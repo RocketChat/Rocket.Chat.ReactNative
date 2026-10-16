@@ -246,7 +246,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 	action = async ({ actionId, value, blockId }: IActions) => {
 		const { data } = this.state;
 		const { mid, appId, viewId } = data;
-		const result = await triggerBlockAction({
+		const shouldClose = await triggerBlockAction({
 			container: {
 				type: ContainerTypes.VIEW,
 				id: viewId
@@ -257,7 +257,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 			blockId,
 			mid
 		});
-		if (result === ModalActions.CLOSE) {
+		if (shouldClose) {
 			this.close();
 			return;
 		}

@@ -11,7 +11,6 @@ jest.mock(
 		({ children }: { children: ReactNode }) =>
 			children
 );
-import { ModalActions } from '~/containers/UIKit/interfaces';
 import { triggerBlockAction, triggerSubmitView } from '~/lib/apps/triggerActions';
 
 let mockBlockAction: (action: { actionId: string; value: unknown; blockId: string }) => Promise<void>;
@@ -125,7 +124,7 @@ describe('ModalBlockView', () => {
 		});
 
 		it('closes when a block action answers with modal.close', async () => {
-			jest.mocked(triggerBlockAction).mockResolvedValueOnce(ModalActions.CLOSE);
+			jest.mocked(triggerBlockAction).mockResolvedValueOnce(true);
 			const navigation = mockNavigation();
 			render(renderModal(modalData('trigger-1'), navigation));
 
@@ -135,7 +134,7 @@ describe('ModalBlockView', () => {
 		});
 
 		it('stays open when a block action does not close the modal', async () => {
-			jest.mocked(triggerBlockAction).mockResolvedValueOnce(undefined);
+			jest.mocked(triggerBlockAction).mockResolvedValueOnce(false);
 			const navigation = mockNavigation();
 			render(renderModal(modalData('trigger-1'), navigation));
 

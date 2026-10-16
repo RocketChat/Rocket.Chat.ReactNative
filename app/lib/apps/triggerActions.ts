@@ -22,8 +22,9 @@ export function triggerCancel({ view, ...options }: ITriggerCancel) {
 	return triggerAction({ type: ActionTypes.CLOSED, view, ...options });
 }
 
-export function triggerBlockAction(options: ITriggerBlockAction) {
-	return triggerAction({ type: ActionTypes.ACTION, ...options });
+export async function triggerBlockAction(options: ITriggerBlockAction): Promise<boolean> {
+	const result = await triggerAction({ type: ActionTypes.ACTION, ...options });
+	return result === ModalActions.CLOSE;
 }
 
 interface ITriggerAppActionButton {

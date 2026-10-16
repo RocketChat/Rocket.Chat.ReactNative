@@ -1,4 +1,4 @@
-import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
+import { ActionTypes, ContainerTypes, type ITriggerBlockAction, ModalActions } from '~/containers/UIKit/interfaces';
 import { ACKNOWLEDGED, postUserInteraction, triggerAction } from '../actions';
 import { triggerAppActionButton, triggerBlockAction, triggerCancel, triggerSubmitView } from '../triggerActions';
 
@@ -95,7 +95,7 @@ describe('triggerActions wrappers', () => {
 		});
 	});
 
-	it('passes block action payload to triggerAction', () => {
+	it('passes block action payload to triggerAction', async () => {
 		const input = {
 			actionId: 'action-id',
 			appId: 'app-id',
@@ -106,12 +106,30 @@ describe('triggerActions wrappers', () => {
 			blockId: 'block-id'
 		};
 
-		triggerBlockAction(input as any);
+		await triggerBlockAction(input as any);
 
 		expect(mockedTriggerAction).toHaveBeenCalledWith({
 			type: ActionTypes.ACTION,
 			...input
 		});
+	});
+
+	it.each([
+		[ModalActions.CLOSE, true],
+		[ModalActions.UPDATE, false],
+		[ACKNOWLEDGED, false],
+		[undefined, false]
+	])('reports whether a block action reply %s closes the view', async (reply, shouldClose) => {
+		mockedTriggerAction.mockResolvedValueOnce(reply as Awaited<ReturnType<typeof triggerAction>>);
+
+		const input: ITriggerBlockAction = {
+			actionId: 'action-id',
+			appId: 'app-id',
+			container: { type: ContainerTypes.VIEW, id: 'view-id' },
+			value: 'value'
+		};
+
+		await expect(triggerBlockAction(input)).resolves.toBe(shouldClose);
 	});
 
 	describe('triggerAppActionButton', () => {
