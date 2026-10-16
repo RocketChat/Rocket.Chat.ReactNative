@@ -103,11 +103,12 @@ open class MainApplication : Application(), ReactApplication {
     val legacyNames = dataDirFiles
         .filter { it.isFile && it.name.endsWith(legacySuffix) }
         .map { it.name }
-        .sortedBy { it == serversLegacyName }
+        .filter { it != serversLegacyName } + serversLegacyName
     for (name in legacyNames) {
       val target = File(dataDir, "${name.removeSuffix(legacySuffix)}.db.db")
       if (target.length() > 0) {
-        if (name != serversLegacyName || !isServersTableEmpty(target)) {
+        val replaceable = if (name == serversLegacyName) isServersTableEmpty(target) else !hasSubscriptionsTable(target)
+        if (!replaceable) {
           continue
         }
         discardDatabase(dataDir, target.name)
@@ -122,15 +123,27 @@ open class MainApplication : Application(), ReactApplication {
     }
   }
 
-  private fun isServersTableEmpty(database: File): Boolean {
+  private fun openForProbe(database: File): SQLiteDatabase {
     val keepFileOnCorruption = DatabaseErrorHandler { }
     val flags = SQLiteDatabase.OPEN_READWRITE or SQLiteDatabase.ENABLE_WRITE_AHEAD_LOGGING
+    return SQLiteDatabase.openDatabase(database.path, null, flags, keepFileOnCorruption)
+  }
+
+  private fun isServersTableEmpty(database: File): Boolean {
     return try {
-      SQLiteDatabase.openDatabase(database.path, null, flags, keepFileOnCorruption).use {
-        DatabaseUtils.queryNumEntries(it, "servers") == 0L
-      }
+      openForProbe(database).use { DatabaseUtils.queryNumEntries(it, "servers") == 0L }
     } catch (e: SQLiteException) {
       false
+    }
+  }
+
+  private fun hasSubscriptionsTable(database: File): Boolean {
+    return try {
+      openForProbe(database).use {
+        DatabaseUtils.queryNumEntries(it, "sqlite_master", "type = 'table' AND name = 'subscriptions'") > 0L
+      }
+    } catch (e: SQLiteException) {
+      true
     }
   }
 
