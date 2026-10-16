@@ -106,27 +106,11 @@ tags:
 - eraseText
 
 # should react to message
-- extendedWaitUntil:
-    visible:
-      text: .*${output.randomMessage}.*
-    timeout: 60000
-- longPressOn:
-    id: 'message-content-${output.randomMessage}'
-- waitForAnimationToEnd
-- extendedWaitUntil:
-    visible:
-      id: action-sheet
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: add-reaction
-    timeout: 60000
-- tapOn:
-    id: add-reaction
-- extendedWaitUntil:
-    visible:
-      id: emoji-picker-tab-emoji
-    timeout: 60000
+- runFlow:
+    file: './utils/open-reaction-picker.yaml'
+    env:
+      MESSAGE: ${output.randomMessage}
+      EXPECTED_ID: emoji-picker-tab-emoji
 - tapOn:
     id: emoji-picker-tab-emoji
 - extendedWaitUntil:
@@ -141,27 +125,11 @@ tags:
     timeout: 60000
 
 # should search emojis in the reaction picker and react
-- extendedWaitUntil:
-    visible:
-      text: .*${output.randomMessage}.*
-    timeout: 60000
-- longPressOn:
-    id: 'message-content-${output.randomMessage}'
-- waitForAnimationToEnd
-- extendedWaitUntil:
-    visible:
-      id: action-sheet
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: add-reaction
-    timeout: 60000
-- tapOn:
-    id: add-reaction
-- extendedWaitUntil:
-    visible:
-      id: emoji-searchbar-input
-    timeout: 60000
+- runFlow:
+    file: './utils/open-reaction-picker.yaml'
+    env:
+      MESSAGE: ${output.randomMessage}
+      EXPECTED_ID: emoji-searchbar-input
 - tapOn:
     id: emoji-searchbar-input
 - inputText: 'laughing'

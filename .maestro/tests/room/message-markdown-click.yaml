@@ -23,7 +23,7 @@ tags:
 
 - extendedWaitUntil:
     visible:
-      text: 'Link with text https://www.rocket.chat'
+      text: '.*Link with text https://www.rocket.chat.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
@@ -146,7 +146,7 @@ tags:
 
 # Tap on message with thread to open thread room
 - tapOn:
-    text: '.*Message with thread*.'
+    text: '.*Message with thread.*'
 
 # Verify thread room view is opened with the correct id
 - runFlow:
@@ -184,7 +184,7 @@ tags:
 
 # Now tap on a message within the thread
 - tapOn:
-    text: '.*a message in thread*.'
+    text: '.*a message in thread.*'
 
 # Verify thread room view remains (clicking message in thread stays in thread)
 - runFlow:

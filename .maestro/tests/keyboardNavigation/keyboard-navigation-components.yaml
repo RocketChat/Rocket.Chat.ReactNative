@@ -57,9 +57,24 @@ tags:
       notVisible:
         focused: true
         containsDescendants:
-          - id: 'accessibility-mentions-with-at-symbol-switch'
+          - text: 'Show alerts as\. Toasts'
     commands:
       - pressKey: Remote Dpad Down
+      - waitForAnimationToEnd:
+          timeout: 1000
+- assertVisible:
+    focused: true
+    containsDescendants:
+      - text: 'Show alerts as\. Toasts'
+- repeat:
+    times: 10
+    while:
+      notVisible:
+        focused: true
+        containsDescendants:
+          - id: 'accessibility-mentions-with-at-symbol-switch'
+    commands:
+      - pressKey: Remote Dpad Up
       - waitForAnimationToEnd:
           timeout: 1000
 - assertVisible:
