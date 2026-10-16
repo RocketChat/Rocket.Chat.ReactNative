@@ -7,6 +7,7 @@ type TTrackedUpload = { loaded: number; total: number; cancel: () => void };
 
 const tracked = new Set<TTrackedUpload>();
 let running = false;
+let startAttempt = 0;
 let lastPercent = -1;
 let cancelSubscription: { remove: () => void } | undefined;
 
@@ -37,8 +38,12 @@ const sync = () => {
 	const shouldRun = tracked.size > 0;
 	if (shouldRun && !running) {
 		lastPercent = percent();
+		startAttempt += 1;
+		const attempt = startAttempt;
 		Promise.resolve(service()?.start(I18n.t('Uploading'), I18n.t('Cancel'), lastPercent)).catch(() => {
-			running = false;
+			if (attempt === startAttempt) {
+				running = false;
+			}
 		});
 	} else if (!shouldRun && running) {
 		service()?.stop();

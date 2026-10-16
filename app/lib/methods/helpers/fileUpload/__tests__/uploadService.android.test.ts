@@ -71,6 +71,20 @@ describe('uploadService (Android)', () => {
 		expect(mockService.start).toHaveBeenCalledTimes(2);
 	});
 
+	it('keeps the newer service run when an earlier start fails late', async () => {
+		let failFirstStart: (error: Error) => void = noop;
+		const firstStart = new Promise((_resolve, reject) => {
+			failFirstStart = reject;
+		});
+		mockService.start.mockImplementationOnce(() => firstStart);
+		track().end();
+		const second = track();
+		failFirstStart(new Error('ForegroundServiceStartNotAllowedException'));
+		await new Promise(resolve => setImmediate(resolve));
+		second.end();
+		expect(mockService.stop).toHaveBeenCalledTimes(2);
+	});
+
 	it('cancels every tracked upload when the notification Cancel button is tapped', () => {
 		const first = jest.fn();
 		const second = jest.fn();
