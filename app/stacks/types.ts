@@ -196,6 +196,7 @@ export type ProfileStackParamList = {
 	ProfileView: undefined;
 	UserPreferencesView: undefined;
 	UserNotificationPrefView: undefined;
+	UserWatchOSQuickRepliesView: undefined;
 	PushTroubleshootView: undefined;
 	ChangeAvatarView: {
 		context: TChangeAvatarViewContext;

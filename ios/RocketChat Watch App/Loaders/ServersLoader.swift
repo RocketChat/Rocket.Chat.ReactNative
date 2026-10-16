@@ -31,6 +31,19 @@ final class ServersLoader: NSObject {
 		self.session = session
 		super.init()
 	}
+	
+	// quick replies sent via application context may arrive before the server is added,
+	// so they are kept under pendingQuickReplies and applied once the server is in the DB
+	func applyPendingQuickReplies(for server: Server) {
+		var allReplies = UserDefaults.standard.dictionary(forKey: "pendingQuickReplies") as? [String: [String]] ?? [:]
+		let key = server.url.absoluteString
+		if let pending = allReplies[key] {
+			server.quickReplies = pending
+			database.save()
+			allReplies.removeValue(forKey: key)
+			UserDefaults.standard.set(allReplies, forKey: "pendingQuickReplies")
+		}
+	}
 }
 
 // MARK: - ServersLoading
@@ -41,13 +54,21 @@ extension ServersLoader: ServersLoading {
 			session.sendMessage { result in
 				switch result {
 				case .success(let message):
+					let group = DispatchGroup()
 					for server in message.servers {
+						group.enter()
 						DispatchQueue.main.async {						
 							self.database.process(updatedServer: server)
+							if let savedServer = self.database.server(url: server.url) {
+								self.applyPendingQuickReplies(for: savedServer)
+							}
+							group.leave()
 						}
 					}
 					
-					promise(.success(()))
+					group.notify(queue: .main) {
+						promise(.success(()))
+					}
 				case .failure(let error):
 					promise(.failure(error))
 				}

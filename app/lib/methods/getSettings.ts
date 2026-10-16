@@ -14,6 +14,7 @@ import protectedFunction from './helpers/protectedFunction';
 import { parseSettings, _prepareSettings } from './parseSettings';
 import { setPresenceCap } from './getUsersPresence';
 import { compareServerVersion } from './helpers';
+import { SETTINGS } from '~/actions/actionsTypes';
 
 const serverInfoKeys = new Set([
 	'Site_Name',
@@ -22,6 +23,7 @@ const serverInfoKeys = new Set([
 	'FileUpload_MaxFileSize',
 	'Force_Screen_Lock',
 	'Force_Screen_Lock_After',
+	'Apple_Watch_Quick_Actions',
 	'uniqueID',
 	'E2E_Enable',
 	'E2E_Enabled_Default_PrivateRooms'
@@ -246,5 +248,7 @@ export async function getSettings(server: string): Promise<void> {
 		});
 	} catch (e) {
 		log(e);
+	} finally {
+		reduxStore.dispatch({ type: SETTINGS.FETCH_COMPLETE });
 	}
 }
