@@ -1,9 +1,29 @@
+import { NetInfoStateType } from '@react-native-community/netinfo';
 import { File, UploadType } from 'expo-file-system';
+import * as LegacyFileSystem from 'expo-file-system/legacy';
 
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
+import { store } from '~/lib/store/auxStore';
 import { type IFormData } from './definitions';
 
 const sanitizeFilename = (name: string) => name.replace(/[/\r\n]/g, '_').replace(/"/g, '%22');
+
+const BODIES_DIR = `${LegacyFileSystem.cacheDirectory}uploads/`;
+const STALE_AFTER_MS = 24 * 60 * 60 * 1000;
+
+const removeStaleBodies = async () => {
+	try {
+		const names = await LegacyFileSystem.readDirectoryAsync(BODIES_DIR);
+		await Promise.all(
+			names.map(async name => {
+				const info = await LegacyFileSystem.getInfoAsync(`${BODIES_DIR}${name}`);
+				if (info.exists && Date.now() - info.modificationTime * 1000 > STALE_AFTER_MS) {
+					await LegacyFileSystem.deleteAsync(info.uri, { idempotent: true });
+				}
+			})
+		);
+	} catch {}
+};
 
 export class Upload {
 	private uploadUrl = '';
@@ -36,10 +56,14 @@ export class Upload {
 			throw new Error('No file to upload');
 		}
 		const { uri, filename, name: fieldName, type: mimeType } = this.file;
+		removeStaleBodies();
 		try {
 			const file = new File(uri);
 			if (!file.exists) {
 				throw new Error('File not found');
+			}
+			if (store.getState().app.netInfoState === NetInfoStateType.none) {
+				throw new Error('Network Error');
 			}
 			const response = await file.upload(this.uploadUrl, {
 				uploadType: UploadType.MULTIPART,
