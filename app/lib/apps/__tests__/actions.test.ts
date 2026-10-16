@@ -50,19 +50,21 @@ describe('actions', () => {
 	});
 
 	describe('handlePayloadUserInteraction', () => {
-		it('returns undefined when trigger id is unknown', () => {
-			expect(handlePayloadUserInteraction(ModalActions.OPEN, { triggerId: 'unknown', viewId: 'view-id' })).toBeUndefined();
+		it('ignores an unknown trigger id', () => {
+			handlePayloadUserInteraction(ModalActions.OPEN, { triggerId: 'unknown', viewId: 'view-id' });
+
+			expect(mockedNavigate).not.toHaveBeenCalled();
+			expect(mockedEmit).not.toHaveBeenCalled();
+			expect(showToast).not.toHaveBeenCalled();
 		});
 
-		it('navigates for modal.open and returns modal.open', async () => {
-			let result;
+		it('navigates for modal.open', async () => {
 			let triggerId = '';
 			await withTriggerId('app-id', async id => {
 				triggerId = id;
-				result = handlePayloadUserInteraction(ModalActions.OPEN, { triggerId, view: { id: 'view-id' } });
+				handlePayloadUserInteraction(ModalActions.OPEN, { triggerId, view: { id: 'view-id' } });
 			});
 
-			expect(result).toBe(ModalActions.OPEN);
 			expect(mockedNavigate).toHaveBeenCalledWith('ModalBlockView', {
 				data: expect.objectContaining({
 					appId: 'app-id',
@@ -72,22 +74,17 @@ describe('actions', () => {
 			});
 		});
 
-		it('returns modal.close for a stream close, which carries no view id', async () => {
-			let result;
-			await withTriggerId('app-id', async triggerId => {
-				result = handlePayloadUserInteraction(ModalActions.CLOSE, { triggerId, appId: 'app-id' });
-			});
-
-			expect(result).toBe(ModalActions.CLOSE);
-		});
-
 		it('accepts a stream reply that arrives after the request settled', async () => {
 			let triggerId = '';
 			await withTriggerId('app-id', async id => {
 				triggerId = id;
 			});
 
-			expect(handlePayloadUserInteraction(ModalActions.OPEN, { triggerId, viewId: 'view-id' })).toBe(ModalActions.OPEN);
+			handlePayloadUserInteraction(ModalActions.OPEN, { triggerId, viewId: 'view-id' });
+
+			expect(mockedNavigate).toHaveBeenCalledWith('ModalBlockView', {
+				data: expect.objectContaining({ triggerId, viewId: 'view-id' })
+			});
 		});
 
 		it('drops a stream reply once the trigger expired', async () => {
@@ -97,7 +94,9 @@ describe('actions', () => {
 			});
 			jest.advanceTimersByTime(5000);
 
-			expect(handlePayloadUserInteraction(ModalActions.OPEN, { triggerId, viewId: 'view-id' })).toBeUndefined();
+			handlePayloadUserInteraction(ModalActions.OPEN, { triggerId, viewId: 'view-id' });
+
+			expect(mockedNavigate).not.toHaveBeenCalled();
 		});
 	});
 
@@ -357,12 +356,12 @@ describe('actions', () => {
 
 			await triggerAction(actionInput);
 
-			const staleResult = handlePayloadUserInteraction(ModalActions.UPDATE, {
+			handlePayloadUserInteraction(ModalActions.UPDATE, {
 				triggerId: 'trigger-fixed-id',
 				viewId: 'view-id'
 			});
 
-			expect(staleResult).toBeUndefined();
+			expect(mockedEmit).toHaveBeenCalledTimes(1);
 		});
 	});
 });

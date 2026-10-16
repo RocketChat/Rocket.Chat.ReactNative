@@ -37,10 +37,7 @@ type THandledServerPayload = {
 	[key: string]: unknown;
 };
 
-export const handlePayloadUserInteraction = (
-	type: string,
-	{ triggerId, ...data }: THandledServerPayload
-): TModalAction | undefined => {
+export const handlePayloadUserInteraction = (type: string, { triggerId, ...data }: THandledServerPayload): void => {
 	const trigger = triggers.get(triggerId);
 	if (!trigger || trigger.consumed) {
 		return;
@@ -54,7 +51,7 @@ export const handlePayloadUserInteraction = (
 	}
 	if (modalType === ModalActions.CLOSE) {
 		trigger.handled = modalType;
-		return modalType;
+		return;
 	}
 	const payloadAppId = data.appId ?? trigger.appId;
 	if (!payloadAppId) {
@@ -77,7 +74,7 @@ export const handlePayloadUserInteraction = (
 				viewId
 			}
 		});
-		return modalType;
+		return;
 	}
 
 	EventEmitter.emit(viewId, {
@@ -87,7 +84,6 @@ export const handlePayloadUserInteraction = (
 		triggerId,
 		viewId
 	} as IEmitUserInteraction);
-	return modalType;
 };
 
 type TTriggerResult = TModalAction | typeof ACKNOWLEDGED | undefined;
