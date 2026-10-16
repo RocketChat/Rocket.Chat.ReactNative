@@ -6590,48 +6590,61 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 }
               >
                 <View
-                  accessibilityLabel=""
-                  accessibilityRole="image"
-                  accessible={false}
                   style={
                     [
                       {
-                        "bottom": 0,
-                        "height": 24,
-                        "width": 24.75,
+                        "justifyContent": "center",
                       },
                       {
-                        "height": 24,
-                        "marginRight": 4,
+                        "height": 20,
                       },
                     ]
                   }
                 >
-                  <Text
+                  <View
+                    accessibilityLabel=""
+                    accessibilityRole="image"
                     accessible={false}
-                    allowFontScaling={false}
-                    selectable={false}
                     style={
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-24242538",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                          "includeFontPadding": false,
-                          "position": "absolute",
+                          "height": 24,
+                          "width": 24.75,
                         },
                         {
-                          "fontSize": 24,
-                        },
-                        {
-                          "color": "#1F2329",
+                          "height": 24,
+                          "marginRight": 4,
                         },
                       ]
                     }
                   >
-                    
-                  </Text>
+                    <Text
+                      accessible={false}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "bottom": 0,
+                            "fontFamily": "custom-24242538",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                            "includeFontPadding": false,
+                            "position": "absolute",
+                          },
+                          {
+                            "fontSize": 24,
+                          },
+                          {
+                            "color": "#1F2329",
+                          },
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                  </View>
                 </View>
                 <View
                   style={
@@ -6956,48 +6969,61 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 }
               >
                 <View
-                  accessibilityLabel=""
-                  accessibilityRole="image"
-                  accessible={false}
                   style={
                     [
                       {
-                        "bottom": 0,
-                        "height": 24,
-                        "width": 24.75,
+                        "justifyContent": "center",
                       },
                       {
-                        "height": 24,
-                        "marginRight": 4,
+                        "height": 20,
                       },
                     ]
                   }
                 >
-                  <Text
+                  <View
+                    accessibilityLabel=""
+                    accessibilityRole="image"
                     accessible={false}
-                    allowFontScaling={false}
-                    selectable={false}
                     style={
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-24242538",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                          "includeFontPadding": false,
-                          "position": "absolute",
+                          "height": 24,
+                          "width": 24.75,
                         },
                         {
-                          "fontSize": 24,
-                        },
-                        {
-                          "color": "#1F2329",
+                          "height": 24,
+                          "marginRight": 4,
                         },
                       ]
                     }
                   >
-                    
-                  </Text>
+                    <Text
+                      accessible={false}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "bottom": 0,
+                            "fontFamily": "custom-24242538",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                            "includeFontPadding": false,
+                            "position": "absolute",
+                          },
+                          {
+                            "fontSize": 24,
+                          },
+                          {
+                            "color": "#1F2329",
+                          },
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                  </View>
                 </View>
                 <View
                   style={
@@ -7322,48 +7348,61 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 }
               >
                 <View
-                  accessibilityLabel=""
-                  accessibilityRole="image"
-                  accessible={false}
                   style={
                     [
                       {
-                        "bottom": 0,
-                        "height": 24,
-                        "width": 24.75,
+                        "justifyContent": "center",
                       },
                       {
-                        "height": 24,
-                        "marginRight": 4,
+                        "height": 20,
                       },
                     ]
                   }
                 >
-                  <Text
+                  <View
+                    accessibilityLabel=""
+                    accessibilityRole="image"
                     accessible={false}
-                    allowFontScaling={false}
-                    selectable={false}
                     style={
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-24242538",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                          "includeFontPadding": false,
-                          "position": "absolute",
+                          "height": 24,
+                          "width": 24.75,
                         },
                         {
-                          "fontSize": 24,
-                        },
-                        {
-                          "color": "#1F2329",
+                          "height": 24,
+                          "marginRight": 4,
                         },
                       ]
                     }
                   >
-                    
-                  </Text>
+                    <Text
+                      accessible={false}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "bottom": 0,
+                            "fontFamily": "custom-24242538",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                            "includeFontPadding": false,
+                            "position": "absolute",
+                          },
+                          {
+                            "fontSize": 24,
+                          },
+                          {
+                            "color": "#1F2329",
+                          },
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                  </View>
                 </View>
                 <View
                   style={

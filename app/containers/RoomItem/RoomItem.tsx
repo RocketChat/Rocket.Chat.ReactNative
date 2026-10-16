@@ -17,6 +17,7 @@ import { formatLastMessage } from '~/lib/methods/formatLastMessage';
 import useStatusAccessibilityLabel from '~/lib/hooks/useStatusAccessibilityLabel';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { CustomIcon } from '../CustomIcon';
+import TextLineCenter from '../TextLineCenter';
 import { useTheme } from '~/theme';
 
 const RoomItem = ({
@@ -143,7 +144,9 @@ const RoomItem = ({
 								hideUnreadStatus={hideUnreadStatus}
 							/>
 							{isInvited ? (
-								<CustomIcon size={24} name='mail' accessibilityLabel={I18n.t('Invited')} color={colors.badgeBackgroundLevel2} />
+								<TextLineCenter lineHeight={styles.markdownText.lineHeight}>
+									<CustomIcon size={24} name='mail' accessibilityLabel={I18n.t('Invited')} color={colors.badgeBackgroundLevel2} />
+								</TextLineCenter>
 							) : null}
 						</View>
 						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}

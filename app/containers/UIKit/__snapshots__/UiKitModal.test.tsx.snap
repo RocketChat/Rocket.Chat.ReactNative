@@ -289,7 +289,11 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   "position": "absolute",
                   "right": 0,
                 },
-                undefined,
+                {
+                  "bottom": 0,
+                  "justifyContent": "center",
+                  "top": 0,
+                },
               ]
             }
             testID="icon_container"
@@ -436,7 +440,11 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   "position": "absolute",
                   "right": 0,
                 },
-                undefined,
+                {
+                  "bottom": 0,
+                  "justifyContent": "center",
+                  "top": 0,
+                },
               ]
             }
             testID="icon_container"
@@ -583,7 +591,11 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   "position": "absolute",
                   "right": 0,
                 },
-                undefined,
+                {
+                  "bottom": 0,
+                  "justifyContent": "center",
+                  "top": 0,
+                },
               ]
             }
             testID="icon_container"
@@ -730,7 +742,11 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   "position": "absolute",
                   "right": 0,
                 },
-                undefined,
+                {
+                  "bottom": 0,
+                  "justifyContent": "center",
+                  "top": 0,
+                },
               ]
             }
             testID="icon_container"

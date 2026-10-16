@@ -4,7 +4,7 @@ import { useTheme } from '~/theme';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import I18n from '~/i18n';
 import sharedStyles from '~/views/Styles';
-import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import TextLineCenter from '~/containers/TextLineCenter';
 
 interface ITipProps {
 	iconType?: 'success' | 'error' | 'info';
@@ -18,9 +18,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		gap: 4
 	},
-	iconLine: {
-		justifyContent: 'center'
-	},
 	text: {
 		...sharedStyles.textRegular,
 		lineHeight: TEXT_LINE_HEIGHT,
@@ -30,7 +27,6 @@ const styles = StyleSheet.create({
 
 const Tip = ({ iconType, description }: ITipProps) => {
 	const { colors } = useTheme();
-	const { fontScale } = useResponsiveLayout();
 
 	let icon: TIconsName = 'info';
 	let color = colors.fontDefault;
@@ -48,9 +44,9 @@ const Tip = ({ iconType, description }: ITipProps) => {
 
 	return (
 		<View accessible accessibilityLabel={`${accessibilityLabel}${description}`} style={styles.container}>
-			<View style={[styles.iconLine, { height: TEXT_LINE_HEIGHT * fontScale }]}>
+			<TextLineCenter lineHeight={TEXT_LINE_HEIGHT}>
 				<CustomIcon color={color} name={icon} size={16} />
-			</View>
+			</TextLineCenter>
 			<Text style={{ ...styles.text, color }}>{description}</Text>
 		</View>
 	);
