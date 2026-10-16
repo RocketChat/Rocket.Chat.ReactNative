@@ -6,6 +6,9 @@ import android.database.DatabaseErrorHandler
 import android.database.DatabaseUtils
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
+import android.system.ErrnoException
+import android.system.Os
+import android.util.Log
 import java.io.File
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
@@ -90,68 +93,68 @@ open class MainApplication : Application(), ReactApplication {
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
   }
 
-  private val sidecarSuffixesThenMain = listOf("-wal", "-shm", "-journal", "")
-
   private fun migrateLegacyExperimentalDatabases() {
     val dataDir = File(applicationInfo.dataDir)
     val legacySuffix = "-experimental.db.db"
-    val serversLegacyName = "default$legacySuffix"
-    if (!File(dataDir, serversLegacyName).exists()) {
+    val serversLegacy = File(dataDir, "default$legacySuffix")
+    if (!serversLegacy.exists()) {
       return
     }
     val dataDirFiles = dataDir.listFiles() ?: return
-    val legacyNames = dataDirFiles
-        .filter { it.isFile && it.name.endsWith(legacySuffix) }
-        .map { it.name }
-        .filter { it != serversLegacyName } + serversLegacyName
-    for (name in legacyNames) {
-      val target = File(dataDir, "${name.removeSuffix(legacySuffix)}.db.db")
+    val otherLegacy = dataDirFiles.filter { it.isFile && it.name.endsWith(legacySuffix) && it != serversLegacy }
+    for (legacy in otherLegacy + serversLegacy) {
+      val target = File(legacy.path.removeSuffix(legacySuffix) + ".db.db")
       if (target.length() > 0) {
-        val replaceable = if (name == serversLegacyName) isServersTableEmpty(target) else !hasSubscriptionsTable(target)
-        if (!replaceable) {
+        if (!isReplaceable(target, isServersDatabase = legacy == serversLegacy)) {
           continue
         }
-        discardDatabase(dataDir, target.name)
+        discardDatabase(target)
       }
-      for (suffix in sidecarSuffixesThenMain) {
-        val from = File(dataDir, name + suffix)
-        val to = File(dataDir, target.name + suffix)
-        if (from.exists() && !from.renameTo(to)) {
-          throw IllegalStateException("Failed to migrate ${from.name} to ${to.name}")
+      moveDatabase(legacy, target)
+    }
+  }
+
+  private fun databaseFiles(main: File) = listOf("-wal", "-shm", "-journal", "").map { File(main.path + it) }
+
+  private fun moveDatabase(from: File, to: File) {
+    for ((source, destination) in databaseFiles(from).zip(databaseFiles(to))) {
+      if (source.exists()) {
+        abortStartupOnFailure("Failed to migrate ${source.name} to ${destination.name}") {
+          Os.rename(source.path, destination.path)
         }
       }
     }
   }
 
-  private fun openForProbe(database: File): SQLiteDatabase {
+  private fun discardDatabase(main: File) {
+    for (file in databaseFiles(main)) {
+      if (file.exists()) {
+        abortStartupOnFailure("Failed to discard ${file.name}") { Os.remove(file.path) }
+      }
+    }
+  }
+
+  private fun abortStartupOnFailure(message: String, operation: () -> Unit) {
+    try {
+      operation()
+    } catch (e: ErrnoException) {
+      throw IllegalStateException(message, e)
+    }
+  }
+
+  private fun isReplaceable(target: File, isServersDatabase: Boolean): Boolean {
     val keepFileOnCorruption = DatabaseErrorHandler { }
-    return SQLiteDatabase.openDatabase(database.path, null, SQLiteDatabase.OPEN_READONLY, keepFileOnCorruption)
-  }
-
-  private fun isServersTableEmpty(database: File): Boolean {
     return try {
-      openForProbe(database).use { DatabaseUtils.queryNumEntries(it, "servers") == 0L }
+      SQLiteDatabase.openDatabase(target.path, null, SQLiteDatabase.OPEN_READONLY, keepFileOnCorruption).use {
+        if (isServersDatabase) {
+          DatabaseUtils.queryNumEntries(it, "servers") == 0L
+        } else {
+          DatabaseUtils.queryNumEntries(it, "sqlite_master", "type = 'table' AND name = 'subscriptions'") == 0L
+        }
+      }
     } catch (e: SQLiteException) {
+      Log.w("MainApplication", "Legacy database probe failed", e)
       false
-    }
-  }
-
-  private fun hasSubscriptionsTable(database: File): Boolean {
-    return try {
-      openForProbe(database).use {
-        DatabaseUtils.queryNumEntries(it, "sqlite_master", "type = 'table' AND name = 'subscriptions'") > 0L
-      }
-    } catch (e: SQLiteException) {
-      true
-    }
-  }
-
-  private fun discardDatabase(dir: File, name: String) {
-    for (suffix in sidecarSuffixesThenMain) {
-      val file = File(dir, name + suffix)
-      if (file.exists() && !file.delete()) {
-        throw IllegalStateException("Failed to discard ${file.name}")
-      }
     }
   }
 }

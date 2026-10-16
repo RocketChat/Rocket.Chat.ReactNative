@@ -15,6 +15,8 @@ public class AppDelegate: ExpoAppDelegate {
   var reactNativeFactory: RCTReactNativeFactory?
   var watchConnection: WatchConnection?
 
+  private static let sidecarSuffixesThenMain = ["-wal", "-shm", "-journal", ""]
+
   public override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
@@ -71,29 +73,27 @@ public class AppDelegate: ExpoAppDelegate {
     return result
   }
 
-  private let sidecarSuffixesThenMain = ["-wal", "-shm", "-journal", ""]
-
   private func migrateLegacyExperimentalDatabases() {
     let fileManager = FileManager.default
     let groupDir = fileManager.groupDir()
     let legacySuffix = "-experimental.db"
     let serversLegacyName = "default\(legacySuffix)"
-    guard fileManager.fileExists(atPath: "\(groupDir)/\(serversLegacyName)") else {
+    guard fileManager.fileExists(atPath: "\(groupDir)/\(serversLegacyName)"),
+          let groupFiles = try? fileManager.contentsOfDirectory(atPath: groupDir) else {
       return
     }
-    let legacyNames = ((try? fileManager.contentsOfDirectory(atPath: groupDir)) ?? []).filter { $0.hasSuffix(legacySuffix) }
+    let legacyNames = groupFiles.filter { $0.hasSuffix(legacySuffix) }
     for name in legacyNames.filter({ $0 != serversLegacyName }) + [serversLegacyName] {
       let from = "\(groupDir)/\(name)"
-      let targetName = "\(name.dropLast(legacySuffix.count)).db"
-      let to = "\(groupDir)/\(targetName)"
+      let to = "\(groupDir)/\(name.dropLast(legacySuffix.count)).db"
       if let size = (try? fileManager.attributesOfItem(atPath: to))?[.size] as? Int, size > 0 {
         guard name == serversLegacyName, isServersTableEmpty(atPath: to) else {
           continue
         }
-        discardDatabase(named: targetName, inDirectory: groupDir)
+        discardDatabase(atPath: to)
       }
       foldWalIntoMainFile(atPath: from)
-      for suffix in sidecarSuffixesThenMain where fileManager.fileExists(atPath: from + suffix) {
+      for suffix in Self.sidecarSuffixesThenMain where fileManager.fileExists(atPath: from + suffix) {
         guard Darwin.rename(from + suffix, to + suffix) == 0 else {
           let code = errno
           fatalError("Failed to migrate \(name + suffix): errno \(code)")
@@ -105,7 +105,8 @@ public class AppDelegate: ExpoAppDelegate {
   private func foldWalIntoMainFile(atPath path: String) {
     var database: OpaquePointer?
     defer { sqlite3_close(database) }
-    guard sqlite3_open_v2(path, &database, SQLITE_OPEN_READWRITE, nil) == SQLITE_OK else {
+    guard FileManager.default.fileExists(atPath: path + "-wal"),
+          sqlite3_open_v2(path, &database, SQLITE_OPEN_READWRITE, nil) == SQLITE_OK else {
       return
     }
     sqlite3_exec(database, "PRAGMA wal_checkpoint(TRUNCATE)", nil, nil, nil)
@@ -115,24 +116,26 @@ public class AppDelegate: ExpoAppDelegate {
     var database: OpaquePointer?
     defer { sqlite3_close(database) }
     guard sqlite3_open_v2(path, &database, SQLITE_OPEN_READONLY, nil) == SQLITE_OK else {
+      print("Legacy database migration: could not open the target database")
       return false
     }
     var statement: OpaquePointer?
     defer { sqlite3_finalize(statement) }
     guard sqlite3_prepare_v2(database, "SELECT COUNT(*) FROM servers", -1, &statement, nil) == SQLITE_OK,
           sqlite3_step(statement) == SQLITE_ROW else {
+      print("Legacy database migration: could not read servers from the target database")
       return false
     }
     return sqlite3_column_int64(statement, 0) == 0
   }
 
-  private func discardDatabase(named name: String, inDirectory directory: String) {
+  private func discardDatabase(atPath path: String) {
     let fileManager = FileManager.default
-    for suffix in sidecarSuffixesThenMain where fileManager.fileExists(atPath: "\(directory)/\(name)\(suffix)") {
+    for suffix in Self.sidecarSuffixesThenMain where fileManager.fileExists(atPath: path + suffix) {
       do {
-        try fileManager.removeItem(atPath: "\(directory)/\(name)\(suffix)")
+        try fileManager.removeItem(atPath: path + suffix)
       } catch {
-        fatalError("Failed to discard \(name + suffix): \(error.localizedDescription)")
+        fatalError("Failed to discard \(path + suffix): \(error.localizedDescription)")
       }
     }
   }
