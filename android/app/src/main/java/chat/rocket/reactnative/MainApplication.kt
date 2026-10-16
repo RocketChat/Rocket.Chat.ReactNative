@@ -104,6 +104,9 @@ open class MainApplication : Application(), ReactApplication {
     val otherLegacy = dataDirFiles.filter { it.isFile && it.name.endsWith(legacySuffix) && it != serversLegacy }
     for (legacy in otherLegacy + serversLegacy) {
       val target = File(legacy.path.removeSuffix(legacySuffix) + ".db.db")
+      if (target == serversLegacy) {
+        continue
+      }
       if (target.length() > 0) {
         if (!isReplaceable(target, isServersDatabase = legacy == serversLegacy)) {
           continue
@@ -114,10 +117,10 @@ open class MainApplication : Application(), ReactApplication {
     }
   }
 
-  private fun databaseFiles(main: File) = listOf("-wal", "-shm", "-journal", "").map { File(main.path + it) }
+  private fun sidecarsThenMain(main: File) = listOf("-wal", "-shm", "-journal", "").map { File(main.path + it) }
 
   private fun moveDatabase(from: File, to: File) {
-    for ((source, destination) in databaseFiles(from).zip(databaseFiles(to))) {
+    for ((source, destination) in sidecarsThenMain(from).zip(sidecarsThenMain(to))) {
       if (source.exists()) {
         abortStartupOnFailure("Failed to migrate ${source.name} to ${destination.name}") {
           Os.rename(source.path, destination.path)
@@ -127,7 +130,7 @@ open class MainApplication : Application(), ReactApplication {
   }
 
   private fun discardDatabase(main: File) {
-    for (file in databaseFiles(main)) {
+    for (file in sidecarsThenMain(main)) {
       if (file.exists()) {
         abortStartupOnFailure("Failed to discard ${file.name}") { Os.remove(file.path) }
       }
