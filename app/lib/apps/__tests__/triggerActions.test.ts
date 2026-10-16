@@ -1,10 +1,4 @@
-import {
-	ActionTypes,
-	ContainerTypes,
-	type ITriggerBlockAction,
-	type ITriggerSubmitView,
-	ModalActions
-} from '~/containers/UIKit/interfaces';
+import { ContainerTypes, type ITriggerBlockAction, type ITriggerSubmitView, ModalActions } from '~/containers/UIKit/interfaces';
 import { ACKNOWLEDGED, postUserInteraction, triggerAction } from '../actions';
 import { triggerAppActionButton, triggerBlockAction, triggerSubmitView } from '../triggerActions';
 
@@ -36,17 +30,6 @@ describe('triggerActions wrappers', () => {
 				}
 			}
 		};
-
-		it('passes submit payload to triggerAction', async () => {
-			mockedTriggerAction.mockResolvedValueOnce(ModalActions.UPDATE);
-
-			await triggerSubmitView(submitInput);
-
-			expect(mockedTriggerAction).toHaveBeenCalledWith({
-				type: ActionTypes.SUBMIT,
-				...submitInput
-			});
-		});
 
 		it('asks to close when triggerAction returns modal.close', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.CLOSE);

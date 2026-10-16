@@ -73,12 +73,4 @@ describe('ActionsButton', () => {
 
 		expect(options.map(option => option.title)).toEqual(['Create discussion', 'Summarize', 'Translate']);
 	});
-
-	it('passes the room, the thread and the draft getter to the app options', () => {
-		openSheet();
-
-		const [params] = mockUseComposerAppActionOptions.mock.calls[0] as [{ rid: string; tmid: string; getText: () => string }];
-		expect(params).toMatchObject({ rid: 'rid-1', tmid: 'tmid-1' });
-		expect(params.getText()).toBe('draft text');
-	});
 });

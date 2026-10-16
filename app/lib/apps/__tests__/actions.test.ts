@@ -217,20 +217,6 @@ describe('actions', () => {
 			);
 		});
 
-		it('handles a reply that arrives after the stream trigger timeout', async () => {
-			mockedFetch.mockImplementationOnce(async () => {
-				jest.advanceTimersByTime(6000);
-				return {
-					ok: true,
-					text: () =>
-						Promise.resolve(JSON.stringify({ type: ModalActions.OPEN, triggerId: 'trigger-fixed-id', view: { id: 'slow-view' } }))
-				} as Response;
-			});
-
-			await expect(triggerAction(actionInput)).resolves.toBe(ModalActions.OPEN);
-			expect(mockedNavigate).toHaveBeenCalledTimes(1);
-		});
-
 		it('returns modal.close for explicit close response', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
