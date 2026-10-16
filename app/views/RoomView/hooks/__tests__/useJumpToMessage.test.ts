@@ -154,6 +154,23 @@ describe('useJumpToMessage', () => {
 		expect(mockGetMessageInfo).toHaveBeenCalledWith('msg-42');
 	});
 
+	it('jumpToMessageByUrl inside a thread pointing to a main-room message in the same room opens the room', async () => {
+		mockGetRoomInfo.mockResolvedValueOnce({ rid: 'rid-1' });
+		mockGetMessageInfo.mockResolvedValueOnce({ id: 'msg-target', rid: 'rid-1' });
+		const { result } = renderRoomNavigation({ tmid: 'thread-parent', t: 'thread' });
+
+		await act(async () => {
+			await result.current.jumpToMessageByUrl('https://open.rocket.chat/channel/general?msg=msg-target');
+		});
+
+		expect(mockGetRoomInfo).toHaveBeenCalledWith('rid-1');
+		expect(mockGoRoom).toHaveBeenCalledWith({
+			item: { rid: 'rid-1' },
+			isMasterDetail: false,
+			jumpToMessageId: 'msg-target'
+		});
+	});
+
 	it('jumpToMessageByUrl is a no-op without a url', async () => {
 		const { result } = renderRoomNavigation();
 

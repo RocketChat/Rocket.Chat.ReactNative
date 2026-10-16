@@ -1,0 +1,65 @@
+appId: ${APP_ID}
+name: Jump to main room message from thread link
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-13
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+- evalScript: ${output.targetMsg = output.utils.sendMessage(output.user.username, output.user.password, output.room._id, 'target-main-room-message')}
+- repeat:
+    times: 15
+    commands:
+      - evalScript: ${output.utils.sendMessage(output.user.username, output.user.password, output.room._id, 'filler-msg-' + output.random())}
+- evalScript: ${output.threadParent = output.utils.sendMessage(output.user.username, output.user.password, output.room._id, 'parent-thread-message')}
+- evalScript: ${output.linkUrl = output.data.server + '/channel/' + output.room.name + '?msg=' + output.targetMsg.message._id}
+- evalScript: ${output.utils.sendMessage(output.user.username, output.user.password, output.room._id, output.linkUrl, output.threadParent.message._id)}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+
+# verify in room and open thread
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-thread-button-parent-thread-message'
+    timeout: 60000
+- tapOn:
+    id: 'message-thread-button-parent-thread-message'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-parent-thread-message'
+    timeout: 60000
+
+# tap the link in the thread pointing to the main room message
+- extendedWaitUntil:
+    visible:
+      text: '.*${output.targetMsg.message._id}.*'
+    timeout: 60000
+- tapOn:
+    text: '.*${output.targetMsg.message._id}.*'
+    retryTapIfNoChange: true
+
+# verify navigation left the thread and returned to main room
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-target-main-room-message'
+    timeout: 60000
