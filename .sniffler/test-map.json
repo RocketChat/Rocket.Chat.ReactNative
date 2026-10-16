@@ -454,7 +454,12 @@
 	},
 	{
 		"test": ".maestro/tests/uikit/button-kit.yaml",
-		"dependsOn": ["app/containers/UIKit/**", "app/lib/apps/**"]
+		"dependsOn": [
+			"app/containers/UIKit/**",
+			"app/lib/apps/**",
+			"app/lib/services/appsApiFetch.ts",
+			"app/views/RoomView/services/blockAction.ts"
+		]
 	},
 	{
 		"test": ".maestro/tests/uikit/poll.yaml",
@@ -463,7 +468,10 @@
 			"app/lib/apps/**",
 			"app/containers/MessageComposer/**",
 			"app/views/ModalBlockView.tsx",
-			"app/views/RoomView/services/blockAction.ts"
+			"app/views/RoomView/services/blockAction.ts",
+			"app/lib/services/appsApiFetch.ts",
+			"app/lib/services/connect.ts",
+			"app/sagas/login.js"
 		]
 	}
 ]
