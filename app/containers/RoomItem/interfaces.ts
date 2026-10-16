@@ -42,7 +42,7 @@ export interface IUpdatedAtProps {
 export interface IWrapperProps {
 	accessibilityLabel: string;
 	testID?: string;
-	accessibilityHint?: string;
+	onShowActions?: () => void;
 	avatar: string;
 	type: string;
 	userId: string | null;
@@ -77,7 +77,6 @@ interface IRoomItemTouchables {
 	toggleRead?: (rid: string, tIsRead: boolean) => Promise<void>;
 	hideChannel?: (rid: string, type: SubscriptionType) => Promise<void>;
 	onPress: (item?: any) => void;
-	onLongPress?: (item?: any) => void;
 }
 
 interface IBaseRoomItem extends IRoomItemTouchables {
@@ -99,6 +98,7 @@ export interface IRoomItemContainerProps extends IBaseRoomItem {
 	getRoomTitle: (item: any) => string;
 	getRoomAvatar: (item: any) => string;
 	getIsRead?: (item: any) => boolean;
+	onShowActions?: (item: any) => void;
 }
 
 export interface IRoomItemProps extends IBaseRoomItem {
@@ -129,6 +129,8 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	hideMentionStatus?: boolean;
 	accessibilityDate: string;
 	abacAttributes?: ISubscription['abacAttributes'];
+	onLongPress?: () => void;
+	onShowActions?: () => void;
 }
 
 export interface ILastMessageProps {
@@ -142,6 +144,7 @@ export interface ILastMessageProps {
 
 export interface ITouchableProps extends IRoomItemTouchables {
 	children: ReactElement;
+	onLongPress?: () => void;
 	type: SubscriptionType;
 	width: number;
 	favorite: boolean;

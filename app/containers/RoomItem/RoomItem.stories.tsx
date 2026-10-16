@@ -53,7 +53,13 @@ export default {
 
 export const Basic = () => <RoomItem />;
 
-export const Touch = () => <RoomItem onPress={() => alert('on press')} onLongPress={() => alert('on long press')} />;
+export const Touch = () => (
+	<RoomItem
+		onPress={() => alert('on press')}
+		onLongPress={() => alert('on long press')}
+		onShowActions={() => alert('on show actions')}
+	/>
+);
 
 export const User = () => (
 	<>

@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
+import { AccessibilityInfo, Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
 import { connect } from 'react-redux';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type SearchBarCommands } from 'react-native-screens';
@@ -529,6 +529,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 		}
 
 		if (options.length === 0) {
+			AccessibilityInfo.announceForAccessibilityWithOptions(I18n.t('No_actions_available'), { queue: true });
 			return;
 		}
 		showActionSheet({ options });
@@ -553,7 +554,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
 				width={width}
-				onLongPress={this.showChannelActions}
+				onShowActions={this.showChannelActions}
 				useRealName={useRealName}
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}

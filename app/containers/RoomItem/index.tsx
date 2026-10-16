@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { AccessibilityInfo } from 'react-native';
+import { runOnUISync } from 'react-native-worklets';
 
 import { useActionSheet } from '../ActionSheet';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -11,13 +12,14 @@ import { getRoomActionsOptions } from './getRoomActionsOptions';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
 import { useRoomSnapshot } from './hooks/useRoomSnapshot';
+import { closeOpenSwipeItem } from './utils/openSwipeItem';
 
 const RoomItemContainer = memo(
 	({
 		item,
 		id,
 		onPress,
-		onLongPress,
+		onShowActions,
 		width,
 		isFocused,
 		showLastMessage,
@@ -46,15 +48,10 @@ const RoomItemContainer = memo(
 
 		const handleOnPress = () => onPress(item);
 
-		const handleOnLongPress = async () => {
-			if (onLongPress) {
-				onLongPress(item);
-				return;
-			}
-			const isScreenReaderEnabled = await AccessibilityInfo.isScreenReaderEnabled();
-			const hasExternalKeyboard = isExternalKeyboardConnected();
-
-			if (item.separator || !swipeEnabled || (!isScreenReaderEnabled && !hasExternalKeyboard)) {
+		const showRoomActions = () => {
+			runOnUISync(closeOpenSwipeItem);
+			if (onShowActions) {
+				onShowActions(item);
 				return;
 			}
 			showActionSheet({
@@ -68,6 +65,14 @@ const RoomItemContainer = memo(
 			});
 		};
 
+		const handleOnLongPress = async () => {
+			if (onShowActions || isExternalKeyboardConnected() || (await AccessibilityInfo.isScreenReaderEnabled())) {
+				showRoomActions();
+			}
+		};
+
+		const onShowRoomActions = onShowActions || swipeEnabled ? showRoomActions : undefined;
+
 		return (
 			<RoomItem
 				name={name}
@@ -76,7 +81,8 @@ const RoomItemContainer = memo(
 				isInvited={isInvited}
 				isRead={isRead}
 				onPress={handleOnPress}
-				onLongPress={handleOnLongPress}
+				onLongPress={onShowRoomActions && handleOnLongPress}
+				onShowActions={onShowRoomActions}
 				date={date}
 				accessibilityDate={accessibilityDate}
 				width={width}

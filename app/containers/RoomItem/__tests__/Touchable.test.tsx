@@ -49,9 +49,9 @@ afterEach(() => {
 test('a tap after a touch that closed another row without pressing still opens the room', async () => {
 	const { gesture, onPress, pressRow } = setup();
 	openOtherRow();
-	await act(() => fireGestureHandler(gesture, touchWithoutSwipe));
+	await act(async () => fireGestureHandler(gesture, touchWithoutSwipe));
 
-	await act(() => fireGestureHandler(gesture, touchWithoutSwipe));
+	await act(async () => fireGestureHandler(gesture, touchWithoutSwipe));
 	pressRow();
 
 	expect(onPress).toHaveBeenCalledTimes(1);
@@ -61,7 +61,7 @@ test('a tap that closed another row does not open the room', async () => {
 	const { gesture, onPress, pressRow } = setup();
 	openOtherRow();
 
-	await act(() => fireGestureHandler(gesture, touchWithoutSwipe));
+	await act(async () => fireGestureHandler(gesture, touchWithoutSwipe));
 	pressRow();
 
 	expect(onPress).not.toHaveBeenCalled();
@@ -69,7 +69,7 @@ test('a tap that closed another row does not open the room', async () => {
 
 test('a tap on a swiped-open row closes it instead of opening the room', async () => {
 	const { gesture, onPress, pressRow } = setup();
-	await act(() =>
+	await act(async () =>
 		fireGestureHandler(gesture, [
 			{ state: State.BEGAN, translationX: 0, velocityX: 0 },
 			{ state: State.ACTIVE, translationX: 60, velocityX: 0 },
