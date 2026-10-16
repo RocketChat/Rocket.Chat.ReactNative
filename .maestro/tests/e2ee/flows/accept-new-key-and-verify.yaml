@@ -16,7 +16,7 @@ env:
       USERNAME: ${USERNAME}
       PASSWORD: ${PASSWORD}
 - runFlow:
-    file: '../../../helpers/navigate-to-room.yaml'
+    file: '../../../helpers/open-room.yaml'
     env:
       ROOM: ${ROOM}
 - runFlow: '../utils/enter-e2e-key.yaml'

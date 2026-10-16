@@ -28,7 +28,7 @@ env:
 # Reset room E2EE key
 - launchApp
 - runFlow:
-    file: '../../../helpers/navigate-to-room.yaml'
+    file: '../../../helpers/open-room.yaml'
     env:
       ROOM: ${ROOM}
 - extendedWaitUntil:
@@ -87,7 +87,7 @@ env:
 
 # Navigate to room and send message
 - runFlow:
-    file: '../../../helpers/navigate-to-room.yaml'
+    file: '../../../helpers/open-room.yaml'
     env:
       ROOM: ${ROOM}
 - runFlow:

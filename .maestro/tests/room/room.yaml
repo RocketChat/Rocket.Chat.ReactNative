@@ -19,7 +19,7 @@ tags:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 
@@ -286,7 +286,7 @@ tags:
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 
@@ -316,7 +316,7 @@ tags:
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 
@@ -525,7 +525,7 @@ tags:
 - runFlow: '../../helpers/hide-keyboard.yaml'
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
@@ -580,7 +580,7 @@ tags:
 - runFlow: '../../helpers/hide-keyboard.yaml'
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:
@@ -605,7 +605,7 @@ tags:
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:
@@ -622,7 +622,7 @@ tags:
     timeout: 10000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:
@@ -639,7 +639,7 @@ tags:
     timeout: 10000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:

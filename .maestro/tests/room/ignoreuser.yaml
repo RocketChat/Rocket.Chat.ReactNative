@@ -43,7 +43,7 @@ tags:
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.otherUser.username}
 - extendedWaitUntil:
@@ -70,7 +70,7 @@ tags:
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.otherUser.username}
 - extendedWaitUntil:

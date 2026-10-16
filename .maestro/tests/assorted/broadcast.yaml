@@ -97,7 +97,7 @@ tags:
 - runFlow: ../../helpers/go-back.yaml
 - runFlow: ../../helpers/go-back.yaml
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room}
 - runFlow:

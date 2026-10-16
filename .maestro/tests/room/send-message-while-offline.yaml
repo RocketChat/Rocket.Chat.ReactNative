@@ -23,7 +23,7 @@ tags:
       PASSWORD: ${output.user.password}
       CLEAR_STATE: true
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.sender.username}
 - extendedWaitUntil:
