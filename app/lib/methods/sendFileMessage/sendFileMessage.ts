@@ -3,8 +3,9 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { type IUser, type TSendFileMessageFileInfo, type TUploadModel } from '~/definitions';
 import database from '~/lib/database';
 import FileUpload from '../helpers/fileUpload';
-import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
+import { cancelUpload, copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
 import { type IFormData } from '../helpers/fileUpload/definitions';
+import { trackUpload } from '../helpers/fileUpload/uploadService';
 
 export async function sendFileMessage(
 	rid: string,
@@ -15,7 +16,14 @@ export async function sendFileMessage(
 	isForceTryAgain?: boolean
 ): Promise<void> {
 	let uploadPath: string | null = '';
-	let uploadRecord: TUploadModel | null;
+	let uploadRecord: TUploadModel | null = null;
+	let cancelled = false;
+	const tracker = trackUpload(() => {
+		cancelled = true;
+		if (uploadRecord) {
+			cancelUpload(uploadRecord, rid);
+		}
+	});
 	try {
 		const { id, token } = user;
 		const uploadUrl = `${server}/api/v1/rooms.upload/${rid}`;
@@ -29,6 +37,9 @@ export async function sendFileMessage(
 		}
 
 		fileInfo.path = await copyFileToCacheDirectoryIfNeeded(fileInfo.path, fileInfo.name);
+		if (cancelled) {
+			return;
+		}
 
 		const formData: IFormData[] = [];
 		formData.push({
@@ -67,6 +78,7 @@ export async function sendFileMessage(
 		};
 
 		uploadQueue[uploadPath] = new FileUpload(uploadUrl, headers, formData, async (loaded, total) => {
+			tracker.progress(loaded, total);
 			try {
 				await db.write(async () => {
 					await uploadRecord?.update(u => {
@@ -88,5 +100,7 @@ export async function sendFileMessage(
 			await persistUploadError(fileInfo.path, rid);
 			throw e;
 		}
+	} finally {
+		tracker.end();
 	}
 }
