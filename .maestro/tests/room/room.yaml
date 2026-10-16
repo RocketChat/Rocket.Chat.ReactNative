@@ -296,6 +296,11 @@ tags:
 
 - extendedWaitUntil:
     visible:
+      id: 'message-content-new message'
+    timeout: 60000
+- waitForAnimationToEnd
+- extendedWaitUntil:
+    visible:
       id: 'username-header-${output.otherUser.username}'
     timeout: 60000
 - tapOn:
@@ -507,7 +512,7 @@ tags:
 
 # should save draft, check it, send it and clear it
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:

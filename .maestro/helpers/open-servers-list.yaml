@@ -8,5 +8,16 @@ tags:
     visible:
       id: 'rooms-list-header-servers-list-button'
     timeout: 60000
-- tapOn:
-    id: 'rooms-list-header-servers-list-button'
+- repeat:
+    times: 3
+    while:
+      notVisible:
+        id: 'rooms-list-header-servers-list'
+    commands:
+      - tapOn:
+          id: 'rooms-list-header-servers-list-button'
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-header-servers-list'
+          timeout: 5000
+          optional: true

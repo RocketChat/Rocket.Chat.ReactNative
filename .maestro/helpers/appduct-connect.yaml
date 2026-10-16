@@ -9,5 +9,13 @@ tags:
     while:
       true: ${!output.appductLink.live}
     commands:
+      - runFlow:
+          when:
+            visible: '.*Open in.*'
+            platform: iOS
+          commands:
+            - tapOn:
+                text: '^Open$'
+                optional: true
       - evalScript: ${output.appductLink = output.utils.waitForAppduct(output.appductLink)}
 - assertTrue: ${output.appductLink.live}
