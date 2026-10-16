@@ -145,8 +145,18 @@ tags:
 - tapOn:
     id: 'profile-view-enter-password-sheet-input'
 - inputText: ${output.user.password}
-- tapOn:
-    text: 'Save'
+# On iOS 26 the keyboard can cover the sheet's Save button; submit from the keyboard instead.
+- runFlow:
+    when:
+      platform: ios
+    commands:
+      - pressKey: enter
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - tapOn:
+          text: 'Save'
 - extendedWaitUntil:
     notVisible:
       id: 'profile-view-enter-password-sheet-input'
@@ -184,6 +194,9 @@ tags:
 - tapOn:
     id: 'change-password-view-confirm-new-password'
 - inputText: ${output.user.password + 'new'}
+# Maestro on iOS reports the button as visible while the keyboard covers it, so the tap lands on the keyboard.
+- runFlow:
+    file: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'change-password-view-set-new-password-button'
