@@ -34,6 +34,9 @@ export default StyleSheet.create({
 	inputBorder: {
 		borderRadius: 4
 	},
+	pressed: {
+		opacity: 0.7
+	},
 	input: {
 		minHeight: 48,
 		paddingHorizontal: 8,
@@ -55,6 +58,10 @@ export default StyleSheet.create({
 	},
 	items: {
 		height: 226
+	},
+	loading: {
+		padding: 24,
+		alignItems: 'center'
 	},
 	chips: {
 		paddingTop: 8,

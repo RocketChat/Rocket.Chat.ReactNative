@@ -1,5 +1,6 @@
 import { Text } from 'react-native';
 import { render } from '@testing-library/react-native';
+import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { InfoCard } from './InfoCard';
 
@@ -58,7 +59,7 @@ describe('InfoCard', () => {
 		});
 	});
 
-	it('ignores row action rendering for now (non-interactive)', () => {
+	it('renders the row action through parser.icon_button', () => {
 		const parser = {
 			icon: jest.fn((element: any) => <Text>{`icon:${element.icon}`}</Text>),
 			plain_text: jest.fn((element: any) => <Text>{`text:${element.text}`}</Text>),
@@ -70,6 +71,8 @@ describe('InfoCard', () => {
 			<InfoCard
 				type='info_card'
 				parser={parser as any}
+				appId='app-id'
+				blockId='block-id'
 				rows={[
 					{
 						background: 'default',
@@ -85,7 +88,10 @@ describe('InfoCard', () => {
 		);
 
 		expect(queryByText('text:Line')).toBeTruthy();
-		expect(queryByText('action')).toBeNull();
-		expect(parser.icon_button).not.toHaveBeenCalled();
+		expect(queryByText('action')).toBeTruthy();
+		expect(parser.icon_button).toHaveBeenCalledWith(
+			expect.objectContaining({ actionId: 'act-id', appId: 'app-id', blockId: 'block-id' }),
+			BlockContext.ACTION
+		);
 	});
 });
