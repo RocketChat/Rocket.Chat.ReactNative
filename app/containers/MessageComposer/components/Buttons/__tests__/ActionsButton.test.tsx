@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react-native';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import { type TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import { ActionsButton } from '../ActionsButton';
@@ -47,7 +47,7 @@ jest.mock('../BaseButton', () => {
 
 const openSheet = () => {
 	render(<ActionsButton />);
-	screen.getByTestId('message-composer-actions').props.onPress();
+	fireEvent.press(screen.getByTestId('message-composer-actions'));
 	return mockShowActionSheet.mock.calls[0][0].options as { title: string; testID?: string; onPress: () => void }[];
 };
 

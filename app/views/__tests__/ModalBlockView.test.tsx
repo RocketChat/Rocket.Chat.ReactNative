@@ -1,9 +1,10 @@
-import { act, render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import ModalBlockView from '../ModalBlockView';
 import { mockedStore } from '~/reducers/mockedStore';
+import { triggerBlockAction, triggerSubmitView } from '~/lib/apps/triggerActions';
 
 jest.mock(
 	'~/containers/KeyboardView',
@@ -11,7 +12,6 @@ jest.mock(
 		({ children }: { children: ReactNode }) =>
 			children
 );
-import { triggerBlockAction, triggerSubmitView } from '~/lib/apps/triggerActions';
 
 let mockBlockAction: (action: { actionId: string; value: unknown; blockId: string }) => Promise<void>;
 jest.mock('~/containers/UIKit/MessageBlock', () => ({
@@ -88,7 +88,7 @@ describe('ModalBlockView', () => {
 			const navigation = mockNavigation();
 			renderHeader(navigation);
 
-			await act(() => screen.getByTestId('submit-modal-uikit').props.onPress());
+			await act(async () => fireEvent.press(screen.getByTestId('submit-modal-uikit')));
 
 			expect(navigation.goBack).toHaveBeenCalledTimes(1);
 		});
@@ -98,7 +98,7 @@ describe('ModalBlockView', () => {
 			const navigation = mockNavigation();
 			renderHeader(navigation);
 
-			await act(() => screen.getByTestId('submit-modal-uikit').props.onPress());
+			await act(async () => fireEvent.press(screen.getByTestId('submit-modal-uikit')));
 
 			expect(navigation.goBack).not.toHaveBeenCalled();
 		});
@@ -113,12 +113,9 @@ describe('ModalBlockView', () => {
 			const navigation = mockNavigation();
 			renderHeader(navigation);
 
-			const submitting = screen.getByTestId('submit-modal-uikit').props.onPress();
-			await act(() => screen.getByTestId('close-modal-uikit').props.onPress());
-			await act(async () => {
-				resolveSubmit(true);
-				await submitting;
-			});
+			fireEvent.press(screen.getByTestId('submit-modal-uikit'));
+			await act(async () => fireEvent.press(screen.getByTestId('close-modal-uikit')));
+			await act(async () => resolveSubmit(true));
 
 			expect(navigation.goBack).toHaveBeenCalledTimes(1);
 		});

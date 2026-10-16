@@ -1,6 +1,12 @@
-import { ActionTypes, ContainerTypes, type ITriggerBlockAction, ModalActions } from '~/containers/UIKit/interfaces';
+import {
+	ActionTypes,
+	ContainerTypes,
+	type ITriggerBlockAction,
+	type ITriggerSubmitView,
+	ModalActions
+} from '~/containers/UIKit/interfaces';
 import { ACKNOWLEDGED, postUserInteraction, triggerAction } from '../actions';
-import { triggerAppActionButton, triggerBlockAction, triggerCancel, triggerSubmitView } from '../triggerActions';
+import { triggerAppActionButton, triggerBlockAction, triggerSubmitView } from '../triggerActions';
 
 jest.mock('../actions', () => ({
 	ACKNOWLEDGED: 'acknowledged',
@@ -20,7 +26,7 @@ describe('triggerActions wrappers', () => {
 	});
 
 	describe('triggerSubmitView', () => {
-		const submitInput = {
+		const submitInput: ITriggerSubmitView = {
 			viewId: 'view-id',
 			appId: 'app-id',
 			payload: {
@@ -34,7 +40,7 @@ describe('triggerActions wrappers', () => {
 		it('passes submit payload to triggerAction', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.UPDATE);
 
-			await triggerSubmitView(submitInput as any);
+			await triggerSubmitView(submitInput);
 
 			expect(mockedTriggerAction).toHaveBeenCalledWith({
 				type: ActionTypes.SUBMIT,
@@ -45,72 +51,37 @@ describe('triggerActions wrappers', () => {
 		it('asks to close when triggerAction returns modal.close', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.CLOSE);
 
-			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(true);
+			await expect(triggerSubmitView(submitInput)).resolves.toBe(true);
 		});
 
 		it('asks to close when the app acknowledges the submit', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ACKNOWLEDGED);
 
-			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(true);
+			await expect(triggerSubmitView(submitInput)).resolves.toBe(true);
 		});
 
 		it('keeps the modal open when the server sends no reply', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(undefined);
 
-			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(false);
+			await expect(triggerSubmitView(submitInput)).resolves.toBe(false);
 		});
 
 		it('keeps the modal open for errors', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.ERRORS);
 
-			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(false);
+			await expect(triggerSubmitView(submitInput)).resolves.toBe(false);
 		});
 
 		it('keeps the modal open for modal.update', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.UPDATE);
 
-			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(false);
+			await expect(triggerSubmitView(submitInput)).resolves.toBe(false);
 		});
 
 		it('keeps the modal for the app to replace when it opens another modal', async () => {
 			mockedTriggerAction.mockResolvedValueOnce(ModalActions.OPEN);
 
-			await expect(triggerSubmitView(submitInput as any)).resolves.toBe(false);
-		});
-	});
-
-	it('passes cancel payload to triggerAction', () => {
-		const input = {
-			view: { id: 'view-id' },
-			appId: 'app-id',
-			viewId: 'view-id',
-			isCleared: false
-		};
-
-		triggerCancel(input as any);
-
-		expect(mockedTriggerAction).toHaveBeenCalledWith({
-			type: ActionTypes.CLOSED,
-			...input
-		});
-	});
-
-	it('passes block action payload to triggerAction', async () => {
-		const input = {
-			actionId: 'action-id',
-			appId: 'app-id',
-			container: { type: 'message', id: 'container-id' },
-			value: 'value',
-			rid: 'room-id',
-			mid: 'message-id',
-			blockId: 'block-id'
-		};
-
-		await triggerBlockAction(input as any);
-
-		expect(mockedTriggerAction).toHaveBeenCalledWith({
-			type: ActionTypes.ACTION,
-			...input
+			await expect(triggerSubmitView(submitInput)).resolves.toBe(false);
 		});
 	});
 

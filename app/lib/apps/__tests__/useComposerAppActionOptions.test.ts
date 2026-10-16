@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react-native';
 
+import { type IAppActionButton } from '../definitions';
 import { type IAppActionButtonItem } from '../useAppActionButtons';
 import { useComposerAppActionOptions } from '../useComposerAppActionOptions';
 
@@ -13,7 +14,7 @@ jest.mock('../triggerActions', () => ({
 	triggerAppActionButton: (params: unknown) => mockTriggerAppActionButton(params)
 }));
 
-const item = (id: string, overrides = {}): IAppActionButtonItem => ({
+const item = (id: string, overrides: Partial<IAppActionButton> = {}): IAppActionButtonItem => ({
 	id,
 	label: `Label ${id}`,
 	button: { appId: 'app-id', actionId: id, context: 'messageBoxAction', labelI18n: 'label', ...overrides }
