@@ -143,7 +143,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   "height": 20,
                   "width": 20,
                 },
-                undefined,
+                {
+                  "height": 20,
+                },
               ]
             }
           >
@@ -252,7 +254,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 "height": 16,
                 "width": 16,
               },
-              undefined,
+              {
+                "height": 16,
+              },
             ]
           }
         >
@@ -350,7 +354,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   "height": 20,
                   "width": 20,
                 },
-                undefined,
+                {
+                  "height": 20,
+                },
               ]
             }
           >
@@ -470,7 +476,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 "height": 16,
                 "width": 16,
               },
-              undefined,
+              {
+                "height": 16,
+              },
             ]
           }
         >
@@ -636,7 +644,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   "height": 20,
                   "width": 20,
                 },
-                undefined,
+                {
+                  "height": 20,
+                },
               ]
             }
           >
@@ -745,7 +755,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 "height": 16,
                 "width": 16,
               },
-              undefined,
+              {
+                "height": 16,
+              },
             ]
           }
         >
@@ -924,7 +936,9 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
                   "height": 20,
                   "width": 20,
                 },
-                undefined,
+                {
+                  "height": 20,
+                },
               ]
             }
           >
@@ -1033,7 +1047,9 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
                 "height": 16,
                 "width": 16,
               },
-              undefined,
+              {
+                "height": 16,
+              },
             ]
           }
         >
@@ -1144,7 +1160,9 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
                   "height": 20,
                   "width": 20,
                 },
-                undefined,
+                {
+                  "height": 20,
+                },
               ]
             }
           >
@@ -1264,7 +1282,9 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
                 "height": 16,
                 "width": 16,
               },
-              undefined,
+              {
+                "height": 16,
+              },
             ]
           }
         >
@@ -1443,7 +1463,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   "height": 20,
                   "width": 20,
                 },
-                undefined,
+                {
+                  "height": 20,
+                },
               ]
             }
           >
@@ -1552,7 +1574,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                 "height": 16,
                 "width": 16,
               },
-              undefined,
+              {
+                "height": 16,
+              },
             ]
           }
         >

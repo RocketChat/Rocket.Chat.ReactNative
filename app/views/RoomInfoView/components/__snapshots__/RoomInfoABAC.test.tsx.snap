@@ -78,7 +78,9 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                       "height": 16,
                       "width": 16,
                     },
-                    undefined,
+                    {
+                      "height": 16,
+                    },
                   ]
                 }
               >
@@ -364,7 +366,9 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                       "height": 16,
                       "width": 16,
                     },
-                    undefined,
+                    {
+                      "height": 16,
+                    },
                   ]
                 }
               >
@@ -1095,7 +1099,9 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                       "height": 16,
                       "width": 16,
                     },
-                    undefined,
+                    {
+                      "height": 16,
+                    },
                   ]
                 }
               >
@@ -1381,7 +1387,9 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                       "height": 16,
                       "width": 16,
                     },
-                    undefined,
+                    {
+                      "height": 16,
+                    },
                   ]
                 }
               >
@@ -2112,7 +2120,9 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                       "height": 16,
                       "width": 16,
                     },
-                    undefined,
+                    {
+                      "height": 16,
+                    },
                   ]
                 }
               >
@@ -2398,7 +2408,9 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                       "height": 16,
                       "width": 16,
                     },
-                    undefined,
+                    {
+                      "height": 16,
+                    },
                   ]
                 }
               >

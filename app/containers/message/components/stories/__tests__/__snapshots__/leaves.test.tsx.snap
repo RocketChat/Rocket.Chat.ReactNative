@@ -84,7 +84,9 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
               "height": 20,
               "width": 20,
             },
-            undefined,
+            {
+              "height": 20,
+            },
           ]
         }
       >
@@ -226,7 +228,9 @@ exports[`Story Snapshots: CallButton should match snapshot 1`] = `
               "height": 16,
               "width": 16,
             },
-            undefined,
+            {
+              "height": 16,
+            },
           ]
         }
       >
@@ -602,7 +606,9 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                 "height": 16,
                 "width": 16,
               },
-              undefined,
+              {
+                "height": 16,
+              },
             ]
           }
         >
@@ -702,7 +708,9 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
           "height": 16,
           "width": 16.5,
         },
-        undefined,
+        {
+          "height": 16,
+        },
       ]
     }
   >
@@ -843,7 +851,9 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
           "height": 16,
           "width": 16.5,
         },
-        undefined,
+        {
+          "height": 16,
+        },
       ]
     }
   >
@@ -1160,7 +1170,9 @@ exports[`Story Snapshots: Item should match snapshot 1`] = `
                 "height": 22,
                 "width": 22,
               },
-              undefined,
+              {
+                "height": 22,
+              },
             ]
           }
         >
@@ -1520,7 +1532,9 @@ exports[`Story Snapshots: MessageError should match snapshot 1`] = `
           "height": 16,
           "width": 16,
         },
-        undefined,
+        {
+          "height": 16,
+        },
       ]
     }
   >
@@ -1710,7 +1724,9 @@ exports[`Story Snapshots: MultipleImagesNewServer should match snapshot 1`] = `
                     "height": 54,
                     "width": 55.6875,
                   },
-                  undefined,
+                  {
+                    "height": 54,
+                  },
                 ]
               }
             >
@@ -1967,7 +1983,9 @@ exports[`Story Snapshots: MultipleImagesNewServer should match snapshot 1`] = `
                     "height": 54,
                     "width": 55.6875,
                   },
-                  undefined,
+                  {
+                    "height": 54,
+                  },
                 ]
               }
             >
@@ -2224,7 +2242,9 @@ exports[`Story Snapshots: MultipleImagesNewServer should match snapshot 1`] = `
                     "height": 54,
                     "width": 55.6875,
                   },
-                  undefined,
+                  {
+                    "height": 54,
+                  },
                 ]
               }
             >
@@ -2481,7 +2501,9 @@ exports[`Story Snapshots: MultipleImagesNewServer should match snapshot 1`] = `
                     "height": 54,
                     "width": 55.6875,
                   },
-                  undefined,
+                  {
+                    "height": 54,
+                  },
                 ]
               }
             >
@@ -2738,7 +2760,9 @@ exports[`Story Snapshots: MultipleImagesNewServer should match snapshot 1`] = `
                     "height": 54,
                     "width": 55.6875,
                   },
-                  undefined,
+                  {
+                    "height": 54,
+                  },
                 ]
               }
             >
@@ -3076,7 +3100,9 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
                     "height": 54,
                     "width": 55.6875,
                   },
-                  undefined,
+                  {
+                    "height": 54,
+                  },
                 ]
               }
             >
@@ -3321,7 +3347,9 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
                     "height": 54,
                     "width": 55.6875,
                   },
-                  undefined,
+                  {
+                    "height": 54,
+                  },
                 ]
               }
             >
@@ -3566,7 +3594,9 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
                     "height": 54,
                     "width": 55.6875,
                   },
-                  undefined,
+                  {
+                    "height": 54,
+                  },
                 ]
               }
             >
@@ -3811,7 +3841,9 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
                     "height": 54,
                     "width": 55.6875,
                   },
-                  undefined,
+                  {
+                    "height": 54,
+                  },
                 ]
               }
             >
@@ -3873,6 +3905,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
         "width": 16.5,
       },
       {
+        "height": 16,
         "marginLeft": 5,
       },
     ]
@@ -4214,7 +4247,9 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
               "height": 20,
               "width": 20,
             },
-            undefined,
+            {
+              "height": 20,
+            },
           ]
         }
       >
@@ -4262,6 +4297,7 @@ exports[`Story Snapshots: ReadReceipt should match snapshot 1`] = `
         "width": 25,
       },
       {
+        "height": 25,
         "marginLeft": 5,
         "marginTop": -5,
       },
@@ -4312,6 +4348,7 @@ exports[`Story Snapshots: ReadReceiptUnread should match snapshot 1`] = `
         "width": 25,
       },
       {
+        "height": 25,
         "marginLeft": 5,
         "marginTop": -5,
       },
@@ -4377,7 +4414,9 @@ exports[`Story Snapshots: RepliedThread should match snapshot 1`] = `
             "height": 20,
             "width": 20,
           },
-          undefined,
+          {
+            "height": 20,
+          },
         ]
       }
     >
@@ -4469,7 +4508,9 @@ exports[`Story Snapshots: RepliedThread should match snapshot 1`] = `
             "height": 20,
             "width": 20,
           },
-          undefined,
+          {
+            "height": 20,
+          },
         ]
       }
     >
@@ -4658,7 +4699,9 @@ exports[`Story Snapshots: SingleImageNewServer should match snapshot 1`] = `
                     "height": 54,
                     "width": 55.6875,
                   },
-                  undefined,
+                  {
+                    "height": 54,
+                  },
                 ]
               }
             >
@@ -4928,7 +4971,9 @@ exports[`Story Snapshots: SingleImageNoAlt should match snapshot 1`] = `
                   "height": 54,
                   "width": 55.6875,
                 },
-                undefined,
+                {
+                  "height": 54,
+                },
               ]
             }
           >
@@ -5192,7 +5237,9 @@ exports[`Story Snapshots: SingleImageOldServer should match snapshot 1`] = `
                     "height": 54,
                     "width": 55.6875,
                   },
-                  undefined,
+                  {
+                    "height": 54,
+                  },
                 ]
               }
             >
@@ -5365,7 +5412,9 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
                 "height": 24,
                 "width": 24,
               },
-              undefined,
+              {
+                "height": 24,
+              },
             ]
           }
         >
@@ -5440,7 +5489,9 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
                 "height": 24,
                 "width": 24.75,
               },
-              undefined,
+              {
+                "height": 24,
+              },
             ]
           }
         >
@@ -5597,7 +5648,9 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
                     "height": 24,
                     "width": 24,
                   },
-                  undefined,
+                  {
+                    "height": 24,
+                  },
                 ]
               }
             >
@@ -5679,7 +5732,9 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
           "height": 16,
           "width": 16.5,
         },
-        undefined,
+        {
+          "height": 16,
+        },
       ]
     }
   >

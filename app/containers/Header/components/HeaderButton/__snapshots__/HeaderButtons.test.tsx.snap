@@ -163,7 +163,9 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     "height": 24,
                     "width": 24,
                   },
-                  undefined,
+                  {
+                    "height": 24,
+                  },
                 ]
               }
             >
@@ -309,7 +311,9 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     "height": 24,
                     "width": 24,
                   },
-                  undefined,
+                  {
+                    "height": 24,
+                  },
                 ]
               }
             >
@@ -455,7 +459,9 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     "height": 24,
                     "width": 24,
                   },
-                  undefined,
+                  {
+                    "height": 24,
+                  },
                 ]
               }
             >
@@ -641,7 +647,9 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      {},
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -929,7 +937,9 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                       "height": 24,
                       "width": 24,
                     },
-                    {},
+                    {
+                      "height": 24,
+                    },
                   ]
                 }
               >
@@ -1173,7 +1183,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                       "height": 24,
                       "width": 24,
                     },
-                    undefined,
+                    {
+                      "height": 24,
+                    },
                   ]
                 }
               >
@@ -1328,7 +1340,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                       "height": 24,
                       "width": 24,
                     },
-                    undefined,
+                    {
+                      "height": 24,
+                    },
                   ]
                 }
               >
@@ -1526,7 +1540,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                       "height": 24,
                       "width": 24,
                     },
-                    undefined,
+                    {
+                      "height": 24,
+                    },
                   ]
                 }
               >
@@ -1623,7 +1639,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                       "height": 24,
                       "width": 24.75,
                     },
-                    undefined,
+                    {
+                      "height": 24,
+                    },
                   ]
                 }
               >
@@ -1778,7 +1796,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                       "height": 24,
                       "width": 24,
                     },
-                    undefined,
+                    {
+                      "height": 24,
+                    },
                   ]
                 }
               >
@@ -1875,7 +1895,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                       "height": 24,
                       "width": 24.75,
                     },
-                    undefined,
+                    {
+                      "height": 24,
+                    },
                   ]
                 }
               >
@@ -2125,7 +2147,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                             "height": 24,
                             "width": 24,
                           },
-                          {},
+                          {
+                            "height": 24,
+                          },
                         ]
                       }
                     >
@@ -2244,7 +2268,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -2476,7 +2502,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -2771,7 +2799,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                             "height": 24,
                             "width": 24,
                           },
-                          {},
+                          {
+                            "height": 24,
+                          },
                         ]
                       }
                     >
@@ -2890,7 +2920,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -3122,7 +3154,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -3417,7 +3451,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                             "height": 24,
                             "width": 24,
                           },
-                          {},
+                          {
+                            "height": 24,
+                          },
                         ]
                       }
                     >
@@ -3536,7 +3572,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -3768,7 +3806,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >

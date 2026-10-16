@@ -111,6 +111,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -319,6 +320,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -527,6 +529,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -735,6 +738,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -943,6 +947,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -1151,6 +1156,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -1227,6 +1233,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 12,
                 },
                 {
+                  "height": 12,
                   "marginRight": 4,
                 },
               ]
@@ -1411,6 +1418,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -1487,6 +1495,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 12,
                 },
                 {
+                  "height": 12,
                   "marginRight": 4,
                 },
               ]
@@ -1671,6 +1680,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -1884,6 +1894,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -2052,6 +2063,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -2220,6 +2232,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -2404,6 +2417,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -2572,6 +2586,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -2740,6 +2755,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -2908,6 +2924,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -3076,6 +3093,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -3244,6 +3262,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -3412,6 +3431,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -3580,6 +3600,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -3748,6 +3769,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -3916,6 +3938,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -4084,6 +4107,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 16,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -4257,6 +4281,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -4464,6 +4489,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -4671,6 +4697,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -4932,6 +4959,7 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -5155,6 +5183,7 @@ preview
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -5326,6 +5355,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -5494,6 +5524,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -5662,6 +5693,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -5869,6 +5901,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -6076,6 +6109,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -6289,6 +6323,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -6496,6 +6531,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]
@@ -6703,6 +6739,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
                   "width": 16.5,
                 },
                 {
+                  "height": 16,
                   "marginRight": 4,
                 },
               ]

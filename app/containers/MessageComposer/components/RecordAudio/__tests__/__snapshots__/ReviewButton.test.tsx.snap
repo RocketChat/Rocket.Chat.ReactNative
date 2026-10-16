@@ -72,7 +72,9 @@ exports[`renders and fires onPress 1`] = `
             "height": 24,
             "width": 24,
           },
-          undefined,
+          {
+            "height": 24,
+          },
         ]
       }
     >

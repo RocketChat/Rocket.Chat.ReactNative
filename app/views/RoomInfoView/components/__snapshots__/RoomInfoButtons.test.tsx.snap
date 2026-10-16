@@ -70,7 +70,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -169,7 +171,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -268,7 +272,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -367,7 +373,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -487,7 +495,9 @@ exports[`Story Snapshots: ItsMe should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -586,7 +596,9 @@ exports[`Story Snapshots: ItsMe should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -706,7 +718,9 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -805,7 +819,9 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -904,7 +920,9 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -1003,7 +1021,9 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -1123,7 +1143,9 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -1222,7 +1244,9 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -1321,7 +1345,9 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -1420,7 +1446,9 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -1540,7 +1568,9 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -1639,7 +1669,9 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -1738,7 +1770,9 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -1837,7 +1871,9 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -1957,7 +1993,9 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -2056,7 +2094,9 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -2155,7 +2195,9 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >
@@ -2254,7 +2296,9 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
               "height": 30,
               "width": 30,
             },
-            undefined,
+            {
+              "height": 30,
+            },
           ]
         }
       >

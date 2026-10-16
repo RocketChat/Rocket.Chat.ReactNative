@@ -121,6 +121,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 20,
                 },
                 {
+                  "height": 20,
                   "position": "absolute",
                   "right": 12,
                 },
@@ -270,6 +271,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 20,
                 },
                 {
+                  "height": 20,
                   "left": 12,
                   "position": "absolute",
                 },
@@ -421,6 +423,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 20,
                 },
                 {
+                  "height": 20,
                   "left": 12,
                   "position": "absolute",
                 },
@@ -465,6 +468,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "width": 20,
                 },
                 {
+                  "height": 20,
                   "position": "absolute",
                   "right": 12,
                 },
@@ -715,7 +719,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                           "height": 20,
                           "width": 20,
                         },
-                        undefined,
+                        {
+                          "height": 20,
+                        },
                       ]
                     }
                   >
@@ -1431,7 +1437,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                           "height": 20,
                           "width": 20.625,
                         },
-                        undefined,
+                        {
+                          "height": 20,
+                        },
                       ]
                     }
                   >

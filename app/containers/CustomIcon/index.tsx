@@ -27,13 +27,14 @@ export interface ICustomIcon {
 const CustomIcon = memo(({ name, size, color, style, testID, accessibilityLabel }: ICustomIcon): ReactElement => {
 	const { colors } = useTheme();
 	const { fontScaleLimited } = useResponsiveLayout();
+	const iconSize = size * fontScaleLimited;
 
 	return (
 		<IconSet
 			name={name}
-			size={size * fontScaleLimited}
+			size={iconSize}
 			color={color || colors.fontDefault}
-			style={StyleSheet.flatten(style)}
+			style={StyleSheet.flatten([{ height: iconSize }, style])}
 			allowFontScaling={false}
 			testID={testID}
 			accessible={!!accessibilityLabel}

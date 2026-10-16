@@ -711,7 +711,9 @@ exports[`Story Snapshots: ActionSelect should match snapshot 1`] = `
                     "height": 22,
                     "width": 22,
                   },
-                  undefined,
+                  {
+                    "height": 22,
+                  },
                 ]
               }
             >
@@ -1050,7 +1052,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "height": 20,
                         "width": 20,
                       },
-                      undefined,
+                      {
+                        "height": 20,
+                      },
                     ]
                   }
                 >
@@ -1398,7 +1402,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "height": 20,
                         "width": 20.625,
                       },
-                      undefined,
+                      {
+                        "height": 20,
+                      },
                     ]
                   }
                 >
@@ -1746,7 +1752,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "height": 20,
                         "width": 20,
                       },
-                      undefined,
+                      {
+                        "height": 20,
+                      },
                     ]
                   }
                 >
@@ -1961,7 +1969,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "height": 20,
                         "width": 20,
                       },
-                      undefined,
+                      {
+                        "height": 20,
+                      },
                     ]
                   }
                 >
@@ -2186,7 +2196,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "height": 20,
                         "width": 20,
                       },
-                      undefined,
+                      {
+                        "height": 20,
+                      },
                     ]
                   }
                 >
@@ -2534,7 +2546,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "height": 20,
                         "width": 20.625,
                       },
-                      undefined,
+                      {
+                        "height": 20,
+                      },
                     ]
                   }
                 >
@@ -2882,7 +2896,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "height": 20,
                         "width": 20,
                       },
-                      undefined,
+                      {
+                        "height": 20,
+                      },
                     ]
                   }
                 >
@@ -3097,7 +3113,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "height": 20,
                         "width": 20,
                       },
-                      undefined,
+                      {
+                        "height": 20,
+                      },
                     ]
                   }
                 >
@@ -3322,7 +3340,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "height": 20,
                         "width": 20,
                       },
-                      undefined,
+                      {
+                        "height": 20,
+                      },
                     ]
                   }
                 >
@@ -3670,7 +3690,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "height": 20,
                         "width": 20.625,
                       },
-                      undefined,
+                      {
+                        "height": 20,
+                      },
                     ]
                   }
                 >
@@ -4018,7 +4040,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "height": 20,
                         "width": 20,
                       },
-                      undefined,
+                      {
+                        "height": 20,
+                      },
                     ]
                   }
                 >
@@ -4233,7 +4257,9 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                         "height": 20,
                         "width": 20,
                       },
-                      undefined,
+                      {
+                        "height": 20,
+                      },
                     ]
                   }
                 >
@@ -5036,7 +5062,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                   "height": 20,
                   "width": 20,
                 },
-                undefined,
+                {
+                  "height": 20,
+                },
               ]
             }
           >
@@ -5102,7 +5130,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                   "height": 20,
                   "width": 20,
                 },
-                undefined,
+                {
+                  "height": 20,
+                },
               ]
             }
           >
@@ -5168,7 +5198,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                   "height": 20,
                   "width": 20,
                 },
-                undefined,
+                {
+                  "height": 20,
+                },
               ]
             }
           >
@@ -5234,7 +5266,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                   "height": 20,
                   "width": 20,
                 },
-                undefined,
+                {
+                  "height": 20,
+                },
               ]
             }
           >
@@ -5341,7 +5375,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                 "height": 20,
                 "width": 20,
               },
-              undefined,
+              {
+                "height": 20,
+              },
             ]
           }
         >
@@ -5390,7 +5426,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                 "height": 20,
                 "width": 20,
               },
-              undefined,
+              {
+                "height": 20,
+              },
             ]
           }
         >
@@ -5439,7 +5477,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                 "height": 20,
                 "width": 20,
               },
-              undefined,
+              {
+                "height": 20,
+              },
             ]
           }
         >
@@ -5488,7 +5528,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                 "height": 20,
                 "width": 20,
               },
-              undefined,
+              {
+                "height": 20,
+              },
             ]
           }
         >
@@ -5537,7 +5579,9 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
                 "height": 20,
                 "width": 20,
               },
-              undefined,
+              {
+                "height": 20,
+              },
             ]
           }
         >
@@ -5631,7 +5675,9 @@ exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
                 "height": 20,
                 "width": 20,
               },
-              undefined,
+              {
+                "height": 20,
+              },
             ]
           }
         >
@@ -7535,7 +7581,9 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
                 "height": 18,
                 "width": 18,
               },
-              undefined,
+              {
+                "height": 18,
+              },
             ]
           }
         >
@@ -7752,7 +7800,9 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
                   "height": 22,
                   "width": 22,
                 },
-                undefined,
+                {
+                  "height": 22,
+                },
               ]
             }
           >

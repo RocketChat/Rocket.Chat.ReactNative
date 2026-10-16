@@ -169,7 +169,9 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -360,7 +362,9 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -551,7 +555,9 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -615,7 +621,9 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -796,7 +804,9 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -860,7 +870,9 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -1132,7 +1144,9 @@ exports[`Story Snapshots: Icon should match snapshot 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -1307,7 +1321,9 @@ exports[`Story Snapshots: ListItemWithRightContainerStyle should match snapshot 
                     "height": 24,
                     "width": 24,
                   },
-                  undefined,
+                  {
+                    "height": 24,
+                  },
                 ]
               }
             >
@@ -1438,7 +1454,9 @@ exports[`Story Snapshots: ListItemWithRightContainerStyle should match snapshot 
                     "height": 24,
                     "width": 24,
                   },
-                  undefined,
+                  {
+                    "height": 24,
+                  },
                 ]
               }
             >
@@ -4769,7 +4787,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -4892,7 +4912,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -5043,7 +5065,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -5166,7 +5190,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -5365,7 +5391,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -5488,7 +5516,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -5639,7 +5669,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -5762,7 +5794,9 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -6004,7 +6038,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -6127,7 +6163,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -6278,7 +6316,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -6401,7 +6441,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -6600,7 +6642,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -6723,7 +6767,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -6874,7 +6920,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -6997,7 +7045,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -7574,7 +7624,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -7697,7 +7749,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -7848,7 +7902,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -7971,7 +8027,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -8170,7 +8228,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -8293,7 +8353,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -8444,7 +8506,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -8567,7 +8631,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -9803,7 +9869,9 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                       "height": 24,
                       "width": 24,
                     },
-                    undefined,
+                    {
+                      "height": 24,
+                    },
                   ]
                 }
               >
@@ -10061,7 +10129,9 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -10210,7 +10280,9 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                       "height": 24,
                       "width": 24,
                     },
-                    undefined,
+                    {
+                      "height": 24,
+                    },
                   ]
                 }
               >
@@ -10333,7 +10405,9 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -10737,7 +10811,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -10860,7 +10936,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -11011,7 +11089,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -11134,7 +11214,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -11333,7 +11415,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -11456,7 +11540,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -11607,7 +11693,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                         "height": 24,
                         "width": 24,
                       },
-                      undefined,
+                      {
+                        "height": 24,
+                      },
                     ]
                   }
                 >
@@ -11730,7 +11818,9 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >

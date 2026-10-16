@@ -87,7 +87,9 @@ exports[`Story Snapshots: ActiveButton should match snapshot 1`] = `
                 "height": 32,
                 "width": 32,
               },
-              undefined,
+              {
+                "height": 32,
+              },
             ]
           }
         >
@@ -241,7 +243,9 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                   "height": 32,
                   "width": 32,
                 },
-                undefined,
+                {
+                  "height": 32,
+                },
               ]
             }
           >
@@ -366,7 +370,9 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                   "height": 32,
                   "width": 32,
                 },
-                undefined,
+                {
+                  "height": 32,
+                },
               ]
             }
           >
@@ -491,7 +497,9 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                   "height": 32,
                   "width": 32,
                 },
-                undefined,
+                {
+                  "height": 32,
+                },
               ]
             }
           >
@@ -630,7 +638,9 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                   "height": 32,
                   "width": 32,
                 },
-                undefined,
+                {
+                  "height": 32,
+                },
               ]
             }
           >
@@ -755,7 +765,9 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                   "height": 32,
                   "width": 32,
                 },
-                undefined,
+                {
+                  "height": 32,
+                },
               ]
             }
           >
@@ -880,7 +892,9 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                   "height": 32,
                   "width": 32,
                 },
-                undefined,
+                {
+                  "height": 32,
+                },
               ]
             }
           >
@@ -1027,7 +1041,9 @@ exports[`Story Snapshots: DangerButton should match snapshot 1`] = `
                 "height": 32,
                 "width": 32,
               },
-              undefined,
+              {
+                "height": 32,
+              },
             ]
           }
         >
@@ -1173,7 +1189,9 @@ exports[`Story Snapshots: DefaultButton should match snapshot 1`] = `
                 "height": 32,
                 "width": 32,
               },
-              undefined,
+              {
+                "height": 32,
+              },
             ]
           }
         >
@@ -1321,7 +1339,9 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
                 "height": 32,
                 "width": 32,
               },
-              undefined,
+              {
+                "height": 32,
+              },
             ]
           }
         >
@@ -1476,7 +1496,9 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                   "height": 32,
                   "width": 32,
                 },
-                undefined,
+                {
+                  "height": 32,
+                },
               ]
             }
           >
@@ -1601,7 +1623,9 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                   "height": 32,
                   "width": 32,
                 },
-                undefined,
+                {
+                  "height": 32,
+                },
               ]
             }
           >
@@ -1726,7 +1750,9 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                   "height": 32,
                   "width": 32,
                 },
-                undefined,
+                {
+                  "height": 32,
+                },
               ]
             }
           >
@@ -1851,7 +1877,9 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                   "height": 32,
                   "width": 32,
                 },
-                undefined,
+                {
+                  "height": 32,
+                },
               ]
             }
           >
@@ -1976,7 +2004,9 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                   "height": 32,
                   "width": 32,
                 },
-                undefined,
+                {
+                  "height": 32,
+                },
               ]
             }
           >
@@ -2101,7 +2131,9 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                   "height": 32,
                   "width": 33,
                 },
-                undefined,
+                {
+                  "height": 32,
+                },
               ]
             }
           >

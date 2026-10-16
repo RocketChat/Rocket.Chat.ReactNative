@@ -473,6 +473,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
                   "width": 24,
                 },
                 {
+                  "height": 24,
                   "left": 15,
                   "position": "absolute",
                 },
@@ -658,6 +659,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
                   "width": 24,
                 },
                 {
+                  "height": 24,
                   "left": 15,
                   "position": "absolute",
                 },
@@ -843,6 +845,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
                   "width": 24.75,
                 },
                 {
+                  "height": 24,
                   "left": 15,
                   "position": "absolute",
                 },
@@ -1110,6 +1113,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
                   "width": 24,
                 },
                 {
+                  "height": 24,
                   "left": 15,
                   "position": "absolute",
                 },
@@ -1295,6 +1299,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
                   "width": 24,
                 },
                 {
+                  "height": 24,
                   "left": 15,
                   "position": "absolute",
                 },
@@ -1480,6 +1485,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
                   "width": 24.75,
                 },
                 {
+                  "height": 24,
                   "left": 15,
                   "position": "absolute",
                 },
@@ -1665,6 +1671,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
                   "width": 24.75,
                 },
                 {
+                  "height": 24,
                   "left": 15,
                   "position": "absolute",
                 },
@@ -1854,6 +1861,7 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
                   "width": 24,
                 },
                 {
+                  "height": 24,
                   "left": 15,
                   "position": "absolute",
                 },
@@ -2038,6 +2046,7 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
                   "width": 24,
                 },
                 {
+                  "height": 24,
                   "left": 15,
                   "position": "absolute",
                 },
@@ -2222,6 +2231,7 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
                   "width": 24.75,
                 },
                 {
+                  "height": 24,
                   "left": 15,
                   "position": "absolute",
                 },
@@ -2406,6 +2416,7 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
                   "width": 24.75,
                 },
                 {
+                  "height": 24,
                   "left": 15,
                   "position": "absolute",
                 },

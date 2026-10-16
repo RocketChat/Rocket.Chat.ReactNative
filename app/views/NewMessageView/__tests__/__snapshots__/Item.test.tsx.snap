@@ -402,7 +402,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "height": 20,
               "width": 20,
             },
-            undefined,
+            {
+              "height": 20,
+            },
           ]
         }
       >
@@ -664,7 +666,9 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
               "height": 20,
               "width": 20,
             },
-            undefined,
+            {
+              "height": 20,
+            },
           ]
         }
       >
@@ -926,7 +930,9 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
               "height": 20,
               "width": 20,
             },
-            undefined,
+            {
+              "height": 20,
+            },
           ]
         }
       >

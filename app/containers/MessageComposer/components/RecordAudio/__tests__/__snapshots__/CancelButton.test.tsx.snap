@@ -73,7 +73,9 @@ exports[`a11y label is cancel when cancelAndDelete 1`] = `
             "height": 24,
             "width": 24.75,
           },
-          undefined,
+          {
+            "height": 24,
+          },
         ]
       }
     >
@@ -180,7 +182,9 @@ exports[`a11y label is delete otherwise and fires onPress 1`] = `
             "height": 24,
             "width": 24.75,
           },
-          undefined,
+          {
+            "height": 24,
+          },
         ]
       }
     >

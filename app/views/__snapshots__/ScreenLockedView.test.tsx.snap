@@ -158,7 +158,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                         "height": 40,
                         "width": 40,
                       },
-                      undefined,
+                      {
+                        "height": 40,
+                      },
                     ]
                   }
                 >
@@ -1844,7 +1846,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                               "height": 36,
                               "width": 36,
                             },
-                            undefined,
+                            {
+                              "height": 36,
+                            },
                           ]
                         }
                       >
@@ -2045,7 +2049,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                         "height": 40,
                         "width": 40,
                       },
-                      undefined,
+                      {
+                        "height": 40,
+                      },
                     ]
                   }
                 >
@@ -3590,7 +3596,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                               "height": 36,
                               "width": 36,
                             },
-                            undefined,
+                            {
+                              "height": 36,
+                            },
                           ]
                         }
                       >
@@ -3866,7 +3874,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                               "height": 36,
                               "width": 36,
                             },
-                            undefined,
+                            {
+                              "height": 36,
+                            },
                           ]
                         }
                       >
@@ -4067,7 +4077,9 @@ exports[`Story Snapshots: WithBiometryAndClose should match snapshot 1`] = `
                         "height": 40,
                         "width": 40,
                       },
-                      undefined,
+                      {
+                        "height": 40,
+                      },
                     ]
                   }
                 >
@@ -5612,7 +5624,9 @@ exports[`Story Snapshots: WithBiometryAndClose should match snapshot 1`] = `
                               "height": 36,
                               "width": 36,
                             },
-                            undefined,
+                            {
+                              "height": 36,
+                            },
                           ]
                         }
                       >
@@ -5888,7 +5902,9 @@ exports[`Story Snapshots: WithBiometryAndClose should match snapshot 1`] = `
                               "height": 36,
                               "width": 36,
                             },
-                            undefined,
+                            {
+                              "height": 36,
+                            },
                           ]
                         }
                       >
@@ -6024,7 +6040,9 @@ exports[`Story Snapshots: WithBiometryAndClose should match snapshot 1`] = `
                       "height": 30,
                       "width": 30,
                     },
-                    undefined,
+                    {
+                      "height": 30,
+                    },
                   ]
                 }
               >
@@ -6221,7 +6239,9 @@ exports[`Story Snapshots: WithCloseButton should match snapshot 1`] = `
                         "height": 40,
                         "width": 40,
                       },
-                      undefined,
+                      {
+                        "height": 40,
+                      },
                     ]
                   }
                 >
@@ -7907,7 +7927,9 @@ exports[`Story Snapshots: WithCloseButton should match snapshot 1`] = `
                               "height": 36,
                               "width": 36,
                             },
-                            undefined,
+                            {
+                              "height": 36,
+                            },
                           ]
                         }
                       >
@@ -8043,7 +8065,9 @@ exports[`Story Snapshots: WithCloseButton should match snapshot 1`] = `
                       "height": 30,
                       "width": 30,
                     },
-                    undefined,
+                    {
+                      "height": 30,
+                    },
                   ]
                 }
               >

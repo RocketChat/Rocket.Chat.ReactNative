@@ -34,7 +34,9 @@ exports[`MessageComposer Audio tap record 1`] = `
               "height": 24,
               "width": 24,
             },
-            undefined,
+            {
+              "height": 24,
+            },
           ]
         }
       >
@@ -164,7 +166,9 @@ exports[`MessageComposer Audio tap record 1`] = `
                   "height": 24,
                   "width": 24.75,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -296,7 +300,9 @@ exports[`MessageComposer Audio tap record 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -451,7 +457,9 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                     "height": 24,
                     "width": 24,
                   },
-                  undefined,
+                  {
+                    "height": 24,
+                  },
                 ]
               }
             >
@@ -642,7 +650,9 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                     "height": 24,
                     "width": 24,
                   },
-                  undefined,
+                  {
+                    "height": 24,
+                  },
                 ]
               }
             >
@@ -855,7 +865,9 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -1052,7 +1064,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     "height": 24,
                     "width": 24,
                   },
-                  undefined,
+                  {
+                    "height": 24,
+                  },
                 ]
               }
             >
@@ -1243,7 +1257,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     "height": 24,
                     "width": 24,
                   },
-                  undefined,
+                  {
+                    "height": 24,
+                  },
                 ]
               }
             >
@@ -1457,7 +1473,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -1685,7 +1703,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -1882,7 +1902,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     "height": 24,
                     "width": 24,
                   },
-                  undefined,
+                  {
+                    "height": 24,
+                  },
                 ]
               }
             >
@@ -2073,7 +2095,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     "height": 24,
                     "width": 24,
                   },
-                  undefined,
+                  {
+                    "height": 24,
+                  },
                 ]
               }
             >
@@ -2287,7 +2311,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -2515,7 +2541,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                           "height": 24,
                           "width": 24,
                         },
-                        undefined,
+                        {
+                          "height": 24,
+                        },
                       ]
                     }
                   >
@@ -2788,7 +2816,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -2899,7 +2929,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -3010,7 +3042,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -3121,7 +3155,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -3232,7 +3268,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -3343,7 +3381,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -3454,7 +3494,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -3685,7 +3727,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -3796,7 +3840,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -3907,7 +3953,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -4018,7 +4066,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -4129,7 +4179,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -4240,7 +4292,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -4351,7 +4405,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -4582,7 +4638,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -4693,7 +4751,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -4804,7 +4864,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -4915,7 +4977,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -5026,7 +5090,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -5137,7 +5203,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -5248,7 +5316,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -5479,7 +5549,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -5590,7 +5662,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -5701,7 +5775,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -5812,7 +5888,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -5923,7 +6001,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -6034,7 +6114,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -6145,7 +6227,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -6376,7 +6460,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -6487,7 +6573,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -6598,7 +6686,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -6709,7 +6799,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -6820,7 +6912,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -6931,7 +7025,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -7042,7 +7138,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -7273,7 +7371,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -7384,7 +7484,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -7495,7 +7597,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -7606,7 +7710,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -7717,7 +7823,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -7828,7 +7936,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -7939,7 +8049,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -8170,7 +8282,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -8281,7 +8395,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -8392,7 +8508,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -8503,7 +8621,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -8614,7 +8734,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -8725,7 +8847,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -8836,7 +8960,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -9067,7 +9193,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -9178,7 +9306,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -9289,7 +9419,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -9400,7 +9532,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -9511,7 +9645,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -9622,7 +9758,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -9733,7 +9871,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -9964,7 +10104,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -10075,7 +10217,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -10186,7 +10330,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -10297,7 +10443,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -10408,7 +10556,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -10519,7 +10669,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -10630,7 +10782,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -10861,7 +11015,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -10972,7 +11128,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -11083,7 +11241,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -11194,7 +11354,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -11305,7 +11467,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -11416,7 +11580,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -11527,7 +11693,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -11758,7 +11926,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -11869,7 +12039,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -11980,7 +12152,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -12091,7 +12265,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -12202,7 +12378,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -12313,7 +12491,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -12424,7 +12604,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -12655,7 +12837,9 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -12766,7 +12950,9 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -12877,7 +13063,9 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -12988,7 +13176,9 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -13099,7 +13289,9 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -13330,7 +13522,9 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -13441,7 +13635,9 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -13552,7 +13748,9 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -13663,7 +13861,9 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -13774,7 +13974,9 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -13918,6 +14120,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
+                        "height": 24,
                         "marginVertical": 4,
                       },
                     ]
@@ -14030,6 +14233,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
+                        "height": 24,
                         "marginVertical": 4,
                       },
                     ]
@@ -14142,6 +14346,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
+                        "height": 24,
                         "marginVertical": 4,
                       },
                     ]
@@ -14254,6 +14459,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
+                        "height": 24,
                         "marginVertical": 4,
                       },
                     ]
@@ -14366,6 +14572,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
+                        "height": 24,
                         "marginVertical": 4,
                       },
                     ]
@@ -14478,6 +14685,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
+                        "height": 24,
                         "marginVertical": 4,
                       },
                     ]
@@ -14590,6 +14798,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
+                        "height": 24,
                         "marginVertical": 4,
                       },
                     ]
@@ -14702,6 +14911,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
+                        "height": 24,
                         "marginVertical": 4,
                       },
                     ]
@@ -14814,6 +15024,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
+                        "height": 24,
                         "marginVertical": 4,
                       },
                     ]
@@ -14926,6 +15137,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                         "width": 24,
                       },
                       {
+                        "height": 24,
                         "marginVertical": 4,
                       },
                     ]
@@ -15352,7 +15564,9 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "height": 24,
                   "width": 24.75,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -15439,7 +15653,9 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -15660,7 +15876,9 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -15771,7 +15989,9 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -15882,7 +16102,9 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -15993,7 +16215,9 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -16104,7 +16328,9 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >

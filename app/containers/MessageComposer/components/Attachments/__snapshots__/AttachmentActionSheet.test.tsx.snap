@@ -93,7 +93,9 @@ exports[`Story Snapshots: File should match snapshot 1`] = `
                 "height": 40,
                 "width": 40,
               },
-              undefined,
+              {
+                "height": 40,
+              },
             ]
           }
         >
@@ -790,7 +792,9 @@ exports[`Story Snapshots: Video should match snapshot 1`] = `
                 "height": 40,
                 "width": 40,
               },
-              undefined,
+              {
+                "height": 40,
+              },
             ]
           }
         >

@@ -341,7 +341,9 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
                 "height": 20,
                 "width": 20,
               },
-              undefined,
+              {
+                "height": 20,
+              },
             ]
           }
         >
@@ -718,7 +720,9 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                 "height": 20,
                 "width": 20,
               },
-              undefined,
+              {
+                "height": 20,
+              },
             ]
           }
         >
@@ -1095,7 +1099,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 "height": 20,
                 "width": 20,
               },
-              undefined,
+              {
+                "height": 20,
+              },
             ]
           }
         >
@@ -1472,7 +1478,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                 "height": 20,
                 "width": 20,
               },
-              undefined,
+              {
+                "height": 20,
+              },
             ]
           }
         >

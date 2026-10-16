@@ -104,6 +104,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                   "width": 20.625,
                 },
                 {
+                  "height": 20,
                   "position": "absolute",
                   "right": 12,
                 },

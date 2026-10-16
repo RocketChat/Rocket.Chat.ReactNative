@@ -113,7 +113,9 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
                   "height": 24,
                   "width": 24.75,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -215,7 +217,9 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                undefined,
+                {
+                  "height": 16,
+                },
               ]
             }
           >
@@ -357,7 +361,9 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -507,7 +513,9 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -609,7 +617,9 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                undefined,
+                {
+                  "height": 16,
+                },
               ]
             }
           >
@@ -751,7 +761,9 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -901,7 +913,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   "height": 24,
                   "width": 24.75,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -1003,7 +1017,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                undefined,
+                {
+                  "height": 16,
+                },
               ]
             }
           >
@@ -1165,7 +1181,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -1315,7 +1333,9 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
                   "height": 24,
                   "width": 24.75,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -1417,7 +1437,9 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                undefined,
+                {
+                  "height": 16,
+                },
               ]
             }
           >
@@ -1559,7 +1581,9 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -1729,7 +1753,9 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
                   "height": 24,
                   "width": 24.75,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -1831,7 +1857,9 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                undefined,
+                {
+                  "height": 16,
+                },
               ]
             }
           >
@@ -1997,7 +2025,9 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -2147,7 +2177,9 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
                   "height": 24,
                   "width": 24.75,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >
@@ -2249,7 +2281,9 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
                   "height": 16,
                   "width": 16,
                 },
-                undefined,
+                {
+                  "height": 16,
+                },
               ]
             }
           >
@@ -2415,7 +2449,9 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
                   "height": 24,
                   "width": 24,
                 },
-                undefined,
+                {
+                  "height": 24,
+                },
               ]
             }
           >

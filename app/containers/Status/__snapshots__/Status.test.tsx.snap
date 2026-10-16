@@ -13,7 +13,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "height": 32,
           "width": 32,
         },
-        undefined,
+        {
+          "height": 32,
+        },
       ]
     }
   >
@@ -54,7 +56,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "height": 32,
           "width": 32,
         },
-        undefined,
+        {
+          "height": 32,
+        },
       ]
     }
   >
@@ -95,7 +99,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "height": 32,
           "width": 32,
         },
-        undefined,
+        {
+          "height": 32,
+        },
       ]
     }
   >
@@ -136,7 +142,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "height": 32,
           "width": 32,
         },
-        undefined,
+        {
+          "height": 32,
+        },
       ]
     }
   >
@@ -177,7 +185,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "height": 32,
           "width": 32,
         },
-        undefined,
+        {
+          "height": 32,
+        },
       ]
     }
   >
@@ -218,7 +228,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "height": 32,
           "width": 32,
         },
-        undefined,
+        {
+          "height": 32,
+        },
       ]
     }
   >
@@ -259,7 +271,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "height": 32,
           "width": 32,
         },
-        undefined,
+        {
+          "height": 32,
+        },
       ]
     }
   >
@@ -300,7 +314,9 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "height": 60,
           "width": 60,
         },
-        undefined,
+        {
+          "height": 60,
+        },
       ]
     }
   >

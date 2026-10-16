@@ -54,7 +54,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
                   "height": 40,
                   "width": 40,
                 },
-                undefined,
+                {
+                  "height": 40,
+                },
               ]
             }
           >
@@ -1740,7 +1742,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
                         "height": 36,
                         "width": 36,
                       },
-                      undefined,
+                      {
+                        "height": 36,
+                      },
                     ]
                   }
                 >
@@ -1834,7 +1838,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
                   "height": 40,
                   "width": 40,
                 },
-                undefined,
+                {
+                  "height": 40,
+                },
               ]
             }
           >
@@ -3520,7 +3526,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
                         "height": 36,
                         "width": 36,
                       },
-                      undefined,
+                      {
+                        "height": 36,
+                      },
                     ]
                   }
                 >
@@ -3614,7 +3622,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
                   "height": 40,
                   "width": 40,
                 },
-                undefined,
+                {
+                  "height": 40,
+                },
               ]
             }
           >
@@ -5300,7 +5310,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
                         "height": 36,
                         "width": 36,
                       },
-                      undefined,
+                      {
+                        "height": 36,
+                      },
                     ]
                   }
                 >
@@ -5394,7 +5406,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                   "height": 40,
                   "width": 40,
                 },
-                undefined,
+                {
+                  "height": 40,
+                },
               ]
             }
           >
@@ -6979,7 +6993,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                         "height": 36,
                         "width": 36,
                       },
-                      undefined,
+                      {
+                        "height": 36,
+                      },
                     ]
                   }
                 >
@@ -7255,7 +7271,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
                         "height": 36,
                         "width": 36,
                       },
-                      undefined,
+                      {
+                        "height": 36,
+                      },
                     ]
                   }
                 >
@@ -7349,7 +7367,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                   "height": 40,
                   "width": 40,
                 },
-                undefined,
+                {
+                  "height": 40,
+                },
               ]
             }
           >
@@ -8894,7 +8914,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                         "height": 36,
                         "width": 36,
                       },
-                      undefined,
+                      {
+                        "height": 36,
+                      },
                     ]
                   }
                 >
@@ -9170,7 +9192,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
                         "height": 36,
                         "width": 36,
                       },
-                      undefined,
+                      {
+                        "height": 36,
+                      },
                     ]
                   }
                 >
@@ -9264,7 +9288,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
                   "height": 40,
                   "width": 40,
                 },
-                undefined,
+                {
+                  "height": 40,
+                },
               ]
             }
           >
@@ -10990,7 +11016,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
                         "height": 36,
                         "width": 36,
                       },
-                      undefined,
+                      {
+                        "height": 36,
+                      },
                     ]
                   }
                 >
