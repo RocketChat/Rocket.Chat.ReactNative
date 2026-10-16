@@ -1,11 +1,11 @@
 import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 
-import { useActionSheet } from '../../../containers/ActionSheet';
-import * as List from '../../../containers/List';
-import I18n from '../../../i18n';
-import dayjs from '../../../lib/dayjs';
-import { useTheme } from '../../../theme';
+import { useActionSheet } from '~/containers/ActionSheet';
+import * as List from '~/containers/List';
+import I18n from '~/i18n';
+import dayjs from '~/lib/dayjs';
+import { useTheme } from '~/theme';
 import ClearAfterSheetContent from './ClearAfterSheetContent';
 import styles from './styles';
 import { CLEAR_AFTER_OPTIONS, type ClearAfterValue } from './types';

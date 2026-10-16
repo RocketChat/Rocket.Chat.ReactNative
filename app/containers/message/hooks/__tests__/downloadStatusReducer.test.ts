@@ -1,5 +1,5 @@
 import { downloadStatusReducer, type TDownloadEvent } from '../useMediaAutoDownload';
-import { type TDownloadState } from '../../../../lib/methods/handleMediaDownload';
+import { type TDownloadState } from '~/lib/methods/handleMediaDownload';
 
 describe('downloadStatusReducer', () => {
 	const cases: Array<[TDownloadState, TDownloadEvent, TDownloadState]> = [

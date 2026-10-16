@@ -2,8 +2,8 @@ import { type FC } from 'react';
 import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
 import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 
-import { useTheme } from '../../theme';
-import sharedStyles from '../../views/Styles';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
 interface IButtonProps extends Omit<RectButtonProps, 'children' | 'enabled'> {

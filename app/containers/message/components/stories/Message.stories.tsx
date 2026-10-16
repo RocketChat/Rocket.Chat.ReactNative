@@ -2,23 +2,25 @@ import { type ComponentType } from 'react';
 import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
-import MessageContainer from '../../index';
-import { type TAnyMessageModel } from '../../../../definitions';
-import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
-import { messagesStatus } from '../../../../lib/constants/messagesStatus';
-import { themes } from '../../../../lib/constants/colors';
-import MessageSeparator from '../../../MessageSeparator';
+import MessageContainer from '~/containers/message/index';
+import { type TAnyMessageModel } from '~/definitions';
+import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
+import { messagesStatus } from '~/lib/constants/messagesStatus';
+import { themes } from '~/lib/constants/colors';
+import MessageSeparator from '~/containers/Separator/MessageSeparator';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
 	FONT_SCALE_LIMIT,
 	ResponsiveLayoutContext
-} from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { mockedStore as store } from '../../../../reducers/mockedStore';
-import { updateSettings } from '../../../../actions/settings';
-import { setCustomEmojis } from '../../../../actions/customEmojis';
-import { createMessageActionStore, MessageActionStoreContext } from '../../stores/MessageActionStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
+} from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { mockedStore as store } from '~/reducers/mockedStore';
+import { updateSettings } from '~/actions/settings';
+import { setCustomEmojis } from '~/actions/customEmojis';
+import { setUser } from '~/actions/login';
+import { selectServerSuccess } from '~/actions/server';
+import { createMessageActionStore, MessageActionStoreContext } from '~/containers/message/stores/MessageActionStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 
 const _theme = 'light';
 
@@ -55,6 +57,8 @@ const date = new Date(2017, 10, 10, 10);
 const longText =
 	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
+store.dispatch(setUser(user));
+store.dispatch(selectServerSuccess({ server: baseUrl, version: '', name: '' }));
 store.dispatch(updateSettings('API_Embed', true));
 store.dispatch(
 	setCustomEmojis({
@@ -81,22 +85,9 @@ const containerHandlers = {
 };
 
 const roomHandlers: Partial<MessageRoomState> = {
-	user,
-	baseUrl,
 	reactionInit: () => {},
-	replyBroadcast: () => {},
-	onReactionPress: () => {},
-	onEncryptedPress: () => {},
-	onDiscussionPress: () => {},
-	onThreadPress: () => {},
-	onReactionLongPress: () => {},
-	onAnswerButtonPress: () => {},
 	jumpToMessage: () => {},
-	navToRoomInfo: () => {},
-	showAttachment: undefined,
-	blockAction: undefined,
-	handleEnterCall: undefined,
-	fetchThreadName: undefined
+	handlers: { navToRoomInfo: () => {}, showAttachment: undefined }
 };
 
 export default {

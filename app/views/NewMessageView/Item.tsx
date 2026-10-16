@@ -1,17 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 
-import Avatar from '../../containers/Avatar';
-import { CustomIcon } from '../../containers/CustomIcon';
+import Avatar from '~/containers/Avatar';
+import { CustomIcon } from '~/containers/CustomIcon';
 import sharedStyles from '../Styles';
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
-import { useMediaCallPermission } from '../../lib/hooks/useMediaCallPermission';
-import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
-import { useIsInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
-import { isSelfUserId } from '../../lib/services/voip/isSelfUserId';
-import { showActionSheetRef } from '../../containers/ActionSheet';
-import { NewMediaCall } from '../../containers/NewMediaCall';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
+import { useMediaCallPermission } from '~/lib/hooks/useMediaCallPermission';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
+import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
+import { isSelfUserId } from '~/lib/services/voip/isSelfUserId';
+import { showActionSheetRef } from '~/containers/ActionSheet';
+import { NewMediaCall } from '~/containers/NewMediaCall';
 
 interface IItem {
 	userId: string;

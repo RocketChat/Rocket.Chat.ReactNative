@@ -1,14 +1,16 @@
-import { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useEffect, useImperativeHandle } from 'react';
 
-import { useDebounce } from '../../../lib/methods/helpers';
+import { useDebounce } from '~/lib/methods/helpers';
 import EmptyRoom from './components/EmptyRoom';
 import List from './components/List';
-import { type IListContainerProps, type IListContainerRef, type IListProps } from './definitions';
-import { useMessages, useScroll } from './hooks';
+import { MessageRow } from '../components/MessageRow';
+import { type IListContainerProps, type IListContainerRef, type IListProps } from '../definitions';
+import { useMessages } from './hooks/useMessages';
+import { useScroll } from './hooks/useScroll';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
-	({ rid, tmid, t, renderRow, showMessageInMainThread, hideSystemMessages, listRef, serverVersion }, ref) => {
-		const [messages, messagesIds, fetchMessages, { highTs, setHighTs }] = useMessages({
+	({ rid, tmid, t, onLongPress, showMessageInMainThread, hideSystemMessages, flatListRef, serverVersion }, ref) => {
+		const [messages, messagesIds, fetchMessages, { highTs, setHighTs, loadOlderMessages }] = useMessages({
 			rid,
 			tmid,
 			showMessageInMainThread,
@@ -18,17 +20,18 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 		});
 		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, handleScrollToIndexFailed, highlightedMessageId, isReleasing } =
 			useScroll({
-				listRef,
+				flatListRef,
 				messages,
 				messagesIds,
 				highTs,
 				setHighTs,
-				fetchMessages
+				fetchMessages,
+				tmid
 			});
 
-		const onEndReached = useDebounce(() => {
-			fetchMessages();
-		}, 300);
+		const onEndReached = useDebounce(loadOlderMessages, 300);
+
+		useEffect(() => onEndReached.cancel, [onEndReached]);
 
 		useImperativeHandle(ref, () => ({
 			jumpToMessage,
@@ -36,13 +39,20 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			isMessageInWindow: (messageId: string) => messagesIds.current?.includes(messageId) ?? false
 		}));
 
-		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index + 1], highlightedMessageId);
+		const renderItem: IListProps['renderItem'] = ({ item, index }) => (
+			<MessageRow
+				item={item}
+				previousItem={messages[index + 1]}
+				highlightedMessage={highlightedMessageId ?? undefined}
+				onLongPress={onLongPress}
+			/>
+		);
 
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} />
 				<List
-					listRef={listRef}
+					flatListRef={flatListRef}
 					data={messages}
 					renderItem={renderItem}
 					onEndReached={onEndReached}

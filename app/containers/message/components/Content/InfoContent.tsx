@@ -1,10 +1,10 @@
 import { Text } from 'react-native';
 
-import styles from '../../styles';
-import { getInfoMessage, messageHaveAuthorName } from '../../utils';
-import { useTheme } from '../../../../theme';
-import { type MessageTypesValues } from '../../../../definitions';
-import { useInfoData, useMessageAuthor, useMessageText } from '../../stores/MessageStore';
+import styles from '~/containers/message/styles';
+import { getInfoMessage, messageHaveAuthorName } from '~/containers/message/utils';
+import { useTheme } from '~/theme';
+import { type MessageTypesValues } from '~/definitions';
+import { useInfoData, useMessageAuthor, useMessageText } from '~/containers/message/stores/MessageStore';
 import User from '../User';
 
 const InfoContent = () => {

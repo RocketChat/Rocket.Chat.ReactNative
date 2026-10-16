@@ -3,7 +3,7 @@ import { type StyleProp, StyleSheet, View, type ViewStyle } from 'react-native';
 
 import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { ICON_SIZE } from './constants';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 
 export interface IListIcon {
 	name: TIconsName;

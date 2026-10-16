@@ -3,16 +3,16 @@ import { useCallback, useContext, useLayoutEffect, useRef, useState } from 'reac
 import { InteractionManager } from 'react-native';
 import { type KeyboardFocus } from 'react-native-external-keyboard';
 
-import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
-import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useIsAccessibilityNavigationEnabled } from '../../../lib/hooks/useIsAccessibilityNavigationEnabled';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { usePermissions } from '../../../lib/hooks/usePermissions';
-import { isTablet } from '../../../lib/methods/helpers';
-import { events, logEvent } from '../../../lib/methods/helpers/log';
-import { getUserSelector } from '../../../selectors/login';
-import { useTheme } from '../../../theme';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import i18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { isTablet } from '~/lib/methods/helpers';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { getUserSelector } from '~/selectors/login';
+import { useTheme } from '~/theme';
 import RoomsListHeaderView from '../components/Header';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 

@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet, View, Text, type StyleProp, type ViewStyle } from 'react-native';
 
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import { CustomIcon } from '../CustomIcon';
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 import Avatar from '../Avatar';
 
 const styles = StyleSheet.create({

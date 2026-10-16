@@ -1,7 +1,7 @@
 import { PixelRatio, StyleSheet } from 'react-native';
 
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../../views/Styles';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
 
 const BUTTON_HEIGHT = 36;
 

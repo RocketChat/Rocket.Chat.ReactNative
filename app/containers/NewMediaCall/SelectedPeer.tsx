@@ -1,12 +1,12 @@
 import { View, StyleSheet } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import { CustomIcon } from '../CustomIcon';
-import I18n from '../../i18n';
-import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
+import I18n from '~/i18n';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 import { PeerItemInner } from './PeerItemInner';
-import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
+import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';
 
 export const SelectedPeer = () => {
 	const selectedPeer = usePeerAutocompleteStore(state => state.selectedPeer);

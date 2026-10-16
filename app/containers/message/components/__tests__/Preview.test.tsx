@@ -2,8 +2,8 @@ import { Provider } from 'react-redux';
 import { render } from '@testing-library/react-native';
 
 import MessagePreview from '../Preview';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type TAnyMessageModel } from '../../../../definitions';
+import { mockedStore } from '~/reducers/mockedStore';
+import { type TAnyMessageModel } from '~/definitions';
 
 jest.mock('../Touchable/Touch', () => {
 	const { forwardRef } = require('react');

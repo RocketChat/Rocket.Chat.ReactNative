@@ -1,11 +1,11 @@
 import { type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 
-import { CustomIcon } from '../../CustomIcon';
-import ActivityIndicator from '../../ActivityIndicator';
+import { CustomIcon } from '~/containers/CustomIcon';
+import ActivityIndicator from '~/containers/ActivityIndicator';
 import styles from './styles';
-import { useTheme } from '../../../theme';
-import Touch from '../../Touch';
+import { useTheme } from '~/theme';
+import Touch from '~/containers/Touch';
 
 interface IInput {
 	children?: ReactElement;

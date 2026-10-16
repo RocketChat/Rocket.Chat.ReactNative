@@ -5,13 +5,13 @@ import { UiKitComponent, UiKitModal } from '.';
 import { KitContext, defaultContext } from './utils';
 import { MessageRoomProvider } from '../message/stores/MessageRoomStore';
 import { MessageProvider } from '../message/stores/MessageStore';
-import { type TAnyMessageModel } from '../../definitions';
+import { type TAnyMessageModel } from '~/definitions';
 
 export default {
 	title: 'UIKit/UiKitModal',
 	decorators: [
 		(Story: any) => (
-			<MessageRoomProvider user={{ id: 'u1', username: 'user', token: 't' }} baseUrl='https://open.rocket.chat'>
+			<MessageRoomProvider>
 				<MessageProvider item={{} as TAnyMessageModel}>
 					<Story />
 				</MessageProvider>

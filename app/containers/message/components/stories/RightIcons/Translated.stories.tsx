@@ -1,11 +1,11 @@
 import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
-import { createMockedStore } from '../../../../../reducers/mockedStore';
-import { type TAnyMessageModel } from '../../../../../definitions';
-import { MessageRoomProvider, type MessageRoomState } from '../../../stores/MessageRoomStore';
-import { MessageProvider } from '../../../stores/MessageStore';
-import TranslatedLeaf from '../../RightIcons/Translated';
+import { createMockedStore } from '~/reducers/mockedStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import TranslatedLeaf from '~/containers/message/components/RightIcons/Translated';
 
 const store = createMockedStore();
 
@@ -46,16 +46,14 @@ export default {
 
 // An auto-translated message from another user renders the language icon.
 export const Translated = () => (
-	<StoryWrapper
-		item={translatedItem}
-		room={{ user: { id: 'reader-id', username: 'rocket.cat' }, autoTranslateRoom: true, autoTranslateLanguage: 'en' }}>
+	<StoryWrapper item={translatedItem} room={{ autoTranslateRoom: true, autoTranslateLanguage: 'en' }}>
 		<TranslatedLeaf />
 	</StoryWrapper>
 );
 
 // A message that is not translated renders nothing.
 export const TranslatedHidden = () => (
-	<StoryWrapper item={plainItem} room={{ user: { id: 'reader-id', username: 'rocket.cat' } }}>
+	<StoryWrapper item={plainItem} room={{}}>
 		<TranslatedLeaf />
 	</StoryWrapper>
 );

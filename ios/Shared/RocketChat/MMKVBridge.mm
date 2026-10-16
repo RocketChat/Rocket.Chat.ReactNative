@@ -48,6 +48,11 @@
     return [_mmkvInstance setString:value forKey:key];
 }
 
+- (BOOL)boolForKey:(NSString *)key {
+    if (!_mmkvInstance) return NO;
+    return [_mmkvInstance getBoolForKey:key defaultValue:NO];
+}
+
 - (nullable NSData *)dataForKey:(NSString *)key {
     if (!_mmkvInstance) return nil;
     return [_mmkvInstance getDataForKey:key];

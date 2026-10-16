@@ -6,23 +6,23 @@ import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { type ISearch, type TSubscriptionModel } from '../../definitions';
-import I18n from '../../i18n';
-import database from '../../lib/database';
-import { useTheme } from '../../theme';
-import { goRoom as goRoomMethod, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { type NewMessageStackParamList } from '../../stacks/types';
-import { search as runSearch } from '../../lib/methods/search';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { type ISearch, type TSubscriptionModel } from '~/definitions';
+import I18n from '~/i18n';
+import database from '~/lib/database';
+import { useTheme } from '~/theme';
+import { goRoom as goRoomMethod, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { type NewMessageStackParamList } from '~/stacks/types';
+import { search as runSearch } from '~/lib/methods/search';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import Item from './Item';
 import HeaderNewMessage from './HeaderNewMessage';
-import { getUidDirectMessage } from '../../lib/methods/helpers/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
 
 const QUERY_SIZE = 50;
 

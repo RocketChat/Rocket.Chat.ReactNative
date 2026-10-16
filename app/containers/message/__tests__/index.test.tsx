@@ -2,7 +2,7 @@ import { act } from 'react';
 import { fireEvent } from '@testing-library/react-native';
 
 import MessageContainer from '../index';
-import { type TAnyMessageModel } from '../../../definitions';
+import { type TAnyMessageModel } from '~/definitions';
 import { createMessageActionStore, MessageActionStoreContext } from '../stores/MessageActionStore';
 import { renderWithMessageProviders } from './testHelpers';
 import { type MessageRoomState } from '../stores/MessageRoomStore';

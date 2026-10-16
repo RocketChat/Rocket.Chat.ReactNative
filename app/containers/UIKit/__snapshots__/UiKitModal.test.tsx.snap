@@ -908,30 +908,45 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Actions with Show More"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Actions with Show More
+                <Text
+                  accessibilityLabel="Actions with Show More"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  Actions with Show More
+                </Text>
               </Text>
             </Text>
             <Text
@@ -1825,30 +1840,45 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="8 buttons"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                8 buttons
+                <Text
+                  accessibilityLabel="8 buttons"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  8 buttons
+                </Text>
               </Text>
             </Text>
             <Text
@@ -1882,30 +1912,45 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="5"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                5
+                <Text
+                  accessibilityLabel="5"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  5
+                </Text>
               </Text>
             </Text>
             <Text
@@ -3976,30 +4021,45 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Next stop, Mars!"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Next stop, Mars!
+                <Text
+                  accessibilityLabel="Next stop, Mars!"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  Next stop, Mars!
+                </Text>
               </Text>
             </Text>
           </Text>
@@ -5242,30 +5302,45 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Bruno Quadros"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Bruno Quadros
+                <Text
+                  accessibilityLabel="Bruno Quadros"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  Bruno Quadros
+                </Text>
               </Text>
             </Text>
             <Text
@@ -5352,30 +5427,45 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="travel expense"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                travel expense
+                <Text
+                  accessibilityLabel="travel expense"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  travel expense
+                </Text>
               </Text>
             </Text>
             <Text
@@ -5462,30 +5552,45 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="DA921"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                DA921
+                <Text
+                  accessibilityLabel="DA921"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  DA921
+                </Text>
               </Text>
             </Text>
             <Text
@@ -5636,30 +5741,45 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Date:"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Date:
+                <Text
+                  accessibilityLabel="Date:"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  Date:
+                </Text>
               </Text>
             </Text>
           </Text>
@@ -5795,30 +5915,45 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Category:"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Category:
+                <Text
+                  accessibilityLabel="Category:"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  Category:
+                </Text>
               </Text>
             </Text>
           </Text>
@@ -5954,30 +6089,45 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Cost:"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Cost:
+                <Text
+                  accessibilityLabel="Cost:"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  Cost:
+                </Text>
               </Text>
             </Text>
           </Text>
@@ -6113,30 +6263,45 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Notes:"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Notes:
+                <Text
+                  accessibilityLabel="Notes:"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  Notes:
+                </Text>
               </Text>
             </Text>
           </Text>
@@ -6277,30 +6442,45 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Rocket.Chat is free, unlimited and open source"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Rocket.Chat is free, unlimited and open source
+                <Text
+                  accessibilityLabel="Rocket.Chat is free, unlimited and open source"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  Rocket.Chat is free, unlimited and open source
+                </Text>
               </Text>
             </Text>
             <Text
@@ -6522,30 +6702,45 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Text 1"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Text 1
+                <Text
+                  accessibilityLabel="Text 1"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  Text 1
+                </Text>
               </Text>
             </Text>
           </Text>
@@ -6676,30 +6871,45 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Text 2"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Text 2
+                <Text
+                  accessibilityLabel="Text 2"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  Text 2
+                </Text>
               </Text>
             </Text>
           </Text>
@@ -6843,30 +7053,45 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Text 3"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Text 3
+                <Text
+                  accessibilityLabel="Text 3"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  Text 3
+                </Text>
               </Text>
             </Text>
           </Text>
@@ -6997,30 +7222,45 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Text 4"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "textAlign": "left",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Text 4
+                <Text
+                  accessibilityLabel="Text 4"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  Text 4
+                </Text>
               </Text>
             </Text>
           </Text>

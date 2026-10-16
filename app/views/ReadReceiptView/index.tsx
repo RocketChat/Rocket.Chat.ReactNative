@@ -6,19 +6,19 @@ import { type RouteProp } from '@react-navigation/core';
 import { type EdgeInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
 
-import { withSafeAreaInsets } from '../../lib/hooks/withSafeAreaInsets';
-import dayjs from '../../lib/dayjs';
-import * as List from '../../containers/List';
-import Avatar from '../../containers/Avatar';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import I18n from '../../i18n';
-import { type TSupportedThemes, withTheme } from '../../theme';
-import { themes } from '../../lib/constants/colors';
-import SafeAreaView from '../../containers/SafeAreaView';
+import { withSafeAreaInsets } from '~/lib/hooks/withSafeAreaInsets';
+import dayjs from '~/lib/dayjs';
+import * as List from '~/containers/List';
+import Avatar from '~/containers/Avatar';
+import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import I18n from '~/i18n';
+import { type TSupportedThemes, withTheme } from '~/theme';
+import { themes } from '~/lib/constants/colors';
+import SafeAreaView from '~/containers/SafeAreaView';
 import styles from './styles';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { type IApplicationState, type IReadReceipts } from '../../definitions';
-import { getReadReceipts } from '../../lib/services/restApi';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { type IApplicationState, type IReadReceipts } from '~/definitions';
+import { getReadReceipts } from '~/lib/services/restApi';
 
 interface IReadReceiptViewState {
 	loading: boolean;

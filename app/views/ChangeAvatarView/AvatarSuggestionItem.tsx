@@ -1,8 +1,8 @@
 import { View, StyleSheet } from 'react-native';
 
-import { type IAvatar } from '../../definitions';
-import Avatar from '../../containers/Avatar';
-import { useTheme } from '../../theme';
+import { type IAvatar } from '~/definitions';
+import Avatar from '~/containers/Avatar';
+import { useTheme } from '~/theme';
 
 const styles = StyleSheet.create({
 	container: {

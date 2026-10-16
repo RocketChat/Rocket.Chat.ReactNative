@@ -8,7 +8,7 @@ import {
 	type PathFor,
 	type ResultFor,
 	type Serialized
-} from '../../definitions/rest/helpers';
+} from '~/definitions/rest/helpers';
 import sdk from '../services/sdk';
 
 export const useEndpointData = <TPath extends PathFor<'GET'>>(

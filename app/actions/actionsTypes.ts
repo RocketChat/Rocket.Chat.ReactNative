@@ -34,6 +34,7 @@ export const INQUIRY = createRequestTypes('INQUIRY', [
 	'QUEUE_UPDATE',
 	'QUEUE_REMOVE'
 ]);
+export const ROUTING_CONFIG = createRequestTypes('ROUTING_CONFIG');
 export const APP = createRequestTypes('APP', [
 	'START',
 	'READY',

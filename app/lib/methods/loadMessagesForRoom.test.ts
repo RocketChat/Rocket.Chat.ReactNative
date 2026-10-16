@@ -1,6 +1,6 @@
 import { loadMessagesForRoom } from './loadMessagesForRoom';
 import sdk from '../services/sdk';
-import { ROOM } from '../../actions/actionsTypes';
+import { ROOM } from '~/actions/actionsTypes';
 import { getMessageById } from '../database/services/Message';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import updateMessages from './updateMessages';
@@ -168,6 +168,46 @@ describe('loadMessagesForRoom', () => {
 		expect(finalUpdate.update).toHaveLength(30);
 		expect(finalUpdate.update.find(m => m.t === 'load_more')).toBeUndefined();
 		expect(mockedDispatch).not.toHaveBeenCalledWith(expect.objectContaining({ type: ROOM.HISTORY_UI_LOADER_PUSH }));
+	});
+
+	const buildMillisecondBatch = (prefix: string, baseSeconds: number, t?: string) =>
+		Array.from({ length: 50 }, (_, index) =>
+			buildMessage({
+				id: `${prefix}-${index + 1}`,
+				ts: new Date(Date.UTC(2024, 0, 1, 0, 0, baseSeconds, 999 - index * 7)).toISOString(),
+				t
+			})
+		);
+
+	it('stamps the trailing Older Loader one millisecond before the oldest Message of the Chunk', async () => {
+		const batch = buildMillisecondBatch('visible', 30);
+		const oldest = batch[batch.length - 1];
+
+		mockedSdkGet.mockResolvedValueOnce({ success: true, messages: batch } as any);
+
+		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+		const { update } = mockedUpdateMessages.mock.calls[0][0] as { update: { _id: string; t?: string; ts: string | Date }[] };
+		const loaderRow = update.find(m => m.t === 'load_more');
+		expect(loaderRow?._id).toBe('load-more-visible-50');
+		expect(new Date(loaderRow?.ts as string | Date).getTime()).toBe(new Date(oldest.ts).getTime() - 1);
+	});
+
+	it('stamps the intermediate Older Loader one millisecond before the oldest Message of the first batch', async () => {
+		const firstBatch = buildMillisecondBatch('first', 30, 'uj');
+		const secondBatch = buildMillisecondBatch('second', 10);
+		const oldest = firstBatch[firstBatch.length - 1];
+
+		mockedSdkGet
+			.mockResolvedValueOnce({ success: true, messages: firstBatch } as any)
+			.mockResolvedValueOnce({ success: true, messages: secondBatch } as any);
+
+		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+		const { update } = mockedUpdateMessages.mock.calls[0][0] as { update: { _id: string; t?: string; ts: string | Date }[] };
+		const loaderRow = update.find(m => m.t === 'load_more');
+		expect(loaderRow?._id).toBe('load-more-first-50');
+		expect(new Date(loaderRow?.ts as string | Date).getTime()).toBe(new Date(oldest.ts).getTime() - 1);
 	});
 
 	it('pops the ui loader when a recursive batch fetch fails after the loader was pushed', async () => {

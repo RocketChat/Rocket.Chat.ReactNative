@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import styles from './styles';
 import { type ITitleProps } from './interfaces';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 
 const Title = memo(({ name, hideUnreadStatus, alert }: ITitleProps) => {
 	const { colors } = useTheme();

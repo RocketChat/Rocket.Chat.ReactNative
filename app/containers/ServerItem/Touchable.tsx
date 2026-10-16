@@ -4,7 +4,7 @@ import { type AccessibilityRole } from 'react-native';
 import SwipeableDeleteTouchable from './SwipeableDeleteItem/Touchable';
 import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 
 export interface IServerItemTouchableProps {
 	children: ReactElement;

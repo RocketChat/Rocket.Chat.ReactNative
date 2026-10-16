@@ -11,13 +11,13 @@ import {
 } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
-import i18n from '../../i18n';
-import { useTheme } from '../../theme';
-import sharedStyles from '../../views/Styles';
+import i18n from '~/i18n';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
-import { isIOS } from '../../lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers';
 import Touch from '../Touch';
 
 const styles = StyleSheet.create({

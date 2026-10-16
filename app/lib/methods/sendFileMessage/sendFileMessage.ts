@@ -1,7 +1,7 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { type IUser, type TSendFileMessageFileInfo, type TUploadModel } from '../../../definitions';
-import database from '../../database';
+import { type IUser, type TSendFileMessageFileInfo, type TUploadModel } from '~/definitions';
+import database from '~/lib/database';
 import FileUpload from '../helpers/fileUpload';
 import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
 import { type IFormData } from '../helpers/fileUpload/definitions';

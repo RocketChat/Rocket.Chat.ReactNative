@@ -3,10 +3,10 @@ import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import RoomInfoView from './index';
-import { mockedStore } from '../../reducers/mockedStore';
-import { initStore } from '../../lib/store/auxStore';
-import { setUser } from '../../actions/login';
-import { getUserInfo, toggleBlockUser } from '../../lib/services/restApi';
+import { mockedStore } from '~/reducers/mockedStore';
+import { initStore } from '~/lib/store/auxStore';
+import { setUser } from '~/actions/login';
+import { getUserInfo, toggleBlockUser } from '~/lib/services/restApi';
 
 let mockRouteParams: Record<string, unknown> = {};
 const mockNavigate = jest.fn();
@@ -17,16 +17,16 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => ({ addListener: jest.fn(() => jest.fn()), setOptions: jest.fn(), navigate: mockNavigate })
 }));
 
-jest.mock('../../lib/database/services/Subscription', () => ({
+jest.mock('~/lib/database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn().mockResolvedValue(null)
 }));
 
-jest.mock('../../lib/methods/helpers', () => ({
-	...jest.requireActual('../../lib/methods/helpers'),
+jest.mock('~/lib/methods/helpers', () => ({
+	...jest.requireActual('~/lib/methods/helpers'),
 	hasPermission: jest.fn().mockResolvedValue([false])
 }));
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	getUserInfo: jest.fn(() => new Promise(() => {})),
 	getRoomInfo: jest.fn(),
 	getVisitorInfo: jest.fn(),
@@ -34,23 +34,23 @@ jest.mock('../../lib/services/restApi', () => ({
 	ignoreUser: jest.fn().mockResolvedValue(true)
 }));
 
-jest.mock('../../lib/methods/createDirectMessage', () => ({
+jest.mock('~/lib/methods/createDirectMessage', () => ({
 	createDirectMessage: jest.fn()
 }));
 
-jest.mock('../../lib/hooks/useMasterDetail', () => ({
+jest.mock('~/lib/hooks/useMasterDetail', () => ({
 	useMasterDetail: () => false
 }));
 
-jest.mock('../../lib/hooks/useVideoConf', () => ({
+jest.mock('~/lib/hooks/useVideoConf', () => ({
 	useVideoConf: () => ({ callEnabled: false, disabledTooltip: false, showInitCallActionSheet: jest.fn() })
 }));
 
-jest.mock('../../lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall', () => ({
 	useNewMediaCall: () => ({ openNewMediaCall: jest.fn(), hasMediaCallPermission: false, isInActiveCall: false })
 }));
 
-jest.mock('../../lib/services/voip/isInActiveVoipCall', () => ({
+jest.mock('~/lib/services/voip/isInActiveVoipCall', () => ({
 	useIsInActiveVoipCall: () => false
 }));
 
@@ -58,11 +58,11 @@ jest.mock('./hooks', () => ({
 	useE2EEWarning: () => false
 }));
 
-jest.mock('../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: jest.fn() })
 }));
 
-jest.mock('../../containers/Header/components/HeaderButton', () => ({
+jest.mock('~/containers/Header/components/HeaderButton', () => ({
 	Container: () => null,
 	Item: () => null,
 	CloseModal: () => null

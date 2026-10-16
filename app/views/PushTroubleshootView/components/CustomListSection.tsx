@@ -1,7 +1,7 @@
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { type ReactElement } from 'react';
 
-import { Header } from '../../../containers/List';
+import { Header } from '~/containers/List';
 
 const styles = StyleSheet.create({
 	container: {

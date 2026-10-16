@@ -2,7 +2,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 
 import CallActionButton from './CallActionButton';
 import * as stories from './CallActionButton.stories';
-import { generateSnapshots } from '../../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const onPressMock = jest.fn();
 

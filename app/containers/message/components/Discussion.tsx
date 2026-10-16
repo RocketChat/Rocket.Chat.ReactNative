@@ -3,11 +3,11 @@ import { Text, View } from 'react-native';
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import { BUTTON_HIT_SLOP, formatMessageCount } from '../utils';
 import styles from '../styles';
-import I18n from '../../../i18n';
-import { CustomIcon } from '../../CustomIcon';
+import I18n from '~/i18n';
+import { CustomIcon } from '~/containers/CustomIcon';
 import { DISCUSSION } from '../constants';
-import { formatDateThreads } from '../../../lib/methods/helpers/room';
-import { useTheme } from '../../../theme';
+import { formatDateThreads } from '~/lib/methods/helpers/room';
+import { useTheme } from '~/theme';
 import { useDiscussion, useMessageField, useMessageText } from '../stores/MessageStore';
 import { useOnDiscussionPress } from '../stores/MessageRoomStore';
 

@@ -4,15 +4,16 @@ import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { type ReactElement } from 'react';
 
-import { setLoading } from '../../../actions/selectedUsers';
-import * as List from '../../../containers/List';
-import { type TSubscriptionModel } from '../../../definitions';
-import i18n from '../../../i18n';
-import { usePermissions } from '../../../lib/hooks/usePermissions';
-import log, { events, logEvent } from '../../../lib/methods/helpers/log';
-import { addUsersToRoom } from '../../../lib/services/restApi';
-import { type MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
-import { type ChatsStackParamList } from '../../../stacks/types';
+import { setLoading } from '~/actions/selectedUsers';
+import * as List from '~/containers/List';
+import { type TSubscriptionModel } from '~/definitions';
+import i18n from '~/i18n';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { showErrorAlertWithEMessage } from '~/lib/methods/helpers';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { addUsersToRoom } from '~/lib/services/restApi';
+import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
+import { type ChatsStackParamList } from '~/stacks/types';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
@@ -56,10 +57,11 @@ export default function ActionsSection({ rid, t, joined, abacAttributes }: IActi
 	const addUser = async () => {
 		try {
 			dispatch(setLoading(true));
-			await addUsersToRoom(rid);
+			await addUsersToRoom(rid, t as 'c' | 'p');
 			pop();
 		} catch (e) {
 			log(e);
+			showErrorAlertWithEMessage(e);
 		} finally {
 			dispatch(setLoading(false));
 		}

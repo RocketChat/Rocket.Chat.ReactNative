@@ -1,7 +1,7 @@
 import { type ServerInteraction } from '@rocket.chat/ui-kit';
 
-import { type ITriggerAction, ModalActions, type TModalAction } from '../../containers/UIKit/interfaces';
-import { toServerModalInteractionType, toUserInteraction } from '../../containers/UIKit/interactionAdapters';
+import { type ITriggerAction, ModalActions, type TModalAction } from '~/containers/UIKit/interfaces';
+import { toServerModalInteractionType, toUserInteraction } from '~/containers/UIKit/interactionAdapters';
 import EventEmitter from './helpers/events';
 import fetch from './helpers/fetch';
 import { random } from './helpers';
@@ -108,8 +108,11 @@ export async function triggerAction({
 	const payload = rest.payload ?? rest.value;
 
 	try {
-		const { userId, authToken } = sdk.current.currentLogin;
-		const { host } = sdk.current.client;
+		const { host, currentLogin } = sdk;
+		if (!host || !currentLogin) {
+			throw new Error('triggerAction requires an initialized, authenticated session');
+		}
+		const { userId, authToken } = currentLogin;
 		const interaction = toUserInteraction({
 			type,
 			actionId,

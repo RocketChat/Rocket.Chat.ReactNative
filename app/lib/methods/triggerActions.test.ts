@@ -1,4 +1,4 @@
-import { ActionTypes, ModalActions } from '../../containers/UIKit/interfaces';
+import { ActionTypes, ModalActions } from '~/containers/UIKit/interfaces';
 import Navigation from '../navigation/appNavigation';
 import { triggerAction } from './actions';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from './triggerActions';

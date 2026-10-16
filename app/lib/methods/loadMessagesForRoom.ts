@@ -1,7 +1,7 @@
 import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
-import { roomHistoryUiLoaderPop, roomHistoryUiLoaderPush } from '../../actions/room';
-import { type IMessage, type TMessageModel } from '../../definitions';
+import { roomHistoryUiLoaderPop, roomHistoryUiLoaderPush } from '~/actions/room';
+import { type IMessage, type TMessageModel } from '~/definitions';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
@@ -91,7 +91,7 @@ async function load(args: {
 				const loadMoreMessage = {
 					_id: generateLoadMoreId(lastMessage._id as string),
 					rid: lastMessage.rid,
-					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toString(),
+					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toDate(),
 					t: MessageTypeLoad.MORE,
 					msg: lastMessage.msg
 				} as IMessage;
@@ -135,7 +135,7 @@ export async function loadMessagesForRoom(args: {
 				messages.push({
 					_id: generateLoadMoreId(lastMessage._id as string),
 					rid: lastMessage.rid,
-					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toString(),
+					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toDate(),
 					t: MessageTypeLoad.MORE,
 					msg: lastMessage.msg
 				} as IMessage);

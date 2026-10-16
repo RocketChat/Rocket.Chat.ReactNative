@@ -1,7 +1,7 @@
 import { memo, type ReactElement } from 'react';
 
-import SafeAreaView from '../../../containers/SafeAreaView';
-import { useTheme } from '../../../theme';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { useTheme } from '~/theme';
 import TabletHeader from './TabletHeader';
 
 const Container = ({ children }: { children: ReactElement }) => {

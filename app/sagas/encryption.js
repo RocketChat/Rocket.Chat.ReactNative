@@ -1,7 +1,7 @@
 import EJSON from 'ejson';
-import { put, select, takeLatest } from 'redux-saga/effects';
+import { put, race, select, take, takeLatest } from 'redux-saga/effects';
 
-import { ENCRYPTION } from '../actions/actionsTypes';
+import { ENCRYPTION, LOGOUT, SERVER, SETTINGS } from '../actions/actionsTypes';
 import { encryptionDecodeKeyFailure, encryptionSet } from '../actions/encryption';
 import { Encryption } from '../lib/encryption';
 import database from '../lib/database';
@@ -14,6 +14,23 @@ import { readMessages } from '../lib/methods/readMessages';
 
 const getServer = state => state.server.server;
 const getE2eEnable = state => state.settings.E2E_Enable;
+
+const waitForE2eEnable = function* waitForE2eEnable() {
+	let e2eEnable;
+	while (e2eEnable === undefined) {
+		const { logout, selectServer } = yield race({
+			settingsAdded: take(SETTINGS.ADD),
+			logout: take(LOGOUT),
+			selectServer: take(SERVER.SELECT_REQUEST)
+		});
+		if (logout || selectServer) {
+			return;
+		}
+
+		e2eEnable = yield select(getE2eEnable);
+	}
+	return e2eEnable;
+};
 
 const handleEncryptionInit = function* handleEncryptionInit() {
 	try {
@@ -31,8 +48,13 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 			// Server not found
 		}
 
+		let e2eEnable = E2E_Enable;
+		if (serverInfo?.E2E_Enable === undefined && E2E_Enable === undefined) {
+			e2eEnable = yield* waitForE2eEnable();
+		}
+
 		// If E2E is disabled on server, skip
-		if (!serverInfo?.E2E_Enable && !E2E_Enable) {
+		if (!serverInfo?.E2E_Enable && !e2eEnable) {
 			return;
 		}
 

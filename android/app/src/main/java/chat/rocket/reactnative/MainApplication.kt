@@ -32,6 +32,7 @@ import chat.rocket.reactnative.notification.PushNotificationTurboPackage
 import chat.rocket.reactnative.VoipTurboPackage
 import chat.rocket.reactnative.scroll.InvertedScrollPackage
 import chat.rocket.reactnative.input.ExternalInputPackage
+import chat.rocket.reactnative.biometric.BiometricEnrollmentPackage
 
 /**
  * Main Application class.
@@ -59,6 +60,7 @@ open class MainApplication : Application(), ReactApplication {
               add(SecureStoragePackage())
               add(InvertedScrollPackage())
               add(ExternalInputPackage())
+              add(BiometricEnrollmentPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"

@@ -1,7 +1,7 @@
 import { getAudioUrl, getAudioUrlToCache } from './getAudioUrl';
 import { store } from '../store/auxStore';
 import { getFilePath } from './handleMediaDownload';
-import { getUserSelector } from '../../selectors/login';
+import { getUserSelector } from '~/selectors/login';
 
 export const getFilePathAudio = ({ audioUrl, audioType }: { audioUrl?: string; audioType?: string }): string | null => {
 	const baseUrl = store.getState().server.server;

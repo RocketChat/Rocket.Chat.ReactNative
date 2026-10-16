@@ -1,4 +1,4 @@
-import { type IShareAttachment, type IUser } from '../../../definitions';
+import { type IShareAttachment, type IUser } from '~/definitions';
 import { sendFileMessage } from './index';
 
 const ROTATED_ORIENTATIONS = ['5', '6', '7', '8'];

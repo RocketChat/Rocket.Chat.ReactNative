@@ -11,7 +11,7 @@ jest.mock('../CustomIcon', () => ({
 	CustomIcon: (...props: Parameters<typeof mockCustomIcon>) => mockCustomIcon(...props)
 }));
 
-jest.mock('../../theme', () => ({
+jest.mock('~/theme', () => ({
 	useTheme: () => ({
 		colors: {
 			fontDefault: '#000000',

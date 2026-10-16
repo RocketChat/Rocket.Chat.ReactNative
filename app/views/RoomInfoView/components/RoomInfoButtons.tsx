@@ -1,18 +1,18 @@
 import { View } from 'react-native';
 import { type ReactElement } from 'react';
 
-import { type TIconsName } from '../../../containers/CustomIcon';
-import { type ISubscription, SubscriptionType } from '../../../definitions';
-import i18n from '../../../i18n';
-import { useVideoConf } from '../../../lib/hooks/useVideoConf';
+import { type TIconsName } from '~/containers/CustomIcon';
+import { type ISubscription, SubscriptionType } from '~/definitions';
+import i18n from '~/i18n';
+import { useVideoConf } from '~/lib/hooks/useVideoConf';
 import styles from '../styles';
-import { compareServerVersion } from '../../../lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers';
 import { useE2EEWarning } from '../hooks';
-import { useActionSheet } from '../../../containers/ActionSheet';
-import type { TActionSheetOptionsItem } from '../../../containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet';
+import type { TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import { BaseButton } from './BaseButton';
-import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
-import { useIsInActiveVoipCall } from '../../../lib/services/voip/isInActiveVoipCall';
+import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
+import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 
 type ButtonConfig = {
 	label: string;

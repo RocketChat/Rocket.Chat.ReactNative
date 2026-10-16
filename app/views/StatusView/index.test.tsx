@@ -2,11 +2,11 @@ import { type ReactNode } from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-import { mockedStore } from '../../reducers/mockedStore';
-import { setUser } from '../../actions/login';
-import { addSettings } from '../../actions/settings';
-import { selectServerSuccess } from '../../actions/server';
-import { initStore } from '../../lib/store/auxStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import { setUser } from '~/actions/login';
+import { addSettings } from '~/actions/settings';
+import { selectServerSuccess } from '~/actions/server';
+import { initStore } from '~/lib/store/auxStore';
 import StatusView from './index';
 
 const mockNavigationSetOptions = jest.fn();
@@ -33,23 +33,23 @@ jest.mock('@react-navigation/native', () => {
 });
 
 const mockSetUserStatus = jest.fn();
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	setUserStatus: (...args: unknown[]) => mockSetUserStatus(...args)
 }));
 
 const mockShowToast = jest.fn();
-jest.mock('../../lib/methods/helpers/showToast', () => ({
+jest.mock('~/lib/methods/helpers/showToast', () => ({
 	showToast: (...args: unknown[]) => mockShowToast(...args)
 }));
 
 const mockShowErrorAlertWithEMessage = jest.fn();
-jest.mock('../../lib/methods/helpers/info', () => ({
+jest.mock('~/lib/methods/helpers/info', () => ({
 	showErrorAlertWithEMessage: (...args: unknown[]) => mockShowErrorAlertWithEMessage(...args)
 }));
 
 const mockShowActionSheet = jest.fn();
 const mockHideActionSheet = jest.fn();
-jest.mock('../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
 }));
 

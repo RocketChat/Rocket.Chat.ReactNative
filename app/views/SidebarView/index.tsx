@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { type DrawerNavigationProp } from '@react-navigation/drawer';
 import { ScrollView, View } from 'react-native';
 
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import styles from './styles';
-import { type DrawerParamList } from '../../stacks/types';
+import { type DrawerParamList } from '~/stacks/types';
 import SupportedVersionsWarnItem from './components/SupportedVersionsWarnItem';
 import CustomStatus from './components/CustomStatus';
 import Stacks from './components/Stacks';

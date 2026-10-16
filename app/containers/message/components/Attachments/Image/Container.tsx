@@ -1,16 +1,16 @@
 import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
-import Markdown from '../../../../markdown';
-import { useMediaAutoDownload } from '../../../hooks/useMediaAutoDownload';
+import Markdown from '~/containers/markdown';
+import { useMediaAutoDownload } from '~/containers/message/hooks/useMediaAutoDownload';
 import { Button } from './Button';
 import { MessageImage } from './Image';
-import AltTextLabel from '../../../../AltTextLabel';
+import AltTextLabel from '~/containers/AltTextLabel';
 import { type IImageContainer } from './definitions';
-import { useMessageUser } from '../../../stores/MessageRoomStore';
-import { WidthAwareView } from '../../WidthAwareView';
-import { useAltTextSupported } from '../../../../../lib/hooks/useAltTextSupported';
-import I18n from '../../../../../i18n';
+import { useMessageUser } from '~/containers/message/stores/MessageRoomStore';
+import { WidthAwareView } from '~/containers/message/components/WidthAwareView';
+import { useAltTextSupported } from '~/lib/hooks/useAltTextSupported';
+import I18n from '~/i18n';
 
 const ImageContainer = ({ file, showAttachment, author, msg, imagePreview, imageType }: IImageContainer): ReactElement | null => {
 	const user = useMessageUser();

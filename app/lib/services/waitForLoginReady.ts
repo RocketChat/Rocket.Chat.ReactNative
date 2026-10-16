@@ -1,8 +1,6 @@
 import { onAbort } from '../methods/helpers/onAbort';
 import { store } from '../store/auxStore';
 
-// Reads redux rather than `ddp.loggedIn`: `close` clears `meteor.connected`, while `ddp.loggedIn` survives it.
-// Neither survives a silent background death, so callers must bound their wait.
 export function isLoginReady(): boolean {
 	const state = store.getState();
 	return state.login.isAuthenticated && state.meteor.connected;

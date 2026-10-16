@@ -1,11 +1,11 @@
 import { type ReactElement } from 'react';
 import { shallowEqual } from 'react-redux';
 
-import { getUserSelector } from '../../selectors/login';
+import { getUserSelector } from '~/selectors/login';
 import Avatar from './Avatar';
 import { type IAvatar } from './interfaces';
 import { useAvatarETag } from './useAvatarETag';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 
 const AvatarContainer = ({
 	style,

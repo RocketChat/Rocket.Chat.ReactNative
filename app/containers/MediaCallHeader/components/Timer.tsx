@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
 
 const formatDuration = (seconds: number): string => {
 	const hours = Math.floor(seconds / 3600);

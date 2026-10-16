@@ -1,4 +1,4 @@
-import { type IAttachment } from '../../../../definitions';
+import { type IAttachment } from '~/definitions';
 import { isContentAttachment, isQuoteAttachment } from '../Attachments/utils';
 
 describe('Attachments predicates', () => {

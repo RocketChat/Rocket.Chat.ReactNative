@@ -1,5 +1,6 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getUniqueId } from 'react-native-device-info';
+import EJSON from 'ejson';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 
 import {
@@ -15,19 +16,17 @@ import {
 	type IServerRoom,
 	type RoomType,
 	type SubscriptionType
-} from '../../definitions';
-import { type TParams } from '../../definitions/ILivechatEditView';
-import { type ILivechatTag } from '../../definitions/ILivechatTag';
-import { type ISpotlight } from '../../definitions/ISpotlight';
-import { TEAM_TYPE } from '../../definitions/ITeam';
-import { type OperationParams, type ResultFor } from '../../definitions/rest/helpers';
-import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
-import { Encryption } from '../encryption';
+} from '~/definitions';
+import { type TParams } from '~/definitions/ILivechatEditView';
+import { type ILivechatTag } from '~/definitions/ILivechatTag';
+import { type ISpotlight } from '~/definitions/ISpotlight';
+import { TEAM_TYPE } from '~/definitions/ITeam';
+import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers';
+import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
-import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
-import { getDeviceToken } from '../notifications';
+import { getDeviceToken } from '../notifications/deviceToken';
 import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
@@ -68,9 +67,14 @@ export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: 
 	// RC 2.2.0
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key, ...(force && { force: true }) });
 
-export const e2eRequestSubscriptionKeys = (): Promise<boolean> =>
+export const e2eRequestSubscriptionKeys = () => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('e2e.requestSubscriptionKeys');
+	}
 	// RC 0.72.0
-	sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
+	return sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
+};
 
 export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 	// RC 0.70.0
@@ -127,11 +131,22 @@ export const spotlight = (
 	usernames: string[],
 	type: { users: boolean; rooms: boolean; mentions: boolean },
 	rid?: string
-): Promise<ISpotlight> =>
+): Promise<ISpotlight> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
+		const cappedUsernames = usernames.filter(name => !name.includes(',')).slice(0, 50);
+		return sdk.get('spotlight', {
+			query: search,
+			type: JSON.stringify(type),
+			...(cappedUsernames.length ? { usernames: cappedUsernames.join(',') } : {}),
+			...(rid ? { rid } : {})
+		}) as Promise<ISpotlight>;
+	}
 	// RC 0.51.0
-	rid
+	return rid
 		? sdk.methodCallWrapper('spotlight', search, usernames, type, rid)
 		: sdk.methodCallWrapper('spotlight', search, usernames, type);
+};
 
 export const createDirectMessage = (username: string) =>
 	// RC 0.59.0
@@ -284,9 +299,13 @@ export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; sel
 };
 
 export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p') => {
-	// RC 0.48.0
 	if (type === 'p') {
-		return sdk.methodCallWrapper('joinRoom', roomId) as Promise<boolean>;
+		const serverVersion = reduxStore.getState().server.version;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+			return sdk.post('rooms.join', { roomId, joinCode });
+		}
+		// RC 0.48.0
+		return sdk.methodCallWrapper('joinRoom', roomId);
 	}
 	return sdk.post('channels.join', { roomId, joinCode });
 };
@@ -545,7 +564,11 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	return sdk.get('canned-responses', params);
 };
 
-export const toggleBlockUser = (rid: string, blocked: string, block: boolean): Promise<boolean> => {
+export const toggleBlockUser = (rid: string, blocked: string, block: boolean) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('im.blockUser', { roomId: rid, block });
+	}
 	if (block) {
 		// RC 0.49.0
 		return sdk.methodCallWrapper('blockUser', { rid, blocked });
@@ -562,10 +585,13 @@ export const deleteRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.49.0
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
-export const toggleMuteUserInRoom = (rid: string, username: string, userId: string, mute: boolean) => {
+export const toggleMuteUserInRoom = (rid: string, username: string | undefined, userId: string, mute: boolean) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
 		return sdk.post(mute ? 'rooms.muteUser' : 'rooms.unmuteUser', { roomId: rid, userId });
+	}
+	if (!username) {
+		throw new Error('muteUserInRoom requires a username on servers older than 6.8.0');
 	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper(mute ? 'muteUserInRoom' : 'unmuteUserInRoom', { rid, username });
@@ -891,12 +917,65 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 	return sdk.get('chat.getThreadsList', params);
 };
 
+export const getThreadMessages = async ({ tmid, offset, count }: { tmid: string; offset: number; count: number }) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.8.0')) {
+		const result = await sdk.get('chat.getThreadMessages', { tmid, count, offset, sort: { ts: -1 } });
+		if (!result.success) {
+			throw new Error('Unable to load thread messages');
+		}
+		return { messages: result.messages, total: result.total, threadParent: null };
+	}
+	const result = await sdk.methodCallWrapper('getThreadMessages', { tmid });
+	const thread: IMessage[] = result ? EJSON.fromJSONValue(result) : [];
+	const messages = thread.filter(m => m._id !== tmid);
+	return { messages, total: messages.length, threadParent: thread.find(m => m._id === tmid) ?? null };
+};
+
 export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>
 	// RC 1.0
 	sdk.get('chat.syncThreadsList', {
 		rid,
 		updatedSince
 	});
+
+const getRoomHistory = async (roomId: string, position: { next: string } | { aroundId: string }, count: number) => {
+	const history = await sdk.get('rooms.history', { roomId, ...position, count, showThreadMessages: true });
+	if (!history.success) {
+		throw new Error('Unable to load room history');
+	}
+	const messages = history.messages.map(message => ({ ...message, _updatedAt: new Date(message._updatedAt) }));
+	return { messages: messages as IMessage[], cursor: history.cursor };
+};
+
+export const getNextMessages = async ({ rid, after, count }: { rid: string; after: Date; count: number }) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
+		const newestLoadedTs = after.getTime() - 1;
+		const { messages, cursor } = await getRoomHistory(rid, { next: String(newestLoadedTs) }, count);
+		return { messages, hasMore: cursor.next !== null };
+	}
+	const result = await sdk.methodCallWrapper('loadNextMessages', rid, after, count);
+	if (!result?.messages) {
+		throw new Error('Unable to load newer messages');
+	}
+	const messages: IMessage[] = EJSON.fromJSONValue(result.messages);
+	return { messages, hasMore: messages.length === count };
+};
+
+export const getSurroundingMessages = async ({ rid, messageId, count }: { rid: string; messageId: string; count: number }) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
+		const { messages, cursor } = await getRoomHistory(rid, { aroundId: messageId }, count);
+		return { messages, moreBefore: cursor.previous !== null, moreAfter: cursor.next !== null };
+	}
+	const result = await sdk.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, count);
+	if (!result?.messages) {
+		throw new Error('Unable to load surrounding messages');
+	}
+	const messages: IMessage[] = EJSON.fromJSONValue(result.messages);
+	return { messages, moreBefore: !!result.moreBefore, moreAfter: !!result.moreAfter };
+};
 
 export const runSlashCommand = (command: string, roomId: string, params: string, triggerId?: string, tmid?: string) =>
 	// RC 0.60.2
@@ -970,12 +1049,17 @@ export const saveAutoTranslate = ({
 	field,
 	value,
 	options
-}: {
-	rid: string;
-	field: string;
-	value: string;
-	options?: { defaultLanguage: string };
-}) => sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options ?? null);
+}: { rid: string; options?: { defaultLanguage: string } } & (
+	| { field: 'autoTranslate'; value: boolean }
+	| { field: 'autoTranslateLanguage'; value: string }
+)) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('autotranslate.saveSettings', { roomId: rid, field, value, ...options });
+	}
+	const ddpValue = typeof value === 'boolean' ? (value ? '1' : '0') : value;
+	return sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, ddpValue, options ?? null);
+};
 
 export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
 	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
@@ -1001,8 +1085,11 @@ export const inviteToken = (token: string): any =>
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
 
-export const readThreads = (tmid: string): Promise<void> => {
+export const readThreads = (tmid: string) => {
 	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.8.0')) {
+		return sdk.post('chat.readThread', { tmid });
+	}
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
 		// RC 3.4.0
 		return sdk.methodCallWrapper('readThreads', tmid);
@@ -1018,9 +1105,20 @@ export const createGroupChat = () => {
 	return sdk.post('im.create', { usernames });
 };
 
-export const addUsersToRoom = (rid: string): Promise<boolean> => {
-	const { users: selectedUsers } = reduxStore.getState().selectedUsers;
-	const users = selectedUsers.map(u => u.name);
+export const addUsersToRoom = async (rid: string, t: 'c' | 'p') => {
+	const { selectedUsers, server } = reduxStore.getState();
+	const users = selectedUsers.users.map(u => u.name);
+	if (compareServerVersion(server.version, 'greaterThanOrEqualTo', '8.6.0')) {
+		if (t === 'p') {
+			return sdk.post('groups.invite', { roomId: rid, usernames: users });
+		}
+		const results = await Promise.allSettled(users.map(username => sdk.post('channels.invite', { roomId: rid, username })));
+		const failed = results.find((result): result is PromiseRejectedResult => result.status === 'rejected');
+		if (failed) {
+			throw failed.reason;
+		}
+		return results;
+	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
 };
@@ -1038,9 +1136,6 @@ export const emitTyping = (room: IRoom, typing = true, args: { tmid?: string } =
 };
 
 export function e2eResetOwnKey(): Promise<{ success?: boolean }> {
-	// {} when TOTP is enabled
-	unsubscribeRooms();
-
 	// RC 3.6.0
 	return sdk.post('users.resetE2EKey');
 }
@@ -1087,29 +1182,6 @@ export const editMediaMessage = async (
 	return response.json();
 };
 
-export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
-	const result = await Encryption.encryptMessage(message as IMessage);
-	if (!result) {
-		throw new Error('Failed to encrypt message');
-	}
-
-	if (result.content) {
-		// RC 0.49.0
-		return sdk.post('chat.update', {
-			roomId: message.rid,
-			msgId: message.id,
-			content: result.content
-		});
-	}
-
-	// RC 0.49.0
-	return sdk.post('chat.update', {
-		roomId: message.rid,
-		msgId: message.id,
-		text: message.msg || ''
-	});
-};
-
 let lastToken = '';
 let lastVoipToken = '';
 
@@ -1137,7 +1209,7 @@ export const registerPushToken = async (): Promise<void> => {
 	// On a fresh-install cold-start, FCM/APNS and iOS PushKit can deliver tokens before that
 	// happens; bail without recording lastToken/lastVoipToken so registerPushTokenFork retries
 	// after login (and a later VoipPushTokenRegistered emission can still re-fire this path).
-	if (!sdk.current) {
+	if (!sdk.isInitialized) {
 		return;
 	}
 
@@ -1173,15 +1245,18 @@ export const registerPushToken = async (): Promise<void> => {
 };
 
 // TODO: add voip token removal
-export const removePushToken = (): Promise<boolean | void> => {
+export const removePushToken = async (): Promise<void> => {
 	const token = getDeviceToken();
-	if (token) {
-		lastToken = '';
-		lastVoipToken = '';
-		// RC 0.60.0
-		return sdk.current.del('push.token', { token });
+	if (!token) {
+		return;
 	}
-	return Promise.resolve();
+	lastToken = '';
+	lastVoipToken = '';
+	if (!sdk.isInitialized) {
+		return;
+	}
+	// RC 0.60.0
+	await sdk.del('push.token', { token });
 };
 
 // RC 6.6.0
@@ -1291,8 +1366,10 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 	return sdk.methodCall('getUserRoles');
 };
 
-export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
-	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
+export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string, signal?: AbortSignal) =>
+	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`, {
+		signal
+	});
 
 export const mediaCallsStateSignals = async (contractId: string): Promise<{ signals: ServerMediaSignal[]; success: boolean }> => {
 	try {

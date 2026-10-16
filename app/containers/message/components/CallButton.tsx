@@ -3,9 +3,9 @@ import { Text, View } from 'react-native';
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
 import { BUTTON_HIT_SLOP } from '../utils';
 import styles from '../styles';
-import I18n from '../../../i18n';
-import { CustomIcon } from '../../CustomIcon';
-import { useTheme } from '../../../theme';
+import I18n from '~/i18n';
+import { CustomIcon } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
 import { useHandleEnterCall } from '../stores/MessageRoomStore';
 
 const CallButton = () => {

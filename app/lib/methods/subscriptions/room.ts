@@ -2,29 +2,29 @@ import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
+import { type ISubscription } from '@rocket.chat/sdk/interfaces';
 
 import log from '../helpers/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
-import database from '../../database';
-import { getMessageById } from '../../database/services/Message';
-import { getThreadById } from '../../database/services/Thread';
-import { getThreadMessageById } from '../../database/services/ThreadMessage';
-import { store as reduxStore } from '../../store/auxStore';
-import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actions/usersTyping';
+import database from '~/lib/database';
+import { getMessageById } from '~/lib/database/services/Message';
+import { getThreadById } from '~/lib/database/services/Thread';
+import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
+import { store as reduxStore } from '~/lib/store/auxStore';
+import { addUserTyping, clearUserTyping, removeUserTyping } from '~/actions/usersTyping';
 import { debounce } from '../helpers';
-import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
-import { Encryption } from '../../encryption';
+import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
+import { Encryption } from '~/lib/encryption';
 import {
 	type IMessage,
 	type TMessageModel,
-	type TSubscriptionModel,
 	type TThreadMessageModel,
 	type TThreadModel,
 	type IDeleteMessageBulkParams
-} from '../../../definitions';
-import { type IDDPMessage } from '../../../definitions/IDDPMessage';
-import sdk from '../../services/sdk';
+} from '~/definitions';
+import { type IDDPMessage } from '~/definitions/IDDPMessage';
+import sdk from '~/lib/services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import markMessagesRead from '../helpers/markMessagesRead';
@@ -32,7 +32,7 @@ import markMessagesRead from '../helpers/markMessagesRead';
 export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
-	private promises?: Promise<TSubscriptionModel[]>;
+	private promises?: Promise<(ISubscription | undefined)[]>;
 	private connectedListener?: Promise<any>;
 	private disconnectedListener?: Promise<any>;
 	private notifyRoomListener?: Promise<any>;
@@ -68,7 +68,7 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+				subscriptions.forEach(sub => sub?.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 			} catch (e) {
 				// do nothing
 			}
@@ -282,7 +282,12 @@ export default class RoomSubscription {
 					batch.push(
 						messageRecord.prepareUpdate(
 							protectedFunction((m: TMessageModel) => {
+								const { urls } = m;
 								Object.assign(m, message);
+
+								if (!message.urls?.length && urls?.length) {
+									m.urls = urls;
+								}
 							})
 						)
 					);
@@ -309,7 +314,12 @@ export default class RoomSubscription {
 						batch.push(
 							threadRecord.prepareUpdate(
 								protectedFunction((t: TThreadModel) => {
+									const { urls } = t;
 									Object.assign(t, message);
+
+									if (!message.urls?.length && urls?.length) {
+										t.urls = urls;
+									}
 								})
 							)
 						);
@@ -337,7 +347,12 @@ export default class RoomSubscription {
 						batch.push(
 							threadMessageRecord.prepareUpdate(
 								protectedFunction((tm: TThreadMessageModel) => {
+									const { urls } = tm;
 									Object.assign(tm, message);
+
+									if (!message.urls?.length && urls?.length) {
+										tm.urls = urls;
+									}
 									if (message.tmid) {
 										tm.rid = message.tmid;
 										delete tm.tmid;

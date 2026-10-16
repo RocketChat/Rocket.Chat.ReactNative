@@ -4,8 +4,8 @@ import { Header, HeaderBackground, SafeAreaProviderCompat } from '@react-navigat
 import { NavigationContainer } from '@react-navigation/native';
 
 import * as HeaderButton from '.';
-import { type TColors, ThemeContext, type TSupportedThemes } from '../../../../theme';
-import { colors } from '../../../../lib/constants/colors';
+import { type TColors, ThemeContext, type TSupportedThemes } from '~/theme';
+import { colors } from '~/lib/constants/colors';
 
 interface IHeader {
 	left?: () => ReactElement | null;

@@ -1,9 +1,9 @@
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { View, StyleSheet, useWindowDimensions } from 'react-native';
 
-import I18n from '../../../../i18n';
-import { CustomIcon, type TIconsName } from '../../../CustomIcon';
-import { useMessageComposerApi } from '../../context';
+import I18n from '~/i18n';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { useMessageComposerApi } from '~/containers/MessageComposer/context';
 
 export interface IBaseButton {
 	testID: string;

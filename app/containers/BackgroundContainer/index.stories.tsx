@@ -1,7 +1,7 @@
-import { ThemeContext, type TSupportedThemes } from '../../theme';
-import { longText } from '../../../.rnstorybook/utils';
+import { ThemeContext, type TSupportedThemes } from '~/theme';
+import { longText } from '~/.rnstorybook/utils';
 import BackgroundContainer, { type IBackgroundContainer } from '.';
-import { themes } from '../../lib/constants/colors';
+import { themes } from '~/lib/constants/colors';
 
 export default {
 	title: 'BackgroundContainer'

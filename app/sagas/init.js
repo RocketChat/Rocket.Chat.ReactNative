@@ -4,74 +4,92 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import UserPreferences from '../lib/methods/userPreferences';
+import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
+import { isLoggedInServer } from '../lib/methods/loggedInServer';
 import { selectServerRequest, serverRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import log from '../lib/methods/helpers/log';
-import database from '../lib/database';
-import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
+import { runBiometricTrustMigration } from '../lib/biometricTrustStore/migration';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
 
+// eslint-disable-next-line no-restricted-imports
 import appConfig from '../../app.json';
+
+const PUSH_NOTIFICATION_KEY = 'pushNotification';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
 };
 
-const restore = function* restore() {
-	try {
-		// const server = UserPreferences.getString(CURRENT_SERVER);
-		// let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+const restoreServer = async () => {
+	const { server } = appConfig;
+	const restoredServer = isLoggedInServer(server) ? await getServerById(server) : null;
 
-		// if (!server) {
-		// 	yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		// } else if (!userId) {
-		// 	const serversDB = database.servers;
-		// 	const serversCollection = serversDB.get('servers');
-		// 	const servers = yield serversCollection.query().fetch();
-
-		// 	// Check if there're other logged in servers and picks first one
-		// 	if (servers.length > 0) {
-		// 		for (let i = 0; i < servers.length; i += 1) {
-		// 			const newServer = servers[i].id;
-		// 			userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-		// 			if (userId) {
-		// 				return yield put(selectServerRequest(newServer));
-		// 			}
-		// 		}
-		// 	}
-		const { server } = appConfig;
-		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
-
-		if (!userId) {
-			UserPreferences.removeItem(TOKEN_KEY);
-			UserPreferences.removeItem(CURRENT_SERVER);
-			yield put(serverRequest(appConfig.server));
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		} else {
-			yield localAuthenticate(server);
-			const serverRecord = yield getServerById(server);
-			if (!serverRecord) {
-				return;
+	if (restoredServer) {
+		try {
+			await localAuthenticate(restoredServer.id);
+		} catch (e) {
+			// A superseded unlock still has a newer modal gating the screen, so keep booting.
+			if (!(e instanceof UserCanceledError)) {
+				throw e;
 			}
-			yield put(selectServerRequest(server, serverRecord.version));
+		}
+	}
+
+	return restoredServer;
+};
+
+const getServerToRestore = function* getServerToRestore() {
+	try {
+		yield call(migrateTokenKeysToServerScoped);
+		return (yield call(restoreServer)) || null;
+	} catch (e) {
+		log(e);
+		return null;
+	}
+};
+
+const deliverPendingPushNotification = function* deliverPendingPushNotification(restoredServer) {
+	try {
+		const pushNotification = yield call(AsyncStorage.getItem, PUSH_NOTIFICATION_KEY);
+		if (!pushNotification) {
+			return;
 		}
 
-		yield put(appReady({}));
-		const pushNotification = yield call(AsyncStorage.getItem, 'pushNotification');
-		if (pushNotification) {
-			const pushNotification = yield call(AsyncStorage.removeItem, 'pushNotification');
-			yield call(deepLinkingClickCallPush, JSON.parse(pushNotification));
+		yield call(AsyncStorage.removeItem, PUSH_NOTIFICATION_KEY);
+
+		if (restoredServer) {
+			yield put(deepLinkingClickCallPush(JSON.parse(pushNotification)));
 		}
 	} catch (e) {
 		log(e);
+	}
+};
+
+const restore = function* restore() {
+	yield call(runBiometricTrustMigration);
+
+	const restoredServer = yield* getServerToRestore();
+
+	if (restoredServer) {
+		yield put(selectServerRequest(restoredServer.id, restoredServer.version));
+	} else {
+		UserPreferences.removeItem(TOKEN_KEY);
+		UserPreferences.removeItem(CURRENT_SERVER);
+		yield put(serverRequest(appConfig.server));
 		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 	}
+
+	yield put(appReady({}));
+
+	yield* deliverPendingPushNotification(restoredServer);
 };
 
 const start = function* start() {

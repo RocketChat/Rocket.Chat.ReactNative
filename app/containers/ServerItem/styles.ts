@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 
 export const ROW_HEIGHT = 68;
 export const ACTION_WIDTH = 80;

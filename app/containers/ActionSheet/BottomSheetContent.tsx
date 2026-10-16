@@ -2,15 +2,16 @@ import { FlatList, Text, View, type ViewProps } from 'react-native';
 import { memo, type ReactElement } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import I18n from '../../i18n';
-import { useTheme } from '../../theme';
-import { isAndroid } from '../../lib/methods/helpers';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
+import { isAndroid } from '~/lib/methods/helpers';
 import { type IActionSheetItem, Item } from './Item';
 import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import * as List from '../List';
 import Touch from '../Touch';
 import { useActionSheetItemHeight } from './useActionSheetItemHeight';
+import { getSheetContentPaddingBottom } from './useActionSheetDetents';
 
 interface IBottomSheetContentProps {
 	hasCancel?: boolean;
@@ -40,6 +41,7 @@ const BottomSheetContent = memo(
 		const { bottom } = useSafeAreaInsets();
 		const height = useActionSheetItemHeight();
 		const minHeightStyle = isAndroid || !contentMinHeight ? undefined : { minHeight: contentMinHeight };
+		const paddingBottom = getSheetContentPaddingBottom({ bottom, fullContainer, hugContent, scrollEnabled });
 
 		const renderFooter = () =>
 			hasCancel ? (
@@ -78,7 +80,7 @@ const BottomSheetContent = memo(
 		return (
 			<View
 				testID='action-sheet'
-				style={fullContainer && !(hugContent && isAndroid) ? [styles.fullContainer, minHeightStyle] : undefined}
+				style={[fullContainer && !hugContent ? styles.fullContainer : undefined, minHeightStyle, { paddingBottom }]}
 				onLayout={onLayout}>
 				{children}
 			</View>

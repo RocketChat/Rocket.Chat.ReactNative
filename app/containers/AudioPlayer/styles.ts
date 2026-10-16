@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 import { THUMB_SEEK_SIZE } from './constants';
 
 const styles = StyleSheet.create({

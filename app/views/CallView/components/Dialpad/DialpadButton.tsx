@@ -2,8 +2,8 @@ import { Pressable, Text, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import type { ReactElement } from 'react';
 
-import { useCallStore } from '../../../../lib/services/voip/useCallStore';
-import { useTheme } from '../../../../theme';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import { useTheme } from '~/theme';
 import { useDialpadAudio } from './DialpadContext';
 import { styles } from './styles';
 

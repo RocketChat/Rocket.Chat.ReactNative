@@ -1,6 +1,6 @@
-import { mockedStore } from '../../../reducers/mockedStore';
-import { initStore } from '../../store/auxStore';
-import { setUser } from '../../../actions/login';
+import { mockedStore } from '~/reducers/mockedStore';
+import { initStore } from '~/lib/store/auxStore';
+import { setUser } from '~/actions/login';
 import { isSelfUserId } from './isSelfUserId';
 
 describe('isSelfUserId', () => {

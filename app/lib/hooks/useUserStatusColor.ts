@@ -1,8 +1,8 @@
 import { capitalize } from 'lodash';
 
-import { useTheme } from '../../theme';
-import type { TColors } from '../../theme';
-import type { TUserStatus } from '../../definitions';
+import { useTheme } from '~/theme';
+import type { TColors } from '~/theme';
+import type { TUserStatus } from '~/definitions';
 
 export const useUserStatusColor = (status: TUserStatus): keyof TColors => {
 	const { colors } = useTheme();

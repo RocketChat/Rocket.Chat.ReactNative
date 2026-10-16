@@ -1,8 +1,8 @@
 import { Text, View } from 'react-native';
 
-import Avatar from '../../containers/Avatar';
+import Avatar from '~/containers/Avatar';
 import styles from './styles';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 
 const UserInfo = ({ username, name }: { username: string; name: string }) => {
 	const { colors } = useTheme();

@@ -3,11 +3,11 @@ import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import { RoomInfoButtons } from './RoomInfoButtons';
-import { mockedStore } from '../../../reducers/mockedStore';
+import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './RoomInfoButtons.stories';
-import { generateSnapshots } from '../../../../.rnstorybook/generateSnapshots';
-import type { ISubscription } from '../../../definitions';
-import { SubscriptionType } from '../../../definitions';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
+import type { ISubscription } from '~/definitions';
+import { SubscriptionType } from '~/definitions';
 
 const mockShowInitCallActionSheet = jest.fn();
 const mockShowActionSheet = jest.fn();
@@ -17,11 +17,11 @@ const noopOpenNewMediaCall = () => undefined;
 const mockUseVideoConf = jest.fn();
 const mockUseNewMediaCall = jest.fn();
 
-jest.mock('../../../lib/hooks/useVideoConf', () => ({
+jest.mock('~/lib/hooks/useVideoConf', () => ({
 	useVideoConf: (...args: unknown[]) => mockUseVideoConf(...args)
 }));
 
-jest.mock('../../../lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall', () => ({
 	useNewMediaCall: (...args: unknown[]) => mockUseNewMediaCall(...args)
 }));
 
@@ -29,8 +29,8 @@ jest.mock('../hooks', () => ({
 	useE2EEWarning: () => false
 }));
 
-jest.mock('../../../containers/ActionSheet', () => ({
-	...jest.requireActual('../../../containers/ActionSheet'),
+jest.mock('~/containers/ActionSheet', () => ({
+	...jest.requireActual('~/containers/ActionSheet'),
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet })
 }));
 

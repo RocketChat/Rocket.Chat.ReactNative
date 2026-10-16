@@ -1,5 +1,5 @@
 import { usersAutoComplete } from '../restApi';
-import { store as reduxStore } from '../../store/auxStore';
+import { store as reduxStore } from '~/lib/store/auxStore';
 
 export type TPeerItem =
 	| { type: 'user'; value: string; label: string; username?: string; callerId?: string }

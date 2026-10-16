@@ -13,7 +13,7 @@ import type {
 } from '@rocket.chat/ui-kit';
 import { type ReactElement } from 'react';
 
-import { type TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '~/theme';
 
 export const ActionTypes = {
 	ACTION: 'blockAction',

@@ -5,10 +5,10 @@ import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } fr
 import { Image, type ImageStyle } from 'expo-image';
 
 import Touch from '../Touch';
-import { useUserPreferences } from '../../lib/methods/userPreferences';
-import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants/keys';
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
+import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '~/lib/constants/keys';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
 
 interface ImageViewerProps {
 	style?: StyleProp<ImageStyle>;

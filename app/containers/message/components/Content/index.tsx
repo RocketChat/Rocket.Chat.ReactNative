@@ -3,8 +3,14 @@ import IgnoredContent from './IgnoredContent';
 import InfoContent from './InfoContent';
 import MarkdownContent from './MarkdownContent';
 import PreviewContent from './PreviewContent';
-import { useIsEncrypted, useIsInfoMessage, useMessageIgnored, useMessageText, useThreadData } from '../../stores/MessageStore';
-import { useIsThreadRoom } from '../../stores/MessageRoomStore';
+import {
+	useIsEncrypted,
+	useIsInfoMessage,
+	useMessageIgnored,
+	useMessageText,
+	useThreadData
+} from '~/containers/message/stores/MessageStore';
+import { useIsThreadRoom } from '~/containers/message/stores/MessageRoomStore';
 
 // isInfo forces InfoContent regardless of useIsInfoMessage — jitsi_call_started is deliberately
 // excluded there (it isn't a compact/non-touchable info row) but still needs the info-style body.

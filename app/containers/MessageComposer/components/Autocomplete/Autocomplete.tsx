@@ -3,12 +3,13 @@ import { FlatList, type ViewStyle } from 'react-native';
 import Animated, { type AnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAutocompleteParams } from '../../context';
+import { useAutocompleteParams } from '~/containers/MessageComposer/context';
 import { AutocompleteItem } from './AutocompleteItem';
-import { useAutocomplete } from '../../hooks';
-import { type IAutocompleteItemProps } from '../../interfaces';
+import { useAutocomplete } from '~/containers/MessageComposer/hooks';
+import { type IAutocompleteItemProps } from '~/containers/MessageComposer/interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { useComposerRid, useUpdateAutocompleteVisible } from '~/containers/MessageComposer/ComposerStore';
+import { useAutocompleteA11yAnnounce } from './useAutocompleteA11yAnnounce';
 import { useStyle } from './styles';
 
 export const Autocomplete = ({
@@ -20,7 +21,10 @@ export const Autocomplete = ({
 	style: AnimatedStyle<ViewStyle>;
 	accessibilityFocusOnInput: () => void;
 }): ReactElement | null => {
-	const { rid, updateAutocompleteVisible } = useRoomContext();
+	useAutocompleteA11yAnnounce();
+
+	const rid = useComposerRid();
+	const updateAutocompleteVisible = useUpdateAutocompleteVisible();
 	const { text, type, params } = useAutocompleteParams();
 	const items = useAutocomplete({
 		rid,

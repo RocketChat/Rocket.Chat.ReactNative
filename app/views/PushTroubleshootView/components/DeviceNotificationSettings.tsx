@@ -1,11 +1,11 @@
 import { Linking } from 'react-native';
 import { type ReactElement } from 'react';
 
-import * as List from '../../../containers/List';
-import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { isIOS, showErrorAlert } from '../../../lib/methods/helpers';
-import { useTheme } from '../../../theme';
+import * as List from '~/containers/List';
+import i18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { isIOS, showErrorAlert } from '~/lib/methods/helpers';
+import { useTheme } from '~/theme';
 import CustomListSection from './CustomListSection';
 
 export default function DeviceNotificationSettings(): ReactElement {

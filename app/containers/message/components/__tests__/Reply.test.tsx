@@ -2,16 +2,18 @@ import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import Reply from '../Attachments/Reply';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
-import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
-import openLink from '../../../../lib/methods/helpers/openLink';
-import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import { setUser } from '~/actions/login';
+import { selectServerSuccess } from '~/actions/server';
+import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
+import { fileDownloadAndPreview } from '~/lib/methods/helpers/fileDownload';
+import openLink from '~/lib/methods/helpers/openLink';
+import { store } from '~/lib/store/auxStore';
 
-jest.mock('../../../markdown', () => {
+jest.mock('~/containers/markdown', () => {
 	const React = require('react');
 	const { Text } = require('react-native');
 	return {
@@ -21,29 +23,29 @@ jest.mock('../../../markdown', () => {
 	};
 });
 
-jest.mock('../../../../lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers/fileDownload', () => ({
 	fileDownloadAndPreview: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../../../../lib/methods/helpers/openLink', () => ({
+jest.mock('~/lib/methods/helpers/openLink', () => ({
 	__esModule: true,
 	default: jest.fn()
 }));
 
-jest.mock('../../../../lib/methods/helpers/formatAttachmentUrl', () => ({
-	formatAttachmentUrl: jest.fn((url: string) => `formatted:${url}`)
+jest.mock('~/lib/store/auxStore', () => ({
+	store: { getState: jest.fn() }
 }));
 
 jest.mock('expo-image', () => {
 	const { View } = require('react-native');
-	const Image = () => <View testID='reply-url-image' />;
+	const Image = ({ source }: { source?: { uri?: string } }) => <View testID='reply-url-image' source={source} />;
 	Image.loadAsync = jest.fn();
 	return { Image };
 });
 
 const mockFileDownloadAndPreview = fileDownloadAndPreview as jest.Mock;
 const mockOpenLink = openLink as jest.Mock;
-const mockFormatAttachmentUrl = formatAttachmentUrl as jest.Mock;
+const mockGetState = store.getState as jest.Mock;
 
 const buildItem = (isEncrypted?: boolean) =>
 	({
@@ -54,18 +56,14 @@ const buildItem = (isEncrypted?: boolean) =>
 
 const renderReply = ({
 	attachment,
-	msg,
 	isEncrypted,
 	ctx = {}
 }: {
 	attachment?: IAttachment;
-	msg?: string;
 	isEncrypted?: boolean;
 	ctx?: Partial<MessageRoomState>;
 }) => {
 	const contextValue: Partial<MessageRoomState> = {
-		user: { id: 'user-1', username: 'john', token: 'token' },
-		baseUrl: 'https://open.rocket.chat',
 		timeFormat: 'HH:mm',
 		...ctx
 	};
@@ -73,17 +71,20 @@ const renderReply = ({
 		<Provider store={mockedStore}>
 			<MessageRoomProvider {...contextValue}>
 				<MessageProvider item={buildItem(isEncrypted)}>
-					<Reply attachment={attachment as IAttachment} msg={msg} />
+					<Reply attachment={attachment as IAttachment} />
 				</MessageProvider>
 			</MessageRoomProvider>
 		</Provider>
 	);
 };
 
+mockedStore.dispatch(setUser({ id: 'user-1', username: 'john', token: 'token' }));
+mockedStore.dispatch(selectServerSuccess({ server: 'https://open.rocket.chat', version: '', name: '' }));
+
 describe('Reply', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockFormatAttachmentUrl.mockImplementation((url: string) => `formatted:${url}`);
+		mockGetState.mockReturnValue({ settings: { FileUpload_ProtectFiles: true } });
 	});
 
 	describe('null gate', () => {
@@ -117,8 +118,11 @@ describe('Reply', () => {
 			fireEvent.press(getByTestId('reply-Alice-doc'));
 
 			await waitFor(() => expect(mockFileDownloadAndPreview).toHaveBeenCalled());
-			expect(mockFormatAttachmentUrl).toHaveBeenCalledWith('/file-upload/doc', 'user-1', 'token', 'https://open.rocket.chat');
-			expect(mockFileDownloadAndPreview).toHaveBeenCalledWith('formatted:/file-upload/doc', attachment, 'msg-1');
+			expect(mockFileDownloadAndPreview).toHaveBeenCalledWith(
+				'https://open.rocket.chat/file-upload/doc?rc_token=token&rc_uid=user-1',
+				attachment,
+				'msg-1'
+			);
 			expect(mockOpenLink).not.toHaveBeenCalled();
 		});
 
@@ -189,6 +193,25 @@ describe('Reply', () => {
 			const { queryByTestId } = renderReply({ attachment: { author_name: 'Alice', text: 'Hi' } });
 			expect(queryByTestId('reply-url-image')).toBeNull();
 		});
+
+		it('adds credentials to a relative thumb_url on the workspace', () => {
+			const { getByTestId } = renderReply({
+				attachment: { thumb_url: 'file-upload/1/thumb.png', author_name: 'Alice', text: 'Hi' }
+			});
+			const uri = getByTestId('reply-url-image').props.source.uri as string;
+			expect(uri.startsWith('https://open.rocket.chat/file-upload/1/thumb.png')).toBe(true);
+			expect(uri).toContain('rc_token=token');
+			expect(uri).toContain('rc_uid=user-1');
+		});
+
+		it('requests an absolute third-party thumb_url without credentials', () => {
+			const { getByTestId } = renderReply({
+				attachment: { thumb_url: 'https://evil.example/thumb.png', author_name: 'Alice', text: 'Hi' }
+			});
+			const uri = getByTestId('reply-url-image').props.source.uri as string;
+			expect(uri).toBe('https://evil.example/thumb.png');
+			expect(uri).not.toContain('rc_token');
+		});
 	});
 
 	describe('Fields', () => {
@@ -202,5 +225,9 @@ describe('Reply', () => {
 			});
 			expect(getByText('Status')).toBeTruthy();
 		});
+	});
+	it('renders the attachment description as the message', () => {
+		const { getByTestId } = renderReply({ attachment: { author_name: 'Alice', description: 'Look at this' } });
+		expect(getByTestId('reply-markdown')).toHaveTextContent('Look at this');
 	});
 });

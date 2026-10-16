@@ -1,29 +1,30 @@
 import RoomSubscription from './room';
-import sdk from '../../services/sdk';
+import sdk from '~/lib/services/sdk';
 import updateMessages from '../updateMessages';
-import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { loadMessagesForRoom } from '../loadMessagesForRoom';
 
-jest.mock('../../services/sdk', () => ({
+jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
 		get: jest.fn()
 	}
 }));
 
-jest.mock('../../database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn(), write: jest.fn() } }
 }));
 
-jest.mock('../../database/services/Subscription', () => ({
+jest.mock('~/lib/database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn()
 }));
 
-jest.mock('../../database/services/Message', () => ({
+jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: jest.fn(() => Promise.resolve(null))
 }));
 
-jest.mock('../../store/auxStore', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => ({ server: { version: '7.4.0' }, settings: {}, login: { user: {} }, room: {} })),
 		dispatch: jest.fn()
@@ -32,11 +33,13 @@ jest.mock('../../store/auxStore', () => ({
 
 jest.mock('../updateMessages', () => jest.fn());
 jest.mock('../readMessages', () => ({ readMessages: jest.fn() }));
-jest.mock('../../encryption', () => ({ Encryption: { decryptMessage: jest.fn(m => m) } }));
+jest.mock('../loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn() }));
+jest.mock('~/lib/encryption', () => ({ Encryption: { decryptMessage: jest.fn(m => m) } }));
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 const mockedUpdateMessages = updateMessages as jest.MockedFunction<typeof updateMessages>;
 const mockedGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.MockedFunction<typeof getSubscriptionByRoomId>;
+const mockedLoadMessagesForRoom = loadMessagesForRoom as jest.MockedFunction<typeof loadMessagesForRoom>;
 
 const RID = 'ROOM_ID';
 
@@ -58,6 +61,7 @@ describe('RoomSubscription resume sync', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedUpdateMessages.mockResolvedValue(0);
+		mockedLoadMessagesForRoom.mockResolvedValue(undefined as never);
 		mockedSdkGet.mockResolvedValue(syncMessagesResponse([missedMessage]) as never);
 	});
 
@@ -79,11 +83,12 @@ describe('RoomSubscription resume sync', () => {
 		);
 	});
 
-	it('fetches nothing for a room without a sync cursor (null lastOpen): RoomView owns the initial load', async () => {
+	it('loads the room history for a room without a sync cursor, seeding one', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'c' } as never);
 
 		await new RoomSubscription(RID).handleConnection();
 
+		expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'c' });
 		expect(mockedSdkGet).not.toHaveBeenCalled();
 	});
 

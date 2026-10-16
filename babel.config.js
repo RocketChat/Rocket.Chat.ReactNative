@@ -1,9 +1,12 @@
+const getAliasConfig = require('./config/import-aliases');
+
 module.exports = {
 	presets: ['babel-preset-expo'],
 	plugins: [
+		['module-resolver', { alias: getAliasConfig().babel }],
 		['@babel/plugin-proposal-decorators', { legacy: true }],
 		'@babel/plugin-transform-named-capturing-groups-regex',
-		['module:react-native-dotenv'],
+		['transform-inline-environment-variables', { include: ['RUNNING_E2E_TESTS', 'USE_STORYBOOK'] }],
 		'react-native-worklets/plugin'
 	],
 	overrides: [
