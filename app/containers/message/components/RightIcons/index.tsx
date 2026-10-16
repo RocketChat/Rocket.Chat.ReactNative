@@ -10,7 +10,8 @@ import Translated from './Translated';
 
 const styles = StyleSheet.create({
 	actionIcons: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		alignItems: 'center'
 	}
 });
 

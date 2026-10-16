@@ -5,6 +5,7 @@ import Inline from '../Inline';
 import styles from '~/containers/markdown/styles';
 import { useTheme } from '~/theme';
 import { CustomIcon } from '~/containers/CustomIcon';
+import TextLineCenter from '~/containers/TextLineCenter';
 
 interface ITasksProps {
 	value: TasksProps['value'];
@@ -16,13 +17,13 @@ const TaskList = ({ value = [] }: ITasksProps) => {
 		<View>
 			{value.map(item => (
 				<View style={styles.row}>
-					<Text style={[styles.text, { color: colors.fontDefault }]}>
+					<TextLineCenter lineHeight={styles.text.lineHeight}>
 						<CustomIcon
 							testID={item.status ? 'task-list-checked' : 'task-list-unchecked'}
 							name={item.status ? 'checkbox-checked' : 'checkbox-unchecked'}
 							size={24}
 						/>
-					</Text>
+					</TextLineCenter>
 					<Text style={[styles.inline, { color: colors.fontDefault }]}>
 						<Inline value={item.value} />
 					</Text>

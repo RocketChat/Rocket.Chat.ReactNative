@@ -391,32 +391,49 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       testID="new-message-view-item-john.doe-call"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#2F343D",
-              "fontSize": 20,
+              "bottom": 0,
+              "height": 20,
+              "width": 20,
             },
-            [
-              {
-                "lineHeight": 20,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 20,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 20,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -638,32 +655,49 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       testID="new-message-view-item-long.name-call"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#2F343D",
-              "fontSize": 20,
+              "bottom": 0,
+              "height": 20,
+              "width": 20,
             },
-            [
-              {
-                "lineHeight": 20,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 20,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 20,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -885,32 +919,49 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       testID="new-message-view-item-john.doe-call"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#2F343D",
-              "fontSize": 20,
+              "bottom": 0,
+              "height": 20,
+              "width": 20,
             },
-            [
-              {
-                "lineHeight": 20,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 20,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 20,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
   </View>
 </View>

@@ -59,32 +59,49 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       }
       testID="room-info-view-message"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -143,32 +160,49 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       }
       testID="room-info-view-phone"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -227,32 +261,49 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       }
       testID="room-info-view-video"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -311,32 +362,49 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       }
       testID="room-info-view-kebab"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -416,32 +484,49 @@ exports[`Story Snapshots: ItsMe should match snapshot 1`] = `
       }
       testID="room-info-view-message"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -500,32 +585,49 @@ exports[`Story Snapshots: ItsMe should match snapshot 1`] = `
       }
       testID="room-info-view-video"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -605,32 +707,49 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
       }
       testID="room-info-view-message"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -689,32 +808,49 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
       }
       testID="room-info-view-phone"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -773,32 +909,49 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
       }
       testID="room-info-view-video"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -857,32 +1010,49 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
       }
       testID="room-info-view-kebab"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -962,32 +1132,49 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
       }
       testID="room-info-view-message"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -1046,32 +1233,49 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
       }
       testID="room-info-view-phone"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -1130,32 +1334,49 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
       }
       testID="room-info-view-video"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -1214,32 +1435,49 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
       }
       testID="room-info-view-ignore"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -1319,32 +1557,49 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
       }
       testID="room-info-view-message"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -1403,32 +1658,49 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
       }
       testID="room-info-view-phone"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -1487,32 +1759,49 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
       }
       testID="room-info-view-video"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -1571,32 +1860,49 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
       }
       testID="room-info-view-kebab"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -1676,32 +1982,49 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
       }
       testID="room-info-view-message"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -1760,32 +2083,49 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
       }
       testID="room-info-view-phone"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -1844,32 +2184,49 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
       }
       testID="room-info-view-ignore"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#6C727A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={
@@ -1928,32 +2285,49 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
       }
       testID="room-info-view-warning"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        accessibilityLabel=""
+        accessibilityRole="image"
+        accessible={false}
         style={
           [
             {
-              "color": "#EC0D2A",
-              "fontSize": 30,
+              "bottom": 0,
+              "height": 30,
+              "width": 30,
             },
-            [
-              {
-                "lineHeight": 30,
-              },
-              undefined,
-            ],
             {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
+              "height": 30,
             },
-            {},
           ]
         }
       >
-        
-      </Text>
+        <Text
+          accessible={false}
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "bottom": 0,
+                "fontFamily": "custom-24242538",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "includeFontPadding": false,
+                "position": "absolute",
+              },
+              {
+                "fontSize": 30,
+              },
+              {
+                "color": "#EC0D2A",
+              },
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
       <Text
         numberOfLines={1}
         style={

@@ -2,395 +2,534 @@
 
 exports[`Story Snapshots: All should match snapshot 1`] = `
 [
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#6C727A",
-          "fontSize": 30,
+          "bottom": 0,
+          "height": 30,
+          "width": 30,
         },
-        [
-          {
-            "lineHeight": 30,
-          },
-          [
-            {
-              "height": 30,
-              "textAlign": "center",
-              "textAlignVertical": "center",
-              "width": 30,
-            },
-            [
-              {
-                "marginRight": 4,
-              },
-              undefined,
-            ],
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "height": 30,
+          "marginRight": 4,
         },
-        {},
       ]
     }
   >
-    
-  </Text>,
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 30,
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>,
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#158D65",
-          "fontSize": 30,
+          "bottom": 0,
+          "height": 30,
+          "width": 30,
         },
-        [
-          {
-            "lineHeight": 30,
-          },
-          [
-            {
-              "height": 30,
-              "textAlign": "center",
-              "textAlignVertical": "center",
-              "width": 30,
-            },
-            [
-              {
-                "marginRight": 4,
-              },
-              undefined,
-            ],
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "height": 30,
+          "marginRight": 4,
         },
-        {},
       ]
     }
   >
-    
-  </Text>,
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 30,
+          },
+          {
+            "color": "#158D65",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>,
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#1F2329",
-          "fontSize": 30,
+          "bottom": 0,
+          "height": 30,
+          "width": 30,
         },
-        [
-          {
-            "lineHeight": 30,
-          },
-          [
-            {
-              "marginRight": 4,
-            },
-            undefined,
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "height": 30,
+          "marginRight": 4,
         },
-        {},
       ]
     }
   >
-    
-  </Text>,
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 30,
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>,
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#1F2329",
-          "fontSize": 30,
+          "bottom": 0,
+          "height": 30,
+          "width": 30,
         },
-        [
-          {
-            "lineHeight": 30,
-          },
-          [
-            {
-              "marginRight": 4,
-            },
-            undefined,
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "height": 30,
+          "marginRight": 4,
         },
-        {},
       ]
     }
   >
-    
-  </Text>,
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 30,
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>,
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#1F2329",
-          "fontSize": 30,
+          "bottom": 0,
+          "height": 30,
+          "width": 30.9375,
         },
-        [
-          {
-            "lineHeight": 30,
-          },
-          [
-            {
-              "marginRight": 4,
-            },
-            undefined,
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "height": 30,
+          "marginRight": 4,
         },
-        {},
       ]
     }
   >
-    
-  </Text>,
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 30,
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>,
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#1F2329",
-          "fontSize": 30,
+          "bottom": 0,
+          "height": 30,
+          "width": 30,
         },
-        [
-          {
-            "lineHeight": 30,
-          },
-          [
-            {
-              "marginRight": 4,
-            },
-            undefined,
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "height": 30,
+          "marginRight": 4,
         },
-        {},
       ]
     }
   >
-    
-  </Text>,
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 30,
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>,
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#1F2329",
-          "fontSize": 30,
+          "bottom": 0,
+          "height": 30,
+          "width": 30,
         },
-        [
-          {
-            "lineHeight": 30,
-          },
-          [
-            {
-              "marginRight": 4,
-            },
-            undefined,
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "height": 30,
+          "marginRight": 4,
         },
-        {},
       ]
     }
   >
-    
-  </Text>,
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 30,
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>,
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#1F2329",
-          "fontSize": 30,
+          "bottom": 0,
+          "height": 30,
+          "width": 30,
         },
-        [
-          {
-            "lineHeight": 30,
-          },
-          [
-            {
-              "marginRight": 4,
-            },
-            undefined,
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "height": 30,
+          "marginRight": 4,
         },
-        {},
       ]
     }
   >
-    
-  </Text>,
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 30,
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>,
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#AC892F",
-          "fontSize": 30,
+          "bottom": 0,
+          "height": 30,
+          "width": 30,
         },
-        [
-          {
-            "lineHeight": 30,
-          },
-          [
-            {
-              "marginRight": 4,
-            },
-            undefined,
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "height": 30,
+          "marginRight": 4,
         },
-        {},
       ]
     }
   >
-    
-  </Text>,
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 30,
+          },
+          {
+            "color": "#AC892F",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>,
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#1F2329",
-          "fontSize": 30,
+          "bottom": 0,
+          "height": 30,
+          "width": 30,
         },
-        [
-          {
-            "lineHeight": 30,
-          },
-          [
-            {
-              "marginRight": 4,
-            },
-            undefined,
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "height": 30,
+          "marginRight": 4,
         },
-        {},
       ]
     }
   >
-    
-  </Text>,
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 30,
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>,
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#1F2329",
-          "fontSize": 30,
+          "bottom": 0,
+          "height": 30,
+          "width": 30,
         },
-        [
-          {
-            "lineHeight": 30,
-          },
-          [
-            {
-              "marginRight": 4,
-            },
-            undefined,
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "height": 30,
+          "marginRight": 4,
         },
-        {},
       ]
     }
   >
-    
-  </Text>,
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 30,
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>,
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#1F2329",
-          "fontSize": 30,
+          "bottom": 0,
+          "height": 30,
+          "width": 30.9375,
         },
-        [
-          {
-            "lineHeight": 30,
-          },
-          [
-            {
-              "marginRight": 4,
-            },
-            {
-              "margin": 10,
-            },
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "height": 30,
+          "margin": 10,
+          "marginRight": 4,
         },
-        {},
       ]
     }
   >
-    
-  </Text>,
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 30,
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>,
 ]
 `;

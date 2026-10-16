@@ -66,13 +66,7 @@ const StatusRows = ({
 			) : null}
 			{formattedExpiry ? (
 				<View style={[styles.row, expiryRowStyle]}>
-					<CustomIcon
-						name='clock'
-						size={14}
-						color={fontSecondaryInfo}
-						accessibilityElementsHidden
-						importantForAccessibility='no'
-					/>
+					<CustomIcon name='clock' size={14} color={fontSecondaryInfo} />
 					<Text style={[secondaryTextStyle, { color: fontSecondaryInfo }]}>{formattedExpiry}</Text>
 				</View>
 			) : null}

@@ -477,45 +477,53 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+  <View
+    accessibilityLabel=""
+    accessibilityRole="image"
+    accessible={false}
     style={
       [
         {
-          "color": "#D40C26",
-          "fontSize": 24,
+          "bottom": 0,
+          "height": 24,
+          "width": 24,
         },
-        [
-          {
-            "lineHeight": 24,
-          },
-          [
-            {
-              "height": 24,
-              "textAlign": "center",
-              "textAlignVertical": "center",
-              "width": 24,
-            },
-            {
-              "borderRadius": 10,
-              "bottom": -2,
-              "position": "absolute",
-              "right": -2,
-            },
-          ],
-        ],
         {
-          "fontFamily": "custom",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "borderRadius": 10,
+          "bottom": -2,
+          "height": 24,
+          "position": "absolute",
+          "right": -2,
         },
-        {},
       ]
     }
   >
-    
-  </Text>
+    <Text
+      accessible={false}
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "bottom": 0,
+            "fontFamily": "custom-24242538",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+            "includeFontPadding": false,
+            "position": "absolute",
+          },
+          {
+            "fontSize": 24,
+          },
+          {
+            "color": "#D40C26",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
 </View>
 `;
 

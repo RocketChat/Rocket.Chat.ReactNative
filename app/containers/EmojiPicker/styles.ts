@@ -19,7 +19,7 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	tabEmoji: {
-		paddingVertical: 4
+		marginVertical: 4
 	},
 	tabLine: {
 		width: '100%',

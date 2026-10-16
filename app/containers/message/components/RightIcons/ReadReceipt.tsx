@@ -11,7 +11,6 @@ const ReadReceipt = () => {
 	const isUnread = unread || unread === null;
 	const iconName = isUnread ? 'check-single' : 'check-double';
 	const iconColor = isUnread ? colors.fontAnnotation : colors.fontInfo;
-	const marginTop = -5;
 
 	if (isReadReceiptEnabled) {
 		return (
@@ -19,7 +18,7 @@ const ReadReceipt = () => {
 				name={iconName}
 				color={iconColor}
 				size={25}
-				style={{ ...styles.rightIcons, marginTop }}
+				style={styles.rightIcons}
 				testID={isUnread ? 'read-receipt-unread' : 'read-receipt-read'}
 			/>
 		);

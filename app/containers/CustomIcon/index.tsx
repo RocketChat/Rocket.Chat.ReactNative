@@ -1,36 +1,32 @@
-import { memo, type ComponentProps, type ReactElement } from 'react';
-import { createIconSetFromIcoMoon } from '@expo/vector-icons';
-import type { StyleProp, TextStyle } from 'react-native';
+import { memo, type ReactElement } from 'react';
+import { StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
+import { createNanoIconSet } from 'react-native-nano-icons';
 
-import { type mappedIcons } from './mappedIcons';
 import { useTheme } from '~/theme';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import icoMoonConfig from './selection.json';
+import glyphMap from './nanoicons/custom.glyphmap.json';
+import symbolMap from './nanoicons/custom.symbolmap.json';
 
-export const IconSet = createIconSetFromIcoMoon(icoMoonConfig, 'custom', 'custom.ttf');
+const IconSet = createNanoIconSet(glyphMap);
 
-const glyphMap = IconSet.getRawGlyphMap
-	? IconSet.getRawGlyphMap()
-	: icoMoonConfig.icons?.reduce((map: Record<string, string | number>, glyph: any) => {
-			map[glyph.icon.name] = glyph.icon.code;
-			return map;
-		}, {}) || {};
+export type TIconsName = keyof typeof glyphMap.i;
 
-export const hasIcon = (name: string) => Object.prototype.hasOwnProperty.call(glyphMap, name);
+export const hasIcon = (name: string): name is TIconsName => Object.hasOwn(glyphMap.i, name);
 
-export type TIconsName = keyof typeof mappedIcons;
+export const iconAssetName = (name: TIconsName) => symbolMap.s[name];
 
-export interface ICustomIcon extends ComponentProps<typeof IconSet> {
+export interface ICustomIcon {
 	name: TIconsName;
 	size: number;
 	color?: string;
-	style?: StyleProp<TextStyle>;
+	style?: StyleProp<ViewStyle>;
+	testID?: string;
+	accessibilityLabel?: string;
 }
 
-const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon): ReactElement => {
+const CustomIcon = memo(({ name, size, color, style, testID, accessibilityLabel }: ICustomIcon): ReactElement => {
 	const { colors } = useTheme();
 	const { fontScaleLimited } = useResponsiveLayout();
-
 	const iconSize = size * fontScaleLimited;
 
 	return (
@@ -38,8 +34,11 @@ const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon): R
 			name={name}
 			size={iconSize}
 			color={color || colors.fontDefault}
-			style={[{ lineHeight: iconSize }, style]}
-			{...props}
+			style={StyleSheet.flatten([{ height: iconSize }, style])}
+			allowFontScaling={false}
+			testID={testID}
+			accessible={!!accessibilityLabel}
+			accessibilityLabel={accessibilityLabel ?? ''}
 		/>
 	);
 });

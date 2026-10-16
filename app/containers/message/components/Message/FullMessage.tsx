@@ -1,6 +1,8 @@
 import { View } from 'react-native';
 
 import styles from '~/containers/message/styles';
+import markdownStyles from '~/containers/markdown/styles';
+import TextLineCenter from '~/containers/TextLineCenter';
 import MessageAvatar from '../MessageAvatar';
 import MessageAccessibleIndex from '../MessageAccessibleIndex';
 import RightIcons from '../RightIcons';
@@ -19,7 +21,11 @@ const FullMessage = ({ isPreview }: { isPreview?: boolean }) => {
 					<View style={styles.messageContent}>
 						<Layout isPreview={isPreview} isHeader={isHeader} />
 					</View>
-					{!isHeader ? <RightIcons /> : null}
+					{!isHeader ? (
+						<TextLineCenter lineHeight={markdownStyles.text.lineHeight}>
+							<RightIcons />
+						</TextLineCenter>
+					) : null}
 				</View>
 			</MessageAccessibleIndex>
 		</View>

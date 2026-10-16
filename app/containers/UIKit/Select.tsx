@@ -27,6 +27,11 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular,
 		fontSize: 16
 	},
+	iconContainer: {
+		top: 0,
+		bottom: 0,
+		justifyContent: 'center'
+	},
 	icon: {
 		right: 16
 	},
@@ -83,7 +88,8 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 			}}
 			style={{
 				viewContainer: pickerStyle,
-				inputAndroidContainer: pickerStyle
+				inputAndroidContainer: pickerStyle,
+				iconContainer: styles.iconContainer
 			}}
 			Icon={Icon}
 			textInputProps={{
