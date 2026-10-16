@@ -1,30 +1,9 @@
-import * as LegacyFileSystem from 'expo-file-system/legacy';
 import { File, UploadType } from 'expo-file-system';
 
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { getFilenameFromUri } from '../getFilenameFromUri';
-import { random } from '../random';
 import { type IFormData } from './definitions';
 
 const sanitizeFilename = (name: string) => name.replace(/[/\r\n]/g, '_').replace(/"/g, '%22');
-
-const STAGING_DIR = `${LegacyFileSystem.cacheDirectory}upload-staging/`;
-const STALE_AFTER_MS = 24 * 60 * 60 * 1000;
-
-const removeStaleStaging = async () => {
-	try {
-		const names = await LegacyFileSystem.readDirectoryAsync(STAGING_DIR);
-		const stale = names.filter(name => Date.now() - Number(name.split('-')[0]) > STALE_AFTER_MS);
-		await Promise.all(stale.map(name => LegacyFileSystem.deleteAsync(`${STAGING_DIR}${name}`, { idempotent: true })));
-	} catch {}
-};
-
-const assertEnoughStorage = async (uri: string) => {
-	const info = await LegacyFileSystem.getInfoAsync(uri);
-	if (info.exists && info.size * 2 > (await LegacyFileSystem.getFreeDiskStorageAsync())) {
-		throw new Error('Not enough storage');
-	}
-};
 
 export class Upload {
 	private uploadUrl = '';
@@ -57,20 +36,17 @@ export class Upload {
 			throw new Error('No file to upload');
 		}
 		const { uri, filename, name: fieldName, type: mimeType } = this.file;
-		const stagingDir = `${STAGING_DIR}${Date.now()}-${random(10)}/`;
 		try {
-			let stagedUri = uri;
-			if (filename && getFilenameFromUri(uri) !== sanitizeFilename(filename)) {
-				await assertEnoughStorage(uri);
-				removeStaleStaging();
-				stagedUri = `${stagingDir}${encodeURIComponent(sanitizeFilename(filename))}`;
-				await LegacyFileSystem.makeDirectoryAsync(stagingDir, { intermediates: true });
-				await LegacyFileSystem.copyAsync({ from: uri, to: stagedUri });
+			const file = new File(uri);
+			if (!file.exists) {
+				throw new Error('File not found');
 			}
-			const response = await new File(stagedUri).upload(this.uploadUrl, {
+			const response = await file.upload(this.uploadUrl, {
 				uploadType: UploadType.MULTIPART,
+				sessionType: 'background',
 				headers: this.headers,
 				fieldName,
+				filename: filename ? sanitizeFilename(filename) : undefined,
 				mimeType,
 				parameters: this.parameters,
 				signal: this.abortController.signal,
@@ -82,8 +58,6 @@ export class Upload {
 			return JSON.parse(response.body);
 		} catch (error) {
 			throw this.abortController.signal.aborted ? new Error('Upload Cancelled') : error;
-		} finally {
-			LegacyFileSystem.deleteAsync(stagingDir, { idempotent: true }).catch(() => {});
 		}
 	}
 

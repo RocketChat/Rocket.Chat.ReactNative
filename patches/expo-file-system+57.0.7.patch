@@ -24,3 +24,126 @@ index 4626dac..a17bc35 100644
    @SuppressLint("WrongConstant", "DiscouragedApi")
    override fun definition() = ModuleDefinition {
      Name("ExponentFileSystem")
+diff --git a/node_modules/expo-file-system/build/NetworkTasks.types.d.ts b/node_modules/expo-file-system/build/NetworkTasks.types.d.ts
+index 9f20c2c..0bcea52 100644
+--- a/node_modules/expo-file-system/build/NetworkTasks.types.d.ts
++++ b/node_modules/expo-file-system/build/NetworkTasks.types.d.ts
+@@ -108,6 +108,11 @@ export type UploadOptions = {
+      * @default 'file'
+      */
+     fieldName?: string;
++    /**
++     * The file name written in the multipart `Content-Disposition` header.
++     * Defaults to the last path component of the file.
++     */
++    filename?: string;
+     /**
+      * The MIME type of the file.
+      */
+diff --git a/node_modules/expo-file-system/ios/FileSystemDownloadTask.swift b/node_modules/expo-file-system/ios/FileSystemDownloadTask.swift
+index 0698aa2..fbcc44f 100644
+--- a/node_modules/expo-file-system/ios/FileSystemDownloadTask.swift
++++ b/node_modules/expo-file-system/ios/FileSystemDownloadTask.swift
+@@ -1,6 +1,7 @@
+ // Copyright 2023-present 650 Industries. All rights reserved.
+ 
+ import ExpoModulesCore
++import ObjectiveC
+ 
+ enum NetworkTaskSessionType: String, Enumerable {
+   case background
+@@ -91,6 +92,31 @@ final class NetworkTaskSessionDispatcher: NSObject, URLSessionDataDelegate, URLS
+     lock.unlock()
+   }
+ 
++  // Challenge lives in the app target; resolve it at runtime because this pod cannot import it.
++  func urlSession(
++    _ session: URLSession,
++    didReceive challenge: URLAuthenticationChallenge,
++    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
++  ) {
++    typealias RunChallenge = @convention(c) (
++      AnyObject,
++      Selector,
++      URLSession,
++      URLAuthenticationChallenge,
++      @escaping @convention(block) (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
++    ) -> Void
++    let selector = NSSelectorFromString("runChallenge:didReceiveChallenge:completionHandler:")
++    guard let challengeClass = NSClassFromString("Challenge"),
++      let method = class_getClassMethod(challengeClass, selector)
++    else {
++      assertionFailure("Challenge.runChallenge is missing: falling back to default TLS handling")
++      completionHandler(.performDefaultHandling, nil)
++      return
++    }
++    let runChallenge = unsafeBitCast(method_getImplementation(method), to: RunChallenge.self)
++    runChallenge(challengeClass, selector, session, challenge, completionHandler)
++  }
++
+   func urlSession(
+     _ session: URLSession,
+     task: URLSessionTask,
+diff --git a/node_modules/expo-file-system/ios/FileSystemUploadTask.swift b/node_modules/expo-file-system/ios/FileSystemUploadTask.swift
+index 455a66e..84c0564 100644
+--- a/node_modules/expo-file-system/ios/FileSystemUploadTask.swift
++++ b/node_modules/expo-file-system/ios/FileSystemUploadTask.swift
+@@ -16,6 +16,7 @@ struct UploadTaskOptions: Record {
+   @Field var httpMethod: String = "POST"
+   @Field var uploadType: UploadType = .binaryContent
+   @Field var fieldName: String?
++  @Field var filename: String?
+   @Field var mimeType: String?
+   @Field var parameters: [String: String]?
+   @Field var sessionType: NetworkTaskSessionType = .background
+@@ -199,7 +200,7 @@ class FileSystemUploadTask: SharedObject {
+     }
+ 
+     // Write file part header
+-    let header = "--\(boundary)\r\nContent-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(sourceUrl.lastPathComponent)\"\r\nContent-Type: \(mimeType)\r\n\r\n"
++    let header = "--\(boundary)\r\nContent-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(multipartFilename(options.filename, fallback: sourceUrl.lastPathComponent))\"\r\nContent-Type: \(mimeType)\r\n\r\n"
+     let headerData = Array(header.utf8)
+     try writeAll(output, headerData)
+ 
+@@ -232,6 +233,13 @@ class FileSystemUploadTask: SharedObject {
+     return tempURL
+   }
+ 
++  private func multipartFilename(_ filename: String?, fallback: String) -> String {
++    return (filename ?? fallback)
++      .replacingOccurrences(of: "\r", with: "_")
++      .replacingOccurrences(of: "\n", with: "_")
++      .replacingOccurrences(of: "\"", with: "%22")
++  }
++
+   private func findMimeType(forAttachment attachment: URL) -> String {
+     return UTType(filenameExtension: attachment.pathExtension)?.preferredMIMEType ?? "application/octet-stream"
+   }
+diff --git a/node_modules/expo-file-system/src/NetworkTasks.ts b/node_modules/expo-file-system/src/NetworkTasks.ts
+index 4708e10..1703c06 100644
+--- a/node_modules/expo-file-system/src/NetworkTasks.ts
++++ b/node_modules/expo-file-system/src/NetworkTasks.ts
+@@ -136,6 +136,7 @@ export class UploadTask {
+         uploadType: this._options?.uploadType ?? 0,
+         headers: this._options?.headers,
+         fieldName: this._options?.fieldName,
++        filename: this._options?.filename,
+         mimeType: this._options?.mimeType,
+         parameters: this._options?.parameters,
+         sessionType: this._options?.sessionType,
+diff --git a/node_modules/expo-file-system/src/NetworkTasks.types.ts b/node_modules/expo-file-system/src/NetworkTasks.types.ts
+index 961cbcb..1a3dec8 100644
+--- a/node_modules/expo-file-system/src/NetworkTasks.types.ts
++++ b/node_modules/expo-file-system/src/NetworkTasks.types.ts
+@@ -114,6 +114,11 @@ export type UploadOptions = {
+    * @default 'file'
+    */
+   fieldName?: string;
++  /**
++   * The file name written in the multipart `Content-Disposition` header.
++   * Defaults to the last path component of the file.
++   */
++  filename?: string;
+   /**
+    * The MIME type of the file.
+    */

@@ -1,8 +1,7 @@
 import { Alert } from 'react-native';
 
-import { getUploadByPath } from '~/lib/database/services/Upload';
 import {
-	cancelAllUploads,
+	cancelUpload,
 	createUploadRecord,
 	copyFileToCacheDirectoryIfNeeded,
 	getUploadPath,
@@ -127,54 +126,25 @@ describe('createUploadRecord', () => {
 	});
 });
 
-describe('cancelAllUploads', () => {
-	it('cancels every queued upload and removes its record', async () => {
-		const cancelA = jest.fn();
-		const cancelB = jest.fn();
-		const destroyA = jest.fn();
-		const destroyB = jest.fn();
-		uploadQueue[getUploadPath('/a.mp4', 'RID1')] = { cancel: cancelA, send: jest.fn() } as any;
-		uploadQueue[getUploadPath('/b.mp4', 'RID2')] = { cancel: cancelB, send: jest.fn() } as any;
-		(getUploadByPath as jest.Mock).mockImplementation((path: string) =>
-			Promise.resolve(
-				path === getUploadPath('/a.mp4', 'RID1')
-					? { id: 'a', path: '/a.mp4', subscription: { id: 'RID1' }, destroyPermanently: destroyA }
-					: { id: 'b', path: '/b.mp4', subscription: { id: 'RID2' }, destroyPermanently: destroyB }
-			)
-		);
-
-		await cancelAllUploads();
-
-		expect(cancelA).toHaveBeenCalledTimes(1);
-		expect(cancelB).toHaveBeenCalledTimes(1);
-		expect(destroyA).toHaveBeenCalledTimes(1);
-		expect(destroyB).toHaveBeenCalledTimes(1);
-		expect(Object.keys(uploadQueue)).toHaveLength(0);
-	});
-
-	it('does nothing when no upload is active', async () => {
-		(getUploadByPath as jest.Mock).mockClear();
-		await expect(cancelAllUploads()).resolves.toBeUndefined();
-		expect(getUploadByPath).not.toHaveBeenCalled();
-	});
-
-	it('keeps failed uploads so they can be retried', async () => {
-		const failedPath = getUploadPath('/c.mp4', 'RID3');
+describe('cancelUpload', () => {
+	it('aborts the queued upload, drops it from the queue and removes its record', async () => {
 		const cancel = jest.fn();
-		const destroy = jest.fn();
-		uploadQueue[failedPath] = { cancel, send: jest.fn() } as any;
-		(getUploadByPath as jest.Mock).mockResolvedValue({
-			id: 'c',
-			path: '/c.mp4',
-			error: true,
-			subscription: { id: 'RID3' },
-			destroyPermanently: destroy
-		});
+		const destroyPermanently = jest.fn();
+		const queuedPath = getUploadPath('/a.mp4', 'RID1');
+		uploadQueue[queuedPath] = { cancel, send: jest.fn() } as any;
 
-		await cancelAllUploads();
+		await cancelUpload({ id: 'a', path: '/a.mp4', destroyPermanently } as any, 'RID1');
 
-		expect(cancel).not.toHaveBeenCalled();
-		expect(destroy).not.toHaveBeenCalled();
-		delete uploadQueue[failedPath];
+		expect(cancel).toHaveBeenCalledTimes(1);
+		expect(destroyPermanently).toHaveBeenCalledTimes(1);
+		expect(uploadQueue[queuedPath]).toBeUndefined();
+	});
+
+	it('removes the record even when the upload has not been queued yet', async () => {
+		const destroyPermanently = jest.fn();
+
+		await cancelUpload({ id: 'b', path: '/b.mp4', destroyPermanently } as any, 'RID2');
+
+		expect(destroyPermanently).toHaveBeenCalledTimes(1);
 	});
 });

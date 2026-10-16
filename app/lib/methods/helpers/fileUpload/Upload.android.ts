@@ -2,7 +2,6 @@ import * as FileSystem from 'expo-file-system/legacy';
 
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import { type IFormData } from './definitions';
-import { beginUploadService, endUploadService, updateUploadService } from './uploadService';
 
 export class Upload {
 	private uploadUrl: string;
@@ -47,7 +46,6 @@ export class Upload {
 
 	public send(): Promise<TRoomsMediaResponse> {
 		return new Promise(async (resolve, reject) => {
-			const serviceId = beginUploadService(() => this.cancel());
 			try {
 				if (!this.file) {
 					return reject();
@@ -64,9 +62,8 @@ export class Upload {
 						parameters: this.formData
 					},
 					data => {
-						if (data.totalBytesSent && data.totalBytesExpectedToSend) {
-							this.progressCallback?.(data.totalBytesSent, data.totalBytesExpectedToSend);
-							updateUploadService(serviceId, data.totalBytesSent, data.totalBytesExpectedToSend);
+						if (data.totalBytesSent && data.totalBytesExpectedToSend && this.progressCallback) {
+							this.progressCallback(data.totalBytesSent, data.totalBytesExpectedToSend);
 						}
 					}
 				);
@@ -83,8 +80,6 @@ export class Upload {
 				} else {
 					reject(error);
 				}
-			} finally {
-				endUploadService(serviceId);
 			}
 		});
 	}
