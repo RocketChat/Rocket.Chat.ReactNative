@@ -66,7 +66,7 @@ export const trackUpload = (cancel: () => void): IUploadTracker => {
 	return {
 		progress: (loaded, total) => {
 			Object.assign(upload, { loaded, total });
-			publishProgress();
+			sync();
 		},
 		end: () => {
 			tracked.delete(upload);

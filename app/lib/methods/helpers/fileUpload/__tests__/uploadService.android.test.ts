@@ -71,6 +71,15 @@ describe('uploadService (Android)', () => {
 		expect(mockService.start).toHaveBeenCalledTimes(2);
 	});
 
+	it('starts the service again from the next progress after the system refused to start it', async () => {
+		mockService.start.mockImplementationOnce(() => Promise.reject(new Error('ForegroundServiceStartNotAllowedException')));
+		const upload = track();
+		await new Promise(resolve => setImmediate(resolve));
+		upload.progress(5, 10);
+		expect(mockService.start).toHaveBeenCalledTimes(2);
+		expect(mockService.start).toHaveBeenLastCalledWith('Uploading', 'Cancel', 50);
+	});
+
 	it('keeps the newer service run when an earlier start fails late', async () => {
 		let failFirstStart: (error: Error) => void = noop;
 		const firstStart = new Promise((_resolve, reject) => {
