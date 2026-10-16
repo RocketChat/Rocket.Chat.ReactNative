@@ -1,4 +1,4 @@
-import { AppState, DeviceEventEmitter, NativeModules } from 'react-native';
+import { DeviceEventEmitter, NativeModules } from 'react-native';
 
 import I18n from '~/i18n';
 import { type IUploadTracker } from './definitions';
@@ -8,7 +8,7 @@ type TTrackedUpload = { loaded: number; total: number; cancel: () => void };
 const tracked = new Set<TTrackedUpload>();
 let running = false;
 let lastPercent = -1;
-let subscriptions: { remove: () => void }[] = [];
+let cancelSubscription: { remove: () => void } | undefined;
 
 const service = () => NativeModules.UploadService;
 
@@ -34,7 +34,7 @@ const publishProgress = () => {
 };
 
 const sync = () => {
-	const shouldRun = tracked.size > 0 && AppState.currentState === 'background';
+	const shouldRun = tracked.size > 0;
 	if (shouldRun && !running) {
 		lastPercent = percent();
 		Promise.resolve(service()?.start(I18n.t('Uploading'), I18n.t('Cancel'), lastPercent)).catch(() => {
@@ -54,8 +54,8 @@ const cancelAll = () => {
 export const trackUpload = (cancel: () => void): IUploadTracker => {
 	const upload = { loaded: 0, total: 0, cancel };
 	tracked.add(upload);
-	if (!subscriptions.length) {
-		subscriptions = [AppState.addEventListener('change', sync), DeviceEventEmitter.addListener('UploadServiceCancel', cancelAll)];
+	if (!cancelSubscription) {
+		cancelSubscription = DeviceEventEmitter.addListener('UploadServiceCancel', cancelAll);
 	}
 	sync();
 	return {
@@ -66,8 +66,8 @@ export const trackUpload = (cancel: () => void): IUploadTracker => {
 		end: () => {
 			tracked.delete(upload);
 			if (!tracked.size) {
-				subscriptions.forEach(subscription => subscription.remove());
-				subscriptions = [];
+				cancelSubscription?.remove();
+				cancelSubscription = undefined;
 			}
 			sync();
 		}
