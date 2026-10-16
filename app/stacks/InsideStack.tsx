@@ -166,6 +166,19 @@ const RoomsListStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
+const DirectMessagesStack = createNativeStackNavigator({
+	screenOptions: defaultHeader,
+	screens: {
+		DirectMessagesView: createNativeStackScreen({
+			screen: RoomsListView,
+			options: { freezeOnBlur: true }
+		})
+	}
+}).with(({ Navigator }) => {
+	const { theme } = useContext(ThemeContext);
+	return <Navigator screenOptions={themedHeader(theme)} />;
+});
+
 const RoomsSearchStack = createNativeStackNavigator({
 	screenOptions: defaultHeader,
 	screens: {
@@ -207,6 +220,14 @@ const HomeTabs = createNativeBottomTabNavigator({
 				title: I18n.t('Chats'),
 				tabBarButtonTestID: 'tab-chats',
 				tabBarIcon: { type: 'image', source: require('../static/images/tabs/chats.png') }
+			})
+		}),
+		DirectMessagesStackNavigator: createNativeBottomTabScreen({
+			screen: DirectMessagesStack,
+			options: () => ({
+				title: I18n.t('DMs'),
+				tabBarButtonTestID: 'tab-direct-messages',
+				tabBarIcon: { type: 'image', source: require('../static/images/tabs/direct-messages.png') }
 			})
 		}),
 		MenuStackNavigator: createNativeBottomTabScreen({

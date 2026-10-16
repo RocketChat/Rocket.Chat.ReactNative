@@ -72,7 +72,9 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 		});
 	}
 
-	Navigation.navigateToRoomsList();
+	if (currentRoute?.name !== 'DirectMessagesView') {
+		Navigation.navigateToRoomsList();
+	}
 	Navigation.navigate('RoomView', routeParams);
 };
 

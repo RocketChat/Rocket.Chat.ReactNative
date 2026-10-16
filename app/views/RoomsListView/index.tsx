@@ -41,6 +41,7 @@ import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useHeader } from './hooks/useHeader';
 import { useNewMessage } from './hooks/useNewMessage';
 import { useRefresh } from './hooks/useRefresh';
+import { useRoomTypeFilter } from './hooks/useRoomTypeFilter';
 import { SECTION_REFLOW, useSectionToggleAnimation } from './hooks/useSectionToggleAnimation';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import { useWarmUpMessageBlocks } from './hooks/useWarmUpMessageBlocks';
@@ -64,7 +65,8 @@ const RoomsListView = memo(function RoomsListView() {
 	const { bottom } = useSafeAreaInsets();
 	const getItemLayout = useGetItemLayout();
 	const { collapsedGroups, toggleGroup } = useCollapsedGroups();
-	const { subscriptions, loading } = useSubscriptions(collapsedGroups);
+	const roomTypeFilter = useRoomTypeFilter();
+	const { subscriptions, loading } = useSubscriptions(collapsedGroups, roomTypeFilter);
 	const { onToggle, rowEntering, rowExiting, badgeEntering, badgeExiting, revealKey, coverEntering, coverExiting } =
 		useSectionToggleAnimation(collapsedGroups, toggleGroup, subscriptions.length);
 	const store = useStore<IApplicationState>();

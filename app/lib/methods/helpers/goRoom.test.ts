@@ -28,6 +28,15 @@ describe('goRoom navigation', () => {
 		);
 	});
 
+	it('opens the room on top of the direct messages tab without switching tabs', async () => {
+		(Navigation.getCurrentRoute as jest.Mock).mockReturnValueOnce({ name: 'DirectMessagesView' });
+
+		await goRoom({ item: { rid: 'r1', t: 'd' as any }, isMasterDetail: false } as any);
+
+		expect(Navigation.navigateToRoomsList).not.toHaveBeenCalled();
+		expect(Navigation.navigate).toHaveBeenCalledWith('RoomView', expect.objectContaining({ rid: 'r1' }));
+	});
+
 	it('updates the params instead of navigating when the room is already open', async () => {
 		(Navigation.getCurrentRoute as jest.Mock).mockReturnValueOnce({ name: 'RoomView', params: { rid: 'r1' } });
 
