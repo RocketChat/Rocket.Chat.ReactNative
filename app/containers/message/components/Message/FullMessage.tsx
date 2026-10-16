@@ -1,6 +1,8 @@
 import { View } from 'react-native';
 
 import styles from '~/containers/message/styles';
+import markdownStyles from '~/containers/markdown/styles';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import MessageAvatar from '../MessageAvatar';
 import MessageAccessibleIndex from '../MessageAccessibleIndex';
 import RightIcons from '../RightIcons';
@@ -10,6 +12,7 @@ import { useMessageField, useMessageGrouping } from '~/containers/message/stores
 const FullMessage = ({ isPreview }: { isPreview?: boolean }) => {
 	const isHeader = useMessageGrouping();
 	const id = useMessageField(item => item.id);
+	const { fontScale } = useResponsiveLayout();
 
 	return (
 		<View testID={`message-${id}`} style={styles.container}>
@@ -19,7 +22,11 @@ const FullMessage = ({ isPreview }: { isPreview?: boolean }) => {
 					<View style={styles.messageContent}>
 						<Layout isPreview={isPreview} isHeader={isHeader} />
 					</View>
-					{!isHeader ? <RightIcons /> : null}
+					{!isHeader ? (
+						<View style={[styles.rightIconsLine, { height: markdownStyles.text.lineHeight * fontScale }]}>
+							<RightIcons />
+						</View>
+					) : null}
 				</View>
 			</MessageAccessibleIndex>
 		</View>

@@ -24,6 +24,9 @@ export default StyleSheet.create({
 	flex: {
 		flexDirection: 'row'
 	},
+	rightIconsLine: {
+		justifyContent: 'center'
+	},
 	temp: { opacity: 0.3 },
 	reactionsContainer: {
 		flexDirection: 'row',

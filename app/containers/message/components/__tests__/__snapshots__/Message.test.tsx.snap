@@ -371,6 +371,7 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -810,6 +811,7 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -1301,6 +1303,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -2105,6 +2108,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -2953,6 +2957,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -3409,6 +3414,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -3857,6 +3863,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -4321,6 +4328,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -4785,6 +4793,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -5254,6 +5263,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -5710,6 +5720,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -6157,6 +6168,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -6613,6 +6625,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -7104,6 +7117,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -7592,6 +7606,7 @@ Testing block quote."
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -8124,6 +8139,7 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -8612,6 +8628,7 @@ Testing block quote."
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -9188,6 +9205,7 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -9775,6 +9793,7 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -10406,6 +10425,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -11034,6 +11054,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -11862,6 +11883,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -12490,6 +12512,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -13362,6 +13385,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -13992,6 +14016,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -14976,6 +15001,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -15606,6 +15632,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -16634,6 +16661,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -17890,6 +17918,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -19190,6 +19219,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -20028,6 +20058,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -21142,6 +21173,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -21980,6 +22012,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -23138,6 +23171,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -23662,6 +23696,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -23997,11 +24032,25 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -24377,6 +24426,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -24910,6 +24960,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -25357,6 +25408,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -25881,6 +25933,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -26238,11 +26291,25 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -26596,6 +26663,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -27129,6 +27197,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -27620,6 +27689,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -28219,6 +28289,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -28820,6 +28891,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -29421,6 +29493,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -30013,6 +30086,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -30612,6 +30686,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -31213,6 +31288,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -31814,6 +31890,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -32450,6 +32527,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -32791,61 +32869,75 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
                     {
-                      "marginLeft": 5,
+                      "alignItems": "center",
+                      "flexDirection": "row",
                     }
                   }
-                  testID="Message without header-edited"
                 >
                   <View
-                    accessibilityLabel=""
-                    accessibilityRole="image"
-                    accessible={false}
                     style={
-                      [
-                        {
-                          "bottom": 0,
-                          "height": 16,
-                          "width": 16.5,
-                        },
-                        {
-                          "height": 16,
-                        },
-                      ]
+                      {
+                        "marginLeft": 5,
+                      }
                     }
+                    testID="Message without header-edited"
                   >
-                    <Text
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
                       accessible={false}
-                      allowFontScaling={false}
-                      selectable={false}
                       style={
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-24242538",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                            "includeFontPadding": false,
-                            "position": "absolute",
+                            "height": 16,
+                            "width": 16.5,
                           },
                           {
-                            "fontSize": 16,
-                          },
-                          {
-                            "color": "#2F343D",
+                            "height": 16,
                           },
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-24242538",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 16,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -33215,6 +33307,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -33578,61 +33671,75 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
                     {
-                      "marginLeft": 5,
+                      "alignItems": "center",
+                      "flexDirection": "row",
                     }
                   }
-                  testID="Message without header-edited"
                 >
                   <View
-                    accessibilityLabel=""
-                    accessibilityRole="image"
-                    accessible={false}
                     style={
-                      [
-                        {
-                          "bottom": 0,
-                          "height": 20.8,
-                          "width": 21.45,
-                        },
-                        {
-                          "height": 20.8,
-                        },
-                      ]
+                      {
+                        "marginLeft": 5,
+                      }
                     }
+                    testID="Message without header-edited"
                   >
-                    <Text
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
                       accessible={false}
-                      allowFontScaling={false}
-                      selectable={false}
                       style={
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-24242538",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                            "includeFontPadding": false,
-                            "position": "absolute",
+                            "height": 20.8,
+                            "width": 21.45,
                           },
                           {
-                            "fontSize": 20.8,
-                          },
-                          {
-                            "color": "#2F343D",
+                            "height": 20.8,
                           },
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-24242538",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 20.8,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -34025,6 +34132,7 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -34473,6 +34581,7 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -34964,6 +35073,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -35419,6 +35529,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -35852,6 +35963,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -36404,6 +36516,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -36862,6 +36975,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -37342,6 +37456,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -37855,6 +37970,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -38310,6 +38426,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -38743,6 +38860,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -39295,6 +39413,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -39753,6 +39872,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -40233,6 +40353,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -40790,6 +40911,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -41091,97 +41213,111 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
               >
                 <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  hitSlop={
-                    {
-                      "bottom": 4,
-                      "left": 4,
-                      "right": 4,
-                      "top": 4,
-                    }
-                  }
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onFocus={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "marginLeft": 5,
+                      "alignItems": "center",
+                      "flexDirection": "row",
                     }
                   }
                 >
                   <View
-                    accessibilityLabel=""
-                    accessibilityRole="image"
-                    accessible={false}
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    collapsable={false}
+                    focusable={true}
+                    hitSlop={
+                      {
+                        "bottom": 4,
+                        "left": 4,
+                        "right": 4,
+                        "top": 4,
+                      }
+                    }
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
-                      [
-                        {
-                          "bottom": 0,
-                          "height": 16,
-                          "width": 16.5,
-                        },
-                        {
-                          "height": 16,
-                        },
-                      ]
+                      {
+                        "marginLeft": 5,
+                      }
                     }
                   >
-                    <Text
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
                       accessible={false}
-                      allowFontScaling={false}
-                      selectable={false}
                       style={
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-24242538",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                            "includeFontPadding": false,
-                            "position": "absolute",
+                            "height": 16,
+                            "width": 16.5,
                           },
                           {
-                            "fontSize": 16,
-                          },
-                          {
-                            "color": "#2F343D",
+                            "height": 16,
                           },
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-24242538",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 16,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -41560,6 +41696,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -42995,6 +43132,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -43506,6 +43644,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -43932,6 +44071,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -44529,6 +44669,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -44635,7 +44776,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             {
                               "height": 25,
                               "marginLeft": 5,
-                              "marginTop": -5,
                             },
                           ]
                         }
@@ -44876,55 +45016,112 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
               >
                 <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  hitSlop={
-                    {
-                      "bottom": 4,
-                      "left": 4,
-                      "right": 4,
-                      "top": 4,
-                    }
-                  }
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onFocus={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "marginLeft": 5,
+                      "alignItems": "center",
+                      "flexDirection": "row",
                     }
                   }
                 >
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    collapsable={false}
+                    focusable={true}
+                    hitSlop={
+                      {
+                        "bottom": 4,
+                        "left": 4,
+                        "right": 4,
+                        "top": 4,
+                      }
+                    }
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      {
+                        "marginLeft": 5,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
+                      style={
+                        [
+                          {
+                            "bottom": 0,
+                            "height": 16,
+                            "width": 16.5,
+                          },
+                          {
+                            "height": 16,
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-24242538",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 16,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
+                  </View>
                   <View
                     accessibilityLabel=""
                     accessibilityRole="image"
@@ -44933,14 +45130,16 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "height": 16,
-                          "width": 16.5,
+                          "height": 25,
+                          "width": 25,
                         },
                         {
-                          "height": 16,
+                          "height": 25,
+                          "marginLeft": 5,
                         },
                       ]
                     }
+                    testID="read-receipt-read"
                   >
                     <Text
                       accessible={false}
@@ -44957,63 +45156,17 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             "position": "absolute",
                           },
                           {
-                            "fontSize": 16,
+                            "fontSize": 25,
                           },
                           {
-                            "color": "#2F343D",
+                            "color": "#095AD2",
                           },
                         ]
                       }
                     >
-                      
+                      
                     </Text>
                   </View>
-                </View>
-                <View
-                  accessibilityLabel=""
-                  accessibilityRole="image"
-                  accessible={false}
-                  style={
-                    [
-                      {
-                        "bottom": 0,
-                        "height": 25,
-                        "width": 25,
-                      },
-                      {
-                        "height": 25,
-                        "marginLeft": 5,
-                        "marginTop": -5,
-                      },
-                    ]
-                  }
-                  testID="read-receipt-read"
-                >
-                  <Text
-                    accessible={false}
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "bottom": 0,
-                          "fontFamily": "custom-24242538",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                          "includeFontPadding": false,
-                          "position": "absolute",
-                        },
-                        {
-                          "fontSize": 25,
-                        },
-                        {
-                          "color": "#095AD2",
-                        },
-                      ]
-                    }
-                  >
-                    
-                  </Text>
                 </View>
               </View>
             </View>
@@ -45382,6 +45535,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -45705,97 +45859,111 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
               >
                 <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  hitSlop={
-                    {
-                      "bottom": 4,
-                      "left": 4,
-                      "right": 4,
-                      "top": 4,
-                    }
-                  }
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onFocus={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "marginLeft": 5,
+                      "alignItems": "center",
+                      "flexDirection": "row",
                     }
                   }
                 >
                   <View
-                    accessibilityLabel=""
-                    accessibilityRole="image"
-                    accessible={false}
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    collapsable={false}
+                    focusable={true}
+                    hitSlop={
+                      {
+                        "bottom": 4,
+                        "left": 4,
+                        "right": 4,
+                        "top": 4,
+                      }
+                    }
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
-                      [
-                        {
-                          "bottom": 0,
-                          "height": 20.8,
-                          "width": 21.45,
-                        },
-                        {
-                          "height": 20.8,
-                        },
-                      ]
+                      {
+                        "marginLeft": 5,
+                      }
                     }
                   >
-                    <Text
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
                       accessible={false}
-                      allowFontScaling={false}
-                      selectable={false}
                       style={
                         [
                           {
                             "bottom": 0,
-                            "fontFamily": "custom-24242538",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                            "includeFontPadding": false,
-                            "position": "absolute",
+                            "height": 20.8,
+                            "width": 21.45,
                           },
                           {
-                            "fontSize": 20.8,
-                          },
-                          {
-                            "color": "#2F343D",
+                            "height": 20.8,
                           },
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-24242538",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 20.8,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -46152,6 +46320,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -47587,6 +47756,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -48098,6 +48268,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -48524,6 +48695,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -49121,6 +49293,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -49227,7 +49400,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             {
                               "height": 32.5,
                               "marginLeft": 5,
-                              "marginTop": -5,
                             },
                           ]
                         }
@@ -49490,55 +49662,112 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
               >
                 <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  hitSlop={
-                    {
-                      "bottom": 4,
-                      "left": 4,
-                      "right": 4,
-                      "top": 4,
-                    }
-                  }
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onFocus={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
                     {
-                      "marginLeft": 5,
+                      "alignItems": "center",
+                      "flexDirection": "row",
                     }
                   }
                 >
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    collapsable={false}
+                    focusable={true}
+                    hitSlop={
+                      {
+                        "bottom": 4,
+                        "left": 4,
+                        "right": 4,
+                        "top": 4,
+                      }
+                    }
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      {
+                        "marginLeft": 5,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
+                      style={
+                        [
+                          {
+                            "bottom": 0,
+                            "height": 20.8,
+                            "width": 21.45,
+                          },
+                          {
+                            "height": 20.8,
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-24242538",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 20.8,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
+                  </View>
                   <View
                     accessibilityLabel=""
                     accessibilityRole="image"
@@ -49547,14 +49776,16 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       [
                         {
                           "bottom": 0,
-                          "height": 20.8,
-                          "width": 21.45,
+                          "height": 32.5,
+                          "width": 32.5,
                         },
                         {
-                          "height": 20.8,
+                          "height": 32.5,
+                          "marginLeft": 5,
                         },
                       ]
                     }
+                    testID="read-receipt-read"
                   >
                     <Text
                       accessible={false}
@@ -49571,63 +49802,17 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             "position": "absolute",
                           },
                           {
-                            "fontSize": 20.8,
+                            "fontSize": 32.5,
                           },
                           {
-                            "color": "#2F343D",
+                            "color": "#095AD2",
                           },
                         ]
                       }
                     >
-                      
+                      
                     </Text>
                   </View>
-                </View>
-                <View
-                  accessibilityLabel=""
-                  accessibilityRole="image"
-                  accessible={false}
-                  style={
-                    [
-                      {
-                        "bottom": 0,
-                        "height": 32.5,
-                        "width": 32.5,
-                      },
-                      {
-                        "height": 32.5,
-                        "marginLeft": 5,
-                        "marginTop": -5,
-                      },
-                    ]
-                  }
-                  testID="read-receipt-read"
-                >
-                  <Text
-                    accessible={false}
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "bottom": 0,
-                          "fontFamily": "custom-24242538",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                          "includeFontPadding": false,
-                          "position": "absolute",
-                        },
-                        {
-                          "fontSize": 32.5,
-                        },
-                        {
-                          "color": "#095AD2",
-                        },
-                      ]
-                    }
-                  >
-                    
-                  </Text>
                 </View>
               </View>
             </View>
@@ -49937,6 +50122,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -50403,6 +50589,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -50860,6 +51047,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -51326,6 +51514,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -51908,6 +52097,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -52509,6 +52699,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -53110,6 +53301,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -53711,6 +53903,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -54467,11 +54660,25 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -54838,6 +55045,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -55439,6 +55647,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -56040,6 +56249,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -56641,6 +56851,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -57419,11 +57630,25 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -57777,6 +58002,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -58574,6 +58800,7 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -59021,6 +59248,7 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -59512,6 +59740,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -59968,6 +60197,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -60256,11 +60486,25 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -60468,11 +60712,25 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -60848,6 +61106,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -61295,6 +61554,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -61751,6 +62011,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -62061,11 +62322,25 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -62273,11 +62548,25 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -62631,6 +62920,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -63764,6 +64054,7 @@ exports[`Story Snapshots: InlineKatex should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -64197,6 +64488,7 @@ exports[`Story Snapshots: InlineKatexLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -64666,6 +64958,7 @@ exports[`Story Snapshots: JitsiCall should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -65192,6 +65485,7 @@ exports[`Story Snapshots: JitsiCallLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -65770,6 +66064,7 @@ exports[`Story Snapshots: Katex should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -66187,6 +66482,7 @@ exports[`Story Snapshots: KatexArray should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -66582,6 +66878,7 @@ exports[`Story Snapshots: KatexArrayLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -66999,6 +67296,7 @@ exports[`Story Snapshots: KatexLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -67440,6 +67738,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -68096,6 +68395,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -68700,6 +69000,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -69084,11 +69385,25 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -69457,6 +69772,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -70113,6 +70429,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -70717,6 +71034,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -71123,11 +71441,25 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -71516,6 +71848,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -71972,6 +72305,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -72481,6 +72815,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -72989,6 +73324,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -73415,6 +73751,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -73962,6 +74299,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -73980,7 +74318,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                             {
                               "height": 25,
                               "marginLeft": 5,
-                              "marginTop": -5,
                             },
                           ]
                         }
@@ -74465,6 +74802,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -74571,7 +74909,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                             {
                               "height": 25,
                               "marginLeft": 5,
-                              "marginTop": -5,
                             },
                           ]
                         }
@@ -74937,6 +75274,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -75235,7 +75573,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       {
                         "height": 25,
                         "marginLeft": 5,
-                        "marginTop": -5,
                       },
                     ]
                   }
@@ -75602,6 +75939,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -75900,7 +76238,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       {
                         "height": 25,
                         "marginLeft": 5,
-                        "marginTop": -5,
                       },
                     ]
                   }
@@ -76267,6 +76604,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -76565,7 +76903,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       {
                         "height": 25,
                         "marginLeft": 5,
-                        "marginTop": -5,
                       },
                     ]
                   }
@@ -77004,6 +77341,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -77460,6 +77798,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -77969,6 +78308,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -78477,6 +78817,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -78903,6 +79244,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -79450,6 +79792,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -79468,7 +79811,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                             {
                               "height": 32.5,
                               "marginLeft": 5,
-                              "marginTop": -5,
                             },
                           ]
                         }
@@ -79953,6 +80295,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -80059,7 +80402,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                             {
                               "height": 32.5,
                               "marginLeft": 5,
-                              "marginTop": -5,
                             },
                           ]
                         }
@@ -80425,6 +80767,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -80723,7 +81066,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       {
                         "height": 32.5,
                         "marginLeft": 5,
-                        "marginTop": -5,
                       },
                     ]
                   }
@@ -81090,6 +81432,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -81388,7 +81731,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       {
                         "height": 32.5,
                         "marginLeft": 5,
-                        "marginTop": -5,
                       },
                     ]
                   }
@@ -81755,6 +82097,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -82053,7 +82396,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       {
                         "height": 32.5,
                         "marginLeft": 5,
-                        "marginTop": -5,
                       },
                     ]
                   }
@@ -82536,6 +82878,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -83189,6 +83532,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -83812,6 +84156,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -84465,6 +84810,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -85132,6 +85478,7 @@ exports[`Story Snapshots: Message should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -85534,6 +85881,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -86300,6 +86648,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -87131,6 +87480,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -87985,6 +88335,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -88713,6 +89064,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -89634,6 +89986,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -89652,7 +90005,6 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                             {
                               "height": 25,
                               "marginLeft": 5,
-                              "marginTop": -5,
                             },
                           ]
                         }
@@ -89969,56 +90321,69 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
               >
                 <View
-                  accessibilityLabel=""
-                  accessibilityRole="image"
-                  accessible={false}
                   style={
-                    [
-                      {
-                        "bottom": 0,
-                        "height": 25,
-                        "width": 25,
-                      },
-                      {
-                        "height": 25,
-                        "marginLeft": 5,
-                        "marginTop": -5,
-                      },
-                    ]
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
                   }
-                  testID="read-receipt-unread"
                 >
-                  <Text
+                  <View
+                    accessibilityLabel=""
+                    accessibilityRole="image"
                     accessible={false}
-                    allowFontScaling={false}
-                    selectable={false}
                     style={
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-24242538",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                          "includeFontPadding": false,
-                          "position": "absolute",
+                          "height": 25,
+                          "width": 25,
                         },
                         {
-                          "fontSize": 25,
-                        },
-                        {
-                          "color": "#9EA2A8",
+                          "height": 25,
+                          "marginLeft": 5,
                         },
                       ]
                     }
+                    testID="read-receipt-unread"
                   >
-                    
-                  </Text>
+                    <Text
+                      accessible={false}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "bottom": 0,
+                            "fontFamily": "custom-24242538",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                            "includeFontPadding": false,
+                            "position": "absolute",
+                          },
+                          {
+                            "fontSize": 25,
+                          },
+                          {
+                            "color": "#9EA2A8",
+                          },
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -90396,6 +90761,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -90414,7 +90780,6 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                             {
                               "height": 25,
                               "marginLeft": 5,
-                              "marginTop": -5,
                             },
                           ]
                         }
@@ -90731,56 +91096,69 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
               >
                 <View
-                  accessibilityLabel=""
-                  accessibilityRole="image"
-                  accessible={false}
                   style={
-                    [
-                      {
-                        "bottom": 0,
-                        "height": 25,
-                        "width": 25,
-                      },
-                      {
-                        "height": 25,
-                        "marginLeft": 5,
-                        "marginTop": -5,
-                      },
-                    ]
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
                   }
-                  testID="read-receipt-read"
                 >
-                  <Text
+                  <View
+                    accessibilityLabel=""
+                    accessibilityRole="image"
                     accessible={false}
-                    allowFontScaling={false}
-                    selectable={false}
                     style={
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-24242538",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                          "includeFontPadding": false,
-                          "position": "absolute",
+                          "height": 25,
+                          "width": 25,
                         },
                         {
-                          "fontSize": 25,
-                        },
-                        {
-                          "color": "#095AD2",
+                          "height": 25,
+                          "marginLeft": 5,
                         },
                       ]
                     }
+                    testID="read-receipt-read"
                   >
-                    
-                  </Text>
+                    <Text
+                      accessible={false}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "bottom": 0,
+                            "fontFamily": "custom-24242538",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                            "includeFontPadding": false,
+                            "position": "absolute",
+                          },
+                          {
+                            "fontSize": 25,
+                          },
+                          {
+                            "color": "#095AD2",
+                          },
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -91149,6 +91527,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -91167,7 +91546,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                             {
                               "height": 32.5,
                               "marginLeft": 5,
-                              "marginTop": -5,
                             },
                           ]
                         }
@@ -91506,56 +91884,69 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
               >
                 <View
-                  accessibilityLabel=""
-                  accessibilityRole="image"
-                  accessible={false}
                   style={
-                    [
-                      {
-                        "bottom": 0,
-                        "height": 32.5,
-                        "width": 32.5,
-                      },
-                      {
-                        "height": 32.5,
-                        "marginLeft": 5,
-                        "marginTop": -5,
-                      },
-                    ]
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
                   }
-                  testID="read-receipt-unread"
                 >
-                  <Text
+                  <View
+                    accessibilityLabel=""
+                    accessibilityRole="image"
                     accessible={false}
-                    allowFontScaling={false}
-                    selectable={false}
                     style={
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-24242538",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                          "includeFontPadding": false,
-                          "position": "absolute",
+                          "height": 32.5,
+                          "width": 32.5,
                         },
                         {
-                          "fontSize": 32.5,
-                        },
-                        {
-                          "color": "#9EA2A8",
+                          "height": 32.5,
+                          "marginLeft": 5,
                         },
                       ]
                     }
+                    testID="read-receipt-unread"
                   >
-                    
-                  </Text>
+                    <Text
+                      accessible={false}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "bottom": 0,
+                            "fontFamily": "custom-24242538",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                            "includeFontPadding": false,
+                            "position": "absolute",
+                          },
+                          {
+                            "fontSize": 32.5,
+                          },
+                          {
+                            "color": "#9EA2A8",
+                          },
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -91911,6 +92302,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -91929,7 +92321,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                             {
                               "height": 32.5,
                               "marginLeft": 5,
-                              "marginTop": -5,
                             },
                           ]
                         }
@@ -92268,56 +92659,69 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
               >
                 <View
-                  accessibilityLabel=""
-                  accessibilityRole="image"
-                  accessible={false}
                   style={
-                    [
-                      {
-                        "bottom": 0,
-                        "height": 32.5,
-                        "width": 32.5,
-                      },
-                      {
-                        "height": 32.5,
-                        "marginLeft": 5,
-                        "marginTop": -5,
-                      },
-                    ]
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
                   }
-                  testID="read-receipt-read"
                 >
-                  <Text
+                  <View
+                    accessibilityLabel=""
+                    accessibilityRole="image"
                     accessible={false}
-                    allowFontScaling={false}
-                    selectable={false}
                     style={
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-24242538",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                          "includeFontPadding": false,
-                          "position": "absolute",
+                          "height": 32.5,
+                          "width": 32.5,
                         },
                         {
-                          "fontSize": 32.5,
-                        },
-                        {
-                          "color": "#095AD2",
+                          "height": 32.5,
+                          "marginLeft": 5,
                         },
                       ]
                     }
+                    testID="read-receipt-read"
                   >
-                    
-                  </Text>
+                    <Text
+                      accessible={false}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "bottom": 0,
+                            "fontFamily": "custom-24242538",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                            "includeFontPadding": false,
+                            "position": "absolute",
+                          },
+                          {
+                            "fontSize": 32.5,
+                          },
+                          {
+                            "color": "#095AD2",
+                          },
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -92708,6 +93112,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -93345,6 +93750,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -94310,6 +94716,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -95141,6 +95548,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -96049,6 +96457,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -96673,6 +97082,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -97404,6 +97814,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -98179,6 +98590,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -98803,6 +99215,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -99534,6 +99947,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -100318,6 +100732,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -101172,6 +101587,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -101900,6 +102316,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -102821,6 +103238,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -103458,6 +103876,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -104142,6 +104561,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -104973,6 +105393,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -105904,6 +106325,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -110985,6 +111407,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -116109,6 +116532,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -116484,6 +116908,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -116827,7 +117252,6 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       {
                         "height": 25,
                         "marginLeft": 5,
-                        "marginTop": -5,
                       },
                     ]
                   }
@@ -117275,6 +117699,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -117650,6 +118075,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -117993,7 +118419,6 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       {
                         "height": 25,
                         "marginLeft": 5,
-                        "marginTop": -5,
                       },
                     ]
                   }
@@ -118441,6 +118866,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -118816,6 +119242,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -119159,7 +119586,6 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       {
                         "height": 25,
                         "marginLeft": 5,
-                        "marginTop": -5,
                       },
                     ]
                   }
@@ -119620,6 +120046,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -119954,55 +120381,69 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
               >
                 <View
-                  accessibilityLabel=""
-                  accessibilityRole="image"
-                  accessible={false}
                   style={
-                    [
-                      {
-                        "bottom": 0,
-                        "height": 16,
-                        "width": 16.5,
-                      },
-                      {
-                        "height": 16,
-                        "marginLeft": 5,
-                      },
-                    ]
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
                   }
-                  testID="Message without header-pinned"
                 >
-                  <Text
+                  <View
+                    accessibilityLabel=""
+                    accessibilityRole="image"
                     accessible={false}
-                    allowFontScaling={false}
-                    selectable={false}
                     style={
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-24242538",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                          "includeFontPadding": false,
-                          "position": "absolute",
+                          "height": 16,
+                          "width": 16.5,
                         },
                         {
-                          "fontSize": 16,
-                        },
-                        {
-                          "color": "#2F343D",
+                          "height": 16,
+                          "marginLeft": 5,
                         },
                       ]
                     }
+                    testID="Message without header-pinned"
                   >
-                    
-                  </Text>
+                    <Text
+                      accessible={false}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "bottom": 0,
+                            "fontFamily": "custom-24242538",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                            "includeFontPadding": false,
+                            "position": "absolute",
+                          },
+                          {
+                            "fontSize": 16,
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -120371,6 +120812,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -120727,55 +121169,69 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
               >
                 <View
-                  accessibilityLabel=""
-                  accessibilityRole="image"
-                  accessible={false}
                   style={
-                    [
-                      {
-                        "bottom": 0,
-                        "height": 20.8,
-                        "width": 21.45,
-                      },
-                      {
-                        "height": 20.8,
-                        "marginLeft": 5,
-                      },
-                    ]
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
                   }
-                  testID="Message without header-pinned"
                 >
-                  <Text
+                  <View
+                    accessibilityLabel=""
+                    accessibilityRole="image"
                     accessible={false}
-                    allowFontScaling={false}
-                    selectable={false}
                     style={
                       [
                         {
                           "bottom": 0,
-                          "fontFamily": "custom-24242538",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                          "includeFontPadding": false,
-                          "position": "absolute",
+                          "height": 20.8,
+                          "width": 21.45,
                         },
                         {
-                          "fontSize": 20.8,
-                        },
-                        {
-                          "color": "#2F343D",
+                          "height": 20.8,
+                          "marginLeft": 5,
                         },
                       ]
                     }
+                    testID="Message without header-pinned"
                   >
-                    
-                  </Text>
+                    <Text
+                      accessible={false}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "bottom": 0,
+                            "fontFamily": "custom-24242538",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                            "includeFontPadding": false,
+                            "position": "absolute",
+                          },
+                          {
+                            "fontSize": 20.8,
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -121166,6 +121622,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -122198,6 +122655,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -123695,6 +124153,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -124727,6 +125186,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -126269,6 +126729,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -128065,6 +128526,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -132740,6 +133202,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -133276,6 +133739,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -134028,6 +134492,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -134564,6 +135029,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -135360,6 +135826,7 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -135807,6 +136274,7 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -149064,6 +149532,7 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -149507,6 +149976,7 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -150002,6 +150472,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -150672,6 +151143,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -151386,6 +151858,7 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -151833,6 +152306,7 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -152324,6 +152798,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -152823,6 +153298,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -153366,6 +153842,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -154647,6 +155124,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -155972,6 +156450,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -156612,6 +157091,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -157089,11 +157569,25 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -157482,6 +157976,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -157976,6 +158471,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -158398,6 +158894,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -158892,6 +159389,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -159336,6 +159834,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -159976,6 +160475,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -160475,11 +160975,25 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -160868,6 +161382,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -161243,6 +161758,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -161586,7 +162102,6 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       {
                         "height": 25,
                         "marginLeft": 5,
-                        "marginTop": -5,
                       },
                     ]
                   }
@@ -162034,6 +162549,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -162409,6 +162925,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -162752,7 +163269,6 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       {
                         "height": 25,
                         "marginLeft": 5,
-                        "marginTop": -5,
                       },
                     ]
                   }
@@ -163200,6 +163716,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -163575,6 +164092,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
               <View
                 style={
                   {
+                    "alignItems": "center",
                     "flexDirection": "row",
                   }
                 }
@@ -163918,7 +164436,6 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       {
                         "height": 25,
                         "marginLeft": 5,
-                        "marginTop": -5,
                       },
                     ]
                   }
@@ -164401,6 +164918,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -164879,6 +165397,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -165348,6 +165867,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -165826,6 +166346,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -166317,6 +166838,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -167198,11 +167720,25 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -167958,11 +168494,25 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -169030,11 +169580,25 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -169401,6 +169965,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -170031,11 +170596,25 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -170516,11 +171095,25 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -170940,11 +171533,25 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -172078,11 +172685,25 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -172471,6 +173092,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -173414,11 +174036,25 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -173785,6 +174421,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -174493,11 +175130,25 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -174886,6 +175537,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -175578,6 +176230,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -176808,6 +177461,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -177628,6 +178282,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -178281,6 +178936,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -178969,11 +179625,25 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -179349,6 +180019,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -180147,6 +180818,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -180844,6 +181516,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -181473,11 +182146,25 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -181853,6 +182540,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -182596,6 +183284,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -183246,6 +183935,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -183788,6 +184478,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                     <View
                       style={
                         {
+                          "alignItems": "center",
                           "flexDirection": "row",
                         }
                       }
@@ -184407,11 +185098,25 @@ exports[`Story Snapshots: WithoutHeader should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 22,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -184632,11 +185337,25 @@ exports[`Story Snapshots: WithoutHeaderLargeFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "flexDirection": "row",
-                  }
+                  [
+                    {
+                      "justifyContent": "center",
+                    },
+                    {
+                      "height": 28.6,
+                    },
+                  ]
                 }
-              />
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>

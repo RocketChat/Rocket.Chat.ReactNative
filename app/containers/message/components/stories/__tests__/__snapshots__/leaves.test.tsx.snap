@@ -4299,7 +4299,6 @@ exports[`Story Snapshots: ReadReceipt should match snapshot 1`] = `
       {
         "height": 25,
         "marginLeft": 5,
-        "marginTop": -5,
       },
     ]
   }
@@ -4350,7 +4349,6 @@ exports[`Story Snapshots: ReadReceiptUnread should match snapshot 1`] = `
       {
         "height": 25,
         "marginLeft": 5,
-        "marginTop": -5,
       },
     ]
   }
@@ -5977,6 +5975,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
   <View
     style={
       {
+        "alignItems": "center",
         "flexDirection": "row",
       }
     }
