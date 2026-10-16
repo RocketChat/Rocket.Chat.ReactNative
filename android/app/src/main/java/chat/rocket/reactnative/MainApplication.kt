@@ -125,8 +125,7 @@ open class MainApplication : Application(), ReactApplication {
 
   private fun openForProbe(database: File): SQLiteDatabase {
     val keepFileOnCorruption = DatabaseErrorHandler { }
-    val flags = SQLiteDatabase.OPEN_READWRITE or SQLiteDatabase.ENABLE_WRITE_AHEAD_LOGGING
-    return SQLiteDatabase.openDatabase(database.path, null, flags, keepFileOnCorruption)
+    return SQLiteDatabase.openDatabase(database.path, null, SQLiteDatabase.OPEN_READONLY, keepFileOnCorruption)
   }
 
   private fun isServersTableEmpty(database: File): Boolean {

@@ -114,7 +114,7 @@ public class AppDelegate: ExpoAppDelegate {
   private func isServersTableEmpty(atPath path: String) -> Bool {
     var database: OpaquePointer?
     defer { sqlite3_close(database) }
-    guard sqlite3_open_v2(path, &database, SQLITE_OPEN_READWRITE, nil) == SQLITE_OK else {
+    guard sqlite3_open_v2(path, &database, SQLITE_OPEN_READONLY, nil) == SQLITE_OK else {
       return false
     }
     var statement: OpaquePointer?
