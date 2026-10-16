@@ -66,6 +66,25 @@ const hasStarted = (state: IApplicationState) => hasRoot(state) && state.app.roo
 
 const waitForAppStart = (signal: AbortSignal) => waitUntil(hasStarted, signal);
 
+const SCREEN_LOCKED_START_TIMEOUT_MS = 10_000;
+
+const waitForAppStartUnlessScreenLocked = async (signal: AbortSignal) => {
+	const startWait = new AbortController();
+	const abortStartWait = () => startWait.abort(signal.reason);
+	signal.addEventListener('abort', abortStartWait);
+	const timer = setTimeout(() => startWait.abort(), SCREEN_LOCKED_START_TIMEOUT_MS);
+	try {
+		await waitForAppStart(startWait.signal);
+	} catch (error) {
+		if (signal.aborted) {
+			throw error;
+		}
+	} finally {
+		clearTimeout(timer);
+		signal.removeEventListener('abort', abortStartWait);
+	}
+};
+
 const waitForNavigatorReady = (signal: AbortSignal) =>
 	new Promise<void>((resolve, reject) => {
 		if (Navigation.navigationRef.current?.isReady()) {
@@ -295,7 +314,7 @@ registerTool({
 		required: ['servers']
 	}),
 	handler: async (_input, { signal }) => {
-		await waitForAppStart(signal);
+		await waitForAppStartUnlessScreenLocked(signal);
 		store.dispatch(appStart({ root: RootEnum.ROOT_LOADING }));
 		store.dispatch(encryptionStop());
 		disconnect();
