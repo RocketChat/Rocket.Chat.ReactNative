@@ -281,10 +281,12 @@ export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: s
 					channelName: name
 				};
 	} else {
-		params = {
-			roomId: rid,
-			roomName: name
-		};
+		params = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0')
+			? { roomId: rid }
+			: {
+					roomId: rid,
+					roomName: name
+				};
 	}
 
 	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
