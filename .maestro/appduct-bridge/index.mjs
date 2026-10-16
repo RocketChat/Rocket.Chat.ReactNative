@@ -3,7 +3,8 @@
 // so this serves the appduct client on 127.0.0.1 for the length of a Maestro run.
 //
 //   POST /link  {}                 { live: true } while the session is up; otherwise mints a
-//                                  bootstrap link, opens it on the device and replies { sessionId }
+//                                  bootstrap link, opens it on the device and replies { sessionId },
+//                                  or { sessionId: null } while the appduct daemon is still starting
 //   POST /wait  { sessionId }      { claimed } once the app claims the session, or after 3s
 //   POST /call  { tool, input }    calls a tool on the session and replies with its result
 //
@@ -69,10 +70,21 @@ const routes = {
 			return { live: true };
 		}
 		dropSession();
-		const { sessionId } = await mintLink();
-		return { live: false, sessionId };
+		try {
+			const { sessionId } = await mintLink();
+			return { live: false, sessionId };
+		} catch (error) {
+			const daemonStillStarting = error.type === 'connection_error';
+			if (!daemonStillStarting) {
+				throw error;
+			}
+			return { live: false, sessionId: null };
+		}
 	},
 	'/wait': async ({ sessionId }) => {
+		if (!sessionId) {
+			return { claimed: false };
+		}
 		try {
 			app = await waitForSession(sessionId, { timeoutMs: 3_000 });
 			return { claimed: true };

@@ -6,7 +6,6 @@ tags:
 ---
 - launchApp:
     appId: ${APP_ID}
-    stopApp: false
 - runFlow: 'appduct-connect.yaml'
 - evalScript: ${output.utils.callAppduct('reset_app')}
 - setPermissions:
