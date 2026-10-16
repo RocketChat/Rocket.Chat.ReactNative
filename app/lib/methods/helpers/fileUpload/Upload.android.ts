@@ -1,7 +1,9 @@
 import * as FileSystem from 'expo-file-system/legacy';
 
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { type IFormData, UploadHttpError, getRetryAfterFromHeaders, parseServerMessage } from './definitions';
+import { getRetryAfterFromHeaders } from '../getRetryAfterFromHeaders';
+import { parseUploadResponse } from '../parseUploadResponse';
+import { type IFormData } from './definitions';
 
 export class Upload {
 	private uploadUrl: string;
@@ -44,57 +46,35 @@ export class Upload {
 		}
 	}
 
-	public send(): Promise<TRoomsMediaResponse> {
-		return new Promise((resolve, reject) => {
-			if (!this.file) {
-				reject(new Error('No file to upload'));
-				return;
-			}
-			this.uploadTask = FileSystem.createUploadTask(
-				this.uploadUrl,
-				this.file.uri,
-				{
-					headers: this.headers,
-					httpMethod: 'POST',
-					uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-					fieldName: this.file.fieldName || 'file',
-					mimeType: this.file.type,
-					parameters: this.formData
-				},
-				data => {
-					if (data.totalBytesSent && data.totalBytesExpectedToSend && this.progressCallback) {
-						this.progressCallback(data.totalBytesSent, data.totalBytesExpectedToSend);
-					}
+	public async send(): Promise<TRoomsMediaResponse> {
+		if (!this.file) {
+			throw new Error('No file to upload');
+		}
+		this.uploadTask = FileSystem.createUploadTask(
+			this.uploadUrl,
+			this.file.uri,
+			{
+				headers: this.headers,
+				httpMethod: 'POST',
+				uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+				fieldName: this.file.fieldName || 'file',
+				mimeType: this.file.type,
+				parameters: this.formData
+			},
+			data => {
+				if (data.totalBytesSent && data.totalBytesExpectedToSend && this.progressCallback) {
+					this.progressCallback(data.totalBytesSent, data.totalBytesExpectedToSend);
 				}
-			);
+			}
+		);
 
-			this.uploadTask
-				.uploadAsync()
-				.then(response => {
-					if (!response) {
-						reject(new Error('Upload failed: no response'));
-						return;
-					}
-					if (response.status >= 200 && response.status < 300) {
-						try {
-							resolve(JSON.parse(response.body));
-						} catch {
-							reject(new Error('Upload failed: invalid server response'));
-						}
-						return;
-					}
-					const serverMessage = parseServerMessage(response.body);
-					const retryAfterSeconds = getRetryAfterFromHeaders(response.headers);
-					reject(new UploadHttpError(response.status, { serverMessage, retryAfterSeconds }));
-				})
-				.catch((error: unknown) => {
-					if (this.isCancelled) {
-						reject(new Error('Upload cancelled'));
-					} else {
-						reject(error);
-					}
-				});
+		const response = await this.uploadTask.uploadAsync().catch((error: unknown) => {
+			throw this.isCancelled ? new Error('Upload cancelled') : error;
 		});
+		if (!response) {
+			throw new Error('Upload failed: no response');
+		}
+		return parseUploadResponse(response.status, response.body, getRetryAfterFromHeaders(response.headers));
 	}
 
 	public cancel(): void {

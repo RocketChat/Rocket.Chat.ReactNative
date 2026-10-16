@@ -12,7 +12,9 @@ import {
 } from './utils';
 import { uploadWithRetry } from './uploadWithRetry';
 import FileUpload from '../helpers/fileUpload';
-import { type IFileUpload, type IFormData, UploadHttpError, parseServerMessage } from '../helpers/fileUpload/definitions';
+import { type IFileUpload, type IFormData } from '../helpers/fileUpload/definitions';
+import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
+import { parseServerMessage } from '../helpers/parseServerMessage';
 import fetch from '../helpers/fetch';
 
 export async function sendFileMessageV2(

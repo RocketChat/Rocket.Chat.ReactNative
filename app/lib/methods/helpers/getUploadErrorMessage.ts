@@ -1,6 +1,6 @@
 import I18n from '~/i18n';
-import { parseRetryAfterFromMessage } from './fileUpload/definitions';
 import { isRetryableUploadError } from './isRetryableUploadError';
+import { parseRetryAfterFromMessage } from './parseRetryAfterFromMessage';
 
 export const getUploadErrorMessage = ({
 	errorStatus,

@@ -1,5 +1,7 @@
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { type IFileUpload, UploadHttpError, parseRetryAfterFromMessage } from '../helpers/fileUpload/definitions';
+import { type IFileUpload } from '../helpers/fileUpload/definitions';
+import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
+import { parseRetryAfterFromMessage } from '../helpers/parseRetryAfterFromMessage';
 import { uploadQueue } from './utils';
 
 const MAX_UPLOAD_ATTEMPTS = 4;

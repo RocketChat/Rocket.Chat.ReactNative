@@ -11,7 +11,7 @@ import {
 	releaseUploadSlot,
 	uploadQueue
 } from '../utils';
-import { UploadHttpError } from '~/lib/methods/helpers/fileUpload/definitions';
+import { UploadHttpError } from '~/lib/methods/helpers/fileUpload/UploadHttpError';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ t: (k: string) => k, isTranslated: () => false }));
@@ -102,7 +102,6 @@ describe('createUploadRecord', () => {
 			update: jest.fn((cb: (u: any) => void) => cb(stale))
 		};
 		mockFind.mockResolvedValue(stale);
-		// uploadQueue is empty -> no live upload -> record is stale
 
 		const [path, record] = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
 

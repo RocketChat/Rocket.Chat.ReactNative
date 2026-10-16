@@ -1,5 +1,5 @@
 import { Upload } from '../Upload';
-import { UploadHttpError } from '../definitions';
+import { UploadHttpError } from '../UploadHttpError';
 
 class MockXHR {
 	static instance: MockXHR;

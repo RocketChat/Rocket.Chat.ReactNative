@@ -1,6 +1,6 @@
 import { getUploadRetryDelay, uploadWithRetry } from '../uploadWithRetry';
 import { uploadQueue } from '../utils';
-import { UploadHttpError } from '../../helpers/fileUpload/definitions';
+import { UploadHttpError } from '../../helpers/fileUpload/UploadHttpError';
 
 const PATH = '/tmp/pic.jpg-GENERAL';
 const RESPONSE = { file: { _id: 'abc', url: '/file/abc' } } as any;

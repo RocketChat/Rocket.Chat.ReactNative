@@ -12,7 +12,8 @@ import log from '../helpers/log';
 import { showToast } from '../helpers/showToast';
 import { getUploadErrorMessage } from '../helpers/getUploadErrorMessage';
 import { isRetryableUploadError } from '../helpers/isRetryableUploadError';
-import { type IFileUpload, UploadHttpError } from '../helpers/fileUpload/definitions';
+import { type IFileUpload } from '../helpers/fileUpload/definitions';
+import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
 
 export const uploadQueue: { [index: string]: IFileUpload } = {};
 
