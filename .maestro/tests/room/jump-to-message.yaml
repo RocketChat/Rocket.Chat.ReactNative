@@ -99,8 +99,10 @@ tags:
     commands:
       - extendedWaitUntil:
           visible:
-            id: 'room-view-search'
+            id: 'room-view-header-kebab'
           timeout: 60000
+      - tapOn:
+          id: 'room-view-header-kebab'
       - tapOn:
           id: 'room-view-search'
 - extendedWaitUntil:
@@ -280,6 +282,8 @@ tags:
     when:
       platform: android
     commands:
+      - tapOn:
+          id: 'room-view-header-kebab'
       - tapOn:
           id: 'room-view-search'
 - extendedWaitUntil:

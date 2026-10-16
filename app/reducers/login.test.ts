@@ -10,7 +10,7 @@ import {
 	setUser
 } from '../actions/login';
 import { initialState } from './login';
-import { mockedStore } from './mockedStore';
+import { createMockedStore, mockedStore } from './mockedStore';
 
 describe('test selectedUsers reducer', () => {
 	it('should return initial state', () => {
@@ -78,6 +78,44 @@ describe('test selectedUsers reducer', () => {
 		mockedStore.dispatch(setUser(user));
 		const state = mockedStore.getState().login.user.username;
 		expect(state).toEqual(user.username);
+	});
+
+	it('should keep the same user object when setUser changes nothing', () => {
+		const before = mockedStore.getState().login.user;
+		mockedStore.dispatch(setUser({ username: before.username, status: before.status }));
+		expect(mockedStore.getState().login.user).toBe(before);
+	});
+
+	it('should replace the user object when setUser changes a field', () => {
+		const before = mockedStore.getState().login.user;
+		mockedStore.dispatch(setUser({ statusText: 'Lunch' }));
+		const after = mockedStore.getState().login.user;
+		expect(after).not.toBe(before);
+		expect(after.statusText).toEqual('Lunch');
+		expect(after.username).toEqual(before.username);
+	});
+
+	it('should keep the user settings when the same user logs in again', () => {
+		const settings = { preferences: { convertAsciiEmoji: true } };
+		const store = createMockedStore();
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings }));
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito' }));
+		expect(store.getState().login.user.settings).toBe(settings);
+	});
+
+	it('should keep the same user object when the same user logs in with unchanged fields', () => {
+		const store = createMockedStore();
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'] }));
+		const before = store.getState().login.user;
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'] }));
+		expect(store.getState().login.user).toBe(before);
+	});
+
+	it('should drop the user settings when a different user logs in', () => {
+		const store = createMockedStore();
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: true } } }));
+		store.dispatch(loginSuccess({ id: 'other-id', username: 'other' }));
+		expect(store.getState().login.user.settings).toBeUndefined();
 	});
 
 	it('should clear user after clearUser', () => {

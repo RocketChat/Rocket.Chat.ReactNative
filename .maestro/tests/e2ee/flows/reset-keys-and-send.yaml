@@ -45,8 +45,10 @@ env:
     commands:
       - extendedWaitUntil:
           visible:
-            id: 'room-view-header-encryption'
+            id: 'room-view-header-kebab'
           timeout: 60000
+      - tapOn:
+          id: 'room-view-header-kebab'
       - tapOn:
           id: 'room-view-header-encryption'
 - runFlow:

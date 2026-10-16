@@ -4,22 +4,22 @@ import sharedStyles from '~/views/Styles';
 
 const styles = StyleSheet.create({
 	containerNormal: {
-		paddingVertical: 3,
-		paddingHorizontal: 5,
+		paddingHorizontal: 4,
 		alignItems: 'center',
-		justifyContent: 'center',
-		marginLeft: 10
+		justifyContent: 'center'
 	},
 	containerSmall: {
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
 	text: {
-		fontSize: 13,
-		...sharedStyles.textSemibold
+		fontSize: 12,
+		lineHeight: 18,
+		...sharedStyles.textBold
 	},
 	textSmall: {
-		fontSize: 10
+		fontSize: 10,
+		...sharedStyles.textSemibold
 	}
 });
 
@@ -34,13 +34,13 @@ interface ICountBadge {
 
 const CountBadge = ({ text, backgroundColor, color, small, style, testID }: ICountBadge) => {
 	const { fontScale } = useWindowDimensions();
-	const minWidth = small ? 11 + text.length * 5 : 21;
+	const minWidth = small ? 11 + text.length * 5 : 18;
 
 	return (
 		<View
 			style={[
 				small ? styles.containerSmall : styles.containerNormal,
-				{ backgroundColor, minWidth: minWidth * fontScale, borderRadius: 10.5 * fontScale },
+				{ backgroundColor, minWidth: minWidth * fontScale, borderRadius: 10 * fontScale },
 				style
 			]}
 			testID={testID}>

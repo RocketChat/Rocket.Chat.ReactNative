@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-native';
+import { renderHook } from '@testing-library/react-native';
 
 import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { events, logEvent } from '~/lib/methods/helpers/log';
@@ -21,20 +21,17 @@ jest.mock('~/lib/hooks/useSetting', () => ({ useSetting: () => mockLivechatReque
 
 let mockUserId = 'user-1';
 jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: () => mockUserId }));
-jest.mock('~/theme', () => ({ useTheme: () => ({ theme: 'light', colors: { fontDanger: '#f00' } }) }));
+jest.mock('~/theme', () => ({ useTheme: () => ({ theme: 'light', colors: { buttonBackgroundDangerDefault: '#f00' } }) }));
 jest.mock('~/lib/methods/helpers/log', () => ({
 	...jest.requireActual('~/lib/methods/helpers/log'),
 	logEvent: jest.fn()
 }));
 
-let mockHasNativeHeaderBar = true;
-jest.mock('~/lib/methods/helpers', () =>
-	Object.defineProperty(
-		{ ...jest.requireActual('~/lib/methods/helpers'), showConfirmationAlert: jest.fn(), showErrorAlert: jest.fn() },
-		'hasNativeHeaderBar',
-		{ get: () => mockHasNativeHeaderBar }
-	)
-);
+jest.mock('~/lib/methods/helpers', () => ({
+	...jest.requireActual('~/lib/methods/helpers'),
+	showConfirmationAlert: jest.fn(),
+	showErrorAlert: jest.fn()
+}));
 
 let mockRoomState: Record<string, unknown>;
 jest.mock('zustand', () => ({
@@ -68,7 +65,6 @@ jest.mock('~/lib/hooks/useVideoConf', () => ({ useVideoConf: () => mockVideoConf
 
 const mockMediaCall = {
 	openNewMediaCall: jest.fn(),
-	startCallImmediate: jest.fn(),
 	hasMediaCallPermission: false,
 	isInActiveCall: false
 };
@@ -90,11 +86,11 @@ const moreMenuOf = (actions: IHeaderAction[]) => {
 };
 
 const actionByTestID = (actions: IHeaderAction[], testID: string) => actions.find(action => action.testID === testID);
+const menuItemByTestID = (testID: string) => moreMenuOf(renderRoomActions()).find(item => item.testID === testID);
 
 describe('useRoomHeaderActions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockHasNativeHeaderBar = true;
 		mockIsMasterDetail = false;
 		mockLivechatRequestComment = false;
 		mockUserId = 'user-1';
@@ -154,47 +150,18 @@ describe('useRoomHeaderActions', () => {
 		expect(result.current).toBe(mode);
 	});
 
-	describe('room on the native header bar', () => {
-		it('lists search in the more menu and runs the chosen action', () => {
-			const menu = moreMenuOf(renderRoomActions());
+	describe('room', () => {
+		it('shows only the more menu, holding search, when nothing else is present', () => {
+			const actions = renderRoomActions();
+			const menu = moreMenuOf(actions);
 
+			expect(labelsOf(actions)).toEqual(['More']);
 			expect(labelsOf(menu)).toEqual(['Search messages']);
 			menu[0].onPress();
 			expect(mockGoSearchView).toHaveBeenCalled();
 		});
 
-		it('keeps the two highest priority actions visible and moves the rest into the menu, keeping disabled state', () => {
-			mockButtonsData = { ...mockButtonsData, threadsEnabled: true, hasE2EEWarning: true, canToggleEncryption: false };
-			mockMediaCall.hasMediaCallPermission = true;
-
-			const actions = renderRoomActions();
-
-			expect(labelsOf(actions)).toEqual(['Encrypted', 'Threads', 'More']);
-			expect(moreMenuOf(actions).map(item => [item.label, !!item.disabled])).toEqual([
-				['Call', true],
-				['Search messages', true]
-			]);
-		});
-
-		it('keeps the test id and the danger tint of actions moved into the menu', () => {
-			mockButtonsData = { ...mockButtonsData, threadsEnabled: true, issuesWithNotifications: true };
-			mockMediaCall.hasMediaCallPermission = true;
-
-			const menu = moreMenuOf(renderRoomActions());
-
-			expect(menu.map(item => [item.testID, !!item.destructive])).toEqual([
-				['room-view-push-troubleshoot', true],
-				['room-view-search', false]
-			]);
-		});
-	});
-
-	describe('room on the JS header', () => {
-		beforeEach(() => {
-			mockHasNativeHeaderBar = false;
-		});
-
-		it('shows every present action followed by search, with no more menu', () => {
+		it('keeps threads in the bar and moves every other action into the more menu', () => {
 			mockButtonsData = {
 				...mockButtonsData,
 				threadsEnabled: true,
@@ -206,14 +173,13 @@ describe('useRoomHeaderActions', () => {
 
 			const actions = renderRoomActions();
 
-			expect(actions.map(action => action.testID)).toEqual([
+			expect(actions.map(action => action.testID)).toEqual(['room-view-header-threads', 'room-view-header-kebab']);
+			expect(moreMenuOf(actions).map(item => item.testID)).toEqual([
+				'room-view-header-call',
 				'room-view-header-encryption',
 				'room-view-push-troubleshoot',
-				'room-view-header-call',
-				'room-view-header-threads',
 				'room-view-search'
 			]);
-			expect(actions.some(action => action.menu)).toBe(false);
 		});
 
 		it('offers encryption while the other actions are disabled by the e2ee warning', () => {
@@ -221,33 +187,38 @@ describe('useRoomHeaderActions', () => {
 
 			const actions = renderRoomActions();
 
-			expect(actionByTestID(actions, 'room-view-header-encryption')?.disabled).toBe(false);
+			expect(menuItemByTestID('room-view-header-encryption')?.disabled).toBe(false);
 			expect(actionByTestID(actions, 'room-view-header-threads')?.disabled).toBe(true);
-			expect(actionByTestID(actions, 'room-view-search')?.disabled).toBe(true);
+			expect(menuItemByTestID('room-view-search')?.disabled).toBe(true);
 		});
 
 		it('disables encryption when the user cannot toggle it', () => {
 			mockButtonsData = { ...mockButtonsData, hasE2EEWarning: true, canToggleEncryption: false };
 
-			expect(actionByTestID(renderRoomActions(), 'room-view-header-encryption')?.disabled).toBe(true);
+			expect(menuItemByTestID('room-view-header-encryption')?.disabled).toBe(true);
 		});
 
-		it('tints the troubleshoot action only when notifications have issues', () => {
+		it('badges the more menu in red whenever troubleshooting is listed', () => {
 			mockButtonsData = { ...mockButtonsData, issuesWithNotifications: true };
-			expect(actionByTestID(renderRoomActions(), 'room-view-push-troubleshoot')?.tintColor).toBe('#f00');
+			expect(actionByTestID(renderRoomActions(), 'room-view-header-kebab')?.badge).toEqual({ color: '#f00' });
+			expect(menuItemByTestID('room-view-push-troubleshoot')?.destructive).toBe(true);
 
 			mockButtonsData = { ...mockButtonsData, issuesWithNotifications: false, disableNotifications: true };
-			const troubleshoot = actionByTestID(renderRoomActions(), 'room-view-push-troubleshoot');
-			expect(troubleshoot).toBeDefined();
-			expect(troubleshoot?.tintColor).toBeUndefined();
+			expect(actionByTestID(renderRoomActions(), 'room-view-header-kebab')?.badge).toEqual({ color: '#f00' });
+			expect(menuItemByTestID('room-view-push-troubleshoot')?.destructive).toBe(false);
+		});
+
+		it('leaves the more menu without a badge when troubleshooting is not listed', () => {
+			expect(menuItemByTestID('room-view-push-troubleshoot')).toBeUndefined();
+			expect(actionByTestID(renderRoomActions(), 'room-view-header-kebab')?.badge).toBeUndefined();
 		});
 
 		it('labels the notifications action by where it leads', () => {
 			mockButtonsData = { ...mockButtonsData, issuesWithNotifications: true };
-			expect(actionByTestID(renderRoomActions(), 'room-view-push-troubleshoot')?.label).toBe('Troubleshooting');
+			expect(menuItemByTestID('room-view-push-troubleshoot')?.label).toBe('Troubleshooting');
 
 			mockButtonsData = { ...mockButtonsData, issuesWithNotifications: false, disableNotifications: true };
-			expect(actionByTestID(renderRoomActions(), 'room-view-push-troubleshoot')?.label).toBe('Notification preferences');
+			expect(menuItemByTestID('room-view-push-troubleshoot')?.label).toBe('Notification preferences');
 		});
 
 		it('hides the threads action when threads are disabled', () => {
@@ -258,7 +229,7 @@ describe('useRoomHeaderActions', () => {
 			mockButtonsData = { ...mockButtonsData, isSelfDm: true };
 			mockMediaCall.hasMediaCallPermission = true;
 
-			expect(actionByTestID(renderRoomActions(), 'room-view-header-call')).toBeUndefined();
+			expect(menuItemByTestID('room-view-header-call')).toBeUndefined();
 		});
 
 		it('badges threads with the unread thread count in the unread style color', () => {
@@ -280,16 +251,7 @@ describe('useRoomHeaderActions', () => {
 	});
 
 	describe('call action', () => {
-		beforeEach(() => {
-			mockHasNativeHeaderBar = false;
-			jest.useFakeTimers();
-		});
-
-		afterEach(() => {
-			jest.useRealTimers();
-		});
-
-		const callAction = () => actionByTestID(renderRoomActions(), 'room-view-header-call');
+		const callAction = () => menuItemByTestID('room-view-header-call');
 
 		it('is absent without media call permission and with calls disabled', () => {
 			expect(callAction()).toBeUndefined();
@@ -308,33 +270,18 @@ describe('useRoomHeaderActions', () => {
 			expect(callAction()?.disabled).toBe(true);
 		});
 
-		it('opens the media call sheet after the double tap window on a single tap', () => {
+		it('opens the media call sheet', () => {
 			mockMediaCall.hasMediaCallPermission = true;
 
-			callAction()?.onPress?.();
+			callAction()?.onPress();
 
-			expect(mockMediaCall.openNewMediaCall).not.toHaveBeenCalled();
-			act(() => jest.advanceTimersByTime(300));
 			expect(mockMediaCall.openNewMediaCall).toHaveBeenCalled();
-			expect(mockMediaCall.startCallImmediate).not.toHaveBeenCalled();
-		});
-
-		it('starts the call immediately on a double tap', () => {
-			mockMediaCall.hasMediaCallPermission = true;
-			const onPress = callAction()?.onPress;
-
-			onPress?.();
-			onPress?.();
-
-			expect(mockMediaCall.startCallImmediate).toHaveBeenCalled();
-			act(() => jest.advanceTimersByTime(300));
-			expect(mockMediaCall.openNewMediaCall).not.toHaveBeenCalled();
 		});
 
 		it('shows the video conference sheet when calls are enabled without media call permission', () => {
 			mockVideoConf.callEnabled = true;
 
-			callAction()?.onPress?.();
+			callAction()?.onPress();
 
 			expect(mockVideoConf.showInitCallActionSheet).toHaveBeenCalled();
 		});

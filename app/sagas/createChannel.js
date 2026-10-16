@@ -10,6 +10,7 @@ import { events, logEvent } from '../lib/methods/helpers/log';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { createTeam, createGroupChat, createChannel, addRoomsToTeam } from '../lib/services/restApi';
+import { assignRoomToCategory } from '../lib/methods/assignRoomToCategory';
 import { Encryption } from '../lib/encryption';
 
 const handleRequest = function* handleRequest({ data }) {
@@ -74,6 +75,7 @@ const handleRequest = function* handleRequest({ data }) {
 		} catch {
 			// do nothing
 		}
+		yield call(assignRoomToCategory, sub.rid, data.category);
 		yield put(createChannelSuccess(sub));
 	} catch (err) {
 		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CR_CREATE_F']);
