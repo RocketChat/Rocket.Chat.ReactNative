@@ -55,7 +55,7 @@ describe('sendFileMessage', () => {
 		expect(finalizeFailedUpload).not.toHaveBeenCalled();
 	});
 
-	it('reports a failure for the original file path and the attempt that failed', async () => {
+	it('reports a failure under the upload key and for the attempt that failed', async () => {
 		arrange();
 		const error = new Error('boom');
 		(uploadWithRetry as jest.Mock).mockImplementation(async (path: string, createUpload: () => unknown) => {
@@ -66,7 +66,7 @@ describe('sendFileMessage', () => {
 		await send();
 
 		const [args] = (finalizeFailedUpload as jest.Mock).mock.calls[0];
-		expect(args).toMatchObject({ queueKey: UPLOAD_PATH, filePath: '/tmp/pic.jpg', rid: 'GENERAL', error });
+		expect(args).toMatchObject({ queueKey: UPLOAD_PATH, error });
 		expect(args.upload).toBe(firstAttempt());
 		expect(releaseUploadSlot).not.toHaveBeenCalled();
 	});
@@ -79,7 +79,7 @@ describe('sendFileMessage', () => {
 		await send();
 
 		const [args] = (finalizeFailedUpload as jest.Mock).mock.calls[0];
-		expect(args).toMatchObject({ filePath: '/tmp/pic.jpg', error, upload: null });
+		expect(args).toMatchObject({ queueKey: UPLOAD_PATH, error, upload: null });
 		expect(uploadWithRetry).not.toHaveBeenCalled();
 	});
 });

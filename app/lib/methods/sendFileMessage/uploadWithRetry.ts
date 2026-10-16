@@ -1,6 +1,6 @@
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import { type IFileUpload, UploadHttpError, parseRetryAfterFromMessage } from '../helpers/fileUpload/definitions';
-import { UploadSupersededError, uploadQueue } from './utils';
+import { uploadQueue } from './utils';
 
 const MAX_UPLOAD_ATTEMPTS = 4;
 
@@ -27,7 +27,7 @@ export const uploadWithRetry = async (uploadPath: string, createUpload: () => IF
 		try {
 			const response = await upload.send();
 			if (!isCurrentAttempt(uploadPath, upload)) {
-				throw new UploadSupersededError();
+				throw new Error('Upload superseded by a newer attempt on the same path');
 			}
 			return response;
 		} catch (error) {

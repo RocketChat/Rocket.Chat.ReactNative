@@ -1,11 +1,11 @@
-import { sendFileMessage } from './index';
+import { sendFileMessage } from '../index';
 import { store } from '~/lib/store/auxStore';
-import { sendFileMessage as sendFileMessageV1 } from './sendFileMessage';
-import { sendFileMessageV2 } from './sendFileMessageV2';
+import { sendFileMessage as sendFileMessageV1 } from '../sendFileMessage';
+import { sendFileMessageV2 } from '../sendFileMessageV2';
 
 jest.mock('~/lib/store/auxStore', () => ({ store: { getState: jest.fn() } }));
-jest.mock('./sendFileMessage', () => ({ sendFileMessage: jest.fn() }));
-jest.mock('./sendFileMessageV2', () => ({ sendFileMessageV2: jest.fn() }));
+jest.mock('../sendFileMessage', () => ({ sendFileMessage: jest.fn() }));
+jest.mock('../sendFileMessageV2', () => ({ sendFileMessageV2: jest.fn() }));
 
 const args: Parameters<typeof sendFileMessage> = [
 	'rid1',

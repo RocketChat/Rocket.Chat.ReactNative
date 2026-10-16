@@ -16,13 +16,6 @@ import { type IFileUpload, UploadHttpError } from '../helpers/fileUpload/definit
 
 export const uploadQueue: { [index: string]: IFileUpload } = {};
 
-export class UploadSupersededError extends Error {
-	constructor() {
-		super('Upload superseded by a newer attempt on the same path');
-		this.name = 'UploadSupersededError';
-	}
-}
-
 export const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 
 export function isUploadActive(path: string, rid: string): boolean {
@@ -57,10 +50,10 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
-export const persistUploadError = async (path: string, rid: string, error?: unknown) => {
+export const persistUploadError = async (queueKey: string, error: unknown) => {
 	try {
 		const db = database.active;
-		const uploadRecord = await getUploadByPath(getUploadPath(path, rid));
+		const uploadRecord = await getUploadByPath(queueKey);
 		if (!uploadRecord) {
 			return;
 		}
@@ -84,14 +77,10 @@ export const persistUploadError = async (path: string, rid: string, error?: unkn
 
 export const finalizeFailedUpload = async ({
 	queueKey,
-	filePath,
-	rid,
 	error,
 	upload
 }: {
 	queueKey: string;
-	filePath: string;
-	rid: string;
 	error: unknown;
 	upload: IFileUpload | null;
 }): Promise<void> => {
@@ -99,7 +88,7 @@ export const finalizeFailedUpload = async ({
 		return;
 	}
 	releaseUploadSlot(queueKey, upload);
-	await persistUploadError(filePath, rid, error);
+	await persistUploadError(queueKey, error);
 	throw error;
 };
 

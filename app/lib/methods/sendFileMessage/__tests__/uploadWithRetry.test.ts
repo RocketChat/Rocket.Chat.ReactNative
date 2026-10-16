@@ -1,5 +1,5 @@
 import { getUploadRetryDelay, uploadWithRetry } from '../uploadWithRetry';
-import { UploadSupersededError, uploadQueue } from '../utils';
+import { uploadQueue } from '../utils';
 import { UploadHttpError } from '../../helpers/fileUpload/definitions';
 
 const PATH = '/tmp/pic.jpg-GENERAL';
@@ -146,10 +146,10 @@ describe('uploadWithRetry', () => {
 	it('does not resolve as successful when a newer attempt has already taken over the queue entry', async () => {
 		const createUpload = uploadThat(jest.fn().mockResolvedValue(RESPONSE));
 
-		const pending = uploadWithRetry(PATH, createUpload).catch(e => e);
+		const pending = uploadWithRetry(PATH, createUpload);
 		uploadQueue[PATH] = { send: jest.fn().mockResolvedValue(RESPONSE), cancel: jest.fn() };
 
-		await expect(pending).resolves.toBeInstanceOf(UploadSupersededError);
+		await expect(pending).rejects.toThrow('superseded');
 	});
 
 	it('does not resolve as successful when the upload was cancelled just before the response arrived', async () => {
@@ -160,7 +160,7 @@ describe('uploadWithRetry', () => {
 			})
 		);
 
-		await expect(uploadWithRetry(PATH, createUpload)).rejects.toBeInstanceOf(UploadSupersededError);
+		await expect(uploadWithRetry(PATH, createUpload)).rejects.toThrow('superseded');
 	});
 
 	it('stops when the upload is cancelled during the request', async () => {

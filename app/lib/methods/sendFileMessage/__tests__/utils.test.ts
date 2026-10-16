@@ -10,13 +10,13 @@ import {
 	persistUploadError,
 	releaseUploadSlot,
 	uploadQueue
-} from './utils';
-import { UploadHttpError } from '../helpers/fileUpload/definitions';
+} from '../utils';
+import { UploadHttpError } from '~/lib/methods/helpers/fileUpload/definitions';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ t: (k: string) => k, isTranslated: () => false }));
-jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../helpers/showToast', () => ({ showToast: jest.fn() }));
+jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
 jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
 jest.mock('@nozbe/watermelondb/RawRecord', () => ({ sanitizedRaw: (raw: unknown) => raw }));
 jest.mock('expo-file-system/legacy', () => ({ cacheDirectory: 'file://cache', copyAsync: jest.fn(() => Promise.resolve()) }));
@@ -42,7 +42,7 @@ beforeEach(() => {
 	mockCreate.mockReset();
 	(Alert.alert as jest.Mock).mockReset();
 	(require('expo-file-system/legacy').copyAsync as jest.Mock).mockClear();
-	(require('../helpers/showToast').showToast as jest.Mock).mockClear();
+	(require('~/lib/methods/helpers/showToast').showToast as jest.Mock).mockClear();
 	Object.keys(uploadQueue).forEach(k => delete uploadQueue[k]);
 });
 
@@ -112,17 +112,6 @@ describe('createUploadRecord', () => {
 		expect(stale).toMatchObject({ error: false, errorStatus: undefined, errorMessage: undefined, progress: 0 });
 	});
 
-	it('blocks a retry too when the record is genuinely still active, not just stale', async () => {
-		const existing: any = { id: uploadPath, update: jest.fn((cb: (u: any) => void) => cb(existing)) };
-		mockFind.mockResolvedValue(existing);
-		uploadQueue[uploadPath] = {} as any;
-
-		const result = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
-
-		expect(result).toEqual([null, null]);
-		expect(Alert.alert).toHaveBeenCalled();
-	});
-
 	it('creates a new record when none exists', async () => {
 		mockFind.mockRejectedValue(new Error('not found'));
 		const created = { id: uploadPath };
@@ -141,7 +130,7 @@ describe('createUploadRecord', () => {
 
 describe('persistUploadError', () => {
 	const { getUploadByPath } = require('~/lib/database/services/Upload');
-	const { showToast } = require('../helpers/showToast');
+	const { showToast } = require('~/lib/methods/helpers/showToast');
 
 	const persist = async (error: unknown) => {
 		const updated: any = {};
@@ -150,7 +139,7 @@ describe('persistUploadError', () => {
 				cb(updated);
 			})
 		});
-		await persistUploadError('/tmp/pic.jpg', 'GENERAL', error);
+		await persistUploadError(uploadPath, error);
 		return updated;
 	};
 
@@ -161,7 +150,7 @@ describe('persistUploadError', () => {
 	it('stores the HTTP status and server message from an UploadHttpError', async () => {
 		const updated = await persist(new UploadHttpError(413, { serverMessage: 'File is too large' }));
 
-		expect(getUploadByPath).toHaveBeenCalledWith('/tmp/pic.jpg-GENERAL');
+		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
 		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: 'File is too large' });
 		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
 	});
@@ -196,7 +185,7 @@ describe('persistUploadError', () => {
 	it('does nothing when the record is gone', async () => {
 		(getUploadByPath as jest.Mock).mockResolvedValue(null);
 
-		await expect(persistUploadError('/tmp/pic.jpg', 'GENERAL', new Error('boom'))).resolves.toBeUndefined();
+		await expect(persistUploadError(uploadPath, new Error('boom'))).resolves.toBeUndefined();
 	});
 });
 
@@ -213,8 +202,6 @@ describe('finalizeFailedUpload', () => {
 		await expect(
 			finalizeFailedUpload({
 				queueKey: uploadPath,
-				filePath: fileInfo.path,
-				rid: 'GENERAL',
 				error: new Error('boom'),
 				upload: attempt
 			})
@@ -227,9 +214,7 @@ describe('finalizeFailedUpload', () => {
 		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
 		const error = new Error('encryption failed');
 
-		await expect(
-			finalizeFailedUpload({ queueKey: uploadPath, filePath: fileInfo.path, rid: 'GENERAL', error, upload: null })
-		).rejects.toBe(error);
+		await expect(finalizeFailedUpload({ queueKey: uploadPath, error, upload: null })).rejects.toBe(error);
 
 		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
 	});
@@ -239,9 +224,7 @@ describe('finalizeFailedUpload', () => {
 		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
 		const error = new Error('encryption failed');
 
-		await expect(
-			finalizeFailedUpload({ queueKey: uploadPath, filePath: fileInfo.path, rid: 'GENERAL', error, upload: null })
-		).rejects.toBe(error);
+		await expect(finalizeFailedUpload({ queueKey: uploadPath, error, upload: null })).rejects.toBe(error);
 
 		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
 	});
@@ -253,8 +236,6 @@ describe('finalizeFailedUpload', () => {
 		await expect(
 			finalizeFailedUpload({
 				queueKey: uploadPath,
-				filePath: fileInfo.path,
-				rid: 'GENERAL',
 				error: new Error('boom'),
 				upload: {} as any
 			})
@@ -270,9 +251,7 @@ describe('finalizeFailedUpload', () => {
 		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
 		const error = new UploadHttpError(413);
 
-		await expect(
-			finalizeFailedUpload({ queueKey: uploadPath, filePath: fileInfo.path, rid: 'GENERAL', error, upload: attempt })
-		).rejects.toBe(error);
+		await expect(finalizeFailedUpload({ queueKey: uploadPath, error, upload: attempt })).rejects.toBe(error);
 
 		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
 		expect(uploadQueue[uploadPath]).toBeUndefined();

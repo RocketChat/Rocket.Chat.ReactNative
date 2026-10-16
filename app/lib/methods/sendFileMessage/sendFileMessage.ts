@@ -20,7 +20,6 @@ export async function sendFileMessage(
 	server: string,
 	user: Partial<Pick<IUser, 'id' | 'token'>>
 ): Promise<void> {
-	const originalFilePath = fileInfo.path;
 	let uploadPath: string | null = '';
 	let upload: IFileUpload | null = null;
 	let uploadRecord: TUploadModel | null;
@@ -83,6 +82,6 @@ export async function sendFileMessage(
 		});
 		releaseUploadSlot(uploadPath, upload);
 	} catch (e) {
-		await finalizeFailedUpload({ queueKey: uploadPath ?? '', filePath: originalFilePath, rid, error: e, upload });
+		await finalizeFailedUpload({ queueKey: uploadPath ?? '', error: e, upload });
 	}
 }

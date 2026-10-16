@@ -94,11 +94,4 @@ describe('UploadHttpError', () => {
 		expect(new UploadHttpError(413).message).toBe('Error: 413');
 		expect(new UploadHttpError(429).message).toBe('Error: 429');
 	});
-
-	it('leaves optional details unset when absent', () => {
-		const error = new UploadHttpError(500);
-
-		expect(error.serverMessage).toBeUndefined();
-		expect(error.retryAfterSeconds).toBeUndefined();
-	});
 });

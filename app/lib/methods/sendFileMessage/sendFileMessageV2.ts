@@ -12,7 +12,7 @@ import {
 } from './utils';
 import { uploadWithRetry } from './uploadWithRetry';
 import FileUpload from '../helpers/fileUpload';
-import { type IFileUpload, type IFormData } from '../helpers/fileUpload/definitions';
+import { type IFileUpload, type IFormData, UploadHttpError, parseServerMessage } from '../helpers/fileUpload/definitions';
 import fetch from '../helpers/fetch';
 
 export async function sendFileMessageV2(
@@ -22,7 +22,6 @@ export async function sendFileMessageV2(
 	server: string,
 	user: Partial<Pick<IUser, 'id' | 'token'>>
 ): Promise<void> {
-	const originalFilePath = fileInfo.path;
 	let uploadPath: string | null = '';
 	let upload: IFileUpload | null = null;
 	let uploadRecord: TUploadModel | null;
@@ -71,7 +70,7 @@ export async function sendFileMessageV2(
 		if (getContent) {
 			content = await getContent(response.file._id, response.file.url);
 		}
-		await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${response.file._id}`, {
+		const confirmResponse = await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${response.file._id}`, {
 			method: 'POST',
 			headers: {
 				...headers,
@@ -85,12 +84,15 @@ export async function sendFileMessageV2(
 				content
 			})
 		});
+		if (!confirmResponse.ok) {
+			throw new UploadHttpError(confirmResponse.status, { serverMessage: parseServerMessage(await confirmResponse.text()) });
+		}
 		await db.write(async () => {
 			await uploadRecord?.destroyPermanently();
 		});
 		releaseUploadSlot(uploadPath, upload);
 	} catch (e: any) {
 		console.error(e);
-		await finalizeFailedUpload({ queueKey: uploadPath ?? '', filePath: originalFilePath, rid, error: e, upload });
+		await finalizeFailedUpload({ queueKey: uploadPath ?? '', error: e, upload });
 	}
 }

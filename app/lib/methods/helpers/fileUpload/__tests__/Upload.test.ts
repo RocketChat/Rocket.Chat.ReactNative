@@ -1,11 +1,10 @@
-import { Upload } from './Upload';
-import { UploadHttpError } from './definitions';
+import { Upload } from '../Upload';
+import { UploadHttpError } from '../definitions';
 
 class MockXHR {
 	static instance: MockXHR;
 
 	status = 0;
-	statusText: string | undefined = undefined;
 	responseText = '';
 	headers: Record<string, string> = {};
 	onload: (() => void) | null = null;
@@ -79,10 +78,8 @@ describe('Upload', () => {
 	it('never rejects with "Error: undefined" when statusText is missing', async () => {
 		const error = await send({ status: 413 }).catch(e => e);
 
-		expect(MockXHR.instance.statusText).toBeUndefined();
 		expect(error).toBeInstanceOf(UploadHttpError);
 		expect(error.message).toBe('Error: 413');
-		expect(error.message).not.toContain('undefined');
 	});
 
 	it('does not invent a server message for a non-JSON body', async () => {

@@ -32,7 +32,7 @@ const arrange = () => {
 	(createUploadRecord as jest.Mock).mockResolvedValue([UPLOAD_PATH, record]);
 	(Encryption.encryptFile as jest.Mock).mockImplementation(async (_rid: string, info: unknown) => ({ file: info }));
 	(copyFileToCacheDirectoryIfNeeded as jest.Mock).mockResolvedValue('file:///cache/pic.jpg');
-	(fetch as jest.Mock).mockResolvedValue({});
+	(fetch as jest.Mock).mockResolvedValue({ ok: true });
 	return record;
 };
 
@@ -77,7 +77,7 @@ describe('sendFileMessageV2 - upload outcome', () => {
 		(fetch as jest.Mock).mockImplementation(() => {
 			expect(releaseUploadSlot).not.toHaveBeenCalled();
 			expect(record.destroyPermanently).not.toHaveBeenCalled();
-			return Promise.resolve({});
+			return Promise.resolve({ ok: true });
 		});
 
 		await send();
@@ -86,7 +86,7 @@ describe('sendFileMessageV2 - upload outcome', () => {
 		expect(releaseUploadSlot).toHaveBeenCalledTimes(1);
 	});
 
-	it('reports a failure for the original file path and the attempt that failed', async () => {
+	it('reports a failure under the upload key and for the attempt that failed', async () => {
 		arrange();
 		const error = new Error('boom');
 		(uploadWithRetry as jest.Mock).mockImplementation(async (path: string, createUpload: () => unknown) => {
@@ -98,7 +98,7 @@ describe('sendFileMessageV2 - upload outcome', () => {
 		await send();
 
 		const [args] = (finalizeFailedUpload as jest.Mock).mock.calls[0];
-		expect(args).toMatchObject({ queueKey: UPLOAD_PATH, filePath: '/tmp/pic.jpg', rid: 'GENERAL', error });
+		expect(args).toMatchObject({ queueKey: UPLOAD_PATH, error });
 		expect(args.upload).toBe(firstAttempt());
 		expect(releaseUploadSlot).not.toHaveBeenCalled();
 	});
@@ -112,7 +112,31 @@ describe('sendFileMessageV2 - upload outcome', () => {
 		await send();
 
 		const [args] = (finalizeFailedUpload as jest.Mock).mock.calls[0];
-		expect(args).toMatchObject({ filePath: '/tmp/pic.jpg', error, upload: null });
+		expect(args).toMatchObject({ queueKey: UPLOAD_PATH, error, upload: null });
 		expect(uploadWithRetry).not.toHaveBeenCalled();
+	});
+
+	it('reports a confirm the server rejected instead of dropping the record', async () => {
+		const record = arrange();
+		(uploadWithRetry as jest.Mock).mockImplementation(startAttempt);
+		(fetch as jest.Mock).mockResolvedValue({
+			ok: false,
+			status: 429,
+			text: () =>
+				Promise.resolve('{"error":"You must wait 12 seconds before trying this endpoint again. [error-too-many-requests]"}')
+		});
+		jest.spyOn(console, 'error').mockImplementation(() => {});
+
+		await send();
+
+		const [args] = (finalizeFailedUpload as jest.Mock).mock.calls[0];
+		expect(args.error).toMatchObject({
+			name: 'UploadHttpError',
+			status: 429,
+			serverMessage: expect.stringContaining('wait 12 seconds')
+		});
+		expect(args.upload).toBe(firstAttempt());
+		expect(record.destroyPermanently).not.toHaveBeenCalled();
+		expect(releaseUploadSlot).not.toHaveBeenCalled();
 	});
 });
