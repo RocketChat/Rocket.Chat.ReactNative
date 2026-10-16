@@ -49,26 +49,34 @@ tags:
     visible:
       text: 'Theme'
     timeout: 60000
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Up
+- repeat:
+    times: 10
+    while:
+      notVisible:
+        focused: true
+        text: 'Mentions with @ symbol.*'
+    commands:
+      - pressKey: Remote Dpad Down
+      - waitForAnimationToEnd:
+          timeout: 1000
 - assertVisible:
+    focused: true
     text: 'Mentions with @ symbol unchecked'
 - pressKey: enter
 - assertVisible:
     text: 'Mentions with @ symbol checked'
-- pressKey: Remote Dpad Down
 
 # open Theme and navigate radio buttons
-- pressKey: Remote Dpad Up
-- pressKey: Remote Dpad Up
-- pressKey: Remote Dpad Up
-- pressKey: Remote Dpad Up
+- repeat:
+    times: 10
+    while:
+      notVisible:
+        focused: true
+        text: 'Theme.*'
+    commands:
+      - pressKey: Remote Dpad Up
+      - waitForAnimationToEnd:
+          timeout: 1000
 - pressKey: enter
 - extendedWaitUntil:
     visible:
@@ -90,12 +98,16 @@ tags:
       id: 'accessibility-view-list'
     timeout: 60000
 - assertVisible: Show alerts as
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
+- repeat:
+    times: 10
+    while:
+      notVisible:
+        focused: true
+        text: 'Show alerts as.*'
+    commands:
+      - pressKey: Remote Dpad Down
+      - waitForAnimationToEnd:
+          timeout: 1000
 - pressKey: enter
 - waitForAnimationToEnd:
     timeout: 1000

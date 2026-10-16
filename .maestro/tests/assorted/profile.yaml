@@ -184,6 +184,8 @@ tags:
 - tapOn:
     id: 'change-password-view-confirm-new-password'
 - inputText: ${output.user.password + 'new'}
+- runFlow:
+    file: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'change-password-view-set-new-password-button'
