@@ -164,7 +164,7 @@ const Touchable = ({
 						onPress={handlePress}
 						onLongPress={handleLongPress}
 						style={{
-							backgroundColor: isFocused ? colors.surfaceTint : colors.surfaceRoom
+							backgroundColor: isFocused ? colors.surfaceSelected : colors.surfaceTint
 						}}>
 						{children}
 					</Touch>

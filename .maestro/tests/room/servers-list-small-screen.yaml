@@ -20,12 +20,7 @@ tags:
 
 # should fully render the Workspaces action sheet on small screens
 # (regression for small-screen ServersList — the Add Server button was cut off on iPhone SE)
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-header-servers-list-button'
+- runFlow: '../../helpers/open-servers-list.yaml'
 - waitForAnimationToEnd
 - extendedWaitUntil:
     visible:

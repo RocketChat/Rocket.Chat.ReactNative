@@ -1,0 +1,144 @@
+diff --git a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
+index a56cb12fc83995973fad7d9e851d6fdbaf999a17..3b65c3a1a0d63c92788acb6b3c4d3fee7138b0c3 100644
+--- a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
++++ b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
+@@ -149,7 +149,13 @@ export function useHeaderConfigProps({
+   headerStyle,
+   headerBlurEffect,
+   headerTintColor,
++  headerSubtitle,
++  headerSubtitleImageSource,
++  headerSubtitleColor,
+   headerTitle,
++  headerTitleImageSource,
++  onHeaderTitlePress,
++  headerTitleTestID,
+   headerTitleAlign,
+   headerTitleStyle,
+   headerTransparent,
+@@ -230,6 +236,15 @@ export function useHeaderConfigProps({
+     tintColor,
+     children: titleText
+   }) : null;
++  if (process.env.NODE_ENV !== 'production') {
++    if (headerTitleElement != null && headerSubtitle != null) {
++      console.warn(`'headerSubtitle' is ignored when 'headerTitle' renders a custom element for the screen '${route.name}'. Remove 'headerSubtitle' or use a string 'headerTitle' instead.`);
++    }
++  }
++  const subtitleText = headerTitleElement != null ? undefined : headerSubtitle;
++  const titleImageSource = headerTitleElement != null ? undefined : headerTitleImageSource;
++  const subtitleImageSource = headerTitleElement != null ? undefined : headerSubtitleImageSource;
++  const titlePress = headerTitleElement != null ? undefined : onHeaderTitlePress;
+   const supportsHeaderSearchBar = typeof isSearchBarAvailableForCurrentPlatform === 'boolean' ? isSearchBarAvailableForCurrentPlatform :
+   // Fallback for older versions of react-native-screens
+   Platform.OS === 'ios' && SearchBar != null;
+@@ -356,7 +371,14 @@ export function useHeaderConfigProps({
+     largeTitleFontSize,
+     largeTitleFontWeight,
+     largeTitleHideShadow: headerLargeTitleShadowVisible === false,
++    subtitle: subtitleText,
++    subtitleImageSource,
++    subtitleColor: headerSubtitleColor,
+     title: titleText,
++    titleImageSource,
++    titlePressEnabled: titlePress != null,
++    onTitlePress: titlePress,
++    titleTestID: headerTitleTestID,
+     titleColor,
+     titleFontFamily,
+     titleFontSize,
+diff --git a/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts b/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
+index c32d1da73d44f5820fbd3272551e5f42c3e6c1dc..55d9210725faf7d14e57fb0f399cf74137488596 100644
+--- a/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
++++ b/node_modules/@react-navigation/native-stack/lib/typescript/src/types.d.ts
+@@ -321,6 +321,74 @@ export type NativeStackNavigationOptions = {
+          */
+         tintColor?: string;
+     }) => React.ReactNode);
++    /**
++     * Image rendered as a leading glyph before the header title.
++     *
++     * Ignored when `headerTitle` renders a custom element.
++     *
++     * Only supported on iOS.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    headerTitleImageSource?: ImageSourcePropType;
++    /**
++     * String to display in the header underneath the title.
++     *
++     * Ignored when `headerTitle` renders a custom element.
++     *
++     * Only supported on iOS.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    headerSubtitle?: string;
++    /**
++     * Image rendered as a leading glyph before the header subtitle.
++     *
++     * Ignored when `headerTitle` renders a custom element.
++     *
++     * Only supported on iOS.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    headerSubtitleImageSource?: ImageSourcePropType;
++    /**
++     * Color of the header subtitle text. Defaults to the title color.
++     *
++     * Only supported on iOS.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    headerSubtitleColor?: ColorValue;
++    /**
++     * Called when the native header title or subtitle is tapped.
++     *
++     * Ignored when `headerTitle` renders a custom element.
++     *
++     * Only supported on iOS.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    onHeaderTitlePress?: () => void;
++    /**
++     * Accessibility identifier of the native header title, for e2e tests.
++     *
++     * Only supported on iOS.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    headerTitleTestID?: string;
+     /**
+      * How to align the the header title.
+      * Defaults to `left` on platforms other than iOS.
+@@ -937,6 +1005,15 @@ export type NativeStackHeaderItemButton = SharedHeaderItem & {
+      * Read more: https://developer.apple.com/documentation/uikit/uibarbuttonitem/isselected
+      */
+     selected?: boolean;
++    showsLabelWithIcon?: boolean;
++    /**
++     * Places the item in the bottom toolbar, beside the search field when it is integrated there.
++     *
++     * @platform ios
++     *
++     * @supported iOS 26 or higher
++     */
++    placement?: 'toolbar';
+ };
+ /**
+  * An action item in a menu.

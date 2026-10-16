@@ -17,8 +17,10 @@ function capGraphemes(str, limit, { ellipsis = false } = {}) {
   return chars.slice(0, limit).join("");
 }
 
+const PR_BUILD_PREFIX = "PR BUILD";
+
 function formatPrChangelog({ title, number, commits }) {
-  const header = `${title} (#${number})`;
+  const header = `${PR_BUILD_PREFIX}\n\n${title} (#${number})`;
   // Reverse to newest-first; gh pr view --json commits returns oldest-first
   const rows = [...commits].reverse().map(c => `${c.oid.slice(0, 7)} ${c.messageHeadline}`);
 
