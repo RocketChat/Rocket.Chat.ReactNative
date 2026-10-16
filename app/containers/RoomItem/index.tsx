@@ -71,7 +71,7 @@ const RoomItemContainer = memo(
 			}
 		};
 
-		const roomActions = onShowActions || swipeEnabled ? showRoomActions : undefined;
+		const onShowRoomActions = onShowActions || swipeEnabled ? showRoomActions : undefined;
 
 		return (
 			<RoomItem
@@ -81,8 +81,8 @@ const RoomItemContainer = memo(
 				isInvited={isInvited}
 				isRead={isRead}
 				onPress={handleOnPress}
-				onLongPress={roomActions && handleOnLongPress}
-				onShowActions={roomActions}
+				onLongPress={onShowRoomActions && handleOnLongPress}
+				onShowActions={onShowRoomActions}
 				date={date}
 				accessibilityDate={accessibilityDate}
 				width={width}
