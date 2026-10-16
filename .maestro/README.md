@@ -80,7 +80,7 @@ pnpm android  # for Android
 pnpm ios      # for iOS
 ```
 
-A release build only carries the Appduct tools the flows use for setup when built with `APPDUCT_ENABLED=true RUNNING_E2E_TESTS=true`. Development builds always carry them.
+A release build only carries the Appduct tools the flows use for setup when built with `RUNNING_E2E_TESTS=true` (set it for `pod install` too). Development builds always carry them.
 
 ## Running Maestro Tests
 

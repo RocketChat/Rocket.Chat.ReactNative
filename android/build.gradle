@@ -46,6 +46,9 @@ subprojects { subproject ->
                 }	
             }	
         }	
+        if (project.name == "appduct_react-native" && System.getenv("RUNNING_E2E_TESTS") == "true") {
+            android.sourceSets.release.java.srcDirs = android.sourceSets.release.java.srcDirs.findAll { it.name != "core-noop" } + file("core")
+        }
     }
 }
 

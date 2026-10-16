@@ -49,9 +49,9 @@ jobs:
       MAESTRO_VERSION: 2.5.1
       APK_PATH: android/app/build/outputs/apk/release/app-release.apk
       REACT_RES_DIR: android/app/build/generated/res/react/release
-      # Links Appduct into the Release build so Maestro can drive setup through it.
+      # Also links Appduct into the Release build so Maestro can drive setup through it.
       # Never set it in a job whose build can ship.
-      APPDUCT_ENABLED: true
+      RUNNING_E2E_TESTS: true
       # The APK is signed with a key made for this run, so it can't install over a store build.
       E2E_KEYSTORE_PASSWORD: e2e-throwaway
       E2E_KEY_ALIAS: e2e
@@ -143,7 +143,6 @@ jobs:
           .github/scripts/swap-android-bundle.sh .native-cache/app-release.apk android/app/build/generated/assets/react/release/index.android.bundle "$APK_PATH"
           echo "swapped=true" >> "$GITHUB_OUTPUT"
         env:
-          RUNNING_E2E_TESTS: true
           KEYSTORE_PATH: android/app/release.keystore
           KEYSTORE_PASSWORD: ${{ env.E2E_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ env.E2E_KEY_ALIAS }}
@@ -177,8 +176,6 @@ jobs:
         if: ${{ steps.swap.outputs.swapped != 'true' }}
         working-directory: android
         run: ./gradlew assembleRelease --build-cache --parallel --max-workers=4 --no-daemon --stacktrace
-        env:
-          RUNNING_E2E_TESTS: true
 
       - name: Prepare native build for cache
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
