@@ -21,6 +21,14 @@ export type RoomsEndpoints = {
 			items: IServerRoom[];
 		};
 	};
+	'rooms.membersOrderedByRole': {
+		GET: (params: { roomId: IServerRoom['_id']; offset?: number; count?: number; filter?: string; 'status[]'?: string }) => {
+			members: IUser[];
+			count: number;
+			offset: number;
+			total: number;
+		};
+	};
 	'rooms.info': {
 		GET: (params: { roomId: string } | { roomName: string }) => {
 			room: IServerRoom;
