@@ -15,7 +15,7 @@ tags:
 - evalScript: ${output.randomMessage = 'random-message'}
 
 - runFlow:
-    file: '../../helpers/login-with-token.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}

@@ -6,7 +6,7 @@ env:
   MESSAGE: m4
 ---
 - runFlow:
-    file: '../../../helpers/login-with-token.yaml'
+    file: '../../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${USERNAME}
       PASSWORD: ${PASSWORD}
@@ -17,7 +17,7 @@ env:
 
 # Login again and recreate keys
 - runFlow:
-    file: '../../../helpers/login-with-token.yaml'
+    file: '../../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${USERNAME}
       PASSWORD: ${PASSWORD}

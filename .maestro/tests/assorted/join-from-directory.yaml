@@ -16,7 +16,7 @@ tags:
 - evalScript: ${output.threadReply = output.utils.sendMessage(output.user.username, output.user.password, output.result.message.rid, 'insidethread', output.result.message._id)}
 
 - runFlow:
-    file: '../../helpers/login-with-token.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}

@@ -15,7 +15,7 @@ tags:
 
 # start app
 - runFlow:
-    file: '../../helpers/login-with-token.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}

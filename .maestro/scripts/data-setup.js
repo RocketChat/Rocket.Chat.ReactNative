@@ -397,16 +397,10 @@ const callAppduct = (tool, input) => postToAppductBridge('/call', { tool, input:
 
 const openRoom = name => callAppduct('open_room', { name });
 
-const loginWithToken = (username, password, server) => {
-    const { authToken } = login(username, password);
-    return callAppduct('login_with_token', { host: server, token: authToken });
-};
-
 output.utils = {
     linkAppduct,
     waitForAppduct,
     callAppduct,
-    loginWithToken,
     openRoom,
     createUser,
     createUserWithPasswordChange,

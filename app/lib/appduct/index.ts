@@ -1,19 +1,10 @@
 import '@appduct/react-native/auto';
 import { jsonSchema, registerTool } from '@appduct/react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Q } from '@nozbe/watermelondb';
-import { Image } from 'expo-image';
 import { first, firstValueFrom, fromEvent, takeUntil } from 'rxjs';
 
-import { appStart } from '~/actions/app';
 import { deepLinkingOpen } from '~/actions/deepLinking';
-import { encryptionStop } from '~/actions/encryption';
-import { biometricTrustStore } from '~/lib/biometricTrustStore';
 import database from '~/lib/database';
-import { SERVERS_TABLE } from '~/lib/database/model/servers/Server';
-import { deleteMediaFiles } from '~/lib/methods/handleMediaDownload';
-import { removeServerDatabase } from '~/lib/methods/logout';
-import { disconnect } from '~/lib/services/connect';
 import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
 import { getIsMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { RootEnum, type IApplicationState, type IPreferences, type TSubscriptionModel } from '~/definitions';
@@ -65,25 +56,6 @@ const hasRoot = (state: IApplicationState) => !!state.app.root;
 const hasStarted = (state: IApplicationState) => hasRoot(state) && state.app.root !== RootEnum.ROOT_LOADING;
 
 const waitForAppStart = (signal: AbortSignal) => waitUntil(hasStarted, signal);
-
-const SCREEN_LOCKED_START_TIMEOUT_MS = 10_000;
-
-const waitForAppStartUnlessScreenLocked = async (signal: AbortSignal) => {
-	const startWait = new AbortController();
-	const abortStartWait = () => startWait.abort(signal.reason);
-	signal.addEventListener('abort', abortStartWait);
-	const timer = setTimeout(() => startWait.abort(), SCREEN_LOCKED_START_TIMEOUT_MS);
-	try {
-		await waitForAppStart(startWait.signal);
-	} catch (error) {
-		if (signal.aborted) {
-			throw error;
-		}
-	} finally {
-		clearTimeout(timer);
-		signal.removeEventListener('abort', abortStartWait);
-	}
-};
 
 const waitForNavigatorReady = (signal: AbortSignal) =>
 	new Promise<void>((resolve, reject) => {
@@ -290,43 +262,6 @@ const waitForReadableState = async (signal: AbortSignal) => {
 	await waitUntil(hasRoot, signal);
 	await waitForNavigatorReady(signal);
 };
-
-const wipeServers = async () => {
-	const servers = await database.servers.get(SERVERS_TABLE).query().fetch();
-	await Promise.all(
-		servers.map(async ({ id }) => {
-			await removeServerDatabase({ server: id });
-			await deleteMediaFiles(id);
-		})
-	);
-	await database.servers.write(() => database.servers.unsafeResetDatabase());
-};
-
-registerTool({
-	name: 'reset_app',
-	description:
-		'Wipe every workspace database, stored preference, credential and media file, leaving the app as freshly installed once it restarts. The app stays on a loading screen until then: relaunch it and reconnect before the next call.',
-	timeoutMs: 30_000,
-	inputSchema: jsonSchema<Record<string, never>>({ type: 'object', properties: {}, additionalProperties: false }),
-	outputSchema: jsonSchema<{ servers: number }>({
-		type: 'object',
-		properties: { servers: { type: 'number' } },
-		required: ['servers']
-	}),
-	handler: async (_input, { signal }) => {
-		await waitForAppStartUnlessScreenLocked(signal);
-		store.dispatch(appStart({ root: RootEnum.ROOT_LOADING }));
-		store.dispatch(encryptionStop());
-		disconnect();
-		const servers = await database.servers.get(SERVERS_TABLE).query().fetchCount();
-		await wipeServers();
-		await biometricTrustStore.disenroll();
-		UserPreferences.clearAll();
-		await AsyncStorage.clear();
-		await Promise.all([Image.clearMemoryCache(), Image.clearDiskCache()]);
-		return { servers };
-	}
-});
 
 registerTool({
 	name: 'get_app_state',

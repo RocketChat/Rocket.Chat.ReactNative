@@ -11,7 +11,7 @@ env:
   NEW_MESSAGE: m5
 ---
 - runFlow:
-    file: '../../../helpers/login-with-token.yaml'
+    file: '../../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${USERNAME}
       PASSWORD: ${PASSWORD}

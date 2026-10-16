@@ -13,7 +13,7 @@ tags:
 - evalScript: ${output.channel = output.utils.createRandomRoom(output.user.username, output.user.password, 'c')}
 
 - runFlow:
-    file: '../../helpers/login-with-token.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}

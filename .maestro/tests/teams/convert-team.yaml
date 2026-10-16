@@ -14,7 +14,7 @@ tags:
 - evalScript: ${output.publicChannelToBeConverted = 'channel-public-to-be-converted-' + output.random()}
 
 - runFlow:
-    file: '../../helpers/login-with-token.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}

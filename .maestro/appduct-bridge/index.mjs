@@ -8,8 +8,7 @@
 //   POST /wait  { sessionId }      { claimed } once the app claims the session, or after 3s
 //   POST /call  { tool, input }    calls a tool on the session and replies with its result
 //
-// A JS reload or app launch ends the session: link again afterwards. reset_app drops it too,
-// since the app has to be relaunched after it.
+// A JS reload or app launch ends the session: link again afterwards.
 //
 // Usage: node .maestro/appduct-bridge/index.mjs <android|ios> [port]
 // APPDUCT_DEVICE picks the adb serial or simulator udid when more than one is running.
@@ -99,20 +98,15 @@ const routes = {
 		if (!app) {
 			throw new Error('No Appduct session: run helpers/appduct-connect.yaml first');
 		}
-		let result;
 		try {
-			result = await app.call(tool, input);
+			return await app.call(tool, input);
 		} catch (error) {
 			if (error.type !== 'tool_not_found') {
 				throw error;
 			}
 			await waitForTool(tool);
-			result = await app.call(tool, input);
+			return app.call(tool, input);
 		}
-		if (tool === 'reset_app') {
-			dropSession();
-		}
-		return result;
 	}
 };
 

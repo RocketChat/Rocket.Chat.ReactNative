@@ -4,10 +4,13 @@ tags:
   - 'util'
 
 ---
-- runFlow: 'reset-app.yaml'
 - retry:
     maxRetries: 3
     commands:
+      - launchApp:
+          clearState: true
+          permissions:
+            all: allow
       - waitForAnimationToEnd:
           timeout: 60000
       - runFlow:
