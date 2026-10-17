@@ -19,7 +19,6 @@ interface IConferenceHeader {
 	chatDisabled: boolean;
 	onPeoplePress: () => void;
 	onChatPress: () => void;
-	pills?: ReactElement | null;
 }
 
 const HEADER_BUTTON_SIZE = 36;
@@ -59,14 +58,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 8
-	},
-	pills: {
-		paddingHorizontal: 12,
-		paddingBottom: 8,
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		alignItems: 'center',
-		gap: 8
 	}
 });
 
@@ -79,8 +70,7 @@ const ConferenceHeader = ({
 	chatUnread,
 	chatDisabled,
 	onPeoplePress,
-	onChatPress,
-	pills
+	onChatPress
 }: IConferenceHeader): ReactElement => {
 	const { colors } = useTheme();
 
@@ -128,7 +118,6 @@ const ConferenceHeader = ({
 					/>
 				</View>
 			</View>
-			{pills ? <View style={styles.pills}>{pills}</View> : null}
 		</View>
 	);
 };

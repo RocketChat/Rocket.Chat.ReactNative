@@ -1,6 +1,4 @@
 import { fireEvent, render } from '@testing-library/react-native';
-import { type ReactElement } from 'react';
-import { Text } from 'react-native';
 
 import ConferenceHeader from '../ConferenceHeader';
 
@@ -11,7 +9,6 @@ interface ISetup {
 	audioOutput?: string;
 	chatUnread?: number;
 	chatDisabled?: boolean;
-	pills?: ReactElement | null;
 }
 
 const setup = ({
@@ -20,8 +17,7 @@ const setup = ({
 	peopleCount = 3,
 	audioOutput = 'speaker',
 	chatUnread = 0,
-	chatDisabled = false,
-	pills
+	chatDisabled = false
 }: ISetup = {}) => {
 	const onAudioOutputPress = jest.fn();
 	const onPeoplePress = jest.fn();
@@ -37,7 +33,6 @@ const setup = ({
 			chatDisabled={chatDisabled}
 			onPeoplePress={onPeoplePress}
 			onChatPress={onChatPress}
-			pills={pills}
 		/>
 	);
 	return { ...utils, onAudioOutputPress, onPeoplePress, onChatPress };
@@ -133,17 +128,5 @@ describe('ConferenceHeader', () => {
 
 		expect(onPeoplePress).toHaveBeenCalledTimes(1);
 		expect(onChatPress).toHaveBeenCalledTimes(1);
-	});
-
-	it('shows whatever the call wants to announce on a row of its own below the buttons', () => {
-		const { getByText } = setup({ pills: <Text>pill</Text> });
-
-		expect(getByText('pill')).toBeTruthy();
-	});
-
-	it('adds no extra row when there is nothing to announce', () => {
-		const { toJSON } = setup({ pills: null });
-
-		expect(JSON.stringify(toJSON())).not.toContain('flexWrap');
 	});
 });

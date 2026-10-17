@@ -24,6 +24,7 @@ JSON messages on the room's data channel, no topic: `{ type: 'hand' }` (reliable
 - A new call keeps its "start" wording while it connects, even though `join` swaps the placeholder call id for the real one (`startedNewCall`).
 
 - Menus, People, Add people and Connection info open in the shared `ActionSheet` (TrueSheet).
+- The raised-hand and presenting pills float over the top of the stage instead of taking a row under the header, so the stage keeps its size and the tiles do not resize when a hand goes up or someone starts presenting.
 - The controls row is mic, camera, share screen, hand, reaction, More and Leave. Share screen is its own button (lit while sharing); More holds layout, switch camera, resolution, picture in picture and connection info.
 - Layouts: grid, spotlight, sidebar. A screen share takes the stage; the other tiles become thumbnails.
 - The chat button leaves the call running (Return-to-call row) and shows the Room's unread count. It opens the Room, or, when the Workspace keeps call chats in a thread (`VideoConf_Enable_Persistent_Chat` and `VideoConf_Conference_Window_Enabled` on, `VideoConf_Persistent_Chat_Mode` set to `thread`, and the call has no discussion), the thread of the call's own message (`info.messages.started`) over the Room, the same rule as the web (`getConferenceChatThreadId`).
@@ -37,6 +38,10 @@ JSON messages on the room's data channel, no topic: `{ type: 'hand' }` (reliable
 The speaker button in the header opens the list of outputs the platform reports (speaker, earpiece, headset, Bluetooth; on iOS also the system route picker). Choosing one calls `selectAudioOutput` and stores it as `audioOutput`, which the button's icon follows. LiveKit can only be asked to switch output, not which one is active, so an output the system picks by itself (a headset plugged in mid-call) is not reflected until the user chooses one.
 
 ## Raised hand
+
+A tile shows a raised hand as a green chip that starts as the hand alone and widens to the right a moment later to reveal the place in the queue and the name (`RaisedHandChip`; shown at once when the system asks for reduced motion). The header pill is not animated.
+
+A short two-note chime (`playHandRaisedSound`, the same notes as the web) plays when somebody else's hand goes up and when ours does. A hand that was already up, one repeated for someone who just arrived (`rebroadcast`), and a hand going down are silent (`isHandNews`). The player is created with `keepAudioSessionActive` so finishing the chime never deactivates the audio session the call is using, and it is released when the call ends. Neither platform has been checked on a device yet.
 
 A raised hand drops by itself once its owner has been speaking for about three seconds (`useAutoLowerHand`, `advanceAutoLowerHand`): they have the floor. A pause longer than 0.8 s starts the count again. The web does the same, but it reads the local microphone level against a fixed threshold, while the app takes "speaking" from LiveKit's active-speaker signal, so background noise can also count.
 

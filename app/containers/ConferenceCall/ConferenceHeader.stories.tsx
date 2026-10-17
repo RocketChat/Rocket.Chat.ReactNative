@@ -1,5 +1,4 @@
 import ConferenceHeader from './ConferenceHeader';
-import RaisedHandPill from './RaisedHandPill';
 import { AllThemes } from './stories/ThemedStory';
 
 const noop = () => {};
@@ -49,21 +48,6 @@ export const WithUnreadChat = () => (
 	/>
 );
 
-export const WithRaisedHand = () => (
-	<ConferenceHeader
-		elapsedSeconds={74}
-		title='Meeting in "general-team-room"'
-		peopleCount={3}
-		audioOutput='speaker'
-		onAudioOutputPress={noop}
-		onPeoplePress={noop}
-		chatUnread={0}
-		chatDisabled={false}
-		onChatPress={noop}
-		pills={<RaisedHandPill label='You +1' accessibilityLabel='Raised hands' onPress={noop} />}
-	/>
-);
-
 export const Themes = () => (
 	<AllThemes>
 		{() => (
@@ -77,7 +61,6 @@ export const Themes = () => (
 				chatUnread={0}
 				chatDisabled={false}
 				onChatPress={noop}
-				pills={<RaisedHandPill label='You' accessibilityLabel='Raised hands' onPress={noop} />}
 			/>
 		)}
 	</AllThemes>

@@ -1729,50 +1729,50 @@ exports[`Story Snapshots: HandRaised should match snapshot 2`] = `
       }
     >
       <View
+        layout={BaseAnimationMock {}}
         style={
           [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "overflow": "hidden",
+            },
+            {
+              "backgroundColor": "#158D65",
+            },
             {
               "borderRadius": 16,
               "flexShrink": 1,
               "paddingHorizontal": 12,
               "paddingVertical": 4,
             },
-            {
-              "backgroundColor": "#158D65",
-            },
           ]
         }
         testID="participant-tile-hand"
       >
         <Text
-          numberOfLines={1}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "flexShrink": 1,
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "lineHeight": 24,
-                "textAlign": "left",
-                "textShadowColor": "rgba(0, 0, 0, 0.6)",
-                "textShadowOffset": {
-                  "height": 1,
-                  "width": 0,
-                },
-                "textShadowRadius": 2,
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "400",
+              "lineHeight": 24,
+              "textAlign": "left",
+              "textShadowColor": "rgba(0, 0, 0, 0.6)",
+              "textShadowOffset": {
+                "height": 1,
+                "width": 0,
               },
-              {
-                "color": "#FFFFFF",
-              },
-            ]
+              "textShadowRadius": 2,
+            }
           }
         >
-          ✋ (1) Ada Lovelace
+          ✋
         </Text>
       </View>
     </View>
@@ -7934,90 +7934,6 @@ exports[`Story Snapshots: Themes should match snapshot 3`] = `
           </View>
         </View>
       </View>
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "flexWrap": "wrap",
-            "gap": 8,
-            "paddingBottom": 8,
-            "paddingHorizontal": 12,
-          }
-        }
-      >
-        <View
-          accessibilityLabel="Raised hands"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            [
-              {
-                "borderRadius": 16,
-                "maxWidth": "100%",
-                "paddingHorizontal": 12,
-                "paddingVertical": 6,
-              },
-              {
-                "backgroundColor": "#158D65",
-              },
-            ]
-          }
-          testID="conference-hand-pill"
-        >
-          <Text
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 12,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 16,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#FFFFFF",
-                },
-              ]
-            }
-          >
-            ✋ You
-          </Text>
-        </View>
-      </View>
     </View>
   </View>
   <View
@@ -8403,90 +8319,6 @@ exports[`Story Snapshots: Themes should match snapshot 3`] = `
           </View>
         </View>
       </View>
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "flexWrap": "wrap",
-            "gap": 8,
-            "paddingBottom": 8,
-            "paddingHorizontal": 12,
-          }
-        }
-      >
-        <View
-          accessibilityLabel="Raised hands"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            [
-              {
-                "borderRadius": 16,
-                "maxWidth": "100%",
-                "paddingHorizontal": 12,
-                "paddingVertical": 6,
-              },
-              {
-                "backgroundColor": "#1D7256",
-              },
-            ]
-          }
-          testID="conference-hand-pill"
-        >
-          <Text
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 12,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 16,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#FFFFFF",
-                },
-              ]
-            }
-          >
-            ✋ You
-          </Text>
-        </View>
-      </View>
     </View>
   </View>
   <View
@@ -8870,90 +8702,6 @@ exports[`Story Snapshots: Themes should match snapshot 3`] = `
               
             </Text>
           </View>
-        </View>
-      </View>
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "flexWrap": "wrap",
-            "gap": 8,
-            "paddingBottom": 8,
-            "paddingHorizontal": 12,
-          }
-        }
-      >
-        <View
-          accessibilityLabel="Raised hands"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            [
-              {
-                "borderRadius": 16,
-                "maxWidth": "100%",
-                "paddingHorizontal": 12,
-                "paddingVertical": 6,
-              },
-              {
-                "backgroundColor": "#1D7256",
-              },
-            ]
-          }
-          testID="conference-hand-pill"
-        >
-          <Text
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 12,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 16,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#FFFFFF",
-                },
-              ]
-            }
-          >
-            ✋ You
-          </Text>
         </View>
       </View>
     </View>
@@ -9657,50 +9405,50 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
             }
           >
             <View
+              layout={BaseAnimationMock {}}
               style={
                 [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "overflow": "hidden",
+                  },
+                  {
+                    "backgroundColor": "#158D65",
+                  },
                   {
                     "borderRadius": 16,
                     "flexShrink": 1,
                     "paddingHorizontal": 12,
                     "paddingVertical": 4,
                   },
-                  {
-                    "backgroundColor": "#158D65",
-                  },
                 ]
               }
               testID="participant-tile-hand"
             >
               <Text
-                numberOfLines={1}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "lineHeight": 24,
-                      "textAlign": "left",
-                      "textShadowColor": "rgba(0, 0, 0, 0.6)",
-                      "textShadowOffset": {
-                        "height": 1,
-                        "width": 0,
-                      },
-                      "textShadowRadius": 2,
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "lineHeight": 24,
+                    "textAlign": "left",
+                    "textShadowColor": "rgba(0, 0, 0, 0.6)",
+                    "textShadowOffset": {
+                      "height": 1,
+                      "width": 0,
                     },
-                    {
-                      "color": "#FFFFFF",
-                    },
-                  ]
+                    "textShadowRadius": 2,
+                  }
                 }
               >
-                ✋ (2) Ada Lovelace
+                ✋
               </Text>
             </View>
           </View>
@@ -10003,50 +9751,50 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
             }
           >
             <View
+              layout={BaseAnimationMock {}}
               style={
                 [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "overflow": "hidden",
+                  },
+                  {
+                    "backgroundColor": "#1D7256",
+                  },
                   {
                     "borderRadius": 16,
                     "flexShrink": 1,
                     "paddingHorizontal": 12,
                     "paddingVertical": 4,
                   },
-                  {
-                    "backgroundColor": "#1D7256",
-                  },
                 ]
               }
               testID="participant-tile-hand"
             >
               <Text
-                numberOfLines={1}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "lineHeight": 24,
-                      "textAlign": "left",
-                      "textShadowColor": "rgba(0, 0, 0, 0.6)",
-                      "textShadowOffset": {
-                        "height": 1,
-                        "width": 0,
-                      },
-                      "textShadowRadius": 2,
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "lineHeight": 24,
+                    "textAlign": "left",
+                    "textShadowColor": "rgba(0, 0, 0, 0.6)",
+                    "textShadowOffset": {
+                      "height": 1,
+                      "width": 0,
                     },
-                    {
-                      "color": "#FFFFFF",
-                    },
-                  ]
+                    "textShadowRadius": 2,
+                  }
                 }
               >
-                ✋ (2) Ada Lovelace
+                ✋
               </Text>
             </View>
           </View>
@@ -10349,50 +10097,50 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
             }
           >
             <View
+              layout={BaseAnimationMock {}}
               style={
                 [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "overflow": "hidden",
+                  },
+                  {
+                    "backgroundColor": "#1D7256",
+                  },
                   {
                     "borderRadius": 16,
                     "flexShrink": 1,
                     "paddingHorizontal": 12,
                     "paddingVertical": 4,
                   },
-                  {
-                    "backgroundColor": "#1D7256",
-                  },
                 ]
               }
               testID="participant-tile-hand"
             >
               <Text
-                numberOfLines={1}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "lineHeight": 24,
-                      "textAlign": "left",
-                      "textShadowColor": "rgba(0, 0, 0, 0.6)",
-                      "textShadowOffset": {
-                        "height": 1,
-                        "width": 0,
-                      },
-                      "textShadowRadius": 2,
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "lineHeight": 24,
+                    "textAlign": "left",
+                    "textShadowColor": "rgba(0, 0, 0, 0.6)",
+                    "textShadowOffset": {
+                      "height": 1,
+                      "width": 0,
                     },
-                    {
-                      "color": "#FFFFFF",
-                    },
-                  ]
+                    "textShadowRadius": 2,
+                  }
                 }
               >
-                ✋ (2) Ada Lovelace
+                ✋
               </Text>
             </View>
           </View>
@@ -11630,465 +11378,6 @@ exports[`Story Snapshots: WithCamera should match snapshot 1`] = `
         }
       >
         Ada Lovelace
-      </Text>
-    </View>
-  </View>
-</View>
-`;
-
-exports[`Story Snapshots: WithRaisedHand should match snapshot 1`] = `
-<View
-  testID="conference-header"
->
-  <View
-    style={
-      {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "gap": 8,
-        "minHeight": 48,
-        "paddingHorizontal": 12,
-      }
-    }
-  >
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "flexDirection": "row",
-          "gap": 8,
-        }
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "700",
-              "lineHeight": 24,
-              "textAlign": "left",
-            },
-            {
-              "color": "#1F2329",
-            },
-          ]
-        }
-        testID="conference-timer"
-      >
-        01:14
-      </Text>
-      <View
-        style={
-          [
-            {
-              "height": 20,
-              "width": 0.5,
-            },
-            {
-              "backgroundColor": "#9EA2A8",
-            },
-          ]
-        }
-      />
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 24,
-              "textAlign": "left",
-            },
-            {
-              "color": "#1F2329",
-            },
-          ]
-        }
-      >
-        Meeting in "general-team-room"
-      </Text>
-    </View>
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "gap": 8,
-        }
-      }
-    >
-      <View
-        accessibilityLabel="Audio output"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": true,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={4}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "borderRadius": 4,
-              "justifyContent": "center",
-            },
-            {
-              "backgroundColor": "#9EA2A8",
-              "height": 36,
-              "width": 36,
-            },
-            false,
-          ]
-        }
-        testID="conference-speaker-button"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#095AD2",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="People"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": false,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={4}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "borderRadius": 4,
-              "justifyContent": "center",
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-              "height": 36,
-              "width": 36,
-            },
-            false,
-          ]
-        }
-        testID="conference-people-button"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#1F2329",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "borderRadius": 9,
-                "height": 18,
-                "justifyContent": "center",
-                "minWidth": 18,
-                "paddingHorizontal": 4,
-                "position": "absolute",
-                "right": -6,
-                "top": -6,
-              },
-              {
-                "backgroundColor": "#6C727A",
-              },
-            ]
-          }
-          testID="conference-control-badge"
-        >
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 11,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "700",
-                  "lineHeight": 14,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#FFFFFF",
-                },
-              ]
-            }
-          >
-            3
-          </Text>
-        </View>
-      </View>
-      <View
-        accessibilityLabel="Chat"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": false,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={4}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "borderRadius": 4,
-              "justifyContent": "center",
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-              "height": 36,
-              "width": 36,
-            },
-            false,
-          ]
-        }
-        testID="conference-chat-button"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#1F2329",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-      </View>
-    </View>
-  </View>
-  <View
-    style={
-      {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "flexWrap": "wrap",
-        "gap": 8,
-        "paddingBottom": 8,
-        "paddingHorizontal": 12,
-      }
-    }
-  >
-    <View
-      accessibilityLabel="Raised hands"
-      accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": undefined,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        [
-          {
-            "borderRadius": 16,
-            "maxWidth": "100%",
-            "paddingHorizontal": 12,
-            "paddingVertical": 6,
-          },
-          {
-            "backgroundColor": "#158D65",
-          },
-        ]
-      }
-      testID="conference-hand-pill"
-    >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 12,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "400",
-              "lineHeight": 16,
-              "textAlign": "left",
-            },
-            {
-              "color": "#FFFFFF",
-            },
-          ]
-        }
-      >
-        ✋ You +1
       </Text>
     </View>
   </View>

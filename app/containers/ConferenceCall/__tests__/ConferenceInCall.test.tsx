@@ -1,4 +1,5 @@
 import { act, fireEvent, render, waitFor, within } from '@testing-library/react-native';
+import { StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 
 import { addSettings, clearSettings } from '~/actions/settings';
@@ -233,14 +234,14 @@ describe('ConferenceInCall', () => {
 			expect(getByText('720p')).toBeTruthy();
 		});
 
-		it('shows a raised hand, in the order the hands went up', () => {
+		it('shows a raised hand, in the order the hands went up', async () => {
 			useConferenceInteractionStore.getState().applyHandMessage('ada', { type: 'hand', raised: true, raisedAt: 10 }, 10);
 			useConferenceInteractionStore.getState().applyHandMessage('me', { type: 'hand', raised: true, raisedAt: 20 }, 20);
-			const { getByTestId, getByText } = renderCall();
+			const { getByTestId, findByText } = renderCall();
 			measureStage(getByTestId);
 
-			expect(getByText('✋ (1) Ada')).toBeTruthy();
-			expect(getByText('✋ (2) Me Myself')).toBeTruthy();
+			expect(await findByText('(1) Ada')).toBeTruthy();
+			expect(await findByText('(2) Me Myself')).toBeTruthy();
 		});
 	});
 
@@ -285,12 +286,26 @@ describe('ConferenceInCall', () => {
 			expect(queryByTestId('conference-reconnecting')).not.toBeNull();
 		});
 
-		it('announces a raised hand beside the buttons, by the name of whoever is first in line', () => {
+		it('announces a raised hand over the top of the stage, by the name of whoever is first in line', () => {
 			useConferenceInteractionStore.getState().applyHandMessage('ada', { type: 'hand', raised: true, raisedAt: 10 }, 10);
 
 			const { getByText } = renderCall();
 
 			expect(getByText('✋ Ada')).toBeTruthy();
+		});
+
+		it('floats the announcements over the stage, so the tiles keep their size when a hand goes up', () => {
+			useConferenceInteractionStore.getState().applyHandMessage('ada', { type: 'hand', raised: true, raisedAt: 10 }, 10);
+
+			const { getByTestId } = renderCall();
+
+			expect(StyleSheet.flatten(getByTestId('conference-pills').props.style)).toMatchObject({ position: 'absolute' });
+		});
+
+		it('has nothing to float while nobody has a hand up or is presenting', () => {
+			const { queryByTestId } = renderCall();
+
+			expect(queryByTestId('conference-pills')).toBeNull();
 		});
 
 		it('says "You" when the first hand is our own, and how many others are waiting', () => {

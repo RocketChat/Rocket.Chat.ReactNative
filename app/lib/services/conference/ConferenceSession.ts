@@ -5,6 +5,7 @@ import { captureOptionsFor, type VideoQuality } from '~/lib/methods/helpers/capt
 import { cameraSourceFor, type TCameraFacing } from '~/lib/methods/helpers/cameraSourceFor';
 import { getCallConnectionState } from '~/lib/methods/helpers/getCallConnectionState';
 import { getConferenceError } from '~/lib/methods/helpers/getConferenceError';
+import { isHandNews } from '~/lib/methods/helpers/isHandNews';
 import log from '~/lib/methods/helpers/log';
 import { pickCameraDevices, type TCameraDevice } from '~/lib/methods/helpers/pickCameraDevices';
 import { showToast } from '~/lib/methods/helpers/showToast';
@@ -20,6 +21,7 @@ import { startConferenceForegroundService, stopConferenceForegroundService } fro
 import { stopConferenceMicLevelMonitor } from './conferenceMicLevel';
 import type { LocalVideoTrack, Room } from './livekit';
 import { loadLiveKit, type TLiveKit } from './loadLiveKit';
+import { playHandRaisedSound, releaseHandRaisedSound } from './playHandRaisedSound';
 import { useConferenceInteractionStore } from './useConferenceInteractionStore';
 import {
 	isConferenceSessionActive,
@@ -345,6 +347,9 @@ class ConferenceSession {
 		const now = Date.now();
 		switch (message.type) {
 			case 'hand':
+				if (isHandNews(message, (interactions.hands[participant.identity] ?? 0) > 0)) {
+					playHandRaisedSound();
+				}
 				interactions.applyHandMessage(participant.identity, message, now);
 				break;
 			case 'reaction':
@@ -373,6 +378,9 @@ class ConferenceSession {
 		const now = Date.now();
 		const message: CallDataMessage = { type: 'hand', raised, raisedAt: raised ? now : undefined };
 		useConferenceInteractionStore.getState().applyHandMessage(identity, message, now);
+		if (raised) {
+			playHandRaisedSound();
+		}
 		await this.publish(room, message, true);
 	};
 
@@ -463,6 +471,7 @@ class ConferenceSession {
 		if (!this.isSuperseded(context)) {
 			stopConferenceForegroundService();
 			useConferenceInteractionStore.getState().reset();
+			releaseHandRaisedSound();
 		}
 		const { room } = context;
 		const roomStore = useConferenceRoomStore.getState();

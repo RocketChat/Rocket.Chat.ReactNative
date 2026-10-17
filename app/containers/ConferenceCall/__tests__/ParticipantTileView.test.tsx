@@ -1,9 +1,10 @@
-import { fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 
 import { mockedStore } from '~/reducers/mockedStore';
+import { REVEAL_DELAY_MS } from '../RaisedHandChip';
 import ParticipantTileView from '../ParticipantTileView';
 
 interface ITileState {
@@ -33,6 +34,10 @@ const tile = ({ muted = false, speaking, handPosition, badge, video, testID }: I
 const renderTile = (state: ITileState = {}) => render(tile(state));
 
 describe('ParticipantTileView', () => {
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
 	it('shows who it is', () => {
 		const { getByText } = renderTile();
 
@@ -85,11 +90,11 @@ describe('ParticipantTileView', () => {
 		expect(queryByLabelText(/Avatar/)).toBeNull();
 	});
 
-	it('shows a raised hand with its place in the queue', () => {
-		const { getByText, getByTestId } = renderTile({ handPosition: 2 });
+	it('shows a raised hand with its place in the queue and the name', async () => {
+		const { findByText, getByTestId } = renderTile({ handPosition: 2 });
 
 		expect(getByTestId('participant-tile-hand')).toBeTruthy();
-		expect(getByText('✋ (2) Ada Lovelace')).toBeTruthy();
+		expect(await findByText('(2) Ada Lovelace')).toBeTruthy();
 	});
 
 	describe('on a small thumbnail', () => {
@@ -97,21 +102,25 @@ describe('ParticipantTileView', () => {
 			fireEvent(tile, 'layout', { nativeEvent: { layout: { width, height: 100 } } });
 
 		it('shows the raised hand as a small badge instead of a pill over the avatar', () => {
+			jest.useFakeTimers();
 			const { getByText, getByLabelText, queryByText } = renderTile({ handPosition: 2, testID: 'tile' });
 
 			shrinkTo(getByLabelText('Ada Lovelace'), 140);
+			act(() => {
+				jest.advanceTimersByTime(REVEAL_DELAY_MS);
+			});
 
 			expect(getByText('✋ 2')).toBeTruthy();
 			expect(getByText('Ada Lovelace')).toBeTruthy();
-			expect(queryByText('✋ (2) Ada Lovelace')).toBeNull();
+			expect(queryByText('(2) Ada Lovelace')).toBeNull();
 		});
 
-		it('keeps the full pill on a large tile', () => {
-			const { getByText, getByLabelText } = renderTile({ handPosition: 2 });
+		it('keeps the full pill on a large tile', async () => {
+			const { findByText, getByLabelText } = renderTile({ handPosition: 2 });
 
 			shrinkTo(getByLabelText('Ada Lovelace'), 360);
 
-			expect(getByText('✋ (2) Ada Lovelace')).toBeTruthy();
+			expect(await findByText('(2) Ada Lovelace')).toBeTruthy();
 		});
 
 		it('leaves out the send resolution badge to keep the thumbnail clear', () => {

@@ -10,6 +10,7 @@ import { showToast } from '~/lib/methods/helpers/showToast';
 import { type CallDataMessage, encodeMessage, parseMessage } from '../callDataProtocol';
 import { stopConferenceMicLevelMonitor } from '../conferenceMicLevel';
 import { conferenceSession, HEARTBEAT_INTERVAL_MS } from '../ConferenceSession';
+import { playHandRaisedSound, releaseHandRaisedSound } from '../playHandRaisedSound';
 import { preflightCallId, useConferenceCallStore } from '../useConferenceCallStore';
 import { useConferenceInteractionStore } from '../useConferenceInteractionStore';
 import { useConferenceRoomStore } from '../useConferenceRoomStore';
@@ -17,6 +18,7 @@ import { useConferenceRoomStore } from '../useConferenceRoomStore';
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
 jest.mock('../conferenceMicLevel', () => ({ stopConferenceMicLevelMonitor: jest.fn(() => Promise.resolve()) }));
+jest.mock('../playHandRaisedSound', () => ({ playHandRaisedSound: jest.fn(), releaseHandRaisedSound: jest.fn() }));
 
 jest.mock('../../restApi', () => ({
 	videoConferenceStart: jest.fn(),
@@ -446,6 +448,54 @@ describe('ConferenceSession', () => {
 			receive(room, { identity: 'ada' }, { type: 'hand', raised: true, raisedAt: 42 });
 
 			expect(hands().ada).toBe(42);
+		});
+
+		test('chimes when somebody else raises a hand', async () => {
+			const room = await join();
+
+			receive(room, { identity: 'ada' }, { type: 'hand', raised: true, raisedAt: 42 });
+
+			expect(playHandRaisedSound).toHaveBeenCalledTimes(1);
+		});
+
+		test('chimes again when the same person lowers the hand and raises it once more', async () => {
+			const room = await join();
+
+			receive(room, { identity: 'ada' }, { type: 'hand', raised: true, raisedAt: 42 });
+			receive(room, { identity: 'ada' }, { type: 'hand', raised: false });
+			receive(room, { identity: 'ada' }, { type: 'hand', raised: true, raisedAt: 99 });
+
+			expect(playHandRaisedSound).toHaveBeenCalledTimes(2);
+		});
+
+		test('stays quiet for a hand that was already up, a repeat for a new arrival, and a hand going down', async () => {
+			const room = await join();
+			receive(room, { identity: 'ada' }, { type: 'hand', raised: true, raisedAt: 42 });
+			(playHandRaisedSound as jest.Mock).mockClear();
+
+			receive(room, { identity: 'ada' }, { type: 'hand', raised: true, raisedAt: 42 });
+			receive(room, { identity: 'bob' }, { type: 'hand', raised: true, raisedAt: 50, rebroadcast: true });
+			receive(room, { identity: 'ada' }, { type: 'hand', raised: false });
+
+			expect(playHandRaisedSound).not.toHaveBeenCalled();
+		});
+
+		test('chimes when we raise our own hand, but not when we lower it', async () => {
+			await join();
+
+			await conferenceSession.toggleHand();
+			expect(playHandRaisedSound).toHaveBeenCalledTimes(1);
+
+			await conferenceSession.toggleHand();
+			expect(playHandRaisedSound).toHaveBeenCalledTimes(1);
+		});
+
+		test('lets go of the chime when the call ends', async () => {
+			await join();
+
+			await conferenceSession.end();
+
+			expect(releaseHandRaisedSound).toHaveBeenCalledTimes(1);
 		});
 
 		test('repeats a raised hand to someone who joins later, marked as a repeat', async () => {

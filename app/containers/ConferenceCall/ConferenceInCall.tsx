@@ -59,6 +59,16 @@ const styles = StyleSheet.create({
 	stage: {
 		flex: 1
 	},
+	pills: {
+		position: 'absolute',
+		top: 8,
+		left: 12,
+		right: 12,
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		alignItems: 'center',
+		gap: 8
+	},
 	banner: {
 		paddingVertical: 6,
 		alignItems: 'center'
@@ -289,13 +299,17 @@ const InCallContent = (): ReactElement => {
 				chatUnread={chatUnread}
 				chatDisabled={!info}
 				onChatPress={openChat}
-				pills={shares.length > 0 || raisedHands.length > 0 ? pills : null}
 			/>
 			<ChatAccessNotice count={countMembersWhoCannotSeeChat({ info, viewerId: selfId })} onReview={showChatAccess} />
 			<View style={styles.stage}>
 				{expanded ? <ConferencePipSource source={pipSource} /> : null}
 				<TileSpeakingMonitors tiles={tiles} expanded={expanded} onChange={onTileSpeaking} />
 				{renderStage()}
+				{shares.length > 0 || raisedHands.length > 0 ? (
+					<View style={styles.pills} pointerEvents='box-none' testID='conference-pills'>
+						{pills}
+					</View>
+				) : null}
 				<ReactionLayer reactions={reactions} nameFor={id => nameById.get(id) ?? ''} />
 				<SpeakingWhileMutedNotice enabled={!isMicrophoneEnabled && phase === 'connected' && expanded} />
 			</View>

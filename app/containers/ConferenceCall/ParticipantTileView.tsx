@@ -7,6 +7,7 @@ import { CustomIcon } from '~/containers/CustomIcon';
 import { backdropTint } from '~/lib/methods/helpers/backdropTint';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
+import RaisedHandChip from './RaisedHandChip';
 
 interface IParticipantTileView {
 	identity: string;
@@ -169,13 +170,12 @@ const ParticipantTileView = ({
 			) : null}
 			<View style={styles.labelRow}>
 				{handPosition && !compact ? (
-					<View
-						style={[styles.handPill, { backgroundColor: colors.buttonBackgroundSuccessDefault }]}
-						testID='participant-tile-hand'>
-						<Text style={[styles.name, { color: colors.buttonFontSuccess }]} numberOfLines={1}>
-							{`✋ (${handPosition}) ${name}`}
-						</Text>
-					</View>
+					<RaisedHandChip
+						label={`(${handPosition}) ${name}`}
+						style={styles.handPill}
+						textStyle={styles.name}
+						testID='participant-tile-hand'
+					/>
 				) : (
 					<Text style={[styles.name, compact && styles.nameCompact, { color: colors.fontPureWhite }]} numberOfLines={1}>
 						{name}
