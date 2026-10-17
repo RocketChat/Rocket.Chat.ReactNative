@@ -7,7 +7,7 @@ import database from '~/lib/database';
 import protectedFunction from '../helpers/protectedFunction';
 import log from '../helpers/log';
 import { store } from '~/lib/store/auxStore';
-import { handlePayloadUserInteraction } from '../actions';
+import { handlePayloadUserInteraction } from '~/lib/apps/actions';
 import buildMessage from '../helpers/buildMessage';
 import EventEmitter from '../helpers/events';
 import { removedRoom } from '~/actions/room';
