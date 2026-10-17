@@ -25,11 +25,6 @@ import ConnectionInfoSheetContent from './ConnectionInfoSheetContent';
 import PeopleSheetContent from './PeopleSheetContent';
 import ReactionPicker from './ReactionPicker';
 
-interface IConferenceMenusOptions {
-	isScreenSharing: boolean;
-	onToggleScreenShare: () => void;
-}
-
 const SHEET_TRANSITION_MS = 300;
 const TITLE_HEIGHT = 48;
 const MIN_CAMERAS_TO_CHOOSE = 3;
@@ -47,7 +42,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const useConferenceMenus = ({ isScreenSharing, onToggleScreenShare }: IConferenceMenusOptions) => {
+export const useConferenceMenus = () => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 
@@ -205,11 +200,6 @@ export const useConferenceMenus = ({ isScreenSharing, onToggleScreenShare }: ICo
 	const showMore = useCallback(() => {
 		showActionSheet({
 			options: [
-				{
-					title: isScreenSharing ? I18n.t('Stop_sharing_screen') : I18n.t('Share_screen'),
-					icon: 'desktop',
-					onPress: onToggleScreenShare
-				},
 				{ title: I18n.t('Layout'), icon: 'view-medium', onPress: () => afterSheetClosed(showLayout) },
 				{ title: I18n.t('Switch_camera'), icon: 'refresh', onPress: () => conferenceSession.switchCamera() },
 				{ title: I18n.t('Send_resolution_maximum'), icon: 'video', onPress: () => afterSheetClosed(showVideoQuality) },
@@ -217,16 +207,7 @@ export const useConferenceMenus = ({ isScreenSharing, onToggleScreenShare }: ICo
 				{ title: I18n.t('Connection_info'), icon: 'info', onPress: () => afterSheetClosed(showConnectionInfo) }
 			]
 		});
-	}, [
-		showActionSheet,
-		isScreenSharing,
-		onToggleScreenShare,
-		afterSheetClosed,
-		showLayout,
-		showVideoQuality,
-		enterPictureInPicture,
-		showConnectionInfo
-	]);
+	}, [showActionSheet, afterSheetClosed, showLayout, showVideoQuality, enterPictureInPicture, showConnectionInfo]);
 
 	return { showPeople, showReactions, showAudioOutput, showCameraOptions, showMore, showChatAccess };
 };

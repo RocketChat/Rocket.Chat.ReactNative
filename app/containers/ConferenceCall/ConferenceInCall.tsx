@@ -111,17 +111,18 @@ const InCallContent = (): ReactElement => {
 	const { tiles, shares, speakers } = useConferenceTiles();
 	const { featured: featuredShare, others: otherShares, pin } = useFeaturedScreen(shares);
 
-	const toggleScreenShare = async () => {
+	const shareScreen = async () => {
 		if (isIOS && !isScreenShareEnabled) {
 			await pickerRef.current?.show();
 		}
 		await conferenceSession.toggleScreenShare();
 	};
 
-	const { showPeople, showReactions, showAudioOutput, showCameraOptions, showMore, showChatAccess } = useConferenceMenus({
-		isScreenSharing: !!isScreenShareEnabled,
-		onToggleScreenShare: toggleScreenShare
-	});
+	const toggleScreenShare = () => {
+		shareScreen().catch(log);
+	};
+
+	const { showPeople, showReactions, showAudioOutput, showCameraOptions, showMore, showChatAccess } = useConferenceMenus();
 
 	const elapsedSeconds = useElapsedSeconds(connectedAt);
 
@@ -301,9 +302,11 @@ const InCallContent = (): ReactElement => {
 			<ConferenceControls
 				micEnabled={isMicrophoneEnabled}
 				cameraEnabled={isCameraEnabled}
+				screenSharing={!!isScreenShareEnabled}
 				handRaised={handRaised}
 				onToggleMic={toggleMic}
 				onToggleCamera={toggleCamera}
+				onToggleScreenShare={toggleScreenShare}
 				onMicOptions={showAudioOutput}
 				onCameraOptions={showCameraOptions}
 				onToggleHand={() => conferenceSession.toggleHand()}

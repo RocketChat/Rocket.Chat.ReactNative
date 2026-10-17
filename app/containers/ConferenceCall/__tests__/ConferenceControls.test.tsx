@@ -5,12 +5,14 @@ import ConferenceControls from '../ConferenceControls';
 interface IControlsState {
 	micEnabled?: boolean;
 	cameraEnabled?: boolean;
+	screenSharing?: boolean;
 	handRaised?: boolean;
 }
 
 const makeHandlers = () => ({
 	onToggleMic: jest.fn(),
 	onToggleCamera: jest.fn(),
+	onToggleScreenShare: jest.fn(),
 	onMicOptions: jest.fn(),
 	onCameraOptions: jest.fn(),
 	onToggleHand: jest.fn(),
@@ -21,14 +23,16 @@ const makeHandlers = () => ({
 
 const controls = (
 	handlers: ReturnType<typeof makeHandlers>,
-	{ micEnabled = true, cameraEnabled = true, handRaised = false }: IControlsState = {}
+	{ micEnabled = true, cameraEnabled = true, screenSharing = false, handRaised = false }: IControlsState = {}
 ) => (
 	<ConferenceControls
 		micEnabled={micEnabled}
 		cameraEnabled={cameraEnabled}
+		screenSharing={screenSharing}
 		handRaised={handRaised}
 		onToggleMic={handlers.onToggleMic}
 		onToggleCamera={handlers.onToggleCamera}
+		onToggleScreenShare={handlers.onToggleScreenShare}
 		onMicOptions={handlers.onMicOptions}
 		onCameraOptions={handlers.onCameraOptions}
 		onToggleHand={handlers.onToggleHand}
@@ -63,6 +67,16 @@ describe('ConferenceControls', () => {
 		expect(getByLabelText('Start camera')).toBeTruthy();
 	});
 
+	it('offers to share the screen, and to stop once it is shared', () => {
+		const { getByLabelText, queryByLabelText, rerender, handlers } = setup();
+		expect(getByLabelText('Share screen')).toBeTruthy();
+
+		rerender(controls(handlers, { screenSharing: true }));
+
+		expect(getByLabelText('Stop sharing screen')).toBeTruthy();
+		expect(queryByLabelText('Share screen')).toBeNull();
+	});
+
 	it('offers to lower the hand once it is raised', () => {
 		const { getByLabelText, queryByLabelText } = setup({ handRaised: true });
 
@@ -73,6 +87,7 @@ describe('ConferenceControls', () => {
 	it.each([
 		['conference-mic-button', 'onToggleMic'],
 		['conference-camera-button', 'onToggleCamera'],
+		['conference-screen-share-button', 'onToggleScreenShare'],
 		['conference-hand-button', 'onToggleHand'],
 		['conference-reaction-button', 'onReaction'],
 		['conference-more-button', 'onMore'],

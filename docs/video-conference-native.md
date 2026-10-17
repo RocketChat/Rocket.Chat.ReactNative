@@ -24,6 +24,7 @@ JSON messages on the room's data channel, no topic: `{ type: 'hand' }` (reliable
 - A new call keeps its "start" wording while it connects, even though `join` swaps the placeholder call id for the real one (`startedNewCall`).
 
 - Menus, People, Add people and Connection info open in the shared `ActionSheet` (TrueSheet).
+- The controls row is mic, camera, share screen, hand, reaction, More and Leave. Share screen is its own button (lit while sharing); More holds layout, switch camera, resolution, picture in picture and connection info.
 - Layouts: grid, spotlight, sidebar. A screen share takes the stage; the other tiles become thumbnails.
 - The chat button leaves the call running (Return-to-call row) and shows the Room's unread count. It opens the Room, or, when the Workspace keeps call chats in a thread (`VideoConf_Enable_Persistent_Chat` and `VideoConf_Conference_Window_Enabled` on, `VideoConf_Persistent_Chat_Mode` set to `thread`, and the call has no discussion), the thread of the call's own message (`info.messages.started`) over the Room, the same rule as the web (`getConferenceChatThreadId`).
 - People marks members who cannot see the Room's chat (`chatAccess.membersWithoutAccess`); the notice above the list opens the chat access sheet (see Chat access).

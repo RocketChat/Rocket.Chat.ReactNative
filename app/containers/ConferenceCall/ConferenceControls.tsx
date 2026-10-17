@@ -9,9 +9,11 @@ import HandIcon from './HandIcon';
 interface IConferenceControls {
 	micEnabled: boolean;
 	cameraEnabled: boolean;
+	screenSharing: boolean;
 	handRaised: boolean;
 	onToggleMic: () => void;
 	onToggleCamera: () => void;
+	onToggleScreenShare: () => void;
 	onMicOptions: () => void;
 	onCameraOptions: () => void;
 	onToggleHand: () => void;
@@ -34,9 +36,11 @@ const styles = StyleSheet.create({
 const ConferenceControls = ({
 	micEnabled,
 	cameraEnabled,
+	screenSharing,
 	handRaised,
 	onToggleMic,
 	onToggleCamera,
+	onToggleScreenShare,
 	onMicOptions,
 	onCameraOptions,
 	onToggleHand,
@@ -63,6 +67,13 @@ const ConferenceControls = ({
 				onPress={onToggleCamera}
 				onLongPress={onCameraOptions}
 				testID='conference-camera-button'
+			/>
+			<ConferenceControlButton
+				icon='desktop'
+				label={screenSharing ? I18n.t('Stop_sharing_screen') : I18n.t('Share_screen')}
+				variant={screenSharing ? 'toggled' : 'default'}
+				onPress={onToggleScreenShare}
+				testID='conference-screen-share-button'
 			/>
 			<ConferenceControlButton
 				renderIcon={color => <HandIcon color={color} size={CONTROL_ICON_SIZE} />}

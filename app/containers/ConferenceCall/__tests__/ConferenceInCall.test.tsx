@@ -6,6 +6,7 @@ import { useConferenceInfo } from '~/lib/hooks/useConferenceInfo';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useRoomUnread } from '~/lib/hooks/useRoomUnread';
 import { ensureCameraPermission } from '~/lib/methods/ensureCameraPermission';
+import log from '~/lib/methods/helpers/log';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { createReaction } from '~/lib/services/conference/callDataProtocol';
 import { conferenceSession } from '~/lib/services/conference/ConferenceSession';
@@ -25,7 +26,8 @@ const mockLiveKit = {
 	local: {
 		localParticipant: { identity: 'me', setMicrophoneEnabled: jest.fn(), setCameraEnabled: jest.fn() },
 		isMicrophoneEnabled: true,
-		isCameraEnabled: false
+		isCameraEnabled: false,
+		isScreenShareEnabled: false
 	},
 	participants: [] as TMockParticipant[],
 	speakers: [] as { identity: string; isLocal: boolean; audioLevel: number }[],
@@ -75,6 +77,7 @@ jest.mock('~/lib/services/conference/ConferenceSession', () => ({
 		toggleHand: jest.fn(),
 		setMicrophone: jest.fn(() => Promise.resolve()),
 		setCamera: jest.fn(() => Promise.resolve()),
+		toggleScreenShare: jest.fn(() => Promise.resolve()),
 		selectAudioOutput: jest.fn(() => Promise.resolve())
 	}
 }));
@@ -144,7 +147,8 @@ describe('ConferenceInCall', () => {
 				setCameraEnabled: jest.fn(() => Promise.resolve())
 			},
 			isMicrophoneEnabled: true,
-			isCameraEnabled: false
+			isCameraEnabled: false,
+			isScreenShareEnabled: false
 		};
 		mockLiveKit.participants = [me, ada];
 		mockLiveKit.speakers = [];
@@ -452,6 +456,32 @@ describe('ConferenceInCall', () => {
 
 			await waitFor(() => expect(conferenceSession.setCamera).toHaveBeenCalledWith(false));
 			expect(ensureCameraPermission).not.toHaveBeenCalled();
+		});
+
+		it('shares the screen through the session', async () => {
+			const { getByTestId } = renderCall();
+
+			fireEvent.press(getByTestId('conference-screen-share-button'));
+
+			await waitFor(() => expect(conferenceSession.toggleScreenShare).toHaveBeenCalledTimes(1));
+		});
+
+		it('offers to stop sharing once the screen is shared', () => {
+			mockLiveKit.local.isScreenShareEnabled = true;
+
+			const { getByLabelText } = renderCall();
+
+			expect(getByLabelText('Stop sharing screen')).toBeTruthy();
+		});
+
+		it('logs, rather than throws, when the screen cannot be shared', async () => {
+			const failure = new Error('picker failed');
+			(conferenceSession.toggleScreenShare as jest.Mock).mockRejectedValueOnce(failure);
+			const { getByTestId } = renderCall();
+
+			fireEvent.press(getByTestId('conference-screen-share-button'));
+
+			await waitFor(() => expect(log).toHaveBeenCalledWith(failure));
 		});
 
 		it('raises the hand through the session', () => {
