@@ -82,11 +82,11 @@ tags:
 # Verify alert is shown with the link
 - extendedWaitUntil:
     visible:
-      text: '.*Link Pressed*.'
+      text: '.*Link Pressed.*'
     timeout: 10000
 
 - assertVisible:
-    text: '.*https://www.rocket.chat*.'
+    text: '.*https://www.rocket.chat.*'
 
 # Dismiss the alert
 - tapOn:
@@ -110,11 +110,11 @@ tags:
 # Verify clipboard has the link alert
 - extendedWaitUntil:
     visible:
-      text: '.*Link Long Pressed*.'
+      text: '.*Link Long Pressed.*'
     timeout: 10000
 
 - assertVisible:
-    text: '.*https://www.rocket.chat*.'
+    text: '.*https://www.rocket.chat.*'
 
 # Dismiss the alert
 - tapOn:
@@ -128,7 +128,7 @@ tags:
 # Verify user info view is shown
 - extendedWaitUntil:
     visible:
-      text: '.*User info*.'
+      text: '.*User info.*'
     timeout: 60000
 
 # Verify username is visible in user info

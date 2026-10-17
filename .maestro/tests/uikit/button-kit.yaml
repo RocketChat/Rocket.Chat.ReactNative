@@ -48,5 +48,5 @@ tags:
           id: 'message-[A-Za-z0-9]{17}'
 - extendedWaitUntil:
     visible:
-      text: '.*Button tap received! This reply is private to you*.'
+      text: '.*Button tap received! This reply is private to you.*'
     timeout: 10000
