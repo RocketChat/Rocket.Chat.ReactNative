@@ -14,14 +14,14 @@ describe('RaisedHandChip', () => {
 	});
 
 	it('shows only the hand at first', () => {
-		const { getByText, queryByText } = render(<RaisedHandChip label='(1) Ada' />);
+		const { getByText, queryByText } = render(<RaisedHandChip label='(1) Ada' isSelf={false} />);
 
 		expect(getByText('✋')).toBeTruthy();
 		expect(queryByText('(1) Ada')).toBeNull();
 	});
 
 	it('reveals the name once the hand has been up for a moment', () => {
-		const { getByText, queryByText } = render(<RaisedHandChip label='(1) Ada' />);
+		const { getByText, queryByText } = render(<RaisedHandChip label='(1) Ada' isSelf={false} />);
 
 		act(() => {
 			jest.advanceTimersByTime(REVEAL_DELAY_MS - 1);
@@ -37,24 +37,24 @@ describe('RaisedHandChip', () => {
 	it('shows the name straight away when the system asks for less motion', () => {
 		jest.spyOn(Reanimated, 'useReducedMotion').mockReturnValue(true);
 
-		const { getByText } = render(<RaisedHandChip label='(1) Ada' />);
+		const { getByText } = render(<RaisedHandChip label='(1) Ada' isSelf={false} />);
 
 		expect(getByText('(1) Ada')).toBeTruthy();
 	});
 
 	it('keeps up with the place in the queue after the name is out', () => {
-		const { getByText, rerender } = render(<RaisedHandChip label='(2) Ada' />);
+		const { getByText, rerender } = render(<RaisedHandChip label='(2) Ada' isSelf={false} />);
 		act(() => {
 			jest.advanceTimersByTime(REVEAL_DELAY_MS);
 		});
 
-		rerender(<RaisedHandChip label='(1) Ada' />);
+		rerender(<RaisedHandChip label='(1) Ada' isSelf={false} />);
 
 		expect(getByText('(1) Ada')).toBeTruthy();
 	});
 
 	it('does not reveal anything once it has gone away', () => {
-		const { unmount } = render(<RaisedHandChip label='(1) Ada' />);
+		const { unmount } = render(<RaisedHandChip label='(1) Ada' isSelf={false} />);
 
 		unmount();
 

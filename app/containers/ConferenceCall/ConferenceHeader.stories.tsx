@@ -1,4 +1,5 @@
 import ConferenceHeader from './ConferenceHeader';
+import RaisedHandPill from './RaisedHandPill';
 import { AllThemes } from './stories/ThemedStory';
 
 const noop = () => {};
@@ -11,10 +12,8 @@ export const Default = () => (
 	<ConferenceHeader
 		elapsedSeconds={74}
 		title='Meeting in "general"'
-		peopleCount={3}
 		audioOutput='speaker'
 		onAudioOutputPress={noop}
-		onPeoplePress={noop}
 		chatUnread={0}
 		chatDisabled={false}
 		onChatPress={noop}
@@ -24,10 +23,8 @@ export const Default = () => (
 export const WithoutTitle = () => (
 	<ConferenceHeader
 		elapsedSeconds={3725}
-		peopleCount={2}
 		audioOutput='speaker'
 		onAudioOutputPress={noop}
-		onPeoplePress={noop}
 		chatUnread={0}
 		chatDisabled={false}
 		onChatPress={noop}
@@ -38,13 +35,24 @@ export const WithUnreadChat = () => (
 	<ConferenceHeader
 		elapsedSeconds={74}
 		title='Meeting in "general"'
-		peopleCount={3}
 		audioOutput='earpiece'
 		onAudioOutputPress={noop}
-		onPeoplePress={noop}
 		chatUnread={12}
 		chatDisabled={false}
 		onChatPress={noop}
+	/>
+);
+
+export const WithRaisedHand = () => (
+	<ConferenceHeader
+		elapsedSeconds={74}
+		title='Meeting in "general-team-room"'
+		audioOutput='speaker'
+		onAudioOutputPress={noop}
+		chatUnread={0}
+		chatDisabled={false}
+		onChatPress={noop}
+		handPill={<RaisedHandPill label='You +1' accessibilityLabel='Raised hands' onPress={noop} />}
 	/>
 );
 
@@ -54,13 +62,12 @@ export const Themes = () => (
 			<ConferenceHeader
 				elapsedSeconds={74}
 				title='Meeting in "general"'
-				peopleCount={3}
 				audioOutput='speaker'
 				onAudioOutputPress={noop}
-				onPeoplePress={noop}
 				chatUnread={0}
 				chatDisabled={false}
 				onChatPress={noop}
+				handPill={<RaisedHandPill label='You' accessibilityLabel='Raised hands' onPress={noop} />}
 			/>
 		)}
 	</AllThemes>

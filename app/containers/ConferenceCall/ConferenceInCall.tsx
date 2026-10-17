@@ -59,16 +59,6 @@ const styles = StyleSheet.create({
 	stage: {
 		flex: 1
 	},
-	pills: {
-		position: 'absolute',
-		top: 8,
-		left: 12,
-		right: 12,
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		alignItems: 'center',
-		gap: 8
-	},
 	banner: {
 		paddingVertical: 6,
 		alignItems: 'center'
@@ -132,7 +122,13 @@ const InCallContent = (): ReactElement => {
 		shareScreen().catch(log);
 	};
 
-	const { showPeople, showReactions, showAudioOutput, showCameraOptions, showMore, showChatAccess } = useConferenceMenus();
+	const peopleCount = info ? info.users.filter(isInVideoConference).length : tiles.length;
+
+	const { showPeople, showReactions, showAudioOutput, showCameraOptions, showMore, showChatAccess } = useConferenceMenus({
+		isScreenSharing: !!isScreenShareEnabled,
+		onToggleScreenShare: toggleScreenShare,
+		peopleCount
+	});
 
 	const elapsedSeconds = useElapsedSeconds(connectedAt);
 
@@ -158,8 +154,6 @@ const InCallContent = (): ReactElement => {
 	const raisedHands = orderRaisedHands(hands);
 	const handPositions = new Map(raisedHands.map(({ id }, index) => [id, index + 1]));
 	const nameById = new Map(tiles.map(({ id, name }) => [id, name]));
-
-	const peopleCount = info ? info.users.filter(isInVideoConference).length : tiles.length;
 
 	const hasReactions = reactions.length > 0;
 
@@ -191,15 +185,13 @@ const InCallContent = (): ReactElement => {
 		/>
 	) : null;
 
-	const pills = (
-		<>
+	const presentingPills =
+		shares.length > 0 ? (
 			<PresentingPills
 				presenters={shares.map(({ name, isLocal }) => ({ name: name ?? '', isSelf: isLocal }))}
 				onStop={toggleScreenShare}
 			/>
-			{handPill}
-		</>
-	);
+		) : null;
 
 	const renderTile = (tile: IConferenceTile, { floating = false }: { floating?: boolean } = {}) => (
 		<ParticipantTileView
@@ -218,6 +210,7 @@ const InCallContent = (): ReactElement => {
 				) : null
 			}
 			speaking={!tile.muted && (speakingIds.has(tile.id) || speakingByLevel.has(tile.id))}
+			isSelf={tile.isSelf}
 			handPosition={handPositions.get(tile.id)}
 			badge={tile.isSelf && videoQuality !== 'auto' ? VIDEO_QUALITY_LABELS[videoQuality] : undefined}
 			testID={`conference-tile-${tile.id}`}
@@ -292,35 +285,28 @@ const InCallContent = (): ReactElement => {
 			<ConferenceHeader
 				elapsedSeconds={elapsedSeconds}
 				title={info && 'title' in info ? info.title : undefined}
-				peopleCount={peopleCount}
 				audioOutput={audioOutput}
 				onAudioOutputPress={showAudioOutput}
-				onPeoplePress={showPeople}
 				chatUnread={chatUnread}
 				chatDisabled={!info}
 				onChatPress={openChat}
+				handPill={handPill}
+				pills={presentingPills}
 			/>
 			<ChatAccessNotice count={countMembersWhoCannotSeeChat({ info, viewerId: selfId })} onReview={showChatAccess} />
 			<View style={styles.stage}>
 				{expanded ? <ConferencePipSource source={pipSource} /> : null}
 				<TileSpeakingMonitors tiles={tiles} expanded={expanded} onChange={onTileSpeaking} />
 				{renderStage()}
-				{shares.length > 0 || raisedHands.length > 0 ? (
-					<View style={styles.pills} pointerEvents='box-none' testID='conference-pills'>
-						{pills}
-					</View>
-				) : null}
 				<ReactionLayer reactions={reactions} nameFor={id => nameById.get(id) ?? ''} />
 				<SpeakingWhileMutedNotice enabled={!isMicrophoneEnabled && phase === 'connected' && expanded} />
 			</View>
 			<ConferenceControls
 				micEnabled={isMicrophoneEnabled}
 				cameraEnabled={isCameraEnabled}
-				screenSharing={!!isScreenShareEnabled}
 				handRaised={handRaised}
 				onToggleMic={toggleMic}
 				onToggleCamera={toggleCamera}
-				onToggleScreenShare={toggleScreenShare}
 				onMicOptions={showAudioOutput}
 				onCameraOptions={showCameraOptions}
 				onToggleHand={() => conferenceSession.toggleHand()}

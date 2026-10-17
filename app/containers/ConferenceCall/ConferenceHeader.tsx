@@ -12,16 +12,17 @@ import ConferenceControlButton from './ConferenceControlButton';
 interface IConferenceHeader {
 	elapsedSeconds: number;
 	title?: string;
-	peopleCount: number;
 	audioOutput: string;
 	onAudioOutputPress: () => void;
 	chatUnread: number;
 	chatDisabled: boolean;
-	onPeoplePress: () => void;
 	onChatPress: () => void;
+	handPill?: ReactElement | null;
+	pills?: ReactElement | null;
 }
 
 const HEADER_BUTTON_SIZE = 36;
+const HAND_PILL_MAX_WIDTH = 140;
 const MAX_UNREAD_BADGE = 99;
 
 const styles = StyleSheet.create({
@@ -58,19 +59,31 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 8
+	},
+	handPill: {
+		flexShrink: 1,
+		maxWidth: HAND_PILL_MAX_WIDTH
+	},
+	pills: {
+		paddingHorizontal: 12,
+		paddingBottom: 8,
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		alignItems: 'center',
+		gap: 8
 	}
 });
 
 const ConferenceHeader = ({
 	elapsedSeconds,
 	title,
-	peopleCount,
 	audioOutput,
 	onAudioOutputPress,
 	chatUnread,
 	chatDisabled,
-	onPeoplePress,
-	onChatPress
+	onChatPress,
+	handPill,
+	pills
 }: IConferenceHeader): ReactElement => {
 	const { colors } = useTheme();
 
@@ -91,6 +104,7 @@ const ConferenceHeader = ({
 					) : null}
 				</View>
 				<View style={styles.actions}>
+					{handPill ? <View style={styles.handPill}>{handPill}</View> : null}
 					<ConferenceControlButton
 						icon={getAudioOutputIcon(audioOutput)}
 						label={I18n.t('Audio_output')}
@@ -98,14 +112,6 @@ const ConferenceHeader = ({
 						variant={isSpeakerOutput(audioOutput) ? 'toggled' : 'default'}
 						size={HEADER_BUTTON_SIZE}
 						testID='conference-speaker-button'
-					/>
-					<ConferenceControlButton
-						icon='team'
-						label={I18n.t('People')}
-						onPress={onPeoplePress}
-						size={HEADER_BUTTON_SIZE}
-						badge={peopleCount}
-						testID='conference-people-button'
 					/>
 					<ConferenceControlButton
 						icon='message'
@@ -118,6 +124,7 @@ const ConferenceHeader = ({
 					/>
 				</View>
 			</View>
+			{pills ? <View style={styles.pills}>{pills}</View> : null}
 		</View>
 	);
 };

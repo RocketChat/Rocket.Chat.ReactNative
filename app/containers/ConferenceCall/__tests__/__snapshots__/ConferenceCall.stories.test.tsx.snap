@@ -586,127 +586,6 @@ exports[`Story Snapshots: Default should match snapshot 2`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="People"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": false,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={4}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "borderRadius": 4,
-              "justifyContent": "center",
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-              "height": 36,
-              "width": 36,
-            },
-            false,
-          ]
-        }
-        testID="conference-people-button"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#1F2329",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "borderRadius": 9,
-                "height": 18,
-                "justifyContent": "center",
-                "minWidth": 18,
-                "paddingHorizontal": 4,
-                "position": "absolute",
-                "right": -6,
-                "top": -6,
-              },
-              {
-                "backgroundColor": "#6C727A",
-              },
-            ]
-          }
-          testID="conference-control-badge"
-        >
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 11,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "700",
-                  "lineHeight": 14,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#FFFFFF",
-                },
-              ]
-            }
-          >
-            3
-          </Text>
-        </View>
-      </View>
-      <View
         accessibilityLabel="Chat"
         accessibilityRole="button"
         accessibilityState={
@@ -1202,83 +1081,6 @@ exports[`Story Snapshots: HandRaised should match snapshot 1`] = `
     </Text>
   </View>
   <View
-    accessibilityLabel="Share screen"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    hitSlop={0}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "justifyContent": "center",
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-          "height": 44,
-          "width": 44,
-        },
-        false,
-      ]
-    }
-    testID="conference-screen-share-button"
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "#1F2329",
-            "fontSize": 22,
-          },
-          [
-            {
-              "lineHeight": 22,
-            },
-            undefined,
-          ],
-          {
-            "fontFamily": "custom",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
-    </Text>
-  </View>
-  <View
     accessibilityLabel="Lower hand"
     accessibilityRole="button"
     accessibilityState={
@@ -1738,7 +1540,7 @@ exports[`Story Snapshots: HandRaised should match snapshot 2`] = `
               "overflow": "hidden",
             },
             {
-              "backgroundColor": "#158D65",
+              "backgroundColor": "#FFFFFF",
             },
             {
               "borderRadius": 16,
@@ -1754,7 +1556,6 @@ exports[`Story Snapshots: HandRaised should match snapshot 2`] = `
           style={
             {
               "backgroundColor": "transparent",
-              "flexShrink": 1,
               "fontFamily": "Inter",
               "fontSize": 16,
               "fontVariant": [
@@ -1763,12 +1564,6 @@ exports[`Story Snapshots: HandRaised should match snapshot 2`] = `
               "fontWeight": "400",
               "lineHeight": 24,
               "textAlign": "left",
-              "textShadowColor": "rgba(0, 0, 0, 0.6)",
-              "textShadowOffset": {
-                "height": 1,
-                "width": 0,
-              },
-              "textShadowRadius": 2,
             }
           }
         >
@@ -1951,83 +1746,6 @@ exports[`Story Snapshots: MicAndCameraOff should match snapshot 1`] = `
       }
     >
       
-    </Text>
-  </View>
-  <View
-    accessibilityLabel="Share screen"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    hitSlop={0}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "justifyContent": "center",
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-          "height": 44,
-          "width": 44,
-        },
-        false,
-      ]
-    }
-    testID="conference-screen-share-button"
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "#1F2329",
-            "fontSize": 22,
-          },
-          [
-            {
-              "lineHeight": 22,
-            },
-            undefined,
-          ],
-          {
-            "fontFamily": "custom",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
     </Text>
   </View>
   <View
@@ -2536,83 +2254,6 @@ exports[`Story Snapshots: MicAndCameraOn should match snapshot 1`] = `
       }
     >
       
-    </Text>
-  </View>
-  <View
-    accessibilityLabel="Share screen"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    hitSlop={0}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "justifyContent": "center",
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-          "height": 44,
-          "width": 44,
-        },
-        false,
-      ]
-    }
-    testID="conference-screen-share-button"
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "#1F2329",
-            "fontSize": 22,
-          },
-          [
-            {
-              "lineHeight": 22,
-            },
-            undefined,
-          ],
-          {
-            "fontFamily": "custom",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
     </Text>
   </View>
   <View
@@ -3805,591 +3446,6 @@ exports[`Story Snapshots: PeopleInTheCall should match snapshot 1`] = `
         />
       </View>
     </View>
-  </View>
-</View>
-`;
-
-exports[`Story Snapshots: ScreenSharing should match snapshot 1`] = `
-<View
-  style={
-    [
-      {
-        "alignItems": "center",
-        "borderTopWidth": 0.5,
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-        "paddingHorizontal": 12,
-        "paddingVertical": 12,
-      },
-      {
-        "borderTopColor": "#CBCED1",
-      },
-    ]
-  }
-  testID="conference-controls"
->
-  <View
-    accessibilityLabel="Mute"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    hitSlop={0}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "justifyContent": "center",
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-          "height": 44,
-          "width": 44,
-        },
-        false,
-      ]
-    }
-    testID="conference-mic-button"
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "#1F2329",
-            "fontSize": 22,
-          },
-          [
-            {
-              "lineHeight": 22,
-            },
-            undefined,
-          ],
-          {
-            "fontFamily": "custom",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
-    </Text>
-  </View>
-  <View
-    accessibilityLabel="Stop camera"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    hitSlop={0}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "justifyContent": "center",
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-          "height": 44,
-          "width": 44,
-        },
-        false,
-      ]
-    }
-    testID="conference-camera-button"
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "#1F2329",
-            "fontSize": 22,
-          },
-          [
-            {
-              "lineHeight": 22,
-            },
-            undefined,
-          ],
-          {
-            "fontFamily": "custom",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
-    </Text>
-  </View>
-  <View
-    accessibilityLabel="Stop sharing screen"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": true,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    hitSlop={0}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "justifyContent": "center",
-        },
-        {
-          "backgroundColor": "#9EA2A8",
-          "height": 44,
-          "width": 44,
-        },
-        false,
-      ]
-    }
-    testID="conference-screen-share-button"
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "#095AD2",
-            "fontSize": 22,
-          },
-          [
-            {
-              "lineHeight": 22,
-            },
-            undefined,
-          ],
-          {
-            "fontFamily": "custom",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
-    </Text>
-  </View>
-  <View
-    accessibilityLabel="Raise hand"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    hitSlop={0}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "justifyContent": "center",
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-          "height": 44,
-          "width": 44,
-        },
-        false,
-      ]
-    }
-    testID="conference-hand-button"
-  >
-    <RNSVGSvgView
-      align="xMidYMid"
-      bbHeight={22}
-      bbWidth={22}
-      focusable={false}
-      height={22}
-      meetOrSlice={0}
-      minX={0}
-      minY={0}
-      style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "borderWidth": 0,
-          },
-          {
-            "flex": 0,
-            "height": 22,
-            "width": 22,
-          },
-        ]
-      }
-      vbHeight={24}
-      vbWidth={24}
-      width={22}
-    >
-      <RNSVGGroup
-        fill={
-          {
-            "payload": 4278190080,
-            "type": 0,
-          }
-        }
-      >
-        <RNSVGPath
-          d="M23 5.5V20c0 2.2-1.8 4-4 4h-7.3c-1.08 0-2.1-.43-2.85-1.19L1 14.83s1.26-1.23 1.3-1.25c.22-.19.49-.29.79-.29.22 0 .42.06.6.16.04.01 4.31 2.46 4.31 2.46V4c0-.83.67-1.5 1.5-1.5S11 3.17 11 4v7h1V1.5c0-.83.67-1.5 1.5-1.5S15 .67 15 1.5V11h1V2.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5V11h1V5.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5z"
-          fill={
-            {
-              "payload": 4280230697,
-              "type": 0,
-            }
-          }
-          propList={
-            [
-              "fill",
-            ]
-          }
-        />
-      </RNSVGGroup>
-    </RNSVGSvgView>
-  </View>
-  <View
-    accessibilityLabel="Send reaction"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    hitSlop={0}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "justifyContent": "center",
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-          "height": 44,
-          "width": 44,
-        },
-        false,
-      ]
-    }
-    testID="conference-reaction-button"
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "#1F2329",
-            "fontSize": 22,
-          },
-          [
-            {
-              "lineHeight": 22,
-            },
-            undefined,
-          ],
-          {
-            "fontFamily": "custom",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
-    </Text>
-  </View>
-  <View
-    accessibilityLabel="More"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    hitSlop={0}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "justifyContent": "center",
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-          "height": 44,
-          "width": 44,
-        },
-        false,
-      ]
-    }
-    testID="conference-more-button"
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "#1F2329",
-            "fontSize": 22,
-          },
-          [
-            {
-              "lineHeight": 22,
-            },
-            undefined,
-          ],
-          {
-            "fontFamily": "custom",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
-    </Text>
-  </View>
-  <View
-    accessibilityLabel="Leave call"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    hitSlop={0}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "justifyContent": "center",
-        },
-        {
-          "backgroundColor": "#EC0D2A",
-          "height": 44,
-          "width": 44,
-        },
-        false,
-      ]
-    }
-    testID="conference-leave-button"
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "#FFFFFF",
-            "fontSize": 22,
-          },
-          [
-            {
-              "lineHeight": 22,
-            },
-            undefined,
-          ],
-          {
-            "fontFamily": "custom",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
-    </Text>
   </View>
 </View>
 `;
@@ -5946,83 +5002,6 @@ exports[`Story Snapshots: Themes should match snapshot 2`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Stop sharing screen"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": true,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={0}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "borderRadius": 4,
-              "justifyContent": "center",
-            },
-            {
-              "backgroundColor": "#9EA2A8",
-              "height": 44,
-              "width": 44,
-            },
-            false,
-          ]
-        }
-        testID="conference-screen-share-button"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#095AD2",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-      </View>
-      <View
         accessibilityLabel="Lower hand"
         accessibilityRole="button"
         accessibilityState={
@@ -6538,83 +5517,6 @@ exports[`Story Snapshots: Themes should match snapshot 2`] = `
           }
         >
           
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="Stop sharing screen"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": true,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={0}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "borderRadius": 4,
-              "justifyContent": "center",
-            },
-            {
-              "backgroundColor": "#454C59",
-              "height": 44,
-              "width": 44,
-            },
-            false,
-          ]
-        }
-        testID="conference-screen-share-button"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#739EDE",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
         </Text>
       </View>
       <View
@@ -7136,83 +6038,6 @@ exports[`Story Snapshots: Themes should match snapshot 2`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Stop sharing screen"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": true,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={0}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "borderRadius": 4,
-              "justifyContent": "center",
-            },
-            {
-              "backgroundColor": "#3A3B3B",
-              "height": 44,
-              "width": 44,
-            },
-            false,
-          ]
-        }
-        testID="conference-screen-share-button"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#739EDE",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-      </View>
-      <View
         accessibilityLabel="Lower hand"
         accessibilityRole="button"
         accessibilityState={
@@ -7658,6 +6483,86 @@ exports[`Story Snapshots: Themes should match snapshot 3`] = `
           }
         >
           <View
+            style={
+              {
+                "flexShrink": 1,
+                "maxWidth": 140,
+              }
+            }
+          >
+            <View
+              accessibilityLabel="Raised hands"
+              accessibilityRole="button"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                [
+                  {
+                    "borderRadius": 16,
+                    "maxWidth": "100%",
+                    "paddingHorizontal": 12,
+                    "paddingVertical": 6,
+                  },
+                  {
+                    "backgroundColor": "#158D65",
+                  },
+                ]
+              }
+              testID="conference-hand-pill"
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#FFFFFF",
+                    },
+                  ]
+                }
+              >
+                ✋ You
+              </Text>
+            </View>
+          </View>
+          <View
             accessibilityLabel="Audio output"
             accessibilityRole="button"
             accessibilityState={
@@ -7733,127 +6638,6 @@ exports[`Story Snapshots: Themes should match snapshot 3`] = `
             >
               
             </Text>
-          </View>
-          <View
-            accessibilityLabel="People"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": false,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            hitSlop={4}
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "borderRadius": 4,
-                  "justifyContent": "center",
-                },
-                {
-                  "backgroundColor": "#E4E7EA",
-                  "height": 36,
-                  "width": 36,
-                },
-                false,
-              ]
-            }
-            testID="conference-people-button"
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 22,
-                  },
-                  [
-                    {
-                      "lineHeight": 22,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "borderRadius": 9,
-                    "height": 18,
-                    "justifyContent": "center",
-                    "minWidth": 18,
-                    "paddingHorizontal": 4,
-                    "position": "absolute",
-                    "right": -6,
-                    "top": -6,
-                  },
-                  {
-                    "backgroundColor": "#6C727A",
-                  },
-                ]
-              }
-              testID="conference-control-badge"
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 11,
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "lineHeight": 14,
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#FFFFFF",
-                    },
-                  ]
-                }
-              >
-                3
-              </Text>
-            </View>
           </View>
           <View
             accessibilityLabel="Chat"
@@ -8043,6 +6827,86 @@ exports[`Story Snapshots: Themes should match snapshot 3`] = `
           }
         >
           <View
+            style={
+              {
+                "flexShrink": 1,
+                "maxWidth": 140,
+              }
+            }
+          >
+            <View
+              accessibilityLabel="Raised hands"
+              accessibilityRole="button"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                [
+                  {
+                    "borderRadius": 16,
+                    "maxWidth": "100%",
+                    "paddingHorizontal": 12,
+                    "paddingVertical": 6,
+                  },
+                  {
+                    "backgroundColor": "#1D7256",
+                  },
+                ]
+              }
+              testID="conference-hand-pill"
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#FFFFFF",
+                    },
+                  ]
+                }
+              >
+                ✋ You
+              </Text>
+            </View>
+          </View>
+          <View
             accessibilityLabel="Audio output"
             accessibilityRole="button"
             accessibilityState={
@@ -8118,127 +6982,6 @@ exports[`Story Snapshots: Themes should match snapshot 3`] = `
             >
               
             </Text>
-          </View>
-          <View
-            accessibilityLabel="People"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": false,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            hitSlop={4}
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "borderRadius": 4,
-                  "justifyContent": "center",
-                },
-                {
-                  "backgroundColor": "#353B45",
-                  "height": 36,
-                  "width": 36,
-                },
-                false,
-              ]
-            }
-            testID="conference-people-button"
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#E4E7EA",
-                    "fontSize": 22,
-                  },
-                  [
-                    {
-                      "lineHeight": 22,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "borderRadius": 9,
-                    "height": 18,
-                    "justifyContent": "center",
-                    "minWidth": 18,
-                    "paddingHorizontal": 4,
-                    "position": "absolute",
-                    "right": -6,
-                    "top": -6,
-                  },
-                  {
-                    "backgroundColor": "#484C51",
-                  },
-                ]
-              }
-              testID="conference-control-badge"
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 11,
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "lineHeight": 14,
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#FFFFFF",
-                    },
-                  ]
-                }
-              >
-                3
-              </Text>
-            </View>
           </View>
           <View
             accessibilityLabel="Chat"
@@ -8428,6 +7171,86 @@ exports[`Story Snapshots: Themes should match snapshot 3`] = `
           }
         >
           <View
+            style={
+              {
+                "flexShrink": 1,
+                "maxWidth": 140,
+              }
+            }
+          >
+            <View
+              accessibilityLabel="Raised hands"
+              accessibilityRole="button"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                [
+                  {
+                    "borderRadius": 16,
+                    "maxWidth": "100%",
+                    "paddingHorizontal": 12,
+                    "paddingVertical": 6,
+                  },
+                  {
+                    "backgroundColor": "#1D7256",
+                  },
+                ]
+              }
+              testID="conference-hand-pill"
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#FFFFFF",
+                    },
+                  ]
+                }
+              >
+                ✋ You
+              </Text>
+            </View>
+          </View>
+          <View
             accessibilityLabel="Audio output"
             accessibilityRole="button"
             accessibilityState={
@@ -8503,127 +7326,6 @@ exports[`Story Snapshots: Themes should match snapshot 3`] = `
             >
               
             </Text>
-          </View>
-          <View
-            accessibilityLabel="People"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": false,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            hitSlop={4}
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "borderRadius": 4,
-                  "justifyContent": "center",
-                },
-                {
-                  "backgroundColor": "#292929",
-                  "height": 36,
-                  "width": 36,
-                },
-                false,
-              ]
-            }
-            testID="conference-people-button"
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#E4E4E4",
-                    "fontSize": 22,
-                  },
-                  [
-                    {
-                      "lineHeight": 22,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "borderRadius": 9,
-                    "height": 18,
-                    "justifyContent": "center",
-                    "minWidth": 18,
-                    "paddingHorizontal": 4,
-                    "position": "absolute",
-                    "right": -6,
-                    "top": -6,
-                  },
-                  {
-                    "backgroundColor": "#484848",
-                  },
-                ]
-              }
-              testID="conference-control-badge"
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 11,
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "700",
-                      "lineHeight": 14,
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#FFFFFF",
-                    },
-                  ]
-                }
-              >
-                3
-              </Text>
-            </View>
           </View>
           <View
             accessibilityLabel="Chat"
@@ -9414,7 +8116,7 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
                     "overflow": "hidden",
                   },
                   {
-                    "backgroundColor": "#158D65",
+                    "backgroundColor": "#FFFFFF",
                   },
                   {
                     "borderRadius": 16,
@@ -9430,7 +8132,6 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
                 style={
                   {
                     "backgroundColor": "transparent",
-                    "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
                     "fontVariant": [
@@ -9439,12 +8140,6 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
                     "fontWeight": "400",
                     "lineHeight": 24,
                     "textAlign": "left",
-                    "textShadowColor": "rgba(0, 0, 0, 0.6)",
-                    "textShadowOffset": {
-                      "height": 1,
-                      "width": 0,
-                    },
-                    "textShadowRadius": 2,
                   }
                 }
               >
@@ -9760,7 +8455,7 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
                     "overflow": "hidden",
                   },
                   {
-                    "backgroundColor": "#1D7256",
+                    "backgroundColor": "#FFFFFF",
                   },
                   {
                     "borderRadius": 16,
@@ -9776,7 +8471,6 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
                 style={
                   {
                     "backgroundColor": "transparent",
-                    "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
                     "fontVariant": [
@@ -9785,12 +8479,6 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
                     "fontWeight": "400",
                     "lineHeight": 24,
                     "textAlign": "left",
-                    "textShadowColor": "rgba(0, 0, 0, 0.6)",
-                    "textShadowOffset": {
-                      "height": 1,
-                      "width": 0,
-                    },
-                    "textShadowRadius": 2,
                   }
                 }
               >
@@ -10106,7 +8794,7 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
                     "overflow": "hidden",
                   },
                   {
-                    "backgroundColor": "#1D7256",
+                    "backgroundColor": "#FFFFFF",
                   },
                   {
                     "borderRadius": 16,
@@ -10122,7 +8810,6 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
                 style={
                   {
                     "backgroundColor": "transparent",
-                    "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
                     "fontVariant": [
@@ -10131,12 +8818,6 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
                     "fontWeight": "400",
                     "lineHeight": 24,
                     "textAlign": "left",
-                    "textShadowColor": "rgba(0, 0, 0, 0.6)",
-                    "textShadowOffset": {
-                      "height": 1,
-                      "width": 0,
-                    },
-                    "textShadowRadius": 2,
                   }
                 }
               >
@@ -11384,6 +10065,340 @@ exports[`Story Snapshots: WithCamera should match snapshot 1`] = `
 </View>
 `;
 
+exports[`Story Snapshots: WithRaisedHand should match snapshot 1`] = `
+<View
+  testID="conference-header"
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "gap": 8,
+        "minHeight": 48,
+        "paddingHorizontal": 12,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "gap": 8,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 24,
+              "textAlign": "left",
+            },
+            {
+              "color": "#1F2329",
+            },
+          ]
+        }
+        testID="conference-timer"
+      >
+        01:14
+      </Text>
+      <View
+        style={
+          [
+            {
+              "height": 20,
+              "width": 0.5,
+            },
+            {
+              "backgroundColor": "#9EA2A8",
+            },
+          ]
+        }
+      />
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "flex": 1,
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "400",
+              "lineHeight": 24,
+              "textAlign": "left",
+            },
+            {
+              "color": "#1F2329",
+            },
+          ]
+        }
+      >
+        Meeting in "general-team-room"
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 8,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flexShrink": 1,
+            "maxWidth": 140,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="Raised hands"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "borderRadius": 16,
+                "maxWidth": "100%",
+                "paddingHorizontal": 12,
+                "paddingVertical": 6,
+              },
+              {
+                "backgroundColor": "#158D65",
+              },
+            ]
+          }
+          testID="conference-hand-pill"
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "lineHeight": 16,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+              ]
+            }
+          >
+            ✋ You +1
+          </Text>
+        </View>
+      </View>
+      <View
+        accessibilityLabel="Audio output"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": true,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={4}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "borderRadius": 4,
+              "justifyContent": "center",
+            },
+            {
+              "backgroundColor": "#9EA2A8",
+              "height": 36,
+              "width": 36,
+            },
+            false,
+          ]
+        }
+        testID="conference-speaker-button"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#095AD2",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Chat"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": false,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={4}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "borderRadius": 4,
+              "justifyContent": "center",
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+              "height": 36,
+              "width": 36,
+            },
+            false,
+          ]
+        }
+        testID="conference-chat-button"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#1F2329",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
 exports[`Story Snapshots: WithUnreadChat should match snapshot 1`] = `
 <View
   testID="conference-header"
@@ -11555,127 +10570,6 @@ exports[`Story Snapshots: WithUnreadChat should match snapshot 1`] = `
         >
           
         </Text>
-      </View>
-      <View
-        accessibilityLabel="People"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": false,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={4}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "borderRadius": 4,
-              "justifyContent": "center",
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-              "height": 36,
-              "width": 36,
-            },
-            false,
-          ]
-        }
-        testID="conference-people-button"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#1F2329",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "borderRadius": 9,
-                "height": 18,
-                "justifyContent": "center",
-                "minWidth": 18,
-                "paddingHorizontal": 4,
-                "position": "absolute",
-                "right": -6,
-                "top": -6,
-              },
-              {
-                "backgroundColor": "#6C727A",
-              },
-            ]
-          }
-          testID="conference-control-badge"
-        >
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 11,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "700",
-                  "lineHeight": 14,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#FFFFFF",
-                },
-              ]
-            }
-          >
-            3
-          </Text>
-        </View>
       </View>
       <View
         accessibilityLabel="Chat"
@@ -12088,127 +10982,6 @@ exports[`Story Snapshots: WithoutTitle should match snapshot 1`] = `
         >
           
         </Text>
-      </View>
-      <View
-        accessibilityLabel="People"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": false,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={4}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "borderRadius": 4,
-              "justifyContent": "center",
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-              "height": 36,
-              "width": 36,
-            },
-            false,
-          ]
-        }
-        testID="conference-people-button"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#1F2329",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "borderRadius": 9,
-                "height": 18,
-                "justifyContent": "center",
-                "minWidth": 18,
-                "paddingHorizontal": 4,
-                "position": "absolute",
-                "right": -6,
-                "top": -6,
-              },
-              {
-                "backgroundColor": "#6C727A",
-              },
-            ]
-          }
-          testID="conference-control-badge"
-        >
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 11,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "700",
-                  "lineHeight": 14,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#FFFFFF",
-                },
-              ]
-            }
-          >
-            2
-          </Text>
-        </View>
       </View>
       <View
         accessibilityLabel="Chat"

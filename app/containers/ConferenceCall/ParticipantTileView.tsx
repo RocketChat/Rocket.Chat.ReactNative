@@ -7,6 +7,7 @@ import { CustomIcon } from '~/containers/CustomIcon';
 import { backdropTint } from '~/lib/methods/helpers/backdropTint';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
+import { getRaisedHandColors } from './getRaisedHandColors';
 import RaisedHandChip from './RaisedHandChip';
 
 interface IParticipantTileView {
@@ -15,6 +16,7 @@ interface IParticipantTileView {
 	muted: boolean;
 	video?: ReactElement | null;
 	speaking?: boolean;
+	isSelf?: boolean;
 	handPosition?: number;
 	badge?: string;
 	testID?: string;
@@ -85,6 +87,11 @@ const styles = StyleSheet.create({
 		paddingVertical: 2,
 		borderRadius: 10
 	},
+	handText: {
+		...sharedStyles.textRegular,
+		fontSize: 16,
+		lineHeight: 24
+	},
 	name: {
 		...sharedStyles.textRegular,
 		flexShrink: 1,
@@ -106,6 +113,7 @@ const ParticipantTileView = ({
 	muted,
 	video,
 	speaking = false,
+	isSelf = false,
 	handPosition,
 	badge,
 	testID
@@ -113,6 +121,7 @@ const ParticipantTileView = ({
 	const { colors } = useTheme();
 	const [compact, setCompact] = useState(false);
 	const label = muted ? `${name}, ${I18n.t('Microphone_muted')}` : name;
+	const handColors = getRaisedHandColors(colors, isSelf);
 
 	return (
 		<View
@@ -160,10 +169,8 @@ const ParticipantTileView = ({
 				</View>
 			) : null}
 			{handPosition && compact ? (
-				<View
-					style={[styles.handBadge, { backgroundColor: colors.buttonBackgroundSuccessDefault }]}
-					testID='participant-tile-hand'>
-					<Text style={[styles.name, styles.nameCompact, { color: colors.buttonFontSuccess }]} numberOfLines={1}>
+				<View style={[styles.handBadge, { backgroundColor: handColors.background }]} testID='participant-tile-hand'>
+					<Text style={[styles.handText, styles.nameCompact, { color: handColors.text }]} numberOfLines={1}>
 						{`✋ ${handPosition}`}
 					</Text>
 				</View>
@@ -172,8 +179,9 @@ const ParticipantTileView = ({
 				{handPosition && !compact ? (
 					<RaisedHandChip
 						label={`(${handPosition}) ${name}`}
+						isSelf={isSelf}
 						style={styles.handPill}
-						textStyle={styles.name}
+						textStyle={styles.handText}
 						testID='participant-tile-hand'
 					/>
 				) : (

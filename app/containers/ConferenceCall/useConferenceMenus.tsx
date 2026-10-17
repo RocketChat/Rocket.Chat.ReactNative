@@ -25,6 +25,12 @@ import ConnectionInfoSheetContent from './ConnectionInfoSheetContent';
 import PeopleSheetContent from './PeopleSheetContent';
 import ReactionPicker from './ReactionPicker';
 
+interface IConferenceMenusOptions {
+	isScreenSharing: boolean;
+	onToggleScreenShare: () => void;
+	peopleCount: number;
+}
+
 const SHEET_TRANSITION_MS = 300;
 const TITLE_HEIGHT = 48;
 const MIN_CAMERAS_TO_CHOOSE = 3;
@@ -39,10 +45,15 @@ const styles = StyleSheet.create({
 		...sharedStyles.textBold,
 		fontSize: 16,
 		lineHeight: 24
+	},
+	count: {
+		...sharedStyles.textRegular,
+		fontSize: 16,
+		lineHeight: 24
 	}
 });
 
-export const useConferenceMenus = () => {
+export const useConferenceMenus = ({ isScreenSharing, onToggleScreenShare, peopleCount }: IConferenceMenusOptions) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 
@@ -200,6 +211,18 @@ export const useConferenceMenus = () => {
 	const showMore = useCallback(() => {
 		showActionSheet({
 			options: [
+				{
+					title: I18n.t('People'),
+					accessibilityLabel: `${I18n.t('People')}. ${peopleCount}`,
+					icon: 'team',
+					right: () => <Text style={[styles.count, { color: colors.fontSecondaryInfo }]}>{peopleCount}</Text>,
+					onPress: () => afterSheetClosed(showPeople)
+				},
+				{
+					title: isScreenSharing ? I18n.t('Stop_sharing_screen') : I18n.t('Share_screen'),
+					icon: 'desktop',
+					onPress: onToggleScreenShare
+				},
 				{ title: I18n.t('Layout'), icon: 'view-medium', onPress: () => afterSheetClosed(showLayout) },
 				{ title: I18n.t('Switch_camera'), icon: 'refresh', onPress: () => conferenceSession.switchCamera() },
 				{ title: I18n.t('Send_resolution_maximum'), icon: 'video', onPress: () => afterSheetClosed(showVideoQuality) },
@@ -207,7 +230,19 @@ export const useConferenceMenus = () => {
 				{ title: I18n.t('Connection_info'), icon: 'info', onPress: () => afterSheetClosed(showConnectionInfo) }
 			]
 		});
-	}, [showActionSheet, afterSheetClosed, showLayout, showVideoQuality, enterPictureInPicture, showConnectionInfo]);
+	}, [
+		showActionSheet,
+		colors,
+		peopleCount,
+		isScreenSharing,
+		onToggleScreenShare,
+		afterSheetClosed,
+		showPeople,
+		showLayout,
+		showVideoQuality,
+		enterPictureInPicture,
+		showConnectionInfo
+	]);
 
 	return { showPeople, showReactions, showAudioOutput, showCameraOptions, showMore, showChatAccess };
 };

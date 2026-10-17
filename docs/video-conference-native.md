@@ -24,8 +24,8 @@ JSON messages on the room's data channel, no topic: `{ type: 'hand' }` (reliable
 - A new call keeps its "start" wording while it connects, even though `join` swaps the placeholder call id for the real one (`startedNewCall`).
 
 - Menus, People, Add people and Connection info open in the shared `ActionSheet` (TrueSheet).
-- The raised-hand and presenting pills float over the top of the stage instead of taking a row under the header, so the stage keeps its size and the tiles do not resize when a hand goes up or someone starts presenting.
-- The controls row is mic, camera, share screen, hand, reaction, More and Leave. Share screen is its own button (lit while sharing); More holds layout, switch camera, resolution, picture in picture and connection info.
+- A raised hand is announced by a pill on the header's own line, beside the speaker and chat buttons (our own hand included, as "You"). It adds no row, so the stage keeps its size and the tiles do not resize when a hand goes up. Who is presenting gets a row of its own under the header, only while someone shares.
+- The controls row is mic, camera, hand, reaction, More and Leave. More holds People (with how many are in the call beside it), share screen, layout, switch camera, resolution, picture in picture and connection info.
 - Layouts: grid, spotlight, sidebar. A screen share takes the stage; the other tiles become thumbnails.
 - The chat button leaves the call running (Return-to-call row) and shows the Room's unread count. It opens the Room, or, when the Workspace keeps call chats in a thread (`VideoConf_Enable_Persistent_Chat` and `VideoConf_Conference_Window_Enabled` on, `VideoConf_Persistent_Chat_Mode` set to `thread`, and the call has no discussion), the thread of the call's own message (`info.messages.started`) over the Room, the same rule as the web (`getConferenceChatThreadId`).
 - People marks members who cannot see the Room's chat (`chatAccess.membersWithoutAccess`); the notice above the list opens the chat access sheet (see Chat access).
@@ -39,7 +39,7 @@ The speaker button in the header opens the list of outputs the platform reports 
 
 ## Raised hand
 
-A tile shows a raised hand as a green chip that starts as the hand alone and widens to the right a moment later to reveal the place in the queue and the name (`RaisedHandChip`; shown at once when the system asks for reduced motion). The header pill is not animated.
+A tile shows a raised hand as a chip that starts as the hand alone and widens to the right a moment later to reveal the place in the queue and the name (`RaisedHandChip`; shown at once when the system asks for reduced motion). Our own chip is green and everybody else's is white with dark text (`getRaisedHandColors`). The header pill is not animated.
 
 A short two-note chime (`playHandRaisedSound`, the same notes as the web) plays when somebody else's hand goes up and when ours does. A hand that was already up, one repeated for someone who just arrived (`rebroadcast`), and a hand going down are silent (`isHandNews`). The player is created with `keepAudioSessionActive` so finishing the chime never deactivates the audio session the call is using, and it is released when the call ends. Neither platform has been checked on a device yet.
 

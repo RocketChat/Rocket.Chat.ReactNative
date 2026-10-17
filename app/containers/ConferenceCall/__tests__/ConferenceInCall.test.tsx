@@ -1,5 +1,4 @@
 import { act, fireEvent, render, waitFor, within } from '@testing-library/react-native';
-import { StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 
 import { addSettings, clearSettings } from '~/actions/settings';
@@ -38,6 +37,8 @@ const mockLiveKit = {
 
 const mockTileSpeakingMonitor = jest.fn((_props: unknown) => null);
 
+const mockMenusOptions = jest.fn();
+
 const mockMenus = {
 	showPeople: jest.fn(),
 	showReactions: jest.fn(),
@@ -63,7 +64,12 @@ jest.mock('@livekit/react-native', () => {
 });
 jest.mock('@livekit/react-native-webrtc', () => ({ ScreenCapturePickerView: () => null }));
 jest.mock('~/lib/services/conference/livekit', () => ({ Track: { Source: { Camera: 'camera', Microphone: 'microphone' } } }));
-jest.mock('../useConferenceMenus', () => ({ useConferenceMenus: () => mockMenus }));
+jest.mock('../useConferenceMenus', () => ({
+	useConferenceMenus: (options: unknown) => {
+		mockMenusOptions(options);
+		return mockMenus;
+	}
+}));
 jest.mock('../useConferencePictureInPicture', () => ({ useConferencePictureInPicture: jest.fn(() => false) }));
 jest.mock('../useSpeakingWhileMuted', () => ({ useSpeakingWhileMuted: jest.fn(() => false) }));
 jest.mock('../TileSpeakingMonitor', () => ({ __esModule: true, default: (props: unknown) => mockTileSpeakingMonitor(props) }));
@@ -246,20 +252,25 @@ describe('ConferenceInCall', () => {
 	});
 
 	describe('the header', () => {
-		it('names the call and counts the people in it, not the people who left', () => {
-			const { getByText, getByTestId } = renderCall();
+		it('names the call, and tells the more menu how many are in it, not counting the people who left', () => {
+			const { getByText } = renderCall();
 
 			expect(getByText('Standup')).toBeTruthy();
-			expect(getByTestId('conference-people-button')).toBeTruthy();
-			expect(getByText('2')).toBeTruthy();
+			expect(mockMenusOptions).toHaveBeenLastCalledWith(expect.objectContaining({ peopleCount: 2 }));
 		});
 
 		it('counts the people on screen until the call has been fetched', () => {
 			infoMock.mockReturnValue({ info: undefined, loading: true, failed: false, reload: jest.fn() });
 
-			const { getByText } = renderCall();
+			renderCall();
 
-			expect(getByText('2')).toBeTruthy();
+			expect(mockMenusOptions).toHaveBeenLastCalledWith(expect.objectContaining({ peopleCount: 2 }));
+		});
+
+		it('has no people button, because the people list opens from the more menu', () => {
+			const { queryByTestId } = renderCall();
+
+			expect(queryByTestId('conference-people-button')).toBeNull();
 		});
 
 		it('shows how long the call has run', () => {
@@ -286,26 +297,18 @@ describe('ConferenceInCall', () => {
 			expect(queryByTestId('conference-reconnecting')).not.toBeNull();
 		});
 
-		it('announces a raised hand over the top of the stage, by the name of whoever is first in line', () => {
-			useConferenceInteractionStore.getState().applyHandMessage('ada', { type: 'hand', raised: true, raisedAt: 10 }, 10);
-
-			const { getByText } = renderCall();
-
-			expect(getByText('✋ Ada')).toBeTruthy();
-		});
-
-		it('floats the announcements over the stage, so the tiles keep their size when a hand goes up', () => {
+		it('announces a raised hand in the header, by the name of whoever is first in line', () => {
 			useConferenceInteractionStore.getState().applyHandMessage('ada', { type: 'hand', raised: true, raisedAt: 10 }, 10);
 
 			const { getByTestId } = renderCall();
 
-			expect(StyleSheet.flatten(getByTestId('conference-pills').props.style)).toMatchObject({ position: 'absolute' });
+			expect(within(getByTestId('conference-header')).getByText('✋ Ada')).toBeTruthy();
 		});
 
-		it('has nothing to float while nobody has a hand up or is presenting', () => {
+		it('has no announcement while nobody has a hand up', () => {
 			const { queryByTestId } = renderCall();
 
-			expect(queryByTestId('conference-pills')).toBeNull();
+			expect(queryByTestId('conference-hand-pill')).toBeNull();
 		});
 
 		it('says "You" when the first hand is our own, and how many others are waiting', () => {
@@ -322,14 +325,6 @@ describe('ConferenceInCall', () => {
 			const { getByTestId } = renderCall();
 
 			fireEvent.press(getByTestId('conference-hand-pill'));
-
-			expect(mockMenus.showPeople).toHaveBeenCalledTimes(1);
-		});
-
-		it('opens the people list', () => {
-			const { getByTestId } = renderCall();
-
-			fireEvent.press(getByTestId('conference-people-button'));
 
 			expect(mockMenus.showPeople).toHaveBeenCalledTimes(1);
 		});
@@ -473,28 +468,23 @@ describe('ConferenceInCall', () => {
 			expect(ensureCameraPermission).not.toHaveBeenCalled();
 		});
 
-		it('shares the screen through the session', async () => {
-			const { getByTestId } = renderCall();
-
-			fireEvent.press(getByTestId('conference-screen-share-button'));
-
-			await waitFor(() => expect(conferenceSession.toggleScreenShare).toHaveBeenCalledTimes(1));
-		});
-
-		it('offers to stop sharing once the screen is shared', () => {
+		it('gives the more menu what it needs to share the screen through the session', async () => {
 			mockLiveKit.local.isScreenShareEnabled = true;
+			renderCall();
+			const { isScreenSharing, onToggleScreenShare } = mockMenusOptions.mock.lastCall?.[0];
 
-			const { getByLabelText } = renderCall();
+			onToggleScreenShare();
 
-			expect(getByLabelText('Stop sharing screen')).toBeTruthy();
+			expect(isScreenSharing).toBe(true);
+			await waitFor(() => expect(conferenceSession.toggleScreenShare).toHaveBeenCalledTimes(1));
 		});
 
 		it('logs, rather than throws, when the screen cannot be shared', async () => {
 			const failure = new Error('picker failed');
 			(conferenceSession.toggleScreenShare as jest.Mock).mockRejectedValueOnce(failure);
-			const { getByTestId } = renderCall();
+			renderCall();
 
-			fireEvent.press(getByTestId('conference-screen-share-button'));
+			mockMenusOptions.mock.lastCall?.[0].onToggleScreenShare();
 
 			await waitFor(() => expect(log).toHaveBeenCalledWith(failure));
 		});

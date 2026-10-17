@@ -3,9 +3,11 @@ import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from
 import Animated, { FadeIn, LinearTransition, useReducedMotion } from 'react-native-reanimated';
 
 import { useTheme } from '~/theme';
+import { getRaisedHandColors } from './getRaisedHandColors';
 
 interface IRaisedHandChip {
 	label: string;
+	isSelf: boolean;
 	style?: StyleProp<ViewStyle>;
 	textStyle?: StyleProp<TextStyle>;
 	testID?: string;
@@ -27,8 +29,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-const RaisedHandChip = ({ label, style, textStyle, testID }: IRaisedHandChip): ReactElement => {
+const RaisedHandChip = ({ label, isSelf, style, textStyle, testID }: IRaisedHandChip): ReactElement => {
 	const { colors } = useTheme();
+	const { background, text } = getRaisedHandColors(colors, isSelf);
 	const reducedMotion = useReducedMotion();
 	const [revealed, setRevealed] = useState(reducedMotion);
 
@@ -43,14 +46,14 @@ const RaisedHandChip = ({ label, style, textStyle, testID }: IRaisedHandChip): R
 	return (
 		<Animated.View
 			layout={LinearTransition.duration(REVEAL_DURATION_MS)}
-			style={[styles.chip, { backgroundColor: colors.buttonBackgroundSuccessDefault }, style]}
+			style={[styles.chip, { backgroundColor: background }, style]}
 			testID={testID}>
 			<Text style={textStyle}>✋</Text>
 			{revealed ? (
 				<Animated.Text
 					entering={FadeIn.duration(REVEAL_DURATION_MS)}
 					numberOfLines={1}
-					style={[textStyle, styles.label, { color: colors.buttonFontSuccess }]}>
+					style={[textStyle, styles.label, { color: text }]}>
 					{label}
 				</Animated.Text>
 			) : null}

@@ -1,8 +1,9 @@
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { type ReactElement } from 'react';
-import { Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { Provider } from 'react-redux';
 
+import { colors } from '~/lib/constants/colors';
 import { mockedStore } from '~/reducers/mockedStore';
 import { REVEAL_DELAY_MS } from '../RaisedHandChip';
 import ParticipantTileView from '../ParticipantTileView';
@@ -10,19 +11,21 @@ import ParticipantTileView from '../ParticipantTileView';
 interface ITileState {
 	muted?: boolean;
 	speaking?: boolean;
+	isSelf?: boolean;
 	handPosition?: number;
 	badge?: string;
 	video?: ReactElement;
 	testID?: string;
 }
 
-const tile = ({ muted = false, speaking, handPosition, badge, video, testID }: ITileState) => (
+const tile = ({ muted = false, speaking, isSelf, handPosition, badge, video, testID }: ITileState) => (
 	<Provider store={mockedStore}>
 		<ParticipantTileView
 			identity='ada'
 			name='Ada Lovelace'
 			muted={muted}
 			speaking={speaking}
+			isSelf={isSelf}
 			handPosition={handPosition}
 			badge={badge}
 			video={video}
@@ -97,7 +100,32 @@ describe('ParticipantTileView', () => {
 		expect(await findByText('(2) Ada Lovelace')).toBeTruthy();
 	});
 
+	it('shows the raised hand of the current user in green', () => {
+		const { getByTestId } = renderTile({ handPosition: 1, isSelf: true });
+
+		expect(StyleSheet.flatten(getByTestId('participant-tile-hand').props.style).backgroundColor).toBe(
+			colors.light.buttonBackgroundSuccessDefault
+		);
+	});
+
+	it('shows the raised hand of anybody else in white', () => {
+		const { getByTestId } = renderTile({ handPosition: 1, isSelf: false });
+
+		expect(StyleSheet.flatten(getByTestId('participant-tile-hand').props.style).backgroundColor).toBe('#FFFFFF');
+	});
+
 	describe('on a small thumbnail', () => {
+		it.each([
+			[true, colors.light.buttonBackgroundSuccessDefault],
+			[false, '#FFFFFF']
+		])('keeps the colour of the raised hand when the current user is %s', (isSelf, background) => {
+			const { getByTestId, getByLabelText } = renderTile({ handPosition: 2, isSelf });
+
+			fireEvent(getByLabelText('Ada Lovelace'), 'layout', { nativeEvent: { layout: { width: 140, height: 100 } } });
+
+			expect(StyleSheet.flatten(getByTestId('participant-tile-hand').props.style).backgroundColor).toBe(background);
+		});
+
 		const shrinkTo = (tile: Parameters<typeof fireEvent>[0], width: number) =>
 			fireEvent(tile, 'layout', { nativeEvent: { layout: { width, height: 100 } } });
 
