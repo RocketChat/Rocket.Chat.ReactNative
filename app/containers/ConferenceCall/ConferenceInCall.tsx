@@ -136,8 +136,10 @@ const InCallContent = (): ReactElement => {
 	const inPictureInPicture = useConferencePictureInPicture(expanded);
 	const selfId = localParticipant.identity;
 
+	const handRaised = (hands[selfId] ?? 0) > 0;
+
 	useAutoLowerHand({
-		handRaised: (hands[selfId] ?? 0) > 0,
+		handRaised,
 		micEnabled: isMicrophoneEnabled,
 		isSpeaking: speakingIds.has(selfId)
 	});
@@ -299,7 +301,7 @@ const InCallContent = (): ReactElement => {
 			<ConferenceControls
 				micEnabled={isMicrophoneEnabled}
 				cameraEnabled={isCameraEnabled}
-				handRaised={(hands[selfId] ?? 0) > 0}
+				handRaised={handRaised}
 				onToggleMic={toggleMic}
 				onToggleCamera={toggleCamera}
 				onMicOptions={showAudioOutput}

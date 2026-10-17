@@ -18,7 +18,10 @@ JSON messages on the room's data channel, no topic: `{ type: 'hand' }` (reliable
 
 ## Screens
 
-`ConferenceView` switches on the call phase: preflight, joining, connecting, in call, ended, error. Every surface reads `useTheme()`; the screen follows the light, dark and black themes.
+`ConferenceView` switches on the call phase: preflight (which also covers joining and connecting), in call, ended, error. Every surface reads `useTheme()`; the screen follows the light, dark and black themes.
+
+- While the call is joining or connecting the preflight stays on screen: the Start call or Join call button shows a spinner and cannot be pressed again, the call name and the microphone and camera buttons lock, and the camera preview is released so LiveKit can open the camera. Cancel stays available and, unlike before the user pressed Join, does not send `video-conference.decline`.
+- A new call keeps its "start" wording while it connects, even though `join` swaps the placeholder call id for the real one (`startedNewCall`).
 
 - Menus, People, Add people and Connection info open in the shared `ActionSheet` (TrueSheet).
 - Layouts: grid, spotlight, sidebar. A screen share takes the stage; the other tiles become thumbnails.
@@ -31,6 +34,10 @@ JSON messages on the room's data channel, no topic: `{ type: 'hand' }` (reliable
 `registerLiveKitGlobals` passes `autoConfigureAudioSession: false`. The session starts and stops LiveKit's `AudioSession` with the call, so 1:1 VoIP keeps CallKit/Telecom ownership of audio outside a conference. A VoIP call and a conference never run together: `openConferenceCall` shows the already-in-call alert while `isInActiveVoipCall()`, `MediaSessionInstance` shows it (and refuses, or ends an incoming call) while `isInConferenceCall()`, and the ring popups of `app/sagas/videoConf.ts` are dropped while a VoIP call is active.
 
 The speaker button in the header opens the list of outputs the platform reports (speaker, earpiece, headset, Bluetooth; on iOS also the system route picker). Choosing one calls `selectAudioOutput` and stores it as `audioOutput`, which the button's icon follows. LiveKit can only be asked to switch output, not which one is active, so an output the system picks by itself (a headset plugged in mid-call) is not reflected until the user chooses one.
+
+## Raised hand
+
+A raised hand drops by itself once its owner has been speaking for about three seconds (`useAutoLowerHand`, `advanceAutoLowerHand`): they have the floor. A pause longer than 0.8 s starts the count again. The web does the same, but it reads the local microphone level against a fixed threshold, while the app takes "speaking" from LiveKit's active-speaker signal, so background noise can also count.
 
 ## Speaking border
 

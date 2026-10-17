@@ -1,5 +1,5 @@
 import { type ReactElement, useState } from 'react';
-import { KeyboardAvoidingView, ScrollView, StyleSheet, Text } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, Text } from 'react-native';
 
 import I18n from '~/i18n';
 import { FormTextInput } from '~/containers/TextInput';
@@ -80,6 +80,7 @@ const ConferencePreflight = (): ReactElement => {
 	};
 
 	const join = () => {
+		Keyboard.dismiss();
 		setStartedNewCall(isNew);
 		conferenceSession.join({ title: isNew ? title.trim() || undefined : undefined, mic, cam });
 	};

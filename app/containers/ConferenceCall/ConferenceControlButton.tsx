@@ -66,6 +66,7 @@ const ConferenceControlButton = ({
 	testID
 }: IConferenceControlButton): ReactElement => {
 	const { colors } = useTheme();
+	const iconColor = getControlColors(colors, variant, false).icon;
 
 	const handlePress = () => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -77,6 +78,7 @@ const ConferenceControlButton = ({
 			onPress={handlePress}
 			onLongPress={onLongPress}
 			disabled={disabled}
+			hitSlop={Math.max(0, (CONTROL_BUTTON_SIZE - size) / 2)}
 			accessibilityRole='button'
 			accessibilityLabel={label}
 			accessibilityState={{ selected: variant === 'toggled', disabled }}
@@ -86,11 +88,7 @@ const ConferenceControlButton = ({
 				{ width: size, height: size, backgroundColor: getControlColors(colors, variant, pressed).background },
 				disabled && styles.disabled
 			]}>
-			{renderIcon ? (
-				renderIcon(getControlColors(colors, variant, false).icon)
-			) : (
-				<CustomIcon name={icon as TIconsName} size={CONTROL_ICON_SIZE} color={getControlColors(colors, variant, false).icon} />
-			)}
+			{renderIcon ? renderIcon(iconColor) : <CustomIcon name={icon as TIconsName} size={CONTROL_ICON_SIZE} color={iconColor} />}
 			{badge !== undefined && badge !== 0 ? (
 				<View style={[styles.badge, { backgroundColor: colors.badgeBackgroundLevel1 }]} testID='conference-control-badge'>
 					<Text style={[styles.badgeText, { color: colors.fontWhite }]}>{badge}</Text>

@@ -1,4 +1,5 @@
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
+import { Keyboard } from 'react-native';
 import { Provider } from 'react-redux';
 
 import { setUser } from '~/actions/login';
@@ -110,6 +111,16 @@ describe('ConferencePreflight', () => {
 			fireEvent.press(getByTestId('conference-preflight-join'));
 
 			expect(conferenceSession.join).toHaveBeenCalledWith(expect.objectContaining({ mic: false }));
+		});
+
+		it('puts the keyboard away when the call starts', () => {
+			const dismiss = jest.spyOn(Keyboard, 'dismiss').mockImplementation(() => undefined);
+			const { getByTestId } = renderPreflight();
+
+			fireEvent.press(getByTestId('conference-preflight-join'));
+
+			expect(dismiss).toHaveBeenCalledTimes(1);
+			dismiss.mockRestore();
 		});
 
 		it('cancels the call', () => {

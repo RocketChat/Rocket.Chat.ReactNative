@@ -67,6 +67,18 @@ describe('ConferenceControlButton', () => {
 		expect(renderIcon).toHaveBeenCalledWith(expect.any(String));
 	});
 
+	it.each([
+		[44, 0],
+		[36, 4],
+		[32, 6]
+	])('is easy to hit at %ipx, with %ipx of extra reach on each side', (size, hitSlop) => {
+		const { getByTestId } = render(
+			<ConferenceControlButton icon='team' label='People' size={size} onPress={jest.fn()} testID='button' />
+		);
+
+		expect(getByTestId('button').props.hitSlop).toBe(hitSlop);
+	});
+
 	it('shows a count badge, and none for zero', () => {
 		const { getByText, queryByTestId, rerender } = render(
 			<ConferenceControlButton icon='team' label='People' badge={3} onPress={jest.fn()} />
