@@ -1,5 +1,6 @@
 import { fireEvent, render } from '@testing-library/react-native';
 
+import { hideActionSheetRef } from '~/containers/ActionSheet';
 import { closeConferenceCall } from '~/lib/services/conference/conferenceCallNavigation';
 import { type TConferenceError, useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import Navigation from '~/lib/navigation/appNavigation';
@@ -18,6 +19,10 @@ jest.mock('~/lib/navigation/appNavigation', () => ({
 jest.mock('~/lib/services/conference/conferenceCallNavigation', () => ({
 	closeConferenceCall: jest.fn(),
 	CONFERENCE_ROUTE: 'ConferenceView'
+}));
+jest.mock('~/containers/ActionSheet', () => ({
+	...jest.requireActual('~/containers/ActionSheet'),
+	hideActionSheetRef: jest.fn()
 }));
 jest.mock('~/containers/StatusBar', () => () => null);
 jest.mock('~/containers/ConferenceCall/ConferencePreflight', () => {
@@ -136,6 +141,15 @@ describe('ConferenceView', () => {
 			expect(closeConferenceCall).not.toHaveBeenCalled();
 		}
 	);
+
+	it('puts away any sheet that is open, such as the chat, when the user leaves the screen', () => {
+		state().setPhase('connected');
+		const { unmount } = render(<ConferenceView />);
+
+		unmount();
+
+		expect(hideActionSheetRef).toHaveBeenCalledTimes(1);
+	});
 
 	it.each([
 		['preflight', undefined],

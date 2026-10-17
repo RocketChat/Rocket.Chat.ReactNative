@@ -8,7 +8,7 @@ import ConferenceControlButton, { COMPACT_BUTTON_SIZE } from './ConferenceContro
 
 interface IConferenceSheetHeader {
 	title: string;
-	onClose: () => void;
+	onClose?: () => void;
 	actions?: ReactElement | null;
 }
 
@@ -40,7 +40,9 @@ const ConferenceSheetHeader = ({ title, onClose, actions }: IConferenceSheetHead
 			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>
 			<View style={styles.actions}>
 				{actions}
-				<ConferenceControlButton icon='close' label={I18n.t('Close')} size={COMPACT_BUTTON_SIZE} onPress={onClose} />
+				{onClose ? (
+					<ConferenceControlButton icon='close' label={I18n.t('Close')} size={COMPACT_BUTTON_SIZE} onPress={onClose} />
+				) : null}
 			</View>
 		</View>
 	);

@@ -1,9 +1,9 @@
 import { act, fireEvent, render, waitFor, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
+import { setUser } from '~/actions/login';
 import { addSettings, clearSettings } from '~/actions/settings';
 import { useConferenceInfo } from '~/lib/hooks/useConferenceInfo';
-import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useRoomUnread } from '~/lib/hooks/useRoomUnread';
 import { ensureCameraPermission } from '~/lib/methods/ensureCameraPermission';
 import log from '~/lib/methods/helpers/log';
@@ -11,7 +11,6 @@ import { showToast } from '~/lib/methods/helpers/showToast';
 import { createReaction } from '~/lib/services/conference/callDataProtocol';
 import { conferenceSession } from '~/lib/services/conference/ConferenceSession';
 import { closeConferenceCall } from '~/lib/services/conference/conferenceCallNavigation';
-import { navigateToConferenceChat } from '~/lib/services/conference/navigateToConferenceChat';
 import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import { useConferenceInteractionStore } from '~/lib/services/conference/useConferenceInteractionStore';
 import { useConferenceRoomStore } from '~/lib/services/conference/useConferenceRoomStore';
@@ -38,6 +37,8 @@ const mockLiveKit = {
 const mockTileSpeakingMonitor = jest.fn((_props: unknown) => null);
 
 const mockMenusOptions = jest.fn();
+
+const mockActionSheet = { showActionSheet: jest.fn(), hideActionSheet: jest.fn() };
 
 const mockMenus = {
 	showPeople: jest.fn(),
@@ -74,7 +75,6 @@ jest.mock('../useConferencePictureInPicture', () => ({ useConferencePictureInPic
 jest.mock('../useSpeakingWhileMuted', () => ({ useSpeakingWhileMuted: jest.fn(() => false) }));
 jest.mock('../TileSpeakingMonitor', () => ({ __esModule: true, default: (props: unknown) => mockTileSpeakingMonitor(props) }));
 jest.mock('~/lib/hooks/useConferenceInfo', () => ({ useConferenceInfo: jest.fn() }));
-jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: jest.fn() }));
 jest.mock('~/lib/hooks/useRoomUnread', () => ({ useRoomUnread: jest.fn(() => 0) }));
 jest.mock('~/lib/methods/ensureCameraPermission', () => ({ ensureCameraPermission: jest.fn() }));
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
@@ -89,9 +89,11 @@ jest.mock('~/lib/services/conference/ConferenceSession', () => ({
 	}
 }));
 jest.mock('~/lib/services/conference/conferenceCallNavigation', () => ({ closeConferenceCall: jest.fn() }));
-jest.mock('~/lib/services/conference/navigateToConferenceChat', () => ({
-	navigateToConferenceChat: jest.fn(() => Promise.resolve())
+jest.mock('~/containers/ActionSheet', () => ({
+	...jest.requireActual('~/containers/ActionSheet'),
+	useActionSheet: () => mockActionSheet
 }));
+jest.mock('../ConferenceChatSheetContent', () => ({ __esModule: true, default: () => null }));
 
 const infoMock = useConferenceInfo as jest.Mock;
 const pictureInPictureMock = useConferencePictureInPicture as jest.Mock;
@@ -164,7 +166,6 @@ describe('ConferenceInCall', () => {
 		infoMock.mockReturnValue(callInfo());
 		pictureInPictureMock.mockReturnValue(false);
 		speakingWhileMutedMock.mockReturnValue(false);
-		(useMasterDetail as jest.Mock).mockReturnValue(false);
 		(useRoomUnread as jest.Mock).mockReturnValue(0);
 		(ensureCameraPermission as jest.Mock).mockResolvedValue(true);
 	});
@@ -331,16 +332,39 @@ describe('ConferenceInCall', () => {
 	});
 
 	describe('the chat', () => {
-		it('opens the room the call chats in, and does not hang up', () => {
+		const chatSheet = () => mockActionSheet.showActionSheet.mock.lastCall?.[0];
+
+		it('opens the room the call chats in, in a sheet over the call, and does not hang up', () => {
 			const { getByTestId } = renderCall();
 
 			fireEvent.press(getByTestId('conference-chat-button'));
 
-			expect(navigateToConferenceChat).toHaveBeenCalledWith({
-				chat: { rid: 'GENERAL', name: 'general', t: 'c' },
-				isMasterDetail: false
+			expect(chatSheet().children.props).toEqual({
+				rid: 'GENERAL',
+				name: 'general',
+				t: 'c',
+				tmid: undefined,
+				title: 'Standup',
+				canRead: true
 			});
 			expect(closeConferenceCall).not.toHaveBeenCalled();
+		});
+
+		it('opens it tall, and taller still while the keyboard is up', () => {
+			const { getByTestId } = renderCall();
+
+			fireEvent.press(getByTestId('conference-chat-button'));
+
+			expect(chatSheet()).toMatchObject({ snaps: ['95%', '100%'], expandOnKeyboard: true, fullContainer: true });
+		});
+
+		it('is titled Chat when the call has no name of its own', () => {
+			infoMock.mockReturnValue(callInfo({ title: undefined }));
+			const { getByTestId } = renderCall();
+
+			fireEvent.press(getByTestId('conference-chat-button'));
+
+			expect(chatSheet().children.props.title).toBe('Chat');
 		});
 
 		it('opens the thread of the call message when the chat lives in a thread', () => {
@@ -356,7 +380,7 @@ describe('ConferenceInCall', () => {
 
 			fireEvent.press(getByTestId('conference-chat-button'));
 
-			expect(navigateToConferenceChat).toHaveBeenCalledWith(expect.objectContaining({ threadId: 'started-message' }));
+			expect(chatSheet().children.props).toMatchObject({ rid: 'GENERAL', tmid: 'started-message' });
 		});
 
 		it('opens only the room when the chat lives in the room', () => {
@@ -372,16 +396,19 @@ describe('ConferenceInCall', () => {
 
 			fireEvent.press(getByTestId('conference-chat-button'));
 
-			expect(navigateToConferenceChat).toHaveBeenCalledWith(expect.objectContaining({ threadId: undefined }));
+			expect(chatSheet().children.props.tmid).toBeUndefined();
 		});
 
-		it('passes on whether the app is showing the tablet layout', () => {
-			(useMasterDetail as jest.Mock).mockReturnValue(true);
+		it('tells the sheet when the server says we cannot read the chat', () => {
+			mockedStore.dispatch(setUser({ id: 'me', token: 'tok' }));
+			infoMock.mockReturnValue(
+				callInfo({ chatAccess: { rid: 'GENERAL', name: 'general', type: 'c', membersWithoutAccess: ['me'], canInvite: true } })
+			);
 			const { getByTestId } = renderCall();
 
 			fireEvent.press(getByTestId('conference-chat-button'));
 
-			expect(navigateToConferenceChat).toHaveBeenCalledWith(expect.objectContaining({ isMasterDetail: true }));
+			expect(chatSheet().children.props.canRead).toBe(false);
 		});
 
 		it('does nothing before it knows which room the chat is in', () => {
@@ -390,7 +417,7 @@ describe('ConferenceInCall', () => {
 
 			fireEvent.press(getByTestId('conference-chat-button'));
 
-			expect(navigateToConferenceChat).not.toHaveBeenCalled();
+			expect(mockActionSheet.showActionSheet).not.toHaveBeenCalled();
 		});
 	});
 

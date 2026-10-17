@@ -8,6 +8,7 @@ import ConferenceEndedMessage from '~/containers/ConferenceCall/ConferenceEndedM
 import ConferenceMessage from '~/containers/ConferenceCall/ConferenceMessage';
 import ConferencePreflight from '~/containers/ConferenceCall/ConferencePreflight';
 import LazyConferenceInCall from '~/containers/ConferenceCall/LazyConferenceInCall';
+import { hideActionSheetRef } from '~/containers/ActionSheet';
 import StatusBar from '~/containers/StatusBar';
 import { hasNativeHeaderBar } from '../lib/methods/helpers/deviceInfo';
 import Navigation from '../lib/navigation/appNavigation';
@@ -54,6 +55,7 @@ const ConferenceView = (): ReactElement => {
 
 			expand();
 			return () => {
+				hideActionSheetRef();
 				minimize();
 				if (!isInConferenceCall() && useConferenceCallStore.getState().callId) {
 					closeConferenceCall();

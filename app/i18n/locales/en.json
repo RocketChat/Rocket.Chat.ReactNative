@@ -183,6 +183,8 @@
   "Chat_access_notice": "{{count}} in this call can't see the chat",
   "Chat_closed_by_agent": "Chat closed by agent",
   "Chat_is_on_hold": "This chat is on hold due to inactivity",
+  "Chat_not_shared_with_you": "This chat has not been shared with you",
+  "Chat_not_shared_with_you_description": "You're in the call, but not in the conversation it belongs to. Anyone who is can give you access to it.",
   "Chat_started": "Chat started",
   "Chats": "Chats",
   "Check_again": "Check again",

@@ -20,6 +20,7 @@ import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
 import { HANDLE_HEIGHT, getSheetContentPaddingBottom, useActionSheetDetents } from './useActionSheetDetents';
 import { useActionSheetItemHeight } from './useActionSheetItemHeight';
+import { useExpandOnKeyboard } from './useExpandOnKeyboard';
 import styles from './styles';
 
 export const ACTION_SHEET_ANIMATION_DURATION = 250;
@@ -109,6 +110,8 @@ const ActionSheet = memo(
 			hasCancel: data?.hasCancel,
 			contentHeight
 		});
+
+		useExpandOnKeyboard({ sheetRef, isVisible, options: data, detentsCount: detents.length });
 
 		const hasOptions = !!data?.options?.length;
 		const hasSnaps = !!effectiveSnaps?.length;
