@@ -35,7 +35,17 @@ tags:
     id: autocomplete-item-uikit-test
 - tapOn:
     id: 'message-composer-send'
-- tapOn: Tap Me
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn: Tap Me
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'message-[A-Za-z0-9]{17}'
 - extendedWaitUntil:
     visible:
       text: '.*Button tap received! This reply is private to you*.'

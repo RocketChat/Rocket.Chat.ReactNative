@@ -146,15 +146,18 @@ tags:
       id: 'accessibility-view-list'
     timeout: 60000
 - assertVisible: Show alerts as
+- pressKey: Remote Dpad Down
+- waitForAnimationToEnd:
+    timeout: 1000
 - repeat:
-    times: 10
+    times: 20
     while:
       notVisible:
         focused: true
         containsDescendants:
           - text: 'Show alerts as\. Toasts'
     commands:
-      - pressKey: Remote Dpad Down
+      - pressKey: Tab
       - waitForAnimationToEnd:
           timeout: 1000
 - assertVisible:
@@ -186,15 +189,18 @@ tags:
     timeout: 1000
 - assertVisible: Dialogs
 - assertVisible: Show alerts as
+- pressKey: Remote Dpad Down
+- waitForAnimationToEnd:
+    timeout: 1000
 - repeat:
-    times: 10
+    times: 20
     while:
       notVisible:
         focused: true
         containsDescendants:
           - text: 'Show alerts as\. Dialogs'
     commands:
-      - pressKey: Remote Dpad Down
+      - pressKey: Tab
       - waitForAnimationToEnd:
           timeout: 1000
 - assertVisible:
@@ -214,7 +220,7 @@ tags:
         containsDescendants:
           - text: 'Toasts\. Dismissed automatically\. Unchecked'
     commands:
-      - pressKey: Remote Dpad Up
+      - pressKey: Remote Dpad Down
       - waitForAnimationToEnd:
           timeout: 1000
 - assertVisible:
