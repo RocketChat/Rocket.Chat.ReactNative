@@ -6,7 +6,9 @@ import Navigation from '../../navigation/appNavigation';
 import { closeConferenceCall } from '../../services/conference/conferenceCallNavigation';
 import { conferenceSession } from '../../services/conference/ConferenceSession';
 import { preflightCallId, useConferenceCallStore } from '../../services/conference/useConferenceCallStore';
+import { isInActiveVoipCall } from '../../services/voip/isInActiveVoipCall';
 import { initStore } from '../../store/auxStore';
+import { showErrorAlert } from '../helpers/info';
 import { openConferenceCall } from '../openConferenceCall';
 import { requestVoipCallPermissions } from '../voipCallPermissions';
 
@@ -19,6 +21,8 @@ jest.mock('../../services/conference/ConferenceSession', () => ({
 	conferenceSession: { end: jest.fn(() => Promise.resolve()), join: jest.fn() }
 }));
 jest.mock('../voipCallPermissions', () => ({ requestVoipCallPermissions: jest.fn(() => Promise.resolve(true)) }));
+jest.mock('../../services/voip/isInActiveVoipCall', () => ({ isInActiveVoipCall: jest.fn(() => false) }));
+jest.mock('../helpers/info', () => ({ ...jest.requireActual('../helpers/info'), showErrorAlert: jest.fn() }));
 
 const state = () => useConferenceCallStore.getState();
 
@@ -47,6 +51,17 @@ describe('openConferenceCall', () => {
 		mockedStore.dispatch(clearSettings());
 		mockedStore.dispatch(selectServerRequest('https://open.rocket.chat', '8.0.0'));
 		mockedStore.dispatch(setUser({ id: 'uid1', token: 'tok1' }));
+	});
+
+	test('does not open a video call over an active VoIP call, and says so', async () => {
+		(isInActiveVoipCall as jest.Mock).mockReturnValueOnce(true);
+
+		await openConferenceCall({ callId: 'call1' });
+
+		expect(state().callId).toBeUndefined();
+		expect(Navigation.navigate).not.toHaveBeenCalled();
+		expect(requestVoipCallPermissions).not.toHaveBeenCalled();
+		expect(showErrorAlert).toHaveBeenCalledWith('You are already in a call.', 'Oops!');
 	});
 
 	test('joining an existing call opens its preflight', async () => {

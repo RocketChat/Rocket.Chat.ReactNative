@@ -62,18 +62,20 @@ const showCallNotification = (customComponent: ElementType, payload: ICallInfo):
 	});
 };
 
-function* onDirectCall(payload: ICallInfo) {
-	if (isInActiveVoipCall()) return;
-
+function* showIncomingCall(payload: ICallInfo, component: ElementType, action?: ICallInfo['action']) {
 	const calls = yield* appSelector(state => state.videoConf.calls);
 	const currentCall = calls.find(c => c.callId === payload.callId);
 	const hasAnotherCall = calls.find(c => c.action === 'call');
-	if (hasAnotherCall && hasAnotherCall.callId !== payload.callId) return;
+	if (currentCall || (hasAnotherCall && hasAnotherCall.callId !== payload.callId)) return;
 	const foreground = yield* appSelector(state => state.app.foreground);
-	if (!currentCall && foreground) {
-		yield put(setVideoConfCall(payload));
-		showCallNotification(IncomingCallNotification, payload);
-	}
+	if (!foreground) return;
+	yield put(setVideoConfCall(action ? { ...payload, action } : payload));
+	showCallNotification(component, payload);
+}
+
+function* onDirectCall(payload: ICallInfo) {
+	if (isInActiveVoipCall()) return;
+	yield* showIncomingCall(payload, IncomingCallNotification);
 }
 
 function* onEmbeddedRing(payload: ICallInfo) {
@@ -81,13 +83,7 @@ function* onEmbeddedRing(payload: ICallInfo) {
 	if (isInActiveVoipCall() || isInConferenceCall() || payload.uid === userId) {
 		return;
 	}
-	const calls = yield* appSelector(state => state.videoConf.calls);
-	const foreground = yield* appSelector(state => state.app.foreground);
-	if (!foreground || calls.some(({ callId, action }) => callId === payload.callId || action === 'call')) {
-		return;
-	}
-	yield put(setVideoConfCall({ ...payload, action: 'call' }));
-	showCallNotification(EmbeddedCallNotification, payload);
+	yield* showIncomingCall(payload, EmbeddedCallNotification, 'call');
 }
 
 function* onDirectCallCanceled(payload: ICallInfo) {

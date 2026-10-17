@@ -77,7 +77,7 @@ const ConferencePreflight = (): ReactElement => {
 		closeConferenceCall();
 	};
 
-	const join = () => conferenceSession.join({ title: isNew ? title.trim() || undefined : undefined, ring: true, mic, cam });
+	const join = () => conferenceSession.join({ title: isNew ? title.trim() || undefined : undefined, mic, cam });
 
 	return (
 		<KeyboardAvoidingView style={styles.screen} behavior={isIOS ? 'padding' : undefined}>

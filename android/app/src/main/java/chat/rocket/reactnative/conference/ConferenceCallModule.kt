@@ -18,4 +18,30 @@ class ConferenceCallModule(reactContext: ReactApplicationContext) : NativeConfer
     override fun stopConferenceCallService() {
         ConferenceCallService.stopService(reactApplicationContext)
     }
+
+    override fun consumeOpenCallRequest(promise: Promise) {
+        promise.resolve(ConferenceCallOpenRequest.consume())
+    }
+
+    override fun startMicLevelMonitor(promise: Promise) {
+        promise.resolve(ConferenceMicLevelMonitor.start(reactApplicationContext))
+    }
+
+    override fun stopMicLevelMonitor(promise: Promise) {
+        ConferenceMicLevelMonitor.stop()
+        promise.resolve(null)
+    }
+
+    override fun invalidate() {
+        ConferenceMicLevelMonitor.stop()
+        super.invalidate()
+    }
+
+    override fun setPictureInPictureEnabled(enabled: Boolean) {
+        ConferencePictureInPicture.setEnabled(reactApplicationContext.currentActivity, enabled)
+    }
+
+    override fun enterPictureInPicture(promise: Promise) {
+        promise.resolve(ConferencePictureInPicture.enter(reactApplicationContext.currentActivity))
+    }
 }

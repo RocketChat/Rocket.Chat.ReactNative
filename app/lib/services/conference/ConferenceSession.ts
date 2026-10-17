@@ -2,10 +2,11 @@ import { AppState, type NativeEventSubscription } from 'react-native';
 
 import I18n from '~/i18n';
 import { captureOptionsFor, type VideoQuality } from '~/lib/methods/helpers/captureOptionsFor';
+import { cameraSourceFor, type TCameraFacing } from '~/lib/methods/helpers/cameraSourceFor';
 import { getCallConnectionState } from '~/lib/methods/helpers/getCallConnectionState';
 import { getConferenceError } from '~/lib/methods/helpers/getConferenceError';
-import { getSpeakerOutputs, isSpeakerOutput } from '~/lib/methods/helpers/getSpeakerOutputs';
 import log from '~/lib/methods/helpers/log';
+import { pickCameraDevices, type TCameraDevice } from '~/lib/methods/helpers/pickCameraDevices';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import {
 	videoConferenceCallConfig,
@@ -16,6 +17,7 @@ import {
 } from '../restApi';
 import { type CallDataMessage, createReaction, encodeMessage, parseMessage, reactionIdFor } from './callDataProtocol';
 import { startConferenceForegroundService, stopConferenceForegroundService } from './conferenceForegroundService';
+import { stopConferenceMicLevelMonitor } from './conferenceMicLevel';
 import type { LocalVideoTrack, Room } from './livekit';
 import { loadLiveKit, type TLiveKit } from './loadLiveKit';
 import { useConferenceInteractionStore } from './useConferenceInteractionStore';
@@ -31,7 +33,6 @@ export const HEARTBEAT_INTERVAL_MS = 30_000;
 
 export interface IConferenceJoinOptions {
 	title?: string;
-	ring?: boolean;
 	mic: boolean;
 	cam: boolean;
 }
@@ -110,25 +111,24 @@ class ConferenceSession {
 		}
 	};
 
-	setSpeaker = async (enabled: boolean): Promise<void> => {
+	setMicrophone = async (enabled: boolean): Promise<void> => {
+		const room = this.context?.room;
+		if (!room) {
+			return;
+		}
+		if (enabled) {
+			await stopConferenceMicLevelMonitor();
+		}
+		await room.localParticipant.setMicrophoneEnabled(enabled);
+	};
+
+	selectAudioOutput = async (output: string): Promise<void> => {
 		const audioSession = this.livekit?.AudioSession;
 		if (!audioSession) {
 			return;
 		}
-		const { on, off } = getSpeakerOutputs(await audioSession.getAudioOutputs());
-		const output = enabled ? on : off;
-		if (!output) {
-			if (!enabled) {
-				showToast(I18n.t('No_other_audio_output'));
-			}
-			return;
-		}
-		await this.selectAudioOutput(output);
-	};
-
-	selectAudioOutput = async (output: string): Promise<void> => {
-		await this.livekit?.AudioSession.selectAudioOutput(output);
-		useConferenceInteractionStore.getState().setSpeakerOn(isSpeakerOutput(output));
+		await audioSession.selectAudioOutput(output);
+		useConferenceInteractionStore.getState().setAudioOutput(output);
 	};
 
 	setCamera = async (enabled: boolean): Promise<void> => {
@@ -170,31 +170,54 @@ class ConferenceSession {
 	};
 
 	setVideoQuality = async (quality: VideoQuality): Promise<void> => {
-		const { cameraFacing, setVideoQuality } = useConferenceInteractionStore.getState();
-		const track = this.cameraTrack();
-		if (track) {
-			try {
-				await track.restartTrack({ ...captureOptionsFor(quality), facingMode: cameraFacing });
-			} catch (error) {
-				log(error);
-				return;
-			}
+		const { cameraFacing, cameraDeviceId, setVideoQuality } = useConferenceInteractionStore.getState();
+		if (await this.restartCamera(quality, cameraFacing, cameraDeviceId)) {
+			setVideoQuality(quality);
 		}
-		setVideoQuality(quality);
 	};
 
 	switchCamera = async (): Promise<void> => {
-		const track = this.cameraTrack();
-		if (!track) {
+		if (!this.cameraTrack()) {
 			return;
 		}
-		const { cameraFacing, videoQuality, setCameraFacing } = useConferenceInteractionStore.getState();
-		const facingMode = cameraFacing === 'user' ? 'environment' : 'user';
+		const { cameraFacing, videoQuality, setCameraSource } = useConferenceInteractionStore.getState();
+		const facing = cameraFacing === 'user' ? 'environment' : 'user';
+		if (await this.restartCamera(videoQuality, facing, undefined)) {
+			setCameraSource(facing, undefined);
+		}
+	};
+
+	selectCamera = async (deviceId: string, facing: TCameraFacing): Promise<void> => {
+		const { videoQuality, setCameraSource } = useConferenceInteractionStore.getState();
+		if (await this.restartCamera(videoQuality, facing, deviceId)) {
+			setCameraSource(facing, deviceId);
+		}
+	};
+
+	listCameras = async (): Promise<TCameraDevice[]> => {
 		try {
-			await track.restartTrack({ ...captureOptionsFor(videoQuality), facingMode });
-			setCameraFacing(facingMode);
+			return pickCameraDevices(await this.livekit?.mediaDevices.enumerateDevices());
 		} catch (error) {
 			log(error);
+			return [];
+		}
+	};
+
+	private restartCamera = async (
+		quality: VideoQuality,
+		facing: TCameraFacing,
+		deviceId: string | undefined
+	): Promise<boolean> => {
+		const track = this.cameraTrack();
+		if (!track) {
+			return true;
+		}
+		try {
+			await track.restartTrack({ ...captureOptionsFor(quality), ...cameraSourceFor(facing, deviceId) });
+			return true;
+		} catch (error) {
+			log(error);
+			return false;
 		}
 	};
 
@@ -222,18 +245,14 @@ class ConferenceSession {
 		}
 	};
 
-	private ensureStarted = async (
-		callId: string,
-		rid: string | undefined,
-		{ title, ring }: IConferenceJoinOptions
-	): Promise<string> => {
+	private ensureStarted = async (callId: string, rid: string | undefined, { title }: IConferenceJoinOptions): Promise<string> => {
 		if (!isPreflightCallId(callId)) {
 			return callId;
 		}
 		if (!rid) {
 			throw new ConferenceError('join-failed');
 		}
-		const started = await videoConferenceStart(rid, { title, allowRinging: ring });
+		const started = await videoConferenceStart(rid, { title });
 		if (!started.success) {
 			throw new ConferenceError('join-failed');
 		}
@@ -294,15 +313,17 @@ class ConferenceSession {
 	};
 
 	private applyCamera = async (room: Room, enabled: boolean): Promise<void> => {
-		const { videoQuality, cameraFacing } = useConferenceInteractionStore.getState();
+		const { videoQuality, cameraFacing, cameraDeviceId } = useConferenceInteractionStore.getState();
 		await room.localParticipant.setCameraEnabled(
 			enabled,
-			enabled ? { ...captureOptionsFor(videoQuality), facingMode: cameraFacing } : undefined
+			enabled ? { ...captureOptionsFor(videoQuality), ...cameraSourceFor(cameraFacing, cameraDeviceId) } : undefined
 		);
 	};
 
 	private listen = (context: TJoinContext, room: Room, livekit: TLiveKit): void => {
-		room.on(livekit.RoomEvent.Disconnected, () => this.onDisconnected(context));
+		room.on(livekit.RoomEvent.Disconnected, reason =>
+			this.onDisconnected(context, reason === livekit.DisconnectReason.DUPLICATE_IDENTITY)
+		);
 		room.on(livekit.RoomEvent.ConnectionStateChanged, state => this.onConnectionStateChanged(context, state));
 		room.on(livekit.RoomEvent.DataReceived, (payload, participant) => this.onDataReceived(context, payload, participant));
 		room.on(livekit.RoomEvent.ParticipantConnected, () => this.rebroadcastHand(context));
@@ -379,9 +400,13 @@ class ConferenceSession {
 		}
 	};
 
-	private onDisconnected = (context: TJoinContext): void => {
+	private onDisconnected = (context: TJoinContext, joinedElsewhere: boolean): void => {
 		if (!this.isCurrent(context)) {
 			return;
+		}
+		if (joinedElsewhere) {
+			context.leaveReported = true;
+			showToast(I18n.t('Conference_joined_on_another_device'));
 		}
 		this.context = undefined;
 		useConferenceCallStore.getState().setPhase('ended');

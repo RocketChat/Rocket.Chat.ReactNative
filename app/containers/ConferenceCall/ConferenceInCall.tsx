@@ -8,9 +8,12 @@ import { useElapsedSeconds } from '~/lib/hooks/useElapsedSeconds';
 import { useRoomUnread } from '~/lib/hooks/useRoomUnread';
 import { ensureCameraPermission } from '~/lib/methods/ensureCameraPermission';
 import { isIOS } from '~/lib/methods/helpers';
+import { countMembersWhoCannotSeeChat } from '~/lib/methods/helpers/countMembersWhoCannotSeeChat';
 import { isInVideoConference } from '~/lib/methods/helpers/isInVideoConference';
 import log from '~/lib/methods/helpers/log';
-import { MAX_VISIBLE_TILES, pickFeaturedTile } from '~/lib/methods/helpers/splitByPriority';
+import { needsActiveSpeaker } from '~/lib/methods/helpers/needsActiveSpeaker';
+import { pickPipSource } from '~/lib/methods/helpers/pickPipSource';
+import { pickFeaturedTile } from '~/lib/methods/helpers/splitByPriority';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { orderRaisedHands } from '~/lib/services/conference/callDataProtocol';
 import { conferenceSession } from '~/lib/services/conference/ConferenceSession';
@@ -21,8 +24,11 @@ import { useConferenceRoomStore } from '~/lib/services/conference/useConferenceR
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import { VIDEO_QUALITY_LABELS } from './buildConferenceMenuOptions';
+import ChatAccessNotice from './ChatAccessNotice';
 import ConferenceControls from './ConferenceControls';
 import ConferenceHeader from './ConferenceHeader';
+import ConferencePipSource from './ConferencePipSource';
+import ConferencePipView from './ConferencePipView';
 import ConferenceStage from './ConferenceStage';
 import OverflowTileView from './OverflowTileView';
 import ParticipantTileView from './ParticipantTileView';
@@ -32,13 +38,17 @@ import ReactionLayer from './ReactionLayer';
 import ScreenShareStage from './ScreenShareStage';
 import ScreenSharePicker, { type TScreenSharePickerHandle } from './ScreenSharePicker';
 import SidebarStage from './SidebarStage';
+import SpeakingWhileMutedNotice from './SpeakingWhileMutedNotice';
 import SpotlightStage from './SpotlightStage';
+import TileSpeakingMonitors from './TileSpeakingMonitors';
 import { useActiveSpeakerId } from './useActiveSpeakerId';
 import { useAutoLowerHand } from './useAutoLowerHand';
 import { useConferenceMenus } from './useConferenceMenus';
+import { useConferencePictureInPicture } from './useConferencePictureInPicture';
 import { type IConferenceTile, type TConferenceScreenShare, useConferenceTiles } from './useConferenceTiles';
 import { useFeaturedScreen } from './useFeaturedScreen';
 import { useOpenConferenceChat } from './useOpenConferenceChat';
+import { useTileSpeaking } from './useTileSpeaking';
 
 const REACTION_SWEEP_MS = 500;
 
@@ -66,22 +76,36 @@ const screenVideo = ({ trackRef }: TConferenceScreenShare): ReactElement =>
 const screenLabel = ({ isLocal, name }: TConferenceScreenShare): string =>
 	isLocal ? I18n.t('Your_screen') : I18n.t('Screen_of_name', { name });
 
+interface IRaisedHandsLabel {
+	raisedHands: { id: string }[];
+	selfId: string;
+	nameById: Map<string, string>;
+}
+
+const raisedHandsLabel = ({ raisedHands, selfId, nameById }: IRaisedHandsLabel): string => {
+	const [first] = raisedHands;
+	const firstName = first.id === selfId ? I18n.t('You') : (nameById.get(first.id) ?? '');
+	const others = raisedHands.length - 1;
+	return others > 0 ? `${firstName} +${others}` : firstName;
+};
+
 const InCallContent = (): ReactElement => {
 	const { colors } = useTheme();
 	const pickerRef = useRef<TScreenSharePickerHandle>(null);
 	const callId = useConferenceCallStore(state => state.callId);
 	const connectedAt = useConferenceCallStore(state => state.connectedAt);
 	const phase = useConferenceCallStore(state => state.phase);
+	const expanded = useConferenceCallStore(state => state.expanded);
 	const hands = useConferenceInteractionStore(state => state.hands);
 	const reactions = useConferenceInteractionStore(state => state.reactions);
 	const layout = useConferenceInteractionStore(state => state.layout);
 	const videoQuality = useConferenceInteractionStore(state => state.videoQuality);
 	const cameraFacing = useConferenceInteractionStore(state => state.cameraFacing);
-	const speakerOn = useConferenceInteractionStore(state => state.speakerOn);
+	const audioOutput = useConferenceInteractionStore(state => state.audioOutput);
 	const sweepExpiredReactions = useConferenceInteractionStore(state => state.sweepExpiredReactions);
 
 	const { info } = useConferenceInfo(callId, { live: true });
-	const openChat = useOpenConferenceChat(info?.chatAccess);
+	const openChat = useOpenConferenceChat(info);
 	const chatUnread = useRoomUnread(info?.chatAccess.rid);
 	const { localParticipant, isMicrophoneEnabled, isCameraEnabled, isScreenShareEnabled } = useLocalParticipant();
 	const { tiles, shares, speakers } = useConferenceTiles();
@@ -94,7 +118,7 @@ const InCallContent = (): ReactElement => {
 		await conferenceSession.toggleScreenShare();
 	};
 
-	const { showPeople, showReactions, showAudioOutput, showCameraOptions, showMore } = useConferenceMenus({
+	const { showPeople, showReactions, showAudioOutput, showCameraOptions, showMore, showChatAccess } = useConferenceMenus({
 		isScreenSharing: !!isScreenShareEnabled,
 		onToggleScreenShare: toggleScreenShare
 	});
@@ -102,9 +126,14 @@ const InCallContent = (): ReactElement => {
 	const elapsedSeconds = useElapsedSeconds(connectedAt);
 
 	const speakingIds = new Set(speakers.map(({ identity }) => identity));
+	const { speakingByLevel, onTileSpeaking } = useTileSpeaking();
 	const remoteSpeakers = speakers.filter(({ isLocal }) => !isLocal);
-	const needsActiveSpeaker = tiles.length > MAX_VISIBLE_TILES || layout !== 'grid';
-	const activeSpeakerId = useActiveSpeakerId(remoteSpeakers, needsActiveSpeaker);
+	const activeSpeakerId = useActiveSpeakerId(
+		remoteSpeakers,
+		needsActiveSpeaker({ shares, tiles, gridLayout: layout === 'grid', expanded })
+	);
+	const pipSource = pickPipSource({ shares, tiles, activeSpeakerId });
+	const inPictureInPicture = useConferencePictureInPicture(expanded);
 	const selfId = localParticipant.identity;
 
 	useAutoLowerHand({
@@ -130,7 +159,7 @@ const InCallContent = (): ReactElement => {
 	}, [hasReactions, sweepExpiredReactions]);
 
 	const toggleMic = () => {
-		localParticipant.setMicrophoneEnabled(!isMicrophoneEnabled).catch(log);
+		conferenceSession.setMicrophone(!isMicrophoneEnabled).catch(log);
 	};
 
 	const toggleCamera = async () => {
@@ -141,20 +170,13 @@ const InCallContent = (): ReactElement => {
 		conferenceSession.setCamera(!isCameraEnabled).catch(log);
 	};
 
-	const handPill = raisedHands.length
-		? (() => {
-				const [first] = raisedHands;
-				const firstName = first.id === selfId ? I18n.t('You') : (nameById.get(first.id) ?? '');
-				const others = raisedHands.length - 1;
-				return (
-					<RaisedHandPill
-						label={others > 0 ? `${firstName} +${others}` : firstName}
-						accessibilityLabel={I18n.t('Raised_hands')}
-						onPress={showPeople}
-					/>
-				);
-			})()
-		: null;
+	const handPill = raisedHands.length ? (
+		<RaisedHandPill
+			label={raisedHandsLabel({ raisedHands, selfId, nameById })}
+			accessibilityLabel={I18n.t('Raised_hands')}
+			onPress={showPeople}
+		/>
+	) : null;
 
 	const pills = (
 		<>
@@ -182,7 +204,7 @@ const InCallContent = (): ReactElement => {
 					/>
 				) : null
 			}
-			speaking={!tile.muted && speakingIds.has(tile.id)}
+			speaking={!tile.muted && (speakingIds.has(tile.id) || speakingByLevel.has(tile.id))}
 			handPosition={handPositions.get(tile.id)}
 			badge={tile.isSelf && videoQuality !== 'auto' ? VIDEO_QUALITY_LABELS[videoQuality] : undefined}
 			testID={`conference-tile-${tile.id}`}
@@ -198,8 +220,7 @@ const InCallContent = (): ReactElement => {
 					featured={{
 						key: featuredShare.id,
 						video: screenVideo(featuredShare),
-						label: screenLabel(featuredShare),
-						onStop: featuredShare.isLocal ? toggleScreenShare : undefined
+						label: screenLabel(featuredShare)
 					}}
 					others={otherShares.map(share => ({
 						key: share.id,
@@ -244,6 +265,10 @@ const InCallContent = (): ReactElement => {
 		);
 	};
 
+	if (inPictureInPicture) {
+		return <ConferencePipView source={pipSource} />;
+	}
+
 	return (
 		<View style={styles.content} testID='conference-in-call'>
 			{phase === 'reconnecting' ? (
@@ -255,17 +280,21 @@ const InCallContent = (): ReactElement => {
 				elapsedSeconds={elapsedSeconds}
 				title={info && 'title' in info ? info.title : undefined}
 				peopleCount={peopleCount}
-				speakerOn={speakerOn}
-				onSpeakerPress={() => conferenceSession.setSpeaker(!speakerOn).catch(log)}
+				audioOutput={audioOutput}
+				onAudioOutputPress={showAudioOutput}
 				onPeoplePress={showPeople}
 				chatUnread={chatUnread}
 				chatDisabled={!info}
 				onChatPress={openChat}
 				pills={shares.length > 0 || raisedHands.length > 0 ? pills : null}
 			/>
+			<ChatAccessNotice count={countMembersWhoCannotSeeChat({ info, viewerId: selfId })} onReview={showChatAccess} />
 			<View style={styles.stage}>
+				{expanded ? <ConferencePipSource source={pipSource} /> : null}
+				<TileSpeakingMonitors tiles={tiles} expanded={expanded} onChange={onTileSpeaking} />
 				{renderStage()}
 				<ReactionLayer reactions={reactions} nameFor={id => nameById.get(id) ?? ''} />
+				<SpeakingWhileMutedNotice enabled={!isMicrophoneEnabled && phase === 'connected' && expanded} />
 			</View>
 			<ConferenceControls
 				micEnabled={isMicrophoneEnabled}

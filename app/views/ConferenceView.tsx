@@ -11,8 +11,12 @@ import LazyConferenceInCall from '~/containers/ConferenceCall/LazyConferenceInCa
 import StatusBar from '~/containers/StatusBar';
 import { hasNativeHeaderBar } from '../lib/methods/helpers/deviceInfo';
 import Navigation from '../lib/navigation/appNavigation';
-import { closeConferenceCall } from '../lib/services/conference/conferenceCallNavigation';
-import { type TConferenceError, useConferenceCallStore } from '../lib/services/conference/useConferenceCallStore';
+import { CONFERENCE_ROUTE, closeConferenceCall } from '../lib/services/conference/conferenceCallNavigation';
+import {
+	isInConferenceCall,
+	type TConferenceError,
+	useConferenceCallStore
+} from '../lib/services/conference/useConferenceCallStore';
 import { useTheme } from '../theme';
 
 const ERROR_KEYS: Record<TConferenceError, string> = {
@@ -42,14 +46,19 @@ const ConferenceView = (): ReactElement => {
 	useFocusEffect(
 		useCallback(() => {
 			if (!useConferenceCallStore.getState().callId) {
-				if (Navigation.getCurrentRoute()?.name === 'ConferenceView') {
+				if (Navigation.getCurrentRoute()?.name === CONFERENCE_ROUTE) {
 					Navigation.back();
 				}
 				return;
 			}
 
 			expand();
-			return () => minimize();
+			return () => {
+				minimize();
+				if (!isInConferenceCall() && useConferenceCallStore.getState().callId) {
+					closeConferenceCall();
+				}
+			};
 		}, [expand, minimize])
 	);
 

@@ -2,13 +2,13 @@ import type { SpeakingStreak } from '../advanceAutoLowerHand';
 import { advanceAutoLowerHand } from '../advanceAutoLowerHand';
 
 const SAMPLE_EVERY_MS = 100;
-const LOUD = 0.5;
-const QUIET = 0;
+const LOUD = true;
+const QUIET = false;
 
-const loweredAt = (micLevelAt: (time: number) => number, until = 10000): number | null => {
+const loweredAt = (speakingAt: (time: number) => boolean, until = 10000): number | null => {
 	let streak: SpeakingStreak | null = null;
 	for (let now = 0; now <= until; now += SAMPLE_EVERY_MS) {
-		const step = advanceAutoLowerHand(streak, { micLevel: micLevelAt(now), now });
+		const step = advanceAutoLowerHand(streak, { speaking: speakingAt(now), now });
 		if (step.lower) return now;
 		streak = step.streak;
 	}
@@ -36,22 +36,14 @@ describe('advanceAutoLowerHand', () => {
 		expect(loweredAt(time => (time === 0 ? LOUD : QUIET))).toBeNull();
 	});
 
-	it('does not count a level at the 0.12 threshold as speaking', () => {
-		expect(loweredAt(() => 0.12)).toBeNull();
-	});
-
-	it('counts a level just above the 0.12 threshold as speaking', () => {
-		expect(loweredAt(() => 0.121)).toBe(3000);
-	});
-
 	it('lowers the hand when the three seconds end at the very moment the pause would have ended the streak', () => {
 		const streak = { startedAt: 0, lastHeardAt: 2200 };
-		expect(advanceAutoLowerHand(streak, { micLevel: QUIET, now: 3000 })).toEqual({ streak: null, lower: true });
+		expect(advanceAutoLowerHand(streak, { speaking: QUIET, now: 3000 })).toEqual({ streak: null, lower: true });
 	});
 
 	it('starts a new streak instead of lowering the hand when the pause ended the streak first', () => {
 		const streak = { startedAt: 0, lastHeardAt: 2100 };
-		expect(advanceAutoLowerHand(streak, { micLevel: LOUD, now: 3000 })).toEqual({
+		expect(advanceAutoLowerHand(streak, { speaking: LOUD, now: 3000 })).toEqual({
 			streak: { startedAt: 3000, lastHeardAt: 3000 },
 			lower: false
 		});
@@ -59,11 +51,11 @@ describe('advanceAutoLowerHand', () => {
 
 	it('forgets the streak once it has lowered the hand', () => {
 		const streak = { startedAt: 0, lastHeardAt: 2900 };
-		expect(advanceAutoLowerHand(streak, { micLevel: LOUD, now: 3000 })).toEqual({ streak: null, lower: true });
+		expect(advanceAutoLowerHand(streak, { speaking: LOUD, now: 3000 })).toEqual({ streak: null, lower: true });
 	});
 
 	it('keeps the streak it is given while the wait is not over', () => {
 		const streak = { startedAt: 0, lastHeardAt: 500 };
-		expect(advanceAutoLowerHand(streak, { micLevel: QUIET, now: 600 })).toEqual({ streak, lower: false });
+		expect(advanceAutoLowerHand(streak, { speaking: QUIET, now: 600 })).toEqual({ streak, lower: false });
 	});
 });

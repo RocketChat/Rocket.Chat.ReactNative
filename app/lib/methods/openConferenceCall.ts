@@ -9,8 +9,10 @@ import {
 	preflightCallId,
 	useConferenceCallStore
 } from '../services/conference/useConferenceCallStore';
+import { isInActiveVoipCall } from '../services/voip/isInActiveVoipCall';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
+import { showAlreadyInCallAlert } from './helpers/showAlreadyInCallAlert';
 import { requestVoipCallPermissions } from './voipCallPermissions';
 
 type TConferenceTarget = { callId: string; rid?: string } | { rid: string };
@@ -26,6 +28,11 @@ const requestCallPermissions = async (): Promise<void> => {
 };
 
 export const openConferenceCall = async (target: TConferenceTarget): Promise<void> => {
+	if (isInActiveVoipCall()) {
+		showAlreadyInCallAlert();
+		return;
+	}
+
 	const { server } = store.getState().server;
 
 	if (!server) {

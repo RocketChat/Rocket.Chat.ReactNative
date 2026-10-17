@@ -13,6 +13,7 @@ export interface IConferenceTile extends IStageTile {
 	muted: boolean;
 	isSelf: boolean;
 	cameraTrack?: TTrackRef;
+	micTrack?: TTrackRef;
 }
 
 export type TConferenceScreenShare = ScreenShare<TrackPublication> & { trackRef: TTrackRef };
@@ -40,7 +41,8 @@ export const useConferenceTiles = () => {
 			hasCamera: hasLiveVideo(cameraTrack),
 			muted: isMicMuted(micTrack),
 			isSelf: participant.isLocal,
-			cameraTrack
+			cameraTrack,
+			micTrack
 		};
 	});
 

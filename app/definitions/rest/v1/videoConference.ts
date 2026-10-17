@@ -11,6 +11,7 @@ import {
 	type VideoConfJoinProps,
 	type VideoConfListProps,
 	type VideoConfRingProps,
+	type VideoConfShareChatProps,
 	type VideoConfStartProps
 } from '~/definitions/IVideoConference';
 import { type PaginatedResult } from '../helpers/PaginatedResult';
@@ -54,6 +55,10 @@ export type VideoConferenceEndpoints = {
 
 	'video-conference.ring': {
 		POST: (params: VideoConfRingProps) => { rang: boolean };
+	};
+
+	'video-conference.share-chat': {
+		POST: (params: VideoConfShareChatProps) => { rid: string };
 	};
 
 	'video-conference.list': {

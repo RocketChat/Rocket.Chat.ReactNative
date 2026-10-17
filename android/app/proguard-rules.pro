@@ -11,6 +11,7 @@
 
 # Looked up by name from native code or reflection, which R8 cannot trace
 -keep class com.nozbe.watermelondb.jsi.** { *; }
+-keep class livekit.org.jni_zero.** { *; }
 -keep class com.android.installreferrer.api.** { *; }
 -keep class com.google.android.gms.common.GoogleApiAvailability { *; }
 -keepnames class com.google.mlkit.vision.barcode.BarcodeScanning

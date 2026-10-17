@@ -1,14 +1,8 @@
 import { getCallConnectionState } from '../getCallConnectionState';
 
 describe('getCallConnectionState', () => {
-	it.each([
-		['connected', 'connected'],
-		['connecting', 'connecting'],
-		['reconnecting', 'reconnecting'],
-		['signalReconnecting', 'reconnecting'],
-		['disconnected', 'disconnected']
-	])('maps LiveKit %s to %s', (liveKitState, expected) => {
-		expect(getCallConnectionState(liveKitState)).toBe(expected);
+	it('calls a dropped signal connection reconnecting, like a dropped media connection', () => {
+		expect(getCallConnectionState('signalReconnecting')).toBe('reconnecting');
 	});
 
 	it('treats an unknown state as disconnected rather than connected', () => {

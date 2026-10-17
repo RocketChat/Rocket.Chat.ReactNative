@@ -8,6 +8,7 @@ import {
 import log from '~/lib/methods/helpers/log';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { type CallDataMessage, encodeMessage, parseMessage } from '../callDataProtocol';
+import { stopConferenceMicLevelMonitor } from '../conferenceMicLevel';
 import { conferenceSession, HEARTBEAT_INTERVAL_MS } from '../ConferenceSession';
 import { preflightCallId, useConferenceCallStore } from '../useConferenceCallStore';
 import { useConferenceInteractionStore } from '../useConferenceInteractionStore';
@@ -15,6 +16,7 @@ import { useConferenceRoomStore } from '../useConferenceRoomStore';
 
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
+jest.mock('../conferenceMicLevel', () => ({ stopConferenceMicLevelMonitor: jest.fn(() => Promise.resolve()) }));
 
 jest.mock('../../restApi', () => ({
 	videoConferenceStart: jest.fn(),
@@ -83,8 +85,18 @@ jest.mock('../loadLiveKit', () => {
 			ParticipantConnected: 'participantConnected',
 			ParticipantDisconnected: 'participantDisconnected'
 		},
+		DisconnectReason: { DUPLICATE_IDENTITY: 'duplicateIdentity' },
 		AndroidAudioTypePresets: { communication: { audioMode: 'inCommunication' } },
 		Track: { Source: { Camera: 'camera' } },
+		mediaDevices: {
+			enumerateDevices: jest.fn(() =>
+				Promise.resolve([
+					{ kind: 'videoinput', deviceId: '1', facing: 'front', label: '1' },
+					{ kind: 'videoinput', deviceId: '0', facing: 'environment', label: '0' },
+					{ kind: 'audioinput', deviceId: 'audio-1', label: 'Audio' }
+				])
+			)
+		},
 		AudioSession: {
 			configureAudio: jest.fn(() => Promise.resolve()),
 			startAudioSession: jest.fn(() => Promise.resolve()),
@@ -103,7 +115,13 @@ const rooms = () =>
 		connect: jest.Mock;
 		disconnect: jest.Mock;
 		cameraTrack: { restartTrack: jest.Mock };
-		localParticipant: { identity: string; setMicrophoneEnabled: jest.Mock; setCameraEnabled: jest.Mock; publishData: jest.Mock };
+		localParticipant: {
+			identity: string;
+			setMicrophoneEnabled: jest.Mock;
+			setCameraEnabled: jest.Mock;
+			publishData: jest.Mock;
+			getTrackPublication: jest.Mock;
+		};
 		emit: (event: string, ...args: unknown[]) => void;
 	}[];
 
@@ -167,12 +185,12 @@ describe('ConferenceSession', () => {
 			expect(videoConferenceJoin).toHaveBeenCalledWith('call1', false, true);
 		});
 
-		test('starts a call from a room, with the name and ringing chosen, before joining it', async () => {
+		test('starts a call from a room, with the name chosen, before joining it', async () => {
 			state().open({ callId: preflightCallId('GENERAL'), rid: 'GENERAL' });
 
-			await conferenceSession.join({ ...options, title: 'Standup', ring: false });
+			await conferenceSession.join({ ...options, title: 'Standup' });
 
-			expect(videoConferenceStart).toHaveBeenCalledWith('GENERAL', { title: 'Standup', allowRinging: false });
+			expect(videoConferenceStart).toHaveBeenCalledWith('GENERAL', { title: 'Standup' });
 			expect(videoConferenceJoin).toHaveBeenCalledWith('started1', false, true);
 			expect(state().callId).toBe('started1');
 			expect(state().rid).toBe('GENERAL');
@@ -287,6 +305,31 @@ describe('ConferenceSession', () => {
 			expect(videoConferenceLeave).toHaveBeenCalledTimes(1);
 			expect(livekit.AudioSession.stopAudioSession).toHaveBeenCalledTimes(1);
 			expect(useConferenceRoomStore.getState().room).toBeUndefined();
+		});
+
+		test('being signed in on another device does not report a leave, which the server would never undo', async () => {
+			openCall();
+			await conferenceSession.join(options);
+
+			rooms()[0].emit('disconnected', 'duplicateIdentity');
+			await flush();
+			await conferenceSession.end();
+
+			expect(state().phase).toBe('ended');
+			expect(videoConferenceLeave).not.toHaveBeenCalled();
+			expect(showToast).toHaveBeenCalledWith('You joined this call on another device');
+			expect(livekit.AudioSession.stopAudioSession).toHaveBeenCalledTimes(1);
+		});
+
+		test('any other reason for being disconnected still reports the leave', async () => {
+			openCall();
+			await conferenceSession.join(options);
+
+			rooms()[0].emit('disconnected', 'serverShutdown');
+			await flush();
+
+			expect(videoConferenceLeave).toHaveBeenCalledTimes(1);
+			expect(showToast).not.toHaveBeenCalledWith('You joined this call on another device');
 		});
 
 		test('leaving while the join is still in flight reports it and never connects', async () => {
@@ -639,7 +682,123 @@ describe('ConferenceSession', () => {
 		});
 	});
 
-	describe('speaker', () => {
+	describe('microphone', () => {
+		const joinWithMicrophone = async () => {
+			openCall();
+			await conferenceSession.join(options);
+			return rooms()[0];
+		};
+
+		test('muting just mutes, with no recorder to let go of', async () => {
+			const room = await joinWithMicrophone();
+
+			await conferenceSession.setMicrophone(false);
+
+			expect(room.localParticipant.setMicrophoneEnabled).toHaveBeenLastCalledWith(false);
+			expect(stopConferenceMicLevelMonitor).not.toHaveBeenCalled();
+		});
+
+		test('unmuting lets go of the microphone the muted-speech monitor was listening to first', async () => {
+			const room = await joinWithMicrophone();
+			const order: string[] = [];
+			mocked(stopConferenceMicLevelMonitor).mockImplementationOnce(async () => {
+				order.push('monitor stopped');
+			});
+			room.localParticipant.setMicrophoneEnabled.mockImplementationOnce(async () => {
+				order.push('microphone on');
+			});
+
+			await conferenceSession.setMicrophone(true);
+
+			expect(order).toEqual(['monitor stopped', 'microphone on']);
+		});
+
+		test('does nothing before the call has a room', async () => {
+			await expect(conferenceSession.setMicrophone(true)).resolves.toBeUndefined();
+			expect(stopConferenceMicLevelMonitor).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('camera', () => {
+		const joinWithoutCamera = async () => {
+			openCall();
+			await conferenceSession.join(options);
+			return rooms()[0];
+		};
+
+		test('lists the cameras the device has, without its microphone', async () => {
+			await joinWithoutCamera();
+
+			const cameras = await conferenceSession.listCameras();
+
+			expect(cameras.map(({ deviceId, facing }) => [deviceId, facing])).toEqual([
+				['1', 'user'],
+				['0', 'environment']
+			]);
+		});
+
+		test('moves a running camera to the one that was picked, asking for it by id', async () => {
+			const room = await joinWithoutCamera();
+
+			await conferenceSession.selectCamera('0', 'environment');
+
+			expect(room.cameraTrack.restartTrack).toHaveBeenCalledWith({ deviceId: { exact: '0' } });
+			expect(useConferenceInteractionStore.getState()).toMatchObject({ cameraDeviceId: '0', cameraFacing: 'environment' });
+		});
+
+		test('keeps the old camera when the one that was picked could not be started', async () => {
+			const room = await joinWithoutCamera();
+			room.cameraTrack.restartTrack.mockRejectedValueOnce(new Error('device busy'));
+
+			await conferenceSession.selectCamera('0', 'environment');
+
+			expect(useConferenceInteractionStore.getState()).toMatchObject({ cameraDeviceId: undefined, cameraFacing: 'user' });
+		});
+
+		test('uses a camera picked with the camera off when the camera is turned on', async () => {
+			const room = await joinWithoutCamera();
+			room.localParticipant.getTrackPublication.mockReturnValueOnce(undefined);
+
+			await conferenceSession.selectCamera('0', 'environment');
+			await conferenceSession.setCamera(true);
+
+			expect(room.cameraTrack.restartTrack).not.toHaveBeenCalled();
+			expect(room.localParticipant.setCameraEnabled).toHaveBeenLastCalledWith(true, { deviceId: { exact: '0' } });
+		});
+
+		test('keeps the picked camera when the quality changes', async () => {
+			const room = await joinWithoutCamera();
+			await conferenceSession.selectCamera('0', 'environment');
+
+			await conferenceSession.setVideoQuality('h360');
+
+			expect(room.cameraTrack.restartTrack).toHaveBeenLastCalledWith(
+				expect.objectContaining({ deviceId: { exact: '0' }, resolution: expect.objectContaining({ width: 640 }) })
+			);
+		});
+
+		test('forgets the picked camera when the user flips the camera, which asks only for the other side', async () => {
+			const room = await joinWithoutCamera();
+			await conferenceSession.selectCamera('0', 'environment');
+
+			await conferenceSession.switchCamera();
+
+			expect(room.cameraTrack.restartTrack).toHaveBeenLastCalledWith({ facingMode: 'user' });
+			expect(useConferenceInteractionStore.getState()).toMatchObject({ cameraDeviceId: undefined, cameraFacing: 'user' });
+		});
+
+		test('every call starts on the front camera again', async () => {
+			await joinWithoutCamera();
+			await conferenceSession.selectCamera('0', 'environment');
+			await conferenceSession.end();
+
+			await joinWithoutCamera();
+
+			expect(useConferenceInteractionStore.getState()).toMatchObject({ cameraDeviceId: undefined, cameraFacing: 'user' });
+		});
+	});
+
+	describe('audio output', () => {
 		const join = async () => {
 			openCall();
 			await conferenceSession.join(options);
@@ -648,65 +807,45 @@ describe('ConferenceSession', () => {
 		test('starts on the speaker', async () => {
 			await join();
 
-			expect(useConferenceInteractionStore.getState().speakerOn).toBe(true);
+			expect(useConferenceInteractionStore.getState().audioOutput).toBe('speaker');
 		});
 
-		test('turning it off moves the call audio to the earpiece', async () => {
-			await join();
-
-			await conferenceSession.setSpeaker(false);
-
-			expect(livekit.AudioSession.selectAudioOutput).toHaveBeenCalledWith('earpiece');
-			expect(useConferenceInteractionStore.getState().speakerOn).toBe(false);
-		});
-
-		test('turning it back on moves the call audio to the speaker', async () => {
-			await join();
-			await conferenceSession.setSpeaker(false);
-
-			await conferenceSession.setSpeaker(true);
-
-			expect(livekit.AudioSession.selectAudioOutput).toHaveBeenLastCalledWith('speaker');
-			expect(useConferenceInteractionStore.getState().speakerOn).toBe(true);
-		});
-
-		test('moves to a connected headset instead of the earpiece when turned off', async () => {
-			mocked(livekit.AudioSession.getAudioOutputs).mockResolvedValueOnce(['speaker', 'earpiece', 'bluetooth']);
-			await join();
-
-			await conferenceSession.setSpeaker(false);
-
-			expect(livekit.AudioSession.selectAudioOutput).toHaveBeenCalledWith('bluetooth');
-		});
-
-		test('says so, and keeps the speaker on, when there is no other output to switch to', async () => {
-			mocked(livekit.AudioSession.getAudioOutputs).mockResolvedValueOnce(['speaker']);
-			await join();
-
-			await conferenceSession.setSpeaker(false);
-
-			expect(showToast).toHaveBeenCalledWith('No other audio output available');
-			expect(livekit.AudioSession.selectAudioOutput).not.toHaveBeenCalled();
-			expect(useConferenceInteractionStore.getState().speakerOn).toBe(true);
-		});
-
-		test('choosing an output from the sheet keeps the speaker button in step', async () => {
+		test('moves the call audio to the output that was chosen and remembers it', async () => {
 			await join();
 
 			await conferenceSession.selectAudioOutput('earpiece');
-			expect(useConferenceInteractionStore.getState().speakerOn).toBe(false);
 
-			await conferenceSession.selectAudioOutput('speaker');
-			expect(useConferenceInteractionStore.getState().speakerOn).toBe(true);
+			expect(livekit.AudioSession.selectAudioOutput).toHaveBeenCalledWith('earpiece');
+			expect(useConferenceInteractionStore.getState().audioOutput).toBe('earpiece');
 		});
 
-		test('keeps showing the speaker as on when the output could not be changed', async () => {
+		test('can move to a headset and back to the speaker', async () => {
 			await join();
-			mocked(livekit.AudioSession.selectAudioOutput).mockRejectedValueOnce(new Error('route busy'));
 
-			await expect(conferenceSession.setSpeaker(false)).rejects.toThrow('route busy');
+			await conferenceSession.selectAudioOutput('bluetooth');
+			expect(useConferenceInteractionStore.getState().audioOutput).toBe('bluetooth');
 
-			expect(useConferenceInteractionStore.getState().speakerOn).toBe(true);
+			await conferenceSession.selectAudioOutput('speaker');
+			expect(useConferenceInteractionStore.getState().audioOutput).toBe('speaker');
+		});
+
+		test('keeps showing the old output when the new one could not be selected', async () => {
+			await join();
+			mocked(livekit.AudioSession.selectAudioOutput).mockRejectedValueOnce(new Error('no such output'));
+
+			await expect(conferenceSession.selectAudioOutput('bluetooth')).rejects.toThrow('no such output');
+
+			expect(useConferenceInteractionStore.getState().audioOutput).toBe('speaker');
+		});
+
+		test('every call starts on the speaker again', async () => {
+			await join();
+			await conferenceSession.selectAudioOutput('earpiece');
+			await conferenceSession.end();
+
+			await join();
+
+			expect(useConferenceInteractionStore.getState().audioOutput).toBe('speaker');
 		});
 	});
 

@@ -8,7 +8,7 @@ interface ISetup {
 	elapsedSeconds?: number;
 	title?: string;
 	peopleCount?: number;
-	speakerOn?: boolean;
+	audioOutput?: string;
 	chatUnread?: number;
 	chatDisabled?: boolean;
 	pills?: ReactElement | null;
@@ -18,12 +18,12 @@ const setup = ({
 	elapsedSeconds = 74,
 	title,
 	peopleCount = 3,
-	speakerOn = true,
+	audioOutput = 'speaker',
 	chatUnread = 0,
 	chatDisabled = false,
 	pills
 }: ISetup = {}) => {
-	const onSpeakerPress = jest.fn();
+	const onAudioOutputPress = jest.fn();
 	const onPeoplePress = jest.fn();
 	const onChatPress = jest.fn();
 	const utils = render(
@@ -31,8 +31,8 @@ const setup = ({
 			elapsedSeconds={elapsedSeconds}
 			title={title}
 			peopleCount={peopleCount}
-			speakerOn={speakerOn}
-			onSpeakerPress={onSpeakerPress}
+			audioOutput={audioOutput}
+			onAudioOutputPress={onAudioOutputPress}
 			chatUnread={chatUnread}
 			chatDisabled={chatDisabled}
 			onPeoplePress={onPeoplePress}
@@ -40,7 +40,7 @@ const setup = ({
 			pills={pills}
 		/>
 	);
-	return { ...utils, onSpeakerPress, onPeoplePress, onChatPress };
+	return { ...utils, onAudioOutputPress, onPeoplePress, onChatPress };
 };
 
 describe('ConferenceHeader', () => {
@@ -82,8 +82,8 @@ describe('ConferenceHeader', () => {
 			<ConferenceHeader
 				elapsedSeconds={74}
 				peopleCount={3}
-				speakerOn
-				onSpeakerPress={jest.fn()}
+				audioOutput='speaker'
+				onAudioOutputPress={jest.fn()}
 				chatUnread={250}
 				chatDisabled={false}
 				onPeoplePress={jest.fn()}
@@ -108,13 +108,22 @@ describe('ConferenceHeader', () => {
 		expect(onChatPress).not.toHaveBeenCalled();
 	});
 
-	it('switches the speaker with one tap', () => {
-		const { getByTestId, onSpeakerPress } = setup();
+	it('opens the choice of audio outputs from the speaker button', () => {
+		const { getByTestId, onAudioOutputPress } = setup();
 
 		fireEvent.press(getByTestId('conference-speaker-button'));
 
-		expect(onSpeakerPress).toHaveBeenCalledTimes(1);
+		expect(onAudioOutputPress).toHaveBeenCalledTimes(1);
 	});
+
+	it.each(['speaker', 'earpiece', 'headset', 'bluetooth', 'default'])(
+		'stays one button whichever output (%s) is in use',
+		audioOutput => {
+			const { getByLabelText } = setup({ audioOutput });
+
+			expect(getByLabelText('Audio output')).toBeTruthy();
+		}
+	);
 
 	it('opens the people list and the chat', () => {
 		const { getByTestId, onPeoplePress, onChatPress } = setup();

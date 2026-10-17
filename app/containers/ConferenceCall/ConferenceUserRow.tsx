@@ -10,6 +10,7 @@ interface IConferenceUserRow {
 	name?: string;
 	username: string;
 	leading?: ReactElement | null;
+	status?: string;
 	children?: ReactNode;
 	testID?: string;
 }
@@ -24,27 +25,37 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		gap: 12
 	},
+	text: {
+		flex: 1
+	},
 	names: {
 		...sharedStyles.textRegular,
-		flex: 1,
 		fontSize: 14,
 		lineHeight: 20
+	},
+	status: {
+		...sharedStyles.textRegular,
+		fontSize: 12,
+		lineHeight: 16
 	},
 	username: {
 		...sharedStyles.textRegular
 	}
 });
 
-const ConferenceUserRow = ({ userId, name, username, leading, children, testID }: IConferenceUserRow): ReactElement => {
+const ConferenceUserRow = ({ userId, name, username, leading, status, children, testID }: IConferenceUserRow): ReactElement => {
 	const { colors } = useTheme();
 
 	return (
 		<View style={styles.row} testID={testID}>
 			<Avatar avatar={`/avatar/uid/${userId}`} text={username} size={AVATAR_SIZE} borderRadius={4} />
 			{leading}
-			<Text style={[styles.names, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
-				{name} <Text style={[styles.username, { color: colors.fontHint }]}>{username}</Text>
-			</Text>
+			<View style={styles.text}>
+				<Text style={[styles.names, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+					{name} <Text style={[styles.username, { color: colors.fontHint }]}>{username}</Text>
+				</Text>
+				{status ? <Text style={[styles.status, { color: colors.fontHint }]}>{status}</Text> : null}
+			</View>
 			{children}
 		</View>
 	);

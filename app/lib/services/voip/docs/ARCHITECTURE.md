@@ -10,7 +10,7 @@ VoIP is a peer-to-peer audio call subsystem spanning three runtimes: **TypeScrip
 - **Signaling layer** — TypeScript drives the `@rocket.chat/media-signaling` session, which exchanges typed Media Signals over DDP (`stream-notify-user`) with the Rocket.Chat server.
 - **Media layer** — `@livekit/react-native-webrtc` carries the audio streams; ICE servers come from server settings.
 
-VoIP is not VideoConf. VideoConf (`app/sagas/videoConf.ts`, `app/lib/methods/videoConf.ts`) is a Jitsi-based group meeting feature using **Redux** for state and a different wire protocol. VoIP uses **Zustand** stores (`useCallStore`, `usePeerAutocompleteStore`), a singleton `MediaSessionInstance`, and the `@rocket.chat/media-signaling` protocol. The two features must not share Redux keys, sagas, selectors, or call objects.
+VoIP is not VideoConf. VideoConf (`app/sagas/videoConf.ts`, `app/lib/methods/videoConf.ts`) is the group meeting feature: Jitsi calls use **Redux** for state, Embedded (LiveKit) calls use their own Zustand stores (`app/lib/services/conference/`), and both use a different wire protocol. VoIP uses **Zustand** stores (`useCallStore`, `usePeerAutocompleteStore`), a singleton `MediaSessionInstance`, and the `@rocket.chat/media-signaling` protocol. The two features must not share Redux keys, sagas, selectors, or call objects.
 
 ---
 
@@ -50,7 +50,7 @@ Native code on iOS and Android can accept an incoming call before the JS app is 
 
 ### In-call guard
 
-`isInActiveVoipCall()` returns true when either `call` or `nativeAcceptedCallId` is non-null. It gates new outgoing calls, suppresses incoming VideoConf invitations (`voipBlocksIncomingVideoconf`), and is re-evaluated **after** the OS microphone permission prompt resolves (an incoming call may have arrived during the prompt).
+`isInActiveVoipCall()` returns true when either `call` or `nativeAcceptedCallId` is non-null. It gates new outgoing calls, blocks `openConferenceCall` for Embedded Video Conferences, suppresses incoming VideoConf invitations (`voipBlocksIncomingVideoconf`), and is re-evaluated **after** the OS microphone permission prompt resolves (an incoming call may have arrived during the prompt).
 
 ### Self-call guard
 

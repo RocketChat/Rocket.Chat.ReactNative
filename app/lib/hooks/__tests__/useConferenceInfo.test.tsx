@@ -27,7 +27,8 @@ const titleOf = (info?: unknown) => (info as { title?: string } | undefined)?.ti
 const callInfo = (extra: object = {}) => ({ success: true, _id: 'call1', title: 'Standup', users: [], ...extra });
 
 describe('useConferenceInfo', () => {
-	let emitStreamEvent: (eventName: string) => void;
+	let streamListeners: ((message: unknown) => void)[] = [];
+	const emitStreamEvent = (eventName: string) => streamListeners.forEach(listener => listener({ fields: { eventName } }));
 	const stopListening = jest.fn();
 
 	beforeEach(() => {
@@ -36,8 +37,9 @@ describe('useConferenceInfo', () => {
 		mockedStore.dispatch(connectSuccess());
 		infoMock.mockResolvedValue(callInfo());
 		sdkMock.subscribe.mockResolvedValue({ id: 'subscription' });
+		streamListeners = [];
 		sdkMock.onStreamData.mockImplementation(async (_stream: string, callback: (message: unknown) => void) => {
-			emitStreamEvent = eventName => callback({ fields: { eventName } });
+			streamListeners.push(callback);
 			return { stop: stopListening };
 		});
 	});
@@ -113,6 +115,43 @@ describe('useConferenceInfo', () => {
 			act(() => emitStreamEvent('call1/updated'));
 
 			await waitFor(() => expect(infoMock).toHaveBeenCalledTimes(1));
+		});
+
+		it('asks the server once when several screens refresh for the same update', async () => {
+			const screen = renderHook(() => useConferenceInfo('call1', { live: true }), { wrapper });
+			const sheet = renderHook(() => useConferenceInfo('call1', { live: true }), { wrapper });
+			await waitFor(() => expect(streamListeners).toHaveLength(2));
+			await waitFor(() => expect(screen.result.current.info).toBeDefined());
+			await waitFor(() => expect(sheet.result.current.info).toBeDefined());
+			await act(async () => {
+				await new Promise(resolve => setTimeout(resolve, 150));
+			});
+			infoMock.mockClear();
+			infoMock.mockResolvedValue(callInfo({ title: 'Retro' }));
+
+			act(() => emitStreamEvent('call1/updated'));
+			await act(async () => {
+				await new Promise(resolve => setTimeout(resolve, 150));
+			});
+
+			expect(infoMock).toHaveBeenCalledTimes(1);
+			await waitFor(() => expect(titleOf(screen.result.current.info)).toBe('Retro'));
+			expect(titleOf(sheet.result.current.info)).toBe('Retro');
+		});
+
+		it('fetches again for an update that arrives after the request has gone out, so nothing stale is kept', async () => {
+			const { result } = renderHook(() => useConferenceInfo('call1', { live: true }), { wrapper });
+			await waitFor(() => expect(result.current.info).toBeDefined());
+			await act(async () => {
+				await new Promise(resolve => setTimeout(resolve, 150));
+			});
+			infoMock.mockClear();
+
+			act(() => emitStreamEvent('call1/updated'));
+			await waitFor(() => expect(infoMock).toHaveBeenCalledTimes(1));
+			act(() => emitStreamEvent('call1/updated'));
+
+			await waitFor(() => expect(infoMock).toHaveBeenCalledTimes(2));
 		});
 
 		it('ignores updates to other calls', async () => {

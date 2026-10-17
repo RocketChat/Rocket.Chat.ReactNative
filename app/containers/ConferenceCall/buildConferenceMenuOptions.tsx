@@ -4,6 +4,7 @@ import I18n from '~/i18n';
 import type { TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import { VIDEO_QUALITY_ORDER, type VideoQuality } from '~/lib/methods/helpers/captureOptionsFor';
+import { type TCameraDevice } from '~/lib/methods/helpers/pickCameraDevices';
 import type { TConferenceLayout } from '~/lib/services/conference/useConferenceInteractionStore';
 
 type TColors = { fontInfo: string; strokeMedium: string };
@@ -42,10 +43,19 @@ const radio = (selected: boolean, colors: TColors) => (): ReactElement => (
 	/>
 );
 
-export const buildAudioOutputOptions = (outputs: string[], onSelect: (output: string) => void): TActionSheetOptionsItem[] =>
+export const getAudioOutputIcon = (output: string): NonNullable<TActionSheetOptionsItem['icon']> =>
+	AUDIO_OUTPUT_ICONS[output] ?? 'volume';
+
+export const buildAudioOutputOptions = (
+	outputs: string[],
+	selected: string,
+	colors: TColors,
+	onSelect: (output: string) => void
+): TActionSheetOptionsItem[] =>
 	outputs.map(output => ({
 		title: I18n.t(AUDIO_OUTPUT_LABELS[output] ?? 'Audio_output_default'),
-		icon: AUDIO_OUTPUT_ICONS[output] ?? 'volume',
+		icon: getAudioOutputIcon(output),
+		right: radio(output === selected, colors),
 		onPress: () => onSelect(output)
 	}));
 
@@ -58,6 +68,27 @@ export const buildVideoQualityOptions = (
 		title: quality === 'auto' ? I18n.t('Auto') : VIDEO_QUALITY_LABELS[quality],
 		right: radio(quality === selected, colors),
 		onPress: () => onSelect(quality)
+	}));
+
+const CAMERA_FACING_TITLES = {
+	user: 'Front_camera',
+	environment: 'Back_camera',
+	other: 'Camera'
+};
+
+const getCameraTitle = ({ label, facing, ordinal }: TCameraDevice): string =>
+	label ?? `${I18n.t(CAMERA_FACING_TITLES[facing ?? 'other'])}${ordinal ? ` ${ordinal}` : ''}`;
+
+export const buildCameraOptions = (
+	cameras: TCameraDevice[],
+	selectedId: string | undefined,
+	colors: TColors,
+	onSelect: (camera: TCameraDevice) => void
+): TActionSheetOptionsItem[] =>
+	cameras.map(camera => ({
+		title: getCameraTitle(camera),
+		right: radio(camera.deviceId === selectedId, colors),
+		onPress: () => onSelect(camera)
 	}));
 
 export const CONFERENCE_LAYOUTS: { layout: TConferenceLayout; label: string }[] = [

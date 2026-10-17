@@ -1,13 +1,15 @@
 import Navigation from '~/lib/navigation/appNavigation';
+import { videoConferenceCancel } from '../../restApi';
 import { conferenceSession } from '../ConferenceSession';
 import { CONFERENCE_ROUTE, closeConferenceCall, expandConferenceCall } from '../conferenceCallNavigation';
-import { useConferenceCallStore } from '../useConferenceCallStore';
+import { preflightCallId, useConferenceCallStore } from '../useConferenceCallStore';
 
 jest.mock('~/lib/navigation/appNavigation', () => ({
 	navigate: jest.fn(),
 	back: jest.fn(),
 	getCurrentRoute: jest.fn(() => undefined)
 }));
+jest.mock('../../restApi', () => ({ videoConferenceCancel: jest.fn(() => Promise.resolve({ success: true })) }));
 jest.mock('../ConferenceSession', () => ({
 	conferenceSession: { end: jest.fn(() => Promise.resolve()), join: jest.fn() }
 }));
@@ -89,4 +91,51 @@ describe('closeConferenceCall', () => {
 
 		expect(conferenceSession.end).toHaveBeenCalledTimes(1);
 	});
+
+	describe('a call that could not be joined', () => {
+		test('is cancelled when the user gives up on it, so nobody keeps ringing', () => {
+			showingConference();
+			openCall();
+			state().setPhase('error', 'not-licensed');
+
+			closeConferenceCall();
+
+			expect(videoConferenceCancel).toHaveBeenCalledWith('call1');
+		});
+
+		test('is closed all the same when the server refuses to cancel it', async () => {
+			(videoConferenceCancel as jest.Mock).mockRejectedValueOnce(new Error('error-invalid-call'));
+			showingConference();
+			openCall();
+			state().setPhase('error', 'join-failed');
+
+			closeConferenceCall();
+			await Promise.resolve();
+
+			expect(state().callId).toBeUndefined();
+		});
+
+		test('is not cancelled while it is only a preflight for a call nobody started', () => {
+			showingConference();
+			state().open({ callId: preflightCallId('GENERAL'), rid: 'GENERAL' });
+			state().setPhase('error', 'join-failed');
+
+			closeConferenceCall();
+
+			expect(videoConferenceCancel).not.toHaveBeenCalled();
+		});
+	});
+
+	test.each(['preflight', 'joining', 'connecting', 'connected', 'reconnecting', 'ended'] as const)(
+		'does not cancel a call that did not fail (%s)',
+		phase => {
+			showingConference();
+			openCall();
+			state().setPhase(phase);
+
+			closeConferenceCall();
+
+			expect(videoConferenceCancel).not.toHaveBeenCalled();
+		}
+	);
 });

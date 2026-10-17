@@ -12,7 +12,7 @@ import { useStageSize } from './useStageSize';
 export type TScreenShareView = { key: string; video: ReactElement; label: string };
 
 interface IScreenShareStage<T extends IStageTile> {
-	featured: TScreenShareView & { onStop?: () => void };
+	featured: TScreenShareView;
 	others: (TScreenShareView & { onSpotlight: () => void })[];
 	tiles: T[];
 	renderTile: (tile: T) => ReactElement;
@@ -57,7 +57,7 @@ const ScreenShareStage = <T extends IStageTile>({ featured, others, tiles, rende
 			style={[styles.stage, orientation === 'stacked' ? styles.stacked : styles.sideBySide]}
 			onLayout={onLayout}
 			testID='conference-screen-share'>
-			<ScreenViewer video={featured.video} label={featured.label} onStop={featured.onStop} />
+			<ScreenViewer video={featured.video} label={featured.label} />
 			<ThumbList thumbs={thumbs} orientation={orientation} scrollEnabled />
 		</View>
 	);

@@ -146,6 +146,25 @@ describe('useConferenceCallStore', () => {
 		expect(state().phase).toBe('preflight');
 	});
 
+	test('is not in picture in picture to begin with, and can be put in and taken out of it', () => {
+		expect(state().pictureInPicture).toBe(false);
+
+		state().setPictureInPicture(true);
+		expect(state().pictureInPicture).toBe(true);
+
+		state().setPictureInPicture(false);
+		expect(state().pictureInPicture).toBe(false);
+	});
+
+	test('closing the call takes it out of picture in picture', () => {
+		state().open({ callId: 'call1' });
+		state().setPictureInPicture(true);
+
+		state().close();
+
+		expect(state().pictureInPicture).toBe(false);
+	});
+
 	test('expanding with no call does nothing', () => {
 		state().expand();
 

@@ -10,6 +10,7 @@ import sdk from '~/lib/services/sdk';
 import { useAppSelector } from './useAppSelector';
 
 const STREAM = 'stream-video-conference';
+const COALESCE_MS = 50;
 
 export type TConferenceInfoResult = Serialized<VideoConfCall>;
 
@@ -25,6 +26,23 @@ type TResponse = { requestKey: string; callId: string; info?: TConferenceInfoRes
 type TUpdatesSubscription = { holders: number; ready: ReturnType<typeof sdk.subscribe> };
 
 const updatesSubscriptions = new Map<string, TUpdatesSubscription>();
+
+const scheduledRequests = new Map<string, ReturnType<typeof videoConferenceInfo>>();
+
+const requestConferenceInfo = (callId: string): ReturnType<typeof videoConferenceInfo> => {
+	const scheduled = scheduledRequests.get(callId);
+	if (scheduled) {
+		return scheduled;
+	}
+	const request: ReturnType<typeof videoConferenceInfo> = new Promise((resolve, reject) => {
+		setTimeout(() => {
+			scheduledRequests.delete(callId);
+			videoConferenceInfo(callId).then(resolve, reject);
+		}, COALESCE_MS);
+	});
+	scheduledRequests.set(callId, request);
+	return request;
+};
 
 const retainUpdates = (eventName: string): TUpdatesSubscription['ready'] => {
 	const existing = updatesSubscriptions.get(eventName);
@@ -73,7 +91,7 @@ export const useConferenceInfo = (callId: string | undefined, { live = false }: 
 			return;
 		}
 		let ignore = false;
-		videoConferenceInfo(callId)
+		requestConferenceInfo(callId)
 			.then(result => {
 				if (!ignore) {
 					setResponse(previous => ({

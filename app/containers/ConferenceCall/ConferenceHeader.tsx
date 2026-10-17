@@ -3,16 +3,18 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '~/i18n';
 import { formatCallTimer } from '~/lib/methods/helpers/formatCallTimer';
+import { isSpeakerOutput } from '~/lib/methods/helpers/isSpeakerOutput';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
+import { getAudioOutputIcon } from './buildConferenceMenuOptions';
 import ConferenceControlButton from './ConferenceControlButton';
 
 interface IConferenceHeader {
 	elapsedSeconds: number;
 	title?: string;
 	peopleCount: number;
-	speakerOn: boolean;
-	onSpeakerPress: () => void;
+	audioOutput: string;
+	onAudioOutputPress: () => void;
 	chatUnread: number;
 	chatDisabled: boolean;
 	onPeoplePress: () => void;
@@ -72,8 +74,8 @@ const ConferenceHeader = ({
 	elapsedSeconds,
 	title,
 	peopleCount,
-	speakerOn,
-	onSpeakerPress,
+	audioOutput,
+	onAudioOutputPress,
 	chatUnread,
 	chatDisabled,
 	onPeoplePress,
@@ -100,10 +102,10 @@ const ConferenceHeader = ({
 				</View>
 				<View style={styles.actions}>
 					<ConferenceControlButton
-						icon={speakerOn ? 'volume' : 'volume-off'}
-						label={I18n.t('Speaker')}
-						onPress={onSpeakerPress}
-						variant={speakerOn ? 'toggled' : 'default'}
+						icon={getAudioOutputIcon(audioOutput)}
+						label={I18n.t('Audio_output')}
+						onPress={onAudioOutputPress}
+						variant={isSpeakerOutput(audioOutput) ? 'toggled' : 'default'}
 						size={HEADER_BUTTON_SIZE}
 						testID='conference-speaker-button'
 					/>

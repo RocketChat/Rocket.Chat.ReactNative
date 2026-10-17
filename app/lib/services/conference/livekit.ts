@@ -1,5 +1,7 @@
 import { AndroidAudioTypePresets, AudioSession, registerGlobals } from '@livekit/react-native';
+import { mediaDevices } from '@livekit/react-native-webrtc';
 import {
+	DisconnectReason,
 	isAudioTrack,
 	isLocalTrack,
 	isRemoteTrack,
@@ -10,7 +12,19 @@ import {
 	Track
 } from 'livekit-client';
 
-export { AndroidAudioTypePresets, AudioSession, isAudioTrack, isLocalTrack, isRemoteTrack, isVideoTrack, Room, RoomEvent, Track };
+export {
+	AndroidAudioTypePresets,
+	AudioSession,
+	DisconnectReason,
+	isAudioTrack,
+	isLocalTrack,
+	isRemoteTrack,
+	isVideoTrack,
+	mediaDevices,
+	Room,
+	RoomEvent,
+	Track
+};
 export type { LocalVideoTrack };
 
 let globalsRegistered = false;

@@ -37,6 +37,7 @@ import { isInActiveVoipCall } from './isInActiveVoipCall';
 import { requestVoipCallPermissions } from '~/lib/methods/voipCallPermissions';
 import I18n from '~/i18n';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { showAlreadyInCallAlert } from '~/lib/methods/helpers/showAlreadyInCallAlert';
 import { acceptNativeCallWithReadiness as runAcceptNativeCallGate } from './acceptNativeCall';
 
 const mediaCallLogger = new MediaCallLogger();
@@ -199,7 +200,8 @@ class MediaSessionInstance {
 		if (existingCall != null && existingCall.callId === callId) {
 			return;
 		}
-		if (this.isBlockedByConference()) {
+		if (isInConferenceCall()) {
+			showAlreadyInCallAlert();
 			this.endCall(callId);
 			return;
 		}
@@ -237,16 +239,12 @@ class MediaSessionInstance {
 		}
 	};
 
-	private isBlockedByConference = (): boolean => {
-		if (!isInConferenceCall()) {
-			return false;
-		}
-		showErrorAlert(I18n.t('VoIP_Already_In_Call'), I18n.t('Oops'));
-		return true;
-	};
-
 	public startCallByRoom = (room: TSubscriptionModel | ISubscription) => {
-		if (isInActiveVoipCall() || this.isBlockedByConference()) return;
+		if (isInActiveVoipCall()) return;
+		if (isInConferenceCall()) {
+			showAlreadyInCallAlert();
+			return;
+		}
 		useCallStore.getState().setRoomId(room.rid ?? null);
 		const otherUserId = getUidDirectMessage(room);
 		if (otherUserId) {
@@ -262,7 +260,8 @@ class MediaSessionInstance {
 		if (isInActiveVoipCall()) {
 			throw new Error(I18n.t('VoIP_Already_In_Call'));
 		}
-		if (this.isBlockedByConference()) {
+		if (isInConferenceCall()) {
+			showAlreadyInCallAlert();
 			return;
 		}
 		if (isSelfUserId(userId)) {

@@ -2,7 +2,7 @@ import { isInVideoConference } from './isInVideoConference';
 
 export const RINGING_WINDOW_MS = 15_000;
 
-type TMember = {
+export type TConferenceMemberState = {
 	joined?: boolean;
 	leftAt?: Date | string;
 	declined?: boolean;
@@ -14,7 +14,7 @@ export type TConferenceMemberGroups<T> = { inCall: T[]; waiting: T[]; notInCall:
 
 const timeOf = (value: Date | string): number => new Date(value).getTime();
 
-const isRinging = ({ ringingAt, declined, declinedAt }: TMember, now: number): boolean => {
+export const isRingingConferenceMember = ({ ringingAt, declined, declinedAt }: TConferenceMemberState, now: number): boolean => {
 	if (!ringingAt) {
 		return false;
 	}
@@ -24,19 +24,22 @@ const isRinging = ({ ringingAt, declined, declinedAt }: TMember, now: number): b
 	return now - timeOf(ringingAt) < RINGING_WINDOW_MS;
 };
 
-export const groupConferenceMembers = <T extends TMember>(members: T[], now: number): TConferenceMemberGroups<T> => {
+export const groupConferenceMembers = <T extends TConferenceMemberState>(
+	members: T[],
+	now: number
+): TConferenceMemberGroups<T> => {
 	const inCall = members.filter(member => isInVideoConference(member));
 	const rest = members.filter(member => !isInVideoConference(member));
 	return {
 		inCall,
-		waiting: rest.filter(member => isRinging(member, now)),
-		notInCall: rest.filter(member => !isRinging(member, now))
+		waiting: rest.filter(member => isRingingConferenceMember(member, now)),
+		notInCall: rest.filter(member => !isRingingConferenceMember(member, now))
 	};
 };
 
-export const nextRingingLapse = (members: TMember[], now: number): number | undefined => {
+export const nextRingingLapse = (members: TConferenceMemberState[], now: number): number | undefined => {
 	const lapses = members.flatMap(member =>
-		member.ringingAt && !isInVideoConference(member) && isRinging(member, now)
+		member.ringingAt && !isInVideoConference(member) && isRingingConferenceMember(member, now)
 			? [timeOf(member.ringingAt) + RINGING_WINDOW_MS]
 			: []
 	);

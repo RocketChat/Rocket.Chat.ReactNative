@@ -1,4 +1,4 @@
-import { RoomContext, useParticipants } from '@livekit/react-native';
+import { RoomContext, useParticipants, useSpeakingParticipants } from '@livekit/react-native';
 import { type ReactElement, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
@@ -9,8 +9,10 @@ import Touch from '~/containers/Touch';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { type TConferenceInfoResult, useConferenceInfo } from '~/lib/hooks/useConferenceInfo';
 import { usePermissions } from '~/lib/hooks/usePermissions';
+import { countMembersWhoCannotSeeChat } from '~/lib/methods/helpers/countMembersWhoCannotSeeChat';
+import { getConferenceMemberStatus, type TConferenceMemberStatus } from '~/lib/methods/helpers/getConferenceMemberStatus';
 import { groupConferenceMembers, nextRingingLapse } from '~/lib/methods/helpers/groupConferenceMembers';
-import log from '~/lib/methods/helpers/log';
+import { showErrorAlertWithEMessage } from '~/lib/methods/helpers/info';
 import { orderRaisedHands } from '~/lib/services/conference/callDataProtocol';
 import { conferenceSession } from '~/lib/services/conference/ConferenceSession';
 import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
@@ -22,7 +24,6 @@ import sharedStyles from '~/views/Styles';
 import ConferenceControlButton, { COMPACT_BUTTON_SIZE } from './ConferenceControlButton';
 import ConferenceSheetHeader from './ConferenceSheetHeader';
 import ConferenceUserRow from './ConferenceUserRow';
-import { useOpenConferenceChat } from './useOpenConferenceChat';
 
 type TMember = TConferenceInfoResult['users'][number];
 
@@ -34,9 +35,17 @@ type TRow =
 
 interface IPeopleSheetContent {
 	onAddPeople: () => void;
+	onReviewChatAccess: () => void;
 }
 
 const RING_LAPSE_MARGIN_MS = 50;
+
+const STATUS_LABEL: Record<Exclude<TConferenceMemberStatus, 'joined'>, string> = {
+	ringing: 'Ringing',
+	left: 'Left',
+	declined: 'Declined',
+	invited: 'Waiting_for_answer'
+};
 const NO_USERS: TMember[] = [];
 
 const styles = StyleSheet.create({
@@ -91,16 +100,16 @@ const buildRows = (users: TMember[], now: number): TRow[] => {
 	];
 };
 
-const PeopleList = ({ onAddPeople }: IPeopleSheetContent): ReactElement => {
+const PeopleList = ({ onAddPeople, onReviewChatAccess }: IPeopleSheetContent): ReactElement => {
 	const { colors } = useTheme();
 	const { hideActionSheet } = useActionSheet();
 	const callId = useConferenceCallStore(state => state.callId);
 	const hands = useConferenceInteractionStore(state => state.hands);
 	const selfId = useAppSelector(state => state.login.user.id);
 	const participants = useParticipants();
+	const speakers = useSpeakingParticipants();
 	const { info } = useConferenceInfo(callId, { live: true });
 	const [canRing] = usePermissions(['videoconf-ring-users'], info?.rid);
-	const openChat = useOpenConferenceChat(info?.chatAccess);
 	const [ringingIds, setRingingIds] = useState<string[]>([]);
 	const [now, setNow] = useState(() => Date.now());
 
@@ -118,8 +127,12 @@ const PeopleList = ({ onAddPeople }: IPeopleSheetContent): ReactElement => {
 	const rows = buildRows(users, now);
 	const handPositions = new Map(orderRaisedHands(hands).map(({ id }, index) => [id, index + 1]));
 	const membersWithoutChat = info?.chatAccess.membersWithoutAccess ?? [];
+	const membersWhoCannotSeeChat = countMembersWhoCannotSeeChat({ info, viewerId: selfId });
 	const canMute = (userId: string) =>
 		userId !== selfId && participants.some(({ identity, isMicrophoneEnabled }) => identity === userId && isMicrophoneEnabled);
+
+	const isSpeaking = (userId: string) =>
+		speakers.some(({ identity, isMicrophoneEnabled }) => identity === userId && isMicrophoneEnabled);
 
 	const ringMember = (memberId: string) => {
 		if (!callId) {
@@ -127,13 +140,8 @@ const PeopleList = ({ onAddPeople }: IPeopleSheetContent): ReactElement => {
 		}
 		setRingingIds(current => [...current, memberId]);
 		videoConferenceRing(callId, memberId)
-			.catch(log)
+			.catch(showErrorAlertWithEMessage)
 			.finally(() => setRingingIds(current => current.filter(id => id !== memberId)));
-	};
-
-	const showChat = () => {
-		hideActionSheet();
-		openChat();
 	};
 
 	const renderRow = ({ item }: { item: TRow }) => {
@@ -147,6 +155,7 @@ const PeopleList = ({ onAddPeople }: IPeopleSheetContent): ReactElement => {
 		}
 		const { member, section } = item;
 		const inCall = section === 'in-call';
+		const status = getConferenceMemberStatus(member, now);
 		const handPosition = handPositions.get(member._id);
 		return (
 			<ConferenceUserRow
@@ -154,6 +163,7 @@ const PeopleList = ({ onAddPeople }: IPeopleSheetContent): ReactElement => {
 				name={member.name}
 				username={member.username}
 				leading={inCall ? <CustomIcon name='status-busy' size={14} color={colors.userPresenceBusy} /> : null}
+				status={status === 'joined' ? undefined : I18n.t(STATUS_LABEL[status])}
 				testID={`conference-person-${member._id}`}>
 				{membersWithoutChat.includes(member._id) ? (
 					<View accessible accessibilityLabel={I18n.t('No_chat_access')} testID={`conference-no-chat-${member._id}`}>
@@ -161,6 +171,11 @@ const PeopleList = ({ onAddPeople }: IPeopleSheetContent): ReactElement => {
 					</View>
 				) : null}
 				{handPosition ? <Text style={styles.hand}>{`✋ ${handPosition}`}</Text> : null}
+				{inCall && isSpeaking(member._id) ? (
+					<View accessible accessibilityLabel={I18n.t('Speaking')} testID={`conference-speaking-${member._id}`}>
+						<CustomIcon name='mic' size={16} color={colors.strokeHighlight} />
+					</View>
+				) : null}
 				{!inCall && canRing ? (
 					<ConferenceControlButton
 						icon='phone-in'
@@ -199,15 +214,15 @@ const PeopleList = ({ onAddPeople }: IPeopleSheetContent): ReactElement => {
 					/>
 				}
 			/>
-			{membersWithoutChat.length > 0 ? (
+			{membersWhoCannotSeeChat > 0 ? (
 				<Touch
-					onPress={showChat}
+					onPress={onReviewChatAccess}
 					accessibilityRole='button'
 					style={[styles.notice, { backgroundColor: colors.statusBackgroundWarning }]}
 					testID='conference-chat-access-notice'>
 					<CustomIcon name='message-disabled' size={20} color={colors.statusFontWarning} />
 					<Text style={[styles.noticeText, { color: colors.statusFontWarning }]}>
-						{I18n.t('Chat_access_notice', { count: membersWithoutChat.length })}
+						{I18n.t('Chat_access_notice', { count: membersWhoCannotSeeChat })}
 					</Text>
 				</Touch>
 			) : null}
@@ -216,7 +231,7 @@ const PeopleList = ({ onAddPeople }: IPeopleSheetContent): ReactElement => {
 	);
 };
 
-const PeopleSheetContent = ({ onAddPeople }: IPeopleSheetContent): ReactElement | null => {
+const PeopleSheetContent = ({ onAddPeople, onReviewChatAccess }: IPeopleSheetContent): ReactElement | null => {
 	const room = useConferenceRoomStore(state => state.room);
 
 	if (!room) {
@@ -225,7 +240,7 @@ const PeopleSheetContent = ({ onAddPeople }: IPeopleSheetContent): ReactElement 
 
 	return (
 		<RoomContext.Provider value={room}>
-			<PeopleList onAddPeople={onAddPeople} />
+			<PeopleList onAddPeople={onAddPeople} onReviewChatAccess={onReviewChatAccess} />
 		</RoomContext.Provider>
 	);
 };

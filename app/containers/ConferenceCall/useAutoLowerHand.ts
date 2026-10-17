@@ -6,8 +6,6 @@ import log from '~/lib/methods/helpers/log';
 import { conferenceSession } from '~/lib/services/conference/ConferenceSession';
 
 const SAMPLE_INTERVAL_MS = 200;
-const SPEAKING_LEVEL = 1;
-const SILENT_LEVEL = 0;
 
 interface IAutoLowerHandOptions {
 	handRaised: boolean;
@@ -25,10 +23,7 @@ export const useAutoLowerHand = ({ handRaised, micEnabled, isSpeaking }: IAutoLo
 			return;
 		}
 		const interval = setInterval(() => {
-			const step = advanceAutoLowerHand(streak.current, {
-				micLevel: speaking.current ? SPEAKING_LEVEL : SILENT_LEVEL,
-				now: Date.now()
-			});
+			const step = advanceAutoLowerHand(streak.current, { speaking: speaking.current, now: Date.now() });
 			streak.current = step.streak;
 			if (step.lower) {
 				conferenceSession.lowerHand().catch(log);

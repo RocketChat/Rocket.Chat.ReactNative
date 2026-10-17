@@ -27,6 +27,8 @@ class ConferenceCallService : Service() {
 
         private const val ACTION_START = "chat.rocket.reactnative.conference.START_SERVICE"
 
+        const val EXTRA_OPEN_CALL = "chat.rocket.reactnative.conference.OPEN_CALL"
+
         @JvmStatic
         fun hasMicrophonePermission(context: Context): Boolean =
             ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
@@ -43,6 +45,7 @@ class ConferenceCallService : Service() {
 
         @JvmStatic
         fun stopService(context: Context) {
+            ConferenceCallOpenRequest.clear()
             context.stopService(Intent(context, ConferenceCallService::class.java))
         }
     }
@@ -94,7 +97,10 @@ class ConferenceCallService : Service() {
         val pendingIntent = PendingIntent.getActivity(
             this,
             0,
-            Intent(this, MainActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_SINGLE_TOP },
+            Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                putExtra(EXTRA_OPEN_CALL, true)
+            },
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 

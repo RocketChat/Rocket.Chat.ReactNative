@@ -647,7 +647,7 @@ exports[`Story Snapshots: Default should match snapshot 2`] = `
       }
     >
       <View
-        accessibilityLabel="Speaker"
+        accessibilityLabel="Audio output"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -6692,7 +6692,7 @@ exports[`Story Snapshots: Themes should match snapshot 3`] = `
           }
         >
           <View
-            accessibilityLabel="Speaker"
+            accessibilityLabel="Audio output"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -7158,7 +7158,7 @@ exports[`Story Snapshots: Themes should match snapshot 3`] = `
           }
         >
           <View
-            accessibilityLabel="Speaker"
+            accessibilityLabel="Audio output"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -7624,7 +7624,7 @@ exports[`Story Snapshots: Themes should match snapshot 3`] = `
           }
         >
           <View
-            accessibilityLabel="Speaker"
+            accessibilityLabel="Audio output"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -10740,7 +10740,7 @@ exports[`Story Snapshots: WithRaisedHand should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Speaker"
+        accessibilityLabel="Audio output"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -11196,7 +11196,7 @@ exports[`Story Snapshots: WithUnreadChat should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Speaker"
+        accessibilityLabel="Audio output"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -11268,7 +11268,7 @@ exports[`Story Snapshots: WithUnreadChat should match snapshot 1`] = `
             ]
           }
         >
-          
+          
         </Text>
       </View>
       <View
@@ -11726,7 +11726,7 @@ exports[`Story Snapshots: WithoutTitle should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Speaker"
+        accessibilityLabel="Audio output"
         accessibilityRole="button"
         accessibilityState={
           {

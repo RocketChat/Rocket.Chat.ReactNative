@@ -60,7 +60,7 @@ describe('ConferencePreflight', () => {
 
 			fireEvent.press(getByTestId('conference-preflight-join'));
 
-			expect(conferenceSession.join).toHaveBeenCalledWith({ title: 'Meeting in "general"', ring: true, mic: true, cam: false });
+			expect(conferenceSession.join).toHaveBeenCalledWith({ title: 'Meeting in "general"', mic: true, cam: false });
 		});
 
 		it('uses the name the user typed, without stray spaces', () => {

@@ -45,6 +45,7 @@ export interface IVideoConferenceUser extends Pick<Required<IUser>, '_id' | 'use
 export interface IVideoConference extends IRocketChatRecord {
 	type: VideoConferenceType;
 	rid: string;
+	discussionRid?: IRoom['_id'];
 	users: IVideoConferenceUser[];
 	status: VideoConferenceStatus;
 	messages: {
@@ -106,6 +107,8 @@ export type VideoConferenceChatAccess = {
 	canInvite: boolean;
 };
 
+export type VideoConferenceChatAccessMode = 'invite' | 'discussion';
+
 export type VideoConferenceCallConfig = {
 	providerName: string;
 	livekit?: { serverUrl: string; token: string; roomName: string };
@@ -138,6 +141,8 @@ export type VideoConfInfoProps = { callId: string };
 export type VideoConfAddParticipantsProps = { callId: string; users: string[]; ring?: boolean };
 
 export type VideoConfRingProps = { callId: string; userId: string };
+
+export type VideoConfShareChatProps = { callId: string; mode: VideoConferenceChatAccessMode };
 
 export type VideoConfCall = VideoConference & {
 	capabilities: VideoConferenceCapabilities;

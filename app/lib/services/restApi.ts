@@ -19,6 +19,7 @@ import {
 } from '~/definitions';
 import { type TParams } from '~/definitions/ILivechatEditView';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
+import { type VideoConferenceChatAccessMode } from '~/definitions/IVideoConference';
 import { type ISpotlight } from '~/definitions/ISpotlight';
 import { TEAM_TYPE } from '~/definitions/ITeam';
 import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers';
@@ -1322,6 +1323,9 @@ export const videoConferenceAddParticipants = (callId: string, users: string[], 
 	sdk.post('video-conference.add-participants', { callId, users, ring });
 
 export const videoConferenceRing = (callId: string, userId: string) => sdk.post('video-conference.ring', { callId, userId });
+
+export const videoConferenceShareChat = (callId: string, mode: VideoConferenceChatAccessMode) =>
+	sdk.post('video-conference.share-chat', { callId, mode });
 
 export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
 	// RC 0.67.0

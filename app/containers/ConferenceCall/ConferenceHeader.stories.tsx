@@ -13,8 +13,8 @@ export const Default = () => (
 		elapsedSeconds={74}
 		title='Meeting in "general"'
 		peopleCount={3}
-		speakerOn
-		onSpeakerPress={noop}
+		audioOutput='speaker'
+		onAudioOutputPress={noop}
 		onPeoplePress={noop}
 		chatUnread={0}
 		chatDisabled={false}
@@ -26,8 +26,8 @@ export const WithoutTitle = () => (
 	<ConferenceHeader
 		elapsedSeconds={3725}
 		peopleCount={2}
-		speakerOn
-		onSpeakerPress={noop}
+		audioOutput='speaker'
+		onAudioOutputPress={noop}
 		onPeoplePress={noop}
 		chatUnread={0}
 		chatDisabled={false}
@@ -40,8 +40,8 @@ export const WithUnreadChat = () => (
 		elapsedSeconds={74}
 		title='Meeting in "general"'
 		peopleCount={3}
-		speakerOn={false}
-		onSpeakerPress={noop}
+		audioOutput='earpiece'
+		onAudioOutputPress={noop}
 		onPeoplePress={noop}
 		chatUnread={12}
 		chatDisabled={false}
@@ -54,8 +54,8 @@ export const WithRaisedHand = () => (
 		elapsedSeconds={74}
 		title='Meeting in "general-team-room"'
 		peopleCount={3}
-		speakerOn
-		onSpeakerPress={noop}
+		audioOutput='speaker'
+		onAudioOutputPress={noop}
 		onPeoplePress={noop}
 		chatUnread={0}
 		chatDisabled={false}
@@ -71,8 +71,8 @@ export const Themes = () => (
 				elapsedSeconds={74}
 				title='Meeting in "general"'
 				peopleCount={3}
-				speakerOn
-				onSpeakerPress={noop}
+				audioOutput='speaker'
+				onAudioOutputPress={noop}
 				onPeoplePress={noop}
 				chatUnread={0}
 				chatDisabled={false}

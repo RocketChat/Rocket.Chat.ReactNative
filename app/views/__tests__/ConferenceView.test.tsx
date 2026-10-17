@@ -15,7 +15,10 @@ jest.mock('~/lib/navigation/appNavigation', () => ({
 	back: jest.fn(),
 	getCurrentRoute: jest.fn(() => ({ name: 'ConferenceView' }))
 }));
-jest.mock('~/lib/services/conference/conferenceCallNavigation', () => ({ closeConferenceCall: jest.fn() }));
+jest.mock('~/lib/services/conference/conferenceCallNavigation', () => ({
+	closeConferenceCall: jest.fn(),
+	CONFERENCE_ROUTE: 'ConferenceView'
+}));
 jest.mock('~/containers/StatusBar', () => () => null);
 jest.mock('~/containers/ConferenceCall/ConferencePreflight', () => {
 	const { createElement } = jest.requireActual('react');
@@ -112,6 +115,7 @@ describe('ConferenceView', () => {
 	});
 
 	it('shows the call while on screen and minimizes it when the user leaves the screen', () => {
+		state().setPhase('connected');
 		const { unmount } = render(<ConferenceView />);
 		expect(state().expanded).toBe(true);
 
@@ -119,6 +123,42 @@ describe('ConferenceView', () => {
 
 		expect(state().expanded).toBe(false);
 		expect(state().callId).toBe('call1');
+	});
+
+	it.each(['joining', 'connecting', 'reconnecting'] as const)(
+		'keeps the call to return to when the user leaves while %s',
+		phase => {
+			state().setPhase(phase);
+			const { unmount } = render(<ConferenceView />);
+
+			unmount();
+
+			expect(state().callId).toBe('call1');
+			expect(closeConferenceCall).not.toHaveBeenCalled();
+		}
+	);
+
+	it.each([
+		['preflight', undefined],
+		['ended', undefined],
+		['error', 'join-failed']
+	] as const)('closes a call that is not running when the user leaves the screen from %s', (phase, error) => {
+		state().setPhase(phase, error);
+		const { unmount } = render(<ConferenceView />);
+
+		unmount();
+
+		expect(closeConferenceCall).toHaveBeenCalledTimes(1);
+	});
+
+	it('does not close a call that was already closed when the screen goes away', () => {
+		state().setPhase('error', 'join-failed');
+		const { unmount } = render(<ConferenceView />);
+		state().close();
+
+		unmount();
+
+		expect(closeConferenceCall).not.toHaveBeenCalled();
 	});
 
 	it('goes back by itself when there is no call to show', () => {

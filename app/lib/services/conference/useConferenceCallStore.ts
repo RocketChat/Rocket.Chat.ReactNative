@@ -9,6 +9,7 @@ type TConferenceCall = {
 	rid?: string;
 	server?: string;
 	expanded: boolean;
+	pictureInPicture: boolean;
 	phase: TConferencePhase;
 	error?: TConferenceError;
 	connectedAt?: number;
@@ -17,6 +18,7 @@ type TConferenceCall = {
 	setPhase: (phase: TConferencePhase, error?: TConferenceError) => void;
 	expand: () => void;
 	minimize: () => void;
+	setPictureInPicture: (pictureInPicture: boolean) => void;
 	close: () => void;
 };
 
@@ -38,6 +40,7 @@ export const useConferenceCallStore = create<TConferenceCall>(set => ({
 	rid: undefined,
 	server: undefined,
 	expanded: false,
+	pictureInPicture: false,
 	phase: 'preflight',
 	error: undefined,
 	connectedAt: undefined,
@@ -64,12 +67,15 @@ export const useConferenceCallStore = create<TConferenceCall>(set => ({
 
 	minimize: () => set({ expanded: false }),
 
+	setPictureInPicture: pictureInPicture => set({ pictureInPicture }),
+
 	close: () =>
 		set({
 			callId: undefined,
 			rid: undefined,
 			server: undefined,
 			expanded: false,
+			pictureInPicture: false,
 			phase: 'preflight',
 			error: undefined,
 			connectedAt: undefined

@@ -1,15 +1,12 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
-import ConferenceControlButton, { COMPACT_BUTTON_SIZE } from './ConferenceControlButton';
 
 interface IScreenViewer {
 	video: ReactElement;
 	label: string;
-	onStop?: () => void;
 }
 
 const styles = StyleSheet.create({
@@ -33,16 +30,10 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular,
 		fontSize: 12,
 		lineHeight: 16
-	},
-	stop: {
-		position: 'absolute',
-		top: 8,
-		right: 8,
-		zIndex: 1
 	}
 });
 
-const ScreenViewer = ({ video, label, onStop }: IScreenViewer): ReactElement => {
+const ScreenViewer = ({ video, label }: IScreenViewer): ReactElement => {
 	const { colors } = useTheme();
 
 	return (
@@ -53,18 +44,6 @@ const ScreenViewer = ({ video, label, onStop }: IScreenViewer): ReactElement => 
 					{label}
 				</Text>
 			</View>
-			{onStop ? (
-				<View style={styles.stop}>
-					<ConferenceControlButton
-						icon='close'
-						label={I18n.t('Stop_sharing')}
-						variant='danger'
-						size={COMPACT_BUTTON_SIZE}
-						onPress={onStop}
-						testID='conference-stop-sharing'
-					/>
-				</View>
-			) : null}
 		</View>
 	);
 };
