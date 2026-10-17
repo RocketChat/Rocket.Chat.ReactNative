@@ -1,7 +1,6 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import ActivityIndicator from '~/containers/ActivityIndicator';
 import Button from '~/containers/Button';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import { useTheme } from '~/theme';
@@ -18,7 +17,6 @@ interface IConferenceMessage {
 	title: string;
 	description?: string;
 	icon?: TIconsName;
-	loading?: boolean;
 	actions: IConferenceMessageAction[];
 }
 
@@ -48,12 +46,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ConferenceMessage = ({ title, description, icon, loading, actions }: IConferenceMessage): ReactElement => {
+const ConferenceMessage = ({ title, description, icon, actions }: IConferenceMessage): ReactElement => {
 	const { colors } = useTheme();
 
 	return (
 		<View style={styles.container} testID='conference-message'>
-			{loading ? <ActivityIndicator /> : null}
 			{icon ? <CustomIcon name={icon} size={48} color={colors.fontSecondaryInfo} /> : null}
 			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>
 			{description ? <Text style={[styles.description, { color: colors.fontDefault }]}>{description}</Text> : null}

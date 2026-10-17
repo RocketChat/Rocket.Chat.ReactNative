@@ -20,6 +20,7 @@ interface IParticipantTileView {
 }
 
 const TILE_RING_WIDTH = 4;
+const OVERLAY_INSET = TILE_RING_WIDTH + 4;
 const AVATAR_SIZE = 48;
 const COMPACT_AVATAR_SIZE = 32;
 const MIC_BADGE_SIZE = 28;
@@ -39,8 +40,8 @@ const styles = StyleSheet.create({
 	},
 	micBadge: {
 		position: 'absolute',
-		top: 4,
-		right: 4,
+		top: OVERLAY_INSET,
+		right: OVERLAY_INSET,
 		width: MIC_BADGE_SIZE,
 		height: MIC_BADGE_SIZE,
 		borderRadius: MIC_BADGE_SIZE / 2,
@@ -49,8 +50,8 @@ const styles = StyleSheet.create({
 	},
 	sendBadge: {
 		position: 'absolute',
-		top: 4,
-		left: 4,
+		top: OVERLAY_INSET,
+		left: OVERLAY_INSET,
 		paddingHorizontal: 4,
 		paddingVertical: 2,
 		borderRadius: 4
@@ -62,9 +63,9 @@ const styles = StyleSheet.create({
 	},
 	labelRow: {
 		position: 'absolute',
-		left: 8,
-		right: 8,
-		bottom: 4,
+		left: OVERLAY_INSET,
+		right: OVERLAY_INSET,
+		bottom: OVERLAY_INSET,
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 8
@@ -77,8 +78,8 @@ const styles = StyleSheet.create({
 	},
 	handBadge: {
 		position: 'absolute',
-		top: 4,
-		left: 4,
+		top: OVERLAY_INSET,
+		left: OVERLAY_INSET,
 		paddingHorizontal: 6,
 		paddingVertical: 2,
 		borderRadius: 10

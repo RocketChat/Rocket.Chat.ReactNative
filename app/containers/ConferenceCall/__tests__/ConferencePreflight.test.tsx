@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { setUser } from '~/actions/login';
@@ -246,6 +246,76 @@ describe('ConferencePreflight', () => {
 
 			expect(getByText('Call ended')).toBeTruthy();
 			expect(queryByTestId('conference-preflight-join')).toBeNull();
+		});
+	});
+
+	describe('while the call is connecting', () => {
+		const connect = () => act(() => useConferenceCallStore.getState().setPhase('connecting'));
+
+		it('shows a loader in place of the start label and ignores another press', () => {
+			openNewCall();
+			const { getByTestId, queryByText } = renderPreflight();
+			fireEvent.press(getByTestId('conference-preflight-join'));
+
+			connect();
+			fireEvent.press(getByTestId('conference-preflight-join'));
+
+			expect(queryByText('Start call')).toBeNull();
+			expect(conferenceSession.join).toHaveBeenCalledTimes(1);
+		});
+
+		it('keeps offering a new conference once the Workspace has created the call', () => {
+			openNewCall();
+			const { getByTestId, getByText, queryByText } = renderPreflight();
+			fireEvent.press(getByTestId('conference-preflight-join'));
+
+			act(() => {
+				useConferenceCallStore.getState().assignCall('call1', 'GENERAL');
+				useConferenceCallStore.getState().setPhase('connecting');
+			});
+
+			expect(getByText('Start a new conference')).toBeTruthy();
+			expect(queryByText('Join the conference')).toBeNull();
+			expect(getByTestId('conference-preflight-title')).toBeTruthy();
+		});
+
+		it('locks the call name and the microphone and camera buttons', () => {
+			openNewCall();
+			const { getByTestId } = renderPreflight();
+
+			connect();
+
+			expect(getByTestId('conference-preflight-title').props.editable).toBe(false);
+			expect(getByTestId('conference-preflight-mic').props.accessibilityState).toMatchObject({ disabled: true });
+			expect(getByTestId('conference-preflight-camera').props.accessibilityState).toMatchObject({ disabled: true });
+		});
+
+		it('lets go of the camera so the call can use it', async () => {
+			openNewCall();
+			const { getByTestId, queryByTestId } = renderPreflight();
+			fireEvent.press(getByTestId('conference-preflight-camera'));
+			await waitFor(() => expect(getByTestId('conference-preflight-preview')).toBeTruthy());
+
+			connect();
+
+			expect(queryByTestId('conference-preflight-preview')).toBeNull();
+		});
+
+		it('cancels without declining the call it is already joining', () => {
+			openExistingCall();
+			infoMock.mockReturnValue({
+				info: { users: [{ _id: 'me', username: 'me', joined: false, ringingAt: '2026-10-15T08:00:00.000Z' }] },
+				loading: false,
+				failed: false,
+				reload: jest.fn()
+			});
+			const { getByTestId } = renderPreflight();
+
+			connect();
+			fireEvent.press(getByTestId('conference-preflight-cancel'));
+
+			expect(videoConferenceDecline).not.toHaveBeenCalled();
+			expect(closeConferenceCall).toHaveBeenCalledTimes(1);
 		});
 	});
 });

@@ -47,13 +47,12 @@ describe('ConferenceView', () => {
 		expect(getByText('preflight')).toBeTruthy();
 	});
 
-	it.each(['joining', 'connecting'] as const)('says it is connecting while %s, and lets the user cancel', phase => {
+	it.each(['joining', 'connecting'] as const)('keeps the preflight on screen while %s', phase => {
 		state().setPhase(phase);
-		const { getByText, getByTestId } = render(<ConferenceView />);
+		const { getByText, queryByText } = render(<ConferenceView />);
 
-		expect(getByText('Connecting...')).toBeTruthy();
-		fireEvent.press(getByTestId('conference-connecting-cancel'));
-		expect(closeConferenceCall).toHaveBeenCalledTimes(1);
+		expect(getByText('preflight')).toBeTruthy();
+		expect(queryByText('Connecting...')).toBeNull();
 	});
 
 	it.each(['connected', 'reconnecting'] as const)('shows the call while %s', phase => {

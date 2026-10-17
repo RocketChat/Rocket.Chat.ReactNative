@@ -1,8 +1,7 @@
 import { type ReactElement, useState } from 'react';
-import { KeyboardAvoidingView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, StyleSheet, Text } from 'react-native';
 
 import I18n from '~/i18n';
-import Button from '~/containers/Button';
 import { FormTextInput } from '~/containers/TextInput';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useConferenceInfo } from '~/lib/hooks/useConferenceInfo';
@@ -19,6 +18,7 @@ import { videoConferenceDecline } from '~/lib/services/restApi';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import ConferenceEndedMessage from './ConferenceEndedMessage';
+import PreflightActions from './PreflightActions';
 import PreflightPeople from './PreflightPeople';
 import PreflightPreview from './PreflightPreview';
 
@@ -42,7 +42,9 @@ const ConferencePreflight = (): ReactElement => {
 	const { colors } = useTheme();
 	const callId = useConferenceCallStore(state => state.callId);
 	const rid = useConferenceCallStore(state => state.rid);
-	const isNew = !!callId && isPreflightCallId(callId);
+	const connecting = useConferenceCallStore(state => state.phase === 'joining' || state.phase === 'connecting');
+	const [startedNewCall, setStartedNewCall] = useState(false);
+	const isNew = startedNewCall || (!!callId && isPreflightCallId(callId));
 	const subscription = useSubscription(rid);
 	const { info, loading } = useConferenceInfo(callId);
 	const userId = useAppSelector(state => state.login.user.id);
@@ -71,44 +73,46 @@ const ConferencePreflight = (): ReactElement => {
 	};
 
 	const cancel = () => {
-		if (callId && wasRung) {
+		if (callId && wasRung && !connecting) {
 			videoConferenceDecline(callId).catch(log);
 		}
 		closeConferenceCall();
 	};
 
-	const join = () => conferenceSession.join({ title: isNew ? title.trim() || undefined : undefined, mic, cam });
+	const join = () => {
+		setStartedNewCall(isNew);
+		conferenceSession.join({ title: isNew ? title.trim() || undefined : undefined, mic, cam });
+	};
 
 	return (
 		<KeyboardAvoidingView style={styles.screen} behavior={isIOS ? 'padding' : undefined}>
 			<ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps='handled' testID='conference-preflight'>
-				<PreflightPreview mic={mic} cam={cam} onToggleMic={() => setMic(value => !value)} onToggleCamera={toggleCamera} />
-
 				<Text style={[styles.heading, { color: colors.fontTitlesLabels }]}>
 					{isNew ? I18n.t('Start_a_new_conference') : I18n.t('Join_the_conference')}
 				</Text>
+
+				<PreflightPreview
+					mic={mic}
+					cam={cam}
+					connecting={connecting}
+					onToggleMic={() => setMic(value => !value)}
+					onToggleCamera={toggleCamera}
+				/>
 
 				{isNew ? (
 					<FormTextInput
 						label={I18n.t('Call_name')}
 						value={title}
 						onChangeText={setEditedTitle}
+						editable={!connecting}
 						testID='conference-preflight-title'
 					/>
 				) : (
 					<PreflightPeople people={(info?.users ?? []).filter(isInVideoConference)} />
 				)}
-
-				<View>
-					<Button
-						title={isNew ? I18n.t('Start_call') : I18n.t('Join_call')}
-						onPress={join}
-						loading={!isNew && loading}
-						testID='conference-preflight-join'
-					/>
-					<Button title={I18n.t('Cancel')} type='secondary' onPress={cancel} testID='conference-preflight-cancel' />
-				</View>
 			</ScrollView>
+
+			<PreflightActions isNew={isNew} connecting={connecting} loadingInfo={loading} onJoin={join} onCancel={cancel} />
 		</KeyboardAvoidingView>
 	);
 };

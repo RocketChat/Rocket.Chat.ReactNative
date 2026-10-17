@@ -15,16 +15,6 @@ export default {
 	title: 'ConferenceCall/ConferenceMessage'
 };
 
-export const Connecting = () => (
-	<View style={styles.frame}>
-		<ConferenceMessage
-			loading
-			title='Connecting...'
-			actions={[{ title: 'Cancel', type: 'secondary', onPress: noop, testID: 'cancel' }]}
-		/>
-	</View>
-);
-
 export const Ended = () => (
 	<View style={styles.frame}>
 		<ConferenceMessage icon='phone-off' title='Call ended' actions={[{ title: 'Close', onPress: noop, testID: 'close' }]} />

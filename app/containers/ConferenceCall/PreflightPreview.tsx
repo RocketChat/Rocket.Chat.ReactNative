@@ -11,6 +11,7 @@ import ConferenceControlButton from './ConferenceControlButton';
 interface IPreflightPreview {
 	mic: boolean;
 	cam: boolean;
+	connecting?: boolean;
 	onToggleMic: () => void;
 	onToggleCamera: () => void;
 }
@@ -25,12 +26,16 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	placeholder: {
+		alignSelf: 'stretch',
 		alignItems: 'center',
 		gap: 8,
+		paddingHorizontal: 16,
 		paddingBottom: 60
 	},
 	placeholderText: {
 		...sharedStyles.textBold,
+		...sharedStyles.textAlignCenter,
+		alignSelf: 'stretch',
 		fontSize: 14,
 		lineHeight: 20
 	},
@@ -42,24 +47,26 @@ const styles = StyleSheet.create({
 	}
 });
 
-const PreflightPreview = ({ mic, cam, onToggleMic, onToggleCamera }: IPreflightPreview): ReactElement => {
+const PreflightPreview = ({ mic, cam, connecting, onToggleMic, onToggleCamera }: IPreflightPreview): ReactElement => {
 	const { colors } = useTheme();
 
 	return (
-		<View style={[styles.preview, { backgroundColor: colors.backdropColor }]}>
-			{cam ? (
+		<View style={[styles.preview, { backgroundColor: cam ? colors.backdropColor : colors.surfaceNeutral }]}>
+			{cam && !connecting ? (
 				<CameraView style={StyleSheet.absoluteFill} facing='front' testID='conference-preflight-preview' />
-			) : (
+			) : null}
+			{!cam ? (
 				<View style={styles.placeholder}>
-					<CustomIcon name='camera-disabled' size={32} color={colors.fontPureWhite} />
-					<Text style={[styles.placeholderText, { color: colors.fontPureWhite }]}>{I18n.t('Your_camera_will_be_off')}</Text>
+					<CustomIcon name='camera-disabled' size={32} color={colors.fontDefault} />
+					<Text style={[styles.placeholderText, { color: colors.fontDefault }]}>{I18n.t('Your_camera_will_be_off')}</Text>
 				</View>
-			)}
+			) : null}
 			<View style={styles.toggles}>
 				<ConferenceControlButton
 					icon={mic ? 'mic' : 'mic-off'}
 					label={mic ? I18n.t('Mute') : I18n.t('Unmute')}
 					variant={mic ? 'default' : 'danger'}
+					disabled={connecting}
 					onPress={onToggleMic}
 					testID='conference-preflight-mic'
 				/>
@@ -67,6 +74,7 @@ const PreflightPreview = ({ mic, cam, onToggleMic, onToggleCamera }: IPreflightP
 					icon={cam ? 'video' : 'camera-disabled'}
 					label={cam ? I18n.t('Stop_camera') : I18n.t('Start_camera')}
 					variant={cam ? 'default' : 'danger'}
+					disabled={connecting}
 					onPress={onToggleCamera}
 					testID='conference-preflight-camera'
 				/>

@@ -65,18 +65,9 @@ const ConferenceView = (): ReactElement => {
 	const renderContent = () => {
 		switch (phase) {
 			case 'preflight':
-				return <ConferencePreflight />;
 			case 'joining':
 			case 'connecting':
-				return (
-					<ConferenceMessage
-						loading
-						title={I18n.t('Connecting')}
-						actions={[
-							{ title: I18n.t('Cancel'), type: 'secondary', onPress: closeConferenceCall, testID: 'conference-connecting-cancel' }
-						]}
-					/>
-				);
+				return <ConferencePreflight />;
 			case 'connected':
 			case 'reconnecting':
 				return <LazyConferenceInCall />;

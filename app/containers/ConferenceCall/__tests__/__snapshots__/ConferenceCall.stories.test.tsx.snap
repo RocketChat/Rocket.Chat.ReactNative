@@ -20,7 +20,7 @@ exports[`Story Snapshots: CameraOff should match snapshot 1`] = `
           "width": "100%",
         },
         {
-          "backgroundColor": "#000000",
+          "backgroundColor": "#E4E7EA",
         },
       ]
     }
@@ -29,8 +29,10 @@ exports[`Story Snapshots: CameraOff should match snapshot 1`] = `
       style={
         {
           "alignItems": "center",
+          "alignSelf": "stretch",
           "gap": 8,
           "paddingBottom": 60,
+          "paddingHorizontal": 16,
         }
       }
     >
@@ -40,7 +42,7 @@ exports[`Story Snapshots: CameraOff should match snapshot 1`] = `
         style={
           [
             {
-              "color": "#FFFFFF",
+              "color": "#2F343D",
               "fontSize": 32,
             },
             [
@@ -64,6 +66,7 @@ exports[`Story Snapshots: CameraOff should match snapshot 1`] = `
         style={
           [
             {
+              "alignSelf": "stretch",
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 14,
@@ -72,10 +75,10 @@ exports[`Story Snapshots: CameraOff should match snapshot 1`] = `
               ],
               "fontWeight": "700",
               "lineHeight": 20,
-              "textAlign": "left",
+              "textAlign": "center",
             },
             {
-              "color": "#FFFFFF",
+              "color": "#2F343D",
             },
           ]
         }
@@ -243,151 +246,6 @@ exports[`Story Snapshots: CameraOff should match snapshot 1`] = `
           }
         >
           
-        </Text>
-      </View>
-    </View>
-  </View>
-</View>
-`;
-
-exports[`Story Snapshots: Connecting should match snapshot 1`] = `
-<View
-  style={
-    {
-      "height": 360,
-    }
-  }
->
-  <View
-    style={
-      {
-        "alignItems": "center",
-        "flex": 1,
-        "gap": 16,
-        "justifyContent": "center",
-        "paddingHorizontal": 24,
-      }
-    }
-    testID="conference-message"
-  >
-    <ActivityIndicator
-      color="#6C727A"
-      style={
-        [
-          {
-            "flex": 1,
-            "padding": 16,
-          },
-          undefined,
-        ]
-      }
-    />
-    <Text
-      style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 20,
-            "fontVariant": [
-              "tabular-nums",
-            ],
-            "fontWeight": "700",
-            "lineHeight": 28,
-            "textAlign": "center",
-          },
-          {
-            "color": "#1F2329",
-          },
-        ]
-      }
-    >
-      Connecting...
-    </Text>
-    <View
-      style={
-        {
-          "marginTop": 8,
-          "width": "100%",
-        }
-      }
-    >
-      <View
-        accessibilityLabel="Cancel"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        activeUnderlayOpacity={0.105}
-        animationDuration={0}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-            },
-            {},
-            undefined,
-          ]
-        }
-        testID="cancel"
-        underlayColor="black"
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 16,
-              },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "500",
-                "textAlign": "center",
-              },
-              undefined,
-            ]
-          }
-        >
-          Cancel
         </Text>
       </View>
     </View>
@@ -1770,7 +1628,7 @@ exports[`Story Snapshots: HandRaised should match snapshot 2`] = `
       style={
         {
           "alignItems": "center",
-          "bottom": 4,
+          "bottom": 8,
           "flexDirection": "row",
           "gap": 8,
           "left": 8,
@@ -2855,7 +2713,7 @@ exports[`Story Snapshots: MicMuted should match snapshot 1`] = `
           "width": "100%",
         },
         {
-          "backgroundColor": "#000000",
+          "backgroundColor": "#E4E7EA",
         },
       ]
     }
@@ -2864,8 +2722,10 @@ exports[`Story Snapshots: MicMuted should match snapshot 1`] = `
       style={
         {
           "alignItems": "center",
+          "alignSelf": "stretch",
           "gap": 8,
           "paddingBottom": 60,
+          "paddingHorizontal": 16,
         }
       }
     >
@@ -2875,7 +2735,7 @@ exports[`Story Snapshots: MicMuted should match snapshot 1`] = `
         style={
           [
             {
-              "color": "#FFFFFF",
+              "color": "#2F343D",
               "fontSize": 32,
             },
             [
@@ -2899,6 +2759,7 @@ exports[`Story Snapshots: MicMuted should match snapshot 1`] = `
         style={
           [
             {
+              "alignSelf": "stretch",
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
               "fontSize": 14,
@@ -2907,10 +2768,10 @@ exports[`Story Snapshots: MicMuted should match snapshot 1`] = `
               ],
               "fontWeight": "700",
               "lineHeight": 20,
-              "textAlign": "left",
+              "textAlign": "center",
             },
             {
-              "color": "#FFFFFF",
+              "color": "#2F343D",
             },
           ]
         }
@@ -3196,8 +3057,8 @@ exports[`Story Snapshots: Muted should match snapshot 1`] = `
             "height": 28,
             "justifyContent": "center",
             "position": "absolute",
-            "right": 4,
-            "top": 4,
+            "right": 8,
+            "top": 8,
             "width": 28,
           },
           false,
@@ -3239,7 +3100,7 @@ exports[`Story Snapshots: Muted should match snapshot 1`] = `
       style={
         {
           "alignItems": "center",
-          "bottom": 4,
+          "bottom": 8,
           "flexDirection": "row",
           "gap": 8,
           "left": 8,
@@ -3739,11 +3600,11 @@ exports[`Story Snapshots: SendResolutionBadge should match snapshot 1`] = `
         [
           {
             "borderRadius": 4,
-            "left": 4,
+            "left": 8,
             "paddingHorizontal": 4,
             "paddingVertical": 2,
             "position": "absolute",
-            "top": 4,
+            "top": 8,
           },
           {
             "backgroundColor": "rgba(31, 35, 41, 0.65)",
@@ -3778,7 +3639,7 @@ exports[`Story Snapshots: SendResolutionBadge should match snapshot 1`] = `
       style={
         {
           "alignItems": "center",
-          "bottom": 4,
+          "bottom": 8,
           "flexDirection": "row",
           "gap": 8,
           "left": 8,
@@ -3951,7 +3812,7 @@ exports[`Story Snapshots: Speaking should match snapshot 1`] = `
       style={
         {
           "alignItems": "center",
-          "bottom": 4,
+          "bottom": 8,
           "flexDirection": "row",
           "gap": 8,
           "left": 8,
@@ -8629,8 +8490,8 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
                   "height": 28,
                   "justifyContent": "center",
                   "position": "absolute",
-                  "right": 4,
-                  "top": 4,
+                  "right": 8,
+                  "top": 8,
                   "width": 28,
                 },
                 false,
@@ -8672,7 +8533,7 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
             style={
               {
                 "alignItems": "center",
-                "bottom": 4,
+                "bottom": 8,
                 "flexDirection": "row",
                 "gap": 8,
                 "left": 8,
@@ -8801,7 +8662,7 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
             style={
               {
                 "alignItems": "center",
-                "bottom": 4,
+                "bottom": 8,
                 "flexDirection": "row",
                 "gap": 8,
                 "left": 8,
@@ -8975,8 +8836,8 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
                   "height": 28,
                   "justifyContent": "center",
                   "position": "absolute",
-                  "right": 4,
-                  "top": 4,
+                  "right": 8,
+                  "top": 8,
                   "width": 28,
                 },
                 false,
@@ -9018,7 +8879,7 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
             style={
               {
                 "alignItems": "center",
-                "bottom": 4,
+                "bottom": 8,
                 "flexDirection": "row",
                 "gap": 8,
                 "left": 8,
@@ -9147,7 +9008,7 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
             style={
               {
                 "alignItems": "center",
-                "bottom": 4,
+                "bottom": 8,
                 "flexDirection": "row",
                 "gap": 8,
                 "left": 8,
@@ -9321,8 +9182,8 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
                   "height": 28,
                   "justifyContent": "center",
                   "position": "absolute",
-                  "right": 4,
-                  "top": 4,
+                  "right": 8,
+                  "top": 8,
                   "width": 28,
                 },
                 false,
@@ -9364,7 +9225,7 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
             style={
               {
                 "alignItems": "center",
-                "bottom": 4,
+                "bottom": 8,
                 "flexDirection": "row",
                 "gap": 8,
                 "left": 8,
@@ -9493,7 +9354,7 @@ exports[`Story Snapshots: Themes should match snapshot 5`] = `
             style={
               {
                 "alignItems": "center",
-                "bottom": 4,
+                "bottom": 8,
                 "flexDirection": "row",
                 "gap": 8,
                 "left": 8,
@@ -9574,7 +9435,7 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
               "width": "100%",
             },
             {
-              "backgroundColor": "#000000",
+              "backgroundColor": "#E4E7EA",
             },
           ]
         }
@@ -9583,8 +9444,10 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
           style={
             {
               "alignItems": "center",
+              "alignSelf": "stretch",
               "gap": 8,
               "paddingBottom": 60,
+              "paddingHorizontal": 16,
             }
           }
         >
@@ -9594,7 +9457,7 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
             style={
               [
                 {
-                  "color": "#FFFFFF",
+                  "color": "#2F343D",
                   "fontSize": 32,
                 },
                 [
@@ -9618,6 +9481,7 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
             style={
               [
                 {
+                  "alignSelf": "stretch",
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -9626,10 +9490,10 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
                   ],
                   "fontWeight": "700",
                   "lineHeight": 20,
-                  "textAlign": "left",
+                  "textAlign": "center",
                 },
                 {
-                  "color": "#FFFFFF",
+                  "color": "#2F343D",
                 },
               ]
             }
@@ -9834,7 +9698,7 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
               "width": "100%",
             },
             {
-              "backgroundColor": "#000000",
+              "backgroundColor": "#2D3039",
             },
           ]
         }
@@ -9843,8 +9707,10 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
           style={
             {
               "alignItems": "center",
+              "alignSelf": "stretch",
               "gap": 8,
               "paddingBottom": 60,
+              "paddingHorizontal": 16,
             }
           }
         >
@@ -9854,7 +9720,7 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
             style={
               [
                 {
-                  "color": "#FFFFFF",
+                  "color": "#C1C7D0",
                   "fontSize": 32,
                 },
                 [
@@ -9878,6 +9744,7 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
             style={
               [
                 {
+                  "alignSelf": "stretch",
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -9886,10 +9753,10 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
                   ],
                   "fontWeight": "700",
                   "lineHeight": 20,
-                  "textAlign": "left",
+                  "textAlign": "center",
                 },
                 {
-                  "color": "#FFFFFF",
+                  "color": "#C1C7D0",
                 },
               ]
             }
@@ -10094,7 +9961,7 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
               "width": "100%",
             },
             {
-              "backgroundColor": "#000000",
+              "backgroundColor": "#161717",
             },
           ]
         }
@@ -10103,8 +9970,10 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
           style={
             {
               "alignItems": "center",
+              "alignSelf": "stretch",
               "gap": 8,
               "paddingBottom": 60,
+              "paddingHorizontal": 16,
             }
           }
         >
@@ -10114,7 +9983,7 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
             style={
               [
                 {
-                  "color": "#FFFFFF",
+                  "color": "#E4E4E4",
                   "fontSize": 32,
                 },
                 [
@@ -10138,6 +10007,7 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
             style={
               [
                 {
+                  "alignSelf": "stretch",
                   "backgroundColor": "transparent",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -10146,10 +10016,10 @@ exports[`Story Snapshots: Themes should match snapshot 6`] = `
                   ],
                   "fontWeight": "700",
                   "lineHeight": 20,
-                  "textAlign": "left",
+                  "textAlign": "center",
                 },
                 {
-                  "color": "#FFFFFF",
+                  "color": "#E4E4E4",
                 },
               ]
             }
@@ -10599,7 +10469,7 @@ exports[`Story Snapshots: WithCamera should match snapshot 1`] = `
       style={
         {
           "alignItems": "center",
-          "bottom": 4,
+          "bottom": 8,
           "flexDirection": "row",
           "gap": 8,
           "left": 8,
@@ -11622,7 +11492,7 @@ exports[`Story Snapshots: WithoutCamera should match snapshot 1`] = `
       style={
         {
           "alignItems": "center",
-          "bottom": 4,
+          "bottom": 8,
           "flexDirection": "row",
           "gap": 8,
           "left": 8,
