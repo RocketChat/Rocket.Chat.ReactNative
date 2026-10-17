@@ -2,8 +2,7 @@ import { type ReactElement, useEffect, useState } from 'react';
 import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
 import Animated, { FadeIn, LinearTransition, useReducedMotion } from 'react-native-reanimated';
 
-import { useTheme } from '~/theme';
-import { getRaisedHandColors } from './getRaisedHandColors';
+import { type TColors, useTheme } from '~/theme';
 
 interface IRaisedHandChip {
 	label: string;
@@ -28,6 +27,13 @@ const styles = StyleSheet.create({
 		marginLeft: LABEL_GAP
 	}
 });
+
+type TRaisedHandColors = { background: string; text: string };
+
+export const getRaisedHandColors = (colors: TColors, isSelf: boolean): TRaisedHandColors =>
+	isSelf
+		? { background: colors.buttonBackgroundSuccessDefault, text: colors.buttonFontSuccess }
+		: { background: colors.fontPureWhite, text: colors.fontPureBlack };
 
 const RaisedHandChip = ({ label, isSelf, style, textStyle, testID }: IRaisedHandChip): ReactElement => {
 	const { colors } = useTheme();

@@ -5,7 +5,6 @@ import { captureOptionsFor, type VideoQuality } from '~/lib/methods/helpers/capt
 import { cameraSourceFor, type TCameraFacing } from '~/lib/methods/helpers/cameraSourceFor';
 import { getCallConnectionState } from '~/lib/methods/helpers/getCallConnectionState';
 import { getConferenceError } from '~/lib/methods/helpers/getConferenceError';
-import { isHandNews } from '~/lib/methods/helpers/isHandNews';
 import log from '~/lib/methods/helpers/log';
 import { pickCameraDevices, type TCameraDevice } from '~/lib/methods/helpers/pickCameraDevices';
 import { showToast } from '~/lib/methods/helpers/showToast';
@@ -16,7 +15,7 @@ import {
 	videoConferenceLeave,
 	videoConferenceStart
 } from '../restApi';
-import { type CallDataMessage, createReaction, encodeMessage, parseMessage, reactionIdFor } from './callDataProtocol';
+import { type CallDataMessage, createReaction, encodeMessage, isHandNews, parseMessage, reactionIdFor } from './callDataProtocol';
 import { startConferenceForegroundService, stopConferenceForegroundService } from './conferenceForegroundService';
 import { stopConferenceMicLevelMonitor } from './conferenceMicLevel';
 import type { LocalVideoTrack, Room } from './livekit';

@@ -1,7 +1,8 @@
 import { act, render } from '@testing-library/react-native';
 import * as Reanimated from 'react-native-reanimated';
 
-import RaisedHandChip, { REVEAL_DELAY_MS } from '../RaisedHandChip';
+import { colors } from '~/lib/constants/colors';
+import RaisedHandChip, { getRaisedHandColors, REVEAL_DELAY_MS } from '../RaisedHandChip';
 
 describe('RaisedHandChip', () => {
 	beforeEach(() => {
@@ -60,5 +61,27 @@ describe('RaisedHandChip', () => {
 
 		expect(() => act(() => jest.advanceTimersByTime(REVEAL_DELAY_MS))).not.toThrow();
 		expect(jest.getTimerCount()).toBe(0);
+	});
+});
+
+describe('getRaisedHandColors', () => {
+	it.each(['light', 'dark', 'black'] as const)('gives our own raised hand the green of a success button (%s theme)', theme => {
+		const palette = colors[theme];
+
+		expect(getRaisedHandColors(palette, true)).toEqual({
+			background: palette.buttonBackgroundSuccessDefault,
+			text: palette.buttonFontSuccess
+		});
+	});
+
+	it.each(['light', 'dark', 'black'] as const)('gives anybody else a white raised hand with dark text (%s theme)', theme => {
+		const palette = colors[theme];
+
+		expect(getRaisedHandColors(palette, false)).toEqual({ background: palette.fontPureWhite, text: palette.fontPureBlack });
+		expect(palette.fontPureWhite).toBe('#FFFFFF');
+	});
+
+	it('tells our hand apart from everybody else', () => {
+		expect(getRaisedHandColors(colors.light, true).background).not.toBe(getRaisedHandColors(colors.light, false).background);
 	});
 });

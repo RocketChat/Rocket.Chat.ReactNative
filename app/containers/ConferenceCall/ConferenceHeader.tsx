@@ -3,10 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '~/i18n';
 import { formatCallTimer } from '~/lib/methods/helpers/formatCallTimer';
-import { isSpeakerOutput } from '~/lib/methods/helpers/isSpeakerOutput';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
-import { getAudioOutputIcon } from './buildConferenceMenuOptions';
+import { getAudioOutputIcon, isSpeakerOutput } from './buildConferenceMenuOptions';
 import ConferenceControlButton from './ConferenceControlButton';
 
 interface IConferenceHeader {

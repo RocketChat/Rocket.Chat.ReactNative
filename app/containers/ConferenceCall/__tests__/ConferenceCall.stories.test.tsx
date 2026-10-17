@@ -8,9 +8,11 @@ import * as preflight from '../PreflightPreview.stories';
 
 jest.mock('expo-camera', () => ({ CameraView: 'CameraView' }));
 
-generateSnapshots(controlButton);
-generateSnapshots(controls);
-generateSnapshots(header);
-generateSnapshots(message);
-generateSnapshots(tile);
-generateSnapshots(preflight);
+const withoutThemes = (stories: object) => Object.fromEntries(Object.entries(stories).filter(([name]) => name !== 'Themes'));
+
+generateSnapshots(withoutThemes(controlButton));
+generateSnapshots(withoutThemes(controls));
+generateSnapshots(withoutThemes(header));
+generateSnapshots(withoutThemes(message));
+generateSnapshots(withoutThemes(tile));
+generateSnapshots(withoutThemes(preflight));

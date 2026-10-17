@@ -1,5 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, type ReactElement } from 'react';
+import { type ComponentType, lazy, Suspense, useCallback, type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -7,7 +7,7 @@ import I18n from '~/i18n';
 import ConferenceEndedMessage from '~/containers/ConferenceCall/ConferenceEndedMessage';
 import ConferenceMessage from '~/containers/ConferenceCall/ConferenceMessage';
 import ConferencePreflight from '~/containers/ConferenceCall/ConferencePreflight';
-import LazyConferenceInCall from '~/containers/ConferenceCall/LazyConferenceInCall';
+import ActivityIndicator from '~/containers/ActivityIndicator';
 import { hideActionSheetRef } from '~/containers/ActionSheet';
 import StatusBar from '~/containers/StatusBar';
 import { hasNativeHeaderBar } from '../lib/methods/helpers/deviceInfo';
@@ -28,6 +28,10 @@ const ERROR_KEYS: Record<TConferenceError, string> = {
 	unsupported: 'Conference_error_unsupported',
 	ended: 'Call_ended'
 };
+
+const ConferenceInCall = lazy(() =>
+	Promise.resolve(require('~/containers/ConferenceCall/ConferenceInCall') as { default: ComponentType })
+);
 
 const styles = StyleSheet.create({
 	container: {
@@ -72,7 +76,11 @@ const ConferenceView = (): ReactElement => {
 				return <ConferencePreflight />;
 			case 'connected':
 			case 'reconnecting':
-				return <LazyConferenceInCall />;
+				return (
+					<Suspense fallback={<ActivityIndicator />}>
+						<ConferenceInCall />
+					</Suspense>
+				);
 			case 'ended':
 				return <ConferenceEndedMessage onRejoin={() => setPhase('preflight')} />;
 			default:

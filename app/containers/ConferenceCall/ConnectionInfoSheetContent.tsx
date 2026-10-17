@@ -4,7 +4,6 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import I18n from '~/i18n';
 import { useActionSheet } from '~/containers/ActionSheet';
-import { formatBitrate } from '~/lib/methods/helpers/formatBitrate';
 import { useConferenceRoomStore } from '~/lib/services/conference/useConferenceRoomStore';
 import { type TColors, useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
@@ -13,6 +12,7 @@ import { useConferenceDiagnostics } from './useConferenceDiagnostics';
 
 const QUALITY_DOT_SIZE = 8;
 const NOT_AVAILABLE = '—';
+const KBPS_PER_MBPS = 1000;
 
 const styles = StyleSheet.create({
 	container: {
@@ -99,6 +99,13 @@ const qualityColor = (quality: string, colors: TColors): string => {
 		default:
 			return colors.fontHint;
 	}
+};
+
+const formatBitrate = (kbps?: number): string => {
+	if (kbps === undefined) {
+		return NOT_AVAILABLE;
+	}
+	return kbps >= KBPS_PER_MBPS ? `${(kbps / KBPS_PER_MBPS).toFixed(1)} Mbps` : `${Math.round(kbps)} kbps`;
 };
 
 const StatRow = ({ label, value, testID }: { label: string; value: string; testID?: string }): ReactElement => {

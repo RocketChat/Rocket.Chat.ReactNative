@@ -4,7 +4,6 @@ import type { SubscriptionType } from '~/definitions';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { type TConferenceInfoResult } from '~/lib/hooks/useConferenceInfo';
 import { getConferenceChatThreadId } from '~/lib/methods/helpers/getConferenceChatThreadId';
-import { hasConferenceChatAccess } from '~/lib/methods/helpers/hasConferenceChatAccess';
 import ConferenceChatSheetContent from './ConferenceChatSheetContent';
 
 const CHAT_SHEET_SNAPS = ['95%', '100%'];
@@ -36,7 +35,7 @@ export const useOpenConferenceChat = (info?: TConferenceInfoResult): (() => void
 					name={name}
 					tmid={tmid}
 					title={('title' in info && info.title) || I18n.t('Chat')}
-					canRead={hasConferenceChatAccess(membersWithoutAccess, viewerId)}
+					canRead={!viewerId || !membersWithoutAccess.includes(viewerId)}
 				/>
 			),
 			snaps: CHAT_SHEET_SNAPS,

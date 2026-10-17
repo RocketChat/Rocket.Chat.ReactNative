@@ -6,7 +6,8 @@ import {
 	buildAudioOutputOptions,
 	buildCameraOptions,
 	buildVideoQualityOptions,
-	getAudioOutputIcon
+	getAudioOutputIcon,
+	isSpeakerOutput
 } from '../buildConferenceMenuOptions';
 
 describe('getAudioOutputIcon', () => {
@@ -136,5 +137,15 @@ describe('buildCameraOptions', () => {
 		options[1].onPress();
 
 		expect(onSelect).toHaveBeenCalledWith(second);
+	});
+});
+
+describe('isSpeakerOutput', () => {
+	it.each(['speaker', 'force_speaker'])('calls %s the loudspeaker', output => {
+		expect(isSpeakerOutput(output)).toBe(true);
+	});
+
+	it.each(['earpiece', 'headset', 'bluetooth', 'default'])('does not call %s the loudspeaker', output => {
+		expect(isSpeakerOutput(output)).toBe(false);
 	});
 });

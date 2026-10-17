@@ -9,6 +9,10 @@ import type { TConferenceLayout } from '~/lib/services/conference/useConferenceI
 
 type TColors = { fontInfo: string; strokeMedium: string };
 
+const SPEAKER_OUTPUTS = ['force_speaker', 'speaker'];
+
+export const isSpeakerOutput = (output: string): boolean => SPEAKER_OUTPUTS.includes(output);
+
 export const AUDIO_OUTPUT_LABELS: Record<string, string> = {
 	speaker: 'Speaker',
 	force_speaker: 'Speaker',

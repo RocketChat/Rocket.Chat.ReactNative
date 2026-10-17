@@ -68,6 +68,9 @@ export const dropHand = (hands: HandsMap, identity: string): HandsMap => {
 	return Object.fromEntries(Object.entries(hands).filter(([id]) => id !== identity));
 };
 
+export const isHandNews = (message: HandMessage, alreadyUp: boolean): boolean =>
+	message.raised && !message.rebroadcast && !alreadyUp;
+
 export const orderRaisedHands = (hands: HandsMap): { id: string; raisedAt: number }[] =>
 	Object.entries(hands)
 		.filter(([, raisedAt]) => raisedAt > 0)

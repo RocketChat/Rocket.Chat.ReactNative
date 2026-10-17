@@ -30,7 +30,7 @@ jest.mock('~/containers/ConferenceCall/ConferencePreflight', () => {
 	const { Text: MockText } = jest.requireActual('react-native');
 	return { __esModule: true, default: () => createElement(MockText, null, 'preflight') };
 });
-jest.mock('~/containers/ConferenceCall/LazyConferenceInCall', () => {
+jest.mock('~/containers/ConferenceCall/ConferenceInCall', () => {
 	const { createElement } = jest.requireActual('react');
 	const { Text: MockText } = jest.requireActual('react-native');
 	return { __esModule: true, default: () => createElement(MockText, null, 'in call') };
@@ -60,11 +60,11 @@ describe('ConferenceView', () => {
 		expect(queryByText('Connecting...')).toBeNull();
 	});
 
-	it.each(['connected', 'reconnecting'] as const)('shows the call while %s', phase => {
+	it.each(['connected', 'reconnecting'] as const)('shows the call while %s', async phase => {
 		state().setPhase(phase);
-		const { getByText } = render(<ConferenceView />);
+		const { findByText } = render(<ConferenceView />);
 
-		expect(getByText('in call')).toBeTruthy();
+		expect(await findByText('in call')).toBeTruthy();
 	});
 
 	it('says the call ended, and lets the user close it', () => {
