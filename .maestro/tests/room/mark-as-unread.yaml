@@ -18,7 +18,7 @@ tags:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.otherUser.username}
 

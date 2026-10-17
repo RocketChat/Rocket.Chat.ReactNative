@@ -97,7 +97,7 @@ tags:
 - runFlow: ../../helpers/go-back.yaml
 - runFlow: ../../helpers/go-back.yaml
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room}
 - runFlow:
@@ -113,7 +113,7 @@ tags:
       PASSWORD: ${output.otherUser.password}
       CLEAR_STATE: true
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room}
 - runFlow:

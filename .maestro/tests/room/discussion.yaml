@@ -110,7 +110,7 @@ tags:
 
 # should create discussion from MessageComposer Actions
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
@@ -249,8 +249,11 @@ tags:
     timeout: 60000
 
 # should have edit button
-- assertVisible:
-    id: room-info-view-edit-button
+- runFlow:
+    file: '../../helpers/wait-header-item.yaml'
+    env:
+      ANDROID_ID: 'room-info-view-edit-button'
+      IOS_LABEL: 'Room info edit'
 
 # should go back to main room
 - runFlow: '../../helpers/go-back.yaml'
@@ -269,7 +272,7 @@ tags:
       id: 'rooms-list-view'
     timeout: 60000
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 

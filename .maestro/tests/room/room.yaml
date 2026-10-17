@@ -19,7 +19,7 @@ tags:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 
@@ -123,6 +123,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: add-reaction
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: emoji-picker-tab-emoji
@@ -158,6 +159,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: add-reaction
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: emoji-searchbar-input
@@ -286,7 +288,7 @@ tags:
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 
@@ -294,6 +296,11 @@ tags:
 - evalScript: ${output.otherUser = output.utils.createUser()}
 - evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room._id, 'new message')}
 
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-new message'
+    timeout: 60000
+- waitForAnimationToEnd
 - extendedWaitUntil:
     visible:
       id: 'username-header-${output.otherUser.username}'
@@ -311,7 +318,7 @@ tags:
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 
@@ -507,7 +514,7 @@ tags:
 
 # should save draft, check it, send it and clear it
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
@@ -520,7 +527,7 @@ tags:
 - runFlow: '../../helpers/hide-keyboard.yaml'
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
@@ -575,7 +582,7 @@ tags:
 - runFlow: '../../helpers/hide-keyboard.yaml'
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:
@@ -600,7 +607,7 @@ tags:
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:
@@ -617,7 +624,7 @@ tags:
     timeout: 10000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:
@@ -634,7 +641,7 @@ tags:
     timeout: 10000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:

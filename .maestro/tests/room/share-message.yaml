@@ -31,7 +31,7 @@ tags:
 
 # should navigate to room and send a message
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 - runFlow:
@@ -96,7 +96,7 @@ tags:
 # should go to otherUser DM and verify if exist both messages
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.otherUser.username}
 - extendedWaitUntil:

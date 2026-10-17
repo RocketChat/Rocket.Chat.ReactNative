@@ -16,7 +16,7 @@ tags:
 
 # should jump to an old message and load its surroundings
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: 'jumping'
 - extendedWaitUntil:
@@ -61,7 +61,7 @@ tags:
 
 # should load messages on scroll
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: 'jumping'
 - extendedWaitUntil:
@@ -82,7 +82,7 @@ tags:
 
 # should search for old message and load its surroundings
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: 'jumping'
 - runFlow:
@@ -199,7 +199,7 @@ tags:
 
 # should navigate to a thread from another room
 - runFlow:
-    file: '../../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: 'jumping'
 - extendedWaitUntil:

@@ -207,7 +207,7 @@ tags:
 - tapOn:
     text: 'Send'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
@@ -280,7 +280,7 @@ tags:
 - tapOn:
     text: 'Send'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:

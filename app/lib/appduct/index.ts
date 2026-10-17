@@ -1,6 +1,7 @@
 import '@appduct/react-native/auto';
 import { jsonSchema, registerTool } from '@appduct/react-native';
 import { Q } from '@nozbe/watermelondb';
+import { first, firstValueFrom, fromEvent, takeUntil } from 'rxjs';
 
 import { deepLinkingOpen } from '~/actions/deepLinking';
 import database from '~/lib/database';
@@ -73,11 +74,35 @@ const waitForNavigatorReady = (signal: AbortSignal) =>
 		});
 	});
 
+const insideNavigators = ['InsideStack', 'MasterDetailStack'];
+
+const isInsideNavigatorMounted = () =>
+	!!Navigation.navigationRef.current?.getRootState()?.routes.some(route => insideNavigators.includes(route.name));
+
+const waitForInsideNavigator = (signal: AbortSignal) =>
+	new Promise<void>((resolve, reject) => {
+		const navigation = Navigation.navigationRef.current!;
+		const resolveIfMounted = () => {
+			if (isInsideNavigatorMounted()) {
+				unsubscribe();
+				resolve();
+			}
+		};
+		const unsubscribe = navigation.addListener('state', resolveIfMounted);
+		signal.addEventListener('abort', () => {
+			unsubscribe();
+			reject(signal.reason);
+		});
+		resolveIfMounted();
+	});
+
 const waitForInside = async (signal: AbortSignal) => {
 	await waitForAppStart(signal);
 	if (store.getState().app.root !== RootEnum.ROOT_INSIDE) {
 		throw new Error('Not logged in to a workspace');
 	}
+	await waitForNavigatorReady(signal);
+	await waitForInsideNavigator(signal);
 };
 
 const showDrawer = () => Navigation.popTo('DrawerNavigator');
@@ -337,9 +362,25 @@ registerTool({
 	}
 });
 
+const waitForSubscription = async (name: string, signal: AbortSignal) => {
+	const [subscription] = await firstValueFrom(
+		database.active
+			.get(SUBSCRIPTIONS_TABLE)
+			.query(Q.or(Q.where('name', name), Q.where('fname', name)), Q.take(1))
+			.observe()
+			.pipe(
+				first(subscriptions => subscriptions.length > 0),
+				takeUntil(fromEvent(signal, 'abort'))
+			)
+	);
+	return subscription as TSubscriptionModel;
+};
+
 registerTool({
 	name: 'open_room',
-	description: 'Open a room the logged-in user is subscribed to, matched by its name or display name.',
+	description:
+		'Open a room the logged-in user is subscribed to, matched by its name or display name. Waits for the subscription to reach the local database, so a room created through the REST API just before can be opened.',
+	timeoutMs: 30_000,
 	inputSchema: jsonSchema<{ name: string }>({
 		type: 'object',
 		properties: {
@@ -355,13 +396,7 @@ registerTool({
 	}),
 	handler: async ({ name }, { signal }) => {
 		await waitForInside(signal);
-		const [subscription] = await database.active
-			.get(SUBSCRIPTIONS_TABLE)
-			.query(Q.or(Q.where('name', name), Q.where('fname', name)), Q.take(1))
-			.fetch();
-		if (!subscription) {
-			throw new Error(`No subscribed room named ${name}`);
-		}
+		const subscription = await waitForSubscription(name, signal);
 		openRoom(subscription, getIsMasterDetail());
 		return { rid: subscription.rid, name: subscription.name, type: subscription.t };
 	}
@@ -437,7 +472,6 @@ registerTool({
 			throw new Error(`Unsupported screen ${screen}. Supported: ${supportedScreens.join(', ')}`);
 		}
 		await waitForInside(signal);
-		await waitForNavigatorReady(signal);
 		const isMasterDetail = getIsMasterDetail();
 		const isRoomScreen = screen in roomScreenParams;
 		if (isRoomScreen) {

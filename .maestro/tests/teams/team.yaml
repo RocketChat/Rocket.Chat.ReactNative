@@ -20,7 +20,7 @@ tags:
       USERNAME: ${output.firstUser.username}
       PASSWORD: ${output.firstUser.password}
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.team}
 
@@ -242,7 +242,7 @@ tags:
 
 # should add existing channel to team
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.team}
 - runFlow:
@@ -360,7 +360,7 @@ tags:
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.team}
 
@@ -461,16 +461,40 @@ tags:
     timeout: 60000
 - tapOn:
     id: select-list-view-item-${output.privateRoomName}
-- extendedWaitUntil:
-    visible:
-      id: ${output.privateRoomName}-checked
-    timeout: 60000
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: ${output.privateRoomName}-checked
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: '${output.privateRoomName} Checked'
+          timeout: 60000
 - tapOn:
     id: select-list-view-item-${output.privateRoomName}
-- extendedWaitUntil:
-    notVisible:
-      id: ${output.privateRoomName}-checked
-    timeout: 60000
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            id: ${output.privateRoomName}-checked
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: '${output.privateRoomName} Unchecked'
+          timeout: 60000
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
