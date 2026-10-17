@@ -10,7 +10,7 @@ jest.mock('../useAppActionButtons', () => ({
 }));
 
 const mockTriggerAppActionButton = jest.fn();
-jest.mock('../triggerActions', () => ({
+jest.mock('../actions', () => ({
 	triggerAppActionButton: (params: unknown) => mockTriggerAppActionButton(params)
 }));
 

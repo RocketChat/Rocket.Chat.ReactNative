@@ -14,6 +14,7 @@ import { waitForLoginReady } from './waitForLoginReady';
 import sdk, { type IStreamDataListener } from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { onAppsStreamData, useAppsStore } from '../apps/appsStore';
+import { clearTriggers } from '../apps/actions';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '~/i18n';
 import {
@@ -428,6 +429,7 @@ function disconnect(): void {
 	sdk.disconnect();
 	mediaSessionInstance.reset();
 	useAppsStore.getState().reset();
+	clearTriggers();
 }
 
 async function getWebsocketInfo({

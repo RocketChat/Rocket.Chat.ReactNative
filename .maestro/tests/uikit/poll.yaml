@@ -85,6 +85,10 @@ tags:
 - inputText: 'Option B'
 - tapOn:
     id: 'submit-modal-uikit'
+- extendedWaitUntil:
+    notVisible:
+      id: 'submit-modal-uikit'
+    timeout: 60000
 
 # should render the poll blocks the app posted back
 - extendedWaitUntil:

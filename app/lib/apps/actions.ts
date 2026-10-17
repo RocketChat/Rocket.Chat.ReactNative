@@ -1,21 +1,34 @@
 import type { UserInteraction } from '@rocket.chat/ui-kit';
 
-import { type IEmitUserInteraction, type ITriggerAction, ModalActions, type TModalAction } from '~/containers/UIKit/interfaces';
+import {
+	ActionTypes,
+	type IEmitUserInteraction,
+	type ITriggerAction,
+	type ITriggerBlockAction,
+	type ITriggerCancel,
+	type ITriggerSubmitView,
+	ModalActions,
+	type TModalAction
+} from '~/containers/UIKit/interfaces';
 import { toServerModalInteractionType, toUserInteraction } from '~/containers/UIKit/interactionAdapters';
 import I18n from '~/i18n';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { showToast } from '~/lib/methods/helpers/showToast';
+import log from '~/lib/methods/helpers/log';
 import { random } from '~/lib/methods/helpers';
 import Navigation from '~/lib/navigation/appNavigation';
 import { appsApiFetch } from '~/lib/services/appsApiFetch';
+import { type IAppActionButton, UIActionButtonContext } from './definitions';
 
 const TRIGGER_TIMEOUT = 5000;
 
-export const ACKNOWLEDGED = 'acknowledged';
+const ACKNOWLEDGED = 'acknowledged';
 
 const KEEPS_VIEW_OPEN: ReadonlySet<string> = new Set([ModalActions.ERRORS, ModalActions.UPDATE, 'contextual_bar.update']);
 
 const triggers = new Map<string, { appId?: string; consumed?: boolean; handled?: TModalAction }>();
+
+export const clearTriggers = () => triggers.clear();
 
 export const withTriggerId = async <T>(appId: string | undefined, request: (triggerId: string) => Promise<T>): Promise<T> => {
 	const triggerId = random(17);
@@ -50,49 +63,27 @@ export const handlePayloadUserInteraction = (type: string, { triggerId, ...data 
 		return;
 	}
 	const viewId = data.view?.id || data.viewId;
-	if (modalType === ModalActions.CLOSE) {
-		trigger.handled = modalType;
-		if (viewId) {
-			EventEmitter.emit(viewId, {
-				type: modalType,
-				triggerId,
-				appId: data.appId ?? trigger.appId,
-				viewId
-			} as IEmitUserInteraction);
-		}
-		return;
-	}
-	const payloadAppId = data.appId ?? trigger.appId;
-	if (!payloadAppId || !viewId) {
+	const appId = data.appId ?? trigger.appId;
+	if (modalType !== ModalActions.CLOSE && (!viewId || !appId)) {
 		return;
 	}
 
 	trigger.handled = modalType;
-
-	if (modalType === ModalActions.OPEN) {
-		Navigation.navigate('ModalBlockView', {
-			data: {
-				...data,
-				appId: payloadAppId,
-				triggerId,
-				viewId
-			}
-		});
+	if (!viewId) {
 		return;
 	}
 
-	EventEmitter.emit(viewId, {
-		...data,
-		appId: payloadAppId,
-		type: modalType,
-		triggerId,
-		viewId
-	} as IEmitUserInteraction);
+	if (modalType === ModalActions.OPEN) {
+		Navigation.navigate('ModalBlockView', { data: { ...data, appId, triggerId, viewId } });
+		return;
+	}
+
+	EventEmitter.emit(viewId, { ...data, appId, type: modalType, triggerId, viewId } as IEmitUserInteraction);
 };
 
 type TTriggerResult = TModalAction | typeof ACKNOWLEDGED | undefined;
 
-export function postUserInteraction(
+function postUserInteraction(
 	appId: string | undefined,
 	buildInteraction: (triggerId: string) => UserInteraction
 ): Promise<TTriggerResult> {
@@ -114,6 +105,7 @@ export function postUserInteraction(
 
 		const { type: interactionType, ...data } = parsed;
 		if (interactionType === ModalActions.CLOSE) {
+			triggers.delete(triggerId);
 			return ModalActions.CLOSE;
 		}
 
@@ -125,8 +117,44 @@ export function postUserInteraction(
 	});
 }
 
-export function triggerAction(action: ITriggerAction): Promise<TTriggerResult> {
+function triggerAction(action: ITriggerAction): Promise<TTriggerResult> {
 	return postUserInteraction(action.appId, triggerId =>
 		toUserInteraction({ ...action, payload: action.payload ?? action.value, triggerId })
 	);
+}
+
+export async function triggerSubmitView({ viewId, ...options }: ITriggerSubmitView): Promise<boolean> {
+	const result = await triggerAction({ type: ActionTypes.SUBMIT, viewId, ...options });
+	return result === ModalActions.CLOSE || result === ACKNOWLEDGED;
+}
+
+export function triggerCancel({ view, ...options }: ITriggerCancel) {
+	return triggerAction({ type: ActionTypes.CLOSED, view, ...options });
+}
+
+export async function triggerBlockAction(options: ITriggerBlockAction): Promise<boolean> {
+	const result = await triggerAction({ type: ActionTypes.ACTION, ...options });
+	return result === ModalActions.CLOSE;
+}
+
+interface ITriggerAppActionButton {
+	button: IAppActionButton;
+	rid: string;
+	tmid?: string;
+	message?: string;
+}
+
+export async function triggerAppActionButton({ button, rid, tmid, message }: ITriggerAppActionButton) {
+	try {
+		const { actionId, appId, context } = button;
+		await postUserInteraction(appId, (triggerId): UserInteraction => {
+			if (context === UIActionButtonContext.ROOM_ACTION) {
+				return { type: 'actionButton', actionId, rid, triggerId, payload: { context } };
+			}
+			return { type: 'actionButton', actionId, rid, tmid, triggerId, payload: { context, message: message ?? '' } };
+		});
+	} catch (e) {
+		log(e);
+		showToast(I18n.t('App_action_error'));
+	}
 }

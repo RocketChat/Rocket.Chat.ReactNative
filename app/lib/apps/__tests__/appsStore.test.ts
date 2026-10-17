@@ -1,5 +1,7 @@
 import { onAppsStreamData, useAppsStore } from '../appsStore';
 import { UIActionButtonContext } from '../definitions';
+import { AppsApiError } from '~/lib/services/appsApiFetch';
+import log from '~/lib/methods/helpers/log';
 
 const mockGetAppActionButtons = jest.fn(() =>
 	Promise.resolve([
@@ -10,6 +12,14 @@ const mockGetAppsLanguages = jest.fn(() =>
 	Promise.resolve({ apps: [{ id: 'app-id', languages: { en: { summarize: 'Summarize' }, pt_BR: { summarize: 'Resumir' } } }] })
 );
 jest.mock('~/lib/services/appsApiFetch', () => ({
+	AppsApiError: class extends Error {
+		status: number;
+
+		constructor(message: string, status: number) {
+			super(message);
+			this.status = status;
+		}
+	},
 	getAppActionButtons: () => mockGetAppActionButtons(),
 	getAppsLanguages: () => mockGetAppsLanguages()
 }));
@@ -45,6 +55,22 @@ describe('appsStore', () => {
 
 		expect(useAppsStore.getState().actionButtons).toEqual([]);
 		expect(useAppsStore.getState().translations).toEqual({});
+	});
+
+	it('does not log when the server has no Apps-Engine', async () => {
+		mockGetAppActionButtons.mockRejectedValueOnce(new AppsApiError('Not found', 404));
+
+		await useAppsStore.getState().fetchActionButtons();
+
+		expect(log).not.toHaveBeenCalled();
+	});
+
+	it('logs any other failure', async () => {
+		mockGetAppActionButtons.mockRejectedValueOnce(new AppsApiError('Server error', 500));
+
+		await useAppsStore.getState().fetchActionButtons();
+
+		expect(log).toHaveBeenCalledTimes(1);
 	});
 
 	it('refetches only the action buttons on actions/changed', async () => {

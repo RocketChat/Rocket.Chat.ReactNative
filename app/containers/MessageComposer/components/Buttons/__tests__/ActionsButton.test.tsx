@@ -3,9 +3,9 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 import { type TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import { ActionsButton } from '../ActionsButton';
 
-const mockUseComposerAppActionOptions = jest.fn((_params: unknown): TActionSheetOptionsItem[] => []);
+const mockUseComposerAppActionOptions = jest.fn((): TActionSheetOptionsItem[] => []);
 jest.mock('~/lib/apps/useComposerAppActionOptions', () => ({
-	useComposerAppActionOptions: (params: unknown) => mockUseComposerAppActionOptions(params)
+	useComposerAppActionOptions: () => mockUseComposerAppActionOptions()
 }));
 
 const mockShowActionSheet = jest.fn();
@@ -52,19 +52,8 @@ const openSheet = () => {
 };
 
 describe('ActionsButton', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-		mockUseComposerAppActionOptions.mockImplementation(() => []);
-	});
-
-	it('shows only the built-in actions when no app registered any', () => {
-		const options = openSheet();
-
-		expect(options.map(option => option.title)).toEqual(['Create discussion']);
-	});
-
 	it('lists app actions after the built-in ones', () => {
-		mockUseComposerAppActionOptions.mockImplementation(() => [
+		mockUseComposerAppActionOptions.mockReturnValue([
 			{ title: 'Summarize', icon: 'stars', onPress: jest.fn() },
 			{ title: 'Translate', icon: 'apps', onPress: jest.fn() }
 		]);

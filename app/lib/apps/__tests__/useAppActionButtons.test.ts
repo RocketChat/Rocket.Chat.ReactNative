@@ -57,12 +57,13 @@ describe('useAppActionButtons', () => {
 		mockLanguage = 'en';
 	});
 
-	it('returns nothing until the room is resolved', () => {
+	it('returns nothing until the room is resolved', async () => {
 		mockActionButtons = [button()];
 
 		const { result } = renderHook(() => useAppActionButtons('rid'));
 
 		expect(result.current).toEqual([]);
+		await waitFor(() => expect(result.current).toHaveLength(1));
 	});
 
 	it('labels a button with the app translation for the active locale', async () => {

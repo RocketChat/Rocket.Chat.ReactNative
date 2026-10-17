@@ -2,7 +2,7 @@ import { type TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import { type TIconsName } from '~/containers/CustomIcon';
 import { UIActionButtonContext } from './definitions';
 import { applyCategoryFilter } from './filters';
-import { triggerAppActionButton } from './triggerActions';
+import { triggerAppActionButton } from './actions';
 import { type IAppActionButtonItem, useAppActionButtons } from './useAppActionButtons';
 
 interface IUseComposerAppActionOptions {

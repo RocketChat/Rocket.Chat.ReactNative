@@ -458,7 +458,8 @@
 			"app/containers/UIKit/**",
 			"app/lib/apps/**",
 			"app/lib/services/appsApiFetch.ts",
-			"app/views/RoomView/services/blockAction.ts"
+			"app/views/RoomView/services/blockAction.ts",
+			"app/lib/methods/subscriptions/rooms.ts"
 		]
 	},
 	{
@@ -471,7 +472,8 @@
 			"app/views/RoomView/services/blockAction.ts",
 			"app/lib/services/appsApiFetch.ts",
 			"app/lib/services/connect.ts",
-			"app/sagas/login.js"
+			"app/sagas/login.js",
+			"app/lib/methods/subscriptions/rooms.ts"
 		]
 	}
 ]

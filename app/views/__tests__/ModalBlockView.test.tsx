@@ -6,7 +6,7 @@ import ModalBlockView from '../ModalBlockView';
 import { ModalActions } from '~/containers/UIKit/interfaces';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { mockedStore } from '~/reducers/mockedStore';
-import { triggerBlockAction, triggerSubmitView } from '~/lib/apps/triggerActions';
+import { triggerBlockAction, triggerSubmitView } from '~/lib/apps/actions';
 
 jest.mock(
 	'~/containers/KeyboardView',
@@ -29,7 +29,7 @@ jest.mock('~/containers/Header/components/HeaderButton', () => {
 		Item: ({ onPress, testID }: { onPress: () => void; testID: string }) => ReactActual.createElement('Item', { onPress, testID })
 	};
 });
-jest.mock('~/lib/apps/triggerActions', () => ({
+jest.mock('~/lib/apps/actions', () => ({
 	triggerBlockAction: jest.fn(),
 	triggerCancel: jest.fn(),
 	triggerSubmitView: jest.fn()
