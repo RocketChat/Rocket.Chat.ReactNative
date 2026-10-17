@@ -128,8 +128,8 @@ export async function triggerSubmitView({ viewId, ...options }: ITriggerSubmitVi
 	return result === ModalActions.CLOSE || result === ACKNOWLEDGED;
 }
 
-export function triggerCancel({ view, ...options }: ITriggerCancel) {
-	return triggerAction({ type: ActionTypes.CLOSED, view, ...options });
+export async function triggerCancel({ view, ...options }: ITriggerCancel): Promise<void> {
+	await triggerAction({ type: ActionTypes.CLOSED, view, ...options });
 }
 
 export async function triggerBlockAction(options: ITriggerBlockAction): Promise<boolean> {

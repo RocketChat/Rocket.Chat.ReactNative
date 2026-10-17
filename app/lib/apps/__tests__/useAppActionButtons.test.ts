@@ -132,10 +132,12 @@ describe('useAppActionButtons', () => {
 
 		await waitFor(() => expect(result.current).toHaveLength(1));
 
+		mockActionButtons = [button({ actionId: 'unconditional' }), button({ when: { hasOnePermission: ['pin-message'] } })];
 		mockPermissionRecords = [{ id: 'pin-message', roles: ['owner'] }];
 		const second = renderHook(() => useAppActionButtons('rid-2'));
 
-		await waitFor(() => expect(second.result.current).toEqual([]));
+		await waitFor(() => expect(second.result.current).toHaveLength(1));
+		expect(second.result.current[0].button.actionId).toBe('unconditional');
 	});
 
 	it('matches a role the user holds in the room', async () => {

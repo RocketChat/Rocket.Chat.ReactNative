@@ -1,11 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
-import { type TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import { ActionsButton } from '../ActionsButton';
 
-const mockUseComposerAppActionOptions = jest.fn((): TActionSheetOptionsItem[] => []);
 jest.mock('~/lib/apps/useComposerAppActionOptions', () => ({
-	useComposerAppActionOptions: () => mockUseComposerAppActionOptions()
+	useComposerAppActionOptions: () => [
+		{ title: 'Summarize', icon: 'stars', onPress: jest.fn() },
+		{ title: 'Translate', icon: 'apps', onPress: jest.fn() }
+	]
 }));
 
 const mockShowActionSheet = jest.fn();
@@ -48,16 +49,11 @@ jest.mock('../BaseButton', () => {
 const openSheet = () => {
 	render(<ActionsButton />);
 	fireEvent.press(screen.getByTestId('message-composer-actions'));
-	return mockShowActionSheet.mock.calls[0][0].options as { title: string; testID?: string; onPress: () => void }[];
+	return mockShowActionSheet.mock.calls[0][0].options as { title: string }[];
 };
 
 describe('ActionsButton', () => {
 	it('lists app actions after the built-in ones', () => {
-		mockUseComposerAppActionOptions.mockReturnValue([
-			{ title: 'Summarize', icon: 'stars', onPress: jest.fn() },
-			{ title: 'Translate', icon: 'apps', onPress: jest.fn() }
-		]);
-
 		const options = openSheet();
 
 		expect(options.map(option => option.title)).toEqual(['Create discussion', 'Summarize', 'Translate']);
