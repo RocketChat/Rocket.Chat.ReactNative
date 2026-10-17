@@ -10,13 +10,13 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '~/containers/MessageComposer/hooks';
 import { useComposerRid, useComposerTmid, useComposerType } from '~/containers/MessageComposer/ComposerStore';
-import { useComposerAppActionOptions } from '~/lib/apps/useComposerAppActionOptions';
+import { useComposerAppActionOptions } from '~/containers/MessageComposer/hooks/useComposerAppActionOptions';
 
 export const ActionsButton = () => {
 	const rid = useComposerRid();
 	const tmid = useComposerTmid();
 	const t = useComposerType();
-	const { closeEmojiKeyboardAndAction, getText } = useContext(MessageInnerContext);
+	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);
 	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
@@ -26,7 +26,7 @@ export const ActionsButton = () => {
 	});
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useMasterDetail();
-	const appOptions = useComposerAppActionOptions({ rid, tmid, getText });
+	const appOptions = useComposerAppActionOptions();
 
 	const createDiscussion = async () => {
 		if (!rid) return;

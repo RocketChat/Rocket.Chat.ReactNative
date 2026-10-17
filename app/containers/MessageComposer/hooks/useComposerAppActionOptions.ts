@@ -1,17 +1,18 @@
+import { useContext } from 'react';
+
 import { type TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import { type TIconsName } from '~/containers/CustomIcon';
-import { UIActionButtonContext } from './definitions';
-import { applyCategoryFilter } from './filters';
-import { triggerAppActionButton } from './actions';
-import { type IAppActionButtonItem, useAppActionButtons } from './useAppActionButtons';
+import { UIActionButtonContext } from '~/lib/apps/definitions';
+import { applyCategoryFilter } from '~/lib/apps/filters';
+import { triggerAppActionButton } from '~/lib/apps/actions';
+import { type IAppActionButtonItem, useAppActionButtons } from '~/lib/apps/useAppActionButtons';
+import { useComposerRid, useComposerTmid } from '../ComposerStore';
+import { MessageInnerContext } from '../context';
 
-interface IUseComposerAppActionOptions {
-	rid?: string;
-	tmid?: string;
-	getText: () => string | undefined;
-}
-
-export const useComposerAppActionOptions = ({ rid, tmid, getText }: IUseComposerAppActionOptions): TActionSheetOptionsItem[] => {
+export const useComposerAppActionOptions = (): TActionSheetOptionsItem[] => {
+	const rid = useComposerRid();
+	const tmid = useComposerTmid();
+	const { getText } = useContext(MessageInnerContext);
 	const appButtons = useAppActionButtons(rid);
 	if (!rid) {
 		return [];

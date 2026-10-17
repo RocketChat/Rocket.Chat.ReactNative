@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import { ActionsButton } from '../ActionsButton';
 
-jest.mock('~/lib/apps/useComposerAppActionOptions', () => ({
+jest.mock('~/containers/MessageComposer/hooks/useComposerAppActionOptions', () => ({
 	useComposerAppActionOptions: () => [
 		{ title: 'Summarize', icon: 'stars', onPress: jest.fn() },
 		{ title: 'Translate', icon: 'apps', onPress: jest.fn() }
@@ -24,8 +24,7 @@ jest.mock('~/containers/MessageComposer/context', () => {
 	const ReactActual = jest.requireActual('react');
 	return {
 		MessageInnerContext: ReactActual.createContext({
-			closeEmojiKeyboardAndAction: (action: Function, params: unknown) => action(params),
-			getText: () => 'draft text'
+			closeEmojiKeyboardAndAction: (action: Function, params: unknown) => action(params)
 		})
 	};
 });

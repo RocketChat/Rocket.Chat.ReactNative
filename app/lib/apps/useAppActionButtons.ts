@@ -6,7 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { useAppsStore } from './appsStore';
 import { getIdForActionButton, type IAppActionButton, type IAppActionButtonRoom } from './definitions';
-import { applyAuthFilter, applyRoomFilter, collectPermissions } from './filters';
+import { applyAuthFilter, applyRoomFilter, collectPermissions, type IAppActionButtonAuth } from './filters';
 import { translateAppKey } from './translations';
 import database from '~/lib/database';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -15,11 +15,7 @@ import log from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { type TPermissionModel, type TSubscriptionModel } from '~/definitions';
 
-interface IAppActionButtonContext {
-	room: IAppActionButtonRoom;
-	roomRoles: string[];
-	permissions: { [permission: string]: string[] };
-}
+type TAppActionButtonContext = { room: IAppActionButtonRoom } & Omit<IAppActionButtonAuth, 'userRoles'>;
 
 export interface IAppActionButtonItem {
 	id: string;
@@ -55,7 +51,7 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 			: of([]);
 
 		return combineLatest([subscription$, permissions$]).pipe(
-			map(([subscriptions, permissionRecords]): IAppActionButtonContext => {
+			map(([subscriptions, permissionRecords]): TAppActionButtonContext => {
 				const [sub] = subscriptions as TSubscriptionModel[];
 				return {
 					room: sub ?? {},

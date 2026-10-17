@@ -1,16 +1,26 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { type IAppActionButton } from '../definitions';
-import { type IAppActionButtonItem } from '../useAppActionButtons';
+import { type IAppActionButton } from '~/lib/apps/definitions';
+import { type IAppActionButtonItem } from '~/lib/apps/useAppActionButtons';
 import { useComposerAppActionOptions } from '../useComposerAppActionOptions';
 
 let mockItems: IAppActionButtonItem[] = [];
-jest.mock('../useAppActionButtons', () => ({
+jest.mock('~/lib/apps/useAppActionButtons', () => ({
 	useAppActionButtons: () => mockItems
 }));
 
+let mockRid: string | undefined;
+jest.mock('../../ComposerStore', () => ({
+	useComposerRid: () => mockRid,
+	useComposerTmid: () => 'tmid-1'
+}));
+
+jest.mock('../../context', () => ({
+	MessageInnerContext: require('react').createContext({ getText: () => 'draft text' })
+}));
+
 const mockTriggerAppActionButton = jest.fn();
-jest.mock('../actions', () => ({
+jest.mock('~/lib/apps/actions', () => ({
 	triggerAppActionButton: (params: unknown) => mockTriggerAppActionButton(params)
 }));
 
@@ -20,13 +30,13 @@ const item = (id: string, overrides: Partial<IAppActionButton> = {}): IAppAction
 	button: { appId: 'app-id', actionId: id, context: 'messageBoxAction', labelI18n: 'label', ...overrides }
 });
 
-const renderOptions = ({ rid }: { rid?: string } = { rid: 'rid-1' }) =>
-	renderHook(() => useComposerAppActionOptions({ rid, tmid: 'tmid-1', getText: () => 'draft text' })).result.current;
+const renderOptions = () => renderHook(() => useComposerAppActionOptions()).result.current;
 
 describe('useComposerAppActionOptions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockItems = [];
+		mockRid = 'rid-1';
 	});
 
 	it('returns nothing when no app registered any action', () => {
@@ -35,8 +45,9 @@ describe('useComposerAppActionOptions', () => {
 
 	it('returns nothing outside a room', () => {
 		mockItems = [item('translate')];
+		mockRid = undefined;
 
-		expect(renderOptions({})).toEqual([]);
+		expect(renderOptions()).toEqual([]);
 	});
 
 	it('lists ai room actions then default message box actions', () => {
