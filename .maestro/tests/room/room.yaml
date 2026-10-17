@@ -159,6 +159,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: add-reaction
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: emoji-searchbar-input
