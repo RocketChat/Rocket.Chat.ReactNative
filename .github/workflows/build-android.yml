@@ -33,8 +33,19 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-      - name: Checkout and Setup Node
-        uses: ./.github/actions/setup-node
+      - parallel:
+          - name: Checkout and Setup Node
+            uses: ./.github/actions/setup-node
+
+          - name: Set up Ruby and Bundler
+            uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
+            with:
+              ruby-version: 2.7.7
+              bundler-cache: true
+              working-directory: android
+
+          - name: Set up Gradle
+            uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
 
       - name: Fetch supported versions from Cloud
         uses: ./.github/actions/fetch-supported-versions
@@ -58,6 +69,18 @@ jobs:
           KEYSTORE_OFFICIAL_ALIAS: ${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}
           BUGSNAG_KEY_OFFICIAL: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
           BUILD_VERSION: ${{ steps.version.outputs.BUILD_VERSION }}
+
+      - parallel:
+          - name: Upload sourcemaps/NDK symbols to Bugsnag
+            run: |
+              pnpm bugsnag:upload-android --variant release --app-manifest android/app/build/intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml
+              pnpm exec bugsnag-cli upload android-aab android/app/build/outputs/bundle/release/app-release.aab
+
+          - name: Upload AAB
+            uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+            with:
+              name: android-aab
+              path: android/app/build/outputs/bundle/release/app-release.aab
 
   upload-hold:
     name: Upload Hold

@@ -35,8 +35,26 @@ tags:
     id: autocomplete-item-uikit-test
 - tapOn:
     id: 'message-composer-send'
-- tapOn: Tap Me
-- extendedWaitUntil:
-    visible:
-      text: '.*Button tap received! This reply is private to you*.'
-    timeout: 10000
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn: Tap Me
+      - extendedWaitUntil:
+          visible:
+            text: '.*Button tap received! This reply is private to you.*'
+          timeout: 10000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'message-[A-Za-z0-9]{17}'
+      - extendedWaitUntil:
+          visible:
+            id: 'message-[A-Za-z0-9]{17}'
+            index: 1
+          timeout: 10000
+      - assertVisible:
+          text: 'uikit-mobile-test\.bot .*'
+          index: 1
