@@ -96,7 +96,7 @@ class ConferenceCallService : Service() {
     private fun buildNotification(): Notification {
         val pendingIntent = PendingIntent.getActivity(
             this,
-            0,
+            NOTIFICATION_ID,
             Intent(this, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                 putExtra(EXTRA_OPEN_CALL, true)

@@ -1,4 +1,4 @@
-import { type ReactElement, useState } from 'react';
+import { type ReactElement, useRef, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import I18n from '~/i18n';
@@ -83,8 +83,13 @@ const AddParticipantsSheetContent = (): ReactElement => {
 	];
 	const tooMany = selected.length > RING_RECIPIENTS_LIMIT;
 
+	const latestTerm = useRef('');
 	const search = useDebounce(async (value: string, except: string[]) => {
-		setResults(await findCandidates(value, except));
+		latestTerm.current = value;
+		const found = await findCandidates(value, except);
+		if (latestTerm.current === value) {
+			setResults(found);
+		}
 	}, textInputDebounceTime);
 
 	const onChangeTerm = (value: string) => {

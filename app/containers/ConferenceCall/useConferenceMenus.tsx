@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '~/i18n';
@@ -57,9 +57,16 @@ export const useConferenceMenus = ({ isScreenSharing, onToggleScreenShare, peopl
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 
-	const afterSheetClosed = useCallback((callback: () => void) => {
-		setTimeout(callback, SHEET_TRANSITION_MS);
-	}, []);
+	const [pendingTimers] = useState(() => new Set<ReturnType<typeof setTimeout>>());
+
+	useEffect(() => () => pendingTimers.forEach(clearTimeout), [pendingTimers]);
+
+	const afterSheetClosed = useCallback(
+		(callback: () => void) => {
+			pendingTimers.add(setTimeout(callback, SHEET_TRANSITION_MS));
+		},
+		[pendingTimers]
+	);
 
 	const showAddParticipants = useCallback(() => {
 		showActionSheet({

@@ -19,8 +19,8 @@ jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.
 jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
 
 const setup = ({ isScreenSharing = false, onToggleScreenShare = jest.fn(), peopleCount = 3 } = {}) => {
-	const { result } = renderHook(() => useConferenceMenus({ isScreenSharing, onToggleScreenShare, peopleCount }));
-	return { result, onToggleScreenShare };
+	const { result, unmount } = renderHook(() => useConferenceMenus({ isScreenSharing, onToggleScreenShare, peopleCount }));
+	return { result, unmount, onToggleScreenShare };
 };
 
 const openMore = (result: ReturnType<typeof setup>['result']): TActionSheetOptionsItem[] => {
@@ -85,6 +85,19 @@ describe('useConferenceMenus', () => {
 			expect(titles).toEqual(
 				expect.arrayContaining(['Layout', 'Switch camera', 'Send resolution (maximum)', 'Picture in picture', 'Connection info'])
 			);
+		});
+
+		it('does not open the next sheet when the call is left while the more menu is closing', () => {
+			jest.useFakeTimers();
+			const { result, unmount } = setup();
+			openMore(result)[0].onPress();
+
+			unmount();
+			act(() => {
+				jest.advanceTimersByTime(300);
+			});
+
+			expect(mockActionSheet.showActionSheet).toHaveBeenCalledTimes(1);
 		});
 
 		it('opens the people list once the more menu has closed', () => {
