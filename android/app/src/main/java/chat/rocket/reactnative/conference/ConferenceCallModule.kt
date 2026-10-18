@@ -19,6 +19,10 @@ class ConferenceCallModule(reactContext: ReactApplicationContext) : NativeConfer
         ConferenceCallService.stopService(reactApplicationContext)
     }
 
+    override fun updateConferenceCallNotification(micEnabled: Boolean, muteLabel: String, unmuteLabel: String, leaveLabel: String) {
+        ConferenceCallService.updateControls(reactApplicationContext, micEnabled, muteLabel, unmuteLabel, leaveLabel)
+    }
+
     override fun consumeOpenCallRequest(promise: Promise) {
         promise.resolve(ConferenceCallOpenRequest.consume())
     }

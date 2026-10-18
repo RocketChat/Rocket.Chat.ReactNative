@@ -16,7 +16,11 @@ import {
 	videoConferenceStart
 } from '../restApi';
 import { type CallDataMessage, createReaction, encodeMessage, isHandNews, parseMessage, reactionIdFor } from './callDataProtocol';
-import { startConferenceForegroundService, stopConferenceForegroundService } from './conferenceForegroundService';
+import {
+	startConferenceForegroundService,
+	stopConferenceForegroundService,
+	updateConferenceNotification
+} from './conferenceForegroundService';
 import { stopConferenceMicLevelMonitor } from './conferenceMicLevel';
 import type { LocalVideoTrack, Room } from './livekit';
 import { loadLiveKit, type TLiveKit } from './loadLiveKit';
@@ -79,7 +83,7 @@ class ConferenceSession {
 				useConferenceCallStore.getState().assignCall(startedCallId, rid);
 			}
 			await this.joinCall(context, startedCallId, options);
-			startConferenceForegroundService();
+			startConferenceForegroundService(options.mic);
 			setPhase('connecting');
 			await this.connect(context, startedCallId, options);
 			this.assertCurrent(context);
@@ -121,6 +125,13 @@ class ConferenceSession {
 			await stopConferenceMicLevelMonitor();
 		}
 		await room.localParticipant.setMicrophoneEnabled(enabled);
+	};
+
+	toggleMicrophone = async (): Promise<void> => {
+		const room = this.context?.room;
+		if (room) {
+			await this.setMicrophone(!room.localParticipant.isMicrophoneEnabled);
+		}
 	};
 
 	selectAudioOutput = async (output: string): Promise<void> => {
@@ -331,6 +342,19 @@ class ConferenceSession {
 		room.on(livekit.RoomEvent.ParticipantDisconnected, participant =>
 			useConferenceInteractionStore.getState().dropParticipantHand(participant.identity)
 		);
+		this.listenMicrophone(context, room, livekit);
+	};
+
+	private listenMicrophone = (context: TJoinContext, room: Room, livekit: TLiveKit): void => {
+		const syncNotification = () => {
+			if (this.isCurrent(context)) {
+				updateConferenceNotification(room.localParticipant.isMicrophoneEnabled);
+			}
+		};
+		room.on(livekit.RoomEvent.LocalTrackPublished, syncNotification);
+		room.on(livekit.RoomEvent.LocalTrackUnpublished, syncNotification);
+		room.on(livekit.RoomEvent.TrackMuted, syncNotification);
+		room.on(livekit.RoomEvent.TrackUnmuted, syncNotification);
 	};
 
 	private onDataReceived = (

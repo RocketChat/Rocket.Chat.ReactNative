@@ -8,6 +8,11 @@ import {
 import log from '~/lib/methods/helpers/log';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { type CallDataMessage, encodeMessage, parseMessage } from '../callDataProtocol';
+import {
+	startConferenceForegroundService,
+	stopConferenceForegroundService,
+	updateConferenceNotification
+} from '../conferenceForegroundService';
 import { stopConferenceMicLevelMonitor } from '../conferenceMicLevel';
 import { conferenceSession, HEARTBEAT_INTERVAL_MS } from '../ConferenceSession';
 import { playHandRaisedSound, releaseHandRaisedSound } from '../playHandRaisedSound';
@@ -18,6 +23,11 @@ import { useConferenceRoomStore } from '../useConferenceRoomStore';
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
 jest.mock('../conferenceMicLevel', () => ({ stopConferenceMicLevelMonitor: jest.fn(() => Promise.resolve()) }));
+jest.mock('../conferenceForegroundService', () => ({
+	startConferenceForegroundService: jest.fn(),
+	stopConferenceForegroundService: jest.fn(),
+	updateConferenceNotification: jest.fn()
+}));
 jest.mock('../playHandRaisedSound', () => ({ playHandRaisedSound: jest.fn(), releaseHandRaisedSound: jest.fn() }));
 
 jest.mock('../../restApi', () => ({
@@ -44,6 +54,7 @@ jest.mock('../loadLiveKit', () => {
 
 		localParticipant = {
 			identity: 'me',
+			isMicrophoneEnabled: true,
 			setMicrophoneEnabled: jest.fn(() => Promise.resolve()),
 			setCameraEnabled: jest.fn(() => Promise.resolve()),
 			publishData: jest.fn(() => Promise.resolve()),
@@ -85,7 +96,11 @@ jest.mock('../loadLiveKit', () => {
 			ConnectionStateChanged: 'connectionStateChanged',
 			DataReceived: 'dataReceived',
 			ParticipantConnected: 'participantConnected',
-			ParticipantDisconnected: 'participantDisconnected'
+			ParticipantDisconnected: 'participantDisconnected',
+			LocalTrackPublished: 'localTrackPublished',
+			LocalTrackUnpublished: 'localTrackUnpublished',
+			TrackMuted: 'trackMuted',
+			TrackUnmuted: 'trackUnmuted'
 		},
 		DisconnectReason: { DUPLICATE_IDENTITY: 'duplicateIdentity' },
 		AndroidAudioTypePresets: { communication: { audioMode: 'inCommunication' } },
@@ -119,6 +134,7 @@ const rooms = () =>
 		cameraTrack: { restartTrack: jest.Mock };
 		localParticipant: {
 			identity: string;
+			isMicrophoneEnabled: boolean;
 			setMicrophoneEnabled: jest.Mock;
 			setCameraEnabled: jest.Mock;
 			publishData: jest.Mock;
@@ -766,6 +782,64 @@ describe('ConferenceSession', () => {
 		test('does nothing before the call has a room', async () => {
 			await expect(conferenceSession.setMicrophone(true)).resolves.toBeUndefined();
 			expect(stopConferenceMicLevelMonitor).not.toHaveBeenCalled();
+		});
+
+		test('toggling mutes a live microphone', async () => {
+			const room = await joinWithMicrophone();
+			room.localParticipant.isMicrophoneEnabled = true;
+
+			await conferenceSession.toggleMicrophone();
+
+			expect(room.localParticipant.setMicrophoneEnabled).toHaveBeenLastCalledWith(false);
+		});
+
+		test('toggling unmutes a muted microphone', async () => {
+			const room = await joinWithMicrophone();
+			room.localParticipant.isMicrophoneEnabled = false;
+
+			await conferenceSession.toggleMicrophone();
+
+			expect(room.localParticipant.setMicrophoneEnabled).toHaveBeenLastCalledWith(true);
+		});
+
+		test('toggling does nothing before the call has a room', async () => {
+			await expect(conferenceSession.toggleMicrophone()).resolves.toBeUndefined();
+		});
+	});
+
+	describe('notification', () => {
+		const join = async (mic: boolean) => {
+			openCall();
+			await conferenceSession.join({ mic, cam: false });
+			return rooms()[0];
+		};
+
+		test('starts with the microphone the user chose', async () => {
+			await join(false);
+
+			expect(startConferenceForegroundService).toHaveBeenCalledWith(false);
+		});
+
+		test.each(['localTrackPublished', 'localTrackUnpublished', 'trackMuted', 'trackUnmuted'])(
+			'follows the microphone when %s',
+			async event => {
+				const room = await join(true);
+				room.localParticipant.isMicrophoneEnabled = false;
+
+				room.emit(event);
+
+				expect(updateConferenceNotification).toHaveBeenLastCalledWith(false);
+			}
+		);
+
+		test('stops following once the call is over', async () => {
+			const room = await join(true);
+			await conferenceSession.end();
+
+			room.emit('trackMuted');
+
+			expect(updateConferenceNotification).not.toHaveBeenCalled();
+			expect(stopConferenceForegroundService).toHaveBeenCalledTimes(1);
 		});
 	});
 

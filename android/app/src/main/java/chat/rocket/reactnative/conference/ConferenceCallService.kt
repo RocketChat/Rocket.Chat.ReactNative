@@ -26,8 +26,27 @@ class ConferenceCallService : Service() {
         private const val NOTIFICATION_ID = 2
 
         private const val ACTION_START = "chat.rocket.reactnative.conference.START_SERVICE"
+        const val ACTION_TOGGLE_MIC = "chat.rocket.reactnative.conference.TOGGLE_MIC"
+        const val ACTION_LEAVE = "chat.rocket.reactnative.conference.LEAVE"
+
+        private const val NOTIFICATION_ACTION_EVENT = "ConferenceNotificationAction"
+        private const val EVENT_TOGGLE_MIC = "toggleMic"
+        private const val EVENT_LEAVE = "leave"
 
         const val EXTRA_OPEN_CALL = "chat.rocket.reactnative.conference.OPEN_CALL"
+
+        private data class Controls(
+            val micEnabled: Boolean,
+            val muteLabel: String,
+            val unmuteLabel: String,
+            val leaveLabel: String
+        )
+
+        @Volatile
+        private var controls: Controls? = null
+
+        @Volatile
+        private var running = false
 
         @JvmStatic
         fun hasMicrophonePermission(context: Context): Boolean =
@@ -46,30 +65,92 @@ class ConferenceCallService : Service() {
         @JvmStatic
         fun stopService(context: Context) {
             ConferenceCallOpenRequest.clear()
+            controls = null
             context.stopService(Intent(context, ConferenceCallService::class.java))
         }
+
+        @JvmStatic
+        fun updateControls(context: Context, micEnabled: Boolean, muteLabel: String, unmuteLabel: String, leaveLabel: String) {
+            val next = Controls(micEnabled, muteLabel, unmuteLabel, leaveLabel)
+            if (controls == next) {
+                return
+            }
+            controls = next
+            if (running) {
+                context.getSystemService(NotificationManager::class.java)?.notify(NOTIFICATION_ID, buildNotification(context))
+            }
+        }
+
+        internal fun buildNotification(context: Context): Notification {
+            val pendingIntent = PendingIntent.getActivity(
+                context,
+                NOTIFICATION_ID,
+                Intent(context, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    putExtra(EXTRA_OPEN_CALL, true)
+                },
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+                .setContentTitle(context.getString(R.string.conference_call_service_title))
+                .setContentText(context.getString(R.string.conference_call_service_text))
+                .setSmallIcon(context.applicationInfo.icon)
+                .setContentIntent(pendingIntent)
+                .setOngoing(true)
+                .setOnlyAlertOnce(true)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setCategory(NotificationCompat.CATEGORY_CALL)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+
+            controls?.let {
+                builder
+                    .addAction(0, if (it.micEnabled) it.muteLabel else it.unmuteLabel, actionIntent(context, ACTION_TOGGLE_MIC))
+                    .addAction(0, it.leaveLabel, actionIntent(context, ACTION_LEAVE))
+            }
+            return builder.build()
+        }
+
+        private fun actionIntent(context: Context, action: String): PendingIntent =
+            PendingIntent.getService(
+                context,
+                NOTIFICATION_ID,
+                Intent(context, ConferenceCallService::class.java).apply { this.action = action },
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
     }
 
     override fun onCreate() {
         super.onCreate()
+        running = true
         createNotificationChannel()
     }
 
+    override fun onDestroy() {
+        running = false
+        super.onDestroy()
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent?.action != ACTION_START) {
-            startForegroundSafely()
-            stopSelf(startId)
-            return START_NOT_STICKY
-        }
-        if (!startForegroundSafely()) {
-            stopSelf(startId)
+        when (intent?.action) {
+            ACTION_START -> if (!startForegroundSafely()) {
+                stopSelf(startId)
+            }
+            ACTION_TOGGLE_MIC -> ConferenceEvents.emit(this, NOTIFICATION_ACTION_EVENT, EVENT_TOGGLE_MIC)
+            ACTION_LEAVE -> if (!ConferenceEvents.emit(this, NOTIFICATION_ACTION_EVENT, EVENT_LEAVE)) {
+                ConferenceCallService.stopService(this)
+            }
+            else -> {
+                startForegroundSafely()
+                stopSelf(startId)
+            }
         }
         return START_NOT_STICKY
     }
 
     private fun startForegroundSafely(): Boolean {
         return try {
-            val notification = buildNotification()
+            val notification = buildNotification(this)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 startForeground(NOTIFICATION_ID, notification, foregroundServiceType())
             } else {
@@ -91,30 +172,6 @@ class ConferenceCallService : Service() {
             type = type or ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA
         }
         return type
-    }
-
-    private fun buildNotification(): Notification {
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            NOTIFICATION_ID,
-            Intent(this, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                putExtra(EXTRA_OPEN_CALL, true)
-            },
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(getString(R.string.conference_call_service_title))
-            .setContentText(getString(R.string.conference_call_service_text))
-            .setSmallIcon(applicationInfo.icon)
-            .setContentIntent(pendingIntent)
-            .setOngoing(true)
-            .setOnlyAlertOnce(true)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setCategory(NotificationCompat.CATEGORY_CALL)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .build()
     }
 
     private fun createNotificationChannel() {

@@ -4,6 +4,7 @@ import { TurboModuleRegistry } from 'react-native';
 export interface Spec extends TurboModule {
 	startConferenceCallService(): Promise<void>;
 	stopConferenceCallService(): void;
+	updateConferenceCallNotification(micEnabled: boolean, muteLabel: string, unmuteLabel: string, leaveLabel: string): void;
 	consumeOpenCallRequest(): Promise<boolean>;
 	startMicLevelMonitor(): Promise<boolean>;
 	stopMicLevelMonitor(): Promise<void>;
