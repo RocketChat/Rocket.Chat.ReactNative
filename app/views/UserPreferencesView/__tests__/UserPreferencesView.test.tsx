@@ -65,7 +65,9 @@ describe('UserPreferencesView', () => {
 	it('keeps enableMobileRinging enabled while enabling convertAsciiEmoji', async () => {
 		const { getByTestId } = renderWithPreferences({ convertAsciiEmoji: false, enableMobileRinging: true });
 
-		fireEvent(getByTestId('preferences-view-convert-ascii-to-emoji'), 'isOnChange', { nativeEvent: { isOn: true } });
+		fireEvent(getByTestId('preferences-view-convert-ascii-to-emoji', { includeHiddenElements: true }), 'isOnChange', {
+			nativeEvent: { isOn: true }
+		});
 
 		const dispatchedUser = dispatch.mock.calls[0][0].user;
 		expect(dispatchedUser.settings.preferences).toEqual({
@@ -78,7 +80,9 @@ describe('UserPreferencesView', () => {
 	it('keeps enableMobileRinging disabled while disabling convertAsciiEmoji', async () => {
 		const { getByTestId } = renderWithPreferences({ convertAsciiEmoji: true, enableMobileRinging: false });
 
-		fireEvent(getByTestId('preferences-view-convert-ascii-to-emoji'), 'isOnChange', { nativeEvent: { isOn: false } });
+		fireEvent(getByTestId('preferences-view-convert-ascii-to-emoji', { includeHiddenElements: true }), 'isOnChange', {
+			nativeEvent: { isOn: false }
+		});
 
 		const dispatchedUser = dispatch.mock.calls[0][0].user;
 		expect(dispatchedUser.settings.preferences).toEqual({
@@ -91,7 +95,9 @@ describe('UserPreferencesView', () => {
 	it('keeps convertAsciiEmoji enabled while enabling enableMobileRinging', async () => {
 		const { getByTestId } = renderWithPreferences({ convertAsciiEmoji: true, enableMobileRinging: false });
 
-		fireEvent(getByTestId('preferences-view-enable-mobile-ringing'), 'isOnChange', { nativeEvent: { isOn: true } });
+		fireEvent(getByTestId('preferences-view-enable-mobile-ringing', { includeHiddenElements: true }), 'isOnChange', {
+			nativeEvent: { isOn: true }
+		});
 
 		const dispatchedUser = dispatch.mock.calls[0][0].user;
 		expect(dispatchedUser.settings.preferences).toEqual({
@@ -104,7 +110,9 @@ describe('UserPreferencesView', () => {
 	it('keeps convertAsciiEmoji disabled while disabling enableMobileRinging', async () => {
 		const { getByTestId } = renderWithPreferences({ convertAsciiEmoji: false, enableMobileRinging: true });
 
-		fireEvent(getByTestId('preferences-view-enable-mobile-ringing'), 'isOnChange', { nativeEvent: { isOn: false } });
+		fireEvent(getByTestId('preferences-view-enable-mobile-ringing', { includeHiddenElements: true }), 'isOnChange', {
+			nativeEvent: { isOn: false }
+		});
 
 		const dispatchedUser = dispatch.mock.calls[0][0].user;
 		expect(dispatchedUser.settings.preferences).toEqual({

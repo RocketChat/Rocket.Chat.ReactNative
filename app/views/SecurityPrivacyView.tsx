@@ -100,6 +100,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps) => {
 						title='Log_analytics_events'
 						testID='security-privacy-view-analytics-events'
 						right={() => <Switch value={analyticsEventsState} onValueChange={toggleAnalyticsEvents} />}
+						interactiveRight
 						onPress={() => toggleAnalyticsEvents(!analyticsEventsState)}
 						additionalAccessibilityLabel={analyticsEventsState}
 						accessibilityRole='switch'
@@ -109,6 +110,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps) => {
 						title='Send_crash_report'
 						testID='security-privacy-view-crash-report'
 						right={() => <Switch value={crashReportState} onValueChange={toggleCrashReport} />}
+						interactiveRight
 						onPress={() => toggleCrashReport(!crashReportState)}
 						additionalAccessibilityLabel={crashReportState}
 						accessibilityRole='switch'

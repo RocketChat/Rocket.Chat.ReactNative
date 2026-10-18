@@ -92,6 +92,7 @@ export interface INativeListRowContent {
 	titleLeading?: ReactElement;
 	titleTrailing?: ReactElement;
 	trailing?: ReactNode;
+	isTrailingInteractive?: boolean;
 	trailingAction?: INativeListRowAction;
 	onPress?: () => void;
 	onLongPress?: () => void;
@@ -108,12 +109,32 @@ export interface INativeListRowContent {
 	style?: StyleProp<ViewStyle>;
 }
 
-const Trailing = ({ isRowPressable, children }: { isRowPressable: boolean; children: ReactNode }) => {
-	if (!children) {
+interface ITrailing {
+	isRowPressable: boolean;
+	isInteractive?: boolean;
+	children: ReactNode;
+}
+
+const isTrailingSeparate = ({ isRowPressable, isInteractive }: Omit<ITrailing, 'children'>) =>
+	isRowPressable && Boolean(isInteractive);
+
+const Trailing = ({ isRowPressable, isInteractive, children }: ITrailing) => {
+	if (!children || isTrailingSeparate({ isRowPressable, isInteractive })) {
 		return null;
 	}
 	return (
 		<View pointerEvents={isRowPressable ? 'none' : 'auto'} style={styles.trailing}>
+			{children}
+		</View>
+	);
+};
+
+const InteractiveTrailing = ({ isRowPressable, isInteractive, disabled, children }: ITrailing & { disabled?: boolean }) => {
+	if (!children || !isTrailingSeparate({ isRowPressable, isInteractive })) {
+		return null;
+	}
+	return (
+		<View accessibilityElementsHidden style={[styles.trailing, disabled && styles.disabled]}>
 			{children}
 		</View>
 	);
@@ -126,6 +147,7 @@ export const NativeListRowContent = ({
 	titleLeading,
 	titleTrailing,
 	trailing,
+	isTrailingInteractive,
 	trailingAction,
 	onPress,
 	onLongPress,
@@ -179,8 +201,13 @@ export const NativeListRowContent = ({
 						</Text>
 					) : null}
 				</View>
-				<Trailing isRowPressable={Boolean(onPress)}>{trailing}</Trailing>
+				<Trailing isRowPressable={Boolean(onPress)} isInteractive={isTrailingInteractive}>
+					{trailing}
+				</Trailing>
 			</Pressable>
+			<InteractiveTrailing isRowPressable={Boolean(onPress)} isInteractive={isTrailingInteractive} disabled={disabled}>
+				{trailing}
+			</InteractiveTrailing>
 			{trailingAction ? (
 				<Pressable
 					onPress={trailingAction.onPress}

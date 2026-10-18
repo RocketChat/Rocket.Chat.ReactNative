@@ -1,6 +1,7 @@
+import { Pressable } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 
-import NativeListRow from '..';
+import NativeListRow, { NativeListRowContent } from '..';
 
 jest.mock('~/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({ useResponsiveLayout: () => ({ fontScale: 1 }) }));
 
@@ -28,5 +29,30 @@ describe('NativeListRow', () => {
 		renderRow({ disabled: false });
 
 		expect(screen.getByRole('button', { name: 'Invite users' }).props.accessibilityHint).toBeUndefined();
+	});
+});
+
+describe('NativeListRowContent with an interactive trailing control', () => {
+	const renderContent = ({ onPress }: { onPress?: () => void }) =>
+		render(
+			<NativeListRowContent
+				title='Autoplay GIFs'
+				accessibilityLabel='Autoplay GIFs'
+				onPress={onPress}
+				isTrailingInteractive
+				trailing={<Pressable testID='control' />}
+			/>
+		);
+
+	it('hides the control from assistive tech while the row is pressable', () => {
+		renderContent({ onPress: jest.fn() });
+
+		expect(screen.queryByTestId('control')).toBeNull();
+	});
+
+	it('keeps the control reachable by assistive tech when the row is not pressable', () => {
+		renderContent({});
+
+		expect(screen.getByTestId('control')).toBeTruthy();
 	});
 });

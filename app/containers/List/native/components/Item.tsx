@@ -31,6 +31,7 @@ const NativeListItem = ({ item }: INativeListItem) => {
 					{item.showActionIndicator ? <Indicator indicator='disclosure' /> : null}
 				</>
 			}
+			isTrailingInteractive={item.interactiveRight}
 			onPress={item.onPress ? () => item.onPress?.(item.title) : undefined}
 			testID={item.testID}
 			accessibilityLabel={nativeListItemAccessibilityLabel(item)}
