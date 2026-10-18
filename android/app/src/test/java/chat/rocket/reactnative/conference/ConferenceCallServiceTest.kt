@@ -5,6 +5,7 @@ import android.content.ContextWrapper
 import android.content.res.Resources
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -80,6 +81,27 @@ class ConferenceCallServiceTest {
         assertTrue(button.isService)
         assertEquals(ConferenceCallService.ACTION_LEAVE, button.savedIntent.action)
         assertEquals(ConferenceCallService::class.java.name, button.savedIntent.component?.className)
+    }
+
+    @Test
+    @Config(sdk = [35])
+    fun `asks for the device to be unlocked before unmuting`() {
+        ConferenceCallService.updateControls(context, false, "Mute", "Unmute", "Leave call")
+
+        val unmute = ConferenceCallService.buildNotification(context).actions[0]
+
+        assertTrue(unmute.isAuthenticationRequired)
+    }
+
+    @Test
+    @Config(sdk = [35])
+    fun `lets the microphone be muted and the call left from the lock screen`() {
+        ConferenceCallService.updateControls(context, true, "Mute", "Unmute", "Leave call")
+
+        val (mute, leave) = ConferenceCallService.buildNotification(context).actions.toList()
+
+        assertFalse(mute.isAuthenticationRequired)
+        assertFalse(leave.isAuthenticationRequired)
     }
 
     @Test

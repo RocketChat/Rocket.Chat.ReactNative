@@ -104,9 +104,14 @@ class ConferenceCallService : Service() {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
             controls?.let {
-                builder
-                    .addAction(0, if (it.micEnabled) it.muteLabel else it.unmuteLabel, actionIntent(context, ACTION_TOGGLE_MIC))
-                    .addAction(0, it.leaveLabel, actionIntent(context, ACTION_LEAVE))
+                // Unmuting needs an unlocked device so nobody can open the microphone from the lock screen.
+                val toggleMic = NotificationCompat.Action.Builder(
+                    0,
+                    if (it.micEnabled) it.muteLabel else it.unmuteLabel,
+                    actionIntent(context, ACTION_TOGGLE_MIC)
+                ).setAuthenticationRequired(!it.micEnabled).build()
+                val leave = NotificationCompat.Action.Builder(0, it.leaveLabel, actionIntent(context, ACTION_LEAVE)).build()
+                builder.addAction(toggleMic).addAction(leave)
             }
             return builder.build()
         }
