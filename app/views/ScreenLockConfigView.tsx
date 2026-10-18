@@ -329,7 +329,6 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 							testID='screen-lock-config-view-auto-lock'
 							title='Local_authentication_unlock_option'
 							right={() => this.renderAutoLockSwitch()}
-							interactiveRight
 							additionalAccessibilityLabel={autoLock}
 							onPress={Force_Screen_Lock ? undefined : this.toggleAutoLock}
 							disabled={Force_Screen_Lock}

@@ -894,7 +894,6 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
           </Text>
         </View>
         <View
-          pointerEvents="none"
           style={
             {
               "alignItems": "center",
@@ -1557,7 +1556,6 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
           </Text>
         </View>
         <View
-          pointerEvents="none"
           style={
             {
               "alignItems": "center",

@@ -121,7 +121,6 @@ const DisplayPrefsView = (): ReactElement => {
 						title='Avatars'
 						testID='display-pref-view-avatars'
 						right={() => renderAvatarSwitch(showAvatar)}
-						interactiveRight
 						onPress={toggleAvatar}
 						additionalAccessibilityLabel={showAvatar}
 						accessibilityRole='switch'
@@ -161,7 +160,6 @@ const DisplayPrefsView = (): ReactElement => {
 						left={() => <List.Icon name='flag' />}
 						onPress={toggleUnread}
 						right={() => renderCheckBox(showUnread, toggleUnread)}
-						interactiveRight
 						additionalAccessibilityLabel={showUnread}
 						accessibilityRole='checkbox'
 					/>
@@ -172,7 +170,6 @@ const DisplayPrefsView = (): ReactElement => {
 						left={() => <List.Icon name='star' />}
 						onPress={toggleGroupByFavorites}
 						right={() => renderCheckBox(showFavorites, toggleGroupByFavorites)}
-						interactiveRight
 						additionalAccessibilityLabel={showFavorites}
 						accessibilityRole='checkbox'
 					/>
@@ -183,7 +180,6 @@ const DisplayPrefsView = (): ReactElement => {
 						left={() => <List.Icon name='group-by-type' />}
 						onPress={toggleCategories}
 						right={() => renderCheckBox(groupByType, toggleCategories)}
-						interactiveRight
 						additionalAccessibilityLabel={groupByType}
 						accessibilityRole='checkbox'
 					/>

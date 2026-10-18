@@ -85,7 +85,6 @@ const AccessibilityAndAppearanceView = () => {
 						testID='accessibility-autoplay-gifs-switch'
 						title='Autoplay_gifs'
 						right={renderAutoplayGifs}
-						interactiveRight
 						onPress={toggleAutoplayGifs}
 						accessibilityRole='switch'
 						additionalAccessibilityLabel={autoplayGifs}
@@ -96,7 +95,6 @@ const AccessibilityAndAppearanceView = () => {
 						testID='accessibility-mentions-with-at-symbol-switch'
 						title='Mentions_With_@_Symbol'
 						right={renderMentionsWithAtSymbolSwitch}
-						interactiveRight
 						onPress={toggleMentionsWithAtSymbol}
 						accessibilityRole='switch'
 						additionalAccessibilityLabel={mentionsWithAtSymbol}
@@ -107,7 +105,6 @@ const AccessibilityAndAppearanceView = () => {
 						testID='accessibility-rooms-with-hashtag-symbol-switch'
 						title='Rooms_With_#_Symbol'
 						right={renderRoomsWithHashTagSwitch}
-						interactiveRight
 						onPress={toggleRoomsWithHashTag}
 						accessibilityRole='switch'
 						additionalAccessibilityLabel={roomsWithHashTagSymbol}

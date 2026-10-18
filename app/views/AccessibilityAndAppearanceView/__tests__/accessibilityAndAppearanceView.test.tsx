@@ -27,9 +27,9 @@ describe('Autoplay GIFs switch', () => {
 			return [false, jest.fn()];
 		});
 
-		const { UNSAFE_getAllByProps } = render(<AccessibilityAndAppearanceView />);
+		const { getByTestId } = render(<AccessibilityAndAppearanceView />);
 
-		const [autoplaySwitch] = UNSAFE_getAllByProps({ isOn: false });
+		const autoplaySwitch = getByTestId('accessibility-autoplay-gifs-switch').findByProps({ isOn: false });
 		expect(autoplaySwitch.props.isOn).toBe(false);
 
 		fireEvent(autoplaySwitch, 'isOnChange', { nativeEvent: { isOn: true } });

@@ -1,13 +1,27 @@
 import { Pressable, Text } from 'react-native';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
+import Switch from '~/containers/Switch';
 import { NativeListContext } from '../../native/context';
 import ListItem from '../ListItem';
 
 jest.mock('~/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({ useResponsiveLayout: () => ({ fontScale: 1 }) }));
 
+type TElement = ReturnType<typeof screen.getByTestId>;
+
+const touchResponderOf = (element: TElement) => {
+	let node: TElement | null = element;
+	while (node) {
+		if (node.props.onStartShouldSetResponder?.()) {
+			return node;
+		}
+		node = node.parent;
+	}
+	return null;
+};
+
 describe('List.Item in a native list', () => {
-	it('lets an interactive right control take the press instead of the row', () => {
+	it('lets a right control take the press instead of the row', () => {
 		const onRowPress = jest.fn();
 		const onControlPress = jest.fn();
 		render(
@@ -17,18 +31,33 @@ describe('List.Item in a native list', () => {
 					translateTitle={false}
 					onPress={onRowPress}
 					right={() => <Pressable testID='control' onPress={onControlPress} />}
-					interactiveRight
 				/>
 			</NativeListContext.Provider>
 		);
 
-		fireEvent.press(screen.getByTestId('control', { includeHiddenElements: true }));
+		fireEvent.press(screen.getByTestId('control'));
 
 		expect(onControlPress).toHaveBeenCalledTimes(1);
 		expect(onRowPress).not.toHaveBeenCalled();
 	});
 
-	it('presses the row when its title is pressed next to an interactive right control', () => {
+	it('makes the toggle, not the pressable row, the touch responder', () => {
+		render(
+			<NativeListContext.Provider value={{ sectionIndex: 0 }}>
+				<ListItem
+					title='Autoplay GIFs'
+					translateTitle={false}
+					testID='row'
+					onPress={jest.fn()}
+					right={() => <Switch value={false} onValueChange={jest.fn()} testID='toggle' />}
+				/>
+			</NativeListContext.Provider>
+		);
+
+		expect(touchResponderOf(screen.getByTestId('toggle'))?.props.testID).not.toBe('row');
+	});
+
+	it('presses the row when its title is pressed', () => {
 		const onRowPress = jest.fn();
 		render(
 			<NativeListContext.Provider value={{ sectionIndex: 0 }}>
@@ -37,7 +66,6 @@ describe('List.Item in a native list', () => {
 					translateTitle={false}
 					onPress={onRowPress}
 					right={() => <Pressable testID='control' />}
-					interactiveRight
 				/>
 			</NativeListContext.Provider>
 		);

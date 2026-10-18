@@ -140,7 +140,6 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 								testID='preferences-view-convert-ascii-to-emoji'
 							/>
 						)}
-						interactiveRight
 						onPress={() => toggleConvertAsciiToEmoji(!convertAsciiEmoji)}
 					/>
 					<List.Separator />
@@ -155,7 +154,6 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 										testID='preferences-view-enable-mobile-ringing'
 									/>
 								)}
-								interactiveRight
 								onPress={() => toggleEnableMobileRinging(!enableMobileRinging)}
 							/>
 							<List.Separator />

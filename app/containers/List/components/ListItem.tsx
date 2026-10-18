@@ -227,7 +227,6 @@ export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListIt
 	onPress?: Function;
 	style?: ViewStyle;
 	selected?: boolean;
-	interactiveRight?: boolean;
 }
 
 const ListItem = memo((props: IListItem) => {
