@@ -148,14 +148,6 @@ export interface IMessageFromServer {
 	content?: EncryptedContent;
 }
 
-export interface ILoadMoreMessage {
-	_id: string;
-	rid: string;
-	ts: string;
-	t: string;
-	msg: string;
-}
-
 export interface IMessage extends IMessageFromServer {
 	id: string;
 	t: MessageType;
@@ -195,7 +187,7 @@ export type TMessageModel = IMessage &
 	};
 
 export type TAnyMessageModel = TMessageModel | TThreadModel | TThreadMessageModel;
-export type TTypeMessages = IMessageFromServer | ILoadMoreMessage | IMessage;
+export type TTypeMessages = IMessageFromServer | IMessage;
 
 // Read receipts to ReadReceiptView and chat.getMessageReadReceipts
 export interface IReadReceipts {

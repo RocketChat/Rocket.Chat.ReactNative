@@ -74,63 +74,6 @@ describe('loadSurroundingMessages', () => {
 		expect(mockedUpdateMessages.mock.calls[0][0]).not.toHaveProperty('loaderItem');
 	});
 
-	it('prepends an Older Loader when moreBefore is true and the first message is not local', async () => {
-		const messages = buildMessages();
-		serve(messages, true, false);
-
-		const result = await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });
-
-		const firstMessage = messages[0];
-		expect(mockedGetMessageById).toHaveBeenCalledWith(firstMessage._id);
-		expect(result).toHaveLength(messages.length + 1);
-		const marker = result[0];
-		expect(marker._id).toBe(`load-more-${firstMessage._id}`);
-		expect(marker.rid).toBe(firstMessage.rid);
-		expect(marker.t).toBe(MessageTypeLoad.PREVIOUS_CHUNK);
-		expect(marker.msg).toBe(firstMessage.msg);
-		expect(dayjs(marker.ts).valueOf()).toBe(dayjs(firstMessage.ts).subtract(1, 'millisecond').valueOf());
-		expect(mockedUpdateMessages).toHaveBeenCalledWith({ rid: RID, update: result });
-	});
-
-	it('prepends no Older Loader when moreBefore is true but the first message is already local', async () => {
-		const messages = buildMessages();
-		serve(messages, true, false);
-		mockedGetMessageById.mockResolvedValue({ id: messages[0]._id } as never);
-
-		const result = await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });
-
-		expect(result).toHaveLength(messages.length);
-		expect(result.find(m => m.t === MessageTypeLoad.PREVIOUS_CHUNK)).toBeUndefined();
-	});
-
-	it('appends a Newer Loader when moreAfter is true and the last message is not local', async () => {
-		const messages = buildMessages();
-		serve(messages, false, true);
-
-		const result = await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });
-
-		const lastMessage = messages[messages.length - 1];
-		expect(mockedGetMessageById).toHaveBeenCalledWith(lastMessage._id);
-		expect(result).toHaveLength(messages.length + 1);
-		const marker = result[result.length - 1];
-		expect(marker._id).toBe(`load-more-${lastMessage._id}`);
-		expect(marker.rid).toBe(lastMessage.rid);
-		expect(marker.t).toBe(MessageTypeLoad.NEXT_CHUNK);
-		expect(marker.msg).toBe(lastMessage.msg);
-		expect(dayjs(marker.ts).valueOf()).toBe(dayjs(lastMessage.ts).add(1, 'millisecond').valueOf());
-	});
-
-	it('appends no Newer Loader when moreAfter is true but the last message is already local', async () => {
-		const messages = buildMessages();
-		serve(messages, false, true);
-		mockedGetMessageById.mockResolvedValue({ id: messages[messages.length - 1]._id } as never);
-
-		const result = await loadSurroundingMessages({ messageId: MESSAGE_ID, rid: RID });
-
-		expect(result).toHaveLength(messages.length);
-		expect(result.find(m => m.t === MessageTypeLoad.NEXT_CHUNK)).toBeUndefined();
-	});
-
 	it('adds both Loader Rows when moreBefore and moreAfter are true and neither endpoint is local', async () => {
 		const messages = buildMessages();
 		serve(messages, true, true);

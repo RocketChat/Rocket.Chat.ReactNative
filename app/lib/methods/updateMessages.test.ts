@@ -292,6 +292,16 @@ describe('updateMessages', () => {
 			expect(destroy).toHaveBeenCalled();
 			expect(batched()).toContain(loaderItem);
 		});
+
+		it('destroys the loaderItem when there is nothing to update or remove', async () => {
+			const loaderItem = makeFakeRecord('messages#loaderItem', { t: 'load_next_chunk' });
+			const destroy = jest.spyOn(loaderItem as any, 'prepareDestroyPermanently');
+
+			await expect(updateMessages({ rid, update: [], loaderItem: loaderItem as any })).resolves.toBe(1);
+
+			expect(destroy).toHaveBeenCalled();
+			expect(batched()).toContain(loaderItem);
+		});
 	});
 
 	describe('threads', () => {

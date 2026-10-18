@@ -29,7 +29,7 @@ export default async function updateMessages({
 	remove = [],
 	loaderItem
 }: IUpdateMessages): Promise<number | void> {
-	if (!((update && update.length) || (remove && remove.length))) {
+	if (!((update && update.length) || (remove && remove.length) || loaderItem)) {
 		return Promise.resolve(0);
 	}
 
