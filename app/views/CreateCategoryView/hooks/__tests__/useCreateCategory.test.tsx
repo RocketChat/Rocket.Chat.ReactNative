@@ -58,6 +58,15 @@ it('saves the categories and assigns the picked rooms', async () => {
 	expect(mockSetRoomsCategory).toHaveBeenCalledWith(['general'], expect.any(String));
 });
 
+it('turns on the Categories display option so the new category shows in the room list', async () => {
+	mockSaveSidebarCategories.mockResolvedValueOnce(undefined as any);
+	const { store, createCategory } = renderCreate();
+
+	await act(() => createCategory('Work', []));
+
+	expect(store.getState().sortPreferences.groupByType).toBe(true);
+});
+
 it('leaves another server alone when the user switches servers while saving', async () => {
 	const save = deferredSave();
 	mockSaveSidebarCategories.mockReturnValueOnce(save.promise as any);
@@ -98,6 +107,7 @@ it('stays on the flow when saving the category fails', async () => {
 	await act(() => createCategory('Work', ['general']));
 
 	expect(store.getState().login.user.sidebarCategories).toEqual([]);
+	expect(store.getState().sortPreferences.groupByType).toBe(false);
 	expect(alertCategoryError).toHaveBeenCalledWith(saveError);
 	expect(mockSetRoomsCategory).not.toHaveBeenCalled();
 	expect(Navigation.popTo).not.toHaveBeenCalled();
