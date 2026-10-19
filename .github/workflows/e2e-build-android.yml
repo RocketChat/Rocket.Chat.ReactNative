@@ -53,8 +53,10 @@ jobs:
       # Never set it in a job whose build can ship.
       RUNNING_E2E_TESTS: true
       # The APK is signed with a key made for this run, so it can't install over a store build.
-      E2E_KEYSTORE_PASSWORD: e2e-throwaway
-      E2E_KEY_ALIAS: e2e
+      KEYSTORE_PATH: android/app/release.keystore
+      KEYSTORE_PASSWORD: e2e-throwaway
+      KEY_PASSWORD: e2e-throwaway
+      KEY_ALIAS: e2e
 
     outputs:
       artifact_name: Android APK
@@ -126,8 +128,8 @@ jobs:
 
       - name: Create throwaway keystore
         run: |
-          keytool -genkeypair -noprompt -keystore android/app/release.keystore \
-            -storepass "$E2E_KEYSTORE_PASSWORD" -keypass "$E2E_KEYSTORE_PASSWORD" -alias "$E2E_KEY_ALIAS" \
+          keytool -genkeypair -noprompt -keystore "$KEYSTORE_PATH" \
+            -storepass "$KEYSTORE_PASSWORD" -keypass "$KEY_PASSWORD" -alias "$KEY_ALIAS" \
             -keyalg RSA -keysize 2048 -validity 7 -dname "CN=Rocket.Chat E2E"
 
       - name: Swap JS bundle into cached APK
@@ -142,11 +144,6 @@ jobs:
           mkdir -p "$(dirname "$APK_PATH")"
           .github/scripts/swap-android-bundle.sh .native-cache/app-release.apk android/app/build/generated/assets/react/release/index.android.bundle "$APK_PATH"
           echo "swapped=true" >> "$GITHUB_OUTPUT"
-        env:
-          KEYSTORE_PATH: android/app/release.keystore
-          KEYSTORE_PASSWORD: ${{ env.E2E_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ env.E2E_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ env.E2E_KEYSTORE_PASSWORD }}
 
       - name: Cache Android build
         if: ${{ steps.swap.outputs.swapped != 'true' }}
@@ -167,9 +164,9 @@ jobs:
           echo -e "reactNativeArchitectures=arm64-v8a,x86_64" >> ./gradle.properties
           echo -e "VERSIONCODE=999999" >> ./gradle.properties
           echo -e "KEYSTORE=release.keystore" >> ./gradle.properties
-          echo -e "KEYSTORE_PASSWORD=$E2E_KEYSTORE_PASSWORD" >> ./gradle.properties
-          echo -e "KEY_ALIAS=$E2E_KEY_ALIAS" >> ./gradle.properties
-          echo -e "KEY_PASSWORD=$E2E_KEYSTORE_PASSWORD" >> ./gradle.properties
+          echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+          echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
+          echo -e "KEY_PASSWORD=$KEY_PASSWORD" >> ./gradle.properties
           echo -e 'BugsnagAPIKey=${{ secrets.BUGSNAG_KEY_OFFICIAL }}' >> ./gradle.properties
 
       - name: Build Android Release APK

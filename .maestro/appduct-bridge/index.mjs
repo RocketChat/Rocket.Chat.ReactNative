@@ -110,13 +110,13 @@ const routes = {
 	}
 };
 
-const readBody = request =>
-	new Promise((resolve, reject) => {
-		let body = '';
-		request.on('data', chunk => (body += chunk));
-		request.on('end', () => resolve(body ? JSON.parse(body) : {}));
-		request.on('error', reject);
-	});
+const readBody = async request => {
+	let body = '';
+	for await (const chunk of request) {
+		body += chunk;
+	}
+	return body ? JSON.parse(body) : {};
+};
 
 const reply = (response, status, payload) => {
 	response.writeHead(status, { 'Content-Type': 'application/json' });

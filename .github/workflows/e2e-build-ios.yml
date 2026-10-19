@@ -32,6 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      # Must match ios-build, so the fingerprint sees Appduct linked into Release.
+      RUNNING_E2E_TESTS: true
 
     outputs:
       cache-key: ${{ steps.fingerprint.outputs.cache-key }}

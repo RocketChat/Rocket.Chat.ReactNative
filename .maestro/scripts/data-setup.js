@@ -400,7 +400,6 @@ const openRoom = name => callAppduct('open_room', { name });
 output.utils = {
     linkAppduct,
     waitForAppduct,
-    callAppduct,
     openRoom,
     createUser,
     createUserWithPasswordChange,
