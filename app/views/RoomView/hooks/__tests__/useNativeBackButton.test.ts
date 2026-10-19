@@ -9,8 +9,11 @@ let mockUnreads: number | null = null;
 const mockUseUnreadsCount = jest.fn((_rid?: string) => mockUnreads);
 let mockFontScale = 1;
 
+// Stable across renders, so effects only re-run when their real dependencies change
+const mockNavigation = { setOptions: mockSetOptions, goBack: mockGoBack, canGoBack: () => mockCanGoBack };
+
 jest.mock('@react-navigation/native', () => ({
-	useNavigation: () => ({ setOptions: mockSetOptions, goBack: mockGoBack, canGoBack: () => mockCanGoBack })
+	useNavigation: () => mockNavigation
 }));
 jest.mock('../useUnreadsCount', () => ({ useUnreadsCount: (rid?: string) => mockUseUnreadsCount(rid) }));
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
@@ -61,6 +64,9 @@ it('goes back when pressed', () => {
 it('recreates the back button when the font scale changes', () => {
 	const { rerender } = renderHook(() => useNativeBackButton('rid'));
 	const [before] = mockSetOptions.mock.lastCall[0].unstable_headerLeftItems({ tintColor: 'header-tint' });
+
+	rerender({});
+	expect(mockSetOptions).toHaveBeenCalledTimes(1);
 
 	mockFontScale = 2;
 	rerender({});
