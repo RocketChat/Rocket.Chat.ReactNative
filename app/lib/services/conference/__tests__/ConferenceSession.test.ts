@@ -9,10 +9,10 @@ import log from '~/lib/methods/helpers/log';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { type CallDataMessage, encodeMessage, parseMessage } from '../callDataProtocol';
 import {
-	startConferenceForegroundService,
-	stopConferenceForegroundService,
-	updateConferenceNotification
-} from '../conferenceForegroundService';
+	startConferenceCallNotification,
+	stopConferenceCallNotification,
+	updateConferenceCallNotification
+} from '../conferenceCallNotification';
 import { stopConferenceMicLevelMonitor } from '../conferenceMicLevel';
 import { conferenceSession, HEARTBEAT_INTERVAL_MS } from '../ConferenceSession';
 import { playHandRaisedSound, releaseHandRaisedSound } from '../playHandRaisedSound';
@@ -23,10 +23,10 @@ import { useConferenceRoomStore } from '../useConferenceRoomStore';
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
 jest.mock('../conferenceMicLevel', () => ({ stopConferenceMicLevelMonitor: jest.fn(() => Promise.resolve()) }));
-jest.mock('../conferenceForegroundService', () => ({
-	startConferenceForegroundService: jest.fn(),
-	stopConferenceForegroundService: jest.fn(),
-	updateConferenceNotification: jest.fn()
+jest.mock('../conferenceCallNotification', () => ({
+	startConferenceCallNotification: jest.fn(),
+	stopConferenceCallNotification: jest.fn(),
+	updateConferenceCallNotification: jest.fn()
 }));
 jest.mock('../playHandRaisedSound', () => ({ playHandRaisedSound: jest.fn(), releaseHandRaisedSound: jest.fn() }));
 
@@ -783,28 +783,6 @@ describe('ConferenceSession', () => {
 			await expect(conferenceSession.setMicrophone(true)).resolves.toBeUndefined();
 			expect(stopConferenceMicLevelMonitor).not.toHaveBeenCalled();
 		});
-
-		test('toggling mutes a live microphone', async () => {
-			const room = await joinWithMicrophone();
-			room.localParticipant.isMicrophoneEnabled = true;
-
-			await conferenceSession.toggleMicrophone();
-
-			expect(room.localParticipant.setMicrophoneEnabled).toHaveBeenLastCalledWith(false);
-		});
-
-		test('toggling unmutes a muted microphone', async () => {
-			const room = await joinWithMicrophone();
-			room.localParticipant.isMicrophoneEnabled = false;
-
-			await conferenceSession.toggleMicrophone();
-
-			expect(room.localParticipant.setMicrophoneEnabled).toHaveBeenLastCalledWith(true);
-		});
-
-		test('toggling does nothing before the call has a room', async () => {
-			await expect(conferenceSession.toggleMicrophone()).resolves.toBeUndefined();
-		});
 	});
 
 	describe('notification', () => {
@@ -817,7 +795,7 @@ describe('ConferenceSession', () => {
 		test('starts with the microphone the user chose', async () => {
 			await join(false);
 
-			expect(startConferenceForegroundService).toHaveBeenCalledWith(false);
+			expect(startConferenceCallNotification).toHaveBeenCalledWith(false);
 		});
 
 		test.each(['localTrackPublished', 'localTrackUnpublished', 'trackMuted', 'trackUnmuted'])(
@@ -828,7 +806,7 @@ describe('ConferenceSession', () => {
 
 				room.emit(event);
 
-				expect(updateConferenceNotification).toHaveBeenLastCalledWith(false);
+				expect(updateConferenceCallNotification).toHaveBeenLastCalledWith(false);
 			}
 		);
 
@@ -838,8 +816,8 @@ describe('ConferenceSession', () => {
 
 			room.emit('trackMuted');
 
-			expect(updateConferenceNotification).not.toHaveBeenCalled();
-			expect(stopConferenceForegroundService).toHaveBeenCalledTimes(1);
+			expect(updateConferenceCallNotification).not.toHaveBeenCalled();
+			expect(stopConferenceCallNotification).toHaveBeenCalledTimes(1);
 		});
 	});
 

@@ -1,6 +1,7 @@
 package chat.rocket.reactnative.conference
 
 import android.Manifest
+import android.app.KeyguardManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -20,27 +21,29 @@ import chat.rocket.reactnative.R
 
 class ConferenceCallService : Service() {
 
+    data class Controls(
+        val micEnabled: Boolean,
+        val muteLabel: String,
+        val unmuteLabel: String,
+        val leaveLabel: String
+    )
+
     companion object {
         private const val TAG = "RocketChat.ConferenceCallService"
         private const val CHANNEL_ID = "conference-call-service"
         private const val NOTIFICATION_ID = 2
 
         private const val ACTION_START = "chat.rocket.reactnative.conference.START_SERVICE"
-        const val ACTION_TOGGLE_MIC = "chat.rocket.reactnative.conference.TOGGLE_MIC"
+        const val ACTION_MUTE = "chat.rocket.reactnative.conference.MUTE"
+        const val ACTION_UNMUTE = "chat.rocket.reactnative.conference.UNMUTE"
         const val ACTION_LEAVE = "chat.rocket.reactnative.conference.LEAVE"
 
         private const val NOTIFICATION_ACTION_EVENT = "ConferenceNotificationAction"
-        private const val EVENT_TOGGLE_MIC = "toggleMic"
+        private const val EVENT_MUTE = "mute"
+        private const val EVENT_UNMUTE = "unmute"
         private const val EVENT_LEAVE = "leave"
 
         const val EXTRA_OPEN_CALL = "chat.rocket.reactnative.conference.OPEN_CALL"
-
-        private data class Controls(
-            val micEnabled: Boolean,
-            val muteLabel: String,
-            val unmuteLabel: String,
-            val leaveLabel: String
-        )
 
         @Volatile
         private var controls: Controls? = null
@@ -70,8 +73,7 @@ class ConferenceCallService : Service() {
         }
 
         @JvmStatic
-        fun updateControls(context: Context, micEnabled: Boolean, muteLabel: String, unmuteLabel: String, leaveLabel: String) {
-            val next = Controls(micEnabled, muteLabel, unmuteLabel, leaveLabel)
+        fun updateControls(context: Context, next: Controls) {
             if (controls == next) {
                 return
             }
@@ -104,17 +106,26 @@ class ConferenceCallService : Service() {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
             controls?.let {
-                // Unmuting needs an unlocked device so nobody can open the microphone from the lock screen.
-                val toggleMic = NotificationCompat.Action.Builder(
-                    0,
-                    if (it.micEnabled) it.muteLabel else it.unmuteLabel,
-                    actionIntent(context, ACTION_TOGGLE_MIC)
-                ).setAuthenticationRequired(!it.micEnabled).build()
+                val mic = if (it.micEnabled) {
+                    NotificationCompat.Action.Builder(0, it.muteLabel, actionIntent(context, ACTION_MUTE)).build()
+                } else {
+                    NotificationCompat.Action.Builder(0, it.unmuteLabel, actionIntent(context, ACTION_UNMUTE))
+                        .setAuthenticationRequired(true)
+                        .build()
+                }
                 val leave = NotificationCompat.Action.Builder(0, it.leaveLabel, actionIntent(context, ACTION_LEAVE)).build()
-                builder.addAction(toggleMic).addAction(leave)
+                builder.addAction(mic).addAction(leave)
             }
             return builder.build()
         }
+
+        internal fun notificationEvent(action: String?, deviceLocked: Boolean): String? =
+            when (action) {
+                ACTION_MUTE -> EVENT_MUTE
+                ACTION_UNMUTE -> if (deviceLocked) null else EVENT_UNMUTE
+                ACTION_LEAVE -> EVENT_LEAVE
+                else -> null
+            }
 
         private fun actionIntent(context: Context, action: String): PendingIntent =
             PendingIntent.getService(
@@ -141,16 +152,21 @@ class ConferenceCallService : Service() {
             ACTION_START -> if (!startForegroundSafely()) {
                 stopSelf(startId)
             }
-            ACTION_TOGGLE_MIC -> ConferenceEvents.emit(this, NOTIFICATION_ACTION_EVENT, EVENT_TOGGLE_MIC)
-            ACTION_LEAVE -> if (!ConferenceEvents.emit(this, NOTIFICATION_ACTION_EVENT, EVENT_LEAVE)) {
-                ConferenceCallService.stopService(this)
-            }
+            ACTION_MUTE, ACTION_UNMUTE, ACTION_LEAVE -> forwardAction(intent?.action)
             else -> {
                 startForegroundSafely()
                 stopSelf(startId)
             }
         }
         return START_NOT_STICKY
+    }
+
+    private fun forwardAction(action: String?) {
+        val deviceLocked = getSystemService(KeyguardManager::class.java)?.isKeyguardLocked == true
+        val event = notificationEvent(action, deviceLocked) ?: return
+        if (!ConferenceEvents.emit(this, NOTIFICATION_ACTION_EVENT, event) && event == EVENT_LEAVE) {
+            ConferenceCallService.stopService(this)
+        }
     }
 
     private fun startForegroundSafely(): Boolean {

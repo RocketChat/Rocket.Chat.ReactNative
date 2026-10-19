@@ -20,63 +20,82 @@ import org.robolectric.annotation.Config
 @Config(sdk = [28])
 class ConferenceCallServiceTest {
 
-    // Unit tests run without the app's resource table, so the title and text are stubbed out.
-    private val context: Context = object : ContextWrapper(RuntimeEnvironment.getApplication()) {
-        private val stubbed = object : Resources(baseContext.assets, baseContext.resources.displayMetrics, baseContext.resources.configuration) {
+    private val contextWithStubbedStrings: Context = object : ContextWrapper(RuntimeEnvironment.getApplication()) {
+        private val stubbedResources = object : Resources(
+            baseContext.assets,
+            baseContext.resources.displayMetrics,
+            baseContext.resources.configuration
+        ) {
             override fun getString(id: Int): String = "string $id"
         }
 
-        override fun getResources(): Resources = stubbed
+        override fun getResources(): Resources = stubbedResources
     }
+
+    private fun controls(micEnabled: Boolean) =
+        ConferenceCallService.Controls(micEnabled, "Mute", "Unmute", "Leave call")
 
     @Before
     fun setUp() {
-        ConferenceCallService.stopService(context)
+        ConferenceCallService.stopService(contextWithStubbedStrings)
     }
 
     @After
     fun tearDown() {
-        ConferenceCallService.stopService(context)
+        ConferenceCallService.stopService(contextWithStubbedStrings)
     }
 
     private fun actionTitles(): List<String> =
-        ConferenceCallService.buildNotification(context).actions.orEmpty().map { it.title.toString() }
+        ConferenceCallService.buildNotification(contextWithStubbedStrings).actions.orEmpty().map { it.title.toString() }
+
+    private fun action(index: Int) = ConferenceCallService.buildNotification(contextWithStubbedStrings).actions[index]
 
     @Test
     fun `has no buttons until the app has labelled them`() {
-        assertNull(ConferenceCallService.buildNotification(context).actions)
+        assertNull(ConferenceCallService.buildNotification(contextWithStubbedStrings).actions)
     }
 
     @Test
     fun `offers to mute while the microphone is on, and to leave`() {
-        ConferenceCallService.updateControls(context, true, "Mute", "Unmute", "Leave call")
+        ConferenceCallService.updateControls(contextWithStubbedStrings, controls(micEnabled = true))
 
         assertEquals(listOf("Mute", "Leave call"), actionTitles())
     }
 
     @Test
     fun `offers to unmute once the microphone is off`() {
-        ConferenceCallService.updateControls(context, false, "Mute", "Unmute", "Leave call")
+        ConferenceCallService.updateControls(contextWithStubbedStrings, controls(micEnabled = false))
 
         assertEquals(listOf("Unmute", "Leave call"), actionTitles())
     }
 
     @Test
-    fun `sends the mute button to the service as a toggle`() {
-        ConferenceCallService.updateControls(context, true, "Mute", "Unmute", "Leave call")
+    fun `sends the mute button to the service as a mute, never an unmute`() {
+        ConferenceCallService.updateControls(contextWithStubbedStrings, controls(micEnabled = true))
 
-        val button = shadowOf(ConferenceCallService.buildNotification(context).actions[0].actionIntent)
+        val button = shadowOf(action(0).actionIntent)
 
         assertTrue(button.isService)
-        assertEquals(ConferenceCallService.ACTION_TOGGLE_MIC, button.savedIntent.action)
+        assertEquals(ConferenceCallService.ACTION_MUTE, button.savedIntent.action)
+        assertEquals(ConferenceCallService::class.java.name, button.savedIntent.component?.className)
+    }
+
+    @Test
+    fun `sends the unmute button to the service as an unmute, never a mute`() {
+        ConferenceCallService.updateControls(contextWithStubbedStrings, controls(micEnabled = false))
+
+        val button = shadowOf(action(0).actionIntent)
+
+        assertTrue(button.isService)
+        assertEquals(ConferenceCallService.ACTION_UNMUTE, button.savedIntent.action)
         assertEquals(ConferenceCallService::class.java.name, button.savedIntent.component?.className)
     }
 
     @Test
     fun `sends the leave button to the service as a leave`() {
-        ConferenceCallService.updateControls(context, true, "Mute", "Unmute", "Leave call")
+        ConferenceCallService.updateControls(contextWithStubbedStrings, controls(micEnabled = true))
 
-        val button = shadowOf(ConferenceCallService.buildNotification(context).actions[1].actionIntent)
+        val button = shadowOf(action(1).actionIntent)
 
         assertTrue(button.isService)
         assertEquals(ConferenceCallService.ACTION_LEAVE, button.savedIntent.action)
@@ -84,40 +103,62 @@ class ConferenceCallServiceTest {
     }
 
     @Test
+    fun `passes a mute on even while the device is locked`() {
+        assertEquals("mute", ConferenceCallService.notificationEvent(ConferenceCallService.ACTION_MUTE, deviceLocked = true))
+    }
+
+    @Test
+    fun `passes a leave on even while the device is locked`() {
+        assertEquals("leave", ConferenceCallService.notificationEvent(ConferenceCallService.ACTION_LEAVE, deviceLocked = true))
+    }
+
+    @Test
+    fun `drops an unmute pressed while the device is locked`() {
+        assertNull(ConferenceCallService.notificationEvent(ConferenceCallService.ACTION_UNMUTE, deviceLocked = true))
+    }
+
+    @Test
+    fun `passes an unmute on once the device is unlocked`() {
+        assertEquals("unmute", ConferenceCallService.notificationEvent(ConferenceCallService.ACTION_UNMUTE, deviceLocked = false))
+    }
+
+    @Test
+    fun `ignores an action it does not know`() {
+        assertNull(ConferenceCallService.notificationEvent("chat.rocket.reactnative.conference.START_SERVICE", deviceLocked = false))
+        assertNull(ConferenceCallService.notificationEvent(null, deviceLocked = false))
+    }
+
+    @Test
     @Config(sdk = [35])
     fun `asks for the device to be unlocked before unmuting`() {
-        ConferenceCallService.updateControls(context, false, "Mute", "Unmute", "Leave call")
+        ConferenceCallService.updateControls(contextWithStubbedStrings, controls(micEnabled = false))
 
-        val unmute = ConferenceCallService.buildNotification(context).actions[0]
-
-        assertTrue(unmute.isAuthenticationRequired)
+        assertTrue(action(0).isAuthenticationRequired)
     }
 
     @Test
     @Config(sdk = [35])
     fun `lets the microphone be muted and the call left from the lock screen`() {
-        ConferenceCallService.updateControls(context, true, "Mute", "Unmute", "Leave call")
+        ConferenceCallService.updateControls(contextWithStubbedStrings, controls(micEnabled = true))
 
-        val (mute, leave) = ConferenceCallService.buildNotification(context).actions.toList()
-
-        assertFalse(mute.isAuthenticationRequired)
-        assertFalse(leave.isAuthenticationRequired)
+        assertFalse(action(0).isAuthenticationRequired)
+        assertFalse(action(1).isAuthenticationRequired)
     }
 
     @Test
     fun `forgets the buttons when the service is stopped`() {
-        ConferenceCallService.updateControls(context, true, "Mute", "Unmute", "Leave call")
+        ConferenceCallService.updateControls(contextWithStubbedStrings, controls(micEnabled = true))
 
-        ConferenceCallService.stopService(context)
+        ConferenceCallService.stopService(contextWithStubbedStrings)
 
-        assertNull(ConferenceCallService.buildNotification(context).actions)
+        assertNull(ConferenceCallService.buildNotification(contextWithStubbedStrings).actions)
     }
 
     @Test
     fun `posts nothing while no call is running`() {
-        ConferenceCallService.updateControls(context, true, "Mute", "Unmute", "Leave call")
+        ConferenceCallService.updateControls(contextWithStubbedStrings, controls(micEnabled = true))
 
-        val notifications = context.getSystemService(android.app.NotificationManager::class.java)
+        val notifications = contextWithStubbedStrings.getSystemService(android.app.NotificationManager::class.java)
         assertEquals(0, shadowOf(notifications).size())
     }
 }

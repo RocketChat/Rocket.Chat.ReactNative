@@ -17,10 +17,10 @@ import {
 } from '../restApi';
 import { type CallDataMessage, createReaction, encodeMessage, isHandNews, parseMessage, reactionIdFor } from './callDataProtocol';
 import {
-	startConferenceForegroundService,
-	stopConferenceForegroundService,
-	updateConferenceNotification
-} from './conferenceForegroundService';
+	startConferenceCallNotification,
+	stopConferenceCallNotification,
+	updateConferenceCallNotification
+} from './conferenceCallNotification';
 import { stopConferenceMicLevelMonitor } from './conferenceMicLevel';
 import type { LocalVideoTrack, Room } from './livekit';
 import { loadLiveKit, type TLiveKit } from './loadLiveKit';
@@ -83,7 +83,7 @@ class ConferenceSession {
 				useConferenceCallStore.getState().assignCall(startedCallId, rid);
 			}
 			await this.joinCall(context, startedCallId, options);
-			startConferenceForegroundService(options.mic);
+			startConferenceCallNotification(options.mic);
 			setPhase('connecting');
 			await this.connect(context, startedCallId, options);
 			this.assertCurrent(context);
@@ -125,13 +125,6 @@ class ConferenceSession {
 			await stopConferenceMicLevelMonitor();
 		}
 		await room.localParticipant.setMicrophoneEnabled(enabled);
-	};
-
-	toggleMicrophone = async (): Promise<void> => {
-		const room = this.context?.room;
-		if (room) {
-			await this.setMicrophone(!room.localParticipant.isMicrophoneEnabled);
-		}
 	};
 
 	selectAudioOutput = async (output: string): Promise<void> => {
@@ -348,7 +341,7 @@ class ConferenceSession {
 	private listenMicrophone = (context: TJoinContext, room: Room, livekit: TLiveKit): void => {
 		const syncNotification = () => {
 			if (this.isCurrent(context)) {
-				updateConferenceNotification(room.localParticipant.isMicrophoneEnabled);
+				updateConferenceCallNotification(room.localParticipant.isMicrophoneEnabled);
 			}
 		};
 		room.on(livekit.RoomEvent.LocalTrackPublished, syncNotification);
@@ -492,7 +485,7 @@ class ConferenceSession {
 	private teardown = async (context: TJoinContext): Promise<void> => {
 		this.stopHeartbeat(context);
 		if (!this.isSuperseded(context)) {
-			stopConferenceForegroundService();
+			stopConferenceCallNotification();
 			useConferenceInteractionStore.getState().reset();
 			releaseHandRaisedSound();
 		}

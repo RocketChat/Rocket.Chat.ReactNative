@@ -3,6 +3,7 @@ package chat.rocket.reactnative.conference
 import chat.rocket.reactnative.networking.NativeConferenceCallAndroidSpec
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReadableMap
 
 class ConferenceCallModule(reactContext: ReactApplicationContext) : NativeConferenceCallAndroidSpec(reactContext) {
 
@@ -19,8 +20,14 @@ class ConferenceCallModule(reactContext: ReactApplicationContext) : NativeConfer
         ConferenceCallService.stopService(reactApplicationContext)
     }
 
-    override fun updateConferenceCallNotification(micEnabled: Boolean, muteLabel: String, unmuteLabel: String, leaveLabel: String) {
-        ConferenceCallService.updateControls(reactApplicationContext, micEnabled, muteLabel, unmuteLabel, leaveLabel)
+    override fun updateConferenceCallNotification(micEnabled: Boolean, labels: ReadableMap) {
+        val controls = ConferenceCallService.Controls(
+            micEnabled = micEnabled,
+            muteLabel = labels.getString("mute").orEmpty(),
+            unmuteLabel = labels.getString("unmute").orEmpty(),
+            leaveLabel = labels.getString("leave").orEmpty()
+        )
+        ConferenceCallService.updateControls(reactApplicationContext, controls)
     }
 
     override fun consumeOpenCallRequest(promise: Promise) {
