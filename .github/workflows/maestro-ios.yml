@@ -39,9 +39,10 @@ jobs:
           defaults write com.apple.iphonesimulator ShowChrome -bool false
           defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
 
-      - name: Start Simulator Boot
+      - name: Boot Simulator
         id: simulator-boot
         background: true
+        timeout-minutes: 15
         run: |
           # Device names rotate with Xcode releases — resolve by family instead of pinning.
           if [[ "${{ inputs.shard }}" == "14" ]]; then
@@ -66,10 +67,18 @@ jobs:
             exit 1
           fi
 
-          echo "Starting boot for simulator: $SIM_NAME"
-          echo "SIM_NAME=$SIM_NAME" >> "$GITHUB_ENV"
-
+          echo "Booting simulator: $SIM_NAME"
           xcrun simctl boot "$SIM_NAME" || true
+          xcrun simctl bootstatus "$SIM_NAME" -b
+
+          # UIAnimationDragCoefficient is a duration multiplier (values > 1 SLOW
+          # animations down); near-zero makes transitions instant — the iOS
+          # analogue of Android's disable-animations.
+          echo "Disabling animations"
+          xcrun simctl spawn booted defaults write -g UIAnimationDragCoefficient -float 0.0001
+
+          echo "Booted devices:"
+          xcrun simctl list devices | grep Booted
 
       - parallel:
           - name: Setup Java
@@ -112,21 +121,6 @@ jobs:
 
       - name: Wait for Simulator Boot
         wait: simulator-boot
-
-      - name: Wait for Simulator Ready
-        timeout-minutes: 15
-        run: |
-          echo "Waiting for simulator to finish booting: $SIM_NAME"
-          xcrun simctl bootstatus "$SIM_NAME" -b
-
-          # UIAnimationDragCoefficient is a duration multiplier (values > 1 SLOW
-          # animations down); near-zero makes transitions instant — the iOS
-          # analogue of Android's disable-animations.
-          echo "Disabling animations"
-          xcrun simctl spawn booted defaults write -g UIAnimationDragCoefficient -float 0.0001
-
-          echo "Booted devices:"
-          xcrun simctl list devices | grep Booted
 
       - name: Install App
         run: |
