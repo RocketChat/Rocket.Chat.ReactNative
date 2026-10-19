@@ -116,11 +116,21 @@ public class AppDelegate: ExpoAppDelegate {
   private func foldWalIntoMainFile(atPath path: String) {
     var database: OpaquePointer?
     defer { sqlite3_close(database) }
-    guard FileManager.default.fileExists(atPath: path + "-wal"),
-          sqlite3_open_v2(path, &database, SQLITE_OPEN_READWRITE, nil) == SQLITE_OK else {
+    guard FileManager.default.fileExists(atPath: path + "-wal") else {
       return
     }
-    sqlite3_exec(database, "PRAGMA wal_checkpoint(TRUNCATE)", nil, nil, nil)
+    guard sqlite3_open_v2(path, &database, SQLITE_OPEN_READWRITE, nil) == SQLITE_OK else {
+      print("Legacy database migration: could not open the legacy database to fold its WAL")
+      return
+    }
+    var statement: OpaquePointer?
+    defer { sqlite3_finalize(statement) }
+    guard sqlite3_prepare_v2(database, "PRAGMA wal_checkpoint(TRUNCATE)", -1, &statement, nil) == SQLITE_OK,
+          sqlite3_step(statement) == SQLITE_ROW,
+          sqlite3_column_int(statement, 0) == 0 else {
+      print("Legacy database migration: could not fold the legacy WAL into the main file")
+      return
+    }
   }
 
   private func isReplaceableServersDatabase(atPath path: String) -> Bool {
