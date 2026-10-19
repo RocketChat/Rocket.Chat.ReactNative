@@ -20,8 +20,8 @@ export const sendAttachments = ({
 	user: Partial<Pick<IUser, 'id' | 'token'>>;
 	altTextSupported: boolean;
 	getMsg: (attachment: IShareAttachment, index: number) => string | undefined;
-}): Promise<void[]> =>
-	Promise.all(
+}): Promise<PromiseSettledResult<void>[]> =>
+	Promise.allSettled(
 		attachments.map((attachment, index) => {
 			const { filename: name, mime: type, description, altText, size, path, canUpload, exif } = attachment;
 			let { height, width } = attachment;

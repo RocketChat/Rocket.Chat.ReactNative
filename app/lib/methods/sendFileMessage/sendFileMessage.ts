@@ -73,10 +73,15 @@ export async function sendFileMessage(
 			'X-User-Id': id
 		};
 
-		await uploadWithRetry(uploadPath, () => {
-			upload = new FileUpload(uploadUrl, headers, formData, createUploadProgressCallback(db, uploadRecord));
-			return upload;
-		});
+		const updateProgress = createUploadProgressCallback(db, uploadRecord);
+		await uploadWithRetry(
+			uploadPath,
+			() => {
+				upload = new FileUpload(uploadUrl, headers, formData, updateProgress);
+				return upload;
+			},
+			() => updateProgress(0, 1)
+		);
 		await db.write(async () => {
 			await uploadRecord?.destroyPermanently();
 		});

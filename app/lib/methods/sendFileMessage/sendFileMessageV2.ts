@@ -58,15 +58,15 @@ export async function sendFileMessageV2(
 			});
 		}
 
-		const response = await uploadWithRetry(uploadPath, () => {
-			upload = new FileUpload(
-				`${server}/api/v1/rooms.media/${rid}`,
-				headers,
-				formData,
-				createUploadProgressCallback(db, uploadRecord)
-			);
-			return upload;
-		});
+		const updateProgress = createUploadProgressCallback(db, uploadRecord);
+		const response = await uploadWithRetry(
+			uploadPath,
+			() => {
+				upload = new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, updateProgress);
+				return upload;
+			},
+			() => updateProgress(0, 1)
+		);
 
 		let content;
 		if (getContent) {

@@ -61,7 +61,7 @@ export const MessageComposer = ({
 	const actionKind = useMessageActionKind();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
-	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
+	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments, removeAttachment } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const { colors } = useTheme();
@@ -135,18 +135,19 @@ export const MessageComposer = ({
 				quotedMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
 			}
 
-			try {
-				await sendAttachments({
-					attachments,
-					rid,
-					tmid,
-					server,
-					user: { id: user.id, token: user.token },
-					altTextSupported,
-					getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
-				});
-			} catch (e) {
-				log(e);
+			const results = await sendAttachments({
+				attachments,
+				rid,
+				tmid,
+				server,
+				user: { id: user.id, token: user.token },
+				altTextSupported,
+				getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
+			});
+			const rejected = results.filter((result): result is PromiseRejectedResult => result.status === 'rejected');
+			if (rejected.length) {
+				rejected.forEach(({ reason }) => log(reason));
+				attachments.filter((_, index) => results[index].status === 'fulfilled').forEach(({ path }) => removeAttachment(path));
 				composerInputComponentRef.current.setInput(textFromInput);
 				return;
 			}

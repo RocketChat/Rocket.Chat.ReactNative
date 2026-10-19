@@ -1,6 +1,12 @@
 import { sendFileMessage } from '../sendFileMessage';
 import FileUpload from '../../helpers/fileUpload';
-import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, finalizeFailedUpload, releaseUploadSlot } from '../utils';
+import {
+	copyFileToCacheDirectoryIfNeeded,
+	createUploadProgressCallback,
+	createUploadRecord,
+	finalizeFailedUpload,
+	releaseUploadSlot
+} from '../utils';
 import { uploadWithRetry } from '../uploadWithRetry';
 
 jest.mock('../utils', () => ({
@@ -69,6 +75,19 @@ describe('sendFileMessage', () => {
 		expect(args).toMatchObject({ queueKey: UPLOAD_PATH, error });
 		expect(args.upload).toBe(firstAttempt());
 		expect(releaseUploadSlot).not.toHaveBeenCalled();
+	});
+
+	it('lets the retry loop reset the progress its attempts reported', async () => {
+		arrange();
+		const updateProgress = jest.fn();
+		(createUploadProgressCallback as jest.Mock).mockReturnValueOnce(updateProgress);
+		(uploadWithRetry as jest.Mock).mockImplementation(
+			async (_path: string, _createUpload: () => unknown, onRetryWait: () => Promise<void>) => onRetryWait()
+		);
+
+		await send();
+
+		expect(updateProgress).toHaveBeenCalledWith(0, 1);
 	});
 
 	it('reports a failure before any attempt started without an attempt to blame', async () => {

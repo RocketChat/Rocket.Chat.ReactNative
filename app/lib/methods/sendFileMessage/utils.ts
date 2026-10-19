@@ -17,6 +17,8 @@ import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
 
 export const uploadQueue: { [index: string]: IFileUpload } = {};
 
+export const uploadRetryWaits: { [index: string]: () => void } = {};
+
 export const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 
 export function isUploadActive(path: string, rid: string): boolean {
@@ -39,6 +41,7 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 		}
 		delete uploadQueue[uploadPath];
 	}
+	uploadRetryWaits[uploadPath]?.();
 	if (item.id) {
 		try {
 			const db = database.active;

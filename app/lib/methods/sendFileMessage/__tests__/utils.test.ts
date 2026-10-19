@@ -1,6 +1,7 @@
 import { Alert } from 'react-native';
 
 import {
+	cancelUpload,
 	createUploadProgressCallback,
 	createUploadRecord,
 	copyFileToCacheDirectoryIfNeeded,
@@ -9,7 +10,8 @@ import {
 	isUploadActive,
 	persistUploadError,
 	releaseUploadSlot,
-	uploadQueue
+	uploadQueue,
+	uploadRetryWaits
 } from '../utils';
 import { UploadHttpError } from '~/lib/methods/helpers/fileUpload/UploadHttpError';
 
@@ -44,6 +46,35 @@ beforeEach(() => {
 	(require('expo-file-system/legacy').copyAsync as jest.Mock).mockClear();
 	(require('~/lib/methods/helpers/showToast').showToast as jest.Mock).mockClear();
 	Object.keys(uploadQueue).forEach(k => delete uploadQueue[k]);
+	Object.keys(uploadRetryWaits).forEach(k => delete uploadRetryWaits[k]);
+});
+
+describe('cancelUpload', () => {
+	it('ends a pending rate limit wait only after it released the upload slot', async () => {
+		const queueKey = getUploadPath('/tmp/pic.jpg', 'GENERAL');
+		uploadQueue[queueKey] = { send: jest.fn(), cancel: jest.fn() };
+		let slotWhenWaitEnded: unknown = 'wait not ended';
+		const endWait = jest.fn(() => {
+			slotWhenWaitEnded = uploadQueue[queueKey];
+		});
+		uploadRetryWaits[queueKey] = endWait;
+
+		await cancelUpload({ path: '/tmp/pic.jpg' } as any, 'GENERAL');
+
+		expect(endWait).toHaveBeenCalledTimes(1);
+		expect(slotWhenWaitEnded).toBeUndefined();
+	});
+
+	it('cancels the upload that is running when no rate limit wait is pending', async () => {
+		const queueKey = getUploadPath('/tmp/pic.jpg', 'GENERAL');
+		const running = { send: jest.fn(), cancel: jest.fn() };
+		uploadQueue[queueKey] = running;
+
+		await cancelUpload({ path: '/tmp/pic.jpg' } as any, 'GENERAL');
+
+		expect(running.cancel).toHaveBeenCalledTimes(1);
+		expect(uploadQueue[queueKey]).toBeUndefined();
+	});
 });
 
 describe('getUploadPath / isUploadActive', () => {

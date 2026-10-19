@@ -905,5 +905,25 @@ describe('MessageComposer', () => {
 			expect(screen.getByTestId('message-composer-attachments')).toBeOnTheScreen();
 			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
 		});
+
+		test('keeps only the attachments that failed so the ones already sent are not sent again', async () => {
+			const sent = { ...attachment, filename: 'sent.png', path: 'file:///tmp/sent.png' } as IShareAttachment;
+			const failed = { ...attachment, filename: 'failed.png', path: 'file:///tmp/failed.png' } as IShareAttachment;
+			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('upload failed'));
+			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
+			render(
+				<Render forwardedRef={composerRef}>
+					<AttachmentSeeder attachments={[sent, failed]} />
+				</Render>
+			);
+			await screen.findByTestId('message-composer-attachment-1');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
+			await user.press(screen.getByTestId('message-composer-send'));
+
+			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
+			expect(screen.getByLabelText('failed.png')).toBeOnTheScreen();
+			expect(screen.queryByLabelText('sent.png')).not.toBeOnTheScreen();
+			expect(screen.queryByTestId('message-composer-attachment-1')).not.toBeOnTheScreen();
+		});
 	});
 });

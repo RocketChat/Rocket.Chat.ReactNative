@@ -1,8 +1,8 @@
-import { sendAttachments } from './sendAttachments';
-import { sendFileMessage } from './index';
+import { sendAttachments } from '../sendAttachments';
+import { sendFileMessage } from '../index';
 import { type IShareAttachment } from '~/definitions';
 
-jest.mock('./index', () => ({ sendFileMessage: jest.fn(() => Promise.resolve()) }));
+jest.mock('../index', () => ({ sendFileMessage: jest.fn(() => Promise.resolve()) }));
 
 const base = {
 	rid: 'rid1',
@@ -107,5 +107,34 @@ describe('sendAttachments', () => {
 			base.server,
 			base.user
 		);
+	});
+
+	it('reports each upload outcome in attachment order instead of rejecting on the first failure', async () => {
+		const failure = new Error('upload failed');
+		(sendFileMessage as jest.Mock).mockRejectedValueOnce(failure).mockResolvedValueOnce(undefined);
+
+		const results = await sendAttachments({ ...base, attachments: [attachment(), attachment({ path: '/tmp/b.jpg' })] });
+
+		expect(results).toEqual([
+			{ status: 'rejected', reason: failure },
+			{ status: 'fulfilled', value: undefined }
+		]);
+	});
+
+	it('does not settle while another upload is still running', async () => {
+		let finishSecond!: () => void;
+		(sendFileMessage as jest.Mock)
+			.mockRejectedValueOnce(new Error('upload failed'))
+			.mockImplementationOnce(() => new Promise<void>(resolve => (finishSecond = resolve)));
+
+		const pending = sendAttachments({ ...base, attachments: [attachment(), attachment({ path: '/tmp/b.jpg' })] });
+		const outcome = await Promise.race([
+			pending.then(() => 'settled'),
+			new Promise(resolve => setTimeout(() => resolve('still pending'), 0))
+		]);
+		finishSecond();
+
+		expect(outcome).toBe('still pending');
+		await expect(pending).resolves.toHaveLength(2);
 	});
 });

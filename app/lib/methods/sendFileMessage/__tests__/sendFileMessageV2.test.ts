@@ -2,7 +2,13 @@ import { Encryption } from '~/lib/encryption';
 import { sendFileMessageV2 } from '../sendFileMessageV2';
 import FileUpload from '../../helpers/fileUpload';
 import fetch from '../../helpers/fetch';
-import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, finalizeFailedUpload, releaseUploadSlot } from '../utils';
+import {
+	copyFileToCacheDirectoryIfNeeded,
+	createUploadProgressCallback,
+	createUploadRecord,
+	finalizeFailedUpload,
+	releaseUploadSlot
+} from '../utils';
 import { uploadWithRetry } from '../uploadWithRetry';
 
 jest.mock('../utils', () => ({
@@ -114,6 +120,23 @@ describe('sendFileMessageV2 - upload outcome', () => {
 		const [args] = (finalizeFailedUpload as jest.Mock).mock.calls[0];
 		expect(args).toMatchObject({ queueKey: UPLOAD_PATH, error, upload: null });
 		expect(uploadWithRetry).not.toHaveBeenCalled();
+	});
+
+	it('lets the retry loop reset the progress its attempts reported', async () => {
+		arrange();
+		const updateProgress = jest.fn();
+		(createUploadProgressCallback as jest.Mock).mockReturnValueOnce(updateProgress);
+		(uploadWithRetry as jest.Mock).mockImplementation(
+			async (_path: string, createUpload: () => unknown, onRetryWait: () => Promise<void>) => {
+				createUpload();
+				await onRetryWait();
+				return { file: { _id: 'file1', url: '/file/1' } };
+			}
+		);
+
+		await send();
+
+		expect(updateProgress).toHaveBeenCalledWith(0, 1);
 	});
 
 	it('reports a confirm the server rejected instead of dropping the record', async () => {
