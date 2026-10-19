@@ -112,7 +112,7 @@ tags:
     id: room-view-join-button
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.data.channels.detoxpublic.name}
 - assertVisible:

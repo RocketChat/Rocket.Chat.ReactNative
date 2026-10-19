@@ -4,10 +4,6 @@ tags:
   - 'util'
 
 ---
-- runFlow:
-    file: '../../../helpers/search-and-navigate-room.yaml'
-    env:
-      ROOM: ${ROOM}
 - runFlow: '../../../helpers/open-room-actions.yaml'
 - extendedWaitUntil:
     visible:

@@ -17,9 +17,10 @@ tags:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
 - runFlow:
-    file: './utils/navigate-to-room-info.yaml'
+    file: '../../helpers/open-room.yaml'
     env:
       ROOM: ${output.room.name}
+- runFlow: './utils/navigate-to-room-info.yaml'
 
 # should have room info view
 - extendedWaitUntil:
@@ -454,9 +455,10 @@ tags:
 
 # should see user role correctly
 - runFlow:
-    file: './utils/navigate-to-room-info.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: 'roles-test'
+- runFlow: './utils/navigate-to-room-info.yaml'
 - extendedWaitUntil:
     visible:
       id: 'user-roles'

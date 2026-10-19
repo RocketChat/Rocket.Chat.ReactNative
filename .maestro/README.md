@@ -93,6 +93,8 @@ node .maestro/appduct-bridge/index.mjs android   # or ios
 
 Set `APPDUCT_DEVICE` to the adb serial or simulator udid when more than one is running. To run a second bridge, pass its port as the second argument and to Maestro as `-e APPDUCT_BRIDGE_PORT=<port>`.
 
+To open a room as setup, use `helpers/open-room.yaml` when the user is subscribed to it. Use `helpers/search-and-navigate-room.yaml` when the user still has to join or preview it, and `helpers/navigate-to-room.yaml` while the device is offline.
+
 Once your app and the bridge are running, you can execute Maestro tests:
 
 ```bash
