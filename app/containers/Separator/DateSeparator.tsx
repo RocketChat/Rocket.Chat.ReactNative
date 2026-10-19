@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { formatLongDate } from '~/lib/dayjs';
 import sharedStyles from '~/views/Styles';
@@ -23,11 +23,9 @@ const styles = StyleSheet.create({
 
 export const DateSeparatorLabel = ({ ts }: { ts: Date | string }): ReactElement => {
 	const { colors } = useTheme();
-	// Fabric keeps the label's old size after a Dynamic Type change; remounting forces a fresh layout
-	const { fontScale } = useWindowDimensions();
 
 	return (
-		<View key={fontScale} style={[styles.label, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
+		<View style={[styles.label, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
 			<Text style={[styles.text, { color: colors.buttonFontSecondary }]}>{formatLongDate(ts)}</Text>
 		</View>
 	);
