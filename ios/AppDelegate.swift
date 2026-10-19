@@ -78,11 +78,11 @@ public class AppDelegate: ExpoAppDelegate {
     let groupDir = fileManager.groupDir()
     let legacySuffix = "-experimental.db"
     let serversLegacyName = "default\(legacySuffix)"
-    guard fileManager.fileExists(atPath: "\(groupDir)/\(serversLegacyName)"),
+    guard isRegularFile(atPath: "\(groupDir)/\(serversLegacyName)"),
           let groupFiles = try? fileManager.contentsOfDirectory(atPath: groupDir) else {
       return
     }
-    let legacyNames = groupFiles.filter { $0.hasSuffix(legacySuffix) }
+    let legacyNames = groupFiles.filter { $0.hasSuffix(legacySuffix) && isRegularFile(atPath: "\(groupDir)/\($0)") }
     for name in legacyNames.filter({ $0 != serversLegacyName }) + [serversLegacyName] {
       let from = "\(groupDir)/\(name)"
       let to = "\(groupDir)/\(name.dropLast(legacySuffix.count)).db"
@@ -100,6 +100,10 @@ public class AppDelegate: ExpoAppDelegate {
         }
       }
     }
+  }
+
+  private func isRegularFile(atPath path: String) -> Bool {
+    (try? FileManager.default.attributesOfItem(atPath: path))?[.type] as? FileAttributeType == .typeRegular
   }
 
   private func foldWalIntoMainFile(atPath path: String) {

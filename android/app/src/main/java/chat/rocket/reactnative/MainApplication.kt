@@ -99,7 +99,7 @@ open class MainApplication : Application(), ReactApplication {
     val dataDir = File(applicationInfo.dataDir)
     val legacySuffix = "-experimental.db.db"
     val serversLegacy = File(dataDir, "default$legacySuffix")
-    if (!serversLegacy.exists()) {
+    if (!serversLegacy.isFile) {
       return
     }
     val dataDirFiles = dataDir.listFiles() ?: return
