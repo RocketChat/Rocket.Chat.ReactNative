@@ -2,7 +2,7 @@ import { type ReactElement, type ReactNode, useState } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { showActionSheetRef, type TActionSheetOptionsItem } from '~/containers/ActionSheet';
+import { showActionSheetRef, type TActionSheetOptions, type TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
 import { type RoomMembership, type RoomStore } from '~/views/RoomView/definitions';
@@ -145,13 +145,19 @@ const renderActions = (element: ReactElement) => render(element, { wrapper: Head
 
 const ROOM_BUTTONS = ['room-view-header-threads', 'room-view-header-kebab'];
 
+const lastSheet = () => (showActionSheetRef as jest.Mock).mock.lastCall[0] as TActionSheetOptions;
+
 const openMoreMenu = () => {
 	fireEvent.press(screen.getByTestId('room-view-header-kebab'));
-	const { options } = (showActionSheetRef as jest.Mock).mock.lastCall[0] as { options: TActionSheetOptionsItem[] };
-	return options;
+	return lastSheet().options as TActionSheetOptionsItem[];
 };
 
 const moreMenuOption = (testID: string) => openMoreMenu().find(option => option.testID === testID);
+
+const pickOption = (option?: TActionSheetOptionsItem) => {
+	option?.onPress();
+	lastSheet().onClose?.();
+};
 
 describe('RoomHeaderActions', () => {
 	beforeEach(() => {
@@ -282,7 +288,7 @@ describe('RoomHeaderActions', () => {
 			mockHeaderHooks = { ...mockHeaderHooks, canToggleEncryption: true };
 			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
 
-			moreMenuOption('room-view-header-encryption')?.onPress();
+			pickOption(moreMenuOption('room-view-header-encryption'));
 
 			expect(logEvent).toHaveBeenCalledTimes(1);
 			expect(logEvent).toHaveBeenCalledWith(events.ROOM_GO_E2EE);
@@ -317,7 +323,7 @@ describe('RoomHeaderActions', () => {
 			mockAppState = { ...mockAppState, troubleshootingNotification: { issuesWithNotifications: true } };
 			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
 
-			moreMenuOption('room-view-push-troubleshoot')?.onPress();
+			pickOption(moreMenuOption('room-view-push-troubleshoot'));
 
 			expect(mockNavigation.navigate).toHaveBeenCalledWith(
 				...(isMasterDetail
@@ -345,7 +351,7 @@ describe('RoomHeaderActions', () => {
 		it('starts a video conference from the call option', () => {
 			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
 
-			moreMenuOption('room-view-header-call')?.onPress();
+			pickOption(moreMenuOption('room-view-header-call'));
 
 			expect(mockVideoConf.showInitCallActionSheet).toHaveBeenCalled();
 		});
@@ -390,9 +396,9 @@ describe('RoomHeaderActions', () => {
 			fireEvent.press(screen.getByTestId('room-view-header-omnichannel-kebab'));
 
 			expect(logEvent).toHaveBeenCalledWith(events.ROOM_SHOW_MORE_ACTIONS);
-			const { options } = (showActionSheetRef as jest.Mock).mock.calls[0][0] as { options: TActionSheetOptionsItem[] };
+			const options = lastSheet().options as TActionSheetOptionsItem[];
 			expect(options).toEqual([expect.objectContaining({ title: 'Close', icon: 'chat-close', danger: true })]);
-			options[0].onPress();
+			pickOption(options[0]);
 			expect(closeLivechat).toHaveBeenCalledWith(expect.objectContaining({ rid: 'rid-1', departmentId: 'department-1' }));
 		});
 	});
