@@ -7,7 +7,7 @@ exports[`Story Snapshots: AvatarBase64 should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -20,7 +20,7 @@ exports[`Story Snapshots: AvatarBase64 should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -31,7 +31,7 @@ exports[`Story Snapshots: AvatarBase64 should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -61,7 +61,7 @@ exports[`Story Snapshots: AvatarBase64 should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -82,7 +82,7 @@ exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = 
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -95,7 +95,7 @@ exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = 
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -106,7 +106,7 @@ exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = 
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -136,7 +136,7 @@ exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = 
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -157,7 +157,7 @@ exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -170,7 +170,7 @@ exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -181,7 +181,7 @@ exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -211,7 +211,7 @@ exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -232,7 +232,7 @@ exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -245,7 +245,7 @@ exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -256,7 +256,7 @@ exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -286,7 +286,7 @@ exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -307,7 +307,7 @@ exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -320,7 +320,7 @@ exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -331,7 +331,7 @@ exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -361,7 +361,7 @@ exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -382,7 +382,7 @@ exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -395,7 +395,7 @@ exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -406,7 +406,7 @@ exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -436,7 +436,7 @@ exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -457,7 +457,7 @@ exports[`Story Snapshots: Channel should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -470,7 +470,7 @@ exports[`Story Snapshots: Channel should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -481,7 +481,7 @@ exports[`Story Snapshots: Channel should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -511,7 +511,7 @@ exports[`Story Snapshots: Channel should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -532,7 +532,7 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -545,7 +545,7 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -556,7 +556,7 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -586,7 +586,7 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -721,7 +721,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -736,7 +736,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -747,7 +747,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -777,7 +777,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -798,7 +798,7 @@ exports[`Story Snapshots: Direct should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -811,7 +811,7 @@ exports[`Story Snapshots: Direct should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -822,7 +822,7 @@ exports[`Story Snapshots: Direct should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -852,7 +852,7 @@ exports[`Story Snapshots: Direct should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -873,7 +873,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -894,7 +894,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="contain"
       contentPosition={
@@ -920,7 +920,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -941,7 +941,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -954,7 +954,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -965,7 +965,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -995,7 +995,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -1016,7 +1016,7 @@ exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -1029,7 +1029,7 @@ exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -1040,7 +1040,7 @@ exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -1070,7 +1070,7 @@ exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -1091,7 +1091,7 @@ exports[`Story Snapshots: Static should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -1104,7 +1104,7 @@ exports[`Story Snapshots: Static should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -1115,7 +1115,7 @@ exports[`Story Snapshots: Static should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -1145,7 +1145,7 @@ exports[`Story Snapshots: Static should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -1165,7 +1165,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -1262,7 +1262,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
           style={
             [
               {
-                "borderRadius": 4,
+                "borderRadius": 8,
                 "height": 56,
                 "width": 56,
               },
@@ -1273,7 +1273,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
           }
         >
           <ViewManagerAdapter_ExpoImage
-            borderRadius={4}
+            borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
             contentPosition={
@@ -1303,7 +1303,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
             }
             style={
               {
-                "borderRadius": 4,
+                "borderRadius": 8,
                 "height": 56,
                 "width": 56,
               }
@@ -1327,7 +1327,7 @@ exports[`Story Snapshots: WithETag should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -1340,7 +1340,7 @@ exports[`Story Snapshots: WithETag should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -1351,7 +1351,7 @@ exports[`Story Snapshots: WithETag should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -1381,7 +1381,7 @@ exports[`Story Snapshots: WithETag should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -1402,7 +1402,7 @@ exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -1415,7 +1415,7 @@ exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -1426,7 +1426,7 @@ exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -1456,7 +1456,7 @@ exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }
@@ -1477,7 +1477,7 @@ exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
   style={
     [
       {
-        "borderRadius": 4,
+        "borderRadius": 8,
         "height": 56,
         "width": 56,
       },
@@ -1490,7 +1490,7 @@ exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         },
@@ -1501,7 +1501,7 @@ exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
     }
   >
     <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
+      borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
@@ -1531,7 +1531,7 @@ exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
       }
       style={
         {
-          "borderRadius": 4,
+          "borderRadius": 8,
           "height": 56,
           "width": 56,
         }

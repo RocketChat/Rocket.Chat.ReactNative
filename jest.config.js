@@ -6,7 +6,6 @@ module.exports = {
 	workerIdleMemoryLimit: '512MB',
 	modulePathIgnorePatterns: ['<rootDir>/.*worktrees/'],
 	testPathIgnorePatterns: [
-		'e2e',
 		'node_modules',
 		'<rootDir>/.*worktrees/',
 		'/__tests__/testHelpers\\.tsx$',

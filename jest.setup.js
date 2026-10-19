@@ -29,10 +29,20 @@ jest.mock('react-native-reanimated/src/css/native/proxy', () => ({
 
 jest.mock('react-native-reanimated', () => {
 	const actual = jest.requireActual('react-native-reanimated/mock');
+	const createSharedValue = init => {
+		const sharedValue = {
+			value: init,
+			get: () => sharedValue.value,
+			set: next => {
+				sharedValue.value = typeof next === 'function' ? next(sharedValue.value) : next;
+			}
+		};
+		return sharedValue;
+	};
 	return {
 		...actual,
-		useSharedValue: jest.fn(init => jest.requireActual('react').useState(() => ({ value: init }))[0]),
-		makeMutable: jest.fn(init => ({ value: init })),
+		useSharedValue: jest.fn(init => jest.requireActual('react').useState(() => createSharedValue(init))[0]),
+		makeMutable: jest.fn(createSharedValue),
 		useAnimatedReaction: jest.fn(),
 		withTiming: jest.fn(value => value),
 		useAnimatedGestureHandler: jest.fn(() => jest.fn()),
@@ -140,6 +150,10 @@ jest.mock('./app/lib/database', () => ({
 	active: {
 		get: jest.fn()
 	}
+}));
+
+jest.mock('./app/containers/Avatar/useAvatarETag', () => ({
+	useAvatarETag: () => ({ avatarETag: undefined })
 }));
 
 jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({

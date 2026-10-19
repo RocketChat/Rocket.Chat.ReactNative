@@ -18,12 +18,7 @@ tags:
       PASSWORD: ${output.user.password}
 
 # should open the servers list, have the server add button and create workspace button
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-header-servers-list-button'
+- runFlow: '../../helpers/open-servers-list.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list'
@@ -57,12 +52,7 @@ tags:
     timeout: 60000
 
 # should add server and create new user
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-header-servers-list-button'
+- runFlow: '../../helpers/open-servers-list.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list'
@@ -107,14 +97,9 @@ tags:
       server: ${output.data.alternateServer}
 
 # should change back to main server
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
 - waitForAnimationToEnd:
     timeout: 5000
-- tapOn:
-    id: 'rooms-list-header-servers-list-button'
+- runFlow: '../../helpers/open-servers-list.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list'
@@ -154,12 +139,7 @@ tags:
       server: ${output.data.server}
 
 # should test swipe to delete on alternate server
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-header-servers-list-button'
+- runFlow: '../../helpers/open-servers-list.yaml'
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.alternateServer}'
@@ -198,12 +178,7 @@ tags:
 # verify alternate server is deleted
 - waitForAnimationToEnd:
     timeout: 500
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-header-servers-list-button'
+- runFlow: '../../helpers/open-servers-list.yaml'
 - extendedWaitUntil:
     notVisible:
       id: 'server-item-${output.data.alternateServer}'

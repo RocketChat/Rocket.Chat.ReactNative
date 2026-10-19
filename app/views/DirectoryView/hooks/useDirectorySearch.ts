@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { type IServerRoom } from '~/definitions';
 import { announceSearchResultsForAccessibility } from '~/lib/methods/helpers/announceSearchResultsForAccessibility';
@@ -6,24 +6,47 @@ import { useDebounce } from '~/lib/methods/helpers/debounce';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { getDirectory } from '~/lib/services/restApi';
 
+type DirectoryResults = { rooms: IServerRoom[]; fetchedCount: number; total: number };
+
+const emptyResults: DirectoryResults = { rooms: [], fetchedCount: 0, total: -1 };
+
+const appendPage = (results: DirectoryResults, page: IServerRoom[], total: number): DirectoryResults => {
+	const ids = new Set(results.rooms.map(room => room._id));
+	const newRooms = page.filter(room => {
+		if (ids.has(room._id)) {
+			return false;
+		}
+		ids.add(room._id);
+		return true;
+	});
+	return {
+		rooms: [...results.rooms, ...newRooms],
+		fetchedCount: results.fetchedCount + page.length,
+		total
+	};
+};
+
+const hasMore = (results: DirectoryResults) => results.fetchedCount < results.total;
+
 export const useDirectorySearch = (directoryDefaultView: string) => {
-	const [data, setData] = useState<IServerRoom[]>([]);
-	const [loading, setLoading] = useState(false);
+	const [results, setResults] = useState(emptyResults);
+	const [loading, setLoading] = useState(true);
 	const [text, setText] = useState('');
-	const [total, setTotal] = useState(-1);
 	const [globalUsers, setGlobalUsers] = useState(true);
 	const [type, setType] = useState(directoryDefaultView);
+	const searchGeneration = useRef(0);
+	const newSearchPending = useRef(false);
 
 	// useDebounce keeps a ref to the latest callback, so this always reads fresh state
-	const load = useDebounce(async ({ newSearch = false }: { newSearch?: boolean } = {}) => {
-		if (!newSearch && (loading || data.length === total)) {
+	const load = useDebounce(async () => {
+		const newSearch = newSearchPending.current;
+		newSearchPending.current = false;
+		if (!newSearch && (loading || !hasMore(results))) {
 			return;
 		}
 
-		if (newSearch) {
-			setData([]);
-			setTotal(-1);
-		}
+		const requestGeneration = searchGeneration.current;
+		const isStale = () => requestGeneration !== searchGeneration.current;
 		setLoading(true);
 
 		try {
@@ -31,13 +54,15 @@ export const useDirectorySearch = (directoryDefaultView: string) => {
 				text,
 				type,
 				workspace: globalUsers ? 'all' : 'local',
-				offset: newSearch ? 0 : data.length,
+				offset: newSearch ? 0 : results.fetchedCount,
 				count: 50,
 				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
 			});
+			if (isStale()) {
+				return;
+			}
 			if (directories.success) {
-				setData(prev => [...(newSearch ? [] : prev), ...(directories.result as IServerRoom[])]);
-				setTotal(directories.total);
+				setResults(prev => appendPage(newSearch ? emptyResults : prev, directories.result as IServerRoom[], directories.total));
 				setLoading(false);
 				// Announce the full total on a fresh search; loadMore pages shouldn't re-announce
 				if (newSearch) {
@@ -48,12 +73,23 @@ export const useDirectorySearch = (directoryDefaultView: string) => {
 			}
 		} catch (e) {
 			log(e);
-			setLoading(false);
+			if (!isStale()) {
+				setLoading(false);
+			}
 		}
 	}, 200);
 
-	const search = () => load({ newSearch: true });
-	const loadMore = () => load({});
+	const startSearch = () => {
+		searchGeneration.current += 1;
+		newSearchPending.current = true;
+		load();
+	};
+	const search = () => {
+		setResults(emptyResults);
+		setLoading(true);
+		startSearch();
+	};
+	const loadMore = () => load();
 
 	const onSearchChangeText = (newText: string) => {
 		setText(newText);
@@ -79,13 +115,12 @@ export const useDirectorySearch = (directoryDefaultView: string) => {
 		search();
 	};
 
-	// Run the initial search when the hook mounts; `search` is stable, so this fires once
 	useEffect(() => {
-		search();
+		startSearch();
 	}, []);
 
 	return {
-		data,
+		data: results.rooms,
 		loading,
 		type,
 		globalUsers,

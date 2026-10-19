@@ -1,5 +1,6 @@
 import { URL } from 'react-native-url-polyfill';
 
+import { getOrigin } from './getOrigin';
 import { isImageBase64 } from '../isImageBase64';
 import { store } from '~/lib/store/auxStore';
 
@@ -18,35 +19,43 @@ export const encodeAttachmentUrl = (url: string): string => {
 	}
 };
 
+const getCdnPrefix = (): string => {
+	const cdnPrefix = (store.getState().settings.CDN_PREFIX as string | undefined)?.trim().replace(/\/+$/, '');
+	return cdnPrefix && getOrigin(cdnPrefix) ? cdnPrefix : '';
+};
+
 export const formatAttachmentUrl = (
 	attachmentUrl: string | undefined,
 	userId: string,
 	token: string,
 	server: string,
-	_originalUrl?: string | null
+	originalUrl?: string | null
 ): string => {
-	const protectFiles = store.getState().settings.FileUpload_ProtectFiles;
-
-	if ((attachmentUrl && isImageBase64(attachmentUrl)) || attachmentUrl?.startsWith('file://')) {
+	if (!attachmentUrl) {
+		return '';
+	}
+	if (isImageBase64(attachmentUrl) || attachmentUrl.startsWith('file://')) {
 		return attachmentUrl;
 	}
-	if (attachmentUrl && attachmentUrl.startsWith('http')) {
-		if (_originalUrl && !_originalUrl.startsWith(server)) {
-			return _originalUrl;
-		}
 
-		if (attachmentUrl.includes('rc_token')) {
-			return encodeAttachmentUrl(attachmentUrl);
-		}
+	const { FileUpload_ProtectFiles: protectFiles, Site_Url: siteUrl } = store.getState().settings;
+	const cdnPrefix = getCdnPrefix();
+	const trustedOrigins = [getOrigin(server), getOrigin(cdnPrefix), getOrigin((siteUrl as string | undefined) ?? '')].filter(
+		Boolean
+	);
+	const isTrusted = (url: string) => {
+		const origin = getOrigin(url);
+		return !!origin && trustedOrigins.includes(origin);
+	};
 
-		if (protectFiles) return setParamInUrl({ url: attachmentUrl, token, userId });
-		return attachmentUrl;
+	const isAbsolute = /^https?:\/\//i.test(attachmentUrl);
+	const originalOrigin = originalUrl ? getOrigin(originalUrl) : null;
+	if (isAbsolute && originalUrl && originalOrigin && !trustedOrigins.includes(originalOrigin)) {
+		return encodeAttachmentUrl(originalUrl);
 	}
-	let cdnPrefix = store?.getState().settings.CDN_PREFIX as string;
-	cdnPrefix = cdnPrefix?.trim();
-	if (cdnPrefix && cdnPrefix.startsWith('http')) {
-		server = cdnPrefix.replace(/\/+$/, '');
+	const url = isAbsolute ? attachmentUrl : `${cdnPrefix || server}/${attachmentUrl.replace(/^\/+/, '')}`;
+	if (!isTrusted(url)) {
+		return encodeAttachmentUrl(url);
 	}
-	if (protectFiles) return setParamInUrl({ url: `${server}${attachmentUrl}`, token, userId });
-	return `${server}${attachmentUrl}`;
+	return protectFiles ? setParamInUrl({ url, token, userId }) : encodeAttachmentUrl(url);
 };

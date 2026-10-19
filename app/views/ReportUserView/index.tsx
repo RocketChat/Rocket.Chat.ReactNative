@@ -2,7 +2,7 @@ import { useLayoutEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { type CompositeNavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -49,7 +49,6 @@ const ReportUserView = () => {
 	const {
 		control,
 		handleSubmit,
-		watch,
 		formState: { errors }
 	} = useForm<ISubmit>({
 		mode: 'onChange',
@@ -57,7 +56,7 @@ const ReportUserView = () => {
 		defaultValues: { description: '' }
 	});
 
-	const inputValues = watch();
+	const inputValues = useWatch({ control });
 
 	useA11yErrorAnnouncement({ errors, inputValues });
 

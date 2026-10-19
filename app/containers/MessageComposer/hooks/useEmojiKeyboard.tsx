@@ -45,17 +45,17 @@ const useKeyboardAnimation = () => {
 				if (e.duration === 0) {
 					return;
 				}
-				height.value = e.height;
+				height.set(e.height);
 			},
 			onInteractive: e => {
 				'worklet';
 
-				height.value = e.height;
+				height.set(e.height);
 			},
 			onEnd: e => {
 				'worklet';
 
-				height.value = Math.max(e.height, 0);
+				height.set(Math.max(e.height, 0));
 			}
 		},
 		[]
@@ -80,32 +80,32 @@ export const useEmojiKeyboard = () => {
 
 		if (
 			!force &&
-			(showEmojiPickerSharedValue.value === true || showEmojiSearchbarSharedValue.value === true) &&
-			previousHeight.value !== EMOJI_KEYBOARD_FIXED_HEIGHT
+			(showEmojiPickerSharedValue.get() === true || showEmojiSearchbarSharedValue.get() === true) &&
+			previousHeight.get() !== EMOJI_KEYBOARD_FIXED_HEIGHT
 		) {
 			return;
 		}
 		// When keyboard is closed, add bottom safe area inset to ensure content is visible above
 		// navigation bars/home indicator. When keyboard is open, keyboard height already covers it.
-		const notch = height.value === 0 ? bottom : 0;
-		keyboardHeight.value = height.value + notch;
-		previousHeight.value = keyboardHeight.value;
+		const notch = height.get() === 0 ? bottom : 0;
+		keyboardHeight.set(height.get() + notch);
+		previousHeight.set(keyboardHeight.get());
 	};
 
 	const openEmojiKeyboard = () => {
-		showEmojiPickerSharedValue.value = true;
+		showEmojiPickerSharedValue.set(true);
 	};
 
 	const closeEmojiKeyboard = () => {
-		showEmojiPickerSharedValue.value = false;
+		showEmojiPickerSharedValue.set(false);
 	};
 
 	const openEmojiSearchbar = () => {
-		showEmojiSearchbarSharedValue.value = true;
+		showEmojiSearchbarSharedValue.set(true);
 	};
 
 	const closeEmojiSearchbar = () => {
-		showEmojiSearchbarSharedValue.value = false;
+		showEmojiSearchbarSharedValue.set(false);
 		focus && focus();
 	};
 
@@ -131,9 +131,9 @@ export const useEmojiKeyboard = () => {
 	const openEmojiPicker = () => {
 		'worklet';
 
-		if (height.value < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
-			keyboardHeight.value = EMOJI_KEYBOARD_FIXED_HEIGHT;
-			previousHeight.value = keyboardHeight.value;
+		if (height.get() < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
+			keyboardHeight.set(EMOJI_KEYBOARD_FIXED_HEIGHT);
+			previousHeight.set(keyboardHeight.get());
 		}
 	};
 

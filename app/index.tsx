@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Linking } from 'react-native';
+import { Linking, type EmitterSubscription } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
@@ -11,6 +11,7 @@ import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
 import { ActionSheetProvider } from './containers/ActionSheet';
+import ConferenceCall from './containers/ConferenceCall';
 import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
 import StatusBar from './containers/StatusBar';
@@ -20,7 +21,9 @@ import TwoFactor from './containers/TwoFactor';
 import { type IThemePreference } from './definitions/ITheme';
 import { themes } from './lib/constants/colors';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
-import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
+import { hasNativeHeaderBar } from './lib/methods/helpers/deviceInfo';
+import log, { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
+import { preloadHeaderIcons } from './lib/methods/helpers/navigation/headerIcon';
 import parseDeepLinking from './lib/methods/helpers/parseDeepLinking';
 import {
 	getTheme,
@@ -30,6 +33,8 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './lib/methods/helpers/theme';
+import { initializeStorage } from './lib/methods/userPreferences';
+import { THEME_PREFERENCES_KEY } from './lib/constants/keys';
 import { initializePushNotifications, onNotification } from './lib/notifications';
 import { getInitialNotification, setupVideoConfActionListener } from './lib/notifications/videoConf/getInitialNotification';
 import {
@@ -52,9 +57,10 @@ interface IState {
 }
 
 export default class Root extends Component<{}, IState> {
-	private listenerTimeout!: any;
+	private deepLinkSubscription?: EmitterSubscription;
 	private videoConfActionCleanup?: () => void;
 	private mediaCallEventCleanup?: () => void;
+	private themePreferencesListener?: { remove: () => void };
 
 	constructor(props: any) {
 		super(props);
@@ -76,31 +82,39 @@ export default class Root extends Component<{}, IState> {
 	}
 
 	componentDidMount() {
-		this.listenerTimeout = setTimeout(() => {
-			Linking.addEventListener('url', ({ url }) => {
-				const parsedDeepLinkingURL = parseDeepLinking(url);
-				if (parsedDeepLinkingURL) {
-					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
-				}
-			});
-		}, 5000);
+		this.deepLinkSubscription = Linking.addEventListener('url', ({ url }) => {
+			const parsedDeepLinkingURL = parseDeepLinking(url);
+			if (parsedDeepLinkingURL) {
+				store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
+			}
+		});
 
 		// Set up video conf action listener for background accept/decline
 		this.videoConfActionCleanup = setupVideoConfActionListener();
 		// Set up media call event listeners for incoming calls
 		this.mediaCallEventCleanup = setupMediaCallEvents(this.getMediaCallEventsAdapters());
+		this.themePreferencesListener = initializeStorage.addOnValueChangedListener(key => {
+			if (key === THEME_PREFERENCES_KEY) {
+				this.setTheme(initialTheme());
+			}
+		});
 	}
 
 	componentWillUnmount() {
-		clearTimeout(this.listenerTimeout);
+		this.deepLinkSubscription?.remove();
 		this.videoConfActionCleanup?.();
 		this.mediaCallEventCleanup?.();
+		this.themePreferencesListener?.remove();
 
 		unsubscribeTheme();
 	}
 
 	init = async () => {
 		store.dispatch(appInitLocalSettings());
+
+		if (hasNativeHeaderBar) {
+			await preloadHeaderIcons().catch(log);
+		}
 
 		// Open app from push notification
 		const notification = await initializePushNotifications();
@@ -161,7 +175,7 @@ export default class Root extends Component<{}, IState> {
 		return (
 			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
-					<ThemeContextProvider theme={theme} themePreferences={themePreferences} setTheme={this.setTheme}>
+					<ThemeContextProvider theme={theme} themePreferences={themePreferences}>
 						<ResponsiveLayoutProvider>
 							<GestureHandlerRootView>
 								<KeyboardProvider>
@@ -172,6 +186,7 @@ export default class Root extends Component<{}, IState> {
 										<ScreenLockedView />
 										<ChangePasscodeView />
 										<InAppNotification />
+										<ConferenceCall />
 										<Toast />
 										<Loading />
 									</ActionSheetProvider>

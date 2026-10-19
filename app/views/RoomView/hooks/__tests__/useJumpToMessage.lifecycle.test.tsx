@@ -165,6 +165,21 @@ it('resolves the server Chunk anchor through the real resolver before requesting
 	expect(getLocalAnchorTs).not.toHaveBeenCalled();
 });
 
+it('cancels the jump and logs when the server Chunk fails to load', async () => {
+	const failure = new Error('Unable to load room history');
+	lookup.mockResolvedValue(message('target', { fromServer: true }) as any);
+	jest.mocked(loadSurroundingMessages).mockRejectedValue(failure);
+	const view = screen();
+	view.list.isMessageInWindow.mockReturnValue(false);
+	const jump = view.jump('target');
+	await advance(100);
+	await jump;
+	expect(log).toHaveBeenCalledWith(failure);
+	expect(view.list.cancelJumpToMessage).toHaveBeenCalledTimes(1);
+	expect(view.list.jumpToMessage).not.toHaveBeenCalled();
+	expect(visibility()).toEqual([true, false]);
+});
+
 it('lets an older successful List completion dismiss loading while a newer lookup remains pending', async () => {
 	const completion = deferred<void>();
 	const newerLookup = deferred<any>();

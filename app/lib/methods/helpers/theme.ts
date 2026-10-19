@@ -57,6 +57,10 @@ export const setNativeTheme = (themePreferences: IThemePreference) => {
 		} catch (error) {
 			// Do nothing
 		}
+	} else {
+		Appearance.setColorScheme(
+			themePreferences.currentTheme === 'automatic' ? 'unspecified' : theme === 'light' ? 'light' : 'dark'
+		);
 	}
 	SystemUI.setBackgroundColorAsync(themes[theme].surfaceNeutral);
 };

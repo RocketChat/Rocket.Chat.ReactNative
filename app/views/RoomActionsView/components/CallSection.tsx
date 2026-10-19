@@ -7,7 +7,7 @@ import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
 import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { videoConferenceGetCapabilities } from '~/lib/services/restApi';
 
-export default function CallSection({
+function CallSection({
 	room,
 	disabled,
 	itsMe
@@ -69,3 +69,5 @@ export default function CallSection({
 		</List.Section>
 	);
 }
+
+export default CallSection;
