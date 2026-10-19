@@ -146,22 +146,8 @@ function adb(serial, ...args) {
 	return execFileSync('adb', ['-s', serial, ...args], { stdio: 'ignore' });
 }
 
-function waitForWritableDownloads(serial) {
-	const probe = '/sdcard/Download/.push-probe';
-	for (let attempt = 1; attempt <= 30; attempt++) {
-		try {
-			adb(serial, 'shell', `touch ${probe} && rm ${probe}`);
-			return;
-		} catch {
-			Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 2000);
-		}
-	}
-	throw new Error('/sdcard/Download did not become writable within 60s');
-}
-
 function pushAndroid(fixtures) {
 	const serial = androidSerial();
-	waitForWritableDownloads(serial);
 	console.log(`Downloads: adb://${serial}/sdcard/Download/`);
 	const results = [];
 	for (const [name, content] of fixtures) {

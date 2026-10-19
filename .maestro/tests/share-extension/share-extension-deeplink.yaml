@@ -32,24 +32,24 @@ tags:
           appId: com.apple.mobileslideshow
           permissions:
             all: allow
-      - retry:
-          maxRetries: 3
+      - extendedWaitUntil:
+          visible: 'What’s New in Photos'
+          timeout: 20000
+          optional: true
+      - tapOn:
+          text: 'Continue'
+          optional: true
+      - runFlow:
+          when:
+            notVisible: '1 Photo Selected'
           commands:
-            - runFlow:
-                when:
-                  visible: 'What’s New in Photos'
-                commands:
-                  - tapOn: 'Continue'
-            - runFlow:
-                when:
-                  notVisible: '1 Photo Selected'
-                commands:
-                  - extendedWaitUntil:
-                      visible:
-                        id: 'PXGGridLayout-Info'
-                      timeout: 15000
-                  - longPressOn:
-                      id: 'PXGGridLayout-Info'
+            - extendedWaitUntil:
+                visible: 'Library'
+                timeout: 10000
+            - assertVisible:
+                id: 'PXGGridLayout-Info'
+            - longPressOn:
+                id: 'PXGGridLayout-Info'
       - runFlow: './utils/share-file.yaml'
 
 # share files on android

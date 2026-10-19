@@ -249,11 +249,8 @@ tags:
     timeout: 60000
 
 # should have edit button
-- runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'room-info-view-edit-button'
-      IOS_LABEL: 'Room info edit'
+- assertVisible:
+    id: room-info-view-edit-button
 
 # should go back to main room
 - runFlow: '../../helpers/go-back.yaml'

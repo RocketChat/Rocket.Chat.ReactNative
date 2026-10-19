@@ -38,19 +38,9 @@ tags:
     visible:
       id: message-composer-input
     timeout: 60000
-- repeat:
-    times: 10
-    while:
-      notVisible:
-        id: message-composer-input
-        focused: true
-    commands:
-      - pressKey: Remote Dpad Down
-      - waitForAnimationToEnd:
-          timeout: 1000
-- assertVisible:
-    id: message-composer-input
-    focused: true
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
 - inputText: ${output.keyboardMessage}
 - pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Right

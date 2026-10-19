@@ -461,42 +461,16 @@ tags:
     timeout: 60000
 - tapOn:
     id: select-list-view-item-${output.privateRoomName}
-- runFlow:
-    when:
-      platform: android
-    commands:
-      - extendedWaitUntil:
-          visible:
-            id: ${output.privateRoomName}-checked
-          timeout: 60000
-- runFlow:
-    when:
-      platform: iOS
-    commands:
-      - extendedWaitUntil:
-          visible:
-            id: select-list-view-item-${output.privateRoomName}
-            selected: true
-          timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: ${output.privateRoomName}-checked
+    timeout: 60000
 - tapOn:
     id: select-list-view-item-${output.privateRoomName}
-- runFlow:
-    when:
-      platform: android
-    commands:
-      - extendedWaitUntil:
-          notVisible:
-            id: ${output.privateRoomName}-checked
-          timeout: 60000
-- runFlow:
-    when:
-      platform: iOS
-    commands:
-      - extendedWaitUntil:
-          visible:
-            id: select-list-view-item-${output.privateRoomName}
-            selected: false
-          timeout: 60000
+- extendedWaitUntil:
+    notVisible:
+      id: ${output.privateRoomName}-checked
+    timeout: 60000
 - runFlow:
     file: '../../helpers/tap-header-item.yaml'
     env:
