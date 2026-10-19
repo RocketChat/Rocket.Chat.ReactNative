@@ -1,4 +1,3 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getUniqueId } from 'react-native-device-info';
 import EJSON from 'ejson';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
@@ -723,23 +722,26 @@ export const saveUserPreferences = (data: Partial<INotificationPreferences & IMe
 export const saveSidebarCategories = (sidebarCategories: ISidebarCategory[]) =>
 	sdk.post('users.setPreferences', { data: { sidebarCategories } });
 
-export const setRoomsCategory = async (roomIds: string[], category: string | null) => {
+const postAuthenticated = async (path: string, body: object) => {
 	const { login, server } = reduxStore.getState();
-	const { user } = login;
-	const response = await fetch(`${server.server}/api/experimental/rooms.setCategory`, {
+	const response = await fetch(`${server.server}/api/${path}`, {
 		method: 'POST',
 		headers: {
-			...RocketChatSettings.customHeaders,
 			'Content-Type': 'application/json',
-			'X-Auth-Token': user.token,
-			'X-User-Id': user.id
+			'X-Auth-Token': login.user.token,
+			'X-User-Id': login.user.id
 		},
-		body: JSON.stringify({ roomIds, category })
+		body: JSON.stringify(body)
 	});
 	if (!response.ok) {
 		const errorBody = await response.json().catch(() => undefined);
-		throw new Error(errorBody?.error || `${response.status} ${response.statusText}`);
+		throw new Error(errorBody?.error || errorBody?.message || `${response.status} ${response.statusText}`);
 	}
+	return response;
+};
+
+export const setRoomsCategory = async (roomIds: string[], category: string | null) => {
+	await postAuthenticated('experimental/rooms.setCategory', { roomIds, category });
 };
 
 export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
@@ -1135,35 +1137,12 @@ export const editMediaMessage = async (
 	fileId: string,
 	body: { description?: string; filename: string; msg?: string }
 ) => {
-	const { login, server } = reduxStore.getState();
-	const { user } = login;
 	// RC 8.4.0
-	const response = await fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
-		method: 'POST',
-		headers: {
-			...RocketChatSettings.customHeaders,
-			'Content-Type': 'application/json',
-			'X-Auth-Token': user.token,
-			'X-User-Id': user.id
-		},
-		body: JSON.stringify({
-			description: body.description,
-			filename: body.filename,
-			msg: body.msg || ''
-		})
+	const response = await postAuthenticated(`v1/rooms.mediaConfirm/${rid}/${fileId}`, {
+		description: body.description,
+		filename: body.filename,
+		msg: body.msg || ''
 	});
-
-	if (!response.ok) {
-		let errorReason = `${response.status} ${response.statusText}`;
-		try {
-			const errorBody = await response.json();
-			errorReason = errorBody?.error || errorBody?.message || errorReason;
-		} catch {
-			// Best effort only: keep default HTTP reason when body is not JSON.
-		}
-		throw new Error(`Failed to edit media message: ${errorReason}`);
-	}
-
 	return response.json();
 };
 
