@@ -1,7 +1,7 @@
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Image } from 'expo-image';
 
-import AvatarImage from './AvatarImage';
+import AvatarImage from '../AvatarImage';
 
 const style = { width: 25, height: 25, borderRadius: 4 };
 const showDelay = () => act(() => jest.advanceTimersByTime(150));

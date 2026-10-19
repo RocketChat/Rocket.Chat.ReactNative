@@ -296,47 +296,62 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 }
                 testID="avatar"
               >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
-                  }
-                  height={28}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  sfEffect={null}
-                  source={
+                <View
+                  style={
                     [
                       {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/alice.johnson?format=png&size=56",
+                        "borderRadius": 4,
+                        "height": 28,
+                        "width": 28,
+                      },
+                      {
+                        "backgroundColor": "#E4E7EA",
                       },
                     ]
                   }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 28,
-                      "width": 28,
+                >
+                  <ViewManagerAdapter_ExpoImage
+                    borderRadius={4}
+                    containerViewRef={{"current":"Object"}}
+                    contentFit="cover"
+                    contentPosition={
+                      {
+                        "left": "50%",
+                        "top": "50%",
+                      }
                     }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={28}
-                />
+                    height={28}
+                    nativeViewRef={{"current":"NativeComponent"}}
+                    onError={[Function]}
+                    onLoad={[Function]}
+                    onLoadStart={[Function]}
+                    onProgress={[Function]}
+                    placeholder={[]}
+                    priority="high"
+                    sfEffect={null}
+                    source={
+                      [
+                        {
+                          "headers": {
+                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                          },
+                          "uri": "https://open.rocket.chat/avatar/alice.johnson?format=png&size=56",
+                        },
+                      ]
+                    }
+                    style={
+                      {
+                        "borderRadius": 4,
+                        "height": 28,
+                        "width": 28,
+                      }
+                    }
+                    symbolSize={null}
+                    symbolWeight={null}
+                    transition={null}
+                    width={28}
+                  />
+                </View>
               </View>
             </View>
             <View
@@ -507,47 +522,62 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 }
                 testID="avatar"
               >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
-                  }
-                  height={28}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  sfEffect={null}
-                  source={
+                <View
+                  style={
                     [
                       {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/very.long.username?format=png&size=56",
+                        "borderRadius": 4,
+                        "height": 28,
+                        "width": 28,
+                      },
+                      {
+                        "backgroundColor": "#E4E7EA",
                       },
                     ]
                   }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 28,
-                      "width": 28,
+                >
+                  <ViewManagerAdapter_ExpoImage
+                    borderRadius={4}
+                    containerViewRef={{"current":"Object"}}
+                    contentFit="cover"
+                    contentPosition={
+                      {
+                        "left": "50%",
+                        "top": "50%",
+                      }
                     }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={28}
-                />
+                    height={28}
+                    nativeViewRef={{"current":"NativeComponent"}}
+                    onError={[Function]}
+                    onLoad={[Function]}
+                    onLoadStart={[Function]}
+                    onProgress={[Function]}
+                    placeholder={[]}
+                    priority="high"
+                    sfEffect={null}
+                    source={
+                      [
+                        {
+                          "headers": {
+                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                          },
+                          "uri": "https://open.rocket.chat/avatar/very.long.username?format=png&size=56",
+                        },
+                      ]
+                    }
+                    style={
+                      {
+                        "borderRadius": 4,
+                        "height": 28,
+                        "width": 28,
+                      }
+                    }
+                    symbolSize={null}
+                    symbolWeight={null}
+                    transition={null}
+                    width={28}
+                  />
+                </View>
               </View>
             </View>
             <View
@@ -718,47 +748,62 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 }
                 testID="avatar"
               >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
-                  }
-                  height={28}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  sfEffect={null}
-                  source={
+                <View
+                  style={
                     [
                       {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/bob.smith?format=png&size=56",
+                        "borderRadius": 4,
+                        "height": 28,
+                        "width": 28,
+                      },
+                      {
+                        "backgroundColor": "#E4E7EA",
                       },
                     ]
                   }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 28,
-                      "width": 28,
+                >
+                  <ViewManagerAdapter_ExpoImage
+                    borderRadius={4}
+                    containerViewRef={{"current":"Object"}}
+                    contentFit="cover"
+                    contentPosition={
+                      {
+                        "left": "50%",
+                        "top": "50%",
+                      }
                     }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={28}
-                />
+                    height={28}
+                    nativeViewRef={{"current":"NativeComponent"}}
+                    onError={[Function]}
+                    onLoad={[Function]}
+                    onLoadStart={[Function]}
+                    onProgress={[Function]}
+                    placeholder={[]}
+                    priority="high"
+                    sfEffect={null}
+                    source={
+                      [
+                        {
+                          "headers": {
+                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                          },
+                          "uri": "https://open.rocket.chat/avatar/bob.smith?format=png&size=56",
+                        },
+                      ]
+                    }
+                    style={
+                      {
+                        "borderRadius": 4,
+                        "height": 28,
+                        "width": 28,
+                      }
+                    }
+                    symbolSize={null}
+                    symbolWeight={null}
+                    transition={null}
+                    width={28}
+                  />
+                </View>
               </View>
             </View>
             <View

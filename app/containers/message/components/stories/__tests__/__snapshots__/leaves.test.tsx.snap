@@ -1325,47 +1325,62 @@ exports[`Story Snapshots: MessageAvatar should match snapshot 1`] = `
           accessible={true}
           style={{}}
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={4}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={36}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 4,
-                "height": 36,
-                "width": 36,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={36}
-          />
+              height={36}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={36}
+            />
+          </View>
         </View>
       </View>
     </ExternalKeyboardView>

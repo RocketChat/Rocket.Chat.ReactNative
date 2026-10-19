@@ -73,47 +73,62 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
       }
       testID="avatar"
     >
-      <ViewManagerAdapter_ExpoImage
-        borderRadius={4}
-        containerViewRef={{"current":"Object"}}
-        contentFit="cover"
-        contentPosition={
-          {
-            "left": "50%",
-            "top": "50%",
-          }
-        }
-        height={30}
-        nativeViewRef={{"current":"NativeComponent"}}
-        onError={[Function]}
-        onLoad={[Function]}
-        onLoadStart={[Function]}
-        onProgress={[Function]}
-        placeholder={[]}
-        priority="high"
-        sfEffect={null}
-        source={
+      <View
+        style={
           [
             {
-              "headers": {
-                "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-              },
-              "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
+              "borderRadius": 4,
+              "height": 30,
+              "width": 30,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
             },
           ]
         }
-        style={
-          {
-            "borderRadius": 4,
-            "height": 30,
-            "width": 30,
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={4}
+          containerViewRef={{"current":"Object"}}
+          contentFit="cover"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
           }
-        }
-        symbolSize={null}
-        symbolWeight={null}
-        transition={null}
-        width={30}
-      />
+          height={30}
+          nativeViewRef={{"current":"NativeComponent"}}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          priority="high"
+          sfEffect={null}
+          source={
+            [
+              {
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
+                "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 4,
+              "height": 30,
+              "width": 30,
+            }
+          }
+          symbolSize={null}
+          symbolWeight={null}
+          transition={null}
+          width={30}
+        />
+      </View>
     </View>
     <View
       style={
@@ -235,47 +250,62 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         }
         testID="avatar"
       >
-        <ViewManagerAdapter_ExpoImage
-          borderRadius={4}
-          containerViewRef={{"current":"Object"}}
-          contentFit="cover"
-          contentPosition={
-            {
-              "left": "50%",
-              "top": "50%",
-            }
-          }
-          height={30}
-          nativeViewRef={{"current":"NativeComponent"}}
-          onError={[Function]}
-          onLoad={[Function]}
-          onLoadStart={[Function]}
-          onProgress={[Function]}
-          placeholder={[]}
-          priority="high"
-          sfEffect={null}
-          source={
+        <View
+          style={
             [
               {
-                "headers": {
-                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                },
-                "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
               },
             ]
           }
-          style={
-            {
-              "borderRadius": 4,
-              "height": 30,
-              "width": 30,
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={{"current":"Object"}}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
             }
-          }
-          symbolSize={null}
-          symbolWeight={null}
-          transition={null}
-          width={30}
-        />
+            height={30}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            sfEffect={null}
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              }
+            }
+            symbolSize={null}
+            symbolWeight={null}
+            transition={null}
+            width={30}
+          />
+        </View>
       </View>
       <View
         style={
@@ -467,47 +497,62 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
         }
         testID="avatar"
       >
-        <ViewManagerAdapter_ExpoImage
-          borderRadius={4}
-          containerViewRef={{"current":"Object"}}
-          contentFit="cover"
-          contentPosition={
-            {
-              "left": "50%",
-              "top": "50%",
-            }
-          }
-          height={30}
-          nativeViewRef={{"current":"NativeComponent"}}
-          onError={[Function]}
-          onLoad={[Function]}
-          onLoadStart={[Function]}
-          onProgress={[Function]}
-          placeholder={[]}
-          priority="high"
-          sfEffect={null}
-          source={
+        <View
+          style={
             [
               {
-                "headers": {
-                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                },
-                "uri": "https://open.rocket.chat/avatar/long.name?format=png&size=60",
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
               },
             ]
           }
-          style={
-            {
-              "borderRadius": 4,
-              "height": 30,
-              "width": 30,
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={{"current":"Object"}}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
             }
-          }
-          symbolSize={null}
-          symbolWeight={null}
-          transition={null}
-          width={30}
-        />
+            height={30}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            sfEffect={null}
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/long.name?format=png&size=60",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              }
+            }
+            symbolSize={null}
+            symbolWeight={null}
+            transition={null}
+            width={30}
+          />
+        </View>
       </View>
       <View
         style={
@@ -699,47 +744,62 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
         }
         testID="avatar"
       >
-        <ViewManagerAdapter_ExpoImage
-          borderRadius={4}
-          containerViewRef={{"current":"Object"}}
-          contentFit="cover"
-          contentPosition={
-            {
-              "left": "50%",
-              "top": "50%",
-            }
-          }
-          height={30}
-          nativeViewRef={{"current":"NativeComponent"}}
-          onError={[Function]}
-          onLoad={[Function]}
-          onLoadStart={[Function]}
-          onProgress={[Function]}
-          placeholder={[]}
-          priority="high"
-          sfEffect={null}
-          source={
+        <View
+          style={
             [
               {
-                "headers": {
-                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                },
-                "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
               },
             ]
           }
-          style={
-            {
-              "borderRadius": 4,
-              "height": 30,
-              "width": 30,
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={{"current":"Object"}}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
             }
-          }
-          symbolSize={null}
-          symbolWeight={null}
-          transition={null}
-          width={30}
-        />
+            height={30}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            sfEffect={null}
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 30,
+                "width": 30,
+              }
+            }
+            symbolSize={null}
+            symbolWeight={null}
+            transition={null}
+            width={30}
+          />
+        </View>
       </View>
       <View
         style={

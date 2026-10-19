@@ -104,47 +104,62 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -1002,47 +1017,62 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -1906,47 +1936,62 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -2804,47 +2849,62 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -3702,47 +3762,62 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -4600,47 +4675,62 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -5481,47 +5571,62 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -6351,47 +6456,62 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -7227,47 +7347,62 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -8097,47 +8232,62 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -8967,47 +9117,62 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -9837,47 +10002,62 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -10707,47 +10887,62 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View
@@ -11594,47 +11789,62 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={2}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={120}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 2,
-                "height": 120,
-                "width": 120,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={2}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={120}
-          />
+              height={120}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 2,
+                  "height": 120,
+                  "width": 120,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={120}
+            />
+          </View>
         </View>
       </View>
       <View

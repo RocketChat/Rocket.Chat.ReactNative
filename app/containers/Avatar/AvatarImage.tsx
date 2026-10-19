@@ -1,8 +1,8 @@
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View, type ImageStyle, type ViewStyle } from 'react-native';
 import { Image } from 'expo-image';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-import Animated, { cancelAnimation, makeMutable, useAnimatedStyle, withRepeat, withTiming } from 'react-native-reanimated';
+import Animated, { makeMutable, useAnimatedStyle, withRepeat, withTiming } from 'react-native-reanimated';
 
 import { headers } from '~/lib/methods/helpers/fetch';
 import { useTheme } from '~/theme';
@@ -31,7 +31,6 @@ const startPulse = () => {
 
 const stopPulse = () => {
 	if (--activeSkeletons === 0) {
-		cancelAnimation(pulse);
 		pulse.value = 1;
 	}
 };
@@ -55,7 +54,7 @@ const Skeleton = ({ borderRadius }: { borderRadius: ViewStyle['borderRadius'] })
 	);
 };
 
-const AvatarImage = memo(({ uri, style }: IAvatarImage) => {
+const AvatarImage = ({ uri, style }: IAvatarImage) => {
 	const { colors } = useTheme();
 	const [loadedUri, setLoadedUri] = useState<string | undefined>();
 	const [delayedUri, setDelayedUri] = useState<string | undefined>();
@@ -83,6 +82,6 @@ const AvatarImage = memo(({ uri, style }: IAvatarImage) => {
 			{showSkeleton ? <Skeleton borderRadius={style.borderRadius} /> : null}
 		</View>
 	);
-});
+};
 
 export default AvatarImage;

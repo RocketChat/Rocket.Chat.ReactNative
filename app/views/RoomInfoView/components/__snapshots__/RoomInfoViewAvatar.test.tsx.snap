@@ -28,47 +28,62 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     }
     testID="avatar"
   >
-    <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
-      containerViewRef={{"current":"Object"}}
-      contentFit="cover"
-      contentPosition={
-        {
-          "left": "50%",
-          "top": "50%",
-        }
-      }
-      height={120}
-      nativeViewRef={{"current":"NativeComponent"}}
-      onError={[Function]}
-      onLoad={[Function]}
-      onLoadStart={[Function]}
-      onProgress={[Function]}
-      placeholder={[]}
-      priority="high"
-      sfEffect={null}
-      source={
+    <View
+      style={
         [
           {
-            "headers": {
-              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-            },
-            "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=240",
+            "borderRadius": 4,
+            "height": 120,
+            "width": 120,
+          },
+          {
+            "backgroundColor": "#E4E7EA",
           },
         ]
       }
-      style={
-        {
-          "borderRadius": 4,
-          "height": 120,
-          "width": 120,
+    >
+      <ViewManagerAdapter_ExpoImage
+        borderRadius={4}
+        containerViewRef={{"current":"Object"}}
+        contentFit="cover"
+        contentPosition={
+          {
+            "left": "50%",
+            "top": "50%",
+          }
         }
-      }
-      symbolSize={null}
-      symbolWeight={null}
-      transition={null}
-      width={120}
-    />
+        height={120}
+        nativeViewRef={{"current":"NativeComponent"}}
+        onError={[Function]}
+        onLoad={[Function]}
+        onLoadStart={[Function]}
+        onProgress={[Function]}
+        placeholder={[]}
+        priority="high"
+        sfEffect={null}
+        source={
+          [
+            {
+              "headers": {
+                "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+              },
+              "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=240",
+            },
+          ]
+        }
+        style={
+          {
+            "borderRadius": 4,
+            "height": 120,
+            "width": 120,
+          }
+        }
+        symbolSize={null}
+        symbolWeight={null}
+        transition={null}
+        width={120}
+      />
+    </View>
   </View>
 </View>
 `;
@@ -101,47 +116,62 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
     }
     testID="avatar"
   >
-    <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
-      containerViewRef={{"current":"Object"}}
-      contentFit="cover"
-      contentPosition={
-        {
-          "left": "50%",
-          "top": "50%",
-        }
-      }
-      height={120}
-      nativeViewRef={{"current":"NativeComponent"}}
-      onError={[Function]}
-      onLoad={[Function]}
-      onLoadStart={[Function]}
-      onProgress={[Function]}
-      placeholder={[]}
-      priority="high"
-      sfEffect={null}
-      source={
+    <View
+      style={
         [
           {
-            "headers": {
-              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-            },
-            "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=240",
+            "borderRadius": 4,
+            "height": 120,
+            "width": 120,
+          },
+          {
+            "backgroundColor": "#E4E7EA",
           },
         ]
       }
-      style={
-        {
-          "borderRadius": 4,
-          "height": 120,
-          "width": 120,
+    >
+      <ViewManagerAdapter_ExpoImage
+        borderRadius={4}
+        containerViewRef={{"current":"Object"}}
+        contentFit="cover"
+        contentPosition={
+          {
+            "left": "50%",
+            "top": "50%",
+          }
         }
-      }
-      symbolSize={null}
-      symbolWeight={null}
-      transition={null}
-      width={120}
-    />
+        height={120}
+        nativeViewRef={{"current":"NativeComponent"}}
+        onError={[Function]}
+        onLoad={[Function]}
+        onLoadStart={[Function]}
+        onProgress={[Function]}
+        placeholder={[]}
+        priority="high"
+        sfEffect={null}
+        source={
+          [
+            {
+              "headers": {
+                "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+              },
+              "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=240",
+            },
+          ]
+        }
+        style={
+          {
+            "borderRadius": 4,
+            "height": 120,
+            "width": 120,
+          }
+        }
+        symbolSize={null}
+        symbolWeight={null}
+        transition={null}
+        width={120}
+      />
+    </View>
   </View>
   <View
     accessibilityLabel="Edit room photo"

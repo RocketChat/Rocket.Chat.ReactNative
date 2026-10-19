@@ -140,47 +140,62 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={4}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={48}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/room/rid-1?format=png&size=96",
+                  "borderRadius": 4,
+                  "height": 48,
+                  "width": 48,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 4,
-                "height": 48,
-                "width": 48,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={48}
-          />
+              height={48}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/room/rid-1?format=png&size=96",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 48,
+                  "width": 48,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={48}
+            />
+          </View>
         </View>
         <View
           style={
@@ -502,47 +517,62 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={4}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={48}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=96",
+                  "borderRadius": 4,
+                  "height": 48,
+                  "width": 48,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 4,
-                "height": 48,
-                "width": 48,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={48}
-          />
+              height={48}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=96",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 48,
+                  "width": 48,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={48}
+            />
+          </View>
         </View>
         <View
           style={
@@ -864,47 +894,62 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={4}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={48}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/room/rid-1?format=png&size=96",
+                  "borderRadius": 4,
+                  "height": 48,
+                  "width": 48,
+                },
+                {
+                  "backgroundColor": "#16181a",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 4,
-                "height": 48,
-                "width": 48,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={48}
-          />
+              height={48}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/room/rid-1?format=png&size=96",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 48,
+                  "width": 48,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={48}
+            />
+          </View>
         </View>
         <View
           style={
@@ -1226,47 +1271,62 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           }
           testID="avatar"
         >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={4}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={48}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            sfEffect={null}
-            source={
+          <View
+            style={
               [
                 {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/room/rid-1?format=png&size=96",
+                  "borderRadius": 4,
+                  "height": 48,
+                  "width": 48,
+                },
+                {
+                  "backgroundColor": "#2D3039",
                 },
               ]
             }
-            style={
-              {
-                "borderRadius": 4,
-                "height": 48,
-                "width": 48,
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={{"current":"Object"}}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
               }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={48}
-          />
+              height={48}
+              nativeViewRef={{"current":"NativeComponent"}}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              sfEffect={null}
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/room/rid-1?format=png&size=96",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 48,
+                  "width": 48,
+                }
+              }
+              symbolSize={null}
+              symbolWeight={null}
+              transition={null}
+              width={48}
+            />
+          </View>
         </View>
         <View
           style={
