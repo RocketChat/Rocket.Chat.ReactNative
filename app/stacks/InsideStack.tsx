@@ -17,7 +17,6 @@ import { isIOS } from '../lib/methods/helpers';
 import { type TNavigation } from './stackType';
 import RoomView from '../views/RoomView';
 import RoomsListView from '../views/RoomsListView';
-import { useCanCreateRoom, useNewMessage } from '../views/RoomsListView/hooks/useNewMessage';
 import RoomActionsView from '../views/RoomActionsView';
 import RoomInfoView from '../views/RoomInfoView';
 import ReportUserView from '../views/ReportUserView';
@@ -205,8 +204,6 @@ const MenuStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
-const EmptyScreen = () => null;
-
 const textlessBadge = isIOS ? ' ' : '';
 
 const HomeTabs = createNativeBottomTabNavigator({
@@ -242,45 +239,29 @@ const HomeTabs = createNativeBottomTabNavigator({
 			screen: RoomsSearchStack,
 			options: () => ({
 				title: I18n.t('Search'),
-				tabBarSystemItem: 'search',
+				...(isIOS
+					? { tabBarSystemItem: 'search' as const }
+					: { tabBarIcon: { type: 'image' as const, source: require('../static/images/tabs/search.png') } }),
 				tabBarButtonTestID: 'tab-search',
 				tabBarStyle: { display: 'none' }
-			})
-		}),
-		NewMessageTab: createNativeBottomTabScreen({
-			screen: EmptyScreen,
-			if: useCanCreateRoom,
-			options: () => ({
-				title: I18n.t('Create_new_channel_team_dm_discussion'),
-				tabBarLabel: '',
-				tabBarButtonTestID: 'tab-new-message',
-				tabBarSelectionEnabled: false,
-				tabBarIcon: { type: 'sfSymbol', name: 'plus' }
 			})
 		})
 	}
 }).with(({ Navigator }) => {
 	const { colors } = useTheme();
 	const { disabled, badgeColor } = useMenuButtonState();
-	const { goToNewMessage } = useNewMessage();
 	return (
 		<Navigator
 			screenOptions={({ route }) => ({
 				tabBarActiveTintColor: colors.buttonBackgroundPrimaryDefault,
 				tabBarInactiveTintColor: colors.fontSecondaryInfo,
+				tabBarLabelVisibilityMode: 'labeled',
 				tabBarStyle: { backgroundColor: colors.surfaceLight },
 				...(route.name === 'MenuStackNavigator' && {
 					tabBarSelectionEnabled: !disabled,
 					tabBarBadge: badgeColor ? textlessBadge : undefined,
 					tabBarBadgeStyle: { backgroundColor: badgeColor }
 				})
-			})}
-			screenListeners={({ route }) => ({
-				tabPress: () => {
-					if (route.name === 'NewMessageTab') {
-						goToNewMessage();
-					}
-				}
 			})}
 		/>
 	);

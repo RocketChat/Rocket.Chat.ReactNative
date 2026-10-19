@@ -26,7 +26,7 @@ export const useNativeRoomsListHeader = () => {
 	const { canCreateRoom, goToNewMessage } = useNewMessage();
 	const isSearchTab = useRoute().name === 'RoomsSearchView';
 	const showsSearchBar = isMasterDetail || isSearchTab;
-	const showsNewMessageAction = showsSearchBar && canCreateRoom;
+	const showsNewMessageAction = isMasterDetail && canCreateRoom;
 	const showsCancelSearch = isTablet && searchEnabled;
 
 	useFocusEffect(

@@ -13,7 +13,7 @@ tags:
       platform: android
     commands:
       - tapOn:
-          id: 'rooms-list-view-search'
+          id: 'tab-search'
       - extendedWaitUntil:
           visible:
             id: 'rooms-list-view-search-input'

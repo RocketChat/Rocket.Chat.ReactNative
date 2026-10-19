@@ -241,7 +241,6 @@ export type HomeTabsParamList = {
 	DirectMessagesStackNavigator: NavigatorScreenParams<{ DirectMessagesView: undefined }>;
 	MenuStackNavigator: NavigatorScreenParams<{ MenuView: undefined }>;
 	RoomsSearchStackNavigator: NavigatorScreenParams<{ RoomsSearchView: undefined }>;
-	NewMessageTab: undefined;
 };
 
 export type MainStackParamList = { HomeTabs: NavigatorScreenParams<HomeTabsParamList> } & Omit<

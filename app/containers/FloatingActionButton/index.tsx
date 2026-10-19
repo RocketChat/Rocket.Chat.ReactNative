@@ -1,5 +1,5 @@
 import { Platform, Pressable, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-screens/experimental';
 
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import { useTheme } from '~/theme';
@@ -11,9 +11,10 @@ export const FLOATING_ACTION_BUTTON_CLEARANCE = SIZE + MARGIN * 2;
 
 const styles = StyleSheet.create({
 	container: {
-		...StyleSheet.absoluteFill,
-		alignItems: 'flex-end',
-		justifyContent: 'flex-end',
+		position: 'absolute',
+		right: 0,
+		bottom: 0,
+		flex: 0,
 		padding: MARGIN
 	},
 	button: {
@@ -39,7 +40,7 @@ interface IFloatingActionButton {
 const FloatingActionButton = ({ icon, accessibilityLabel, testID, onPress }: IFloatingActionButton) => {
 	const { colors } = useTheme();
 	return (
-		<SafeAreaView edges={['bottom']} pointerEvents='box-none' style={styles.container}>
+		<SafeAreaView edges={{ bottom: true }} pointerEvents='box-none' style={styles.container}>
 			<Pressable
 				testID={testID}
 				accessibilityRole='button'

@@ -1,4 +1,5 @@
-import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
+import { useCallback, useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { InteractionManager } from 'react-native';
 import { type KeyboardFocus } from 'react-native-external-keyboard';
 
@@ -24,6 +25,15 @@ export const useJsRoomsListHeader = () => {
 		useRoomsListHeaderState();
 	const isAccessibilityNavigationEnabled = useIsAccessibilityNavigationEnabled();
 	const settingsButtonRef = useRef<KeyboardFocus>(null);
+	const isSearchTab = useRoute().name === 'RoomsSearchView';
+
+	useFocusEffect(
+		useCallback(() => {
+			if (isSearchTab) {
+				startSearch();
+			}
+		}, [isSearchTab, startSearch])
+	);
 
 	useLayoutEffect(() => {
 		const searchAction: IHeaderAction = {
@@ -34,12 +44,18 @@ export const useJsRoomsListHeader = () => {
 			onPress: startSearch
 		};
 		const headerTitle = () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />;
+		const onCloseSearch = isSearchTab
+			? () => {
+					stopSearch();
+					navigation.navigate('RoomsListStackNavigator');
+				}
+			: stopSearch;
 		const nextOptions = searchEnabled
 			? {
 					headerTitle,
 					headerLeft: () => (
 						<HeaderButton.Container style={{ marginLeft: 1 }} left>
-							<HeaderButton.Item iconName='close' onPress={stopSearch} />
+							<HeaderButton.Item iconName='close' onPress={onCloseSearch} />
 						</HeaderButton.Container>
 					),
 					headerRight: () => null
@@ -57,12 +73,13 @@ export const useJsRoomsListHeader = () => {
 								/>
 							)
 						: undefined,
-					...headerRightActions([...troubleshootActions, searchAction, ...browseActions])
+					...headerRightActions([...troubleshootActions, ...(isMasterDetail ? [searchAction] : []), ...browseActions])
 				};
 		navigation.setOptions(nextOptions);
 	}, [
 		navigation,
 		isMasterDetail,
+		isSearchTab,
 		disabled,
 		badgeColor,
 		troubleshootActions,

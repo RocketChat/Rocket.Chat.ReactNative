@@ -291,17 +291,16 @@ describe('RoomsListView useHeader', () => {
 		expect(mockNavigation.navigate).not.toHaveBeenCalled();
 	});
 
-	it('puts the Search tab search bar in the bottom toolbar next to the create item', () => {
+	it('puts the Search tab search bar in the bottom toolbar without a create item', () => {
 		mockRouteName = 'RoomsSearchView';
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(options.headerSearchBarOptions.placement).toBe('automatic');
-		const toolbarLabels = options
+		const toolbarItems = options
 			.unstable_headerRightItems({})
-			.filter((item: { placement?: string }) => item.placement === 'toolbar')
-			.map((item: { accessibilityLabel: string }) => item.accessibilityLabel);
-		expect(toolbarLabels).toEqual(['Create new channel, team, direct message or discussion']);
+			.filter((item: { placement?: string }) => item.placement === 'toolbar');
+		expect(toolbarItems).toEqual([]);
 	});
 
 	it('focuses the search bar when the Search tab is focused', () => {
@@ -379,6 +378,71 @@ describe('RoomsListView useHeader', () => {
 		const options = mockSetOptions.mock.calls[0][0];
 		expect(options.headerLargeTitle).toBeUndefined();
 		expect(typeof options.headerTitle).toBe('function');
+	});
+
+	describe('JS header', () => {
+		const renderJsHeader = ({ searchEnabled = false } = {}) =>
+			renderHook(() => useJsRoomsListHeader(), {
+				wrapper: ({ children }: { children: ReactElement }) => (
+					<RoomsSearchContext.Provider value={{ ...searchContextValue, searchEnabled }}>{children}</RoomsSearchContext.Provider>
+				)
+			});
+		const rightActionTestIDs = () =>
+			mockSetOptions.mock.calls[0][0]
+				.headerRight()
+				.props.actions.map((action: { testID?: string; label: string }) => action.testID ?? action.label);
+
+		beforeEach(() => {
+			mockIsIOS = false;
+		});
+
+		it('leaves search to the Search tab on phones', () => {
+			renderJsHeader();
+
+			expect(rightActionTestIDs()).not.toContain('rooms-list-view-search');
+		});
+
+		it('keeps the search action in the header on master detail', () => {
+			mockIsMasterDetail = true;
+
+			renderJsHeader();
+
+			expect(rightActionTestIDs()).toContain('rooms-list-view-search');
+		});
+
+		it('starts searching when the Search tab is focused', () => {
+			mockRouteName = 'RoomsSearchView';
+
+			renderJsHeader();
+
+			expect(mockStartSearch).toHaveBeenCalledTimes(1);
+		});
+
+		it('does not start searching when the Chats tab is focused', () => {
+			renderJsHeader();
+
+			expect(mockStartSearch).not.toHaveBeenCalled();
+		});
+
+		it('returns to the Chats tab when the Search tab search is closed', () => {
+			mockRouteName = 'RoomsSearchView';
+
+			renderJsHeader({ searchEnabled: true });
+			mockSetOptions.mock.calls[0][0].headerLeft().props.children.props.onPress();
+
+			expect(mockStopSearch).toHaveBeenCalledTimes(1);
+			expect(mockNavigation.navigate).toHaveBeenCalledWith('RoomsListStackNavigator');
+		});
+
+		it('stays on the current tab when a header search is closed', () => {
+			mockIsMasterDetail = true;
+
+			renderJsHeader({ searchEnabled: true });
+			mockSetOptions.mock.calls[0][0].headerLeft().props.children.props.onPress();
+
+			expect(mockStopSearch).toHaveBeenCalledTimes(1);
+			expect(mockNavigation.navigate).not.toHaveBeenCalled();
+		});
 	});
 
 	it('uses the native header on iPad', () => {
