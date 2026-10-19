@@ -234,7 +234,6 @@ export type SettingsStackParamList = {
 	ScreenLockConfigView: undefined;
 	ProfileView: undefined;
 	DisplayPrefsView: undefined;
-	CategoryOrderView: undefined;
 	MediaAutoDownloadView: undefined;
 	PushTroubleshootView: undefined;
 	GetHelpView: undefined;
