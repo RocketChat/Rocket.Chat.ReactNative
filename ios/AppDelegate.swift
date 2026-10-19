@@ -78,16 +78,22 @@ public class AppDelegate: ExpoAppDelegate {
     let groupDir = fileManager.groupDir()
     let legacySuffix = "-experimental.db"
     let serversLegacyName = "default\(legacySuffix)"
-    guard isFile(atPath: "\(groupDir)/\(serversLegacyName)"),
+    let serversLegacyPath = "\(groupDir)/\(serversLegacyName)"
+    guard isFile(atPath: serversLegacyPath),
           let groupFiles = try? fileManager.contentsOfDirectory(atPath: groupDir) else {
       return
     }
     let legacyNames = groupFiles.filter { $0.hasSuffix(legacySuffix) && isFile(atPath: "\(groupDir)/\($0)") }
+    var targetKept = false
     for name in legacyNames.filter({ $0 != serversLegacyName }) + [serversLegacyName] {
       let from = "\(groupDir)/\(name)"
       let to = "\(groupDir)/\(name.dropLast(legacySuffix.count)).db"
+      if to == serversLegacyPath || (name == serversLegacyName && targetKept) {
+        continue
+      }
       if let size = (try? fileManager.attributesOfItem(atPath: to))?[.size] as? Int, size > 0 {
         guard name == serversLegacyName, isReplaceableServersDatabase(atPath: to) else {
+          targetKept = true
           continue
         }
         discardDatabase(atPath: to)

@@ -104,14 +104,17 @@ open class MainApplication : Application(), ReactApplication {
     }
     val dataDirFiles = dataDir.listFiles() ?: return
     val otherLegacy = dataDirFiles.filter { it.isFile && it.name.endsWith(legacySuffix) && it != serversLegacy }
+    var targetKept = false
     for (legacy in otherLegacy + serversLegacy) {
+      val isServersDatabase = legacy == serversLegacy
       val target = File(legacy.path.removeSuffix(legacySuffix) + ".db.db")
       val targetCollidesWithServersLegacy = target == serversLegacy
-      if (targetCollidesWithServersLegacy) {
+      if (targetCollidesWithServersLegacy || (isServersDatabase && targetKept)) {
         continue
       }
       if (target.length() > 0) {
-        if (!isReplaceable(target, isServersDatabase = legacy == serversLegacy)) {
+        if (!isReplaceable(target, isServersDatabase)) {
+          targetKept = true
           continue
         }
         discardDatabase(target)
@@ -125,8 +128,10 @@ open class MainApplication : Application(), ReactApplication {
   private fun moveDatabase(from: File, to: File) {
     for ((source, destination) in sidecarsThenMain(from).zip(sidecarsThenMain(to))) {
       if (source.exists()) {
-        abortStartupOnFailure("Failed to migrate ${source.name} to ${destination.name}") {
+        try {
           Os.rename(source.path, destination.path)
+        } catch (e: ErrnoException) {
+          throw IllegalStateException("Failed to migrate ${source.name} to ${destination.name}", e)
         }
       }
     }
@@ -135,16 +140,12 @@ open class MainApplication : Application(), ReactApplication {
   private fun discardDatabase(main: File) {
     for (file in sidecarsThenMain(main)) {
       if (file.exists()) {
-        abortStartupOnFailure("Failed to discard ${file.name}") { Os.remove(file.path) }
+        try {
+          Os.remove(file.path)
+        } catch (e: ErrnoException) {
+          throw IllegalStateException("Failed to discard ${file.name}", e)
+        }
       }
-    }
-  }
-
-  private fun abortStartupOnFailure(message: String, operation: () -> Unit) {
-    try {
-      operation()
-    } catch (e: ErrnoException) {
-      throw IllegalStateException(message, e)
     }
   }
 
