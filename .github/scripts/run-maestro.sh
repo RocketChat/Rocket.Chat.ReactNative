@@ -93,7 +93,7 @@ echo "Preflight OK: ${E2E_SERVER}/api/info -> 200"
 MAPFILE="$(mktemp)"
 # Redact on every exit path, before the always() upload reads the logs
 BRIDGE_PID=""
-trap 'rm -f "$MAPFILE"; [ -n "$BRIDGE_PID" ] && kill "$BRIDGE_PID" 2>/dev/null; redact_uploaded_logs' EXIT
+trap 'rm -f "$MAPFILE"; redact_uploaded_logs; [ -n "$BRIDGE_PID" ] && kill "$BRIDGE_PID" 2>/dev/null || true' EXIT
 
 while IFS= read -r -d '' file; do
   if grep -qE "^[[:space:]]*-[[:space:]]*['\"]?test-${SHARD}['\"]?([[:space:]]*$|[[:space:]]*,|[[:space:]]*\\])" "$file"; then
