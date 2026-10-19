@@ -339,7 +339,8 @@ async function login(credentials: ILoginCredentials): Promise<ILoggedUser> {
 		bio: result.me.bio,
 		nickname: result.me.nickname,
 		requirePasswordChange: result.me.requirePasswordChange,
-		sidebarCategories: result.me.settings?.preferences?.sidebarCategories
+		sidebarCategories: result.me.settings?.preferences?.sidebarCategories,
+		settings: { preferences: { ...result.me.settings?.preferences } }
 	};
 	return user;
 }

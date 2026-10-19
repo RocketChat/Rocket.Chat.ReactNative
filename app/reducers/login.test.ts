@@ -95,19 +95,19 @@ describe('test selectedUsers reducer', () => {
 		expect(after.username).toEqual(before.username);
 	});
 
-	it('should keep the user settings when the same user logs in again', () => {
-		const settings = { preferences: { convertAsciiEmoji: true } };
+	it('should take the server settings when the same user logs in again', () => {
 		const store = createMockedStore();
-		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings }));
-		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito' }));
-		expect(store.getState().login.user.settings).toBe(settings);
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: true } } }));
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: false } } }));
+		expect(store.getState().login.user.settings).toEqual({ preferences: { convertAsciiEmoji: false } });
 	});
 
 	it('should keep the same user object when the same user logs in with unchanged fields', () => {
 		const store = createMockedStore();
-		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'] }));
+		const settings = { preferences: { convertAsciiEmoji: true } };
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'], settings }));
 		const before = store.getState().login.user;
-		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'] }));
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'], settings: { ...settings } }));
 		expect(store.getState().login.user).toBe(before);
 	});
 
@@ -115,6 +115,20 @@ describe('test selectedUsers reducer', () => {
 		const store = createMockedStore();
 		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: true } } }));
 		store.dispatch(loginSuccess({ id: 'other-id', username: 'other' }));
+		expect(store.getState().login.user.settings).toBeUndefined();
+	});
+
+	it('should not carry the previous server settings when switching to another server', () => {
+		const store = createMockedStore();
+		store.dispatch(
+			loginSuccess({
+				id: 'user-id',
+				username: 'carlito',
+				settings: { preferences: { convertAsciiEmoji: true, enableMobileRinging: true } }
+			})
+		);
+		store.dispatch(setUser({ id: 'other-server-user-id', username: 'carlito' }));
+		store.dispatch(loginSuccess({ id: 'other-server-user-id', username: 'carlito' }));
 		expect(store.getState().login.user.settings).toBeUndefined();
 	});
 

@@ -34,12 +34,7 @@ export interface ILogin {
 const isSubsetOf = (fields: Partial<IUser>, user: Partial<IUser>) =>
 	Object.entries(fields).every(([key, value]) => dequal(user[key as keyof IUser], value));
 
-const userAfterLogin = (previous: Partial<IUser>, loggedIn: Partial<IUser>) => {
-	if (previous.id !== loggedIn.id) {
-		return loggedIn;
-	}
-	return isSubsetOf(loggedIn, previous) ? previous : { settings: previous.settings, ...loggedIn };
-};
+const userAfterLogin = (previous: Partial<IUser>, loggedIn: Partial<IUser>) => (dequal(previous, loggedIn) ? previous : loggedIn);
 
 export const initialState: ILogin = {
 	isLocalAuthenticated: true,
