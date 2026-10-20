@@ -3,6 +3,7 @@ import { DrawerActions } from '@react-navigation/native';
 import { triggerAppActionButton } from '~/lib/apps/actions';
 import { UIActionButtonContext } from '~/lib/apps/definitions';
 import { useAppActionButtons } from '~/lib/apps/useAppActionButtons';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import Navigation from '~/lib/navigation/appNavigation';
 
@@ -13,8 +14,9 @@ export interface ISidebarAppAction {
 	onPress: () => void;
 }
 
-export const useSidebarAppActions = (): ISidebarAppAction[] =>
-	useAppActionButtons()
+export const useSidebarAppActions = (): ISidebarAppAction[] => {
+	const isMasterDetail = useMasterDetail();
+	return useAppActionButtons()
 		.filter(({ button }) => button.context === UIActionButtonContext.USER_DROPDOWN_ACTION)
 		.map(({ id, label, button }) => ({
 			id,
@@ -22,7 +24,12 @@ export const useSidebarAppActions = (): ISidebarAppAction[] =>
 			testID: `sidebar-app-${id}`,
 			onPress: () => {
 				logEvent(events.SIDEBAR_APP_ACTION, { appId: button.appId, actionId: button.actionId });
-				Navigation.dispatch(DrawerActions.closeDrawer());
+				if (isMasterDetail) {
+					Navigation.popTo('DrawerNavigator');
+				} else {
+					Navigation.dispatch(DrawerActions.closeDrawer());
+				}
 				triggerAppActionButton({ button });
 			}
 		}));
+};

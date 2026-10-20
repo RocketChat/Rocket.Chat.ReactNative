@@ -3,13 +3,15 @@ import { renderHook } from '@testing-library/react-native';
 import { useSidebarAppActions } from '../useSidebarAppActions';
 import { triggerAppActionButton } from '~/lib/apps/actions';
 import { type IAppActionButtonItem, useAppActionButtons } from '~/lib/apps/useAppActionButtons';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { logEvent } from '~/lib/methods/helpers/log';
 import Navigation from '~/lib/navigation/appNavigation';
 
 jest.mock('~/lib/apps/useAppActionButtons', () => ({ useAppActionButtons: jest.fn() }));
 jest.mock('~/lib/apps/actions', () => ({ triggerAppActionButton: jest.fn() }));
 jest.mock('~/lib/methods/helpers/log', () => ({ events: { SIDEBAR_APP_ACTION: 'sidebar_app_action' }, logEvent: jest.fn() }));
-jest.mock('~/lib/navigation/appNavigation', () => ({ dispatch: jest.fn() }));
+jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: jest.fn(() => false) }));
+jest.mock('~/lib/navigation/appNavigation', () => ({ dispatch: jest.fn(), popTo: jest.fn() }));
 
 const mockedHook = useAppActionButtons as jest.Mock;
 
@@ -45,6 +47,18 @@ describe('useSidebarAppActions', () => {
 
 		expect(logEvent).toHaveBeenCalledWith('sidebar_app_action', { appId: 'app-1', actionId: 'open-thing' });
 		expect(Navigation.dispatch).toHaveBeenCalledWith(expect.objectContaining({ type: 'CLOSE_DRAWER' }));
+		expect(triggerAppActionButton).toHaveBeenCalledWith({ button: dropdownItem.button });
+	});
+
+	it('closes the settings modal on master detail and triggers the app action', () => {
+		(useMasterDetail as jest.Mock).mockReturnValueOnce(true);
+		const dropdownItem = item('open-thing', 'userDropdownAction');
+		mockedHook.mockReturnValue([dropdownItem]);
+		const { result } = renderHook(() => useSidebarAppActions());
+		result.current[0].onPress();
+
+		expect(Navigation.popTo).toHaveBeenCalledWith('DrawerNavigator');
+		expect(Navigation.dispatch).not.toHaveBeenCalled();
 		expect(triggerAppActionButton).toHaveBeenCalledWith({ button: dropdownItem.button });
 	});
 });
