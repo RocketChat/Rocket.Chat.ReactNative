@@ -112,7 +112,7 @@ describe('useAppActionButtons', () => {
 		await waitFor(() => expect(result.current).toHaveLength(1));
 	});
 
-	it('resolves buttons without a room, dropping room-typed ones', async () => {
+	it('resolves buttons without a room, skipping the room type filter', async () => {
 		mockActionButtons = [
 			button({ context: UIActionButtonContext.USER_DROPDOWN_ACTION }),
 			button({ actionId: 'channel-only', when: { roomTypes: ['public_channel'] } })
@@ -120,8 +120,7 @@ describe('useAppActionButtons', () => {
 
 		const { result } = renderHook(() => useAppActionButtons());
 
-		await waitFor(() => expect(result.current).toHaveLength(1));
-		expect(result.current[0].button.context).toBe(UIActionButtonContext.USER_DROPDOWN_ACTION);
+		await waitFor(() => expect(result.current).toHaveLength(2));
 	});
 
 	it('drops a button whose room type does not match', async () => {

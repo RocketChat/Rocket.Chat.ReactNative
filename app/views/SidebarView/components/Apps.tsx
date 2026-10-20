@@ -1,25 +1,14 @@
 import { memo } from 'react';
-import { type DrawerNavigationProp } from '@react-navigation/drawer';
 
 import * as List from '~/containers/List';
-import { triggerAppActionButton } from '~/lib/apps/actions';
-import { UIActionButtonContext } from '~/lib/apps/definitions';
-import { type IAppActionButtonItem, useAppActionButtons } from '~/lib/apps/useAppActionButtons';
-import { events, logEvent } from '~/lib/methods/helpers/log';
-import { type DrawerParamList } from '~/stacks/types';
+import { useSidebarAppActions } from './useSidebarAppActions';
 
-const Apps = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
-	const appActions = useAppActionButtons().filter(({ button }) => button.context === UIActionButtonContext.USER_DROPDOWN_ACTION);
+const Apps = () => {
+	const appActions = useSidebarAppActions();
 
 	if (!appActions.length) {
 		return null;
 	}
-
-	const onPress = ({ button }: IAppActionButtonItem) => {
-		logEvent(events.SIDEBAR_APP_ACTION, { appId: button.appId, actionId: button.actionId });
-		navigation.closeDrawer();
-		triggerAppActionButton({ button });
-	};
 
 	return (
 		<>
@@ -27,11 +16,11 @@ const Apps = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList
 			{appActions.map(item => (
 				<List.Item
 					key={item.id}
-					title={item.label}
+					title={item.title}
 					translateTitle={false}
 					left={() => <List.Icon name='apps' />}
-					onPress={() => onPress(item)}
-					testID={`sidebar-app-${item.id}`}
+					onPress={item.onPress}
+					testID={item.testID}
 				/>
 			))}
 			<List.Separator />

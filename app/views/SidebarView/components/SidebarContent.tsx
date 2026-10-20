@@ -19,7 +19,7 @@ const SidebarContent = ({ navigation }: { navigation: DrawerNavigationProp<Drawe
 			<CustomStatus />
 			<Stacks currentScreen={currentScreen} />
 			<Admin currentScreen={currentScreen} />
-			<Apps navigation={navigation} />
+			<Apps />
 		</>
 	);
 };
