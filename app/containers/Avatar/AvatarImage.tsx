@@ -12,6 +12,10 @@ interface IAvatarImage {
 	style: ImageStyle;
 }
 
+interface ISkeleton {
+	borderRadius: ViewStyle['borderRadius'];
+}
+
 const styles = StyleSheet.create({
 	skeleton: {
 		...StyleSheet.absoluteFill
@@ -35,7 +39,7 @@ const stopPulse = () => {
 	}
 };
 
-const Skeleton = ({ borderRadius }: { borderRadius: ViewStyle['borderRadius'] }) => {
+const SkeletonPulse = ({ borderRadius }: ISkeleton) => {
 	const { colors } = useTheme();
 
 	useEffect(() => {
@@ -54,16 +58,21 @@ const Skeleton = ({ borderRadius }: { borderRadius: ViewStyle['borderRadius'] })
 	);
 };
 
+const Skeleton = ({ borderRadius }: ISkeleton) => {
+	const [visible, setVisible] = useState(false);
+
+	useEffect(() => {
+		const timer = setTimeout(() => setVisible(true), SKELETON_DELAY);
+		return () => clearTimeout(timer);
+	}, []);
+
+	return visible ? <SkeletonPulse borderRadius={borderRadius} /> : null;
+};
+
 const AvatarImage = ({ uri, style }: IAvatarImage) => {
 	const { colors } = useTheme();
 	const [loadedUri, setLoadedUri] = useState<string | undefined>();
-	const [delayedUri, setDelayedUri] = useState<string | undefined>();
-	const showSkeleton = loadedUri !== uri && delayedUri === uri;
-
-	useEffect(() => {
-		const timer = setTimeout(() => setDelayedUri(uri), SKELETON_DELAY);
-		return () => clearTimeout(timer);
-	}, [uri]);
+	const showSkeleton = loadedUri !== uri;
 
 	const onEnd = () => setLoadedUri(uri);
 
