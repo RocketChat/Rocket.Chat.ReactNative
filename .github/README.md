@@ -16,10 +16,10 @@ Maps which event triggers which workflow.
 | Environment | Workflow / job | Fires when |
 |---|---|---|
 | `android_build` | [build-android.yml](workflows/build-android.yml) — `build-hold` | Called with `trigger == pr` (i.e. from `build-pr.yml`) |
-| `upload_android` | [build-android.yml](workflows/build-android.yml) — `open-testing-hold` | Called with `trigger == pr`, after the Android build completes |
-| `production_android` | [build-android.yml](workflows/build-android.yml) — `production-hold` | Called with `trigger == pr`, after the Android build completes. Approving promotes the build to the Play production track (full rollout) once `open-testing` uploads it; Play then reviews it. |
+| `open_testing_android` | [build-android.yml](workflows/build-android.yml) — `open-testing-hold` | Called with `trigger == pr`, after the Android build completes |
+| `production_android` | [build-android.yml](workflows/build-android.yml) — `production-hold` | Every call (`pr` and `develop`), after the Android build completes. Approving promotes the build to the Play production track (full rollout) once `open-testing` uploads it; Play then reviews it. |
 | `ios_build` | [build-ios.yml](workflows/build-ios.yml) — `build-hold` | Called with `trigger == pr` (i.e. from `build-pr.yml`) |
-| `production_ios` | [build-ios.yml](workflows/build-ios.yml) — `production-hold` | Called with `trigger == pr`, after the iOS build completes. Approving submits the build to App Store review (released automatically on approval) once `upload-ios` sends it to TestFlight. |
+| `production_ios` | [build-ios.yml](workflows/build-ios.yml) — `production-hold` | Every call (`pr` and `develop`), after the iOS build completes. Approving submits the build to App Store review (released automatically on approval) once `upload-ios` sends it to TestFlight. |
 | `approve_e2e_testing` | [build-pr.yml](workflows/build-pr.yml) — `e2e-hold` | A `pull_request` run whose diff impacts at least one Maestro flow (`e2e-shards` sets `should_run == true`). A confident-zero diff skips the whole e2e stage, so no approval fires. |
 
 ## E2E native build cache

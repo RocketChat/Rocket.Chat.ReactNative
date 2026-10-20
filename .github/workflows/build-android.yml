@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: {}
     if: ${{ inputs.trigger == 'pr' }}
-    environment: upload_android
+    environment: open_testing_android
     needs: [build-android]
     outputs:
       BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
@@ -95,7 +95,6 @@ jobs:
     name: Production Hold
     runs-on: ubuntu-latest
     permissions: {}
-    if: ${{ inputs.trigger == 'pr' }}
     environment: production_android
     needs: [build-android]
     steps:

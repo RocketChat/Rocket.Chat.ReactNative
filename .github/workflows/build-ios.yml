@@ -92,7 +92,6 @@ jobs:
     name: Production Hold
     runs-on: ubuntu-latest
     permissions: {}
-    if: ${{ inputs.trigger == 'pr' }}
     environment: production_ios
     needs: [build-ios]
     steps:
