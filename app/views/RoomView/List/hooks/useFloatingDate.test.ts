@@ -118,7 +118,16 @@ describe('useFloatingDate', () => {
 	const fadeOut = { type: 'timing', toValue: 0, duration: 300 };
 
 	const animationsOf = (result: any) => (result.current.opacity as any).animations;
-	const settle = (ms: number) => act(() => jest.advanceTimersByTime(ms));
+	const scroll = (callback: () => void) =>
+		act(() => {
+			callback();
+			jest.runAllTicks();
+		});
+	const settle = (ms: number) =>
+		act(() => {
+			jest.advanceTimersByTime(ms);
+			jest.runAllTicks();
+		});
 
 	it('keeps viewabilityConfigCallbackPairs identity stable across updates', () => {
 		const { result, rerender } = renderHook(() => useFloatingDate());
@@ -140,7 +149,7 @@ describe('useFloatingDate', () => {
 
 		it('fades in when the user starts dragging', () => {
 			const { result } = renderHook(() => useFloatingDate());
-			act(() => result.current.scrollEvents.onBeginDrag());
+			scroll(() => result.current.scrollEvents.onBeginDrag());
 			expect(animationsOf(result)).toEqual([fadeIn]);
 			expect(result.current.opacity.value).toBe(1);
 		});
@@ -150,10 +159,10 @@ describe('useFloatingDate', () => {
 		// crept towards 1 without arriving.
 		it('issues the fade in once across a momentum event storm', () => {
 			const { result } = renderHook(() => useFloatingDate());
-			act(() => result.current.scrollEvents.onBeginDrag());
+			scroll(() => result.current.scrollEvents.onBeginDrag());
 			for (let i = 0; i < 20; i++) {
-				act(() => result.current.scrollEvents.onMomentumEnd());
-				act(() => result.current.scrollEvents.onMomentumBegin());
+				scroll(() => result.current.scrollEvents.onMomentumEnd());
+				scroll(() => result.current.scrollEvents.onMomentumBegin());
 			}
 			expect(animationsOf(result)).toEqual([fadeIn]);
 			expect(result.current.opacity.value).toBe(1);
@@ -161,8 +170,8 @@ describe('useFloatingDate', () => {
 
 		it('holds at full opacity until the settle delay elapses', () => {
 			const { result } = renderHook(() => useFloatingDate());
-			act(() => result.current.scrollEvents.onBeginDrag());
-			act(() => result.current.scrollEvents.onEndDrag());
+			scroll(() => result.current.scrollEvents.onBeginDrag());
+			scroll(() => result.current.scrollEvents.onEndDrag());
 			settle(999);
 			expect(animationsOf(result)).toEqual([fadeIn]);
 			settle(1);
@@ -172,11 +181,11 @@ describe('useFloatingDate', () => {
 
 		it('re-arms the settle delay so the fling that follows a drag keeps the pill up', () => {
 			const { result } = renderHook(() => useFloatingDate());
-			act(() => result.current.scrollEvents.onBeginDrag());
-			act(() => result.current.scrollEvents.onEndDrag());
+			scroll(() => result.current.scrollEvents.onBeginDrag());
+			scroll(() => result.current.scrollEvents.onEndDrag());
 			settle(500);
-			act(() => result.current.scrollEvents.onMomentumBegin());
-			act(() => result.current.scrollEvents.onMomentumEnd());
+			scroll(() => result.current.scrollEvents.onMomentumBegin());
+			scroll(() => result.current.scrollEvents.onMomentumEnd());
 			settle(999);
 			expect(animationsOf(result)).toEqual([fadeIn]);
 			settle(1);
@@ -185,10 +194,10 @@ describe('useFloatingDate', () => {
 
 		it('cancels the pending fade out when scrolling resumes', () => {
 			const { result } = renderHook(() => useFloatingDate());
-			act(() => result.current.scrollEvents.onBeginDrag());
-			act(() => result.current.scrollEvents.onEndDrag());
+			scroll(() => result.current.scrollEvents.onBeginDrag());
+			scroll(() => result.current.scrollEvents.onEndDrag());
 			settle(500);
-			act(() => result.current.scrollEvents.onBeginDrag());
+			scroll(() => result.current.scrollEvents.onBeginDrag());
 			settle(5000);
 			expect(animationsOf(result)).toEqual([fadeIn]);
 			expect(result.current.opacity.value).toBe(1);
@@ -196,18 +205,18 @@ describe('useFloatingDate', () => {
 
 		it('fades in again after a completed fade out', () => {
 			const { result } = renderHook(() => useFloatingDate());
-			act(() => result.current.scrollEvents.onBeginDrag());
-			act(() => result.current.scrollEvents.onEndDrag());
+			scroll(() => result.current.scrollEvents.onBeginDrag());
+			scroll(() => result.current.scrollEvents.onEndDrag());
 			settle(HIDE_DELAY_MS);
-			act(() => result.current.scrollEvents.onBeginDrag());
+			scroll(() => result.current.scrollEvents.onBeginDrag());
 			expect(animationsOf(result)).toEqual([fadeIn, fadeOut, fadeIn]);
 			expect(result.current.opacity.value).toBe(1);
 		});
 
 		it('drops the pending fade out on unmount', () => {
 			const { result, unmount } = renderHook(() => useFloatingDate());
-			act(() => result.current.scrollEvents.onBeginDrag());
-			act(() => result.current.scrollEvents.onEndDrag());
+			scroll(() => result.current.scrollEvents.onBeginDrag());
+			scroll(() => result.current.scrollEvents.onEndDrag());
 			unmount();
 			settle(5000);
 			expect(animationsOf(result)).toEqual([fadeIn]);

@@ -2,16 +2,14 @@ import { memo } from 'react';
 import { type DrawerNavigationProp } from '@react-navigation/drawer';
 
 import * as List from '~/containers/List';
+import { triggerAppActionButton } from '~/lib/apps/actions';
 import { UIActionButtonContext } from '~/lib/apps/definitions';
-import { triggerAppActionButton } from '~/lib/apps/triggerAppActionButton';
 import { type IAppActionButtonItem, useAppActionButtons } from '~/lib/apps/useAppActionButtons';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { type DrawerParamList } from '~/stacks/types';
 
-const SIDEBAR_APP_FILTERS = [{ context: UIActionButtonContext.USER_DROPDOWN_ACTION }];
-
 const Apps = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
-	const [appActions] = useAppActionButtons({ filters: SIDEBAR_APP_FILTERS });
+	const appActions = useAppActionButtons().filter(({ button }) => button.context === UIActionButtonContext.USER_DROPDOWN_ACTION);
 
 	if (!appActions.length) {
 		return null;

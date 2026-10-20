@@ -1,4 +1,4 @@
-import { triggerBlockAction } from '~/lib/apps/triggerActions';
+import { triggerBlockAction } from '~/lib/apps/actions';
 import { ContainerTypes, type ITriggerBlockAction } from '~/containers/UIKit/interfaces';
 
 type TBlockActionParams = Omit<ITriggerBlockAction, 'container' | 'mid'> & { mid: string };

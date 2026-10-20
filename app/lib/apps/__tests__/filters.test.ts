@@ -52,7 +52,11 @@ describe('applyCategoryFilter', () => {
 });
 
 describe('applyAuthFilter', () => {
-	const auth = { roles: ['user', 'owner'], permissions: { 'pin-message': ['owner'], 'delete-p': ['admin'] } };
+	const auth = {
+		userRoles: ['user', 'leader'],
+		roomRoles: ['owner'],
+		permissions: { 'pin-message': ['leader'], 'delete-p': ['admin'], 'edit-room': ['owner'] }
+	};
 
 	test('a button with no conditions always passes', () => {
 		expect(applyAuthFilter(button(), auth)).toBe(true);
@@ -68,6 +72,10 @@ describe('applyAuthFilter', () => {
 		expect(applyAuthFilter(button({ when: { hasAllPermissions: ['pin-message', 'delete-p'] } }), auth)).toBe(false);
 	});
 
+	test('permissions are granted by workspace roles only, as on web', () => {
+		expect(applyAuthFilter(button({ when: { hasOnePermission: ['edit-room'] } }), auth)).toBe(false);
+	});
+
 	test('an unknown permission is treated as not granted', () => {
 		expect(applyAuthFilter(button({ when: { hasOnePermission: ['never-synced'] } }), auth)).toBe(false);
 	});
@@ -75,6 +83,7 @@ describe('applyAuthFilter', () => {
 	test('role conditions read the merged workspace and subscription roles', () => {
 		expect(applyAuthFilter(button({ when: { hasOneRole: ['owner'] } }), auth)).toBe(true);
 		expect(applyAuthFilter(button({ when: { hasAllRoles: ['user', 'owner'] } }), auth)).toBe(true);
+		expect(applyAuthFilter(button({ when: { hasOneRole: ['leader'] } }), auth)).toBe(true);
 		expect(applyAuthFilter(button({ when: { hasAllRoles: ['user', 'admin'] } }), auth)).toBe(false);
 	});
 });

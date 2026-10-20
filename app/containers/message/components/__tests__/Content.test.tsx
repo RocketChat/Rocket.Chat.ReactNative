@@ -125,7 +125,7 @@ describe('Content preview branch — Thread Message Attachment fallback', () => 
 		expect(queryByText('secret.pptx')).toBeNull();
 	});
 
-	test('renders "Encrypted message" with no file-name leak when the Thread Message preview is encrypted', () => {
+	test('renders the encrypted placeholder with no file-name leak when the Thread Message preview is encrypted', () => {
 		const { getByTestId, queryByText } = renderContent({
 			tmid: '1',
 			msg: '',

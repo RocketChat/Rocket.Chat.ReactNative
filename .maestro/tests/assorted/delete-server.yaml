@@ -22,12 +22,7 @@ tags:
       server: ${output.data.server}
 
 # should add server
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-header-servers-list-button'
+- runFlow: '../../helpers/open-servers-list.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-server-add'
@@ -67,12 +62,7 @@ tags:
       server: ${output.data.alternateServer}
 
 # should delete server
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-header-servers-list-button'
+- runFlow: '../../helpers/open-servers-list.yaml'
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.server}'
@@ -109,12 +99,7 @@ tags:
           retryTapIfNoChange: true
 - waitForAnimationToEnd:
     timeout: 300
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-header-servers-list-button'
+- runFlow: '../../helpers/open-servers-list.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list'

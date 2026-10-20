@@ -25,6 +25,7 @@ jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
 jest.mock('~/views/RoomView/services/getMessageInfo', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/views/RoomView/services/fetchThreadName', () => ({ fetchThreadName: jest.fn() }));
 jest.mock('~/views/RoomView/services/resolveJumpAnchor', () => ({ resolveJumpAnchor: jest.fn() }));
+jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessagesUntil: jest.fn(() => Promise.resolve(true)) }));
 jest.mock('~/lib/methods/helpers/room', () => ({ makeThreadName: jest.fn(() => 'Parent thread') }));
 jest.mock('~/i18n', () => ({ __esModule: true, default: { t: (key: string) => key } }));
 
@@ -316,7 +317,7 @@ describe('useJumpToMessage composed entry points', () => {
 		mockGetMessageInfo.mockResolvedValue({ id: 'reply-4', rid: 'rid-1', tmid: 'thread-4', t: 'e2e', e2e: 'pending' });
 		const { result } = renderNavigation();
 		await act(async () => await result.current.jumpToMessageByUrl('https://open.rocket.chat/room?msg=reply-4'));
-		expect(mockNavigation.push).toHaveBeenCalledWith('RoomView', expect.objectContaining({ name: 'Encrypted_message' }));
+		expect(mockNavigation.push).toHaveBeenCalledWith('RoomView', expect.objectContaining({ name: 'E2E_Key_Error' }));
 	});
 
 	it('keeps overlapping cross-Room lookups observable when the older Room resolves late', async () => {

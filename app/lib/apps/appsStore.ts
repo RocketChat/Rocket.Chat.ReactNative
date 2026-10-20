@@ -3,10 +3,7 @@ import { create } from 'zustand';
 import { type IAppActionButton, type TAppTranslations } from './definitions';
 import { normalizeLanguage } from './translations';
 import log from '~/lib/methods/helpers/log';
-import { getAppActionButtons, getAppsLanguages } from '~/lib/services/restApi';
-import sdk from '~/lib/services/sdk';
-import { isLoginReady } from '~/lib/services/waitForLoginReady';
-import { store } from '~/lib/store/auxStore';
+import { AppsApiError, getAppActionButtons, getAppsLanguages } from '~/lib/services/appsApiFetch';
 
 type TAppsState = {
 	actionButtons: IAppActionButton[];
@@ -24,172 +21,60 @@ const initialState: TAppsState = {
 	translations: {}
 };
 
-let storeVersion = 0;
+const logUnlessAppsUnavailable = (e: unknown) => {
+	if (e instanceof AppsApiError && e.status === 404) {
+		return;
+	}
+	log(e);
+};
+
+let actionButtonsRequest = 0;
+let translationsRequest = 0;
 
 export const useAppsStore = create<TAppsState & TAppsActions>(set => ({
 	...initialState,
 
 	fetchActionButtons: async () => {
-		const version = storeVersion;
+		const current = ++actionButtonsRequest;
 		try {
 			const actionButtons = await getAppActionButtons();
-			if (version === storeVersion) {
-				set({ actionButtons });
-			}
-		} catch {
-			// Servers without the Apps framework reject this.
+			if (current === actionButtonsRequest) set({ actionButtons });
+		} catch (e) {
+			logUnlessAppsUnavailable(e);
 		}
 	},
 
 	fetchTranslations: async () => {
-		const version = storeVersion;
+		const current = ++translationsRequest;
 		try {
 			const { apps } = await getAppsLanguages();
-			if (version !== storeVersion) {
-				return;
-			}
 			const translations = apps.reduce<TAppTranslations>((acc, { id, languages }) => {
-				acc[id] = Object.entries(languages).reduce<TAppTranslations[string]>((byLanguage, [language, keys]) => {
-					byLanguage[normalizeLanguage(language)] = keys;
-					return byLanguage;
-				}, {});
+				acc[id] = Object.fromEntries(
+					Object.entries(languages ?? {}).map(([language, keys]) => [normalizeLanguage(language), keys])
+				);
 				return acc;
 			}, {});
-			set({ translations });
-		} catch {
-			// Servers without the Apps framework reject this.
+			if (current === translationsRequest) set({ translations });
+		} catch (e) {
+			logUnlessAppsUnavailable(e);
 		}
 	},
 
 	reset: () => {
-		storeVersion += 1;
+		actionButtonsRequest += 1;
+		translationsRequest += 1;
 		set(initialState);
 	}
 }));
 
-const APPS_STREAM = 'stream-apps';
-const APPS_EVENT = 'apps';
-
-let consumers = 0;
-let generation = 0;
-let subscribed = false;
-let loginReady = false;
-let storeListener: (() => void) | null = null;
-let streamListener: Promise<{ stop: () => void }> | null = null;
-let streamSubscription: { unsubscribe: () => Promise<unknown> } | null = null;
-let retryTimer: ReturnType<typeof setTimeout> | null = null;
-let retryAttempt = 0;
-
-const RETRY_BASE_MS = 2000;
-const RETRY_MAX_MS = 60000;
-
-const clearRetry = () => {
-	if (retryTimer) {
-		clearTimeout(retryTimer);
-		retryTimer = null;
-	}
-};
-
-const handleStreamData = (ddpMessage: { fields?: { args?: [[string, unknown[]]] } }) => {
+export const onAppsStreamData = (ddpMessage: { fields?: { args?: [[string, unknown[]]] } }) => {
 	const [event] = ddpMessage?.fields?.args?.[0] || [];
 	const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
 	if (event === 'actions/changed') {
 		fetchActionButtons();
 	}
-	if (typeof event === 'string' && event.startsWith('app/')) {
+	if (event === 'app/added' || event === 'app/updated' || event === 'app/removed') {
+		fetchActionButtons();
 		fetchTranslations();
 	}
-};
-
-const subscribeToStream = () => {
-	if (subscribed || consumers === 0) {
-		return;
-	}
-	subscribed = true;
-	const current = (generation += 1);
-	const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
-	fetchActionButtons();
-	fetchTranslations();
-	let listener: typeof streamListener = null;
-	const fail = (e: unknown) => {
-		log(e);
-		listener?.then(l => l.stop()).catch(log);
-		if (current !== generation) {
-			return;
-		}
-		subscribed = false;
-		streamListener = null;
-		clearRetry();
-		const delay = Math.min(RETRY_BASE_MS * 2 ** retryAttempt, RETRY_MAX_MS);
-		retryAttempt += 1;
-		retryTimer = setTimeout(() => {
-			retryTimer = null;
-			if (current === generation && loginReady) {
-				subscribeToStream();
-			}
-		}, delay);
-	};
-	try {
-		listener = sdk.onStreamData(APPS_STREAM, handleStreamData);
-		streamListener = listener;
-		sdk
-			.subscribe(APPS_STREAM, APPS_EVENT)
-			.then(subscription => {
-				// The last consumer may have unmounted while this was in flight.
-				if (current !== generation || consumers === 0) {
-					subscription?.unsubscribe().catch(log);
-					return;
-				}
-				streamSubscription = subscription ?? null;
-				retryAttempt = 0;
-			})
-			.catch(fail);
-	} catch (e) {
-		fail(e);
-	}
-};
-
-const unsubscribeFromStream = () => {
-	generation += 1;
-	clearRetry();
-	retryAttempt = 0;
-	subscribed = false;
-	streamListener?.then(listener => listener.stop()).catch(log);
-	streamListener = null;
-	streamSubscription?.unsubscribe().catch(log);
-	streamSubscription = null;
-};
-
-const handleStoreChange = () => {
-	const ready = isLoginReady();
-	if (ready === loginReady) {
-		return;
-	}
-	loginReady = ready;
-	if (ready) {
-		subscribeToStream();
-	} else {
-		unsubscribeFromStream();
-	}
-};
-
-export const subscribeToApps = (): (() => void) => {
-	consumers += 1;
-	if (consumers === 1) {
-		loginReady = isLoginReady();
-		storeListener = store.subscribe(handleStoreChange);
-		if (loginReady) {
-			subscribeToStream();
-		}
-	}
-
-	return () => {
-		consumers = Math.max(consumers - 1, 0);
-		if (consumers > 0) {
-			return;
-		}
-		storeListener?.();
-		storeListener = null;
-		unsubscribeFromStream();
-	};
 };

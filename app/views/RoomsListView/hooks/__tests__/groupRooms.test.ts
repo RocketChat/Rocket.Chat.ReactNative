@@ -12,8 +12,9 @@ const options = {
 	]),
 	showUnread: false,
 	showFavorites: true,
-	groupByType: false,
-	isOmnichannelAgent: false
+	groupByType: true,
+	isOmnichannelAgent: false,
+	collapsedGroups: new Set<string>()
 };
 
 const layout = (chats: TSubscriptionModel[]) => chats.map(chat => (chat.separator ? `# ${chat.name ?? chat.rid}` : chat.rid));
@@ -26,21 +27,50 @@ describe('groupRooms', () => {
 			room({ rid: 'dm', t: SubscriptionType.DIRECT })
 		];
 
-		expect(layout(buildRoomList(chats, options))).toEqual(['# Work', 'general', '# Favorites', 'random', '# Chats', 'dm']);
+		expect(layout(buildRoomList(chats, options))).toEqual([
+			'# Work',
+			'general',
+			'# Favorites',
+			'random',
+			'# Direct_Messages',
+			'dm'
+		]);
+	});
+
+	it('hides custom categories and type groups when categories are off', () => {
+		const chats = [
+			room({ rid: 'general', category: 'work' }),
+			room({ rid: 'random', f: true, category: 'work' }),
+			room({ rid: 'dm', t: SubscriptionType.DIRECT })
+		];
+
+		expect(layout(buildRoomList(chats, { ...options, groupByType: false }))).toEqual([
+			'# Favorites',
+			'random',
+			'# Chats',
+			'general',
+			'dm'
+		]);
+	});
+
+	it('lists rooms in a flat list when categories, favorites and unread are off', () => {
+		const chats = [room({ rid: 'general', category: 'work' }), room({ rid: 'dm', t: SubscriptionType.DIRECT })];
+
+		expect(layout(buildRoomList(chats, { ...options, groupByType: false, showFavorites: false }))).toEqual(['general', 'dm']);
 	});
 
 	it('falls back to the default groups when the room category no longer exists', () => {
 		const chats = [room({ rid: 'general', category: 'deleted' })];
 
-		expect(layout(buildRoomList(chats, options))).toEqual(['# Chats', 'general']);
+		expect(layout(buildRoomList(chats, options))).toEqual(['# Channels', 'general']);
 	});
 
 	it('lists rooms without a header when nothing else is grouped', () => {
 		const chats = [room({ rid: 'general' })];
 
-		expect(layout(buildRoomList(chats, { ...options, customCategoryNames: new Map(), showFavorites: false }))).toEqual([
-			'general'
-		]);
+		expect(
+			layout(buildRoomList(chats, { ...options, customCategoryNames: new Map(), showFavorites: false, groupByType: false }))
+		).toEqual(['general']);
 	});
 
 	it('places omnichannel rooms before unread rooms and regular groups', () => {
@@ -57,6 +87,7 @@ describe('groupRooms', () => {
 					...options,
 					showUnread: true,
 					showFavorites: false,
+					groupByType: false,
 					isOmnichannelAgent: true
 				})
 			)
@@ -70,5 +101,34 @@ describe('groupRooms', () => {
 			'# Chats',
 			'regular'
 		]);
+	});
+
+	it('keeps the header of a collapsed group and hides its rooms', () => {
+		const chats = [room({ rid: 'general', category: 'work' }), room({ rid: 'dm', t: SubscriptionType.DIRECT })];
+
+		expect(layout(buildRoomList(chats, { ...options, collapsedGroups: new Set(['work']) }))).toEqual([
+			'# Work',
+			'# Direct_Messages',
+			'dm'
+		]);
+	});
+
+	it('gives a collapsed header the badge totals of its rooms, skipping rooms that hide unread status', () => {
+		const chats = [
+			room({ rid: 'general', category: 'work', unread: 3, userMentions: 1 }),
+			room({ rid: 'random', category: 'work', unread: 4, groupMentions: 2 }),
+			room({ rid: 'thread-only', category: 'work', unread: 0, tunread: ['thread'], tunreadUser: ['thread'] }),
+			room({ rid: 'muted', category: 'work', unread: 10, hideUnreadStatus: true })
+		];
+
+		const [header] = buildRoomList(chats, { ...options, collapsedGroups: new Set(['work']) });
+
+		expect(header).toMatchObject({
+			unread: 8,
+			userMentions: 1,
+			groupMentions: 2,
+			tunread: ['thread'],
+			tunreadUser: ['thread']
+		});
 	});
 });

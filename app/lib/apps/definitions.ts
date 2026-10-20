@@ -1,14 +1,9 @@
-/**
- * Mirror of `@rocket.chat/apps-engine/definition/ui`, which isn't a dependency here.
- * Keep in sync with the server: packages/apps-engine/src/definition/ui.
- */
+// https://github.com/RocketChat/Rocket.Chat/tree/develop/packages/apps-engine/src/definition/ui
 
 export const UIActionButtonContext = {
-	MESSAGE_ACTION: 'messageAction',
 	ROOM_ACTION: 'roomAction',
 	MESSAGE_BOX_ACTION: 'messageBoxAction',
-	USER_DROPDOWN_ACTION: 'userDropdownAction',
-	ROOM_SIDEBAR_ACTION: 'roomSideBarAction'
+	USER_DROPDOWN_ACTION: 'userDropdownAction'
 } as const;
 
 export type TUIActionButtonContext = (typeof UIActionButtonContext)[keyof typeof UIActionButtonContext];
@@ -31,7 +26,6 @@ export type TAppActionButtonCategory = 'default' | 'ai';
 
 export interface IAppActionButtonWhen {
 	roomTypes?: TRoomTypeFilter[];
-	messageActionContext?: string[];
 	hasOnePermission?: string[];
 	hasAllPermissions?: string[];
 	hasOneRole?: string[];
@@ -58,13 +52,12 @@ export interface IAppActionButtonRoom {
 export interface IAppLanguages {
 	apps: {
 		id: string;
-		languages: { [language: string]: { [key: string]: string } };
+		languages?: { [language: string]: { [key: string]: string } };
 	}[];
 }
 
 export const getIdForActionButton = ({ appId, actionId }: IAppActionButton): string => `${appId}/${actionId}`;
 
-export type TAppTranslations = {
-	// appId -> language -> key -> translation
-	[appId: string]: { [language: string]: { [key: string]: string } };
-};
+type TTranslationsByKey = { [key: string]: string };
+type TTranslationsByLanguage = { [language: string]: TTranslationsByKey };
+export type TAppTranslations = { [appId: string]: TTranslationsByLanguage };

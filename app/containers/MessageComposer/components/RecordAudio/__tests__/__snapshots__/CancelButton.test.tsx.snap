@@ -1,13 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`a11y label is cancel when cancelAndDelete 1`] = `
-<RNGestureHandlerButton
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
   activeOpacity={0.3}
-  borderless={true}
+  animationDuration={0}
   collapsable={false}
-  delayLongPress={600}
-  handlerTag={-1}
-  handlerType="NativeViewGestureHandler"
+  focusable={true}
   hitSlop={
     {
       "bottom": 10,
@@ -16,22 +32,24 @@ exports[`a11y label is cancel when cancelAndDelete 1`] = `
       "top": 10,
     }
   }
-  innerRef={null}
-  onActiveStateChange={[Function]}
-  onGestureHandlerEvent={[Function]}
-  onGestureHandlerStateChange={[Function]}
-  onPress={[Function]}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     [
       {
         "alignItems": "center",
-        "height": 24,
         "justifyContent": "center",
-        "opacity": 1,
-        "width": 24,
       },
       {
-        "cursor": undefined,
+        "height": 24,
+        "width": 24,
       },
     ]
   }
@@ -71,17 +89,33 @@ exports[`a11y label is cancel when cancelAndDelete 1`] = `
       
     </Text>
   </View>
-</RNGestureHandlerButton>
+</View>
 `;
 
 exports[`a11y label is delete otherwise and fires onPress 1`] = `
-<RNGestureHandlerButton
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
   activeOpacity={0.3}
-  borderless={true}
+  animationDuration={0}
   collapsable={false}
-  delayLongPress={600}
-  handlerTag={-1}
-  handlerType="NativeViewGestureHandler"
+  focusable={true}
   hitSlop={
     {
       "bottom": 10,
@@ -90,22 +124,24 @@ exports[`a11y label is delete otherwise and fires onPress 1`] = `
       "top": 10,
     }
   }
-  innerRef={null}
-  onActiveStateChange={[Function]}
-  onGestureHandlerEvent={[Function]}
-  onGestureHandlerStateChange={[Function]}
-  onPress={[Function]}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     [
       {
         "alignItems": "center",
-        "height": 24,
         "justifyContent": "center",
-        "opacity": 1,
-        "width": 24,
       },
       {
-        "cursor": undefined,
+        "height": 24,
+        "width": 24,
       },
     ]
   }
@@ -145,5 +181,5 @@ exports[`a11y label is delete otherwise and fires onPress 1`] = `
       
     </Text>
   </View>
-</RNGestureHandlerButton>
+</View>
 `;

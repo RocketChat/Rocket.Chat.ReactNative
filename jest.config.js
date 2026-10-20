@@ -1,9 +1,11 @@
 const getAliasConfig = require('./config/import-aliases');
 
 module.exports = {
+	maxWorkers: 2,
+	fakeTimers: { doNotFake: ['setImmediate'] },
+	workerIdleMemoryLimit: '512MB',
 	modulePathIgnorePatterns: ['<rootDir>/.*worktrees/'],
 	testPathIgnorePatterns: [
-		'e2e',
 		'node_modules',
 		'<rootDir>/.*worktrees/',
 		'/__tests__/testHelpers\\.tsx$',
@@ -21,5 +23,6 @@ module.exports = {
 		'.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js',
 		...getAliasConfig().jest
 	},
+	setupFiles: ['react-native-gesture-handler/jestSetup.js'],
 	setupFilesAfterEnv: ['./jest.setup.js']
 };

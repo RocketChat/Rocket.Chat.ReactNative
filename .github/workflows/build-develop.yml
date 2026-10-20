@@ -50,6 +50,28 @@ jobs:
     with:
       trigger: develop
 
+  # PR-written caches aren't visible to other PRs, so develop saves the E2E
+  # native builds PRs reuse. Builds only when the native fingerprint is new.
+  seed-e2e-android:
+    name: Seed E2E Android Native Build
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    permissions:
+      contents: read
+    uses: ./.github/workflows/e2e-build-android.yml
+    secrets: inherit
+    with:
+      seed-only: true
+
+  seed-e2e-ios:
+    name: Seed E2E iOS Native Build
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    permissions:
+      contents: read
+    uses: ./.github/workflows/e2e-build-ios.yml
+    secrets: inherit
+    with:
+      seed-only: true
+
   # Single writer of the AVD + SDK caches: PR-written caches aren't visible to
   # other PRs, so develop seeds them and the shards restore read-only.
   seed-android-avd:

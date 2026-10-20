@@ -1,5 +1,7 @@
-import { subscribeToApps, useAppsStore } from '../appsStore';
+import { onAppsStreamData, useAppsStore } from '../appsStore';
 import { UIActionButtonContext } from '../definitions';
+import { AppsApiError } from '~/lib/services/appsApiFetch';
+import log from '~/lib/methods/helpers/log';
 
 const mockGetAppActionButtons = jest.fn(() =>
 	Promise.resolve([
@@ -7,9 +9,17 @@ const mockGetAppActionButtons = jest.fn(() =>
 	])
 );
 const mockGetAppsLanguages = jest.fn(() =>
-	Promise.resolve({ apps: [{ id: 'app-id', languages: { en: { summarize: 'Summarize' } } }] })
+	Promise.resolve({ apps: [{ id: 'app-id', languages: { en: { summarize: 'Summarize' }, pt_BR: { summarize: 'Resumir' } } }] })
 );
-jest.mock('~/lib/services/restApi', () => ({
+jest.mock('~/lib/services/appsApiFetch', () => ({
+	AppsApiError: class extends Error {
+		status: number;
+
+		constructor(message: string, status: number) {
+			super(message);
+			this.status = status;
+		}
+	},
 	getAppActionButtons: () => mockGetAppActionButtons(),
 	getAppsLanguages: () => mockGetAppsLanguages()
 }));
@@ -19,257 +29,63 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 	default: jest.fn()
 }));
 
-const mockStop = jest.fn();
-const mockUnsubscribe = jest.fn(() => Promise.resolve());
-const mockOnStreamData = jest.fn((_event: string, _callback: (message: unknown) => void) => Promise.resolve({ stop: mockStop }));
-const mockSubscribe = jest.fn(() => Promise.resolve({ unsubscribe: mockUnsubscribe }));
-jest.mock('~/lib/services/sdk', () => ({
-	__esModule: true,
-	default: {
-		onStreamData: (event: string, callback: (message: unknown) => void) => mockOnStreamData(event, callback),
-		subscribe: (...args: unknown[]) => mockSubscribe(...(args as []))
-	}
-}));
-
-const mockState = { login: { isAuthenticated: false }, meteor: { connected: false } };
-const mockListeners = new Set<() => void>();
-jest.mock('~/lib/store/auxStore', () => ({
-	store: {
-		getState: () => mockState,
-		subscribe: (listener: () => void) => {
-			mockListeners.add(listener);
-			return () => mockListeners.delete(listener);
-		}
-	}
-}));
-
-const notify = () => mockListeners.forEach(listener => listener());
-
-const setLoginReady = (ready: boolean) => {
-	mockState.login.isAuthenticated = ready;
-	mockState.meteor.connected = ready;
-	notify();
-};
-
-/** Keeps the session authenticated so only the transport flaps, as it does on a socket drop. */
-const setConnected = (connected: boolean) => {
-	mockState.meteor.connected = connected;
-	notify();
-};
-
-const streamCallback = () => mockOnStreamData.mock.calls[0][1] as (message: unknown) => void;
-
 const flush = () => new Promise(resolve => setImmediate(resolve));
 
-describe('subscribeToApps', () => {
+describe('appsStore', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockState.login.isAuthenticated = false;
-		mockState.meteor.connected = false;
-		mockListeners.clear();
 		useAppsStore.getState().reset();
 	});
 
-	it('waits for login to be ready before fetching and subscribing', async () => {
-		const dispose = subscribeToApps();
+	it('stores the fetched action buttons and translations', async () => {
+		await useAppsStore.getState().fetchActionButtons();
+		await useAppsStore.getState().fetchTranslations();
 
-		expect(mockGetAppActionButtons).not.toHaveBeenCalled();
-		expect(mockSubscribe).not.toHaveBeenCalled();
-
-		setLoginReady(true);
-		await flush();
-
-		expect(mockGetAppActionButtons).toHaveBeenCalledTimes(1);
-		expect(mockSubscribe).toHaveBeenCalledTimes(1);
 		expect(useAppsStore.getState().actionButtons).toHaveLength(1);
-
-		dispose();
-	});
-
-	it('subscribes immediately when login is already ready', async () => {
-		setLoginReady(true);
-
-		const dispose = subscribeToApps();
-		await flush();
-
-		expect(mockSubscribe).toHaveBeenCalledTimes(1);
-
-		dispose();
-	});
-
-	it('resubscribes on reconnect while the consumer stays mounted', async () => {
-		setLoginReady(true);
-		const dispose = subscribeToApps();
-		await flush();
-
-		setLoginReady(false);
-		await flush();
-
-		expect(mockStop).toHaveBeenCalledTimes(1);
-		expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
-
-		setLoginReady(true);
-		await flush();
-
-		expect(mockSubscribe).toHaveBeenCalledTimes(2);
-		expect(mockGetAppActionButtons).toHaveBeenCalledTimes(2);
-
-		dispose();
-	});
-
-	it('retries on the next reconnect after a failed subscribe', async () => {
-		mockOnStreamData.mockImplementationOnce(() => {
-			throw new Error('Sdk is not initialized');
+		expect(useAppsStore.getState().translations).toEqual({
+			'app-id': { en: { summarize: 'Summarize' }, 'pt-br': { summarize: 'Resumir' } }
 		});
-
-		setLoginReady(true);
-		const dispose = subscribeToApps();
-		await flush();
-
-		expect(mockSubscribe).not.toHaveBeenCalled();
-
-		setLoginReady(false);
-		setLoginReady(true);
-		await flush();
-
-		expect(mockSubscribe).toHaveBeenCalledTimes(1);
-
-		dispose();
 	});
 
-	it('resubscribes when only the transport flaps, with the session still authenticated', async () => {
-		setLoginReady(true);
-		const dispose = subscribeToApps();
-		await flush();
-
-		setConnected(false);
-		await flush();
-
-		expect(mockState.login.isAuthenticated).toBe(true);
-		expect(mockStop).toHaveBeenCalledTimes(1);
-		expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
-
-		setConnected(true);
-		await flush();
-
-		expect(mockSubscribe).toHaveBeenCalledTimes(2);
-
-		dispose();
-	});
-
-	it('refetches only the action buttons on actions/changed', async () => {
-		setLoginReady(true);
-		const dispose = subscribeToApps();
-		await flush();
-		mockGetAppActionButtons.mockClear();
-		mockGetAppsLanguages.mockClear();
-
-		streamCallback()({ fields: { args: [['actions/changed', []]] } });
-		await flush();
-
-		expect(mockGetAppActionButtons).toHaveBeenCalledTimes(1);
-		expect(mockGetAppsLanguages).not.toHaveBeenCalled();
-
-		dispose();
-	});
-
-	it('refetches only the translations on app/added', async () => {
-		setLoginReady(true);
-		const dispose = subscribeToApps();
-		await flush();
-		mockGetAppActionButtons.mockClear();
-		mockGetAppsLanguages.mockClear();
-
-		streamCallback()({ fields: { args: [['app/added', ['app-id']]] } });
-		await flush();
-
-		expect(mockGetAppsLanguages).toHaveBeenCalledTimes(1);
-		expect(mockGetAppActionButtons).not.toHaveBeenCalled();
-
-		dispose();
-	});
-
-	it('retries a failed subscribe while the connection stays up', async () => {
-		jest.useFakeTimers({ doNotFake: ['setImmediate'] });
-		try {
-			mockSubscribe.mockImplementationOnce(() => Promise.reject(new Error('nosub')));
-
-			setLoginReady(true);
-			const dispose = subscribeToApps();
-			await flush();
-			expect(mockSubscribe).toHaveBeenCalledTimes(1);
-
-			jest.advanceTimersByTime(2000);
-			await flush();
-			expect(mockSubscribe).toHaveBeenCalledTimes(2);
-
-			dispose();
-		} finally {
-			jest.useRealTimers();
-		}
-	});
-
-	it('refetches the translations when an app is updated', async () => {
-		setLoginReady(true);
-		const dispose = subscribeToApps();
-		await flush();
-		mockGetAppsLanguages.mockClear();
-
-		streamCallback()({ fields: { args: [['app/updated', ['app-id']]] } });
-		await flush();
-
-		expect(mockGetAppsLanguages).toHaveBeenCalledTimes(1);
-
-		dispose();
-	});
-
-	it('keeps a single subscription while more than one consumer is mounted', async () => {
-		setLoginReady(true);
-		const first = subscribeToApps();
-		const second = subscribeToApps();
-		await flush();
-
-		expect(mockSubscribe).toHaveBeenCalledTimes(1);
-
-		first();
-		await flush();
-		expect(mockUnsubscribe).not.toHaveBeenCalled();
-
-		second();
-		await flush();
-		expect(mockStop).toHaveBeenCalledTimes(1);
-		expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
-	});
-});
-
-describe('useAppsStore reset', () => {
-	it('drops responses that resolve after a reset', async () => {
-		let resolveButtons: (value: unknown) => void = () => {};
-		let resolveLanguages: (value: unknown) => void = () => {};
-		mockGetAppActionButtons.mockImplementationOnce(() => new Promise(resolve => (resolveButtons = resolve)) as never);
-		mockGetAppsLanguages.mockImplementationOnce(() => new Promise(resolve => (resolveLanguages = resolve)) as never);
-
-		const buttons = useAppsStore.getState().fetchActionButtons();
-		const translations = useAppsStore.getState().fetchTranslations();
+	it('drops responses that resolve after reset', async () => {
+		const pendingButtons = useAppsStore.getState().fetchActionButtons();
+		const pendingTranslations = useAppsStore.getState().fetchTranslations();
 		useAppsStore.getState().reset();
-		resolveButtons([{ appId: 'stale', actionId: 'a' }]);
-		resolveLanguages({ apps: [{ id: 'stale', languages: { en: { k: 'v' } } }] });
-		await Promise.all([buttons, translations]);
+		await Promise.all([pendingButtons, pendingTranslations]);
 
 		expect(useAppsStore.getState().actionButtons).toEqual([]);
 		expect(useAppsStore.getState().translations).toEqual({});
 	});
 
-	it('keeps the loaded data when a refetch fails', async () => {
-		await useAppsStore.getState().fetchActionButtons();
-		await useAppsStore.getState().fetchTranslations();
-		mockGetAppActionButtons.mockImplementationOnce(() => Promise.reject(new Error('503')));
-		mockGetAppsLanguages.mockImplementationOnce(() => Promise.reject(new Error('503')));
+	it('does not log when the server has no Apps-Engine', async () => {
+		mockGetAppActionButtons.mockRejectedValueOnce(new AppsApiError('Not found', 404));
 
 		await useAppsStore.getState().fetchActionButtons();
-		await useAppsStore.getState().fetchTranslations();
 
-		expect(useAppsStore.getState().actionButtons).toHaveLength(1);
-		expect(useAppsStore.getState().translations).toEqual({ 'app-id': { en: { summarize: 'Summarize' } } });
+		expect(log).not.toHaveBeenCalled();
+	});
+
+	it('logs any other failure', async () => {
+		mockGetAppActionButtons.mockRejectedValueOnce(new AppsApiError('Server error', 500));
+
+		await useAppsStore.getState().fetchActionButtons();
+
+		expect(log).toHaveBeenCalledTimes(1);
+	});
+
+	it('refetches only the action buttons on actions/changed', async () => {
+		onAppsStreamData({ fields: { args: [['actions/changed', []]] } });
+		await flush();
+
+		expect(mockGetAppActionButtons).toHaveBeenCalledTimes(1);
+		expect(mockGetAppsLanguages).not.toHaveBeenCalled();
+	});
+
+	it.each(['app/added', 'app/updated', 'app/removed'])('refetches the action buttons and translations on %s', async event => {
+		onAppsStreamData({ fields: { args: [[event, ['app-id']]] } });
+		await flush();
+
+		expect(mockGetAppsLanguages).toHaveBeenCalledTimes(1);
+		expect(mockGetAppActionButtons).toHaveBeenCalledTimes(1);
 	});
 });

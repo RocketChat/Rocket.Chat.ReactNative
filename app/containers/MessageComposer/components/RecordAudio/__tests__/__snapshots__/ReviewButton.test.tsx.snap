@@ -1,13 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders and fires onPress 1`] = `
-<RNGestureHandlerButton
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
   activeOpacity={0.3}
-  borderless={true}
+  animationDuration={0}
   collapsable={false}
-  delayLongPress={600}
-  handlerTag={-1}
-  handlerType="NativeViewGestureHandler"
+  focusable={true}
   hitSlop={
     {
       "bottom": 10,
@@ -16,24 +32,26 @@ exports[`renders and fires onPress 1`] = `
       "top": 10,
     }
   }
-  innerRef={null}
-  onActiveStateChange={[Function]}
-  onGestureHandlerEvent={[Function]}
-  onGestureHandlerStateChange={[Function]}
-  onPress={[Function]}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     [
       {
         "alignItems": "center",
-        "backgroundColor": "#054",
         "borderRadius": 16,
         "height": 32,
         "justifyContent": "center",
-        "opacity": 1,
         "width": 32,
       },
       {
-        "cursor": undefined,
+        "backgroundColor": "#054",
       },
     ]
   }
@@ -70,5 +88,5 @@ exports[`renders and fires onPress 1`] = `
       
     </Text>
   </View>
-</RNGestureHandlerButton>
+</View>
 `;

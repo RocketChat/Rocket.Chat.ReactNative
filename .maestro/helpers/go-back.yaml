@@ -6,16 +6,34 @@ tags:
 ---
 - runFlow:
     when:
-      visible:
-        id: 'custom-header-back'
+      platform: Android
     commands:
       - tapOn:
-          id: 'custom-header-back'
+          id: '(custom-)?header-back'
+
+- evalScript: ${output.iosBackButtonHasId = false}
+- runFlow:
+    when:
+      platform: iOS
+      visible:
+        id: 'BackButton'
+    commands:
+      - evalScript: ${output.iosBackButtonHasId = true}
 
 - runFlow:
     when:
-      visible:
-        id: 'header-back'
+      platform: iOS
+      true: ${output.iosBackButtonHasId}
     commands:
       - tapOn:
-          id: 'header-back'
+          id: 'BackButton'
+          retryTapIfNoChange: true
+
+- runFlow:
+    when:
+      platform: iOS
+      true: ${!output.iosBackButtonHasId}
+    commands:
+      - tapOn:
+          text: 'Back(, .*)?'
+          retryTapIfNoChange: true

@@ -1,13 +1,16 @@
 import { type FC } from 'react';
-import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
-import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
+import { type Insets, type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
 
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
+import { RectButton } from '../GestureButtons';
 
-interface IButtonProps extends Omit<RectButtonProps, 'children' | 'enabled'> {
+interface IButtonProps {
 	title: string;
+	testID?: string;
+	hitSlop?: number | Insets;
+	accessibilityLabel?: string;
 	onPress: () => void;
 	type?: 'primary' | 'secondary';
 	backgroundColor?: string;
@@ -61,7 +64,9 @@ const Button: FC<IButtonProps> = ({
 	style,
 	styleText,
 	small,
-	...otherProps
+	testID,
+	hitSlop,
+	accessibilityLabel
 }) => {
 	const { colors } = useTheme();
 	const isPrimary = type === 'primary';
@@ -90,11 +95,12 @@ const Button: FC<IButtonProps> = ({
 	return (
 		<RectButton
 			onPress={onPress}
-			enabled={!isDisabled}
+			disabled={isDisabled}
 			style={containerStyle}
-			accessibilityLabel={title}
-			accessibilityRole='button'
-			{...otherProps}>
+			testID={testID}
+			hitSlop={hitSlop}
+			accessibilityLabel={accessibilityLabel ?? title}
+			accessibilityRole='button'>
 			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
 		</RectButton>
 	);
