@@ -109,9 +109,13 @@ export const useEmojiKeyboard = () => {
 		focus && focus();
 	};
 
-	const resetKeyboard = () => {
+	const collapseEmojiKeyboard = () => {
 		updateHeight(true);
 		closeEmojiKeyboard();
+	};
+
+	const resetKeyboard = () => {
+		collapseEmojiKeyboard();
 		closeEmojiSearchbar();
 	};
 
@@ -179,6 +183,7 @@ export const useEmojiKeyboard = () => {
 		// Functions
 		openEmojiKeyboard,
 		closeEmojiKeyboard,
+		collapseEmojiKeyboard,
 		openEmojiSearchbar,
 		closeEmojiSearchbar,
 		resetKeyboard

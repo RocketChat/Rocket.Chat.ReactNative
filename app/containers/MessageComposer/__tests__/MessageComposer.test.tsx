@@ -201,6 +201,7 @@ beforeEach(() => {
 		showEmojiKeyboard,
 		openEmojiKeyboard: jest.fn(),
 		closeEmojiKeyboard: jest.fn(),
+		collapseEmojiKeyboard: jest.fn(),
 		showEmojiSearchbarSharedValue: sharedValueSearchbar,
 		showEmojiSearchbar,
 		openEmojiSearchbar: jest.fn(),
@@ -237,6 +238,7 @@ describe('MessageComposer', () => {
 				showEmojiKeyboard,
 				openEmojiKeyboard: jest.fn(),
 				closeEmojiKeyboard: jest.fn(),
+				collapseEmojiKeyboard: jest.fn(),
 				showEmojiSearchbarSharedValue: sharedValueSearchbar,
 				showEmojiSearchbar,
 				openEmojiSearchbar: jest.fn(),
@@ -910,13 +912,14 @@ describe('MessageComposer', () => {
 
 	describe('Hardware back', () => {
 		const renderWithEmojiKeyboardState = ({ pickerOpen, searchbarOpen }: { pickerOpen: boolean; searchbarOpen: boolean }) => {
-			const closeEmojiKeyboard = jest.fn();
+			const collapseEmojiKeyboard = jest.fn();
 			const resetKeyboard = jest.fn();
 			jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
 				showEmojiPickerSharedValue: sharedValue,
 				showEmojiKeyboard: pickerOpen,
 				openEmojiKeyboard: jest.fn(),
-				closeEmojiKeyboard,
+				closeEmojiKeyboard: jest.fn(),
+				collapseEmojiKeyboard,
 				showEmojiSearchbarSharedValue: sharedValueSearchbar,
 				showEmojiSearchbar: searchbarOpen,
 				openEmojiSearchbar: jest.fn(),
@@ -927,7 +930,7 @@ describe('MessageComposer', () => {
 			const addEventListener = jest.spyOn(BackHandler, 'addEventListener').mockReturnValue({ remove: jest.fn() });
 			render(<Render />);
 			const registered = addEventListener.mock.calls.filter(([eventName]) => eventName === 'hardwareBackPress').pop();
-			return { handleBackPress: registered![1] as () => boolean, closeEmojiKeyboard, resetKeyboard };
+			return { handleBackPress: registered![1] as () => boolean, collapseEmojiKeyboard, resetKeyboard };
 		};
 
 		afterEach(() => {
@@ -935,35 +938,35 @@ describe('MessageComposer', () => {
 		});
 
 		test('closes only the emoji keyboard when it is open', () => {
-			const { handleBackPress, closeEmojiKeyboard, resetKeyboard } = renderWithEmojiKeyboardState({
+			const { handleBackPress, collapseEmojiKeyboard, resetKeyboard } = renderWithEmojiKeyboardState({
 				pickerOpen: true,
 				searchbarOpen: false
 			});
 
 			expect(handleBackPress()).toBe(true);
-			expect(closeEmojiKeyboard).toHaveBeenCalledTimes(1);
+			expect(collapseEmojiKeyboard).toHaveBeenCalledTimes(1);
 			expect(resetKeyboard).not.toHaveBeenCalled();
 		});
 
 		test('resets the keyboard when the emoji searchbar is open', () => {
-			const { handleBackPress, closeEmojiKeyboard, resetKeyboard } = renderWithEmojiKeyboardState({
+			const { handleBackPress, collapseEmojiKeyboard, resetKeyboard } = renderWithEmojiKeyboardState({
 				pickerOpen: true,
 				searchbarOpen: true
 			});
 
 			expect(handleBackPress()).toBe(true);
 			expect(resetKeyboard).toHaveBeenCalledTimes(1);
-			expect(closeEmojiKeyboard).not.toHaveBeenCalled();
+			expect(collapseEmojiKeyboard).not.toHaveBeenCalled();
 		});
 
 		test('lets back navigate when no emoji keyboard is open', () => {
-			const { handleBackPress, closeEmojiKeyboard, resetKeyboard } = renderWithEmojiKeyboardState({
+			const { handleBackPress, collapseEmojiKeyboard, resetKeyboard } = renderWithEmojiKeyboardState({
 				pickerOpen: false,
 				searchbarOpen: false
 			});
 
 			expect(handleBackPress()).toBe(false);
-			expect(closeEmojiKeyboard).not.toHaveBeenCalled();
+			expect(collapseEmojiKeyboard).not.toHaveBeenCalled();
 			expect(resetKeyboard).not.toHaveBeenCalled();
 		});
 	});

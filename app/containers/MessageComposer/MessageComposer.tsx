@@ -60,7 +60,7 @@ export const MessageComposer = ({
 	const messageActionStore = useMessageActionStoreApi();
 	const actionKind = useMessageActionKind();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
-	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, closeEmojiKeyboard, resetKeyboard, keyboardHeight } =
+	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, collapseEmojiKeyboard, resetKeyboard, keyboardHeight } =
 		useEmojiKeyboard();
 	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
@@ -77,7 +77,7 @@ export const MessageComposer = ({
 			return true;
 		}
 		if (showEmojiKeyboard) {
-			closeEmojiKeyboard();
+			collapseEmojiKeyboard();
 			return true;
 		}
 		return false;
