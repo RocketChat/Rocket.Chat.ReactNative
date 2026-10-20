@@ -1,5 +1,5 @@
 import { Component, Fragment, type ReactElement } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/native';
@@ -21,9 +21,6 @@ import { A11yGateProvider } from '../containers/message/stores/A11yGate';
 import { MessageProvider } from '../containers/message/stores/MessageStore';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
 	content: {
 		padding: 16
 	}
@@ -91,9 +88,9 @@ const reduceState = (obj: any, el: any) =>
 const InsetScrollView = ({ children }: { children: ReactElement }) => {
 	const { bottom } = useSafeAreaInsets();
 	return (
-		<View style={[styles.container, { paddingBottom: bottom }]}>
-			<ScrollView contentContainerStyle={styles.content}>{children}</ScrollView>
-		</View>
+		<ScrollView contentContainerStyle={[styles.content, { paddingBottom: styles.content.padding + bottom }]}>
+			{children}
+		</ScrollView>
 	);
 };
 
