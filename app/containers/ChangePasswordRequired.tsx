@@ -20,7 +20,7 @@ export const ChangePasswordRequired = ({ navigation }: IChangePasswordRequired) 
 	const dispatch = useDispatch();
 
 	const handleChangePassword = () => {
-		navigation.navigate('ProfileStackNavigator', { screen: 'ChangePasswordView', params: { fromProfileView: false } });
+		navigation.navigate('ChangePasswordView');
 	};
 
 	return (

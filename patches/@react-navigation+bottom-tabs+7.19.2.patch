@@ -1,0 +1,72 @@
+diff --git a/node_modules/@react-navigation/bottom-tabs/lib/module/unstable/NativeBottomTabView.native.js b/node_modules/@react-navigation/bottom-tabs/lib/module/unstable/NativeBottomTabView.native.js
+index fa5d7ca..4549a47 100644
+--- a/node_modules/@react-navigation/bottom-tabs/lib/module/unstable/NativeBottomTabView.native.js
++++ b/node_modules/@react-navigation/bottom-tabs/lib/module/unstable/NativeBottomTabView.native.js
+@@ -225,6 +225,7 @@ export function NativeBottomTabView({
+           lazy = false,
+           tabBarLabel,
+           tabBarSelectionEnabled,
++          tabBarButtonTestID,
+           tabBarBadgeStyle,
+           tabBarIcon,
+           tabBarBadge,
+@@ -288,6 +289,7 @@ export function NativeBottomTabView({
+           }),
+           screenKey: route.key,
+           preventNativeSelection: tabBarSelectionEnabled === false,
++          tabBarItemTestID: tabBarButtonTestID,
+           badgeValue: tabBarBadge?.toString(),
+           title: tabTitle,
+           nativeContainerStyle: {
+diff --git a/node_modules/@react-navigation/bottom-tabs/lib/typescript/src/unstable/types.d.ts b/node_modules/@react-navigation/bottom-tabs/lib/typescript/src/unstable/types.d.ts
+index ac25ed1..fce558d 100644
+--- a/node_modules/@react-navigation/bottom-tabs/lib/typescript/src/unstable/types.d.ts
++++ b/node_modules/@react-navigation/bottom-tabs/lib/typescript/src/unstable/types.d.ts
+@@ -204,6 +204,11 @@ export type NativeBottomTabNavigationOptions = NativeHeaderOptions & {
+      * Defaults to `true`.
+      */
+     tabBarSelectionEnabled?: boolean;
++
++    /**
++     * ID to locate this tab button in tests.
++     */
++    tabBarButtonTestID?: string;
+     /**
+      * Blur effect applied to the tab bar when tab screen is selected.
+      *
+diff --git a/node_modules/@react-navigation/bottom-tabs/src/unstable/NativeBottomTabView.native.tsx b/node_modules/@react-navigation/bottom-tabs/src/unstable/NativeBottomTabView.native.tsx
+index 0ddc9f7..b66c1a9 100644
+--- a/node_modules/@react-navigation/bottom-tabs/src/unstable/NativeBottomTabView.native.tsx
++++ b/node_modules/@react-navigation/bottom-tabs/src/unstable/NativeBottomTabView.native.tsx
+@@ -349,6 +349,7 @@ export function NativeBottomTabView({ state, navigation, descriptors }: Props) {
+             lazy = false,
+             tabBarLabel,
+             tabBarSelectionEnabled,
++            tabBarButtonTestID,
+             tabBarBadgeStyle,
+             tabBarIcon,
+             tabBarBadge,
+@@ -425,6 +426,7 @@ export function NativeBottomTabView({ state, navigation, descriptors }: Props) {
+               key={route.key}
+               screenKey={route.key}
+               preventNativeSelection={tabBarSelectionEnabled === false}
++              tabBarItemTestID={tabBarButtonTestID}
+               badgeValue={tabBarBadge?.toString()}
+               title={tabTitle}
+               nativeContainerStyle={{ backgroundColor: colors.background }}
+diff --git a/node_modules/@react-navigation/bottom-tabs/src/unstable/types.tsx b/node_modules/@react-navigation/bottom-tabs/src/unstable/types.tsx
+index a2471f5..cce493b 100644
+--- a/node_modules/@react-navigation/bottom-tabs/src/unstable/types.tsx
++++ b/node_modules/@react-navigation/bottom-tabs/src/unstable/types.tsx
+@@ -253,6 +253,11 @@ export type NativeBottomTabNavigationOptions = NativeHeaderOptions & {
+    */
+   tabBarSelectionEnabled?: boolean;
+ 
++  /**
++   * ID to locate this tab button in tests.
++   */
++  tabBarButtonTestID?: string;
++
+   /**
+    * Blur effect applied to the tab bar when tab screen is selected.
+    *

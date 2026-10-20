@@ -20,11 +20,8 @@ tags:
     visible:
       id: 'rooms-list-view'
     timeout: 60000
-- runFlow:
-    file: '../../helpers/tap-header-item.yaml'
-    env:
-      ANDROID_ID: 'rooms-list-view-sidebar'
-      IOS_LABEL: 'Menu'
+- tapOn:
+    id: 'tab-menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
@@ -162,11 +159,8 @@ tags:
     timeout: 60000
 
 # should navigate to legalview
-- runFlow:
-    file: '../../helpers/tap-header-item.yaml'
-    env:
-      ANDROID_ID: 'rooms-list-view-sidebar'
-      IOS_LABEL: 'Menu'
+- tapOn:
+    id: 'tab-menu'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'

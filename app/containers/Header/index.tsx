@@ -11,7 +11,7 @@ import { HeaderBackButton } from './components/HeaderBackButton';
 
 interface IHeader extends NativeStackHeaderProps {}
 
-const Header = ({ options, navigation, route }: IHeader) => {
+const Header = ({ options, navigation, route, back }: IHeader) => {
 	const { headerLeft, headerTitle, headerRight, title } = options;
 	const [rightButtonsWidth, setRightButtonsWidth] = useState<number | null>(null);
 	const isMasterDetail = useMasterDetail();
@@ -27,7 +27,7 @@ const Header = ({ options, navigation, route }: IHeader) => {
 		route.name === 'ShareListView' ||
 		route.name === 'ShareView' ||
 		route.name === 'AttachmentView' ||
-		route.name === 'DrawerNavigator';
+		route.name === 'MainNavigator';
 
 	const handleOnLayout = ({
 		nativeEvent: {
@@ -61,7 +61,9 @@ const Header = ({ options, navigation, route }: IHeader) => {
 				headerLeft({ canGoBack: false })
 			) : (
 				<View style={{ width: rightButtonsWidth }}>
-					<HeaderBackButton onPress={() => navigation.goBack()} testID='custom-header-back' style={styles.headerBackButton} />
+					{back ? (
+						<HeaderBackButton onPress={() => navigation.goBack()} testID='custom-header-back' style={styles.headerBackButton} />
+					) : null}
 				</View>
 			)}
 			<HeaderTitle headerTitle={headerTitle ?? title} />

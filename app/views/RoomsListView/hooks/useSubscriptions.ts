@@ -10,13 +10,14 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { getUserSelector } from '~/selectors/login';
 import { buildRoomList } from './groupRooms';
 import { getGroupOrder } from './sidebarGroupOrder';
+import { type TRoomTypeFilter } from './useRoomTypeFilter';
 
 const CUSTOM_CATEGORIES_LICENSE_MODULE = 'experimental-enterprise-features';
 const NO_CATEGORIES: ISidebarCategory[] = [];
 const NO_ROWS: TSubscriptionModel[] = [];
 const SECTION_BADGE_COLUMNS = ['unread', 'user_mentions', 'group_mentions', 'tunread', 'tunread_user', 'tunread_group'];
 
-export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
+export const useSubscriptions = (collapsedGroups: ReadonlySet<string>, roomTypeFilter: TRoomTypeFilter = 'all') => {
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const server = useAppSelector(state => state.server);
 	const [loaded, setLoaded] = useState<{ server: typeof server; rows: TSubscriptionModel[] }>();
@@ -41,6 +42,12 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 		const getSubscriptions = async () => {
 			const db = database.active;
 			const whereClause = [Q.where('archived', false), Q.where('open', true)] as (Q.WhereDescription | Q.SortBy)[];
+
+			if (roomTypeFilter === 'directMessages') {
+				whereClause.push(Q.where('t', 'd'));
+			} else if (roomTypeFilter === 'withoutDirectMessages') {
+				whereClause.push(Q.where('t', Q.notEq('d')));
+			}
 
 			if (sortBy === SortBy.Alphabetical) {
 				whereClause.push(Q.sortBy(`${useRealName ? 'fname' : 'name'}`, Q.asc));
@@ -74,7 +81,7 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 			cancelled = true;
 			subscription?.unsubscribe();
 		};
-	}, [isGrouping, hasCollapsedGroup, sortBy, useRealName, server]);
+	}, [isGrouping, hasCollapsedGroup, sortBy, useRealName, server, roomTypeFilter]);
 
 	const rows = loaded?.rows ?? NO_ROWS;
 	const loading = loaded?.server !== server;

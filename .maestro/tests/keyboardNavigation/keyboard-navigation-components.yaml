@@ -22,7 +22,8 @@ tags:
     visible:
       text: 'Save your encryption password'
     timeout: 60000
-- pressKey: enter
+- tapOn:
+    id: 'tab-menu'
 - extendedWaitUntil:
     visible:
       text: 'Accessibility & Appearance'

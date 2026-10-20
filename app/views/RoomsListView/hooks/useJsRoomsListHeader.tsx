@@ -1,4 +1,5 @@
-import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
+import { useCallback, useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { InteractionManager } from 'react-native';
 import { type KeyboardFocus } from 'react-native-external-keyboard';
 
@@ -20,10 +21,19 @@ const getScreenFocusNavigation = (navigation: any, isMasterDetail: boolean) => {
 
 export const useJsRoomsListHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
-	const { navigation, isMasterDetail, disabled, badgeColor, troubleshootActions, browseActions, onDrawerPress } =
+	const { navigation, isMasterDetail, disabled, badgeColor, troubleshootActions, browseActions, onSettingsPress } =
 		useRoomsListHeaderState();
 	const isAccessibilityNavigationEnabled = useIsAccessibilityNavigationEnabled();
-	const drawerButtonRef = useRef<KeyboardFocus>(null);
+	const settingsButtonRef = useRef<KeyboardFocus>(null);
+	const isSearchTab = useRoute().name === 'RoomsSearchView';
+
+	useFocusEffect(
+		useCallback(() => {
+			if (isSearchTab) {
+				startSearch();
+			}
+		}, [isSearchTab, startSearch])
+	);
 
 	useLayoutEffect(() => {
 		const searchAction: IHeaderAction = {
@@ -34,37 +44,47 @@ export const useJsRoomsListHeader = () => {
 			onPress: startSearch
 		};
 		const headerTitle = () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />;
+		const onCloseSearch = isSearchTab
+			? () => {
+					stopSearch();
+					navigation.navigate('RoomsListStackNavigator');
+				}
+			: stopSearch;
 		const nextOptions = searchEnabled
 			? {
 					headerTitle,
 					headerLeft: () => (
 						<HeaderButton.Container style={{ marginLeft: 1 }} left>
-							<HeaderButton.Item iconName='close' onPress={stopSearch} />
+							<HeaderButton.Item iconName='close' onPress={onCloseSearch} />
 						</HeaderButton.Container>
 					),
 					headerRight: () => null
 				}
 			: {
 					headerTitle,
-					headerLeft: () => (
-						<HeaderButton.Drawer
-							ref={drawerButtonRef}
-							testID='rooms-list-view-sidebar'
-							onPress={onDrawerPress}
-							badge={() => (badgeColor ? <HeaderButton.BadgeWarn color={badgeColor} /> : null)}
-							disabled={disabled}
-						/>
-					),
-					...headerRightActions([...troubleshootActions, searchAction, ...browseActions])
+					headerLeft: isMasterDetail
+						? () => (
+								<HeaderButton.Drawer
+									ref={settingsButtonRef}
+									testID='rooms-list-view-sidebar'
+									onPress={onSettingsPress}
+									badge={() => (badgeColor ? <HeaderButton.BadgeWarn color={badgeColor} /> : null)}
+									disabled={disabled}
+								/>
+							)
+						: undefined,
+					...headerRightActions([...troubleshootActions, ...(isMasterDetail ? [searchAction] : []), ...browseActions])
 				};
 		navigation.setOptions(nextOptions);
 	}, [
 		navigation,
+		isMasterDetail,
+		isSearchTab,
 		disabled,
 		badgeColor,
 		troubleshootActions,
 		browseActions,
-		onDrawerPress,
+		onSettingsPress,
 		searchEnabled,
 		search,
 		startSearch,
@@ -78,16 +98,16 @@ export const useJsRoomsListHeader = () => {
 			return;
 		}
 		let task: ReturnType<typeof InteractionManager.runAfterInteractions> | undefined;
-		const focusDrawerButton = () => {
+		const focusSettingsButton = () => {
 			task?.cancel();
 			task = InteractionManager.runAfterInteractions(() => {
-				drawerButtonRef.current?.focus();
+				settingsButtonRef.current?.focus();
 			});
 		};
 		if (focusNavigation.isFocused()) {
-			focusDrawerButton();
+			focusSettingsButton();
 		}
-		const unsubscribe = focusNavigation.addListener('focus', focusDrawerButton);
+		const unsubscribe = focusNavigation.addListener('focus', focusSettingsButton);
 		return () => {
 			unsubscribe();
 			task?.cancel();

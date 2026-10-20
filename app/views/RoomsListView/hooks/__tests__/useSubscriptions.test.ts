@@ -1,8 +1,10 @@
 import { act, renderHook } from '@testing-library/react-native';
+import { Q } from '@nozbe/watermelondb';
 import { Subject as MockSubject } from 'rxjs';
 
 import { type TSubscriptionModel } from '~/definitions';
 import { useSubscriptions } from '../useSubscriptions';
+import { type TRoomTypeFilter } from '../useRoomTypeFilter';
 
 const mockState = {
 	settings: { UI_Use_Real_Name: false },
@@ -16,15 +18,15 @@ jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: typeof mockState) => unknown) => selector(mockState)
 }));
 
-const mockQueries: { columns: string[]; emissions: MockSubject<TSubscriptionModel[]> }[] = [];
+const mockQueries: { clauses: unknown[]; columns: string[]; emissions: MockSubject<TSubscriptionModel[]> }[] = [];
 
 jest.mock('~/lib/database', () => ({
 	active: {
 		get: () => ({
-			query: () => ({
+			query: (...clauses: unknown[]) => ({
 				observeWithColumns: (columns: string[]) => {
 					const emissions = new MockSubject<TSubscriptionModel[]>();
-					mockQueries.push({ columns, emissions });
+					mockQueries.push({ clauses, columns, emissions });
 					return emissions;
 				}
 			})
@@ -36,10 +38,16 @@ const latestQuery = () => mockQueries[mockQueries.length - 1];
 
 const flushQuerySetup = () => act(() => Promise.resolve());
 
-const renderSubscriptions = () =>
-	renderHook(({ collapsedGroups }: { collapsedGroups: ReadonlySet<string> }) => useSubscriptions(collapsedGroups), {
-		initialProps: { collapsedGroups: new Set<string>() }
-	});
+const renderSubscriptions = (roomTypeFilter?: TRoomTypeFilter) =>
+	renderHook(
+		({ collapsedGroups }: { collapsedGroups: ReadonlySet<string> }) => useSubscriptions(collapsedGroups, roomTypeFilter),
+		{
+			initialProps: { collapsedGroups: new Set<string>() }
+		}
+	);
+
+const directMessagesClause = Q.where('t', 'd');
+const withoutDirectMessagesClause = Q.where('t', Q.notEq('d'));
 
 describe('RoomsListView useSubscriptions', () => {
 	beforeEach(() => {
@@ -69,5 +77,27 @@ describe('RoomsListView useSubscriptions', () => {
 		await flushQuerySetup();
 
 		expect(result.current.loading).toBe(false);
+	});
+
+	it('queries every room type by default', async () => {
+		renderSubscriptions();
+		await flushQuerySetup();
+
+		expect(latestQuery().clauses).not.toContainEqual(directMessagesClause);
+		expect(latestQuery().clauses).not.toContainEqual(withoutDirectMessagesClause);
+	});
+
+	it('queries only direct messages when asked to', async () => {
+		renderSubscriptions('directMessages');
+		await flushQuerySetup();
+
+		expect(latestQuery().clauses).toContainEqual(directMessagesClause);
+	});
+
+	it('leaves direct messages out when asked to', async () => {
+		renderSubscriptions('withoutDirectMessages');
+		await flushQuerySetup();
+
+		expect(latestQuery().clauses).toContainEqual(withoutDirectMessagesClause);
 	});
 });

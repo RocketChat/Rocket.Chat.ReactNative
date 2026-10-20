@@ -19,10 +19,10 @@ tags:
 
 - extendedWaitUntil:
     visible:
-      id: 'rooms-list-view-search'
+      id: 'tab-search'
     timeout: 60000
 - tapOn:
-    id: rooms-list-view-search
+    id: tab-search
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'

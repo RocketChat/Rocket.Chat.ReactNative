@@ -207,7 +207,7 @@ export type ModalStackParamList = {
 };
 
 export type MasterDetailInsideStackParamList = {
-	DrawerNavigator: NavigatorScreenParams<Partial<MasterDetailSplitParamList>>;
+	MainNavigator: NavigatorScreenParams<Partial<MasterDetailSplitParamList>>;
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
 	ModalBlockView: {
 		data: any; // TODO: Change

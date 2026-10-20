@@ -17,14 +17,14 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { clearCacheAndReconnect } from '~/lib/methods/clearCache';
 import { getDeviceModel, getReadableVersion, isAndroid } from '~/lib/methods/helpers';
 import EventEmitter from '~/lib/methods/helpers/events';
-import { headerLeftCloseModal, headerLeftDrawer } from '~/lib/methods/helpers/navigation/headerActions';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import openLink from '~/lib/methods/helpers/openLink';
 import { onReviewPress } from '~/lib/methods/helpers/review';
 import { type SettingsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
-import SidebarSections from '../SidebarView/SidebarSections';
+import MenuSections from '../MenuView/MenuSections';
 
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
@@ -37,9 +37,7 @@ const SettingsView = (): ReactElement => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			...(isMasterDetail
-				? headerLeftCloseModal(navigation, 'settings-view-close')
-				: headerLeftDrawer(navigation, 'settings-view-drawer')),
+			...(isMasterDetail ? headerLeftCloseModal(navigation, 'settings-view-close') : {}),
 			title: I18n.t('Settings')
 		});
 	}, [navigation, isMasterDetail]);
@@ -120,7 +118,7 @@ const SettingsView = (): ReactElement => {
 			<List.Container>
 				{isMasterDetail ? (
 					<>
-						<SidebarSections navigation={navigation as any} />
+						<MenuSections />
 						<List.Section>
 							<List.Separator />
 							<List.Item

@@ -6,7 +6,7 @@ import {
 	type AdminPanelStackParamList,
 	type ChatsStackParamList,
 	type DisplayPrefStackParamList,
-	type DrawerParamList,
+	type MainStackParamList,
 	type E2EEnterYourPasswordStackParamList,
 	type E2ESaveYourPasswordStackParamList,
 	type InsideStackParamList,
@@ -23,7 +23,7 @@ type TRoutes =
 	| SettingsStackParamList
 	| AdminPanelStackParamList
 	| DisplayPrefStackParamList
-	| DrawerParamList
+	| MainStackParamList
 	| NewMessageStackParamList
 	| E2ESaveYourPasswordStackParamList
 	| E2EEnterYourPasswordStackParamList

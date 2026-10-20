@@ -148,9 +148,9 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 		if (result === true) {
 			const isMasterDetail = getIsMasterDetail();
 			if (isMasterDetail) {
-				Navigation.navigate('DrawerNavigator');
+				Navigation.navigate('MainNavigator');
 			} else {
-				Navigation.navigate('RoomsListView');
+				Navigation.navigateToRoomsList();
 			}
 		} else {
 			showErrorAlert(I18n.t('No_available_agents_to_transfer'), I18n.t('Oops'));

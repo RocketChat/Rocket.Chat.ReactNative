@@ -1,21 +1,15 @@
 import { memo } from 'react';
 
 import * as List from '~/containers/List';
-import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { useTheme } from '~/theme';
-import { sidebarNavigate } from '../methods/sidebarNavigate';
+import { menuNavigate } from '../methods/menuNavigate';
 
 export const useIsAdmin = () =>
 	usePermissions(['view-statistics', 'view-room-administration', 'view-user-administration', 'view-privileged-setting']).some(
 		Boolean
 	);
 
-export const useAdminRoute = () => (useMasterDetail() ? 'AdminPanelView' : 'AdminPanelStackNavigator');
-
-const Admin = ({ currentScreen }: { currentScreen: string }) => {
-	const routeName = useAdminRoute();
-	const { colors } = useTheme();
+const Admin = () => {
 	const isAdmin = useIsAdmin();
 
 	if (!isAdmin) {
@@ -27,8 +21,7 @@ const Admin = ({ currentScreen }: { currentScreen: string }) => {
 				title={'Admin_Panel'}
 				testID='sidebar-admin'
 				left={() => <List.Icon name='settings' />}
-				onPress={() => sidebarNavigate(routeName)}
-				backgroundColor={currentScreen === routeName ? colors.strokeLight : undefined}
+				onPress={() => menuNavigate('AdminPanelView')}
 			/>
 			<List.Separator />
 		</>

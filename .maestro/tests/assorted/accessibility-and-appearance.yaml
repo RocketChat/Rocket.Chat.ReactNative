@@ -24,13 +24,6 @@ tags:
       id: 'accessibility-view-list'
     timeout: 60000
 
-# should have menu button
-- runFlow:
-    file: '../../helpers/wait-header-item.yaml'
-    env:
-      ANDROID_ID: 'accessibility-view-drawer'
-      IOS_LABEL: 'Menu'
-
 # should have theme button
 - extendedWaitUntil:
     visible:
@@ -69,17 +62,13 @@ tags:
 - tapOn:
     id: 'accessibility-mentions-with-at-symbol-switch'
 
-- runFlow:
-    file: '../../helpers/tap-header-item.yaml'
-    env:
-      ANDROID_ID: 'accessibility-view-drawer'
-      IOS_LABEL: 'Menu'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
-      id: 'sidebar-chats'
+      id: 'sidebar-view'
     timeout: 60000
 - tapOn:
-    id: 'sidebar-chats'
+    id: 'tab-chats'
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
@@ -106,17 +95,13 @@ tags:
 - tapOn:
     id: 'accessibility-mentions-with-at-symbol-switch'
 
-- runFlow:
-    file: '../../helpers/tap-header-item.yaml'
-    env:
-      ANDROID_ID: 'accessibility-view-drawer'
-      IOS_LABEL: 'Menu'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
-      id: 'sidebar-chats'
+      id: 'sidebar-view'
     timeout: 60000
 - tapOn:
-    id: 'sidebar-chats'
+    id: 'tab-chats'
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
@@ -143,17 +128,13 @@ tags:
 - tapOn:
     id: 'accessibility-rooms-with-hashtag-symbol-switch'
 
-- runFlow:
-    file: '../../helpers/tap-header-item.yaml'
-    env:
-      ANDROID_ID: 'accessibility-view-drawer'
-      IOS_LABEL: 'Menu'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
-      id: 'sidebar-chats'
+      id: 'sidebar-view'
     timeout: 60000
 - tapOn:
-    id: 'sidebar-chats'
+    id: 'tab-chats'
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
@@ -176,17 +157,13 @@ tags:
 - tapOn:
     id: 'accessibility-rooms-with-hashtag-symbol-switch'
 
-- runFlow:
-    file: '../../helpers/tap-header-item.yaml'
-    env:
-      ANDROID_ID: 'accessibility-view-drawer'
-      IOS_LABEL: 'Menu'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
-      id: 'sidebar-chats'
+      id: 'sidebar-view'
     timeout: 60000
 - tapOn:
-    id: 'sidebar-chats'
+    id: 'tab-chats'
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:

@@ -6,7 +6,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
-import { getUserSelector } from '~/selectors/login';
+import { useMenuButtonState } from '~/views/MenuView/hooks/useMenuButtonState';
 import { useTheme } from '~/theme';
 
 type TRoomsListModalScreen = 'DirectoryView' | 'DisplayPrefsView' | 'PushTroubleshootView';
@@ -58,19 +58,9 @@ export const useRoomsListHeaderState = () => {
 	const navigation = useNavigation<any>();
 	const isMasterDetail = useMasterDetail();
 	const { colors } = useTheme();
-	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
-	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
 	const issuesWithNotifications = useAppSelector(state => state.troubleshootingNotification.issuesWithNotifications);
-	const notificationPresenceCap = useAppSelector(state => state.app.notificationPresenceCap);
-	const disabled = supportedVersionsStatus === 'expired' || !!requirePasswordChange;
+	const { disabled, badgeColor } = useMenuButtonState();
 	const showTroubleshoot = !!issuesWithNotifications && !__DEV__;
-
-	const badgeColor =
-		supportedVersionsStatus === 'warn'
-			? colors.buttonBackgroundDangerDefault
-			: notificationPresenceCap
-				? colors.userPresenceDisabled
-				: undefined;
 
 	const navigateToScreen = useCallback(
 		(screen: TRoomsListModalScreen) => {
@@ -88,13 +78,9 @@ export const useRoomsListHeaderState = () => {
 		[showTroubleshoot, disabled, colors.fontDanger, navigateToScreen]
 	);
 
-	const onDrawerPress = useCallback(() => {
-		if (isMasterDetail) {
-			navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' });
-		} else {
-			navigation.toggleDrawer();
-		}
-	}, [isMasterDetail, navigation]);
+	const onSettingsPress = useCallback(() => {
+		navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' });
+	}, [navigation]);
 
-	return { navigation, isMasterDetail, disabled, badgeColor, troubleshootActions, browseActions, onDrawerPress };
+	return { navigation, isMasterDetail, disabled, badgeColor, troubleshootActions, browseActions, onSettingsPress };
 };

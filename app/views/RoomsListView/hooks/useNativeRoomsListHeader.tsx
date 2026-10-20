@@ -1,4 +1,5 @@
-import { useContext, useLayoutEffect } from 'react';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
+import { useCallback, useContext, useLayoutEffect } from 'react';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
 import i18n from '~/i18n';
@@ -17,20 +18,32 @@ const openServersList = () => showActionSheetRef({ children: <ServersList />, en
 
 export const useNativeRoomsListHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch, resetSearch, searchBarRef } = useContext(RoomsSearchContext);
-	const { navigation, disabled, badgeColor, troubleshootActions, browseActions, onDrawerPress } = useRoomsListHeaderState();
+	const { navigation, isMasterDetail, disabled, badgeColor, troubleshootActions, browseActions, onSettingsPress } =
+		useRoomsListHeaderState();
 	const { colors } = useTheme();
 	const serverName = useAppSelector(state => state.settings.Site_Name as string | undefined);
 	const subtitle = useRoomsListSubtitle();
 	const { canCreateRoom, goToNewMessage } = useNewMessage();
+	const isSearchTab = useRoute().name === 'RoomsSearchView';
+	const showsSearchBar = isMasterDetail || isSearchTab;
+	const showsNewMessageAction = isMasterDetail && canCreateRoom;
 	const showsCancelSearch = isTablet && searchEnabled;
 
+	useFocusEffect(
+		useCallback(() => {
+			if (isSearchTab) {
+				searchBarRef.current?.focus();
+			}
+		}, [isSearchTab, searchBarRef])
+	);
+
 	useLayoutEffect(() => {
-		const drawerAction: IHeaderAction = {
+		const settingsAction: IHeaderAction = {
 			label: i18n.t('Menu'),
 			icon: 'hamburguer',
 			disabled,
 			badge: badgeColor ? { color: badgeColor } : undefined,
-			onPress: onDrawerPress
+			onPress: onSettingsPress
 		};
 		const newMessageAction: IHeaderAction = {
 			label: i18n.t('Create_new_channel_team_dm_discussion'),
@@ -42,6 +55,12 @@ export const useNativeRoomsListHeader = () => {
 			onPress: goToNewMessage
 		};
 		const cancelSearchAction: IHeaderAction = { label: i18n.t('Cancel'), onPress: stopSearch };
+		const onCancelSearch = isSearchTab
+			? () => {
+					resetSearch();
+					navigation.navigate('RoomsListStackNavigator');
+				}
+			: resetSearch;
 
 		navigation.setOptions({
 			...translucentHeader,
@@ -49,35 +68,39 @@ export const useNativeRoomsListHeader = () => {
 			headerSubtitle: subtitle,
 			headerTitleTestID: 'rooms-list-header-servers-list-button',
 			onHeaderTitlePress: openServersList,
-			headerSearchBarOptions: disabled
-				? undefined
-				: {
-						...stackedSearchBarOptions({
-							ref: searchBarRef,
-							onFocus: searchEnabled ? undefined : startSearch,
-							onChangeText: search,
-							onCancel: resetSearch
-						}),
-						placement: isTablet ? 'stacked' : 'automatic',
-						hideWhenScrolling: true,
-						hideNavigationBar: !isTablet
-					},
-			...headerLeftActions([drawerAction]),
+			headerSearchBarOptions:
+				disabled || !showsSearchBar
+					? undefined
+					: {
+							...stackedSearchBarOptions({
+								ref: searchBarRef,
+								onFocus: searchEnabled ? undefined : startSearch,
+								onChangeText: search,
+								onCancel: onCancelSearch
+							}),
+							placement: isSearchTab ? 'automatic' : 'stacked',
+							hideWhenScrolling: !isSearchTab,
+							hideNavigationBar: !isTablet
+						},
+			...headerLeftActions(isMasterDetail ? [settingsAction] : []),
 			...headerRightActions(
 				showsCancelSearch
 					? [cancelSearchAction]
-					: [...troubleshootActions, ...browseActions, ...(canCreateRoom ? [newMessageAction] : [])]
+					: [...troubleshootActions, ...browseActions, ...(showsNewMessageAction ? [newMessageAction] : [])]
 			)
 		});
 	}, [
 		navigation,
 		colors.buttonBackgroundPrimaryDefault,
+		isMasterDetail,
 		disabled,
 		badgeColor,
 		troubleshootActions,
 		browseActions,
-		onDrawerPress,
-		canCreateRoom,
+		onSettingsPress,
+		showsNewMessageAction,
+		showsSearchBar,
+		isSearchTab,
 		goToNewMessage,
 		showsCancelSearch,
 		searchEnabled,

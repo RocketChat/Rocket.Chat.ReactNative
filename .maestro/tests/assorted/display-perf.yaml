@@ -49,25 +49,12 @@ tags:
           timeout: 60000
           label: 'Should have create channel button'
 
-# should have sidebar button
-- runFlow:
-    when:
-      platform: Android
-    commands:
-      - extendedWaitUntil:
-          visible:
-            id: 'rooms-list-view-sidebar'
-          timeout: 60000
-          label: 'Should have sidebar button'
-- runFlow:
-    when:
-      platform: iOS
-    commands:
-      - extendedWaitUntil:
-          visible:
-            text: 'Menu'
-          timeout: 60000
-          label: 'Should have sidebar button'
+# should have menu tab
+- extendedWaitUntil:
+    visible:
+      id: 'tab-menu'
+    timeout: 60000
+    label: 'Should have menu tab'
 
 # should go to Display Preferences
 - runFlow:

@@ -13,7 +13,7 @@ import { setNotificationPresenceCap } from '~/actions/app';
 import userPreferences from '~/lib/methods/userPreferences';
 import I18n from '~/i18n';
 import { NOTIFICATION_PRESENCE_CAP } from '~/lib/constants/notifications';
-import { sidebarNavigate } from '../methods/sidebarNavigate';
+import { menuNavigate } from '../methods/menuNavigate';
 
 export const useIsCustomStatusVisible = () =>
 	Boolean(useAppSelector(state => state.settings.Accounts_AllowUserStatusMessageChange));
@@ -70,7 +70,7 @@ const CustomStatus = () => {
 				title={statusText || 'Edit_Status'}
 				left={() => <Status size={24} status={status} />}
 				right={right}
-				onPress={() => (presenceBroadcastDisabled ? onPressPresenceLearnMore() : sidebarNavigate('StatusView'))}
+				onPress={() => (presenceBroadcastDisabled ? onPressPresenceLearnMore() : menuNavigate('StatusView'))}
 				translateTitle={!statusText}
 				testID={`sidebar-custom-status-${status}`}
 				numberOfLines={1}

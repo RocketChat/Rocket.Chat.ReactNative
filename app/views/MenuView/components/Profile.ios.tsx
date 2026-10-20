@@ -1,18 +1,14 @@
 import { memo } from 'react';
-import { type DrawerNavigationProp } from '@react-navigation/drawer';
 import { shallowEqual } from 'react-redux';
 
 import Avatar from '~/containers/Avatar';
 import { getUserSelector } from '~/selectors/login';
-import { type DrawerParamList } from '~/stacks/types';
 import * as List from '~/containers/List';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 
 const PROFILE_ROW_HEIGHT = 68;
 
-const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
-	const isMasterDetail = useMasterDetail();
+const Profile = () => {
 	const { username, name, statusText } = useAppSelector(getUserSelector, shallowEqual);
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const server = useAppSelector(state => state.server.server);
@@ -20,13 +16,6 @@ const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamL
 
 	const displayName = (useRealName ? name : username) ?? '';
 	const subtitle = statusText || siteName;
-
-	const onPressUser = () => {
-		if (isMasterDetail) {
-			return;
-		}
-		navigation.closeDrawer();
-	};
 
 	return (
 		<List.Item
@@ -36,8 +25,7 @@ const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamL
 			translateSubtitle={false}
 			left={() => <Avatar text={username} size={40} />}
 			heightContainer={PROFILE_ROW_HEIGHT}
-			onPress={onPressUser}
-			testID='sidebar-close-drawer'
+			testID='sidebar-user-info'
 			accessibilityLabel={`${displayName} ${subtitle} Connected to ${server}`}
 			numberOfLines={1}
 		/>

@@ -1,6 +1,5 @@
 import { SubscriptionType } from '~/definitions';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
-import Navigation from '~/lib/navigation/appNavigation';
 import { useCallStore } from './useCallStore';
 
 /**
@@ -21,13 +20,6 @@ export async function navigateToCallRoom({ isMasterDetail }: { isMasterDetail: b
 
 	if (focused) {
 		toggleFocus();
-	}
-
-	// If we're not in the chats navigator (e.g., in Profile/Settings/Accessibility screens),
-	// navigate to ChatsStackNavigator first to ensure goRoom works correctly
-	const currentRoute = Navigation.getCurrentRoute() as any;
-	if (currentRoute?.name !== 'RoomsListView' && currentRoute?.name !== 'RoomView') {
-		Navigation.navigate('ChatsStackNavigator');
 	}
 
 	await goRoom({

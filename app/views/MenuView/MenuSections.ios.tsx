@@ -1,27 +1,21 @@
-import { type DrawerNavigationProp } from '@react-navigation/drawer';
-
 import * as List from '~/containers/List';
-import { type DrawerParamList } from '~/stacks/types';
 import SupportedVersionsWarnItem, { useIsSupportedVersionsWarnVisible } from './components/SupportedVersionsWarnItem';
 import CustomStatus, { useIsCustomStatusVisible } from './components/CustomStatus';
 import { useStackItems } from './components/useStackItems';
-import { useAdminRoute, useIsAdmin } from './components/Admin';
-import { sidebarNavigate } from './methods/sidebarNavigate';
+import { useIsAdmin } from './components/Admin';
+import { menuNavigate } from './methods/menuNavigate';
 import Profile from './components/Profile';
-import { useCurrentScreen } from './useCurrentScreen';
 
-const SidebarSections = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
-	const currentScreen = useCurrentScreen(navigation);
+const MenuSections = () => {
 	const isSupportedVersionsWarnVisible = useIsSupportedVersionsWarnVisible();
 	const isCustomStatusVisible = useIsCustomStatusVisible();
-	const stackItems = useStackItems(currentScreen);
+	const stackItems = useStackItems();
 	const isAdmin = useIsAdmin();
-	const adminRoute = useAdminRoute();
 
 	return (
 		<>
 			<List.Section>
-				<Profile navigation={navigation} />
+				<Profile />
 			</List.Section>
 			{isSupportedVersionsWarnVisible || isCustomStatusVisible ? (
 				<List.Section>
@@ -39,7 +33,6 @@ const SidebarSections = ({ navigation }: { navigation: DrawerNavigationProp<Draw
 							onPress={item.onPress}
 							testID={item.testID}
 							disabled={item.disabled}
-							selected={item.selected}
 						/>
 					))}
 				</List.Section>
@@ -49,9 +42,8 @@ const SidebarSections = ({ navigation }: { navigation: DrawerNavigationProp<Draw
 					<List.Item
 						title='Admin_Panel'
 						testID='sidebar-admin'
-						selected={currentScreen === adminRoute}
 						left={() => <List.Icon name='settings' />}
-						onPress={() => sidebarNavigate(adminRoute)}
+						onPress={() => menuNavigate('AdminPanelView')}
 					/>
 				</List.Section>
 			) : null}
@@ -59,4 +51,4 @@ const SidebarSections = ({ navigation }: { navigation: DrawerNavigationProp<Draw
 	);
 };
 
-export default SidebarSections;
+export default MenuSections;

@@ -73,7 +73,7 @@ const ReportUserView = () => {
 			EventEmitter.emit(LISTENER, { message: I18n.t('Report_sent_successfully') });
 			setLoading(false);
 			if (isMasterDetail) {
-				navigation.navigate('DrawerNavigator');
+				navigation.navigate('MainNavigator');
 				return;
 			}
 			Navigation.resetTo();

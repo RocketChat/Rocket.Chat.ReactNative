@@ -7,10 +7,9 @@ import { type CompositeNavigationProp } from '@react-navigation/core';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
-import { type ChatsStackParamList, type DrawerParamList, type NewMessageStackParamList } from '../stacks/types';
+import { type ChatsStackParamList, type MainStackParamList, type NewMessageStackParamList } from '../stacks/types';
 import { type IApplicationState } from '../definitions';
 import { usePermissions } from '../lib/hooks/usePermissions';
-import { useMasterDetail } from '../lib/hooks/useMasterDetail';
 import { compareServerVersion } from '../lib/methods/helpers';
 import { type TSupportedPermissions } from '../reducers/permissions';
 
@@ -18,7 +17,7 @@ type TRoute = RouteProp<ChatsStackParamList, 'AddChannelTeamView'>;
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>,
-	CompositeNavigationProp<NativeStackNavigationProp<NewMessageStackParamList>, NativeStackNavigationProp<DrawerParamList>>
+	CompositeNavigationProp<NativeStackNavigationProp<NewMessageStackParamList>, NativeStackNavigationProp<MainStackParamList>>
 >;
 
 const useCreateNewPermission = (rid: string, t: 'c' | 'p') => {
@@ -47,7 +46,6 @@ const useAddExistingPermission = (rid: string) => {
 
 const AddChannelTeamView = () => {
 	const navigation = useNavigation<TNavigation>();
-	const isMasterDetail = useMasterDetail();
 	const {
 		params: { teamId, rid, t }
 	} = useRoute<TRoute>();
@@ -69,14 +67,9 @@ const AddChannelTeamView = () => {
 							<List.Item
 								title='Create_New'
 								onPress={() =>
-									isMasterDetail
-										? navigation.navigate('SelectedUsersView', {
-												nextAction: () => navigation.navigate('CreateChannelView', { teamId })
-											})
-										: navigation.navigate('SelectedUsersView', {
-												nextAction: () =>
-													navigation.navigate('ChatsStackNavigator', { screen: 'CreateChannelView', params: { teamId } })
-											})
+									navigation.navigate('SelectedUsersView', {
+										nextAction: () => navigation.navigate('CreateChannelView', { teamId })
+									})
 								}
 								testID='add-channel-team-view-create-channel'
 								left={() => <List.Icon name='team' />}

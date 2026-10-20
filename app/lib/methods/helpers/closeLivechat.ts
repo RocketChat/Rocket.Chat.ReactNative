@@ -18,9 +18,9 @@ export const closeLivechat = async ({
 	try {
 		await closeLivechatService(rid, comment, tags);
 		if (isMasterDetail) {
-			Navigation.navigate('DrawerNavigator');
+			Navigation.navigate('MainNavigator');
 		} else {
-			Navigation.navigate('RoomsListView');
+			Navigation.navigateToRoomsList();
 		}
 	} catch (e: any) {
 		showErrorAlert(I18n.isTranslated(e.error) ? I18n.t(e.error) : e.reason, I18n.t('Oops'));

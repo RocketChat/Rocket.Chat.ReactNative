@@ -35,12 +35,15 @@ import ListHeader from './components/ListHeader';
 import NewMessageButton from './components/NewMessageButton';
 import SectionHeader from './components/SectionHeader';
 import SectionRevealFooter from './components/SectionRevealFooter';
+import TabBarClearance from './components/TabBarClearance';
 import RoomsSearchProvider, { RoomsSearchContext } from './contexts/RoomsSearchProvider';
 import { useCollapsedGroups } from './hooks/useCollapsedGroups';
 import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useHeader } from './hooks/useHeader';
 import { useNewMessage } from './hooks/useNewMessage';
+import { useShowsNewMessageButton } from './hooks/useShowsNewMessageButton';
 import { useRefresh } from './hooks/useRefresh';
+import { useRoomTypeFilter } from './hooks/useRoomTypeFilter';
 import { SECTION_REFLOW, useSectionToggleAnimation } from './hooks/useSectionToggleAnimation';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import { useWarmUpMessageBlocks } from './hooks/useWarmUpMessageBlocks';
@@ -64,7 +67,8 @@ const RoomsListView = memo(function RoomsListView() {
 	const { bottom } = useSafeAreaInsets();
 	const getItemLayout = useGetItemLayout();
 	const { collapsedGroups, toggleGroup } = useCollapsedGroups();
-	const { subscriptions, loading } = useSubscriptions(collapsedGroups);
+	const roomTypeFilter = useRoomTypeFilter();
+	const { subscriptions, loading } = useSubscriptions(collapsedGroups, roomTypeFilter);
 	const { onToggle, rowEntering, rowExiting, badgeEntering, badgeExiting, revealKey, coverEntering, coverExiting } =
 		useSectionToggleAnimation(collapsedGroups, toggleGroup, subscriptions.length);
 	const store = useStore<IApplicationState>();
@@ -72,8 +76,8 @@ const RoomsListView = memo(function RoomsListView() {
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
-	const { canCreateRoom, goToNewMessage } = useNewMessage();
-	const showNewMessageButton = !hasNativeHeaderBar && canCreateRoom && !searchEnabled;
+	const { goToNewMessage } = useNewMessage();
+	const showNewMessageButton = useShowsNewMessageButton();
 
 	useEffect(() => {
 		const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -183,11 +187,14 @@ const RoomsListView = memo(function RoomsListView() {
 				itemLayoutAnimation={SECTION_REFLOW}
 				ListHeaderComponent={ListHeader}
 				ListFooterComponent={
-					searching ? (
-						<ActivityIndicator />
-					) : (
-						<SectionRevealFooter revealKey={revealKey} entering={coverEntering} exiting={coverExiting} />
-					)
+					<>
+						{searching ? (
+							<ActivityIndicator />
+						) : (
+							<SectionRevealFooter revealKey={revealKey} entering={coverEntering} exiting={coverExiting} />
+						)}
+						<TabBarClearance />
+					</>
 				}
 				removeClippedSubviews={false}
 				getItemLayout={getItemLayout}

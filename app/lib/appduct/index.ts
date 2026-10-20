@@ -80,15 +80,9 @@ const waitForInside = async (signal: AbortSignal) => {
 	}
 };
 
-const showDrawer = () => Navigation.popTo('DrawerNavigator');
+const popToMainNavigator = () => Navigation.popTo('MainNavigator');
 
-const openRoom = (room: TSubscriptionModel, isMasterDetail: boolean) => {
-	if (!isMasterDetail) {
-		showDrawer();
-		Navigation.navigate('ChatsStackNavigator');
-	}
-	navigateToRoom({ item: room, isMasterDetail });
-};
+const openRoom = (room: TSubscriptionModel, isMasterDetail: boolean) => navigateToRoom({ item: room, isMasterDetail });
 
 const waitForRoomsSync = (server: string, signal: AbortSignal) => {
 	let roomsSyncStarted = false;
@@ -367,19 +361,19 @@ registerTool({
 	}
 });
 
-const phoneStackByScreen: Record<string, string> = {
-	SettingsView: 'SettingsStackNavigator',
-	LanguageView: 'SettingsStackNavigator',
-	SecurityPrivacyView: 'SettingsStackNavigator',
-	MediaAutoDownloadView: 'SettingsStackNavigator',
-	AccessibilityAndAppearanceView: 'AccessibilityStackNavigator',
-	DisplayPrefsView: 'AccessibilityStackNavigator',
-	ThemeView: 'AccessibilityStackNavigator',
-	ProfileView: 'ProfileStackNavigator',
-	UserPreferencesView: 'ProfileStackNavigator',
-	UserNotificationPrefView: 'ProfileStackNavigator',
-	DirectoryView: 'ChatsStackNavigator'
-};
+const appScreens = [
+	'SettingsView',
+	'LanguageView',
+	'SecurityPrivacyView',
+	'MediaAutoDownloadView',
+	'AccessibilityAndAppearanceView',
+	'DisplayPrefsView',
+	'ThemeView',
+	'ProfileView',
+	'UserPreferencesView',
+	'UserNotificationPrefView',
+	'DirectoryView'
+];
 
 const roomScreenParams: Record<string, (room: TSubscriptionModel, isMasterDetail: boolean) => object> = {
 	RoomActionsView: room => ({ rid: room.rid, t: room.t, room, joined: true }),
@@ -395,7 +389,7 @@ const roomScreenParams: Record<string, (room: TSubscriptionModel, isMasterDetail
 	ThreadMessagesView: room => ({ rid: room.rid, t: room.t })
 };
 
-const supportedScreens = [...Object.keys(phoneStackByScreen), ...Object.keys(roomScreenParams)];
+const supportedScreens = [...appScreens, ...Object.keys(roomScreenParams)];
 
 const openRoomScreen = async (screen: string, rid: string | undefined, isMasterDetail: boolean) => {
 	if (!rid) {
@@ -443,11 +437,11 @@ registerTool({
 		if (isRoomScreen) {
 			await openRoomScreen(screen, rid, isMasterDetail);
 		} else if (isMasterDetail) {
-			showDrawer();
+			popToMainNavigator();
 			Navigation.navigate('ModalStackNavigator', { screen });
 		} else {
-			showDrawer();
-			Navigation.navigate(phoneStackByScreen[screen], { screen, initial: false, pop: true });
+			popToMainNavigator();
+			Navigation.navigate('MainNavigator', { screen, pop: true });
 		}
 		return waitForRoute(screen, isRoomScreen ? rid : undefined, signal);
 	}

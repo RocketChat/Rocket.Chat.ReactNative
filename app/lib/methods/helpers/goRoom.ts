@@ -54,8 +54,8 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 		return;
 	}
 
-	Navigation.popTo('DrawerNavigator');
 	if (isMasterDetail) {
+		Navigation.popTo('MainNavigator');
 		return Navigation.dispatch((state: any) => {
 			const routesRoomView = state.routes.filter((r: any) => r.name !== 'RoomView');
 			return CommonActions.reset({
@@ -72,20 +72,10 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 		});
 	}
 
-	return Navigation.dispatch((state: any) => {
-		const routesRoomsListView = state.routes.filter((r: any) => r.name === 'RoomsListView');
-		return CommonActions.reset({
-			...state,
-			routes: [
-				...routesRoomsListView,
-				{
-					name: 'RoomView',
-					params: routeParams
-				}
-			],
-			index: routesRoomsListView.length
-		});
-	});
+	if (currentRoute?.name !== 'DirectMessagesView') {
+		Navigation.navigateToRoomsList();
+	}
+	Navigation.navigate('RoomView', routeParams);
 };
 
 interface IOmnichannelRoomVisitor extends IOmnichannelRoom {

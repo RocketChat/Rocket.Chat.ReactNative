@@ -25,16 +25,14 @@ tags:
     commands:
       - assertVisible:
           id: 'rooms-list-view-create-channel'
-      - assertVisible:
-          id: 'rooms-list-view-sidebar'
 - runFlow:
     when:
       platform: iOS
     commands:
       - assertVisible:
           text: 'Create new channel, team, direct message or discussion'
-      - assertVisible:
-          text: 'Menu'
+- assertVisible:
+    id: 'tab-menu'
 - runFlow:
     file: ../../helpers/search-room.yaml
     env:

@@ -80,9 +80,9 @@ importers:
       '@react-native/codegen':
         specifier: 0.86.3
         version: 0.86.3(@babel/core@7.29.7)
-      '@react-navigation/drawer':
-        specifier: ^7.14.1
-        version: 7.14.2(2bc054b45d80945c6bf73a8ade7ad73e)
+      '@react-navigation/bottom-tabs':
+        specifier: 7.19.2
+        version: 7.19.2(9f93b74e18ae1df429c2a9dc7118e4c2)
       '@react-navigation/elements':
         specifier: ^2.9.42
         version: 2.9.43(322efc84ae2b5bd2002572a8329e2a5c)
@@ -2883,21 +2883,19 @@ packages:
       '@types/react':
         optional: true
 
-  '@react-navigation/core@7.22.1':
-    resolution: {integrity: sha512-6JAaYM4u6RPtVMUjN5ovX5DNBdBZtDqebk7kEwlncUP6fP4P94+qEYv1bRmtxSFs7UxiZwQQs+jzTsBaW2WeyA==}
-    peerDependencies:
-      react: '>= 18.2.0'
-
-  '@react-navigation/drawer@7.14.2':
-    resolution: {integrity: sha512-vHDJ5TlKZ2RWW1z+Zy7k4mwuo3kLXfhO2+EpDWBTPcaeb8b/3upouKDALQviWCQ1KqyUAme+DbE8cIoGcuSQvg==}
+  '@react-navigation/bottom-tabs@7.19.2':
+    resolution: {integrity: sha512-sXUS7cySIj2cLwD1trdTnbqAm3TWYiF6L9i0VNES2+4ssUyBDgkIdmm7uxjhJ8ZSjzpWj8uSfLHkkSx0j0MpmA==}
     peerDependencies:
       '@react-navigation/native': ^7.4.1
       react: '>= 18.2.0'
       react-native: '*'
-      react-native-gesture-handler: '>= 2.0.0'
-      react-native-reanimated: '>= 2.0.0'
       react-native-safe-area-context: '>= 4.0.0'
       react-native-screens: '>= 4.0.0'
+
+  '@react-navigation/core@7.22.1':
+    resolution: {integrity: sha512-6JAaYM4u6RPtVMUjN5ovX5DNBdBZtDqebk7kEwlncUP6fP4P94+qEYv1bRmtxSFs7UxiZwQQs+jzTsBaW2WeyA==}
+    peerDependencies:
+      react: '>= 18.2.0'
 
   '@react-navigation/elements@2.9.43':
     resolution: {integrity: sha512-XOYpRfgT9RPV2VIoXeEfTVdmXwEPpHwkezDkZVsVNEN6rTWDo07BPyLmWsvXooczyMf3jHe9AB2p/U9lJArtiQ==}
@@ -6858,14 +6856,6 @@ packages:
     resolution: {integrity: sha512-hzXJSObJdezEz0hF7MAJ3tGeoesuQWenXXt9mrQR9Mjb8kXpZ09rqSsZ/quNpJdZpQ3rYiFa3/0GFG5KNn9PBg==}
     peerDependencies:
       react-native: '*'
-
-  react-native-drawer-layout@4.2.10:
-    resolution: {integrity: sha512-O6TQdZ5LSm3dqnuR4rX9KPtE+9dVg7jsezEYz1l01rkQTe4fQvYZIoPu2sZFl5X2N70uhRdjnPULySVR3sBUwA==}
-    peerDependencies:
-      react: '>= 18.2.0'
-      react-native: '*'
-      react-native-gesture-handler: '>= 2.0.0'
-      react-native-reanimated: '>= 2.0.0'
 
   react-native-easy-grid@0.2.2:
     resolution: {integrity: sha512-MlYrNIldnEMKn6TVatQN1P64GoVlwGIuz+8ncdfJ0Wq/xtzUkQwlil8Uksyp7MhKfENE09MQnGNcba6Mx3oSAA==}
@@ -11303,6 +11293,19 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.18
 
+  '@react-navigation/bottom-tabs@7.19.2(9f93b74e18ae1df429c2a9dc7118e4c2)':
+    dependencies:
+      '@react-navigation/elements': 2.9.43(322efc84ae2b5bd2002572a8329e2a5c)
+      '@react-navigation/native': 7.4.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
+      color: 4.2.3
+      react: 19.2.3
+      react-native: 0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
+      react-native-safe-area-context: 5.10.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
+      react-native-screens: 4.28.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
+      sf-symbols-typescript: 2.2.0
+    transitivePeerDependencies:
+      - '@react-native-masked-view/masked-view'
+
   '@react-navigation/core@7.22.1(react@19.2.3)':
     dependencies:
       '@react-navigation/routers': 7.6.4
@@ -11313,22 +11316,6 @@ snapshots:
       react-is: 19.3.0
       use-latest-callback: 0.2.6(react@19.2.3)
       use-sync-external-store: 1.6.0(react@19.2.3)
-
-  '@react-navigation/drawer@7.14.2(2bc054b45d80945c6bf73a8ade7ad73e)':
-    dependencies:
-      '@react-navigation/elements': 2.9.43(322efc84ae2b5bd2002572a8329e2a5c)
-      '@react-navigation/native': 7.4.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
-      color: 4.2.3
-      react: 19.2.3
-      react-native: 0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
-      react-native-drawer-layout: 4.2.10(106987a3d5ae1ef5de78591772a14578)
-      react-native-gesture-handler: 3.3.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
-      react-native-reanimated: 4.6.0(react-native-worklets@0.12.2(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
-      react-native-safe-area-context: 5.10.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
-      react-native-screens: 4.28.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
-      use-latest-callback: 0.2.6(react@19.2.3)
-    transitivePeerDependencies:
-      - '@react-native-masked-view/masked-view'
 
   '@react-navigation/elements@2.9.43(322efc84ae2b5bd2002572a8329e2a5c)':
     dependencies:
@@ -16037,15 +16024,6 @@ snapshots:
   react-native-device-info@11.1.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)):
     dependencies:
       react-native: 0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
-
-  react-native-drawer-layout@4.2.10(106987a3d5ae1ef5de78591772a14578):
-    dependencies:
-      color: 4.2.3
-      react: 19.2.3
-      react-native: 0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
-      react-native-gesture-handler: 3.3.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
-      react-native-reanimated: 4.6.0(react-native-worklets@0.12.2(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
-      use-latest-callback: 0.2.6(react@19.2.3)
 
   react-native-easy-grid@0.2.2:
     dependencies:

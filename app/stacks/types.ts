@@ -206,8 +206,6 @@ export type ProfileStackParamList = {
 	ChangePasswordView: undefined;
 };
 
-// Cross-stack entries (ProfileView, DisplayPrefsView, AccessibilityAndAppearanceView) are reachable
-// from SettingsView via the drawer/accessibility stack.
 export type SettingsStackParamList = {
 	LegalView: undefined;
 	SettingsView: undefined;
@@ -238,13 +236,21 @@ export type DisplayPrefStackParamList = {
 	DisplayPrefsView: undefined;
 };
 
-export type DrawerParamList = {
-	ChatsStackNavigator: NavigatorScreenParams<ChatsStackParamList>;
-	ProfileStackNavigator: NavigatorScreenParams<ProfileStackParamList>;
-	SettingsStackNavigator: NavigatorScreenParams<SettingsStackParamList>;
-	AdminPanelStackNavigator: NavigatorScreenParams<AdminPanelStackParamList>;
-	AccessibilityStackNavigator: NavigatorScreenParams<AccessibilityStackParamList>;
+export type HomeTabsParamList = {
+	RoomsListStackNavigator: NavigatorScreenParams<{ RoomsListView: undefined }>;
+	DirectMessagesStackNavigator: NavigatorScreenParams<{ DirectMessagesView: undefined }>;
+	MenuStackNavigator: NavigatorScreenParams<{ MenuView: undefined }>;
+	RoomsSearchStackNavigator: NavigatorScreenParams<{ RoomsSearchView: undefined }>;
 };
+
+export type MainStackParamList = { HomeTabs: NavigatorScreenParams<HomeTabsParamList> } & Omit<
+	ChatsStackParamList,
+	'RoomsListView'
+> &
+	ProfileStackParamList &
+	SettingsStackParamList &
+	AdminPanelStackParamList &
+	AccessibilityStackParamList;
 
 export type NewMessageStackParamList = {
 	NewMessageView: undefined;
@@ -283,7 +289,7 @@ export type E2EEnterYourPasswordStackParamList = {
 };
 
 export type InsideStackParamList = {
-	DrawerNavigator: NavigatorScreenParams<DrawerParamList>;
+	MainNavigator: NavigatorScreenParams<MainStackParamList>;
 	NewMessageStackNavigator: NavigatorScreenParams<NewMessageStackParamList>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
 	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
