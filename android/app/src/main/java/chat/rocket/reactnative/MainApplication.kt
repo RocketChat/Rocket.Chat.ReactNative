@@ -2,6 +2,14 @@ package chat.rocket.reactnative
 
 import android.app.Application
 import android.content.res.Configuration
+import android.database.DatabaseErrorHandler
+import android.database.DatabaseUtils
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
+import android.system.ErrnoException
+import android.system.Os
+import android.util.Log
+import java.io.File
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -70,6 +78,8 @@ open class MainApplication : Application(), ReactApplication {
     super.onCreate()
     Bugsnag.start(this)
     
+    migrateLegacyExperimentalDatabases()
+
     // Initialize MMKV encryption - reads existing key or generates new one
     // Must run before React Native starts to avoid race conditions
     MMKVKeyManager.initialize(this)
@@ -83,5 +93,75 @@ open class MainApplication : Application(), ReactApplication {
 	override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
+  }
+
+  private fun migrateLegacyExperimentalDatabases() {
+    val dataDir = File(applicationInfo.dataDir)
+    val legacySuffix = "-experimental.db.db"
+    val serversLegacy = File(dataDir, "default$legacySuffix")
+    if (!serversLegacy.isFile) {
+      return
+    }
+    val dataDirFiles = dataDir.listFiles() ?: return
+    val otherLegacy = dataDirFiles.filter { it.isFile && it.name.endsWith(legacySuffix) && it != serversLegacy }
+    var targetKept = false
+    for (legacy in otherLegacy + serversLegacy) {
+      val isServersDatabase = legacy == serversLegacy
+      val target = File(legacy.path.removeSuffix(legacySuffix) + ".db.db")
+      val targetCollidesWithServersLegacy = target == serversLegacy
+      if (targetCollidesWithServersLegacy || (isServersDatabase && targetKept)) {
+        continue
+      }
+      if (target.length() > 0) {
+        if (!isReplaceable(target, isServersDatabase)) {
+          targetKept = true
+          continue
+        }
+        discardDatabase(target)
+      }
+      moveDatabase(legacy, target)
+    }
+  }
+
+  private fun sidecarsThenMain(main: File) = listOf("-wal", "-shm", "-journal", "").map { File(main.path + it) }
+
+  private fun moveDatabase(from: File, to: File) {
+    for ((source, destination) in sidecarsThenMain(from).zip(sidecarsThenMain(to))) {
+      if (source.exists()) {
+        try {
+          Os.rename(source.path, destination.path)
+        } catch (e: ErrnoException) {
+          throw IllegalStateException("Failed to migrate ${source.name} to ${destination.name}", e)
+        }
+      }
+    }
+  }
+
+  private fun discardDatabase(main: File) {
+    for (file in sidecarsThenMain(main)) {
+      if (file.exists()) {
+        try {
+          Os.remove(file.path)
+        } catch (e: ErrnoException) {
+          throw IllegalStateException("Failed to discard ${file.name}", e)
+        }
+      }
+    }
+  }
+
+  private fun isReplaceable(target: File, isServersDatabase: Boolean): Boolean {
+    val keepFileOnCorruption = DatabaseErrorHandler { }
+    return try {
+      SQLiteDatabase.openDatabase(target.path, null, SQLiteDatabase.OPEN_READONLY, keepFileOnCorruption).use {
+        if (isServersDatabase) {
+          DatabaseUtils.queryNumEntries(it, "servers") == 0L
+        } else {
+          DatabaseUtils.queryNumEntries(it, "sqlite_master", "type = 'table' AND name = 'subscriptions'") == 0L
+        }
+      }
+    } catch (e: SQLiteException) {
+      Log.w("MainApplication", "Legacy database probe failed", e)
+      false
+    }
   }
 }

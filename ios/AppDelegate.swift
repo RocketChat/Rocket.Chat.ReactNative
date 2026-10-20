@@ -5,6 +5,7 @@ import Firebase
 import Bugsnag
 import WatchConnectivity
 import PushKit
+import SQLite3
 
 @UIApplicationMain
 public class AppDelegate: ExpoAppDelegate {
@@ -13,6 +14,8 @@ public class AppDelegate: ExpoAppDelegate {
   var reactNativeDelegate: ReactNativeDelegate?
   var reactNativeFactory: RCTReactNativeFactory?
   var watchConnection: WatchConnection?
+
+  private static let sidecarSuffixesThenMain = ["-wal", "-shm", "-journal", ""]
 
   public override func application(
     _ application: UIApplication,
@@ -25,6 +28,7 @@ public class AppDelegate: ExpoAppDelegate {
     
     FirebaseApp.configure()
     Bugsnag.start()
+    migrateLegacyExperimentalDatabases()
     ReplyNotification.configure()
     if !VoipRegion.isChina() {
       VoipService.voipRegistration()
@@ -67,6 +71,94 @@ public class AppDelegate: ExpoAppDelegate {
     watchConnection = WatchConnection(session: WCSession.default)
 
     return result
+  }
+
+  private func migrateLegacyExperimentalDatabases() {
+    let fileManager = FileManager.default
+    let groupDir = fileManager.groupDir()
+    let legacySuffix = "-experimental.db"
+    let serversLegacyName = "default\(legacySuffix)"
+    let serversLegacyPath = "\(groupDir)/\(serversLegacyName)"
+    guard isFile(atPath: serversLegacyPath),
+          let groupFiles = try? fileManager.contentsOfDirectory(atPath: groupDir) else {
+      return
+    }
+    let legacyNames = groupFiles.filter { $0.hasSuffix(legacySuffix) && isFile(atPath: "\(groupDir)/\($0)") }
+    var targetKept = false
+    for name in legacyNames.filter({ $0 != serversLegacyName }) + [serversLegacyName] {
+      let from = "\(groupDir)/\(name)"
+      let to = "\(groupDir)/\(name.dropLast(legacySuffix.count)).db"
+      if to == serversLegacyPath || (name == serversLegacyName && targetKept) {
+        continue
+      }
+      if let size = (try? fileManager.attributesOfItem(atPath: to))?[.size] as? Int, size > 0 {
+        guard name == serversLegacyName, isReplaceableServersDatabase(atPath: to) else {
+          targetKept = true
+          continue
+        }
+        discardDatabase(atPath: to)
+      }
+      foldWalIntoMainFile(atPath: from)
+      for suffix in Self.sidecarSuffixesThenMain where fileManager.fileExists(atPath: from + suffix) {
+        guard Darwin.rename(from + suffix, to + suffix) == 0 else {
+          let code = errno
+          fatalError("Failed to migrate \(name + suffix): errno \(code)")
+        }
+      }
+    }
+  }
+
+  private func isFile(atPath path: String) -> Bool {
+    var isDirectory: ObjCBool = false
+    return FileManager.default.fileExists(atPath: path, isDirectory: &isDirectory) && !isDirectory.boolValue
+  }
+
+  private func foldWalIntoMainFile(atPath path: String) {
+    var database: OpaquePointer?
+    defer { sqlite3_close(database) }
+    guard FileManager.default.fileExists(atPath: path + "-wal") else {
+      return
+    }
+    guard sqlite3_open_v2(path, &database, SQLITE_OPEN_READWRITE, nil) == SQLITE_OK else {
+      print("Legacy database migration: could not open the legacy database to fold its WAL")
+      return
+    }
+    var statement: OpaquePointer?
+    defer { sqlite3_finalize(statement) }
+    guard sqlite3_prepare_v2(database, "PRAGMA wal_checkpoint(TRUNCATE)", -1, &statement, nil) == SQLITE_OK,
+          sqlite3_step(statement) == SQLITE_ROW,
+          sqlite3_column_int(statement, 0) == 0 else {
+      print("Legacy database migration: could not fold the legacy WAL into the main file")
+      return
+    }
+  }
+
+  private func isReplaceableServersDatabase(atPath path: String) -> Bool {
+    var database: OpaquePointer?
+    defer { sqlite3_close(database) }
+    guard sqlite3_open_v2(path, &database, SQLITE_OPEN_READONLY, nil) == SQLITE_OK else {
+      print("Legacy database migration: could not open the target database")
+      return false
+    }
+    var statement: OpaquePointer?
+    defer { sqlite3_finalize(statement) }
+    guard sqlite3_prepare_v2(database, "SELECT COUNT(*) FROM servers", -1, &statement, nil) == SQLITE_OK,
+          sqlite3_step(statement) == SQLITE_ROW else {
+      print("Legacy database migration: could not read servers from the target database")
+      return false
+    }
+    return sqlite3_column_int64(statement, 0) == 0
+  }
+
+  private func discardDatabase(atPath path: String) {
+    let fileManager = FileManager.default
+    for suffix in Self.sidecarSuffixesThenMain where fileManager.fileExists(atPath: path + suffix) {
+      do {
+        try fileManager.removeItem(atPath: path + suffix)
+      } catch {
+        fatalError("Failed to discard \(path + suffix): \(error.localizedDescription)")
+      }
+    }
   }
 
   // Linking API
