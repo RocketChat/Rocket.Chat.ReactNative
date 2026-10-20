@@ -1,6 +1,6 @@
-import { fireEvent, render } from '@testing-library/react-native';
+import { renderHook } from '@testing-library/react-native';
 
-import Apps from './Apps';
+import { useSidebarAppActions } from '../useSidebarAppActions';
 import { triggerAppActionButton } from '~/lib/apps/actions';
 import { type IAppActionButtonItem, useAppActionButtons } from '~/lib/apps/useAppActionButtons';
 import { logEvent } from '~/lib/methods/helpers/log';
@@ -20,33 +20,28 @@ const item = (actionId: string, context: string): IAppActionButtonItem =>
 		button: { appId: 'app-1', actionId, context, labelI18n: actionId }
 	}) as IAppActionButtonItem;
 
-describe('Sidebar Apps', () => {
+describe('useSidebarAppActions', () => {
 	beforeEach(() => jest.clearAllMocks());
 
-	it('asks for buttons without a room', () => {
-		mockedHook.mockReturnValue([]);
-		render(<Apps />);
-		expect(mockedHook).toHaveBeenCalledWith();
-	});
-
-	it('renders nothing without user dropdown buttons', () => {
+	it('returns nothing without user dropdown buttons', () => {
 		mockedHook.mockReturnValue([item('room-thing', 'roomAction')]);
-		const { toJSON } = render(<Apps />);
-		expect(toJSON()).toBeNull();
+		const { result } = renderHook(() => useSidebarAppActions());
+		expect(result.current).toEqual([]);
 	});
 
-	it('renders only user dropdown buttons, with their label', () => {
+	it('keeps only user dropdown buttons, with their label', () => {
 		mockedHook.mockReturnValue([item('open-thing', 'userDropdownAction'), item('room-thing', 'roomAction')]);
-		const { getByText, queryByTestId } = render(<Apps />);
-		expect(getByText('Label open-thing')).toBeTruthy();
-		expect(queryByTestId('sidebar-app-app-1/room-thing')).toBeNull();
+		const { result } = renderHook(() => useSidebarAppActions());
+		expect(result.current).toEqual([
+			expect.objectContaining({ id: 'app-1/open-thing', title: 'Label open-thing', testID: 'sidebar-app-app-1/open-thing' })
+		]);
 	});
 
 	it('closes the drawer and triggers the app action', () => {
 		const dropdownItem = item('open-thing', 'userDropdownAction');
 		mockedHook.mockReturnValue([dropdownItem]);
-		const { getByTestId } = render(<Apps />);
-		fireEvent.press(getByTestId('sidebar-app-app-1/open-thing'));
+		const { result } = renderHook(() => useSidebarAppActions());
+		result.current[0].onPress();
 
 		expect(logEvent).toHaveBeenCalledWith('sidebar_app_action', { appId: 'app-1', actionId: 'open-thing' });
 		expect(Navigation.dispatch).toHaveBeenCalledWith(expect.objectContaining({ type: 'CLOSE_DRAWER' }));
