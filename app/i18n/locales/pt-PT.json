@@ -50,6 +50,8 @@
   "Animals_and_nature": "Animais e natureza",
   "Announcement": "Anúncio",
   "announcement": "anúncio",
+  "App_action_error": "Não foi possível executar esta ação da aplicação",
+  "App_action_unsupported": "Esta ação da aplicação ainda não é suportada em dispositivos móveis",
   "Apply_Certificate": "Aplicar certificado",
   "ARCHIVE": "Arquivar",
   "archive": "arquivar",
