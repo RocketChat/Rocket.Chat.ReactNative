@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AccessibilityInfo, BackHandler, Keyboard, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Image } from 'expo-image';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -10,11 +10,11 @@ import { inviteLinksClear } from '~/actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '~/actions/server';
 import Button from '~/containers/Button';
 import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import { type TServerHistoryModel } from '~/definitions';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import { isAndroid, isTablet } from '~/lib/methods/helpers';
+import { headerLeftClose } from '~/lib/methods/helpers/navigation/headerActions';
 import EventEmitter from '~/lib/methods/helpers/events';
 import ServerInput from './components/ServerInput';
 import { getServerById } from '~/lib/database/services/Server';
@@ -39,14 +39,13 @@ const NewServerView = () => {
 
 	const {
 		control,
-		watch,
 		formState: { errors },
 		setValue,
 		setError,
 		clearErrors
 	} = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: '' } });
 
-	const workspaceUrl = watch('workspaceUrl');
+	const workspaceUrl = useWatch({ control, name: 'workspaceUrl' });
 	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);
 	const { deleteServerHistory, queryServerHistory, serversHistory } = useServersHistory();
 	const { certificate, chooseCertificate, removeCertificate, autocompleteCertificate } = useCertificate();
@@ -101,8 +100,9 @@ const NewServerView = () => {
 		if (previousServer) {
 			return navigation.setOptions({
 				headerTitle: I18n.t('Add_Server'),
-				headerLeft: () =>
-					!connecting ? <HeaderButton.CloseModal navigation={navigation} onPress={close} testID='new-server-view-close' /> : null
+				...(connecting
+					? { headerLeft: () => null, unstable_headerLeftItems: () => [] }
+					: headerLeftClose(close, 'new-server-view-close'))
 			});
 		}
 		return navigation.setOptions({

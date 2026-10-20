@@ -15,7 +15,7 @@ import { themes } from '~/lib/constants/colors';
 import I18n from '~/i18n';
 import { prepareQuoteMessage } from '~/containers/MessageComposer/helpers';
 import { sendLoadingEvent } from '~/containers/Loading';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { type TSupportedThemes, withTheme } from '~/theme';
 import { FormTextInput } from '~/containers/TextInput';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -139,25 +139,16 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	setHeader = () => {
 		const { room, thread, readOnly, attachments } = this.state;
-		const { navigation, theme } = this.props;
+		const { navigation } = this.props;
 
 		const options: NativeStackNavigationOptions = {
-			headerTitle: () => <Header room={room} thread={thread} />
+			headerTitle: () => <Header room={room} thread={thread} />,
+			...headerRightActions(!attachments.length && !readOnly ? [{ label: I18n.t('Send'), onPress: this.send }] : [])
 		};
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
-			options.headerLeft = () => (
-				<HeaderButton.CloseModal navigation={navigation} color={themes[theme].fontDefault} testID='share-view-close' />
-			);
-		}
-
-		if (!attachments.length && !readOnly) {
-			options.headerRight = () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].fontDefault} />
-				</HeaderButton.Container>
-			);
+			Object.assign(options, headerLeftCloseModal(navigation, 'share-view-close'));
 		}
 
 		navigation.setOptions(options);

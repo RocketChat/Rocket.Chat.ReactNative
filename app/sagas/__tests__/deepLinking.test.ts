@@ -121,6 +121,7 @@ import { localAuthenticate, logUnlessUserCanceled, UserCanceledError } from '~/l
 import { canOpenRoom } from '~/lib/methods/canOpenRoom';
 import { getServerInfo } from '~/lib/methods/getServerInfo';
 import { goRoom, navigateToRoom } from '~/lib/methods/helpers/goRoom';
+import { videoConfJoin } from '~/lib/methods/videoConf';
 import { waitForNavigationReady } from '~/lib/navigation/appNavigation';
 import { loginOAuthOrSso } from '~/lib/services/connect';
 import sdk from '~/lib/services/sdk';
@@ -318,6 +319,32 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		expect(dispatchedActions.some(a => a.type === APP.INIT)).toBe(true);
 		expect(toastedMessages(emitSpy)).not.toContain('Deep_link_login_declined');
 		emitSpy.mockRestore();
+	});
+
+	it('logs in without the confirmation prompt when the action skips login consent', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken(), { skipLoginConsent: true }));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).not.toHaveBeenCalled();
+		expect(dispatchedActions.some(a => a.type === LOGIN.REQUEST)).toBe(true);
+	});
+
+	it('still shows the confirmation prompt when a link carries skipLoginConsent as a param', async () => {
+		jest.mocked(showConfirmationAlert).mockClear();
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ ...makeParamsWithToken(), skipLoginConsent: 'true' } as any));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(showConfirmationAlert)).toHaveBeenCalledTimes(1);
 	});
 
 	it('leaves a running app where it was when the login confirmation is declined', async () => {
@@ -760,6 +787,23 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(navigateToRoom)).toHaveBeenCalledTimes(1);
+	});
+
+	it('joins an accepted call with the push context, so a failure reads as a missed call', async () => {
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingClickCallPush(makeCallParams({ event: 'accept', callId: 'call-1', caller: { _id: 'caller-1' } })));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(videoConfJoin)).toHaveBeenCalledWith('call-1', true, false, { fromPush: true, rid: 'room-1' });
 	});
 });
 
