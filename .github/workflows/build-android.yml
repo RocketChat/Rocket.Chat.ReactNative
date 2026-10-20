@@ -59,8 +59,8 @@ jobs:
           BUGSNAG_KEY_OFFICIAL: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
           BUILD_VERSION: ${{ steps.version.outputs.BUILD_VERSION }}
 
-  upload-hold:
-    name: Upload Hold
+  open-testing-hold:
+    name: Open Testing Hold
     runs-on: ubuntu-latest
     permissions: {}
     if: ${{ inputs.trigger == 'pr' }}
@@ -71,14 +71,14 @@ jobs:
     steps:
       - run: echo "Waiting for manual approval..."
 
-  upload-android:
-    name: Upload
+  open-testing:
+    name: Open Testing
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
-    needs: [build-android, upload-hold]
-    if: ${{ always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped') }}
+    needs: [build-android, open-testing-hold]
+    if: ${{ always() && (needs.open-testing-hold.result == 'success' || needs.open-testing-hold.result == 'skipped') }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
@@ -89,6 +89,34 @@ jobs:
           trigger: ${{ inputs.trigger }}
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
+
+  production-hold:
+    name: Production Hold
+    runs-on: ubuntu-latest
+    permissions: {}
+    if: ${{ inputs.trigger == 'pr' }}
+    environment: production_android
+    needs: [build-android]
+    steps:
+      - run: echo "Waiting for manual approval..."
+
+  production:
+    name: Production
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    needs: [build-android, open-testing, production-hold]
+    if: ${{ always() && needs.open-testing.result == 'success' && needs.production-hold.result == 'success' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Promote to Production
+        uses: ./.github/actions/production-android
+        with:
+          trigger: ${{ inputs.trigger }}
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
           BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
 
   upload-internal:

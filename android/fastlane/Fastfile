@@ -65,4 +65,29 @@ platform :android do
       skip_upload_screenshots: true
     )
   end
+
+  desc "Promote the uploaded build to Production"
+  lane :production do
+    source_track = { 'pr' => 'internal', 'develop' => 'beta' }.fetch(ENV['TRIGGER'])
+    version_code = ENV['BUILD_VERSION'].to_i
+    metadata_path = File.join(__dir__, 'metadata/android')
+    changelogs_path = File.join(metadata_path, 'en-US/changelogs')
+
+    FileUtils.mkdir_p(changelogs_path)
+    FileUtils.cp(File.expand_path('../../.github/store-release-notes.txt', __dir__), File.join(changelogs_path, "#{version_code}.txt"))
+
+    upload_to_play_store(
+      package_name: 'chat.rocket.android',
+      track: source_track,
+      track_promote_to: 'production',
+      version_code: version_code,
+      metadata_path: metadata_path,
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
 end
