@@ -334,6 +334,34 @@ describe('sendMessage', () => {
 
 			expect(createdRecord('messages').status).toBe(messagesStatus.ERROR);
 		});
+
+		it.each([
+			['has no response', new TypeError('Network request failed')],
+			['gets a gateway error', { status: 502 }],
+			['is rate limited', { status: 429 }]
+		])('marks the failed message for a retry on reconnect when the request %s', async (_, error) => {
+			mockPost.mockImplementation(() => Promise.reject(error));
+
+			await sendMessage(rid, 'hello', undefined, user);
+
+			expect(createdRecord('messages').retryOnReconnect).toBe(true);
+		});
+
+		it('does not mark the failed message for a retry when the server rejects it', async () => {
+			mockPost.mockImplementation(() => Promise.reject({ status: 400, data: { success: false } }));
+
+			await sendMessage(rid, 'hello', undefined, user);
+
+			expect(createdRecord('messages').retryOnReconnect).toBe(false);
+		});
+
+		it('does not mark the failed message for a retry when the server answers success: false', async () => {
+			mockPost.mockImplementation(() => Promise.resolve({ success: false }));
+
+			await sendMessage(rid, 'hello', undefined, user);
+
+			expect(createdRecord('messages').retryOnReconnect).toBe(false);
+		});
 	});
 
 	describe('sendMessage - failures', () => {
@@ -571,13 +599,136 @@ describe('sendMessage', () => {
 			expect(mockPost).not.toHaveBeenCalled();
 		});
 
-		it('logs and does not rethrow when encryption fails', async () => {
+		it('logs and puts the message back in error, marked for a retry, when encryption fails', async () => {
 			mockEncryptMessage.mockImplementation(() => Promise.reject(new Error('encryption failed')));
+			const message = makeMessageModel();
 
-			await expect(resendMessage(makeMessageModel() as any)).resolves.toBeUndefined();
+			await expect(resendMessage(message as any)).resolves.toBeUndefined();
 
 			expect(log).toHaveBeenCalledWith(expect.objectContaining({ message: 'encryption failed' }));
 			expect(mockPost).not.toHaveBeenCalled();
+			expect(message.status).toBe(messagesStatus.ERROR);
+			expect(message.retryOnReconnect).toBe(true);
+		});
+
+		it('does not turn a message confirmed while it was being encrypted back into an error', async () => {
+			const message = makeMessageModel();
+			mockEncryptMessage.mockImplementation(() => {
+				message.status = messagesStatus.SENT;
+				return Promise.reject(new Error('encryption failed'));
+			});
+
+			await resendMessage(message as any);
+
+			expect(message.status).toBe(messagesStatus.SENT);
+		});
+
+		it('puts the message back in error without sending it when the workspace changed meanwhile', async () => {
+			const message = makeMessageModel();
+			mockEncryptMessage.mockImplementation((encrypted: unknown) => {
+				(database as any).active = { ...db };
+				return Promise.resolve(encrypted);
+			});
+
+			try {
+				await resendMessage(message as any);
+			} finally {
+				(database as any).active = db;
+			}
+
+			expect(mockPost).not.toHaveBeenCalled();
+			expect(message.status).toBe(messagesStatus.ERROR);
+			expect(message.retryOnReconnect).toBe(true);
+		});
+
+		it('keeps the also-send-to-channel flag when resending a thread reply', async () => {
+			await resendMessage(makeMessageModel({ tshow: true }) as any, 'threadHeaderId');
+
+			expect(mockEncryptMessage).toHaveBeenCalledWith(expect.objectContaining({ tmid: 'threadHeaderId', tshow: true }));
+		});
+
+		it.each([
+			['temp', messagesStatus.TEMP],
+			['sent', messagesStatus.SENT]
+		])('does nothing when the message is %s', async (_, status) => {
+			const message = makeMessageModel({ status });
+
+			await resendMessage(message as any);
+
+			expect(message.update).not.toHaveBeenCalled();
+			expect(message.status).toBe(status);
+			expect(mockEncryptMessage).not.toHaveBeenCalled();
+			expect(mockPost).not.toHaveBeenCalled();
+		});
+
+		it('sends once when the same message is resent twice at the same time', async () => {
+			const message = makeMessageModel();
+
+			await Promise.all([resendMessage(message as any), resendMessage(message as any)]);
+
+			expect(mockPost).toHaveBeenCalledTimes(1);
+		});
+
+		describe('resendMessage - stored message', () => {
+			const makeStoredMessageModel = (fields: FakeRecord = {}): FakeRecord => {
+				const model = makeRecord('messages#messageId', {
+					msg: 'hello',
+					subscription: { id: rid },
+					status: messagesStatus.ERROR,
+					...fields
+				});
+				model.update = jest.fn((updater: (m: FakeRecord) => void) => Promise.resolve(updater(model)));
+				mockGetCollection('messages').records.set(model.id, model);
+				mockGetCollection('thread_messages');
+				return model;
+			};
+
+			it('puts the message back in error and keeps it marked for a retry when it cannot be encrypted yet', async () => {
+				mockEncryptMessage.mockImplementation(() => Promise.resolve(undefined));
+				const message = makeStoredMessageModel();
+
+				await resendMessage(message as any);
+
+				expect(message.status).toBe(messagesStatus.ERROR);
+				expect(message.retryOnReconnect).toBe(true);
+				expect(mockPost).not.toHaveBeenCalled();
+			});
+
+			it('clears the retry mark once the message is delivered', async () => {
+				const message = makeStoredMessageModel({ retryOnReconnect: true });
+
+				await resendMessage(message as any);
+
+				expect(message.status).toBe(messagesStatus.SENT);
+				expect(message.retryOnReconnect).toBeFalsy();
+			});
+
+			it('keeps the message marked for a retry when the resend fails without a response', async () => {
+				mockPost.mockImplementation(() => Promise.reject(new TypeError('Network request failed')));
+				const message = makeStoredMessageModel({ retryOnReconnect: true });
+
+				await resendMessage(message as any);
+
+				expect(message.status).toBe(messagesStatus.ERROR);
+				expect(message.retryOnReconnect).toBe(true);
+			});
+
+			it('does not turn a message that was confirmed meanwhile back into an error', async () => {
+				const post = deferred();
+				mockPost.mockImplementation(async () => {
+					await post.promise;
+					throw new TypeError('Network request failed');
+				});
+				const message = makeStoredMessageModel();
+
+				const resend = resendMessage(message as any);
+				await flush();
+				message.status = messagesStatus.SENT;
+				post.resolve();
+				await resend;
+
+				expect(message.status).toBe(messagesStatus.SENT);
+			});
 		});
 	});
 });

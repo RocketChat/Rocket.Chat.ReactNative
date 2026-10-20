@@ -88,6 +88,8 @@ export default class Message extends Model {
 
 	@field('comment') comment;
 
+	@field('retry_on_reconnect') retryOnReconnect;
+
 	asPlain() {
 		return {
 			id: this.id,
