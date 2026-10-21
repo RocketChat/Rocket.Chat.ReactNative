@@ -9,7 +9,7 @@
 #import <objc/runtime.h>
 #import "SSLPinning.h"
 #import "../Shared/RocketChat/MMKVBridge.h"
-#import "SRWebSocket.h"
+#import <SocketRocket/SRWebSocket.h>
 #import "EXSessionTaskDispatcher.h"
 
 @implementation RCTHTTPRequestHandler (Challenge)

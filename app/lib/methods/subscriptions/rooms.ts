@@ -7,7 +7,7 @@ import database from '~/lib/database';
 import protectedFunction from '../helpers/protectedFunction';
 import log from '../helpers/log';
 import { store } from '~/lib/store/auxStore';
-import { handlePayloadUserInteraction } from '../actions';
+import { handlePayloadUserInteraction } from '~/lib/apps/actions';
 import buildMessage from '../helpers/buildMessage';
 import EventEmitter from '../helpers/events';
 import { removedRoom } from '~/actions/room';
@@ -19,7 +19,9 @@ import {
 	type IMessage,
 	type IServerRoom,
 	type IRoom,
+	type ISidebarCategory,
 	type ISubscription,
+	type TLoggedUserModel,
 	type TMessageModel,
 	type TRoomModel,
 	type TThreadMessageModel,
@@ -46,11 +48,12 @@ const WINDOW_TIME = 500;
 
 export let roomsSubscription: { stop: () => void } | null = null;
 
-const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom) => {
+export const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom): Promise<void> => {
 	try {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
 		const roomsCollection = db.get('rooms');
+		const messagesCollection = db.get('messages');
 
 		if (!subscription) {
 			try {
@@ -107,7 +110,8 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 					E2ESuggestedKey: s.E2ESuggestedKey,
 					avatarETag: s.avatarETag,
 					onHold: s.onHold,
-					hideMentionStatus: s.hideMentionStatus
+					hideMentionStatus: s.hideMentionStatus,
+					category: s.category
 				} as ISubscription;
 			} catch (error) {
 				try {
@@ -150,74 +154,70 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		}
 
 		const tmp = merge(subscription, room);
-		const sub = await getSubscriptionByRoomId(tmp.rid);
-
-		const batch: Model[] = [];
-		if (sub) {
-			try {
-				const update = sub.prepareUpdate(s => {
-					Object.assign(s, tmp);
-					if (subscription.announcement) {
-						if (subscription.announcement !== sub.announcement) {
-							s.bannerClosed = false;
-						}
-					}
-					if (sub.hideUnreadStatus && subscription.hasOwnProperty('hideUnreadStatus')) {
-						if (sub.hideUnreadStatus !== subscription.hideUnreadStatus) {
-							s.hideUnreadStatus = !!subscription.hideUnreadStatus;
-						}
-					}
-				});
-				batch.push(update);
-			} catch (e) {
-				console.log(e);
-			}
-		} else {
-			try {
-				const create = subCollection.prepareCreate(s => {
-					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
-					Object.assign(s, tmp);
-					if (s.roomUpdatedAt) {
-						s.roomUpdatedAt = new Date();
-					}
-				});
-				batch.push(create);
-			} catch (e) {
-				console.log(e);
-			}
-		}
-
-		const { subscribedRoom } = store.getState().room;
-		if (tmp.lastMessage && subscribedRoom !== tmp.rid) {
-			const lastMessage = buildMessage(tmp.lastMessage);
-			const messagesCollection = db.get('messages');
-			let messageRecord = {} as TMessageModel | null;
-			if (lastMessage) {
-				messageRecord = await getMessageById(lastMessage._id);
-			}
-
-			if (messageRecord) {
-				batch.push(
-					messageRecord.prepareUpdate(() => {
-						Object.assign(messageRecord, lastMessage);
-					})
-				);
-			} else {
-				batch.push(
-					messagesCollection.prepareCreate(m => {
-						if (lastMessage) {
-							m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
-							if (m.subscription) {
-								m.subscription.id = lastMessage.rid;
-							}
-						}
-						return Object.assign(m, lastMessage);
-					})
-				);
-			}
-		}
 
 		await db.write(async () => {
+			const sub = await getSubscriptionByRoomId(tmp.rid);
+			const { subscribedRoom } = store.getState().room;
+			const lastMessage = tmp.lastMessage && subscribedRoom !== tmp.rid ? buildMessage(tmp.lastMessage) : null;
+			const messageRecord = lastMessage ? await getMessageById(lastMessage._id) : null;
+			const batch: Model[] = [];
+
+			try {
+				if (sub) {
+					batch.push(
+						sub.prepareUpdate(s => {
+							Object.assign(s, tmp);
+							if (subscription.announcement) {
+								if (subscription.announcement !== sub.announcement) {
+									s.bannerClosed = false;
+								}
+							}
+							if (sub.hideUnreadStatus && subscription.hasOwnProperty('hideUnreadStatus')) {
+								if (sub.hideUnreadStatus !== subscription.hideUnreadStatus) {
+									s.hideUnreadStatus = !!subscription.hideUnreadStatus;
+								}
+							}
+						})
+					);
+				} else {
+					batch.push(
+						subCollection.prepareCreate(s => {
+							s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
+							Object.assign(s, tmp);
+							if (s.roomUpdatedAt) {
+								s.roomUpdatedAt = new Date();
+							}
+						})
+					);
+				}
+			} catch (e) {
+				log(e);
+			}
+
+			if (lastMessage) {
+				try {
+					if (messageRecord) {
+						batch.push(
+							messageRecord.prepareUpdate(() => {
+								Object.assign(messageRecord, lastMessage);
+							})
+						);
+					} else {
+						batch.push(
+							messagesCollection.prepareCreate(m => {
+								m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+								if (m.subscription) {
+									m.subscription.id = lastMessage.rid;
+								}
+								return Object.assign(m, lastMessage);
+							})
+						);
+					}
+				} catch (e) {
+					log(e);
+				}
+			}
+
 			await db.batch(batch);
 		});
 
@@ -270,6 +270,25 @@ const debouncedUpdate = (subscription: ISubscription) => {
 	queue[subscription.rid ? getSubQueueId(subscription.rid) : getRoomQueueId(subscription._id)] = subscription;
 };
 
+const setSidebarCategories = async (sidebarCategories: ISidebarCategory[]) => {
+	store.dispatch(setUser({ sidebarCategories }));
+	const userId = store.getState().login.user.id;
+	if (!userId) {
+		return;
+	}
+	try {
+		const serversDB = database.servers;
+		const userRecord = await serversDB.get('users').find(userId);
+		await serversDB.write(() =>
+			userRecord.update((record: TLoggedUserModel) => {
+				record.sidebarCategories = sidebarCategories;
+			})
+		);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
 	if (diff?.emails?.length > 0) {
 		store.dispatch(setUser({ emails: diff.emails }));
@@ -282,6 +301,12 @@ const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
 	}
 	if (diff?.['settings.preferences.alsoSendThreadToChannel'] !== undefined) {
 		store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
+	}
+	if (diff?.['settings.preferences.sidebarCategories'] !== undefined) {
+		setSidebarCategories(diff['settings.preferences.sidebarCategories']);
+	}
+	if (unset?.['settings.preferences.sidebarCategories']) {
+		setSidebarCategories([]);
 	}
 	if (diff?.avatarETag) {
 		store.dispatch(setUser({ avatarETag: diff.avatarETag }));

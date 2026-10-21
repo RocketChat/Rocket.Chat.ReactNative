@@ -37,7 +37,7 @@ const VideoPreview = memo(({ uri, width, height }: { uri: string; width?: number
 			style={{ width: width || '100%', height: height || '100%' }}
 			contentFit='contain'
 			nativeControls
-			allowsFullscreen
+			fullscreenOptions={{ enable: true }}
 		/>
 	);
 });
@@ -90,7 +90,7 @@ interface IPreview {
 }
 
 const Preview = memo(({ item, theme, length }: IPreview) => {
-	const type = item?.mime;
+	const type = typeof item?.mime === 'string' ? item.mime : undefined;
 	const { width, height } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	const headerHeight = useHeaderHeight();

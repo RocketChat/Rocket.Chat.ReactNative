@@ -195,6 +195,42 @@ const reactAsNewUsers = (count, messageId, emoji) => {
     return reactors;
 };
 
+const appsApiGet = (path) => {
+    const response = getWithRetry(`${data.server}/api/apps/${path}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        }
+    });
+
+    return json(response.body);
+};
+
+const findAppActionButton = (username, password, context, actionId) => {
+    login(username, password);
+
+    const button = appsApiGet('actionButtons').find(b => b.context === context && b.actionId === actionId);
+
+    if (!button) {
+        throw new Error(`No ${context} action button "${actionId}" installed on ${data.server}`);
+    }
+
+    return button;
+};
+
+const getServerAppTranslation = (username, password, appId, key) => {
+    login(username, password);
+
+    const app = appsApiGet('languages').apps.find(a => a.id === appId);
+    const translation = app && app.languages && app.languages.en && app.languages.en[key];
+
+    if (!translation) {
+        throw new Error(`App ${appId} has no en translation for "${key}"`);
+    }
+
+    return translation;
+};
+
 const createDM = (username, password, otherUsername) => {
     login(username, password);
 
@@ -219,6 +255,20 @@ const deleteCreatedUsers = () => {
         }
     }
 };
+
+const groupMessageCount = (username, password, roomId) => {
+    login(username, password);
+
+    const result = getWithRetry(`${data.server}/api/v1/groups.messages?roomId=${roomId}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        }
+    });
+    const resultJson = json(result.body);
+
+    return resultJson?.count || 0;
+}
 
 function logAccounts() {
     console.log(JSON.stringify(data.accounts));
@@ -266,6 +316,96 @@ const postWithRetry = (url, options) => retryRequest(() => http.post(url, option
 
 const getWithRetry = (url, options) => retryRequest(() => http.get(url, options));
 
+const getServerVersion = () => {
+    const result = getWithRetry(`${data.server}/api/info`, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    return json(result.body)?.version;
+};
+
+const parseVersion = version => {
+    const [core, ...prerelease] = String(version || '').split('-');
+    return {
+        numbers: core.split('.').map(part => parseInt(part, 10) || 0),
+        isPrerelease: prerelease.length > 0
+    };
+};
+
+const isServerAtLeast = required => {
+    const current = parseVersion(getServerVersion());
+    const wanted = parseVersion(required);
+    const length = Math.max(current.numbers.length, wanted.numbers.length);
+
+    for (let i = 0; i < length; i++) {
+        const c = current.numbers[i] || 0;
+        const r = wanted.numbers[i] || 0;
+        if (c > r) {
+            return true;
+        }
+        if (c < r) {
+            return false;
+        }
+    }
+
+    // Same core version: a prerelease (8.4.0-rc.1) precedes the stable release (8.4.0)
+    return !current.isPrerelease || wanted.isPrerelease;
+};
+
+const isImageMessage = message =>
+    Boolean(
+        message &&
+            ((Array.isArray(message.files) && message.files.some(file => String(file?.type || '').startsWith('image/'))) ||
+                (Array.isArray(message.attachments) && message.attachments.some(attachment => attachment?.image_url)))
+    );
+
+const getRoomHistory = roomId => {
+    const result = getWithRetry(`${data.server}/api/v1/channels.history?roomId=${roomId}&count=20`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        }
+    });
+
+    return json(result.body)?.messages || [];
+};
+
+const waitFor = (predicate, { timeoutMs = 60000, intervalMs = 2000, label = 'condition' } = {}) => {
+    const deadline = Date.now() + timeoutMs;
+
+    while (Date.now() < deadline) {
+        const result = predicate();
+        if (result) {
+            return result;
+        }
+        sleep(intervalMs);
+    }
+
+    console.log(JSON.stringify({ waitForTimeout: true, label }));
+    return null;
+};
+
+const waitForImageMessage = (roomId, username, password, timeoutMs = 60000) => {
+    login(username, password);
+
+    return waitFor(
+        () => {
+            try {
+                return getRoomHistory(roomId).find(message => message?.u?.username === username && isImageMessage(message)) || null;
+            } catch (err) {
+                if (String(err?.message).startsWith('Non-retryable error')) {
+                    throw err;
+                }
+                console.log(`channels.history failed, polling again: ${err?.message}`);
+                return null;
+            }
+        },
+        { timeoutMs, label: `image message in ${roomId}` }
+    );
+};
+
 output.utils = {
     createUser,
     createUserWithPasswordChange,
@@ -275,10 +415,16 @@ output.utils = {
     createRandomRoom,
     sendMessage,
     getProfileInfo,
+    getServerVersion,
+    isServerAtLeast,
+    waitForImageMessage,
     post,
     reactAsNewUsers,
     login,
     getDeepLink,
     createDM,
-    sleep
+    findAppActionButton,
+    getServerAppTranslation,
+    sleep,
+    groupMessageCount
 };

@@ -97,8 +97,6 @@ export type IRoomMessageHandlersInput = {
 
 export interface IRoomScreenContextValue {
 	loading: boolean;
-	failed: boolean;
-	retry: () => void;
 	lastSeen: Date | null;
 	clearLastSeen: () => void;
 }
@@ -109,7 +107,7 @@ export interface IRoomStoreInitParams {
 	signal?: AbortSignal;
 }
 
-export type TRoomInitResult = { status: 'loaded'; lastSeen: Date | null } | { status: 'skipped' } | { status: 'failed' };
+export type TRoomInitResult = { status: 'loaded'; lastSeen: Date | null } | { status: 'skipped' };
 
 export type RoomMembership = 'preview' | 'invited' | 'subscribed';
 
@@ -158,7 +156,7 @@ export interface IJumpTarget {
 }
 
 export interface IJumpAnchorDeps {
-	loadSurroundingMessages: (params: { messageId: string; rid: string }) => Promise<unknown>;
+	loadSurroundingMessages: (params: { messageId: string; rid: string }) => Promise<IMessage[]>;
 	getLocalAnchorTs: (rid: string, ts: Date | number | string) => Promise<number | null>;
 }
 

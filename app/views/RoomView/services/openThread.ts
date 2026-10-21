@@ -66,7 +66,7 @@ export const openThread = async (
 	return navigation.push('RoomView', {
 		rid,
 		tmid,
-		name: isUndecryptable(message) ? I18n.t('Encrypted_message') : threadName,
+		name: isUndecryptable(message) ? I18n.t('E2E_Key_Error') : threadName,
 		t: SubscriptionType.THREAD,
 		roomUserId,
 		jumpToMessageId

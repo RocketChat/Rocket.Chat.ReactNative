@@ -8,8 +8,8 @@ import JoinCode from './components/JoinCode';
 import { type IJoinCode, type IRoomScreenProps } from './definitions';
 import { RoomProviders } from './components/RoomProviders';
 import { RoomAnnouncementBanner } from './components/RoomAnnouncementBanner';
+import { RoomBodyFocusAnchor } from './components/RoomBodyFocusAnchor';
 import { RoomFooter } from './components/RoomFooter/RoomFooter';
-import { RoomLoadFailed } from './components/RoomLoadFailed';
 import { RoomMessageActions } from './components/RoomMessageActions';
 import { RoomMessageList } from './components/RoomMessageList';
 import { RoomUploadProgress } from './components/RoomUploadProgress';
@@ -74,10 +74,6 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 		roomStore.getState().join();
 	};
 
-	if (roomScreen.failed) {
-		return <RoomLoadFailed onRetry={roomScreen.retry} />;
-	}
-
 	return (
 		<RoomStoreContext.Provider value={roomStore}>
 			<RoomScreenContext.Provider value={roomScreen}>
@@ -92,36 +88,38 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 					editCancel={onEditCancel}
 					editRequest={onEditRequest}
 					onSendMessage={sendMessage}>
-					<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-view'>
-						{!tmid ? <RoomAnnouncementBanner /> : null}
-						<RoomMessageList
-							tmid={tmid}
-							listContainerRef={listContainerRef}
-							flatListRef={flatListRef}
-							onLongPress={onMessageLongPress}
-							onThreadPress={onThreadPress}
-							onReactionPress={onReactionPress}
-							sendMessage={sendMessage}
-							jumpToMessage={jumpToMessage}
-							closeEmojiAndAction={closeEmojiAndAction}
-							reactionInit={onReactionInit}
-							errorActionsShow={errorActionsShow}
-						/>
-						<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} ready={ready} />
-						<RoomMessageActions
-							tmid={tmid}
-							messageActionsRef={messageActionsRef}
-							messageErrorActionsRef={messageErrorActionsRef}
-							editInit={onEditInit}
-							replyInit={onReplyInit}
-							quoteInit={onQuoteInit}
-							reactionInit={onReactionInit}
-							onReactionPress={onReactionPress}
-							jumpToMessage={jumpToMessage}
-						/>
-						<RoomUploadProgress />
-						<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={roomRid} t={roomType} />
-					</SafeAreaView>
+					<RoomBodyFocusAnchor>
+						<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-view'>
+							{!tmid ? <RoomAnnouncementBanner /> : null}
+							<RoomMessageList
+								tmid={tmid}
+								listContainerRef={listContainerRef}
+								flatListRef={flatListRef}
+								onLongPress={onMessageLongPress}
+								onThreadPress={onThreadPress}
+								onReactionPress={onReactionPress}
+								sendMessage={sendMessage}
+								jumpToMessage={jumpToMessage}
+								closeEmojiAndAction={closeEmojiAndAction}
+								reactionInit={onReactionInit}
+								errorActionsShow={errorActionsShow}
+							/>
+							<RoomFooter messageComposerRef={messageComposerRef} joinCodeRef={joinCodeRef} ready={ready} />
+							<RoomMessageActions
+								tmid={tmid}
+								messageActionsRef={messageActionsRef}
+								messageErrorActionsRef={messageErrorActionsRef}
+								editInit={onEditInit}
+								replyInit={onReplyInit}
+								quoteInit={onQuoteInit}
+								reactionInit={onReactionInit}
+								onReactionPress={onReactionPress}
+								jumpToMessage={jumpToMessage}
+							/>
+							<RoomUploadProgress />
+							<JoinCode ref={joinCodeRef} onJoin={onJoin} rid={roomRid} t={roomType} />
+						</SafeAreaView>
+					</RoomBodyFocusAnchor>
 				</RoomProviders>
 			</RoomScreenContext.Provider>
 		</RoomStoreContext.Provider>

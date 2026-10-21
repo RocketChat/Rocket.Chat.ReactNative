@@ -1,0 +1,55 @@
+appId: ${APP_ID}
+name: Attachment Send
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-9
+
+---
+- assertTrue: ${output.utils.isServerAtLeast('8.4.0')}
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+- evalScript: ${output.loggedInUser = output.utils.login(output.user.username, output.user.password)}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-actions'
+    timeout: 60000
+- tapOn:
+    id: 'message-composer-actions'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Choose from library'
+    timeout: 60000
+- tapOn:
+    text: 'Choose from library'
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-attachment-0'
+    timeout: 60000
+
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-send'
+    timeout: 60000
+- tapOn:
+    id: 'message-composer-send'
+
+- evalScript: ${output.imageMessage = output.utils.waitForImageMessage(output.room._id, output.user.username, output.user.password)}
+- assertTrue: ${output.imageMessage !== null}

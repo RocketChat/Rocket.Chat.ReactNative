@@ -35,4 +35,6 @@ export default class User extends Model {
 	@field('bio') bio;
 
 	@field('require_password_change') requirePasswordChange;
+
+	@json('sidebar_categories', sanitizer) sidebarCategories;
 }

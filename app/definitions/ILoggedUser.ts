@@ -1,6 +1,6 @@
 import type Model from '@nozbe/watermelondb/Model';
 
-import { type IUserEmail } from './IUser';
+import { type ISidebarCategory, type IUserEmail } from './IUser';
 import { type TStatusSource } from './TStatusSource';
 import { type TUserStatus } from './TUserStatus';
 
@@ -28,6 +28,7 @@ export interface ILoggedUser {
 	bio?: string;
 	nickname?: string;
 	requirePasswordChange?: boolean;
+	sidebarCategories?: ISidebarCategory[];
 }
 
 export type TLoggedUserModel = ILoggedUser & Model;

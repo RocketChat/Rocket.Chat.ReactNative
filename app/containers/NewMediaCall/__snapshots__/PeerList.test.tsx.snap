@@ -287,7 +287,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderRadius": 4,
+                      "borderRadius": 8,
                       "height": 28,
                       "width": 28,
                     },
@@ -297,7 +297,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 testID="avatar"
               >
                 <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
+                  borderRadius={8}
                   containerViewRef={{"current":"Object"}}
                   contentFit="cover"
                   contentPosition={
@@ -314,6 +314,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -326,11 +327,13 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "borderRadius": 4,
+                      "borderRadius": 8,
                       "height": 28,
                       "width": 28,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={28}
                 />
@@ -495,7 +498,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderRadius": 4,
+                      "borderRadius": 8,
                       "height": 28,
                       "width": 28,
                     },
@@ -505,7 +508,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 testID="avatar"
               >
                 <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
+                  borderRadius={8}
                   containerViewRef={{"current":"Object"}}
                   contentFit="cover"
                   contentPosition={
@@ -522,6 +525,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -534,11 +538,13 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "borderRadius": 4,
+                      "borderRadius": 8,
                       "height": 28,
                       "width": 28,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={28}
                 />
@@ -703,7 +709,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 style={
                   [
                     {
-                      "borderRadius": 4,
+                      "borderRadius": 8,
                       "height": 28,
                       "width": 28,
                     },
@@ -713,7 +719,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 testID="avatar"
               >
                 <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
+                  borderRadius={8}
                   containerViewRef={{"current":"Object"}}
                   contentFit="cover"
                   contentPosition={
@@ -730,6 +736,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -742,11 +749,13 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "borderRadius": 4,
+                      "borderRadius": 8,
                       "height": 28,
                       "width": 28,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={28}
                 />

@@ -1,11 +1,12 @@
 import { memo, type ReactElement } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Touchable } from 'react-native-gesture-handler';
 import { KeyboardFocusView } from 'react-native-external-keyboard';
 
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
 import I18n from '~/i18n';
+import { joinTypingUsers } from './subtitle';
 import sharedStyles from '~/views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
@@ -88,7 +89,6 @@ interface IRoomHeader {
 	testID?: string;
 	sourceType?: IOmnichannelSource;
 	disabled?: boolean;
-	rightButtonsWidth?: number;
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
@@ -99,15 +99,9 @@ const SubTitle = memo(({ usersTyping, subtitle, formattedStatusExpiry, renderFun
 	const fontSize = getSubTitleSize(scale);
 	// typing
 	if (usersTyping.length) {
-		let usersText;
-		if (usersTyping.length === 2) {
-			usersText = usersTyping.join(` ${I18n.t('and')} `);
-		} else {
-			usersText = usersTyping.join(', ');
-		}
 		return (
 			<Text style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} numberOfLines={1}>
-				<Text style={styles.typingUsers}>{usersText} </Text>
+				<Text style={styles.typingUsers}>{joinTypingUsers(usersTyping)} </Text>
 				{usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing')}...
 			</Text>
 		);
@@ -233,11 +227,16 @@ const Header = ({
 			enableA11yFocus={autoFocusHeader && !disabled}
 			focusable={!disabled}
 			canBeFocused={!disabled}
-			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
-			accessible
-			accessibilityLabel={accessibilityLabel}
-			accessibilityRole='header'>
-			<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
+			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}>
+			<Touchable
+				activeOpacity={0.2}
+				animationDuration={{ in: 0, out: 150 }}
+				testID='room-header'
+				onPress={handleOnPress}
+				disabled={disabled}
+				hitSlop={HIT_SLOP}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityRole='header'>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon
@@ -259,7 +258,7 @@ const Header = ({
 					renderFunc={renderFunc}
 					scale={scale}
 				/>
-			</TouchableOpacity>
+			</Touchable>
 		</KeyboardFocusView>
 	);
 };

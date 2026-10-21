@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 
+import { BorderlessButton } from '~/containers/GestureButtons';
 import { useTheme } from '~/theme';
 import { CustomIcon } from '../CustomIcon';
 import I18n from '~/i18n';

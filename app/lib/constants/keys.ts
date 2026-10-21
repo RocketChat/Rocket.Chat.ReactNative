@@ -29,3 +29,5 @@ export const getUserTokenKey = (server: string, userId: string): string => `${TO
 export const TOKEN_KEY_SERVER_SCOPED_MIGRATED = 'RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED';
 export const CURRENT_SERVER = 'currentServer';
 export const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
+const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';
+export const getBasicAuthKey = (server: string): string => `${BASIC_AUTH_KEY}-${server}`;

@@ -1,7 +1,7 @@
 [
 	{
 		"test": ".maestro/tests/accessibilityAndAppearance/ToastsAndDialogs.yml",
-		"dependsOn": ["app/views/StatusView/**"]
+		"dependsOn": ["app/views/StatusView/**", "app/views/SidebarView/**"]
 	},
 	{
 		"test": ".maestro/tests/assorted/accessibility-and-appearance.yaml",
@@ -313,6 +313,15 @@
 		]
 	},
 	{
+		"test": ".maestro/tests/room/send-message-while-offline.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/containers/message/components/RightIcons/MessageError.tsx",
+			"app/lib/methods/sendMessage.ts",
+			"app/sagas/messages.js"
+		]
+	},
+	{
 		"test": ".maestro/tests/room/message-markdown-click.yaml",
 		"dependsOn": ["app/views/RoomView/**", "app/containers/markdown/**", "app/sagas/room.js"]
 	},
@@ -327,6 +336,16 @@
 			"app/containers/MessageComposer/**",
 			"app/containers/MessageActions/**",
 			"app/sagas/room.js"
+		]
+	},
+	{
+		"test": ".maestro/tests/room/attachment-send.yaml",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/containers/MessageComposer/**",
+			"app/lib/methods/helpers/ImagePicker/**",
+			"app/lib/methods/sendFileMessage/**",
+			"app/lib/hooks/useAltTextSupported.ts"
 		]
 	},
 	{
@@ -381,10 +400,23 @@
 		"dependsOn": ["app/views/RoomsListView/**", "app/sagas/rooms.js"]
 	},
 	{
+		"test": ".maestro/tests/share-extension/share-extension-deeplink.yaml",
+		"dependsOn": [
+			"app/views/ShareListView/**",
+			"app/views/ShareView/**",
+			"app/views/SelectServerView.tsx",
+			"app/views/NewServerView/**",
+			"app/views/RoomsListView/**",
+			"app/sagas/deepLinking.js",
+			"android/app/src/main/java/chat/rocket/reactnative/share/**",
+			"ios/ShareRocketChatRN/**"
+		]
+	},
+	{
 		"test": ".maestro/tests/teams/convert-team.yaml",
 		"dependsOn": [
 			"app/views/RoomActionsView/**",
-			"app/views/SelectListView.tsx",
+			"app/views/SelectListView/**",
 			"app/views/CreateChannelView/**",
 			"app/views/NewMessageView/**",
 			"app/views/SelectedUsersView/**",
@@ -414,7 +446,7 @@
 			"app/views/AddExistingChannelView/**",
 			"app/views/RoomMembersView/**",
 			"app/views/SelectedUsersView/**",
-			"app/views/SelectListView.tsx",
+			"app/views/SelectListView/**",
 			"app/views/CreateChannelView/**",
 			"app/sagas/room.js",
 			"app/sagas/createChannel.js"
@@ -422,6 +454,26 @@
 	},
 	{
 		"test": ".maestro/tests/uikit/button-kit.yaml",
-		"dependsOn": ["app/containers/UIKit/**"]
+		"dependsOn": [
+			"app/containers/UIKit/**",
+			"app/lib/apps/**",
+			"app/lib/services/appsApiFetch.ts",
+			"app/views/RoomView/services/blockAction.ts",
+			"app/lib/methods/subscriptions/rooms.ts"
+		]
+	},
+	{
+		"test": ".maestro/tests/uikit/poll.yaml",
+		"dependsOn": [
+			"app/containers/UIKit/**",
+			"app/lib/apps/**",
+			"app/containers/MessageComposer/**",
+			"app/views/ModalBlockView.tsx",
+			"app/views/RoomView/services/blockAction.ts",
+			"app/lib/services/appsApiFetch.ts",
+			"app/lib/services/connect.ts",
+			"app/sagas/login.js",
+			"app/lib/methods/subscriptions/rooms.ts"
+		]
 	}
 ]

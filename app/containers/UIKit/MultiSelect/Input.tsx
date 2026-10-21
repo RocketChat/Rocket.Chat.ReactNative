@@ -25,7 +25,7 @@ const Input = ({ children, onPress, loading, inputStyle, placeholder, disabled, 
 			onPress={onPress}
 			testID={testID}
 			style={[{ backgroundColor: colors.surfaceRoom }, styles.inputBorder, inputStyle]}
-			enabled={!disabled}>
+			disabled={disabled}>
 			<View style={[styles.input, styles.inputBorder, { borderColor: colors.strokeMedium }, innerInputStyle]}>
 				{placeholder ? <Text style={[styles.pickerText, { color: colors.fontSecondaryInfo }]}>{placeholder}</Text> : children}
 				{loading ? (

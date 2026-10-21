@@ -573,6 +573,35 @@ describe('MessageComposer', () => {
 			expect(onSendMessage).toHaveBeenCalledWith('#general', false);
 		});
 
+		test('typing # after a slash command opens channel autocomplete', async () => {
+			const onSendMessage = jest.fn();
+			(searchRemote as unknown as jest.Mock).mockImplementationOnce(() => [{ rid: 'r1', name: 'general', t: 'c' }]);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '/hello #');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 8, end: 8 } }
+			});
+			await advanceComposerTimers();
+
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-general')).toBeOnTheScreen());
+		});
+
+		test('typing @ after a slash command opens user autocomplete', async () => {
+			const onSendMessage = jest.fn();
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '/hello @');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 8, end: 8 } }
+			});
+			await advanceComposerTimers();
+
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-John')).toBeOnTheScreen());
+		});
+
 		test('select : emoji inserts emoji and sends, autocomplete hides', async () => {
 			const onSendMessage = jest.fn();
 			render(<Render context={{ onSendMessage }} />);
@@ -847,11 +876,13 @@ describe('MessageComposer', () => {
 			await screen.findByTestId('message-composer-attachment-0');
 			await screen.findByTestId('composer-quote-abc');
 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
-			const sendPromise = user.press(screen.getByTestId('message-composer-send'));
+			await user.press(screen.getByTestId('message-composer-send'));
 			await waitFor(() => expect(sendFileMessage).toHaveBeenCalled());
 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'typed while uploading');
-			resolveUpload();
-			await sendPromise;
+			await act(() => {
+				resolveUpload();
+				return Promise.resolve();
+			});
 
 			await waitFor(() => expect(composerRef.current?.getText()).toBe(''));
 			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();

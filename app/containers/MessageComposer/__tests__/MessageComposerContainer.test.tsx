@@ -1,4 +1,4 @@
-import { createRef, type RefObject } from 'react';
+import { createRef, useImperativeHandle, type RefObject } from 'react';
 import { render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { getDocumentAsync } from 'expo-document-picker';
@@ -89,10 +89,9 @@ type MediaHandles = {
 };
 
 const MediaProbe = ({ handles, rid, tmid }: { handles: RefObject<MediaHandles | null>; rid: string; tmid: string }) => {
-	handles.current = {
-		chooseMedia: useChooseMedia({ rid, tmid, permissionToUpload: true }),
-		actionStore: useMessageActionStoreApi()
-	};
+	const chooseMedia = useChooseMedia({ rid, tmid, permissionToUpload: true });
+	const actionStore = useMessageActionStoreApi();
+	useImperativeHandle(handles, () => ({ chooseMedia, actionStore }), [chooseMedia, actionStore]);
 	return null;
 };
 

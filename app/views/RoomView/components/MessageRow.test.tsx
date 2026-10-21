@@ -72,8 +72,7 @@ describe('MessageRow', () => {
 
 		render(
 			<RoomStoreContext.Provider value={store}>
-				<RoomScreenContext.Provider
-					value={{ loading: false, failed: false, retry: jest.fn(), lastSeen: null, clearLastSeen: jest.fn() }}>
+				<RoomScreenContext.Provider value={{ loading: false, lastSeen: null, clearLastSeen: jest.fn() }}>
 					<MessageRow item={item} previousItem={undefined as any} onLongPress={jest.fn()} />
 				</RoomScreenContext.Provider>
 			</RoomStoreContext.Provider>
@@ -98,8 +97,7 @@ describe('MessageRow', () => {
 
 		render(
 			<RoomStoreContext.Provider value={store}>
-				<RoomScreenContext.Provider
-					value={{ loading: false, failed: false, retry: jest.fn(), lastSeen: null, clearLastSeen: jest.fn() }}>
+				<RoomScreenContext.Provider value={{ loading: false, lastSeen: null, clearLastSeen: jest.fn() }}>
 					<MessageRow item={item} previousItem={undefined as any} onLongPress={jest.fn()} />
 				</RoomScreenContext.Provider>
 			</RoomStoreContext.Provider>

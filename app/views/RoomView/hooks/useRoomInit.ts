@@ -14,47 +14,37 @@ interface IUseRoomInitParams {
 	onThreadMessagesLoaded: () => void;
 }
 
-interface IRunInitSetters {
-	setSettled: (settled: boolean) => void;
-	setLastSeen: (lastSeen: Date | null) => void;
-	setFailed: (failed: boolean) => void;
+interface IInitTarget {
+	rid: string;
+	tmid?: string;
 }
 
-// Marks the screen unsettled for the duration of one init() run. init() resolves on the invite
-// early-return and on failure alike, so the finally is the only place that settles it; awaiting it is
-// what keeps the footer from flickering. Lives outside the hook because the React Compiler cannot
-// lower a try/finally inside a hook body.
-//
-// `controller` belongs to this run alone and is never reset by a later one: once a newer run aborts
-// it, this run stops writing for a screen that has already moved on.
+interface IRunInitSetters {
+	settle: () => void;
+	setLastSeen: (lastSeen: Date | null) => void;
+}
+
 const runInit = async (
 	roomStore: RoomStore,
 	tmid: string | undefined,
 	onLoadedRef: RefObject<() => void>,
 	controller: AbortController,
-	{ setSettled, setLastSeen, setFailed }: IRunInitSetters
+	{ settle, setLastSeen }: IRunInitSetters
 ): Promise<void> => {
-	setSettled(false);
 	try {
 		const result = await roomStore.getState().init({
 			tmid,
 			onThreadMessagesLoaded: () => onLoadedRef.current?.(),
 			signal: controller.signal
 		});
-		if (!controller.signal.aborted) {
-			if (result.status === 'loaded') {
-				setLastSeen(result.lastSeen);
-			}
-			setFailed(result.status === 'failed');
+		if (!controller.signal.aborted && result.status === 'loaded') {
+			setLastSeen(result.lastSeen);
 		}
 	} catch (e) {
 		log(e);
-		if (!controller.signal.aborted) {
-			setFailed(true);
-		}
 	} finally {
 		if (!controller.signal.aborted) {
-			setSettled(true);
+			settle();
 		}
 	}
 };
@@ -73,23 +63,12 @@ export function useRoomInit({
 
 	// The unread divider anchor belongs to this screen, not to the room — see stores/RoomScreenContext.
 	const [lastSeen, setLastSeen] = useState<Date | null>(null);
-	// `settled` tracks the init run, and only the init run. A screen that has no rid or no auth never
-	// starts one, so `loading` is derived from both: no work pending means idle, never a stuck flag.
-	const [settled, setSettled] = useState(false);
-	const [failed, setFailed] = useState(false);
 	const hasInitWork = !!rid && isAuthenticated && ready;
-	const loading = hasInitWork && !settled;
+	const [settledTarget, setSettledTarget] = useState<IInitTarget | null>(null);
+	const loading = hasInitWork && (settledTarget?.rid !== rid || settledTarget?.tmid !== tmid);
 	// One controller per init() run. A new run aborts the one it supersedes and never resets it, so a
 	// still-in-flight predecessor can no longer un-cancel itself and write for a screen that moved on.
 	const initControllerRef = useRef<AbortController | null>(null);
-
-	const init = useCallback(() => {
-		initControllerRef.current?.abort();
-		const controller = new AbortController();
-		initControllerRef.current = controller;
-		setFailed(false);
-		return runInit(roomStore, tmid, onLoadedRef, controller, { setSettled, setLastSeen, setFailed });
-	}, [roomStore, tmid, onLoadedRef]);
 
 	const clearLastSeen = useCallback(() => setLastSeen(null), []);
 
@@ -97,17 +76,21 @@ export function useRoomInit({
 		if (!hasInitWork) {
 			return;
 		}
-		// Settle down synchronously, before the deferred run starts: a rid swap commits its render
-		// before this effect, so leaving the previous run's `settled` in place would show an enabled
-		// footer for one frame on a room that has not loaded yet.
-		setSettled(false);
-		const task = InteractionManager.runAfterInteractions(() => init());
+		const task = InteractionManager.runAfterInteractions(() => {
+			initControllerRef.current?.abort();
+			const controller = new AbortController();
+			initControllerRef.current = controller;
+			return runInit(roomStore, tmid, onLoadedRef, controller, {
+				settle: () => setSettledTarget({ rid, tmid }),
+				setLastSeen
+			});
+		});
 		return () => {
 			initControllerRef.current?.abort();
+			setSettledTarget(null);
 			task.cancel();
 		};
-		// rid and isAuthenticated stay in the deps: hasInitWork alone would not re-fire on a rid swap.
-	}, [rid, isAuthenticated, ready, hasInitWork, init]);
+	}, [hasInitWork, rid, tmid, roomStore, onLoadedRef]);
 
-	return { loading, failed: hasInitWork && failed && !loading, retry: init, lastSeen, clearLastSeen };
+	return { loading, lastSeen, clearLastSeen };
 }
