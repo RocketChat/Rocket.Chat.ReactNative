@@ -416,7 +416,7 @@
 		"test": ".maestro/tests/teams/convert-team.yaml",
 		"dependsOn": [
 			"app/views/RoomActionsView/**",
-			"app/views/SelectListView.tsx",
+			"app/views/SelectListView/**",
 			"app/views/CreateChannelView/**",
 			"app/views/NewMessageView/**",
 			"app/views/SelectedUsersView/**",
@@ -446,7 +446,7 @@
 			"app/views/AddExistingChannelView/**",
 			"app/views/RoomMembersView/**",
 			"app/views/SelectedUsersView/**",
-			"app/views/SelectListView.tsx",
+			"app/views/SelectListView/**",
 			"app/views/CreateChannelView/**",
 			"app/sagas/room.js",
 			"app/sagas/createChannel.js"
@@ -454,6 +454,26 @@
 	},
 	{
 		"test": ".maestro/tests/uikit/button-kit.yaml",
-		"dependsOn": ["app/containers/UIKit/**"]
+		"dependsOn": [
+			"app/containers/UIKit/**",
+			"app/lib/apps/**",
+			"app/lib/services/appsApiFetch.ts",
+			"app/views/RoomView/services/blockAction.ts",
+			"app/lib/methods/subscriptions/rooms.ts"
+		]
+	},
+	{
+		"test": ".maestro/tests/uikit/poll.yaml",
+		"dependsOn": [
+			"app/containers/UIKit/**",
+			"app/lib/apps/**",
+			"app/containers/MessageComposer/**",
+			"app/views/ModalBlockView.tsx",
+			"app/views/RoomView/services/blockAction.ts",
+			"app/lib/services/appsApiFetch.ts",
+			"app/lib/services/connect.ts",
+			"app/sagas/login.js",
+			"app/lib/methods/subscriptions/rooms.ts"
+		]
 	}
 ]

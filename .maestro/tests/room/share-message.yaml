@@ -83,16 +83,15 @@ tags:
     notVisible:
       id: 'multi-select-search'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'forward-message-view-send'
-    timeout: 60000
-- tapOn:
-    id: 'forward-message-view-send'
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/tap-header-item.yaml'
+    env:
+      ANDROID_ID: 'forward-message-view-send'
+      IOS_LABEL: 'Send'
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.room.name}
 
 # should go to otherUser DM and verify if exist both messages
 - runFlow: '../../helpers/go-back.yaml'
