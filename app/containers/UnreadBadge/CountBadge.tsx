@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
-	text: {
+	textNormal: {
 		fontSize: 12,
 		lineHeight: 18,
 		...sharedStyles.textBold
@@ -44,7 +44,7 @@ const CountBadge = ({ text, backgroundColor, color, small, style, testID }: ICou
 				style
 			]}
 			testID={testID}>
-			<Text style={[styles.text, small && styles.textSmall, { color }]} numberOfLines={1}>
+			<Text style={[small ? styles.textSmall : styles.textNormal, { color }]} numberOfLines={1}>
 				{text}
 			</Text>
 		</View>

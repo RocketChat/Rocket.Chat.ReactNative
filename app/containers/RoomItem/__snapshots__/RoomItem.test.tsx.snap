@@ -679,7 +679,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -1049,7 +1048,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -1419,7 +1417,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -1789,7 +1786,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -2159,7 +2155,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -2529,7 +2524,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -2899,7 +2893,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -3269,7 +3262,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -3639,7 +3631,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -4009,7 +4000,6 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -4690,7 +4680,6 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -5060,7 +5049,6 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -5720,7 +5708,6 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                                 "lineHeight": 18,
                                 "textAlign": "left",
                               },
-                              undefined,
                               {
                                 "color": "#FFFFFF",
                               },
@@ -6612,7 +6599,6 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                               "lineHeight": 18,
                               "textAlign": "left",
                             },
-                            undefined,
                             {
                               "color": "#FFFFFF",
                             },
@@ -6967,7 +6953,6 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                               "lineHeight": 18,
                               "textAlign": "left",
                             },
-                            undefined,
                             {
                               "color": "#FFFFFF",
                             },
@@ -9743,7 +9728,6 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                               "lineHeight": 18,
                               "textAlign": "left",
                             },
-                            undefined,
                             {
                               "color": "#FFFFFF",
                             },
@@ -10155,7 +10139,6 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                               "lineHeight": 18,
                               "textAlign": "left",
                             },
-                            undefined,
                             {
                               "color": "#FFFFFF",
                             },
@@ -10567,7 +10550,6 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                               "lineHeight": 18,
                               "textAlign": "left",
                             },
-                            undefined,
                             {
                               "color": "#FFFFFF",
                             },

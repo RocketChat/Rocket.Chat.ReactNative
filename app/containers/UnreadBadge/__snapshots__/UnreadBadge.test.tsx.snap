@@ -35,17 +35,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 12,
-            "fontVariant": [
-              "tabular-nums",
-            ],
-            "fontWeight": "700",
-            "lineHeight": 18,
-            "textAlign": "left",
-          },
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
             "fontSize": 10,
             "fontVariant": [
               "tabular-nums",
@@ -83,17 +72,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       numberOfLines={1}
       style={
         [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 12,
-            "fontVariant": [
-              "tabular-nums",
-            ],
-            "fontWeight": "700",
-            "lineHeight": 18,
-            "textAlign": "left",
-          },
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
@@ -146,7 +124,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -189,7 +166,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -232,7 +208,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -275,7 +250,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -318,7 +292,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -375,7 +348,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -418,7 +390,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -461,7 +432,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -504,7 +474,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -547,7 +516,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -590,7 +558,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -633,7 +600,6 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -690,7 +656,6 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -733,7 +698,6 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
             "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -781,17 +745,6 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 12,
-            "fontVariant": [
-              "tabular-nums",
-            ],
-            "fontWeight": "700",
-            "lineHeight": 18,
-            "textAlign": "left",
-          },
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
             "fontSize": 10,
             "fontVariant": [
               "tabular-nums",
@@ -829,17 +782,6 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
       numberOfLines={1}
       style={
         [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 12,
-            "fontVariant": [
-              "tabular-nums",
-            ],
-            "fontWeight": "700",
-            "lineHeight": 18,
-            "textAlign": "left",
-          },
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
@@ -907,7 +849,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -950,7 +891,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -993,7 +933,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1036,7 +975,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1090,7 +1028,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1133,7 +1070,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1176,7 +1112,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1219,7 +1154,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1273,7 +1207,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1316,7 +1249,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1359,7 +1291,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1402,7 +1333,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
