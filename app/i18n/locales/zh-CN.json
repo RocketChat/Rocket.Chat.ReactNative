@@ -16,6 +16,8 @@
   "ABAC_disabled_action_reason": "在ABAC管理的房间中不可用",
   "ABAC_managed": "ABAC 管理",
   "ABAC_managed_description": "只有符合条件的用户才能访问基于属性的访问控制房间。属性决定房间访问权限。",
+  "abac_removed__count__member_from_the_room": "更改了房间属性，ABAC 移除了 {{count}} 名成员",
+  "abac_removed__count__members_from_the_room": "更改了房间属性，ABAC 移除了 {{count}} 名成员",
   "abac_removed_user_from_the_room": "被ABAC删除",
   "ABAC_room_attributes": "房间属性",
   "Accessibility": "无障碍性",
