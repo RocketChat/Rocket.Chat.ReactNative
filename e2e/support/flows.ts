@@ -562,7 +562,14 @@ export const goBack = async ({ screen, platform }: Fixtures) => {
 	if (platform === 'ios') {
 		backButtons.push(screen.getByRole('button', { name: IOS_BACK_LABEL }).first());
 	}
-	await tapWhenUncovered(await firstVisible(backButtons, BACK_STEP_TIMEOUT));
+	for (let attempt = 1; ; attempt += 1) {
+		try {
+			await tapWhenUncovered(await firstVisible(backButtons, BACK_STEP_TIMEOUT));
+			return;
+		} catch (error) {
+			if (errorCode(error) !== 'LOCATOR_NOT_FOUND' || attempt >= BACK_ATTEMPTS) throw error;
+		}
+	}
 };
 
 export const goBackUntil = async (
