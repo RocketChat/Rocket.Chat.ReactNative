@@ -22,6 +22,9 @@ const DetailFocusedRouter = (options: TabRouterOptions): ReturnType<typeof TabRo
 				return nextState;
 			}
 			return { ...nextState, index: state.index };
+		},
+		getStateForRouteFocus(state) {
+			return state;
 		}
 	};
 };
