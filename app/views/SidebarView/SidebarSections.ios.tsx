@@ -8,6 +8,7 @@ import { useStackItems } from './components/useStackItems';
 import { useAdminRoute, useIsAdmin } from './components/Admin';
 import { sidebarNavigate } from './methods/sidebarNavigate';
 import Profile from './components/Profile';
+import { useSidebarAppActions } from './components/useSidebarAppActions';
 import { useCurrentScreen } from './useCurrentScreen';
 
 const SidebarSections = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
@@ -17,6 +18,7 @@ const SidebarSections = ({ navigation }: { navigation: DrawerNavigationProp<Draw
 	const stackItems = useStackItems(currentScreen);
 	const isAdmin = useIsAdmin();
 	const adminRoute = useAdminRoute();
+	const appActions = useSidebarAppActions();
 
 	return (
 		<>
@@ -53,6 +55,20 @@ const SidebarSections = ({ navigation }: { navigation: DrawerNavigationProp<Draw
 						left={() => <List.Icon name='settings' />}
 						onPress={() => sidebarNavigate(adminRoute)}
 					/>
+				</List.Section>
+			) : null}
+			{appActions.length ? (
+				<List.Section title='Apps'>
+					{appActions.map(item => (
+						<List.Item
+							key={item.id}
+							title={item.title}
+							translateTitle={false}
+							left={() => <List.Icon name='apps' />}
+							onPress={item.onPress}
+							testID={item.testID}
+						/>
+					))}
 				</List.Section>
 			) : null}
 		</>
