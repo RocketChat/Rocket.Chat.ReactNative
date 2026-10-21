@@ -20,7 +20,7 @@ import {
 import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
-import { clearServerCookies } from './helpers/setServerCookies';
+import { clearServerCookies } from './helpers/clearServerCookies';
 import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from './getUsersPresence';
 

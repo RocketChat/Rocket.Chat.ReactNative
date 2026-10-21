@@ -193,7 +193,7 @@ describe('logout', () => {
 
 	it('drops an ongoing conference call so it cannot outlive the session', async () => {
 		seedServer(SERVER, USER_ID);
-		useConferenceCallStore.getState().open({ callId: 'call1', url: `${SERVER}/conference/call1` });
+		useConferenceCallStore.getState().open({ callId: 'call1' });
 
 		await logout({ server: SERVER });
 

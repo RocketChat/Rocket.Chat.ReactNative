@@ -25,6 +25,9 @@ import chat.rocket.reactnative.VoipTurboPackage
 import chat.rocket.reactnative.scroll.InvertedScrollPackage
 import chat.rocket.reactnative.input.ExternalInputPackage
 import chat.rocket.reactnative.biometric.BiometricEnrollmentPackage
+import chat.rocket.reactnative.conference.ConferenceCallTurboPackage
+import com.livekit.reactnative.LiveKitReactNative
+import com.livekit.reactnative.audio.AudioType
 
 /**
  * Main Application class.
@@ -53,6 +56,7 @@ open class MainApplication : Application(), ReactApplication {
               add(InvertedScrollPackage())
               add(ExternalInputPackage())
               add(BiometricEnrollmentPackage())
+              add(ConferenceCallTurboPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
@@ -68,6 +72,7 @@ open class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
+    LiveKitReactNative.setup(this, AudioType.CommunicationAudioType())
     Bugsnag.start(this)
     
     // Initialize MMKV encryption - reads existing key or generates new one

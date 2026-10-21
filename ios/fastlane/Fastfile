@@ -74,7 +74,7 @@ platform :ios do
     match(
       type: "appstore",
       platform: "ios",
-      app_identifier: ["chat.rocket.ios", "chat.rocket.ios.NotificationService", "chat.rocket.ios.Rocket-Chat-ShareExtension", "chat.rocket.ios.watchkitapp"],
+      app_identifier: ["chat.rocket.ios", "chat.rocket.ios.NotificationService", "chat.rocket.ios.Rocket-Chat-ShareExtension", "chat.rocket.ios.watchkitapp", "chat.rocket.ios.BroadcastUpload"],
       readonly: true,
       output_path: './'
     )
@@ -97,6 +97,13 @@ platform :ios do
       build_configurations: "Release",
       code_sign_identity: "iPhone Distribution",
       targets: "ShareRocketChatRN",
+    )
+
+    update_code_signing_settings(
+      profile_name: "match AppStore chat.rocket.ios.BroadcastUpload",
+      build_configurations: "Release",
+      code_sign_identity: "iPhone Distribution",
+      targets: "BroadcastUpload",
     )
 
     update_code_signing_settings(

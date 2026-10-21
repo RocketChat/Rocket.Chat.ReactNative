@@ -287,8 +287,11 @@ describe('MediaCallHeader', () => {
 });
 
 describe('MediaCallHeader with a conference call', () => {
-	const openConference = () =>
-		useConferenceCallStore.getState().open({ callId: 'call1', url: 'https://open.rocket.chat/conference/call1' });
+	const openConference = () => {
+		useConferenceCallStore.getState().open({ callId: 'call1' });
+		useConferenceCallStore.getState().setPhase('connected');
+	};
+	const minimizeConference = () => useConferenceCallStore.getState().minimize();
 
 	beforeEach(() => {
 		useCallStore.getState().reset();
@@ -299,6 +302,7 @@ describe('MediaCallHeader with a conference call', () => {
 	it('should render the call header for a conference call', () => {
 		useCallStore.setState({ call: null });
 		openConference();
+		minimizeConference();
 
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>
@@ -312,9 +316,38 @@ describe('MediaCallHeader with a conference call', () => {
 		expect(queryByTestId('media-call-header-empty')).toBeNull();
 	});
 
+	it.each(['preflight', 'ended', 'error'] as const)('should not offer to return to a call that is not running (%s)', phase => {
+		useCallStore.setState({ call: null });
+		openConference();
+		useConferenceCallStore.getState().setPhase(phase);
+		minimizeConference();
+
+		const { queryByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(queryByTestId('conference-call-header')).toBeNull();
+	});
+
+	it('should not show the return-to-call row while the conference screen is open', () => {
+		useCallStore.setState({ call: null });
+		openConference();
+
+		const { queryByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(queryByTestId('conference-call-header')).toBeNull();
+	});
+
 	it('should return to the call when the header is pressed', () => {
 		useCallStore.setState({ call: null });
 		openConference();
+		minimizeConference();
 
 		const { getByTestId } = render(
 			<Wrapper>
@@ -329,6 +362,7 @@ describe('MediaCallHeader with a conference call', () => {
 	it('should end the conference call from the header', () => {
 		useCallStore.setState({ call: null });
 		openConference();
+		minimizeConference();
 
 		const { getByTestId } = render(
 			<Wrapper>
@@ -372,6 +406,39 @@ describe('MediaCallHeader with a conference call', () => {
 
 		expect(getByTestId('media-call-header-empty')).toBeTruthy();
 		expect(queryByTestId('conference-call-header')).toBeNull();
+	});
+
+	it('leaves the whole small picture-in-picture window to the call, status bar backdrop included', () => {
+		openConference();
+		useConferenceCallStore.getState().setPictureInPicture(true);
+
+		const { queryByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(queryByTestId('media-call-header-empty')).toBeNull();
+		expect(queryByTestId('conference-call-header')).toBeNull();
+	});
+
+	it('brings the backdrop back when the call leaves picture in picture', () => {
+		openConference();
+		useConferenceCallStore.getState().setPictureInPicture(true);
+		const { getByTestId, rerender } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		useConferenceCallStore.getState().setPictureInPicture(false);
+		rerender(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(getByTestId('media-call-header-empty')).toBeTruthy();
 	});
 });
 

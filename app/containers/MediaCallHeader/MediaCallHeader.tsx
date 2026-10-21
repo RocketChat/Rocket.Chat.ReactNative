@@ -7,7 +7,7 @@ import { useTheme } from '~/theme';
 import Collapse from './components/Collapse';
 import ConferenceCallRow from './components/ConferenceCallRow';
 import EndCall from './components/EndCall';
-import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
+import { isConferenceSessionActive, useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import { useCallStore, useControlsVisible } from '~/lib/services/voip/useCallStore';
 import { Content } from './components/Content';
 import { CONTROLS_ANIMATION_DURATION } from '~/views/CallView/styles';
@@ -31,6 +31,9 @@ const MediaCallHeader = () => {
 	const insets = useSafeAreaInsets();
 	const call = useCallStore(useShallow(state => state.call));
 	const conferenceCallId = useConferenceCallStore(state => state.callId);
+	const conferenceExpanded = useConferenceCallStore(state => state.expanded);
+	const conferencePhase = useConferenceCallStore(state => state.phase);
+	const conferencePictureInPicture = useConferenceCallStore(state => state.pictureInPicture);
 	const focused = useCallStore(state => state.focused);
 	const controlsVisible = useControlsVisible();
 
@@ -49,6 +52,10 @@ const MediaCallHeader = () => {
 		borderBottomColor: withTiming(shouldHide ? 'transparent' : colors.strokeLight, { duration: CONTROLS_ANIMATION_DURATION })
 	}));
 
+	if (conferencePictureInPicture) {
+		return null;
+	}
+
 	const defaultHeaderStyle = {
 		backgroundColor: colors.surfaceNeutral,
 		paddingTop: insets.top
@@ -57,7 +64,7 @@ const MediaCallHeader = () => {
 	const rowStyle = { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + HEADER_TOP_PADDING };
 
 	if (!call) {
-		if (conferenceCallId) {
+		if (conferenceCallId && !conferenceExpanded && isConferenceSessionActive(conferencePhase)) {
 			return (
 				<View style={[styles.header, rowStyle]} testID='conference-call-header'>
 					<ConferenceCallRow />

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0104B294E83433A0D0926A8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120F5EA3553AA154A734CE11 /* Foundation.framework */; };
+		1C41D1491C871B71015BAECB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4DF8A9A7BEF2B4BC1310B3C /* SwiftUI.framework */; };
 		1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C81B2511208400FEF824 /* URL+Extensions.swift */; };
 		1E01C8212511301400FEF824 /* PushResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8202511301400FEF824 /* PushResponse.swift */; };
 		1E01C8252511303100FEF824 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8242511303100FEF824 /* Notification.swift */; };
@@ -134,6 +136,11 @@
 		1EED2D332BC1E09500832666 /* RoomInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED2D322BC1E09500832666 /* RoomInfoView.swift */; };
 		1EF5FBD1250C109E00614FEA /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5FBD0250C109E00614FEA /* Encryption.swift */; };
 		1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFEB5972493B6640072EDC0 /* NotificationService.swift */; };
+		26EBC57E53B3056E63EE6261 /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E443EEE194780B501896996 /* SampleHandler.swift */; };
+		2CC3A77C3CDF204238864EA8 /* ConferenceLiveActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0CDC0BD015F4CAD917C6E2 /* ConferenceLiveActivityWidget.swift */; };
+		3450E49F46AC7A234C8A8D09 /* ConferenceActivityIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1DF1DDF9A562F383FAB316 /* ConferenceActivityIntents.swift */; };
+		3E2E4A0571017E6A6DA034AD /* SocketConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D949987A64310B523A8D97A8 /* SocketConnection.swift */; };
+		3E4C8199CE090D8B1B04C039 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B7AC08238CE76C3685F4DCA /* ReplayKit.framework */; };
 		3F56D232A9EBA1C9C749F15D /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A42CFB843397273C7EA /* SecureStorage.m */; };
 		3F56D232A9EBA1C9C749F15E /* MMKVBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A44CFB843397273C7EC /* MMKVBridge.mm */; };
 		3F56D232A9EBA1C9C749F160 /* MMKVBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A44CFB843397273C7EC /* MMKVBridge.mm */; };
@@ -143,6 +150,7 @@
 		65B9A71B2AFC24190088956F /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 65B9A7192AFC24190088956F /* ringtone.mp3 */; };
 		66C2701C2EBBCB570062725F /* MMKVKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */; };
 		66C2701D2EBBCB570062725F /* MMKVKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */; };
+		6E2203708F7A309B7E9B8CB2 /* ConferenceActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56675694A1C587AEBA191A98 /* ConferenceActivityAttributes.swift */; };
 		6F204E445C3D44699793D4F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680FA18DB475479CAD48F334 /* SceneDelegate.swift */; };
 		6FA7E2392F28A9D300A1D45E /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */; };
 		782E0520ED599FF8DDC2318F /* Pods_defaults_Rocket_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ED4E003393D3A9256F4EB3 /* Pods_defaults_Rocket_Chat.framework */; };
@@ -214,15 +222,26 @@
 		7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */; };
 		7AE10C0828A59530003593CB /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AE10C0528A59530003593CB /* Inter.ttf */; };
 		7AVR00022F5F5900002A6BDE /* VoipRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AVR00002F5F5900002A6BDE /* VoipRegion.swift */; };
+		7DA4DB1CBD171F4D83FE6728 /* ConferenceActivityIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1DF1DDF9A562F383FAB316 /* ConferenceActivityIntents.swift */; };
 		85160EB6C143E0493FE5F014 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */; };
+		885C3ECF16A28C3D9E3FCA18 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30BD446CC0FAB3BA3D60BACC /* WidgetKit.framework */; };
+		88609CF4F8B2141D32EAEC6A /* ConferenceLiveActivityBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20CFD809204DC0FC5CBDB45 /* ConferenceLiveActivityBundle.swift */; };
+		8F0ADB73ADB5369C81D78C0F /* SampleUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513BF72418E026137C948A7 /* SampleUploader.swift */; };
+		9C0837E68CCC5007E197BD59 /* ConferenceLiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15915D6C4755A167D8D0F1C /* ConferenceLiveActivityManager.swift */; };
 		A1C0E0022F90000000C0FFEE /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = A1C0E0012F90000000C0FFEE /* AppIcon.icon */; };
 		A1C0E0032F90000000C0FFEE /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = A1C0E0012F90000000C0FFEE /* AppIcon.icon */; };
 		A48B46DA2D3FFBD200945489 /* A11yFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A48B46D82D3FFBD200945489 /* A11yFlowModule.m */; };
 		B1E1F0022F03A00000EXT002 /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E1F0042F03A00000EXT004 /* ExternalInputModule.m */; };
 		B1E1F0062F03A00000EXT006 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1E1F0072F03A00000EXT007 /* GameController.framework */; };
+		B2C342FDD2CFB51C1F84464E /* BroadcastUpload.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C0CAD2BCE2AF22F2317C7BF6 /* BroadcastUpload.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BC404914E86821389EEB543D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391C4F7AA7023CD41EEBD106 /* ExpoModulesProvider.swift */; };
+		C722945B09C1460C6D00B25A /* ConferenceActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56675694A1C587AEBA191A98 /* ConferenceActivityAttributes.swift */; };
+		CAEF0EA38FF72A099014E2A5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120F5EA3553AA154A734CE11 /* Foundation.framework */; };
 		CE4453310C9A08AB0DAC2307 /* DDPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE2F3DC02A264F204E3EDE3 /* DDPClient.swift */; };
 		D83EEDB28B6D2AE34CF583F6 /* Pods_defaults_NotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5152D3FEFAE1AF8F5E9CCCC /* Pods_defaults_NotificationService.framework */; };
+		E09C67DBE6126A1F7AC5041E /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36036239620288C0A72D8BBD /* Atomic.swift */; };
+		E151DB9E2D1B53C3E6E20136 /* ConferenceLiveActivityModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 939615C1F7D685BAE5242100 /* ConferenceLiveActivityModule.mm */; };
+		E9F06DEB7496C8AB264EEB15 /* ConferenceLiveActivity.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7B98E330DC92966529C2BFEB /* ConferenceLiveActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -232,6 +251,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 1ED0388D2B507B4B00C007D4;
 			remoteInfo = Rocket.Chat.Watch;
+		};
+		430481519A9BAC495C48AF6C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6E8FCA50C68E15C8931505C;
+			remoteInfo = ConferenceLiveActivity;
+		};
+		71D0FE1E58653B7D9F7CB0B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 31F11242519C433A4860DE15;
+			remoteInfo = BroadcastUpload;
 		};
 		7AAB3E0F257E6A6E00707CF6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -269,6 +302,8 @@
 			files = (
 				7AAB3E49257E6A6E00707CF6 /* ShareRocketChatRN.appex in Embed App Extensions */,
 				7AAB3E4A257E6A6E00707CF6 /* NotificationService.appex in Embed App Extensions */,
+				B2C342FDD2CFB51C1F84464E /* BroadcastUpload.appex in Embed App Extensions */,
+				E9F06DEB7496C8AB264EEB15 /* ConferenceLiveActivity.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -277,7 +312,9 @@
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; path = main.jsbundle; sourceTree = "<group>"; };
+		01E38AFCCFF39D470EB9966B /* BroadcastUpload.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = BroadcastUpload.entitlements; sourceTree = "<group>"; };
 		06BB44DD4855498082A744AD /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		120F5EA3553AA154A734CE11 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		1238492C71CF27C87CB2E976 /* Pods-defaults-NotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-NotificationService.release.xcconfig"; path = "Target Support Files/Pods-defaults-NotificationService/Pods-defaults-NotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
@@ -423,15 +460,24 @@
 		1EFEB5972493B6640072EDC0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		1EFEB5992493B6640072EDC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1EFEB5A12493B67D0072EDC0 /* NotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotificationService.entitlements; sourceTree = "<group>"; };
+		2B1DF1DDF9A562F383FAB316 /* ConferenceActivityIntents.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConferenceActivityIntents.swift; sourceTree = "<group>"; };
+		2B7AC08238CE76C3685F4DCA /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/ReplayKit.framework; sourceTree = DEVELOPER_DIR; };
 		2CF16884F9353D83C6EFBE81 /* Pods-defaults-Rocket.Chat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-Rocket.Chat.release.xcconfig"; path = "Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat.release.xcconfig"; sourceTree = "<group>"; };
+		30BD446CC0FAB3BA3D60BACC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/WidgetKit.framework; sourceTree = DEVELOPER_DIR; };
+		36036239620288C0A72D8BBD /* Atomic.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		391C4F7AA7023CD41EEBD106 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-defaults-Rocket.Chat/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		3E443EEE194780B501896996 /* SampleHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SampleHandler.swift; sourceTree = "<group>"; };
 		45AECABFC0DD015C46B1D029 /* Pods-defaults-RocketChatRN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-RocketChatRN.debug.xcconfig"; path = "Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN.debug.xcconfig"; sourceTree = "<group>"; };
+		4D7C53655859BE0FFA24591A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		53B2AF72F617C8BD8C0E85E3 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56675694A1C587AEBA191A98 /* ConferenceActivityAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConferenceActivityAttributes.swift; sourceTree = "<group>"; };
 		60B2A6A31FC4588700BD58E5 /* RocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RocketChatRN.entitlements; path = RocketChatRN/RocketChatRN.entitlements; sourceTree = "<group>"; };
 		65AD38362BFBDF4A00271B39 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		65B9A7192AFC24190088956F /* ringtone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringtone.mp3; sourceTree = "<group>"; };
 		66C270192EBBCB570062725F /* MMKVKeyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMKVKeyManager.h; sourceTree = "<group>"; };
 		66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MMKVKeyManager.mm; sourceTree = "<group>"; };
 		680FA18DB475479CAD48F334 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		6E0CDC0BD015F4CAD917C6E2 /* ConferenceLiveActivityWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConferenceLiveActivityWidget.swift; sourceTree = "<group>"; };
 		6FA7E2362F28A9D300A1D45E /* ExternalInputModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalInputModule.h; sourceTree = "<group>"; };
 		6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExternalInputModule.m; sourceTree = "<group>"; };
 		7A0000032F1BAFA700B6B4BD /* VoipService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipService.swift; sourceTree = "<group>"; };
@@ -456,8 +502,10 @@
 		7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AE10C0528A59530003593CB /* Inter.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inter.ttf; sourceTree = "<group>"; };
 		7AVR00002F5F5900002A6BDE /* VoipRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipRegion.swift; sourceTree = "<group>"; };
+		7B98E330DC92966529C2BFEB /* ConferenceLiveActivity.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ConferenceLiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		83F98EE33D91A93DF8E69F34 /* MediaCallsAnswerRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCallsAnswerRequest.swift; sourceTree = "<group>"; };
 		88ED4E003393D3A9256F4EB3 /* Pods_defaults_Rocket_Chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_defaults_Rocket_Chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		939615C1F7D685BAE5242100 /* ConferenceLiveActivityModule.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = ConferenceLiveActivityModule.mm; sourceTree = "<group>"; };
 		9B215A42CFB843397273C7EA /* SecureStorage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SecureStorage.m; sourceTree = "<group>"; };
 		9B215A44CFB843397273C7EC /* MMKVBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MMKVBridge.mm; path = Shared/RocketChat/MMKVBridge.mm; sourceTree = "<group>"; };
 		9BE2F3DC02A264F204E3EDE3 /* DDPClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DDPClient.swift; sourceTree = "<group>"; };
@@ -473,8 +521,14 @@
 		B37C79D9BD0742CE936B6982 /* libc++.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		BA6E8FC7989FF1E93670E634 /* Pods_defaults_RocketChatRN.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_defaults_RocketChatRN.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA7E862283664608B3894E34 /* libWatermelonDB.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libWatermelonDB.a; sourceTree = "<group>"; };
+		C0CAD2BCE2AF22F2317C7BF6 /* BroadcastUpload.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BroadcastUpload.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D513BF72418E026137C948A7 /* SampleUploader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SampleUploader.swift; sourceTree = "<group>"; };
 		D5152D3FEFAE1AF8F5E9CCCC /* Pods_defaults_NotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_defaults_NotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D949987A64310B523A8D97A8 /* SocketConnection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SocketConnection.swift; sourceTree = "<group>"; };
+		E15915D6C4755A167D8D0F1C /* ConferenceLiveActivityManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConferenceLiveActivityManager.swift; sourceTree = "<group>"; };
+		E4DF8A9A7BEF2B4BC1310B3C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
 		E604ABC16022AB0B4819037E /* Pods-defaults-Rocket.Chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-Rocket.Chat.debug.xcconfig"; path = "Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat.debug.xcconfig"; sourceTree = "<group>"; };
+		F20CFD809204DC0FC5CBDB45 /* ConferenceLiveActivityBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConferenceLiveActivityBundle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -490,6 +544,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				D83EEDB28B6D2AE34CF583F6 /* Pods_defaults_NotificationService.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2506A428E1D26BC08BB194C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAEF0EA38FF72A099014E2A5 /* Foundation.framework in Frameworks */,
+				885C3ECF16A28C3D9E3FCA18 /* WidgetKit.framework in Frameworks */,
+				1C41D1491C871B71015BAECB /* SwiftUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6C9E80862912E90856085F62 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0104B294E83433A0D0926A8C /* Foundation.framework in Frameworks */,
+				3E4C8199CE090D8B1B04C039 /* ReplayKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,6 +614,19 @@
 				65AD38362BFBDF4A00271B39 /* PrivacyInfo.xcprivacy */,
 			);
 			name = RocketChatRN;
+			sourceTree = "<group>";
+		};
+		186E8AFE11E32904E4BE43FE /* ConferenceLiveActivity */ = {
+			isa = PBXGroup;
+			children = (
+				56675694A1C587AEBA191A98 /* ConferenceActivityAttributes.swift */,
+				2B1DF1DDF9A562F383FAB316 /* ConferenceActivityIntents.swift */,
+				F20CFD809204DC0FC5CBDB45 /* ConferenceLiveActivityBundle.swift */,
+				6E0CDC0BD015F4CAD917C6E2 /* ConferenceLiveActivityWidget.swift */,
+				4D7C53655859BE0FFA24591A /* Info.plist */,
+			);
+			name = ConferenceLiveActivity;
+			path = ConferenceLiveActivity;
 			sourceTree = "<group>";
 		};
 		1E0656192B7E91F00081B01F /* ActionHandler */ = {
@@ -953,6 +1039,8 @@
 				7AC0A1E02C000001001CAA11 /* Challenge.h */,
 				7AC0A1E02C000002001CAA11 /* Challenge.mm */,
 				9BE2F3DC02A264F204E3EDE3 /* DDPClient.swift */,
+				E15915D6C4755A167D8D0F1C /* ConferenceLiveActivityManager.swift */,
+				939615C1F7D685BAE5242100 /* ConferenceLiveActivityModule.mm */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -968,6 +1056,17 @@
 				9F66BEF98C5CF2CFDD4B4C87 /* Pods-defaults-RocketChatRN.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		7DF1715E7FDE284D918EB319 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				120F5EA3553AA154A734CE11 /* Foundation.framework */,
+				2B7AC08238CE76C3685F4DCA /* ReplayKit.framework */,
+				30BD446CC0FAB3BA3D60BACC /* WidgetKit.framework */,
+				E4DF8A9A7BEF2B4BC1310B3C /* SwiftUI.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 		83CBB9F61A601CBA00E9B192 = {
@@ -988,6 +1087,8 @@
 				B8E79A681F3CCC69005B464F /* Recovered References */,
 				7AC2B09613AA7C3FEBAC9F57 /* Pods */,
 				7890E71355E6C0A3288089E7 /* ExpoModulesProviders */,
+				F872A5706614808B429028B0 /* BroadcastUpload */,
+				186E8AFE11E32904E4BE43FE /* ConferenceLiveActivity */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -1000,6 +1101,8 @@
 				1EFEB5952493B6640072EDC0 /* NotificationService.appex */,
 				7AAB3E52257E6A6E00707CF6 /* Rocket.Chat.app */,
 				1ED0388E2B507B4B00C007D4 /* Rocket.Chat Watch.app */,
+				C0CAD2BCE2AF22F2317C7BF6 /* BroadcastUpload.appex */,
+				7B98E330DC92966529C2BFEB /* ConferenceLiveActivity.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1057,8 +1160,23 @@
 				D5152D3FEFAE1AF8F5E9CCCC /* Pods_defaults_NotificationService.framework */,
 				88ED4E003393D3A9256F4EB3 /* Pods_defaults_Rocket_Chat.framework */,
 				BA6E8FC7989FF1E93670E634 /* Pods_defaults_RocketChatRN.framework */,
+				7DF1715E7FDE284D918EB319 /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F872A5706614808B429028B0 /* BroadcastUpload */ = {
+			isa = PBXGroup;
+			children = (
+				3E443EEE194780B501896996 /* SampleHandler.swift */,
+				D513BF72418E026137C948A7 /* SampleUploader.swift */,
+				D949987A64310B523A8D97A8 /* SocketConnection.swift */,
+				36036239620288C0A72D8BBD /* Atomic.swift */,
+				53B2AF72F617C8BD8C0E85E3 /* Info.plist */,
+				01E38AFCCFF39D470EB9966B /* BroadcastUpload.entitlements */,
+			);
+			name = BroadcastUpload;
+			path = BroadcastUpload;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1117,6 +1235,23 @@
 			productReference = 1EFEB5952493B6640072EDC0 /* NotificationService.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		31F11242519C433A4860DE15 /* BroadcastUpload */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B4C8AA4B6FB02D39653B0563 /* Build configuration list for PBXNativeTarget "BroadcastUpload" */;
+			buildPhases = (
+				3C7641F96174BBE54C9A5E7F /* Sources */,
+				6C9E80862912E90856085F62 /* Frameworks */,
+				7034C885C768998CC00C4D62 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BroadcastUpload;
+			productName = BroadcastUpload;
+			productReference = C0CAD2BCE2AF22F2317C7BF6 /* BroadcastUpload.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		7AAB3E0D257E6A6E00707CF6 /* Rocket.Chat */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7AAB3E4F257E6A6E00707CF6 /* Build configuration list for PBXNativeTarget "Rocket.Chat" */;
@@ -1140,11 +1275,30 @@
 				7AAB3E0E257E6A6E00707CF6 /* PBXTargetDependency */,
 				7AAB3E10257E6A6E00707CF6 /* PBXTargetDependency */,
 				1ED1ECE62B8699E900F6620C /* PBXTargetDependency */,
+				E959069BA4FF74058EA7D51B /* PBXTargetDependency */,
+				BF34BA1D5A49208C9BF3ED08 /* PBXTargetDependency */,
 			);
 			name = Rocket.Chat;
 			productName = "Hello World";
 			productReference = 7AAB3E52257E6A6E00707CF6 /* Rocket.Chat.app */;
 			productType = "com.apple.product-type.application";
+		};
+		E6E8FCA50C68E15C8931505C /* ConferenceLiveActivity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 635AE8035356B7BA325E338C /* Build configuration list for PBXNativeTarget "ConferenceLiveActivity" */;
+			buildPhases = (
+				09052FBB14104D9533311459 /* Sources */,
+				2506A428E1D26BC08BB194C1 /* Frameworks */,
+				0AB8622740E31CDB47ABCBA2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ConferenceLiveActivity;
+			productName = ConferenceLiveActivity;
+			productReference = 7B98E330DC92966529C2BFEB /* ConferenceLiveActivity.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -1193,11 +1347,20 @@
 				1EC6ACAF22CB9FC300A41C61 /* ShareRocketChatRN */,
 				1EFEB5942493B6640072EDC0 /* NotificationService */,
 				1ED0388D2B507B4B00C007D4 /* Rocket.Chat.Watch */,
+				31F11242519C433A4860DE15 /* BroadcastUpload */,
+				E6E8FCA50C68E15C8931505C /* ConferenceLiveActivity */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0AB8622740E31CDB47ABCBA2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1ED0388C2B507B4B00C007D4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1218,6 +1381,13 @@
 				65AD38392BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */,
 				1E6CC61F2513DBF400965591 /* GoogleService-Info.plist in Resources */,
 				7A610CD427ECE38100B8ABDD /* custom.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7034C885C768998CC00C4D62 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1555,7 +1725,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-frameworks.sh",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ExpoModulesJSI/ExpoModulesJSI.framework/ExpoModulesJSI",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiWebRTC/WebRTC.framework/WebRTC",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/LiveKitWebRTC/LiveKitWebRTC.framework/LiveKitWebRTC",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/React-Core-prebuilt/React.framework/React",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermesvm.framework/hermesvm",
@@ -1563,7 +1733,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpoModulesJSI.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LiveKitWebRTC.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermesvm.framework",
@@ -1576,6 +1746,17 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		09052FBB14104D9533311459 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E2203708F7A309B7E9B8CB2 /* ConferenceActivityAttributes.swift in Sources */,
+				3450E49F46AC7A234C8A8D09 /* ConferenceActivityIntents.swift in Sources */,
+				88609CF4F8B2141D32EAEC6A /* ConferenceLiveActivityBundle.swift in Sources */,
+				2CC3A77C3CDF204238864EA8 /* ConferenceLiveActivityWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1ED0388A2B507B4B00C007D4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1708,6 +1889,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3C7641F96174BBE54C9A5E7F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26EBC57E53B3056E63EE6261 /* SampleHandler.swift in Sources */,
+				8F0ADB73ADB5369C81D78C0F /* SampleUploader.swift in Sources */,
+				3E2E4A0571017E6A6DA034AD /* SocketConnection.swift in Sources */,
+				E09C67DBE6126A1F7AC5041E /* Atomic.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7AAB3E14257E6A6E00707CF6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1770,6 +1962,10 @@
 				79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */,
 				CE4453310C9A08AB0DAC2307 /* DDPClient.swift in Sources */,
 				7A0000072F1BAFA700B6B4BD /* MediaCallsAnswerRequest.swift in Sources */,
+				C722945B09C1460C6D00B25A /* ConferenceActivityAttributes.swift in Sources */,
+				7DA4DB1CBD171F4D83FE6728 /* ConferenceActivityIntents.swift in Sources */,
+				9C0837E68CCC5007E197BD59 /* ConferenceLiveActivityManager.swift in Sources */,
+				E151DB9E2D1B53C3E6E20136 /* ConferenceLiveActivityModule.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1799,6 +1995,18 @@
 			isa = PBXTargetDependency;
 			target = 1EFEB5942493B6640072EDC0 /* NotificationService */;
 			targetProxy = 7AAB3E11257E6A6E00707CF6 /* PBXContainerItemProxy */;
+		};
+		BF34BA1D5A49208C9BF3ED08 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ConferenceLiveActivity;
+			target = E6E8FCA50C68E15C8931505C /* ConferenceLiveActivity */;
+			targetProxy = 430481519A9BAC495C48AF6C /* PBXContainerItemProxy */;
+		};
+		E959069BA4FF74058EA7D51B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BroadcastUpload;
+			target = 31F11242519C433A4860DE15 /* BroadcastUpload */;
+			targetProxy = 71D0FE1E58653B7D9F7CB0B9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2170,6 +2378,90 @@
 			};
 			name = Release;
 		};
+		691FB98DC2BF869EC2BDB751 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(EMBEDDED_CONTENT_CONTAINS_SWIFT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = BroadcastUpload/BroadcastUpload.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				INFOPLIST_FILE = BroadcastUpload/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 4.78.0;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.ios.BroadcastUpload;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.ios.BroadcastUpload";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		75184ED9D4718D259D6D5C12 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(EMBEDDED_CONTENT_CONTAINS_SWIFT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				INFOPLIST_FILE = ConferenceLiveActivity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 4.78.0;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.ios.ConferenceLiveActivity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7691642A0AB892A624149273 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(EMBEDDED_CONTENT_CONTAINS_SWIFT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				INFOPLIST_FILE = ConferenceLiveActivity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 4.78.0;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.ios.ConferenceLiveActivity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.ios.ConferenceLiveActivity";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		7AAB3E50257E6A6E00707CF6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E604ABC16022AB0B4819037E /* Pods-defaults-Rocket.Chat.debug.xcconfig */;
@@ -2483,6 +2775,34 @@
 			};
 			name = Release;
 		};
+		DE2D915C7BD4A73147CC6506 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(EMBEDDED_CONTENT_CONTAINS_SWIFT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = BroadcastUpload/BroadcastUpload.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				INFOPLIST_FILE = BroadcastUpload/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 4.78.0;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.ios.BroadcastUpload;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2513,6 +2833,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		635AE8035356B7BA325E338C /* Build configuration list for PBXNativeTarget "ConferenceLiveActivity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7691642A0AB892A624149273 /* Release */,
+				75184ED9D4718D259D6D5C12 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7AAB3E4F257E6A6E00707CF6 /* Build configuration list for PBXNativeTarget "Rocket.Chat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2527,6 +2856,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B4C8AA4B6FB02D39653B0563 /* Build configuration list for PBXNativeTarget "BroadcastUpload" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				691FB98DC2BF869EC2BDB751 /* Release */,
+				DE2D915C7BD4A73147CC6506 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

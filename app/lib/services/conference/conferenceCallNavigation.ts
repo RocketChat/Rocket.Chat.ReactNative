@@ -1,5 +1,8 @@
+import log from '~/lib/methods/helpers/log';
 import Navigation from '~/lib/navigation/appNavigation';
-import { useConferenceCallStore } from './useConferenceCallStore';
+import { videoConferenceCancel } from '../restApi';
+import { conferenceSession } from './ConferenceSession';
+import { isPreflightCallId, useConferenceCallStore } from './useConferenceCallStore';
 
 export const CONFERENCE_ROUTE = 'ConferenceView';
 
@@ -18,6 +21,10 @@ const invalidatePendingConferenceCallOpen = (): void => {
 
 const isShowingConference = () => Navigation.getCurrentRoute()?.name === CONFERENCE_ROUTE;
 
+const cancelFailedCall = (callId: string): void => {
+	videoConferenceCancel(callId).catch(() => undefined);
+};
+
 export const expandConferenceCall = (): void => {
 	if (!useConferenceCallStore.getState().callId) {
 		return;
@@ -30,6 +37,11 @@ export const expandConferenceCall = (): void => {
 
 export const closeConferenceCall = (): void => {
 	invalidatePendingConferenceCallOpen();
+	const { phase, callId } = useConferenceCallStore.getState();
+	if (phase === 'error' && callId && !isPreflightCallId(callId)) {
+		cancelFailedCall(callId);
+	}
+	conferenceSession.end().catch(log);
 	useConferenceCallStore.getState().close();
 	if (isShowingConference()) {
 		Navigation.back();

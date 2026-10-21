@@ -273,6 +273,15 @@ export const defaultSettings = {
 	VideoConf_Enable_Teams: {
 		type: 'valueAsBoolean'
 	},
+	VideoConf_Enable_Persistent_Chat: {
+		type: 'valueAsBoolean'
+	},
+	VideoConf_Conference_Window_Enabled: {
+		type: 'valueAsBoolean'
+	},
+	VideoConf_Persistent_Chat_Mode: {
+		type: 'valueAsString'
+	},
 	Accounts_AllowDeleteOwnAccount: {
 		type: 'valueAsBoolean'
 	},
