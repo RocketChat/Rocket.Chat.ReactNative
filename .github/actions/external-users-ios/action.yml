@@ -1,4 +1,4 @@
-name: 'Open Testing iOS'
+name: 'External Users iOS'
 description: 'Distributes the TestFlight build to external testers'
 inputs:
   MATCH_KEYCHAIN_NAME:
@@ -39,7 +39,7 @@ runs:
 
     - name: Fastlane Distribute to External Testers
       working-directory: ios
-      run: bundle exec fastlane ios open_testing
+      run: bundle exec fastlane ios external_users
       env:
         MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}
         MATCH_KEYCHAIN_PASSWORD: ${{ inputs.MATCH_KEYCHAIN_PASSWORD }}

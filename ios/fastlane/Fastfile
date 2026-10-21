@@ -70,7 +70,7 @@ platform :ios do
   end
 
   desc "Distribute the TestFlight build to external testers"
-  lane :open_testing do
+  lane :external_users do
     api_key = app_store_connect_api_key(
       key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
       issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
