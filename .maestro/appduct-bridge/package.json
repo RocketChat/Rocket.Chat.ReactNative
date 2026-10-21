@@ -1,8 +1,0 @@
-{
-	"name": "appduct-bridge",
-	"private": true,
-	"type": "module",
-	"dependencies": {
-		"appduct": "0.13.0"
-	}
-}
