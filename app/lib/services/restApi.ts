@@ -32,6 +32,8 @@ import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
 import log from '../methods/helpers/log';
+import { getNewestLoadedTs } from '../methods/helpers/buildLoaderRow';
+import { mapMessageFromAPI } from '../encryption/helpers/mapMessageFromApi';
 
 export const createChannel = ({
 	name,
@@ -944,23 +946,23 @@ const getRoomHistory = async (roomId: string, position: { next: string } | { aro
 	if (!history.success) {
 		throw new Error('Unable to load room history');
 	}
-	const messages = history.messages.map(message => ({ ...message, _updatedAt: new Date(message._updatedAt) }));
-	return { messages: messages as IMessage[], cursor: history.cursor };
+	const messages: IMessage[] = history.messages.map(message => mapMessageFromAPI(message as IMessage));
+	return { messages, cursor: history.cursor };
 };
 
 export const getNextMessages = async ({ rid, after, count }: { rid: string; after: Date; count: number }) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
-		const newestLoadedTs = after.getTime() - 1;
-		const { messages, cursor } = await getRoomHistory(rid, { next: String(newestLoadedTs) }, count);
-		return { messages, hasMore: cursor.next !== null };
+		const next = String(getNewestLoadedTs(after).getTime());
+		const { messages, cursor } = await getRoomHistory(rid, { next }, count);
+		return { messages, moreBefore: false, moreAfter: cursor.next !== null };
 	}
 	const result = await sdk.methodCallWrapper('loadNextMessages', rid, after, count);
 	if (!result?.messages) {
 		throw new Error('Unable to load newer messages');
 	}
 	const messages: IMessage[] = EJSON.fromJSONValue(result.messages);
-	return { messages, hasMore: messages.length === count };
+	return { messages, moreBefore: false, moreAfter: messages.length === count };
 };
 
 export const getSurroundingMessages = async ({ rid, messageId, count }: { rid: string; messageId: string; count: number }) => {

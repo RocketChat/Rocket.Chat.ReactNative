@@ -1,28 +1,28 @@
-import { loadMessagesForRoom } from './loadMessagesForRoom';
-import sdk from '../services/sdk';
+import { loadMessagesForRoom } from '../loadMessagesForRoom';
+import sdk from '../../services/sdk';
 import { ROOM } from '~/actions/actionsTypes';
-import { getMessageById } from '../database/services/Message';
-import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import updateMessages from './updateMessages';
-import { store } from '../store/auxStore';
-import { updateLastOpen } from './updateLastOpen';
+import { getMessageById } from '../../database/services/Message';
+import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import updateMessages from '../updateMessages';
+import { store } from '../../store/auxStore';
+import { updateLastOpen } from '../updateLastOpen';
 
-jest.mock('../services/sdk', () => ({
+jest.mock('../../services/sdk', () => ({
 	__esModule: true,
 	default: {
 		get: jest.fn()
 	}
 }));
 
-jest.mock('../database/services/Message', () => ({
+jest.mock('../../database/services/Message', () => ({
 	getMessageById: jest.fn()
 }));
 
-jest.mock('../database/services/Subscription', () => ({
+jest.mock('../../database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn(() => Promise.resolve(null))
 }));
 
-jest.mock('../store/auxStore', () => ({
+jest.mock('../../store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => ({
 			settings: { Hide_System_Messages: ['uj'] }
@@ -31,9 +31,9 @@ jest.mock('../store/auxStore', () => ({
 	}
 }));
 
-jest.mock('./updateMessages', () => jest.fn());
-jest.mock('./updateLastOpen', () => ({
-	...jest.requireActual('./updateLastOpen'),
+jest.mock('../updateMessages', () => jest.fn());
+jest.mock('../updateLastOpen', () => ({
+	...jest.requireActual('../updateLastOpen'),
 	updateLastOpen: jest.fn()
 }));
 

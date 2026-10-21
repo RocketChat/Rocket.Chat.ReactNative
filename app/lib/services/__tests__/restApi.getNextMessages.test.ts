@@ -1,6 +1,8 @@
 import { store as reduxStore } from '~/lib/store/auxStore';
 import sdk from '../sdk';
 import { getNextMessages } from '../restApi';
+import { buildLoaderRow } from '../../methods/helpers/buildLoaderRow';
+import { MessageTypeLoad } from '../../constants/messageTypeLoad';
 
 jest.mock('~/lib/store/auxStore', () => ({
 	store: {
@@ -68,28 +70,40 @@ describe('getNextMessages', () => {
 		});
 	});
 
+	it('requests the cursor at the ts of the newest message a Newer Loader was stamped from', async () => {
+		const newest = { _id: 'newest', rid: RID, ts: new Date(AFTER_MS), msg: 'text' };
+		const newerLoader = buildLoaderRow(newest, MessageTypeLoad.NEXT_CHUNK);
+
+		await getNextMessages({ rid: RID, after: newerLoader.ts as Date, count: COUNT });
+
+		expect(mockedGet).toHaveBeenCalledWith('rooms.history', expect.objectContaining({ next: String(AFTER_MS) }));
+	});
+
 	it.each([
 		['more newer messages exist', String(AFTER_MS + 3000), true],
 		['no newer messages exist', null, false]
-	])('reports hasMore from the cursor when %s', async (_name, next, hasMore) => {
+	])('reports moreAfter from the cursor when %s', async (_name, next, moreAfter) => {
 		mockedGet.mockResolvedValue(restResponse(['a', 'b', 'c'], next));
 
 		const result = await getNextMessages({ rid: RID, after: AFTER, count: COUNT });
 
-		expect(result.hasMore).toBe(hasMore);
+		expect(result.moreBefore).toBe(false);
+		expect(result.moreAfter).toBe(moreAfter);
 		expect(result.messages.map(message => message._id)).toEqual(['a', 'b', 'c']);
 	});
 
-	it('converts the ISO _updatedAt of each REST message to a Date', async () => {
-		const updatedAt = '2024-01-15T12:00:00.000Z';
+	it('converts the ISO timestamps of each REST message to Dates', async () => {
+		const iso = '2024-01-15T12:00:00.000Z';
 		mockedGet.mockResolvedValue({
 			...restResponse([], null),
-			messages: [{ _id: 'a', rid: RID, _updatedAt: updatedAt }]
+			messages: [{ _id: 'a', rid: RID, ts: iso, tlm: iso, _updatedAt: iso }]
 		});
 
-		const result = await getNextMessages({ rid: RID, after: AFTER, count: COUNT });
+		const [message] = (await getNextMessages({ rid: RID, after: AFTER, count: COUNT })).messages;
 
-		expect(result.messages[0]._updatedAt).toEqual(new Date(updatedAt));
+		expect(message.ts).toEqual(new Date(iso));
+		expect(message.tlm).toEqual(new Date(iso));
+		expect(message._updatedAt).toEqual(new Date(iso));
 	});
 
 	it('rejects instead of returning no messages when the response is not successful', async () => {
@@ -117,12 +131,13 @@ describe('getNextMessages', () => {
 		it.each([
 			['a full response', ['a', 'b', 'c'], true],
 			['a partial response', ['a', 'b'], false]
-		])('decodes the DDP dates and guesses hasMore from %s', async (_name, ids, hasMore) => {
+		])('decodes the DDP dates and guesses moreAfter from %s', async (_name, ids, moreAfter) => {
 			mockedMethodCallWrapper.mockResolvedValue(ddpResponse(ids));
 
 			const result = await getNextMessages({ rid: RID, after: AFTER, count: COUNT });
 
-			expect(result.hasMore).toBe(hasMore);
+			expect(result.moreBefore).toBe(false);
+			expect(result.moreAfter).toBe(moreAfter);
 			expect(result.messages[0].ts).toEqual(new Date(AFTER_MS + 1000));
 		});
 

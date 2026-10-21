@@ -33,10 +33,12 @@ const LOADER_ITEM = { id: 'tapped-loader' } as any;
 const buildMessages = (length: number) =>
 	Array.from(
 		{ length },
-		(_, index) => ({ _id: `msg-${index + 1}`, rid: RID, ts: new Date(TS.getTime() + (index + 1) * 1000) }) as any
+		(_, index) =>
+			({ _id: `msg-${index + 1}`, rid: RID, ts: new Date(TS.getTime() + (index + 1) * 1000), msg: `text-${index + 1}` }) as any
 	);
 
-const serve = (messages: any[], hasMore: boolean) => mockedGetNextMessages.mockResolvedValue({ messages, hasMore });
+const serve = (messages: any[], moreAfter: boolean) =>
+	mockedGetNextMessages.mockResolvedValue({ messages, moreBefore: false, moreAfter });
 
 describe('loadNextMessages', () => {
 	beforeEach(() => {
@@ -53,13 +55,13 @@ describe('loadNextMessages', () => {
 		expect(mockedGetNextMessages).toHaveBeenCalledWith({ rid: RID, after: TS, count: COUNT });
 	});
 
-	it('removes the Newer Loader when the server returns nothing newer', async () => {
+	it('hands the tapped Newer Loader to updateMessages to remove when the server returns nothing newer', async () => {
 		serve([], false);
 
 		await expect(loadNextMessages({ rid: RID, ts: TS, loaderItem: LOADER_ITEM })).resolves.toBeUndefined();
 
 		expect(mockedUpdateMessages).toHaveBeenCalledTimes(1);
-		expect(mockedUpdateMessages).toHaveBeenCalledWith({ rid: RID, update: [], remove: [{ _id: 'tapped-loader' }] });
+		expect(mockedUpdateMessages).toHaveBeenCalledWith({ rid: RID, update: [], loaderItem: LOADER_ITEM });
 	});
 
 	it('delegates a full response without adding a Newer Loader when the server reports nothing newer', async () => {
@@ -73,16 +75,6 @@ describe('loadNextMessages', () => {
 		expect(mockedUpdateMessages).toHaveBeenCalledWith({ rid: RID, update: messages, loaderItem: LOADER_ITEM });
 	});
 
-	it('adds no Newer Loader when more exist but the newest message is already local', async () => {
-		const messages = buildMessages(COUNT);
-		serve(messages, true);
-		mockedGetMessageById.mockResolvedValue({ id: 'msg-50' } as never);
-
-		await loadNextMessages({ rid: RID, ts: TS, loaderItem: LOADER_ITEM });
-
-		expect(mockedUpdateMessages).toHaveBeenCalledWith({ rid: RID, update: messages, loaderItem: LOADER_ITEM });
-	});
-
 	it('appends a Newer Loader one millisecond after the newest message when more exist and it is not local', async () => {
 		const messages = buildMessages(COUNT);
 		serve(messages, true);
@@ -90,10 +82,20 @@ describe('loadNextMessages', () => {
 		await loadNextMessages({ rid: RID, ts: TS, loaderItem: LOADER_ITEM });
 
 		expect(mockedGetMessageById).toHaveBeenCalledWith('msg-50');
-		expect(mockedUpdateMessages.mock.calls[0][0].update).toEqual([
-			...messages,
-			{ _id: 'load-more-msg-50', rid: RID, t: MessageTypeLoad.NEXT_CHUNK, ts: new Date(messages[COUNT - 1].ts.getTime() + 1) }
-		]);
+		expect(mockedUpdateMessages).toHaveBeenCalledWith({
+			rid: RID,
+			update: [
+				...messages,
+				{
+					_id: 'load-more-msg-50',
+					rid: RID,
+					t: MessageTypeLoad.NEXT_CHUNK,
+					msg: 'text-50',
+					ts: new Date(messages[COUNT - 1].ts.getTime() + 1)
+				}
+			],
+			loaderItem: LOADER_ITEM
+		});
 	});
 
 	it('stores a newest-first response oldest-first', async () => {

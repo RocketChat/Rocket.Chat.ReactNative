@@ -1,4 +1,3 @@
-import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import { roomHistoryUiLoaderPop, roomHistoryUiLoaderPush } from '~/actions/room';
 import { type IMessage, type TMessageModel } from '~/definitions';
@@ -9,7 +8,7 @@ import { type RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import updateMessages from './updateMessages';
-import { generateLoadMoreId } from './helpers/generateLoadMoreId';
+import { buildLoaderRow } from './helpers/buildLoaderRow';
 import { snapshotServerTimestamps, type TServerTimestamps, updateLastOpen } from './updateLastOpen';
 
 const COUNT = 50;
@@ -88,13 +87,7 @@ async function load(args: {
 			const lastMessage = batch[batch.length - 1];
 
 			if (!args.loaderItem && batchesFetched === 1) {
-				const loadMoreMessage = {
-					_id: generateLoadMoreId(lastMessage._id as string),
-					rid: lastMessage.rid,
-					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toDate(),
-					t: MessageTypeLoad.MORE,
-					msg: lastMessage.msg
-				} as IMessage;
+				const loadMoreMessage = buildLoaderRow(lastMessage, MessageTypeLoad.MORE);
 
 				await updateMessages({
 					rid: roomId,
@@ -132,13 +125,7 @@ export async function loadMessagesForRoom(args: {
 			const lastMessage = messages[messages.length - 1];
 			const lastMessageRecord = await getMessageById(lastMessage._id as string);
 			if (!lastMessageRecord && lastBatchWasFull) {
-				messages.push({
-					_id: generateLoadMoreId(lastMessage._id as string),
-					rid: lastMessage.rid,
-					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toDate(),
-					t: MessageTypeLoad.MORE,
-					msg: lastMessage.msg
-				} as IMessage);
+				messages.push(buildLoaderRow(lastMessage, MessageTypeLoad.MORE));
 			}
 			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
 		}

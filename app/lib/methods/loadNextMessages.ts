@@ -1,13 +1,10 @@
 import orderBy from 'lodash/orderBy';
 
-import dayjs from '../dayjs';
 import log from './helpers/log';
-import { getMessageById } from '../database/services/Message';
-import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import updateMessages from './updateMessages';
-import { type IMessage, type TMessageModel } from '~/definitions';
+import { type TMessageModel } from '~/definitions';
 import { getNextMessages } from '../services/restApi';
-import { generateLoadMoreId } from './helpers/generateLoadMoreId';
+import { withChunkLoaders } from './withChunkLoaders';
 
 const COUNT = 50;
 
@@ -19,21 +16,8 @@ interface ILoadNextMessages {
 
 export async function loadNextMessages(args: ILoadNextMessages): Promise<void> {
 	try {
-		const { messages: fetched, hasMore } = await getNextMessages({ rid: args.rid, after: args.ts, count: COUNT });
-		const messages = orderBy(fetched, 'ts');
-		if (!messages.length) {
-			await updateMessages({ rid: args.rid, update: [], remove: [{ _id: args.loaderItem.id }] });
-			return;
-		}
-		const lastMessage = messages[messages.length - 1];
-		if (hasMore && !(await getMessageById(lastMessage._id))) {
-			messages.push({
-				_id: generateLoadMoreId(lastMessage._id),
-				rid: lastMessage.rid,
-				ts: dayjs(lastMessage.ts).add(1, 'millisecond').toDate(),
-				t: MessageTypeLoad.NEXT_CHUNK
-			} as IMessage);
-		}
+		const { messages: fetched, moreBefore, moreAfter } = await getNextMessages({ rid: args.rid, after: args.ts, count: COUNT });
+		const messages = await withChunkLoaders(orderBy(fetched, 'ts'), { moreBefore, moreAfter });
 		await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
 	} catch (e) {
 		log(e);
