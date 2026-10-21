@@ -101,7 +101,7 @@ jobs:
       contents: read
       pull-requests: write
     needs: [build-android, upload-hold]
-    if: ${{ always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped') }}
+    if: ${{ always() && needs.build-android.result == 'success' && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped') }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
