@@ -1,4 +1,4 @@
-import { call, put, select, take, takeLatest } from 'redux-saga/effects';
+import { call, put, select, spawn, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { CREATE_DISCUSSION, LOGIN } from '../actions/actionsTypes';
@@ -32,7 +32,7 @@ const handleRequest = function* handleRequest({ data }) {
 			} catch {
 				// do nothing
 			}
-			yield call(assignRoomToCategory, sub.rid, data.category);
+			yield spawn(assignRoomToCategory, sub.rid, data.category);
 			yield put(createDiscussionSuccess(sub));
 		} else {
 			logEvent(events.CD_CREATE_F);

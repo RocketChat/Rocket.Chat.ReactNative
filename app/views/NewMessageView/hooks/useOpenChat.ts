@@ -33,7 +33,7 @@ const openChatInCategory = async (chat: TNewMessageChat, categoryId: string, isM
 		if (!rid) {
 			return;
 		}
-		await assignRoomToCategory(rid, categoryId);
+		assignRoomToCategory(rid, categoryId);
 		await goRoom({ item: { rid, name: chat.name, t: SubscriptionType.DIRECT }, isMasterDetail });
 	} catch (error: any) {
 		emitErrorCreateDirectMessage(error?.data);
