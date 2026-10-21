@@ -1,0 +1,48 @@
+name: 'Open Testing iOS'
+description: 'Distributes the TestFlight build to external testers'
+inputs:
+  MATCH_KEYCHAIN_NAME:
+    description: 'Match Keychain Name'
+    required: true
+  MATCH_KEYCHAIN_PASSWORD:
+    description: 'Match Keychain Password'
+    required: true
+  APP_STORE_CONNECT_API_KEY_ID:
+    description: 'App Store Connect API Key ID'
+    required: true
+  APP_STORE_CONNECT_API_KEY_ISSUER_ID:
+    description: 'App Store Connect API Key Issuer ID'
+    required: true
+  APP_STORE_CONNECT_API_KEY_BASE64:
+    description: 'Base64 encoded App Store Connect API Key'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download Info.plist
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      with:
+        name: ios-build-info-plist
+        path: ios/RocketChatRN/
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
+      with:
+        ruby-version: 2.7.7
+        bundler-cache: true
+
+    - name: Decode p8
+      run: |
+        echo ${{ inputs.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
+      shell: bash
+
+    - name: Fastlane Distribute to External Testers
+      working-directory: ios
+      run: bundle exec fastlane ios open_testing
+      env:
+        MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}
+        MATCH_KEYCHAIN_PASSWORD: ${{ inputs.MATCH_KEYCHAIN_PASSWORD }}
+        APP_STORE_CONNECT_API_KEY_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ID }}
+        APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+      shell: bash

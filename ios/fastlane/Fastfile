@@ -69,6 +69,27 @@ platform :ios do
     )
   end
 
+  desc "Distribute the TestFlight build to external testers"
+  lane :open_testing do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
+      key_filepath: 'fastlane/app_store_connect_api_key.p8',
+      in_house: false
+    )
+
+    pilot(
+      api_key: api_key,
+      app_identifier: 'chat.rocket.ios',
+      app_version: get_info_plist_value(path: 'RocketChatRN/Info.plist', key: 'CFBundleShortVersionString'),
+      build_number: get_info_plist_value(path: 'RocketChatRN/Info.plist', key: 'CFBundleVersion'),
+      distribute_only: true,
+      distribute_external: true,
+      notify_external_testers: true,
+      groups: ["External Testers"]
+    )
+  end
+
   desc "Submit the TestFlight build to App Store review"
   lane :production do
     app_identifier = 'chat.rocket.ios'

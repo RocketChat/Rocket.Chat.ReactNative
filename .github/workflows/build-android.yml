@@ -67,6 +67,8 @@ jobs:
       pull-requests: write
     needs: [build-android]
     if: ${{ always() && needs.build-android.result == 'success' }}
+    outputs:
+      BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
@@ -85,7 +87,7 @@ jobs:
     permissions:
       contents: read
     environment: production_android
-    needs: [build-android, upload-android]
+    needs: [upload-android]
     if: ${{ always() && needs.upload-android.result == 'success' }}
     steps:
       - name: Checkout Repository
@@ -96,7 +98,25 @@ jobs:
         with:
           trigger: ${{ inputs.trigger }}
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
-          BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
+          BUILD_VERSION: ${{ needs.upload-android.outputs.BUILD_VERSION }}
+
+  open-testing:
+    name: Open Testing
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: open_testing_android
+    needs: [upload-android]
+    if: ${{ always() && inputs.trigger == 'pr' && needs.upload-android.result == 'success' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Promote to Open Testing
+        uses: ./.github/actions/open-testing-android
+        with:
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          BUILD_VERSION: ${{ needs.upload-android.outputs.BUILD_VERSION }}
 
   upload-internal:
     name: Internal Sharing

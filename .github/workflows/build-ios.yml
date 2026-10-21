@@ -88,6 +88,27 @@ jobs:
           APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  open-testing:
+    name: Open Testing
+    runs-on: macos-26
+    permissions:
+      contents: read
+    environment: open_testing_ios
+    needs: [upload-ios]
+    if: ${{ always() && inputs.trigger == 'pr' && needs.upload-ios.result == 'success' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Distribute to External Testers
+        uses: ./.github/actions/open-testing-ios
+        with:
+          MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+
   production:
     name: Production
     runs-on: macos-26
