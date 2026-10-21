@@ -1,10 +1,11 @@
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect, useLayoutEffect } from 'react';
 
 import i18n from '~/i18n';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import Navigation from '~/lib/navigation/appNavigation';
 import { headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
@@ -26,9 +27,12 @@ export const useCategoryHeader = (header: string, title: string) => {
 
 	useEffect(() => {
 		if (isCustomCategory && categoryName === undefined) {
-			navigation.goBack();
+			if (isMasterDetail) {
+				Navigation.popTo('DrawerNavigator');
+			}
+			navigation.dispatch(StackActions.popTo('RoomsListView'));
 		}
-	}, [navigation, isCustomCategory, categoryName]);
+	}, [navigation, isMasterDetail, isCustomCategory, categoryName]);
 
 	useLayoutEffect(() => {
 		const goToSettings = () => {
