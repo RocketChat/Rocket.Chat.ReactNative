@@ -11,6 +11,7 @@ import { type ISidebarCategory } from '~/definitions';
 import { DisplayMode, SortBy } from '~/lib/constants/constantDisplayMode';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
+import { startCategoryDraft } from '~/views/CreateCategoryView/hooks/useCategoryDraftStore';
 import { useCategoryUnreadToggles } from './hooks/useCategoryUnreadToggles';
 import { useSettingsCategory } from './hooks/useSettingsCategory';
 import { useDeleteCategory } from './hooks/useDeleteCategory';
@@ -41,6 +42,11 @@ const CategorySettings = ({ category, title }: { category: ISidebarCategory; tit
 		navigation.setOptions({ title: headerTitle });
 	}, [navigation, headerTitle]);
 
+	const goToManageRooms = () => {
+		startCategoryDraft(rooms);
+		navigation.navigate('ManageCategoryRoomsView', { categoryId: category._id, initialRoomIds: rooms.map(room => room.rid) });
+	};
+
 	return (
 		<List.Container testID='category-settings-view-list'>
 			{isCustomCategory ? (
@@ -50,7 +56,7 @@ const CategorySettings = ({ category, title }: { category: ISidebarCategory; tit
 						title='Manage_rooms'
 						testID='category-settings-view-manage-rooms'
 						left={() => <List.Icon name='settings' />}
-						onPress={() => navigation.navigate('ManageCategoryRoomsView', { categoryId: category._id, rooms })}
+						onPress={goToManageRooms}
 						showActionIndicator
 					/>
 					<List.Separator />

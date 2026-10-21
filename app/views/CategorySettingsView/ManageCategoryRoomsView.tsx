@@ -9,24 +9,26 @@ import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
 import CategoryRoomList from '~/views/CreateCategoryView/components/CategoryRoomList';
 import { useCategoryRoomCandidates } from '~/views/CreateCategoryView/hooks/useCategoryRoomCandidates';
-import { useRoomSelection } from '~/views/CreateCategoryView/hooks/useRoomSelection';
+import { useCategoryDraftStore } from '~/views/CreateCategoryView/hooks/useCategoryDraftStore';
 import { roomSearchHeaderOptions } from '~/views/CreateCategoryView/utils/roomSearchHeaderOptions';
-import { type ICategoryRoom } from '~/views/CreateCategoryView/types';
+import { isRoomIn } from '~/views/CreateCategoryView/utils/roomSelection';
 import { useCustomCategory } from './hooks/useCustomCategory';
 
 export type ManageCategoryRoomsViewParams = {
 	categoryId: string;
-	rooms: ICategoryRoom[];
+	initialRoomIds: string[];
 };
 
 const ManageCategoryRoomsView = ({ route }: StaticScreenProps<ManageCategoryRoomsViewParams>) => {
-	const { categoryId, rooms: initialRooms } = route.params;
+	const { categoryId, initialRoomIds } = route.params;
 	const { colors } = useTheme();
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'ManageCategoryRoomsView'>>();
 	const category = useCustomCategory(categoryId);
 	const [searchText, setSearchText] = useState('');
 	const rooms = useCategoryRoomCandidates(searchText);
-	const { selectedRooms, isSelected, toggleRoom } = useRoomSelection(initialRooms);
+	const selectedRooms = useCategoryDraftStore(state => state.rooms);
+	const toggleRoom = useCategoryDraftStore(state => state.toggleRoom);
+	const isSelected = (rid: string) => isRoomIn(selectedRooms, rid);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -35,17 +37,12 @@ const ManageCategoryRoomsView = ({ route }: StaticScreenProps<ManageCategoryRoom
 				{
 					label: I18n.t('Next'),
 					testID: 'manage-category-rooms-view-next',
-					onPress: () =>
-						navigation.navigate('ConfirmCategoryRoomsView', {
-							categoryId,
-							initialRoomIds: initialRooms.map(room => room.rid),
-							rooms: selectedRooms
-						})
+					onPress: () => navigation.navigate('ConfirmCategoryRoomsView', { categoryId, initialRoomIds })
 				}
 			]),
 			...roomSearchHeaderOptions(setSearchText)
 		});
-	}, [navigation, categoryId, initialRooms, selectedRooms]);
+	}, [navigation, categoryId, initialRoomIds]);
 
 	return (
 		<SafeAreaView testID='manage-category-rooms-view' style={{ backgroundColor: colors.surfaceTint }}>

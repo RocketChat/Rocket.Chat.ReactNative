@@ -10,8 +10,7 @@ import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import RoomChips from '~/views/CreateCategoryView/components/RoomChips';
 import TextWithBoldName from '~/views/CreateCategoryView/components/TextWithBoldName';
-import { useRoomSelection } from '~/views/CreateCategoryView/hooks/useRoomSelection';
-import { type ICategoryRoom } from '~/views/CreateCategoryView/types';
+import { useCategoryDraftStore } from '~/views/CreateCategoryView/hooks/useCategoryDraftStore';
 import { useCustomCategory } from './hooks/useCustomCategory';
 import { useSaveCategoryRooms } from './hooks/useSaveCategoryRooms';
 
@@ -31,15 +30,15 @@ const styles = StyleSheet.create({
 export type ConfirmCategoryRoomsViewParams = {
 	categoryId: string;
 	initialRoomIds: string[];
-	rooms: ICategoryRoom[];
 };
 
 const ConfirmCategoryRoomsView = ({ route }: StaticScreenProps<ConfirmCategoryRoomsViewParams>) => {
-	const { categoryId, initialRoomIds, rooms } = route.params;
+	const { categoryId, initialRoomIds } = route.params;
 	const { colors } = useTheme();
 	const navigation = useNavigation();
 	const category = useCustomCategory(categoryId);
-	const { selectedRooms, toggleRoom } = useRoomSelection(rooms);
+	const selectedRooms = useCategoryDraftStore(state => state.rooms);
+	const toggleRoom = useCategoryDraftStore(state => state.toggleRoom);
 	const { saveRooms, saving } = useSaveCategoryRooms(categoryId, initialRoomIds);
 
 	useLayoutEffect(() => {
