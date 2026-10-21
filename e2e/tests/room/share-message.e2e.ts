@@ -1,7 +1,7 @@
 import { afterEach, test } from '@e2e-dev/mobile';
 
 import { openRoom } from '~e2e/support/appduct';
-import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { createDM, createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
 	loginWithDeepLink,
 	sendMessage,
@@ -33,6 +33,7 @@ test('forwards a message to a direct message', { tags: ['test-3'], timeout: 300_
 	const user = await createUser();
 	const otherUser = await createUser();
 	const room = await createRandomRoom(user);
+	await createDM(user, otherUser.username);
 
 	await loginWithDeepLink(fixtures, user);
 	await openRoom(fixtures, otherUser.username);

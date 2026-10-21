@@ -2,7 +2,7 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { openRoom } from '~e2e/support/appduct';
-import { createRandomRoom, createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
+import { createDM, createRandomRoom, createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
 import {
 	hideKeyboard,
 	loginWithDeepLink,
@@ -52,6 +52,7 @@ test('blocks, ignores and reports a user', { tags: ['test-4'] }, async fixtures 
 	const user = await createUser();
 	const otherUser = await createUser();
 	const room = await createRandomRoom(user);
+	await createDM(user, otherUser.username);
 	await loginWithDeepLink(fixtures, user);
 
 	await openRoom(fixtures, otherUser.username);
