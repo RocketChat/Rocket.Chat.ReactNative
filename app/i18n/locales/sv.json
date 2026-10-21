@@ -538,6 +538,7 @@
   "missing_room_e2ee_title": "Kontrollera igen om några ögonblick",
   "Moderator": "Moderator",
   "More": "Mer",
+  "More_notifications_need_attention": "Mer, aviseringar behöver uppmärksamhet",
   "move": "flytta",
   "Move_Channel_Paragraph": "Om du flyttar in en kanal i ett team läggs kanalen till i teamets kontext. Alla kanalmedlemmar som inte är medlemmar i respektive team har dock fortfarande åtkomst till kanalen, men läggs inte till som teammedlemmar. \n\nAll kanalhantering görs fortfarande av kanalens ägare.\n\nTeammedlemmar och teamägare som inte är medlemmar i kanalen får inte ha åtkomst till kanalens innehåll. \n\nObs! Teamets ägare kan ta bort medlemmar från kanalen.",
   "Move_down": "Flytta ned",

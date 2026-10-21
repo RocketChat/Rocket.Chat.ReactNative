@@ -438,6 +438,7 @@
   "missing_room_e2ee_description": "Odanın şifreleme anahtarları güncellenmelidir, bunun gerçekleşmesi için başka bir oda üyesinin çevrimiçi olması gerekmektedir.",
   "missing_room_e2ee_title": "Birkaç an içinde tekrar kontrol edin",
   "More": "Daha fazla",
+  "More_notifications_need_attention": "Daha fazla, bildirimler ilgi gerektiriyor",
   "Move_down": "Aşağı taşı",
   "Move_to_category": "Kategoriye taşı",
   "Move_up": "Yukarı taşı",

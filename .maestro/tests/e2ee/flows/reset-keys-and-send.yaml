@@ -61,7 +61,7 @@ env:
               text: 'Encrypted'
           commands:
             - tapOn:
-                text: 'More'
+                text: 'More.*'
       - extendedWaitUntil:
           visible:
             text: 'Encrypted'

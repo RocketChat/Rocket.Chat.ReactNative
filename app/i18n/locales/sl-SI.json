@@ -514,6 +514,7 @@
   "missing_room_e2ee_title": "Ponovno preverite čez nekaj trenutkov",
   "Moderator": "Moderator",
   "More": "Več",
+  "More_notifications_need_attention": "Več, obvestila zahtevajo pozornost",
   "move": "premaknite se",
   "Move_Channel_Paragraph": "Premik kanala znotraj ekipe pomeni, da bo ta kanal dodan v kontekstu ekipe, vendar bodo vsi člani kanala, ki niso člani ustrezne ekipe, še vedno imeli dostop do tega kanala, vendar ne bodo dodani kot člani ekipe.\n\nZ vsemi kanali bodo še vedno upravljali lastniki teh kanalov.\n\nČlani ekipe in celo lastniki ekipe, če ni član tega kanala, ne morejo imeti dostopa do vsebine kanala.\n\nPazite, da bo lastnik ekipe lahko odstranil člane s kanala.",
   "Move_down": "Premakni navzdol",

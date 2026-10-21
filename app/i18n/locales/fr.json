@@ -502,6 +502,7 @@
   "missing_room_e2ee_title": "Revenez dans quelques instants",
   "Moderator": "Modérateur",
   "More": "Plus",
+  "More_notifications_need_attention": "Plus, les notifications nécessitent votre attention",
   "move": "déplacer",
   "Move_Channel_Paragraph": "Le déplacement d'un canal dans une équipe signifie que ce canal sera ajouté dans le contexte d'équipe. Cependant, tous les membres du canal, qui ne sont pas membres de l'équipe respective, auront toujours accès à ce canal, mais ne seront pas ajoutés comme membres de l'équipe.\n\nLa gestion de tout le canal sera toujours assurée par les propriétaires de ce canal.\n\nLes membres de l'équipe et même les propriétaires de l'équipe, s'ils ne sont pas membres de ce canal, ne peuvent pas avoir accès au contenu du canal.\n\nVeuillez noter que le propriétaire de l'équipe pourra supprimer des membres du canal.",
   "Move_down": "Déplacer vers le bas",

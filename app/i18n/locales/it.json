@@ -453,6 +453,7 @@
   "missing_room_e2ee_description": "Le chiavi di crittografia per la stanza devono essere aggiornate, un altro membro della stanza deve essere online affinché ciò avvenga.",
   "missing_room_e2ee_title": "Ricontrolla tra qualche istante",
   "More": "Di più",
+  "More_notifications_need_attention": "Altro, le notifiche richiedono attenzione",
   "move": "spostare",
   "Move_down": "Sposta giù",
   "Move_to_category": "Sposta nella categoria",

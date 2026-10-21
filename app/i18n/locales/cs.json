@@ -601,6 +601,7 @@
   "Missed_call": "Zmeškaný hovor",
   "Moderator": "Moderátor",
   "More": "Více",
+  "More_notifications_need_attention": "Více, oznámení vyžadují pozornost",
   "move": "hýbat se",
   "Move_Channel_Paragraph": "Přesunutí kanálu do týmu znamená, že tento kanál bude přidán do kontextu týmu, ale všichni členové kanálu, kteří nejsou členy příslušného týmu, budou mít stále přístup k tomuto kanálu, ale nebudou přidáni jako členové týmu. \n\nVeškerou správu kanálu budou nadále provádět vlastníci tohoto kanálu.\n\nČlenové týmu a dokonce i vlastníci týmu, pokud nejsou členy tohoto kanálu, nemají přístup k obsahu kanálu že vlastník týmu bude moci odebrat členy z kanálu.",
   "Move_down": "Posunout dolů",

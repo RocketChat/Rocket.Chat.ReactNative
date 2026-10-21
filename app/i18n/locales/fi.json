@@ -539,6 +539,7 @@
   "missing_room_e2ee_title": "Tarkista uudelleen muutaman hetken kuluttua",
   "Moderator": "Moderaattori",
   "More": "Lisää",
+  "More_notifications_need_attention": "Lisää, ilmoitukset vaativat huomiota",
   "move": "siirrä",
   "Move_Channel_Paragraph": "Kanavan siirtäminen tiimiin tarkoittaa, että tämä kanava lisätään tiimin kontekstiin. Kaikki kanavan jäsenet, jotka eivät ole vastaavan tiimin jäseniä, pääsevät silti edelleen tälle kanavalle, mutta heitä ei lisätä tiimin jäseniksi. \n\nKanavan omistajat hoitavat edelleen kaiken kanavan hallinnan.\n\nTiimin jäsenillä ja jopa tiimin omistajilla, jotka eivät ole tämän kanavan jäseniä, ei ole pääsyä kanavan sisältöön. \n\nHuomioi, että tiimin omistaja voi poistaa jäseniä kanavalta.",
   "Move_down": "Siirrä alas",

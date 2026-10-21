@@ -568,6 +568,7 @@
   "missing_room_e2ee_title": "Nézzen vissza néhány perc múlva",
   "Moderator": "Moderátor",
   "More": "Több",
+  "More_notifications_need_attention": "Több, az értesítések figyelmet igényelnek",
   "move": "mozgatás",
   "Move_Channel_Paragraph": "Egy csatorna áthelyezése egy csapaton belül azt jelenti, hogy ez a csatorna hozzá lesz adva a csapat kontextusához, azonban a csatorna minden olyan tagja, aki nem tagja az adott csapatnak, továbbra is hozzáfér a csatornához, de nem lesz hozzáadva a csapat tagjaként.\n\nA csatorna minden irányítását továbbra is a csatorna tulajdonosai végzik.\n\nA csapat tagjai és még a csapat tulajdonosai sem férhetnek hozzá a csatorna tartalmához, ha nem tagjai ennek a csatornának.\n\nKérjük, vegye figyelembe, hogy a csapat tulajdonosa képes lesz eltávolítani a tagokat a csatornáról.",
   "Move_down": "Mozgatás lefelé",

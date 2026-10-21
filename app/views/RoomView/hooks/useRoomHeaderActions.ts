@@ -190,7 +190,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 	];
 
 	const moreAction: IHeaderAction = {
-		label: i18n.t('More'),
+		label: i18n.t(showNotifications ? 'More_notifications_need_attention' : 'More'),
 		icon: 'kebab',
 		testID: 'room-view-header-kebab',
 		badge: showNotifications ? { color: colors.buttonBackgroundDangerDefault } : undefined,

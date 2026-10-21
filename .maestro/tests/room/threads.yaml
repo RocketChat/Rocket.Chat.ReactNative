@@ -43,7 +43,7 @@ tags:
     commands:
       - extendedWaitUntil:
           visible:
-            text: 'More'
+            text: 'More.*'
           timeout: 60000
 
 # should have threads button

@@ -90,7 +90,7 @@ tags:
       platform: iOS
     commands:
       - tapOn:
-          text: 'More'
+          text: 'More.*'
       - tapOn:
           text: 'Search messages'
 - runFlow:
@@ -275,7 +275,7 @@ tags:
       platform: iOS
     commands:
       - tapOn:
-          text: 'More'
+          text: 'More.*'
       - tapOn:
           text: 'Search messages'
 - runFlow:

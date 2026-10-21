@@ -36,7 +36,7 @@ tags:
       platform: iOS
     commands:
       - assertVisible:
-          text: 'More'
+          text: 'More.*'
 
 # should have join
 - assertVisible:

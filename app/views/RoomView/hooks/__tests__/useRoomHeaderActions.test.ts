@@ -80,7 +80,7 @@ const labelsOf = (actions: { label: string }[]) => actions.map(action => action.
 
 const moreMenuOf = (actions: IHeaderAction[]) => {
 	const more = actions[actions.length - 1];
-	expect(more.label).toBe('More');
+	expect(more.testID).toBe('room-view-header-kebab');
 	expect(more.icon).toBe('kebab');
 	return more.menu ?? [];
 };
@@ -206,6 +206,11 @@ describe('useRoomHeaderActions', () => {
 			mockButtonsData = { ...mockButtonsData, issuesWithNotifications: false, disableNotifications: true };
 			expect(actionByTestID(renderRoomActions(), 'room-view-header-kebab')?.badge).toEqual({ color: '#f00' });
 			expect(menuItemByTestID('room-view-push-troubleshoot')?.destructive).toBe(false);
+		});
+
+		it('announces the badge in the more menu label', () => {
+			mockButtonsData = { ...mockButtonsData, issuesWithNotifications: true };
+			expect(actionByTestID(renderRoomActions(), 'room-view-header-kebab')?.label).toBe('More, notifications need attention');
 		});
 
 		it('leaves the more menu without a badge when troubleshooting is not listed', () => {

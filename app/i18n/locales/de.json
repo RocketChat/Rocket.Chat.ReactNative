@@ -558,6 +558,7 @@
   "missing_room_e2ee_title": "Überprüfen Sie in ein paar Momenten zurück",
   "Moderator": "Moderator",
   "More": "Mehr",
+  "More_notifications_need_attention": "Mehr, Benachrichtigungen erfordern Aufmerksamkeit",
   "move": "verschieben",
   "Move_Channel_Paragraph": "Das Verschieben eines Channels innerhalb eines Teams bedeutet, dass dieser Channel im Kontext des Teams hinzugefügt wird, jedoch haben alle Mitglieder des Channels, die nicht Mitglied des jeweiligen Teams sind, weiterhin Zugriff auf diesen Channel, werden aber nicht als Teammitglieder hinzugefügt \n\nDie gesamte Verwaltung des Channels wird weiterhin von den Eigentümern dieses Channels vorgenommen.\n\nTeammitglieder und sogar Teameigentümer, die nicht Mitglied dieses Channels  sind, haben keinen Zugriff auf den Inhalt des Channels. \n\nBitte beachten Sie, dass der Besitzer des Teams in der Lage ist, Mitglieder aus dem Channel zu entfernen.",
   "Move_down": "Nach unten verschieben",

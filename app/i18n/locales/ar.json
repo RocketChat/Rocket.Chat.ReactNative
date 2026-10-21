@@ -422,6 +422,7 @@
   "missing_room_e2ee_description": "يجب تحديث مفاتيح التشفير للغرفة، ويجب أن يكون عضو آخر في الغرفة متصلاً بالإنترنت حتى يحدث ذلك.",
   "missing_room_e2ee_title": "تحقق مرة أخرى بعد بضع لحظات",
   "More": "أكثر",
+  "More_notifications_need_attention": "المزيد، الإشعارات تحتاج إلى انتباه",
   "move": "حرك",
   "Move_down": "نقل لأسفل",
   "Move_to_category": "نقل إلى فئة",

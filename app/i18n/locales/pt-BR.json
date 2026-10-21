@@ -611,6 +611,7 @@
   "missing_room_e2ee_title": "Verifique novamente em alguns momentos",
   "Moderator": "Moderador",
   "More": "Mais",
+  "More_notifications_need_attention": "Mais, as notificações precisam de atenção",
   "move": "mover",
   "Move_Channel_Paragraph": "Mover um canal dentro de um time significa que este canal será adicionado no contexto do time, no entanto, todos os membros do canal, que não são membros do respectivo time, ainda terão acesso a este canal, mas não serão adicionados como membros do time. \n\nA gestão de todos os canais continuará a ser feita pelos proprietários deste canal.\n\nOs membros do time e até mesmo os proprietários do time, se não forem membros deste canal, não podem ter acesso ao conteúdo do canal.\n\nPor favor, note que o dono do time poderá remover membros do canal.",
   "Move_down": "Mover para baixo",

@@ -591,6 +591,7 @@
   "missing_room_e2ee_description": "Krypteringsnøklene for rommet må oppdateres, et annet rommedlem må være online for at dette skal skje.",
   "missing_room_e2ee_title": "Kom tilbake om noen få øyeblikk",
   "Moderator": "Moderator",
+  "More_notifications_need_attention": "Mer, varsler trenger oppmerksomhet",
   "move": "flytte",
   "Move_Channel_Paragraph": "Flytting av en kanal inne i et arbeidsområde betyr at denne kanalen legges til i arbeidsområdes kontekst, men alle kanalens medlemmer, som ikke er medlemmer av det respektive arbeidsområde, vil fortsatt ha tilgang til denne kanalen, men vil ikke bli lagt til som arbeidsområdemedlemmer.\n\nAll kanaladministrasjon vil fortsatt bli utført av eierne av denne kanalen.\n\nArbeidsområde medlemmer og til og med arbeidsområdets eiere, hvis de ikke er medlem av denne kanalen, kan ikke ha tilgang til kanalens innhold.\n\nVær oppmerksom på at arbeidsområdes eier vil kunne fjerne medlemmer fra kanalen.",
   "Move_down": "Flytt ned",

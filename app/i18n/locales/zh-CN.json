@@ -422,6 +422,7 @@
   "missing_room_e2ee_description": "房间的加密密钥需要更新，另一位房间成员需要在线才能进行此操作。",
   "missing_room_e2ee_title": "过几分钟再回来检查",
   "More": "更多",
+  "More_notifications_need_attention": "更多，通知需要处理",
   "Move_down": "下移",
   "Move_to_category": "移动到分类",
   "Move_up": "上移",

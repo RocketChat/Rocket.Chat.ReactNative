@@ -48,7 +48,7 @@ tags:
       - assertVisible:
           text: 'Threads'
       - tapOn:
-          text: 'More'
+          text: 'More.*'
       - extendedWaitUntil:
           visible:
             text: 'Search messages'
@@ -186,7 +186,7 @@ tags:
       platform: iOS
     commands:
       - assertVisible:
-          text: 'More'
+          text: 'More.*'
 - runFlow: '../../helpers/open-room-actions.yaml'
 - assertVisible:
     id: room-actions-teams
@@ -235,7 +235,7 @@ tags:
       - assertVisible:
           text: 'Threads'
       - tapOn:
-          text: 'More'
+          text: 'More.*'
       - extendedWaitUntil:
           visible:
             text: 'Search messages'
@@ -264,7 +264,7 @@ tags:
       platform: iOS
     commands:
       - assertVisible:
-          text: 'More'
+          text: 'More.*'
 - runFlow: '../../helpers/open-room-actions.yaml'
 - assertVisible:
     id: room-actions-teams
