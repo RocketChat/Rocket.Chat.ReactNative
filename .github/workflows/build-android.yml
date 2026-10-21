@@ -59,26 +59,14 @@ jobs:
           BUGSNAG_KEY_OFFICIAL: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
           BUILD_VERSION: ${{ steps.version.outputs.BUILD_VERSION }}
 
-  open-testing-hold:
-    name: Open Testing Hold
-    runs-on: ubuntu-latest
-    permissions: {}
-    if: ${{ inputs.trigger == 'pr' }}
-    environment: open_testing_android
-    needs: [build-android]
-    outputs:
-      BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
-    steps:
-      - run: echo "Waiting for manual approval..."
-
-  open-testing:
-    name: Open Testing
+  upload-android:
+    name: Upload
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
-    needs: [build-android, open-testing-hold]
-    if: ${{ always() && (needs.open-testing-hold.result == 'success' || needs.open-testing-hold.result == 'skipped') }}
+    needs: [build-android]
+    if: ${{ always() && needs.build-android.result == 'success' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
@@ -97,8 +85,8 @@ jobs:
     permissions:
       contents: read
     environment: production_android
-    needs: [build-android, open-testing]
-    if: ${{ always() && needs.open-testing.result == 'success' }}
+    needs: [build-android, upload-android]
+    if: ${{ always() && needs.upload-android.result == 'success' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1

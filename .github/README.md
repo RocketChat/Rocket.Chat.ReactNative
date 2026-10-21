@@ -16,8 +16,7 @@ Maps which event triggers which workflow.
 | Environment | Workflow / job | Fires when |
 |---|---|---|
 | `android_build` | [build-android.yml](workflows/build-android.yml) — `build-hold` | Called with `trigger == pr` (i.e. from `build-pr.yml`) |
-| `open_testing_android` | [build-android.yml](workflows/build-android.yml) — `open-testing-hold` | Called with `trigger == pr`, after the Android build completes |
-| `production_android` | [build-android.yml](workflows/build-android.yml) — `production` | Every call (`pr` and `develop`), after `open-testing` uploads the build. Approving promotes it to the Play production track (full rollout); Play then reviews it. |
+| `production_android` | [build-android.yml](workflows/build-android.yml) — `production` | Every call (`pr` and `develop`), after `upload-android` uploads the build (`internal` track on PRs, `beta` on develop). Approving promotes it to the Play production track (full rollout); Play then reviews it. |
 | `ios_build` | [build-ios.yml](workflows/build-ios.yml) — `build-hold` | Called with `trigger == pr` (i.e. from `build-pr.yml`) |
 | `production_ios` | [build-ios.yml](workflows/build-ios.yml) — `production` | Every call (`pr` and `develop`), after `upload-ios` sends the build to TestFlight. Approving submits it to App Store review (released automatically on approval). |
 | `approve_e2e_testing` | [build-pr.yml](workflows/build-pr.yml) — `e2e-hold` | A `pull_request` run whose diff impacts at least one Maestro flow (`e2e-shards` sets `should_run == true`). A confident-zero diff skips the whole e2e stage, so no approval fires. |
