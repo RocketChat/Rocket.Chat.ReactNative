@@ -40,20 +40,49 @@ it('restores the previous categories when the save fails', async () => {
 	mockSaveSidebarCategories.mockRejectedValueOnce(new Error('offline'));
 	const { save, storedCategories } = renderSave();
 
-	await act(() => expect(save(renamed, original)).rejects.toThrow('offline'));
+	await act(() => expect(save(renamed)).rejects.toThrow('offline'));
 
 	expect(storedCategories()).toBe(original);
 });
 
-it('keeps a newer update quietly when an older save fails after it', async () => {
+it('keeps a newer update when an older save fails after it, and still reports the failure', async () => {
 	const firstSave = deferredRejection();
 	mockSaveSidebarCategories.mockReturnValueOnce(firstSave.promise as any).mockResolvedValueOnce(undefined as any);
 	const { save, storedCategories } = renderSave();
 
-	const first = save(renamed, original);
-	await act(() => save(renamedWithUnreads, renamed));
+	const first = save(renamed);
+	await act(() => save(renamedWithUnreads));
 	firstSave.reject(new Error('offline'));
-	await act(() => expect(first).resolves.toBeUndefined());
+	await act(() => expect(first).rejects.toThrow('offline'));
 
 	expect(storedCategories()).toBe(renamedWithUnreads);
+});
+
+it('restores the last accepted categories when two overlapping saves both fail', async () => {
+	const firstSave = deferredRejection();
+	const secondSave = deferredRejection();
+	mockSaveSidebarCategories.mockReturnValueOnce(firstSave.promise as any).mockReturnValueOnce(secondSave.promise as any);
+	const { save, storedCategories } = renderSave();
+
+	const first = save(renamed);
+	const second = save(renamedWithUnreads);
+	firstSave.reject(new Error('offline'));
+	await act(() => expect(first).rejects.toThrow('offline'));
+	secondSave.reject(new Error('offline'));
+	await act(() => expect(second).rejects.toThrow('offline'));
+
+	expect(storedCategories()).toBe(original);
+});
+
+it('restores the newest accepted categories when a later save fails', async () => {
+	const secondSave = deferredRejection();
+	mockSaveSidebarCategories.mockResolvedValueOnce(undefined as any).mockReturnValueOnce(secondSave.promise as any);
+	const { save, storedCategories } = renderSave();
+
+	await act(() => save(renamed));
+	const second = save(renamedWithUnreads);
+	secondSave.reject(new Error('offline'));
+	await act(() => expect(second).rejects.toThrow('offline'));
+
+	expect(storedCategories()).toBe(renamed);
 });

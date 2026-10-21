@@ -5,21 +5,33 @@ import { type IApplicationState, type ISidebarCategory } from '~/definitions';
 import { saveSidebarCategories } from '~/lib/services/restApi';
 import { getUserSelector } from '~/selectors/login';
 
+let pendingSaves = 0;
+let acceptedCategories: ISidebarCategory[] | undefined;
+
 export const useSaveSidebarCategories = () => {
 	const dispatch = useDispatch();
 	const store = useStore<IApplicationState>();
+	const currentCategories = () => getUserSelector(store.getState()).sidebarCategories;
 
-	return async (sidebarCategories: ISidebarCategory[], previousCategories: ISidebarCategory[]) => {
+	return async (sidebarCategories: ISidebarCategory[], { ignoreSupersededFailure = false } = {}) => {
+		if (pendingSaves === 0) {
+			acceptedCategories = currentCategories();
+		}
+		pendingSaves += 1;
 		dispatch(setUser({ sidebarCategories }));
 		try {
 			await saveSidebarCategories(sidebarCategories);
+			acceptedCategories = sidebarCategories;
 		} catch (error) {
-			const isSuperseded = getUserSelector(store.getState()).sidebarCategories !== sidebarCategories;
-			if (isSuperseded) {
+			const isSuperseded = currentCategories() !== sidebarCategories;
+			if (!isSuperseded) {
+				dispatch(setUser({ sidebarCategories: acceptedCategories }));
+			} else if (ignoreSupersededFailure) {
 				return;
 			}
-			dispatch(setUser({ sidebarCategories: previousCategories }));
 			throw error;
+		} finally {
+			pendingSaves -= 1;
 		}
 	};
 };

@@ -34,7 +34,7 @@ export const useCategoryOrder = () => {
 	const saveOrder = async (orderedIds: string[]) => {
 		const reorderedGroups = showsConversations ? [...orderedIds, CONVERSATIONS_GROUP] : orderedIds;
 		const sidebarCategories = toSidebarCategories(storedCategories, reorderGroups(groupOrder, reorderedGroups), sectionsOrder);
-		await saveOptimistically(sidebarCategories, storedCategories).catch(alertCategoryError);
+		await saveOptimistically(sidebarCategories, { ignoreSupersededFailure: true }).catch(alertCategoryError);
 	};
 
 	return { movableGroups, pinnedGroup, saveOrder };

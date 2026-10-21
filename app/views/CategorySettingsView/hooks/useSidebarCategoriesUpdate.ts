@@ -21,7 +21,7 @@ export const useSidebarCategoriesUpdate = (categoryId: string) => {
 		const isStored = storedCategories.some(category => category._id === categoryId);
 		const categories = isStored ? storedCategories : toSidebarCategories(storedCategories, groupOrder, sectionsOrder);
 		const sidebarCategories = patchCategory(categories, categoryId, patch);
-		await saveOptimistically(sidebarCategories, storedCategories);
+		await saveOptimistically(sidebarCategories);
 	};
 
 	const deleteCategory = async (roomIds: string[]) => {
