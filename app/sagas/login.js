@@ -39,6 +39,7 @@ import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway 
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import { useAppsStore } from '../lib/apps/appsStore';
+import { resendFailedMessages } from './resendFailedMessages';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
@@ -332,6 +333,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		const server = yield select(getServer);
 		yield put(roomsRequest());
 		yield put(encryptionInit());
+		yield spawn(resendFailedMessages);
 		// VoIP must spawn before the awaited fetches so it survives the 2s cancel race in root().
 		// On warm relaunch, redux is already populated by selectServer; on cold login, it re-checks
 		// when PERMISSIONS.SET / ENTERPRISE_MODULES.SET land.

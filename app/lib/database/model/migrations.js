@@ -365,6 +365,15 @@ export default schemaMigrations({
 				}),
 				unsafeExecuteSql(`INSERT OR REPLACE INTO local_storage (key, value) VALUES ('${FULL_ROOMS_SYNC_KEY}', 'true');`)
 			]
+		},
+		{
+			toVersion: 31,
+			steps: [
+				addColumns({
+					table: 'messages',
+					columns: [{ name: 'retry_on_reconnect', type: 'boolean', isOptional: true }]
+				})
+			]
 		}
 	]
 });

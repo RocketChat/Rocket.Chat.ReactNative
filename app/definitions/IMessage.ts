@@ -164,6 +164,7 @@ export interface IMessage extends IMessageFromServer {
 	avatar?: string;
 	emoji?: string;
 	status?: number;
+	retryOnReconnect?: boolean;
 	pinned?: boolean;
 	editedBy?: IEditedBy;
 	reactions?: IReaction[];

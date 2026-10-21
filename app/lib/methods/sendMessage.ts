@@ -2,16 +2,28 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { type Model } from '@nozbe/watermelondb';
 
 import database from '../database';
+import type { TAppDatabase } from '../database/interfaces';
 import log from './helpers/log';
 import { random } from './helpers';
 import { closeUnclosedCodeBlock } from './helpers/closeUnclosedCodeBlock';
+import { isTransientSendError } from './helpers/isTransientSendError';
 import { Encryption } from '../encryption';
 import type { E2EType, IMessage, IUser, MessageType, TMessageModel } from '~/definitions';
 import sdk from '../services/sdk';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import { messagesStatus } from '../constants/messagesStatus';
 
-const changeMessageStatus = async (id: string, status: number, tmid?: string, message?: IMessage) => {
+interface IMessageStatusChanges {
+	message?: IMessage;
+	retryOnReconnect?: boolean;
+}
+
+const changeMessageStatus = async (
+	id: string,
+	status: number,
+	tmid?: string,
+	{ message, retryOnReconnect }: IMessageStatusChanges = {}
+) => {
 	const db = database.active;
 	const msgCollection = db.get('messages');
 	const threadMessagesCollection = db.get('thread_messages');
@@ -20,9 +32,13 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, me
 		await db.write(async () => {
 			const successBatch: Model[] = [];
 			const messageRecord = await msgCollection.find(id);
+			if (status === messagesStatus.ERROR && messageRecord.status === messagesStatus.SENT) {
+				return;
+			}
 			successBatch.push(
 				messageRecord.prepareUpdate(m => {
 					m.status = status;
+					m.retryOnReconnect = retryOnReconnect;
 					if (message) {
 						m.mentions = message.mentions;
 						m.channels = message.channels;
@@ -52,38 +68,67 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, me
 
 async function sendMessageCall(message: any) {
 	const { _id, tmid } = message;
+	let retryOnReconnect = false;
 	try {
 		// RC 0.60.0
 		// @ts-ignore
 		const result = await sdk.post('chat.sendMessage', { message });
 		if (result.success) {
 			// @ts-ignore
-			return changeMessageStatus(_id, messagesStatus.SENT, tmid, result.message);
+			return changeMessageStatus(_id, messagesStatus.SENT, tmid, { message: result.message });
 		}
-	} catch {
-		// do nothing
+	} catch (e) {
+		retryOnReconnect = isTransientSendError(e);
 	}
-	return changeMessageStatus(_id, messagesStatus.ERROR, tmid);
+	return changeMessageStatus(_id, messagesStatus.ERROR, tmid, { retryOnReconnect });
 }
+
+const putBackInError = (db: TAppDatabase, message: TMessageModel) =>
+	db.write(async () => {
+		if (message.status !== messagesStatus.TEMP) {
+			return;
+		}
+		await message.update(m => {
+			m.status = messagesStatus.ERROR;
+			m.retryOnReconnect = true;
+		});
+	});
 
 export async function resendMessage(message: TMessageModel, tmid?: string) {
 	const db = database.active;
+	let claimed = false;
 	try {
-		await db.write(async () => {
+		claimed = await db.write(async () => {
+			if (message.status !== messagesStatus.ERROR) {
+				return false;
+			}
 			await message.update(m => {
 				m.status = messagesStatus.TEMP;
 			});
+			return true;
 		});
+		if (!claimed) {
+			return;
+		}
 		const m = await Encryption.encryptMessage({
 			_id: message.id,
 			rid: message.subscription ? message.subscription.id : '',
 			msg: message.msg,
+			tshow: message.tshow,
 			...(tmid && { tmid })
 		} as IMessage);
+
+		if (!m || database.active !== db) {
+			await putBackInError(db, message);
+			return;
+		}
 
 		await sendMessageCall(m);
 	} catch (e) {
 		log(e);
+		if (claimed) {
+			await putBackInError(db, message).catch(log);
+		}
 	}
 }
 
