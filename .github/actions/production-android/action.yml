@@ -10,7 +10,6 @@ inputs:
   trigger:
     description: 'Trigger for build'
     required: true
-    default: pr
 
 runs:
   using: "composite"

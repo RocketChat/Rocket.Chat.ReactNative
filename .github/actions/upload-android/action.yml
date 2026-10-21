@@ -61,13 +61,9 @@ runs:
 
     - name: Fastlane Play Store Upload
       working-directory: android
-      run: |
-        if [[ ${{ inputs.trigger }} == "pr" ]]; then
-          bundle exec fastlane android beta
-        fi
-        if [[ ${{ inputs.trigger }} == "develop" ]]; then
-          bundle exec fastlane android open_testing
-        fi
+      run: bundle exec fastlane android upload
+      env:
+        TRIGGER: ${{ inputs.trigger }}
       shell: bash
 
     - name: Leave a comment on PR

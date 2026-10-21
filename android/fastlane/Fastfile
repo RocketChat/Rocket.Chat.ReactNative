@@ -16,6 +16,8 @@
 default_platform(:android)
 
 platform :android do
+  TRACK_BY_TRIGGER = { 'pr' => 'internal', 'develop' => 'beta' }.freeze
+
   def with_retries(times: 3, sleep_time: 10)
     tries = 0
     begin
@@ -32,11 +34,11 @@ platform :android do
     end
   end
 
-  desc "Upload App to Play Store Internal"
-  lane :beta do
+  desc "Upload App to the Play Store track for the trigger"
+  lane :upload do
     upload_to_play_store(
       package_name: 'chat.rocket.android',
-      track: 'internal',
+      track: TRACK_BY_TRIGGER.fetch(ENV['TRIGGER']),
       aab: 'app/build/outputs/bundle/release/app-release.aab',
       skip_upload_metadata: true,
       skip_upload_changelogs: false,
@@ -53,23 +55,9 @@ platform :android do
     )
   end
 
-  desc "Upload App to Play Store Open Testing"
-  lane :open_testing do
-    upload_to_play_store(
-      package_name: 'chat.rocket.android',
-      track: 'beta',
-      aab: 'app/build/outputs/bundle/release/app-release.aab',
-      skip_upload_metadata: true,
-      skip_upload_changelogs: false,
-      skip_upload_images: true,
-      skip_upload_screenshots: true
-    )
-  end
-
   desc "Promote the uploaded build to Production"
   lane :production do
-    source_track = { 'pr' => 'internal', 'develop' => 'beta' }.fetch(ENV['TRIGGER'])
-    version_code = ENV['BUILD_VERSION'].to_i
+    version_code = Integer(ENV.fetch('BUILD_VERSION'))
     metadata_path = File.join(__dir__, 'metadata/android')
     changelogs_path = File.join(metadata_path, 'en-US/changelogs')
 
@@ -78,7 +66,7 @@ platform :android do
 
     upload_to_play_store(
       package_name: 'chat.rocket.android',
-      track: source_track,
+      track: TRACK_BY_TRIGGER.fetch(ENV['TRIGGER']),
       track_promote_to: 'production',
       version_code: version_code,
       metadata_path: metadata_path,
