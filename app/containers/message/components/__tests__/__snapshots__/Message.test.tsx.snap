@@ -23097,27 +23097,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 14,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "left",
-            },
-            {
-              "color": "#D40C26",
-            },
-          ]
-        }
-      >
-        unread
-      </Text>
       <View
         style={
           [
@@ -23128,8 +23107,62 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
             {
               "backgroundColor": "#EC0D2A",
             },
+          ]
+        }
+      />
+      <View
+        style={
+          {
+            "marginHorizontal": 12,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "borderRadius": 16,
+                "paddingHorizontal": 8,
+                "paddingVertical": 2,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            November 10, 2017
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          [
             {
-              "marginHorizontal": 14,
+              "flex": 1,
+              "height": 1,
+            },
+            {
+              "backgroundColor": "#EC0D2A",
             },
           ]
         }
@@ -23140,11 +23173,13 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 14,
+              "fontSize": 12,
               "fontVariant": [
                 "tabular-nums",
               ],
-              "fontWeight": "500",
+              "fontWeight": "700",
+              "lineHeight": 16,
+              "marginLeft": 8,
               "textAlign": "left",
             },
             {
@@ -23153,7 +23188,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           ]
         }
       >
-        November 10, 2017
+        unread
       </Text>
     </View>
     <ExternalKeyboardView
@@ -23621,30 +23656,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 14,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "left",
-            },
-            {
-              "color": "#D40C26",
-            },
-            {
-              "marginRight": 14,
-            },
-          ]
-        }
-      >
-        unread
-      </Text>
       <View
         style={
           [
@@ -23658,6 +23669,29 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           ]
         }
       />
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 16,
+              "marginLeft": 8,
+              "textAlign": "left",
+            },
+            {
+              "color": "#D40C26",
+            },
+          ]
+        }
+      >
+        unread
+      </Text>
     </View>
     <ExternalKeyboardView
       canBeFocused={true}
@@ -25338,27 +25372,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
         }
       }
     >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 14,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "left",
-            },
-            {
-              "color": "#D40C26",
-            },
-          ]
-        }
-      >
-        unread
-      </Text>
       <View
         style={
           [
@@ -25369,8 +25382,62 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
             {
               "backgroundColor": "#EC0D2A",
             },
+          ]
+        }
+      />
+      <View
+        style={
+          {
+            "marginHorizontal": 12,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "borderRadius": 16,
+                "paddingHorizontal": 8,
+                "paddingVertical": 2,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            November 10, 2017
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          [
             {
-              "marginHorizontal": 14,
+              "flex": 1,
+              "height": 1,
+            },
+            {
+              "backgroundColor": "#EC0D2A",
             },
           ]
         }
@@ -25381,11 +25448,13 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 14,
+              "fontSize": 12,
               "fontVariant": [
                 "tabular-nums",
               ],
-              "fontWeight": "500",
+              "fontWeight": "700",
+              "lineHeight": 16,
+              "marginLeft": 8,
               "textAlign": "left",
             },
             {
@@ -25394,7 +25463,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           ]
         }
       >
-        November 10, 2017
+        unread
       </Text>
     </View>
     <ExternalKeyboardView
@@ -25862,30 +25931,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
         }
       }
     >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 14,
-              "fontVariant": [
-                "tabular-nums",
-              ],
-              "fontWeight": "500",
-              "textAlign": "left",
-            },
-            {
-              "color": "#D40C26",
-            },
-            {
-              "marginRight": 14,
-            },
-          ]
-        }
-      >
-        unread
-      </Text>
       <View
         style={
           [
@@ -25899,6 +25944,29 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           ]
         }
       />
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 16,
+              "marginLeft": 8,
+              "textAlign": "left",
+            },
+            {
+              "color": "#D40C26",
+            },
+          ]
+        }
+      >
+        unread
+      </Text>
     </View>
     <ExternalKeyboardView
       canBeFocused={true}
