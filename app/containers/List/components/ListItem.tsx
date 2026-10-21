@@ -24,7 +24,7 @@ import { CustomIcon } from '~/containers/CustomIcon';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { isIOS } from '~/lib/methods/helpers';
 
-// Maestro fail to click on child component when we enable accessibility in parent component on iOS
+// XCUITest fails to tap a child component when its parent is accessible on iOS
 const shouldDisableAccessibility = process.env.RUNNING_E2E_TESTS === 'true' && isIOS;
 
 const styles = StyleSheet.create({
