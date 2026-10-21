@@ -2,6 +2,7 @@ import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import { parseRetryAfter } from '../parseRetryAfter';
 import { parseUploadResponse } from '../parseUploadResponse';
 import { type IFormData } from './definitions';
+import { UploadNetworkError } from './UploadNetworkError';
 
 export class Upload {
 	private xhr: XMLHttpRequest;
@@ -71,7 +72,7 @@ export class Upload {
 			};
 
 			this.xhr.onerror = () => {
-				reject(new Error('Network Error'));
+				reject(new UploadNetworkError());
 			};
 
 			this.xhr.onabort = () => {

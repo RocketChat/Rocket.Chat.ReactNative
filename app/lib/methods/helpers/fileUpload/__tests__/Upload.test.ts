@@ -1,5 +1,6 @@
 import { Upload } from '../Upload';
 import { UploadHttpError } from '../UploadHttpError';
+import { UploadNetworkError } from '../UploadNetworkError';
 
 class MockXHR {
 	static instance: MockXHR;
@@ -105,7 +106,7 @@ describe('Upload', () => {
 		upload.setupRequest('https://open.rocket.chat/api/v1/rooms.media/rid', {});
 		MockXHR.instance.send = jest.fn(() => MockXHR.instance.onerror?.());
 
-		await expect(upload.send()).rejects.toThrow('Network Error');
+		await expect(upload.send()).rejects.toBeInstanceOf(UploadNetworkError);
 	});
 
 	it('rejects with a cancellation once cancelled', async () => {

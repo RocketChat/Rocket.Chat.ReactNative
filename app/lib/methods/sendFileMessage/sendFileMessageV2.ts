@@ -14,6 +14,7 @@ import { uploadWithRetry } from './uploadWithRetry';
 import FileUpload from '../helpers/fileUpload';
 import { type IFileUpload, type IFormData } from '../helpers/fileUpload/definitions';
 import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
+import { UploadNetworkError } from '../helpers/fileUpload/UploadNetworkError';
 import { parseServerMessage } from '../helpers/parseServerMessage';
 import fetch from '../helpers/fetch';
 
@@ -85,6 +86,8 @@ export async function sendFileMessageV2(
 				t: content ? 'e2e' : undefined,
 				content
 			})
+		}).catch(() => {
+			throw new UploadNetworkError();
 		});
 		if (!confirmResponse.ok) {
 			throw new UploadHttpError(confirmResponse.status, { serverMessage: parseServerMessage(await confirmResponse.text()) });

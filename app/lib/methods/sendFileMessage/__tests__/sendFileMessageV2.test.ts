@@ -2,6 +2,7 @@ import { Encryption } from '~/lib/encryption';
 import { sendFileMessageV2 } from '../sendFileMessageV2';
 import FileUpload from '../../helpers/fileUpload';
 import fetch from '../../helpers/fetch';
+import { UploadNetworkError } from '../../helpers/fileUpload/UploadNetworkError';
 import {
 	copyFileToCacheDirectoryIfNeeded,
 	createUploadProgressCallback,
@@ -161,5 +162,18 @@ describe('sendFileMessageV2 - upload outcome', () => {
 		expect(args.upload).toBe(firstAttempt());
 		expect(record.destroyPermanently).not.toHaveBeenCalled();
 		expect(releaseUploadSlot).not.toHaveBeenCalled();
+	});
+
+	it('reports a connection lost while confirming as a network error', async () => {
+		const record = arrange();
+		(uploadWithRetry as jest.Mock).mockImplementation(startAttempt);
+		(fetch as jest.Mock).mockRejectedValue(new TypeError('Network request failed'));
+		jest.spyOn(console, 'error').mockImplementation(() => {});
+
+		await send();
+
+		const [args] = (finalizeFailedUpload as jest.Mock).mock.calls[0];
+		expect(args.error).toBeInstanceOf(UploadNetworkError);
+		expect(record.destroyPermanently).not.toHaveBeenCalled();
 	});
 });
