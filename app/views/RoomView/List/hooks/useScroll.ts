@@ -14,6 +14,7 @@ const MAX_JUMP_GROWTH_RETRIES = 5;
 // VirtualizedList re-fires onScrollToIndexFailed synchronously, so defer each retry one frame to break
 // the recursion.
 const SCROLL_TO_INDEX_RETRY_DELAY = 50;
+const JUMP_RESCROLL_DELAYS = [SCROLL_TO_INDEX_RETRY_DELAY, 300, 1000];
 
 // animated:false snaps straight to the target instead of smooth-scrolling through every row between here
 // and a deep index — the latter reads as the list "hunting" for the message across several visible scrolls.
@@ -60,9 +61,15 @@ export const useScroll = ({
 	const jumpGrowthRetries = useRef(0);
 	// A jump-to-bottom deferred until the released live window emits (set when releasing an Anchored Window).
 	const pendingBottom = useRef(false);
+	const rescrollTimeouts = useRef<ReturnType<typeof setTimeout>[]>([]);
 	// True across an Anchored → Live release: suppresses maintainVisibleContentPosition so the disjoint
 	// data swap can't apply a native offset adjustment that drags the pre-pinned viewport off-content.
 	const [isReleasing, setIsReleasing] = useState(false);
+
+	const clearRescrolls = () => {
+		rescrollTimeouts.current.forEach(clearTimeout);
+		rescrollTimeouts.current = [];
+	};
 
 	useEffect(
 		() => () => {
@@ -72,9 +79,16 @@ export const useScroll = ({
 			if (pendingJump.current?.safety) {
 				clearTimeout(pendingJump.current.safety);
 			}
+			clearRescrolls();
 		},
 		[]
 	);
+
+	const releaseJumpTarget = () => {
+		lastJumpTargetId.current = null;
+		clearRescrolls();
+		cancelJumpToMessage();
+	};
 
 	// Back to live from an Anchored Window. The release swaps the (tall) anchored rows for the disjoint,
 	// shorter live tail in a single emit; a scroll offset deep enough for the tall content then sits past
@@ -83,12 +97,17 @@ export const useScroll = ({
 	// so the shorter tail cannot strand it, and scrolling the already-settled anchored content sidesteps
 	// the post-shrink layout race a deferred correction loses to. Suppress MVCP across the swap so its
 	// offset adjustment for the disjoint key set cannot drag the viewport back off-content.
+	const releaseAnchoredWindow = () => {
+		flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
+		pendingBottom.current = true;
+		setIsReleasing(true);
+		setHighTs(null);
+	};
+
 	const jumpToBottom = () => {
+		releaseJumpTarget();
 		if (highTs != null) {
-			flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
-			pendingBottom.current = true;
-			setIsReleasing(true);
-			setHighTs(null);
+			releaseAnchoredWindow();
 			return;
 		}
 		flatListRef.current?.scrollToOffset({ offset: -100 });
@@ -122,7 +141,7 @@ export const useScroll = ({
 		}
 		pendingJump.current = null;
 		if (jump.anchored) {
-			setHighTs(null);
+			releaseAnchoredWindow();
 		}
 		jump.resolve();
 	};
@@ -155,17 +174,13 @@ export const useScroll = ({
 	};
 
 	// No getItemLayout for these variable-height rows, so the first scroll uses an estimated offset and
-	// can undershoot while the target is unmeasured. It renders the row; a second scroll lands precisely.
-	// Re-read the index in case the window shifted a row between.
+	// can undershoot while the target is unmeasured.
 	const scrollToTarget = (messageId: string, index: number) => {
 		flatListRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
-		setTimeout(() => {
-			// A newer jump may now own the scroll; re-reading this old target would yank the list off it.
-			if (lastJumpTargetId.current !== messageId) {
-				return;
-			}
-			reScrollWhenSettled(messageId);
-		}, SCROLL_TO_INDEX_RETRY_DELAY);
+		clearRescrolls();
+		rescrollTimeouts.current = JUMP_RESCROLL_DELAYS.map(rescrollDelay =>
+			setTimeout(() => reScrollWhenSettled(messageId), rescrollDelay)
+		);
 	};
 
 	// Release settled: the live tail has emitted (keyed on messages so this runs on the first live emit)
@@ -266,6 +281,7 @@ export const useScroll = ({
 			}
 
 			lastJumpTargetId.current = messageId;
+			clearRescrolls();
 			scrollFailRetries.current = 0;
 			jumpGrowthRetries.current = 0;
 			const anchored = typeof highTsMs === 'number' && Number.isFinite(highTsMs);
@@ -307,6 +323,7 @@ export const useScroll = ({
 		jumpToMessage,
 		cancelJumpToMessage,
 		handleScrollToIndexFailed,
+		handleDragStart: releaseJumpTarget,
 		highlightedMessageId,
 		isReleasing
 	};
