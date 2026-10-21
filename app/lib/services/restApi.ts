@@ -1,3 +1,4 @@
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getUniqueId } from 'react-native-device-info';
 import EJSON from 'ejson';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
@@ -727,6 +728,7 @@ const postAuthenticated = async (path: string, body: object) => {
 	const response = await fetch(`${server.server}/api/${path}`, {
 		method: 'POST',
 		headers: {
+			...RocketChatSettings.customHeaders,
 			'Content-Type': 'application/json',
 			'X-Auth-Token': login.user.token,
 			'X-User-Id': login.user.id
@@ -1138,12 +1140,16 @@ export const editMediaMessage = async (
 	body: { description?: string; filename: string; msg?: string }
 ) => {
 	// RC 8.4.0
-	const response = await postAuthenticated(`v1/rooms.mediaConfirm/${rid}/${fileId}`, {
-		description: body.description,
-		filename: body.filename,
-		msg: body.msg || ''
-	});
-	return response.json();
+	try {
+		const response = await postAuthenticated(`v1/rooms.mediaConfirm/${rid}/${fileId}`, {
+			description: body.description,
+			filename: body.filename,
+			msg: body.msg || ''
+		});
+		return response.json();
+	} catch (error) {
+		throw new Error(`Failed to edit media message: ${(error as Error).message}`);
+	}
 };
 
 let lastToken = '';

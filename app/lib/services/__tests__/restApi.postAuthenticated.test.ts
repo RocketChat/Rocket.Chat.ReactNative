@@ -1,3 +1,5 @@
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+
 import { store as reduxStore } from '~/lib/store/auxStore';
 import { mockGlobalFetch } from '~/lib/testUtils/mockGlobalFetch';
 import { editMediaMessage, setRoomsCategory } from '../restApi';
@@ -35,6 +37,19 @@ describe('authenticated REST posts', () => {
 		expect(JSON.parse(options.body as string)).toEqual({ roomIds: ['rid1', 'rid2'], category: 'category-id' });
 	});
 
+	it('sends the server custom headers, so Basic Auth servers accept the request', async () => {
+		const originalCustomHeaders = RocketChatSettings.customHeaders;
+		RocketChatSettings.customHeaders = { Authorization: 'Basic credentials' };
+
+		await setRoomsCategory(['rid1'], 'category-id');
+
+		RocketChatSettings.customHeaders = originalCustomHeaders;
+		const [, options] = sentToNetwork.mock.calls[0] as unknown as [string, RequestInit];
+		expect(options.headers).toEqual(
+			expect.objectContaining({ Authorization: 'Basic credentials', 'X-Auth-Token': 'auth-token' })
+		);
+	});
+
 	it('throws the server error when the request fails', async () => {
 		sentToNetwork.mockResolvedValueOnce(jsonResponse(400, { error: 'invalid-category' }));
 
@@ -61,5 +76,13 @@ describe('authenticated REST posts', () => {
 		const [url, options] = sentToNetwork.mock.calls[0] as unknown as [string, RequestInit];
 		expect(url).toBe(`${server}/api/v1/rooms.mediaConfirm/rid/file-id`);
 		expect(JSON.parse(options.body as string)).toEqual({ filename: 'photo.jpg', msg: '' });
+	});
+
+	it('prefixes media confirm failures with the edit context', async () => {
+		sentToNetwork.mockResolvedValueOnce(jsonResponse(400, { error: 'file-not-found' }));
+
+		await expect(editMediaMessage('rid', 'file-id', { filename: 'photo.jpg' })).rejects.toThrow(
+			'Failed to edit media message: file-not-found'
+		);
 	});
 });
