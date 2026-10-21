@@ -6,6 +6,7 @@ import { createRandomRoom, createUser, deleteCreatedUsers, sendMessage as sendMe
 import {
 	hideKeyboard,
 	loginWithDeepLink,
+	searchAndNavigateRoom,
 	sendMessage,
 	type Fixtures,
 	LONG_TIMEOUT,
@@ -130,7 +131,7 @@ const openRoomWithOthersMessage = async (fixtures: Fixtures, message: string) =>
 	const room = await createRandomRoom(author);
 	await sendMessageAsUser(author, room._id, message);
 	await expectVisible(fixtures, 'rooms-list-view');
-	await openRoom(fixtures, room.name);
+	await searchAndNavigateRoom(fixtures, room.name);
 	await expectVisible(fixtures, `message-content-${message}`);
 	await joinRoom(fixtures, room.name);
 	return { author, room };
