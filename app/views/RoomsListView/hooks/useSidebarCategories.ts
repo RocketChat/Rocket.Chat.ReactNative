@@ -16,6 +16,9 @@ export const useSidebarCategories = () => {
 	const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
 	const storedCategories = useAppSelector(state => getUserSelector(state).sidebarCategories ?? NO_CATEGORIES);
 	const categories = isCustomCategoriesAvailable ? storedCategories : NO_CATEGORIES;
+	const userSectionsOrder = useAppSelector(
+		state => getUserSelector(state).settings?.preferences?.sidebarSectionsOrder as string[] | undefined
+	);
 	const adminSectionsOrder = useAppSelector(
 		state => state.settings.Accounts_Default_User_Preferences_sidebarSectionsOrder as string[] | undefined
 	);
@@ -33,7 +36,10 @@ export const useSidebarCategories = () => {
 			),
 		[categories]
 	);
-	const sectionsOrder = useMemo(() => getSectionsOrder(adminSectionsOrder), [adminSectionsOrder]);
+	const sectionsOrder = useMemo(
+		() => getSectionsOrder(userSectionsOrder ?? adminSectionsOrder),
+		[userSectionsOrder, adminSectionsOrder]
+	);
 	const groupOrder = useMemo(() => getGroupOrder(categories, sectionsOrder), [categories, sectionsOrder]);
 	return { storedCategories, customCategoryNames, categoryUnreadOptions, sectionsOrder, groupOrder };
 };
