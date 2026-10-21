@@ -65,8 +65,8 @@ const RCSSLPinning = Platform.select({
 									try {
 										const certificatePath = getPath(name);
 										await FileSystem.copyAsync({ from: uri, to: certificatePath });
-										persistCertificate(server, name, password);
-										SSLPinning?.setCertificate(server, certificatePath, password);
+										const certificate = persistCertificate(server, name, password);
+										SSLPinning?.setCertificate(server, certificate.path, password);
 										resolve(name);
 									} catch (e) {
 										reject(e);

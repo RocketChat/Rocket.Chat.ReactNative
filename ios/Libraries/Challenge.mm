@@ -77,14 +77,17 @@
     }
 
     SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
-    SecCertificateRef certificate = NULL;
-    if (identity) {
-        SecIdentityCopyCertificate(identity, &certificate);
-        if (certificate) { CFRelease(certificate); }
-    }
 
-    NSMutableArray *certificates = [[NSMutableArray alloc] init];
-    [certificates addObject:CFBridgingRelease(certificate)];
+    // Send the whole chain from the p12 (leaf first), so a leaf issued by an
+    // intermediate CA can still be verified by the server
+    NSMutableArray *certificates = [NSMutableArray arrayWithArray:firstItem[(id)kSecImportItemCertChain]];
+    if (certificates.count == 0 && identity) {
+        SecCertificateRef certificate = NULL;
+        SecIdentityCopyCertificate(identity, &certificate);
+        if (certificate) {
+            [certificates addObject:CFBridgingRelease(certificate)];
+        }
+    }
 
     [SDWebImageDownloader sharedDownloader].config.urlCredential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
 

@@ -11,6 +11,11 @@
 #import "../Shared/RocketChat/MMKVBridge.h"
 #import <SocketRocket/SRWebSocket.h>
 #import "EXSessionTaskDispatcher.h"
+#if __has_include(<ExpoModulesCore/ExpoModulesCore-Swift.h>)
+#import <ExpoModulesCore/ExpoModulesCore-Swift.h>
+#else
+#import "ExpoModulesCore-Swift.h"
+#endif
 
 @implementation RCTHTTPRequestHandler (Challenge)
 
@@ -29,6 +34,25 @@
     completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
 {
   [Challenge runChallenge:session didReceiveChallenge:challenge completionHandler:completionHandler];
+}
+
+@end
+
+// expo/fetch is the global fetch since Expo SDK 57 and runs on its own NSURLSession,
+// whose delegate answers auth challenges with default handling (no client certificate).
+@implementation URLSessionSessionDelegateProxy (Challenge)
+
++ (void)load
+{
+  Method method = class_getInstanceMethod(self, @selector(URLSession:task:didReceiveChallenge:completionHandler:));
+  NSAssert(method, @"URLSessionSessionDelegateProxy no longer handles auth challenges; client certificates will not be sent");
+  if (!method) {
+    return;
+  }
+  IMP imp = imp_implementationWithBlock(^(id _self, NSURLSession *session, NSURLSessionTask *task, NSURLAuthenticationChallenge *challenge, void (^completionHandler)(NSURLSessionAuthChallengeDisposition, NSURLCredential *)) {
+    [Challenge runChallenge:session didReceiveChallenge:challenge completionHandler:completionHandler];
+  });
+  method_setImplementation(method, imp);
 }
 
 @end
