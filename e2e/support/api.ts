@@ -67,8 +67,11 @@ const failedToConnect = (error: unknown) => {
 	return [cause, ...(cause?.errors ?? [])].some(reason => CONNECTION_FAILURE_CODES.has(reason?.code ?? ''));
 };
 
+const endpointUrl = (endpoint: string) =>
+	endpoint.startsWith('/') ? `${data.server}${endpoint}` : `${data.server}/api/v1/${endpoint}`;
+
 const fetchOnce = async (method: Method, endpoint: string, body?: unknown, session?: Session) => {
-	const response = await fetch(`${data.server}/api/v1/${endpoint}`, {
+	const response = await fetch(endpointUrl(endpoint), {
 		method,
 		headers: headersFor(session),
 		body: body === undefined ? undefined : JSON.stringify(body)
@@ -221,6 +224,34 @@ export const reactAsNewUsers = async (count: number, messageId: string, emoji: s
 		reactors.push(reactor);
 	}
 	return reactors;
+};
+
+interface AppActionButton {
+	appId: string;
+	actionId: string;
+	context: string;
+}
+
+export const findAppActionButton = async (
+	credentials: Credentials,
+	context: string,
+	actionId: string
+): Promise<AppActionButton> => {
+	const buttons: AppActionButton[] = await get('/api/apps/actionButtons', credentials);
+	const button = buttons.find(candidate => candidate.context === context && candidate.actionId === actionId);
+	if (!button) {
+		throw new Error(`No ${context} action button "${actionId}" installed on ${data.server}`);
+	}
+	return button;
+};
+
+export const getServerAppTranslation = async (credentials: Credentials, appId: string, key: string): Promise<string> => {
+	const { apps } = await get('/api/apps/languages', credentials);
+	const translation = apps.find((app: { id: string }) => app.id === appId)?.languages?.en?.[key];
+	if (!translation) {
+		throw new Error(`App ${appId} has no en translation for "${key}"`);
+	}
+	return translation;
 };
 
 export const createDM = (credentials: Credentials, otherUsername: string) =>

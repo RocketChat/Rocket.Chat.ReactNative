@@ -1,16 +1,17 @@
-import { connect, determineAuthType, disconnect, login, loginTOTP } from './connect';
-import { mediaSessionInstance } from './voip/MediaSessionInstance';
-import { pendingHangups } from './voip/pendingHangups';
+import { connect, determineAuthType, disconnect, login, loginTOTP } from '../connect';
+import { mediaSessionInstance } from '../voip/MediaSessionInstance';
+import { useAppsStore } from '../../apps/appsStore';
+import { pendingHangups } from '../voip/pendingHangups';
 import { setUser } from '~/actions/login';
-import database from '../database';
+import database from '../../database';
 
-jest.mock('./voip/MediaSessionInstance', () => ({
+jest.mock('../voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
 }));
 
 // Mock the isIOS helper
-jest.mock('../methods/helpers/deviceInfo', () => ({
-	...jest.requireActual('../methods/helpers/deviceInfo'),
+jest.mock('../../methods/helpers/deviceInfo', () => ({
+	...jest.requireActual('../../methods/helpers/deviceInfo'),
 	isIOS: false
 }));
 
@@ -28,7 +29,7 @@ const mockSdkCurrent: Record<string, unknown> = {
 	currentLogin: undefined
 };
 const mockSdkInitialize = jest.fn<void, [string]>();
-jest.mock('./sdk', () => ({
+jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: {
 		initialize: (server: string) => mockSdkInitialize(server),
@@ -62,7 +63,7 @@ const mockStoreGetState = jest.fn<MockStoreState, []>(() => ({
 const mockStoreDispatch = jest.fn<unknown, [unknown]>();
 const noopUnsubscribe = () => () => {};
 const mockStoreSubscribe = jest.fn<() => void, [() => void]>(noopUnsubscribe);
-jest.mock('../store/auxStore', () => ({
+jest.mock('../../store/auxStore', () => ({
 	store: {
 		getState: () => mockStoreGetState(),
 		dispatch: (action: unknown) => mockStoreDispatch(action),
@@ -70,7 +71,7 @@ jest.mock('../store/auxStore', () => ({
 	}
 }));
 
-jest.mock('../database', () => ({
+jest.mock('../../database', () => ({
 	__esModule: true,
 	default: {
 		setActiveDB: jest.fn(),
@@ -78,26 +79,26 @@ jest.mock('../database', () => ({
 	}
 }));
 
-jest.mock('../methods/subscribeRooms', () => ({
+jest.mock('../../methods/subscribeRooms', () => ({
 	unsubscribeRooms: jest.fn()
 }));
 
-jest.mock('../methods/getSettings', () => ({
+jest.mock('../../methods/getSettings', () => ({
 	getSettings: jest.fn()
 }));
 
-jest.mock('../methods/helpers/events', () => ({
+jest.mock('../../methods/helpers/events', () => ({
 	__esModule: true,
 	default: { emit: jest.fn(), on: jest.fn(), removeListener: jest.fn() }
 }));
 
 const mockLog = jest.fn<void, unknown[]>();
 const mockTwoFactor = jest.fn<Promise<{ twoFactorCode: string }>, [unknown]>(() => Promise.resolve({ twoFactorCode: '123456' }));
-jest.mock('./twoFactor/twoFactor', () => ({
+jest.mock('../twoFactor/twoFactor', () => ({
 	twoFactor: (params: unknown) => mockTwoFactor(params)
 }));
 
-jest.mock('../methods/helpers/log', () => ({
+jest.mock('../../methods/helpers/log', () => ({
 	__esModule: true,
 	default: (...args: unknown[]) => mockLog(...args)
 }));
@@ -425,6 +426,20 @@ describe('VoIP media session lifecycle (disconnect)', () => {
 	it('calls mediaSessionInstance.reset when disconnect runs', () => {
 		disconnect();
 		expect(mediaSessionInstance.reset).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe('apps store lifecycle (disconnect)', () => {
+	it('clears the apps store when disconnect runs', () => {
+		useAppsStore.setState({
+			actionButtons: [{ appId: 'app-id', actionId: 'action-id', labelI18n: 'label', context: 'messageBoxAction' }],
+			translations: { 'app-id': { en: { label: 'Label' } } }
+		});
+
+		disconnect();
+
+		expect(useAppsStore.getState().actionButtons).toEqual([]);
+		expect(useAppsStore.getState().translations).toEqual({});
 	});
 });
 

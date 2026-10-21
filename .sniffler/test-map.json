@@ -454,6 +454,26 @@
 	},
 	{
 		"test": "e2e/tests/uikit/button-kit.e2e.ts",
-		"dependsOn": ["app/containers/UIKit/**"]
+		"dependsOn": [
+			"app/containers/UIKit/**",
+			"app/lib/apps/**",
+			"app/lib/services/appsApiFetch.ts",
+			"app/views/RoomView/services/blockAction.ts",
+			"app/lib/methods/subscriptions/rooms.ts"
+		]
+	},
+	{
+		"test": "e2e/tests/uikit/poll.e2e.ts",
+		"dependsOn": [
+			"app/containers/UIKit/**",
+			"app/lib/apps/**",
+			"app/containers/MessageComposer/**",
+			"app/views/ModalBlockView.tsx",
+			"app/views/RoomView/services/blockAction.ts",
+			"app/lib/services/appsApiFetch.ts",
+			"app/lib/services/connect.ts",
+			"app/sagas/login.js",
+			"app/lib/methods/subscriptions/rooms.ts"
+		]
 	}
 ]
