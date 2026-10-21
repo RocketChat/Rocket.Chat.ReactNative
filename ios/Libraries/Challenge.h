@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
  didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
   completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler
   NS_SWIFT_NAME(runChallenge(_:didReceiveChallenge:completionHandler:));
+// The configured client certificate for a client-certificate challenge, nil for any other challenge
++ (nullable NSURLCredential *)clientCertificateCredential:(NSURLAuthenticationChallenge *)challenge
+  NS_SWIFT_UNAVAILABLE("ObjC-only helper");
 + (MMKVBridge *)getMMKVInstance NS_SWIFT_UNAVAILABLE("ObjC-only helper");
 @end
 

@@ -78,16 +78,19 @@
 
     SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
 
-    // Send the whole chain from the p12 (leaf first), so a leaf issued by an
-    // intermediate CA can still be verified by the server
-    NSMutableArray *certificates = [NSMutableArray arrayWithArray:firstItem[(id)kSecImportItemCertChain]];
-    if (certificates.count == 0 && identity) {
-        SecCertificateRef certificate = NULL;
-        SecIdentityCopyCertificate(identity, &certificate);
-        if (certificate) {
-            [certificates addObject:CFBridgingRelease(certificate)];
+    // Send the intermediates from the p12, so a leaf issued by an intermediate CA can
+    // still be verified by the server. The identity already carries the leaf.
+    SecCertificateRef leaf = NULL;
+    if (identity) {
+        SecIdentityCopyCertificate(identity, &leaf);
+    }
+    NSMutableArray *certificates = [[NSMutableArray alloc] init];
+    for (id certificate in firstItem[(id)kSecImportItemCertChain]) {
+        if (!leaf || !CFEqual((__bridge CFTypeRef)certificate, leaf)) {
+            [certificates addObject:certificate];
         }
     }
+    if (leaf) { CFRelease(leaf); }
 
     [SDWebImageDownloader sharedDownloader].config.urlCredential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
 
@@ -104,6 +107,29 @@
   while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
 
   return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
+}
+
++ (nullable NSURLCredential *)clientCertificateCredential:(NSURLAuthenticationChallenge *)challenge
+{
+  if (![challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate]) {
+    return nil;
+  }
+
+  NSString *clientSSL = [[self getMMKVInstance] stringForKey:challenge.protectionSpace.host];
+  if (!clientSSL) {
+    return nil;
+  }
+
+  NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
+  id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+  NSString *path = [dict objectForKey:@"path"];
+  NSString *password = [dict objectForKey:@"password"];
+  if (!path || !password) {
+    return nil;
+  }
+
+  NSURLCredential *credential = [self getUrlCredential:challenge path:path password:password];
+  return credential.identity ? credential : nil;
 }
 
 + (void)runChallenge:(NSURLSession *)session

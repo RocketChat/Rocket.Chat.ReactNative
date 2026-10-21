@@ -40,17 +40,28 @@
 
 // expo/fetch is the global fetch since Expo SDK 57 and runs on its own NSURLSession,
 // whose delegate answers auth challenges with default handling (no client certificate).
+// Only the configured client certificate is answered here; server trust and every other
+// challenge keep Expo's own handling, which forwards them to the task.
+typedef void (*TaskChallengeIMP)(id, SEL, NSURLSession *, NSURLSessionTask *, NSURLAuthenticationChallenge *, void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *));
+
 @implementation URLSessionSessionDelegateProxy (Challenge)
 
 + (void)load
 {
-  Method method = class_getInstanceMethod(self, @selector(URLSession:task:didReceiveChallenge:completionHandler:));
+  SEL selector = @selector(URLSession:task:didReceiveChallenge:completionHandler:);
+  Method method = class_getInstanceMethod(self, selector);
   NSAssert(method, @"URLSessionSessionDelegateProxy no longer handles auth challenges; client certificates will not be sent");
   if (!method) {
     return;
   }
+  TaskChallengeIMP original = (TaskChallengeIMP)method_getImplementation(method);
   IMP imp = imp_implementationWithBlock(^(id _self, NSURLSession *session, NSURLSessionTask *task, NSURLAuthenticationChallenge *challenge, void (^completionHandler)(NSURLSessionAuthChallengeDisposition, NSURLCredential *)) {
-    [Challenge runChallenge:session didReceiveChallenge:challenge completionHandler:completionHandler];
+    NSURLCredential *credential = [Challenge clientCertificateCredential:challenge];
+    if (credential) {
+      completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+      return;
+    }
+    original(_self, selector, session, task, challenge, completionHandler);
   });
   method_setImplementation(method, imp);
 }
