@@ -1,5 +1,5 @@
 import { Model } from '@nozbe/watermelondb';
-import { field, relation } from '@nozbe/watermelondb/decorators';
+import { date, field, relation } from '@nozbe/watermelondb/decorators';
 
 export const UPLOADS_TABLE = 'uploads';
 
@@ -34,6 +34,16 @@ export default class Upload extends Model {
 
 	@field('error_message') errorMessage;
 
+	@date('ts') ts;
+
+	@field('msg') msg;
+
+	@field('width') width;
+
+	@field('height') height;
+
+	@field('retry_on_reconnect') retryOnReconnect;
+
 	asPlain() {
 		return {
 			id: this.id,
@@ -44,7 +54,10 @@ export default class Upload extends Model {
 			description: this.description,
 			size: this.size,
 			type: this.type,
-			store: this.store
+			store: this.store,
+			msg: this.msg,
+			width: this.width,
+			height: this.height
 		};
 	}
 }

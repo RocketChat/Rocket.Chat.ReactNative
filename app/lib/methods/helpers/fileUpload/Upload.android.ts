@@ -4,6 +4,7 @@ import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import { getRetryAfterFromHeaders } from '../getRetryAfterFromHeaders';
 import { parseUploadResponse } from '../parseUploadResponse';
 import { type IFormData } from './definitions';
+import { UploadNetworkError } from './UploadNetworkError';
 
 export class Upload {
 	private uploadUrl: string;
@@ -69,7 +70,9 @@ export class Upload {
 		);
 
 		const response = await this.uploadTask.uploadAsync().catch((error: unknown) => {
-			throw this.isCancelled ? new Error('Upload cancelled') : error;
+			throw this.isCancelled
+				? new Error('Upload cancelled')
+				: new UploadNetworkError(error instanceof Error ? error.message : undefined);
 		});
 		if (!response) {
 			throw new Error('Upload failed: no response');

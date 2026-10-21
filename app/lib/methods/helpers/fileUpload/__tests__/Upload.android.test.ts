@@ -1,6 +1,7 @@
 import * as FileSystem from 'expo-file-system/legacy';
 
 import { Upload } from '../Upload.android';
+import { UploadNetworkError } from '../UploadNetworkError';
 
 jest.mock('expo-file-system/legacy', () => ({
 	createUploadTask: jest.fn(),
@@ -68,6 +69,18 @@ describe('Upload (android)', () => {
 		mockUpload({ status: 302, body: '<html>Found</html>' });
 
 		await expect(send()).rejects.toMatchObject({ name: 'UploadHttpError', status: 302 });
+	});
+
+	it('rejects with a network error when the native upload fails without being cancelled', async () => {
+		(FileSystem.createUploadTask as jest.Mock).mockReturnValue({
+			uploadAsync: jest.fn(() => Promise.reject(new Error('java.net.UnknownHostException'))),
+			cancelAsync: jest.fn()
+		});
+
+		const error = await send().catch(e => e);
+
+		expect(error).toBeInstanceOf(UploadNetworkError);
+		expect(error.message).toBe('java.net.UnknownHostException');
 	});
 
 	it('rejects with a cancellation when the native upload fails after cancel()', async () => {

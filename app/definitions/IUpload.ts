@@ -14,6 +14,8 @@ export interface IUpload {
 	error?: boolean;
 	errorStatus?: number;
 	errorMessage?: string;
+	ts?: Date;
+	retryOnReconnect?: boolean;
 	subscription?: { id: string };
 	msg?: string;
 	width?: number;

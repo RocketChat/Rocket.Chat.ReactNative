@@ -12,6 +12,7 @@ import log from '../helpers/log';
 import { showToast } from '../helpers/showToast';
 import { getUploadErrorMessage } from '../helpers/getUploadErrorMessage';
 import { isRetryableUploadError } from '../helpers/isRetryableUploadError';
+import { isTransientUploadError } from '../helpers/isTransientUploadError';
 import { type IFileUpload } from '../helpers/fileUpload/definitions';
 import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
 
@@ -68,6 +69,7 @@ export const persistUploadError = async (queueKey: string, error: unknown) => {
 				u.error = true;
 				u.errorStatus = errorStatus;
 				u.errorMessage = errorMessage;
+				u.retryOnReconnect = isTransientUploadError(error);
 			});
 		});
 		const reason = getUploadErrorMessage({ errorStatus, errorMessage });
@@ -136,6 +138,10 @@ export const createUploadRecord = async ({
 					u.error = false;
 					u.errorStatus = undefined;
 					u.errorMessage = undefined;
+					u.retryOnReconnect = false;
+					u.msg = fileInfo.msg;
+					u.width = fileInfo.width;
+					u.height = fileInfo.height;
 					u.progress = 0;
 				});
 			});
@@ -146,6 +152,7 @@ export const createUploadRecord = async ({
 				uploadRecord = await uploadsCollection.create(u => {
 					u._raw = sanitizedRaw({ id: uploadPath }, uploadsCollection.schema);
 					Object.assign(u, fileInfo);
+					u.ts = new Date();
 					if (tmid) {
 						u.tmid = tmid;
 					}

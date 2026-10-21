@@ -14,6 +14,7 @@ import {
 	uploadRetryWaits
 } from '../utils';
 import { UploadHttpError } from '~/lib/methods/helpers/fileUpload/UploadHttpError';
+import { UploadNetworkError } from '~/lib/methods/helpers/fileUpload/UploadNetworkError';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ t: (k: string) => k, isTranslated: () => false }));
@@ -129,17 +130,34 @@ describe('createUploadRecord', () => {
 			error: true,
 			errorStatus: 413,
 			errorMessage: 'File is too large',
+			retryOnReconnect: true,
+			msg: 'caption of the failed attempt',
+			width: 100,
+			height: 50,
 			progress: 40,
 			update: jest.fn((cb: (u: any) => void) => cb(stale))
 		};
 		mockFind.mockResolvedValue(stale);
 
-		const [path, record] = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
+		const [path, record] = await createUploadRecord({
+			rid: 'GENERAL',
+			fileInfo: { ...fileInfo, msg: 'the new caption', width: 640, height: 480 },
+			tmid: undefined
+		});
 
 		expect(Alert.alert).not.toHaveBeenCalled();
 		expect(path).toBe(uploadPath);
 		expect(record).toBe(stale);
-		expect(stale).toMatchObject({ error: false, errorStatus: undefined, errorMessage: undefined, progress: 0 });
+		expect(stale).toMatchObject({
+			error: false,
+			errorStatus: undefined,
+			errorMessage: undefined,
+			retryOnReconnect: false,
+			msg: 'the new caption',
+			width: 640,
+			height: 480,
+			progress: 0
+		});
 	});
 
 	it('creates a new record when none exists', async () => {
@@ -155,6 +173,30 @@ describe('createUploadRecord', () => {
 
 		expect(path).toBe(uploadPath);
 		expect(record).toBe(created);
+	});
+
+	it('stamps the creation time on a new record so retries keep the send order', async () => {
+		mockFind.mockRejectedValue(new Error('not found'));
+		let createdRecord: any;
+		mockCreate.mockImplementation((cb: (u: any) => void) => {
+			createdRecord = {};
+			cb(createdRecord);
+			return createdRecord;
+		});
+
+		await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
+
+		expect(createdRecord.ts).toBeInstanceOf(Date);
+	});
+
+	it('keeps the creation time of a record it reuses', async () => {
+		const ts = new Date(0);
+		const stale: any = { id: uploadPath, error: true, ts, update: jest.fn((cb: (u: any) => void) => cb(stale)) };
+		mockFind.mockResolvedValue(stale);
+
+		await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
+
+		expect(stale.ts).toBe(ts);
 	});
 });
 
@@ -210,6 +252,27 @@ describe('persistUploadError', () => {
 
 		expect(updated).toMatchObject({ errorStatus: 429 });
 		expect(showToast).not.toHaveBeenCalled();
+	});
+
+	it.each([
+		['loses the connection', new UploadNetworkError()],
+		['gets a server error', new UploadHttpError(503)],
+		['is rate limited', new UploadHttpError(429)]
+	])('marks the upload for a retry on reconnect when it %s', async (_, error) => {
+		const updated = await persist(error);
+
+		expect(updated.retryOnReconnect).toBe(true);
+	});
+
+	it.each([
+		['is rejected as a bad request', new UploadHttpError(400)],
+		['is too large', new UploadHttpError(413)],
+		['is not allowed', new UploadHttpError(403)],
+		['cannot be encrypted for a room the user left', new Error('Subscription not found')]
+	])('does not mark the upload for a retry on reconnect when it %s', async (_, error) => {
+		const updated = await persist(error);
+
+		expect(updated.retryOnReconnect).toBe(false);
 	});
 
 	it('does nothing when the record is gone', async () => {

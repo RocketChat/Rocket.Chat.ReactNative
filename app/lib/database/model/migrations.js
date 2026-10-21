@@ -377,6 +377,21 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 32,
+			steps: [
+				addColumns({
+					table: 'uploads',
+					columns: [
+						{ name: 'ts', type: 'number', isOptional: true },
+						{ name: 'msg', type: 'string', isOptional: true },
+						{ name: 'width', type: 'number', isOptional: true },
+						{ name: 'height', type: 'number', isOptional: true },
+						{ name: 'retry_on_reconnect', type: 'boolean', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
