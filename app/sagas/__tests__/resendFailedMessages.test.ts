@@ -88,6 +88,34 @@ describe('resendFailedMessages', () => {
 		expect(resendMessage).toHaveBeenLastCalledWith(second, 'threadId');
 	});
 
+	it('stops at a message that is still waiting for a retry, so later messages do not overtake it', async () => {
+		jest.mocked(resendMessage).mockImplementationOnce(async message => {
+			Object.assign(message, { status: messagesStatus.ERROR, retryOnReconnect: true });
+		});
+		const store = startDrain();
+		store.dispatch({ type: ROOMS.SUCCESS });
+		await flushSagaMicrotasks();
+
+		await advance(RESEND_INTERVAL_MS * 4);
+
+		expect(resendMessage).toHaveBeenCalledTimes(1);
+		expect(resendMessage).toHaveBeenLastCalledWith(first, undefined);
+	});
+
+	it('carries on past a message the server rejected for good', async () => {
+		jest.mocked(resendMessage).mockImplementationOnce(async message => {
+			Object.assign(message, { status: messagesStatus.ERROR, retryOnReconnect: false });
+		});
+		const store = startDrain();
+		store.dispatch({ type: ROOMS.SUCCESS });
+		await flushSagaMicrotasks();
+
+		await advance(RESEND_INTERVAL_MS);
+
+		expect(resendMessage).toHaveBeenCalledTimes(2);
+		expect(resendMessage).toHaveBeenLastCalledWith(second, 'threadId');
+	});
+
 	it('logs a failed resend and carries on with the next message', async () => {
 		const error = new Error('resend failed');
 		jest.mocked(resendMessage).mockRejectedValueOnce(error);

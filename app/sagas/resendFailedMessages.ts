@@ -28,6 +28,9 @@ function* resendAll() {
 		} catch (e) {
 			log(e);
 		}
+		if (message.status === messagesStatus.ERROR && message.retryOnReconnect) {
+			return;
+		}
 		yield* delay(RESEND_INTERVAL_MS);
 	}
 }
