@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { I18nManager, StyleSheet } from 'react-native';
 
 import sharedStyles from '../Styles';
 
@@ -49,6 +49,9 @@ export default StyleSheet.create({
 	},
 	groupTitleUnread: {
 		...sharedStyles.textBold
+	},
+	groupTitleChevron: {
+		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
 	},
 	serverHeader: {
 		justifyContent: 'space-between'

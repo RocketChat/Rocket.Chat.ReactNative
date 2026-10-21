@@ -76,7 +76,12 @@ const SectionHeader = ({
 					numberOfLines={1}>
 					{sectionTitle}
 				</Text>
-				<CustomIcon name='chevron-right' size={20} color={hasHiddenUnread ? colors.fontTitlesLabels : colors.fontDefault} />
+				<CustomIcon
+					name='chevron-right'
+					size={20}
+					style={styles.groupTitleChevron}
+					color={hasHiddenUnread ? colors.fontTitlesLabels : colors.fontDefault}
+				/>
 			</Pressable>
 			<Pressable
 				onPress={onPressToggle}
