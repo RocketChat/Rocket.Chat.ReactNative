@@ -34,7 +34,7 @@ platform :android do
     end
   end
 
-  desc "Upload App to the Play Store track for the trigger"
+  desc "Upload App to the Play Store track for TRIGGER (pr: internal, develop: beta)"
   lane :upload do
     upload_to_play_store(
       package_name: 'chat.rocket.android',
@@ -55,7 +55,7 @@ platform :android do
     )
   end
 
-  desc "Promote the uploaded build to Production"
+  desc "Promote BUILD_VERSION from the TRIGGER track to Production"
   lane :production do
     version_code = Integer(ENV.fetch('BUILD_VERSION'))
     metadata_path = File.join(__dir__, 'metadata/android')

@@ -88,22 +88,14 @@ jobs:
           APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  production-hold:
-    name: Production Hold
-    runs-on: ubuntu-latest
-    permissions: {}
-    environment: production_ios
-    needs: [build-ios]
-    steps:
-      - run: echo "Waiting for manual approval..."
-
   production:
     name: Production
     runs-on: macos-26
     permissions:
       contents: read
-    needs: [upload-ios, production-hold]
-    if: ${{ always() && needs.upload-ios.result == 'success' && needs.production-hold.result == 'success' }}
+    environment: production_ios
+    needs: [upload-ios]
+    if: ${{ always() && needs.upload-ios.result == 'success' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1

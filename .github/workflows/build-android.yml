@@ -91,22 +91,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
 
-  production-hold:
-    name: Production Hold
-    runs-on: ubuntu-latest
-    permissions: {}
-    environment: production_android
-    needs: [build-android]
-    steps:
-      - run: echo "Waiting for manual approval..."
-
   production:
     name: Production
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    needs: [build-android, open-testing, production-hold]
-    if: ${{ always() && needs.open-testing.result == 'success' && needs.production-hold.result == 'success' }}
+    environment: production_android
+    needs: [build-android, open-testing]
+    if: ${{ always() && needs.open-testing.result == 'success' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
