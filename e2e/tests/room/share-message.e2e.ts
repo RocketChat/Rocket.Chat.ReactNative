@@ -1,9 +1,9 @@
 import { afterEach, test } from '@e2e-dev/mobile';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
 	loginWithDeepLink,
-	searchAndNavigateRoom,
 	sendMessage,
 	type Fixtures,
 	tapWhenVisible,
@@ -35,11 +35,11 @@ test('forwards a message to a direct message', { tags: ['test-3'], timeout: 300_
 	const room = await createRandomRoom(user);
 
 	await loginWithDeepLink(fixtures, user);
-	await searchAndNavigateRoom(fixtures, otherUser.username);
+	await openRoom(fixtures, otherUser.username);
 	await sendMessage(fixtures, 'Hello user');
 	await backToRoomsList(fixtures);
 
-	await searchAndNavigateRoom(fixtures, room.name);
+	await openRoom(fixtures, room.name);
 	await sendMessage(fixtures, 'Hello room');
 	await openMessageActions(fixtures, 'Hello room');
 	await screen.getByText('Forward').tap();
@@ -47,7 +47,7 @@ test('forwards a message to a direct message', { tags: ['test-3'], timeout: 300_
 	await expectRoomTitle(fixtures, room.name);
 
 	await backToRoomsList(fixtures);
-	await searchAndNavigateRoom(fixtures, otherUser.username);
+	await openRoom(fixtures, otherUser.username);
 	await expectVisible(fixtures, 'message-content-Hello user');
 	await expectVisible(fixtures, `reply-${user.name}-Hello room`);
 });

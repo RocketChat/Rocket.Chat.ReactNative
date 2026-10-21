@@ -1,12 +1,12 @@
 import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
 	goBackUntil,
 	hideKeyboard,
 	loginWithDeepLink,
-	searchAndNavigateRoom,
 	sendMessage,
 	type Fixtures,
 	LONG_TIMEOUT,
@@ -68,7 +68,7 @@ test('creates a broadcast room and replies to its message', { tags: ['test-7'] }
 	await sendMessage(fixtures, 'message');
 
 	await loginWithDeepLink(fixtures, member);
-	await searchAndNavigateRoom(fixtures, room);
+	await openRoom(fixtures, room);
 	await expect(screen.getByTestId('message-composer')).toBeHidden();
 	await expect(screen.getByLabel('This room is read only')).toBeVisible();
 	await expect(screen.getByTestId('message-content-message')).toBeVisible();

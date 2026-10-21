@@ -36,7 +36,7 @@ A passing `agent.act` step is recorded in `.e2e/cache` and replays without a mod
 
 ## Running tests
 
-1. Build a release app: an iOS simulator `.app` or an Android `.apk`. Debug builds load JS from Metro.
+1. Build a release app: an iOS simulator `.app` or an Android `.apk`. Debug builds load JS from Metro. Build with `RUNNING_E2E_TESTS=true` (set it for `pod install` too), so the release app carries the Appduct tools the tests use for setup.
 2. Boot a simulator or emulator.
 3. Run:
 
@@ -57,6 +57,7 @@ On Android emulators with Google Play services, disable autofill first, or the p
 ## Writing tests
 
 - Tag each test with its CI shard: `test('...', { tags: ['test-5'] }, ...)`. Platform-only tests add `platforms: ['ios']` or `platforms: ['android']`.
+- Open a room the user is subscribed to with `openRoom` (`e2e/support/appduct.ts`), which opens it through the app's `open_room` Appduct tool. Use `searchAndNavigateRoom` when the test covers the rooms list search, or when the user still has to join or preview the room.
 - Start every test from `launchApp` or `loginWithDeepLink`. On iOS they reinstall the app, since clearing app state keeps the app group container.
 - Prefer `getByTestId` and exact `getByText`. A locator that matches more than one node fails; narrow it, or use `.first()` / `.last()`.
 - `swipe({ direction })` uses scroll semantics: the finger moves opposite to `direction`.

@@ -17,7 +17,8 @@ import {
 	headerItem
 } from '~e2e/support/flows';
 import { tapHeaderItem } from '~e2e/support/header';
-import { navigateToRoomInfo } from '~e2e/support/room';
+import { openRoom } from '~e2e/support/appduct';
+import { navigateToInfoView, navigateToRoomInfo } from '~e2e/support/room';
 
 afterEach(deleteCreatedUsers);
 
@@ -156,7 +157,8 @@ test('shows and edits room info', { tags: ['test-8'], timeout: 600_000 }, async 
 	const newRoomName = `${room.name}new`;
 
 	await loginWithDeepLink(fixtures, user);
-	await navigateToRoomInfo(fixtures, room.name);
+	await openRoom(fixtures, room.name);
+	await navigateToInfoView(fixtures);
 	await expectInfoView(fixtures);
 
 	await openEditView(fixtures);

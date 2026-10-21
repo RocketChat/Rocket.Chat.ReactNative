@@ -2,7 +2,8 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { goBack, goBackUntil, loginWithDeepLink, navigateToRoomActions, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
+import { goBack, goBackUntil, loginWithDeepLink, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
+import { navigateToRoomActions } from '~e2e/support/room';
 import { expectRoomTitle, tapHeaderItem } from '~e2e/support/header';
 import { random } from '~e2e/support/random';
 import { createChannel } from '~e2e/support/teams';

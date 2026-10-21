@@ -47,7 +47,7 @@ jobs:
     env:
       APK_PATH: android/app/build/outputs/apk/release/app-release.apk
       REACT_RES_DIR: android/app/build/generated/res/react/release
-      # Also links Appduct into the Release build so Maestro can drive setup through it.
+      # Also links Appduct into the Release build so e2e tests can drive setup through it.
       # Never set it in a job whose build can ship.
       RUNNING_E2E_TESTS: true
       # The APK is signed with a key made for this run, so it can't install over a store build.

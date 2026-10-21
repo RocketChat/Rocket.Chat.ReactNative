@@ -462,7 +462,7 @@ const openLinkWithRetry = async (device: Fixtures['device'], link: string, arriv
 	}
 };
 
-const acceptOpenPrompt = async ({ device, screen }: Fixtures) => {
+export const acceptOpenPrompt = async ({ device, screen }: Fixtures) => {
 	const prompt = screen.getByRole('button', 'Open');
 	if (await prompt.isVisible()) {
 		await tapWhenUncovered(prompt);
@@ -659,14 +659,6 @@ export const openRoomActions = async (fixtures: Fixtures) => {
 	await expectVisible(fixtures, 'room-header');
 	await fixtures.screen.getByTestId('room-header').first().tap();
 	await expectVisible(fixtures, 'room-actions-view');
-};
-
-export const navigateToRoomActions = async (fixtures: Fixtures, room: string) => {
-	if (!(await isVisibleNow(fixtures.screen.getByTestId('room-view')))) {
-		await searchAndNavigateRoom(fixtures, room);
-	}
-	await expectVisible(fixtures, 'room-view');
-	await openRoomActions(fixtures);
 };
 
 const SEND_RESPONSE_TIMEOUT = 10_000;

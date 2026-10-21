@@ -63,7 +63,7 @@ jobs:
 
     env:
       APP_PATH: .native-cache/Rocket.Chat.app
-      # Also links Appduct into the Release build so Maestro can drive setup through it.
+      # Also links Appduct into the Release build so e2e tests can drive setup through it.
       # Never set it in a job whose build can ship.
       RUNNING_E2E_TESTS: true
 

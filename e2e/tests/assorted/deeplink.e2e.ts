@@ -1,6 +1,7 @@
 import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createRandomRoom, createUser, deleteCreatedUsers, getDeepLink, login, sendMessage } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
 import {
@@ -9,7 +10,6 @@ import {
 	isVisibleNow,
 	launchApp,
 	navigateToRegister,
-	navigateToRoom,
 	openDeepLink,
 	type Fixtures,
 	LONG_TIMEOUT,
@@ -49,7 +49,7 @@ const shareTextTo = async (fixtures: Fixtures, room: string, message: string) =>
 	await expectVisible(fixtures, 'share-view');
 	await expect(fixtures.screen.getByText('Send')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await fixtures.screen.getByText('Send').tap();
-	await navigateToRoom(fixtures, room);
+	await openRoom(fixtures, room);
 	await expectVisible(fixtures, `message-content-${message}`);
 };
 

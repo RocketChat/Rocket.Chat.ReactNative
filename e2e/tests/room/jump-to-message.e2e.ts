@@ -1,12 +1,12 @@
 import { test } from '@e2e-dev/mobile';
 import { expect, type Locator } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { adminCredentials } from '~e2e/support/api';
 import { openSidebar } from '~e2e/support/settings';
 import { delay } from '~e2e/support/timing';
 import {
 	loginWithDeepLink,
-	searchAndNavigateRoom,
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenVisible,
@@ -118,7 +118,7 @@ test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, as
 	const { screen } = fixtures;
 	await loginWithDeepLink(fixtures, adminCredentials());
 
-	await searchAndNavigateRoom(fixtures, ROOM);
+	await openRoom(fixtures, ROOM);
 	await expect(testIdContaining(fixtures, 'Quote first message')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await jumpToMessageFrom(fixtures, 'Quote first message');
 	await expectMessages(fixtures, [1, 2]);
@@ -126,13 +126,13 @@ test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, as
 	await expect(testIdContaining(fixtures, "Go to jumping-thread's thread")).toBeVisible({ timeout: LONG_TIMEOUT });
 	await clearCache(fixtures);
 
-	await searchAndNavigateRoom(fixtures, ROOM);
+	await openRoom(fixtures, ROOM);
 	await expectVisible(fixtures, 'room-view-messages');
 	await expect(testIdContaining(fixtures, 'Quote first message')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-249'), 'up');
 	await clearCache(fixtures);
 
-	await searchAndNavigateRoom(fixtures, ROOM);
+	await openRoom(fixtures, ROOM);
 	await searchMessage(fixtures, '30');
 	await expectMessages(fixtures, [29, 30, 31]);
 
@@ -149,7 +149,7 @@ test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, as
 	}
 	await goBack(fixtures);
 
-	await searchAndNavigateRoom(fixtures, ROOM);
+	await openRoom(fixtures, ROOM);
 	await jumpToMessageFrom(fixtures, "Go to jumping-thread's thread");
 	await expectThreadMessage(fixtures, "Go to jumping-thread's thread");
 	await leaveThread(fixtures);

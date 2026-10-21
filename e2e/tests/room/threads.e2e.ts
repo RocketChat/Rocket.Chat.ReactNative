@@ -1,16 +1,9 @@
 import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
-import {
-	type Fixtures,
-	loginWithDeepLink,
-	navigateToRoom,
-	sendMessage,
-	LONG_TIMEOUT,
-	tapWhenVisible,
-	goBack
-} from '~e2e/support/flows';
+import { type Fixtures, loginWithDeepLink, sendMessage, LONG_TIMEOUT, tapWhenVisible, goBack } from '~e2e/support/flows';
 import { expectRoomTitle, followThreadButton, threadsButton } from '~e2e/support/header';
 import { deleteMessage } from '~e2e/support/room';
 import {
@@ -36,7 +29,7 @@ test('creates, follows, drafts and navigates threads', { tags: ['test-4'], timeo
 	const room = await createRandomRoom(user);
 
 	await loginWithDeepLink(fixtures, user);
-	await navigateToRoom(fixtures, room.name);
+	await openRoom(fixtures, room.name);
 	await expect(screen.getByTestId('room-header')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(threadsButton(fixtures)).toBeVisible({ timeout: LONG_TIMEOUT });
 
