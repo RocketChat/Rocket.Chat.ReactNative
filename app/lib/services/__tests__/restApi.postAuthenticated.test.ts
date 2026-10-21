@@ -1,5 +1,5 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-
+import { getBasicAuthKey } from '~/lib/constants/keys';
+import UserPreferences from '~/lib/methods/userPreferences';
 import { store as reduxStore } from '~/lib/store/auxStore';
 import { mockGlobalFetch } from '~/lib/testUtils/mockGlobalFetch';
 import { editMediaMessage, setRoomsCategory } from '../restApi';
@@ -37,13 +37,12 @@ describe('authenticated REST posts', () => {
 		expect(JSON.parse(options.body as string)).toEqual({ roomIds: ['rid1', 'rid2'], category: 'category-id' });
 	});
 
-	it('sends the server custom headers, so Basic Auth servers accept the request', async () => {
-		const originalCustomHeaders = RocketChatSettings.customHeaders;
-		RocketChatSettings.customHeaders = { Authorization: 'Basic credentials' };
+	it('sends the workspace Basic Auth credentials, so Basic Auth workspaces accept the request', async () => {
+		UserPreferences.setString(getBasicAuthKey(server), 'credentials');
 
 		await setRoomsCategory(['rid1'], 'category-id');
 
-		RocketChatSettings.customHeaders = originalCustomHeaders;
+		UserPreferences.removeItem(getBasicAuthKey(server));
 		const [, options] = sentToNetwork.mock.calls[0] as unknown as [string, RequestInit];
 		expect(options.headers).toEqual(
 			expect.objectContaining({ Authorization: 'Basic credentials', 'X-Auth-Token': 'auth-token' })

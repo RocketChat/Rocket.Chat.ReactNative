@@ -1,4 +1,3 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getUniqueId } from 'react-native-device-info';
 import EJSON from 'ejson';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
@@ -32,6 +31,7 @@ import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
+import { fetchForWorkspace } from '../methods/serverBasicAuth';
 import log from '../methods/helpers/log';
 
 export const createChannel = ({
@@ -725,10 +725,9 @@ export const saveSidebarCategories = (sidebarCategories: ISidebarCategory[]) =>
 
 const postAuthenticated = async (path: string, body: object) => {
 	const { login, server } = reduxStore.getState();
-	const response = await fetch(`${server.server}/api/${path}`, {
+	const response = await fetchForWorkspace(server.server, `${server.server}/api/${path}`, {
 		method: 'POST',
 		headers: {
-			...RocketChatSettings.customHeaders,
 			'Content-Type': 'application/json',
 			'X-Auth-Token': login.user.token,
 			'X-User-Id': login.user.id
