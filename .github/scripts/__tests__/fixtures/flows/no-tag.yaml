@@ -1,4 +1,0 @@
-appId: ${APP_ID}
-name: No Tag Test
-tags:
-  - android-only
