@@ -12,11 +12,24 @@ import { StyleSheet, View } from 'react-native';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
 import { useTheme } from '~/theme';
 
+const popMasterStack = (state: TabNavigationState<ParamListBase>) => {
+	const [master, ...details] = state.routes;
+	const masterStack = master.state;
+	if (masterStack?.stale !== false || masterStack.routes.length < 2) {
+		return null;
+	}
+	const routes = masterStack.routes.slice(0, -1);
+	return { ...state, routes: [{ ...master, state: { ...masterStack, routes, index: routes.length - 1 } }, ...details] };
+};
+
 const DetailFocusedRouter = (options: TabRouterOptions): ReturnType<typeof TabRouter> => {
 	const router = TabRouter({ ...options, backBehavior: 'none' });
 	return {
 		...router,
 		getStateForAction(state, action, configOptions) {
+			if (action.type === 'GO_BACK') {
+				return popMasterStack(state);
+			}
 			const nextState = router.getStateForAction(state, action, configOptions);
 			if (nextState === null || nextState.index === state.index) {
 				return nextState;

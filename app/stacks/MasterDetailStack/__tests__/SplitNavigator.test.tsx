@@ -1,4 +1,4 @@
-import { CommonActions, createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
+import { CommonActions, createNavigationContainerRef, NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { Pressable, Text } from 'react-native';
@@ -55,4 +55,32 @@ it('keeps the detail stack focused after pushing a screen onto the master stack'
 
 	expect(screen.getByText('category')).toBeOnTheScreen();
 	expect(screen.getByText('room general')).toBeOnTheScreen();
+});
+
+it('goes back on the master stack when the detail stack has nothing to pop', () => {
+	renderSplit();
+
+	fireEvent.press(screen.getByText('open category'));
+	act(() => navigationRef.goBack());
+
+	expect(screen.getByText('open category')).toBeOnTheScreen();
+	expect(screen.queryByText('category')).not.toBeOnTheScreen();
+	expect(screen.getByText('room empty')).toBeOnTheScreen();
+});
+
+it('cannot go back when neither stack has a screen to pop', () => {
+	renderSplit();
+
+	expect(navigationRef.canGoBack()).toBe(false);
+});
+
+it('goes back on the detail stack first while it has a screen to pop', () => {
+	renderSplit();
+
+	fireEvent.press(screen.getByText('open category'));
+	act(() => navigationRef.dispatch(StackActions.push('RoomView', { rid: 'general' })));
+	act(() => navigationRef.goBack());
+
+	expect(screen.getByText('category')).toBeOnTheScreen();
+	expect(screen.getByText('room empty')).toBeOnTheScreen();
 });
