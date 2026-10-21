@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	alertIcon: {
-		paddingLeft: 4
+		marginLeft: 4
 	},
 	title: {
 		flex: 1,

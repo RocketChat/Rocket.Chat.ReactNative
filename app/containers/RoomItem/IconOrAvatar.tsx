@@ -2,7 +2,9 @@ import { type ReactElement } from 'react';
 
 import Avatar from '../Avatar';
 import { DisplayMode } from '~/lib/constants/constantDisplayMode';
+import TextLineCenter from '../TextLineCenter';
 import TypeIcon from './TypeIcon';
+import styles from './styles';
 import { type IIconOrAvatar } from './interfaces';
 
 const IconOrAvatar = ({
@@ -26,17 +28,19 @@ const IconOrAvatar = ({
 
 	if (displayMode === DisplayMode.Expanded && showLastMessage) {
 		return (
-			<TypeIcon
-				userId={userId}
-				type={type}
-				prid={prid}
-				status={status}
-				isGroupChat={isGroupChat}
-				teamMain={teamMain}
-				size={24}
-				sourceType={sourceType}
-				abacAttributes={abacAttributes}
-			/>
+			<TextLineCenter lineHeight={styles.title.lineHeight}>
+				<TypeIcon
+					userId={userId}
+					type={type}
+					prid={prid}
+					status={status}
+					isGroupChat={isGroupChat}
+					teamMain={teamMain}
+					size={24}
+					sourceType={sourceType}
+					abacAttributes={abacAttributes}
+				/>
+			</TextLineCenter>
 		);
 	}
 

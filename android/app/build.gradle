@@ -69,11 +69,6 @@ react {
  */
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
-project.ext.react = [
-    // bundleAssetName: "app.bundle",
-    iconFontNames: [ 'custom.ttf' ]
-]
-
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion

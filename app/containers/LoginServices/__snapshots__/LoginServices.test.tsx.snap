@@ -461,35 +461,51 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  {
-                    "left": 15,
-                    "position": "absolute",
-                  },
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 24,
+                  "left": 15,
+                  "position": "absolute",
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             accessible={false}
             style={
@@ -631,35 +647,51 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  {
-                    "left": 15,
-                    "position": "absolute",
-                  },
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 24,
+                  "left": 15,
+                  "position": "absolute",
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             accessible={false}
             style={
@@ -801,35 +833,51 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24.75,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  {
-                    "left": 15,
-                    "position": "absolute",
-                  },
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 24,
+                  "left": 15,
+                  "position": "absolute",
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             accessible={false}
             style={
@@ -1053,35 +1101,51 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  {
-                    "left": 15,
-                    "position": "absolute",
-                  },
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 24,
+                  "left": 15,
+                  "position": "absolute",
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             accessible={false}
             style={
@@ -1223,35 +1287,51 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  {
-                    "left": 15,
-                    "position": "absolute",
-                  },
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 24,
+                  "left": 15,
+                  "position": "absolute",
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             accessible={false}
             style={
@@ -1393,35 +1473,51 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24.75,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  {
-                    "left": 15,
-                    "position": "absolute",
-                  },
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 24,
+                  "left": 15,
+                  "position": "absolute",
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             accessible={false}
             style={
@@ -1563,35 +1659,51 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24.75,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  {
-                    "left": 15,
-                    "position": "absolute",
-                  },
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 24,
+                  "left": 15,
+                  "position": "absolute",
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             accessible={false}
             style={
@@ -1737,35 +1849,51 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  {
-                    "left": 15,
-                    "position": "absolute",
-                  },
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 24,
+                  "left": 15,
+                  "position": "absolute",
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             accessible={false}
             style={
@@ -1906,35 +2034,51 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  {
-                    "left": 15,
-                    "position": "absolute",
-                  },
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 24,
+                  "left": 15,
+                  "position": "absolute",
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             accessible={false}
             style={
@@ -2075,35 +2219,51 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24.75,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  {
-                    "left": 15,
-                    "position": "absolute",
-                  },
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 24,
+                  "left": 15,
+                  "position": "absolute",
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             accessible={false}
             style={
@@ -2244,35 +2404,51 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 24,
+                  "bottom": 0,
+                  "height": 24,
+                  "width": 24.75,
                 },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  {
-                    "left": 15,
-                    "position": "absolute",
-                  },
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 24,
+                  "left": 15,
+                  "position": "absolute",
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 24,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
           <Text
             accessible={false}
             style={

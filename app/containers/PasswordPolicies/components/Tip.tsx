@@ -4,11 +4,14 @@ import { useTheme } from '~/theme';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import I18n from '~/i18n';
 import sharedStyles from '~/views/Styles';
+import TextLineCenter from '~/containers/TextLineCenter';
 
 interface ITipProps {
 	iconType?: 'success' | 'error' | 'info';
 	description: string;
 }
+
+const TEXT_LINE_HEIGHT = 16;
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,7 +20,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		...sharedStyles.textRegular,
-		lineHeight: 16,
+		lineHeight: TEXT_LINE_HEIGHT,
 		fontSize: 12
 	}
 });
@@ -41,7 +44,9 @@ const Tip = ({ iconType, description }: ITipProps) => {
 
 	return (
 		<View accessible accessibilityLabel={`${accessibilityLabel}${description}`} style={styles.container}>
-			<CustomIcon color={color} name={icon} size={16} />
+			<TextLineCenter lineHeight={TEXT_LINE_HEIGHT}>
+				<CustomIcon color={color} name={icon} size={16} />
+			</TextLineCenter>
 			<Text style={{ ...styles.text, color }}>{description}</Text>
 		</View>
 	);

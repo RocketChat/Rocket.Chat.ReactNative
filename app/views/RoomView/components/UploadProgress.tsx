@@ -185,14 +185,9 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 								{I18n.t('Uploading')} {item.name}
 							</Text>
 							<A11y.Index index={2}>
-								<CustomIcon
-									accessible
-									accessibilityLabel={I18n.t('Cancel_upload')}
-									name='close'
-									size={20}
-									color={themes[theme!].fontSecondaryInfo}
-									onPress={() => this.handleCancelUpload(item)}
-								/>
+								<TouchableOpacity accessibilityLabel={I18n.t('Cancel_upload')} onPress={() => this.handleCancelUpload(item)}>
+									<CustomIcon name='close' size={20} color={themes[theme!].fontSecondaryInfo} />
+								</TouchableOpacity>
 							</A11y.Index>
 						</View>
 					</A11y.Index>
@@ -224,14 +219,9 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 							</A11y.Index>
 						</View>
 						<A11y.Index index={3}>
-							<CustomIcon
-								accessible
-								accessibilityLabel={I18n.t('Cancel_upload')}
-								name='close'
-								size={20}
-								color={themes[theme!].fontSecondaryInfo}
-								onPress={() => this.deleteUpload(item)}
-							/>
+							<TouchableOpacity accessibilityLabel={I18n.t('Cancel_upload')} onPress={() => this.deleteUpload(item)}>
+								<CustomIcon name='close' size={20} color={themes[theme!].fontSecondaryInfo} />
+							</TouchableOpacity>
 						</A11y.Index>
 					</View>
 				</A11y.Index>

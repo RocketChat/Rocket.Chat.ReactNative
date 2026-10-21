@@ -145,6 +145,7 @@
 		66C2701D2EBBCB570062725F /* MMKVKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */; };
 		6F204E445C3D44699793D4F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680FA18DB475479CAD48F334 /* SceneDelegate.swift */; };
 		6FA7E2392F28A9D300A1D45E /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */; };
+		74B36FEF18614B4EAD713471 /* NanoIconsSymbols.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71CEF2EA50814DA2B706A06B /* NanoIconsSymbols.xcassets */; };
 		782E0520ED599FF8DDC2318F /* Pods_defaults_Rocket_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ED4E003393D3A9256F4EB3 /* Pods_defaults_Rocket_Chat.framework */; };
 		79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A42CFB843397273C7EA /* SecureStorage.m */; };
 		7A0000052F1BAFA700B6B4BD /* VoipService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0000032F1BAFA700B6B4BD /* VoipService.swift */; };
@@ -158,8 +159,6 @@
 		7A1B58452F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
 		7A3704572F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */; };
 		7A37D6FF2F896C360095EBA1 /* MediaCallsAnswerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F98EE33D91A93DF8E69F34 /* MediaCallsAnswerRequest.swift */; };
-		7A610CD427ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
-		7A610CD527ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
 		7A8B30772BCD9D3F00146A40 /* SSLPinning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */; };
 		7AAB3E15257E6A6E00707CF6 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8282511304100FEF824 /* Sender.swift */; };
 		7AAB3E16257E6A6E00707CF6 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E680ED82512990700C9257A /* Request.swift */; };
@@ -434,6 +433,7 @@
 		680FA18DB475479CAD48F334 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6FA7E2362F28A9D300A1D45E /* ExternalInputModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalInputModule.h; sourceTree = "<group>"; };
 		6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExternalInputModule.m; sourceTree = "<group>"; };
+		71CEF2EA50814DA2B706A06B /* NanoIconsSymbols.xcassets */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = NanoIconsSymbols.xcassets; path = NanoIconsSymbols.xcassets; sourceTree = "<group>"; };
 		7A0000032F1BAFA700B6B4BD /* VoipService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipService.swift; sourceTree = "<group>"; };
 		7A0000042F1BAFA700B6B4BD /* VoipModule.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VoipModule.mm; sourceTree = "<group>"; };
 		7A006F13229C83B600803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -443,7 +443,6 @@
 		7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPayload.swift; sourceTree = "<group>"; };
 		7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Voip.swift"; sourceTree = "<group>"; };
 		7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPerCallDdpRegistry.swift; sourceTree = "<group>"; };
-		7A610CD127ECE38100B8ABDD /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
 		7A8B30742BCD9D3F00146A40 /* SSLPinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLPinning.h; sourceTree = "<group>"; };
 		7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SSLPinning.mm; sourceTree = "<group>"; };
 		7AAA749C23043B1D00F1ADE9 /* RocketChatRN-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RocketChatRN-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1024,7 +1023,7 @@
 			isa = PBXGroup;
 			children = (
 				7AE10C0528A59530003593CB /* Inter.ttf */,
-				7A610CD127ECE38100B8ABDD /* custom.ttf */,
+				71CEF2EA50814DA2B706A06B /* NanoIconsSymbols.xcassets */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1133,6 +1132,7 @@
 				7A55BE3D2F11320C00D8744D /* Upload source maps to Bugsnag */,
 				F8FA5EB1C05179679A1B0213 /* [CP] Embed Pods Frameworks */,
 				6C507C5DC028E270B40EF89D /* [CP] Copy Pods Resources */,
+				EB20708DBDAB461AAEAEB000 /* Copy nanoicons fonts */,
 			);
 			buildRules = (
 			);
@@ -1217,7 +1217,6 @@
 			files = (
 				65AD38392BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */,
 				1E6CC61F2513DBF400965591 /* GoogleService-Info.plist in Resources */,
-				7A610CD427ECE38100B8ABDD /* custom.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1236,12 +1235,12 @@
 				65B9A71B2AFC24190088956F /* ringtone.mp3 in Resources */,
 				7A14FCF4257FEB59005BDCD4 /* Assets.xcassets in Resources */,
 				A1C0E0022F90000000C0FFEE /* AppIcon.icon in Resources */,
-				7A610CD527ECE38100B8ABDD /* custom.ttf in Resources */,
 				7AAB3E42257E6A6E00707CF6 /* Images.xcassets in Resources */,
 				7AE10C0828A59530003593CB /* Inter.ttf in Resources */,
 				7AAB3E44257E6A6E00707CF6 /* GoogleService-Info.plist in Resources */,
 				65AD383A2BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */,
 				7AAB3E45257E6A6E00707CF6 /* LaunchScreen.storyboard in Resources */,
+				74B36FEF18614B4EAD713471 /* NanoIconsSymbols.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1391,7 +1390,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				$TARGET_BUILD_DIR/$INFOPLIST_PATH,
+				"$TARGET_BUILD_DIR/$INFOPLIST_PATH",
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -1546,6 +1545,20 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		EB20708DBDAB461AAEAEB000 /* Copy nanoicons fonts */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy nanoicons fonts";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "NANOICONS_DIR=\"${PROJECT_DIR}/nanoicons-fonts\"\nDESTINATION=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\ncp \"$NANOICONS_DIR/custom.ttf\" \"$DESTINATION/\" || { echo \"error: nano-icons could not copy $NANOICONS_DIR/custom.ttf to $DESTINATION\" >&2; exit 1; }\n";
 		};
 		F8FA5EB1C05179679A1B0213 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1858,7 +1871,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
+					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -1934,7 +1947,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
+					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -2384,7 +2397,10 @@
 					"$(inherited)",
 					"-DRCT_REMOVE_LEGACY_ARCH=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				PODFILE_DIR = "$(SRCROOT)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -2472,7 +2488,10 @@
 					"$(inherited)",
 					"-DRCT_REMOVE_LEGACY_ARCH=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				PODFILE_DIR = "$(SRCROOT)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;

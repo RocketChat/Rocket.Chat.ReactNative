@@ -289,37 +289,58 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   "position": "absolute",
                   "right": 0,
                 },
-                undefined,
+                {
+                  "bottom": 0,
+                  "justifyContent": "center",
+                  "top": 0,
+                },
               ]
             }
             testID="icon_container"
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
+              accessibilityLabel=""
+              accessibilityRole="image"
+              accessible={false}
               style={
                 [
                   {
-                    "color": "#6C727A",
-                    "fontSize": 22,
+                    "bottom": 0,
+                    "height": 22,
+                    "width": 22,
                   },
-                  [
-                    {
-                      "lineHeight": 22,
-                    },
-                    false,
-                  ],
                   {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
+                    "height": 22,
                   },
-                  {},
                 ]
               }
             >
-              
-            </Text>
+              <Text
+                accessible={false}
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "bottom": 0,
+                      "fontFamily": "custom-24242538",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                      "includeFontPadding": false,
+                      "position": "absolute",
+                    },
+                    {
+                      "fontSize": 22,
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -419,37 +440,58 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   "position": "absolute",
                   "right": 0,
                 },
-                undefined,
+                {
+                  "bottom": 0,
+                  "justifyContent": "center",
+                  "top": 0,
+                },
               ]
             }
             testID="icon_container"
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
+              accessibilityLabel=""
+              accessibilityRole="image"
+              accessible={false}
               style={
                 [
                   {
-                    "color": "#6C727A",
-                    "fontSize": 22,
+                    "bottom": 0,
+                    "height": 22,
+                    "width": 22,
                   },
-                  [
-                    {
-                      "lineHeight": 22,
-                    },
-                    false,
-                  ],
                   {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
+                    "height": 22,
                   },
-                  {},
                 ]
               }
             >
-              
-            </Text>
+              <Text
+                accessible={false}
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "bottom": 0,
+                      "fontFamily": "custom-24242538",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                      "includeFontPadding": false,
+                      "position": "absolute",
+                    },
+                    {
+                      "fontSize": 22,
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -549,37 +591,58 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   "position": "absolute",
                   "right": 0,
                 },
-                undefined,
+                {
+                  "bottom": 0,
+                  "justifyContent": "center",
+                  "top": 0,
+                },
               ]
             }
             testID="icon_container"
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
+              accessibilityLabel=""
+              accessibilityRole="image"
+              accessible={false}
               style={
                 [
                   {
-                    "color": "#6C727A",
-                    "fontSize": 22,
+                    "bottom": 0,
+                    "height": 22,
+                    "width": 22,
                   },
-                  [
-                    {
-                      "lineHeight": 22,
-                    },
-                    false,
-                  ],
                   {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
+                    "height": 22,
                   },
-                  {},
                 ]
               }
             >
-              
-            </Text>
+              <Text
+                accessible={false}
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "bottom": 0,
+                      "fontFamily": "custom-24242538",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                      "includeFontPadding": false,
+                      "position": "absolute",
+                    },
+                    {
+                      "fontSize": 22,
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -679,37 +742,58 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   "position": "absolute",
                   "right": 0,
                 },
-                undefined,
+                {
+                  "bottom": 0,
+                  "justifyContent": "center",
+                  "top": 0,
+                },
               ]
             }
             testID="icon_container"
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
+              accessibilityLabel=""
+              accessibilityRole="image"
+              accessible={false}
               style={
                 [
                   {
-                    "color": "#6C727A",
-                    "fontSize": 22,
+                    "bottom": 0,
+                    "height": 22,
+                    "width": 22,
                   },
-                  [
-                    {
-                      "lineHeight": 22,
-                    },
-                    false,
-                  ],
                   {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
+                    "height": 22,
                   },
-                  {},
                 ]
               }
             >
-              
-            </Text>
+              <Text
+                accessible={false}
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "bottom": 0,
+                      "fontFamily": "custom-24242538",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                      "includeFontPadding": false,
+                      "position": "absolute",
+                    },
+                    {
+                      "fontSize": 22,
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -2213,32 +2297,49 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 18,
+                  "bottom": 0,
+                  "height": 18,
+                  "width": 18,
                 },
-                [
-                  {
-                    "lineHeight": 18,
-                  },
-                  undefined,
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 18,
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 18,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </ExternalKeyboardView>
@@ -2419,32 +2520,49 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 18,
+                  "bottom": 0,
+                  "height": 18,
+                  "width": 18,
                 },
-                [
-                  {
-                    "lineHeight": 18,
-                  },
-                  undefined,
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 18,
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 18,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </ExternalKeyboardView>
@@ -2625,32 +2743,49 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#2F343D",
-                  "fontSize": 18,
+                  "bottom": 0,
+                  "height": 18,
+                  "width": 18,
                 },
-                [
-                  {
-                    "lineHeight": 18,
-                  },
-                  undefined,
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 18,
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 18,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </ExternalKeyboardView>
@@ -2808,35 +2943,51 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
           >
             Invalid Date
           </Text>
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
+            accessibilityLabel=""
+            accessibilityRole="image"
+            accessible={false}
             style={
               [
                 {
-                  "color": "#EC0D2A",
-                  "fontSize": 20,
+                  "bottom": 0,
+                  "height": 20,
+                  "width": 20.625,
                 },
-                [
-                  {
-                    "lineHeight": 20,
-                  },
-                  {
-                    "position": "absolute",
-                    "right": 16,
-                  },
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "height": 20,
+                  "position": "absolute",
+                  "right": 16,
                 },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "fontFamily": "custom-24242538",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "includeFontPadding": false,
+                    "position": "absolute",
+                  },
+                  {
+                    "fontSize": 20,
+                  },
+                  {
+                    "color": "#EC0D2A",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -3236,35 +3387,51 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
             >
               Invalid Date
             </Text>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
+              accessibilityLabel=""
+              accessibilityRole="image"
+              accessible={false}
               style={
                 [
                   {
-                    "color": "#6C727A",
-                    "fontSize": 20,
+                    "bottom": 0,
+                    "height": 20,
+                    "width": 20.625,
                   },
-                  [
-                    {
-                      "lineHeight": 20,
-                    },
-                    {
-                      "position": "absolute",
-                      "right": 16,
-                    },
-                  ],
                   {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
+                    "height": 20,
+                    "position": "absolute",
+                    "right": 16,
                   },
-                  {},
                 ]
               }
             >
-              
-            </Text>
+              <Text
+                accessible={false}
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "bottom": 0,
+                      "fontFamily": "custom-24242538",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                      "includeFontPadding": false,
+                      "position": "absolute",
+                    },
+                    {
+                      "fontSize": 20,
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -3764,32 +3931,49 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
           ]
         }
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
+          accessibilityLabel=""
+          accessibilityRole="image"
+          accessible={false}
           style={
             [
               {
-                "color": "#2F343D",
-                "fontSize": 54,
+                "bottom": 0,
+                "height": 54,
+                "width": 55.6875,
               },
-              [
-                {
-                  "lineHeight": 54,
-                },
-                undefined,
-              ],
               {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
+                "height": 54,
               },
-              {},
             ]
           }
         >
-          
-        </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "bottom": 0,
+                  "fontFamily": "custom-24242538",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                  "includeFontPadding": false,
+                  "position": "absolute",
+                },
+                {
+                  "fontSize": 54,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
       <View
         style={
@@ -4722,35 +4906,51 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
             >
               Search
             </Text>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
+              accessibilityLabel=""
+              accessibilityRole="image"
+              accessible={false}
               style={
                 [
                   {
-                    "color": "#6C727A",
-                    "fontSize": 22,
+                    "bottom": 0,
+                    "height": 22,
+                    "width": 22,
                   },
-                  [
-                    {
-                      "lineHeight": 22,
-                    },
-                    {
-                      "position": "absolute",
-                      "right": 16,
-                    },
-                  ],
                   {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
+                    "height": 22,
+                    "position": "absolute",
+                    "right": 16,
                   },
-                  {},
                 ]
               }
             >
-              
-            </Text>
+              <Text
+                accessible={false}
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "bottom": 0,
+                      "fontFamily": "custom-24242538",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                      "includeFontPadding": false,
+                      "position": "absolute",
+                    },
+                    {
+                      "fontSize": 22,
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -5033,65 +5233,98 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
                     >
                       John
                     </Text>
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
+                    <View
+                      accessibilityLabel=""
+                      accessibilityRole="image"
+                      accessible={false}
                       style={
                         [
                           {
-                            "color": "#6C727A",
-                            "fontSize": 16,
+                            "bottom": 0,
+                            "height": 16,
+                            "width": 16,
                           },
-                          [
-                            {
-                              "lineHeight": 16,
-                            },
-                            undefined,
-                          ],
                           {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
+                            "height": 16,
                           },
-                          {},
                         ]
                       }
                     >
-                      
-                    </Text>
+                      <Text
+                        accessible={false}
+                        allowFontScaling={false}
+                        selectable={false}
+                        style={
+                          [
+                            {
+                              "bottom": 0,
+                              "fontFamily": "custom-24242538",
+                              "fontStyle": "normal",
+                              "fontWeight": "normal",
+                              "includeFontPadding": false,
+                              "position": "absolute",
+                            },
+                            {
+                              "fontSize": 16,
+                            },
+                            {
+                              "color": "#6C727A",
+                            },
+                          ]
+                        }
+                      >
+                        
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </ExternalKeyboardView>
             </View>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
+              accessibilityLabel=""
+              accessibilityRole="image"
+              accessible={false}
               style={
                 [
                   {
-                    "color": "#6C727A",
-                    "fontSize": 22,
+                    "bottom": 0,
+                    "height": 22,
+                    "width": 22,
                   },
-                  [
-                    {
-                      "lineHeight": 22,
-                    },
-                    {
-                      "position": "absolute",
-                      "right": 16,
-                    },
-                  ],
                   {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
+                    "height": 22,
+                    "position": "absolute",
+                    "right": 16,
                   },
-                  {},
                 ]
               }
             >
-              
-            </Text>
+              <Text
+                accessible={false}
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "bottom": 0,
+                      "fontFamily": "custom-24242538",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                      "includeFontPadding": false,
+                      "position": "absolute",
+                    },
+                    {
+                      "fontSize": 22,
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
           </View>
         </View>
       </View>

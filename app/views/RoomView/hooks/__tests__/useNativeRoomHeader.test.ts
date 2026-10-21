@@ -12,7 +12,7 @@ let mockState: any;
 jest.mock('@react-navigation/native', () => ({ useNavigation: () => mockNavigation }));
 jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: (select: (state: any) => unknown) => select(mockState) }));
 jest.mock('~/containers/CustomIcon', () => ({
-	IconSet: { getImageSource: jest.fn(async (name, size, color) => ({ uri: `${name}:${color}`, width: size, height: size })) },
+	iconAssetName: (name: string) => `nano.${name}`,
 	hasIcon: () => true
 }));
 jest.mock('~/lib/hooks/usePreviewFormatText', () => ({ __esModule: true, default: (text: string) => text.replaceAll('*', '') }));
@@ -46,38 +46,40 @@ beforeEach(() => {
 	};
 });
 
-it('sets the title before the room icon is ready and adds the icon when it loads', async () => {
+it('sets the title together with the room icon', () => {
 	renderHook(() => useNativeRoomHeader({ ...fields, type: 'p', title: 'Shown' }, undefined, undefined, jest.fn()));
-	expect(mockSetOptions.mock.calls[0][0]).toMatchObject({ headerTitle: 'Shown', headerSubtitle: 'Topic' });
-	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('channel-private:title'));
-	expect(latestOptions().headerTitle).toBe('Shown');
+	expect(mockSetOptions.mock.calls[0][0]).toMatchObject({
+		headerTitle: 'Shown',
+		headerSubtitle: 'Topic',
+		headerTitleIcon: { type: 'xcasset', name: 'nano.channel-private', tintColor: 'title' }
+	});
 });
 
-it('shows plain topic text and the room icon', async () => {
+it('shows plain topic text and the room icon', () => {
 	renderHook(() => useNativeRoomHeader(fields, undefined, undefined, jest.fn()));
-	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('channel-public:title'));
-	expect(latestOptions()).toMatchObject({ headerTitle: 'Room', headerSubtitle: 'Topic', headerSubtitleImageSource: undefined });
+	expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.channel-public', tintColor: 'title' });
+	expect(latestOptions()).toMatchObject({ headerTitle: 'Room', headerSubtitle: 'Topic', headerSubtitleIcon: undefined });
 });
 
-it('keeps the parent subtitle and moves its icon below the Thread title while users type', async () => {
+it('keeps the parent subtitle and moves its icon below the Thread title while users type', () => {
 	mockState.usersTyping = ['Alice'];
 	renderHook(() =>
 		useNativeRoomHeader({ ...fields, title: '*Thread*', parentTitle: '*Parent*' }, 'thread', undefined, jest.fn())
 	);
-	await waitFor(() => expect(latestOptions().headerSubtitleImageSource?.uri).toBe('channel-public:title'));
-	expect(latestOptions()).toMatchObject({ headerTitle: 'Thread', headerSubtitle: '*Parent*', headerTitleImageSource: undefined });
+	expect(latestOptions().headerSubtitleIcon).toEqual({ type: 'xcasset', name: 'nano.channel-public', tintColor: 'title' });
+	expect(latestOptions()).toMatchObject({ headerTitle: 'Thread', headerSubtitle: '*Parent*', headerTitleIcon: undefined });
 });
 
-it('clears the expiry clock during typing and updates the colored presence image', async () => {
+it('clears the expiry clock during typing and updates the colored presence image', () => {
 	mockState.activeUsers.user = { status: 'online', statusText: 'Working', statusExpiresAt: 'future' };
 	const { rerender } = renderHook(() => useNativeRoomHeader({ ...fields, type: 'd' }, undefined, 'user', jest.fn()));
-	await waitFor(() => expect(latestOptions().headerSubtitleImageSource?.uri).toBe('clock:subtitle'));
-	expect(latestOptions().headerTitleImageSource.uri).toBe('status-online:online');
+	expect(latestOptions().headerSubtitleIcon).toEqual({ type: 'xcasset', name: 'nano.clock', tintColor: 'subtitle' });
+	expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.status-online', tintColor: 'online' });
 	mockState = { ...mockState, usersTyping: ['Alice', 'Bob'], activeUsers: { user: { status: 'busy' } } };
 	rerender({});
-	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('status-busy:busy'));
+	expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.status-busy', tintColor: 'busy' });
 	expect(latestOptions().headerSubtitle).toBe('Alice and Bob are_typing...');
-	expect(latestOptions().headerSubtitleImageSource).toBeUndefined();
+	expect(latestOptions().headerSubtitleIcon).toBeUndefined();
 });
 
 it('requests missing direct-message presence but respects disabled broadcasting', async () => {
@@ -98,26 +100,27 @@ it('uses supported Omnichannel app images and falls back to the glyph for SVG ic
 	const { rerender } = renderHook(() =>
 		useNativeRoomHeader({ ...fields, type: 'l', sourceType }, undefined, undefined, jest.fn())
 	);
-	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toContain('get-sidebar-icon?icon=icon.png'));
+	await waitFor(() => expect(latestOptions().headerTitleIcon?.source?.uri).toContain('get-sidebar-icon?icon=icon.png'));
 	getSize.mockClear();
 	sourceType = { ...sourceType, sidebarIcon: 'icon.svg' } as IHeaderFields['sourceType'];
 	rerender({});
-	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('omnichannel:offline'));
+	await waitFor(() =>
+		expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.omnichannel', tintColor: 'offline' })
+	);
 	expect(getSize).not.toHaveBeenCalled();
 	getSize.mockRestore();
 });
 
-it('opens room actions when the title is pressed', async () => {
+it('opens room actions when the title is pressed', () => {
 	const onTitlePress = jest.fn();
 	renderHook(() => useNativeRoomHeader(fields, undefined, undefined, onTitlePress));
-	await waitFor(() => expect(latestOptions().onHeaderTitlePress).toBeInstanceOf(Function));
 	latestOptions().onHeaderTitlePress({ nativeEvent: {} });
 	expect(onTitlePress).toHaveBeenCalledWith();
 });
 
-it('does not make the title pressable for invite subscriptions', async () => {
+it('does not make the title pressable for invite subscriptions', () => {
 	renderHook(() => useNativeRoomHeader({ ...fields, disabled: true }, undefined, undefined, jest.fn()));
-	await waitFor(() => expect(latestOptions().headerTitleImageSource?.uri).toBe('channel-public:title'));
+	expect(latestOptions().headerTitleIcon).toEqual({ type: 'xcasset', name: 'nano.channel-public', tintColor: 'title' });
 	expect(latestOptions().onHeaderTitlePress).toBeUndefined();
 });
 
@@ -125,7 +128,7 @@ it('shows the connection state in a thread instead of the parent title and its i
 	mockState.meteor = { connected: false, connecting: true };
 	renderHook(() => useNativeRoomHeader(fields, 'thread', undefined, jest.fn()));
 	await act(async () => {});
-	expect(latestOptions()).toMatchObject({ headerSubtitle: 'Connecting', headerSubtitleImageSource: undefined });
+	expect(latestOptions()).toMatchObject({ headerSubtitle: 'Connecting', headerSubtitleIcon: undefined });
 });
 
 it('shows waiting for network instead of typing users or presence', async () => {
@@ -134,5 +137,5 @@ it('shows waiting for network instead of typing users or presence', async () => 
 	mockState.activeUsers.user = { status: 'online', statusText: 'Working', statusExpiresAt: 'future' };
 	renderHook(() => useNativeRoomHeader({ ...fields, type: 'd' }, undefined, 'user', jest.fn()));
 	await act(async () => {});
-	expect(latestOptions()).toMatchObject({ headerSubtitle: 'Waiting_for_network', headerSubtitleImageSource: undefined });
+	expect(latestOptions()).toMatchObject({ headerSubtitle: 'Waiting_for_network', headerSubtitleIcon: undefined });
 });

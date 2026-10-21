@@ -224,7 +224,6 @@ export const FormTextInput = ({
 								size={20}
 								color={colors.fontDefault}
 								style={[styles.iconContainer, styles.iconRight]}
-								accessible={false}
 							/>
 						) : null}
 
@@ -255,7 +254,7 @@ export const FormTextInput = ({
 					</View>
 					{showErrorMessage && inputError ? (
 						<View accessible={false} style={styles.errorContainer}>
-							<CustomIcon accessible={false} name='warning' size={16} color={colors.fontDanger} />
+							<CustomIcon name='warning' size={16} color={colors.fontDanger} />
 							<Text accessible={false} style={{ ...styles.error, color: colors.fontDanger }}>
 								{inputError}
 							</Text>

@@ -36,7 +36,6 @@
 		"pnpm-lock.yaml",
 		".storybook/",
 		"app/i18n/locales/",
-		"app/containers/CustomIcon/mappedIcons.js",
-		"app/containers/CustomIcon/selection.json"
+		"app/containers/CustomIcon/nanoicons/"
 	]
 }

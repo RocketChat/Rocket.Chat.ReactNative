@@ -62,32 +62,49 @@ exports[`a11y label is cancel when cancelAndDelete 1`] = `
     onFocus={[Function]}
     testID="message-composer-delete-audio"
   >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
+    <View
+      accessibilityLabel=""
+      accessibilityRole="image"
+      accessible={false}
       style={
         [
           {
-            "color": undefined,
-            "fontSize": 24,
+            "bottom": 0,
+            "height": 24,
+            "width": 24.75,
           },
-          [
-            {
-              "lineHeight": 24,
-            },
-            undefined,
-          ],
           {
-            "fontFamily": "custom",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
+            "height": 24,
           },
-          {},
         ]
       }
     >
-      
-    </Text>
+      <Text
+        accessible={false}
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "bottom": 0,
+              "fontFamily": "custom-24242538",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+              "includeFontPadding": false,
+              "position": "absolute",
+            },
+            {
+              "fontSize": 24,
+            },
+            {
+              "color": "currentColor",
+            },
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
   </View>
 </View>
 `;
@@ -154,32 +171,49 @@ exports[`a11y label is delete otherwise and fires onPress 1`] = `
     onFocus={[Function]}
     testID="message-composer-delete-audio"
   >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
+    <View
+      accessibilityLabel=""
+      accessibilityRole="image"
+      accessible={false}
       style={
         [
           {
-            "color": undefined,
-            "fontSize": 24,
+            "bottom": 0,
+            "height": 24,
+            "width": 24.75,
           },
-          [
-            {
-              "lineHeight": 24,
-            },
-            undefined,
-          ],
           {
-            "fontFamily": "custom",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
+            "height": 24,
           },
-          {},
         ]
       }
     >
-      
-    </Text>
+      <Text
+        accessible={false}
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "bottom": 0,
+              "fontFamily": "custom-24242538",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+              "includeFontPadding": false,
+              "position": "absolute",
+            },
+            {
+              "fontSize": 24,
+            },
+            {
+              "color": "currentColor",
+            },
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
   </View>
 </View>
 `;

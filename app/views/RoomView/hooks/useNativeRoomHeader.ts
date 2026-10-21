@@ -18,13 +18,11 @@ import usePreviewFormatText from '~/lib/hooks/usePreviewFormatText';
 import { useUserStatusColor } from '~/lib/hooks/useUserStatusColor';
 import { getUserPresence } from '~/lib/methods/getUsersPresence';
 import { formatStatusExpiry } from '~/lib/methods/helpers/formatStatusExpiry';
+import { headerTextIcon } from '~/lib/methods/helpers/navigation/headerIcon';
 import { useTheme } from '~/theme';
 import { type IRoomViewProps } from '../definitions';
 import { type IHeaderFields } from './useHeaderFields';
-import { useHeaderIconImage, useHeaderRemoteImage } from './useHeaderImage';
-
-const TITLE_FONT_SIZE = 17;
-const SUBTITLE_FONT_SIZE = 12;
+import { useHeaderRemoteImage } from './useHeaderImage';
 
 const getRoomIcon = (fields: IHeaderFields, isDirectMessage: boolean, status: TUserStatus): TIconsName => {
 	if (isDirectMessage) {
@@ -119,28 +117,38 @@ export const useNativeRoomHeader = (
 	const { title, subtitle, showClock, showParentIcon } = useRoomHeaderContent(fields, tmid, activeUser, connected);
 
 	const roomIcon = getRoomIcon(fields, isDirectMessage, status);
-	const glyphImage = useHeaderIconImage(
-		fields.type ? roomIcon : undefined,
-		isDirectMessage || fields.type === 'l' ? statusColor : colors.fontTitlesLabels,
-		TITLE_FONT_SIZE
-	);
+	const roomIconColor = isDirectMessage || fields.type === 'l' ? statusColor : colors.fontTitlesLabels;
 	const server = useAppSelector(state => state.server.server);
 	const isSvgSidebarIcon = fields.sourceType?.sidebarIcon?.toLowerCase().endsWith('.svg');
 	const remoteUri =
 		connected && fields.type === 'l' && !isSvgSidebarIcon ? getOmnichannelSidebarIconUri(server, fields.sourceType) : undefined;
 	const remoteImage = useHeaderRemoteImage(remoteUri);
-	const roomImage = remoteImage ?? glyphImage;
-	const clockImage = useHeaderIconImage(showClock ? 'clock' : undefined, colors.fontSecondaryInfo, SUBTITLE_FONT_SIZE);
-	const subtitleImage = showParentIcon ? roomImage : clockImage;
 
 	useLayoutEffect(() => {
+		const roomGlyph = fields.type ? headerTextIcon(roomIcon, roomIconColor) : undefined;
+		const roomTitleIcon = remoteImage ? { type: 'image' as const, source: remoteImage } : roomGlyph;
+		const clockIcon = showClock ? headerTextIcon('clock', colors.fontSecondaryInfo) : undefined;
 		navigation.setOptions({
 			headerTitle: title,
 			headerSubtitle: subtitle || undefined,
-			headerTitleImageSource: tmid ? undefined : roomImage,
-			headerSubtitleImageSource: subtitleImage,
+			headerTitleIcon: tmid ? undefined : roomTitleIcon,
+			headerSubtitleIcon: showParentIcon ? roomTitleIcon : clockIcon,
 			headerTitleTestID: 'room-header',
 			onHeaderTitlePress: fields.disabled ? undefined : () => onTitlePress()
 		});
-	}, [navigation, title, subtitle, tmid, roomImage, subtitleImage, onTitlePress, fields.disabled]);
+	}, [
+		navigation,
+		title,
+		subtitle,
+		tmid,
+		fields.type,
+		roomIcon,
+		roomIconColor,
+		remoteImage,
+		showClock,
+		colors.fontSecondaryInfo,
+		showParentIcon,
+		onTitlePress,
+		fields.disabled
+	]);
 };

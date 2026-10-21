@@ -187,17 +187,6 @@ jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 	};
 });
 
-jest.mock('./app/containers/CustomIcon', () => {
-	const actualNav = jest.requireActual('./app/containers/CustomIcon');
-
-	return {
-		...actualNav,
-		IconSet: {
-			hasIcon: () => true
-		}
-	};
-});
-
 jest.mock('./app/lib/encryption', () => ({
 	encryptMessage: jest.fn(() => ({ rid: 'test', msg: 'test' }))
 }));

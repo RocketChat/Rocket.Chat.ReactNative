@@ -137,7 +137,7 @@ export default StyleSheet.create({
 		marginLeft: 8
 	},
 	rightIcons: {
-		paddingLeft: 5
+		marginLeft: 5
 	},
 	threadDetails: {
 		flex: 1,
