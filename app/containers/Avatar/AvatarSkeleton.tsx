@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, type ViewStyle } from 'react-native';
-import Animated, { makeMutable, useAnimatedStyle, withRepeat, withTiming } from 'react-native-reanimated';
+import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
 import { useTheme } from '~/theme';
 
@@ -15,35 +15,19 @@ const styles = StyleSheet.create({
 });
 
 const SKELETON_DELAY = 150;
-const PULSE_MIN_OPACITY = 0.4;
+const PULSE_MIN_OPACITY = 0;
 const PULSE_DURATION = 800;
-
-const pulse = makeMutable(1);
-let activeSkeletons = 0;
-
-const startPulse = () => {
-	activeSkeletons += 1;
-	if (activeSkeletons === 1) {
-		pulse.value = withRepeat(withTiming(PULSE_MIN_OPACITY, { duration: PULSE_DURATION }), -1, true);
-	}
-};
-
-const stopPulse = () => {
-	activeSkeletons -= 1;
-	if (activeSkeletons === 0) {
-		pulse.value = 1;
-	}
-};
 
 const SkeletonPulse = ({ borderRadius }: IAvatarSkeleton) => {
 	const { colors } = useTheme();
+	const opacity = useSharedValue(1);
 
 	useEffect(() => {
-		startPulse();
-		return stopPulse;
-	}, []);
+		opacity.set(withRepeat(withTiming(PULSE_MIN_OPACITY, { duration: PULSE_DURATION }), -1, true));
+		return () => cancelAnimation(opacity);
+	}, [opacity]);
 
-	const animatedStyle = useAnimatedStyle(() => ({ opacity: pulse.value }));
+	const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
 
 	return (
 		<Animated.View
