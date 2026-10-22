@@ -95,6 +95,14 @@ export const MessageComposer = ({
 		contentHeight.set(height);
 	};
 
+	const restoreUnsentCaption = (results: PromiseSettledResult<void>[], textFromInput: string) => {
+		if (results[0].status === 'rejected') {
+			composerInputComponentRef.current.setInput(textFromInput);
+			return;
+		}
+		messageActionStore.getState().actions.setQuoteMessageIds([]);
+	};
+
 	const handleSendMessage = async () => {
 		if (!rid) return;
 
@@ -148,7 +156,7 @@ export const MessageComposer = ({
 			if (rejected.length) {
 				rejected.forEach(({ reason }) => log(reason));
 				attachments.filter((_, index) => results[index].status === 'fulfilled').forEach(({ path }) => removeAttachment(path));
-				composerInputComponentRef.current.setInput(textFromInput);
+				restoreUnsentCaption(results, textFromInput);
 				return;
 			}
 			clearAttachments();

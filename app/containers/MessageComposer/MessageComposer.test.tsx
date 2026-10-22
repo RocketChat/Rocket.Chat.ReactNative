@@ -920,10 +920,29 @@ describe('MessageComposer', () => {
 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
 			await user.press(screen.getByTestId('message-composer-send'));
 
-			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
+			await waitFor(() => expect(screen.queryByTestId('message-composer-attachment-1')).not.toBeOnTheScreen());
 			expect(screen.getByLabelText('failed.png')).toBeOnTheScreen();
 			expect(screen.queryByLabelText('sent.png')).not.toBeOnTheScreen();
-			expect(screen.queryByTestId('message-composer-attachment-1')).not.toBeOnTheScreen();
+		});
+
+		test('does not restore the caption or the quote when the first attachment, which carried them, was sent', async () => {
+			const sent = { ...attachment, filename: 'sent.png', path: 'file:///tmp/sent.png' } as IShareAttachment;
+			const failed = { ...attachment, filename: 'failed.png', path: 'file:///tmp/failed.png' } as IShareAttachment;
+			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('upload failed'));
+			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
+			render(
+				<Render forwardedRef={composerRef} action={{ kind: 'quote', messageIds: ['abc'] }}>
+					<AttachmentSeeder attachments={[sent, failed]} />
+				</Render>
+			);
+			await screen.findByTestId('message-composer-attachment-1');
+			await screen.findByTestId('composer-quote-abc');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
+			await user.press(screen.getByTestId('message-composer-send'));
+
+			await waitFor(() => expect(screen.queryByTestId('message-composer-attachment-1')).not.toBeOnTheScreen());
+			expect(composerRef.current?.getText()).toBe('');
+			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();
 		});
 	});
 });
