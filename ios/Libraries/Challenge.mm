@@ -33,8 +33,29 @@
   return mmkvBridge;
 }
 
++ (NSCache<NSString *, NSURLCredential *> *)credentials
+{
+  static NSCache<NSString *, NSURLCredential *> *credentials;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    credentials = [[NSCache alloc] init];
+  });
+  return credentials;
+}
+
 + (nullable NSURLCredential *)credentialForPath:(NSString *)path password:(NSString *)password
 {
+  NSDate *modified = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil].fileModificationDate;
+  if (!modified) {
+    return nil;
+  }
+  // A re-picked file keeps its path, so the modification date tells the copies apart
+  NSString *cacheKey = [NSString stringWithFormat:@"%@\n%@\n%f", path, password, modified.timeIntervalSince1970];
+  NSURLCredential *cached = [[self credentials] objectForKey:cacheKey];
+  if (cached) {
+    return cached;
+  }
+
   NSData *p12data = [NSData dataWithContentsOfFile:path];
   if (!p12data) {
     return nil;
@@ -54,7 +75,9 @@
   }
   NSArray *certificates = [self intermediateCertificates:identity chain:firstItem[(id)kSecImportItemCertChain]];
 
-  return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
+  NSURLCredential *credential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
+  [[self credentials] setObject:credential forKey:cacheKey];
+  return credential;
 }
 
 + (NSString *)stringToHex:(NSString *)string
