@@ -119,27 +119,31 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
                 "RocketChat");
     }
 
-    private static synchronized void updateAlias(String name) {
+    private static void updateAlias(String name) {
         if (Objects.equals(name, alias)) {
             return;
         }
-        alias = name;
-        createSSLContext();
-        connectionPool.evictAll();
+        // KeyChain binds through the main thread, so it must not run under the class lock
+        X509ExtendedKeyManager keyManager = createKeyManager(name);
+        synchronized (SSLPinningTurboModule.class) {
+            alias = name;
+            createSSLContext(keyManager);
+            connectionPool.evictAll();
+        }
     }
 
     public static synchronized SSLSocketFactory getSSLFactory() {
-        if (sslSocketFactory.delegate == null && !createSSLContext()) {
+        if (sslSocketFactory.delegate == null && !createSSLContext(createKeyManager(null))) {
             return null;
         }
         return sslSocketFactory;
     }
 
-    private static synchronized boolean createSSLContext() {
+    private static synchronized boolean createSSLContext(X509ExtendedKeyManager keyManager) {
         try {
             final X509TrustManager trustManager = getTrustManagerFactory();
             final SSLContext context = SSLContext.getInstance("TLS");
-            context.init(new KeyManager[]{createKeyManager(alias)}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
+            context.init(new KeyManager[]{keyManager}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
             sslSocketFactory.setDelegate(context.getSocketFactory());
             return true;
         } catch (Exception e) {
