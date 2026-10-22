@@ -4,13 +4,34 @@ import { type Model } from '@nozbe/watermelondb';
 import database from '../database';
 import log from './helpers/log';
 import { random } from './helpers';
+import normalizeMessage from './helpers/normalizeMessage';
+import { closeUnclosedCodeBlock } from './helpers/closeUnclosedCodeBlock';
 import { Encryption } from '../encryption';
-import type { E2EType, IMessage, IUser, MessageType, TMessageModel } from '~/definitions';
+import type { E2EType, IMessage, IUser, MessageType, TMessageModel, TThreadMessageModel } from '~/definitions';
 import sdk from '../services/sdk';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import { messagesStatus } from '../constants/messagesStatus';
 
-const changeMessageStatus = async (id: string, status: number, tmid?: string, message?: IMessage) => {
+const applySendResult = (record: TMessageModel | TThreadMessageModel, status: number, message: IMessage | null) => {
+	if (record.status === messagesStatus.SENT) {
+		return;
+	}
+	record.status = status;
+	if (!message) {
+		return;
+	}
+	record.mentions = message.mentions;
+	record.channels = message.channels;
+	if (message.t === E2E_MESSAGE_TYPE) {
+		return;
+	}
+	record.attachments = message.attachments;
+	record.urls = message.urls;
+	record.md = message.md;
+};
+
+const changeMessageStatus = async (id: string, status: number, tmid?: string, serverMessage?: IMessage) => {
+	const message = normalizeMessage(serverMessage) as IMessage | null;
 	const db = database.active;
 	const msgCollection = db.get('messages');
 	const threadMessagesCollection = db.get('thread_messages');
@@ -19,27 +40,11 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, me
 		await db.write(async () => {
 			const successBatch: Model[] = [];
 			const messageRecord = await msgCollection.find(id);
-			successBatch.push(
-				messageRecord.prepareUpdate(m => {
-					m.status = status;
-					if (message) {
-						m.mentions = message.mentions;
-						m.channels = message.channels;
-					}
-				})
-			);
+			successBatch.push(messageRecord.prepareUpdate(m => applySendResult(m, status, message)));
 
 			if (tmid) {
 				const threadMessageRecord = await threadMessagesCollection.find(id);
-				successBatch.push(
-					threadMessageRecord.prepareUpdate(tm => {
-						tm.status = status;
-						if (message) {
-							tm.mentions = message.mentions;
-							tm.channels = message.channels;
-						}
-					})
-				);
+				successBatch.push(threadMessageRecord.prepareUpdate(tm => applySendResult(tm, status, message)));
 			}
 
 			await db.batch(successBatch);
@@ -88,12 +93,13 @@ export async function resendMessage(message: TMessageModel, tmid?: string) {
 
 export async function sendMessage(
 	rid: string,
-	msg: string,
+	text: string,
 	tmid: string | undefined,
 	user: Partial<Pick<IUser, 'id' | 'username' | 'name'>>,
 	tshow?: boolean
 ): Promise<void> {
 	try {
+		const msg = closeUnclosedCodeBlock(text);
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
 		const msgCollection = db.get('messages');
