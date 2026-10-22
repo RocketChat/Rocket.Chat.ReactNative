@@ -59,9 +59,14 @@
   }
   NSArray *certificates = [self intermediateCertificates:identity chain:firstItem[(id)kSecImportItemCertChain]];
 
-  [SDWebImageDownloader sharedDownloader].config.urlCredential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
+  NSURLCredential *credential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
 
-  return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
+  // urlCredential is nonatomic and challenges arrive on several delegate queues
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [SDWebImageDownloader sharedDownloader].config.urlCredential = credential;
+  });
+
+  return credential;
 }
 
 + (NSString *)stringToHex:(NSString *)string
