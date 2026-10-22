@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 import com.facebook.react.modules.network.OkHttpClientProvider;
 
-import okhttp3.Dispatcher;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -118,7 +117,6 @@ public class LoadNotification {
 
         // Configure OkHttpClient with proper timeouts
         final OkHttpClient client = OkHttpClientProvider.getOkHttpClient().newBuilder()
-                .dispatcher(new Dispatcher())
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
