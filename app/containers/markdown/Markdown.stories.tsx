@@ -1,3 +1,4 @@
+import { type ReactElement } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -257,5 +258,21 @@ this is a normal line`}
 			textStyle={textStyle}
 		/>
 		<Markdown msg='[Markdown link](https://rocket.chat)' textStyle={textStyle} />
+	</View>
+);
+
+const tableText = `| Client | OS | Tables |
+| --- | :-: | ---: |
+| Desktop | any | rendered |
+| *Mobile* | iOS, Android | **rendered** |`;
+const horizontalRuleText = `Text above the rule
+
+---
+
+Text below the rule`;
+export const Table = (): ReactElement => (
+	<View style={styles.container}>
+		<Markdown msg={tableText} />
+		<Markdown msg={horizontalRuleText} />
 	</View>
 );
