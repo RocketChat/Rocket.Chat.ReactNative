@@ -68,6 +68,7 @@ export interface IListProps extends Omit<
 > {
 	flatListRef: TListRef;
 	jumpToBottom: () => void;
+	onDragStart: () => void;
 	isAnchored?: boolean;
 }
 
@@ -156,7 +157,7 @@ export interface IJumpTarget {
 }
 
 export interface IJumpAnchorDeps {
-	loadSurroundingMessages: (params: { messageId: string; rid: string }) => Promise<unknown>;
+	loadSurroundingMessages: (params: { messageId: string; rid: string }) => Promise<IMessage[]>;
 	getLocalAnchorTs: (rid: string, ts: Date | number | string) => Promise<number | null>;
 }
 

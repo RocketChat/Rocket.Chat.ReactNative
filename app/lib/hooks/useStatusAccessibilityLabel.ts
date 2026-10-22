@@ -9,6 +9,9 @@ interface IUseStatusAccessibiltyLabel extends IGetAccessibilityRoomLabel {
 
 const useStatusAccessibilityLabel = ({ roomUserId, isGroupChat, status, teamMain, type, prid }: IUseStatusAccessibiltyLabel) => {
 	const statusState = useAppSelector(state => {
+		if (!roomUserId) {
+			return undefined;
+		}
 		if (state.settings.Presence_broadcast_disabled) {
 			return 'disabled';
 		}
