@@ -8,12 +8,6 @@ interface IAvatarSkeleton {
 	borderRadius: ViewStyle['borderRadius'];
 }
 
-const styles = StyleSheet.create({
-	skeleton: {
-		...StyleSheet.absoluteFill
-	}
-});
-
 const SKELETON_DELAY = 150;
 const PULSE_MIN_OPACITY = 0;
 const PULSE_DURATION = 800;
@@ -33,7 +27,7 @@ const SkeletonPulse = ({ borderRadius }: IAvatarSkeleton) => {
 		<Animated.View
 			pointerEvents='none'
 			testID='avatar-skeleton'
-			style={[styles.skeleton, { backgroundColor: colors.surfaceSelected, borderRadius }, animatedStyle]}
+			style={[StyleSheet.absoluteFill, { backgroundColor: colors.surfaceSelected, borderRadius }, animatedStyle]}
 		/>
 	);
 };
