@@ -75,7 +75,7 @@ open class MainApplication : Application(), ReactApplication {
     // Must run before React Native starts to avoid race conditions
     MMKVKeyManager.initialize(this)
 
-    // Must be installed before any OkHttp client is created so expo/fetch picks it up
+    // Must run before any OkHttp client is created
     SSLPinningTurboModule.installOkHttpClientFactory(this)
 
     // Load the native entry point for the New Architecture

@@ -28,6 +28,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.webkit.WebView;
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.KeyManager;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
@@ -54,6 +55,8 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static final ConnectionPool connectionPool = new ConnectionPool(20, 5, TimeUnit.MINUTES);
     private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
     private static final X509TrustManager trustManager = createTrustManager();
+    // A custom verifier stops OkHttp from sharing an HTTP/2 connection, and its certificate, across hosts
+    private static final HostnameVerifier hostnameVerifier = OkHostnameVerifier.INSTANCE::verify;
     private static final Map<String, String> hostsByConnection = Collections.synchronizedMap(new LinkedHashMap<String, String>() {
         @Override
         protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {
@@ -68,8 +71,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         OkHttpClientProvider.setOkHttpClientFactory(() ->
             OkHttpClientProvider.createClientBuilder()
                 .sslSocketFactory(sslSocketFactory, trustManager)
-                // A custom verifier stops OkHttp from sharing an HTTP/2 connection, and its certificate, across hosts
-                .hostnameVerifier((host, session) -> OkHostnameVerifier.INSTANCE.verify(host, session))
+                .hostnameVerifier(hostnameVerifier)
                 .connectionPool(connectionPool)
                 .build()
         );
@@ -163,7 +165,6 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         }
     }
 
-    // Picks the certificate by the handshake's host, so each server only ever receives its own
     private static final class ClientKeyManager extends X509ExtendedKeyManager {
         @Override
         public String chooseClientAlias(String[] keyTypes, Principal[] issuers, Socket socket) {
