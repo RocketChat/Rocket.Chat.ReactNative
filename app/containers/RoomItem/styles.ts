@@ -19,7 +19,7 @@ export default StyleSheet.create({
 		flex: 1,
 		fontSize: 16,
 		lineHeight: 20,
-		...sharedStyles.textMedium
+		...sharedStyles.textRegular
 	},
 	alert: {
 		...sharedStyles.textBold
@@ -27,10 +27,13 @@ export default StyleSheet.create({
 	row: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
+		gap: 4
 	},
 	wrapUpdatedAndBadge: {
-		alignItems: 'flex-end'
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8
 	},
 	titleContainer: {
 		width: '100%',
@@ -42,7 +45,7 @@ export default StyleSheet.create({
 		fontSize: 12,
 		lineHeight: 18,
 		marginLeft: 4,
-		...sharedStyles.textRegular
+		...sharedStyles.textMedium
 	},
 	updateAlert: {
 		...sharedStyles.textBold
