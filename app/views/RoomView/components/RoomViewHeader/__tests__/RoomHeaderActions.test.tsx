@@ -107,6 +107,7 @@ const allTestIDs = [
 	'room-view-search',
 	'room-view-header-threads',
 	'room-view-header-call',
+	'room-view-header-video-call',
 	'room-view-header-encryption',
 	'room-view-push-troubleshoot',
 	'room-view-header-omnichannel-kebab',
@@ -143,7 +144,7 @@ const HeaderHost = ({ children }: { children: ReactElement }) => {
 
 const renderActions = (element: ReactElement) => render(element, { wrapper: HeaderHost });
 
-const ROOM_BUTTONS = ['room-view-header-call', 'room-view-header-threads', 'room-view-search'];
+const ROOM_BUTTONS = ['room-view-header-video-call', 'room-view-header-threads', 'room-view-search'];
 
 describe('RoomHeaderActions', () => {
 	beforeEach(() => {
@@ -308,7 +309,7 @@ describe('RoomHeaderActions', () => {
 
 			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
 
-			expectOnly(['room-view-header-call', 'room-view-search']);
+			expectOnly(['room-view-header-video-call', 'room-view-search']);
 		});
 
 		it('hides the call button on a self DM', () => {
@@ -319,10 +320,10 @@ describe('RoomHeaderActions', () => {
 			expectOnly(['room-view-header-threads', 'room-view-search']);
 		});
 
-		it('starts a video conference from the call button', () => {
+		it('starts a video conference from the video call button', () => {
 			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
 
-			fireEvent.press(screen.getByTestId('room-view-header-call'));
+			fireEvent.press(screen.getByTestId('room-view-header-video-call'));
 
 			expect(mockVideoConf.showInitCallActionSheet).toHaveBeenCalled();
 		});

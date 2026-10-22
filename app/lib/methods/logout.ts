@@ -20,6 +20,7 @@ import {
 import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
+import { usePexipCallStore } from '../services/videoConf/usePexipCallStore';
 import { clearServerCookies } from './helpers/setServerCookies';
 import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from './getUsersPresence';
@@ -113,6 +114,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 
 export async function logout({ server }: { server: string }): Promise<void> {
 	closeConferenceCall();
+	usePexipCallStore.getState().leave();
 	try {
 		await clearServerCookies(server);
 	} catch (e) {

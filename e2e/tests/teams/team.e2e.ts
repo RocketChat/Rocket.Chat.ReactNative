@@ -26,7 +26,7 @@ afterEach(deleteCreatedUsers);
 
 const expectRoomHeaderButtons = async (fixtures: Fixtures) => {
 	for (const button of [
-		headerItem(fixtures, 'room-view-header-call', /^Call /),
+		headerItem(fixtures, 'room-view-header-video-call', 'Video call'),
 		threadsButton(fixtures),
 		headerItem(fixtures, 'room-view-search', 'More')
 	]) {

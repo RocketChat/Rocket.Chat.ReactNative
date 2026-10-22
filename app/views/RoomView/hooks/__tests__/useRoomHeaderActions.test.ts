@@ -113,6 +113,7 @@ describe('useRoomHeaderActions', () => {
 			hasE2EEWarning: false,
 			canToggleEncryption: false,
 			isSelfDm: false,
+			isDirect: true,
 			tunread: [],
 			tunreadUser: [],
 			tunreadGroup: [],
@@ -331,26 +332,64 @@ describe('useRoomHeaderActions', () => {
 			expect(mockMediaCall.openNewMediaCall).not.toHaveBeenCalled();
 		});
 
-		it('shows the video conference sheet when calls are enabled without media call permission', () => {
+		it('is absent in a channel even with media call permission', () => {
+			mockMediaCall.hasMediaCallPermission = true;
+			mockButtonsData = { ...mockButtonsData, isDirect: false };
+
+			expect(callAction()).toBeUndefined();
+		});
+	});
+
+	describe('video call action', () => {
+		beforeEach(() => {
+			mockHasNativeHeaderBar = false;
+		});
+
+		const videoCallAction = () => actionByTestID(renderRoomActions(), 'room-view-header-video-call');
+
+		it('is absent when calls are disabled', () => {
+			expect(videoCallAction()).toBeUndefined();
+		});
+
+		it('shows the video conference sheet when calls are enabled', () => {
 			mockVideoConf.callEnabled = true;
 
-			callAction()?.onPress?.();
+			expect(videoCallAction()).toMatchObject({ icon: 'video', label: 'Video call', disabled: false });
+			videoCallAction()?.onPress?.();
 
 			expect(mockVideoConf.showInitCallActionSheet).toHaveBeenCalled();
+		});
+
+		it('sits next to the voice call in a DM', () => {
+			mockVideoConf.callEnabled = true;
+			mockMediaCall.hasMediaCallPermission = true;
+
+			expect(renderRoomActions().map(action => action.testID)).toEqual([
+				'room-view-header-call',
+				'room-view-header-video-call',
+				'room-view-search'
+			]);
 		});
 
 		it('is disabled when the video conference tooltip is disabled', () => {
 			mockVideoConf.callEnabled = true;
 			mockVideoConf.disabledTooltip = true;
 
-			expect(callAction()?.disabled).toBe(true);
+			expect(videoCallAction()?.disabled).toBe(true);
+		});
+
+		it('is disabled while in another call', () => {
+			mockVideoConf.callEnabled = true;
+			mockMediaCall.isInActiveCall = true;
+
+			expect(videoCallAction()?.disabled).toBe(true);
 		});
 
 		it('is disabled by the e2ee warning', () => {
 			mockVideoConf.callEnabled = true;
 			mockButtonsData = { ...mockButtonsData, hasE2EEWarning: true };
 
-			expect(callAction()?.disabled).toBe(true);
+			expect(videoCallAction()?.disabled).toBe(true);
 		});
 	});
 

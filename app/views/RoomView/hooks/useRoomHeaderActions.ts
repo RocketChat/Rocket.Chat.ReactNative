@@ -7,6 +7,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
 import { useSetting } from '~/lib/hooks/useSetting';
+import { useVideoConf } from '~/lib/hooks/useVideoConf';
 import { hasNativeHeaderBar, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { type IHeaderAction, type IHeaderMenuItem } from '~/lib/methods/helpers/navigation/headerActions';
@@ -121,6 +122,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 		hasE2EEWarning,
 		canToggleEncryption,
 		isSelfDm,
+		isDirect,
 		tunread,
 		tunreadUser,
 		tunreadGroup,
@@ -132,10 +134,12 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 		threadsAccessibilityLabel
 	} = useRoomActionsState(rid, roomStore);
 	const { callPresent, isCallDisabled, onPressCall } = useHeaderCallPress(rid);
+	const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);
 
 	const present: Partial<Record<TRoomHeaderActionKey, boolean>> = {
 		threads: threadsEnabled,
-		call: !isSelfDm && callPresent,
+		call: !isSelfDm && isDirect && callPresent,
+		videoCall: !isSelfDm && callEnabled,
 		encryption: hasE2EEWarning,
 		notifications: issuesWithNotifications || disableNotifications
 	};
@@ -160,6 +164,13 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 			testID: 'room-view-header-call',
 			disabled: hasE2EEWarning || isCallDisabled,
 			onPress: onPressCall
+		},
+		videoCall: {
+			label: i18n.t('Video_call'),
+			icon: 'video',
+			testID: 'room-view-header-video-call',
+			disabled: hasE2EEWarning || disabledTooltip || isCallDisabled,
+			onPress: showInitCallActionSheet
 		},
 		encryption: {
 			label: i18n.t('Encrypted'),

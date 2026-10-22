@@ -24,6 +24,10 @@ export type VideoConferenceEndpoints = {
 		POST: (params: VideoConfCancelProps) => void;
 	};
 
+	'video-conference.heartbeat': {
+		POST: (params: { callId: string }) => void;
+	};
+
 	'video-conference.info': {
 		GET: (params: VideoConfInfoProps) => VideoConfCall;
 	};

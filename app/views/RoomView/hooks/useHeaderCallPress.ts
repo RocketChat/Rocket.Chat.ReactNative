@@ -1,12 +1,10 @@
 import { useEffect, useRef } from 'react';
 
 import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
-import { useVideoConf } from '~/lib/hooks/useVideoConf';
 
 const DOUBLE_TAP_WINDOW_MS = 300;
 
 export const useHeaderCallPress = (rid: string) => {
-	const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);
 	const { openNewMediaCall, startCallImmediate, hasMediaCallPermission, isInActiveCall } = useNewMediaCall(rid);
 
 	const lastTapRef = useRef(0);
@@ -38,25 +36,9 @@ export const useHeaderCallPress = (rid: string) => {
 		}, DOUBLE_TAP_WINDOW_MS);
 	};
 
-	if (hasMediaCallPermission) {
-		return {
-			callPresent: true,
-			isCallDisabled: isInActiveCall,
-			onPressCall: onPressMediaCall
-		};
-	}
-
-	if (callEnabled) {
-		return {
-			callPresent: true,
-			isCallDisabled: disabledTooltip || isInActiveCall,
-			onPressCall: showInitCallActionSheet
-		};
-	}
-
 	return {
-		callPresent: false,
-		isCallDisabled: true,
-		onPressCall: () => {}
+		callPresent: hasMediaCallPermission,
+		isCallDisabled: isInActiveCall,
+		onPressCall: onPressMediaCall
 	};
 };

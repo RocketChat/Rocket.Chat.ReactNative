@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
 
+import { hasJoinedVideoConference } from '~/definitions/IVideoConference';
 import { useEndpointData } from '~/lib/hooks/useEndpointData';
 import VideoConferenceDirect from './components/VideoConferenceDirect';
 import VideoConferenceEnded from './components/VideoConferenceEnded';
@@ -11,13 +12,15 @@ export default function VideoConferenceBlock({ callId, blockId }: { callId: stri
 	const { result, error } = useEndpointData('video-conference.info', { callId });
 
 	if (result?.success) {
-		const { users, type, status, createdBy, rid } = result;
+		const { type, status, createdBy, rid } = result;
+		const users = result.users.filter(user => !!user.username && hasJoinedVideoConference(user));
 
-		if ('endedAt' in result) return <VideoConferenceEnded createdBy={createdBy} rid={rid} type={type} users={users} />;
+		if ('endedAt' in result)
+			return <VideoConferenceEnded createdBy={createdBy} rid={rid} type={type} status={status} users={users} />;
 
 		if (type === 'direct' && status === 0) return <VideoConferenceDirect />;
 
-		return <VideoConferenceOutgoing blockId={blockId} users={users} />;
+		return <VideoConferenceOutgoing blockId={blockId} rid={rid} users={users} />;
 	}
 
 	if (result?.error || error) return <VideoConferenceIssue />;
