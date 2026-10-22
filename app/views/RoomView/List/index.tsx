@@ -18,16 +18,23 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			t,
 			serverVersion
 		});
-		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, handleScrollToIndexFailed, highlightedMessageId, isReleasing } =
-			useScroll({
-				flatListRef,
-				messages,
-				messagesIds,
-				highTs,
-				setHighTs,
-				fetchMessages,
-				tmid
-			});
+		const {
+			jumpToBottom,
+			jumpToMessage,
+			cancelJumpToMessage,
+			handleScrollToIndexFailed,
+			handleDragStart,
+			highlightedMessageId,
+			isReleasing
+		} = useScroll({
+			flatListRef,
+			messages,
+			messagesIds,
+			highTs,
+			setHighTs,
+			fetchMessages,
+			tmid
+		});
 
 		const onEndReached = useDebounce(loadOlderMessages, 300);
 
@@ -57,6 +64,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 					renderItem={renderItem}
 					onEndReached={onEndReached}
 					onScrollToIndexFailed={handleScrollToIndexFailed}
+					onDragStart={handleDragStart}
 					jumpToBottom={jumpToBottom}
 					isAnchored={highTs != null}
 					maintainVisibleContentPosition={
