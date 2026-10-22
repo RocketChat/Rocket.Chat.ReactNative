@@ -23,10 +23,14 @@ import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import okhttp3.ConnectionPool;
+import okhttp3.Dispatcher;
 import okhttp3.HttpUrl;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
+import android.webkit.WebView;
 import javax.net.ssl.KeyManager;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
@@ -37,7 +41,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import com.reactnativecommunity.webview.RNCWebViewManager;
+import com.reactnativecommunity.webview.RNCWebViewClient;
 import expo.modules.filesystem.legacy.FileSystemLegacyModule;
 
 public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyChainAliasCallback {
@@ -55,7 +59,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         appContext = context.getApplicationContext();
         aliasesByHost = appContext.getSharedPreferences("RocketChat.ClientCertificateAliases", Context.MODE_PRIVATE);
         createSSLContext();
-        RNCWebViewManager.setCertificateAliasResolver(SSLPinningTurboModule::aliasForHost);
+        RNCWebViewClient.setCertificateAliasResolver(SSLPinningTurboModule::aliasForHost);
         OkHttpClientProvider.setOkHttpClientFactory(() ->
             OkHttpClientProvider.createClientBuilder()
                 .sslSocketFactory(sslSocketFactory, trustManager)
@@ -64,6 +68,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         );
         // Keep expo-file-system's own default timeouts
         FileSystemLegacyModule.setOkHttpClient(OkHttpClientProvider.getOkHttpClient().newBuilder()
+            .dispatcher(new Dispatcher())
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
@@ -123,6 +128,15 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         // A fresh context drops TLS sessions resumed with the previous identity
         createSSLContext();
         connectionPool.evictAll();
+        new Handler(Looper.getMainLooper()).post(SSLPinningTurboModule::clearWebViewCertificateChoices);
+    }
+
+    private static void clearWebViewCertificateChoices() {
+        try {
+            WebView.clearClientCertPreferences(null);
+        } catch (RuntimeException e) {
+            Log.w(TAG, "Failed to clear the WebView client certificate choices", e);
+        }
     }
 
     private static String aliasForHost(String host) {

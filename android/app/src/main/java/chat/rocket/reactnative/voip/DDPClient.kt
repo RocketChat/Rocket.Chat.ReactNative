@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import chat.rocket.reactnative.BuildConfig
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -21,6 +22,7 @@ class DDPClient {
         private const val TAG = "RocketChat.DDPClient"
         private val sharedClient: OkHttpClient by lazy {
             OkHttpClientProvider.getOkHttpClient().newBuilder()
+                .dispatcher(Dispatcher())
                 .pingInterval(30, TimeUnit.SECONDS)
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
