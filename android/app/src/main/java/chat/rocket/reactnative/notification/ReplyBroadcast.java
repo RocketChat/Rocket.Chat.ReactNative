@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import com.facebook.react.modules.network.OkHttpClientProvider;
 
 import okhttp3.Call;
+import okhttp3.Dispatcher;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -77,6 +78,7 @@ public class ReplyBroadcast extends BroadcastReceiver {
         }
 
         final OkHttpClient client = OkHttpClientProvider.getOkHttpClient().newBuilder()
+                .dispatcher(new Dispatcher())
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
