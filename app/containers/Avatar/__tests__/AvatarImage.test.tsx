@@ -36,6 +36,13 @@ describe('AvatarImage', () => {
 		expect(queryByTestId('avatar-skeleton')).toBeTruthy();
 	});
 
+	it('keeps the skeleton when the uri changes before the image loads', () => {
+		const { getByTestId, rerender } = render(<AvatarImage uri='https://a/1.png' style={style} />);
+		showDelay();
+		rerender(<AvatarImage uri='https://a/2.png' style={style} />);
+		expect(getByTestId('avatar-skeleton')).toBeTruthy();
+	});
+
 	it('never shows the skeleton when the image loads before the delay', () => {
 		const { queryByTestId, UNSAFE_getByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
 		act(() => jest.advanceTimersByTime(100));
