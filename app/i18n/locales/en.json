@@ -1051,7 +1051,7 @@
   "Waiting_for_network": "Waiting for network...",
   "Waiting_for_server_connection": "Waiting for server connection",
   "WatchOS_Quick_Replies": "WatchOS quick replies",
-  "WatchOS_Quick_Replies_Description": "Enter quick replies to display on Apple Watch",
+  "WatchOS_Quick_Replies_Description": "Enter quick replies to display on Apple Watch. Up to {{max}} replies, {{length}} characters each.",
   "Websocket_disabled": "Websocket is disabled for this workspace.\n{{contact}}",
   "What_are_you_doing_right_now": "What are you doing right now?",
   "Whats_the_password_for_your_certificate": "What's the password for your certificate?",

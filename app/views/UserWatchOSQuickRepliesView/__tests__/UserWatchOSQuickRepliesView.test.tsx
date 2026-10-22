@@ -4,9 +4,9 @@ import UserWatchOSQuickRepliesView from '..';
 import I18n from '~/i18n';
 import { CURRENT_SERVER, getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
 import UserPreferences from '~/lib/methods/userPreferences';
-import { syncWatchOSQuickReplies } from '~/lib/methods/WatchOSQuickReplies/syncReplies';
+import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncReplies';
 
-jest.mock('~/lib/methods/WatchOSQuickReplies/syncReplies', () => ({ syncWatchOSQuickReplies: jest.fn() }));
+jest.mock('~/lib/methods/watchOSQuickReplies/syncReplies', () => ({ syncWatchOSQuickReplies: jest.fn() }));
 
 const server = 'https://open.rocket.chat';
 const key = getWatchOSQuickRepliesKey(server);

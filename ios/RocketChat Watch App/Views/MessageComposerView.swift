@@ -14,13 +14,19 @@ struct MessageComposerView: View {
 	
 	var body: some View {
 		if room.isReadOnly {
-			HStack {
-				Spacer()
-				Text("This room is read only")
-					.font(.caption.bold())
-					.foregroundStyle(.white)
-					.multilineTextAlignment(.center)
-				Spacer()
+			VStack(spacing: 0) {
+				HStack {
+					Spacer()
+					Text("This room is read only")
+						.font(.caption.bold())
+						.foregroundStyle(.white)
+						.multilineTextAlignment(.center)
+					Spacer()
+				}
+				
+				Color.clear
+					.frame(height: 1)
+					.id(anchorID)
 			}
 		} else {
 			VStack(alignment: .leading, spacing: 4) {
@@ -47,8 +53,7 @@ struct MessageComposerView: View {
 								)
 								.contentShape(Rectangle())
 								.onTapGesture {
-									message = reply
-									send()
+									onSend(reply)
 								}
 								.accessibilityAddTraits(.isButton)
 								.accessibilityLabel(reply)

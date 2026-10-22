@@ -42,7 +42,7 @@ import { useAppsStore } from '../lib/apps/appsStore';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
-import syncWatchOSQuickRepliesWithServer from '../lib/methods/WatchOSQuickReplies/syncWatchOSRepliesWithServer';
+import { syncWatchOSQuickRepliesWithServer } from '../lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
@@ -272,8 +272,9 @@ const fetchWatchReplies = function* fetchWatchRepliesFork() {
 		if (!settingsLoaded) {
 			yield take(types.SETTINGS.FETCH_COMPLETE);
 		}
-		const state = yield select(s => s);
-		syncWatchOSQuickRepliesWithServer(state);
+		const server = yield select(s => s.server.server);
+		const appleWatchReplies = yield select(s => s.settings.Apple_Watch_Quick_Actions);
+		syncWatchOSQuickRepliesWithServer(server, appleWatchReplies);
 	} catch (e) {
 		log(e);
 	}

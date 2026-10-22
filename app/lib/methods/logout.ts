@@ -20,7 +20,7 @@ import {
 } from '../constants/keys';
 import UserPreferences from './userPreferences';
 import NativeWatchModule from '../native/NativeWatchModule';
-import { shouldShowWatchAppOptions } from './WatchOSQuickReplies/getWatchStatus';
+import { shouldShowWatchAppOptions } from './watchOSQuickReplies/getWatchStatus';
 import { removePushToken } from '../services/restApi';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
 import { clearServerCookies } from './helpers/setServerCookies';

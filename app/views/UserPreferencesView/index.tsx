@@ -15,7 +15,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import Switch from '~/containers/Switch';
 import { type IUser } from '~/definitions';
-import { shouldShowWatchAppOptions } from '~/lib/methods/WatchOSQuickReplies/getWatchStatus';
+import { shouldShowWatchAppOptions } from '~/lib/methods/watchOSQuickReplies/getWatchStatus';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;

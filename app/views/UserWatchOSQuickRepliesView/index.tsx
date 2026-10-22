@@ -8,14 +8,12 @@ import { type ProfileStackParamList } from '~/stacks/types';
 import { FormTextInput } from '~/containers/TextInput';
 import Chip from '~/containers/Chip';
 import userPreferences, { useUserPreferences } from '~/lib/methods/userPreferences';
-import { CURRENT_SERVER, getWatchOSQuickRepliesKey, QUICK_REPLIES_MAX } from '~/lib/constants/keys';
-import { syncWatchOSQuickReplies } from '~/lib/methods/WatchOSQuickReplies/syncReplies';
+import { CURRENT_SERVER, getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
+import { QUICK_REPLIES_MAX, QUICK_REPLY_MAX_LENGTH } from '~/lib/methods/watchOSQuickReplies/constants';
+import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncReplies';
 import log from '~/lib/methods/helpers/log';
-import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
-
-const QUICK_REPLY_MAX_LENGTH = 30;
 
 interface IUserWatchOSQuickRepliesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserWatchOSQuickRepliesView'>;
@@ -59,7 +57,8 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 		<SafeAreaView testID='watchos-quick-replies-view'>
 			<ScrollView
 				contentContainerStyle={[sharedStyles.containerScrollView, styles.content, { backgroundColor: colors.surfaceTint }]}
-				{...scrollPersistTaps}>
+				keyboardShouldPersistTaps='handled'
+				keyboardDismissMode='interactive'>
 				<FormTextInput
 					label={I18n.t('WatchOS_Quick_Replies')}
 					value={input}
@@ -70,7 +69,9 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 					containerStyle={styles.inputContainer}
 					maxLength={QUICK_REPLY_MAX_LENGTH}
 				/>
-				<Text style={[styles.info, { color: colors.fontHint }]}>{I18n.t('WatchOS_Quick_Replies_Description')}</Text>
+				<Text style={[styles.info, { color: colors.fontHint }]}>
+					{I18n.t('WatchOS_Quick_Replies_Description', { max: QUICK_REPLIES_MAX, length: QUICK_REPLY_MAX_LENGTH })}
+				</Text>
 				{quickReplies.length !== 0 && (
 					<View style={styles.chipContainer}>
 						{quickReplies.map(reply => (
