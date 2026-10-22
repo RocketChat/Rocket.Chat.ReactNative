@@ -16,17 +16,23 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509ExtendedKeyManager;
 import java.security.PrivateKey;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
 import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import okhttp3.ConnectionPool;
+import okhttp3.HttpUrl;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import javax.net.ssl.KeyManager;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import com.reactnativecommunity.webview.RNCWebViewManager;
@@ -35,15 +41,16 @@ import expo.modules.filesystem.legacy.FileSystemLegacyModule;
 public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyChainAliasCallback {
 
     private Promise promise;
-    private static ClientKeyManager keyManager;
     private static Context appContext;
+    private static SharedPreferences aliasesByHost;
     private static final ConnectionPool connectionPool = new ConnectionPool();
     private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
     private static final X509TrustManager trustManager = createTrustManager();
 
     public static void installOkHttpClientFactory(Context context) {
         appContext = context.getApplicationContext();
-        createSSLContext(null);
+        aliasesByHost = appContext.getSharedPreferences("RocketChat.ClientCertificateAliases", Context.MODE_PRIVATE);
+        createSSLContext();
         OkHttpClientProvider.setOkHttpClientFactory(() ->
             OkHttpClientProvider.createClientBuilder()
                 .sslSocketFactory(sslSocketFactory, trustManager)
@@ -73,10 +80,15 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     }
 
     @Override
-    public void setCertificate(String name, Promise promise) {
-        updateAlias(name);
+    public void setCertificate(String name, String server, Promise promise) {
+        updateAlias(server, name);
         RNCWebViewManager.setCertificateAlias(name);
         promise.resolve(null);
+    }
+
+    @Override
+    public void removeCertificate(String server) {
+        updateAlias(server, null);
     }
 
     @Override
@@ -94,41 +106,29 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
                 "RocketChat");
     }
 
-    private static synchronized void updateAlias(String name) {
-        // Reload every time so a certificate renewed under the same alias is picked up
-        ClientKeyManager next = createKeyManager(name);
-        if (next == null ? keyManager == null : next.isSameIdentity(keyManager)) {
+    private static synchronized void updateAlias(String server, String alias) {
+        HttpUrl url = HttpUrl.parse(server);
+        if (url == null || Objects.equals(alias, aliasesByHost.getString(url.host(), null))) {
             return;
         }
-        keyManager = next;
-        createSSLContext(next);
+        if (alias == null) {
+            aliasesByHost.edit().remove(url.host()).apply();
+        } else {
+            aliasesByHost.edit().putString(url.host(), alias).apply();
+        }
+        // A fresh context drops TLS sessions resumed with the previous identity
+        createSSLContext();
         connectionPool.evictAll();
     }
 
-    private static void createSSLContext(X509ExtendedKeyManager keyManager) {
+    private static void createSSLContext() {
         try {
             final SSLContext context = SSLContext.getInstance("TLS");
-            context.init(keyManager == null ? null : new KeyManager[]{keyManager}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
+            context.init(new KeyManager[]{new ClientKeyManager()}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
             sslSocketFactory.setDelegate(context.getSocketFactory());
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    private static ClientKeyManager createKeyManager(String alias) {
-        if (alias != null) {
-            try {
-                PrivateKey privateKey = KeyChain.getPrivateKey(appContext, alias);
-                X509Certificate[] certificateChain = KeyChain.getCertificateChain(appContext, alias);
-                if (privateKey != null && certificateChain != null) {
-                    return new ClientKeyManager(alias, privateKey, certificateChain);
-                }
-            } catch (Exception e) {
-                // A failed lookup keeps the identity already loaded for this alias
-                return keyManager != null && alias.equals(keyManager.alias) ? keyManager : null;
-            }
-        }
-        return null;
     }
 
     private static X509TrustManager createTrustManager() {
@@ -145,49 +145,63 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         }
     }
 
+    // Picks the certificate by the handshake's host, so each server only ever receives its own
     private static final class ClientKeyManager extends X509ExtendedKeyManager {
-        private final String alias;
-        private final PrivateKey privateKey;
-        private final X509Certificate[] certificateChain;
-
-        ClientKeyManager(String alias, PrivateKey privateKey, X509Certificate[] certificateChain) {
-            this.alias = alias;
-            this.privateKey = privateKey;
-            this.certificateChain = certificateChain;
-        }
-
-        boolean isSameIdentity(ClientKeyManager other) {
-            return other != null && alias.equals(other.alias) && Arrays.equals(certificateChain, other.certificateChain);
+        private static String aliasForHost(String host) {
+            return host == null ? null : aliasesByHost.getString(host, null);
         }
 
         @Override
-        public String chooseClientAlias(String[] strings, Principal[] principals, Socket socket) {
-            return alias;
+        public String chooseClientAlias(String[] keyTypes, Principal[] issuers, Socket socket) {
+            if (!(socket instanceof SSLSocket)) {
+                return null;
+            }
+            SSLSession session = ((SSLSocket) socket).getHandshakeSession();
+            return session == null ? null : aliasForHost(session.getPeerHost());
         }
 
         @Override
-        public String chooseServerAlias(String s, Principal[] principals, Socket socket) {
-            return alias;
+        public String chooseEngineClientAlias(String[] keyTypes, Principal[] issuers, SSLEngine engine) {
+            return aliasForHost(engine.getPeerHost());
         }
 
         @Override
-        public X509Certificate[] getCertificateChain(String s) {
-            return certificateChain;
+        public String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
+            return null;
         }
 
         @Override
-        public String[] getClientAliases(String s, Principal[] principals) {
-            return new String[]{alias};
+        public X509Certificate[] getCertificateChain(String alias) {
+            try {
+                return KeyChain.getCertificateChain(appContext, alias);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return null;
+            } catch (Exception e) {
+                return null;
+            }
         }
 
         @Override
-        public String[] getServerAliases(String s, Principal[] principals) {
-            return new String[]{alias};
+        public String[] getClientAliases(String keyType, Principal[] issuers) {
+            return null;
         }
 
         @Override
-        public PrivateKey getPrivateKey(String s) {
-            return privateKey;
+        public String[] getServerAliases(String keyType, Principal[] issuers) {
+            return null;
+        }
+
+        @Override
+        public PrivateKey getPrivateKey(String alias) {
+            try {
+                return KeyChain.getPrivateKey(appContext, alias);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return null;
+            } catch (Exception e) {
+                return null;
+            }
         }
     }
 

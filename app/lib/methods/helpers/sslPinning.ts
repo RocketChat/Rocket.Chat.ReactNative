@@ -93,8 +93,11 @@ const RCSSLPinning = Platform.select({
 	},
 	android: {
 		pickCertificate: () => SSLPinning?.pickCertificate(),
-		setCertificate: name => SSLPinning?.setCertificate(name),
-		removeCertificate
+		setCertificate: (name: string, server: string) => SSLPinning?.setCertificate(name, server),
+		removeCertificate: (server: string) => {
+			removeCertificate(server);
+			SSLPinning?.removeCertificate(server);
+		}
 	}
 });
 
