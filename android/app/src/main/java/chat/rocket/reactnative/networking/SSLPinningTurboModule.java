@@ -2,11 +2,7 @@ package chat.rocket.reactnative.networking;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.Promise;
-import com.facebook.react.modules.network.NetworkingModule;
-import com.facebook.react.modules.network.CustomClientBuilder;
 import com.facebook.react.modules.network.OkHttpClientProvider;
-import com.facebook.react.modules.network.ReactCookieJarContainer;
-import com.facebook.react.modules.websocket.WebSocketModule;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
@@ -34,7 +30,7 @@ import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
+import java.util.Objects;
 
 import com.reactnativecommunity.webview.RNCWebViewManager;
 import expo.modules.filesystem.legacy.FileSystemLegacyModule;
@@ -48,12 +44,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static OkHttpClient sharedClient;
     private static final ConnectionPool connectionPool = new ConnectionPool();
     private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
-    private static SSLContext sslContext;
 
-    private static Identity loadedIdentity;
-
-    // Clients built through OkHttpClientProvider (RN networking, expo/fetch) resolve the alias at
-    // handshake time, so a certificate picked after they were created is still sent.
     public static void installOkHttpClientFactory(Context context) {
         appContext = context.getApplicationContext();
         OkHttpClientProvider.setOkHttpClientFactory(() ->
@@ -63,12 +54,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
     public static synchronized OkHttpClient getSharedOkHttpClient() {
         if (sharedClient == null) {
-            OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                    .connectTimeout(0, TimeUnit.MILLISECONDS)
-                    .readTimeout(0, TimeUnit.MILLISECONDS)
-                    .writeTimeout(0, TimeUnit.MILLISECONDS)
-                    .cookieJar(new ReactCookieJarContainer());
-            sharedClient = applyClientCertificate(builder).build();
+            sharedClient = applyClientCertificate(OkHttpClientProvider.createClientBuilder()).build();
         }
         return sharedClient;
     }
@@ -84,16 +70,6 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
     public SSLPinningTurboModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        if (appContext == null) {
-            appContext = reactContext.getApplicationContext();
-        }
-    }
-
-    public class CustomClient implements CustomClientBuilder {
-        @Override
-        public void apply(OkHttpClient.Builder builder) {
-            applyClientCertificate(builder);
-        }
     }
 
     @Override
@@ -103,7 +79,6 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
     @Override
     public void alias(String alias) {
-        updateAlias(alias);
         this.promise.resolve(alias);
     }
 
@@ -112,10 +87,6 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         updateAlias(name);
         OkHttpClient client = getSharedOkHttpClient();
 
-        // HTTP Fetch react-native layer
-        NetworkingModule.setCustomClientBuilder(new CustomClient());
-        // Websocket react-native layer
-        WebSocketModule.setCustomClientBuilder(new CustomClient());
         // Image networking react-native layer
         ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
             .newBuilder(appContext, client)
@@ -148,41 +119,17 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
                 "RocketChat");
     }
 
-    // Pooled connections and cached TLS sessions keep the identity of the handshake that created
-    // them, so they must be dropped or the next request reuses the previous certificate (or none).
     private static synchronized void updateAlias(String name) {
-        if (name == null ? alias == null : name.equals(alias)) {
+        if (Objects.equals(name, alias)) {
             return;
         }
         alias = name;
-        if (sslContext != null) {
-            createSSLContext();
-        }
+        createSSLContext();
         connectionPool.evictAll();
     }
 
-    private static synchronized Identity loadIdentity(String alias) {
-        if (alias == null) {
-            return null;
-        }
-        if (loadedIdentity != null && alias.equals(loadedIdentity.alias)) {
-            return loadedIdentity;
-        }
-        try {
-            PrivateKey privateKey = KeyChain.getPrivateKey(appContext, alias);
-            X509Certificate[] certificateChain = KeyChain.getCertificateChain(appContext, alias);
-            if (privateKey == null || certificateChain == null) {
-                return null;
-            }
-            loadedIdentity = new Identity(alias, privateKey, certificateChain);
-            return loadedIdentity;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     public static synchronized SSLSocketFactory getSSLFactory() {
-        if (sslContext == null && !createSSLContext()) {
+        if (sslSocketFactory.delegate == null && !createSSLContext()) {
             return null;
         }
         return sslSocketFactory;
@@ -192,8 +139,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         try {
             final X509TrustManager trustManager = getTrustManagerFactory();
             final SSLContext context = SSLContext.getInstance("TLS");
-            context.init(new KeyManager[]{createKeyManager()}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
-            sslContext = context;
+            context.init(new KeyManager[]{createKeyManager(alias)}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
             sslSocketFactory.setDelegate(context.getSocketFactory());
             return true;
         } catch (Exception e) {
@@ -201,40 +147,18 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         }
     }
 
-    private static X509ExtendedKeyManager createKeyManager() {
-        return new X509ExtendedKeyManager() {
-            @Override
-            public String chooseClientAlias(String[] strings, Principal[] principals, Socket socket) {
-                return alias;
+    private static X509ExtendedKeyManager createKeyManager(String alias) {
+        if (alias != null) {
+            try {
+                PrivateKey privateKey = KeyChain.getPrivateKey(appContext, alias);
+                X509Certificate[] certificateChain = KeyChain.getCertificateChain(appContext, alias);
+                if (privateKey != null && certificateChain != null) {
+                    return new ClientKeyManager(alias, privateKey, certificateChain);
+                }
+            } catch (Exception ignored) {
             }
-
-            @Override
-            public String chooseServerAlias(String s, Principal[] principals, Socket socket) {
-                return alias;
-            }
-
-            @Override
-            public X509Certificate[] getCertificateChain(String s) {
-                Identity identity = loadIdentity(s);
-                return identity == null ? null : identity.certificateChain;
-            }
-
-            @Override
-            public String[] getClientAliases(String s, Principal[] principals) {
-                return alias == null ? null : new String[]{alias};
-            }
-
-            @Override
-            public String[] getServerAliases(String s, Principal[] principals) {
-                return alias == null ? null : new String[]{alias};
-            }
-
-            @Override
-            public PrivateKey getPrivateKey(String s) {
-                Identity identity = loadIdentity(s);
-                return identity == null ? null : identity.privateKey;
-            }
-        };
+        }
+        return new ClientKeyManager(null, null, null);
     }
 
     public static X509TrustManager getTrustManagerFactory() {
@@ -252,20 +176,48 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         }
     }
 
-    private static final class Identity {
-        final String alias;
-        final PrivateKey privateKey;
-        final X509Certificate[] certificateChain;
+    private static final class ClientKeyManager extends X509ExtendedKeyManager {
+        private final String alias;
+        private final PrivateKey privateKey;
+        private final X509Certificate[] certificateChain;
 
-        Identity(String alias, PrivateKey privateKey, X509Certificate[] certificateChain) {
+        ClientKeyManager(String alias, PrivateKey privateKey, X509Certificate[] certificateChain) {
             this.alias = alias;
             this.privateKey = privateKey;
             this.certificateChain = certificateChain;
         }
+
+        @Override
+        public String chooseClientAlias(String[] strings, Principal[] principals, Socket socket) {
+            return alias;
+        }
+
+        @Override
+        public String chooseServerAlias(String s, Principal[] principals, Socket socket) {
+            return alias;
+        }
+
+        @Override
+        public X509Certificate[] getCertificateChain(String s) {
+            return certificateChain;
+        }
+
+        @Override
+        public String[] getClientAliases(String s, Principal[] principals) {
+            return alias == null ? null : new String[]{alias};
+        }
+
+        @Override
+        public String[] getServerAliases(String s, Principal[] principals) {
+            return alias == null ? null : new String[]{alias};
+        }
+
+        @Override
+        public PrivateKey getPrivateKey(String s) {
+            return privateKey;
+        }
     }
 
-    // OkHttp keys pooled connections by socket factory, so clients keep this stable instance while
-    // the SSLContext behind it (and its TLS session cache) is replaced on alias change.
     private static class SwappableSSLSocketFactory extends SSLSocketFactory {
         private volatile SSLSocketFactory delegate;
 

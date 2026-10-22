@@ -77,20 +77,7 @@
     }
 
     SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
-
-    // Send the intermediates from the p12, so a leaf issued by an intermediate CA can
-    // still be verified by the server. The identity already carries the leaf.
-    SecCertificateRef leaf = NULL;
-    if (identity) {
-        SecIdentityCopyCertificate(identity, &leaf);
-    }
-    NSMutableArray *certificates = [[NSMutableArray alloc] init];
-    for (id certificate in firstItem[(id)kSecImportItemCertChain]) {
-        if (!leaf || !CFEqual((__bridge CFTypeRef)certificate, leaf)) {
-            [certificates addObject:certificate];
-        }
-    }
-    if (leaf) { CFRelease(leaf); }
+    NSArray *certificates = [self intermediateCertificates:identity chain:firstItem[(id)kSecImportItemCertChain]];
 
     [SDWebImageDownloader sharedDownloader].config.urlCredential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
 
@@ -107,6 +94,22 @@
   while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
 
   return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
+}
+
++ (NSArray *)intermediateCertificates:(SecIdentityRef)identity chain:(NSArray *)chain
+{
+  SecCertificateRef leaf = NULL;
+  if (identity) {
+    SecIdentityCopyCertificate(identity, &leaf);
+  }
+  NSMutableArray *certificates = [[NSMutableArray alloc] init];
+  for (id certificate in chain) {
+    if (!leaf || !CFEqual((__bridge CFTypeRef)certificate, leaf)) {
+      [certificates addObject:certificate];
+    }
+  }
+  if (leaf) { CFRelease(leaf); }
+  return certificates;
 }
 
 + (nullable NSURLCredential *)clientCertificateCredential:(NSURLAuthenticationChallenge *)challenge
@@ -136,25 +139,8 @@
  didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
   completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
 {
-  NSString *host = challenge.protectionSpace.host;
-  NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-
-  MMKVBridge *mmkvBridge = [self getMMKVInstance];
-
-  if (!mmkvBridge) {
-    return completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, credential);
-  }
-
-  NSString *clientSSL = [mmkvBridge stringForKey:host];
-
-  if (clientSSL) {
-    NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
-    id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-    NSString *path = [dict objectForKey:@"path"];
-    NSString *password = [dict objectForKey:@"password"];
-    credential = [self getUrlCredential:challenge path:path password:password];
-  }
-
+  NSURLCredential *credential = [self clientCertificateCredential:challenge]
+    ?: [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
   completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
 }
 

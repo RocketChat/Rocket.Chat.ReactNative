@@ -38,10 +38,6 @@
 
 @end
 
-// expo/fetch is the global fetch since Expo SDK 57 and runs on its own NSURLSession,
-// whose delegate answers auth challenges with default handling (no client certificate).
-// Only the configured client certificate is answered here; server trust and every other
-// challenge keep Expo's own handling, which forwards them to the task.
 typedef void (*TaskChallengeIMP)(id, SEL, NSURLSession *, NSURLSessionTask *, NSURLAuthenticationChallenge *, void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *));
 
 @implementation URLSessionSessionDelegateProxy (Challenge)
@@ -83,12 +79,9 @@ typedef void (*TaskChallengeIMP)(id, SEL, NSURLSession *, NSURLSessionTask *, NS
       if (sanityChesk == noErr) {
         CFDictionaryRef identityDict = (CFDictionaryRef)CFArrayGetValueAtIndex(keyref, 0);
         SecIdentityRef identityRef = (SecIdentityRef)CFDictionaryGetValue(identityDict, kSecImportItemIdentity);
-        SecCertificateRef cert = NULL;
-        OSStatus status = SecIdentityCopyCertificate(identityRef, &cert);
-        if (!status) {
-          NSArray *certificates = [[NSArray alloc] initWithObjects:(__bridge id)identityRef, (__bridge id)cert, nil];
-          [options setObject:certificates forKey:(NSString *)kCFStreamSSLCertificates];
-        }
+        NSArray *chain = (__bridge NSArray *)CFDictionaryGetValue(identityDict, kSecImportItemCertChain);
+        NSArray *certificates = [@[(__bridge id)identityRef] arrayByAddingObjectsFromArray:[Challenge intermediateCertificates:identityRef chain:chain]];
+        [options setObject:certificates forKey:(NSString *)kCFStreamSSLCertificates];
       }
     }
 }
