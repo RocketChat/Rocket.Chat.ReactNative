@@ -1109,10 +1109,7 @@ export const addUsersToRoom = (rid: string, t: 'c' | 'p') => {
 	const { selectedUsers, server } = reduxStore.getState();
 	const users = selectedUsers.users.map(u => u.name);
 	if (compareServerVersion(server.version, 'greaterThanOrEqualTo', '9.0.0')) {
-		if (t === 'p') {
-			return sdk.post('groups.invite', { roomId: rid, usernames: users });
-		}
-		return sdk.post('channels.invite', { roomId: rid, usernames: users });
+		return sdk.post(`${roomTypeToApiType(t)}.invite`, { roomId: rid, usernames: users });
 	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
