@@ -53,7 +53,8 @@
   }
 
   NSDictionary* firstItem = [(NSArray*)CFBridgingRelease(rawItems) firstObject];
-  SecIdentityRef identity = (__bridge SecIdentityRef)firstItem[(id)kSecImportItemIdentity];
+  NS_VALID_UNTIL_END_OF_SCOPE id identityObject = firstItem[(id)kSecImportItemIdentity];
+  SecIdentityRef identity = (__bridge SecIdentityRef)identityObject;
   if (!identity) {
     return nil;
   }
