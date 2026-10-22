@@ -7,6 +7,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -21,6 +22,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
+import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import android.app.Activity;
@@ -44,11 +46,14 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static OkHttpClient sharedClient;
     private static final ConnectionPool connectionPool = new ConnectionPool();
     private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
+    private static final long HTTP_CACHE_SIZE = 10 * 1024 * 1024;
 
     public static void installOkHttpClientFactory(Context context) {
         appContext = context.getApplicationContext();
+        // OkHttp forbids two Cache instances on one directory, so every client shares this one
+        Cache httpCache = new Cache(new File(appContext.getCacheDir(), "http-cache"), HTTP_CACHE_SIZE);
         OkHttpClientProvider.setOkHttpClientFactory(() ->
-            applyClientCertificate(OkHttpClientProvider.createClientBuilder(appContext)).build()
+            applyClientCertificate(OkHttpClientProvider.createClientBuilder()).cache(httpCache).build()
         );
     }
 
