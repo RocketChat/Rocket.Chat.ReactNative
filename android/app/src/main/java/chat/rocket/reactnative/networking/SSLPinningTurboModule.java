@@ -19,19 +19,15 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
+import okhttp3.ConnectionPool;
 import android.app.Activity;
 import android.content.Context;
 import javax.net.ssl.KeyManager;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.WeakHashMap;
 import java.util.concurrent.TimeUnit;
 
 import com.reactnativecommunity.webview.RNCWebViewManager;
@@ -42,6 +38,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private Promise promise;
     private static volatile String alias;
     private static Context appContext;
+    private static final ConnectionPool connectionPool = new ConnectionPool();
     private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
     private static final X509TrustManager trustManager = createTrustManager();
 
@@ -51,6 +48,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         OkHttpClientProvider.setOkHttpClientFactory(() ->
             OkHttpClientProvider.createClientBuilder()
                 .sslSocketFactory(sslSocketFactory, trustManager)
+                .connectionPool(connectionPool)
                 .build()
         );
         // Keep expo-file-system's own default timeouts
@@ -107,6 +105,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             // A failed lookup leaves the alias unset, so the next setCertificate retries it
             alias = keyManager != null ? name : null;
             createSSLContext(keyManager);
+            connectionPool.evictAll();
         }
     }
 
@@ -192,27 +191,9 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
     private static class SwappableSSLSocketFactory extends SSLSocketFactory {
         private volatile SSLSocketFactory delegate;
-        private final Set<Socket> sockets = Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<>()));
 
-        // Closes the previous identity's sockets, busy ones included, so no connection keeps using it
         void setDelegate(SSLSocketFactory delegate) {
             this.delegate = delegate;
-            List<Socket> previous;
-            synchronized (sockets) {
-                previous = new ArrayList<>(sockets);
-                sockets.clear();
-            }
-            for (Socket socket : previous) {
-                try {
-                    socket.close();
-                } catch (IOException ignored) {
-                }
-            }
-        }
-
-        private Socket track(Socket socket) {
-            sockets.add(socket);
-            return socket;
         }
 
         @Override
@@ -227,32 +208,32 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
         @Override
         public Socket createSocket() throws IOException {
-            return track(delegate.createSocket());
+            return delegate.createSocket();
         }
 
         @Override
         public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
-            return track(delegate.createSocket(socket, host, port, autoClose));
+            return delegate.createSocket(socket, host, port, autoClose);
         }
 
         @Override
         public Socket createSocket(String host, int port) throws IOException {
-            return track(delegate.createSocket(host, port));
+            return delegate.createSocket(host, port);
         }
 
         @Override
         public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException {
-            return track(delegate.createSocket(host, port, localHost, localPort));
+            return delegate.createSocket(host, port, localHost, localPort);
         }
 
         @Override
         public Socket createSocket(InetAddress host, int port) throws IOException {
-            return track(delegate.createSocket(host, port));
+            return delegate.createSocket(host, port);
         }
 
         @Override
         public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort) throws IOException {
-            return track(delegate.createSocket(address, port, localAddress, localPort));
+            return delegate.createSocket(address, port, localAddress, localPort);
         }
     }
 }
