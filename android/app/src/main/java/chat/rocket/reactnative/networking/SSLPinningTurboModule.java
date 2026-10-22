@@ -16,9 +16,6 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509ExtendedKeyManager;
 import java.security.PrivateKey;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocket;
 import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
@@ -170,18 +167,8 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static final class ClientKeyManager extends X509ExtendedKeyManager {
         @Override
         public String chooseClientAlias(String[] keyTypes, Principal[] issuers, Socket socket) {
-            // Android 7-8 sockets have no handshake session while the client certificate is chosen
-            String host = hostsByConnection.get(connectionKey(socket));
-            if (host == null && socket instanceof SSLSocket) {
-                SSLSession session = ((SSLSocket) socket).getHandshakeSession();
-                host = session == null ? null : session.getPeerHost();
-            }
-            return aliasForHost(host);
-        }
-
-        @Override
-        public String chooseEngineClientAlias(String[] keyTypes, Principal[] issuers, SSLEngine engine) {
-            return aliasForHost(engine.getPeerHost());
+            // Keyed by the connection, as Android 7-8 sockets have no handshake session at this point
+            return aliasForHost(hostsByConnection.get(connectionKey(socket)));
         }
 
         @Override
