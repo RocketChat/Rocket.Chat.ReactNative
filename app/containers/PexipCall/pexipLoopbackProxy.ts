@@ -40,7 +40,7 @@ export const startPexipLoopbackProxy = async (url: string): Promise<string | nul
 		const localOrigin = await proxy.start(origin);
 		return `${localOrigin}${url.slice(origin.length)}`;
 	} catch (e) {
-		log(e);
+		if ((e as { code?: string }).code !== 'pexip_proxy_stopped') log(e);
 		return null;
 	}
 };

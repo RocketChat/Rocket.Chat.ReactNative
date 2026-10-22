@@ -22,7 +22,8 @@ RCT_EXPORT_METHOD(start:(NSString *)upstreamOrigin
                   reject:(RCTPromiseRejectBlock)reject) {
   [PexipLoopbackProxy startWithUpstreamOrigin:upstreamOrigin completion:^(NSString *localOrigin, NSError *error) {
     if (error != nil || localOrigin == nil) {
-      reject(@"pexip_proxy_start", error.localizedDescription ?: @"Pexip proxy failed to start", error);
+      BOOL stopped = [error.domain isEqualToString:@"PexipLoopbackProxy"] && error.code == 1;
+      reject(stopped ? @"pexip_proxy_stopped" : @"pexip_proxy_start", error.localizedDescription ?: @"Pexip proxy failed to start", error);
       return;
     }
     resolve(localOrigin);

@@ -56,9 +56,24 @@ public final class PexipLoopbackProxy: NSObject {
     }
 }
 
-enum ProxyError: LocalizedError {
+enum ProxyError: LocalizedError, CustomNSError {
     case invalidOrigin(String)
     case stopped
+    case timedOut
+
+    static let errorDomain = "PexipLoopbackProxy"
+    static let stoppedCode = 1
+
+    var errorCode: Int {
+        switch self {
+        case .invalidOrigin:
+            return 0
+        case .stopped:
+            return ProxyError.stoppedCode
+        case .timedOut:
+            return 2
+        }
+    }
 
     var errorDescription: String? {
         switch self {
@@ -66,6 +81,8 @@ enum ProxyError: LocalizedError {
             return "Pexip proxy needs an https origin, got \(origin)"
         case .stopped:
             return "Pexip proxy stopped before it was ready"
+        case .timedOut:
+            return "Pexip proxy did not become ready in time"
         }
     }
 }
@@ -126,7 +143,7 @@ final class ProxyServer {
         queue.asyncAfter(deadline: .now() + Limits.listenerStartTimeout) { [weak self] in
             guard let self = self, self.pendingStart != nil else { return }
             self.stop()
-            self.finishStart(.failure(ProxyError.stopped))
+            self.finishStart(.failure(ProxyError.timedOut))
         }
         listen(on: .any)
     }
