@@ -100,6 +100,19 @@ describe('uploadAvatar helper', () => {
 		expect(mockTracker.end).toHaveBeenCalledTimes(1);
 	});
 
+	it('does not upload when it is cancelled while the file is being cached', async () => {
+		(copyFileToCacheDirectoryIfNeeded as jest.Mock).mockImplementationOnce(async (p: string) => {
+			(trackUpload as jest.Mock).mock.calls[0][0]();
+			return `cached:${p}`;
+		});
+
+		await expect(uploadUserAvatarMultipart('file:///tmp/avatar.jpg', 'image/jpeg', 'avatar.jpg')).rejects.toThrow(
+			'Upload Cancelled'
+		);
+		expect(FileUpload).not.toHaveBeenCalled();
+		expect(mockTracker.end).toHaveBeenCalledTimes(1);
+	});
+
 	it('aborts the upload when the tracker cancel callback runs', async () => {
 		const cancel = jest.fn();
 		(FileUpload as jest.Mock).mockImplementationOnce(() => ({

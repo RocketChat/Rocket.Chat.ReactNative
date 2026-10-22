@@ -58,6 +58,10 @@ export async function sendFileMessageV2(
 		if (!uploadPath || !uploadRecord) {
 			throw new Error("Couldn't create upload record");
 		}
+		if (cancelled) {
+			await cancelUpload(uploadRecord, rid);
+			return;
+		}
 		const { file, getContent, fileContent } = await Encryption.encryptFile(rid, fileInfo);
 		file.path = await copyFileToCacheDirectoryIfNeeded(file.path, file.name);
 		if (cancelled) {

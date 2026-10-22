@@ -86,6 +86,16 @@ describe('sendFileMessage', () => {
 		expect(mockTracker.end).toHaveBeenCalledTimes(1);
 	});
 
+	it('removes the upload record when it is cancelled while the record is being created', async () => {
+		(createUploadRecord as jest.Mock).mockImplementation(async () => {
+			cancelFromNotification();
+			return ['clip-rid', record];
+		});
+		await send();
+		expect(cancelUpload).toHaveBeenCalledWith(record, 'rid');
+		expect(FileUpload).not.toHaveBeenCalled();
+	});
+
 	it('ends the tracker and rethrows when the upload fails', async () => {
 		(FileUpload as jest.Mock).mockImplementation(() => ({
 			send: jest.fn().mockRejectedValue(new Error('Network request failed')),

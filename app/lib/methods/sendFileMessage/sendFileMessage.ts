@@ -35,6 +35,10 @@ export async function sendFileMessage(
 		if (!uploadPath || !uploadRecord) {
 			return;
 		}
+		if (cancelled) {
+			await cancelUpload(uploadRecord, rid);
+			return;
+		}
 
 		fileInfo.path = await copyFileToCacheDirectoryIfNeeded(fileInfo.path, fileInfo.name);
 		if (cancelled) {

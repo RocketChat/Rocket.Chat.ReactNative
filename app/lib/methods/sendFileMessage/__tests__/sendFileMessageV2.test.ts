@@ -100,6 +100,16 @@ describe('sendFileMessageV2', () => {
 		expect(mockTracker.end).toHaveBeenCalledTimes(1);
 	});
 
+	it('removes the upload record when it is cancelled while the record is being created', async () => {
+		(createUploadRecord as jest.Mock).mockImplementation(async () => {
+			cancelFromNotification();
+			return ['clip-rid', record];
+		});
+		await send();
+		expect(cancelUpload).toHaveBeenCalledWith(record, 'rid');
+		expect(FileUpload).not.toHaveBeenCalled();
+	});
+
 	it('does not confirm the message when it is cancelled while the upload finishes', async () => {
 		(FileUpload as jest.Mock).mockImplementation(() => ({
 			send: jest.fn(async () => {

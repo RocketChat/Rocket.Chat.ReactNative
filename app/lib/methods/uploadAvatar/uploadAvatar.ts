@@ -10,9 +10,16 @@ export const uploadUserAvatarMultipart = async (localUri: string, mimeType: stri
 	const { server } = reduxStore.getState().server;
 	const { id, token } = reduxStore.getState().login.user;
 	let upload: FileUpload | undefined;
-	const tracker = trackUpload(() => upload?.cancel());
+	let cancelled = false;
+	const tracker = trackUpload(() => {
+		cancelled = true;
+		upload?.cancel();
+	});
 	try {
 		const filePath = await copyFileToCacheDirectoryIfNeeded(localUri, filename);
+		if (cancelled) {
+			throw new Error('Upload Cancelled');
+		}
 		const formData: IFormData[] = [{ name: 'image', uri: filePath, type: mimeType, filename }];
 		const headers = {
 			...RocketChatSettings.customHeaders,
