@@ -111,6 +111,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/alice.johnson?format=png&size=56"
                 sfEffect={null}
                 source={
                   [
@@ -567,6 +568,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/this.is.a.very.long.username.for.storybook.preview?format=png&size=56"
                 sfEffect={null}
                 source={
                   [
@@ -848,6 +850,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/this.is.a.very.long.username.for.storybook.preview?format=png&size=56"
                 sfEffect={null}
                 source={
                   [
@@ -1330,6 +1333,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/alice.johnson?format=png&size=56"
                 sfEffect={null}
                 source={
                   [

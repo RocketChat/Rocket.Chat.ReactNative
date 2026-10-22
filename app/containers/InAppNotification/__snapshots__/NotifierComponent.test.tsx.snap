@@ -172,6 +172,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/room/rid-1?format=png&size=96"
               sfEffect={null}
               source={
                 [
@@ -549,6 +550,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=96"
               sfEffect={null}
               source={
                 [
@@ -926,6 +928,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/room/rid-1?format=png&size=96"
               sfEffect={null}
               source={
                 [
@@ -1303,6 +1306,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/room/rid-1?format=png&size=96"
               sfEffect={null}
               source={
                 [

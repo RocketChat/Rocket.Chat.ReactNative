@@ -156,6 +156,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                   sfEffect={null}
                   source={
                     [
@@ -575,6 +576,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                   sfEffect={null}
                   source={
                     [
@@ -994,6 +996,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                   sfEffect={null}
                   source={
                     [
@@ -1415,6 +1418,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                   sfEffect={null}
                   source={
                     [
@@ -1834,6 +1838,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                   sfEffect={null}
                   source={
                     [
@@ -2273,6 +2278,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                   sfEffect={null}
                   source={
                     [
@@ -2679,6 +2685,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                   sfEffect={null}
                   source={
                     [
@@ -3085,6 +3092,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                   sfEffect={null}
                   source={
                     [

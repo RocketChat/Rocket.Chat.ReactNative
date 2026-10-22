@@ -222,6 +222,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=56"
             sfEffect={null}
             source={
               [
@@ -428,6 +429,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=56"
             sfEffect={null}
             source={
               [
@@ -870,6 +872,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=56"
             sfEffect={null}
             source={
               [

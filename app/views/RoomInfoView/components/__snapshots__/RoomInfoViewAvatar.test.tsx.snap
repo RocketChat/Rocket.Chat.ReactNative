@@ -60,6 +60,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         onProgress={[Function]}
         placeholder={[]}
         priority="high"
+        recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=240"
         sfEffect={null}
         source={
           [
@@ -148,6 +149,7 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
         onProgress={[Function]}
         placeholder={[]}
         priority="high"
+        recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=240"
         sfEffect={null}
         source={
           [

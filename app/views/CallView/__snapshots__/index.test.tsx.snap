@@ -136,6 +136,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -1049,6 +1050,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -1968,6 +1970,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -2881,6 +2884,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -3794,6 +3798,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -4707,6 +4712,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -5603,6 +5609,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -6488,6 +6495,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -7379,6 +7387,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -8264,6 +8273,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -9149,6 +9159,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -10034,6 +10045,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -10919,6 +10931,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [
@@ -11821,6 +11834,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
               onProgress={[Function]}
               placeholder={[]}
               priority="high"
+              recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
               sfEffect={null}
               source={
                 [

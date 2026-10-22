@@ -28,6 +28,7 @@ const AvatarImage = ({ uri, style }: IAvatarImage) => {
 					headers: RocketChatSettings.customHeaders ?? headers
 				}}
 				priority='high'
+				recyclingKey={uri}
 				onLoad={onEnd}
 				onError={onEnd}
 			/>

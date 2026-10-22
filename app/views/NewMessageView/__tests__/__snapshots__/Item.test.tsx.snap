@@ -119,6 +119,7 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=60"
           sfEffect={null}
           source={
             [
@@ -318,6 +319,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=60"
             sfEffect={null}
             source={
               [
@@ -580,6 +582,7 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/long.name?format=png&size=60"
             sfEffect={null}
             source={
               [
@@ -842,6 +845,7 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=60"
             sfEffect={null}
             source={
               [

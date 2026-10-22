@@ -241,6 +241,7 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -717,6 +718,7 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -1201,6 +1203,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -2025,6 +2028,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -2849,6 +2853,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/no.avatar?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -3320,6 +3325,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -5180,6 +5186,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -5651,6 +5658,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -6135,6 +6143,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -6606,6 +6615,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -7090,6 +7100,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -7593,6 +7604,7 @@ Testing block quote."
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -8162,6 +8174,7 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -8665,6 +8678,7 @@ Testing block quote."
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -9234,6 +9248,7 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -9841,6 +9856,7 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -10448,6 +10464,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -11074,6 +11091,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -11939,6 +11957,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -12565,6 +12584,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -13430,6 +13450,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -14058,6 +14079,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -15079,6 +15101,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -15707,6 +15730,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -16728,6 +16752,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -18021,6 +18046,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -19314,6 +19340,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -20167,6 +20194,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -21318,6 +21346,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -22171,6 +22200,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -23322,6 +23352,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -23861,6 +23892,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -24591,6 +24623,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -25139,6 +25172,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -25623,6 +25657,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -26162,6 +26197,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -26892,6 +26928,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -27440,6 +27477,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -27924,6 +27962,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -28521,6 +28560,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -29120,6 +29160,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -29719,6 +29760,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -30331,6 +30373,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -30928,6 +30971,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -31527,6 +31571,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -32126,6 +32171,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -32738,6 +32784,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -33506,6 +33553,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -34275,6 +34323,7 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -34760,6 +34809,7 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -35244,6 +35294,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -35714,6 +35765,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -36162,6 +36214,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -36729,6 +36782,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -37202,6 +37256,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -37697,6 +37752,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -38247,6 +38303,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -38717,6 +38774,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -39165,6 +39223,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -39732,6 +39791,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -40205,6 +40265,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -40700,6 +40761,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -41250,6 +41312,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -42001,6 +42064,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -43087,6 +43151,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -43398,6 +43463,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -43907,6 +43973,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -44331,6 +44398,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -44909,6 +44977,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -45733,6 +45802,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -46484,6 +46554,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -47570,6 +47641,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -47881,6 +47953,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -48390,6 +48463,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -48814,6 +48888,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -49392,6 +49467,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -50135,6 +50211,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -50599,6 +50676,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -51076,6 +51154,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -51540,6 +51619,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -52098,6 +52178,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -52714,6 +52795,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -53330,6 +53412,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -53946,6 +54029,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -55110,6 +55194,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -55726,6 +55811,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -56342,6 +56428,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -56958,6 +57045,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -58109,6 +58197,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -58899,6 +58988,7 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -59383,6 +59473,7 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -59867,6 +59958,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -60338,6 +60430,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -61233,6 +61326,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -61717,6 +61811,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -62188,6 +62283,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -63083,6 +63179,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -63572,6 +63669,7 @@ exports[`Story Snapshots: Ignored should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -63908,6 +64006,7 @@ exports[`Story Snapshots: IgnoredLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -64239,6 +64338,7 @@ exports[`Story Snapshots: InlineKatex should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -64709,6 +64809,7 @@ exports[`Story Snapshots: InlineKatexLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -65171,6 +65272,7 @@ exports[`Story Snapshots: JitsiCall should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -65717,6 +65819,7 @@ exports[`Story Snapshots: JitsiCallLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -66271,6 +66374,7 @@ exports[`Story Snapshots: Katex should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -66703,6 +66807,7 @@ exports[`Story Snapshots: KatexArray should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -67135,6 +67240,7 @@ exports[`Story Snapshots: KatexArrayLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -67567,6 +67673,7 @@ exports[`Story Snapshots: KatexLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -68001,6 +68108,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -68672,6 +68780,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -69291,6 +69400,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -70085,6 +70195,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -70756,6 +70867,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -71375,6 +71487,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -72167,6 +72280,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -72638,6 +72752,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -73145,6 +73260,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -73651,6 +73767,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -74075,6 +74192,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -74620,6 +74738,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -75122,6 +75241,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -75576,6 +75696,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -76172,6 +76293,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -76768,6 +76890,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -77458,6 +77581,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -77929,6 +78053,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -78436,6 +78561,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -78942,6 +79068,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -79366,6 +79493,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -79911,6 +80039,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -80413,6 +80542,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -80867,6 +80997,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -81463,6 +81594,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -82059,6 +82191,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -82749,6 +82882,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -83417,6 +83551,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -84077,6 +84212,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -84745,6 +84881,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -85405,6 +85542,7 @@ exports[`Story Snapshots: Message should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -85822,6 +85960,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -86603,6 +86742,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -87432,6 +87572,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -88284,6 +88425,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -89010,6 +89152,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -89946,6 +90089,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -90691,6 +90835,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -91449,6 +91594,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -92194,6 +92340,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -92952,6 +93099,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -93604,6 +93752,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -94584,6 +94733,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -95413,6 +95563,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -96319,6 +96470,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -96958,6 +97110,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -97704,6 +97857,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -98516,6 +98670,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -99155,6 +99310,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -99901,6 +100057,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -100700,6 +100857,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -101552,6 +101710,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -102278,6 +102437,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -103214,6 +103374,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -103866,6 +104027,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -104565,6 +104727,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -105394,6 +105557,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -106301,6 +106465,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -107261,6 +107426,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -107711,6 +107877,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -108161,6 +108328,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -108611,6 +108779,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -109061,6 +109230,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -109511,6 +109681,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -109961,6 +110132,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -110411,6 +110583,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -110861,6 +111034,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -111197,6 +111371,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -112157,6 +112332,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -112607,6 +112783,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -113057,6 +113234,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -113507,6 +113685,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -113957,6 +114136,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -114407,6 +114587,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -114857,6 +115038,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -115307,6 +115489,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -115757,6 +115940,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -116092,6 +116276,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/jd?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -116482,6 +116667,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/jd?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -117188,6 +117374,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -117578,6 +117765,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -118284,6 +118472,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -118674,6 +118863,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -119393,6 +119583,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -120149,6 +120340,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -120905,6 +121097,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -121935,6 +122128,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -123452,6 +123646,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -124482,6 +124677,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -126000,6 +126196,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -126837,6 +127034,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -127164,6 +127362,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -127491,6 +127690,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -127827,6 +128027,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -128664,6 +128865,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -128991,6 +129193,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -129318,6 +129521,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -129781,6 +129985,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -130108,6 +130313,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -130435,6 +130641,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -130762,6 +130969,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -131225,6 +131433,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -131552,6 +131761,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -131879,6 +132089,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -132206,6 +132417,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -132541,6 +132753,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -133092,6 +133305,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -133881,6 +134095,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -134432,6 +134647,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -135221,6 +135437,7 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://pbs.twimg.com/profile_images/1016397063649660929/14EIApTi_400x400.jpg"
                             sfEffect={null}
                             source={
                               [
@@ -135705,6 +135922,7 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://pbs.twimg.com/profile_images/1016397063649660929/14EIApTi_400x400.jpg"
                             sfEffect={null}
                             source={
                               [
@@ -136115,6 +136333,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -136376,6 +136595,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -136637,6 +136857,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -136901,6 +137122,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -137162,6 +137384,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -137423,6 +137646,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -137684,6 +137908,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -137945,6 +138170,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -138206,6 +138432,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -138467,6 +138694,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -138728,6 +138956,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -138989,6 +139218,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -139250,6 +139480,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -139511,6 +139742,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -139772,6 +140004,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -140033,6 +140266,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -140294,6 +140528,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -140555,6 +140790,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -140816,6 +141052,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -141077,6 +141314,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -141338,6 +141576,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -141599,6 +141838,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -141860,6 +142100,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -142121,6 +142362,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -142382,6 +142624,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -142643,6 +142886,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -142892,6 +143136,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -143153,6 +143398,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -143414,6 +143660,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -143678,6 +143925,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -143939,6 +144187,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -144200,6 +144449,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -144461,6 +144711,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -144722,6 +144973,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -144983,6 +145235,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -145244,6 +145497,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -145505,6 +145759,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -145766,6 +146021,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -146027,6 +146283,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -146288,6 +146545,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -146549,6 +146807,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -146810,6 +147069,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -147071,6 +147331,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -147332,6 +147593,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -147593,6 +147855,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -147854,6 +148117,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -148115,6 +148379,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -148376,6 +148641,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -148637,6 +148903,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -148898,6 +149165,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -149159,6 +149427,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -149420,6 +149689,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -149735,6 +150005,7 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -150215,6 +150486,7 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -150703,6 +150975,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -151410,6 +151683,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -152117,6 +152391,7 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -152601,6 +152876,7 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -153085,6 +153361,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/other.user?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -153604,6 +153881,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/other.user?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -154123,6 +154401,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -155441,6 +155720,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -156759,6 +157039,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -157414,6 +157695,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -158299,6 +158581,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -158808,6 +159091,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -159267,6 +159551,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -159776,6 +160061,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -160235,6 +160521,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -160890,6 +161177,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -161775,6 +162063,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/jd?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -162165,6 +162454,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/jd?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -162871,6 +163161,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -163261,6 +163552,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -163967,6 +164259,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -164357,6 +164650,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                       onProgress={[Function]}
                       placeholder={[]}
                       priority="high"
+                      recyclingKey="https://open.rocket.chat/avatar/johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                       sfEffect={null}
                       source={
                         [
@@ -165076,6 +165370,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -165569,6 +165864,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -166075,6 +166371,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -166568,6 +166865,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -167074,6 +167372,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -170076,6 +170375,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -173037,6 +173337,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -174388,6 +174689,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -175482,6 +175784,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -176172,6 +176475,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -177366,6 +177670,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -178167,6 +178472,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -178857,6 +179163,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -179884,6 +180191,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -180685,6 +180993,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -181375,6 +181684,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -182365,6 +182675,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -183111,6 +183422,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -183759,6 +184071,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
@@ -184299,6 +184612,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                             onProgress={[Function]}
                             placeholder={[]}
                             priority="high"
+                            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8"
                             sfEffect={null}
                             source={
                               [
