@@ -81,6 +81,7 @@ platform :ios do
     pilot(
       api_key: api_key,
       app_identifier: 'chat.rocket.ios',
+      app_platform: 'ios',
       app_version: get_info_plist_value(path: 'RocketChatRN/Info.plist', key: 'CFBundleShortVersionString'),
       build_number: get_info_plist_value(path: 'RocketChatRN/Info.plist', key: 'CFBundleVersion'),
       distribute_only: true,
