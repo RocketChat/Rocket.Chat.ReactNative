@@ -12,8 +12,10 @@
 #import "SecureStorage.h"
 
 @interface Challenge ()
++ (MMKVBridge *)getMMKVInstance;
 + (NSString *)stringToHex:(NSString *)string;
 + (nullable NSURLCredential *)credentialForPath:(NSString *)path password:(NSString *)password;
++ (NSArray *)intermediateCertificates:(SecIdentityRef)identity chain:(nullable NSArray *)chain;
 @end
 
 @implementation Challenge
@@ -90,8 +92,12 @@
   if (![challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate]) {
     return nil;
   }
+  return [self clientCertificateCredentialForHost:challenge.protectionSpace.host];
+}
 
-  NSString *clientSSL = [[self getMMKVInstance] stringForKey:challenge.protectionSpace.host];
++ (nullable NSURLCredential *)clientCertificateCredentialForHost:(NSString *)host
+{
+  NSString *clientSSL = [[self getMMKVInstance] stringForKey:host];
   if (!clientSSL) {
     return nil;
   }
