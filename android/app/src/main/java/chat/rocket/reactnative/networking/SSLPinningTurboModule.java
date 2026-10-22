@@ -31,6 +31,7 @@ import android.security.KeyChainAliasCallback;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import com.reactnativecommunity.webview.RNCWebViewManager;
 import expo.modules.filesystem.legacy.FileSystemLegacyModule;
@@ -54,7 +55,12 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         OkHttpClientProvider.setOkHttpClientFactory(() ->
             applyClientCertificate(OkHttpClientProvider.createClientBuilder()).cache(httpCache).build()
         );
-        FileSystemLegacyModule.setOkHttpClient(getSharedOkHttpClient());
+        // Keep expo-file-system's own default timeouts
+        FileSystemLegacyModule.setOkHttpClient(getSharedOkHttpClient().newBuilder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .build());
     }
 
     public static synchronized OkHttpClient getSharedOkHttpClient() {
