@@ -3,7 +3,7 @@ import { dequal } from 'dequal';
 import { type Subscription } from 'rxjs';
 import { createSelector } from 'reselect';
 import { shallowEqual } from 'react-redux';
-import { orderBy } from 'lodash';
+import orderBy from 'lodash/orderBy';
 
 import { type TSupportedPermissions } from '~/reducers/permissions';
 import { type IApplicationState, type TSubscriptionModel } from '~/definitions';
@@ -54,6 +54,6 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 	const permissionsRedux = useAppSelector(state => getPermissionsSelector(state, permissions), shallowEqual);
 	const subscriptionRoles = useSubscriptionRoles(rid);
 
-	const mergedRoles = [...new Set([...(subscriptionRoles || []), ...userRoles])];
-	return permissionsRedux.map(permission => (permission ?? []).some(r => mergedRoles.includes(r)));
+	const mergedRoles = new Set([...(subscriptionRoles || []), ...userRoles]);
+	return permissionsRedux.map(permission => (permission ?? []).some(r => mergedRoles.has(r)));
 }

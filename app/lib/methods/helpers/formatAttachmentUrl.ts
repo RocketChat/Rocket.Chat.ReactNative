@@ -1,5 +1,6 @@
 import { URL } from 'react-native-url-polyfill';
 
+import { getOrigin } from './getOrigin';
 import { isImageBase64 } from '../isImageBase64';
 import { store } from '~/lib/store/auxStore';
 
@@ -15,18 +16,6 @@ export const encodeAttachmentUrl = (url: string): string => {
 		return new URL(url).toString();
 	} catch {
 		return url;
-	}
-};
-
-const getOrigin = (url: string): string | null => {
-	if (!url) {
-		return null;
-	}
-	try {
-		const { protocol, origin } = new URL(url);
-		return protocol === 'http:' || protocol === 'https:' ? origin.toLowerCase() : null;
-	} catch {
-		return null;
 	}
 };
 

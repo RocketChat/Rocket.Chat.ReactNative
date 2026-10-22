@@ -3,7 +3,6 @@ import type Model from '@nozbe/watermelondb/Model';
 
 import { getDeviceToken } from '../notifications';
 import { isSsl } from './helpers';
-import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import { disconnect } from '../services/connect';
@@ -13,12 +12,15 @@ import {
 	E2E_PRIVATE_KEY,
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
+	getBasicAuthKey,
 	getLegacyUserTokenKey,
 	getServerUserIdKey,
 	getUserTokenKey
 } from '../constants/keys';
 import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
+import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
+import { clearServerCookies } from './helpers/setServerCookies';
 import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from './getUsersPresence';
 
@@ -29,7 +31,7 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 		// A logout before the migration ran leaves a token the native fallbacks would still read.
 		UserPreferences.removeItem(getLegacyUserTokenKey(userId));
 	}
-	UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${server}`);
+	UserPreferences.removeItem(getBasicAuthKey(server));
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
@@ -99,12 +101,24 @@ export async function removeServer({ server }: { server: string }): Promise<void
 
 		await removeServerData({ server });
 		await removeServerDatabase({ server });
+		try {
+			await clearServerCookies(server);
+		} catch (e) {
+			log(e);
+		}
 	} catch (e) {
 		log(e);
 	}
 }
 
 export async function logout({ server }: { server: string }): Promise<void> {
+	closeConferenceCall();
+	try {
+		await clearServerCookies(server);
+	} catch (e) {
+		log(e);
+	}
+
 	if (roomsSubscription?.stop) {
 		roomsSubscription.stop();
 	}

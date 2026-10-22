@@ -1,114 +1,29 @@
-import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { View } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { type ReactElement } from 'react';
 
-import { setLoading } from '~/actions/selectedUsers';
 import * as List from '~/containers/List';
-import { type TSubscriptionModel } from '~/definitions';
-import i18n from '~/i18n';
-import { usePermissions } from '~/lib/hooks/usePermissions';
-import log, { events, logEvent } from '~/lib/methods/helpers/log';
-import { addUsersToRoom } from '~/lib/services/restApi';
-import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
-import { type ChatsStackParamList } from '~/stacks/types';
+import { type IActionsSection, useMemberActions } from './useMemberActions';
 
-type TNavigation = CompositeNavigationProp<
-	NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
-	NativeStackNavigationProp<MasterDetailInsideStackParamList>
->;
-
-interface IActionsSection {
-	rid: TSubscriptionModel['rid'];
-	t: TSubscriptionModel['t'];
-	joined: boolean;
-	abacAttributes: TSubscriptionModel['abacAttributes'];
-}
-
-export default function ActionsSection({ rid, t, joined, abacAttributes }: IActionsSection): ReactElement {
-	const { navigate, pop } = useNavigation<TNavigation>();
-	const dispatch = useDispatch();
-	const [addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission, createInviteLinksPermission] =
-		usePermissions(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room', 'create-invite-links'], rid);
-
-	const canAddUser =
-		(joined && addUserToJoinedRoomPermission) ||
-		(t === 'c' && addUserToAnyCRoomPermission) ||
-		(t === 'p' && addUserToAnyPRoomPermission) ||
-		false;
-
-	const canInviteUser = createInviteLinksPermission;
-
-	const handleOnPress = ({
-		route,
-		params
-	}: {
-		route: keyof ChatsStackParamList;
-		params: ChatsStackParamList[keyof ChatsStackParamList];
-	}) => {
-		// @ts-ignore
-		navigate(route, params);
-		// @ts-ignore
-		logEvent(events[`RM_GO_${route.replace('View', '').toUpperCase()}`]);
-	};
-
-	const addUser = async () => {
-		try {
-			dispatch(setLoading(true));
-			await addUsersToRoom(rid);
-			pop();
-		} catch (e) {
-			log(e);
-		} finally {
-			dispatch(setLoading(false));
-		}
-	};
+export default function ActionsSection(props: IActionsSection): ReactElement {
+	const actions = useMemberActions(props);
 
 	return (
-		<View style={{ paddingTop: canAddUser || canInviteUser ? 16 : 0, paddingBottom: canAddUser || canInviteUser ? 16 : 0 }}>
-			{['c', 'p'].includes(t) && canAddUser ? (
-				<>
-					<List.Separator />
+		<View style={{ paddingTop: actions.length ? 16 : 0 }}>
+			{actions.map((action, index) => (
+				<View key={action.testID}>
+					{index === 0 ? <List.Separator /> : null}
 					<List.Item
-						title='Add_users'
-						onPress={() =>
-							handleOnPress({
-								route: 'SelectedUsersView',
-								params: {
-									title: i18n.t('Add_users'),
-									nextAction: addUser,
-									showSkipText: false
-								}
-							})
-						}
-						testID='room-actions-add-user'
-						left={() => <List.Icon name='add' />}
+						title={action.title}
+						onPress={action.onPress}
+						testID={action.testID}
+						left={() => <List.Icon name={action.icon} />}
 						showActionIndicator
+						disabled={action.disabled}
+						disabledReason={action.disabledReason}
 					/>
 					<List.Separator />
-				</>
-			) : null}
-
-			{['c', 'p'].includes(t) && canInviteUser ? (
-				<>
-					<List.Item
-						title='Invite_users'
-						onPress={() =>
-							handleOnPress({
-								route: 'InviteUsersView',
-								params: { rid }
-							})
-						}
-						testID='room-actions-invite-user'
-						left={() => <List.Icon name='user-add' />}
-						showActionIndicator
-						disabled={!!abacAttributes}
-						disabledReason={abacAttributes ? i18n.t('ABAC_disabled_action_reason') : undefined}
-					/>
-					<List.Separator />
-				</>
-			) : null}
+				</View>
+			))}
 		</View>
 	);
 }

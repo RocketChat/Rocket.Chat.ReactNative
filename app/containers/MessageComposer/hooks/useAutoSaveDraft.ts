@@ -1,75 +1,47 @@
 import { useRoute } from '@react-navigation/native';
-import { useCallback, useEffect, useRef } from 'react';
+import { type RefObject, useCallback, useEffect } from 'react';
 
+import { type TMessageActionState } from '~/definitions';
 import { saveDraftMessage } from '~/lib/methods/draftMessage';
-import { useComposerRid, useComposerTmid } from '../ComposerStore';
-import { useMessageAction } from '~/containers/message/stores/MessageActionStore';
+import { useComposerStoreApi } from '../ComposerStore';
+import { useMessageActionStoreApi } from '~/containers/message/stores/MessageActionStore';
 import { useFocused } from '../context';
 
-export const useAutoSaveDraft = (text = '') => {
-	const route = useRoute();
-	const rid = useComposerRid();
-	const tmid = useComposerTmid();
-	const action = useMessageAction();
+const AUTO_SAVE_INTERVAL = 3000;
+
+const serializeDraft = (action: TMessageActionState, text: string) => {
+	if (action?.kind === 'quote') {
+		return JSON.stringify({ quotes: action.messageIds, msg: text });
+	}
+	if (action?.kind === 'react') {
+		return JSON.stringify({ quotes: [action.messageId], msg: text });
+	}
+	return text;
+};
+
+export const useAutoSaveDraft = (textRef: RefObject<string>) => {
+	const routeName = useRoute().name;
+	const composerStore = useComposerStoreApi();
+	const messageActionStore = useMessageActionStoreApi();
 	const focused = useFocused();
-	const oldText = useRef('');
-	const intervalRef = useRef<number | null>(null);
 
-	const mounted = useRef(true);
+	const saveDraft = useCallback(() => {
+		if (routeName === 'ShareView') return;
+		const { action } = messageActionStore.getState();
+		if (action?.kind === 'edit') return;
 
-	const saveMessageDraft = useCallback(
-		(m?: string) => {
-			if (route.name === 'ShareView') return;
-			if (action?.kind === 'edit') return;
+		const { rid, tmid } = composerStore.getState();
+		saveDraftMessage({ rid, tmid, draftMessage: serializeDraft(action, textRef.current) });
+	}, [routeName, textRef, composerStore, messageActionStore]);
 
-			let draftMessage = '';
-			if (action?.kind === 'quote') {
-				draftMessage = JSON.stringify({ quotes: action.messageIds, msg: text });
-			} else if (action?.kind === 'react') {
-				draftMessage = JSON.stringify({ quotes: [action.messageId], msg: text });
-			} else {
-				draftMessage = m ?? text;
-			}
-			if (oldText.current !== draftMessage || (oldText.current === '' && draftMessage === '') || m !== undefined) {
-				oldText.current = draftMessage;
-				saveDraftMessage({ rid, tmid, draftMessage });
-			}
-		},
-		[action, rid, tmid, text, route.name]
-	);
-
-	// if focused on composer input, saves every N seconds
 	useEffect(() => {
-		if (focused) {
-			intervalRef.current = setInterval(saveMessageDraft, 3000) as any;
-		} else if (intervalRef.current) {
-			saveMessageDraft();
-			clearInterval(intervalRef.current);
-		}
+		const interval = focused ? setInterval(saveDraft, AUTO_SAVE_INTERVAL) : undefined;
 
 		return () => {
-			if (intervalRef.current) {
-				clearInterval(intervalRef.current);
-			}
+			clearInterval(interval);
+			saveDraft();
 		};
-	}, [focused, saveMessageDraft]);
+	}, [focused, saveDraft]);
 
-	// hack to call saveMessageDraft when component is unmounted
-	useEffect(() => {
-		() => {};
-		return () => {
-			mounted.current = false;
-		};
-	}, []);
-
-	useEffect(
-		() => () => {
-			if (!mounted.current) {
-				saveMessageDraft();
-			}
-		},
-		[saveMessageDraft]
-	);
-
-	return { saveMessageDraft };
+	return { saveDraft };
 };

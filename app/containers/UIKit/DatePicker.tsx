@@ -43,7 +43,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 	const initial_date = element?.initialDate;
 	const placeholder = element?.placeholder;
 
-	const [currentDate, onChangeDate] = useState(new Date(initial_date || value));
+	const [currentDate, onChangeDate] = useState(() => new Date(initial_date || value));
 
 	const onChange: BaseProps['onChange'] = ({ nativeEvent: { timestamp } }, date?) => {
 		if (date || timestamp) {

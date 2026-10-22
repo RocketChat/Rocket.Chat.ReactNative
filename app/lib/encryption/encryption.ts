@@ -14,7 +14,7 @@ import {
 	aesGcmDecrypt,
 	aesGcmEncrypt
 } from '@rocket.chat/mobile-crypto';
-import { sampleSize } from 'lodash';
+import sampleSize from 'lodash/sampleSize';
 
 import {
 	type IMessage,
@@ -290,9 +290,10 @@ class Encryption {
 	getRoomInstance = async (rid: string) => {
 		try {
 			// Prevent handshake again
-			if (this.roomInstances[rid]) {
-				await this.roomInstances[rid].handshake();
-				return this.roomInstances[rid];
+			const existingRoomE2E = this.roomInstances[rid];
+			if (existingRoomE2E) {
+				await existingRoomE2E.handshake();
+				return existingRoomE2E;
 			}
 			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string, this);
 

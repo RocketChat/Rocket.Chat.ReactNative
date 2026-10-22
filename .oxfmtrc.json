@@ -15,6 +15,7 @@
 		"node_modules/",
 		"coverage/",
 		"e2e/docker/",
+		".e2e/",
 		"artifacts/",
 		"android/",
 		"ios/",
