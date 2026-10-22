@@ -38,6 +38,13 @@ export const findCategoryByName = async (credentials: Credentials, name: string)
 export const expectCategoryNamed = (credentials: Credentials, name: string) =>
 	expect.poll(async () => (await findCategoryByName(credentials, name)) !== undefined, { timeout: LONG_TIMEOUT }).toBe(true);
 
+export const expectCategoryRenamed = (credentials: Credentials, categoryId: string, name: string) =>
+	expect
+		.poll(async () => (await getSidebarCategories(credentials)).find(category => category._id === categoryId)?.name, {
+			timeout: LONG_TIMEOUT
+		})
+		.toBe(name);
+
 export const expectCategoryDeleted = (credentials: Credentials, categoryId: string) =>
 	expect
 		.poll(async () => (await getSidebarCategories(credentials)).some(category => category._id === categoryId), {

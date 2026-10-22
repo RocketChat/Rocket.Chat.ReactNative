@@ -6,6 +6,7 @@ import { openRoom } from '~e2e/support/appduct';
 import {
 	expectCategoryDeleted,
 	expectCategoryNamed,
+	expectCategoryRenamed,
 	expectListedInCategoryView,
 	expectRoomInCategory,
 	fillCategoryName,
@@ -91,7 +92,7 @@ test('moves a room to a category, collapses, renames and deletes it', { tags: ['
 	await fillCategoryName(fixtures, newName);
 	await tapWhenVisible(fixtures, 'rename-category-view-save');
 	await expectVisible(fixtures, 'category-settings-view');
-	await expectCategoryNamed(user, newName);
+	await expectCategoryRenamed(user, category._id, newName);
 
 	await scrollAndTap(screen.getByTestId('category-settings-view-list'), screen.getByTestId('category-settings-view-delete'));
 	await confirmAlert(fixtures, /will move back to default groups/, /^Delete$/i);
