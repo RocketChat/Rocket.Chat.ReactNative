@@ -1,0 +1,52 @@
+
+> rocket-chat-reactnative@4.78.0 start /Users/diegomello/orca/workspaces/Rocket.Chat.ReactNative/custom-categories-2
+> react-native start --port 8131
+
+warn Package react-native-math-view contains invalid configuration: "dependency.assets" is not allowed. Please verify it's properly linked using "npx react-native config" command and contact the package maintainers about this.
+
+Welcome to React Native v0.86
+Starting dev server on http://localhost:8131
+
+
+                        ▒▒▓▓▓▓▒▒
+                     ▒▓▓▓▒▒░░▒▒▓▓▓▒
+                  ▒▓▓▓▓░░░▒▒▒▒░░░▓▓▓▓▒
+                 ▓▓▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▓▓
+                 ▓▓░░░░░▒▓▓▓▓▓▓▒░░░░░▓▓
+                 ▓▓░░▓▓▒░░░▒▒░░░▒▓▒░░▓▓
+                 ▓▓░░▓▓▓▓▓▒▒▒▒▓▓▓▓▒░░▓▓
+                 ▓▓░░▓▓▓▓▓▓▓▓▓▓▓▓▓▒░░▓▓
+                 ▓▓▒░░▒▒▓▓▓▓▓▓▓▓▒░░░▒▓▓
+                  ▒▓▓▓▒░░░▒▓▓▒░░░▒▓▓▓▒
+                     ▒▓▓▓▒░░░░▒▓▓▓▒
+                        ▒▒▓▓▓▓▒▒
+
+
+                Welcome to Metro v0.84.6
+              Fast - Scalable - Integrated
+
+
+ WARN  Watchman `watch-project` returned a warning: Recrawled this watch 3 times, most recently because:
+MustScanSubDirs UserDroppedTo resolve, please review the information on
+https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
+To clear this warning, run:
+`watchman watch-del '/Users/diegomello/orca/workspaces/Rocket.Chat.ReactNative/custom-categories-2' ; watchman watch-project '/Users/diegomello/orca/workspaces/Rocket.Chat.ReactNative/custom-categories-2'`
+
+ WARN  Watchman `query` returned a warning: Recrawled this watch 3 times, most recently because:
+MustScanSubDirs UserDroppedTo resolve, please review the information on
+https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
+To clear this warning, run:
+`watchman watch-del '/Users/diegomello/orca/workspaces/Rocket.Chat.ReactNative/custom-categories-2' ; watchman watch-project '/Users/diegomello/orca/workspaces/Rocket.Chat.ReactNative/custom-categories-2'`
+
+Recrawled this watch 3 times, most recently because:
+MustScanSubDirs UserDroppedTo resolve, please review the information on
+https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
+To clear this warning, run:
+`watchman watch-del '/Users/diegomello/orca/workspaces/Rocket.Chat.ReactNative/custom-categories-2' ; watchman watch-project '/Users/diegomello/orca/workspaces/Rocket.Chat.ReactNative/custom-categories-2'`
+
+ INFO  Dev server ready. Press Ctrl+C to exit.
+ INFO  Interactive mode is not supported in this environment
+ BUNDLE  ./index.js ░░░░░░░░░░░░░░░░ 0% (0/1)
+ WARN  Attempted to import the module "/Users/diegomello/orca/workspaces/Rocket.Chat.ReactNative/custom-categories-2/node_modules/react-native-webrtc/node_modules/event-target-shim/index" which is not listed in the "exports" of "/Users/diegomello/orca/workspaces/Rocket.Chat.ReactNative/custom-categories-2/node_modules/react-native-webrtc/node_modules/event-target-shim" under the requested subpath "./index". Falling back to file-based resolution. Consider updating the call site or asking the package maintainer(s) to expose this API.
+ BUNDLE  ./index.js 
+ ELIFECYCLE  Command failed.

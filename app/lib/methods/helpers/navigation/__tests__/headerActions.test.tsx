@@ -93,6 +93,28 @@ describe('HeaderActions', () => {
 		expect(close.danger).toBe(true);
 	});
 
+	it('runs the picked item only after the menu sheet closes', () => {
+		render(<HeaderActions actions={[filterAction]} />);
+		fireEvent.press(screen.getByTestId('filter'));
+		const { options, onClose } = (showActionSheetRef as jest.Mock).mock.calls[0][0];
+
+		options[1].onPress();
+		expect(filterAction.menu?.[1].onPress).not.toHaveBeenCalled();
+
+		onClose();
+		expect(filterAction.menu?.[1].onPress).toHaveBeenCalledTimes(1);
+		expect(filterAction.menu?.[0].onPress).not.toHaveBeenCalled();
+	});
+
+	it('runs nothing when the menu sheet closes without a pick', () => {
+		render(<HeaderActions actions={[filterAction]} />);
+		fireEvent.press(screen.getByTestId('filter'));
+
+		(showActionSheetRef as jest.Mock).mock.calls[0][0].onClose();
+
+		filterAction.menu?.forEach(({ onPress }) => expect(onPress).not.toHaveBeenCalled());
+	});
+
 	it('caps a numeric badge at +99', () => {
 		render(
 			<HeaderActions
