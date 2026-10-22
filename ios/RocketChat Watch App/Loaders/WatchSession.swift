@@ -60,14 +60,10 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
 		DispatchQueue.main.async { [weak self] in
 			guard let self else { return }
 			
-			if let server = self.serversDB.server(url: serverURL) {
-				server.quickReplies = replies
-				self.serversDB.save()
-			} else {
-				var allReplies = UserDefaults.standard.dictionary(forKey: "pendingQuickReplies") as? [String: [String]] ?? [:]
-				allReplies[serverString.removeTrailingSlash()] = replies
-				UserDefaults.standard.set(allReplies, forKey: "pendingQuickReplies")
-			}
+			guard let server = self.serversDB.server(url: serverURL) else { return }
+			
+			server.quickReplies = replies
+			self.serversDB.save()
 		}
 	}
 }

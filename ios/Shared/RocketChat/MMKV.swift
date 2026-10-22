@@ -39,6 +39,14 @@ extension MMKVBridge {
 		return userId
 	}
 	
+	// Keep in sync with getWatchOSQuickRepliesKey() (JS)
+	func watchQuickReplies(for server: String) -> [String] {
+		guard let json = string(forKey: "\(server)-RC_WATCHOS_QUICKREPLIES"), let data = json.data(using: .utf8) else {
+			return []
+		}
+		return (try? JSONDecoder().decode([String].self, from: data)) ?? []
+	}
+	
 	func privateKey(for server: String) -> String? {
 		guard let privateKey = string(forKey: "\(server)-RC_E2E_PRIVATE_KEY") else {
 			return nil

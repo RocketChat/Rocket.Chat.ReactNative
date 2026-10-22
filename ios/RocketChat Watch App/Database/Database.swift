@@ -85,8 +85,9 @@ final class DefaultDatabase: ServersDatabase {
 			server.certificate = updatedServer.clientSSL?.certificate
 			server.password = updatedServer.clientSSL?.password
 			server.version = updatedServer.version
+			server.quickReplies = updatedServer.quickReplies ?? []
 		} else {
-			Server(
+			let server = Server(
 				context: viewContext,
 				iconURL: updatedServer.iconURL,
 				name: updatedServer.name,
@@ -97,6 +98,7 @@ final class DefaultDatabase: ServersDatabase {
 				password: updatedServer.clientSSL?.password,
 				version: updatedServer.version
 			)
+			server.quickReplies = updatedServer.quickReplies ?? []
 		}
 		
 		save()
