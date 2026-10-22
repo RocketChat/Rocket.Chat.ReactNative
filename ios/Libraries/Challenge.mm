@@ -82,9 +82,7 @@
 + (NSArray *)intermediateCertificates:(SecIdentityRef)identity chain:(NSArray *)chain
 {
   SecCertificateRef leaf = NULL;
-  if (identity) {
-    SecIdentityCopyCertificate(identity, &leaf);
-  }
+  SecIdentityCopyCertificate(identity, &leaf);
   NSMutableArray *certificates = [[NSMutableArray alloc] init];
   for (id certificate in chain) {
     if (!leaf || !CFEqual((__bridge CFTypeRef)certificate, leaf)) {
