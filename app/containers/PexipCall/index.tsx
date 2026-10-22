@@ -10,6 +10,7 @@ import { userAgent } from '~/lib/constants/userAgent';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
+import log from '~/lib/methods/helpers/log';
 import { usePexipCallStore } from '~/lib/services/videoConf/usePexipCallStore';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useTheme } from '~/theme';
@@ -50,7 +51,7 @@ const PexipCall = () => {
 
 	useEffect(() => {
 		if (!call) return;
-		activateKeepAwakeAsync(KEEP_AWAKE_TAG);
+		activateKeepAwakeAsync(KEEP_AWAKE_TAG).catch(log);
 		return () => {
 			deactivateKeepAwake(KEEP_AWAKE_TAG);
 		};
