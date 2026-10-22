@@ -99,6 +99,7 @@ private enum Limits {
     static let maxRequestBody = 16 * 1024 * 1024
     static let maxResponseHead = 256 * 1024
     static let readChunk = 64 * 1024
+    static let listenerStartTimeout: TimeInterval = 10
 }
 
 private let headTerminator = Data("\r\n\r\n".utf8)
@@ -108,6 +109,7 @@ final class ProxyServer {
     let queue: DispatchQueue
     private(set) var localOrigin: String?
     private var listener: NWListener?
+    private var pendingStart: ((Result<String, Error>) -> Void)?
     private var connections: [ObjectIdentifier: ClientConnection] = [:]
     private var stopped = false
 
@@ -117,38 +119,50 @@ final class ProxyServer {
     }
 
     func start(completion: @escaping (Result<String, Error>) -> Void) {
+        pendingStart = completion
+        queue.asyncAfter(deadline: .now() + Limits.listenerStartTimeout) { [weak self] in
+            guard let self = self, self.pendingStart != nil else { return }
+            self.stop()
+            self.finishStart(.failure(ProxyError.stopped))
+        }
+        listen(on: .any)
+    }
+
+    /// iOS can reclaim the listening socket while the app is suspended; listening again on the same port keeps the page's origin.
+    private func listen(on port: NWEndpoint.Port) {
         let parameters = NWParameters.tcp
-        parameters.requiredLocalEndpoint = NWEndpoint.hostPort(host: .ipv4(.loopback), port: .any)
+        parameters.requiredLocalEndpoint = NWEndpoint.hostPort(host: .ipv4(.loopback), port: port)
         let listener: NWListener
         do {
             listener = try NWListener(using: parameters)
         } catch {
-            completion(.failure(error))
+            stop()
+            finishStart(.failure(error))
             return
         }
         self.listener = listener
 
-        var completed = false
+        var readyPort: NWEndpoint.Port?
         listener.stateUpdateHandler = { [weak self] state in
             guard let self = self else { return }
+            if let current = self.listener, current !== listener { return }
             switch state {
             case .ready:
-                guard !completed, let port = listener.port else { return }
-                completed = true
+                guard let port = listener.port else { return }
+                readyPort = port
                 let localOrigin = "http://127.0.0.1:\(port.rawValue)"
                 self.localOrigin = localOrigin
-                completion(.success(localOrigin))
+                self.finishStart(.success(localOrigin))
             case .failed(let error):
+                if let port = readyPort, !self.stopped {
+                    listener.cancel()
+                    self.listen(on: port)
+                    return
+                }
                 self.stop()
-                if !completed {
-                    completed = true
-                    completion(.failure(error))
-                }
+                self.finishStart(.failure(error))
             case .cancelled:
-                if !completed {
-                    completed = true
-                    completion(.failure(ProxyError.stopped))
-                }
+                self.finishStart(.failure(ProxyError.stopped))
             default:
                 break
             }
@@ -157,6 +171,12 @@ final class ProxyServer {
             self?.accept(connection)
         }
         listener.start(queue: queue)
+    }
+
+    private func finishStart(_ result: Result<String, Error>) {
+        guard let completion = pendingStart else { return }
+        pendingStart = nil
+        completion(result)
     }
 
     func stop() {
@@ -207,7 +227,9 @@ final class ProxyServer {
     /// `https://host/x` -> `http://127.0.0.1:<port>/x` (Location sent by the server)
     func rewriteToLocal(_ value: String) -> String {
         guard let localOrigin = localOrigin, value.lowercased().hasPrefix(upstream.origin) else { return value }
-        return localOrigin + value.dropFirst(upstream.origin.count)
+        let rest = value.dropFirst(upstream.origin.count)
+        guard rest.first.map({ "/?#".contains($0) }) ?? true else { return value }
+        return localOrigin + rest
     }
 }
 
@@ -220,6 +242,7 @@ final class ClientConnection {
     private var responseBuffer = Data()
     private var responseHeadSent = false
     private var isHeadRequest = false
+    private var finishing = false
     private var closed = false
 
     init(connection: NWConnection, server: ProxyServer, queue: DispatchQueue) {
@@ -254,8 +277,8 @@ final class ClientConnection {
 
     private func receiveRequest() {
         connection.receive(minimumIncompleteLength: 1, maximumLength: Limits.readChunk) { [weak self] data, _, isComplete, error in
-            guard let self = self, !self.closed, self.upstream == nil else { return }
-            if let data = data, !data.isEmpty {
+            guard let self = self, !self.closed else { return }
+            if let data = data, !data.isEmpty, self.upstream == nil, !self.finishing {
                 self.requestBuffer.append(data)
                 self.forwardRequestIfComplete()
             }
@@ -263,23 +286,7 @@ final class ClientConnection {
                 self.close()
                 return
             }
-            if self.upstream != nil {
-                self.drainClient()
-            } else {
-                self.receiveRequest()
-            }
-        }
-    }
-
-    /// Nothing more is expected from the client; reading on just detects it going away.
-    private func drainClient() {
-        connection.receive(minimumIncompleteLength: 1, maximumLength: Limits.readChunk) { [weak self] _, _, isComplete, error in
-            guard let self = self, !self.closed else { return }
-            if isComplete || error != nil {
-                self.close()
-                return
-            }
-            self.drainClient()
+            self.receiveRequest()
         }
     }
 
@@ -324,7 +331,7 @@ final class ClientConnection {
             }
             request += "\(header.name): \(value)\r\n"
         }
-        if !body.isEmpty || head.contentLength != nil {
+        if head.contentLength != nil {
             request += "Content-Length: \(body.count)\r\n"
         }
         request += "Connection: close\r\n\r\n"
@@ -333,7 +340,7 @@ final class ClientConnection {
         let upstream = server.makeUpstreamConnection()
         self.upstream = upstream
         upstream.stateUpdateHandler = { [weak self] state in
-            guard let self = self else { return }
+            guard let self = self, self.upstream === upstream else { return }
             switch state {
             case .ready:
                 upstream.send(content: Data(request.utf8) + body, completion: .contentProcessed { [weak self] error in
@@ -342,10 +349,8 @@ final class ClientConnection {
                     }
                 })
                 self.receiveResponse()
-            case .failed, .cancelled:
-                self.upstreamFailed()
-            case .waiting:
-                // No route to the host; waiting would hang the WebView until its own timeout.
+            // .waiting: no route to the host; waiting would hang the WebView until its own timeout.
+            case .failed, .cancelled, .waiting:
                 self.upstreamFailed()
             default:
                 break
@@ -407,7 +412,7 @@ final class ClientConnection {
     }
 
     private func upstreamFailed() {
-        guard !closed else { return }
+        guard !closed, !finishing else { return }
         if responseHeadSent {
             // A truncated body makes the WebView treat the load as a network error.
             close()
@@ -427,13 +432,14 @@ final class ClientConnection {
     }
 
     private func finishAndClose() {
+        finishing = true
         connection.send(content: nil, contentContext: .finalMessage, isComplete: true, completion: .contentProcessed { [weak self] _ in
             self?.close()
         })
     }
 
     private func respondAndClose(status: Int, reason: String) {
-        guard !closed else { return }
+        guard !closed, !finishing else { return }
         upstream?.cancel()
         upstream = nil
         let head = "HTTP/1.1 \(status) \(reason)\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"

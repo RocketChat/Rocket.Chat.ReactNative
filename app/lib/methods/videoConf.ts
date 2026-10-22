@@ -4,9 +4,37 @@ import { videoConferenceGetCapabilities, videoConferenceJoin } from '../services
 import { showErrorAlert } from './helpers';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
-import { usePexipCallStore } from '../services/videoConf/usePexipCallStore';
+import { focusActivePexipCall, usePexipCallStore } from '../services/videoConf/usePexipCallStore';
+import { store } from '../store/auxStore';
 import { openConferenceCall } from './openConferenceCall';
 import { requestVoipCallPermissions } from './voipCallPermissions';
+
+const openJoinedCall = async ({
+	callId,
+	url,
+	providerName,
+	cam,
+	rid
+}: {
+	callId: string;
+	url: string;
+	providerName: string;
+	cam?: boolean;
+	rid?: string;
+}) => {
+	if (providerName === 'jitsi') {
+		// Legacy Jitsi path is a WebView too, so BT headset audio needs the same grant. A denial
+		// must not block the call, the speaker still works.
+		await requestVoipCallPermissions().catch(log);
+		navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
+		return;
+	}
+	if (providerName.toLowerCase().includes('pexip')) {
+		usePexipCallStore.getState().open({ callId, url, rid, server: store.getState().server.server });
+		return;
+	}
+	openLink(url);
+};
 
 export const videoConfJoin = async (
 	callId: string,
@@ -14,6 +42,8 @@ export const videoConfJoin = async (
 	mic?: boolean,
 	{ fromPush, rid }: { fromPush?: boolean; rid?: string } = {}
 ): Promise<void> => {
+	if (focusActivePexipCall(callId)) return;
+	const errorMessage = i18n.t(fromPush ? 'Missed_call' : 'error-init-video-conf');
 	try {
 		// Read-only: checking here doesn't post a join, which the embedded page does itself once it loads.
 		const capabilities = await videoConferenceGetCapabilities();
@@ -24,27 +54,14 @@ export const videoConfJoin = async (
 		}
 
 		const result = await videoConferenceJoin(callId, cam, mic);
-		if (result.success) {
-			const { url, providerName } = result;
-			if (providerName === 'jitsi' && url) {
-				// Legacy Jitsi path is a WebView too, so BT headset audio needs the same grant. A denial
-				// must not block the call, the speaker still works.
-				await requestVoipCallPermissions().catch(log);
-				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
-			} else if (providerName.toLowerCase().includes('pexip') && url) {
-				usePexipCallStore.getState().open({ callId, url, rid });
-			} else if (url) {
-				openLink(url);
-			} else {
-				showErrorAlert(i18n.t(fromPush ? 'Missed_call' : 'error-init-video-conf'));
-			}
+		if (!result.success) return;
+		if (result.url) {
+			await openJoinedCall({ callId, url: result.url, providerName: result.providerName, cam, rid });
+		} else {
+			showErrorAlert(errorMessage);
 		}
 	} catch (e) {
-		if (fromPush) {
-			showErrorAlert(i18n.t('Missed_call'));
-		} else {
-			showErrorAlert(i18n.t('error-init-video-conf'));
-		}
+		showErrorAlert(errorMessage);
 		log(e);
 	}
 };

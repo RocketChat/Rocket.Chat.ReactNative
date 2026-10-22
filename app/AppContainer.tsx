@@ -22,7 +22,7 @@ import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
 import PexipCall from './containers/PexipCall';
 import PexipCallSplitSpacer from './containers/PexipCall/PexipCallSplitSpacer';
 import { usePexipSplitLayout } from './containers/PexipCall/usePexipSplitLayout';
-import { useIsPexipCallSplit } from './lib/services/videoConf/usePexipCallStore';
+import { useIsPexipCallFull, useIsPexipCallSplit } from './lib/services/videoConf/usePexipCallStore';
 
 const styles = StyleSheet.create({
 	content: { flex: 1 },
@@ -80,6 +80,7 @@ const AppContainer = () => {
 	const isPexipSplit = useIsPexipCallSplit();
 	const { isLandscape } = usePexipSplitLayout();
 	const isPexipSplitLandscape = isPexipSplit && isLandscape;
+	const isPexipFull = useIsPexipCallFull();
 
 	useEffect(() => {
 		if (root) {
@@ -97,7 +98,10 @@ const AppContainer = () => {
 	return (
 		<>
 			<MediaCallHeader />
-			<View style={[styles.content, isPexipSplitLandscape && styles.row]}>
+			<View
+				style={[styles.content, isPexipSplitLandscape && styles.row]}
+				accessibilityElementsHidden={isPexipFull}
+				importantForAccessibility={isPexipFull ? 'no-hide-descendants' : 'auto'}>
 				<PexipCallSplitSpacer />
 				<View style={styles.content}>
 					<AppNavigation

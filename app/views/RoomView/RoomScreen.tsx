@@ -30,8 +30,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 	const isMasterDetail = useMasterDetail();
 	const isPexipSplit = useIsPexipCallSplit();
 	const { isLandscape } = usePexipSplitLayout();
-	// the docked call already covers the left inset
-	const safeAreaEdges = isPexipSplit && isLandscape ? (['right'] as const) : undefined;
+	const edgesBesideDockedCall = isPexipSplit && isLandscape ? (['right'] as const) : undefined;
 
 	const roomTitle = useStore(roomStore, s => getRoomTitle(s.room));
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
@@ -95,7 +94,7 @@ const RoomScreen = ({ route, rid, t, tmid, roomStore, ready }: IRoomScreenProps)
 					editRequest={onEditRequest}
 					onSendMessage={sendMessage}>
 					<RoomBodyFocusAnchor>
-						<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} edges={safeAreaEdges} testID='room-view'>
+						<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} edges={edgesBesideDockedCall} testID='room-view'>
 							{!tmid ? <RoomAnnouncementBanner /> : null}
 							<RoomMessageList
 								tmid={tmid}

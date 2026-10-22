@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native';
 
-import { getHttpsOrigin, isTlsError, startPexipLoopbackProxy, stopPexipLoopbackProxy } from './pexipLoopbackProxy';
+import { getHttpsOrigin, isTlsError, startPexipLoopbackProxy, stopPexipLoopbackProxy } from '../pexipLoopbackProxy';
 
 jest.mock('~/lib/methods/helpers/log', () => jest.fn());
 
@@ -72,7 +72,7 @@ describe('pexipLoopbackProxy', () => {
 				| undefined;
 			jest.isolateModules(() => {
 				jest.doMock('~/lib/methods/helpers', () => ({ isIOS: false }));
-				androidProxy = jest.requireActual('./pexipLoopbackProxy');
+				androidProxy = jest.requireActual('../pexipLoopbackProxy');
 			});
 			await expect(androidProxy!.startPexipLoopbackProxy(callUrl)).resolves.toBeNull();
 			androidProxy!.stopPexipLoopbackProxy();

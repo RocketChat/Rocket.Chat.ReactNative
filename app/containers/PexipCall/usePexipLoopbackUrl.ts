@@ -39,11 +39,10 @@ export const usePexipLoopbackUrl = (call?: IPexipLoopbackCall | null) => {
 		};
 	}, [needsProxy, callId, callUrl]);
 
-	const onTlsError = (code: unknown): boolean => {
-		if (!callId || !callUrl || proxyState || !isTlsError(code)) return false;
+	const onTlsError = (code: unknown) => {
+		if (!callId || !callUrl || proxyState || !isTlsError(code)) return;
 		markUntrustedOrigin(callUrl);
 		setRejectedCallId(callId);
-		return true;
 	};
 
 	return {

@@ -3,7 +3,8 @@ import { AppState } from 'react-native';
 
 import { videoConferenceHeartbeat } from '~/lib/services/restApi';
 
-export const PRESENCE_HEARTBEAT_MS = 30_000;
+const PRESENCE_HEARTBEAT_MS = 30_000;
+const RENEW_THROTTLE_MS = PRESENCE_HEARTBEAT_MS / 2;
 
 // Mirrors web's useConferencePresenceLease: the server infers leaving once renewals stop.
 export const usePexipPresenceLease = (callId: string | undefined, active: boolean) => {
@@ -15,7 +16,7 @@ export const usePexipPresenceLease = (callId: string | undefined, active: boolea
 		const renewNow = () => {
 			const now = performance.now();
 			if (renewing) return;
-			if (lastRenewedAt !== undefined && now - lastRenewedAt < PRESENCE_HEARTBEAT_MS) return;
+			if (lastRenewedAt !== undefined && now - lastRenewedAt < RENEW_THROTTLE_MS) return;
 
 			lastRenewedAt = now;
 			renewing = true;

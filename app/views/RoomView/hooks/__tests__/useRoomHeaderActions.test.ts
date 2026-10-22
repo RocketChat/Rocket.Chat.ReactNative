@@ -74,9 +74,6 @@ const mockMediaCall = {
 };
 jest.mock('~/lib/hooks/useNewMediaCall', () => ({ useNewMediaCall: () => mockMediaCall }));
 
-let mockSubscription: { t: string; uids?: string[] };
-jest.mock('~/lib/hooks/useSubscription', () => ({ useSubscription: () => mockSubscription }));
-
 let mockIsInPexipCall = false;
 jest.mock('~/lib/services/videoConf/usePexipCallStore', () => ({ useIsInPexipCall: () => mockIsInPexipCall }));
 
@@ -119,6 +116,7 @@ describe('useRoomHeaderActions', () => {
 			hasE2EEWarning: false,
 			canToggleEncryption: false,
 			isSelfDm: false,
+			isDirect: true,
 			tunread: [],
 			tunreadUser: [],
 			tunreadGroup: [],
@@ -133,7 +131,6 @@ describe('useRoomHeaderActions', () => {
 		mockVideoConf.disabledTooltip = false;
 		mockMediaCall.hasMediaCallPermission = false;
 		mockMediaCall.isInActiveCall = false;
-		mockSubscription = { t: 'd' };
 		mockIsInPexipCall = false;
 	});
 
@@ -339,9 +336,16 @@ describe('useRoomHeaderActions', () => {
 			expect(mockMediaCall.openNewMediaCall).not.toHaveBeenCalled();
 		});
 
+		it('is disabled while in a Pexip call', () => {
+			mockMediaCall.hasMediaCallPermission = true;
+			mockIsInPexipCall = true;
+
+			expect(callAction()?.disabled).toBe(true);
+		});
+
 		it('is absent in a channel even with media call permission', () => {
 			mockMediaCall.hasMediaCallPermission = true;
-			mockSubscription = { t: 'c' };
+			mockButtonsData = { ...mockButtonsData, isDirect: false };
 
 			expect(callAction()).toBeUndefined();
 		});

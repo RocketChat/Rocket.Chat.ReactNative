@@ -7,7 +7,7 @@ import AvatarContainer from '~/containers/Avatar';
 
 const MAX_USERS = 3;
 
-export type TCallUsers = { _id: string; username: string; name: string; avatarETag: string; joined?: boolean }[];
+export type TCallUsers = { _id: string; username: string; name: string; avatarETag: string }[];
 
 export const CallParticipants = ({ users }: { users: TCallUsers }): ReactElement => {
 	const style = useStyle();

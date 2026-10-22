@@ -2,7 +2,7 @@ import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { hasNativeHeaderBar } from '~/lib/methods/helpers';
-import { usePexipCallStore } from '~/lib/services/videoConf/usePexipCallStore';
+import { useIsPexipCallSplit } from '~/lib/services/videoConf/usePexipCallStore';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { type IRoomViewProps, type RoomStore } from '~/views/RoomView/definitions';
 import { useJsRoomHeader } from '~/views/RoomView/hooks/useJsRoomHeader';
@@ -35,7 +35,7 @@ const JsRoomHeader = ({ rid, tmid, name, roomStore }: IRoomViewHeaderProps) => {
 
 const useHideHeaderInPexipSplit = (rid?: string) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
-	const isPexipSplit = usePexipCallStore(state => !!rid && state.layout === 'split' && state.call?.rid === rid);
+	const isPexipSplit = useIsPexipCallSplit(rid);
 
 	useLayoutEffect(() => {
 		if (!rid) {

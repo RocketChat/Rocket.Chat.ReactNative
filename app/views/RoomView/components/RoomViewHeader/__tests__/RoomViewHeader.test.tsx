@@ -83,7 +83,9 @@ describe('with a split Pexip call', () => {
 		expect(lastOptionsWith('headerShown').headerShown).toBe(true);
 
 		act(() => {
-			usePexipCallStore.getState().open({ callId: 'call-1', url: 'https://pexip.example/call', rid: 'rid-1' });
+			usePexipCallStore
+				.getState()
+				.open({ callId: 'call-1', url: 'https://pexip.example/call', rid: 'rid-1', server: 'https://open.rocket.chat' });
 			usePexipCallStore.getState().split();
 		});
 
@@ -92,7 +94,9 @@ describe('with a split Pexip call', () => {
 
 	it('keeps the header when the split call belongs to another room', () => {
 		act(() => {
-			usePexipCallStore.getState().open({ callId: 'call-1', url: 'https://pexip.example/call', rid: 'other-rid' });
+			usePexipCallStore
+				.getState()
+				.open({ callId: 'call-1', url: 'https://pexip.example/call', rid: 'other-rid', server: 'https://open.rocket.chat' });
 			usePexipCallStore.getState().split();
 		});
 
