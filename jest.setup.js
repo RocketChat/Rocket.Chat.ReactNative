@@ -295,7 +295,6 @@ jest.mock('./app/lib/native/NativeWatchModule', () => ({
 	default: {
 		syncQuickReplies: jest.fn(),
 		isWatchSupported: jest.fn(() => false),
-		isWatchPaired: jest.fn(() => false),
 		isWatchAppInstalled: jest.fn(() => false)
 	}
 }));

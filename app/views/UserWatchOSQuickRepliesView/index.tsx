@@ -1,18 +1,19 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import I18n from '~/i18n';
 import SafeAreaView from '~/containers/SafeAreaView';
-import * as List from '~/containers/List';
 import { type ProfileStackParamList } from '~/stacks/types';
 import { FormTextInput } from '~/containers/TextInput';
 import Chip from '~/containers/Chip';
 import userPreferences, { useUserPreferences } from '~/lib/methods/userPreferences';
-import { CURRENT_SERVER, WATCHOS_QUICKREPLIES } from '~/lib/constants/keys';
+import { CURRENT_SERVER, getWatchOSQuickRepliesKey, QUICK_REPLIES_MAX } from '~/lib/constants/keys';
 import { syncWatchOSQuickReplies } from '~/lib/methods/WatchOSQuickReplies/syncReplies';
 import log from '~/lib/methods/helpers/log';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
 
 const QUICK_REPLY_MAX_LENGTH = 30;
 
@@ -22,8 +23,9 @@ interface IUserWatchOSQuickRepliesViewProps {
 
 const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesViewProps): JSX.Element => {
 	const currentServer = userPreferences.getString(CURRENT_SERVER);
-	const [quickReplies, setQuickReplies] = useUserPreferences<string[]>(`${currentServer}-${WATCHOS_QUICKREPLIES}`, []);
+	const [quickReplies = [], setQuickReplies] = useUserPreferences<string[]>(getWatchOSQuickRepliesKey(currentServer ?? ''), []);
 	const [input, setInput] = useState<string>('');
+	const { colors } = useTheme();
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -36,7 +38,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 			log(new Error('Error: cannot set quick replies, current server is undefined'));
 			return;
 		}
-		const newReplies = quickReplies?.filter(quickreply => quickreply !== reply);
+		const newReplies = quickReplies.filter(quickreply => quickreply !== reply);
 		setQuickReplies(newReplies);
 		syncWatchOSQuickReplies();
 	};
@@ -47,42 +49,44 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 			return;
 		}
 		const value = input.trim();
-		if (!value) return;
-		if (!quickReplies?.includes(value)) setQuickReplies([...(quickReplies ?? []), value]);
+		if (!value || quickReplies.length >= QUICK_REPLIES_MAX) return;
+		if (!quickReplies.includes(value)) setQuickReplies([...quickReplies, value]);
 		setInput('');
 		syncWatchOSQuickReplies();
 	};
 
 	return (
 		<SafeAreaView testID='watchos-quick-replies-view'>
-			<List.Container>
-				<List.Section title='WatchOS_Quick_Replies'>
-					<>
-						{quickReplies && quickReplies.length !== 0 && (
-							<ScrollView horizontal style={styles.chipContainer} showsHorizontalScrollIndicator={false}>
-								{quickReplies.map(reply => (
-									<Chip key={reply} text={reply} onPress={() => removeQuickReply(reply)} />
-								))}
-							</ScrollView>
-						)}
-					</>
-					<List.Separator />
-					<FormTextInput
-						value={input}
-						onChangeText={text => setInput(text)}
-						placeholder={I18n.t('Add_Quick_Reply')}
-						onSubmitEditing={addQuickReply}
-						maxLength={QUICK_REPLY_MAX_LENGTH}
-					/>
-					<List.Separator />
-					<List.Info info='WatchOS_Quick_Replies_Description' />
-				</List.Section>
-			</List.Container>
+			<ScrollView
+				contentContainerStyle={[sharedStyles.containerScrollView, styles.content, { backgroundColor: colors.surfaceTint }]}
+				{...scrollPersistTaps}>
+				<FormTextInput
+					label={I18n.t('WatchOS_Quick_Replies')}
+					value={input}
+					onChangeText={setInput}
+					placeholder={I18n.t('Add_Quick_Reply')}
+					onSubmitEditing={addQuickReply}
+					returnKeyType='done'
+					containerStyle={styles.inputContainer}
+					maxLength={QUICK_REPLY_MAX_LENGTH}
+				/>
+				<Text style={[styles.info, { color: colors.fontHint }]}>{I18n.t('WatchOS_Quick_Replies_Description')}</Text>
+				{quickReplies.length !== 0 && (
+					<View style={styles.chipContainer}>
+						{quickReplies.map(reply => (
+							<Chip key={reply} text={reply} fullWidth onPress={() => removeQuickReply(reply)} />
+						))}
+					</View>
+				)}
+			</ScrollView>
 		</SafeAreaView>
 	);
 };
 
 const styles = StyleSheet.create({
-	chipContainer: { marginVertical: 8, paddingHorizontal: 4 }
+	content: { flexGrow: 1, paddingTop: 32, gap: 12 },
+	inputContainer: { marginBottom: 0 },
+	info: { fontSize: 14, lineHeight: 20, ...sharedStyles.textRegular },
+	chipContainer: { flexDirection: 'row', flexWrap: 'wrap', rowGap: 8, marginHorizontal: -4 }
 });
 export default UserWatchOSQuickRepliesView;

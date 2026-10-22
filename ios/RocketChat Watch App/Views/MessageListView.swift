@@ -15,6 +15,8 @@ struct MessageListView: View {
 	
 	@State private var lastOpen: Date?
 	@State private var info: Room?
+	@State private var followsLatest = true
+	@State private var positionedCount = 0
 	
 	@Environment(\.scenePhase) private var scenePhase
 	
@@ -49,6 +51,7 @@ struct MessageListView: View {
 							Button("Load more...") {
 								guard let oldestMessage = room.firstMessage?.ts else { return }
 								
+								followsLatest = false
 								messagesLoader.loadMore(from: oldestMessage)
 							}
 							.padding(.bottom, 8)
@@ -81,16 +84,21 @@ struct MessageListView: View {
 							messageSender.sendMessage($0, in: room)
 							
 							lastOpen = nil
+							followsLatest = true
 						}
 						.id(messageComposer)
 						.padding(.top, 8)
 					}
+					// the first batch renders one frame before it can be scrolled, so keep that frame hidden
+					.opacity(positionedCount == 0 && messages.count > 0 ? 0 : 1)
 					.onAppear {
+						positionedCount = messages.count
 						scrollToBottom(proxy: proxy)
 					}
-					.onChange(of: messages.last?.id) { _ in
-						withAnimation(.easeOut(duration: 0.3)) {
-							proxy.scrollTo(bottomAnchor, anchor: .bottom)
+					.onChange(of: messages.count) { count in
+						positionedCount = count
+						if followsLatest {
+							scrollToBottom(proxy: proxy)
 						}
 					}
 				}
@@ -135,11 +143,9 @@ struct MessageListView: View {
 	}
 	
 	private func scrollToBottom(proxy: ScrollViewProxy) {
-		// small delay so layout is complete before scrolling
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-			withAnimation(.easeOut(duration: 0.3)) {
-				proxy.scrollTo(bottomAnchor, anchor: .bottom)
-			}
-		}
+		// the rotated scroll view used before watchOS 10 already starts at the bottom and can't be targeted
+		guard #available(watchOS 10.0, *) else { return }
+		
+		proxy.scrollTo(bottomAnchor, anchor: .bottom)
 	}
 }

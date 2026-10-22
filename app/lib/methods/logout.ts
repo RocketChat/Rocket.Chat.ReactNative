@@ -16,9 +16,11 @@ import {
 	getLegacyUserTokenKey,
 	getServerUserIdKey,
 	getUserTokenKey,
-	WATCHOS_QUICKREPLIES
+	getWatchOSQuickRepliesKey
 } from '../constants/keys';
 import UserPreferences from './userPreferences';
+import NativeWatchModule from '../native/NativeWatchModule';
+import { shouldShowWatchAppOptions } from './WatchOSQuickReplies/getWatchStatus';
 import { removePushToken } from '../services/restApi';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
 import { clearServerCookies } from './helpers/setServerCookies';
@@ -36,7 +38,10 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
-	UserPreferences.removeItem(`${server}-${WATCHOS_QUICKREPLIES}`);
+	UserPreferences.removeItem(getWatchOSQuickRepliesKey(server));
+	if (shouldShowWatchAppOptions()) {
+		NativeWatchModule?.syncQuickReplies(server, []);
+	}
 }
 
 export async function removeServerData({ server }: { server: string }): Promise<void> {

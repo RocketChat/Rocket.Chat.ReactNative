@@ -27,7 +27,6 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 	);
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
-	// native JSI calls; the watch pairing can't change while this screen is open
 	const [showWatchAppOptions] = useState(shouldShowWatchAppOptions);
 	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
 	const enableMobileRinging = settings?.preferences?.enableMobileRinging;

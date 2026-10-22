@@ -252,8 +252,7 @@
 		},
 		"ios": {
 			"modulesProvider": {
-				"WatchModule": "RCTWatchModule",
-				"VoipModule": "VoipModule"
+				"WatchModule": "RCTWatchModule"
 			}
 		}
 	},

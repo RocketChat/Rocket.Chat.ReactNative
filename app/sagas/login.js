@@ -268,7 +268,7 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 
 const fetchWatchReplies = function* fetchWatchRepliesFork() {
 	try {
-		const settingsLoaded = yield select(s => Object.keys(s.settings).length > 0);
+		const settingsLoaded = yield select(s => s.settings.Apple_Watch_Quick_Actions !== undefined);
 		if (!settingsLoaded) {
 			yield take(types.SETTINGS.FETCH_COMPLETE);
 		}

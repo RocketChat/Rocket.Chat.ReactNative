@@ -1,5 +1,5 @@
 import NativeWatchModule from '~/lib/native/NativeWatchModule';
-import { CURRENT_SERVER, WATCHOS_QUICKREPLIES } from '~/lib/constants/keys';
+import { CURRENT_SERVER, getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
 import UserPreferences from '../userPreferences';
 import log from '../helpers/log';
 import { shouldShowWatchAppOptions } from './getWatchStatus';
@@ -9,7 +9,7 @@ export function syncWatchOSQuickReplies(): boolean {
 	try {
 		const server = UserPreferences.getString(CURRENT_SERVER);
 		if (!server) return false;
-		const stored = UserPreferences.getMap(`${server}-${WATCHOS_QUICKREPLIES}`);
+		const stored = UserPreferences.getMap(getWatchOSQuickRepliesKey(server));
 		const replies = Array.isArray(stored) ? stored : [];
 
 		const result = NativeWatchModule?.syncQuickReplies(server, replies);

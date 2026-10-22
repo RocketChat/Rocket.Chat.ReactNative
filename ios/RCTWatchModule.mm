@@ -57,10 +57,6 @@
     return @([WCSession isSupported]);
 }
 
-- (nonnull NSNumber *)isWatchPaired {
-    return @([WCSession isSupported] && _session.isPaired);
-}
-
 - (nonnull NSNumber *)isWatchAppInstalled {
     return @([WCSession isSupported] && _session.isWatchAppInstalled);
 }

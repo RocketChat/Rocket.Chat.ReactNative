@@ -35,25 +35,25 @@ struct MessageComposerView: View {
 				if !quickReplies.isEmpty {
 					VStack(spacing: 6) {
 						ForEach(quickReplies, id: \.self) { reply in
-							Button {
-								message = reply
-								send()
-							} label: {
-								Text(reply)
-									.font(.caption)
-									.foregroundStyle(.white)
-									.frame(maxWidth: .infinity, alignment: .leading)
-									.padding(.horizontal, 12)
-									.padding(.vertical, 8)
-									.background(
-										RoundedRectangle(cornerRadius: 10)
-											.fill(Color.white.opacity(0.12))
-									)
-							}
-							.buttonStyle(.plain)
+							Text(reply)
+								.font(.caption)
+								.foregroundStyle(.white)
+								.frame(maxWidth: .infinity, alignment: .leading)
+								.padding(.horizontal, 12)
+								.padding(.vertical, 8)
+								.background(
+									RoundedRectangle(cornerRadius: 10)
+										.fill(Color.white.opacity(0.12))
+								)
+								.contentShape(Rectangle())
+								.onTapGesture {
+									message = reply
+									send()
+								}
+								.accessibilityAddTraits(.isButton)
+								.accessibilityLabel(reply)
 						}
 					}
-					.frame(maxWidth: .infinity)
 				}
 			}
 		}
