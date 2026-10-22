@@ -11,6 +11,7 @@
 #import "../Shared/RocketChat/MMKVBridge.h"
 #import <SocketRocket/SRWebSocket.h>
 #import "EXSessionTaskDispatcher.h"
+#import <SDWebImage/SDWebImageDownloader.h>
 #if __has_include(<ExpoModulesCore/ExpoModulesCore-Swift.h>)
 #import <ExpoModulesCore/ExpoModulesCore-Swift.h>
 #else
@@ -40,13 +41,11 @@
 
 typedef void (*TaskChallengeIMP)(id, SEL, NSURLSession *, NSURLSessionTask *, NSURLAuthenticationChallenge *, void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *));
 
-@implementation URLSessionSessionDelegateProxy (Challenge)
-
-+ (void)load
+static void sendClientCertificate(Class cls)
 {
   SEL selector = @selector(URLSession:task:didReceiveChallenge:completionHandler:);
-  Method method = class_getInstanceMethod(self, selector);
-  NSAssert(method, @"URLSessionSessionDelegateProxy no longer handles auth challenges; client certificates will not be sent");
+  Method method = class_getInstanceMethod(cls, selector);
+  NSCAssert(method, @"%@ no longer handles auth challenges; client certificates will not be sent", cls);
   if (!method) {
     return;
   }
@@ -60,6 +59,22 @@ typedef void (*TaskChallengeIMP)(id, SEL, NSURLSession *, NSURLSessionTask *, NS
     original(_self, selector, session, task, challenge, completionHandler);
   });
   method_setImplementation(method, imp);
+}
+
+@implementation URLSessionSessionDelegateProxy (Challenge)
+
++ (void)load
+{
+  sendClientCertificate(self);
+}
+
+@end
+
+@implementation SDWebImageDownloader (Challenge)
+
++ (void)load
+{
+  sendClientCertificate(self);
 }
 
 @end
