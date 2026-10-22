@@ -7,11 +7,11 @@ import {
 	getUploadPath,
 	isUploadActive,
 	uploadQueue
-} from '../utils';
+} from './utils';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ t: (k: string) => k }));
-jest.mock('../../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
 jest.mock('@nozbe/watermelondb/RawRecord', () => ({ sanitizedRaw: (raw: unknown) => raw }));
 jest.mock('expo-file-system/legacy', () => ({ cacheDirectory: 'file://cache', copyAsync: jest.fn(() => Promise.resolve()) }));

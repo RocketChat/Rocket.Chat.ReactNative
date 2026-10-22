@@ -92,6 +92,7 @@ describe('sendFileMessage', () => {
 			return ['clip-rid', record];
 		});
 		await send();
+		expect(cancelUpload).toHaveBeenCalledTimes(1);
 		expect(cancelUpload).toHaveBeenCalledWith(record, 'rid');
 		expect(FileUpload).not.toHaveBeenCalled();
 	});
