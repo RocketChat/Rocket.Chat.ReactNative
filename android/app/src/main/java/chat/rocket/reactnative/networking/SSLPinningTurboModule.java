@@ -30,8 +30,10 @@ import android.content.SharedPreferences;
 import javax.net.ssl.KeyManager;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+import android.util.Log;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -40,10 +42,12 @@ import expo.modules.filesystem.legacy.FileSystemLegacyModule;
 
 public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyChainAliasCallback {
 
+    private static final String TAG = "RocketChat.SSLPinning";
+
     private Promise promise;
     private static Context appContext;
     private static SharedPreferences aliasesByHost;
-    private static final ConnectionPool connectionPool = new ConnectionPool();
+    private static final ConnectionPool connectionPool = new ConnectionPool(20, 5, TimeUnit.MINUTES);
     private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
     private static final X509TrustManager trustManager = createTrustManager();
 
@@ -51,6 +55,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         appContext = context.getApplicationContext();
         aliasesByHost = appContext.getSharedPreferences("RocketChat.ClientCertificateAliases", Context.MODE_PRIVATE);
         createSSLContext();
+        RNCWebViewManager.setCertificateAliasResolver(SSLPinningTurboModule::aliasForHost);
         OkHttpClientProvider.setOkHttpClientFactory(() ->
             OkHttpClientProvider.createClientBuilder()
                 .sslSocketFactory(sslSocketFactory, trustManager)
@@ -82,7 +87,6 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     @Override
     public void setCertificate(String name, String server, Promise promise) {
         updateAlias(server, name);
-        RNCWebViewManager.setCertificateAlias(name);
         promise.resolve(null);
     }
 
@@ -121,6 +125,10 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         connectionPool.evictAll();
     }
 
+    private static String aliasForHost(String host) {
+        return host == null ? null : aliasesByHost.getString(host.toLowerCase(Locale.ROOT), null);
+    }
+
     private static void createSSLContext() {
         try {
             final SSLContext context = SSLContext.getInstance("TLS");
@@ -147,10 +155,6 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
     // Picks the certificate by the handshake's host, so each server only ever receives its own
     private static final class ClientKeyManager extends X509ExtendedKeyManager {
-        private static String aliasForHost(String host) {
-            return host == null ? null : aliasesByHost.getString(host, null);
-        }
-
         @Override
         public String chooseClientAlias(String[] keyTypes, Principal[] issuers, Socket socket) {
             if (!(socket instanceof SSLSocket)) {
@@ -178,6 +182,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
                 Thread.currentThread().interrupt();
                 return null;
             } catch (Exception e) {
+                Log.w(TAG, "Failed to load the client certificate chain", e);
                 return null;
             }
         }
@@ -200,6 +205,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
                 Thread.currentThread().interrupt();
                 return null;
             } catch (Exception e) {
+                Log.w(TAG, "Failed to load the client certificate private key", e);
                 return null;
             }
         }

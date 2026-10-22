@@ -60,19 +60,19 @@ index 0287e1c..65174cc 100644
  import java.util.concurrent.atomic.AtomicReference;
  
  public class RNCWebViewClient extends WebViewClient {
-@@ -45,10 +50,60 @@ public class RNCWebViewClient extends WebViewClient {
+@@ -45,10 +50,63 @@ public class RNCWebViewClient extends WebViewClient {
      protected RNCWebView.ProgressChangedFilter progressChangedFilter = null;
      protected @Nullable RNCBasicAuthCredential basicAuthCredential = null;
  
-+    private static String certificateAlias = null;
++    private static java.util.function.Function<String, String> certificateAliasResolver = null;
 +    private ReactContext reactContext;
 +
      public void setBasicAuthCredential(@Nullable RNCBasicAuthCredential credential) {
          basicAuthCredential = credential;
      }
  
-+    public static void setCertificateAlias(String alias) {
-+        certificateAlias = alias;
++    public static void setCertificateAliasResolver(java.util.function.Function<String, String> resolver) {
++        certificateAliasResolver = resolver;
 +    }
 +
 +    public void setReactContext(ReactContext reactContext) {
@@ -91,6 +91,7 @@ index 0287e1c..65174cc 100644
 +            }
 +        }
 +
++        String certificateAlias = certificateAliasResolver == null ? null : certificateAliasResolver.apply(request.getHost());
 +        if (certificateAlias != null && reactContext != null) {
 +            AsyncTask<Void, Void, SslStuff> task = new AsyncTask<Void, Void, SslStuff>() {
 +                @Override
@@ -107,8 +108,10 @@ index 0287e1c..65174cc 100644
 +
 +                @Override
 +                protected void onPostExecute(SslStuff sslStuff) {
-+                    if (sslStuff != null) {
++                    if (sslStuff != null && sslStuff.privKey != null && sslStuff.certChain != null) {
 +                        request.proceed(sslStuff.privKey, sslStuff.certChain);
++                    } else {
++                        request.ignore();
 +                    }
 +                }
 +            };
@@ -130,8 +133,8 @@ index 951749c..05792b8 100644
          return (PermissionAwareActivity) activity;
      }
 +
-+    public static void setCertificateAlias(String alias) {
-+        RNCWebViewClient.setCertificateAlias(alias);
++    public static void setCertificateAliasResolver(java.util.function.Function<String, String> resolver) {
++        RNCWebViewClient.setCertificateAliasResolver(resolver);
 +    }
  }
 \ No newline at end of file
@@ -143,8 +146,8 @@ index 4709e28..0144ef9 100644
          mRNCWebViewManagerImpl = new RNCWebViewManagerImpl(true);
      }
  
-+    public static void setCertificateAlias(String alias) {
-+        RNCWebViewModule.setCertificateAlias(alias);
++    public static void setCertificateAliasResolver(java.util.function.Function<String, String> resolver) {
++        RNCWebViewModule.setCertificateAliasResolver(resolver);
 +    }
 +
      @Nullable
@@ -158,8 +161,8 @@ index 4df0aae..867aa73 100644
          return mRNCWebViewModuleImpl.grantFileDownloaderPermissions(downloadingMessage, lackPermissionToDownloadMessage);
      }
  
-+    public static void setCertificateAlias(String alias) {
-+        RNCWebViewModuleImpl.setCertificateAlias(alias);
++    public static void setCertificateAliasResolver(java.util.function.Function<String, String> resolver) {
++        RNCWebViewModuleImpl.setCertificateAliasResolver(resolver);
 +    }
 +
      @NonNull
@@ -173,8 +176,8 @@ index 974337f..0099677 100644
          mRNCWebViewManagerImpl = new RNCWebViewManagerImpl();
      }
  
-+    public static void setCertificateAlias(String alias) {
-+        RNCWebViewModule.setCertificateAlias(alias);
++    public static void setCertificateAliasResolver(java.util.function.Function<String, String> resolver) {
++        RNCWebViewModule.setCertificateAliasResolver(resolver);
 +    }
 +
      @Override
@@ -188,8 +191,8 @@ index 526cc16..8f3318d 100644
          return mRNCWebViewModuleImpl.grantFileDownloaderPermissions(downloadingMessage, lackPermissionToDownloadMessage);
      }
  
-+    public static void setCertificateAlias(String alias) {
-+        RNCWebViewModuleImpl.setCertificateAlias(alias);
++    public static void setCertificateAliasResolver(java.util.function.Function<String, String> resolver) {
++        RNCWebViewModuleImpl.setCertificateAliasResolver(resolver);
 +    }
 +
      @NonNull
