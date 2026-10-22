@@ -43,6 +43,14 @@ describe('AvatarImage', () => {
 		expect(getByTestId('avatar-skeleton')).toBeTruthy();
 	});
 
+	it('hides the skeleton when the uri is removed after a load', () => {
+		const { queryByTestId, rerender, UNSAFE_getByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
+		fireEvent(UNSAFE_getByType(Image), 'load');
+		rerender(<AvatarImage uri={undefined} style={style} />);
+		showDelay();
+		expect(queryByTestId('avatar-skeleton')).toBeNull();
+	});
+
 	it('never shows the skeleton when the image loads before the delay', () => {
 		const { queryByTestId, UNSAFE_getByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
 		act(() => jest.advanceTimersByTime(100));

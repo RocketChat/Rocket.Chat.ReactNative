@@ -15,7 +15,7 @@ interface IAvatarImage {
 const AvatarImage = ({ uri, style }: IAvatarImage) => {
 	const { colors } = useTheme();
 	const [settledUri, setSettledUri] = useState<string | undefined>();
-	const showSkeleton = settledUri !== uri;
+	const showSkeleton = !!uri && settledUri !== uri;
 
 	const onSettled = () => setSettledUri(uri);
 
