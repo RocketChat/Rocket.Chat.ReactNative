@@ -33,7 +33,7 @@ platform :android do
   end
 
   desc "Upload App to Play Store Open Testing"
-  lane :upload do
+  lane :open_testing do
     upload_to_play_store(
       package_name: 'chat.rocket.android',
       track: 'beta',

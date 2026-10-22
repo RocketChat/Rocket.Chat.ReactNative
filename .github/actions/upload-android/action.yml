@@ -58,5 +58,5 @@ runs:
 
     - name: Fastlane Play Store Upload
       working-directory: android
-      run: bundle exec fastlane android upload
+      run: bundle exec fastlane android open_testing
       shell: bash

@@ -15,10 +15,10 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
-### android upload
+### android open_testing
 
 ```sh
-[bundle exec] fastlane android upload
+[bundle exec] fastlane android open_testing
 ```
 
 Upload App to Play Store Open Testing
@@ -37,7 +37,7 @@ Upload App to Internal App Sharing
 [bundle exec] fastlane android production
 ```
 
-Promote BUILD_VERSION from Open Testing to Production
+Release BUILD_VERSION to Production
 
 ----
 
