@@ -2,6 +2,7 @@ import { type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 
 import ListInfo from '~/containers/List/components/ListInfo';
+import { SECONDARY_LABEL } from '~/containers/List/constants';
 import { flattenListChildren, isListSeparator } from '~/containers/List/utils/listChildren';
 import { useTheme } from '~/theme';
 import { useNativeListContext } from '../context';
@@ -13,11 +14,6 @@ interface IInfoProps {
 	info: string;
 	translateInfo?: boolean;
 }
-
-const SECONDARY_LABEL = {
-	light: 'rgba(60, 60, 67, 0.6)',
-	dark: 'rgba(235, 235, 245, 0.6)'
-};
 
 const isInfo = (element: ReactElement): element is ReactElement<IInfoProps> => element.type === ListInfo;
 

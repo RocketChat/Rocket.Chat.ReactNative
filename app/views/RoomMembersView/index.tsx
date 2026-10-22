@@ -449,7 +449,9 @@ const RoomMembersView = (): ReactElement => {
 		? groupMembersByRole(state.members)
 		: state.members.map(member => ({ type: 'member' as const, member }));
 	// Offset by one because FlatList counts ListHeaderComponent as the first child
-	const stickyHeaderIndices = listItems.flatMap((item, index) => (item.type === 'header' ? [index + 1] : []));
+	const stickyHeaderIndices = hasNativeHeaderBar
+		? []
+		: listItems.flatMap((item, index) => (item.type === 'header' ? [index + 1] : []));
 
 	return (
 		<SafeAreaView testID='room-members-view'>
@@ -466,8 +468,8 @@ const RoomMembersView = (): ReactElement => {
 							onPress={() => onPressUser(item.member)}
 							testID={`room-members-view-item-${item.member.username}`}
 							style={{ backgroundColor: colors.surfaceRoom }}
-							isFirst={index === 0 || listItems[index - 1].type === 'header'}
-							isLast={index === listItems.length - 1 || listItems[index + 1].type === 'header'}
+							isFirst={listItems[index - 1]?.type !== 'member'}
+							isLast={listItems[index + 1]?.type !== 'member'}
 						/>
 					)
 				}
@@ -478,7 +480,9 @@ const RoomMembersView = (): ReactElement => {
 				contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom }}
 				keyExtractor={item => (item.type === 'header' ? `header-${item.group}` : item.member._id)}
 				ItemSeparatorComponent={({ leadingItem }: { leadingItem: TMemberListItem<TUserModel> }) =>
-					leadingItem.type === 'header' ? null : <RowSeparator />
+					leadingItem.type === 'member' && listItems[listItems.indexOf(leadingItem) + 1]?.type === 'member' ? (
+						<RowSeparator />
+					) : null
 				}
 				ListHeaderComponent={
 					<>

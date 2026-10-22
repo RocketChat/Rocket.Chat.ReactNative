@@ -1,6 +1,7 @@
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { type ReactElement, type ReactNode } from 'react';
+import { FlatList } from 'react-native';
 
 import RoomMembersView from './index';
 import { mockedStore } from '~/reducers/mockedStore';
@@ -11,7 +12,15 @@ import { type TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import { getRoomMembers, getRoomRoles, toggleRoomOwner } from '~/lib/services/restApi';
 
 let mockRouteParams: Record<string, unknown> = {};
+let mockHasNativeHeaderBar = false;
 const mockShowActionSheet = jest.fn();
+
+jest.mock('~/lib/methods/helpers/deviceInfo', () =>
+	Object.defineProperties(
+		{ ...jest.requireActual('~/lib/methods/helpers/deviceInfo') },
+		{ hasNativeHeaderBar: { get: () => mockHasNativeHeaderBar, configurable: true } }
+	)
+);
 
 jest.mock('@react-navigation/native', () => ({
 	...jest.requireActual('@react-navigation/native'),
@@ -43,6 +52,12 @@ jest.mock('~/containers/Header/components/HeaderButton', () => ({
 }));
 
 jest.mock('./components/ActionsSection', () => () => null);
+
+jest.mock('~/containers/NativeListRow/components/Separator', () => {
+	const { createElement } = require('react');
+	const { View } = require('react-native');
+	return { __esModule: true, default: () => createElement(View, { testID: 'row-separator' }) };
+});
 
 const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
@@ -91,6 +106,36 @@ describe('RoomMembersView roles', () => {
 			expect(getByTestId('room-members-view-header-member')).toHaveAccessibleName('Members');
 			expect(queryByTestId('room-members-view-header-leader')).toBeNull();
 			expect(queryByTestId('room-members-view-header-moderator')).toBeNull();
+		});
+
+		describe.each([
+			{ hasNativeHeaderBar: false, stickyHeaderIndices: [1, 3] },
+			{ hasNativeHeaderBar: true, stickyHeaderIndices: [] }
+		])('with hasNativeHeaderBar $hasNativeHeaderBar', ({ hasNativeHeaderBar, stickyHeaderIndices }) => {
+			beforeEach(() => {
+				mockHasNativeHeaderBar = hasNativeHeaderBar;
+			});
+
+			afterEach(() => {
+				mockHasNativeHeaderBar = false;
+			});
+
+			it(`sticks the role headers at ${JSON.stringify(stickyHeaderIndices)}`, async () => {
+				const { getByTestId, UNSAFE_getByType } = render(<RoomMembersView />, { wrapper: Wrapper });
+
+				await waitFor(() => getByTestId('room-members-view-header-owner'));
+				expect(UNSAFE_getByType(FlatList).props.stickyHeaderIndices).toEqual(stickyHeaderIndices);
+			});
+		});
+
+		it('separates members of the same group and not the last member from the next header', async () => {
+			jest
+				.mocked(getRoomMembers)
+				.mockResolvedValue([owner, member, { ...member, _id: 'member-2-id', username: 'member2.user' }] as any);
+			const { getByTestId, getAllByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+
+			await waitFor(() => getByTestId('room-members-view-item-member2.user'));
+			expect(getAllByTestId('row-separator')).toHaveLength(1);
 		});
 
 		it('does not crash when the ordered endpoint fails', async () => {
