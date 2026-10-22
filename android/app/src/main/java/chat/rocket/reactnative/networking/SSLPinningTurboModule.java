@@ -22,7 +22,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import okhttp3.Cache;
 import okhttp3.ConnectionPool;
-import okhttp3.OkHttpClient;
 import android.app.Activity;
 import android.content.Context;
 import javax.net.ssl.KeyManager;
@@ -41,7 +40,6 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private Promise promise;
     private static volatile String alias;
     private static Context appContext;
-    private static OkHttpClient sharedClient;
     private static final ConnectionPool connectionPool = new ConnectionPool();
     private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
     private static final X509TrustManager trustManager = createTrustManager();
@@ -49,29 +47,23 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
     public static void installOkHttpClientFactory(Context context) {
         appContext = context.getApplicationContext();
-        createSSLContext(createKeyManager(null));
+        createSSLContext(null);
         // OkHttp forbids two Cache instances on one directory, so every client shares this one
         Cache httpCache = new Cache(new File(appContext.getCacheDir(), "http-cache"), HTTP_CACHE_SIZE);
         OkHttpClientProvider.setOkHttpClientFactory(() ->
-            applyClientCertificate(OkHttpClientProvider.createClientBuilder()).cache(httpCache).build()
+            OkHttpClientProvider.createClientBuilder()
+                .sslSocketFactory(sslSocketFactory, trustManager)
+                .connectionPool(connectionPool)
+                .cache(httpCache)
+                .build()
         );
-        // Keep expo-file-system's own default timeouts
-        FileSystemLegacyModule.setOkHttpClient(getSharedOkHttpClient().newBuilder()
+        // Keep expo-file-system's own default timeouts and keep downloads out of the HTTP cache
+        FileSystemLegacyModule.setOkHttpClient(OkHttpClientProvider.getOkHttpClient().newBuilder()
+            .cache(null)
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
             .build());
-    }
-
-    public static synchronized OkHttpClient getSharedOkHttpClient() {
-        if (sharedClient == null) {
-            sharedClient = applyClientCertificate(OkHttpClientProvider.createClientBuilder()).build();
-        }
-        return sharedClient;
-    }
-
-    private static OkHttpClient.Builder applyClientCertificate(OkHttpClient.Builder builder) {
-        return builder.sslSocketFactory(sslSocketFactory, trustManager).connectionPool(connectionPool);
     }
 
     public SSLPinningTurboModule(ReactApplicationContext reactContext) {
@@ -115,26 +107,26 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             return;
         }
         // KeyChain binds through the main thread, so it must not run under the class lock
-        ClientKeyManager keyManager = createKeyManager(name);
+        X509ExtendedKeyManager keyManager = createKeyManager(name);
         synchronized (SSLPinningTurboModule.class) {
-            // Stays null when the lookup failed, so the next setCertificate retries it
-            alias = keyManager.alias;
+            // A failed lookup leaves the alias unset, so the next setCertificate retries it
+            alias = keyManager != null ? name : null;
             createSSLContext(keyManager);
             connectionPool.evictAll();
         }
     }
 
-    private static synchronized void createSSLContext(X509ExtendedKeyManager keyManager) {
+    private static void createSSLContext(X509ExtendedKeyManager keyManager) {
         try {
             final SSLContext context = SSLContext.getInstance("TLS");
-            context.init(new KeyManager[]{keyManager}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
+            context.init(keyManager == null ? null : new KeyManager[]{keyManager}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
             sslSocketFactory.setDelegate(context.getSocketFactory());
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    private static ClientKeyManager createKeyManager(String alias) {
+    private static X509ExtendedKeyManager createKeyManager(String alias) {
         if (alias != null) {
             try {
                 PrivateKey privateKey = KeyChain.getPrivateKey(appContext, alias);
@@ -145,7 +137,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             } catch (Exception ignored) {
             }
         }
-        return new ClientKeyManager(null, null, null);
+        return null;
     }
 
     private static X509TrustManager createTrustManager() {
@@ -190,12 +182,12 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
         @Override
         public String[] getClientAliases(String s, Principal[] principals) {
-            return alias == null ? null : new String[]{alias};
+            return new String[]{alias};
         }
 
         @Override
         public String[] getServerAliases(String s, Principal[] principals) {
-            return alias == null ? null : new String[]{alias};
+            return new String[]{alias};
         }
 
         @Override

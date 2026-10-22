@@ -13,7 +13,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
-import chat.rocket.reactnative.networking.SSLPinningTurboModule
+import com.facebook.react.modules.network.OkHttpClientProvider
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -44,7 +44,7 @@ class MediaCallsAnswerRequest(
         private const val TAG = "RocketChat.MediaCallsAnswerRequest"
         private val JSON_MEDIA_TYPE = "application/json; charset=utf-8".toMediaType()
         private val httpClient: OkHttpClient by lazy {
-            SSLPinningTurboModule.getSharedOkHttpClient().newBuilder()
+            OkHttpClientProvider.getOkHttpClient().newBuilder()
                 // Own queue so the answer never waits behind file transfers on the shared client
                 .dispatcher(Dispatcher())
                 .callTimeout(10, TimeUnit.SECONDS)
