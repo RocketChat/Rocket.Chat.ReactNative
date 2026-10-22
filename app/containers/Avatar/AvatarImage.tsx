@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, type ImageStyle } from 'react-native';
+import { type ImageStyle } from 'react-native';
 import { Image } from 'expo-image';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
@@ -20,9 +20,9 @@ const AvatarImage = ({ uri, style }: IAvatarImage) => {
 	const onSettled = () => setSettledUri(uri);
 
 	return (
-		<View style={[style, { backgroundColor: colors.surfaceNeutral }]}>
+		<>
 			<Image
-				style={style}
+				style={[style, { backgroundColor: colors.surfaceNeutral }]}
 				source={{
 					uri,
 					headers: RocketChatSettings.customHeaders ?? headers
@@ -33,7 +33,7 @@ const AvatarImage = ({ uri, style }: IAvatarImage) => {
 				onError={onSettled}
 			/>
 			{showSkeleton ? <AvatarSkeleton borderRadius={style.borderRadius} /> : null}
-		</View>
+		</>
 	);
 };
 

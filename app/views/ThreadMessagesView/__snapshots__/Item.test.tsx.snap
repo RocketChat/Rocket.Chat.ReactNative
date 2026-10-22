@@ -124,63 +124,50 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               }
               testID="avatar"
             >
-              <View
-                style={
+              <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
+                sfEffect={null}
+                source={
                   [
                     {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    },
-                    {
-                      "backgroundColor": "#E4E7EA",
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
                   ]
                 }
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
+                style={
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   }
-                  height={36}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={36}
-                />
-              </View>
+                }
+                symbolSize={null}
+                symbolWeight={null}
+                transition={null}
+                width={36}
+              />
             </View>
             <View
               style={
@@ -688,63 +675,50 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               }
               testID="avatar"
             >
-              <View
-                style={
+              <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
+                sfEffect={null}
+                source={
                   [
                     {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    },
-                    {
-                      "backgroundColor": "#E4E7EA",
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
                   ]
                 }
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
+                style={
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   }
-                  height={36}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={36}
-                />
-              </View>
+                }
+                symbolSize={null}
+                symbolWeight={null}
+                transition={null}
+                width={36}
+              />
             </View>
             <View
               style={
@@ -1252,63 +1226,50 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               }
               testID="avatar"
             >
-              <View
-                style={
+              <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
+                sfEffect={null}
+                source={
                   [
                     {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    },
-                    {
-                      "backgroundColor": "#E4E7EA",
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
                   ]
                 }
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
+                style={
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   }
-                  height={36}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={36}
-                />
-              </View>
+                }
+                symbolSize={null}
+                symbolWeight={null}
+                transition={null}
+                width={36}
+              />
             </View>
             <View
               style={
@@ -1803,63 +1764,50 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               }
               testID="avatar"
             >
-              <View
-                style={
+              <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
+                sfEffect={null}
+                source={
                   [
                     {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    },
-                    {
-                      "backgroundColor": "#E4E7EA",
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
                   ]
                 }
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
+                style={
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   }
-                  height={36}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={36}
-                />
-              </View>
+                }
+                symbolSize={null}
+                symbolWeight={null}
+                transition={null}
+                width={36}
+              />
             </View>
             <View
               style={
@@ -2387,63 +2335,50 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               }
               testID="avatar"
             >
-              <View
-                style={
+              <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
+                sfEffect={null}
+                source={
                   [
                     {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    },
-                    {
-                      "backgroundColor": "#E4E7EA",
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
                   ]
                 }
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
+                style={
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   }
-                  height={36}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={36}
-                />
-              </View>
+                }
+                symbolSize={null}
+                symbolWeight={null}
+                transition={null}
+                width={36}
+              />
             </View>
             <View
               style={
@@ -2935,63 +2870,50 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               }
               testID="avatar"
             >
-              <View
-                style={
+              <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
+                sfEffect={null}
+                source={
                   [
                     {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    },
-                    {
-                      "backgroundColor": "#E4E7EA",
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
                   ]
                 }
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
+                style={
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   }
-                  height={36}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={36}
-                />
-              </View>
+                }
+                symbolSize={null}
+                symbolWeight={null}
+                transition={null}
+                width={36}
+              />
             </View>
             <View
               style={
@@ -3483,63 +3405,50 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               }
               testID="avatar"
             >
-              <View
-                style={
+              <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
+                sfEffect={null}
+                source={
                   [
                     {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    },
-                    {
-                      "backgroundColor": "#E4E7EA",
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
                   ]
                 }
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
+                style={
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   }
-                  height={36}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={36}
-                />
-              </View>
+                }
+                symbolSize={null}
+                symbolWeight={null}
+                transition={null}
+                width={36}
+              />
             </View>
             <View
               style={
@@ -4031,63 +3940,50 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               }
               testID="avatar"
             >
-              <View
-                style={
+              <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
+                sfEffect={null}
+                source={
                   [
                     {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    },
-                    {
-                      "backgroundColor": "#E4E7EA",
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
                   ]
                 }
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
+                style={
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   }
-                  height={36}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={36}
-                />
-              </View>
+                }
+                symbolSize={null}
+                symbolWeight={null}
+                transition={null}
+                width={36}
+              />
             </View>
             <View
               style={
@@ -4579,63 +4475,50 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               }
               testID="avatar"
             >
-              <View
-                style={
+              <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
+                sfEffect={null}
+                source={
                   [
                     {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    },
-                    {
-                      "backgroundColor": "#E4E7EA",
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
                   ]
                 }
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
+                style={
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   }
-                  height={36}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={36}
-                />
-              </View>
+                }
+                symbolSize={null}
+                symbolWeight={null}
+                transition={null}
+                width={36}
+              />
             </View>
             <View
               style={
@@ -5147,63 +5030,50 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               }
               testID="avatar"
             >
-              <View
-                style={
+              <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
+                sfEffect={null}
+                source={
                   [
                     {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    },
-                    {
-                      "backgroundColor": "#E4E7EA",
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
                   ]
                 }
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
+                style={
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   }
-                  height={36}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={36}
-                />
-              </View>
+                }
+                symbolSize={null}
+                symbolWeight={null}
+                transition={null}
+                width={36}
+              />
             </View>
             <View
               style={
@@ -5698,63 +5568,50 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               }
               testID="avatar"
             >
-              <View
-                style={
+              <ViewManagerAdapter_ExpoImage
+                backgroundColor={4281151545}
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
+                sfEffect={null}
+                source={
                   [
                     {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    },
-                    {
-                      "backgroundColor": "#2D3039",
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
                   ]
                 }
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
+                style={
+                  {
+                    "backgroundColor": "#2D3039",
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   }
-                  height={36}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={36}
-                />
-              </View>
+                }
+                symbolSize={null}
+                symbolWeight={null}
+                transition={null}
+                width={36}
+              />
             </View>
             <View
               style={
@@ -6249,63 +6106,50 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               }
               testID="avatar"
             >
-              <View
-                style={
+              <ViewManagerAdapter_ExpoImage
+                backgroundColor={4279637783}
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={36}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
+                sfEffect={null}
+                source={
                   [
                     {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    },
-                    {
-                      "backgroundColor": "#161717",
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
                     },
                   ]
                 }
-              >
-                <ViewManagerAdapter_ExpoImage
-                  borderRadius={4}
-                  containerViewRef={{"current":"Object"}}
-                  contentFit="cover"
-                  contentPosition={
-                    {
-                      "left": "50%",
-                      "top": "50%",
-                    }
+                style={
+                  {
+                    "backgroundColor": "#161717",
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   }
-                  height={36}
-                  nativeViewRef={{"current":"NativeComponent"}}
-                  onError={[Function]}
-                  onLoad={[Function]}
-                  onLoadStart={[Function]}
-                  onProgress={[Function]}
-                  placeholder={[]}
-                  priority="high"
-                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
-                  sfEffect={null}
-                  source={
-                    [
-                      {
-                        "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                        },
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
-                      },
-                    ]
-                  }
-                  style={
-                    {
-                      "borderRadius": 4,
-                      "height": 36,
-                      "width": 36,
-                    }
-                  }
-                  symbolSize={null}
-                  symbolWeight={null}
-                  transition={null}
-                  width={36}
-                />
-              </View>
+                }
+                symbolSize={null}
+                symbolWeight={null}
+                transition={null}
+                width={36}
+              />
             </View>
             <View
               style={

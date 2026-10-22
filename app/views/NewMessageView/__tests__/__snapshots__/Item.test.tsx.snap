@@ -87,63 +87,50 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
       }
       testID="avatar"
     >
-      <View
-        style={
+      <ViewManagerAdapter_ExpoImage
+        backgroundColor={4293191658}
+        borderRadius={8}
+        containerViewRef={{"current":"Object"}}
+        contentFit="cover"
+        contentPosition={
+          {
+            "left": "50%",
+            "top": "50%",
+          }
+        }
+        height={30}
+        nativeViewRef={{"current":"NativeComponent"}}
+        onError={[Function]}
+        onLoad={[Function]}
+        onLoadStart={[Function]}
+        onProgress={[Function]}
+        placeholder={[]}
+        priority="high"
+        recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=60"
+        sfEffect={null}
+        source={
           [
             {
-              "borderRadius": 8,
-              "height": 30,
-              "width": 30,
-            },
-            {
-              "backgroundColor": "#E4E7EA",
+              "headers": {
+                "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+              },
+              "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
             },
           ]
         }
-      >
-        <ViewManagerAdapter_ExpoImage
-          borderRadius={8}
-          containerViewRef={{"current":"Object"}}
-          contentFit="cover"
-          contentPosition={
-            {
-              "left": "50%",
-              "top": "50%",
-            }
+        style={
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderRadius": 8,
+            "height": 30,
+            "width": 30,
           }
-          height={30}
-          nativeViewRef={{"current":"NativeComponent"}}
-          onError={[Function]}
-          onLoad={[Function]}
-          onLoadStart={[Function]}
-          onProgress={[Function]}
-          placeholder={[]}
-          priority="high"
-          recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=60"
-          sfEffect={null}
-          source={
-            [
-              {
-                "headers": {
-                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                },
-                "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
-              },
-            ]
-          }
-          style={
-            {
-              "borderRadius": 8,
-              "height": 30,
-              "width": 30,
-            }
-          }
-          symbolSize={null}
-          symbolWeight={null}
-          transition={null}
-          width={30}
-        />
-      </View>
+        }
+        symbolSize={null}
+        symbolWeight={null}
+        transition={null}
+        width={30}
+      />
     </View>
     <View
       style={
@@ -287,63 +274,50 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         }
         testID="avatar"
       >
-        <View
-          style={
+        <ViewManagerAdapter_ExpoImage
+          backgroundColor={4293191658}
+          borderRadius={8}
+          containerViewRef={{"current":"Object"}}
+          contentFit="cover"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={30}
+          nativeViewRef={{"current":"NativeComponent"}}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          priority="high"
+          recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=60"
+          sfEffect={null}
+          source={
             [
               {
-                "borderRadius": 8,
-                "height": 30,
-                "width": 30,
-              },
-              {
-                "backgroundColor": "#E4E7EA",
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
+                "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
               },
             ]
           }
-        >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={8}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderRadius": 8,
+              "height": 30,
+              "width": 30,
             }
-            height={30}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=60"
-            sfEffect={null}
-            source={
-              [
-                {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
-                },
-              ]
-            }
-            style={
-              {
-                "borderRadius": 8,
-                "height": 30,
-                "width": 30,
-              }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={30}
-          />
-        </View>
+          }
+          symbolSize={null}
+          symbolWeight={null}
+          transition={null}
+          width={30}
+        />
       </View>
       <View
         style={
@@ -550,63 +524,50 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
         }
         testID="avatar"
       >
-        <View
-          style={
+        <ViewManagerAdapter_ExpoImage
+          backgroundColor={4293191658}
+          borderRadius={8}
+          containerViewRef={{"current":"Object"}}
+          contentFit="cover"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={30}
+          nativeViewRef={{"current":"NativeComponent"}}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          priority="high"
+          recyclingKey="https://open.rocket.chat/avatar/long.name?format=png&size=60"
+          sfEffect={null}
+          source={
             [
               {
-                "borderRadius": 8,
-                "height": 30,
-                "width": 30,
-              },
-              {
-                "backgroundColor": "#E4E7EA",
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
+                "uri": "https://open.rocket.chat/avatar/long.name?format=png&size=60",
               },
             ]
           }
-        >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={8}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderRadius": 8,
+              "height": 30,
+              "width": 30,
             }
-            height={30}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            recyclingKey="https://open.rocket.chat/avatar/long.name?format=png&size=60"
-            sfEffect={null}
-            source={
-              [
-                {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/long.name?format=png&size=60",
-                },
-              ]
-            }
-            style={
-              {
-                "borderRadius": 8,
-                "height": 30,
-                "width": 30,
-              }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={30}
-          />
-        </View>
+          }
+          symbolSize={null}
+          symbolWeight={null}
+          transition={null}
+          width={30}
+        />
       </View>
       <View
         style={
@@ -813,63 +774,50 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
         }
         testID="avatar"
       >
-        <View
-          style={
+        <ViewManagerAdapter_ExpoImage
+          backgroundColor={4293191658}
+          borderRadius={8}
+          containerViewRef={{"current":"Object"}}
+          contentFit="cover"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={30}
+          nativeViewRef={{"current":"NativeComponent"}}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          priority="high"
+          recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=60"
+          sfEffect={null}
+          source={
             [
               {
-                "borderRadius": 8,
-                "height": 30,
-                "width": 30,
-              },
-              {
-                "backgroundColor": "#E4E7EA",
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
+                "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
               },
             ]
           }
-        >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={8}
-            containerViewRef={{"current":"Object"}}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderRadius": 8,
+              "height": 30,
+              "width": 30,
             }
-            height={30}
-            nativeViewRef={{"current":"NativeComponent"}}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=60"
-            sfEffect={null}
-            source={
-              [
-                {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
-                },
-              ]
-            }
-            style={
-              {
-                "borderRadius": 8,
-                "height": 30,
-                "width": 30,
-              }
-            }
-            symbolSize={null}
-            symbolWeight={null}
-            transition={null}
-            width={30}
-          />
-        </View>
+          }
+          symbolSize={null}
+          symbolWeight={null}
+          transition={null}
+          width={30}
+        />
       </View>
       <View
         style={
