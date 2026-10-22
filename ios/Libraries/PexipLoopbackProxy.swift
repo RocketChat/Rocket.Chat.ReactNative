@@ -256,10 +256,16 @@ final class ProxyServer {
 
     /// `https://host/x` -> `http://127.0.0.1:<port>/x` (Location sent by the server)
     func rewriteToLocal(_ value: String) -> String {
-        guard let localOrigin = localOrigin, value.lowercased().hasPrefix(upstream.origin) else { return value }
-        let rest = value.dropFirst(upstream.origin.count)
-        guard rest.first.map({ "/?#".contains($0) }) ?? true else { return value }
-        return localOrigin + rest
+        guard let localOrigin = localOrigin else { return value }
+        let absolute = value.hasPrefix("//") ? "https:" + value : value
+        let origins = upstream.port == 443 ? [upstream.origin + ":443", upstream.origin] : [upstream.origin]
+        for origin in origins where absolute.lowercased().hasPrefix(origin) {
+            let rest = absolute.dropFirst(origin.count)
+            if rest.first.map({ "/?#".contains($0) }) ?? true {
+                return localOrigin + rest
+            }
+        }
+        return value
     }
 }
 
