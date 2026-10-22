@@ -2,9 +2,7 @@ import { useState } from 'react';
 
 import I18n from '~/i18n';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
-import SSLPinning from '~/lib/methods/helpers/sslPinning';
-import { CERTIFICATE_KEY } from '~/lib/constants/keys';
-import userPreferences from '~/lib/methods/userPreferences';
+import SSLPinning, { applyServerCertificate } from '~/lib/methods/helpers/sslPinning';
 
 const useCertificate = () => {
 	const [certificate, setCertificate] = useState<string | null>(null);
@@ -18,10 +16,9 @@ const useCertificate = () => {
 		}
 	};
 
-	const autocompleteCertificate = (server: string) => {
-		const certificate = userPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
+	const autocompleteCertificate = async (server: string) => {
+		const certificate = await applyServerCertificate(server);
 		if (certificate) {
-			SSLPinning?.setCertificate(certificate, server);
 			setCertificate(certificate);
 		}
 	};
