@@ -1,13 +1,11 @@
 import { useEffect, useRef } from 'react';
 
 import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
-import { useIsInPexipCall } from '~/lib/services/videoConf/usePexipCallStore';
 
 const DOUBLE_TAP_WINDOW_MS = 300;
 
 export const useHeaderCallPress = (rid: string) => {
 	const { openNewMediaCall, startCallImmediate, hasMediaCallPermission, isInActiveCall } = useNewMediaCall(rid);
-	const isInPexipCall = useIsInPexipCall();
 
 	const lastTapRef = useRef(0);
 	const pendingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -40,7 +38,7 @@ export const useHeaderCallPress = (rid: string) => {
 
 	return {
 		callPresent: hasMediaCallPermission,
-		isCallDisabled: isInActiveCall || isInPexipCall,
+		isCallDisabled: isInActiveCall,
 		onPressCall: onPressMediaCall
 	};
 };

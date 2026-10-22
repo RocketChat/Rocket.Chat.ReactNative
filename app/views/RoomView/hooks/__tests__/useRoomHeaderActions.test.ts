@@ -74,9 +74,6 @@ const mockMediaCall = {
 };
 jest.mock('~/lib/hooks/useNewMediaCall', () => ({ useNewMediaCall: () => mockMediaCall }));
 
-let mockIsInPexipCall = false;
-jest.mock('~/lib/services/videoConf/usePexipCallStore', () => ({ useIsInPexipCall: () => mockIsInPexipCall }));
-
 const roomStore = {} as RoomStore;
 
 const renderRoomActions = () => renderHook(() => useRoomActions('rid-1', roomStore)).result.current;
@@ -131,7 +128,6 @@ describe('useRoomHeaderActions', () => {
 		mockVideoConf.disabledTooltip = false;
 		mockMediaCall.hasMediaCallPermission = false;
 		mockMediaCall.isInActiveCall = false;
-		mockIsInPexipCall = false;
 	});
 
 	it.each([
@@ -336,13 +332,6 @@ describe('useRoomHeaderActions', () => {
 			expect(mockMediaCall.openNewMediaCall).not.toHaveBeenCalled();
 		});
 
-		it('is disabled while in a Pexip call', () => {
-			mockMediaCall.hasMediaCallPermission = true;
-			mockIsInPexipCall = true;
-
-			expect(callAction()?.disabled).toBe(true);
-		});
-
 		it('is absent in a channel even with media call permission', () => {
 			mockMediaCall.hasMediaCallPermission = true;
 			mockButtonsData = { ...mockButtonsData, isDirect: false };
@@ -389,9 +378,9 @@ describe('useRoomHeaderActions', () => {
 			expect(videoCallAction()?.disabled).toBe(true);
 		});
 
-		it('is disabled while in a Pexip call', () => {
+		it('is disabled while in another call', () => {
 			mockVideoConf.callEnabled = true;
-			mockIsInPexipCall = true;
+			mockMediaCall.isInActiveCall = true;
 
 			expect(videoCallAction()?.disabled).toBe(true);
 		});
