@@ -26,7 +26,7 @@ e2e/
 - Credentials come from environment variables:
   - `E2E_ADMIN_USER`, `E2E_ADMIN_PASSWORD`: a user with the needed permissions on the server
   - `E2E_SAML_USERNAME`, `E2E_SAML_PASSWORD`, `E2E_CAS_USERNAME`, `E2E_CAS_PASSWORD`: SAML and CAS login tests only
-- To build those from an account file: `node e2e/scripts/account-env.mjs e2e_account.js > .env.e2e`, then `set -a; . ./.env.e2e; set +a`.
+- If they aren't set yet, build them from an account file: `node e2e/scripts/account-env.mjs e2e_account.js > .env.e2e`, then `set -a; . ./.env.e2e; set +a`.
 
 ## Agent steps
 

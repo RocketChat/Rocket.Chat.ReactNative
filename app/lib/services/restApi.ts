@@ -1,4 +1,3 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getUniqueId } from 'react-native-device-info';
 import EJSON from 'ejson';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
@@ -14,6 +13,7 @@ import {
 	type IRoom,
 	type IRoomNotifications,
 	type IServerRoom,
+	type ISidebarCategory,
 	type RoomType,
 	type SubscriptionType
 } from '~/definitions';
@@ -31,6 +31,7 @@ import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
+import { fetchForWorkspace } from '../methods/serverBasicAuth';
 import log from '../methods/helpers/log';
 
 export const createChannel = ({
@@ -707,6 +708,31 @@ export const saveUserPreferences = (data: Partial<INotificationPreferences & IMe
 	// RC 0.62.0
 	sdk.post('users.setPreferences', { data });
 
+export const saveSidebarCategories = (sidebarCategories: ISidebarCategory[]) =>
+	sdk.post('users.setPreferences', { data: { sidebarCategories } });
+
+const postAuthenticated = async (path: string, body: object) => {
+	const { login, server } = reduxStore.getState();
+	const response = await fetchForWorkspace(server.server, `${server.server}/api/${path}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-Auth-Token': login.user.token,
+			'X-User-Id': login.user.id
+		},
+		body: JSON.stringify(body)
+	});
+	if (!response.ok) {
+		const errorBody = await response.json().catch(() => undefined);
+		throw new Error(errorBody?.error || errorBody?.message || `${response.status} ${response.statusText}`);
+	}
+	return response;
+};
+
+export const setRoomsCategory = async (roomIds: string[], category: string | null) => {
+	await postAuthenticated('experimental/rooms.setCategory', { roomIds, category });
+};
+
 export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0
 	sdk.post('rooms.saveNotification', { roomId, notifications });
@@ -1138,36 +1164,17 @@ export const editMediaMessage = async (
 	fileId: string,
 	body: { description?: string; filename: string; msg?: string }
 ) => {
-	const { login, server } = reduxStore.getState();
-	const { user } = login;
 	// RC 8.4.0
-	const response = await fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
-		method: 'POST',
-		headers: {
-			...RocketChatSettings.customHeaders,
-			'Content-Type': 'application/json',
-			'X-Auth-Token': user.token,
-			'X-User-Id': user.id
-		},
-		body: JSON.stringify({
+	try {
+		const response = await postAuthenticated(`v1/rooms.mediaConfirm/${rid}/${fileId}`, {
 			description: body.description,
 			filename: body.filename,
 			msg: body.msg || ''
-		})
-	});
-
-	if (!response.ok) {
-		let errorReason = `${response.status} ${response.statusText}`;
-		try {
-			const errorBody = await response.json();
-			errorReason = errorBody?.error || errorBody?.message || errorReason;
-		} catch {
-			// Best effort only: keep default HTTP reason when body is not JSON.
-		}
-		throw new Error(`Failed to edit media message: ${errorReason}`);
+		});
+		return response.json();
+	} catch (error) {
+		throw new Error(`Failed to edit media message: ${(error as Error).message}`);
 	}
-
-	return response.json();
 };
 
 let lastToken = '';

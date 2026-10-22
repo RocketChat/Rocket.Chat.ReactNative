@@ -13,11 +13,17 @@ import {
 	type Fixtures,
 	LONG_TIMEOUT,
 	fillWhenUncovered,
-	headerItem,
 	roomTitle,
 	headerSearchInput
 } from '~e2e/support/flows';
-import { expectRoomTitle, selectHeaderMenuOption, tapHeaderItem, threadsButton, submitSelectedUsers } from '~e2e/support/header';
+import {
+	expectRoomMenuOptions,
+	expectRoomTitle,
+	selectHeaderMenuOption,
+	tapHeaderItem,
+	threadsButton,
+	submitSelectedUsers
+} from '~e2e/support/header';
 import { random } from '~e2e/support/random';
 import { selectUser } from '~e2e/support/room';
 import { closeActionSheet, openMemberActionSheet } from '~e2e/support/teams';
@@ -25,13 +31,8 @@ import { closeActionSheet, openMemberActionSheet } from '~e2e/support/teams';
 afterEach(deleteCreatedUsers);
 
 const expectRoomHeaderButtons = async (fixtures: Fixtures) => {
-	for (const button of [
-		headerItem(fixtures, 'room-view-header-call', /^Call /),
-		threadsButton(fixtures),
-		headerItem(fixtures, 'room-view-search', 'More')
-	]) {
-		await expect(button).toBeVisible({ timeout: LONG_TIMEOUT });
-	}
+	await expect(threadsButton(fixtures)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomMenuOptions(fixtures, [{ testId: 'room-view-header-call', iosLabel: /^Call / }]);
 };
 
 const openTeamChannels = async (fixtures: Fixtures) => {
