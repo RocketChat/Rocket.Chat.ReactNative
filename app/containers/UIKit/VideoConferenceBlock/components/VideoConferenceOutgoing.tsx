@@ -3,7 +3,8 @@ import { Text } from 'react-native';
 
 import i18n from '~/i18n';
 import { videoConfJoin } from '~/lib/methods/videoConf';
-import { useIsInPexipCall } from '~/lib/services/videoConf/usePexipCallStore';
+import { useIsInAnyCall } from '~/lib/services/isInAnyCall';
+import { usePexipCallStore } from '~/lib/services/videoConf/usePexipCallStore';
 import { CallParticipants, type TCallUsers } from './CallParticipants';
 import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
@@ -19,13 +20,15 @@ export default function VideoConferenceOutgoing({
 	rid: string;
 }): ReactElement {
 	const style = useStyle();
-	const isInPexipCall = useIsInPexipCall();
+	const isInAnyCall = useIsInAnyCall();
+	const isInThisCall = usePexipCallStore(state => state.call?.callId === blockId);
+	const isBusy = isInAnyCall && !isInThisCall;
 
 	return (
 		<VideoConferenceBaseContainer variant='outgoing'>
 			<Touch
-				style={[style.callToActionButton, isInPexipCall && { opacity: 0.5 }]}
-				disabled={isInPexipCall}
+				style={[style.callToActionButton, isBusy && { opacity: 0.5 }]}
+				disabled={isBusy}
 				onPress={() => videoConfJoin(blockId, undefined, undefined, { rid })}>
 				<Text style={style.callToActionButtonText}>{i18n.t('Join')}</Text>
 			</Touch>
