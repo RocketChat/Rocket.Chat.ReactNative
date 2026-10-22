@@ -19,7 +19,8 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 jest.mock('~/lib/methods/userPreferences', () => ({
 	__esModule: true,
 	default: {
-		getString: jest.fn()
+		getString: jest.fn(),
+		removeItem: jest.fn()
 	}
 }));
 
@@ -37,7 +38,7 @@ Object.defineProperty(Platform, 'select', {
 	configurable: true
 });
 
-const { applyServerCertificate, registerCertificates } = require('../sslPinning');
+const { applyServerCertificate, registerCertificates, default: RCSSLPinning } = require('../sslPinning');
 
 const WITH_CERTIFICATE = 'https://mtls.rocket.chat';
 const WITHOUT_CERTIFICATE = 'https://open.rocket.chat';
@@ -45,6 +46,8 @@ const WITHOUT_CERTIFICATE = 'https://open.rocket.chat';
 describe('sslPinning on Android', () => {
 	beforeEach(() => {
 		jest.mocked(NativeSSLPinningAndroid.setCertificate).mockClear();
+		jest.mocked(NativeSSLPinningAndroid.removeCertificate).mockClear();
+		jest.mocked(UserPreferences.removeItem).mockClear();
 		jest.mocked(log).mockClear();
 		jest
 			.mocked(UserPreferences.getString)
@@ -70,6 +73,13 @@ describe('sslPinning on Android', () => {
 
 		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledTimes(1);
 		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledWith('client-alias', WITH_CERTIFICATE);
+	});
+
+	it('clears the stored and the native certificate when removing it', () => {
+		RCSSLPinning.removeCertificate(WITH_CERTIFICATE);
+
+		expect(UserPreferences.removeItem).toHaveBeenCalledWith(`${CERTIFICATE_KEY}-${WITH_CERTIFICATE}`);
+		expect(NativeSSLPinningAndroid.removeCertificate).toHaveBeenCalledWith(WITH_CERTIFICATE);
 	});
 
 	it('logs instead of throwing when the servers cannot be read', async () => {

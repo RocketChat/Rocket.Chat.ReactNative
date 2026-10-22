@@ -103,12 +103,13 @@ const RCSSLPinning = Platform.select({
 	}
 });
 
-export const applyServerCertificate = async (server: string): Promise<string | null> => {
-	const name = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
+export const getServerCertificate = (server: string): string | null => UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
+
+export const applyServerCertificate = async (server: string): Promise<void> => {
+	const name = getServerCertificate(server);
 	if (name) {
 		await RCSSLPinning?.setCertificate(name, server);
 	}
-	return name;
 };
 
 export const registerCertificates = async (): Promise<void> => {
