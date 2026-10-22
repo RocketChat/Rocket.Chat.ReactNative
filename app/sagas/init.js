@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, fork, put, select, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -73,7 +73,7 @@ const deliverPendingPushNotification = function* deliverPendingPushNotification(
 
 const restore = function* restore() {
 	yield call(runBiometricTrustMigration);
-	yield call(registerCertificates);
+	yield fork(registerCertificates);
 
 	const restoredServer = yield* getServerToRestore();
 

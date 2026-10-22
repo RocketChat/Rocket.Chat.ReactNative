@@ -45,24 +45,6 @@ const removeCertificate = (server: string) => {
 	UserPreferences.removeItem(`${CERTIFICATE_KEY}-${server}`);
 };
 
-// Android picks the certificate by host natively, so it needs every server's alias, not just the active one's
-export const registerCertificates = async (): Promise<void> => {
-	if (Platform.OS !== 'android') {
-		return;
-	}
-	try {
-		const servers = await getAllServers();
-		servers.forEach(({ id }) => {
-			const name = UserPreferences.getString(`${CERTIFICATE_KEY}-${id}`);
-			if (name) {
-				SSLPinning?.setCertificate(name, id);
-			}
-		});
-	} catch (e) {
-		log(e);
-	}
-};
-
 const RCSSLPinning = Platform.select({
 	ios: {
 		pickCertificate: (server: string) =>
@@ -120,5 +102,24 @@ const RCSSLPinning = Platform.select({
 		}
 	}
 });
+
+export const applyServerCertificate = async (server: string): Promise<void> => {
+	const name = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
+	if (name) {
+		await RCSSLPinning?.setCertificate(name, server);
+	}
+};
+
+export const registerCertificates = async (): Promise<void> => {
+	if (Platform.OS !== 'android') {
+		return;
+	}
+	try {
+		const servers = await getAllServers();
+		await Promise.all(servers.map(({ id }) => applyServerCertificate(id)));
+	} catch (e) {
+		log(e);
+	}
+};
 
 export default RCSSLPinning;

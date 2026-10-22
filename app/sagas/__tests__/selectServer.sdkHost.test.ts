@@ -11,7 +11,8 @@ jest.mock('universal-websocket-client', () =>
 
 jest.mock('~/lib/methods/helpers/sslPinning', () => ({
 	__esModule: true,
-	default: undefined
+	default: undefined,
+	applyServerCertificate: jest.fn(() => Promise.resolve())
 }));
 
 jest.mock('~/lib/services/connect', () => ({
