@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { createStaticNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { type IApplicationState, RootEnum } from './definitions';
@@ -18,6 +19,15 @@ import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
 import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
+import PexipCall from './containers/PexipCall';
+import PexipCallSplitSpacer from './containers/PexipCall/PexipCallSplitSpacer';
+import { usePexipSplitLayout } from './containers/PexipCall/usePexipSplitLayout';
+import { useIsPexipCallSplit } from './lib/services/videoConf/usePexipCallStore';
+
+const styles = StyleSheet.create({
+	content: { flex: 1 },
+	row: { flexDirection: 'row' }
+});
 
 const useIsLoading = () =>
 	useSelector(
@@ -67,6 +77,9 @@ const { navigationRef } = Navigation;
 const AppContainer = () => {
 	const { theme } = useContext(ThemeContext);
 	const root = useSelector((state: IApplicationState) => state.app.root);
+	const isPexipSplit = useIsPexipCallSplit();
+	const { isLandscape } = usePexipSplitLayout();
+	const isPexipSplitLandscape = isPexipSplit && isLandscape;
 
 	useEffect(() => {
 		if (root) {
@@ -84,21 +97,27 @@ const AppContainer = () => {
 	return (
 		<>
 			<MediaCallHeader />
-			<AppNavigation
-				theme={navigationTheme(theme)}
-				ref={navigationRef}
-				onReady={() => {
-					emitter.emit('navigationReady');
-				}}
-				onStateChange={state => {
-					const previousRouteName = Navigation.routeNameRef.current;
-					const currentRouteName = getActiveRouteName(state);
-					if (previousRouteName !== currentRouteName) {
-						setCurrentScreen(currentRouteName);
-					}
-					Navigation.routeNameRef.current = currentRouteName;
-				}}
-			/>
+			<View style={[styles.content, isPexipSplitLandscape && styles.row]}>
+				<PexipCallSplitSpacer />
+				<View style={styles.content}>
+					<AppNavigation
+						theme={navigationTheme(theme)}
+						ref={navigationRef}
+						onReady={() => {
+							emitter.emit('navigationReady');
+						}}
+						onStateChange={state => {
+							const previousRouteName = Navigation.routeNameRef.current;
+							const currentRouteName = getActiveRouteName(state);
+							if (previousRouteName !== currentRouteName) {
+								setCurrentScreen(currentRouteName);
+							}
+							Navigation.routeNameRef.current = currentRouteName;
+						}}
+					/>
+				</View>
+			</View>
+			<PexipCall />
 		</>
 	);
 };

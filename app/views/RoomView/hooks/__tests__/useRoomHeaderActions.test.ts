@@ -73,6 +73,7 @@ const mockMediaCall = {
 	isInActiveCall: false
 };
 jest.mock('~/lib/hooks/useNewMediaCall', () => ({ useNewMediaCall: () => mockMediaCall }));
+jest.mock('~/lib/services/videoConf/usePexipCallStore', () => ({ useIsInPexipCall: () => false }));
 
 const roomStore = {} as RoomStore;
 
