@@ -16,6 +16,23 @@ fastlane_version "2.63.0"
 default_platform :ios
 
 platform :ios do
+  def app_store_api_key
+    app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
+      key_filepath: 'fastlane/app_store_connect_api_key.p8',
+      in_house: false
+    )
+  end
+
+  def app_version
+    get_info_plist_value(path: 'RocketChatRN/Info.plist', key: 'CFBundleShortVersionString')
+  end
+
+  def build_number
+    get_info_plist_value(path: 'RocketChatRN/Info.plist', key: 'CFBundleVersion')
+  end
+
   before_all do
     setup_ci
     create_keychain(
@@ -36,12 +53,7 @@ platform :ios do
         content.length > 4000 ? content[0, 3997] + "..." : content
     end
 
-    api_key = app_store_connect_api_key(
-      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
-      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
-      key_filepath: 'fastlane/app_store_connect_api_key.p8',
-      in_house: false
-    )
+    app_store_api_key
 
     pilot_options = {
         ipa: 'Rocket.Chat.ipa',
@@ -71,19 +83,12 @@ platform :ios do
 
   desc "Distribute the TestFlight build to external testers"
   lane :external_users do
-    api_key = app_store_connect_api_key(
-      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
-      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
-      key_filepath: 'fastlane/app_store_connect_api_key.p8',
-      in_house: false
-    )
-
     pilot(
-      api_key: api_key,
+      api_key: app_store_api_key,
       app_identifier: 'chat.rocket.ios',
       app_platform: 'ios',
-      app_version: get_info_plist_value(path: 'RocketChatRN/Info.plist', key: 'CFBundleShortVersionString'),
-      build_number: get_info_plist_value(path: 'RocketChatRN/Info.plist', key: 'CFBundleVersion'),
+      app_version: app_version,
+      build_number: build_number,
       distribute_only: true,
       distribute_external: true,
       notify_external_testers: true,
@@ -93,20 +98,9 @@ platform :ios do
 
   desc "Submit the TestFlight build to App Store review"
   lane :production do
-    app_identifier = 'chat.rocket.ios'
-    app_version = get_info_plist_value(path: 'RocketChatRN/Info.plist', key: 'CFBundleShortVersionString')
-    build_number = get_info_plist_value(path: 'RocketChatRN/Info.plist', key: 'CFBundleVersion')
-
-    api_key = app_store_connect_api_key(
-      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
-      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
-      key_filepath: 'fastlane/app_store_connect_api_key.p8',
-      in_house: false
-    )
-
     upload_to_app_store(
-      api_key: api_key,
-      app_identifier: app_identifier,
+      api_key: app_store_api_key,
+      app_identifier: 'chat.rocket.ios',
       app_version: app_version,
       build_number: build_number,
       release_notes: { 'en-US' => File.read(File.expand_path('../../.github/store-release-notes.txt', __dir__)) },
