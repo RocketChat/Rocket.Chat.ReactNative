@@ -124,9 +124,10 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             return;
         }
         // KeyChain binds through the main thread, so it must not run under the class lock
-        X509ExtendedKeyManager keyManager = createKeyManager(name);
+        ClientKeyManager keyManager = createKeyManager(name);
         synchronized (SSLPinningTurboModule.class) {
-            alias = name;
+            // Stays null when the lookup failed, so the next setCertificate retries it
+            alias = keyManager.alias;
             createSSLContext(keyManager);
             connectionPool.evictAll();
         }
@@ -151,7 +152,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         }
     }
 
-    private static X509ExtendedKeyManager createKeyManager(String alias) {
+    private static ClientKeyManager createKeyManager(String alias) {
         if (alias != null) {
             try {
                 PrivateKey privateKey = KeyChain.getPrivateKey(appContext, alias);
