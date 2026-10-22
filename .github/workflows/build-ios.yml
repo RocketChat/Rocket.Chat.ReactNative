@@ -7,6 +7,10 @@ on:
         type: string
         required: false
         default: pr
+      release:
+        type: boolean
+        required: false
+        default: false
 
 permissions: {}
 
@@ -117,7 +121,7 @@ jobs:
       contents: read
     environment: production_ios
     needs: [upload-ios]
-    if: ${{ always() && needs.upload-ios.result == 'success' }}
+    if: ${{ always() && needs.upload-ios.result == 'success' && (inputs.trigger == 'develop' || inputs.release) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
