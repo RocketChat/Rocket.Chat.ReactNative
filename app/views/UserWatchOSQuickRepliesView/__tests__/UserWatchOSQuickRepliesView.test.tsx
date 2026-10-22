@@ -4,6 +4,7 @@ import UserWatchOSQuickRepliesView from '..';
 import I18n from '~/i18n';
 import { CURRENT_SERVER, getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
 import UserPreferences from '~/lib/methods/userPreferences';
+import { QUICK_REPLIES_MAX, QUICK_REPLY_MAX_LENGTH } from '~/lib/methods/watchOSQuickReplies/constants';
 import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncReplies';
 
 jest.mock('~/lib/methods/watchOSQuickReplies/syncReplies', () => ({ syncWatchOSQuickReplies: jest.fn() }));
@@ -41,5 +42,23 @@ describe('UserWatchOSQuickRepliesView', () => {
 
 		expect(stored()).toEqual([]);
 		expect(syncWatchOSQuickReplies).toHaveBeenCalledTimes(1);
+	});
+
+	it('stops adding once the list is full', () => {
+		const full = Array.from({ length: QUICK_REPLIES_MAX }, (_, i) => `Reply ${i}`);
+		UserPreferences.setString(key, JSON.stringify(full));
+		const { getByPlaceholderText } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
+		const input = getByPlaceholderText(I18n.t('Add_Quick_Reply'));
+
+		act(() => fireEvent.changeText(input, 'One more'));
+		act(() => fireEvent(input, 'submitEditing'));
+
+		expect(stored()).toEqual(full);
+	});
+
+	it('limits typed replies to the max length', () => {
+		const { getByPlaceholderText } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
+
+		expect(getByPlaceholderText(I18n.t('Add_Quick_Reply')).props.maxLength).toBe(QUICK_REPLY_MAX_LENGTH);
 	});
 });
