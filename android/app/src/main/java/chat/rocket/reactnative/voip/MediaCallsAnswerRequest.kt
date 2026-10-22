@@ -6,7 +6,6 @@ import android.util.Log
 import chat.rocket.reactnative.notification.Ejson
 import okhttp3.Call
 import okhttp3.Callback
-import okhttp3.Dispatcher
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -44,9 +43,7 @@ class MediaCallsAnswerRequest(
         private const val TAG = "RocketChat.MediaCallsAnswerRequest"
         private val JSON_MEDIA_TYPE = "application/json; charset=utf-8".toMediaType()
         private val httpClient: OkHttpClient by lazy {
-            OkHttpClientProvider.getOkHttpClient().newBuilder()
-                // Own queue so the answer never waits behind file transfers on the shared client
-                .dispatcher(Dispatcher())
+            OkHttpClientProvider.createClient().newBuilder()
                 .callTimeout(10, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)

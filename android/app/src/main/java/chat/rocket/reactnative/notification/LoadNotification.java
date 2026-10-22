@@ -116,7 +116,7 @@ public class LoadNotification {
         }
 
         // Configure OkHttpClient with proper timeouts
-        final OkHttpClient client = OkHttpClientProvider.getOkHttpClient().newBuilder()
+        final OkHttpClient client = OkHttpClientProvider.createClient().newBuilder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
