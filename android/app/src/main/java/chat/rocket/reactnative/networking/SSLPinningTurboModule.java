@@ -36,7 +36,7 @@ import expo.modules.filesystem.legacy.FileSystemLegacyModule;
 public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyChainAliasCallback {
 
     private Promise promise;
-    private static volatile String alias;
+    private static String alias;
     private static Context appContext;
     private static final ConnectionPool connectionPool = new ConnectionPool();
     private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
@@ -95,18 +95,15 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
                 "RocketChat");
     }
 
-    private static void updateAlias(String name) {
+    private static synchronized void updateAlias(String name) {
         if (Objects.equals(name, alias)) {
             return;
         }
-        // KeyChain binds through the main thread, so it must not run under the class lock
         X509ExtendedKeyManager keyManager = createKeyManager(name);
-        synchronized (SSLPinningTurboModule.class) {
-            // A failed lookup leaves the alias unset, so the next setCertificate retries it
-            alias = keyManager != null ? name : null;
-            createSSLContext(keyManager);
-            connectionPool.evictAll();
-        }
+        // A failed lookup leaves the alias unset, so the next setCertificate retries it
+        alias = keyManager != null ? name : null;
+        createSSLContext(keyManager);
+        connectionPool.evictAll();
     }
 
     private static void createSSLContext(X509ExtendedKeyManager keyManager) {
