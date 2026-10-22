@@ -10,7 +10,6 @@ import { userAgent } from '~/lib/constants/userAgent';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
-import Navigation from '~/lib/navigation/appNavigation';
 import { usePexipCallStore } from '~/lib/services/videoConf/usePexipCallStore';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useTheme } from '~/theme';
@@ -22,11 +21,6 @@ import { usePexipPresenceLease } from './usePexipPresenceLease';
 import { usePexipSplitLayout } from './usePexipSplitLayout';
 
 const KEEP_AWAKE_TAG = 'pexip-call';
-
-const isRoomOpen = (rid: string) => {
-	const current = Navigation.getCurrentRoute();
-	return current?.name === 'RoomView' && (current.params as { rid?: string } | undefined)?.rid === rid;
-};
 
 const PexipCall = () => {
 	const { colors } = useTheme();
@@ -67,15 +61,10 @@ const PexipCall = () => {
 	}, [isFull]);
 
 	const openChat = async () => {
-		if (!call?.rid) return;
-		if (isRoomOpen(call.rid)) {
-			split();
-			return;
-		}
-		const subscription = await getSubscriptionByRoomId(call.rid);
-		if (!subscription) return;
 		split();
-		goRoom({ item: subscription, isMasterDetail });
+		if (!call?.rid) return;
+		const subscription = await getSubscriptionByRoomId(call.rid);
+		if (subscription) goRoom({ item: subscription, isMasterDetail });
 	};
 
 	useEffect(() => {
