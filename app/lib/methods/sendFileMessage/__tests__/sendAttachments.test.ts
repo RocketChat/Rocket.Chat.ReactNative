@@ -66,7 +66,7 @@ describe('sendAttachments', () => {
 		base.getMsg.mockImplementation((_: unknown, i: number) => `msg-${i}`);
 	});
 
-	it('maps each IShareAttachment to a sendFileMessage call inside Promise.all', async () => {
+	it('maps each IShareAttachment to a sendFileMessage call', async () => {
 		await sendAttachments({ ...base, attachments: [attachment(), attachment({ filename: 'b.jpg', path: '/tmp/b.jpg' })] });
 		expect(sendFileMessage).toHaveBeenCalledTimes(2);
 	});
@@ -74,6 +74,23 @@ describe('sendAttachments', () => {
 	it('skips attachments where not canUpload', async () => {
 		await sendAttachments({ ...base, attachments: [attachment({ canUpload: false }), attachment()] });
 		expect(sendFileMessage).toHaveBeenCalledTimes(1);
+	});
+
+	it('reports a synchronous throw from sendFileMessage as that attachment rejected', async () => {
+		const error = new Error('sync failure');
+		(sendFileMessage as jest.Mock).mockImplementationOnce(() => {
+			throw error;
+		});
+
+		const results = await sendAttachments({
+			...base,
+			attachments: [attachment(), attachment({ filename: 'b.jpg', path: '/tmp/b.jpg' })]
+		});
+
+		expect(results).toEqual([
+			{ status: 'rejected', reason: error },
+			{ status: 'fulfilled', value: undefined }
+		]);
 	});
 
 	it.each([['5'], ['6'], ['7'], ['8']])('swaps width/height for rotated EXIF orientation %s', async orientation => {

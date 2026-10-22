@@ -944,5 +944,29 @@ describe('MessageComposer', () => {
 			expect(composerRef.current?.getText()).toBe('');
 			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();
 		});
+
+		test('restores the caption and the quote when the first attachment was skipped and a later one failed', async () => {
+			const skipped = {
+				...attachment,
+				filename: 'skipped.png',
+				path: 'file:///tmp/skipped.png',
+				canUpload: false
+			} as IShareAttachment;
+			const failed = { ...attachment, filename: 'failed.png', path: 'file:///tmp/failed.png' } as IShareAttachment;
+			(sendFileMessage as jest.Mock).mockRejectedValueOnce(new Error('upload failed'));
+			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
+			render(
+				<Render forwardedRef={composerRef} action={{ kind: 'quote', messageIds: ['abc'] }}>
+					<AttachmentSeeder attachments={[skipped, failed]} />
+				</Render>
+			);
+			await screen.findByTestId('message-composer-attachment-1');
+			await screen.findByTestId('composer-quote-abc');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
+			await user.press(screen.getByTestId('message-composer-send'));
+
+			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
+			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
+		});
 	});
 });

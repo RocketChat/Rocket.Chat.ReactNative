@@ -54,15 +54,13 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
-export const persistUploadError = async (queueKey: string, error: unknown) => {
+export const persistUploadError = async (queueKey: string, errorStatus?: number, errorMessage?: string) => {
 	try {
 		const db = database.active;
 		const uploadRecord = await getUploadByPath(queueKey);
 		if (!uploadRecord) {
 			return;
 		}
-		const errorStatus = error instanceof UploadHttpError ? error.status : undefined;
-		const errorMessage = error instanceof UploadHttpError ? error.serverMessage : undefined;
 		await db.write(async () => {
 			await uploadRecord.update(u => {
 				u.error = true;
@@ -70,10 +68,6 @@ export const persistUploadError = async (queueKey: string, error: unknown) => {
 				u.errorMessage = errorMessage;
 			});
 		});
-		const reason = getUploadErrorMessage({ errorStatus, errorMessage });
-		if (reason && !isRetryableUploadError(errorStatus)) {
-			showToast(reason);
-		}
 	} catch {
 		// Do nothing
 	}
@@ -92,7 +86,14 @@ export const finalizeFailedUpload = async ({
 		return;
 	}
 	releaseUploadSlot(queueKey, upload);
-	await persistUploadError(queueKey, error);
+	const httpError = error instanceof UploadHttpError ? error : undefined;
+	const errorStatus = httpError?.status;
+	const errorMessage = httpError?.serverMessage;
+	await persistUploadError(queueKey, errorStatus, errorMessage);
+	const reason = getUploadErrorMessage({ errorStatus, errorMessage });
+	if (reason && !isRetryableUploadError(errorStatus)) {
+		showToast(reason);
+	}
 	throw error;
 };
 

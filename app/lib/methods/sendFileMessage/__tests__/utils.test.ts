@@ -160,16 +160,15 @@ describe('createUploadRecord', () => {
 
 describe('persistUploadError', () => {
 	const { getUploadByPath } = require('~/lib/database/services/Upload');
-	const { showToast } = require('~/lib/methods/helpers/showToast');
 
-	const persist = async (error: unknown) => {
+	const persist = async (errorStatus?: number, errorMessage?: string) => {
 		const updated: any = {};
 		(getUploadByPath as jest.Mock).mockResolvedValue({
 			update: jest.fn((cb: (u: any) => void) => {
 				cb(updated);
 			})
 		});
-		await persistUploadError(uploadPath, error);
+		await persistUploadError(uploadPath, errorStatus, errorMessage);
 		return updated;
 	};
 
@@ -177,50 +176,42 @@ describe('persistUploadError', () => {
 		(getUploadByPath as jest.Mock).mockReset();
 	});
 
-	it('stores the HTTP status and server message from an UploadHttpError', async () => {
-		const updated = await persist(new UploadHttpError(413, { serverMessage: 'File is too large' }));
+	it('stores the HTTP status and server message', async () => {
+		const updated = await persist(413, 'File is too large');
 
 		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
 		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: 'File is too large' });
-		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
 	});
 
-	it('stores only the error flag for unknown failures', async () => {
-		const updated = await persist(new Error('boom'));
+	it('stores only the error flag when there is no status or message', async () => {
+		const updated = await persist();
 
 		expect(updated).toMatchObject({ error: true, errorStatus: undefined, errorMessage: undefined });
-		expect(showToast).not.toHaveBeenCalled();
-	});
-
-	it('announces a failure the user cannot retry away', async () => {
-		await persist(new UploadHttpError(415, { serverMessage: 'Not allowed' }));
-
-		expect(showToast).toHaveBeenCalledWith('Not allowed');
-	});
-
-	it('announces a permanent failure even when the server sent no usable message', async () => {
-		const updated = await persist(new UploadHttpError(405));
-
-		expect(updated).toMatchObject({ errorStatus: 405 });
-		expect(showToast).toHaveBeenCalledWith('FileUpload_Error');
-	});
-
-	it('stays quiet about a failure that may still resolve itself', async () => {
-		const updated = await persist(new UploadHttpError(429, { serverMessage: 'error-too-many-requests' }));
-
-		expect(updated).toMatchObject({ errorStatus: 429 });
-		expect(showToast).not.toHaveBeenCalled();
 	});
 
 	it('does nothing when the record is gone', async () => {
 		(getUploadByPath as jest.Mock).mockResolvedValue(null);
 
-		await expect(persistUploadError(uploadPath, new Error('boom'))).resolves.toBeUndefined();
+		await expect(persistUploadError(uploadPath, 500)).resolves.toBeUndefined();
 	});
 });
 
 describe('finalizeFailedUpload', () => {
 	const { getUploadByPath } = require('~/lib/database/services/Upload');
+	const { showToast } = require('~/lib/methods/helpers/showToast');
+
+	const finalize = async (error: unknown) => {
+		const updated: any = {};
+		const attempt = {} as any;
+		uploadQueue[uploadPath] = attempt;
+		(getUploadByPath as jest.Mock).mockResolvedValue({
+			update: jest.fn((cb: (u: any) => void) => {
+				cb(updated);
+			})
+		});
+		await expect(finalizeFailedUpload({ queueKey: uploadPath, error, upload: attempt })).rejects.toBe(error);
+		return updated;
+	};
 
 	beforeEach(() => {
 		(getUploadByPath as jest.Mock).mockReset();
@@ -285,6 +276,40 @@ describe('finalizeFailedUpload', () => {
 
 		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
 		expect(uploadQueue[uploadPath]).toBeUndefined();
+	});
+
+	it('saves the HTTP status and server message of the failure and announces a file that is too large', async () => {
+		const updated = await finalize(new UploadHttpError(413, { serverMessage: 'File is too large' }));
+
+		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: 'File is too large' });
+		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
+	});
+
+	it('announces a failure the user cannot retry away', async () => {
+		await finalize(new UploadHttpError(415, { serverMessage: 'Not allowed' }));
+
+		expect(showToast).toHaveBeenCalledWith('Not allowed');
+	});
+
+	it('announces a permanent failure even when the server sent no usable message', async () => {
+		const updated = await finalize(new UploadHttpError(405));
+
+		expect(updated).toMatchObject({ errorStatus: 405 });
+		expect(showToast).toHaveBeenCalledWith('FileUpload_Error');
+	});
+
+	it('stays quiet about a failure that may still resolve itself', async () => {
+		const updated = await finalize(new UploadHttpError(429, { serverMessage: 'error-too-many-requests' }));
+
+		expect(updated).toMatchObject({ errorStatus: 429 });
+		expect(showToast).not.toHaveBeenCalled();
+	});
+
+	it('saves only the error flag and stays quiet for a failure that is not an http error', async () => {
+		const updated = await finalize(new Error('boom'));
+
+		expect(updated).toMatchObject({ error: true, errorStatus: undefined, errorMessage: undefined });
+		expect(showToast).not.toHaveBeenCalled();
 	});
 });
 
