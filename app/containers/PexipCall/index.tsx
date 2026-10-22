@@ -94,7 +94,6 @@ const PexipCall = () => {
 	return (
 		<View
 			style={[styles.container, isSplit ? splitStyle : StyleSheet.absoluteFill]}
-			accessibilityViewIsModal={isFull}
 			testID={isSplit ? 'pexip-call-split' : 'pexip-call'}>
 			<PexipCallTopBar
 				rid={call.rid}
