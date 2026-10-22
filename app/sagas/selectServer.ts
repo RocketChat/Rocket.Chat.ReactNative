@@ -156,7 +156,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (certificate) {
-			SSLPinning?.setCertificate(certificate, server);
+			yield SSLPinning?.setCertificate(certificate, server);
 		}
 		yield put(inquiryReset());
 		yield put(encryptionStop());
@@ -249,7 +249,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 	try {
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (certificate) {
-			SSLPinning?.setCertificate(certificate, server);
+			yield SSLPinning?.setCertificate(certificate, server);
 		}
 		const { serverInfo, timedOut } = yield* race({
 			serverInfo: call(probeServer, server, probeController.signal),
