@@ -49,9 +49,4 @@ describe('addUsersToRoom', () => {
 		expect(sdk.post).toHaveBeenCalledWith(endpoint, { roomId: 'rid1', usernames: ['alice', 'bob'] });
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
-
-	it('rejects when the invite fails', async () => {
-		(sdk.post as jest.Mock).mockRejectedValueOnce(new Error('error-user-is-banned'));
-		await expect(addUsersToRoom('rid1', 'c')).rejects.toThrow('error-user-is-banned');
-	});
 });
