@@ -141,6 +141,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -158,6 +159,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/room/rid-1?format=png&size=96"
             sfEffect={null}
             source={
               [
@@ -171,6 +173,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 8,
                 "height": 48,
                 "width": 48,
@@ -503,6 +506,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -520,6 +524,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=96"
             sfEffect={null}
             source={
               [
@@ -533,6 +538,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 8,
                 "height": 48,
                 "width": 48,
@@ -865,6 +871,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4279637783}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -882,6 +889,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/room/rid-1?format=png&size=96"
             sfEffect={null}
             source={
               [
@@ -895,6 +903,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#161717",
                 "borderRadius": 8,
                 "height": 48,
                 "width": 48,
@@ -1227,6 +1236,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4281151545}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -1244,6 +1254,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/room/rid-1?format=png&size=96"
             sfEffect={null}
             source={
               [
@@ -1257,6 +1268,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#2D3039",
                 "borderRadius": 8,
                 "height": 48,
                 "width": 48,

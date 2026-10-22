@@ -96,6 +96,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -113,6 +114,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/@S?format=png&size=60"
             sfEffect={null}
             source={
               [
@@ -126,6 +128,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 8,
                 "height": 30,
                 "width": 30,
@@ -329,6 +332,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -346,6 +350,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/@G?format=png&size=60"
             sfEffect={null}
             source={
               [
@@ -359,6 +364,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 8,
                 "height": 30,
                 "width": 30,
@@ -562,6 +568,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -579,6 +586,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/A?format=png&size=60"
             sfEffect={null}
             source={
               [
@@ -592,6 +600,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 8,
                 "height": 30,
                 "width": 30,
@@ -762,6 +771,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -779,6 +789,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/@L?format=png&size=60"
             sfEffect={null}
             source={
               [
@@ -792,6 +803,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 8,
                 "height": 30,
                 "width": 30,
@@ -1192,6 +1204,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -1209,6 +1222,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/@E?format=png&size=60"
             sfEffect={null}
             source={
               [
@@ -1222,6 +1236,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 8,
                 "height": 30,
                 "width": 30,
@@ -1425,6 +1440,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -1442,6 +1458,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/@G?format=png&size=60"
             sfEffect={null}
             source={
               [
@@ -1455,6 +1472,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 8,
                 "height": 30,
                 "width": 30,
@@ -1694,6 +1712,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -1711,6 +1730,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/@N?format=png&size=60"
             sfEffect={null}
             source={
               [
@@ -1724,6 +1744,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 8,
                 "height": 30,
                 "width": 30,

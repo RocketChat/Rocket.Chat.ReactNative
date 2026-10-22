@@ -29,6 +29,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     testID="avatar"
   >
     <ViewManagerAdapter_ExpoImage
+      backgroundColor={4293191658}
       borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
@@ -46,6 +47,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       onProgress={[Function]}
       placeholder={[]}
       priority="high"
+      recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=240"
       sfEffect={null}
       source={
         [
@@ -59,6 +61,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       }
       style={
         {
+          "backgroundColor": "#E4E7EA",
           "borderRadius": 8,
           "height": 120,
           "width": 120,
@@ -102,6 +105,7 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
     testID="avatar"
   >
     <ViewManagerAdapter_ExpoImage
+      backgroundColor={4293191658}
       borderRadius={8}
       containerViewRef={{"current":"Object"}}
       contentFit="cover"
@@ -119,6 +123,7 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
       onProgress={[Function]}
       placeholder={[]}
       priority="high"
+      recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=240"
       sfEffect={null}
       source={
         [
@@ -132,6 +137,7 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
       }
       style={
         {
+          "backgroundColor": "#E4E7EA",
           "borderRadius": 8,
           "height": 120,
           "width": 120,
