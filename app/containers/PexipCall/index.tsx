@@ -1,6 +1,6 @@
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useEffect } from 'react';
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Keyboard, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
@@ -75,6 +75,10 @@ const PexipCall = () => {
 			deactivateKeepAwake();
 		};
 	}, [call]);
+
+	useEffect(() => {
+		if (call && layout === 'full') Keyboard.dismiss();
+	}, [call, layout]);
 
 	const openChat = async () => {
 		split();
