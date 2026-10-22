@@ -94,13 +94,17 @@ jest.mock('~/lib/database', () => ({
 	}
 }));
 
+jest.mock('~/lib/methods/watchOSQuickReplies/getWatchStatus', () => ({
+	shouldShowWatchAppOptions: jest.fn(() => true)
+}));
+
 jest.mock('~/lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer', () => ({
 	syncWatchOSQuickRepliesWithServer: jest.fn()
 }));
 
 import loginRoot from '../login';
 import { loginSuccess } from '~/actions/login';
-import { selectServerSuccess } from '~/actions/server';
+import { selectServerRequest, selectServerSuccess } from '~/actions/server';
 import { addSettings, fetchSettingsComplete } from '~/actions/settings';
 import { syncWatchOSQuickRepliesWithServer } from '~/lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
@@ -144,5 +148,22 @@ describe('login saga — watch quick replies', () => {
 		await flushSagaMicrotasks();
 
 		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'OK');
+	});
+
+	it('stops waiting when the user switches workspace after login finished', async () => {
+		jest.useFakeTimers();
+		const { store } = setupStore();
+
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+		// past the window in which the root saga cancels the whole login task
+		jest.advanceTimersByTime(2500);
+		await flushSagaMicrotasks();
+		store.dispatch(selectServerRequest('https://other.rocket.chat', '7.0.0'));
+		store.dispatch(fetchSettingsComplete());
+		await flushSagaMicrotasks();
+		jest.useRealTimers();
+
+		expect(syncWatchOSQuickRepliesWithServer).not.toHaveBeenCalled();
 	});
 });

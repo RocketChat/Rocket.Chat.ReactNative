@@ -41,6 +41,11 @@ describe('syncWatchOSQuickRepliesWithServer', () => {
 		expect(UserPreferences.getString(key)).toBe(JSON.stringify(['a'.repeat(30), 'No']));
 	});
 
+	it('never splits an emoji when trimming', () => {
+		syncWatchOSQuickRepliesWithServer(server, `Say${'😀'.repeat(30)}`);
+		expect(UserPreferences.getString(key)).toBe(JSON.stringify([`Say${'😀'.repeat(27)}`]));
+	});
+
 	it('does not store an empty list, so a later setting can still seed', () => {
 		syncWatchOSQuickRepliesWithServer(server, ' , ');
 		expect(UserPreferences.contains(key)).toBe(false);

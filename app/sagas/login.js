@@ -43,6 +43,7 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { syncWatchOSQuickRepliesWithServer } from '../lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer';
+import { shouldShowWatchAppOptions } from '../lib/methods/watchOSQuickReplies/getWatchStatus';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
@@ -268,11 +269,17 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 
 const fetchWatchReplies = function* fetchWatchRepliesFork() {
 	try {
+		if (!shouldShowWatchAppOptions()) return;
+		const server = yield select(s => s.server.server);
 		const settingsLoaded = yield select(s => s.settings.Apple_Watch_Quick_Actions !== undefined);
 		if (!settingsLoaded) {
-			yield take(types.SETTINGS.FETCH_COMPLETE);
+			// the settings fetch may never complete for this login, so don't outlive it
+			const { stop } = yield race({
+				loaded: take(types.SETTINGS.FETCH_COMPLETE),
+				stop: take([types.LOGOUT, types.LOGIN.SUCCESS, types.SERVER.SELECT_REQUEST])
+			});
+			if (stop) return;
 		}
-		const server = yield select(s => s.server.server);
 		const appleWatchReplies = yield select(s => s.settings.Apple_Watch_Quick_Actions);
 		syncWatchOSQuickRepliesWithServer(server, appleWatchReplies);
 	} catch (e) {
