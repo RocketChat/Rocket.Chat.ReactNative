@@ -23,8 +23,8 @@ import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import okhttp3.ConnectionPool;
-import okhttp3.Dispatcher;
 import okhttp3.HttpUrl;
+import okhttp3.internal.tls.OkHostnameVerifier;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -58,17 +58,17 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     public static void installOkHttpClientFactory(Context context) {
         appContext = context.getApplicationContext();
         aliasesByHost = appContext.getSharedPreferences("RocketChat.ClientCertificateAliases", Context.MODE_PRIVATE);
-        createSSLContext();
         RNCWebViewClient.setCertificateAliasResolver(SSLPinningTurboModule::aliasForHost);
         OkHttpClientProvider.setOkHttpClientFactory(() ->
             OkHttpClientProvider.createClientBuilder()
                 .sslSocketFactory(sslSocketFactory, trustManager)
+                // A custom verifier stops OkHttp from sharing an HTTP/2 connection, and its certificate, across hosts
+                .hostnameVerifier((host, session) -> OkHostnameVerifier.INSTANCE.verify(host, session))
                 .connectionPool(connectionPool)
                 .build()
         );
         // Keep expo-file-system's own default timeouts
-        FileSystemLegacyModule.setOkHttpClient(OkHttpClientProvider.getOkHttpClient().newBuilder()
-            .dispatcher(new Dispatcher())
+        FileSystemLegacyModule.setOkHttpClient(OkHttpClientProvider.createClient().newBuilder()
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
@@ -232,44 +232,57 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             this.delegate = delegate;
         }
 
+        private SSLSocketFactory delegate() {
+            SSLSocketFactory current = delegate;
+            if (current != null) {
+                return current;
+            }
+            synchronized (SSLPinningTurboModule.class) {
+                if (delegate == null) {
+                    createSSLContext();
+                }
+                return delegate;
+            }
+        }
+
         @Override
         public String[] getDefaultCipherSuites() {
-            return delegate.getDefaultCipherSuites();
+            return delegate().getDefaultCipherSuites();
         }
 
         @Override
         public String[] getSupportedCipherSuites() {
-            return delegate.getSupportedCipherSuites();
+            return delegate().getSupportedCipherSuites();
         }
 
         @Override
         public Socket createSocket() throws IOException {
-            return delegate.createSocket();
+            return delegate().createSocket();
         }
 
         @Override
         public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
-            return delegate.createSocket(socket, host, port, autoClose);
+            return delegate().createSocket(socket, host, port, autoClose);
         }
 
         @Override
         public Socket createSocket(String host, int port) throws IOException {
-            return delegate.createSocket(host, port);
+            return delegate().createSocket(host, port);
         }
 
         @Override
         public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException {
-            return delegate.createSocket(host, port, localHost, localPort);
+            return delegate().createSocket(host, port, localHost, localPort);
         }
 
         @Override
         public Socket createSocket(InetAddress host, int port) throws IOException {
-            return delegate.createSocket(host, port);
+            return delegate().createSocket(host, port);
         }
 
         @Override
         public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort) throws IOException {
-            return delegate.createSocket(address, port, localAddress, localPort);
+            return delegate().createSocket(address, port, localAddress, localPort);
         }
     }
 }
