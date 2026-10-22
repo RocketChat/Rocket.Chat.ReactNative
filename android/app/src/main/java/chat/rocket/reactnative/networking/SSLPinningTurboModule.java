@@ -4,7 +4,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.modules.network.OkHttpClientProvider;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -20,7 +19,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
-import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import android.app.Activity;
 import android.content.Context;
@@ -43,23 +41,18 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static final ConnectionPool connectionPool = new ConnectionPool();
     private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
     private static final X509TrustManager trustManager = createTrustManager();
-    private static final long HTTP_CACHE_SIZE = 10 * 1024 * 1024;
 
     public static void installOkHttpClientFactory(Context context) {
         appContext = context.getApplicationContext();
         createSSLContext(null);
-        // OkHttp forbids two Cache instances on one directory, so every client shares this one
-        Cache httpCache = new Cache(new File(appContext.getCacheDir(), "http-cache"), HTTP_CACHE_SIZE);
         OkHttpClientProvider.setOkHttpClientFactory(() ->
             OkHttpClientProvider.createClientBuilder()
                 .sslSocketFactory(sslSocketFactory, trustManager)
                 .connectionPool(connectionPool)
-                .cache(httpCache)
                 .build()
         );
-        // Keep expo-file-system's own default timeouts and keep downloads out of the HTTP cache
+        // Keep expo-file-system's own default timeouts
         FileSystemLegacyModule.setOkHttpClient(OkHttpClientProvider.getOkHttpClient().newBuilder()
-            .cache(null)
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
