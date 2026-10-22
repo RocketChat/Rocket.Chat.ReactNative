@@ -9,6 +9,7 @@ import { type ICertificate } from '~/definitions';
 import { CERTIFICATE_KEY } from '~/lib/constants/keys';
 import NativeSSLPinningAndroid from '~/lib/native/NativeSSLPinningAndroid';
 import { getAllServers } from '~/lib/database/services/Server';
+import sdk from '~/lib/services/sdk';
 import log from './log';
 
 const SSLPinning = Platform.select({
@@ -96,9 +97,13 @@ const RCSSLPinning = Platform.select({
 	android: {
 		pickCertificate: () => SSLPinning?.pickCertificate(),
 		setCertificate: (name: string, server: string) => SSLPinning?.setCertificate(name, server),
-		removeCertificate: (server: string) => {
+		removeCertificate: async (server: string) => {
 			removeCertificate(server);
 			SSLPinning?.removeCertificate(server);
+			// The native alias is per host, so restore the connected server's certificate if it shares it
+			if (sdk.host) {
+				await applyServerCertificate(sdk.host);
+			}
 		}
 	}
 });

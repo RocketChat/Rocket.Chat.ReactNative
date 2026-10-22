@@ -11,6 +11,11 @@ jest.mock('~/lib/database/services/Server', () => ({
 	getAllServers: jest.fn()
 }));
 
+jest.mock('~/lib/services/sdk', () => ({
+	__esModule: true,
+	default: { host: null }
+}));
+
 jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn()
@@ -28,7 +33,10 @@ import NativeSSLPinningAndroid from '~/lib/native/NativeSSLPinningAndroid';
 import { getAllServers } from '~/lib/database/services/Server';
 import log from '~/lib/methods/helpers/log';
 import UserPreferences from '~/lib/methods/userPreferences';
+import sdk from '~/lib/services/sdk';
 import { Platform } from 'react-native';
+
+import { type TServerModel } from '~/definitions';
 
 import { CERTIFICATE_KEY } from '~/lib/constants/keys';
 
@@ -49,6 +57,7 @@ describe('sslPinning on Android', () => {
 		jest.mocked(NativeSSLPinningAndroid.removeCertificate).mockClear();
 		jest.mocked(UserPreferences.removeItem).mockClear();
 		jest.mocked(log).mockClear();
+		Object.defineProperty(sdk, 'host', { value: null, configurable: true });
 		jest
 			.mocked(UserPreferences.getString)
 			.mockImplementation(key => (key === `${CERTIFICATE_KEY}-${WITH_CERTIFICATE}` ? 'client-alias' : null));
@@ -67,7 +76,7 @@ describe('sslPinning on Android', () => {
 	});
 
 	it('registers the certificate of every server that has one', async () => {
-		jest.mocked(getAllServers).mockResolvedValue([{ id: WITH_CERTIFICATE }, { id: WITHOUT_CERTIFICATE }] as any);
+		jest.mocked(getAllServers).mockResolvedValue([{ id: WITH_CERTIFICATE }, { id: WITHOUT_CERTIFICATE }] as TServerModel[]);
 
 		await registerCertificates();
 
@@ -80,6 +89,16 @@ describe('sslPinning on Android', () => {
 
 		expect(UserPreferences.removeItem).toHaveBeenCalledWith(`${CERTIFICATE_KEY}-${WITH_CERTIFICATE}`);
 		expect(NativeSSLPinningAndroid.removeCertificate).toHaveBeenCalledWith(WITH_CERTIFICATE);
+		expect(NativeSSLPinningAndroid.setCertificate).not.toHaveBeenCalled();
+	});
+
+	it('restores the connected server certificate after removing one on the same host', async () => {
+		Object.defineProperty(sdk, 'host', { value: WITH_CERTIFICATE, configurable: true });
+
+		await RCSSLPinning.removeCertificate(`${WITH_CERTIFICATE}/other`);
+
+		expect(NativeSSLPinningAndroid.removeCertificate).toHaveBeenCalledWith(`${WITH_CERTIFICATE}/other`);
+		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledWith('client-alias', WITH_CERTIFICATE);
 	});
 
 	it('logs instead of throwing when the servers cannot be read', async () => {
