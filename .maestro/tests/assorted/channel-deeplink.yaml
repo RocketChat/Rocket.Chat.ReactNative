@@ -24,10 +24,10 @@ tags:
     file: '../../helpers/open-deeplink.yaml'
     env:
       link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.group.name)}
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.group.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.group.name}
 
 # open group using id
 - killApp
@@ -35,10 +35,10 @@ tags:
     file: '../../helpers/open-deeplink.yaml'
     env:
       link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.group._id)}
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.group.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.group.name}
 
 # open channel using name
 - killApp
@@ -46,10 +46,10 @@ tags:
     file: '../../helpers/open-deeplink.yaml'
     env:
       link: ${output.utils.getDeepLink('room', output.data.server, 'path=channel/', output.channel.name)}
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.channel.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.channel.name}
 
 # open channel using id
 - killApp
@@ -57,7 +57,7 @@ tags:
     file: '../../helpers/open-deeplink.yaml'
     env:
       link: ${output.utils.getDeepLink('room', output.data.server, 'path=channel/', output.channel._id)}
-- extendedWaitUntil:
-    visible:
-      id: 'room-view-title-${output.channel.name}'
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.channel.name}

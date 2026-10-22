@@ -7,6 +7,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { getUserSelector } from '~/selectors/login';
 import { HeaderBackButton } from '~/containers/Header/components/HeaderBackButton';
+import { formatUnreadCount } from '~/lib/methods/helpers/formatUnreadCount';
 import { useUnreadsCount } from '../hooks/useUnreadsCount';
 import { useGoRoomActionsView } from '../hooks/useGoRoomActionsView';
 import { useStore } from 'zustand';
@@ -17,6 +18,8 @@ const styles = StyleSheet.create({
 		borderRadius: 10
 	}
 });
+
+const BLANK_UNREADS_LABEL = ' ';
 
 interface ILeftButtonsProps {
 	rid?: string;
@@ -38,11 +41,11 @@ const LeftButtons = ({ rid, tmid, roomStore }: ILeftButtonsProps): ReactElement 
 	const unreadsCount = useUnreadsCount(rid);
 
 	if (!isMasterDetail || tmid) {
-		let label: string | undefined;
+		let label = BLANK_UNREADS_LABEL;
 		let marginLeft = 0;
 		let fontSize = 0;
 		if (unreadsCount) {
-			label = unreadsCount > 99 ? '+99' : unreadsCount.toString();
+			label = formatUnreadCount(unreadsCount);
 			const labelLength = label.length;
 			marginLeft = -4 * labelLength;
 			fontSize = labelLength > 1 ? 14 : 17;

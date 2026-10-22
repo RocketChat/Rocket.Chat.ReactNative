@@ -483,10 +483,10 @@ tags:
     timeout: 60000
 - tapOn:
     id: message-actions-reply-in-dm
-- extendedWaitUntil:
-    visible:
-      id: room-view-title-${output.replyUser.username}
-    timeout: 60000
+- runFlow:
+    file: '../../helpers/assert-room-title.yaml'
+    env:
+      ROOM: ${output.replyUser.username}
 - extendedWaitUntil:
     visible:
       id: message-composer-input

@@ -231,4 +231,36 @@ describe('parseUrls function', () => {
 		const result = parseUrls(tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithoutParsedUrl.urls);
 		expect(result).toEqual(tmpImagePointingToAnAssetThatStartsWithDoubleSlashWithoutParsedUrl.expectedResult);
 	});
+
+	it('keeps og image dimensions when the og image is the preview image', () => {
+		const [url] = parseUrls([
+			{
+				url: 'https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/7707',
+				meta: { ogImage: 'https://opengraph.githubassets.com/pr.png', ogImageWidth: '1200', ogImageHeight: '600' }
+			}
+		] as unknown as IUrlFromServer[]);
+		expect(url).toMatchObject({ image: 'https://opengraph.githubassets.com/pr.png', imageWidth: 1200, imageHeight: 600 });
+	});
+
+	it('drops og image dimensions when the preview image comes from another tag', () => {
+		const [url] = parseUrls([
+			{
+				url: 'https://rocket.chat',
+				meta: { twitterImage: 'https://rocket.chat/twitter.png', ogImageWidth: '1200', ogImageHeight: '600' }
+			}
+		] as unknown as IUrlFromServer[]);
+		expect(url.imageWidth).toBeUndefined();
+		expect(url.imageHeight).toBeUndefined();
+	});
+
+	it('drops og image dimensions that are not positive numbers', () => {
+		const [url] = parseUrls([
+			{
+				url: 'https://rocket.chat',
+				meta: { ogImage: 'https://rocket.chat/og.png', ogImageWidth: 'auto', ogImageHeight: '0' }
+			}
+		] as unknown as IUrlFromServer[]);
+		expect(url.imageWidth).toBeUndefined();
+		expect(url.imageHeight).toBeUndefined();
+	});
 });

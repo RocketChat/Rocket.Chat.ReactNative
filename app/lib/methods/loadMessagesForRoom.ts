@@ -91,7 +91,7 @@ async function load(args: {
 				const loadMoreMessage = {
 					_id: generateLoadMoreId(lastMessage._id as string),
 					rid: lastMessage.rid,
-					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toString(),
+					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toDate(),
 					t: MessageTypeLoad.MORE,
 					msg: lastMessage.msg
 				} as IMessage;
@@ -135,7 +135,7 @@ export async function loadMessagesForRoom(args: {
 				messages.push({
 					_id: generateLoadMoreId(lastMessage._id as string),
 					rid: lastMessage.rid,
-					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toString(),
+					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toDate(),
 					t: MessageTypeLoad.MORE,
 					msg: lastMessage.msg
 				} as IMessage);

@@ -44,7 +44,7 @@ jest.mock('../hooks/useIOSBackSwipeHandler', () => ({
 	__esModule: true,
 	default: jest.fn(() => ({ iOSBackSwipe: { current: false } }))
 }));
-jest.mock('../hooks/useAutoSaveDraft', () => ({ useAutoSaveDraft: jest.fn(() => ({ saveMessageDraft: jest.fn() })) }));
+jest.mock('../hooks/useAutoSaveDraft', () => ({ useAutoSaveDraft: jest.fn(() => ({ saveDraft: jest.fn() })) }));
 jest.mock('~/lib/methods/draftMessage', () => ({ loadDraftMessage: jest.fn(() => Promise.resolve(undefined)) }));
 
 const mockLoadDraftMessage = loadDraftMessage as jest.Mock;

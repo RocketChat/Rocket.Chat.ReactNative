@@ -1,9 +1,9 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import { AccessibilityInfo, Alert, Keyboard, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { type SetValueConfig } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -57,10 +57,9 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		serverVersion: state.server.version as string,
 		encryptionEnabled: state.encryption.enabled
 	}));
-	const [randomValue, setRandomValue] = useState<string>('');
+	const randomValueRef = useRef('');
 	const {
 		control,
-		watch,
 		clearErrors,
 		setFocus,
 		setError,
@@ -92,7 +91,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		const sysMes = room.sysMes as string[];
 		const newRandomValue = random(15);
 
-		setRandomValue(newRandomValue);
+		randomValueRef.current = newRandomValue;
 		setValue('archived', room.archived);
 		setValue('name', getRoomTitle(room));
 		setValue('description', description || '');
@@ -105,7 +104,10 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setValue('reactWhenReadOnly', !!reactWhenReadOnly);
 		setValue('encrypted', !!encrypted);
 	};
-	const { archived, enableSysMes, encrypted, reactWhenReadOnly, readOnly, systemMessages, t } = watch();
+	const [archived, enableSysMes, encrypted, reactWhenReadOnly, readOnly, systemMessages, t] = useWatch({
+		control,
+		name: ['archived', 'enableSysMes', 'encrypted', 'reactWhenReadOnly', 'readOnly', 'systemMessages', 't']
+	});
 	const { room } = useRoomSubscription({
 		rid: route.params?.rid,
 		initializeRoomState
@@ -182,7 +184,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		}
 
 		// Join Code
-		if (room.joinCodeRequired && randomValue !== joinCode) {
+		if (room.joinCodeRequired && randomValueRef.current !== joinCode) {
 			params.joinCode = joinCode;
 		}
 

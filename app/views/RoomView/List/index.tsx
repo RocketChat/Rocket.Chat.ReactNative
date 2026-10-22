@@ -10,7 +10,7 @@ import { useScroll } from './hooks/useScroll';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, t, onLongPress, showMessageInMainThread, hideSystemMessages, flatListRef, serverVersion }, ref) => {
-		const [messages, messagesIds, fetchMessages, { highTs, setHighTs }] = useMessages({
+		const [messages, messagesIds, fetchMessages, { highTs, setHighTs, loadOlderMessages }] = useMessages({
 			rid,
 			tmid,
 			showMessageInMainThread,
@@ -25,12 +25,11 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 				messagesIds,
 				highTs,
 				setHighTs,
-				fetchMessages
+				fetchMessages,
+				tmid
 			});
 
-		const onEndReached = useDebounce(() => {
-			fetchMessages();
-		}, 300);
+		const onEndReached = useDebounce(loadOlderMessages, 300);
 
 		useEffect(() => onEndReached.cancel, [onEndReached]);
 
