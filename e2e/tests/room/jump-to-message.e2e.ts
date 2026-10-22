@@ -1,4 +1,4 @@
-import { test } from '@e2e-dev/mobile';
+import { test } from '~e2e/support/fixtures';
 import { expect, type Locator } from 'e2e';
 
 import { openRoom } from '~e2e/support/appduct';

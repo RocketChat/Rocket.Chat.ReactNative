@@ -1,4 +1,4 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect, type Locator } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers, get } from '~e2e/support/api';

@@ -1,5 +1,6 @@
 import type { Locator, TestFixtures } from 'e2e';
 import type { Device } from '@e2e-dev/mobile';
+import type { Appduct } from '@appduct/e2e';
 import { expect } from 'e2e';
 import { TestError } from 'e2e/engine';
 
@@ -7,7 +8,7 @@ import { getDeepLink, login, type Credentials } from './api';
 import { data } from './data';
 import { delay } from './timing';
 
-export type Fixtures = TestFixtures & { device: Device };
+export type Fixtures = TestFixtures & { device: Device; appduct: Appduct };
 
 export const LONG_TIMEOUT = 60_000;
 
@@ -462,7 +463,7 @@ const openLinkWithRetry = async (device: Fixtures['device'], link: string, arriv
 	}
 };
 
-export const acceptOpenPrompt = async ({ device, screen }: Fixtures) => {
+const acceptOpenPrompt = async ({ device, screen }: Fixtures) => {
 	const prompt = screen.getByRole('button', 'Open');
 	if (await prompt.isVisible()) {
 		await tapWhenUncovered(prompt);

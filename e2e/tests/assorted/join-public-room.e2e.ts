@@ -1,4 +1,4 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { openRoom } from '~e2e/support/appduct';
