@@ -37,7 +37,10 @@ import android.security.KeyChainAliasCallback;
 import android.util.Log;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -54,6 +57,12 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static final ConnectionPool connectionPool = new ConnectionPool(20, 5, TimeUnit.MINUTES);
     private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
     private static final X509TrustManager trustManager = createTrustManager();
+    private static final Map<String, String> hostsByConnection = Collections.synchronizedMap(new LinkedHashMap<String, String>() {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {
+            return size() > 256;
+        }
+    });
 
     public static void installOkHttpClientFactory(Context context) {
         appContext = context.getApplicationContext();
@@ -120,13 +129,9 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         if (url == null || Objects.equals(alias, aliasesByHost.getString(url.host(), null))) {
             return;
         }
-        if (alias == null) {
-            aliasesByHost.edit().remove(url.host()).apply();
-        } else {
-            aliasesByHost.edit().putString(url.host(), alias).apply();
-        }
+        aliasesByHost.edit().putString(url.host(), alias).apply();
         // A fresh context drops TLS sessions resumed with the previous identity
-        createSSLContext();
+        sslSocketFactory.reset();
         connectionPool.evictAll();
         new Handler(Looper.getMainLooper()).post(SSLPinningTurboModule::clearWebViewCertificateChoices);
     }
@@ -143,14 +148,8 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         return host == null ? null : aliasesByHost.getString(host.toLowerCase(Locale.ROOT), null);
     }
 
-    private static void createSSLContext() {
-        try {
-            final SSLContext context = SSLContext.getInstance("TLS");
-            context.init(new KeyManager[]{new ClientKeyManager()}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
-            sslSocketFactory.setDelegate(context.getSocketFactory());
-        } catch (GeneralSecurityException e) {
-            throw new IllegalStateException(e);
-        }
+    private static String connectionKey(Socket socket) {
+        return socket.getInetAddress() + ":" + socket.getPort() + ":" + socket.getLocalPort();
     }
 
     private static X509TrustManager createTrustManager() {
@@ -171,11 +170,13 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static final class ClientKeyManager extends X509ExtendedKeyManager {
         @Override
         public String chooseClientAlias(String[] keyTypes, Principal[] issuers, Socket socket) {
-            if (!(socket instanceof SSLSocket)) {
-                return null;
+            // Android 7-8 sockets have no handshake session while the client certificate is chosen
+            String host = hostsByConnection.get(connectionKey(socket));
+            if (host == null && socket instanceof SSLSocket) {
+                SSLSession session = ((SSLSocket) socket).getHandshakeSession();
+                host = session == null ? null : session.getPeerHost();
             }
-            SSLSession session = ((SSLSocket) socket).getHandshakeSession();
-            return session == null ? null : aliasForHost(session.getPeerHost());
+            return aliasForHost(host);
         }
 
         @Override
@@ -226,23 +227,23 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     }
 
     private static class SwappableSSLSocketFactory extends SSLSocketFactory {
-        private volatile SSLSocketFactory delegate;
+        private SSLSocketFactory delegate;
 
-        void setDelegate(SSLSocketFactory delegate) {
-            this.delegate = delegate;
+        synchronized void reset() {
+            delegate = null;
         }
 
-        private SSLSocketFactory delegate() {
-            SSLSocketFactory current = delegate;
-            if (current != null) {
-                return current;
-            }
-            synchronized (SSLPinningTurboModule.class) {
-                if (delegate == null) {
-                    createSSLContext();
+        private synchronized SSLSocketFactory delegate() {
+            if (delegate == null) {
+                try {
+                    final SSLContext context = SSLContext.getInstance("TLS");
+                    context.init(new KeyManager[]{new ClientKeyManager()}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
+                    delegate = context.getSocketFactory();
+                } catch (GeneralSecurityException e) {
+                    throw new IllegalStateException(e);
                 }
-                return delegate;
             }
+            return delegate;
         }
 
         @Override
@@ -262,6 +263,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
         @Override
         public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
+            hostsByConnection.put(connectionKey(socket), host);
             return delegate().createSocket(socket, host, port, autoClose);
         }
 
