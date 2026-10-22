@@ -3,14 +3,12 @@ package chat.rocket.reactnative.networking;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.modules.network.OkHttpClientProvider;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.Principal;
 import java.security.cert.X509Certificate;
@@ -36,7 +34,6 @@ import java.util.Objects;
 
 import com.reactnativecommunity.webview.RNCWebViewManager;
 import expo.modules.filesystem.legacy.FileSystemLegacyModule;
-import chat.rocket.reactnative.networking.ExpoImageClient;
 
 public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyChainAliasCallback {
 
@@ -46,15 +43,18 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static OkHttpClient sharedClient;
     private static final ConnectionPool connectionPool = new ConnectionPool();
     private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
+    private static final X509TrustManager trustManager = createTrustManager();
     private static final long HTTP_CACHE_SIZE = 10 * 1024 * 1024;
 
     public static void installOkHttpClientFactory(Context context) {
         appContext = context.getApplicationContext();
+        createSSLContext(createKeyManager(null));
         // OkHttp forbids two Cache instances on one directory, so every client shares this one
         Cache httpCache = new Cache(new File(appContext.getCacheDir(), "http-cache"), HTTP_CACHE_SIZE);
         OkHttpClientProvider.setOkHttpClientFactory(() ->
             applyClientCertificate(OkHttpClientProvider.createClientBuilder()).cache(httpCache).build()
         );
+        FileSystemLegacyModule.setOkHttpClient(getSharedOkHttpClient());
     }
 
     public static synchronized OkHttpClient getSharedOkHttpClient() {
@@ -64,13 +64,8 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         return sharedClient;
     }
 
-    public static OkHttpClient.Builder applyClientCertificate(OkHttpClient.Builder builder) {
-        SSLSocketFactory factory = getSSLFactory();
-        X509TrustManager trustManager = getTrustManagerFactory();
-        if (factory != null && trustManager != null) {
-            builder.sslSocketFactory(factory, trustManager);
-        }
-        return builder.connectionPool(connectionPool);
+    private static OkHttpClient.Builder applyClientCertificate(OkHttpClient.Builder builder) {
+        return builder.sslSocketFactory(sslSocketFactory, trustManager).connectionPool(connectionPool);
     }
 
     public SSLPinningTurboModule(ReactApplicationContext reactContext) {
@@ -90,22 +85,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     @Override
     public void setCertificate(String name, Promise promise) {
         updateAlias(name);
-        OkHttpClient client = getSharedOkHttpClient();
-
-        // Image networking react-native layer
-        ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
-            .newBuilder(appContext, client)
-            .build();
-        Fresco.initialize(appContext, config);
-        // RNCWebView
         RNCWebViewManager.setCertificateAlias(name);
-
-        // Expo File System network layer
-        FileSystemLegacyModule.setOkHttpClient(client);
-        // Expo Image network layer
-        ExpoImageClient.setOkHttpClient(client);
-        ExpoImageClient.applyToGlide(appContext);
-
         promise.resolve(null);
     }
 
@@ -138,22 +118,13 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         }
     }
 
-    public static synchronized SSLSocketFactory getSSLFactory() {
-        if (sslSocketFactory.delegate == null && !createSSLContext(createKeyManager(null))) {
-            return null;
-        }
-        return sslSocketFactory;
-    }
-
-    private static synchronized boolean createSSLContext(X509ExtendedKeyManager keyManager) {
+    private static synchronized void createSSLContext(X509ExtendedKeyManager keyManager) {
         try {
-            final X509TrustManager trustManager = getTrustManagerFactory();
             final SSLContext context = SSLContext.getInstance("TLS");
             context.init(new KeyManager[]{keyManager}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
             sslSocketFactory.setDelegate(context.getSocketFactory());
-            return true;
-        } catch (Exception e) {
-            return false;
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException(e);
         }
     }
 
@@ -171,7 +142,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         return new ClientKeyManager(null, null, null);
     }
 
-    public static X509TrustManager getTrustManagerFactory() {
+    private static X509TrustManager createTrustManager() {
         try {
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             trustManagerFactory.init((KeyStore) null);
@@ -179,10 +150,9 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
                 throw new IllegalStateException("Unexpected default trust managers:" + Arrays.toString(trustManagers));
             }
-            final X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
-            return trustManager;
-        } catch (Exception e) {
-            return null;
+            return (X509TrustManager) trustManagers[0];
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException(e);
         }
     }
 
