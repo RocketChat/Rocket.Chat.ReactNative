@@ -8,6 +8,8 @@ import { extractHostname } from './server';
 import { type ICertificate } from '~/definitions';
 import { CERTIFICATE_KEY } from '~/lib/constants/keys';
 import NativeSSLPinningAndroid from '~/lib/native/NativeSSLPinningAndroid';
+import { getAllServers } from '~/lib/database/services/Server';
+import log from './log';
 
 const SSLPinning = Platform.select({
 	android: NativeSSLPinningAndroid,
@@ -41,6 +43,24 @@ const removeCertificate = (server: string) => {
 	}
 	UserPreferences.removeItem(extractHostname(server));
 	UserPreferences.removeItem(`${CERTIFICATE_KEY}-${server}`);
+};
+
+// Android picks the certificate by host natively, so it needs every server's alias, not just the active one's
+export const registerCertificates = async (): Promise<void> => {
+	if (Platform.OS !== 'android') {
+		return;
+	}
+	try {
+		const servers = await getAllServers();
+		servers.forEach(({ id }) => {
+			const name = UserPreferences.getString(`${CERTIFICATE_KEY}-${id}`);
+			if (name) {
+				SSLPinning?.setCertificate(name, id);
+			}
+		});
+	} catch (e) {
+		log(e);
+	}
 };
 
 const RCSSLPinning = Platform.select({

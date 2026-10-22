@@ -10,6 +10,10 @@ jest.mock('~/lib/database/services/Server', () => ({
 	getAllServers: jest.fn()
 }));
 
+jest.mock('~/lib/methods/helpers/sslPinning', () => ({
+	registerCertificates: jest.fn(() => Promise.resolve())
+}));
+
 jest.mock('~/lib/methods/migrateTokenKeysToServerScoped', () => ({
 	migrateTokenKeysToServerScoped: jest.fn(() => Promise.resolve())
 }));
@@ -45,6 +49,7 @@ import { getAllServers, getServerById } from '~/lib/database/services/Server';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DEEP_LINKING } from '~/actions/actionsTypes';
 import { TOKEN_KEY } from '~/lib/constants/keys';
+import { registerCertificates } from '~/lib/methods/helpers/sslPinning';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 import type { RecordingStore } from '~/lib/testUtils/sagaStore';
 
@@ -77,6 +82,16 @@ describe('init saga — restore user-facing roots', () => {
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
 		expect(jest.mocked(RNBootSplash.hide)).toHaveBeenCalled();
+	});
+
+	it('registers every server certificate on init', async () => {
+		jest.mocked(getServerById).mockResolvedValue(null);
+		const { store } = setupStore();
+
+		store.dispatch(appInit());
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(registerCertificates)).toHaveBeenCalled();
 	});
 
 	it('marks the app ready when the stored server has no database record', async () => {
