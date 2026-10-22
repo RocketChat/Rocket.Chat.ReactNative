@@ -100,6 +100,8 @@ private enum Limits {
     static let maxResponseHead = 256 * 1024
     static let readChunk = 64 * 1024
     static let listenerStartTimeout: TimeInterval = 10
+    static let maxRelistenAttempts = 5
+    static let relistenBackoff: TimeInterval = 0.5
 }
 
 private let headTerminator = Data("\r\n\r\n".utf8)
@@ -110,6 +112,7 @@ final class ProxyServer {
     private(set) var localOrigin: String?
     private var listener: NWListener?
     private var pendingStart: ((Result<String, Error>) -> Void)?
+    private var relistenAttempts = 0
     private var connections: [ObjectIdentifier: ClientConnection] = [:]
     private var stopped = false
 
@@ -131,36 +134,32 @@ final class ProxyServer {
     /// iOS can reclaim the listening socket while the app is suspended; listening again on the same port keeps the page's origin.
     private func listen(on port: NWEndpoint.Port) {
         let parameters = NWParameters.tcp
+        parameters.allowLocalEndpointReuse = true
         parameters.requiredLocalEndpoint = NWEndpoint.hostPort(host: .ipv4(.loopback), port: port)
         let listener: NWListener
         do {
             listener = try NWListener(using: parameters)
         } catch {
-            stop()
-            finishStart(.failure(error))
+            listenFailed(error, relistenPort: port == .any ? nil : port)
             return
         }
         self.listener = listener
 
-        var readyPort: NWEndpoint.Port?
+        var servedPort: NWEndpoint.Port? = port == .any ? nil : port
         listener.stateUpdateHandler = { [weak self] state in
             guard let self = self else { return }
             if let current = self.listener, current !== listener { return }
             switch state {
             case .ready:
-                guard let port = listener.port else { return }
-                readyPort = port
-                let localOrigin = "http://127.0.0.1:\(port.rawValue)"
+                guard let readyPort = listener.port else { return }
+                servedPort = readyPort
+                self.relistenAttempts = 0
+                let localOrigin = "http://127.0.0.1:\(readyPort.rawValue)"
                 self.localOrigin = localOrigin
                 self.finishStart(.success(localOrigin))
             case .failed(let error):
-                if let port = readyPort, !self.stopped {
-                    listener.cancel()
-                    self.listen(on: port)
-                    return
-                }
-                self.stop()
-                self.finishStart(.failure(error))
+                listener.cancel()
+                self.listenFailed(error, relistenPort: servedPort)
             case .cancelled:
                 self.finishStart(.failure(ProxyError.stopped))
             default:
@@ -171,6 +170,20 @@ final class ProxyServer {
             self?.accept(connection)
         }
         listener.start(queue: queue)
+    }
+
+    /// `relistenPort` is nil until the server has served on a port; before that a failure ends the start.
+    private func listenFailed(_ error: Error, relistenPort: NWEndpoint.Port?) {
+        guard let port = relistenPort, localOrigin != nil, !stopped, relistenAttempts < Limits.maxRelistenAttempts else {
+            stop()
+            finishStart(.failure(error))
+            return
+        }
+        relistenAttempts += 1
+        queue.asyncAfter(deadline: .now() + Limits.relistenBackoff * Double(relistenAttempts)) { [weak self] in
+            guard let self = self, !self.stopped else { return }
+            self.listen(on: port)
+        }
     }
 
     private func finishStart(_ result: Result<String, Error>) {
