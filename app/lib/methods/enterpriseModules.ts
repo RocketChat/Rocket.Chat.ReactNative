@@ -19,8 +19,9 @@ export async function setEnterpriseModules() {
 		} catch {
 			// Server not found
 		}
-		if (server?.enterpriseModules) {
-			reduxStore.dispatch(setEnterpriseModulesAction(server.enterpriseModules.split(',')));
+		if (server?.enterpriseModules || server?.hasValidLicense) {
+			const modules = server.enterpriseModules ? server.enterpriseModules.split(',') : [];
+			reduxStore.dispatch(setEnterpriseModulesAction(modules, Boolean(server.hasValidLicense)));
 			return;
 		}
 		reduxStore.dispatch(clearEnterpriseModules());
@@ -29,32 +30,43 @@ export async function setEnterpriseModules() {
 	}
 }
 
-async function fetchEnterpriseModules(serverVersion: string): Promise<string[] | undefined> {
+interface ILicenseState {
+	modules: string[];
+	hasValidLicense: boolean;
+}
+
+async function fetchLicenseState(serverVersion: string): Promise<ILicenseState | undefined> {
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.5.0')) {
 		const licensesInfo = await sdk.get('licenses.info');
-		return licensesInfo.success ? licensesInfo.license.activeModules : undefined;
+		if (!licensesInfo.success) {
+			return;
+		}
+		return { modules: licensesInfo.license.activeModules, hasValidLicense: Boolean(licensesInfo.license.hasValidLicense) };
 	}
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0')) {
-		return sdk.methodCallWrapper('license:getModules');
+		const modules: string[] | undefined = await sdk.methodCallWrapper('license:getModules');
+		return modules && { modules, hasValidLicense: false };
 	}
 }
 
 export async function getEnterpriseModules() {
 	try {
 		const { version: serverVersion, server: serverId } = reduxStore.getState().server;
-		const enterpriseModules = await fetchEnterpriseModules(serverVersion);
-		if (!enterpriseModules) {
+		const licenseState = await fetchLicenseState(serverVersion);
+		if (!licenseState) {
 			reduxStore.dispatch(clearEnterpriseModules());
 			return;
 		}
+		const { modules, hasValidLicense } = licenseState;
 		const serversDB = database.servers;
 		const server = await serversDB.get('servers').find(serverId);
 		await serversDB.write(async () => {
 			await server.update(s => {
-				s.enterpriseModules = enterpriseModules.join(',');
+				s.enterpriseModules = modules.join(',');
+				s.hasValidLicense = hasValidLicense;
 			});
 		});
-		reduxStore.dispatch(setEnterpriseModulesAction(enterpriseModules));
+		reduxStore.dispatch(setEnterpriseModulesAction(modules, hasValidLicense));
 	} catch (e) {
 		log(e);
 	}

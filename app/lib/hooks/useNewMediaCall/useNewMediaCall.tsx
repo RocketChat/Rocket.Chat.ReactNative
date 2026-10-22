@@ -3,10 +3,6 @@ import { showActionSheetRef } from '~/containers/ActionSheet';
 import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
 import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
-import { mediaSessionInstance } from '~/lib/services/voip/MediaSessionInstance';
-import { isSelfUserId } from '~/lib/services/voip/isSelfUserId';
-import { showErrorAlert } from '~/lib/methods/helpers/info';
-import I18n from '~/i18n';
 import { useSubscription } from '../useSubscription';
 import { useMediaCallPermission } from '../useMediaCallPermission';
 import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
@@ -30,20 +26,5 @@ export const useNewMediaCall = (rid?: string) => {
 		});
 	};
 
-	const startCallImmediate = async () => {
-		if (isInActiveCall) return;
-		const otherUserId = room ? getUidDirectMessage(room) : undefined;
-		if (!otherUserId || isSelfUserId(otherUserId)) {
-			openNewMediaCall();
-			return;
-		}
-		try {
-			await mediaSessionInstance.startCall(otherUserId, 'user');
-		} catch (e) {
-			const message = e instanceof Error && e.message ? e.message : I18n.t('VoIP_Call_Issue');
-			showErrorAlert(message, I18n.t('Oops'));
-		}
-	};
-
-	return { openNewMediaCall, startCallImmediate, hasMediaCallPermission, isInActiveCall };
+	return { openNewMediaCall, hasMediaCallPermission, isInActiveCall };
 };

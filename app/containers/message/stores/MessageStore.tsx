@@ -12,7 +12,7 @@ import openLink from '~/lib/methods/helpers/openLink';
 import { useTheme } from '~/theme';
 import {
 	useIsArchived,
-	useAutoTranslate,
+	useRoomTranslateLanguage,
 	useBroadcast,
 	useCloseEmojiAndAction,
 	useIsThreadRoom,
@@ -307,27 +307,24 @@ export const useReplies = (): TAnyMessageModel['replies'] => useMessageField(ite
 const autoTranslateLanguageFor = (
 	item: TAnyMessageModel,
 	username: string | undefined,
-	autoTranslateRoom: boolean | undefined,
-	autoTranslateLanguage: string | undefined
+	roomTranslateLanguage: string | undefined
 ): string | undefined =>
-	autoTranslateRoom && autoTranslateLanguage && item.autoTranslate && item.u?.username !== username
-		? autoTranslateLanguage
-		: undefined;
+	roomTranslateLanguage && item.autoTranslate && item.u?.username !== username ? roomTranslateLanguage : undefined;
 
 export const useTranslateLanguage = (): string | undefined => {
-	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
+	const roomTranslateLanguage = useRoomTranslateLanguage();
 	const user = useMessageUser();
-	return useMessageStore(s => autoTranslateLanguageFor(s.item, user?.username, autoTranslateRoom, autoTranslateLanguage));
+	return useMessageStore(s => autoTranslateLanguageFor(s.item, user?.username, roomTranslateLanguage));
 };
 
 export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTranslated: boolean } => {
 	const user = useMessageUser();
-	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
+	const roomTranslateLanguage = useRoomTranslateLanguage();
 	return useMessageStore(
 		useShallow(s => {
 			let messageText = s.item.msg;
 			let isTranslated = false;
-			const language = autoTranslateLanguageFor(s.item, user?.username, autoTranslateRoom, autoTranslateLanguage);
+			const language = autoTranslateLanguageFor(s.item, user?.username, roomTranslateLanguage);
 			if (language) {
 				const translated = getMessageTranslation(s.item, language);
 				isTranslated = !!translated;
