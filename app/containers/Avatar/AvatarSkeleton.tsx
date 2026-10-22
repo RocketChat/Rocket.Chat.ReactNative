@@ -15,18 +15,22 @@ const styles = StyleSheet.create({
 });
 
 const SKELETON_DELAY = 150;
+const PULSE_MIN_OPACITY = 0.4;
+const PULSE_DURATION = 800;
 
 const pulse = makeMutable(1);
 let activeSkeletons = 0;
 
 const startPulse = () => {
-	if (activeSkeletons++ === 0) {
-		pulse.value = withRepeat(withTiming(0.4, { duration: 800 }), -1, true);
+	activeSkeletons += 1;
+	if (activeSkeletons === 1) {
+		pulse.value = withRepeat(withTiming(PULSE_MIN_OPACITY, { duration: PULSE_DURATION }), -1, true);
 	}
 };
 
 const stopPulse = () => {
-	if (--activeSkeletons === 0) {
+	activeSkeletons -= 1;
+	if (activeSkeletons === 0) {
 		pulse.value = 1;
 	}
 };

@@ -38,6 +38,8 @@ describe('AvatarImage', () => {
 
 	it('never shows the skeleton when the image loads before the delay', () => {
 		const { queryByTestId, UNSAFE_getByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
+		act(() => jest.advanceTimersByTime(100));
+		expect(queryByTestId('avatar-skeleton')).toBeNull();
 		fireEvent(UNSAFE_getByType(Image), 'load');
 		showDelay();
 		expect(queryByTestId('avatar-skeleton')).toBeNull();
