@@ -32,7 +32,7 @@ export async function sendFileMessage(
 
 		[uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid });
 		if (!uploadPath || !uploadRecord) {
-			return;
+			throw new Error("Couldn't create upload record");
 		}
 
 		fileInfo.path = await copyFileToCacheDirectoryIfNeeded(fileInfo.path, fileInfo.name);

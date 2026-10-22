@@ -209,6 +209,15 @@ describe('sendFileMessage', () => {
 
 	const startAttempt = async (_path: string, createUpload: () => unknown) => createUpload();
 
+	it('reports a send skipped because the upload is already in progress as a failure under no upload key', async () => {
+		(createUploadRecord as jest.Mock).mockResolvedValue([null, null]);
+
+		await send();
+
+		expect(finalizeFailedUpload).toHaveBeenCalledWith({ queueKey: '', error: expect.any(Error), upload: null });
+		expect(uploadWithRetry).not.toHaveBeenCalled();
+	});
+
 	it('destroys the record and frees the slot once the upload finished', async () => {
 		const record = arrange();
 		(uploadWithRetry as jest.Mock).mockImplementation(startAttempt);
@@ -285,12 +294,12 @@ describe('sendFileMessageV2', () => {
 	};
 
 	describe('upload already in progress', () => {
-		it('returns quietly instead of marking the still-active record as failed', async () => {
+		it('reports the skipped send as a failure under no upload key so the active record is left alone', async () => {
 			(createUploadRecord as jest.Mock).mockResolvedValue([null, null]);
 
-			await expect(send()).resolves.toBeUndefined();
+			await send();
 
-			expect(finalizeFailedUpload).not.toHaveBeenCalled();
+			expect(finalizeFailedUpload).toHaveBeenCalledWith({ queueKey: '', error: expect.any(Error), upload: null });
 			expect(uploadWithRetry).not.toHaveBeenCalled();
 		});
 	});

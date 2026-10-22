@@ -39,7 +39,7 @@ export async function sendFileMessageV2(
 
 		[uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid });
 		if (!uploadPath || !uploadRecord) {
-			return;
+			throw new Error("Couldn't create upload record");
 		}
 		const { file, getContent, fileContent } = await Encryption.encryptFile(rid, fileInfo);
 		file.path = await copyFileToCacheDirectoryIfNeeded(file.path, file.name);

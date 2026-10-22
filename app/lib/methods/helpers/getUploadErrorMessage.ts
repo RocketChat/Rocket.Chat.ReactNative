@@ -23,6 +23,5 @@ export const getUploadErrorMessage = ({
 	if (!I18n.isTranslated(errorMessage)) {
 		return errorMessage;
 	}
-	const translated = I18n.t(errorMessage);
-	return typeof translated === 'string' ? translated : errorMessage;
+	return I18n.t(errorMessage);
 };

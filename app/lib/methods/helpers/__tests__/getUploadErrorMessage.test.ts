@@ -1,14 +1,11 @@
 import { getUploadErrorMessage } from '../getUploadErrorMessage';
 
-const TRANSLATED = ['error-file-too-large', 'error-too-many-requests', 'error-invalid-file-type', 'toString'];
+const TRANSLATED = ['error-file-too-large', 'error-too-many-requests', 'error-invalid-file-type'];
 
 jest.mock('~/i18n', () => ({
 	__esModule: true,
 	default: {
 		t: (key: string, params?: Record<string, string>) => {
-			if (key === 'toString') {
-				return (() => undefined) as unknown as string;
-			}
 			if (key === 'error-invalid-file-type') {
 				return 'Invalid file type';
 			}
@@ -82,9 +79,5 @@ describe('getUploadErrorMessage', () => {
 
 	it('falls back to a generic notice when a permanent failure carries a rate limit message with no wait', () => {
 		expect(getUploadErrorMessage({ errorStatus: 400, errorMessage: 'error-too-many-requests' })).toBe('FileUpload_Error');
-	});
-
-	it('never returns a non-string for a server message that shadows an object prototype key', () => {
-		expect(getUploadErrorMessage({ errorStatus: 500, errorMessage: 'toString' })).toBe('toString');
 	});
 });
