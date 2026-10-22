@@ -21,7 +21,7 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane android upload
 ```
 
-Upload App to the Play Store track for TRIGGER (pr: internal, develop: beta)
+Upload App to Play Store Open Testing
 
 ### android internal_app_sharing
 
@@ -37,7 +37,7 @@ Upload App to Internal App Sharing
 [bundle exec] fastlane android production
 ```
 
-Promote BUILD_VERSION from the TRIGGER track to Production
+Promote BUILD_VERSION from Open Testing to Production
 
 ----
 

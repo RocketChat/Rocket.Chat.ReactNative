@@ -1,14 +1,11 @@
 name: 'Production Android'
-description: 'Promotes the uploaded build to the Play Store production track'
+description: 'Promotes the open testing build to the Play Store production track'
 inputs:
   FASTLANE_GOOGLE_SERVICE_ACCOUNT:
     description: 'Google service account key for upload'
     required: true
   BUILD_VERSION:
     description: 'Version code of the build to promote'
-    required: true
-  trigger:
-    description: 'Trigger for build'
     required: true
 
 runs:
@@ -31,6 +28,5 @@ runs:
       working-directory: android
       run: bundle exec fastlane android production
       env:
-        TRIGGER: ${{ inputs.trigger }}
         BUILD_VERSION: ${{ inputs.BUILD_VERSION }}
       shell: bash
