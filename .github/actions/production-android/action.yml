@@ -1,11 +1,11 @@
 name: 'Production Android'
-description: 'Promotes the open testing build to the Play Store production track'
+description: 'Releases the open testing build to the Play Store production track'
 inputs:
   FASTLANE_GOOGLE_SERVICE_ACCOUNT:
     description: 'Google service account key for upload'
     required: true
   BUILD_VERSION:
-    description: 'Version code of the build to promote'
+    description: 'Version code of the build to release'
     required: true
 
 runs:
@@ -24,7 +24,7 @@ runs:
         echo "${{ inputs.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}" | base64 --decode > service_account.json
       shell: bash
 
-    - name: Fastlane Promote to Production
+    - name: Fastlane Release to Production
       working-directory: android
       run: bundle exec fastlane android production
       env:

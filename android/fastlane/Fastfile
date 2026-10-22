@@ -53,21 +53,21 @@ platform :android do
     )
   end
 
-  desc "Promote BUILD_VERSION from Open Testing to Production"
+  desc "Release BUILD_VERSION to Production"
   lane :production do
     version_code = Integer(ENV.fetch('BUILD_VERSION'))
-    metadata_path = File.join(__dir__, 'metadata/android')
-    changelogs_path = File.join(metadata_path, 'en-US/changelogs')
+    production_version_code = google_play_track_version_codes(package_name: 'chat.rocket.android', track: 'production').max || 0
+    UI.user_error!("Version code #{version_code} is lower than production's #{production_version_code}") if version_code < production_version_code
 
+    changelogs_path = File.join(__dir__, 'metadata/android/en-US/changelogs')
     FileUtils.mkdir_p(changelogs_path)
     FileUtils.cp(File.expand_path('../../.github/store-release-notes.txt', __dir__), File.join(changelogs_path, "#{version_code}.txt"))
 
     upload_to_play_store(
       package_name: 'chat.rocket.android',
-      track: 'beta',
-      track_promote_to: 'production',
+      track: 'production',
       version_code: version_code,
-      metadata_path: metadata_path,
+      version_codes_to_retain: [version_code],
       skip_upload_apk: true,
       skip_upload_aab: true,
       skip_upload_metadata: true,

@@ -108,7 +108,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-      - name: Promote to Production
+      - name: Release to Production
         uses: ./.github/actions/production-android
         with:
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
