@@ -27,7 +27,6 @@ import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import com.reactnativecommunity.webview.RNCWebViewManager;
@@ -36,7 +35,7 @@ import expo.modules.filesystem.legacy.FileSystemLegacyModule;
 public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyChainAliasCallback {
 
     private Promise promise;
-    private static String alias;
+    private static ClientKeyManager keyManager;
     private static Context appContext;
     private static final ConnectionPool connectionPool = new ConnectionPool();
     private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
@@ -96,13 +95,13 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     }
 
     private static synchronized void updateAlias(String name) {
-        if (Objects.equals(name, alias)) {
+        // Reload every time so a certificate renewed under the same alias is picked up
+        ClientKeyManager next = createKeyManager(name);
+        if (next == null ? keyManager == null : next.isSameIdentity(keyManager)) {
             return;
         }
-        X509ExtendedKeyManager keyManager = createKeyManager(name);
-        // A failed lookup leaves the alias unset, so the next setCertificate retries it
-        alias = keyManager != null ? name : null;
-        createSSLContext(keyManager);
+        keyManager = next;
+        createSSLContext(next);
         connectionPool.evictAll();
     }
 
@@ -116,7 +115,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         }
     }
 
-    private static X509ExtendedKeyManager createKeyManager(String alias) {
+    private static ClientKeyManager createKeyManager(String alias) {
         if (alias != null) {
             try {
                 PrivateKey privateKey = KeyChain.getPrivateKey(appContext, alias);
@@ -124,7 +123,9 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
                 if (privateKey != null && certificateChain != null) {
                     return new ClientKeyManager(alias, privateKey, certificateChain);
                 }
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                // A failed lookup keeps the identity already loaded for this alias
+                return keyManager != null && alias.equals(keyManager.alias) ? keyManager : null;
             }
         }
         return null;
@@ -153,6 +154,10 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             this.alias = alias;
             this.privateKey = privateKey;
             this.certificateChain = certificateChain;
+        }
+
+        boolean isSameIdentity(ClientKeyManager other) {
+            return other != null && alias.equals(other.alias) && Arrays.equals(certificateChain, other.certificateChain);
         }
 
         @Override
