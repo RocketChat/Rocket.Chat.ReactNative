@@ -11,13 +11,6 @@
 #import "../Shared/RocketChat/MMKVBridge.h"
 #import "SecureStorage.h"
 
-@interface Challenge ()
-+ (MMKVBridge *)getMMKVInstance;
-+ (NSString *)stringToHex:(NSString *)string;
-+ (nullable NSURLCredential *)credentialForPath:(NSString *)path password:(NSString *)password;
-+ (NSArray *)intermediateCertificates:(SecIdentityRef)identity chain:(nullable NSArray *)chain;
-@end
-
 @implementation Challenge
 
 + (MMKVBridge *)getMMKVInstance {
@@ -73,7 +66,7 @@
   return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
 }
 
-+ (NSArray *)intermediateCertificates:(SecIdentityRef)identity chain:(NSArray *)chain
++ (NSArray *)intermediateCertificates:(SecIdentityRef)identity chain:(nullable NSArray *)chain
 {
   SecCertificateRef leaf = NULL;
   SecIdentityCopyCertificate(identity, &leaf);
