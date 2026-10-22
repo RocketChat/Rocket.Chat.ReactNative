@@ -79,6 +79,9 @@ typedef void (*TaskChallengeIMP)(id, SEL, NSURLSession *, NSURLSessionTask *, NS
       if (sanityChesk == noErr) {
         CFDictionaryRef identityDict = (CFDictionaryRef)CFArrayGetValueAtIndex(keyref, 0);
         SecIdentityRef identityRef = (SecIdentityRef)CFDictionaryGetValue(identityDict, kSecImportItemIdentity);
+        if (!identityRef) {
+          return;
+        }
         NSArray *chain = (__bridge NSArray *)CFDictionaryGetValue(identityDict, kSecImportItemCertChain);
         NSArray *certificates = [@[(__bridge id)identityRef] arrayByAddingObjectsFromArray:[Challenge intermediateCertificates:identityRef chain:chain]];
         [options setObject:certificates forKey:(NSString *)kCFStreamSSLCertificates];
