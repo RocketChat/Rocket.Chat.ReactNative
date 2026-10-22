@@ -63,6 +63,28 @@ describe('uploadService (Android)', () => {
 		expect(mockService.updateProgress.mock.calls).toEqual([[100], [50], [100]]);
 	});
 
+	it('keeps a finished upload in the combined percentage while another one is still running', () => {
+		const a = track();
+		const b = track();
+		a.progress(100, 100);
+		b.progress(40, 100);
+		mockService.updateProgress.mockClear();
+		a.end();
+		b.progress(50, 100);
+		expect(mockService.updateProgress.mock.calls).toEqual([[75]]);
+	});
+
+	it('starts the combined percentage over once every upload has ended', () => {
+		const a = track();
+		const b = track();
+		a.progress(100, 100);
+		b.progress(100, 100);
+		a.end();
+		b.end();
+		track();
+		expect(mockService.start).toHaveBeenLastCalledWith('Uploading', 'Cancel', 0);
+	});
+
 	it('lets the next change retry when the system refuses to start the service', async () => {
 		mockService.start.mockImplementationOnce(() => Promise.reject(new Error('ForegroundServiceStartNotAllowedException')));
 		track();

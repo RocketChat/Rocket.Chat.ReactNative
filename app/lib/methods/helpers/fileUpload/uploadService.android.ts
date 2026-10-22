@@ -6,6 +6,7 @@ import { type IUploadTracker } from './definitions';
 type TTrackedUpload = { loaded: number; total: number; cancel: () => void };
 
 const tracked = new Set<TTrackedUpload>();
+const finished = { loaded: 0, total: 0 };
 let running = false;
 let startAttempt = 0;
 let lastPercent = -1;
@@ -14,8 +15,7 @@ let cancelSubscription: { remove: () => void } | undefined;
 const service = () => NativeModules.UploadService;
 
 const percent = () => {
-	let loaded = 0;
-	let total = 0;
+	let { loaded, total } = finished;
 	tracked.forEach(upload => {
 		loaded += upload.loaded;
 		total += upload.total;
@@ -70,7 +70,10 @@ export const trackUpload = (cancel: () => void): IUploadTracker => {
 		},
 		end: () => {
 			tracked.delete(upload);
+			finished.loaded += upload.total;
+			finished.total += upload.total;
 			if (!tracked.size) {
+				Object.assign(finished, { loaded: 0, total: 0 });
 				cancelSubscription?.remove();
 				cancelSubscription = undefined;
 			}
