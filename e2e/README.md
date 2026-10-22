@@ -56,6 +56,7 @@ On Android emulators with Google Play services, disable autofill first, or the p
 
 ## Writing tests
 
+- Import `test` and `afterEach` from `~e2e/support/fixtures`, not `@e2e-dev/mobile`. Its `test` adds the `appduct` fixture from `@appduct/e2e`, which calls the app's Appduct tools.
 - Tag each test with its CI shard: `test('...', { tags: ['test-5'] }, ...)`. Platform-only tests add `platforms: ['ios']` or `platforms: ['android']`.
 - Open a room the user is subscribed to with `openRoom` (`e2e/support/appduct.ts`), which opens it through the app's `open_room` Appduct tool. Use `searchAndNavigateRoom` when the test covers the rooms list search, or when the user still has to join or preview the room.
 - Start every test from `launchApp` or `loginWithDeepLink`. On iOS they reinstall the app, since clearing app state keeps the app group container.
