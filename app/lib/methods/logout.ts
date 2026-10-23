@@ -21,7 +21,7 @@ import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
 import { clearServerCookies } from './helpers/setServerCookies';
-import { removeWorkspaceCertificate } from './helpers/sslPinning';
+import { clearRemovedWorkspaceCertificate } from './helpers/sslPinning';
 import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from './getUsersPresence';
 
@@ -107,7 +107,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 		} catch (e) {
 			log(e);
 		}
-		await removeWorkspaceCertificate(server);
+		await clearRemovedWorkspaceCertificate(server);
 	} catch (e) {
 		log(e);
 	}

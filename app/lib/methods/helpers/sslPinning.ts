@@ -78,7 +78,7 @@ const clearServerCertificate = async (server: string, servers: string[], keepFor
 
 const removeServerCertificate = async (server: string) => clearServerCertificate(server, await getServerIds(), false);
 
-export const removeWorkspaceCertificate = async (server: string): Promise<void> => {
+export const clearRemovedWorkspaceCertificate = async (server: string): Promise<void> => {
 	const servers = await getServerIds();
 	if (servers.includes(server)) {
 		return;
@@ -153,8 +153,7 @@ export const registerCertificates = async (): Promise<void> => {
 		return;
 	}
 	try {
-		const servers = await getAllServers();
-		await Promise.all(servers.map(({ id }) => applyServerCertificate(id)));
+		await applyConnectedLast(await getServerIds());
 	} catch (e) {
 		log(e);
 	}

@@ -32,7 +32,7 @@ jest.mock('~/lib/services/restApi', () => ({
 
 jest.mock('~/lib/methods/helpers/sslPinning', () => ({
 	__esModule: true,
-	removeWorkspaceCertificate: jest.fn()
+	clearRemovedWorkspaceCertificate: jest.fn()
 }));
 
 const mockSdkLogout = jest.fn();
@@ -45,7 +45,7 @@ jest.mock('~/lib/services/sdk', () => {
 import CookieManager from '@react-native-cookies/cookies';
 
 import { logout, removeServer, removeServerData } from '../logout';
-import { removeWorkspaceCertificate } from '~/lib/methods/helpers/sslPinning';
+import { clearRemovedWorkspaceCertificate } from '~/lib/methods/helpers/sslPinning';
 import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import sdk from '~/lib/services/sdk';
 import { disconnect } from '~/lib/services/connect';
@@ -169,7 +169,15 @@ describe('removeServer', () => {
 	it('removes the server certificate', async () => {
 		await removeServer({ server: SERVER });
 
-		expect(removeWorkspaceCertificate).toHaveBeenCalledWith(SERVER);
+		expect(clearRemovedWorkspaceCertificate).toHaveBeenCalledWith(SERVER);
+	});
+
+	it('removes the server certificate after deleting the server record', async () => {
+		await removeServer({ server: SERVER });
+
+		expect(jest.mocked(database.servers.batch).mock.invocationCallOrder[0]).toBeLessThan(
+			jest.mocked(clearRemovedWorkspaceCertificate).mock.invocationCallOrder[0]
+		);
 	});
 });
 
