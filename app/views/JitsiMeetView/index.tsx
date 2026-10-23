@@ -13,14 +13,14 @@ import { getRoomIdFromJitsiCallUrl } from '~/lib/methods/helpers/getRoomIdFromJi
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '~/lib/methods/videoConfTimer';
 import { getUserSelector } from '~/selectors/login';
-import { type ChatsStackParamList } from '~/stacks/types';
+import { type InsideStackParamList } from '~/stacks/types';
 import JitsiAuthModal from './JitsiAuthModal';
 import SafeAreaView from '~/containers/SafeAreaView';
 
 const JitsiMeetView = (): ReactElement => {
 	const {
 		params: { rid, url, videoConf }
-	} = useRoute<RouteProp<ChatsStackParamList, 'JitsiMeetView'>>();
+	} = useRoute<RouteProp<InsideStackParamList, 'JitsiMeetView'>>();
 	const { goBack } = useNavigation();
 	const user = useAppSelector(state => getUserSelector(state));
 	const serverUrl = useAppSelector(state => state.server.server);

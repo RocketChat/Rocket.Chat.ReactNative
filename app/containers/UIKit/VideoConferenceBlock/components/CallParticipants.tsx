@@ -21,7 +21,7 @@ export const CallParticipants = ({ users }: { users: TCallUsers }): ReactElement
 					<Text style={style.plusUsersText}>{users.length > 9 ? '+9' : `+${users.length}`}</Text>
 				</View>
 			) : null}
-			<Text style={style.joined}>{i18n.t('Joined')}</Text>
+			{users.length ? <Text style={style.joined}>{i18n.t('Joined')}</Text> : null}
 		</>
 	);
 };
