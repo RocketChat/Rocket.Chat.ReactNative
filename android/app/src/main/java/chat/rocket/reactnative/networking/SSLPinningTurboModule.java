@@ -128,7 +128,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         if (url == null || Objects.equals(alias, aliasesByHost.getString(url.host(), null))) {
             return;
         }
-        aliasesByHost.edit().putString(url.host(), alias).apply();
+        aliasesByHost.edit().putString(url.host(), alias).commit();
         // A fresh SSLContext has no cached sessions, so none resume with the previous identity
         sslSocketFactory.reset();
         connectionPool.evictAll();

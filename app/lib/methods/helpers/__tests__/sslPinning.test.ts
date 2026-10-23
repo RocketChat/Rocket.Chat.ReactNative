@@ -293,6 +293,15 @@ describe('sslPinning on iOS', () => {
 		expect(mockStore.has(HOSTNAME)).toBe(false);
 	});
 
+	it('leaves the host entry alone when removing a workspace without a certificate of its own', async () => {
+		setDatabaseServers(HOST);
+
+		await clearRemovedWorkspaceCertificateIOS(SIBLING);
+
+		expect(mockStore.get(HOSTNAME)).toEqual(certificate);
+		expect(nativeSSLPinning.setCertificate).not.toHaveBeenCalled();
+	});
+
 	it('clears the host entry when the remaining server on the host has lost its certificate entry', async () => {
 		storeServerCertificate(SIBLING, 'deleted.p12');
 		setDatabaseServers(SIBLING);

@@ -101,7 +101,7 @@ index 0287e1c..65174cc 100644
 +                        X509Certificate[] certChain = KeyChain.getCertificateChain(reactContext, certificateAlias);
 +
 +                        return new SslStuff(privKey, certChain);
-+                    } catch (Exception e) {
++                    } catch (Exception | AssertionError e) {
 +                        return null;
 +                    }
 +                }

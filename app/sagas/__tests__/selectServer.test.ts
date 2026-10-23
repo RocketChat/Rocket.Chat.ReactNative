@@ -223,6 +223,15 @@ describe('selectServer saga — version and name fallback', () => {
 		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: TOKEN } as any);
 	});
 
+	it('waits for the workspace certificate before connecting', async () => {
+		jest.mocked(applyServerCertificate).mockImplementationOnce(() => new Promise(() => {}));
+		const { store } = setupStore();
+		store.dispatch(selectServerRequest(SERVER_URL, '7.4.0', false));
+		await flushSagaMicrotasks();
+
+		expect(connect).not.toHaveBeenCalled();
+	});
+
 	it('applies the workspace certificate before connecting', async () => {
 		const { store } = setupStore();
 		store.dispatch(selectServerRequest(SERVER_URL, '7.4.0', false));
@@ -446,6 +455,15 @@ describe('selectServer saga — requesting a new workspace', () => {
 		await flushSagaMicrotasks();
 
 		expect(activeAuthorization()).toBe('Basic old-workspace-credentials');
+	});
+
+	it('waits for the requested host certificate before probing it', async () => {
+		jest.mocked(applyServerCertificate).mockImplementationOnce(() => new Promise(() => {}));
+		const { store } = setupStore();
+		store.dispatch(serverRequest(REQUESTED_HOST));
+		await flushSagaMicrotasks();
+
+		expect(getServerInfo).not.toHaveBeenCalled();
 	});
 
 	it('applies the requested host certificate before probing it', async () => {

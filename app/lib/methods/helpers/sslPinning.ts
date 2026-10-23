@@ -67,7 +67,7 @@ const clearServerCertificate = async (server: string, servers: string[], keepFor
 	const hostname = extractHostname(server);
 	const sameHost = servers.filter(id => id !== server && extractHostname(id) === hostname);
 	const withCertificate = sameHost.filter(id => getServerCertificate(id));
-	if (keepForHost && sameHost.length && !withCertificate.length) {
+	if (keepForHost && sameHost.length && (!certificate || !withCertificate.length)) {
 		return;
 	}
 	UserPreferences.removeItem(hostname);
