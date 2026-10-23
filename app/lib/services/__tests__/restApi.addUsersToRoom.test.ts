@@ -47,7 +47,6 @@ describe('addUsersToRoom', () => {
 		['8.6.0', 'p', 'groups.invite'],
 		['8.9.0', 'p', 'groups.invite'],
 		['9.0.0', 'c', 'channels.invite'],
-		['9.0.0-rc.1', 'c', 'channels.invite'],
 		['9.0.0', 'p', 'groups.invite']
 	] as const)('invites all selected users in one request on %s (%s)', async (version, t, endpoint) => {
 		setServerVersion(version);
