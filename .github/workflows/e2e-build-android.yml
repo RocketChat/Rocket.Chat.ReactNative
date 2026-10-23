@@ -63,8 +63,27 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-      - name: Checkout and Setup Node
-        uses: ./.github/actions/setup-node
+      - parallel:
+          - name: Checkout and Setup Node
+            uses: ./.github/actions/setup-node
+
+          - name: Restore cached native build
+            id: native-cache
+            uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+            with:
+              path: .native-cache
+              key: ${{ needs.native-fingerprint.outputs.cache-key }}
+
+          - name: Set up JDK
+            uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
+            with:
+              java-version: '17'
+              distribution: 'temurin'
+
+          - name: Setup Android SDK
+            uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
+            with:
+              packages: '' # the default `tools` package was removed from the SDK repository
 
       - name: Cache Gradle dependencies
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
@@ -74,24 +93,6 @@ jobs:
           key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             gradle-${{ runner.os }}-
-
-      - name: Restore cached native build
-        id: native-cache
-        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: .native-cache
-          key: ${{ needs.native-fingerprint.outputs.cache-key }}
-
-      - name: Set up JDK
-        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
-        with:
-          packages: '' # the default `tools` package was removed from the SDK repository
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3

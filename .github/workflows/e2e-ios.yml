@@ -48,7 +48,7 @@ jobs:
           defaults write com.apple.iphonesimulator ShowChrome -bool false
           defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
 
-      - name: Start Simulator Boot
+      - name: Resolve Simulator
         env:
           DEVICE_PROFILE: ${{ inputs.device-profile }}
         run: |
@@ -75,22 +75,36 @@ jobs:
 
           SIM_UDID=$(jq -r --arg name "$SIM_NAME" '[.devices | to_entries[] | .value[] | select(.name == $name)] | first | .udid' <<< "$DEVICES_JSON")
 
-          echo "Starting boot for simulator: $SIM_NAME ($SIM_UDID)"
+          echo "Resolved simulator: $SIM_NAME ($SIM_UDID)"
           echo "SIM_UDID=$SIM_UDID" >> "$GITHUB_ENV"
           echo "E2E_IOS_DEVICE=$SIM_UDID" >> "$GITHUB_ENV"
 
+      - name: Boot Simulator
+        id: simulator-boot
+        background: true
+        timeout-minutes: 15
+        run: |
+          echo "Booting simulator: $SIM_UDID"
           xcrun simctl boot "$SIM_UDID" || true
+          xcrun simctl bootstatus "$SIM_UDID" -b
 
-      - name: Setup Node
-        uses: ./.github/actions/setup-node
-        with:
-          node-version: '22'
+          echo "Disabling animations"
+          xcrun simctl spawn "$SIM_UDID" defaults write -g UIAnimationDragCoefficient -float 0.0001
 
-      - name: Download App
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          name: ios-simulator-app
-          path: ios-simulator-app/Rocket.Chat.app
+          echo "Booted devices:"
+          xcrun simctl list devices | grep Booted
+
+      - parallel:
+          - name: Setup Node
+            uses: ./.github/actions/setup-node
+            with:
+              node-version: '22'
+
+          - name: Download App
+            uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+            with:
+              name: ios-simulator-app
+              path: ios-simulator-app/Rocket.Chat.app
 
       - name: Setup E2E Account
         uses: ./.github/actions/e2e-account
@@ -108,17 +122,8 @@ jobs:
           restore-keys: |
             agent-device-runner-${{ runner.os }}-xcode-26.6-
 
-      - name: Wait for Simulator Ready
-        timeout-minutes: 15
-        run: |
-          echo "Waiting for simulator to finish booting: $SIM_UDID"
-          xcrun simctl bootstatus "$SIM_UDID" -b
-
-          echo "Disabling animations"
-          xcrun simctl spawn "$SIM_UDID" defaults write -g UIAnimationDragCoefficient -float 0.0001
-
-          echo "Booted devices:"
-          xcrun simctl list devices | grep Booted
+      - name: Wait for Simulator Boot
+        wait: simulator-boot
 
       - name: Warm Up Simulator
         timeout-minutes: 10
