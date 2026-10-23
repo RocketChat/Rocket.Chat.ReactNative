@@ -22,6 +22,8 @@ const extractFileScheme = (path: string) => path.replace('file://', ''); // file
 
 const getPath = (name: string) => `${documentDirectory}${name}`;
 
+const SERVER_CERTIFICATE_PREFIX = `${CERTIFICATE_KEY}-`;
+
 const persistCertificate = (server: string, name: string, password?: string) => {
 	const certificatePath = getPath(name);
 	const certificate: ICertificate = {
@@ -33,33 +35,33 @@ const persistCertificate = (server: string, name: string, password?: string) => 
 	if (hostname) {
 		UserPreferences.setMap(hostname, certificate);
 	}
-	UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, name);
+	UserPreferences.setString(`${SERVER_CERTIFICATE_PREFIX}${server}`, name);
 	return certificate;
 };
 
-export const getServerCertificate = (server: string): string | null => UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
+export const getServerCertificate = (server: string): string | null =>
+	UserPreferences.getString(`${SERVER_CERTIFICATE_PREFIX}${server}`);
 
-const isCertificateUsedElsewhere = (server: string, certificate: string) =>
-	UserPreferences.getAllKeys().some(
-		key =>
-			key !== `${CERTIFICATE_KEY}-${server}` &&
-			key.startsWith(`${CERTIFICATE_KEY}-`) &&
-			UserPreferences.getString(key) === certificate
-	);
+const getServersWithCertificate = () =>
+	UserPreferences.getAllKeys()
+		.filter(key => key.startsWith(SERVER_CERTIFICATE_PREFIX))
+		.map(key => key.slice(SERVER_CERTIFICATE_PREFIX.length));
 
-const removeCertificate = (server: string) => {
+const clearStoredCertificate = (server: string) => {
 	const certificate = getServerCertificate(server);
-	if (certificate && !isCertificateUsedElsewhere(server, certificate)) {
+	UserPreferences.removeItem(`${SERVER_CERTIFICATE_PREFIX}${server}`);
+	if (certificate && !getServersWithCertificate().some(other => getServerCertificate(other) === certificate)) {
 		UserPreferences.removeItem(certificate);
 	}
 	UserPreferences.removeItem(extractHostname(server));
-	UserPreferences.removeItem(`${CERTIFICATE_KEY}-${server}`);
 };
 
-const restoreConnectedCertificate = async () => {
-	if (sdk.host) {
-		await applyServerCertificate(sdk.host);
-	}
+// The connected server goes last so it keeps the host's certificate
+const restoreHostCertificates = async (server: string) => {
+	const hostname = extractHostname(server);
+	const servers = getServersWithCertificate().filter(other => extractHostname(other) === hostname);
+	const ordered = [...servers.filter(other => other !== sdk.host), ...servers.filter(other => other === sdk.host)];
+	await Promise.all(ordered.map(other => applyServerCertificate(other)));
 };
 
 const RCSSLPinning = Platform.select({
@@ -109,17 +111,17 @@ const RCSSLPinning = Platform.select({
 			}
 		},
 		removeCertificate: async (server: string) => {
-			removeCertificate(server);
-			await restoreConnectedCertificate();
+			clearStoredCertificate(server);
+			await restoreHostCertificates(server);
 		}
 	},
 	android: {
 		pickCertificate: () => SSLPinning?.pickCertificate(),
 		setCertificate: (name: string, server: string) => SSLPinning?.setCertificate(name, server),
 		removeCertificate: async (server: string) => {
-			removeCertificate(server);
+			clearStoredCertificate(server);
 			SSLPinning?.removeCertificate(server);
-			await restoreConnectedCertificate();
+			await restoreHostCertificates(server);
 		}
 	}
 });

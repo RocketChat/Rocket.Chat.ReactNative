@@ -1,11 +1,4 @@
-jest.mock('~/lib/native/NativeSSLPinningAndroid', () => ({
-	__esModule: true,
-	default: {
-		setCertificate: jest.fn(() => Promise.resolve(null)),
-		removeCertificate: jest.fn(),
-		pickCertificate: jest.fn()
-	}
-}));
+const mockStore = new Map<string, unknown>();
 
 jest.mock('~/lib/database/services/Server', () => ({
 	getAllServers: jest.fn()
@@ -24,23 +17,22 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 jest.mock('~/lib/methods/userPreferences', () => ({
 	__esModule: true,
 	default: {
-		getString: jest.fn(),
-		getMap: jest.fn(),
-		setMap: jest.fn(),
-		setString: jest.fn(),
-		getAllKeys: jest.fn(() => []),
-		removeItem: jest.fn()
+		getString: (key: string) => mockStore.get(key) ?? null,
+		getMap: (key: string) => mockStore.get(key) ?? null,
+		setString: (key: string, value: unknown) => mockStore.set(key, value),
+		setMap: (key: string, value: unknown) => mockStore.set(key, value),
+		getAllKeys: () => [...mockStore.keys()],
+		removeItem: (key: string) => mockStore.delete(key)
 	}
 }));
 
 import NativeSSLPinningAndroid from '~/lib/native/NativeSSLPinningAndroid';
 import { getAllServers } from '~/lib/database/services/Server';
 import log from '~/lib/methods/helpers/log';
-import UserPreferences from '~/lib/methods/userPreferences';
 import sdk from '~/lib/services/sdk';
 import { Platform } from 'react-native';
 
-import { type TServerModel } from '~/definitions';
+import { type TServerModel } from '~/definitions/IServer';
 
 import { CERTIFICATE_KEY } from '~/lib/constants/keys';
 
@@ -56,73 +48,80 @@ const {
 	default: RCSSLPinning
 } = require('../sslPinning') as typeof import('../sslPinning');
 
-const WITH_CERTIFICATE = 'https://mtls.rocket.chat';
-const WITHOUT_CERTIFICATE = 'https://open.rocket.chat';
+const HOST = 'https://mtls.rocket.chat';
+const SIBLING = `${HOST}/sibling`;
+const REMOVED = `${HOST}/removed`;
+const OTHER_HOST = 'https://open.rocket.chat';
+
+const setConnectedServer = (server: string | null) => Object.defineProperty(sdk, 'host', { value: server, configurable: true });
+const storeServerCertificate = (server: string, name: string) => mockStore.set(`${CERTIFICATE_KEY}-${server}`, name);
 
 describe('sslPinning on Android', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		jest.mocked(UserPreferences.getAllKeys).mockReturnValue([]);
-		Object.defineProperty(sdk, 'host', { value: null, configurable: true });
-		jest
-			.mocked(UserPreferences.getString)
-			.mockImplementation(key => (key === `${CERTIFICATE_KEY}-${WITH_CERTIFICATE}` ? 'client-alias' : null));
+		mockStore.clear();
+		setConnectedServer(null);
+		storeServerCertificate(HOST, 'host-alias');
 	});
 
 	it('applies the stored certificate of a server', async () => {
-		await applyServerCertificate(WITH_CERTIFICATE);
+		await applyServerCertificate(HOST);
 
-		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledWith('client-alias', WITH_CERTIFICATE);
+		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledWith('host-alias', HOST);
 	});
 
 	it('skips a server without a stored certificate', async () => {
-		await applyServerCertificate(WITHOUT_CERTIFICATE);
+		await applyServerCertificate(OTHER_HOST);
 
 		expect(NativeSSLPinningAndroid.setCertificate).not.toHaveBeenCalled();
 	});
 
 	it('registers the certificate of every server that has one', async () => {
-		jest.mocked(getAllServers).mockResolvedValue([{ id: WITH_CERTIFICATE }, { id: WITHOUT_CERTIFICATE }] as TServerModel[]);
+		jest.mocked(getAllServers).mockResolvedValue([{ id: HOST }, { id: OTHER_HOST }] as TServerModel[]);
 
 		await registerCertificates();
 
 		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledTimes(1);
-		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledWith('client-alias', WITH_CERTIFICATE);
+		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledWith('host-alias', HOST);
 	});
 
 	it('clears the stored and the native certificate when removing it', async () => {
-		await RCSSLPinning?.removeCertificate(WITH_CERTIFICATE);
+		await RCSSLPinning?.removeCertificate(HOST);
 
-		expect(UserPreferences.removeItem).toHaveBeenCalledWith(`${CERTIFICATE_KEY}-${WITH_CERTIFICATE}`);
-		expect(NativeSSLPinningAndroid.removeCertificate).toHaveBeenCalledWith(WITH_CERTIFICATE);
+		expect(mockStore.has(`${CERTIFICATE_KEY}-${HOST}`)).toBe(false);
+		expect(NativeSSLPinningAndroid.removeCertificate).toHaveBeenCalledWith(HOST);
 		expect(NativeSSLPinningAndroid.setCertificate).not.toHaveBeenCalled();
 	});
 
-	it('restores the connected server certificate after removing one on the same host', async () => {
-		Object.defineProperty(sdk, 'host', { value: WITH_CERTIFICATE, configurable: true });
+	it('re-applies the certificate of a server that is not connected on the same host', async () => {
+		storeServerCertificate(REMOVED, 'removed-alias');
+		setConnectedServer(OTHER_HOST);
 
-		await RCSSLPinning?.removeCertificate(`${WITH_CERTIFICATE}/other`);
+		await RCSSLPinning?.removeCertificate(REMOVED);
 
-		expect(NativeSSLPinningAndroid.removeCertificate).toHaveBeenCalledWith(`${WITH_CERTIFICATE}/other`);
-		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledWith('client-alias', WITH_CERTIFICATE);
+		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledWith('host-alias', HOST);
+		expect(NativeSSLPinningAndroid.setCertificate).not.toHaveBeenCalledWith('removed-alias', REMOVED);
 	});
 
-	it('keeps a certificate file another server still uses', async () => {
-		const other = `${WITH_CERTIFICATE}/other`;
-		jest
-			.mocked(UserPreferences.getAllKeys)
-			.mockReturnValue([`${CERTIFICATE_KEY}-${WITH_CERTIFICATE}`, `${CERTIFICATE_KEY}-${other}`]);
-		jest.mocked(UserPreferences.getString).mockReturnValue('client-alias');
+	it('re-applies the connected server last', async () => {
+		storeServerCertificate(SIBLING, 'sibling-alias');
+		storeServerCertificate(REMOVED, 'removed-alias');
+		setConnectedServer(HOST);
 
-		await RCSSLPinning?.removeCertificate(WITH_CERTIFICATE);
+		await RCSSLPinning?.removeCertificate(REMOVED);
 
-		expect(UserPreferences.removeItem).not.toHaveBeenCalledWith('client-alias');
+		expect(jest.mocked(NativeSSLPinningAndroid.setCertificate).mock.calls).toEqual([
+			['sibling-alias', SIBLING],
+			['host-alias', HOST]
+		]);
 	});
 
-	it('removes a certificate file no other server uses', async () => {
-		await RCSSLPinning?.removeCertificate(WITH_CERTIFICATE);
+	it('leaves servers on other hosts alone', async () => {
+		storeServerCertificate(OTHER_HOST, 'other-alias');
 
-		expect(UserPreferences.removeItem).toHaveBeenCalledWith('client-alias');
+		await RCSSLPinning?.removeCertificate(HOST);
+
+		expect(NativeSSLPinningAndroid.setCertificate).not.toHaveBeenCalled();
 	});
 
 	it('logs instead of throwing when the servers cannot be read', async () => {
@@ -136,6 +135,7 @@ describe('sslPinning on Android', () => {
 
 describe('sslPinning on iOS', () => {
 	const nativeSSLPinning = { setCertificate: jest.fn() };
+	const certificate = { path: '/client.p12', password: 'secret' };
 	let RCSSLPinningIOS: typeof RCSSLPinning;
 
 	beforeAll(() => {
@@ -152,21 +152,38 @@ describe('sslPinning on iOS', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		jest
-			.mocked(UserPreferences.getString)
-			.mockImplementation(key => (key === `${CERTIFICATE_KEY}-${WITH_CERTIFICATE}` ? 'client.p12' : null));
-		jest
-			.mocked(UserPreferences.getMap)
-			.mockImplementation(key => (key === 'client.p12' ? { path: '/client.p12', password: 'secret' } : null));
+		mockStore.clear();
+		setConnectedServer(null);
+		storeServerCertificate(HOST, 'client.p12');
+		mockStore.set('client.p12', certificate);
+		mockStore.set('mtls.rocket.chat', certificate);
 	});
 
-	it('restores the connected server certificate after removing one on the same host', async () => {
-		Object.defineProperty(sdk, 'host', { value: WITH_CERTIFICATE, configurable: true });
+	it('restores the host certificate of a server that is not connected', async () => {
+		storeServerCertificate(REMOVED, 'removed.p12');
+		mockStore.set('removed.p12', { path: '/removed.p12', password: 'other' });
+		setConnectedServer(OTHER_HOST);
 
-		await RCSSLPinningIOS?.removeCertificate(`${WITH_CERTIFICATE}/other`);
+		await RCSSLPinningIOS?.removeCertificate(REMOVED);
 
-		expect(UserPreferences.removeItem).toHaveBeenCalledWith('mtls.rocket.chat');
-		expect(UserPreferences.setMap).toHaveBeenCalledWith('mtls.rocket.chat', expect.objectContaining({ password: 'secret' }));
-		expect(nativeSSLPinning.setCertificate).toHaveBeenCalledWith(WITH_CERTIFICATE, expect.any(String), 'secret');
+		expect(mockStore.get('mtls.rocket.chat')).toEqual(expect.objectContaining({ password: 'secret' }));
+		expect(mockStore.has('removed.p12')).toBe(false);
+		expect(nativeSSLPinning.setCertificate).toHaveBeenCalledWith(HOST, '/client.p12', 'secret');
+	});
+
+	it('keeps a certificate entry another server still uses', async () => {
+		storeServerCertificate(REMOVED, 'client.p12');
+
+		await RCSSLPinningIOS?.removeCertificate(REMOVED);
+
+		expect(mockStore.get('client.p12')).toEqual(expect.objectContaining({ password: 'secret' }));
+		expect(mockStore.get('mtls.rocket.chat')).toEqual(expect.objectContaining({ password: 'secret' }));
+	});
+
+	it('removes a certificate entry and host entry no other server uses', async () => {
+		await RCSSLPinningIOS?.removeCertificate(HOST);
+
+		expect(mockStore.has('client.p12')).toBe(false);
+		expect(mockStore.has('mtls.rocket.chat')).toBe(false);
 	});
 });
