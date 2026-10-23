@@ -1,4 +1,3 @@
-import { InteractionManager } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import I18n from 'i18n-js';
 import { all, call, delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
@@ -141,7 +140,7 @@ const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 		yield call(
 			() =>
 				new Promise(resolve => {
-					InteractionManager.runAfterInteractions(() => resolve());
+					setImmediate(() => resolve());
 				})
 		);
 

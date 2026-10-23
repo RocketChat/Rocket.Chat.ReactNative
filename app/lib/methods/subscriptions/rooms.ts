@@ -1,5 +1,4 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { InteractionManager } from 'react-native';
 import EJSON from 'ejson';
 import type Model from '@nozbe/watermelondb/Model';
 
@@ -240,7 +239,7 @@ const debouncedUpdate = (subscription: ISubscription) => {
 			queue = {};
 			subTimer = null;
 			Object.keys(batch).forEach(key => {
-				InteractionManager.runAfterInteractions(() => {
+				setImmediate(() => {
 					if (batch[key]) {
 						if (/SUB/.test(key)) {
 							const sub = batch[key] as ISubscription;
