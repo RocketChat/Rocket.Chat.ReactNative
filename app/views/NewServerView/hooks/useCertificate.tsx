@@ -31,10 +31,10 @@ const useCertificate = () => {
 			onPress: async () => {
 				try {
 					await SSLPinning?.removeCertificate(server);
+					setCertificate(null);
 				} catch (e) {
 					log(e);
 				}
-				setCertificate(null);
 			}
 		});
 	};
