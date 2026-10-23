@@ -206,6 +206,11 @@ describe('connect() over the real SDK', () => {
 		await connect({ server: 'https://a.example.com' });
 		await flushMicrotasksAndTimers();
 		expect(mockConnections).toHaveLength(1);
+		const replaced = mockConnections[0];
+		replaced.close.mockImplementation(() => {
+			replaced.readyState = 3;
+			replaced.onclose({ code: 1000 });
+		});
 
 		await connect({ server: 'https://b.example.com' });
 		await flushMicrotasksAndTimers();
