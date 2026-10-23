@@ -86,4 +86,17 @@ describe('goRoom navigation', () => {
 		expect(Navigation.popTo).toHaveBeenCalledWith('DrawerNavigator');
 		expect(Navigation.dispatch).toHaveBeenCalled();
 	});
+
+	it('keeps the rooms list and an open category below the room', async () => {
+		await goRoom({ item: { rid: 'r1', t: 'c' as any }, isMasterDetail: false } as any);
+		const buildAction = jest.mocked(Navigation.dispatch).mock.calls.at(-1)?.[0] as unknown as (state: any) => any;
+		const action = buildAction({
+			routes: [{ name: 'RoomsListView' }, { name: 'CategoryView' }, { name: 'DirectoryView' }]
+		});
+		expect(action.payload.routes.map((route: { name: string }) => route.name)).toEqual([
+			'RoomsListView',
+			'CategoryView',
+			'RoomView'
+		]);
+	});
 });
