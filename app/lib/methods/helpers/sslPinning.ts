@@ -45,7 +45,7 @@ export const getServerCertificate = (server: string): string | null => UserPrefe
 
 const getServerIds = async () => (await getAllServers()).map(({ id }) => id);
 
-const pickHostCertificates = (servers: string[]) => {
+const pickCertificateServerPerHost = (servers: string[]) => {
 	const connected = reduxStore.getState().server.server || UserPreferences.getString(CURRENT_SERVER);
 	const byHost = new Map<string, string>();
 	servers
@@ -69,7 +69,7 @@ const platformCertificate = Platform.select({
 		forgetServer: () => {},
 		releaseHost: (server: string) => SSLPinning?.removeCertificate(server),
 		register: async () => {
-			await Promise.all(pickHostCertificates(await getServerIds()).map(applyServerCertificate));
+			await Promise.all(pickCertificateServerPerHost(await getServerIds()).map(applyServerCertificate));
 		}
 	}
 });
@@ -91,7 +91,7 @@ const forgetServerCertificate = (server: string) => {
 
 const syncHostCertificate = async (server: string, servers: string[]) => {
 	const hostname = extractHostname(server);
-	const [selected] = pickHostCertificates(servers.filter(id => extractHostname(id) === hostname));
+	const [selected] = pickCertificateServerPerHost(servers.filter(id => extractHostname(id) === hostname));
 	UserPreferences.removeItem(hostname);
 	if (selected) {
 		await applyServerCertificate(selected);
