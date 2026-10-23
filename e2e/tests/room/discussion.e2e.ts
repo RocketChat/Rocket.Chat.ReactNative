@@ -84,8 +84,7 @@ const checkRoomActions = async (fixtures: Fixtures) => {
 		await screen.scrollUntilVisible(screen.getByTestId(testId));
 	}
 	await screen.scrollUntilVisible(screen.getByTestId('room-actions-info'), { direction: 'up' });
-	await screen.getByTestId('room-actions-info').tap();
-	await expectVisible(fixtures, 'room-info-view');
+	await tapUntilVisible(fixtures, screen.getByTestId('room-actions-info'), 'room-info-view');
 	await expect(headerItem(fixtures, 'room-info-view-edit-button', 'Room info edit')).toBeVisible();
 	await goBack(fixtures);
 	await expectVisible(fixtures, 'room-actions-view');
