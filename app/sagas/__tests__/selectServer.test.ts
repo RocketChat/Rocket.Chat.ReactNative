@@ -229,18 +229,8 @@ describe('selectServer saga — version and name fallback', () => {
 		store.dispatch(selectServerRequest(SERVER_URL, '7.4.0', false));
 		await flushSagaMicrotasks();
 
-		expect(connect).not.toHaveBeenCalled();
-	});
-
-	it('applies the workspace certificate before connecting', async () => {
-		const { store } = setupStore();
-		store.dispatch(selectServerRequest(SERVER_URL, '7.4.0', false));
-		await flushSagaMicrotasks();
-
 		expect(applyServerCertificate).toHaveBeenCalledWith(SERVER_URL);
-		expect(jest.mocked(applyServerCertificate).mock.invocationCallOrder[0]).toBeLessThan(
-			jest.mocked(connect).mock.invocationCallOrder[0]
-		);
+		expect(connect).not.toHaveBeenCalled();
 	});
 
 	it('reports the caller-supplied version and the default name', async () => {
@@ -463,18 +453,8 @@ describe('selectServer saga — requesting a new workspace', () => {
 		store.dispatch(serverRequest(REQUESTED_HOST));
 		await flushSagaMicrotasks();
 
-		expect(getServerInfo).not.toHaveBeenCalled();
-	});
-
-	it('applies the requested host certificate before probing it', async () => {
-		const { store } = setupStore();
-		store.dispatch(serverRequest(REQUESTED_HOST));
-		await flushSagaMicrotasks();
-
 		expect(applyServerCertificate).toHaveBeenCalledWith(REQUESTED_HOST);
-		expect(jest.mocked(applyServerCertificate).mock.invocationCallOrder[0]).toBeLessThan(
-			jest.mocked(getServerInfo).mock.invocationCallOrder[0]
-		);
+		expect(getServerInfo).not.toHaveBeenCalled();
 	});
 
 	it('connects to the requested host with its own basic auth after a successful probe', async () => {

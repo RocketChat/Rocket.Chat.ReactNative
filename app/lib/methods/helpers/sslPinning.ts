@@ -45,12 +45,18 @@ export const getServerCertificate = (server: string): string | null => UserPrefe
 
 const getServerIds = async () => (await getAllServers()).map(({ id }) => id);
 
-const applyConnectedLast = async (servers: string[]) => {
+const pickHostCertificates = (servers: string[]) => {
 	const connected = reduxStore.getState().server.server || UserPreferences.getString(CURRENT_SERVER);
-	const connectedLast = [...servers.filter(id => id !== connected), ...servers.filter(id => id === connected)];
-	for (const id of connectedLast) {
-		await applyServerCertificate(id);
-	}
+	const byHost = new Map<string, string>();
+	servers
+		.filter(id => getServerCertificate(id))
+		.forEach(id => {
+			const hostname = extractHostname(id);
+			if (!byHost.has(hostname) || id === connected) {
+				byHost.set(hostname, id);
+			}
+		});
+	return [...byHost.values()];
 };
 
 const isCertificateInUse = (certificate: string) =>
@@ -72,10 +78,10 @@ const forgetServerCertificate = (server: string) => {
 
 const syncHostCertificate = async (server: string, servers: string[]) => {
 	const hostname = extractHostname(server);
-	const withCertificate = servers.filter(id => extractHostname(id) === hostname && getServerCertificate(id));
+	const [selected] = pickHostCertificates(servers.filter(id => extractHostname(id) === hostname));
 	UserPreferences.removeItem(hostname);
-	if (withCertificate.length) {
-		await applyConnectedLast(withCertificate);
+	if (selected) {
+		await applyServerCertificate(selected);
 		return;
 	}
 	if (Platform.OS === 'android') {
@@ -176,7 +182,7 @@ export const registerCertificates = async (): Promise<void> => {
 		return;
 	}
 	try {
-		await applyConnectedLast(await getServerIds());
+		await Promise.all(pickHostCertificates(await getServerIds()).map(applyServerCertificate));
 	} catch (e) {
 		log(e);
 	}

@@ -21,7 +21,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import okhttp3.ConnectionPool;
 import okhttp3.HttpUrl;
-import okhttp3.internal.tls.OkHostnameVerifier;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -29,6 +28,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.webkit.WebView;
 import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
@@ -57,7 +57,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static final ResettableSSLSocketFactory sslSocketFactory = new ResettableSSLSocketFactory();
     private static final X509TrustManager trustManager = createTrustManager();
     // A custom verifier stops OkHttp from sharing an HTTP/2 connection, and its certificate, across hosts
-    private static final HostnameVerifier hostnameVerifier = OkHostnameVerifier.INSTANCE::verify;
+    private static final HostnameVerifier hostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
     private static final Map<String, String> hostsByConnection = Collections.synchronizedMap(new LinkedHashMap<String, String>() {
         @Override
         protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {

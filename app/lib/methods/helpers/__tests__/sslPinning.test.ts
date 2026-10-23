@@ -93,31 +93,37 @@ describe('sslPinning on Android', () => {
 		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledWith('host-alias', HOST);
 	});
 
-	it('registers the last active server last before anything is connected', async () => {
-		storeServerCertificate(SIBLING, 'sibling-alias');
-		mockStore.set(CURRENT_SERVER, HOST);
-		setDatabaseServers(HOST, SIBLING);
+	it('registers one certificate per host', async () => {
+		storeServerCertificate(OTHER_HOST, 'other-alias');
+		setDatabaseServers(HOST, OTHER_HOST);
 
 		await registerCertificates();
 
 		expect(jest.mocked(NativeSSLPinningAndroid.setCertificate).mock.calls).toEqual([
-			['sibling-alias', SIBLING],
-			['host-alias', HOST]
+			['host-alias', HOST],
+			['other-alias', OTHER_HOST]
 		]);
 	});
 
-	it('registers the selected workspace last, even when another one was active last', async () => {
+	it('registers the last active server of a host before anything is connected', async () => {
 		storeServerCertificate(SIBLING, 'sibling-alias');
 		mockStore.set(CURRENT_SERVER, SIBLING);
-		setSelectedServer(HOST);
 		setDatabaseServers(HOST, SIBLING);
 
 		await registerCertificates();
 
-		expect(jest.mocked(NativeSSLPinningAndroid.setCertificate).mock.calls).toEqual([
-			['sibling-alias', SIBLING],
-			['host-alias', HOST]
-		]);
+		expect(jest.mocked(NativeSSLPinningAndroid.setCertificate).mock.calls).toEqual([['sibling-alias', SIBLING]]);
+	});
+
+	it('registers the selected workspace of a host, even when another one was active last', async () => {
+		storeServerCertificate(SIBLING, 'sibling-alias');
+		mockStore.set(CURRENT_SERVER, SIBLING);
+		setSelectedServer(HOST);
+		setDatabaseServers(SIBLING, HOST);
+
+		await registerCertificates();
+
+		expect(jest.mocked(NativeSSLPinningAndroid.setCertificate).mock.calls).toEqual([['host-alias', HOST]]);
 	});
 
 	it('logs instead of throwing when a certificate cannot be applied', async () => {
@@ -136,19 +142,16 @@ describe('sslPinning on Android', () => {
 		expect(NativeSSLPinningAndroid.setCertificate).not.toHaveBeenCalled();
 	});
 
-	it('keeps the host certificate and re-applies the remaining servers, connected last', async () => {
+	it('keeps the host certificate and re-applies the connected workspace on the host', async () => {
 		storeServerCertificate(SIBLING, 'sibling-alias');
 		storeServerCertificate(REMOVED, 'removed-alias');
-		setDatabaseServers(HOST, SIBLING);
+		setDatabaseServers(SIBLING, HOST);
 		setSelectedServer(HOST);
 
 		await RCSSLPinning?.removeCertificate(REMOVED);
 
 		expect(NativeSSLPinningAndroid.removeCertificate).not.toHaveBeenCalled();
-		expect(jest.mocked(NativeSSLPinningAndroid.setCertificate).mock.calls).toEqual([
-			['sibling-alias', SIBLING],
-			['host-alias', HOST]
-		]);
+		expect(jest.mocked(NativeSSLPinningAndroid.setCertificate).mock.calls).toEqual([['host-alias', HOST]]);
 	});
 
 	it('keeps the host certificate for a workspace on the host without one of its own', async () => {
