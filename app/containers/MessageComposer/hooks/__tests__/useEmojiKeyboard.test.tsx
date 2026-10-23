@@ -2,8 +2,8 @@ import { type ReactElement } from 'react';
 import { renderHook, act } from '@testing-library/react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
-import { EmojiKeyboardProvider, useEmojiKeyboard } from './useEmojiKeyboard';
-import { MessageInnerContext } from '../context';
+import { EmojiKeyboardProvider, useEmojiKeyboard } from '../useEmojiKeyboard';
+import { MessageInnerContext } from '../../context';
 
 describe('useEmojiKeyboard', () => {
 	let mockSharedValue: any;
@@ -180,6 +180,21 @@ describe('useEmojiKeyboard', () => {
 
 			expect(mockSharedValue.value).toBe(false);
 			expect(mockSearchbarSharedValue.value).toBe(false);
+		});
+
+		test('should collapse the keyboard space without focusing the input', () => {
+			const wrapper = createWrapper();
+			mockSharedValue.value = true;
+			mockKeyboardHeightSharedValue.value = 770;
+			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
+
+			act(() => {
+				result.current.collapseEmojiKeyboard();
+			});
+
+			expect(mockSharedValue.value).toBe(false);
+			expect(mockKeyboardHeightSharedValue.value).toBe(0);
+			expect(mockFocus).not.toHaveBeenCalled();
 		});
 
 		test('should handle multiple open/close operations', () => {
