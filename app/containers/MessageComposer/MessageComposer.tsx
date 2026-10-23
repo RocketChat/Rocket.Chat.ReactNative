@@ -95,8 +95,9 @@ export const MessageComposer = ({
 		contentHeight.set(height);
 	};
 
-	const keepUnsentInComposer = (results: PromiseSettledResult<void>[], textFromInput: string) => {
-		if (attachments[0].canUpload && results[0].status === 'fulfilled') {
+	const restoreCaptionAfterFailure = (results: PromiseSettledResult<void>[], textFromInput: string) => {
+		const captionSent = attachments[0].canUpload && results[0].status === 'fulfilled';
+		if (captionSent) {
 			messageActionStore.getState().actions.setQuoteMessageIds([]);
 			return;
 		}
@@ -156,7 +157,7 @@ export const MessageComposer = ({
 			const rejected = results.filter((result): result is PromiseRejectedResult => result.status === 'rejected');
 			if (rejected.length) {
 				rejected.forEach(({ reason }) => log(reason));
-				keepUnsentInComposer(results, textFromInput);
+				restoreCaptionAfterFailure(results, textFromInput);
 				return;
 			}
 			clearAttachments();
