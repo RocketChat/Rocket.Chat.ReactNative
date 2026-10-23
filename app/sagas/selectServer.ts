@@ -153,7 +153,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(selectServerCancel());
 			return;
 		}
-		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		yield* call(applyServerCertificate, server);
 		yield put(inquiryReset());
 		yield put(encryptionStop());

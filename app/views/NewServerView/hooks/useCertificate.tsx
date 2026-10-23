@@ -3,6 +3,7 @@ import { useState } from 'react';
 import I18n from '~/i18n';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import SSLPinning, { getServerCertificate } from '~/lib/methods/helpers/sslPinning';
+import log from '~/lib/methods/helpers/log';
 
 const useCertificate = () => {
 	const [certificate, setCertificate] = useState<string | null>(null);
@@ -27,8 +28,12 @@ const useCertificate = () => {
 		showConfirmationAlert({
 			message: I18n.t('You_will_unset_a_certificate_for_this_server'),
 			confirmationText: I18n.t('Remove'),
-			onPress: () => {
-				SSLPinning?.removeCertificate(server);
+			onPress: async () => {
+				try {
+					await SSLPinning?.removeCertificate(server);
+				} catch (e) {
+					log(e);
+				}
 				setCertificate(null);
 			}
 		});

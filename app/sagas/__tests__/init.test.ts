@@ -84,7 +84,7 @@ describe('init saga — restore user-facing roots', () => {
 		expect(jest.mocked(RNBootSplash.hide)).toHaveBeenCalled();
 	});
 
-	it('registers every server certificate on init', async () => {
+	it('registers certificates on init', async () => {
 		jest.mocked(getServerById).mockResolvedValue(null);
 		const { store } = setupStore();
 
