@@ -184,7 +184,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 return null;
-            } catch (Exception e) {
+            } catch (Exception | AssertionError e) {
                 Log.w(TAG, "Failed to load the client certificate chain", e);
                 return null;
             }
@@ -207,7 +207,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 return null;
-            } catch (Exception e) {
+            } catch (Exception | AssertionError e) {
                 Log.w(TAG, "Failed to load the client certificate private key", e);
                 return null;
             }
