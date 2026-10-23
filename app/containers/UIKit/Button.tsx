@@ -25,27 +25,45 @@ interface IUIKitButtonProps {
 	title: string;
 	onPress: () => void;
 	type?: 'primary' | 'secondary';
+	backgroundColor?: string;
+	color?: string;
 	loading?: boolean;
+	disabled?: boolean;
+	testID?: string;
 	style?: StyleProp<ViewStyle>;
 }
 
-const UIKitButton: FC<IUIKitButtonProps> = ({ title, onPress, type = 'primary', loading, style }) => {
+const UIKitButton: FC<IUIKitButtonProps> = ({
+	title,
+	onPress,
+	type = 'primary',
+	backgroundColor,
+	color,
+	loading,
+	disabled,
+	testID,
+	style
+}) => {
 	const { colors } = useTheme();
 	const isPrimary = type === 'primary';
-	const backgroundColor = isPrimary ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundSecondaryDefault;
-	const color = isPrimary ? colors.fontWhite : colors.fontDefault;
+	const resolvedBackgroundColor =
+		backgroundColor || (isPrimary ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundSecondaryDefault);
+	const resolvedColor = color || (isPrimary ? colors.fontWhite : colors.fontDefault);
+	const isDisabled = disabled || loading;
 
 	return (
 		<Pressable
 			onPress={onPress}
-			disabled={loading}
+			disabled={isDisabled}
+			testID={testID}
 			accessibilityLabel={title}
 			accessibilityRole='button'
-			style={({ pressed }) => [styles.container, { backgroundColor }, style, pressed && styles.pressed]}>
+			accessibilityState={{ disabled: isDisabled }}
+			style={({ pressed }) => [styles.container, { backgroundColor: resolvedBackgroundColor }, style, pressed && styles.pressed]}>
 			{loading ? (
-				<ActivityIndicator color={color} style={{ padding: 0 }} />
+				<ActivityIndicator color={resolvedColor} style={{ padding: 0 }} />
 			) : (
-				<Text style={[styles.text, { color }]}>{title}</Text>
+				<Text style={[styles.text, { color: resolvedColor }]}>{title}</Text>
 			)}
 		</Pressable>
 	);

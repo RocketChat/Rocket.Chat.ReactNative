@@ -6,6 +6,7 @@ import { BUTTON_HIT_SLOP } from '../message/utils';
 import openLink from '~/lib/methods/helpers/openLink';
 import { useTheme } from '~/theme';
 import { useBlockContext } from './utils';
+import { isSafeUrl } from './isSafeUrl';
 import { Icon } from './Icon';
 import { type IIconButton, type IText } from './interfaces';
 
@@ -39,9 +40,10 @@ export const IconButton = ({ element, context }: { element: IIconButton; context
 	const { theme, colors } = useTheme();
 	const [{ loading }, action] = useBlockContext(element, context);
 	const label = getLabel(element.label, element.icon?.icon);
+	const isLink = !!element.url && isSafeUrl(element.url);
 
 	const onPress = async () => {
-		if (element.url) {
+		if (isLink && element.url) {
 			await Promise.allSettled([action({ value: element.value }), openLink(element.url, theme)]);
 			return;
 		}
@@ -63,7 +65,7 @@ export const IconButton = ({ element, context }: { element: IIconButton; context
 					opacity: pressed ? 0.7 : 1
 				}
 			]}
-			accessibilityRole={element.url ? 'link' : 'button'}
+			accessibilityRole={isLink ? 'link' : 'button'}
 			accessibilityLabel={label}>
 			{loading ? <ActivityIndicator style={styles.loading} /> : <Icon element={element.icon} />}
 		</Pressable>
