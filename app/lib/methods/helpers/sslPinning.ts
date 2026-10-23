@@ -77,7 +77,12 @@ const clearServerCertificate = async (server: string, servers: string[], keepFor
 	}
 };
 
-const removeServerCertificate = async (server: string) => clearServerCertificate(server, await getServerIds(), false);
+const removeServerCertificate = async (server: string) => {
+	if (!getServerCertificate(server)) {
+		return;
+	}
+	await clearServerCertificate(server, await getServerIds(), false);
+};
 
 export const clearRemovedWorkspaceCertificate = async (server: string): Promise<void> => {
 	const servers = await getServerIds();

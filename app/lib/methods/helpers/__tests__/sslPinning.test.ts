@@ -152,6 +152,15 @@ describe('sslPinning on Android', () => {
 		expect(NativeSSLPinningAndroid.removeCertificate).toHaveBeenCalledWith(HOST);
 	});
 
+	it('leaves the host certificate alone when removing one that was never saved', async () => {
+		setDatabaseServers(SIBLING);
+
+		await RCSSLPinning?.removeCertificate(REMOVED);
+
+		expect(NativeSSLPinningAndroid.removeCertificate).not.toHaveBeenCalled();
+		expect(getServerCertificate(HOST)).toBe('host-alias');
+	});
+
 	it('keeps the certificate of a workspace that is still in the database', async () => {
 		setDatabaseServers(HOST);
 
@@ -171,8 +180,8 @@ describe('sslPinning on Android', () => {
 		expect(getServerCertificate(SIBLING)).toBe('stale-alias');
 	});
 
-	it('clears the native certificate when removing a server without its own from a host no other server uses', async () => {
-		await RCSSLPinning?.removeCertificate(SIBLING);
+	it('clears the native certificate when the last workspace on a host had none of its own', async () => {
+		await clearRemovedWorkspaceCertificate(SIBLING);
 
 		expect(NativeSSLPinningAndroid.removeCertificate).toHaveBeenCalledWith(SIBLING);
 	});
@@ -287,8 +296,8 @@ describe('sslPinning on iOS', () => {
 		expect(mockStore.has(HOSTNAME)).toBe(false);
 	});
 
-	it('clears the host entry when removing a server without its own from a host no other server uses', async () => {
-		await RCSSLPinningIOS?.removeCertificate(SIBLING);
+	it('clears the host entry when the last workspace on a host had none of its own', async () => {
+		await clearRemovedWorkspaceCertificateIOS(SIBLING);
 
 		expect(mockStore.has(HOSTNAME)).toBe(false);
 	});
