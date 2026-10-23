@@ -1,6 +1,13 @@
 import { Alert } from 'react-native';
 
-import { createUploadRecord, copyFileToCacheDirectoryIfNeeded, getUploadPath, isUploadActive, uploadQueue } from './utils';
+import {
+	cancelUpload,
+	createUploadRecord,
+	copyFileToCacheDirectoryIfNeeded,
+	getUploadPath,
+	isUploadActive,
+	uploadQueue
+} from './utils';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ t: (k: string) => k }));
@@ -116,5 +123,28 @@ describe('createUploadRecord', () => {
 
 		expect(path).toBe(uploadPath);
 		expect(record).toBe(created);
+	});
+});
+
+describe('cancelUpload', () => {
+	it('aborts the queued upload, drops it from the queue and removes its record', async () => {
+		const cancel = jest.fn();
+		const destroyPermanently = jest.fn();
+		const queuedPath = getUploadPath('/a.mp4', 'RID1');
+		uploadQueue[queuedPath] = { cancel, send: jest.fn() } as any;
+
+		await cancelUpload({ id: 'a', path: '/a.mp4', destroyPermanently } as any, 'RID1');
+
+		expect(cancel).toHaveBeenCalledTimes(1);
+		expect(destroyPermanently).toHaveBeenCalledTimes(1);
+		expect(uploadQueue[queuedPath]).toBeUndefined();
+	});
+
+	it('removes the record even when the upload has not been queued yet', async () => {
+		const destroyPermanently = jest.fn();
+
+		await cancelUpload({ id: 'b', path: '/b.mp4', destroyPermanently } as any, 'RID2');
+
+		expect(destroyPermanently).toHaveBeenCalledTimes(1);
 	});
 });
