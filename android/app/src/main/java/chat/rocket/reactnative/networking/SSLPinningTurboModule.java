@@ -40,6 +40,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import com.reactnativecommunity.webview.RNCWebViewClient;
@@ -179,15 +180,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
         @Override
         public X509Certificate[] getCertificateChain(String alias) {
-            try {
-                return KeyChain.getCertificateChain(appContext, alias);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return null;
-            } catch (Exception | AssertionError e) {
-                Log.w(TAG, "Failed to load the client certificate chain", e);
-                return null;
-            }
+            return fromKeyChain("certificate chain", () -> KeyChain.getCertificateChain(appContext, alias));
         }
 
         @Override
@@ -202,13 +195,17 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
         @Override
         public PrivateKey getPrivateKey(String alias) {
+            return fromKeyChain("private key", () -> KeyChain.getPrivateKey(appContext, alias));
+        }
+
+        private static <T> T fromKeyChain(String what, Callable<T> load) {
             try {
-                return KeyChain.getPrivateKey(appContext, alias);
+                return load.call();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 return null;
             } catch (Exception | AssertionError e) {
-                Log.w(TAG, "Failed to load the client certificate private key", e);
+                Log.w(TAG, "Failed to load the client certificate " + what, e);
                 return null;
             }
         }
