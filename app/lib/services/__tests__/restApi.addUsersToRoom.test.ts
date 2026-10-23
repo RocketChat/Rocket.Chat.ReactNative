@@ -30,12 +30,11 @@ const setServerVersion = (version: string) =>
 describe('addUsersToRoom', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		setServerVersion('9.0.0');
 	});
 
 	it.each([
-		['8.5.0', 'c'],
-		['8.5.0', 'p'],
+		['8.5.9', 'c'],
+		['8.5.9', 'p'],
 		['8.9.0', 'c']
 	] as const)('calls addUsersToRoom over DDP on %s (%s)', async (version, t) => {
 		setServerVersion(version);
@@ -48,6 +47,7 @@ describe('addUsersToRoom', () => {
 		['8.6.0', 'p', 'groups.invite'],
 		['8.9.0', 'p', 'groups.invite'],
 		['9.0.0', 'c', 'channels.invite'],
+		['9.0.0-rc.1', 'c', 'channels.invite'],
 		['9.0.0', 'p', 'groups.invite']
 	] as const)('invites all selected users in one request on %s (%s)', async (version, t, endpoint) => {
 		setServerVersion(version);
