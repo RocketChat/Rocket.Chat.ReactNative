@@ -51,7 +51,7 @@ const ActionSheet = memo(
 			const phase = phaseRef.current;
 			if (phase === 'idle' || phase === 'dismissing') return;
 			phaseRef.current = 'dismissing';
-			sheetRef.current?.dismiss();
+			sheetRef.current?.dismiss().catch(() => {});
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		};
