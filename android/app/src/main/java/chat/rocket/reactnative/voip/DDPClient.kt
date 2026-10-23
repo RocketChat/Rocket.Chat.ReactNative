@@ -22,7 +22,6 @@ class DDPClient {
         private val sharedClient: OkHttpClient by lazy {
             OkHttpClientProvider.createClient().newBuilder()
                 .pingInterval(30, TimeUnit.SECONDS)
-                .connectTimeout(10, TimeUnit.SECONDS)
                 .callTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .build()
