@@ -200,7 +200,7 @@ class MediaCallsAnswerRequestTest {
         server.enqueue(
             MockResponse()
                 .setResponseCode(200)
-                .setBodyDelay(deadlineMs * 3, TimeUnit.MILLISECONDS)
+                .setHeadersDelay(deadlineMs * 3, TimeUnit.MILLISECONDS)
                 .setBody("{}")
         )
         // Reject reconcile request: immediate 200.
