@@ -43,33 +43,47 @@ const persistCertificate = (server: string, name: string, password?: string) => 
 
 export const getServerCertificate = (server: string): string | null => UserPreferences.getString(getServerCertificateKey(server));
 
+const getServerIds = async () => (await getAllServers()).map(({ id }) => id);
+
 const applyConnectedLast = async (servers: string[]) => {
-	const connectedLast = [...servers.filter(other => other !== sdk.host), ...servers.filter(other => other === sdk.host)];
-	await Promise.all(connectedLast.map(other => applyServerCertificate(other)));
+	const connectedLast = [...servers.filter(id => id !== sdk.host), ...servers.filter(id => id === sdk.host)];
+	for (const id of connectedLast) {
+		await applyServerCertificate(id);
+	}
 };
 
-const isCertificateStored = (certificate: string) =>
+const isCertificateInUse = (certificate: string) =>
 	UserPreferences.getAllKeys().some(
 		key => key.startsWith(SERVER_CERTIFICATE_PREFIX) && UserPreferences.getString(key) === certificate
 	);
 
-const removeServerCertificate = async (server: string) => {
+const clearServerCertificate = async (server: string, servers: string[], keepForHost: boolean) => {
 	const certificate = getServerCertificate(server);
 	UserPreferences.removeItem(getServerCertificateKey(server));
-	const hostname = extractHostname(server);
-	const others = (await getAllServers()).map(({ id }) => id).filter(id => id !== server);
-	if (certificate && !isCertificateStored(certificate)) {
+	if (certificate && !isCertificateInUse(certificate)) {
 		UserPreferences.removeItem(certificate);
 	}
-	const sameHost = others.filter(id => extractHostname(id) === hostname);
-	if (sameHost.length) {
-		await applyConnectedLast(sameHost);
+	const hostname = extractHostname(server);
+	const sameHost = servers.filter(id => id !== server && extractHostname(id) === hostname);
+	const withCertificate = sameHost.filter(id => getServerCertificate(id));
+	if (withCertificate.length || (keepForHost && sameHost.length)) {
+		await applyConnectedLast(withCertificate);
 		return;
 	}
 	UserPreferences.removeItem(hostname);
 	if (Platform.OS === 'android') {
 		SSLPinning?.removeCertificate(server);
 	}
+};
+
+const removeServerCertificate = async (server: string) => clearServerCertificate(server, await getServerIds(), false);
+
+export const removeWorkspaceCertificate = async (server: string): Promise<void> => {
+	const servers = await getServerIds();
+	if (servers.includes(server)) {
+		return;
+	}
+	await clearServerCertificate(server, servers, true);
 };
 
 const RCSSLPinning = Platform.select({
