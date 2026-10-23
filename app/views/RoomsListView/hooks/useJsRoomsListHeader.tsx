@@ -1,5 +1,4 @@
 import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
-import { InteractionManager } from 'react-native';
 import { type KeyboardFocus } from 'react-native-external-keyboard';
 
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
@@ -77,10 +76,15 @@ export const useJsRoomsListHeader = () => {
 		if (!isAccessibilityNavigationEnabled) {
 			return;
 		}
-		let task: ReturnType<typeof InteractionManager.runAfterInteractions> | undefined;
+		let immediate: ReturnType<typeof setImmediate> | undefined;
+		const cancelPendingFocus = () => {
+			if (immediate !== undefined) {
+				clearImmediate(immediate);
+			}
+		};
 		const focusDrawerButton = () => {
-			task?.cancel();
-			task = InteractionManager.runAfterInteractions(() => {
+			cancelPendingFocus();
+			immediate = setImmediate(() => {
 				drawerButtonRef.current?.focus();
 			});
 		};
@@ -90,7 +94,7 @@ export const useJsRoomsListHeader = () => {
 		const unsubscribe = focusNavigation.addListener('focus', focusDrawerButton);
 		return () => {
 			unsubscribe();
-			task?.cancel();
+			cancelPendingFocus();
 		};
 	}, [focusNavigation, isAccessibilityNavigationEnabled]);
 };
