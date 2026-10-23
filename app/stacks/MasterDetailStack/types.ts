@@ -6,6 +6,15 @@ import { type ILivechatTag } from '~/definitions/ILivechatTag';
 import { type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
 import { type ISubscription, type SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
 import { type TChangeAvatarViewContext } from '~/definitions/TChangeAvatarViewContext';
+import { type CategoryViewParams } from '~/views/CategoryView';
+import { type CategorySettingsViewParams } from '~/views/CategorySettingsView';
+import { type ConfirmCategoryRoomsViewParams } from '~/views/CategorySettingsView/ConfirmCategoryRoomsView';
+import { type ManageCategoryRoomsViewParams } from '~/views/CategorySettingsView/ManageCategoryRoomsView';
+import { type RenameCategoryViewParams } from '~/views/CategorySettingsView/RenameCategoryView';
+import { type CreateCategoryViewParams } from '~/views/CreateCategoryView';
+import { type NewMessageViewParams } from '~/views/NewMessageView';
+import { type CategoryRoomsViewParams } from '~/views/CreateCategoryView/CategoryRoomsView';
+import { type ConfirmCategoryViewParams } from '~/views/CreateCategoryView/ConfirmCategoryView';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -24,7 +33,7 @@ export type MasterDetailChatsStackParamList = {
 };
 
 export type MasterDetailSplitParamList = {
-	RoomsListStackNavigator: NavigatorScreenParams<{ RoomsListView: undefined }>;
+	RoomsListStackNavigator: NavigatorScreenParams<{ RoomsListView: undefined; CategoryView: CategoryViewParams }>;
 	ChatsStackNavigator: NavigatorScreenParams<MasterDetailChatsStackParamList>;
 };
 
@@ -172,16 +181,26 @@ export type ModalStackParamList = {
 	ProfileView: undefined;
 	ChangePasswordView: undefined;
 	DisplayPrefsView: undefined;
+	CategoryOrderView: undefined;
+	CategorySettingsView: CategorySettingsViewParams;
+	ManageCategoryRoomsView: ManageCategoryRoomsViewParams;
+	ConfirmCategoryRoomsView: ConfirmCategoryRoomsViewParams;
+	RenameCategoryView: RenameCategoryViewParams;
 	AdminPanelView: undefined;
-	NewMessageView: undefined;
+	NewMessageView: NewMessageViewParams;
+	CreateCategoryView: CreateCategoryViewParams;
+	CategoryRoomsView: CategoryRoomsViewParams;
+	ConfirmCategoryView: ConfirmCategoryViewParams;
 	CreateChannelView: {
 		isTeam?: boolean; // TODO: To check
 		teamId?: string;
+		categoryId?: string;
 	};
 	CreateDiscussionView: {
 		channel: ISubscription;
 		message: IMessage;
 		showCloseModal: boolean;
+		categoryId?: string;
 	};
 	E2ESaveYourPasswordView: undefined;
 	E2EHowItWorksView: {
