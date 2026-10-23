@@ -96,13 +96,11 @@ export const MessageComposer = ({
 	};
 
 	const keepUnsentInComposer = (results: PromiseSettledResult<void>[], textFromInput: string) => {
-		const sent = attachments.map(({ canUpload }, index) => !!canUpload && results[index].status === 'fulfilled');
-		attachments.filter((_, index) => sent[index]).forEach(({ path }) => removeAttachment(path));
-		if (sent[0]) {
+		if (attachments[0].canUpload && results[0].status === 'fulfilled') {
 			messageActionStore.getState().actions.setQuoteMessageIds([]);
 			return;
 		}
-		composerInputComponentRef.current.setInput(textFromInput);
+		composerInputComponentRef.current?.setInput(textFromInput);
 	};
 
 	const handleSendMessage = async () => {
@@ -152,7 +150,8 @@ export const MessageComposer = ({
 				server,
 				user: { id: user.id, token: user.token },
 				altTextSupported,
-				getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
+				getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description),
+				onSent: ({ path }) => removeAttachment(path)
 			});
 			const rejected = results.filter((result): result is PromiseRejectedResult => result.status === 'rejected');
 			if (rejected.length) {

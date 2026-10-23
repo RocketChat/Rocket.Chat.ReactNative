@@ -11,7 +11,8 @@ export const sendAttachments = ({
 	server,
 	user,
 	altTextSupported,
-	getMsg
+	getMsg,
+	onSent
 }: {
 	attachments: IShareAttachment[];
 	rid: string;
@@ -20,6 +21,7 @@ export const sendAttachments = ({
 	user: Partial<Pick<IUser, 'id' | 'token'>>;
 	altTextSupported: boolean;
 	getMsg: (attachment: IShareAttachment, index: number) => string | undefined;
+	onSent?: (attachment: IShareAttachment) => void;
 }): Promise<PromiseSettledResult<void>[]> =>
 	Promise.allSettled(
 		attachments.map(async (attachment, index) => {
@@ -53,5 +55,6 @@ export const sendAttachments = ({
 				server,
 				user
 			);
+			onSent?.(attachment);
 		})
 	);

@@ -968,5 +968,53 @@ describe('MessageComposer', () => {
 			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
 			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
 		});
+
+		test('does not send an attachment again when Send is pressed while another one is still uploading', async () => {
+			const sent = { ...attachment, filename: 'sent.png', path: 'file:///tmp/sent.png' } as IShareAttachment;
+			const pending = { ...attachment, filename: 'pending.png', path: 'file:///tmp/pending.png' } as IShareAttachment;
+			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockImplementationOnce(() => new Promise<void>(() => {}));
+			render(
+				<Render>
+					<AttachmentSeeder attachments={[sent, pending]} />
+				</Render>
+			);
+			await screen.findByTestId('message-composer-attachment-1');
+			await user.press(screen.getByTestId('message-composer-send'));
+			await waitFor(() => expect(screen.queryByLabelText('sent.png')).not.toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('message-composer-send'));
+
+			await waitFor(() => expect(sendFileMessage).toHaveBeenCalledTimes(3));
+			expect((sendFileMessage as jest.Mock).mock.calls.map(([, fileInfo]) => fileInfo.name)).toEqual([
+				'sent.png',
+				'pending.png',
+				'pending.png'
+			]);
+		});
+
+		test('does not throw when the composer is gone before a failed upload settles', async () => {
+			let failUpload!: (error: Error) => void;
+			(sendFileMessage as jest.Mock).mockImplementationOnce(() => new Promise<void>((_, reject) => (failUpload = reject)));
+			const error = new Error('upload failed');
+			const unhandled = jest.fn();
+			process.on('unhandledRejection', unhandled);
+			const { unmount } = render(
+				<Render>
+					<AttachmentSeeder attachments={[attachment]} />
+				</Render>
+			);
+			await screen.findByTestId('message-composer-attachment-0');
+			await user.press(screen.getByTestId('message-composer-send'));
+
+			unmount();
+			failUpload(error);
+			await waitFor(() => expect(log).toHaveBeenCalledWith(error));
+			await act(async () => {
+				await Promise.resolve();
+			});
+			process.off('unhandledRejection', unhandled);
+
+			expect(unhandled).not.toHaveBeenCalled();
+		});
 	});
 });
