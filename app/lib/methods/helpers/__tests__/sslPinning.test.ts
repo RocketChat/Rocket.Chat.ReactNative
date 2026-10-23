@@ -34,7 +34,7 @@ import { Platform } from 'react-native';
 
 import { type TServerModel } from '~/definitions/IServer';
 
-import { CERTIFICATE_KEY } from '~/lib/constants/keys';
+import { CERTIFICATE_KEY, CURRENT_SERVER } from '~/lib/constants/keys';
 
 Object.defineProperty(Platform, 'OS', { value: 'android', configurable: true });
 Object.defineProperty(Platform, 'select', {
@@ -89,6 +89,27 @@ describe('sslPinning on Android', () => {
 
 		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledTimes(1);
 		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledWith('host-alias', HOST);
+	});
+
+	it('registers the last active server last before anything is connected', async () => {
+		storeServerCertificate(SIBLING, 'sibling-alias');
+		mockStore.set(CURRENT_SERVER, HOST);
+		setDatabaseServers(HOST, SIBLING);
+
+		await registerCertificates();
+
+		expect(jest.mocked(NativeSSLPinningAndroid.setCertificate).mock.calls).toEqual([
+			['sibling-alias', SIBLING],
+			['host-alias', HOST]
+		]);
+	});
+
+	it('logs instead of throwing when a certificate cannot be applied', async () => {
+		const error = new Error('KeyChain unavailable');
+		jest.mocked(NativeSSLPinningAndroid.setCertificate).mockRejectedValueOnce(error);
+
+		await expect(applyServerCertificate(HOST)).resolves.toBeUndefined();
+		expect(log).toHaveBeenCalledWith(error);
 	});
 
 	it('clears the stored and the native certificate when no server is left on the host', async () => {

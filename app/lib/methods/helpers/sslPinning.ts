@@ -6,7 +6,7 @@ import UserPreferences from '../userPreferences';
 import I18n from '~/i18n';
 import { extractHostname } from './server';
 import { type ICertificate } from '~/definitions';
-import { CERTIFICATE_KEY } from '~/lib/constants/keys';
+import { CERTIFICATE_KEY, CURRENT_SERVER } from '~/lib/constants/keys';
 import NativeSSLPinningAndroid from '~/lib/native/NativeSSLPinningAndroid';
 import { getAllServers } from '~/lib/database/services/Server';
 import sdk from '~/lib/services/sdk';
@@ -46,7 +46,8 @@ export const getServerCertificate = (server: string): string | null => UserPrefe
 const getServerIds = async () => (await getAllServers()).map(({ id }) => id);
 
 const applyConnectedLast = async (servers: string[]) => {
-	const connectedLast = [...servers.filter(id => id !== sdk.host), ...servers.filter(id => id === sdk.host)];
+	const connected = sdk.host ?? UserPreferences.getString(CURRENT_SERVER);
+	const connectedLast = [...servers.filter(id => id !== connected), ...servers.filter(id => id === connected)];
 	for (const id of connectedLast) {
 		await applyServerCertificate(id);
 	}
@@ -143,8 +144,13 @@ const RCSSLPinning = Platform.select({
 
 export const applyServerCertificate = async (server: string): Promise<void> => {
 	const name = getServerCertificate(server);
-	if (name) {
+	if (!name) {
+		return;
+	}
+	try {
 		await RCSSLPinning?.setCertificate(name, server);
+	} catch (e) {
+		log(e);
 	}
 };
 
