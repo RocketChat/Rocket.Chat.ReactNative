@@ -40,7 +40,7 @@
 
 typedef void (*TaskChallengeIMP)(id, SEL, NSURLSession *, NSURLSessionTask *, NSURLAuthenticationChallenge *, void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *));
 
-static void sendClientCertificate(Class cls)
+static void hookClientCertificateChallenge(Class cls)
 {
   SEL selector = @selector(URLSession:task:didReceiveChallenge:completionHandler:);
   Method method = class_getInstanceMethod(cls, selector);
@@ -65,8 +65,8 @@ static void sendClientCertificate(Class cls)
 
 + (void)load
 {
-  sendClientCertificate(self);
-  sendClientCertificate([URLSessionSessionDelegateProxy class]);
+  hookClientCertificateChallenge(self);
+  hookClientCertificateChallenge([URLSessionSessionDelegateProxy class]);
 }
 
 @end

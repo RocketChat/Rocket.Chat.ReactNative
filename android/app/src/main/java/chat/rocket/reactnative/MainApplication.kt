@@ -76,7 +76,7 @@ open class MainApplication : Application(), ReactApplication {
     MMKVKeyManager.initialize(this)
 
     // Must run before any OkHttp client is created
-    SSLPinningTurboModule.installOkHttpClientFactory(this)
+    SSLPinningTurboModule.installClientCertificates(this)
 
     // Load the native entry point for the New Architecture
     loadReactNative(this)

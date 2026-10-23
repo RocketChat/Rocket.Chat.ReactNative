@@ -64,7 +64,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         }
     });
 
-    public static void installOkHttpClientFactory(Context context) {
+    public static void installClientCertificates(Context context) {
         appContext = context.getApplicationContext();
         aliasesByHost = appContext.getSharedPreferences("RocketChat.ClientCertificateAliases", Context.MODE_PRIVATE);
         RNCWebViewClient.setCertificateAliasResolver(SSLPinningTurboModule::aliasForHost);
