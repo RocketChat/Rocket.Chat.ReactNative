@@ -84,6 +84,7 @@ import { getLoginSettings } from '~/lib/methods/getSettings';
 import { connect, getLoginServices } from '~/lib/services/connect';
 import sdk from '~/lib/services/sdk';
 import { getServerById } from '~/lib/database/services/Server';
+import { applyServerCertificate } from '~/lib/methods/helpers/sslPinning';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 import type { RecordingStore } from '~/lib/testUtils/sagaStore';
 
@@ -220,6 +221,17 @@ describe('selectServer saga — version and name fallback', () => {
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
 		UserPreferences.setString(getUserTokenKey(SERVER_URL, USER_ID), TOKEN);
 		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: TOKEN } as any);
+	});
+
+	it('applies the workspace certificate before connecting', async () => {
+		const { store } = setupStore();
+		store.dispatch(selectServerRequest(SERVER_URL, '7.4.0', false));
+		await flushSagaMicrotasks();
+
+		expect(applyServerCertificate).toHaveBeenCalledWith(SERVER_URL);
+		expect(jest.mocked(applyServerCertificate).mock.invocationCallOrder[0]).toBeLessThan(
+			jest.mocked(connect).mock.invocationCallOrder[0]
+		);
 	});
 
 	it('reports the caller-supplied version and the default name', async () => {
@@ -434,6 +446,17 @@ describe('selectServer saga — requesting a new workspace', () => {
 		await flushSagaMicrotasks();
 
 		expect(activeAuthorization()).toBe('Basic old-workspace-credentials');
+	});
+
+	it('applies the requested host certificate before probing it', async () => {
+		const { store } = setupStore();
+		store.dispatch(serverRequest(REQUESTED_HOST));
+		await flushSagaMicrotasks();
+
+		expect(applyServerCertificate).toHaveBeenCalledWith(REQUESTED_HOST);
+		expect(jest.mocked(applyServerCertificate).mock.invocationCallOrder[0]).toBeLessThan(
+			jest.mocked(getServerInfo).mock.invocationCallOrder[0]
+		);
 	});
 
 	it('connects to the requested host with its own basic auth after a successful probe', async () => {
