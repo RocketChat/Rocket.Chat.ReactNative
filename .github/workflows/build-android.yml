@@ -89,7 +89,7 @@ jobs:
       contents: read
     environment: production_android
     needs: [build-android, open-testing]
-    if: ${{ always() && needs.open-testing.result == 'success' && (inputs.trigger == 'develop' || inputs.release) }}
+    if: ${{ always() && needs.open-testing.result == 'success' && inputs.trigger == 'develop' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
@@ -99,6 +99,26 @@ jobs:
         with:
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
           BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
+          upload: false
+
+  production-pr:
+    name: Production
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: production_android
+    needs: [build-android]
+    if: ${{ inputs.trigger == 'pr' && inputs.release }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Release to Production
+        uses: ./.github/actions/production-android
+        with:
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
+          upload: true
 
   upload-internal:
     name: Internal Sharing

@@ -63,13 +63,15 @@ platform :android do
     FileUtils.mkdir_p(changelogs_path)
     FileUtils.cp(File.expand_path('../../.github/store-release-notes.txt', __dir__), File.join(changelogs_path, "#{version_code}.txt"))
 
+    upload_aab = ENV['UPLOAD_AAB'] == 'true'
     upload_to_play_store(
       package_name: 'chat.rocket.android',
       track: 'production',
-      version_code: version_code,
-      version_codes_to_retain: [version_code],
+      aab: upload_aab ? 'app/build/outputs/bundle/release/app-release.aab' : nil,
+      version_code: upload_aab ? nil : version_code,
+      version_codes_to_retain: upload_aab ? nil : [version_code],
       skip_upload_apk: true,
-      skip_upload_aab: true,
+      skip_upload_aab: !upload_aab,
       skip_upload_metadata: true,
       skip_upload_changelogs: false,
       skip_upload_images: true,

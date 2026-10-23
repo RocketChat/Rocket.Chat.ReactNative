@@ -1,5 +1,5 @@
 name: 'Production Android'
-description: 'Releases the open testing build to the Play Store production track'
+description: 'Releases a build to the Play Store production track, uploading its AAB first when asked'
 inputs:
   FASTLANE_GOOGLE_SERVICE_ACCOUNT:
     description: 'Google service account key for upload'
@@ -7,10 +7,20 @@ inputs:
   BUILD_VERSION:
     description: 'Version code of the build to release'
     required: true
+  upload:
+    description: 'Upload the AAB to production instead of releasing a version code already on Play'
+    required: true
 
 runs:
   using: "composite"
   steps:
+    - name: Download AAB
+      if: ${{ inputs.upload == 'true' }}
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      with:
+        name: android-aab
+        path: android/app/build/outputs/bundle/release/
+
     - name: Set up Ruby and Bundler
       uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
       with:
@@ -29,4 +39,5 @@ runs:
       run: bundle exec fastlane android production
       env:
         BUILD_VERSION: ${{ inputs.BUILD_VERSION }}
+        UPLOAD_AAB: ${{ inputs.upload }}
       shell: bash
