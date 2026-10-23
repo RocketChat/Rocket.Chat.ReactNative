@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { addSettings, clearSettings } from '~/actions/settings';
+import { addSettings, clearSettings, fetchSettingsComplete } from '~/actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import { type IPreparedSettings, type ISettingsIcon } from '~/definitions';
@@ -246,5 +246,7 @@ export async function getSettings(server: string): Promise<void> {
 		});
 	} catch (e) {
 		log(e);
+	} finally {
+		reduxStore.dispatch(fetchSettingsComplete());
 	}
 }

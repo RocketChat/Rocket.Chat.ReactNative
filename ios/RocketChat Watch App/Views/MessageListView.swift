@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MessageListView: View {
 	private let messageComposer = "MESSAGE_COMPOSER_ID"
+	private let bottomAnchor = "BOTTOM_ANCHOR_ID"
 	
 	@Dependency private var database: Database
 	@Dependency private var messagesLoader: MessagesLoading
@@ -14,6 +15,8 @@ struct MessageListView: View {
 	
 	@State private var lastOpen: Date?
 	@State private var info: Room?
+	@State private var followsLatest = true
+	@State private var positionedCount = 0
 	
 	@Environment(\.scenePhase) private var scenePhase
 	
@@ -41,47 +44,63 @@ struct MessageListView: View {
 					Spacer()
 				}
 			}
-			ChatScrollView {
-				VStack(spacing: 0) {
-					if room.hasMoreMessages {
-						Button("Load more...") {
-							guard let oldestMessage = room.firstMessage?.ts else { return }
-							
-							messagesLoader.loadMore(from: oldestMessage)
-						}
-						.padding(.bottom, 8)
-					}
-					
-					ForEach(messages.indices, id: \.self) { index in
-						let message = messages[index]
-						let previousMessage = messages.indices.contains(index - 1) ? messages[index - 1] : nil
-						
-						MessageView(
-							viewModel: .init(
-								message: message,
-								previousMessage: previousMessage,
-								server: server,
-								lastOpen: lastOpen
-							)
-						) { action in
-							switch action {
-							case .resend(let message):
-								messageSender.resendMessage(message: message, in: room)
+			ScrollViewReader { proxy in
+				ChatScrollView {
+					VStack(spacing: 0) {
+						if room.hasMoreMessages {
+							Button("Load more...") {
+								guard let oldestMessage = room.firstMessage?.ts else { return }
 								
-								lastOpen = nil
-							case .delete(let message):
-								database.remove(message)
+								followsLatest = false
+								messagesLoader.loadMore(from: oldestMessage)
+							}
+							.padding(.bottom, 8)
+						}
+						
+						ForEach(messages.indices, id: \.self) { index in
+							let message = messages[index]
+							let previousMessage = messages.indices.contains(index - 1) ? messages[index - 1] : nil
+							
+							MessageView(
+								viewModel: .init(
+									message: message,
+									previousMessage: previousMessage,
+									server: server,
+									lastOpen: lastOpen
+								)
+							) { action in
+								switch action {
+								case .resend(let message):
+									messageSender.resendMessage(message: message, in: room)
+									
+									lastOpen = nil
+								case .delete(let message):
+									database.remove(message)
+								}
 							}
 						}
-					}
-					
-					MessageComposerView(room: room) {
-						messageSender.sendMessage($0, in: room)
 						
-						lastOpen = nil
+						MessageComposerView(room: room, server: server, anchorID: bottomAnchor) {
+							messageSender.sendMessage($0, in: room)
+							
+							lastOpen = nil
+							followsLatest = true
+						}
+						.id(messageComposer)
+						.padding(.top, 8)
 					}
-					.id(messageComposer)
-					.padding(.top, 8)
+					// the first batch renders one frame before it can be scrolled, so keep that frame hidden
+					.opacity(positionedCount == 0 && messages.count > 0 ? 0 : 1)
+					.onAppear {
+						positionedCount = messages.count
+						scrollToBottom(proxy: proxy)
+					}
+					.onChange(of: messages.count) { count in
+						positionedCount = count
+						if followsLatest {
+							scrollToBottom(proxy: proxy)
+						}
+					}
 				}
 			}
 		}
@@ -121,5 +140,12 @@ struct MessageListView: View {
 				break
 			}
 		}
+	}
+	
+	private func scrollToBottom(proxy: ScrollViewProxy) {
+		// the rotated scroll view used before watchOS 10 already starts at the bottom and can't be targeted
+		guard #available(watchOS 10.0, *) else { return }
+		
+		proxy.scrollTo(bottomAnchor, anchor: .bottom)
 	}
 }

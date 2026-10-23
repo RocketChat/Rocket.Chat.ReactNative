@@ -249,6 +249,9 @@ export const defaultSettings = {
 	Allow_Save_Media_to_Gallery: {
 		type: 'valueAsBoolean'
 	},
+	Apple_Watch_Quick_Actions: {
+		type: 'valueAsString'
+	},
 	Accounts_AllowInvisibleStatusOption: {
 		type: 'valueAsString'
 	},

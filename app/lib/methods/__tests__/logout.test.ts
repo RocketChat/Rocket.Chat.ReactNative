@@ -30,6 +30,10 @@ jest.mock('~/lib/services/restApi', () => ({
 	removePushToken: jest.fn()
 }));
 
+jest.mock('~/lib/methods/watchOSQuickReplies/getWatchStatus', () => ({
+	shouldShowWatchAppOptions: jest.fn(() => true)
+}));
+
 const mockSdkLogout = jest.fn();
 
 jest.mock('~/lib/services/sdk', () => {
@@ -52,8 +56,10 @@ import {
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
 	TOKEN_KEY,
-	getBasicAuthKey
+	getBasicAuthKey,
+	getWatchOSQuickRepliesKey
 } from '~/lib/constants/keys';
+import NativeWatchModule from '~/lib/native/NativeWatchModule';
 
 const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
 
@@ -69,7 +75,8 @@ const serverKeys = (server: string): string[] => [
 	getBasicAuthKey(server),
 	`${server}-${E2E_PUBLIC_KEY}`,
 	`${server}-${E2E_PRIVATE_KEY}`,
-	`${server}-${E2E_RANDOM_PASSWORD_KEY}`
+	`${server}-${E2E_RANDOM_PASSWORD_KEY}`,
+	getWatchOSQuickRepliesKey(server)
 ];
 
 const keysToClear = [
@@ -111,6 +118,15 @@ describe('removeServerData', () => {
 		expect(UserPreferences.getString(tokenKey(SERVER))).toBeNull();
 		expect(UserPreferences.getString(tokenKey(USER_ID))).toBeNull();
 		serverKeys(SERVER).forEach(key => expect(UserPreferences.getString(key)).toBeNull());
+	});
+
+	it('clears the watch quick replies on the watch too', async () => {
+		seedServer(SERVER, USER_ID);
+
+		await removeServerData({ server: SERVER });
+
+		expect(UserPreferences.getString(getWatchOSQuickRepliesKey(SERVER))).toBeNull();
+		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith(SERVER, []);
 	});
 
 	it('leaves another workspace keys untouched', async () => {

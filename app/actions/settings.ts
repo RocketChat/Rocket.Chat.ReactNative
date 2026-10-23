@@ -32,3 +32,9 @@ export function clearSettings(): Action {
 		type: SETTINGS.CLEAR
 	};
 }
+
+export function fetchSettingsComplete(): Action {
+	return {
+		type: SETTINGS.FETCH_COMPLETE
+	};
+}
