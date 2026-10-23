@@ -53,7 +53,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static Context appContext;
     private static SharedPreferences aliasesByHost;
     private static final ConnectionPool connectionPool = new ConnectionPool(20, 5, TimeUnit.MINUTES);
-    private static final SwappableSSLSocketFactory sslSocketFactory = new SwappableSSLSocketFactory();
+    private static final ResettableSSLSocketFactory sslSocketFactory = new ResettableSSLSocketFactory();
     private static final X509TrustManager trustManager = createTrustManager();
     // A custom verifier stops OkHttp from sharing an HTTP/2 connection, and its certificate, across hosts
     private static final HostnameVerifier hostnameVerifier = OkHostnameVerifier.INSTANCE::verify;
@@ -129,7 +129,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             return;
         }
         aliasesByHost.edit().putString(url.host(), alias).apply();
-        // A fresh context drops TLS sessions resumed with the previous identity
+        // A fresh SSLContext has no cached sessions, so none resume with the previous identity
         sslSocketFactory.reset();
         connectionPool.evictAll();
         new Handler(Looper.getMainLooper()).post(SSLPinningTurboModule::clearWebViewCertificateChoices);
@@ -214,7 +214,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         }
     }
 
-    private static class SwappableSSLSocketFactory extends SSLSocketFactory {
+    private static class ResettableSSLSocketFactory extends SSLSocketFactory {
         private SSLSocketFactory delegate;
 
         synchronized void reset() {

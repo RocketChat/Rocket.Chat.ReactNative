@@ -31,7 +31,6 @@ jest.mock('~/lib/services/restApi', () => ({
 }));
 
 jest.mock('~/lib/methods/helpers/sslPinning', () => ({
-	__esModule: true,
 	clearRemovedWorkspaceCertificate: jest.fn()
 }));
 

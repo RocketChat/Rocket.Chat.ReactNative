@@ -84,14 +84,16 @@ describe('init saga — restore user-facing roots', () => {
 		expect(jest.mocked(RNBootSplash.hide)).toHaveBeenCalled();
 	});
 
-	it('registers certificates on init', async () => {
+	it('registers certificates before restoring the workspace', async () => {
 		jest.mocked(getServerById).mockResolvedValue(null);
 		const { store } = setupStore();
 
 		store.dispatch(appInit());
 		await flushSagaMicrotasks();
 
-		expect(jest.mocked(registerCertificates)).toHaveBeenCalled();
+		expect(jest.mocked(registerCertificates).mock.invocationCallOrder[0]).toBeLessThan(
+			jest.mocked(getServerById).mock.invocationCallOrder[0]
+		);
 	});
 
 	it('marks the app ready when the stored server has no database record', async () => {
