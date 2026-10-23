@@ -1,5 +1,5 @@
 import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { type ReactElement, useCallback, useEffect, useLayoutEffect, useReducer, useRef } from 'react';
+import { type ReactElement, useCallback, useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { FlatList, Text } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,6 +22,8 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { compareServerVersion, getRoomTitle, hasNativeHeaderBar, isGroupChat, useDebounce } from '~/lib/methods/helpers';
 import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
+import { groupMembersByRole, type TMemberListItem } from '~/lib/methods/helpers/groupMembersByRole';
+import { isMembersOrderedByRoleSupported } from '~/lib/methods/helpers/isMembersOrderedByRoleSupported';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import log from '~/lib/methods/helpers/log';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
@@ -31,6 +33,7 @@ import { getUserSelector } from '~/selectors/login';
 import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
 import { useTheme } from '~/theme';
 import ActionsSection from './components/ActionsSection';
+import RoleGroupHeader from './components/RoleGroupHeader';
 import {
 	fetchRole,
 	fetchRoomMembersRoles,
@@ -46,6 +49,7 @@ import {
 import styles from './styles';
 
 const PAGE_SIZE = 25;
+const LIST_HEADER_OFFSET = 1;
 
 interface IRoomMembersViewState {
 	isLoading: boolean;
@@ -60,14 +64,12 @@ interface IRoomMembersViewState {
 }
 
 const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], page: number) => {
+	const end = membersResult.length < PAGE_SIZE;
+	if (page === 0) {
+		return { members: membersResult, end };
+	}
 	const existingIds = new Set(members.map(m => m._id));
-	const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
-
-	// Safety check: if page is 0, we replace the list entirely
-	return {
-		members: page === 0 ? membersResultFiltered : [...members, ...(membersResultFiltered || [])],
-		end: membersResult?.length < PAGE_SIZE
-	};
+	return { members: [...members, ...membersResult.filter(member => !existingIds.has(member._id))], end };
 };
 
 const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
@@ -92,6 +94,7 @@ const RoomMembersView = (): ReactElement => {
 	const { bottom } = useSafeAreaInsets();
 
 	const latestSearchRequest = useRef(0);
+	const [refreshKey, setRefreshKey] = useState(0);
 
 	const { serverVersion, useRealName, user, loading } = useAppSelector(
 		state => ({
@@ -138,8 +141,10 @@ const RoomMembersView = (): ReactElement => {
 		viewAllTeamsPermission
 	] = usePermissions(['mute-user', 'set-leader', 'set-owner', 'set-moderator', 'remove-user', ...teamPermissions], params.rid);
 
+	const membersHaveRoles = isMembersOrderedByRoleSupported(serverVersion, state.room.t);
+
 	const fetchRoles = () => {
-		if (isGroupChat(state.room)) {
+		if (isGroupChat(state.room) || membersHaveRoles) {
 			return;
 		}
 		if (
@@ -183,6 +188,11 @@ const RoomMembersView = (): ReactElement => {
 				return;
 			}
 
+			if (!membersResult) {
+				updateState({ isLoading: false });
+				return;
+			}
+
 			updateState({
 				...mergeMembersPage(members, membersResult, page),
 				isLoading: false,
@@ -221,7 +231,20 @@ const RoomMembersView = (): ReactElement => {
 
 	useEffect(() => {
 		fetchMembers();
-	}, [state.filter, state.allUsers]);
+	}, [state.filter, state.allUsers, refreshKey]);
+
+	const refreshAfterRoleChange = async () => {
+		if (!membersHaveRoles) {
+			await fetchRoomMembersRoles(state.room.t as TRoomType, state.room.rid, updateState);
+			return;
+		}
+		latestSearchRequest.current += 1;
+		updateState({ page: 0, end: false, isLoading: false });
+		setRefreshKey(key => key + 1);
+	};
+
+	const hasRole = (role: string, selectedUser: TUserModel) =>
+		membersHaveRoles ? !!selectedUser.roles?.includes(role) : fetchRole(role, selectedUser, state.roomRoles);
 
 	const debounceFilterChange = useDebounce((text: string) => {
 		const trimmedFilter = text.trim();
@@ -294,7 +317,7 @@ const RoomMembersView = (): ReactElement => {
 	};
 
 	const onPressUser = (selectedUser: TUserModel) => {
-		const { room, roomRoles, members } = state;
+		const { room, members } = state;
 
 		const options: TActionSheetOptionsItem[] = [
 			{
@@ -306,14 +329,11 @@ const RoomMembersView = (): ReactElement => {
 
 		// Owner
 		if (setOwnerPermission) {
-			const isOwner = fetchRole('owner', selectedUser, roomRoles);
+			const isOwner = hasRole('owner', selectedUser);
 			options.push({
 				icon: 'shield-check',
 				title: I18n.t('Owner'),
-				onPress: () =>
-					handleOwner(selectedUser, !isOwner, getUserDisplayName(selectedUser), room, () =>
-						fetchRoomMembersRoles(room.t as TRoomType, room.rid, updateState)
-					),
+				onPress: () => handleOwner(selectedUser, !isOwner, getUserDisplayName(selectedUser), room, refreshAfterRoleChange),
 				right: () => <RightIcon check={isOwner} label='owner' />,
 				testID: 'action-sheet-set-owner'
 			});
@@ -321,14 +341,11 @@ const RoomMembersView = (): ReactElement => {
 
 		// Leader
 		if (setLeaderPermission) {
-			const isLeader = fetchRole('leader', selectedUser, roomRoles);
+			const isLeader = hasRole('leader', selectedUser);
 			options.push({
 				icon: 'shield-alt',
 				title: I18n.t('Leader'),
-				onPress: () =>
-					handleLeader(selectedUser, !isLeader, room, getUserDisplayName(selectedUser), () =>
-						fetchRoomMembersRoles(room.t as TRoomType, room.rid, updateState)
-					),
+				onPress: () => handleLeader(selectedUser, !isLeader, room, getUserDisplayName(selectedUser), refreshAfterRoleChange),
 				right: () => <RightIcon check={isLeader} label='leader' />,
 				testID: 'action-sheet-set-leader'
 			});
@@ -336,14 +353,12 @@ const RoomMembersView = (): ReactElement => {
 
 		// Moderator
 		if (setModeratorPermission) {
-			const isModerator = fetchRole('moderator', selectedUser, roomRoles);
+			const isModerator = hasRole('moderator', selectedUser);
 			options.push({
 				icon: 'shield',
 				title: I18n.t('Moderator'),
 				onPress: () =>
-					handleModerator(selectedUser, !isModerator, room, getUserDisplayName(selectedUser), () =>
-						fetchRoomMembersRoles(room.t as TRoomType, room.rid, updateState)
-					),
+					handleModerator(selectedUser, !isModerator, room, getUserDisplayName(selectedUser), refreshAfterRoleChange),
 				right: () => <RightIcon check={isModerator} label='moderator' />,
 				testID: 'action-sheet-set-moderator'
 			});
@@ -430,26 +445,43 @@ const RoomMembersView = (): ReactElement => {
 		});
 	};
 
+	const listItems: TMemberListItem<TUserModel>[] = membersHaveRoles
+		? groupMembersByRole(state.members)
+		: state.members.map(member => ({ type: 'member' as const, member }));
+	const stickyHeaderIndices = hasNativeHeaderBar
+		? []
+		: listItems.flatMap((item, index) => (item.type === 'header' ? [index + LIST_HEADER_OFFSET] : []));
+
 	return (
 		<SafeAreaView testID='room-members-view'>
 			<FlatList
-				data={state.members}
+				data={listItems}
 				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
-				renderItem={({ item, index }) => (
-					<UserItem
-						name={getUserDisplayName(item)}
-						username={item.username}
-						onPress={() => onPressUser(item)}
-						testID={`room-members-view-item-${item.username}`}
-						style={{ backgroundColor: colors.surfaceRoom }}
-						isFirst={index === 0}
-						isLast={index === state.members.length - 1}
-					/>
-				)}
+				renderItem={({ item, index }) => {
+					if (item.type === 'header') {
+						return <RoleGroupHeader group={item.group} />;
+					}
+					const isFirst = listItems[index - 1]?.type !== 'member';
+					return (
+						<>
+							{isFirst ? null : <RowSeparator />}
+							<UserItem
+								name={getUserDisplayName(item.member)}
+								username={item.member.username || ''}
+								onPress={() => onPressUser(item.member)}
+								testID={`room-members-view-item-${item.member.username}`}
+								style={{ backgroundColor: colors.surfaceRoom }}
+								isFirst={isFirst}
+								isLast={listItems[index + 1]?.type !== 'member'}
+							/>
+						</>
+					);
+				}}
+				stickyHeaderIndices={stickyHeaderIndices}
+				removeClippedSubviews={false}
 				style={[styles.list, { backgroundColor: listBackgroundColor }]}
 				contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom }}
-				keyExtractor={item => item._id}
-				ItemSeparatorComponent={RowSeparator}
+				keyExtractor={item => (item.type === 'header' ? `header-${item.group}` : item.member._id)}
 				ListHeaderComponent={
 					<>
 						<ActionsSection
