@@ -147,14 +147,14 @@ const getServerInfoSaga = function* getServerInfoSaga({
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
+		yield* call(applyServerCertificate, server);
 		if (sdk.host === server) {
 			applyBasicAuth(server);
-			yield* call(applyServerCertificate, server);
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 			yield put(selectServerCancel());
 			return;
 		}
-		yield* call(applyServerCertificate, server);
+
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
