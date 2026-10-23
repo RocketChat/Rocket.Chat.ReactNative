@@ -109,21 +109,46 @@ describe('ActionSheet', () => {
 		expect(mockPresent).toHaveBeenCalledTimes(1);
 	});
 
-	it('dismisses a sheet hidden before it finished presenting once the presentation ends', () => {
+	it('dismisses a sheet hidden before it finished presenting right away and again once the presentation ends', () => {
 		act(() => showActionSheetRef({ children: <Text>first sheet</Text> }));
 		act(() => hideActionSheetRef());
 		act(() => showActionSheetRef({ children: <Text>second sheet</Text> }));
 
-		expect(mockDismiss).not.toHaveBeenCalled();
+		expect(mockDismiss).toHaveBeenCalledTimes(1);
 
 		finishPresent();
 
-		expect(mockDismiss).toHaveBeenCalledTimes(1);
+		expect(mockDismiss).toHaveBeenCalledTimes(2);
 
 		finishDismiss();
 		act(() => jest.runAllTimers());
 
 		expect(screen.getByText('second sheet')).toBeOnTheScreen();
+	});
+
+	it('closes a sheet whose presentation never reports finishing', () => {
+		const onClose = jest.fn();
+		act(() => showActionSheetRef({ children: <Text>first sheet</Text>, onClose }));
+		act(() => hideActionSheetRef());
+
+		expect(mockDismiss).toHaveBeenCalledTimes(1);
+
+		finishDismiss();
+		act(() => showActionSheetRef({ children: <Text>second sheet</Text> }));
+
+		expect(onClose).toHaveBeenCalledTimes(1);
+		expect(screen.getByText('second sheet')).toBeOnTheScreen();
+		expect(mockPresent).toHaveBeenCalledTimes(2);
+	});
+
+	it('ignores a presentation that finishes after the sheet was dismissed', () => {
+		act(() => showActionSheetRef({ children: <Text>first sheet</Text> }));
+		act(() => hideActionSheetRef());
+		finishDismiss();
+		finishPresent();
+		act(() => hideActionSheetRef());
+
+		expect(mockDismiss).toHaveBeenCalledTimes(1);
 	});
 
 	it('drops a queued sheet when hide is called again during the dismissal', () => {
