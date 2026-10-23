@@ -33,17 +33,24 @@ describe('addUsersToRoom', () => {
 		setServerVersion('9.0.0');
 	});
 
-	it.each(['c', 'p'] as const)('calls addUsersToRoom over DDP below 9.0.0 (%s)', async t => {
-		setServerVersion('8.9.0');
+	it.each([
+		['8.5.0', 'c'],
+		['8.5.0', 'p'],
+		['8.9.0', 'c']
+	] as const)('calls addUsersToRoom over DDP on %s (%s)', async (version, t) => {
+		setServerVersion(version);
 		await addUsersToRoom('rid1', t);
 		expect(sdk.methodCallWrapper).toHaveBeenCalledWith('addUsersToRoom', { rid: 'rid1', users: ['alice', 'bob'] });
 		expect(sdk.post).not.toHaveBeenCalled();
 	});
 
 	it.each([
-		['c', 'channels.invite'],
-		['p', 'groups.invite']
-	] as const)('invites all selected users in one request on 9.0.0+ (%s)', async (t, endpoint) => {
+		['8.6.0', 'p', 'groups.invite'],
+		['8.9.0', 'p', 'groups.invite'],
+		['9.0.0', 'c', 'channels.invite'],
+		['9.0.0', 'p', 'groups.invite']
+	] as const)('invites all selected users in one request on %s (%s)', async (version, t, endpoint) => {
+		setServerVersion(version);
 		await addUsersToRoom('rid1', t);
 		expect(sdk.post).toHaveBeenCalledTimes(1);
 		expect(sdk.post).toHaveBeenCalledWith(endpoint, { roomId: 'rid1', usernames: ['alice', 'bob'] });

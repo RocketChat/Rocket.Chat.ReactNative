@@ -1131,8 +1131,11 @@ export const createGroupChat = () => {
 export const addUsersToRoom = (rid: string, t: 'c' | 'p') => {
 	const { selectedUsers, server } = reduxStore.getState();
 	const users = selectedUsers.users.map(u => u.name);
+	if (t === 'p' && compareServerVersion(server.version, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('groups.invite', { roomId: rid, usernames: users });
+	}
 	if (compareServerVersion(server.version, 'greaterThanOrEqualTo', '9.0.0')) {
-		return sdk.post(`${roomTypeToApiType(t)}.invite`, { roomId: rid, usernames: users });
+		return sdk.post('channels.invite', { roomId: rid, usernames: users });
 	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
