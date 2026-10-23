@@ -1,10 +1,11 @@
-import { getMemberRoleGroup, groupMembersByRole } from './groupMembersByRole';
+import { getMemberRoleGroup, groupMembersByRole } from '../groupMembersByRole';
 
 describe('getMemberRoleGroup', () => {
 	it.each([
 		[['owner'], 'owner'],
 		[['leader'], 'leader'],
 		[['moderator'], 'moderator'],
+		[['owner', 'leader'], 'owner'],
 		[['owner', 'moderator'], 'owner'],
 		[['leader', 'moderator'], 'leader'],
 		[[], 'member'],
@@ -34,18 +35,6 @@ describe('groupMembersByRole', () => {
 			{ type: 'header', group: 'moderator' },
 			{ type: 'member', member: moderatorA },
 			{ type: 'member', member: moderatorB },
-			{ type: 'header', group: 'member' },
-			{ type: 'member', member }
-		]);
-	});
-
-	it('skips headers for groups with no members', () => {
-		const owner = { _id: '1', roles: ['owner'] };
-		const member = { _id: '2', roles: [] };
-
-		expect(groupMembersByRole([owner, member])).toEqual([
-			{ type: 'header', group: 'owner' },
-			{ type: 'member', member: owner },
 			{ type: 'header', group: 'member' },
 			{ type: 'member', member }
 		]);

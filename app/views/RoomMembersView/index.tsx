@@ -49,6 +49,7 @@ import {
 import styles from './styles';
 
 const PAGE_SIZE = 25;
+const LIST_HEADER_OFFSET = 1;
 
 interface IRoomMembersViewState {
 	isLoading: boolean;
@@ -63,14 +64,12 @@ interface IRoomMembersViewState {
 }
 
 const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], page: number) => {
+	const end = membersResult.length < PAGE_SIZE;
+	if (page === 0) {
+		return { members: membersResult, end };
+	}
 	const existingIds = new Set(members.map(m => m._id));
-	const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
-
-	// Safety check: if page is 0, we replace the list entirely
-	return {
-		members: page === 0 ? membersResultFiltered : [...members, ...(membersResultFiltered || [])],
-		end: membersResult?.length < PAGE_SIZE
-	};
+	return { members: [...members, ...membersResult.filter(member => !existingIds.has(member._id))], end };
 };
 
 const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
@@ -235,12 +234,13 @@ const RoomMembersView = (): ReactElement => {
 	}, [state.filter, state.allUsers, refreshKey]);
 
 	const refreshAfterRoleChange = async () => {
-		latestSearchRequest.current += 1;
-		updateState({ members: [], page: 0, end: false, isLoading: false });
-		setRefreshKey(key => key + 1);
 		if (!membersHaveRoles) {
 			await fetchRoomMembersRoles(state.room.t as TRoomType, state.room.rid, updateState);
+			return;
 		}
+		latestSearchRequest.current += 1;
+		updateState({ page: 0, end: false, isLoading: false });
+		setRefreshKey(key => key + 1);
 	};
 
 	const hasRole = (role: string, selectedUser: TUserModel) =>
@@ -448,42 +448,40 @@ const RoomMembersView = (): ReactElement => {
 	const listItems: TMemberListItem<TUserModel>[] = membersHaveRoles
 		? groupMembersByRole(state.members)
 		: state.members.map(member => ({ type: 'member' as const, member }));
-	// Offset by one because FlatList counts ListHeaderComponent as the first child
 	const stickyHeaderIndices = hasNativeHeaderBar
 		? []
-		: listItems.flatMap((item, index) => (item.type === 'header' ? [index + 1] : []));
+		: listItems.flatMap((item, index) => (item.type === 'header' ? [index + LIST_HEADER_OFFSET] : []));
 
 	return (
 		<SafeAreaView testID='room-members-view'>
-			<FlatList<TMemberListItem<TUserModel>>
+			<FlatList
 				data={listItems}
 				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
-				renderItem={({ item, index }) =>
-					item.type === 'header' ? (
-						<RoleGroupHeader group={item.group} />
-					) : (
-						<UserItem
-							name={getUserDisplayName(item.member)}
-							username={item.member.username || ''}
-							onPress={() => onPressUser(item.member)}
-							testID={`room-members-view-item-${item.member.username}`}
-							style={{ backgroundColor: colors.surfaceRoom }}
-							isFirst={listItems[index - 1]?.type !== 'member'}
-							isLast={listItems[index + 1]?.type !== 'member'}
-						/>
-					)
-				}
+				renderItem={({ item, index }) => {
+					if (item.type === 'header') {
+						return <RoleGroupHeader group={item.group} />;
+					}
+					const isFirst = listItems[index - 1]?.type !== 'member';
+					return (
+						<>
+							{isFirst ? null : <RowSeparator />}
+							<UserItem
+								name={getUserDisplayName(item.member)}
+								username={item.member.username || ''}
+								onPress={() => onPressUser(item.member)}
+								testID={`room-members-view-item-${item.member.username}`}
+								style={{ backgroundColor: colors.surfaceRoom }}
+								isFirst={isFirst}
+								isLast={listItems[index + 1]?.type !== 'member'}
+							/>
+						</>
+					);
+				}}
 				stickyHeaderIndices={stickyHeaderIndices}
-				// Android's clipped-subview insertion crashes with sticky headers (addViewAt IndexOutOfBounds)
 				removeClippedSubviews={false}
 				style={[styles.list, { backgroundColor: listBackgroundColor }]}
 				contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom }}
 				keyExtractor={item => (item.type === 'header' ? `header-${item.group}` : item.member._id)}
-				ItemSeparatorComponent={({ leadingItem }: { leadingItem: TMemberListItem<TUserModel> }) =>
-					leadingItem.type === 'member' && listItems[listItems.indexOf(leadingItem) + 1]?.type === 'member' ? (
-						<RowSeparator />
-					) : null
-				}
 				ListHeaderComponent={
 					<>
 						<ActionsSection

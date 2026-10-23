@@ -1,4 +1,4 @@
-import { isMembersOrderedByRoleSupported } from './isMembersOrderedByRoleSupported';
+import { isMembersOrderedByRoleSupported } from '../isMembersOrderedByRoleSupported';
 
 describe('isMembersOrderedByRoleSupported', () => {
 	it.each(['c', 'p'])('returns true for room type %s on 7.4.0', roomType => {

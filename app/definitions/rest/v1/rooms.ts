@@ -1,6 +1,7 @@
 import type { IMessage, IMessageFromServer } from '~/definitions/IMessage';
 import type { IRoomNotifications, IServerRoom } from '~/definitions/IRoom';
 import type { IUser } from '~/definitions/IUser';
+import type { PaginatedResult } from '../helpers/PaginatedResult';
 
 export type RoomsEndpoints = {
 	'rooms.autocomplete.channelAndPrivate': {
@@ -22,12 +23,15 @@ export type RoomsEndpoints = {
 		};
 	};
 	'rooms.membersOrderedByRole': {
-		GET: (params: { roomId: IServerRoom['_id']; offset?: number; count?: number; filter?: string; 'status[]'?: string }) => {
+		GET: (params: {
+			roomId: IServerRoom['_id'];
+			offset?: number;
+			count?: number;
+			filter?: string;
+			'status[]'?: string;
+		}) => PaginatedResult<{
 			members: IUser[];
-			count: number;
-			offset: number;
-			total: number;
-		};
+		}>;
 	};
 	'rooms.info': {
 		GET: (params: { roomId: string } | { roomName: string }) => {

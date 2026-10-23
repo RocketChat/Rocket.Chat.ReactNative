@@ -1,21 +1,12 @@
-export type TMemberRoleGroup = 'owner' | 'leader' | 'moderator' | 'member';
+const ELEVATED_ROLES = ['owner', 'leader', 'moderator'] as const;
+
+export type TMemberRoleGroup = (typeof ELEVATED_ROLES)[number] | 'member';
 
 export type TMemberListItem<T> = { type: 'header'; group: TMemberRoleGroup } | { type: 'member'; member: T };
 
-export const getMemberRoleGroup = (roles?: string[]): TMemberRoleGroup => {
-	if (roles?.includes('owner')) {
-		return 'owner';
-	}
-	if (roles?.includes('leader')) {
-		return 'leader';
-	}
-	if (roles?.includes('moderator')) {
-		return 'moderator';
-	}
-	return 'member';
-};
+export const getMemberRoleGroup = (roles: string[] = []): TMemberRoleGroup =>
+	ELEVATED_ROLES.find(role => roles.includes(role)) ?? 'member';
 
-// Expects members already sorted by role, as returned by rooms.membersOrderedByRole
 export const groupMembersByRole = <T extends { roles?: string[] }>(members: T[]): TMemberListItem<T>[] => {
 	const items: TMemberListItem<T>[] = [];
 	let currentGroup: TMemberRoleGroup | undefined;

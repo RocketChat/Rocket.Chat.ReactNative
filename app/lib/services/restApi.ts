@@ -1295,8 +1295,6 @@ export const getRoomMembers = async ({
 		...(filter && { filter })
 	};
 	if (isMembersOrderedByRoleSupported(serverVersion, roomType)) {
-		// RC 7.4.0
-		// No fallback: members from this endpoint carry roles, which the view relies on.
 		const result = await sdk.get('rooms.membersOrderedByRole', params);
 		return result.success ? result.members : undefined;
 	}
