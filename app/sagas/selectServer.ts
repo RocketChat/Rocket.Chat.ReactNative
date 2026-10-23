@@ -154,7 +154,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(selectServerCancel());
 			return;
 		}
-
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());

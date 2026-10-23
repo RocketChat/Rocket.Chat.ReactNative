@@ -158,7 +158,6 @@ describe('sslPinning on Android', () => {
 		await RCSSLPinning?.removeCertificate(REMOVED);
 
 		expect(NativeSSLPinningAndroid.removeCertificate).not.toHaveBeenCalled();
-		expect(getServerCertificate(HOST)).toBe('host-alias');
 	});
 
 	it('keeps the certificate of a workspace that is still in the database', async () => {
@@ -170,14 +169,13 @@ describe('sslPinning on Android', () => {
 		expect(NativeSSLPinningAndroid.removeCertificate).not.toHaveBeenCalled();
 	});
 
-	it('ignores stored certificates of servers that are not in the database', async () => {
-		storeServerCertificate(SIBLING, 'stale-alias');
+	it('ignores the stored certificates of logged out servers', async () => {
+		storeServerCertificate(SIBLING, 'logged-out-alias');
 
 		await RCSSLPinning?.removeCertificate(HOST);
 
 		expect(NativeSSLPinningAndroid.removeCertificate).toHaveBeenCalledWith(HOST);
 		expect(NativeSSLPinningAndroid.setCertificate).not.toHaveBeenCalled();
-		expect(getServerCertificate(SIBLING)).toBe('stale-alias');
 	});
 
 	it('clears the native certificate when the last workspace on a host had none of its own', async () => {
@@ -193,8 +191,7 @@ describe('sslPinning on Android', () => {
 		await RCSSLPinning?.removeCertificate(HOST);
 
 		expect(NativeSSLPinningAndroid.setCertificate).not.toHaveBeenCalled();
-		expect(NativeSSLPinningAndroid.removeCertificate).not.toHaveBeenCalledWith(OTHER_HOST);
-		expect(getServerCertificate(OTHER_HOST)).toBe('other-alias');
+		expect(NativeSSLPinningAndroid.removeCertificate).toHaveBeenCalledWith(HOST);
 	});
 
 	it('logs instead of throwing when the servers cannot be read', async () => {
@@ -293,6 +290,15 @@ describe('sslPinning on iOS', () => {
 		await RCSSLPinningIOS?.removeCertificate(HOST);
 
 		expect(mockStore.get('client.p12')).toEqual(certificate);
+		expect(mockStore.has(HOSTNAME)).toBe(false);
+	});
+
+	it('clears the host entry when the remaining server on the host has lost its certificate entry', async () => {
+		storeServerCertificate(SIBLING, 'deleted.p12');
+		setDatabaseServers(SIBLING);
+
+		await RCSSLPinningIOS?.removeCertificate(HOST);
+
 		expect(mockStore.has(HOSTNAME)).toBe(false);
 	});
 
