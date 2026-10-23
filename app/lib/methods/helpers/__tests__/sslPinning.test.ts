@@ -21,6 +21,7 @@ jest.mock('~/lib/methods/userPreferences', () => ({
 		getMap: (key: string) => mockStore.get(key) ?? null,
 		setString: (key: string, value: unknown) => mockStore.set(key, value),
 		setMap: (key: string, value: unknown) => mockStore.set(key, value),
+		getAllKeys: () => [...mockStore.keys()],
 		removeItem: (key: string) => mockStore.delete(key)
 	}
 }));
@@ -128,6 +129,12 @@ describe('sslPinning on Android', () => {
 		expect(NativeSSLPinningAndroid.setCertificate).not.toHaveBeenCalled();
 	});
 
+	it('clears the native certificate when the last server on the host has none of its own', async () => {
+		await RCSSLPinning?.removeCertificate(SIBLING);
+
+		expect(NativeSSLPinningAndroid.removeCertificate).toHaveBeenCalledWith(SIBLING);
+	});
+
 	it('leaves servers on other hosts alone', async () => {
 		storeServerCertificate(OTHER_HOST, 'other-alias');
 		setDatabaseServers(OTHER_HOST);
@@ -205,12 +212,27 @@ describe('sslPinning on iOS', () => {
 	});
 
 	it('removes the certificate and host entries when no server is left on the host', async () => {
-		storeServerCertificate(SIBLING, 'client.p12');
-
 		await RCSSLPinningIOS?.removeCertificate(HOST);
 
 		expect(mockStore.has('client.p12')).toBe(false);
 		expect(mockStore.has(HOSTNAME)).toBe(false);
 		expect(nativeSSLPinning.setCertificate).not.toHaveBeenCalled();
+	});
+
+	it('keeps a certificate entry a logged out server still points to', async () => {
+		storeServerCertificate(SIBLING, 'client.p12');
+
+		await RCSSLPinningIOS?.removeCertificate(HOST);
+
+		expect(mockStore.get('client.p12')).toEqual(certificate);
+		expect(mockStore.has(HOSTNAME)).toBe(false);
+	});
+
+	it('clears the host entry when the last server on the host has no certificate of its own', async () => {
+		mockStore.delete(`${CERTIFICATE_KEY}-${HOST}`);
+
+		await RCSSLPinningIOS?.removeCertificate(SIBLING);
+
+		expect(mockStore.has(HOSTNAME)).toBe(false);
 	});
 });

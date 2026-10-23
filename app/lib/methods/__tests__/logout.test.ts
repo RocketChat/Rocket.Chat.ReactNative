@@ -32,8 +32,7 @@ jest.mock('~/lib/services/restApi', () => ({
 
 jest.mock('~/lib/methods/helpers/sslPinning', () => ({
 	__esModule: true,
-	default: { removeCertificate: jest.fn() },
-	getServerCertificate: jest.fn()
+	default: { removeCertificate: jest.fn() }
 }));
 
 const mockSdkLogout = jest.fn();
@@ -46,7 +45,7 @@ jest.mock('~/lib/services/sdk', () => {
 import CookieManager from '@react-native-cookies/cookies';
 
 import { logout, removeServer, removeServerData } from '../logout';
-import RCSSLPinning, { getServerCertificate } from '~/lib/methods/helpers/sslPinning';
+import RCSSLPinning from '~/lib/methods/helpers/sslPinning';
 import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import sdk from '~/lib/services/sdk';
 import { disconnect } from '~/lib/services/connect';
@@ -168,19 +167,9 @@ describe('removeServer', () => {
 	});
 
 	it('removes the server certificate', async () => {
-		jest.mocked(getServerCertificate).mockReturnValue('client-certificate');
-
 		await removeServer({ server: SERVER });
 
 		expect(RCSSLPinning?.removeCertificate).toHaveBeenCalledWith(SERVER);
-	});
-
-	it('leaves certificates alone when the server has none', async () => {
-		jest.mocked(getServerCertificate).mockReturnValue(null);
-
-		await removeServer({ server: SERVER });
-
-		expect(RCSSLPinning?.removeCertificate).not.toHaveBeenCalled();
 	});
 });
 

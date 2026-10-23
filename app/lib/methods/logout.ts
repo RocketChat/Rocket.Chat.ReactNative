@@ -21,7 +21,7 @@ import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
 import { clearServerCookies } from './helpers/setServerCookies';
-import RCSSLPinning, { getServerCertificate } from './helpers/sslPinning';
+import RCSSLPinning from './helpers/sslPinning';
 import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from './getUsersPresence';
 
@@ -107,9 +107,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 		} catch (e) {
 			log(e);
 		}
-		if (getServerCertificate(server)) {
-			await RCSSLPinning?.removeCertificate(server);
-		}
+		await RCSSLPinning?.removeCertificate(server);
 	} catch (e) {
 		log(e);
 	}

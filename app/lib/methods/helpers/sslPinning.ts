@@ -22,7 +22,9 @@ const extractFileScheme = (path: string) => path.replace('file://', ''); // file
 
 const getPath = (name: string) => `${documentDirectory}${name}`;
 
-const getServerCertificateKey = (server: string) => `${CERTIFICATE_KEY}-${server}`;
+const SERVER_CERTIFICATE_PREFIX = `${CERTIFICATE_KEY}-`;
+
+const getServerCertificateKey = (server: string) => `${SERVER_CERTIFICATE_PREFIX}${server}`;
 
 const persistCertificate = (server: string, name: string, password?: string) => {
 	const certificatePath = getPath(name);
@@ -46,12 +48,17 @@ const applyConnectedLast = async (servers: string[]) => {
 	await Promise.all(connectedLast.map(other => applyServerCertificate(other)));
 };
 
+const isCertificateStored = (certificate: string) =>
+	UserPreferences.getAllKeys().some(
+		key => key.startsWith(SERVER_CERTIFICATE_PREFIX) && UserPreferences.getString(key) === certificate
+	);
+
 const removeServerCertificate = async (server: string) => {
 	const certificate = getServerCertificate(server);
 	UserPreferences.removeItem(getServerCertificateKey(server));
 	const hostname = extractHostname(server);
 	const others = (await getAllServers()).map(({ id }) => id).filter(id => id !== server);
-	if (certificate && !others.some(id => getServerCertificate(id) === certificate)) {
+	if (certificate && !isCertificateStored(certificate)) {
 		UserPreferences.removeItem(certificate);
 	}
 	const sameHost = others.filter(id => extractHostname(id) === hostname);
