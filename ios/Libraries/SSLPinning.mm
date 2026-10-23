@@ -60,20 +60,13 @@ static void sendClientCertificate(Class cls)
   method_setImplementation(method, imp);
 }
 
-@implementation URLSessionSessionDelegateProxy (Challenge)
-
-+ (void)load
-{
-  sendClientCertificate(self);
-}
-
-@end
-
+// URLSessionSessionDelegateProxy is a Swift class; the ObjC runtime aborts on a category +load for it.
 @implementation SDWebImageDownloader (Challenge)
 
 + (void)load
 {
   sendClientCertificate(self);
+  sendClientCertificate([URLSessionSessionDelegateProxy class]);
 }
 
 @end
