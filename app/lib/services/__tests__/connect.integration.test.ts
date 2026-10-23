@@ -177,6 +177,48 @@ describe('connect() over the real SDK', () => {
 
 		expect(successCount()).toBe(before);
 	});
+
+	it('keeps retrying when the first attempt fails and connects once the network is back', async () => {
+		redux.state.login.user = { token: 'stored-token' };
+
+		await connect({ server: 'https://example.com' });
+		await flushMicrotasksAndTimers();
+		expect(mockConnections).toHaveLength(1);
+		mockConnections[0].onerror();
+		await flushMicrotasksAndTimers();
+
+		expect(mockConnections).toHaveLength(2);
+		mockConnections[1].onerror();
+		await flushMicrotasksAndTimers();
+		expect(mockConnections).toHaveLength(2);
+
+		await jest.runOnlyPendingTimersAsync();
+		await flushMicrotasksAndTimers();
+		expect(mockConnections).toHaveLength(3);
+		mockConnections[2].onopen();
+		await flushMicrotasksAndTimers();
+
+		expect(redux.store.dispatch).toHaveBeenCalledWith(connectSuccess());
+		expect(redux.store.dispatch).toHaveBeenCalledWith(loginRequest({ resume: 'stored-token' }, false));
+	});
+
+	it('does not retry an attempt that a later connect() replaced', async () => {
+		await connect({ server: 'https://a.example.com' });
+		await flushMicrotasksAndTimers();
+		expect(mockConnections).toHaveLength(1);
+
+		await connect({ server: 'https://b.example.com' });
+		await flushMicrotasksAndTimers();
+		expect(mockConnections).toHaveLength(2);
+		expect(mockConnections[0].close).toHaveBeenCalled();
+
+		mockConnections[1].onopen();
+		await flushMicrotasksAndTimers();
+		await jest.runOnlyPendingTimersAsync();
+		await flushMicrotasksAndTimers();
+
+		expect(mockConnections).toHaveLength(2);
+	});
 });
 
 describe('login() over the real SDK', () => {
