@@ -20,9 +20,25 @@ const EmojiKeyboardContext = createContext<IEmojiKeyboardContextProps>({
 	showEmojiSearchbarSharedValue: { value: false } as SharedValue<boolean>
 });
 
+const IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD = 70;
+const EMOJI_KEYBOARD_FIXED_HEIGHT = 250;
+
 export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 	const showEmojiPickerSharedValue = useSharedValue(false);
 	const showEmojiSearchbarSharedValue = useSharedValue(false);
+
+	useKeyboardHandler(
+		{
+			onStart: e => {
+				'worklet';
+
+				if (e.height > IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD && !showEmojiSearchbarSharedValue.value) {
+					showEmojiPickerSharedValue.value = false;
+				}
+			}
+		},
+		[]
+	);
 
 	return (
 		<EmojiKeyboardContext.Provider value={{ showEmojiPickerSharedValue, showEmojiSearchbarSharedValue }}>
@@ -30,9 +46,6 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 		</EmojiKeyboardContext.Provider>
 	);
 };
-
-const IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD = 70;
-const EMOJI_KEYBOARD_FIXED_HEIGHT = 250;
 
 const useKeyboardAnimation = () => {
 	const height = useSharedValue(0);
