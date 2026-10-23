@@ -166,15 +166,10 @@ describe('removeServer', () => {
 		mockDestroyableServerRecord();
 	});
 
-	it('removes the server certificate', async () => {
-		await removeServer({ server: SERVER });
-
-		expect(clearRemovedWorkspaceCertificate).toHaveBeenCalledWith(SERVER);
-	});
-
 	it('removes the server certificate after deleting the server record', async () => {
 		await removeServer({ server: SERVER });
 
+		expect(clearRemovedWorkspaceCertificate).toHaveBeenCalledWith(SERVER);
 		expect(jest.mocked(database.servers.batch).mock.invocationCallOrder[0]).toBeLessThan(
 			jest.mocked(clearRemovedWorkspaceCertificate).mock.invocationCallOrder[0]
 		);

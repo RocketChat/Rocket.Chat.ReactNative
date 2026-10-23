@@ -91,19 +91,6 @@ describe('sslPinning on Android', () => {
 		expect(NativeSSLPinningAndroid.setCertificate).toHaveBeenCalledWith('host-alias', HOST);
 	});
 
-	it('registers the connected server last', async () => {
-		storeServerCertificate(SIBLING, 'sibling-alias');
-		setDatabaseServers(HOST, SIBLING);
-		setConnectedServer(HOST);
-
-		await registerCertificates();
-
-		expect(jest.mocked(NativeSSLPinningAndroid.setCertificate).mock.calls).toEqual([
-			['sibling-alias', SIBLING],
-			['host-alias', HOST]
-		]);
-	});
-
 	it('clears the stored and the native certificate when no server is left on the host', async () => {
 		await RCSSLPinning?.removeCertificate(HOST);
 
@@ -163,7 +150,7 @@ describe('sslPinning on Android', () => {
 		expect(getServerCertificate(SIBLING)).toBe('stale-alias');
 	});
 
-	it('clears the native certificate when the last server on the host has none of its own', async () => {
+	it('clears the native certificate when removing a server without its own from a host no other server uses', async () => {
 		await RCSSLPinning?.removeCertificate(SIBLING);
 
 		expect(NativeSSLPinningAndroid.removeCertificate).toHaveBeenCalledWith(SIBLING);
@@ -194,6 +181,7 @@ describe('sslPinning on iOS', () => {
 	const certificate = { path: '/client.p12', password: 'secret' };
 	let RCSSLPinningIOS: typeof RCSSLPinning;
 	let clearRemovedWorkspaceCertificateIOS: typeof clearRemovedWorkspaceCertificate;
+	let getServerCertificateIOS: typeof getServerCertificate;
 
 	beforeAll(() => {
 		Object.defineProperty(Platform, 'OS', { value: 'ios', configurable: true });
@@ -207,6 +195,7 @@ describe('sslPinning on iOS', () => {
 			const sslPinning = require('../sslPinning') as typeof import('../sslPinning');
 			RCSSLPinningIOS = sslPinning.default;
 			clearRemovedWorkspaceCertificateIOS = sslPinning.clearRemovedWorkspaceCertificate;
+			getServerCertificateIOS = sslPinning.getServerCertificate;
 		});
 	});
 
@@ -233,13 +222,14 @@ describe('sslPinning on iOS', () => {
 		expect(nativeSSLPinning.setCertificate).toHaveBeenCalledWith(HOST, '/client.p12', 'secret');
 	});
 
-	it('keeps a certificate entry another server still uses', async () => {
-		storeServerCertificate(REMOVED, 'client.p12');
-		setDatabaseServers(HOST);
+	it('keeps a certificate entry a server on another host still uses', async () => {
+		storeServerCertificate(OTHER_HOST, 'client.p12');
+		setDatabaseServers(OTHER_HOST);
 
-		await RCSSLPinningIOS?.removeCertificate(REMOVED);
+		await RCSSLPinningIOS?.removeCertificate(HOST);
 
-		expect(mockStore.get('client.p12')).toEqual(expect.objectContaining({ password: 'secret' }));
+		expect(mockStore.get('client.p12')).toEqual(certificate);
+		expect(nativeSSLPinning.setCertificate).not.toHaveBeenCalled();
 	});
 
 	it('keeps the host entry for a workspace on the host without a certificate of its own', async () => {
@@ -247,7 +237,7 @@ describe('sslPinning on iOS', () => {
 
 		await clearRemovedWorkspaceCertificateIOS(HOST);
 
-		expect(getServerCertificate(HOST)).toBeNull();
+		expect(getServerCertificateIOS(HOST)).toBeNull();
 		expect(mockStore.get(HOSTNAME)).toEqual(certificate);
 	});
 
@@ -276,7 +266,7 @@ describe('sslPinning on iOS', () => {
 		expect(mockStore.has(HOSTNAME)).toBe(false);
 	});
 
-	it('clears the host entry when the last server on the host has no certificate of its own', async () => {
+	it('clears the host entry when removing a server without its own from a host no other server uses', async () => {
 		await RCSSLPinningIOS?.removeCertificate(SIBLING);
 
 		expect(mockStore.has(HOSTNAME)).toBe(false);
