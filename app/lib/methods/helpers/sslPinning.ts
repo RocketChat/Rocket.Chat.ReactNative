@@ -67,11 +67,14 @@ const clearServerCertificate = async (server: string, servers: string[], keepFor
 	const hostname = extractHostname(server);
 	const sameHost = servers.filter(id => id !== server && extractHostname(id) === hostname);
 	const withCertificate = sameHost.filter(id => getServerCertificate(id));
-	if (withCertificate.length || (keepForHost && sameHost.length)) {
-		await applyConnectedLast(withCertificate);
+	if (keepForHost && sameHost.length && !withCertificate.length) {
 		return;
 	}
 	UserPreferences.removeItem(hostname);
+	if (withCertificate.length) {
+		await applyConnectedLast(withCertificate);
+		return;
+	}
 	if (Platform.OS === 'android') {
 		SSLPinning?.removeCertificate(server);
 	}
