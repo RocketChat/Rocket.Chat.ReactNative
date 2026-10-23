@@ -149,6 +149,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	try {
 		if (sdk.host === server) {
 			applyBasicAuth(server);
+			yield* call(applyServerCertificate, server);
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 			yield put(selectServerCancel());
 			return;

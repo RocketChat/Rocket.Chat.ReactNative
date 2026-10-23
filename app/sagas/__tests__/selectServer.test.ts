@@ -489,4 +489,14 @@ describe('selectServer saga — selecting the connected workspace', () => {
 
 		expect(activeAuthorization()).toBe('Basic new-workspace-credentials');
 	});
+
+	it('applies the connected workspace certificate when it is selected again', async () => {
+		setActiveHost(OLD_SERVER);
+
+		const { store } = setupStore();
+		store.dispatch(selectServerRequest(OLD_SERVER, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(applyServerCertificate).toHaveBeenCalledWith(OLD_SERVER);
+	});
 });
