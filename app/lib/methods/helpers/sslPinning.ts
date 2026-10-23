@@ -37,13 +37,29 @@ const persistCertificate = (server: string, name: string, password?: string) => 
 	return certificate;
 };
 
+export const getServerCertificate = (server: string): string | null => UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
+
+const isCertificateUsedElsewhere = (server: string, certificate: string) =>
+	UserPreferences.getAllKeys().some(
+		key =>
+			key !== `${CERTIFICATE_KEY}-${server}` &&
+			key.startsWith(`${CERTIFICATE_KEY}-`) &&
+			UserPreferences.getString(key) === certificate
+	);
+
 const removeCertificate = (server: string) => {
-	const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-	if (certificate) {
+	const certificate = getServerCertificate(server);
+	if (certificate && !isCertificateUsedElsewhere(server, certificate)) {
 		UserPreferences.removeItem(certificate);
 	}
 	UserPreferences.removeItem(extractHostname(server));
 	UserPreferences.removeItem(`${CERTIFICATE_KEY}-${server}`);
+};
+
+const restoreConnectedCertificate = async () => {
+	if (sdk.host) {
+		await applyServerCertificate(sdk.host);
+	}
 };
 
 const RCSSLPinning = Platform.select({
@@ -92,7 +108,10 @@ const RCSSLPinning = Platform.select({
 				}
 			}
 		},
-		removeCertificate
+		removeCertificate: async (server: string) => {
+			removeCertificate(server);
+			await restoreConnectedCertificate();
+		}
 	},
 	android: {
 		pickCertificate: () => SSLPinning?.pickCertificate(),
@@ -100,15 +119,10 @@ const RCSSLPinning = Platform.select({
 		removeCertificate: async (server: string) => {
 			removeCertificate(server);
 			SSLPinning?.removeCertificate(server);
-			// The native alias is per host, so restore the connected server's certificate if it shares it
-			if (sdk.host) {
-				await applyServerCertificate(sdk.host);
-			}
+			await restoreConnectedCertificate();
 		}
 	}
 });
-
-export const getServerCertificate = (server: string): string | null => UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 
 export const applyServerCertificate = async (server: string): Promise<void> => {
 	const name = getServerCertificate(server);
