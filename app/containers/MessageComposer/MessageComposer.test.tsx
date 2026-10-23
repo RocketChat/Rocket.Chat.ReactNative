@@ -812,9 +812,26 @@ describe('MessageComposer', () => {
 			canUpload: true
 		} as IShareAttachment;
 
+		const sent = { ...attachment, filename: 'sent.png', path: 'file:///tmp/sent.png' } as IShareAttachment;
+		const failed = { ...attachment, filename: 'failed.png', path: 'file:///tmp/failed.png' } as IShareAttachment;
+
 		beforeEach(() => {
 			(sendFileMessage as jest.Mock).mockClear();
 		});
+
+		const sendWithCaptionAndQuote = async (attachments: IShareAttachment[]) => {
+			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
+			render(
+				<Render forwardedRef={composerRef} action={{ kind: 'quote', messageIds: ['abc'] }}>
+					<AttachmentSeeder attachments={attachments} />
+				</Render>
+			);
+			await screen.findByTestId(`message-composer-attachment-${attachments.length - 1}`);
+			await screen.findByTestId('composer-quote-abc');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
+			await user.press(screen.getByTestId('message-composer-send'));
+			return composerRef;
+		};
 
 		test('shows inline attachments and remove button', async () => {
 			render(
@@ -904,6 +921,80 @@ describe('MessageComposer', () => {
 			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
 			expect(screen.getByTestId('message-composer-attachments')).toBeOnTheScreen();
 			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
+		});
+
+		test('keeps only the attachments that failed so the ones already sent are not sent again', async () => {
+			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('upload failed'));
+			await sendWithCaptionAndQuote([sent, failed]);
+
+			await waitFor(() => expect(screen.queryByTestId('message-composer-attachment-1')).not.toBeOnTheScreen());
+			expect(screen.getByLabelText('failed.png')).toBeOnTheScreen();
+			expect(screen.queryByLabelText('sent.png')).not.toBeOnTheScreen();
+		});
+
+		test('does not restore the caption or the quote when the first attachment, which carried them, was sent', async () => {
+			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('upload failed'));
+			const composerRef = await sendWithCaptionAndQuote([sent, failed]);
+
+			await waitFor(() => expect(screen.queryByTestId('message-composer-attachment-1')).not.toBeOnTheScreen());
+			expect(composerRef.current?.getText()).toBe('');
+			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();
+		});
+
+		test('restores the caption and the quote when the first attachment was skipped and a later one failed', async () => {
+			const skipped = { ...attachment, path: 'file:///tmp/skipped.png', canUpload: false } as IShareAttachment;
+			(sendFileMessage as jest.Mock).mockRejectedValueOnce(new Error('upload failed'));
+			const composerRef = await sendWithCaptionAndQuote([skipped, failed]);
+
+			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
+			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
+		});
+
+		test('does not send an attachment again when Send is pressed while another one is still uploading', async () => {
+			const pending = { ...attachment, filename: 'pending.png', path: 'file:///tmp/pending.png' } as IShareAttachment;
+			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockImplementationOnce(() => new Promise<void>(() => {}));
+			render(
+				<Render>
+					<AttachmentSeeder attachments={[sent, pending]} />
+				</Render>
+			);
+			await screen.findByTestId('message-composer-attachment-1');
+			await user.press(screen.getByTestId('message-composer-send'));
+			await waitFor(() => expect(screen.queryByLabelText('sent.png')).not.toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('message-composer-send'));
+
+			await waitFor(() => expect(sendFileMessage).toHaveBeenCalledTimes(3));
+			expect((sendFileMessage as jest.Mock).mock.calls.map(([, fileInfo]) => fileInfo.name)).toEqual([
+				'sent.png',
+				'pending.png',
+				'pending.png'
+			]);
+		});
+
+		test('does not throw when the composer is gone before a failed upload settles', async () => {
+			let failUpload!: (error: Error) => void;
+			(sendFileMessage as jest.Mock).mockImplementationOnce(() => new Promise<void>((_, reject) => (failUpload = reject)));
+			const error = new Error('upload failed');
+			const unhandled = jest.fn();
+			process.on('unhandledRejection', unhandled);
+			const { unmount } = render(
+				<Render>
+					<AttachmentSeeder attachments={[attachment]} />
+				</Render>
+			);
+			await screen.findByTestId('message-composer-attachment-0');
+			await user.press(screen.getByTestId('message-composer-send'));
+
+			unmount();
+			failUpload(error);
+			await waitFor(() => expect(log).toHaveBeenCalledWith(error));
+			await act(async () => {
+				await Promise.resolve();
+			});
+			process.off('unhandledRejection', unhandled);
+
+			expect(unhandled).not.toHaveBeenCalled();
 		});
 	});
 });

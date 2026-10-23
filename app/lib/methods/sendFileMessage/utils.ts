@@ -1,3 +1,4 @@
+import { type Database } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import isEmpty from 'lodash/isEmpty';
 import { Alert } from 'react-native';
@@ -8,15 +9,27 @@ import { type IUpload, type TUploadModel } from '~/definitions';
 import i18n from '~/i18n';
 import database from '~/lib/database';
 import log from '../helpers/log';
+import { showToast } from '../helpers/showToast';
+import { getUploadErrorMessage } from '../helpers/getUploadErrorMessage';
+import { isRetryableUploadError } from '../helpers/isRetryableUploadError';
 import { type IFileUpload } from '../helpers/fileUpload/definitions';
+import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
 
 export const uploadQueue: { [index: string]: IFileUpload } = {};
+
+export const uploadRetryWaits: { [index: string]: () => void } = {};
 
 export const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 
 export function isUploadActive(path: string, rid: string): boolean {
 	return !!uploadQueue[getUploadPath(path, rid)];
 }
+
+export const releaseUploadSlot = (queueKey: string, upload: IFileUpload | null) => {
+	if (upload && uploadQueue[queueKey] === upload) {
+		delete uploadQueue[queueKey];
+	}
+};
 
 export async function cancelUpload(item: TUploadModel, rid: string): Promise<void> {
 	const uploadPath = getUploadPath(item.path, rid);
@@ -28,6 +41,7 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 		}
 		delete uploadQueue[uploadPath];
 	}
+	uploadRetryWaits[uploadPath]?.();
 	if (item.id) {
 		try {
 			const db = database.active;
@@ -40,16 +54,18 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
-export const persistUploadError = async (path: string, rid: string) => {
+export const persistUploadError = async (queueKey: string, errorStatus?: number, errorMessage?: string) => {
 	try {
 		const db = database.active;
-		const uploadRecord = await getUploadByPath(getUploadPath(path, rid));
+		const uploadRecord = await getUploadByPath(queueKey);
 		if (!uploadRecord) {
 			return;
 		}
 		await db.write(async () => {
 			await uploadRecord.update(u => {
 				u.error = true;
+				u.errorStatus = errorStatus;
+				u.errorMessage = errorMessage;
 			});
 		});
 	} catch {
@@ -57,16 +73,52 @@ export const persistUploadError = async (path: string, rid: string) => {
 	}
 };
 
+export const finalizeFailedUpload = async ({
+	queueKey,
+	error,
+	upload
+}: {
+	queueKey: string;
+	error: unknown;
+	upload: IFileUpload | null;
+}): Promise<void> => {
+	if (upload && uploadQueue[queueKey] !== upload) {
+		return;
+	}
+	releaseUploadSlot(queueKey, upload);
+	const httpError = error instanceof UploadHttpError ? error : undefined;
+	const errorStatus = httpError?.status;
+	const errorMessage = httpError?.serverMessage;
+	await persistUploadError(queueKey, errorStatus, errorMessage);
+	const reason = getUploadErrorMessage({ errorStatus, errorMessage });
+	if (reason && !isRetryableUploadError(errorStatus)) {
+		showToast(reason);
+	}
+	throw error;
+};
+
+export const createUploadProgressCallback =
+	(db: Database, uploadRecord: TUploadModel | null) =>
+	async (loaded: number, total: number): Promise<void> => {
+		try {
+			await db.write(async () => {
+				await uploadRecord?.update(u => {
+					u.progress = Math.floor((loaded / total) * 100);
+				});
+			});
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
 export const createUploadRecord = async ({
 	rid,
 	fileInfo,
-	tmid,
-	isForceTryAgain
+	tmid
 }: {
 	rid: string;
 	fileInfo: IUpload;
 	tmid: string | undefined;
-	isForceTryAgain?: boolean;
 }) => {
 	const db = database.active;
 	const uploadsCollection = db.get('uploads');
@@ -75,7 +127,7 @@ export const createUploadRecord = async ({
 	try {
 		uploadRecord = await uploadsCollection.find(uploadPath);
 		if (uploadRecord.id) {
-			if (isUploadActive(fileInfo.path, rid) && !isForceTryAgain) {
+			if (isUploadActive(fileInfo.path, rid)) {
 				Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
 				return [null, null];
 			}
@@ -83,6 +135,8 @@ export const createUploadRecord = async ({
 			await db.write(async () => {
 				await uploadRecord?.update(u => {
 					u.error = false;
+					u.errorStatus = undefined;
+					u.errorMessage = undefined;
 					u.progress = 0;
 				});
 			});

@@ -61,7 +61,7 @@ export const MessageComposer = ({
 	const actionKind = useMessageActionKind();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
-	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
+	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments, removeAttachment } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const { colors } = useTheme();
@@ -93,6 +93,15 @@ export const MessageComposer = ({
 	const handleLayout = (event: LayoutChangeEvent) => {
 		const { height } = event.nativeEvent.layout;
 		contentHeight.set(height);
+	};
+
+	const restoreCaptionAfterFailure = (results: PromiseSettledResult<void>[], textFromInput: string) => {
+		const captionSent = attachments[0].canUpload && results[0].status === 'fulfilled';
+		if (captionSent) {
+			messageActionStore.getState().actions.setQuoteMessageIds([]);
+			return;
+		}
+		composerInputComponentRef.current?.setInput(textFromInput);
 	};
 
 	const handleSendMessage = async () => {
@@ -135,19 +144,20 @@ export const MessageComposer = ({
 				quotedMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
 			}
 
-			try {
-				await sendAttachments({
-					attachments,
-					rid,
-					tmid,
-					server,
-					user: { id: user.id, token: user.token },
-					altTextSupported,
-					getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
-				});
-			} catch (e) {
-				log(e);
-				composerInputComponentRef.current.setInput(textFromInput);
+			const results = await sendAttachments({
+				attachments,
+				rid,
+				tmid,
+				server,
+				user: { id: user.id, token: user.token },
+				altTextSupported,
+				getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description),
+				onSent: ({ path }) => removeAttachment(path)
+			});
+			const rejected = results.filter((result): result is PromiseRejectedResult => result.status === 'rejected');
+			if (rejected.length) {
+				rejected.forEach(({ reason }) => log(reason));
+				restoreCaptionAfterFailure(results, textFromInput);
 				return;
 			}
 			clearAttachments();

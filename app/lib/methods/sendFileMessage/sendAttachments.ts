@@ -11,7 +11,8 @@ export const sendAttachments = ({
 	server,
 	user,
 	altTextSupported,
-	getMsg
+	getMsg,
+	onSent
 }: {
 	attachments: IShareAttachment[];
 	rid: string;
@@ -20,14 +21,15 @@ export const sendAttachments = ({
 	user: Partial<Pick<IUser, 'id' | 'token'>>;
 	altTextSupported: boolean;
 	getMsg: (attachment: IShareAttachment, index: number) => string | undefined;
-}): Promise<void[]> =>
-	Promise.all(
-		attachments.map((attachment, index) => {
+	onSent?: (attachment: IShareAttachment) => void;
+}): Promise<PromiseSettledResult<void>[]> =>
+	Promise.allSettled(
+		attachments.map(async (attachment, index) => {
 			const { filename: name, mime: type, description, altText, size, path, canUpload, exif } = attachment;
 			let { height, width } = attachment;
 
 			if (!canUpload) {
-				return Promise.resolve();
+				return;
 			}
 
 			if (exif?.Orientation && ROTATED_ORIENTATIONS.includes(exif.Orientation)) {
@@ -36,7 +38,7 @@ export const sendAttachments = ({
 
 			const msg = getMsg(attachment, index);
 
-			return sendFileMessage(
+			await sendFileMessage(
 				rid,
 				{
 					rid,
@@ -53,5 +55,6 @@ export const sendAttachments = ({
 				server,
 				user
 			);
+			onSent?.(attachment);
 		})
 	);

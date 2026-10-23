@@ -4,6 +4,7 @@ import bugsnag from '@bugsnag/react-native';
 
 import events from './events';
 import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
+import { UploadHttpError } from '~/lib/methods/helpers/fileUpload/UploadHttpError';
 
 export { events };
 
@@ -62,8 +63,11 @@ const log = (e: any): void => {
 		return;
 	}
 	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
-		bugsnag.notify(e, (event: { addMetadata: (arg0: string, arg1: {}) => void }) => {
+		bugsnag.notify(e, event => {
 			event.addMetadata('details', { ...metadata });
+			if (e instanceof UploadHttpError) {
+				event.groupingHash = `UploadHttpError:${e.status}`;
+			}
 		});
 		crashlytics().recordError(e);
 	} else {
