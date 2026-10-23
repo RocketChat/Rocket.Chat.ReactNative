@@ -1,8 +1,19 @@
 import { expect } from 'e2e';
 
-import { getRoomCategory, getSidebarCategories, type Credentials } from './api';
-import { expectVisible, fillSettled, type Fixtures, LONG_TIMEOUT, scrollAndTap, tapUntilHidden, tapWhenVisible } from './flows';
+import { getRoomCategory, getSidebarCategories, type Credentials, type SidebarCategory } from './api';
+import {
+	escapeRegExp,
+	expectVisible,
+	fillSettled,
+	type Fixtures,
+	isVisibleNow,
+	LONG_TIMEOUT,
+	scrollAndTap,
+	succeeds,
+	tapWhenVisible
+} from './flows';
 import { tapHeaderItem } from './header';
+import { closeActionSheet } from './teams';
 
 export const groupRoomsByCategory = (fixtures: Fixtures) =>
 	fixtures.appduct.call('set_preference', { name: 'groupByType', value: true });
@@ -25,11 +36,26 @@ export const openCategorySettings = async (fixtures: Fixtures) => {
 	await expectVisible(fixtures, 'category-settings-view');
 };
 
-export const moveOpenRoomToCategory = async (fixtures: Fixtures, categoryId: string) => {
+const MOVE_TAP_ATTEMPTS = 3;
+const MOVE_RESPONSE_TIMEOUT = 5_000;
+
+export const moveOpenRoomToCategory = async (fixtures: Fixtures, category: SidebarCategory) => {
 	const { screen } = fixtures;
+	const sheet = screen.getByTestId('move-to-category-sheet');
+	const option = screen.getByTestId(`move-to-category-${category._id}`);
+	const selected = screen.getByLabel(new RegExp(`^${escapeRegExp(category.name)} Checked$`));
 	await scrollAndTap(screen.getByTestId('room-actions-scrollview'), screen.getByTestId('room-actions-category'));
-	await expectVisible(fixtures, `move-to-category-${categoryId}`);
-	await tapUntilHidden(fixtures, `move-to-category-${categoryId}`, 'move-to-category-sheet');
+	await expect(option).toBeVisible({ timeout: LONG_TIMEOUT });
+	for (let attempt = 1; attempt <= MOVE_TAP_ATTEMPTS; attempt += 1) {
+		if (!(await isVisibleNow(sheet)) || (await isVisibleNow(selected))) {
+			break;
+		}
+		await option.tap();
+		await succeeds(expect(sheet).toBeHidden({ timeout: MOVE_RESPONSE_TIMEOUT }));
+	}
+	if (await isVisibleNow(sheet)) {
+		await closeActionSheet(fixtures);
+	}
 };
 
 export const findCategoryByName = async (credentials: Credentials, name: string) =>

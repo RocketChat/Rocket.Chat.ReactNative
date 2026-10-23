@@ -73,7 +73,7 @@ test('moves a room to a category, collapses, renames and deletes it', { tags: ['
 	await groupRoomsByCategory(fixtures);
 	await openRoom(fixtures, room.name);
 	await openRoomActions(fixtures);
-	await moveOpenRoomToCategory(fixtures, category._id);
+	await moveOpenRoomToCategory(fixtures, category);
 	await expectRoomInCategory(user, room._id, category._id);
 	await expect(screen.getByLabel(new RegExp(`^Category.*${category.name}`))).toBeVisible({ timeout: LONG_TIMEOUT });
 
