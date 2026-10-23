@@ -60,12 +60,14 @@ static void hookClientCertificateChallenge(Class cls)
   method_setImplementation(method, imp);
 }
 
-// URLSessionSessionDelegateProxy is a Swift class; the ObjC runtime aborts on a category +load for it.
-@implementation SDWebImageDownloader (Challenge)
+@interface ClientCertificateChallengeHooks : NSObject
+@end
+
+@implementation ClientCertificateChallengeHooks
 
 + (void)load
 {
-  hookClientCertificateChallenge(self);
+  hookClientCertificateChallenge([SDWebImageDownloader class]);
   hookClientCertificateChallenge([URLSessionSessionDelegateProxy class]);
 }
 

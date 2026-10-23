@@ -59,6 +59,21 @@ const pickHostCertificates = (servers: string[]) => {
 	return [...byHost.values()];
 };
 
+const platformCertificate = Platform.select({
+	ios: {
+		forgetServer: (server: string) => SSLPinning?.removeWatchCertificate(server),
+		releaseHost: () => {},
+		register: async () => {}
+	},
+	android: {
+		forgetServer: () => {},
+		releaseHost: (server: string) => SSLPinning?.removeCertificate(server),
+		register: async () => {
+			await Promise.all(pickHostCertificates(await getServerIds()).map(applyServerCertificate));
+		}
+	}
+});
+
 const isCertificateInUse = (certificate: string) =>
 	UserPreferences.getAllKeys().some(
 		key => key.startsWith(SERVER_CERTIFICATE_PREFIX) && UserPreferences.getString(key) === certificate
@@ -70,9 +85,7 @@ const forgetServerCertificate = (server: string) => {
 	if (certificate && !isCertificateInUse(certificate)) {
 		UserPreferences.removeItem(certificate);
 	}
-	if (Platform.OS === 'ios') {
-		SSLPinning?.removeCertificate(server);
-	}
+	platformCertificate?.forgetServer(server);
 	return certificate;
 };
 
@@ -84,15 +97,10 @@ const syncHostCertificate = async (server: string, servers: string[]) => {
 		await applyServerCertificate(selected);
 		return;
 	}
-	if (Platform.OS === 'android') {
-		SSLPinning?.removeCertificate(server);
-	}
+	platformCertificate?.releaseHost(server);
 };
 
 const removeServerCertificate = async (server: string) => {
-	if (Platform.OS === 'android' && !getServerCertificate(server)) {
-		return;
-	}
 	forgetServerCertificate(server);
 	await syncHostCertificate(server, await getServerIds());
 };
@@ -161,7 +169,11 @@ const RCSSLPinning = Platform.select({
 	android: {
 		pickCertificate: () => SSLPinning?.pickCertificate(),
 		setCertificate: (name: string, server: string) => SSLPinning?.setCertificate(name, server),
-		removeCertificate: removeServerCertificate
+		removeCertificate: async (server: string) => {
+			if (getServerCertificate(server)) {
+				await removeServerCertificate(server);
+			}
+		}
 	}
 });
 
@@ -178,11 +190,8 @@ export const applyServerCertificate = async (server: string): Promise<void> => {
 };
 
 export const registerCertificates = async (): Promise<void> => {
-	if (Platform.OS !== 'android') {
-		return;
-	}
 	try {
-		await Promise.all(pickHostCertificates(await getServerIds()).map(applyServerCertificate));
+		await platformCertificate?.register();
 	} catch (e) {
 		log(e);
 	}

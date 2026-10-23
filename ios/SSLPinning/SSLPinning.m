@@ -6,6 +6,6 @@ RCT_EXTERN_METHOD(setCertificate:(NSString *)server
                   :(NSString *)path
                   :(NSString *)password)
 
-RCT_EXTERN_METHOD(removeCertificate:(NSString *)server)
+RCT_EXTERN_METHOD(removeWatchCertificate:(NSString *)server)
 
 @end

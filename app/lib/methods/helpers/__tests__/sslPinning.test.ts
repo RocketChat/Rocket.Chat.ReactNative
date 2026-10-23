@@ -223,7 +223,7 @@ describe('sslPinning on Android', () => {
 });
 
 describe('sslPinning on iOS', () => {
-	const nativeSSLPinning = { setCertificate: jest.fn(), removeCertificate: jest.fn() };
+	const nativeSSLPinning = { setCertificate: jest.fn(), removeWatchCertificate: jest.fn() };
 	const certificate = { path: '/client.p12', password: 'secret' };
 	let RCSSLPinningIOS: typeof RCSSLPinning;
 	let clearRemovedWorkspaceCertificateIOS: typeof clearRemovedWorkspaceCertificate;
@@ -324,7 +324,7 @@ describe('sslPinning on iOS', () => {
 	it('clears the Watch copy of a certificate removed by hand', async () => {
 		await RCSSLPinningIOS?.removeCertificate(HOST);
 
-		expect(nativeSSLPinning.removeCertificate).toHaveBeenCalledWith(HOST);
+		expect(nativeSSLPinning.removeWatchCertificate).toHaveBeenCalledWith(HOST);
 	});
 
 	it('clears the Watch copy of a removed workspace certificate', async () => {
@@ -332,7 +332,7 @@ describe('sslPinning on iOS', () => {
 
 		await clearRemovedWorkspaceCertificateIOS(HOST);
 
-		expect(nativeSSLPinning.removeCertificate).toHaveBeenCalledWith(HOST);
+		expect(nativeSSLPinning.removeWatchCertificate).toHaveBeenCalledWith(HOST);
 	});
 
 	it('clears the host entry of a certificate picked for another address on the host', async () => {

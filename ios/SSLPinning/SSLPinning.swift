@@ -21,7 +21,7 @@ final class SSLPinning: NSObject {
 		mmkv.setString(password, forKey: Constants.passwordKey.appending(server))
 	}
 	
-	@objc func removeCertificate(_ server: String) {
+	@objc func removeWatchCertificate(_ server: String) {
 		mmkv.removeValue(forKey: Constants.certificateKey.appending(server))
 		mmkv.removeValue(forKey: Constants.passwordKey.appending(server))
 	}

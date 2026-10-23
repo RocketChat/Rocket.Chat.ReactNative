@@ -35,12 +35,11 @@ import android.security.KeyChainAliasCallback;
 import android.util.Log;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import com.reactnativecommunity.webview.RNCWebViewClient;
@@ -58,12 +57,6 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static final X509TrustManager trustManager = createTrustManager();
     // A custom verifier stops OkHttp from sharing an HTTP/2 connection, and its certificate, across hosts
     private static final HostnameVerifier hostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
-    private static final Map<String, String> hostsByConnection = Collections.synchronizedMap(new LinkedHashMap<String, String>() {
-        @Override
-        protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {
-            return size() > 256;
-        }
-    });
 
     public static void installClientCertificates(Context context) {
         appContext = context.getApplicationContext();
@@ -148,10 +141,6 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         return host == null ? null : aliasesByHost.getString(host.toLowerCase(Locale.ROOT), null);
     }
 
-    private static String connectionKey(Socket socket) {
-        return socket.getInetAddress() + ":" + socket.getPort() + ":" + socket.getLocalPort();
-    }
-
     private static X509TrustManager createTrustManager() {
         try {
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -167,10 +156,15 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     }
 
     private static final class ClientKeyManager extends X509ExtendedKeyManager {
+        private final String alias;
+
+        ClientKeyManager(String alias) {
+            this.alias = alias;
+        }
+
         @Override
         public String chooseClientAlias(String[] keyTypes, Principal[] issuers, Socket socket) {
-            // Keyed by the connection, as Android 7-8 sockets have no handshake session at this point
-            return aliasForHost(hostsByConnection.get(connectionKey(socket)));
+            return alias;
         }
 
         @Override
@@ -212,23 +206,30 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     }
 
     private static class ResettableSSLSocketFactory extends SSLSocketFactory {
-        private SSLSocketFactory delegate;
+        // ConcurrentHashMap rejects null keys
+        private static final String NO_CERTIFICATE = "";
+        private final Map<String, SSLSocketFactory> factoriesByAlias = new ConcurrentHashMap<>();
 
-        synchronized void reset() {
-            delegate = null;
+        void reset() {
+            factoriesByAlias.clear();
         }
 
-        private synchronized SSLSocketFactory delegate() {
-            if (delegate == null) {
-                try {
-                    final SSLContext context = SSLContext.getInstance("TLS");
-                    context.init(new KeyManager[]{new ClientKeyManager()}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
-                    delegate = context.getSocketFactory();
-                } catch (GeneralSecurityException e) {
-                    throw new IllegalStateException(e);
-                }
+        private SSLSocketFactory factoryFor(String alias) {
+            return factoriesByAlias.computeIfAbsent(alias == null ? NO_CERTIFICATE : alias, key -> createFactory(alias));
+        }
+
+        private SSLSocketFactory delegate() {
+            return factoryFor(null);
+        }
+
+        private static SSLSocketFactory createFactory(String alias) {
+            try {
+                final SSLContext context = SSLContext.getInstance("TLS");
+                context.init(new KeyManager[]{new ClientKeyManager(alias)}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
+                return context.getSocketFactory();
+            } catch (GeneralSecurityException e) {
+                throw new IllegalStateException(e);
             }
-            return delegate;
         }
 
         @Override
@@ -248,18 +249,17 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
         @Override
         public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
-            hostsByConnection.put(connectionKey(socket), host);
-            return delegate().createSocket(socket, host, port, autoClose);
+            return factoryFor(aliasForHost(host)).createSocket(socket, host, port, autoClose);
         }
 
         @Override
         public Socket createSocket(String host, int port) throws IOException {
-            return delegate().createSocket(host, port);
+            return factoryFor(aliasForHost(host)).createSocket(host, port);
         }
 
         @Override
         public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException {
-            return delegate().createSocket(host, port, localHost, localPort);
+            return factoryFor(aliasForHost(host)).createSocket(host, port, localHost, localPort);
         }
 
         @Override
