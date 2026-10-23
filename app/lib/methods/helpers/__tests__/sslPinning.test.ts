@@ -4,9 +4,10 @@ jest.mock('~/lib/database/services/Server', () => ({
 	getAllServers: jest.fn()
 }));
 
-jest.mock('~/lib/services/sdk', () => ({
-	__esModule: true,
-	default: { host: null }
+const mockSelectedServer = { server: '' };
+
+jest.mock('~/lib/store/auxStore', () => ({
+	store: { getState: () => ({ server: mockSelectedServer }) }
 }));
 
 jest.mock('~/lib/methods/helpers/log', () => ({
@@ -29,7 +30,6 @@ jest.mock('~/lib/methods/userPreferences', () => ({
 import NativeSSLPinningAndroid from '~/lib/native/NativeSSLPinningAndroid';
 import { getAllServers } from '~/lib/database/services/Server';
 import log from '~/lib/methods/helpers/log';
-import sdk from '~/lib/services/sdk';
 import { Platform } from 'react-native';
 
 import { type TServerModel } from '~/definitions/IServer';
@@ -56,7 +56,9 @@ const SIBLING = `${HOST}/sibling`;
 const REMOVED = `${HOST}/removed`;
 const OTHER_HOST = 'https://open.rocket.chat';
 
-const setConnectedServer = (server: string | null) => Object.defineProperty(sdk, 'host', { value: server, configurable: true });
+const setSelectedServer = (server: string) => {
+	mockSelectedServer.server = server;
+};
 const storeServerCertificate = (server: string, name: string) => mockStore.set(`${CERTIFICATE_KEY}-${server}`, name);
 const setDatabaseServers = (...ids: string[]) =>
 	jest.mocked(getAllServers).mockResolvedValue(ids.map(id => ({ id })) as TServerModel[]);
@@ -65,7 +67,7 @@ describe('sslPinning on Android', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockStore.clear();
-		setConnectedServer(null);
+		setSelectedServer('');
 		setDatabaseServers();
 		storeServerCertificate(HOST, 'host-alias');
 	});
@@ -104,6 +106,20 @@ describe('sslPinning on Android', () => {
 		]);
 	});
 
+	it('registers the selected workspace last, even when another one was active last', async () => {
+		storeServerCertificate(SIBLING, 'sibling-alias');
+		mockStore.set(CURRENT_SERVER, SIBLING);
+		setSelectedServer(HOST);
+		setDatabaseServers(HOST, SIBLING);
+
+		await registerCertificates();
+
+		expect(jest.mocked(NativeSSLPinningAndroid.setCertificate).mock.calls).toEqual([
+			['sibling-alias', SIBLING],
+			['host-alias', HOST]
+		]);
+	});
+
 	it('logs instead of throwing when a certificate cannot be applied', async () => {
 		const error = new Error('KeyChain unavailable');
 		jest.mocked(NativeSSLPinningAndroid.setCertificate).mockRejectedValueOnce(error);
@@ -124,7 +140,7 @@ describe('sslPinning on Android', () => {
 		storeServerCertificate(SIBLING, 'sibling-alias');
 		storeServerCertificate(REMOVED, 'removed-alias');
 		setDatabaseServers(HOST, SIBLING);
-		setConnectedServer(HOST);
+		setSelectedServer(HOST);
 
 		await RCSSLPinning?.removeCertificate(REMOVED);
 
@@ -204,7 +220,7 @@ describe('sslPinning on Android', () => {
 });
 
 describe('sslPinning on iOS', () => {
-	const nativeSSLPinning = { setCertificate: jest.fn() };
+	const nativeSSLPinning = { setCertificate: jest.fn(), removeCertificate: jest.fn() };
 	const certificate = { path: '/client.p12', password: 'secret' };
 	let RCSSLPinningIOS: typeof RCSSLPinning;
 	let clearRemovedWorkspaceCertificateIOS: typeof clearRemovedWorkspaceCertificate;
@@ -229,7 +245,7 @@ describe('sslPinning on iOS', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockStore.clear();
-		setConnectedServer(null);
+		setSelectedServer('');
 		setDatabaseServers();
 		storeServerCertificate(HOST, 'client.p12');
 		mockStore.set('client.p12', certificate);
@@ -300,6 +316,26 @@ describe('sslPinning on iOS', () => {
 
 		expect(mockStore.get(HOSTNAME)).toEqual(certificate);
 		expect(nativeSSLPinning.setCertificate).not.toHaveBeenCalled();
+	});
+
+	it('clears the Watch copy of a certificate removed by hand', async () => {
+		await RCSSLPinningIOS?.removeCertificate(HOST);
+
+		expect(nativeSSLPinning.removeCertificate).toHaveBeenCalledWith(HOST);
+	});
+
+	it('clears the Watch copy of a removed workspace certificate', async () => {
+		setDatabaseServers(SIBLING);
+
+		await clearRemovedWorkspaceCertificateIOS(HOST);
+
+		expect(nativeSSLPinning.removeCertificate).toHaveBeenCalledWith(HOST);
+	});
+
+	it('clears the host entry of a certificate picked for another address on the host', async () => {
+		await RCSSLPinningIOS?.removeCertificate(SIBLING);
+
+		expect(mockStore.has(HOSTNAME)).toBe(false);
 	});
 
 	it('clears the host entry when the remaining server on the host has lost its certificate entry', async () => {

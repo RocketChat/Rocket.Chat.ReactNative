@@ -9,7 +9,7 @@ import { type ICertificate } from '~/definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER } from '~/lib/constants/keys';
 import NativeSSLPinningAndroid from '~/lib/native/NativeSSLPinningAndroid';
 import { getAllServers } from '~/lib/database/services/Server';
-import sdk from '~/lib/services/sdk';
+import { store as reduxStore } from '~/lib/store/auxStore';
 import log from './log';
 
 const SSLPinning = Platform.select({
@@ -46,7 +46,7 @@ export const getServerCertificate = (server: string): string | null => UserPrefe
 const getServerIds = async () => (await getAllServers()).map(({ id }) => id);
 
 const applyConnectedLast = async (servers: string[]) => {
-	const connected = sdk.host ?? UserPreferences.getString(CURRENT_SERVER);
+	const connected = reduxStore.getState().server.server || UserPreferences.getString(CURRENT_SERVER);
 	const connectedLast = [...servers.filter(id => id !== connected), ...servers.filter(id => id === connected)];
 	for (const id of connectedLast) {
 		await applyServerCertificate(id);
@@ -58,18 +58,21 @@ const isCertificateInUse = (certificate: string) =>
 		key => key.startsWith(SERVER_CERTIFICATE_PREFIX) && UserPreferences.getString(key) === certificate
 	);
 
-const clearServerCertificate = async (server: string, servers: string[], keepForHost: boolean) => {
+const forgetServerCertificate = (server: string) => {
 	const certificate = getServerCertificate(server);
 	UserPreferences.removeItem(getServerCertificateKey(server));
 	if (certificate && !isCertificateInUse(certificate)) {
 		UserPreferences.removeItem(certificate);
 	}
-	const hostname = extractHostname(server);
-	const sameHost = servers.filter(id => id !== server && extractHostname(id) === hostname);
-	const withCertificate = sameHost.filter(id => getServerCertificate(id));
-	if (keepForHost && sameHost.length && (!certificate || !withCertificate.length)) {
-		return;
+	if (Platform.OS === 'ios') {
+		SSLPinning?.removeCertificate(server);
 	}
+	return certificate;
+};
+
+const syncHostCertificate = async (server: string, servers: string[]) => {
+	const hostname = extractHostname(server);
+	const withCertificate = servers.filter(id => extractHostname(id) === hostname && getServerCertificate(id));
 	UserPreferences.removeItem(hostname);
 	if (withCertificate.length) {
 		await applyConnectedLast(withCertificate);
@@ -81,10 +84,11 @@ const clearServerCertificate = async (server: string, servers: string[], keepFor
 };
 
 const removeServerCertificate = async (server: string) => {
-	if (!getServerCertificate(server)) {
+	if (Platform.OS === 'android' && !getServerCertificate(server)) {
 		return;
 	}
-	await clearServerCertificate(server, await getServerIds(), false);
+	forgetServerCertificate(server);
+	await syncHostCertificate(server, await getServerIds());
 };
 
 export const clearRemovedWorkspaceCertificate = async (server: string): Promise<void> => {
@@ -92,7 +96,12 @@ export const clearRemovedWorkspaceCertificate = async (server: string): Promise<
 	if (servers.includes(server)) {
 		return;
 	}
-	await clearServerCertificate(server, servers, true);
+	const certificate = forgetServerCertificate(server);
+	const sameHost = servers.filter(id => extractHostname(id) === extractHostname(server));
+	if (sameHost.length && (!certificate || !sameHost.some(id => getServerCertificate(id)))) {
+		return;
+	}
+	await syncHostCertificate(server, servers);
 };
 
 const RCSSLPinning = Platform.select({

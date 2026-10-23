@@ -21,6 +21,11 @@ final class SSLPinning: NSObject {
 		mmkv.setString(password, forKey: Constants.passwordKey.appending(server))
 	}
 	
+	@objc func removeCertificate(_ server: String) {
+		mmkv.removeValue(forKey: Constants.certificateKey.appending(server))
+		mmkv.removeValue(forKey: Constants.passwordKey.appending(server))
+	}
+	
     @objc func migrate() {
         guard let serversQuery = database.query("SELECT * FROM servers") else {
             print("No servers found")
