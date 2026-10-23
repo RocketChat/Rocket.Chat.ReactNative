@@ -31,6 +31,7 @@ export const videoConfJoin = async (
 				await requestVoipCallPermissions().catch(log);
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
 			} else if (providerName === 'core.pexip' && url) {
+				await requestVoipCallPermissions().catch(log);
 				navigation.navigate('VideoConfWebView', { url });
 			} else if (url) {
 				openLink(url);

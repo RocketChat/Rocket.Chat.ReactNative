@@ -14,10 +14,26 @@ type VideoConfMessageIconProps = {
 	discussionRid?: string;
 };
 
-export const VideoConferenceBaseContainer = ({ variant, children, discussionRid }: VideoConfMessageIconProps): ReactElement => {
+const JoinDiscussionButton = ({ discussionRid }: { discussionRid?: string }): ReactElement | null => {
 	const { colors } = useTheme();
 	const style = useStyle();
 	const onDiscussionPress = useOnDiscussionPress();
+	if (!discussionRid || !onDiscussionPress) return null;
+	return (
+		<Touch
+			style={style.actionButton}
+			onPress={() => onDiscussionPress(discussionRid)}
+			accessibilityLabel={i18n.t('Join_discussion')}
+			accessibilityRole='button'
+			testID='video-conf-join-discussion'>
+			<CustomIcon name='discussions' size={20} color={colors.fontDefault} />
+		</Touch>
+	);
+};
+
+export const VideoConferenceBaseContainer = ({ variant, children, discussionRid }: VideoConfMessageIconProps): ReactElement => {
+	const { colors } = useTheme();
+	const style = useStyle();
 
 	const iconStyle: { [key: string]: { icon: TIconsName; color: string; backgroundColor: string; label: string } } = {
 		ended: {
@@ -59,16 +75,7 @@ export const VideoConferenceBaseContainer = ({ variant, children, discussionRid 
 					</View>
 					<Text style={style.infoContainerText}>{iconStyle[variant].label}</Text>
 				</View>
-				{discussionRid && onDiscussionPress ? (
-					<Touch
-						style={style.actionButton}
-						onPress={() => onDiscussionPress(discussionRid)}
-						accessibilityLabel={i18n.t('Join_discussion')}
-						accessibilityRole='button'
-						testID='video-conf-join-discussion'>
-						<CustomIcon name='discussions' size={20} color={colors.fontDefault} />
-					</Touch>
-				) : null}
+				<JoinDiscussionButton discussionRid={discussionRid} />
 			</View>
 			<View style={style.callToActionContainer}>{children}</View>
 		</View>

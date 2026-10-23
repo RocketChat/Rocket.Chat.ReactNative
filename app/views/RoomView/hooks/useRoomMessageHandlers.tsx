@@ -48,15 +48,15 @@ export function useRoomMessageHandlers({
 		if (!drid || openingDiscussion.current) return;
 		openingDiscussion.current = true;
 		try {
-			const discussion = await getRoomInfo(drid);
+			const discussion = await getRoomInfo(drid).catch(e => {
+				log(e);
+				return null;
+			});
 			if (!discussion) {
 				showToast(I18n.t('Room_not_found'));
 				return;
 			}
 			await goRoom({ item: discussion as TGoRoomItem, isMasterDetail });
-		} catch (e) {
-			log(e);
-			showToast(I18n.t('Room_not_found'));
 		} finally {
 			openingDiscussion.current = false;
 		}
