@@ -1,8 +1,9 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
-import { loginWithDeepLink, navigateToRoom, LONG_TIMEOUT, expectVisible, scrollAndTap } from '~e2e/support/flows';
+import { loginWithDeepLink, LONG_TIMEOUT, expectVisible, scrollAndTap } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
@@ -12,7 +13,7 @@ test('marks a message as unread', { tags: ['test-1'] }, async fixtures => {
 	const otherUser = await createUser();
 	await sendMessage(otherUser, `@${user.username}`, 'message-mark-as-unread');
 	await loginWithDeepLink(fixtures, user);
-	await navigateToRoom(fixtures, otherUser.username);
+	await openRoom(fixtures, otherUser.username);
 
 	await expectVisible(fixtures, 'message-content-message-mark-as-unread');
 	await screen.getByTestId('message-content-message-mark-as-unread').longPress();

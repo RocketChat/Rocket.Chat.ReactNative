@@ -3,12 +3,6 @@ name: E2E Build Android
 on:
   workflow_call:
     secrets:
-      KEYSTORE_OFFICIAL_BASE64:
-        required: true
-      KEYSTORE_OFFICIAL_PASSWORD:
-        required: true
-      KEYSTORE_OFFICIAL_ALIAS:
-        required: true
       BUGSNAG_KEY_OFFICIAL:
         required: true
     inputs:
@@ -53,6 +47,14 @@ jobs:
     env:
       APK_PATH: android/app/build/outputs/apk/release/app-release.apk
       REACT_RES_DIR: android/app/build/generated/res/react/release
+      # Also links Appduct into the Release build so e2e tests can drive setup through it.
+      # Never set it in a job whose build can ship.
+      RUNNING_E2E_TESTS: true
+      # The APK is signed with a key made for this run, so it can't install over a store build.
+      KEYSTORE_PATH: android/app/release.keystore
+      KEYSTORE_PASSWORD: e2e-throwaway
+      KEY_PASSWORD: e2e-throwaway
+      KEY_ALIAS: e2e
 
     outputs:
       artifact_name: Android APK
@@ -97,9 +99,11 @@ jobs:
         with:
           gradle-version: wrapper
 
-      - name: Decode Keystore
+      - name: Create throwaway keystore
         run: |
-          echo "${{ secrets.KEYSTORE_OFFICIAL_BASE64 }}" | base64 -d > android/app/release.keystore
+          keytool -genkeypair -noprompt -keystore "$KEYSTORE_PATH" \
+            -storepass "$KEYSTORE_PASSWORD" -keypass "$KEY_PASSWORD" -alias "$KEY_ALIAS" \
+            -keyalg RSA -keysize 2048 -validity 7 -dname "CN=Rocket.Chat E2E"
 
       - name: Swap JS bundle into cached APK
         id: swap
@@ -113,12 +117,6 @@ jobs:
           mkdir -p "$(dirname "$APK_PATH")"
           .github/scripts/swap-android-bundle.sh .native-cache/app-release.apk android/app/build/generated/assets/react/release/index.android.bundle "$APK_PATH"
           echo "swapped=true" >> "$GITHUB_OUTPUT"
-        env:
-          RUNNING_E2E_TESTS: true
-          KEYSTORE_PATH: android/app/release.keystore
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}
 
       - name: Cache Android build
         if: ${{ steps.swap.outputs.swapped != 'true' }}
@@ -139,17 +137,15 @@ jobs:
           echo -e "reactNativeArchitectures=arm64-v8a,x86_64" >> ./gradle.properties
           echo -e "VERSIONCODE=999999" >> ./gradle.properties
           echo -e "KEYSTORE=release.keystore" >> ./gradle.properties
-          echo -e 'KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
-          echo -e 'KEY_ALIAS=${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}' >> ./gradle.properties
-          echo -e 'KEY_PASSWORD=${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
+          echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+          echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
+          echo -e "KEY_PASSWORD=$KEY_PASSWORD" >> ./gradle.properties
           echo -e 'BugsnagAPIKey=${{ secrets.BUGSNAG_KEY_OFFICIAL }}' >> ./gradle.properties
 
       - name: Build Android Release APK
         if: ${{ steps.swap.outputs.swapped != 'true' }}
         working-directory: android
         run: ./gradlew assembleRelease --build-cache --parallel --max-workers=4 --no-daemon --stacktrace
-        env:
-          RUNNING_E2E_TESTS: true
 
       - name: Prepare native build for cache
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
@@ -171,3 +167,4 @@ jobs:
         with:
           name: Android APK
           path: ${{ env.APK_PATH }}
+          retention-days: 1

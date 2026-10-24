@@ -1,4 +1,4 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 
 import { createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
 import { loginWithDeepLink } from '~e2e/support/flows';

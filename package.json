@@ -28,7 +28,7 @@
 		"doctor": "npx react-doctor@latest"
 	},
 	"dependencies": {
-		"@appduct/react-native": "^0.13.0",
+		"@appduct/react-native": "^0.16.0",
 		"@bugsnag/react-native": "8.4.0",
 		"@expo/ui": "~57.0.19",
 		"@expo/vector-icons": "^15.0.3",
@@ -166,6 +166,7 @@
 		]
 	},
 	"devDependencies": {
+		"@appduct/e2e": "0.16.0",
 		"@babel/core": "~7.29.7",
 		"@babel/plugin-proposal-decorators": "~7.25.9",
 		"@babel/plugin-transform-named-capturing-groups-regex": "~7.25.9",
@@ -206,7 +207,7 @@
 		"babel-plugin-transform-inline-environment-variables": "^0.4.4",
 		"babel-plugin-transform-remove-console": "^6.9.4",
 		"babel-preset-expo": "~57.0.12",
-		"e2e": "0.18.0",
+		"e2e": "0.21.2",
 		"emojibase-data": "17.0.0",
 		"eslint-plugin-react-native": "~5.0.0",
 		"fast-glob": "3.3.3",

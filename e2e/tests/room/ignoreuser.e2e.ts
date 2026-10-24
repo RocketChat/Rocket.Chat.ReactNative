@@ -1,12 +1,11 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
-import { createRandomRoom, createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
+import { openRoom } from '~e2e/support/appduct';
+import { createDM, createRandomRoom, createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
 import {
 	hideKeyboard,
 	loginWithDeepLink,
-	navigateToRoom,
-	searchAndNavigateRoom,
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenVisible,
@@ -53,23 +52,24 @@ test('blocks, ignores and reports a user', { tags: ['test-4'] }, async fixtures 
 	const user = await createUser();
 	const otherUser = await createUser();
 	const room = await createRandomRoom(user);
+	await createDM(user, otherUser.username);
 	await loginWithDeepLink(fixtures, user);
 
-	await searchAndNavigateRoom(fixtures, otherUser.username);
+	await openRoom(fixtures, otherUser.username);
 	await navigateToInfoView(fixtures);
 	await toggleUserAction(fixtures, 'Block', 'Unblock');
 	await goBackThrough(fixtures, INFO_VIA_ACTIONS_TO_ROOMS_LIST);
-	await navigateToRoom(fixtures, otherUser.username);
+	await openRoom(fixtures, otherUser.username);
 	await expect(screen.getByText('This room is blocked')).toBeVisible({ timeout: LONG_TIMEOUT });
 
 	await navigateToInfoView(fixtures);
 	await toggleUserAction(fixtures, 'Unblock', 'Block');
 	await goBackThrough(fixtures, INFO_VIA_ACTIONS_TO_ROOMS_LIST);
-	await navigateToRoom(fixtures, otherUser.username);
+	await openRoom(fixtures, otherUser.username);
 	await expectVisible(fixtures, 'message-composer');
 	await backToRoomsList(fixtures);
 
-	await searchAndNavigateRoom(fixtures, room.name);
+	await openRoom(fixtures, room.name);
 	await sendMessage(otherUser, room._id, 'message-01');
 	await sendMessage(otherUser, room._id, 'message-02');
 	await expectVisible(fixtures, 'message-content-message-02');
@@ -77,7 +77,7 @@ test('blocks, ignores and reports a user', { tags: ['test-4'] }, async fixtures 
 	await toggleUserAction(fixtures, 'Ignore', 'Unignore');
 	await goBackThrough(fixtures, INFO_VIA_MESSAGE_TO_ROOMS_LIST);
 
-	await searchAndNavigateRoom(fixtures, room.name);
+	await openRoom(fixtures, room.name);
 	const ignoredMessage = screen.getByText(/Message ignored\. Tap to display it/).first();
 	await expect(ignoredMessage).toBeVisible({ timeout: LONG_TIMEOUT });
 	await ignoredMessage.tap();
@@ -86,16 +86,16 @@ test('blocks, ignores and reports a user', { tags: ['test-4'] }, async fixtures 
 	await openUserInfoFromMessage(fixtures, otherUser.username);
 	await toggleUserAction(fixtures, 'Unignore', 'Ignore');
 	await goBackThrough(fixtures, INFO_VIA_MESSAGE_TO_ROOMS_LIST);
-	await searchAndNavigateRoom(fixtures, room.name);
+	await openRoom(fixtures, room.name);
 	await expect(screen.getByTestId('message-content-message-02').first()).toBeVisible({ timeout: LONG_TIMEOUT });
 
 	await backToRoomsList(fixtures);
-	await searchAndNavigateRoom(fixtures, otherUser.username);
+	await openRoom(fixtures, otherUser.username);
 	await navigateToInfoView(fixtures);
 	await reportUser(fixtures, otherUser.username);
 
 	await backToRoomsList(fixtures);
-	await searchAndNavigateRoom(fixtures, room.name);
+	await openRoom(fixtures, room.name);
 	await openUserInfoFromMessage(fixtures, otherUser.username);
 	await reportUser(fixtures, room.name);
 });

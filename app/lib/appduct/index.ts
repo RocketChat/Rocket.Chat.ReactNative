@@ -1,6 +1,7 @@
 import '@appduct/react-native/auto';
 import { jsonSchema, registerTool } from '@appduct/react-native';
 import { Q } from '@nozbe/watermelondb';
+import { first, firstValueFrom, fromEvent, takeUntil } from 'rxjs';
 
 import { deepLinkingOpen } from '~/actions/deepLinking';
 import database from '~/lib/database';
@@ -73,11 +74,41 @@ const waitForNavigatorReady = (signal: AbortSignal) =>
 		});
 	});
 
+const waitForNavigationState = <T>(find: () => T | null, signal: AbortSignal) =>
+	new Promise<T>((resolve, reject) => {
+		const navigation = Navigation.navigationRef.current!;
+		const resolveIfFound = () => {
+			const found = find();
+			if (found) {
+				unsubscribe();
+				resolve(found);
+			}
+		};
+		const unsubscribe = navigation.addListener('state', resolveIfFound);
+		signal.addEventListener('abort', () => {
+			unsubscribe();
+			reject(signal.reason);
+		});
+		resolveIfFound();
+	});
+
+const insideNavigators = ['InsideStack', 'MasterDetailStack'];
+
+const isInsideNavigatorMounted = () =>
+	!!Navigation.navigationRef.current?.getRootState()?.routes.some(route => insideNavigators.includes(route.name));
+
+const isInShareExtension = (state: IApplicationState) =>
+	state.app.root === RootEnum.ROOT_SHARE_EXTENSION || state.app.root === RootEnum.ROOT_LOADING_SHARE_EXTENSION;
+
+const hasLeftShareExtension = (state: IApplicationState) => hasStarted(state) && !isInShareExtension(state);
+
 const waitForInside = async (signal: AbortSignal) => {
-	await waitForAppStart(signal);
+	await waitUntil(hasLeftShareExtension, signal);
 	if (store.getState().app.root !== RootEnum.ROOT_INSIDE) {
 		throw new Error('Not logged in to a workspace');
 	}
+	await waitForNavigatorReady(signal);
+	await waitForNavigationState(isInsideNavigatorMounted, signal);
 };
 
 const showDrawer = () => Navigation.popTo('DrawerNavigator');
@@ -87,6 +118,7 @@ const openRoom = (room: TSubscriptionModel, isMasterDetail: boolean) => {
 		showDrawer();
 		Navigation.navigate('ChatsStackNavigator');
 	}
+	Navigation.popToTop(isMasterDetail);
 	navigateToRoom({ item: room, isMasterDetail });
 };
 
@@ -171,22 +203,7 @@ const findRoute = (screen: string, rid: string | undefined) => {
 };
 
 const waitForRoute = (screen: string, rid: string | undefined, signal: AbortSignal) =>
-	new Promise<{ route: string; rid: string | null }>((resolve, reject) => {
-		const navigation = Navigation.navigationRef.current!;
-		const resolveIfFocused = () => {
-			const focused = findRoute(screen, rid);
-			if (focused) {
-				unsubscribe();
-				resolve(focused);
-			}
-		};
-		const unsubscribe = navigation.addListener('state', resolveIfFocused);
-		signal.addEventListener('abort', () => {
-			unsubscribe();
-			reject(signal.reason);
-		});
-		resolveIfFocused();
-	});
+	waitForNavigationState(() => findRoute(screen, rid), signal);
 
 const isConnected = (state: IApplicationState) =>
 	state.meteor.connected && state.login.isAuthenticated && state.app.root === RootEnum.ROOT_INSIDE;
@@ -337,9 +354,25 @@ registerTool({
 	}
 });
 
+const waitForSubscription = async (name: string, signal: AbortSignal) => {
+	const [subscription] = await firstValueFrom(
+		database.active
+			.get<TSubscriptionModel>(SUBSCRIPTIONS_TABLE)
+			.query(Q.or(Q.where('name', name), Q.where('fname', name)), Q.take(1))
+			.observe()
+			.pipe(
+				first(subscriptions => subscriptions.length > 0),
+				takeUntil(fromEvent(signal, 'abort'))
+			)
+	);
+	return subscription;
+};
+
 registerTool({
 	name: 'open_room',
-	description: 'Open a room the logged-in user is subscribed to, matched by its name or display name.',
+	description:
+		'Open a room the logged-in user is subscribed to, matched by its name or display name. Waits for the subscription to reach the local database, so a room created through the REST API just before can be opened.',
+	timeoutMs: 30_000,
 	inputSchema: jsonSchema<{ name: string }>({
 		type: 'object',
 		properties: {
@@ -355,13 +388,7 @@ registerTool({
 	}),
 	handler: async ({ name }, { signal }) => {
 		await waitForInside(signal);
-		const [subscription] = await database.active
-			.get(SUBSCRIPTIONS_TABLE)
-			.query(Q.or(Q.where('name', name), Q.where('fname', name)), Q.take(1))
-			.fetch();
-		if (!subscription) {
-			throw new Error(`No subscribed room named ${name}`);
-		}
+		const subscription = await waitForSubscription(name, signal);
 		openRoom(subscription, getIsMasterDetail());
 		return { rid: subscription.rid, name: subscription.name, type: subscription.t };
 	}
@@ -437,7 +464,6 @@ registerTool({
 			throw new Error(`Unsupported screen ${screen}. Supported: ${supportedScreens.join(', ')}`);
 		}
 		await waitForInside(signal);
-		await waitForNavigatorReady(signal);
 		const isMasterDetail = getIsMasterDetail();
 		const isRoomScreen = screen in roomScreenParams;
 		if (isRoomScreen) {

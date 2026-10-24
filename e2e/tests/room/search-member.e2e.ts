@@ -1,11 +1,11 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
 	fillSettled,
 	loginWithDeepLink,
-	navigateToRoom,
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenVisible,
@@ -38,7 +38,7 @@ test('searches members of a room', { tags: ['test-5'] }, async fixtures => {
 	const noMembersFound = screen.getByText('No members found');
 
 	await loginWithDeepLink(fixtures, user);
-	await navigateToRoom(fixtures, 'general');
+	await openRoom(fixtures, 'general');
 	await openRoomActions(fixtures);
 	await tapWhenVisible(fixtures, 'room-actions-members');
 	await expect(headerSearchInput(fixtures, 'room-members-view-search')).toBeVisible({ timeout: LONG_TIMEOUT });

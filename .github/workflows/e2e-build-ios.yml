@@ -32,6 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      # Must match ios-build, so the fingerprint sees Appduct linked into Release.
+      RUNNING_E2E_TESTS: true
 
     outputs:
       cache-key: ${{ steps.fingerprint.outputs.cache-key }}
@@ -60,6 +63,9 @@ jobs:
 
     env:
       APP_PATH: .native-cache/Rocket.Chat.app
+      # Also links Appduct into the Release build so e2e tests can drive setup through it.
+      # Never set it in a job whose build can ship.
+      RUNNING_E2E_TESTS: true
 
     steps:
       - name: Checkout repository
@@ -79,8 +85,6 @@ jobs:
       - name: Bundle JS into cached app
         if: ${{ steps.native-cache.outputs.cache-hit == 'true' }}
         run: .github/scripts/bundle-ios-app.sh "$APP_PATH"
-        env:
-          RUNNING_E2E_TESTS: true
 
       - name: Set up Xcode
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
@@ -139,7 +143,6 @@ jobs:
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         run: |
           cd ios
-          export RUNNING_E2E_TESTS=true
           bundle exec fastlane ios build_simulator \
             disable_xcpretty:false \
             skip_package_ipa:true \
@@ -151,7 +154,6 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
-          RUNNING_E2E_TESTS: true
 
       - name: Find latest xcarchive path
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}

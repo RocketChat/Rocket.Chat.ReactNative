@@ -1,5 +1,6 @@
 import type { Locator, TestFixtures } from 'e2e';
 import type { Device } from '@e2e-dev/mobile';
+import type { Appduct } from '@appduct/e2e';
 import { expect } from 'e2e';
 import { TestError } from 'e2e/engine';
 
@@ -7,7 +8,7 @@ import { getDeepLink, login, type Credentials } from './api';
 import { data } from './data';
 import { delay } from './timing';
 
-export type Fixtures = TestFixtures & { device: Device };
+export type Fixtures = TestFixtures & { device: Device; appduct: Appduct };
 
 export const LONG_TIMEOUT = 60_000;
 
@@ -562,7 +563,14 @@ export const goBack = async ({ screen, platform }: Fixtures) => {
 	if (platform === 'ios') {
 		backButtons.push(screen.getByRole('button', { name: IOS_BACK_LABEL }).first());
 	}
-	await tapWhenUncovered(await firstVisible(backButtons, BACK_STEP_TIMEOUT));
+	for (let attempt = 1; ; attempt += 1) {
+		try {
+			await tapWhenUncovered(await firstVisible(backButtons, BACK_STEP_TIMEOUT));
+			return;
+		} catch (error) {
+			if (errorCode(error) !== 'LOCATOR_NOT_FOUND' || attempt >= BACK_ATTEMPTS) throw error;
+		}
+	}
 };
 
 export const goBackUntil = async (
@@ -659,14 +667,6 @@ export const openRoomActions = async (fixtures: Fixtures) => {
 	await expectVisible(fixtures, 'room-header');
 	await fixtures.screen.getByTestId('room-header').first().tap();
 	await expectVisible(fixtures, 'room-actions-view');
-};
-
-export const navigateToRoomActions = async (fixtures: Fixtures, room: string) => {
-	if (!(await isVisibleNow(fixtures.screen.getByTestId('room-view')))) {
-		await searchAndNavigateRoom(fixtures, room);
-	}
-	await expectVisible(fixtures, 'room-view');
-	await openRoomActions(fixtures);
 };
 
 const SEND_RESPONSE_TIMEOUT = 10_000;
