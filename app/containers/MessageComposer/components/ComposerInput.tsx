@@ -1,5 +1,5 @@
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { TextInput, StyleSheet, type TextInputProps, InteractionManager, Text, View } from 'react-native';
+import { TextInput, StyleSheet, type TextInputProps, Text, View } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
@@ -335,7 +335,7 @@ export const ComposerInput = memo(
 
 		useFocusEffect(
 			useCallback(() => {
-				const task = InteractionManager.runAfterInteractions(() => {
+				const immediate = setImmediate(() => {
 					emitter.on('addMarkdown', ({ style }) => {
 						const { start, end } = selectionRef.current;
 						const text = textRef.current;
@@ -360,7 +360,7 @@ export const ComposerInput = memo(
 				return () => {
 					emitter.off('addMarkdown');
 					emitter.off('toolbarMention');
-					task?.cancel();
+					clearImmediate(immediate);
 				};
 			}, [autocompleteType, setInput, setAutocompleteParams])
 		);
