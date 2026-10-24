@@ -289,6 +289,53 @@ describe('useMediaAutoDownload', () => {
 		});
 	});
 
+	describe('image thumbnail', () => {
+		const thumbnail: IAttachment = {
+			image_url: '/file-upload/thumb/photo.png',
+			title_link: '/file-upload/full/photo.png',
+			image_type: 'image/jpeg'
+		};
+		const SERVER = 'https://open.rocket.chat';
+
+		it('loads image_url instead of title_link', async () => {
+			mockFetchAutoDownloadEnabled.mockReturnValue(true);
+			const { result } = renderMediaHook({ file: thumbnail });
+			await waitFor(() => expect(result.current.status).toBe('downloaded'));
+			expect(result.current.url).toBe(`${SERVER}/file-upload/thumb/photo.png`);
+			expect(mockDownloadMediaFile).toHaveBeenCalledWith(
+				expect.objectContaining({ downloadUrl: `${SERVER}/file-upload/thumb/photo.png` })
+			);
+		});
+
+		it('keeps the remote title_link for the full-size preview after the thumbnail downloads', async () => {
+			mockFetchAutoDownloadEnabled.mockReturnValue(true);
+			const showAttachment = jest.fn();
+			const { result } = renderMediaHook({ file: thumbnail, showAttachment });
+			await waitFor(() => expect(result.current.status).toBe('downloaded'));
+
+			act(() => result.current.onPress());
+			expect(showAttachment).toHaveBeenCalledWith(expect.objectContaining({ title_link: '/file-upload/full/photo.png' }));
+		});
+
+		it('uses the local title_link when the full-size file is already cached', () => {
+			const { result } = renderMediaHook({ file: { ...thumbnail, title_link: 'file://full/photo.png' } });
+			expect(result.current.url).toBe('file://full/photo.png');
+		});
+
+		it('falls back to title_link when image_url is absent', () => {
+			const { result } = renderMediaHook({ file: { title_link: '/file-upload/full/photo.png', image_type: 'image/png' } });
+			expect(result.current.url).toBe(`${SERVER}/file-upload/full/photo.png`);
+		});
+
+		it('still replaces title_link when image_url and title_link are the same file', async () => {
+			mockFetchAutoDownloadEnabled.mockReturnValue(true);
+			const same = '/file-upload/same/photo.png';
+			const { result } = renderMediaHook({ file: { image_url: same, title_link: same } });
+			await waitFor(() => expect(result.current.status).toBe('downloaded'));
+			expect(result.current.currentFile.title_link).toBe('file://downloaded');
+		});
+	});
+
 	describe('attachment credentials', () => {
 		beforeEach(() => {
 			mockGetState.mockReturnValue({ settings: { FileUpload_ProtectFiles: true } });
@@ -303,12 +350,15 @@ describe('useMediaAutoDownload', () => {
 		it('does not rewrite the credentials already on an untrusted url', () => {
 			const attackerUrl = 'https://evil.example/x.png?rc_token=attacker&rc_uid=attacker';
 			expect(getUrl({ image_url: attackerUrl })).toBe(attackerUrl);
-			expect(getUrl({ title_link: attackerUrl, image_url: URL })).toBe(attackerUrl);
+		});
+
+		it('requests the thumbnail from the workspace and never sends credentials to an attacker title_link', () => {
+			const attackerUrl = 'https://evil.example/x.png?rc_token=attacker&rc_uid=attacker';
+			expect(getUrl({ title_link: attackerUrl, image_url: URL })).toBe(`${URL}?rc_token=${USER.token}&rc_uid=${USER.id}`);
 		});
 
 		it.each([
 			['plain image_url on attacker host', { image_url: 'https://evil.example/pixel.jpg' }],
-			['title_link on attacker host, image_url on the real server', { title_link: 'https://evil.example/x.jpg', image_url: URL }],
 			[
 				'title_link on attacker host, image_url on a look-alike host',
 				{ title_link: 'https://evil.example/x.jpg', image_url: 'https://open.rocket.chat.evil.example/x.png' }
