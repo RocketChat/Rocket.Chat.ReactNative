@@ -285,7 +285,8 @@ export type MessageTypesValues =
 	| 'message_pinned'
 	| 'message_snippeted'
 	| 'jitsi_call_started'
-	| 'abac-removed-user-from-room';
+	| 'abac-removed-user-from-room'
+	| 'abac-removed-users-from-room';
 
 export interface IAttachmentTranslations {
 	[k: string]: string;

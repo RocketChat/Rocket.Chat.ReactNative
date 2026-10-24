@@ -17,6 +17,8 @@
   "ABAC_disabled_action_reason": "غير متاح في الغرف المدارة بواسطة ABAC",
   "ABAC_managed": "مدار بواسطة ABAC",
   "ABAC_managed_description": "فقط المستخدمون المتوافقون لديهم حق الوصول إلى الغرف التي يتم التحكم فيها بالوصول المستند إلى السمات. تحدد السمات الوصول إلى الغرفة.",
+  "abac_removed__count__member_from_the_room": "غيّر سمات الغرفة، وأزال ABAC عضوًا واحدًا",
+  "abac_removed__count__members_from_the_room": "غيّر سمات الغرفة، وأزال ABAC عدد الأعضاء: {{count}}",
   "abac_removed_user_from_the_room": "تمت إزالته بواسطة ABAC",
   "ABAC_room_attributes": "سمات الغرفة",
   "Accessibility": "إمكانية الوصول",

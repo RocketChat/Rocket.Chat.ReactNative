@@ -17,6 +17,8 @@
   "ABAC_disabled_action_reason": "No disponible en salas gestionadas por ABAC",
   "ABAC_managed": "Gestionado por ABAC",
   "ABAC_managed_description": "Solo los usuarios compatibles tienen acceso a las salas controladas por acceso basado en atributos. Los atributos determinan el acceso a la sala.",
+  "abac_removed__count__member_from_the_room": "cambió los atributos de la sala y {{count}} miembro fue eliminado por ABAC",
+  "abac_removed__count__members_from_the_room": "cambió los atributos de la sala y {{count}} miembros fueron eliminados por ABAC",
   "abac_removed_user_from_the_room": "fue eliminado por ABAC",
   "ABAC_room_attributes": "Atributos de la sala",
   "Accessibility": "Accesibilidad",
