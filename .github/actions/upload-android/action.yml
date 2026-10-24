@@ -1,11 +1,8 @@
 name: 'Upload Android'
-description: 'Downloads AAB + Manifest, uploads to Play Store'
+description: 'Downloads AAB + Manifest, uploads to Play Store Open Testing'
 inputs:
   FASTLANE_GOOGLE_SERVICE_ACCOUNT:
     description: 'Google service account key for upload'
-    required: true
-  GITHUB_TOKEN:
-    description: 'GitHub token for commenting'
     required: true
   BUILD_VERSION:
     description: 'Build version for build'
@@ -61,28 +58,5 @@ runs:
 
     - name: Fastlane Play Store Upload
       working-directory: android
-      run: |
-        if [[ ${{ inputs.trigger }} == "pr" ]]; then
-          bundle exec fastlane android beta
-        fi
-        if [[ ${{ inputs.trigger }} == "develop" ]]; then
-          bundle exec fastlane android open_testing
-        fi
-      shell: bash
-
-    - name: Leave a comment on PR
-      if: ${{ inputs.trigger == 'pr' }}
-      env:
-        GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        PR_NUMBER: ${{ github.event.pull_request.number }}
-        BUILD_VERSION: ${{ inputs.BUILD_VERSION }}
-      run: |
-        gradle_file="android/app/build.gradle"
-        VERSION_NAME=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
-
-        version_info="Rocket.Chat $VERSION_NAME.$BUILD_VERSION"
-
-        message="**Android Build Available**"$'\n\n'"$version_info"
-
-        gh pr comment "$PR_NUMBER" --body "$message"
+      run: bundle exec fastlane android open_testing
       shell: bash
