@@ -25,15 +25,6 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        maven {
-            // expo-camera bundles a custom com.google.android:cameraview
-            url "$rootDir/../node_modules/expo-camera/android/maven"
-        }
-    }
-}
-
 subprojects { subproject ->	
     afterEvaluate {	
         if (!project.name.equalsIgnoreCase("app") && project.hasProperty("android")) {	
