@@ -14,3 +14,8 @@ export interface IFileUpload {
 	send(): Promise<TRoomsMediaResponse>;
 	cancel(): void;
 }
+
+export interface IUploadTracker {
+	progress(loaded: number, total: number): void;
+	end(): void;
+}

@@ -3,10 +3,29 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '~/definitions';
 import database from '~/lib/database';
 import { Encryption } from '~/lib/encryption';
-import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
+import { type TGetContentResult } from '~/lib/encryption/definitions';
+import { cancelUpload, copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
 import FileUpload from '../helpers/fileUpload';
 import { type IFormData } from '../helpers/fileUpload/definitions';
+import { trackUpload } from '../helpers/fileUpload/uploadService';
 import fetch from '../helpers/fetch';
+
+const getMediaConfirmBody = ({
+	file,
+	tmid,
+	content
+}: {
+	file: Pick<TSendFileMessageFileInfo, 'msg' | 'description'>;
+	tmid: string | undefined;
+	content: TGetContentResult | undefined;
+}) =>
+	JSON.stringify({
+		msg: (content ? '' : file.msg) || undefined,
+		tmid: tmid || undefined,
+		description: file.description || undefined,
+		t: content ? 'e2e' : undefined,
+		content
+	});
 
 export async function sendFileMessageV2(
 	rid: string,
@@ -17,7 +36,14 @@ export async function sendFileMessageV2(
 	isForceTryAgain?: boolean
 ): Promise<void> {
 	let uploadPath: string | null = '';
-	let uploadRecord: TUploadModel | null;
+	let uploadRecord: TUploadModel | null = null;
+	let cancelled = false;
+	const tracker = trackUpload(() => {
+		cancelled = true;
+		if (uploadRecord) {
+			cancelUpload(uploadRecord, rid);
+		}
+	});
 	try {
 		const { id, token } = user;
 		const headers = {
@@ -32,8 +58,15 @@ export async function sendFileMessageV2(
 		if (!uploadPath || !uploadRecord) {
 			throw new Error("Couldn't create upload record");
 		}
+		if (cancelled) {
+			await cancelUpload(uploadRecord, rid);
+			return;
+		}
 		const { file, getContent, fileContent } = await Encryption.encryptFile(rid, fileInfo);
 		file.path = await copyFileToCacheDirectoryIfNeeded(file.path, file.name);
+		if (cancelled) {
+			return;
+		}
 
 		const formData: IFormData[] = [];
 		formData.push({
@@ -50,6 +83,7 @@ export async function sendFileMessageV2(
 		}
 
 		uploadQueue[uploadPath] = new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, async (loaded, total) => {
+			tracker.progress(loaded, total);
 			try {
 				await db.write(async () => {
 					await uploadRecord?.update(u => {
@@ -66,19 +100,16 @@ export async function sendFileMessageV2(
 		if (getContent) {
 			content = await getContent(response.file._id, response.file.url);
 		}
+		if (cancelled) {
+			return;
+		}
 		await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${response.file._id}`, {
 			method: 'POST',
 			headers: {
 				...headers,
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({
-				msg: (content ? '' : file.msg) || undefined,
-				tmid: tmid || undefined,
-				description: file.description || undefined,
-				t: content ? 'e2e' : undefined,
-				content
-			})
+			body: getMediaConfirmBody({ file, tmid, content })
 		});
 		await db.write(async () => {
 			await uploadRecord?.destroyPermanently();
@@ -91,5 +122,7 @@ export async function sendFileMessageV2(
 			await persistUploadError(fileInfo.path, rid);
 			throw e;
 		}
+	} finally {
+		tracker.end();
 	}
 }

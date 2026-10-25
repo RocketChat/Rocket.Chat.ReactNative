@@ -26,6 +26,7 @@ import chat.rocket.reactnative.VoipTurboPackage
 import chat.rocket.reactnative.scroll.InvertedScrollPackage
 import chat.rocket.reactnative.input.ExternalInputPackage
 import chat.rocket.reactnative.biometric.BiometricEnrollmentPackage
+import chat.rocket.reactnative.upload.UploadServicePackage
 
 /**
  * Main Application class.
@@ -54,6 +55,7 @@ open class MainApplication : Application(), ReactApplication {
               add(InvertedScrollPackage())
               add(ExternalInputPackage())
               add(BiometricEnrollmentPackage())
+              add(UploadServicePackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
