@@ -9,8 +9,6 @@
 
 #import <Foundation/NSURLSession.h>
 
-@class MMKVBridge;
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Challenge : NSObject
@@ -18,7 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
  didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
   completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler
   NS_SWIFT_NAME(runChallenge(_:didReceiveChallenge:completionHandler:));
-+ (MMKVBridge *)getMMKVInstance NS_SWIFT_UNAVAILABLE("ObjC-only helper");
++ (nullable NSURLCredential *)clientCertificateCredential:(NSURLAuthenticationChallenge *)challenge
+  NS_SWIFT_UNAVAILABLE("ObjC-only helper");
++ (nullable NSURLCredential *)clientCertificateCredentialForHost:(NSString *)host
+  NS_SWIFT_UNAVAILABLE("ObjC-only helper");
 @end
 
 NS_ASSUME_NONNULL_END
