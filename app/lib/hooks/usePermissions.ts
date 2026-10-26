@@ -26,9 +26,10 @@ const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 		if (!rid) {
 			return;
 		}
+		let isCancelled = false;
 		let subSubscription: Subscription;
 		getSubscriptionByRoomId(rid).then(sub => {
-			if (!sub) {
+			if (isCancelled || !sub) {
 				return;
 			}
 			const observable = sub.observe();
@@ -42,13 +43,13 @@ const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 		});
 
 		return () => {
+			isCancelled = true;
 			if (subSubscription && subSubscription?.unsubscribe) {
 				subSubscription.unsubscribe();
 			}
 		};
 	}, [rid]);
 
-	// Ignore roles captured for a previous rid so stale roles never leak after rid changes.
 	return rolesByRid.rid === rid ? rolesByRid.roles : EMPTY_ROLES;
 };
 
