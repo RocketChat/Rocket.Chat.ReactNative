@@ -137,13 +137,6 @@ const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 		};
 		yield navigate({ params: navigateParams });
 
-		yield call(
-			() =>
-				new Promise(resolve => {
-					setImmediate(() => resolve());
-				})
-		);
-
 		showToast(I18n.t('VoIP_Call_Issue'));
 	} catch (e) {
 		log(e);

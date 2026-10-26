@@ -335,32 +335,29 @@ export const ComposerInput = memo(
 
 		useFocusEffect(
 			useCallback(() => {
-				const immediate = setImmediate(() => {
-					emitter.on('addMarkdown', ({ style }) => {
-						const { start, end } = selectionRef.current;
-						const text = textRef.current;
-						const markdown = MARKDOWN_STYLES[style];
-						const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
-						setInput(newText, {
-							start: start + markdown.length,
-							end: start === end ? start + markdown.length : end + markdown.length
-						});
+				emitter.on('addMarkdown', ({ style }) => {
+					const { start, end } = selectionRef.current;
+					const text = textRef.current;
+					const markdown = MARKDOWN_STYLES[style];
+					const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
+					setInput(newText, {
+						start: start + markdown.length,
+						end: start === end ? start + markdown.length : end + markdown.length
 					});
-					emitter.on('toolbarMention', () => {
-						if (autocompleteType) {
-							return;
-						}
-						const { start, end } = selectionRef.current;
-						const text = textRef.current;
-						const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
-						setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
-						setAutocompleteParams({ text: '', type: '@' });
-					});
+				});
+				emitter.on('toolbarMention', () => {
+					if (autocompleteType) {
+						return;
+					}
+					const { start, end } = selectionRef.current;
+					const text = textRef.current;
+					const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
+					setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
+					setAutocompleteParams({ text: '', type: '@' });
 				});
 				return () => {
 					emitter.off('addMarkdown');
 					emitter.off('toolbarMention');
-					clearImmediate(immediate);
 				};
 			}, [autocompleteType, setInput, setAutocompleteParams])
 		);

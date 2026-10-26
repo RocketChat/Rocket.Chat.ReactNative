@@ -52,10 +52,8 @@ export function _setUser(ddpMessage: IActiveUsers): void {
 		if (!_setUserTimer.setUserTimer) {
 			_setUserTimer.setUserTimer = setTimeout(() => {
 				const activeUsersBatch = _activeUsers.activeUsers;
-				setImmediate(() => {
-					// @ts-ignore
-					reduxStore.dispatch(setActiveUsers(activeUsersBatch));
-				});
+				// @ts-ignore
+				reduxStore.dispatch(setActiveUsers(activeUsersBatch));
 				_setUserTimer.setUserTimer = null;
 				_activeUsers.activeUsers = {} as IActiveUsers;
 			}, 10000);
