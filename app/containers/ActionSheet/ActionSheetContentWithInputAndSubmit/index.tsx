@@ -1,5 +1,5 @@
 import { useState, createRef, type ReactElement } from 'react';
-import { StyleSheet, Text, type TextInput, type TextInputProps, View } from 'react-native';
+import { StyleSheet, Text, type TextInputProps, View } from 'react-native';
 
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import i18n from '~/i18n';
@@ -7,6 +7,7 @@ import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import Button from '~/containers/Button';
 import { FormTextInput } from '~/containers/TextInput/FormTextInput';
+import { type TextInputInstance } from '~/containers/TextInput/TextInput';
 import { useActionSheet } from '../Provider';
 
 const styles = StyleSheet.create({
@@ -106,7 +107,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 }): ReactElement => {
 	const { colors } = useTheme();
 	const [inputValues, setInputValues] = useState(() => inputs.map(() => ''));
-	const [inputRefs] = useState(() => inputs.map(() => createRef<TextInput>()));
+	const [inputRefs] = useState(() => inputs.map(() => createRef<TextInputInstance>()));
 
 	const handleInputChange = (value: string, index: number) => {
 		const newInputValues = [...inputValues];
