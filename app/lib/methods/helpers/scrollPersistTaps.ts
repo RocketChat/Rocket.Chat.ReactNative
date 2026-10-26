@@ -1,6 +1,6 @@
-import { type FlatListProps } from 'react-native';
+import { type ScrollViewProps } from 'react-native';
 
-const scrollPersistTaps: Partial<FlatListProps<any>> = {
+const scrollPersistTaps: Pick<ScrollViewProps, 'keyboardShouldPersistTaps' | 'keyboardDismissMode'> = {
 	keyboardShouldPersistTaps: 'handled',
 	keyboardDismissMode: 'interactive'
 };

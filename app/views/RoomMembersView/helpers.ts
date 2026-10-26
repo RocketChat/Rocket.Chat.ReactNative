@@ -109,11 +109,12 @@ export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): 
 	}
 };
 
+type TRemoveMemberUpdate = (update: (state: { members: TUserModel[] }) => { members: TUserModel[] }) => void;
+
 const removeFromTeam = async (
 	selectedUser: IUser,
-	updateState: Function,
+	updateState: TRemoveMemberUpdate,
 	room: TSubscriptionModel,
-	members: TUserModel[],
 	selected?: any
 ) => {
 	try {
@@ -126,10 +127,9 @@ const removeFromTeam = async (
 		if (result.success) {
 			const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 			EventEmitter.emit(LISTENER, { message });
-			const newMembers = members.filter(member => member._id !== userId);
-			updateState({
-				members: newMembers
-			});
+			updateState(({ members }) => ({
+				members: members.filter(member => member._id !== userId)
+			}));
 			Navigation.resetTo('RoomMembersView');
 		}
 	} catch (e: any) {
@@ -143,9 +143,8 @@ const removeFromTeam = async (
 
 export const handleRemoveFromTeam = async (
 	selectedUser: TUserModel,
-	updateState: Function,
-	room: TSubscriptionModel,
-	members: TUserModel[]
+	updateState: TRemoveMemberUpdate,
+	room: TSubscriptionModel
 ): Promise<void> => {
 	try {
 		const result = await teamListRoomsOfUser({ teamId: room.teamId as string, userId: selectedUser._id });
@@ -162,14 +161,14 @@ export const handleRemoveFromTeam = async (
 					title: 'Remove_Member',
 					infoText: 'Remove_User_Team_Channels',
 					data: teamChannels,
-					nextAction: (selected: any) => removeFromTeam(selectedUser, updateState, room, members, selected),
+					nextAction: (selected: any) => removeFromTeam(selectedUser, updateState, room, selected),
 					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_remove'))
 				});
 			} else {
 				showConfirmationAlert({
 					message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-					onPress: () => removeFromTeam(selectedUser, updateState, room, members)
+					onPress: () => removeFromTeam(selectedUser, updateState, room)
 				});
 			}
 		}
@@ -177,7 +176,7 @@ export const handleRemoveFromTeam = async (
 		showConfirmationAlert({
 			message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
 			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-			onPress: () => removeFromTeam(selectedUser, updateState, room, members)
+			onPress: () => removeFromTeam(selectedUser, updateState, room)
 		});
 	}
 };
@@ -239,7 +238,7 @@ export const handleOwner = async (
 	isOwner: boolean,
 	username: string,
 	room: TSubscriptionModel,
-	callback: Function
+	callback: () => Promise<void>
 ): Promise<void> => {
 	try {
 		await toggleRoomOwner({
@@ -255,8 +254,8 @@ export const handleOwner = async (
 				room_name: getRoomTitle(room)
 			})
 		});
+		callback();
 	} catch (e) {
 		log(e);
 	}
-	callback();
 };

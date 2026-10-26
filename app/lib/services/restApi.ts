@@ -1291,8 +1291,8 @@ export const getRoomMembers = async ({
 		roomId: rid,
 		offset: skip,
 		count: limit,
-		...(type !== 'all' && { 'status[]': type }),
-		...(filter && { filter })
+		...(type !== 'all' ? { 'status[]': type } : {}),
+		...(filter ? { filter } : {})
 	};
 	if (isMembersOrderedByRoleSupported(serverVersion, roomType)) {
 		const result = await sdk.get('rooms.membersOrderedByRole', params);

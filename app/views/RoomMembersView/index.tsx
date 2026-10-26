@@ -1,6 +1,6 @@
 import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { type ReactElement, useCallback, useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
-import { FlatList, Text } from 'react-native';
+import { type ReactElement, useCallback, useEffect, useLayoutEffect, useReducer, useRef } from 'react';
+import { SectionList, Text } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -20,10 +20,18 @@ import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActio
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { compareServerVersion, getRoomTitle, hasNativeHeaderBar, isGroupChat, useDebounce } from '~/lib/methods/helpers';
+import {
+	compareServerVersion,
+	getRoomTitle,
+	hasNativeHeaderBar,
+	isAndroid,
+	isGroupChat,
+	useDebounce
+} from '~/lib/methods/helpers';
 import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
-import { groupMembersByRole, type TMemberListItem } from '~/lib/methods/helpers/groupMembersByRole';
+import { groupMembersByRole, type TMemberRoleGroup } from '~/lib/methods/helpers/groupMembersByRole';
 import { isMembersOrderedByRoleSupported } from '~/lib/methods/helpers/isMembersOrderedByRoleSupported';
+import { setMemberRole } from '~/lib/methods/helpers/setMemberRole';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import log from '~/lib/methods/helpers/log';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
@@ -49,7 +57,6 @@ import {
 import styles from './styles';
 
 const PAGE_SIZE = 25;
-const LIST_HEADER_OFFSET = 1;
 
 interface IRoomMembersViewState {
 	isLoading: boolean;
@@ -63,13 +70,19 @@ interface IRoomMembersViewState {
 	page: number;
 }
 
+type TStateUpdate = Partial<IRoomMembersViewState> | ((state: IRoomMembersViewState) => Partial<IRoomMembersViewState>);
+
+type TMembersSection = { key?: TMemberRoleGroup; data: TUserModel[] };
+
 const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], page: number) => {
-	const end = membersResult.length < PAGE_SIZE;
-	if (page === 0) {
-		return { members: membersResult, end };
-	}
 	const existingIds = new Set(members.map(m => m._id));
-	return { members: [...members, ...membersResult.filter(member => !existingIds.has(member._id))], end };
+	const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
+
+	// Safety check: if page is 0, we replace the list entirely
+	return {
+		members: page === 0 ? membersResultFiltered : [...members, ...(membersResultFiltered || [])],
+		end: membersResult?.length < PAGE_SIZE
+	};
 };
 
 const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
@@ -94,7 +107,6 @@ const RoomMembersView = (): ReactElement => {
 	const { bottom } = useSafeAreaInsets();
 
 	const latestSearchRequest = useRef(0);
-	const [refreshKey, setRefreshKey] = useState(0);
 
 	const { serverVersion, useRealName, user, loading } = useAppSelector(
 		state => ({
@@ -112,7 +124,10 @@ const RoomMembersView = (): ReactElement => {
 	}, [loading]);
 
 	const [state, updateState] = useReducer(
-		(state: IRoomMembersViewState, newState: Partial<IRoomMembersViewState>) => ({ ...state, ...newState }),
+		(state: IRoomMembersViewState, newState: TStateUpdate) => ({
+			...state,
+			...(typeof newState === 'function' ? newState(state) : newState)
+		}),
 		{
 			isLoading: false,
 			allUsers: true,
@@ -162,7 +177,7 @@ const RoomMembersView = (): ReactElement => {
 	};
 
 	const fetchMembers = useCallback(async () => {
-		const { members, isLoading, end, room, filter, page, allUsers } = state;
+		const { isLoading, end, room, filter, page, allUsers } = state;
 		const { t } = room;
 
 		if (isLoading || end) {
@@ -193,11 +208,11 @@ const RoomMembersView = (): ReactElement => {
 				return;
 			}
 
-			updateState({
-				...mergeMembersPage(members, membersResult, page),
+			updateState(current => ({
+				...mergeMembersPage(page === 0 ? [] : current.members, membersResult, page),
 				isLoading: false,
 				page: page + 1
-			});
+			}));
 		} catch (e) {
 			log(e);
 			if (requestId === latestSearchRequest.current) {
@@ -231,16 +246,14 @@ const RoomMembersView = (): ReactElement => {
 
 	useEffect(() => {
 		fetchMembers();
-	}, [state.filter, state.allUsers, refreshKey]);
+	}, [state.filter, state.allUsers]);
 
-	const refreshAfterRoleChange = async () => {
+	const applyRoleChange = async (userId: string, role: string, isAdded: boolean) => {
 		if (!membersHaveRoles) {
 			await fetchRoomMembersRoles(state.room.t as TRoomType, state.room.rid, updateState);
 			return;
 		}
-		latestSearchRequest.current += 1;
-		updateState({ page: 0, end: false, isLoading: false });
-		setRefreshKey(key => key + 1);
+		updateState(({ members }) => ({ members: setMemberRole(members, userId, role, isAdded) }));
 	};
 
 	const hasRole = (role: string, selectedUser: TUserModel) =>
@@ -317,7 +330,7 @@ const RoomMembersView = (): ReactElement => {
 	};
 
 	const onPressUser = (selectedUser: TUserModel) => {
-		const { room, members } = state;
+		const { room } = state;
 
 		const options: TActionSheetOptionsItem[] = [
 			{
@@ -333,7 +346,10 @@ const RoomMembersView = (): ReactElement => {
 			options.push({
 				icon: 'shield-check',
 				title: I18n.t('Owner'),
-				onPress: () => handleOwner(selectedUser, !isOwner, getUserDisplayName(selectedUser), room, refreshAfterRoleChange),
+				onPress: () =>
+					handleOwner(selectedUser, !isOwner, getUserDisplayName(selectedUser), room, () =>
+						applyRoleChange(selectedUser._id, 'owner', !isOwner)
+					),
 				right: () => <RightIcon check={isOwner} label='owner' />,
 				testID: 'action-sheet-set-owner'
 			});
@@ -345,7 +361,10 @@ const RoomMembersView = (): ReactElement => {
 			options.push({
 				icon: 'shield-alt',
 				title: I18n.t('Leader'),
-				onPress: () => handleLeader(selectedUser, !isLeader, room, getUserDisplayName(selectedUser), refreshAfterRoleChange),
+				onPress: () =>
+					handleLeader(selectedUser, !isLeader, room, getUserDisplayName(selectedUser), () =>
+						applyRoleChange(selectedUser._id, 'leader', !isLeader)
+					),
 				right: () => <RightIcon check={isLeader} label='leader' />,
 				testID: 'action-sheet-set-leader'
 			});
@@ -358,7 +377,9 @@ const RoomMembersView = (): ReactElement => {
 				icon: 'shield',
 				title: I18n.t('Moderator'),
 				onPress: () =>
-					handleModerator(selectedUser, !isModerator, room, getUserDisplayName(selectedUser), refreshAfterRoleChange),
+					handleModerator(selectedUser, !isModerator, room, getUserDisplayName(selectedUser), () =>
+						applyRoleChange(selectedUser._id, 'moderator', !isModerator)
+					),
 				right: () => <RightIcon check={isModerator} label='moderator' />,
 				testID: 'action-sheet-set-moderator'
 			});
@@ -411,7 +432,7 @@ const RoomMembersView = (): ReactElement => {
 				icon: 'logout',
 				danger: true,
 				title: I18n.t('Remove_from_Team'),
-				onPress: () => handleRemoveFromTeam(selectedUser, updateState, room, members),
+				onPress: () => handleRemoveFromTeam(selectedUser, updateState, room),
 				testID: 'action-sheet-remove-from-team'
 			});
 		}
@@ -428,9 +449,9 @@ const RoomMembersView = (): ReactElement => {
 						confirmationText: I18n.t('Yes_remove_user'),
 						onPress: () => {
 							handleRemoveUserFromRoom(selectedUser, room, () =>
-								updateState({
+								updateState(({ members }) => ({
 									members: members.filter(member => member._id !== selectedUser._id)
-								})
+								}))
 							);
 						}
 					});
@@ -445,43 +466,31 @@ const RoomMembersView = (): ReactElement => {
 		});
 	};
 
-	const listItems: TMemberListItem<TUserModel>[] = membersHaveRoles
-		? groupMembersByRole(state.members)
-		: state.members.map(member => ({ type: 'member' as const, member }));
-	const stickyHeaderIndices = hasNativeHeaderBar
-		? []
-		: listItems.flatMap((item, index) => (item.type === 'header' ? [index + LIST_HEADER_OFFSET] : []));
+	const sections: TMembersSection[] = membersHaveRoles ? groupMembersByRole(state.members) : [{ data: state.members }];
 
 	return (
 		<SafeAreaView testID='room-members-view'>
-			<FlatList
-				data={listItems}
+			<SectionList
+				sections={sections.filter(section => section.data.length)}
 				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
-				renderItem={({ item, index }) => {
-					if (item.type === 'header') {
-						return <RoleGroupHeader group={item.group} />;
-					}
-					const isFirst = listItems[index - 1]?.type !== 'member';
-					return (
-						<>
-							{isFirst ? null : <RowSeparator />}
-							<UserItem
-								name={getUserDisplayName(item.member)}
-								username={item.member.username || ''}
-								onPress={() => onPressUser(item.member)}
-								testID={`room-members-view-item-${item.member.username}`}
-								style={{ backgroundColor: colors.surfaceRoom }}
-								isFirst={isFirst}
-								isLast={listItems[index + 1]?.type !== 'member'}
-							/>
-						</>
-					);
-				}}
-				stickyHeaderIndices={stickyHeaderIndices}
-				removeClippedSubviews={false}
+				renderSectionHeader={({ section }) => (section.key ? <RoleGroupHeader group={section.key} /> : null)}
+				renderItem={({ item, index, section }) => (
+					<UserItem
+						name={getUserDisplayName(item)}
+						username={item.username ?? ''}
+						onPress={() => onPressUser(item)}
+						testID={`room-members-view-item-${item.username}`}
+						style={{ backgroundColor: colors.surfaceRoom }}
+						isFirst={index === 0}
+						isLast={index === section.data.length - 1}
+					/>
+				)}
+				stickySectionHeadersEnabled={membersHaveRoles && !hasNativeHeaderBar}
+				removeClippedSubviews={isAndroid && !membersHaveRoles}
 				style={[styles.list, { backgroundColor: listBackgroundColor }]}
 				contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom }}
-				keyExtractor={item => (item.type === 'header' ? `header-${item.group}` : item.member._id)}
+				keyExtractor={item => item._id}
+				ItemSeparatorComponent={RowSeparator}
 				ListHeaderComponent={
 					<>
 						<ActionsSection
