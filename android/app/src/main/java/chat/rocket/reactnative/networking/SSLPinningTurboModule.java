@@ -2,18 +2,14 @@ package chat.rocket.reactnative.networking;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.Promise;
-import com.facebook.react.modules.network.NetworkingModule;
-import com.facebook.react.modules.network.CustomClientBuilder;
-import com.facebook.react.modules.network.ReactCookieJarContainer;
-import com.facebook.react.modules.websocket.WebSocketModule;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
+import com.facebook.react.modules.network.OkHttpClientProvider;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.Principal;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.TrustManagerFactory;
@@ -23,87 +19,66 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
-import okhttp3.OkHttpClient;
+import okhttp3.ConnectionPool;
+import okhttp3.HttpUrl;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
+import android.webkit.WebView;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+import android.util.Log;
 
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import com.reactnativecommunity.webview.RNCWebViewManager;
+import com.reactnativecommunity.webview.RNCWebViewClient;
 import expo.modules.filesystem.legacy.FileSystemLegacyModule;
-import chat.rocket.reactnative.networking.ExpoImageClient;
 
 public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyChainAliasCallback {
 
+    private static final String TAG = "RocketChat.SSLPinning";
+
     private Promise promise;
-    private static String alias;
-    private static ReactApplicationContext reactContext;
-    private static OkHttpClient sharedClient;
+    private static Context appContext;
+    private static SharedPreferences aliasesByHost;
+    private static final ConnectionPool connectionPool = new ConnectionPool(20, 5, TimeUnit.MINUTES);
+    private static final ResettableSSLSocketFactory sslSocketFactory = new ResettableSSLSocketFactory();
+    private static final X509TrustManager trustManager = createTrustManager();
+    // A custom verifier stops OkHttp from sharing an HTTP/2 connection, and its certificate, across hosts
+    private static final HostnameVerifier hostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
 
-    public static OkHttpClient getSharedOkHttpClient() {
-        if (sharedClient != null) {
-            return sharedClient;
-        }
-        if (alias != null) {
-            OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                    .connectTimeout(0, TimeUnit.MILLISECONDS)
-                    .readTimeout(0, TimeUnit.MILLISECONDS)
-                    .writeTimeout(0, TimeUnit.MILLISECONDS)
-                    .cookieJar(new ReactCookieJarContainer());
-
-            SSLSocketFactory sslSocketFactory = getSSLFactory(alias);
-            X509TrustManager trustManager = getTrustManagerFactory();
-            if (sslSocketFactory != null) {
-                builder.sslSocketFactory(sslSocketFactory, trustManager);
-            }
-
-            sharedClient = builder.build();
-            return sharedClient;
-        }
-        return null;
+    public static void installClientCertificates(Context context) {
+        appContext = context.getApplicationContext();
+        aliasesByHost = appContext.getSharedPreferences("RocketChat.ClientCertificateAliases", Context.MODE_PRIVATE);
+        RNCWebViewClient.setCertificateAliasResolver(SSLPinningTurboModule::aliasForHost);
+        OkHttpClientProvider.setOkHttpClientFactory(() ->
+            OkHttpClientProvider.createClientBuilder()
+                .sslSocketFactory(sslSocketFactory, trustManager)
+                .hostnameVerifier(hostnameVerifier)
+                .connectionPool(connectionPool)
+                .build()
+        );
+        // Keep expo-file-system's own default timeouts
+        FileSystemLegacyModule.setOkHttpClient(OkHttpClientProvider.createClient().newBuilder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .build());
     }
 
     public SSLPinningTurboModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        this.reactContext = reactContext;
-    }
-
-    public class CustomClient implements CustomClientBuilder {
-        @Override
-        public void apply(OkHttpClient.Builder builder) {
-            if (alias != null) {
-                SSLSocketFactory sslSocketFactory = getSSLFactory(alias);
-                X509TrustManager trustManager = getTrustManagerFactory();
-                if (sslSocketFactory != null) {
-                    builder.sslSocketFactory(sslSocketFactory, trustManager);
-                }
-            }
-        }
-    }
-
-    protected OkHttpClient getOkHttpClient() {
-        OkHttpClient shared = getSharedOkHttpClient();
-        if (shared != null) {
-            return shared;
-        }
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(0, TimeUnit.MILLISECONDS)
-                .readTimeout(0, TimeUnit.MILLISECONDS)
-                .writeTimeout(0, TimeUnit.MILLISECONDS)
-                .cookieJar(new ReactCookieJarContainer());
-
-        if (alias != null) {
-            SSLSocketFactory sslSocketFactory = getSSLFactory(alias);
-            X509TrustManager trustManager = getTrustManagerFactory();
-            if (sslSocketFactory != null) {
-                builder.sslSocketFactory(sslSocketFactory, trustManager);
-            }
-        }
-
-        return builder.build();
     }
 
     @Override
@@ -113,34 +88,18 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
 
     @Override
     public void alias(String alias) {
-        this.alias = alias;
         this.promise.resolve(alias);
     }
 
     @Override
-    public void setCertificate(String name, Promise promise) {
-        this.alias = name;
-        OkHttpClient client = getOkHttpClient();
-
-        // HTTP Fetch react-native layer
-        NetworkingModule.setCustomClientBuilder(new CustomClient());
-        // Websocket react-native layer
-        WebSocketModule.setCustomClientBuilder(new CustomClient());
-        // Image networking react-native layer
-        ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
-            .newBuilder(this.reactContext, client)
-            .build();
-        Fresco.initialize(this.reactContext, config);
-        // RNCWebView
-        RNCWebViewManager.setCertificateAlias(name);
-
-        // Expo File System network layer
-        FileSystemLegacyModule.setOkHttpClient(client);
-        // Expo Image network layer
-        ExpoImageClient.setOkHttpClient(client);
-        ExpoImageClient.applyToGlide(this.reactContext);
-
+    public void setCertificate(String name, String server, Promise promise) {
+        updateAlias(server, name);
         promise.resolve(null);
+    }
+
+    @Override
+    public void removeCertificate(String server) {
+        updateAlias(server, null);
     }
 
     @Override
@@ -158,57 +117,31 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
                 "RocketChat");
     }
 
-    public static SSLSocketFactory getSSLFactory(final String alias) {
+    private static synchronized void updateAlias(String server, String alias) {
+        HttpUrl url = HttpUrl.parse(server);
+        if (url == null || Objects.equals(alias, aliasesByHost.getString(url.host(), null))) {
+            return;
+        }
+        aliasesByHost.edit().putString(url.host(), alias).commit();
+        // A fresh SSLContext has no cached sessions, so none resume with the previous identity
+        sslSocketFactory.reset();
+        connectionPool.evictAll();
+        new Handler(Looper.getMainLooper()).post(SSLPinningTurboModule::clearWebViewCertificateChoices);
+    }
+
+    private static void clearWebViewCertificateChoices() {
         try {
-            final PrivateKey privKey = KeyChain.getPrivateKey(reactContext, alias);
-            final X509Certificate[] certChain = KeyChain.getCertificateChain(reactContext, alias);
-
-            final X509ExtendedKeyManager keyManager = new X509ExtendedKeyManager() {
-                @Override
-                public String chooseClientAlias(String[] strings, Principal[] principals, Socket socket) {
-                    return alias;
-                }
-
-                @Override
-                public String chooseServerAlias(String s, Principal[] principals, Socket socket) {
-                    return alias;
-                }
-
-                @Override
-                public X509Certificate[] getCertificateChain(String s) {
-                    return certChain;
-                }
-
-                @Override
-                public String[] getClientAliases(String s, Principal[] principals) {
-                    return new String[]{alias};
-                }
-
-                @Override
-                public String[] getServerAliases(String s, Principal[] principals) {
-                    return new String[]{alias};
-                }
-
-                @Override
-                public PrivateKey getPrivateKey(String s) {
-                    return privKey;
-                }
-            };
-
-            final X509TrustManager trustManager = getTrustManagerFactory();
-            final SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(new KeyManager[]{keyManager}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
-            SSLContext.setDefault(sslContext);
-
-            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
-            return sslSocketFactory;
-        } catch (Exception e) {
-            return null;
+            WebView.clearClientCertPreferences(null);
+        } catch (RuntimeException e) {
+            Log.w(TAG, "Failed to clear the WebView client certificate choices", e);
         }
     }
 
-    public static X509TrustManager getTrustManagerFactory() {
+    private static String aliasForHost(String host) {
+        return host == null ? null : aliasesByHost.getString(host.toLowerCase(Locale.ROOT), null);
+    }
+
+    private static X509TrustManager createTrustManager() {
         try {
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             trustManagerFactory.init((KeyStore) null);
@@ -216,10 +149,127 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
                 throw new IllegalStateException("Unexpected default trust managers:" + Arrays.toString(trustManagers));
             }
-            final X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
-            return trustManager;
-        } catch (Exception e) {
+            return (X509TrustManager) trustManagers[0];
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private static final class ClientKeyManager extends X509ExtendedKeyManager {
+        private final String alias;
+
+        ClientKeyManager(String alias) {
+            this.alias = alias;
+        }
+
+        @Override
+        public String chooseClientAlias(String[] keyTypes, Principal[] issuers, Socket socket) {
+            return alias;
+        }
+
+        @Override
+        public String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
             return null;
+        }
+
+        @Override
+        public X509Certificate[] getCertificateChain(String alias) {
+            return fromKeyChain("certificate chain", () -> KeyChain.getCertificateChain(appContext, alias));
+        }
+
+        @Override
+        public String[] getClientAliases(String keyType, Principal[] issuers) {
+            return null;
+        }
+
+        @Override
+        public String[] getServerAliases(String keyType, Principal[] issuers) {
+            return null;
+        }
+
+        @Override
+        public PrivateKey getPrivateKey(String alias) {
+            return fromKeyChain("private key", () -> KeyChain.getPrivateKey(appContext, alias));
+        }
+
+        private static <T> T fromKeyChain(String what, Callable<T> load) {
+            try {
+                return load.call();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return null;
+            } catch (Exception | AssertionError e) {
+                Log.w(TAG, "Failed to load the client certificate " + what, e);
+                return null;
+            }
+        }
+    }
+
+    private static class ResettableSSLSocketFactory extends SSLSocketFactory {
+        // ConcurrentHashMap rejects null keys
+        private static final String NO_CERTIFICATE = "";
+        private final Map<String, SSLSocketFactory> factoriesByAlias = new ConcurrentHashMap<>();
+
+        void reset() {
+            factoriesByAlias.clear();
+        }
+
+        private SSLSocketFactory factoryFor(String alias) {
+            return factoriesByAlias.computeIfAbsent(alias == null ? NO_CERTIFICATE : alias, key -> createFactory(alias));
+        }
+
+        private SSLSocketFactory delegate() {
+            return factoryFor(null);
+        }
+
+        private static SSLSocketFactory createFactory(String alias) {
+            try {
+                final SSLContext context = SSLContext.getInstance("TLS");
+                context.init(new KeyManager[]{new ClientKeyManager(alias)}, new TrustManager[]{trustManager}, new java.security.SecureRandom());
+                return context.getSocketFactory();
+            } catch (GeneralSecurityException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public String[] getDefaultCipherSuites() {
+            return delegate().getDefaultCipherSuites();
+        }
+
+        @Override
+        public String[] getSupportedCipherSuites() {
+            return delegate().getSupportedCipherSuites();
+        }
+
+        @Override
+        public Socket createSocket() throws IOException {
+            return delegate().createSocket();
+        }
+
+        @Override
+        public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
+            return factoryFor(aliasForHost(host)).createSocket(socket, host, port, autoClose);
+        }
+
+        @Override
+        public Socket createSocket(String host, int port) throws IOException {
+            return factoryFor(aliasForHost(host)).createSocket(host, port);
+        }
+
+        @Override
+        public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException {
+            return factoryFor(aliasForHost(host)).createSocket(host, port, localHost, localPort);
+        }
+
+        @Override
+        public Socket createSocket(InetAddress host, int port) throws IOException {
+            return delegate().createSocket(host, port);
+        }
+
+        @Override
+        public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort) throws IOException {
+            return delegate().createSocket(address, port, localAddress, localPort);
         }
     }
 }

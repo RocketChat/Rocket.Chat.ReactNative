@@ -8,9 +8,14 @@
 
 #import <objc/runtime.h>
 #import "SSLPinning.h"
-#import "../Shared/RocketChat/MMKVBridge.h"
 #import <SocketRocket/SRWebSocket.h>
 #import "EXSessionTaskDispatcher.h"
+#import <SDWebImage/SDWebImageDownloader.h>
+#if __has_include(<ExpoModulesCore/ExpoModulesCore-Swift.h>)
+#import <ExpoModulesCore/ExpoModulesCore-Swift.h>
+#else
+#import "ExpoModulesCore-Swift.h"
+#endif
 
 @implementation RCTHTTPRequestHandler (Challenge)
 
@@ -33,30 +38,42 @@
 
 @end
 
-@implementation SRWebSocket (Challenge)
+typedef void (*TaskChallengeIMP)(id, SEL, NSURLSession *, NSURLSessionTask *, NSURLAuthenticationChallenge *, void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *));
 
-- (void)setClientSSL:(NSString *)path password:(NSString *)password options:(NSMutableDictionary *)options;
+static void hookClientCertificateChallenge(Class cls)
 {
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
-    {
-      NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:path];
-      NSDictionary* certOptions = @{ (id)kSecImportExportPassphrase:password };
-      CFArrayRef keyref = NULL;
-      OSStatus sanityChesk = SecPKCS12Import((__bridge CFDataRef)pkcs12data,
-                                              (__bridge CFDictionaryRef)certOptions,
-                                              &keyref);
-      if (sanityChesk == noErr) {
-        CFDictionaryRef identityDict = (CFDictionaryRef)CFArrayGetValueAtIndex(keyref, 0);
-        SecIdentityRef identityRef = (SecIdentityRef)CFDictionaryGetValue(identityDict, kSecImportItemIdentity);
-        SecCertificateRef cert = NULL;
-        OSStatus status = SecIdentityCopyCertificate(identityRef, &cert);
-        if (!status) {
-          NSArray *certificates = [[NSArray alloc] initWithObjects:(__bridge id)identityRef, (__bridge id)cert, nil];
-          [options setObject:certificates forKey:(NSString *)kCFStreamSSLCertificates];
-        }
-      }
+  SEL selector = @selector(URLSession:task:didReceiveChallenge:completionHandler:);
+  Method method = class_getInstanceMethod(cls, selector);
+  NSCAssert(method, @"%@ no longer handles auth challenges; client certificates will not be sent", cls);
+  if (!method) {
+    return;
+  }
+  TaskChallengeIMP original = (TaskChallengeIMP)method_getImplementation(method);
+  IMP imp = imp_implementationWithBlock(^(id _self, NSURLSession *session, NSURLSessionTask *task, NSURLAuthenticationChallenge *challenge, void (^completionHandler)(NSURLSessionAuthChallengeDisposition, NSURLCredential *)) {
+    NSURLCredential *credential = [Challenge clientCertificateCredential:challenge];
+    if (credential) {
+      completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+      return;
     }
+    original(_self, selector, session, task, challenge, completionHandler);
+  });
+  method_setImplementation(method, imp);
 }
+
+@interface ClientCertificateChallengeHooks : NSObject
+@end
+
+@implementation ClientCertificateChallengeHooks
+
++ (void)load
+{
+  hookClientCertificateChallenge([SDWebImageDownloader class]);
+  hookClientCertificateChallenge([URLSessionSessionDelegateProxy class]);
+}
+
+@end
+
+@implementation SRWebSocket (Challenge)
 
 +(void)load
 {
@@ -71,29 +88,15 @@
                 
 - (void)xxx_updateSecureStreamOptions {
     [self xxx_updateSecureStreamOptions];
-  
-    // Read the clientSSL info from MMKV using MMKVBridge
-    NSMutableDictionary<NSString *, id> *SSLOptions = [NSMutableDictionary new];
-    
-    MMKVBridge *mmkvBridge = [Challenge getMMKVInstance];
-    
-    if (mmkvBridge) {
-      NSURLRequest *_urlRequest = [self valueForKey:@"_urlRequest"];
-      NSString *host = _urlRequest.URL.host;
-      NSString *clientSSL = [mmkvBridge stringForKey:host];
-      
-      if (clientSSL) {
-        NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
-        id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSString *path = [dict objectForKey:@"path"];
-        NSString *password = [dict objectForKey:@"password"];
-        [self setClientSSL:path password:password options:SSLOptions];
-        if (SSLOptions) {
-          id _outputStream = [self valueForKey:@"_outputStream"];
-          [_outputStream setProperty:SSLOptions forKey:(__bridge id)kCFStreamPropertySSLSettings];
-        }
-      }
+
+    NSURLRequest *_urlRequest = [self valueForKey:@"_urlRequest"];
+    NSURLCredential *credential = [Challenge clientCertificateCredentialForHost:_urlRequest.URL.host];
+    if (!credential) {
+      return;
     }
+    NSArray *certificates = [@[(__bridge id)credential.identity] arrayByAddingObjectsFromArray:credential.certificates ?: @[]];
+    id _outputStream = [self valueForKey:@"_outputStream"];
+    [_outputStream setProperty:@{ (NSString *)kCFStreamSSLCertificates: certificates } forKey:(__bridge id)kCFStreamPropertySSLSettings];
 }
 
 @end
