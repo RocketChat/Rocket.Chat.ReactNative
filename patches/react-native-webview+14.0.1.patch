@@ -11,7 +11,7 @@ index 80c6803..97df1fa 100644
              mRNCWebViewClient.setProgressChangedFilter(progressChangedFilter);
          }
 diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java
-index 209b855..0ee5712 100644
+index 209b855..8404fc8 100644
 --- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java
 +++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java
 @@ -32,6 +32,11 @@ import com.reactnativecommunity.webview.events.TopRenderProcessGoneEvent;
@@ -26,19 +26,19 @@ index 209b855..0ee5712 100644
  import java.util.concurrent.atomic.AtomicReference;
  
  public class RNCWebViewClient extends WebViewClient {
-@@ -42,10 +47,60 @@ public class RNCWebViewClient extends WebViewClient {
+@@ -42,10 +47,63 @@ public class RNCWebViewClient extends WebViewClient {
      protected RNCWebView.ProgressChangedFilter progressChangedFilter = null;
      protected @Nullable RNCBasicAuthCredential basicAuthCredential = null;
  
-+    private static String certificateAlias = null;
++    private static java.util.function.Function<String, String> certificateAliasResolver = null;
 +    private ReactContext reactContext;
 +
      public void setBasicAuthCredential(@Nullable RNCBasicAuthCredential credential) {
          basicAuthCredential = credential;
      }
  
-+    public static void setCertificateAlias(String alias) {
-+        certificateAlias = alias;
++    public static void setCertificateAliasResolver(java.util.function.Function<String, String> resolver) {
++        certificateAliasResolver = resolver;
 +    }
 +
 +    public void setReactContext(ReactContext reactContext) {
@@ -57,6 +57,7 @@ index 209b855..0ee5712 100644
 +            }
 +        }
 +
++        String certificateAlias = certificateAliasResolver == null ? null : certificateAliasResolver.apply(request.getHost());
 +        if (certificateAlias != null && reactContext != null) {
 +            AsyncTask<Void, Void, SslStuff> task = new AsyncTask<Void, Void, SslStuff>() {
 +                @Override
@@ -66,15 +67,17 @@ index 209b855..0ee5712 100644
 +                        X509Certificate[] certChain = KeyChain.getCertificateChain(reactContext, certificateAlias);
 +
 +                        return new SslStuff(privKey, certChain);
-+                    } catch (Exception e) {
++                    } catch (Exception | AssertionError e) {
 +                        return null;
 +                    }
 +                }
 +
 +                @Override
 +                protected void onPostExecute(SslStuff sslStuff) {
-+                    if (sslStuff != null) {
++                    if (sslStuff != null && sslStuff.privKey != null && sslStuff.certChain != null) {
 +                        request.proceed(sslStuff.privKey, sslStuff.certChain);
++                    } else {
++                        request.ignore();
 +                    }
 +                }
 +            };
@@ -87,76 +90,3 @@ index 209b855..0ee5712 100644
      @Override
      public void onPageFinished(WebView webView, String url) {
          super.onPageFinished(webView, url);
-diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java
-index 89b0aeb..da00052 100644
---- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java
-+++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java
-@@ -437,4 +437,8 @@ public class RNCWebViewModuleImpl implements ActivityEventListener {
-         }
-         return (PermissionAwareActivity) activity;
-     }
-+
-+    public static void setCertificateAlias(String alias) {
-+        RNCWebViewClient.setCertificateAlias(alias);
-+    }
- }
-diff --git a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java
-index fa8efb8..de37f03 100644
---- a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java
-+++ b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java
-@@ -45,6 +45,10 @@ public class RNCWebViewManager extends ViewGroupManager<RNCWebViewWrapper>
-         mRNCWebViewManagerImpl = new RNCWebViewManagerImpl(true);
-     }
- 
-+    public static void setCertificateAlias(String alias) {
-+        RNCWebViewModule.setCertificateAlias(alias);
-+    }
-+
-     @Nullable
-     @Override
-     protected ViewManagerDelegate<RNCWebViewWrapper> getDelegate() {
-diff --git a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewModule.java b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewModule.java
-index ca9ff96..3a2a39b 100644
---- a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewModule.java
-+++ b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewModule.java
-@@ -39,6 +39,10 @@ public class RNCWebViewModule extends NativeRNCWebViewModuleSpec {
-         return mRNCWebViewModuleImpl.grantFileDownloaderPermissions(downloadingMessage, lackPermissionToDownloadMessage);
-     }
- 
-+    public static void setCertificateAlias(String alias) {
-+        RNCWebViewModuleImpl.setCertificateAlias(alias);
-+    }
-+
-     @NonNull
-     @Override
-     public String getName() {
-diff --git a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java
-index 974337f..0099677 100644
---- a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java
-+++ b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java
-@@ -32,6 +32,10 @@ public class RNCWebViewManager extends ViewGroupManager<RNCWebViewWrapper> {
-         mRNCWebViewManagerImpl = new RNCWebViewManagerImpl();
-     }
- 
-+    public static void setCertificateAlias(String alias) {
-+        RNCWebViewModule.setCertificateAlias(alias);
-+    }
-+
-     @Override
-     public String getName() {
-         return RNCWebViewManagerImpl.NAME;
-diff --git a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java
-index 07f2eee..1ca0890 100644
---- a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java
-+++ b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java
-@@ -41,6 +41,10 @@ public class RNCWebViewModule extends ReactContextBaseJavaModule {
-         return mRNCWebViewModuleImpl.grantFileDownloaderPermissions(downloadingMessage, lackPermissionToDownloadMessage);
-     }
- 
-+    public static void setCertificateAlias(String alias) {
-+        RNCWebViewModuleImpl.setCertificateAlias(alias);
-+    }
-+
-     @NonNull
-     @Override
-     public String getName() {

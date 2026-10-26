@@ -20,7 +20,10 @@ public abstract class NativeSSLPinningSpec extends ReactContextBaseJavaModule im
   }
 
   @ReactMethod
-  public abstract void setCertificate(String name, Promise promise);
+  public abstract void setCertificate(String name, String server, Promise promise);
+
+  @ReactMethod
+  public abstract void removeCertificate(String server);
 
   @ReactMethod
   public abstract void pickCertificate(Promise promise);
