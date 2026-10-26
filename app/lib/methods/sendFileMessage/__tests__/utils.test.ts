@@ -140,6 +140,20 @@ describe('createUploadRecord', () => {
 		expect(stale).toMatchObject({ error: false, errorStatus: undefined, errorMessage: undefined, progress: 0 });
 	});
 
+	it('gives a reused record the thread and description of the new send', async () => {
+		const stale: any = {
+			id: uploadPath,
+			tmid: 'old-thread',
+			description: 'old caption',
+			update: jest.fn((cb: (u: any) => void) => cb(stale))
+		};
+		mockFind.mockResolvedValue(stale);
+
+		await createUploadRecord({ rid: 'GENERAL', fileInfo: { ...fileInfo, description: 'new caption' }, tmid: 'new-thread' });
+
+		expect(stale).toMatchObject({ tmid: 'new-thread', description: 'new caption' });
+	});
+
 	it('creates a new record when none exists', async () => {
 		mockFind.mockRejectedValue(new Error('not found'));
 		const created = { id: uploadPath };

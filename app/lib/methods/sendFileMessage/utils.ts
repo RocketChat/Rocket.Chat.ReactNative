@@ -138,6 +138,8 @@ export const createUploadRecord = async ({
 					u.errorStatus = undefined;
 					u.errorMessage = undefined;
 					u.progress = 0;
+					u.tmid = tmid;
+					u.description = fileInfo.description;
 				});
 			});
 		}
