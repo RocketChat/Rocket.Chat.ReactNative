@@ -246,6 +246,7 @@
   "error-invalid-password": "無效的密碼",
   "error-invalid-room-name": "{{room_name}} 不是一個有效的聊天室名稱",
   "error-invitation-reply-action": "發送邀請回覆時出錯",
+  "error-message-size-exceeded": "訊息過長",
   "error-not-allowed": "不允許",
   "error-not-permission-to-upload-file": "You don't have permission to upload files",
   "error-save-image": "錯誤，無法儲存圖片",

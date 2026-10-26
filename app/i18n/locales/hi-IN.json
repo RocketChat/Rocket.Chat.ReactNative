@@ -335,6 +335,7 @@
   "error-invalid-password": "अवैध पासवर्ड",
   "error-invalid-room-name": "{{room_name}} एक वैध कमरा नाम नहीं है",
   "error-invitation-reply-action": "आमंत्रण उत्तर भेजते समय त्रुटि",
+  "error-message-size-exceeded": "संदेश बहुत लंबा है",
   "error-not-allowed": "अनुमति नहीं है",
   "error-not-permission-to-upload-file": "आपको फ़ाइल अपलोड करने की अनुमति नहीं है",
   "error-save-image": "छवि सहेजते समय त्रुटि",

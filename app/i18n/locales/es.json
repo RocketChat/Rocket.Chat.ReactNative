@@ -196,6 +196,7 @@
   "error-invalid-password": "La contraseña no es correcta",
   "error-invalid-room-name": "No se puede asignar el nombre {{room_name}} a una sala.",
   "error-invitation-reply-action": "Error al enviar respuesta de invitación",
+  "error-message-size-exceeded": "El mensaje es demasiado largo",
   "error-not-allowed": "No permitido",
   "error-too-many-requests": "Error, demasiadas peticiones. Debes esperar {{seconds}} segundos antes de continuar. Por favor, sé paciente.",
   "error-you-are-last-owner": "Eres el único propietario existente. Debes establecer un nuevo propietario antes de abandonar la sala.",

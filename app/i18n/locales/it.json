@@ -255,6 +255,7 @@
   "error-invalid-password": "Password non corretta",
   "error-invalid-room-name": "{{room_name}} non è un nome di stanza valido",
   "error-invitation-reply-action": "Errore durante l'invio della risposta all'invito",
+  "error-message-size-exceeded": "Il messaggio è troppo lungo",
   "error-not-allowed": "Non permesso",
   "error-not-permission-to-upload-file": "Non hai l'autorizzazione per caricare file",
   "error-save-image": "Errore nel salvataggio dell'immagine",

@@ -281,6 +281,7 @@
   "error-invalid-password": "Ongeldig wachtwoord",
   "error-invalid-room-name": "{{room_name}} is geen geldige kamernaam",
   "error-invitation-reply-action": "Fout bij het verzenden van uitnodigingsantwoord",
+  "error-message-size-exceeded": "Bericht is te lang",
   "error-not-allowed": "Niet toegestaan",
   "error-not-permission-to-upload-file": "Je hebt geen toestemming om bestanden up te loaden",
   "error-save-image": "Fout bij het opslaan van afbeelding",

@@ -226,6 +226,7 @@
   "error-invalid-password": "Palavra-passe inválida",
   "error-invalid-room-name": "{{room_name}} não é um nome de sala válido",
   "error-invitation-reply-action": "Erro ao enviar resposta do convite",
+  "error-message-size-exceeded": "A mensagem é demasiado longa",
   "error-not-allowed": "Não permitido",
   "error-save-image": "Erro ao salvar imagem",
   "error-save-video": "Erro ao salvar vídeo",

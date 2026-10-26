@@ -1,6 +1,6 @@
 import { getUploadErrorMessage } from '../getUploadErrorMessage';
 
-const TRANSLATED = ['error-file-too-large', 'error-too-many-requests', 'error-invalid-file-type'];
+const TRANSLATED = ['error-file-too-large', 'error-too-many-requests', 'error-invalid-file-type', 'error-message-size-exceeded'];
 
 jest.mock('~/i18n', () => ({
 	__esModule: true,
@@ -42,6 +42,18 @@ describe('getUploadErrorMessage', () => {
 
 	it('translates a server message that is a known key', () => {
 		expect(getUploadErrorMessage({ errorStatus: 400, errorMessage: 'error-invalid-file-type' })).toBe('Invalid file type');
+	});
+
+	it('translates a known key the server sends in brackets', () => {
+		expect(getUploadErrorMessage({ errorStatus: 400, errorMessage: '[error-message-size-exceeded]' })).toBe(
+			'error-message-size-exceeded'
+		);
+		expect(
+			getUploadErrorMessage({
+				errorStatus: 400,
+				errorMessage: 'Message size exceeds Message_MaxAllowedSize [error-message-size-exceeded]'
+			})
+		).toBe('error-message-size-exceeded');
 	});
 
 	it('translates an oversize sentence carrying the key', () => {

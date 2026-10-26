@@ -244,6 +244,7 @@
   "error-invalid-password": "Geçersiz şifre!",
   "error-invalid-room-name": "{{room_name}}, geçerli bir oda adı değil!",
   "error-invitation-reply-action": "Davet yanıtı gönderilirken hata oluştu",
+  "error-message-size-exceeded": "Mesaj çok uzun",
   "error-not-allowed": "İzin verilmedi",
   "error-save-image": "Görüntüyü kaydederken hata oluştu!",
   "error-save-video": "Videoyu kaydederken hata oluştu!",

@@ -335,6 +335,7 @@
   "error-invalid-password": "Érvénytelen jelszó",
   "error-invalid-room-name": "{{room_name}} nem érvényes szobanév",
   "error-invitation-reply-action": "Hiba a meghívó válasz küldésekor",
+  "error-message-size-exceeded": "Az üzenet túl hosszú",
   "error-not-allowed": "Nem engedélyezett",
   "error-not-permission-to-upload-file": "Nincs jogosultsága fájlok feltöltéséhez",
   "error-save-image": "Hiba a kép mentése közben",

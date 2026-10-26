@@ -231,6 +231,7 @@
   "error-invalid-password": "كلمة مرور خاطئة",
   "error-invalid-room-name": "{{room_name}} اسم الغرفة غير صالح",
   "error-invitation-reply-action": "خطأ أثناء إرسال رد الدعوة",
+  "error-message-size-exceeded": "الرسالة طويلة جدًا",
   "error-not-allowed": "غير مسموح",
   "error-save-image": "خطأ عند حفظ الصورة",
   "error-save-video": "خطأ عند حفظ الفيديو",
