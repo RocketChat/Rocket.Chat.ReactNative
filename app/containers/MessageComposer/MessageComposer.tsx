@@ -98,13 +98,16 @@ export const MessageComposer = ({
 	const restoreFailedAttachments = (results: PromiseSettledResult<void>[]) =>
 		addAttachments(attachments.filter((attachment, index) => !attachment.canUpload || results[index].status === 'rejected'));
 
-	const restoreCaptionAfterFailure = (results: PromiseSettledResult<void>[], textFromInput: string) => {
+	const restoreCaptionAfterFailure = (
+		results: PromiseSettledResult<void>[],
+		textFromInput: string,
+		quotedMessageIds: string[]
+	) => {
 		const captionSent = attachments[0].canUpload && results[0].status === 'fulfilled';
-		if (captionSent) {
-			messageActionStore.getState().actions.setQuoteMessageIds([]);
-			return;
-		}
+		const composerIdle = !composerInputComponentRef.current?.getText() && !messageActionStore.getState().action;
+		if (captionSent || !composerIdle) return;
 		composerInputComponentRef.current?.setInput(textFromInput);
+		messageActionStore.getState().actions.setQuoteMessageIds(quotedMessageIds);
 	};
 
 	const handleSendMessage = async () => {
@@ -142,6 +145,7 @@ export const MessageComposer = ({
 
 		if (attachments.length) {
 			clearAttachments();
+			messageActionStore.getState().actions.setQuoteMessageIds([]);
 			let quotedMessage: string | undefined;
 
 			if (quotedMessageIds.length) {
@@ -161,11 +165,8 @@ export const MessageComposer = ({
 			if (rejected.length) {
 				rejected.forEach(({ reason }) => log(reason));
 				restoreFailedAttachments(results);
-				restoreCaptionAfterFailure(results, textFromInput);
-				return;
+				restoreCaptionAfterFailure(results, textFromInput, quotedMessageIds);
 			}
-			messageActionStore.getState().actions.setQuoteMessageIds([]);
-			composerInputComponentRef.current?.setInput('');
 			return;
 		}
 

@@ -15,7 +15,8 @@ import { type IMessage, type IShareAttachment, type TMessageActionState } from '
 import { colors } from '~/lib/constants/colors';
 import { type ComposerState } from '../ComposerStore';
 import { ComposerProvider } from '../ComposerStore';
-import { MessageActionProvider } from '../../message/stores/MessageActionStore';
+import { createMessageActionStore, MessageActionProvider } from '../../message/stores/MessageActionStore';
+import { type TMessageActionStore } from '../../message/stores/MessageActionStore';
 import * as EmojiKeyboardHook from '../hooks/useEmojiKeyboard';
 import { initStore } from '~/lib/store/auxStore';
 import { searchRemote } from '~/lib/methods/search';
@@ -119,16 +120,18 @@ const initialContext = {
 const Render = ({
 	context,
 	action,
+	store,
 	children,
 	forwardedRef
 }: {
 	context?: Partial<ComposerState>;
 	action?: TMessageActionState;
+	store?: TMessageActionStore;
 	children?: ReactElement;
 	forwardedRef?: RefObject<IMessageComposerRef | null>;
 }) => (
 	<Provider store={mockedStore}>
-		<MessageActionProvider initialAction={action}>
+		<MessageActionProvider store={store} initialAction={action}>
 			<ComposerProvider {...initialContext} {...context}>
 				<MessageComposerContainer ref={forwardedRef}>
 					<>
@@ -821,8 +824,9 @@ describe('MessageComposer', () => {
 
 		const sendWithCaptionAndQuote = async (attachments: IShareAttachment[]) => {
 			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
+			const messageActionStore = createMessageActionStore({ kind: 'quote', messageIds: ['abc'] });
 			render(
-				<Render forwardedRef={composerRef} action={{ kind: 'quote', messageIds: ['abc'] }}>
+				<Render forwardedRef={composerRef} store={messageActionStore}>
 					<AttachmentSeeder attachments={attachments} />
 				</Render>
 			);
@@ -830,7 +834,15 @@ describe('MessageComposer', () => {
 			await screen.findByTestId('composer-quote-abc');
 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
 			await user.press(screen.getByTestId('message-composer-send'));
-			return composerRef;
+			return { composerRef, messageActionStore };
+		};
+
+		const holdUpload = () => {
+			const upload = { resolve: () => {}, reject: () => {} };
+			(sendFileMessage as jest.Mock).mockImplementationOnce(
+				() => new Promise<void>((resolve, reject) => Object.assign(upload, { resolve, reject }))
+			);
+			return upload;
 		};
 
 		test('shows inline attachments and remove button', async () => {
@@ -881,42 +893,38 @@ describe('MessageComposer', () => {
 			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
 		});
 
-		test('clears input after a delayed successful upload, including text typed while uploading', async () => {
-			let resolveUpload!: () => void;
-			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
-			(sendFileMessage as jest.Mock).mockImplementationOnce(() => new Promise<void>(resolve => (resolveUpload = resolve)));
-			render(
-				<Render forwardedRef={composerRef} action={{ kind: 'quote', messageIds: ['abc'] }}>
-					<AttachmentSeeder attachments={[attachment]} />
-				</Render>
-			);
-			await screen.findByTestId('message-composer-attachment-0');
-			await screen.findByTestId('composer-quote-abc');
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
-			await user.press(screen.getByTestId('message-composer-send'));
-			await waitFor(() => expect(sendFileMessage).toHaveBeenCalled());
+		test.each(['resolve', 'reject'] as const)('keeps text typed while the upload runs when it %ss', async outcome => {
+			const upload = holdUpload();
+			const { composerRef } = await sendWithCaptionAndQuote([attachment]);
 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'typed while uploading');
-			await act(() => {
-				resolveUpload();
-				return Promise.resolve();
-			});
+			await act(async () => upload[outcome]());
 
-			await waitFor(() => expect(composerRef.current?.getText()).toBe(''));
-			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();
-			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
+			expect(composerRef.current?.getText()).toBe('typed while uploading');
+		});
+
+		test.each(['resolve', 'reject'] as const)('keeps an edit started while the upload runs when it %ss', async outcome => {
+			const upload = holdUpload();
+			const { composerRef, messageActionStore } = await sendWithCaptionAndQuote([attachment]);
+			await act(() => messageActionStore.getState().actions.requestEditing('started-during-upload'));
+			await waitFor(() => expect(composerRef.current?.getText()).toBe('Message started-during-upload'));
+			await act(async () => upload[outcome]());
+
+			expect(composerRef.current?.getText()).toBe('Message started-during-upload');
+			expect(messageActionStore.getState().action).toEqual({ kind: 'edit', messageId: 'started-during-upload' });
+		});
+
+		test('keeps a quote picked while the upload runs when it fails', async () => {
+			const upload = holdUpload();
+			const { messageActionStore } = await sendWithCaptionAndQuote([attachment]);
+			await act(() => messageActionStore.getState().actions.requestQuote('def'));
+			await act(async () => upload.reject());
+
+			expect(messageActionStore.getState().action).toEqual({ kind: 'quote', messageIds: ['def'] });
 		});
 
 		test('restores input and keeps attachments after a failed upload', async () => {
 			(sendFileMessage as jest.Mock).mockRejectedValueOnce(new Error('upload failed'));
-			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
-			render(
-				<Render forwardedRef={composerRef} action={{ kind: 'quote', messageIds: ['abc'] }}>
-					<AttachmentSeeder attachments={[attachment]} />
-				</Render>
-			);
-			await screen.findByTestId('message-composer-attachment-0');
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
-			await user.press(screen.getByTestId('message-composer-send'));
+			const { composerRef } = await sendWithCaptionAndQuote([attachment]);
 
 			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
 			expect(screen.getByTestId('message-composer-attachments')).toBeOnTheScreen();
@@ -934,7 +942,7 @@ describe('MessageComposer', () => {
 
 		test('does not restore the caption or the quote when the first attachment, which carried them, was sent', async () => {
 			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('upload failed'));
-			const composerRef = await sendWithCaptionAndQuote([sent, failed]);
+			const { composerRef } = await sendWithCaptionAndQuote([sent, failed]);
 
 			await waitFor(() => expect(screen.queryByTestId('message-composer-attachment-1')).not.toBeOnTheScreen());
 			expect(composerRef.current?.getText()).toBe('');
@@ -944,7 +952,7 @@ describe('MessageComposer', () => {
 		test('restores the caption and the quote when the first attachment was skipped and a later one failed', async () => {
 			const skipped = { ...attachment, path: 'file:///tmp/skipped.png', canUpload: false } as IShareAttachment;
 			(sendFileMessage as jest.Mock).mockRejectedValueOnce(new Error('upload failed'));
-			const composerRef = await sendWithCaptionAndQuote([skipped, failed]);
+			const { composerRef } = await sendWithCaptionAndQuote([skipped, failed]);
 
 			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
 			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
@@ -952,14 +960,8 @@ describe('MessageComposer', () => {
 		});
 
 		test('clears the tray as soon as Send is pressed so an upload in flight cannot be sent again', async () => {
-			(sendFileMessage as jest.Mock).mockImplementationOnce(() => new Promise<void>(() => {}));
-			render(
-				<Render>
-					<AttachmentSeeder attachments={[attachment]} />
-				</Render>
-			);
-			await screen.findByTestId('message-composer-attachment-0');
-			await user.press(screen.getByTestId('message-composer-send'));
+			holdUpload();
+			await sendWithCaptionAndQuote([attachment]);
 
 			await waitFor(() => expect(sendFileMessage).toHaveBeenCalledTimes(1));
 			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
