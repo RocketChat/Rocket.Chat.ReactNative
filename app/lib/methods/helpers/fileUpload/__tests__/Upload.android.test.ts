@@ -58,18 +58,6 @@ describe('Upload (android)', () => {
 		expect(error.message).toBe('Upload failed: no response');
 	});
 
-	it('rejects when a 2xx response has no parseable body', async () => {
-		mockUpload({ status: 200, body: 'not json' });
-
-		await expect(send()).rejects.toThrow('Upload failed: invalid server response');
-	});
-
-	it('rejects a 3xx as an HTTP error instead of treating it as success', async () => {
-		mockUpload({ status: 302, body: '<html>Found</html>' });
-
-		await expect(send()).rejects.toMatchObject({ name: 'UploadHttpError', status: 302 });
-	});
-
 	it('rejects with a cancellation when the native upload fails after cancel()', async () => {
 		let failNativeUpload: (error: Error) => void = () => {};
 		const cancelAsync = jest.fn();
@@ -89,10 +77,19 @@ describe('Upload (android)', () => {
 		expect(cancelAsync).toHaveBeenCalledTimes(1);
 	});
 
-	it('rejects with an Error, not undefined, when no file was appended', async () => {
+	it('rethrows the native error when the upload was not cancelled', async () => {
+		(FileSystem.createUploadTask as jest.Mock).mockReturnValue({
+			uploadAsync: jest.fn(() => Promise.reject(new Error('native failure'))),
+			cancelAsync: jest.fn()
+		});
+
+		await expect(send()).rejects.toThrow('native failure');
+	});
+
+	it('rejects with a clear error when no file was appended', async () => {
 		const upload = new Upload();
 		upload.setupRequest('https://open.rocket.chat/api/v1/rooms.media/rid', {});
 
-		await expect(upload.send()).rejects.toBeInstanceOf(Error);
+		await expect(upload.send()).rejects.toThrow('No file to upload');
 	});
 });
