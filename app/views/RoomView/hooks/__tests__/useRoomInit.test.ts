@@ -153,6 +153,9 @@ describe('useRoomInit', () => {
 		const newRidRenders = renders.filter(render => render.rid === 'rid-2');
 		expect(newRidRenders.length).toBeGreaterThan(0);
 		expect(newRidRenders.every(render => render.loading)).toBe(true);
+
+		await runDeferredInit();
+		expect(roomStore.getState().init).toHaveBeenCalledTimes(2);
 	});
 
 	it('keeps the lastSeen returned by init and clears it on demand', async () => {
