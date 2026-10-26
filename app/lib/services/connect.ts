@@ -216,10 +216,8 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 					if (!_setUserTimer.setUserTimer) {
 						_setUserTimer.setUserTimer = setTimeout(() => {
 							const activeUsersBatch = _activeUsers.activeUsers;
-							setImmediate(() => {
-								// @ts-ignore
-								store.dispatch(setActiveUsers(activeUsersBatch));
-							});
+							// @ts-ignore
+							store.dispatch(setActiveUsers(activeUsersBatch));
 							_setUserTimer.setUserTimer = null;
 							_activeUsers.activeUsers = {} as IActiveUsers;
 							return null;

@@ -239,30 +239,26 @@ const debouncedUpdate = (subscription: ISubscription) => {
 			queue = {};
 			subTimer = null;
 			Object.keys(batch).forEach(key => {
-				setImmediate(() => {
-					if (batch[key]) {
-						if (/SUB/.test(key)) {
-							const sub = batch[key] as ISubscription;
-							// When calling the api subscriptions.read passing readThreads as true it does not return this prop
-							if (!sub.tunread) sub.tunread = [];
-							const roomQueueId = getRoomQueueId(sub.rid);
-							const room = batch[roomQueueId] as IRoom;
-							delete batch[roomQueueId];
-							createOrUpdateSubscription(sub, room);
-						} else {
-							const room = batch[key] as IRoom;
-							// If the omnichannel's chat is onHold and waitingResponse we shouldn't create or update the chat,
-							// because it should go to Queue
-							if (room.t === SubscriptionType.OMNICHANNEL && room.onHold && room.waitingResponse) {
-								return null;
-							}
-							const subQueueId = getSubQueueId(room._id);
-							const sub = batch[subQueueId] as ISubscription;
-							delete batch[subQueueId];
-							createOrUpdateSubscription(sub, room);
+				if (batch[key]) {
+					if (/SUB/.test(key)) {
+						const sub = batch[key] as ISubscription;
+						if (!sub.tunread) sub.tunread = [];
+						const roomQueueId = getRoomQueueId(sub.rid);
+						const room = batch[roomQueueId] as IRoom;
+						delete batch[roomQueueId];
+						createOrUpdateSubscription(sub, room);
+					} else {
+						const room = batch[key] as IRoom;
+						const isQueuedOmnichannel = room.t === SubscriptionType.OMNICHANNEL && room.onHold && room.waitingResponse;
+						if (isQueuedOmnichannel) {
+							return;
 						}
+						const subQueueId = getSubQueueId(room._id);
+						const sub = batch[subQueueId] as ISubscription;
+						delete batch[subQueueId];
+						createOrUpdateSubscription(sub, room);
 					}
-				});
+				}
 			});
 		}, WINDOW_TIME);
 	}
