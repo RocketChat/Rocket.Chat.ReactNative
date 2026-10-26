@@ -915,14 +915,15 @@ describe('MessageComposer', () => {
 
 		test('keeps a quote picked while the upload runs when it fails', async () => {
 			const upload = holdUpload();
-			const { messageActionStore } = await sendWithCaptionAndQuote([attachment]);
+			const { composerRef, messageActionStore } = await sendWithCaptionAndQuote([attachment]);
 			await act(() => messageActionStore.getState().actions.requestQuote('def'));
 			await act(async () => upload.reject());
 
 			expect(messageActionStore.getState().action).toEqual({ kind: 'quote', messageIds: ['def'] });
+			expect(composerRef.current?.getText()).toBe('');
 		});
 
-		test('restores the caption and keeps the reaction picker open when an upload fails while reacting', async () => {
+		test('restores the caption but not the quote when an upload fails while reacting', async () => {
 			const upload = holdUpload();
 			const { composerRef, messageActionStore } = await sendWithCaptionAndQuote([attachment]);
 			await act(() => messageActionStore.getState().actions.startReacting('def'));
