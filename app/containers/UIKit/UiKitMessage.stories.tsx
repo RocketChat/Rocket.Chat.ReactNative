@@ -545,6 +545,22 @@ export const ActionSelect = () =>
 	]);
 ActionSelect.storyName = 'Action - Select';
 
+export const ActionButtonStyles = () =>
+	UiKitMessage([
+		{
+			type: 'actions',
+			blockId: 'button-styles',
+			elements: (['primary', 'secondary', 'danger', 'warning', 'success'] as const).map(style => ({
+				type: 'button',
+				actionId: `button-${style}`,
+				text: { type: 'plain_text', text: style },
+				style,
+				value: style
+			}))
+		}
+	]);
+ActionButtonStyles.storyName = 'Action - Button styles';
+
 const getInfoCardAction = ({
 	appId,
 	blockId,
@@ -747,3 +763,117 @@ export const InfoCardLongText = () =>
 		}
 	]);
 InfoCardLongText.storyName = 'Info Card - Long text';
+
+export const PreviewAndCallout = () =>
+	UiKitMessage([
+		{
+			type: 'preview',
+			title: [{ type: 'plain_text', text: 'Preview block', emoji: true }],
+			description: [{ type: 'mrkdwn', text: 'Title, description, thumb and a context footer.' }],
+			thumb: { url: 'https://picsum.photos/seed/uikit-preview/200/200' },
+			footer: {
+				type: 'context',
+				elements: [{ type: 'mrkdwn', text: 'Preview footer' }]
+			}
+		},
+		{
+			type: 'callout',
+			title: { type: 'plain_text', text: 'Callout block', emoji: true },
+			text: { type: 'mrkdwn', text: 'Info variant with a button accessory.' },
+			variant: 'info',
+			accessory: {
+				type: 'button',
+				actionId: 'callout-ok',
+				text: { type: 'plain_text', text: 'Got it' },
+				style: 'primary',
+				value: 'ok'
+			}
+		},
+		{
+			type: 'callout',
+			text: { type: 'mrkdwn', text: 'Danger variant without accessory.' },
+			variant: 'danger'
+		}
+	]);
+PreviewAndCallout.storyName = 'Preview and Callout';
+
+export const ChoiceElements = () =>
+	UiKitMessage([
+		{
+			type: 'actions',
+			blockId: 'choice',
+			elements: [
+				{
+					type: 'checkbox',
+					actionId: 'demo-checkbox',
+					options: [
+						{
+							text: { type: 'plain_text', text: 'Check me' },
+							value: 'check-1',
+							description: { type: 'plain_text', text: 'With an option description' }
+						},
+						{ text: { type: 'plain_text', text: 'Me too' }, value: 'check-2' }
+					]
+				},
+				{
+					type: 'radio_button',
+					actionId: 'demo-radio',
+					options: [
+						{ text: { type: 'plain_text', text: 'Pick me' }, value: 'radio-1' },
+						{ text: { type: 'plain_text', text: 'No, me' }, value: 'radio-2' }
+					]
+				},
+				{
+					type: 'toggle_switch',
+					actionId: 'demo-toggle',
+					options: [{ text: { type: 'plain_text', text: 'Toggle me' }, value: 'toggle-1' }]
+				},
+				{
+					type: 'linear_scale',
+					actionId: 'demo-scale',
+					minValue: 0,
+					maxValue: 5,
+					preLabel: { type: 'plain_text', text: 'Bad' },
+					postLabel: { type: 'plain_text', text: 'Good' }
+				},
+				{
+					type: 'time_picker',
+					actionId: 'demo-time',
+					placeholder: { type: 'plain_text', text: 'Pick a time' },
+					initialTime: '12:00'
+				}
+			]
+		}
+	]);
+ChoiceElements.storyName = 'Choice elements';
+
+export const EntitySelects = () =>
+	UiKitMessage([
+		{
+			type: 'actions',
+			blockId: 'entity-selects',
+			elements: [
+				{
+					type: 'users_select',
+					actionId: 'demo-users-select',
+					placeholder: { type: 'plain_text', text: 'Select a user' }
+				},
+				{
+					type: 'channels_select',
+					actionId: 'demo-channels-select',
+					placeholder: { type: 'plain_text', text: 'Select a channel' }
+				},
+				{
+					type: 'multi_users_select',
+					actionId: 'demo-multi-users-select',
+					placeholder: { type: 'plain_text', text: 'Select users' }
+				},
+				{
+					type: 'multi_channels_select',
+					actionId: 'demo-multi-channels-select',
+					placeholder: { type: 'plain_text', text: 'Select channels' }
+				}
+			]
+		}
+	]);
+EntitySelects.storyName = 'Entity selects';

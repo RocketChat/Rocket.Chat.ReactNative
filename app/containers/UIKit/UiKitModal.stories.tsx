@@ -793,3 +793,80 @@ export const ModalInputWithAddField = () => {
 	);
 };
 ModalInputWithAddField.storyName = 'Modal - Input with add field';
+
+export const ModalPreviewCallout = () =>
+	UiKitModal([
+		{
+			type: 'preview',
+			title: [{ type: 'plain_text', text: 'Preview block', emoji: true }],
+			description: [{ type: 'mrkdwn', text: 'Now supported on the modal surface too.' }]
+		},
+		{
+			type: 'callout',
+			text: { type: 'mrkdwn', text: 'Warning callout inside a modal.' },
+			variant: 'warning'
+		}
+	]);
+ModalPreviewCallout.storyName = 'Modal - Preview and Callout';
+
+export const ModalChoiceInputs = () =>
+	UiKitModal([
+		{
+			type: 'input',
+			blockId: 'modal-checkbox',
+			label: { type: 'plain_text', text: 'Checkbox', emoji: true },
+			element: {
+				type: 'checkbox',
+				actionId: 'modal-checkbox',
+				options: [
+					{ text: { type: 'plain_text', text: 'Check me' }, value: 'check-1' },
+					{ text: { type: 'plain_text', text: 'Me too' }, value: 'check-2' }
+				]
+			}
+		},
+		{
+			type: 'input',
+			blockId: 'modal-radio',
+			label: { type: 'plain_text', text: 'Radio button', emoji: true },
+			element: {
+				type: 'radio_button',
+				actionId: 'modal-radio',
+				options: [
+					{ text: { type: 'plain_text', text: 'Pick me' }, value: 'radio-1' },
+					{ text: { type: 'plain_text', text: 'No, me' }, value: 'radio-2' }
+				]
+			}
+		},
+		{
+			type: 'input',
+			blockId: 'modal-toggle',
+			label: { type: 'plain_text', text: 'Toggle switch', emoji: true },
+			element: {
+				type: 'toggle_switch',
+				actionId: 'modal-toggle',
+				options: [{ text: { type: 'plain_text', text: 'Toggle me' }, value: 'toggle-1' }]
+			}
+		},
+		{
+			type: 'input',
+			blockId: 'modal-scale',
+			label: { type: 'plain_text', text: 'Linear scale', emoji: true },
+			element: {
+				type: 'linear_scale',
+				actionId: 'modal-scale',
+				minValue: 1,
+				maxValue: 5
+			}
+		},
+		{
+			type: 'input',
+			blockId: 'modal-time',
+			label: { type: 'plain_text', text: 'Time picker', emoji: true },
+			element: {
+				type: 'time_picker',
+				actionId: 'modal-time',
+				placeholder: { type: 'plain_text', text: 'Pick a time' }
+			}
+		}
+	]);
+ModalChoiceInputs.storyName = 'Modal - Choice inputs';
