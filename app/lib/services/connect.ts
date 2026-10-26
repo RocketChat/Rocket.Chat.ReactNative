@@ -102,7 +102,6 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			.catch((err: unknown) => {
 				console.log('connect error', err);
 				// A failed plain open schedules no Reopen; a forced attempt enters the SDK's reopen loop.
-				// Skipped when this connect() was already superseded.
 				if (driver && sdk.driver === driver) {
 					driver.reopenNow().catch(() => {});
 				}

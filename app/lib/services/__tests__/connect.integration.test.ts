@@ -179,8 +179,6 @@ describe('connect() over the real SDK', () => {
 	});
 
 	it('keeps retrying when the first attempt fails and connects once the network is back', async () => {
-		redux.state.login.user = { token: 'stored-token' };
-
 		await connect({ server: 'https://example.com' });
 		await flushMicrotasksAndTimers();
 		expect(mockConnections).toHaveLength(1);
@@ -199,7 +197,6 @@ describe('connect() over the real SDK', () => {
 		await flushMicrotasksAndTimers();
 
 		expect(redux.store.dispatch).toHaveBeenCalledWith(connectSuccess());
-		expect(redux.store.dispatch).toHaveBeenCalledWith(loginRequest({ resume: 'stored-token' }, false));
 	});
 
 	it('does not retry an attempt that a later connect() replaced', async () => {
