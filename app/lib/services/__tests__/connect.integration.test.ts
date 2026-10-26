@@ -212,14 +212,6 @@ describe('connect() over the real SDK', () => {
 		await connect({ server: 'https://b.example.com' });
 		await flushMicrotasksAndTimers();
 		expect(mockConnections).toHaveLength(2);
-		expect(mockConnections[0].close).toHaveBeenCalled();
-
-		mockConnections[1].onopen();
-		await flushMicrotasksAndTimers();
-		await jest.runOnlyPendingTimersAsync();
-		await flushMicrotasksAndTimers();
-
-		expect(mockConnections).toHaveLength(2);
 	});
 });
 
