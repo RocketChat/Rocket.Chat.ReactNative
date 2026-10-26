@@ -243,6 +243,11 @@
 	"engines": {
 		"node": ">=22.22.3"
 	},
+	"reanimated": {
+		"staticFeatureFlags": {
+			"USE_LEGACY_LAYOUT_ANIMATIONS_PROXY": true
+		}
+	},
 	"codegenConfig": {
 		"name": "SSLPinning",
 		"type": "modules",
