@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import sharedStyles from '../../../views/Styles';
+import sharedStyles from '~/views/Styles';
 
 export default StyleSheet.create({
 	container: {
@@ -10,8 +10,7 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	subtitleView: {
-		justifyContent: 'center',
-		height: 32
+		justifyContent: 'center'
 	},
 	row: {
 		flex: 0,

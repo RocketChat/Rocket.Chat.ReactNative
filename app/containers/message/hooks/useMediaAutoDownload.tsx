@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 
-import { type IAttachment, type IUserMessage } from '../../../definitions';
-import { isImageBase64 } from '../../../lib/methods/isImageBase64';
-import { fetchAutoDownloadEnabled } from '../../../lib/methods/autoDownloadPreference';
+import { type IAttachment, type IUserMessage } from '~/definitions';
+import { isImageBase64 } from '~/lib/methods/isImageBase64';
+import { fetchAutoDownloadEnabled } from '~/lib/methods/autoDownloadPreference';
 import {
 	cancelDownload,
 	downloadMediaFile,
@@ -10,12 +10,11 @@ import {
 	isDownloadActive,
 	type MediaTypes,
 	type TDownloadState
-} from '../../../lib/methods/handleMediaDownload';
-import { emitter } from '../../../lib/methods/helpers/emitter';
-import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
+} from '~/lib/methods/handleMediaDownload';
+import { emitter } from '~/lib/methods/helpers/emitter';
+import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
 import { useMessageId } from '../stores/MessageStore';
-import { useFile } from './useFile';
 
 const getFileType = (file: IAttachment): MediaTypes | null => {
 	if (file.image_url) {
@@ -75,23 +74,82 @@ export const useMediaAutoDownload = ({
 	author?: IUserMessage;
 	showAttachment?: (file: IAttachment) => void;
 }) => {
-	'use memo';
-
 	const fileType = getFileType(file) ?? 'image';
 	const id = useMessageId();
 	const baseUrl = useBaseUrl();
 	const user = useMessageUser();
 	const [status, dispatchDownloadEvent] = useReducer(downloadStatusReducer, 'to-download');
-	const [currentFile, setCurrentFile] = useFile(file, id ?? '');
+	const [fileOverrides, setFileOverrides] = useState<Partial<IAttachment> | null>(null);
+	const currentFile = fileOverrides ? { ...file, ...fileOverrides } : file;
 	const originalUrl = getOriginalURL(file);
 	const url = formatAttachmentUrl(
 		file.title_link || getFileProperty(currentFile, fileType, 'url'),
-		user?.id ?? '',
-		user?.token ?? '',
-		baseUrl ?? '',
+		user.id,
+		user.token,
+		baseUrl,
 		originalUrl
 	);
 	const isEncrypted = currentFile.e2e === 'pending';
+
+	const resumeDownload = () => {
+		dispatchDownloadEvent('download_started');
+		emitter.on(`downloadMedia${url}`, downloadMediaListener);
+	};
+
+	const tryAutoDownload = async () => {
+		const isCurrentUserAuthor = author?._id === user.id;
+		const isAutoDownloadEnabled = fetchAutoDownloadEnabled(`${fileType}PreferenceDownload`);
+		if (isAutoDownloadEnabled || isCurrentUserAuthor) {
+			await download();
+		}
+	};
+
+	const download = async () => {
+		const mimeType = getFileProperty(currentFile, fileType, 'type');
+		const originalChecksum = file.hashes?.sha256;
+		try {
+			dispatchDownloadEvent('download_started');
+			const uri = await downloadMediaFile({
+				messageId: id,
+				downloadUrl: url,
+				type: fileType,
+				mimeType,
+				encryption: file.encryption,
+				originalChecksum
+			});
+			setDecrypted();
+			updateCurrentFile(uri);
+		} catch (e) {
+			dispatchDownloadEvent('download_failed');
+		}
+	};
+
+	const updateCurrentFile = (uri: string) => {
+		setFileOverrides(prev => ({ ...prev, title_link: uri }));
+		dispatchDownloadEvent('download_succeeded');
+	};
+
+	const setDecrypted = () => {
+		if (isEncrypted) {
+			setFileOverrides(prev => ({ ...prev, e2e: 'done' }));
+		}
+	};
+
+	const checkCache = async () => {
+		const result = await getMediaCache({
+			type: fileType,
+			mimeType: getFileProperty(currentFile, fileType, 'type'),
+			urlToCache: url
+		});
+		if (result?.exists && !isEncrypted) {
+			updateCurrentFile(result.uri);
+		}
+		return result?.exists;
+	};
+
+	const downloadMediaListener = (uri: string) => {
+		updateCurrentFile(uri);
+	};
 
 	useEffect(() => {
 		const handleCache = async () => {
@@ -117,68 +175,6 @@ export const useMediaAutoDownload = ({
 			emitter.off(`downloadMedia${url}`, downloadMediaListener);
 		};
 	}, []);
-
-	const downloadMediaListener = useCallback((uri: string) => {
-		updateCurrentFile(uri);
-	}, []);
-
-	const resumeDownload = () => {
-		dispatchDownloadEvent('download_started');
-		emitter.on(`downloadMedia${url}`, downloadMediaListener);
-	};
-
-	const tryAutoDownload = async () => {
-		const isCurrentUserAuthor = author?._id === user?.id;
-		const isAutoDownloadEnabled = fetchAutoDownloadEnabled(`${fileType}PreferenceDownload`);
-		if (isAutoDownloadEnabled || isCurrentUserAuthor) {
-			await download();
-		}
-	};
-
-	const download = async () => {
-		try {
-			dispatchDownloadEvent('download_started');
-			const uri = await downloadMediaFile({
-				messageId: id ?? '',
-				downloadUrl: url,
-				type: fileType,
-				mimeType: getFileProperty(currentFile, fileType, 'type'),
-				encryption: file.encryption,
-				originalChecksum: file.hashes?.sha256
-			});
-			setDecrypted();
-			updateCurrentFile(uri);
-		} catch (e) {
-			dispatchDownloadEvent('download_failed');
-		}
-	};
-
-	const updateCurrentFile = (uri: string) => {
-		setCurrentFile({
-			title_link: uri
-		});
-		dispatchDownloadEvent('download_succeeded');
-	};
-
-	const setDecrypted = () => {
-		if (isEncrypted) {
-			setCurrentFile({
-				e2e: 'done'
-			});
-		}
-	};
-
-	const checkCache = async () => {
-		const result = await getMediaCache({
-			type: fileType,
-			mimeType: getFileProperty(currentFile, fileType, 'type'),
-			urlToCache: url
-		});
-		if (result?.exists && !isEncrypted) {
-			updateCurrentFile(result.uri);
-		}
-		return result?.exists;
-	};
 
 	const onPress = () => {
 		if (status === 'loading') {

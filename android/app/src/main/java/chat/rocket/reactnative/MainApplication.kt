@@ -16,6 +16,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.nozbe.watermelondb.jsi.WatermelonDBJSIPackage;
 import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
+import chat.rocket.reactnative.networking.SSLPinningTurboModule;
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
@@ -24,6 +25,7 @@ import chat.rocket.reactnative.notification.PushNotificationTurboPackage
 import chat.rocket.reactnative.VoipTurboPackage
 import chat.rocket.reactnative.scroll.InvertedScrollPackage
 import chat.rocket.reactnative.input.ExternalInputPackage
+import chat.rocket.reactnative.biometric.BiometricEnrollmentPackage
 
 /**
  * Main Application class.
@@ -51,6 +53,7 @@ open class MainApplication : Application(), ReactApplication {
               add(SecureStoragePackage())
               add(InvertedScrollPackage())
               add(ExternalInputPackage())
+              add(BiometricEnrollmentPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
@@ -71,6 +74,9 @@ open class MainApplication : Application(), ReactApplication {
     // Initialize MMKV encryption - reads existing key or generates new one
     // Must run before React Native starts to avoid race conditions
     MMKVKeyManager.initialize(this)
+
+    // Must run before any OkHttp client is created
+    SSLPinningTurboModule.installClientCertificates(this)
 
     // Load the native entry point for the New Architecture
     loadReactNative(this)

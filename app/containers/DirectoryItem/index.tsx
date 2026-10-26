@@ -5,9 +5,9 @@ import Touch from '../Touch';
 import Avatar from '../Avatar';
 import RoomTypeIcon from '../RoomTypeIcon';
 import styles from './styles';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import { MarkdownPreview } from '../markdown';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export const ROW_HEIGHT = 54;
 interface IDirectoryItemLabel {
@@ -15,7 +15,7 @@ interface IDirectoryItemLabel {
 	color: string;
 }
 
-interface IDirectoryItem {
+export interface IDirectoryItem {
 	title: string;
 	description?: string;
 	avatar?: string;
@@ -26,6 +26,8 @@ interface IDirectoryItem {
 	rightLabel?: string;
 	rid?: string;
 	teamMain?: boolean;
+	isFirst?: boolean;
+	isLast?: boolean;
 }
 
 const DirectoryItemLabel = memo(({ text, color }: IDirectoryItemLabel) => {

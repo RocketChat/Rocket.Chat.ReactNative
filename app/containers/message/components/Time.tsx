@@ -1,14 +1,12 @@
 import { Text } from 'react-native';
 
-import dayjs from '../../../lib/dayjs';
-import { useTheme } from '../../../theme';
+import dayjs from '~/lib/dayjs';
+import { useTheme } from '~/theme';
 import messageStyles from '../styles';
 import { useMessageField } from '../stores/MessageStore';
 import { useTimeFormat } from '../stores/MessageRoomStore';
 
 const MessageTime = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const ts = useMessageField(item => item.ts);
 	const timeFormat = useTimeFormat();

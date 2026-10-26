@@ -1,5 +1,5 @@
 name: 'Build Android'
-description: 'Builds Android app AAB and uploads manifest and AAB'
+description: 'Builds and verifies the Android app AAB'
 inputs:
   BUILD_VERSION:
     description: 'Build version for build'
@@ -26,16 +26,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set up Ruby and Bundler
-      uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
-      with:
-        ruby-version: 2.7.7
-        bundler-cache: true
-        working-directory: android
-
-    - name: Set up Gradle
-      uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
-
     - name: Decode Keystore
       working-directory: android/app
       run: |
@@ -45,17 +35,8 @@ runs:
     - name: Set gradle.properties
       working-directory: android
       run: |
-        echo "" > ./gradle.properties
-        echo -e "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8" >> ./gradle.properties
-        echo -e "android.useAndroidX=true" >> ./gradle.properties
-        echo -e "android.enableJetifier=true" >> ./gradle.properties
-        echo -e "android.jetifier.ignorelist=bcprov-jdk18on" >> ./gradle.properties
-        echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
-        echo -e "newArchEnabled=true" >> ./gradle.properties
-        echo -e "hermesEnabled=true" >> ./gradle.properties
-        echo -e "edgeToEdgeEnabled=true" >> ./gradle.properties
+        printf '\n' >> ./gradle.properties
         echo -e "VERSIONCODE=${{ inputs.BUILD_VERSION }}" >> ./gradle.properties
-        echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
         echo -e "BugsnagAPIKey=${{ inputs.BUGSNAG_KEY_OFFICIAL }}" >> ./gradle.properties
         echo -e "KEYSTORE=${{ inputs.KEYSTORE_OFFICIAL }}" >> ./gradle.properties
         echo -e 'KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
@@ -150,15 +131,3 @@ runs:
           echo "- Wall time: **${mins}m ${secs}s**"
         } >> "$GITHUB_STEP_SUMMARY"
       shell: bash
-
-    - name: Upload sourcemaps/NDK symbols to Bugsnag
-      run: |
-        pnpm bugsnag:upload-android --variant release --app-manifest android/app/build/intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml
-        pnpm exec bugsnag-cli upload android-aab android/app/build/outputs/bundle/release/app-release.aab
-      shell: bash
-
-    - name: Upload AAB
-      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-      with:
-        name: android-aab
-        path: android/app/build/outputs/bundle/release/app-release.aab

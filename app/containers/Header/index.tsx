@@ -4,16 +4,14 @@ import { type NativeStackHeaderProps } from '@react-navigation/native-stack';
 
 import HeaderTitle from './components/HeaderTitle';
 import HeaderContainer from './components/HeaderContainer';
-import { isAndroid } from '../../lib/methods/helpers';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
+import { isAndroid } from '~/lib/methods/helpers';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { styles } from './styles';
 import { HeaderBackButton } from './components/HeaderBackButton';
 
 interface IHeader extends NativeStackHeaderProps {}
 
 const Header = ({ options, navigation, route }: IHeader) => {
-	'use memo';
-
 	const { headerLeft, headerTitle, headerRight, title } = options;
 	const [rightButtonsWidth, setRightButtonsWidth] = useState<number | null>(null);
 	const isMasterDetail = useMasterDetail();

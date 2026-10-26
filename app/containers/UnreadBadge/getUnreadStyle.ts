@@ -1,6 +1,6 @@
 import { type IUnreadBadge } from '.';
-import { themes } from '../../lib/constants/colors';
-import { type TSupportedThemes } from '../../theme';
+import { themes } from '~/lib/constants/colors';
+import { type TSupportedThemes } from '~/theme';
 
 interface IGetUnreadStyle extends Omit<IUnreadBadge, 'small' | 'style'> {
 	theme: TSupportedThemes;
@@ -19,7 +19,7 @@ export const getUnreadStyle = ({
 		return {};
 	}
 
-	let backgroundColor = themes[theme].fontAnnotation;
+	let backgroundColor = themes[theme].badgeBackgroundLevel1;
 	const color = themes[theme].fontWhite;
 	if ((userMentions && userMentions > 0) || tunreadUser?.length) {
 		backgroundColor = themes[theme].badgeBackgroundLevel4;

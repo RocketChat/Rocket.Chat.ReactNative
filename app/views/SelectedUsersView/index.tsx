@@ -8,25 +8,28 @@ import { type RouteProp, useNavigation, useRoute } from '@react-navigation/nativ
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { addUser, removeUser, reset } from '../../actions/selectedUsers';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import * as List from '../../containers/List';
-import { sendLoadingEvent } from '../../containers/Loading';
-import SafeAreaView from '../../containers/SafeAreaView';
-import I18n from '../../i18n';
-import database from '../../lib/database';
-import UserItem from '../../containers/UserItem';
-import { type ISelectedUser } from '../../reducers/selectedUsers';
-import { getUserSelector } from '../../selectors/login';
-import { type ChatsStackParamList, type NewMessageStackParamList } from '../../stacks/types';
-import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import { useTheme } from '../../theme';
-import { showErrorAlert } from '../../lib/methods/helpers/info';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { search as runSearch, type TSearch } from '../../lib/methods/search';
-import { isGroupChat as isGroupChatMethod } from '../../lib/methods/helpers';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { addUser, removeUser, reset } from '~/actions/selectedUsers';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import * as List from '~/containers/List';
+import { sendLoadingEvent } from '~/containers/Loading';
+import SafeAreaView from '~/containers/SafeAreaView';
+import RowSeparator from '~/containers/NativeListRow/components/Separator';
+import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
+import I18n from '~/i18n';
+import { stackedSearchBarOptions, nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
+import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
+import database from '~/lib/database';
+import UserItem from '~/containers/UserItem';
+import { type ISelectedUser } from '~/reducers/selectedUsers';
+import { getUserSelector } from '~/selectors/login';
+import { type ChatsStackParamList, type NewMessageStackParamList } from '~/stacks/types';
+import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
+import { useTheme } from '~/theme';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { search as runSearch, type TSearch } from '~/lib/methods/search';
+import { hasNativeHeaderBar, isGroupChat as isGroupChatMethod } from '~/lib/methods/helpers';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import Header from './Header';
 
 type TRoute = RouteProp<ChatsStackParamList & NewMessageStackParamList & ModalStackParamList, 'SelectedUsersView'>;
@@ -47,6 +50,7 @@ const SelectedUsersView = () => {
 	const navigation = useNavigation<TNavigation>();
 
 	const { colors } = useTheme();
+	const listBackgroundColor = useListBackgroundColor(colors.surfaceRoom);
 	const dispatch = useDispatch();
 	const { bottom } = useSafeAreaInsets();
 
@@ -75,26 +79,51 @@ const SelectedUsersView = () => {
 		return showSkipText ? I18n.t('Skip') : '';
 	};
 
+	const handleSearch = useCallback(async (text: string) => {
+		searchId.current += 1;
+		const currentSearchId = searchId.current;
+		const isStale = () => currentSearchId !== searchId.current;
+
+		setSearching(true);
+
+		try {
+			const result = await runSearch({
+				text,
+				filterRooms: false,
+				onLocal: localData => {
+					if (isStale()) return;
+					setSearch(localData);
+				}
+			});
+			if (!isStale()) setSearch(result);
+		} catch (e) {
+			log(e);
+		}
+		if (!isStale()) setSearching(false);
+	}, []);
+
 	useLayoutEffect(() => {
 		const titleHeader = title ?? I18n.t('Select_Members');
 		const buttonTextHeader = buttonText || I18n.t('Next');
 		const nextActionHeader = nextAction || (() => {});
 		const buttonTitle = handleButtonTitle(buttonTextHeader);
-		const options = {
+		const showHeaderButton = (!maxUsers || showButton || (isGroupChat() && users.length > 1)) && !!buttonTitle;
+		navigation.setOptions({
 			title: titleHeader,
-			headerRight: () =>
-				(!maxUsers || showButton || (isGroupChat() && users.length > 1)) &&
-				!!buttonTitle && (
-					<HeaderButton.Container>
-						<HeaderButton.Item title={buttonTitle} onPress={nextActionHeader} testID='selected-users-view-submit' />
-					</HeaderButton.Container>
-				)
-		};
-		navigation.setOptions(options);
-	}, [navigation, users.length, maxUsers, buttonText, nextAction]);
+			...headerRightActions(
+				showHeaderButton ? [{ label: buttonTitle, testID: 'selected-users-view-submit', onPress: nextActionHeader }] : []
+			),
+			...(hasNativeHeaderBar
+				? {
+						...translucentHeader,
+						headerSearchBarOptions: stackedSearchBarOptions({ onChangeText: handleSearch })
+					}
+				: {})
+		});
+	}, [navigation, users.length, maxUsers, buttonText, nextAction, handleSearch]);
 
 	useEffect(() => {
-		if (isGroupChat()) {
+		if (isGroupChat() && user.username) {
 			dispatch(addUser({ _id: user.id, name: user.username, fname: user.name as string }));
 		}
 	}, []);
@@ -123,33 +152,6 @@ const SelectedUsersView = () => {
 			}
 		};
 	}, [dispatch]);
-
-	const handleSearch = useCallback(async (text: string) => {
-		searchId.current += 1;
-		const currentSearchId = searchId.current;
-		const isStale = () => currentSearchId !== searchId.current;
-
-		setSearching(true);
-
-		try {
-			// Paint local results immediately while the backend request is still in flight
-			const result = await runSearch({
-				text,
-				filterRooms: false,
-				onLocal: localData => {
-					if (isStale()) return;
-					setSearch(localData);
-				}
-			});
-			if (isStale()) return;
-			setSearch(result);
-		} catch (e) {
-			log(e);
-		} finally {
-			// Only the latest search clears the flag, so a stale request never hides an in-flight newer one
-			if (!isStale()) setSearching(false);
-		}
-	}, []);
 
 	const toggleUser = (userItem: ISelectedUser) => {
 		// Disallow removing self user from the direct message group
@@ -185,8 +187,9 @@ const SelectedUsersView = () => {
 		<SafeAreaView testID='select-users-view'>
 			<FlatList
 				data={data}
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				keyExtractor={item => item._id}
-				renderItem={({ item }) => {
+				renderItem={({ item, index }) => {
 					const name = useRealName && item.fname ? item.fname : item.name;
 					const username = item.search ? (item.username as string) : item.name;
 					return (
@@ -198,13 +201,19 @@ const SelectedUsersView = () => {
 							icon={isChecked(username) ? 'checkbox-checked' : 'checkbox-unchecked'}
 							iconColor={isChecked(username) ? colors.fontHint : colors.strokeLight}
 							isChecked={isChecked(username)}
+							isFirst={index === 0}
+							isLast={index === data.length - 1}
 						/>
 					);
 				}}
-				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={searching ? <ActivityIndicator /> : <List.Separator />}
+				ItemSeparatorComponent={RowSeparator}
+				ListFooterComponent={searching ? <ActivityIndicator /> : hasNativeHeaderBar ? null : <List.Separator />}
 				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
-				contentContainerStyle={{ backgroundColor: colors.surfaceRoom, paddingBottom: bottom }}
+				contentContainerStyle={{
+					backgroundColor: listBackgroundColor,
+					paddingTop: hasNativeHeaderBar ? 16 : 0,
+					paddingBottom: bottom
+				}}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

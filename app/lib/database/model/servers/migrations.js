@@ -164,6 +164,24 @@ export default schemaMigrations({
 					columns: [{ name: 'icon_url', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 18,
+			steps: [
+				addColumns({
+					table: 'users',
+					columns: [{ name: 'sidebar_categories', type: 'string', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 19,
+			steps: [
+				addColumns({
+					table: 'servers',
+					columns: [{ name: 'has_valid_license', type: 'boolean', isOptional: true }]
+				})
+			]
 		}
 	]
 });

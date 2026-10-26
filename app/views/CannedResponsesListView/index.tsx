@@ -1,32 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 import { type RouteProp } from '@react-navigation/native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { type SearchBarCommands } from 'react-native-screens';
 
-import database from '../../lib/database';
-import I18n from '../../i18n';
-import { hideActionSheetRef, showActionSheetRef } from '../../containers/ActionSheet';
-import SafeAreaView from '../../containers/SafeAreaView';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import SearchHeader from '../../containers/SearchHeader';
-import BackgroundContainer from '../../containers/BackgroundContainer';
-import { useTheme } from '../../theme';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import * as List from '../../containers/List';
-import { themes } from '../../lib/constants/colors';
-import log from '../../lib/methods/helpers/log';
+import database from '~/lib/database';
+import I18n from '~/i18n';
+import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
+import { hideActionSheetRef, showActionSheetRef } from '~/containers/ActionSheet';
+import SafeAreaView from '~/containers/SafeAreaView';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import BackgroundContainer from '~/containers/BackgroundContainer';
+import { useTheme } from '~/theme';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import * as List from '~/containers/List';
+import { themes } from '~/lib/constants/colors';
+import log from '~/lib/methods/helpers/log';
 import CannedResponseItem from './CannedResponseItem';
 import DepartmentFilter from './DepartmentFilter';
 import styles from './styles';
-import { type ICannedResponse } from '../../definitions/ICannedResponse';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { useDebounce } from '../../lib/methods/helpers';
-import { getListCannedResponse, getDepartments } from '../../lib/services/restApi';
-import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { type ISubscription } from '../../definitions';
+import { type ICannedResponse } from '~/definitions/ICannedResponse';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { useDebounce } from '~/lib/methods/helpers';
+import { getListCannedResponse, getDepartments } from '~/lib/services/restApi';
+import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { type ISubscription } from '~/definitions';
 
 const COUNT = 25;
 
@@ -51,24 +51,23 @@ interface ICannedResponsesListViewProps {
 }
 
 const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps) => {
-	const [room, setRoom] = useState<ISubscription | null>(null);
+	const roomRef = useRef<ISubscription | null>(null);
 
 	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);
-	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState<ICannedResponse[]>([]);
 	const [departments, setDepartments] = useState<ILivechatDepartment[]>([]);
 	const [isSearching, setIsSearching] = useState(false);
 	const [currentDepartment, setCurrentDepartment] = useState(fixedScopes[0]);
 
-	// states used to do a fetch by onChangeText, onDepartmentSelect and onEndReached
-	const [searchText, setSearchText] = useState('');
-	const [scope, setScope] = useState('');
-	const [departmentId, setDepartmentId] = useState('');
+	const searchTextRef = useRef('');
+	const scopeRef = useRef('');
+	const departmentIdRef = useRef('');
 	const [loading, setLoading] = useState(true);
 	const [offset, setOffset] = useState(0);
 
 	const { theme } = useTheme();
 	const isMasterDetail = useMasterDetail();
 	const { bottom } = useSafeAreaInsets();
+	const searchBarRef = useRef<SearchBarCommands>(null);
 
 	const getRoomFromDb = async () => {
 		const { rid } = route.params;
@@ -76,7 +75,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		const subsCollection = db.get('subscriptions');
 		try {
 			const r = await subsCollection.find(rid);
-			setRoom(r);
+			roomRef.current = r;
 		} catch (error) {
 			console.log('CannedResponsesListView: Room not found');
 			log(error);
@@ -96,12 +95,14 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	}, 300);
 
 	const goToDetail = (item: ICannedResponse) => {
+		const room = roomRef.current;
 		if (room) {
 			navigation.navigate('CannedResponseDetail', { cannedResponse: item, room });
 		}
 	};
 
 	const navigateToRoom = (item: ICannedResponse) => {
+		const room = roomRef.current;
 		if (room?.rid) {
 			goRoom({ item: room, isMasterDetail, usedCannedResponse: item.text });
 		}
@@ -138,23 +139,16 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 	};
 
-	useEffect(() => {
-		if (departments.length > 0) {
-			const newCannedResponses = cannedResponses.map(cr => {
-				let scopeName = '';
-
-				if (cr?.departmentId) {
-					scopeName = departments.filter(dep => dep._id === cr.departmentId)[0]?.name || 'Department';
-				} else {
-					scopeName = departments.filter(dep => dep._id === cr.scope)[0]?.name;
-				}
-				cr.scopeName = scopeName;
-
-				return cr;
-			});
-			setCannedResponsesScopeName(newCannedResponses);
+	const getScopeName = (cannedResponse: ICannedResponse) => {
+		if (cannedResponse.departmentId) {
+			return departments.find(department => department._id === cannedResponse.departmentId)?.name || 'Department';
 		}
-	}, [departments, cannedResponses]);
+		return departments.find(department => department._id === cannedResponse.scope)?.name ?? '';
+	};
+
+	const cannedResponsesScopeName: ICannedResponse[] = departments.length
+		? cannedResponses.map(cannedResponse => ({ ...cannedResponse, scopeName: getScopeName(cannedResponse) }))
+		: [];
 
 	const searchCallback = useDebounce(async (text = '', department = '', depId = '') => {
 		await handleGetListCannedResponse({ text, department, depId, debounced: true });
@@ -174,8 +168,8 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const onChangeText = (text: string) => {
 		newSearch();
-		setSearchText(text);
-		searchCallback(text, scope, departmentId);
+		searchTextRef.current = text;
+		searchCallback(text, scopeRef.current, departmentIdRef.current);
 	};
 
 	const onDepartmentSelect = (value: ILivechatDepartment) => {
@@ -195,9 +189,9 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 		newSearch();
 		setCurrentDepartment(value);
-		setScope(department);
-		setDepartmentId(depId);
-		searchCallback(searchText, department, depId);
+		scopeRef.current = department;
+		departmentIdRef.current = depId;
+		searchCallback(searchTextRef.current, department, depId);
 		hideActionSheetRef();
 	};
 
@@ -206,50 +200,13 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			return;
 		}
 		setLoading(true);
-		await handleGetListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
+		await handleGetListCannedResponse({
+			text: searchTextRef.current,
+			department: scopeRef.current,
+			depId: departmentIdRef.current,
+			debounced: false
+		});
 	};
-
-	const getHeader = () => {
-		if (isSearching) {
-			return {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item
-							iconName='close'
-							onPress={() => {
-								onChangeText('');
-								setIsSearching(false);
-							}}
-						/>
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <SearchHeader onSearchChangeText={onChangeText} testID='team-channels-view-search-header' />,
-				headerRight: () => null
-			};
-		}
-
-		const options: NativeStackNavigationOptions = {
-			headerLeft: () => null,
-			headerTitle: I18n.t('Canned_Responses'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item iconName='filter' onPress={showFilters} />
-					<HeaderButton.Item iconName='search' onPress={() => setIsSearching(true)} />
-				</HeaderButton.Container>
-			)
-		};
-
-		return options;
-	};
-
-	const setHeader = () => {
-		const options = getHeader();
-		navigation.setOptions(options);
-	};
-
-	useEffect(() => {
-		setHeader();
-	}, [isSearching, departments, currentDepartment]);
 
 	const showFilters = () => {
 		showActionSheetRef({
@@ -263,6 +220,32 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			enableContentPanningGesture: false
 		});
 	};
+
+	const onCancelSearch = () => {
+		onChangeText('');
+		setIsSearching(false);
+	};
+
+	const getHeader = (): NativeStackNavigationOptions =>
+		searchHeaderOptions({
+			isSearching,
+			searchBarRef,
+			onSearchPress: () => setIsSearching(true),
+			onChangeText,
+			onCancel: onCancelSearch,
+			testIDPrefix: 'canned-responses-view',
+			options: { headerLeft: () => null, headerTitle: I18n.t('Canned_Responses') },
+			rightActions: [{ label: I18n.t('Filter'), icon: 'filter', onPress: showFilters }]
+		});
+
+	const setHeader = () => {
+		const options = getHeader();
+		navigation.setOptions(options);
+	};
+
+	useEffect(() => {
+		setHeader();
+	}, [isSearching, departments, currentDepartment]);
 
 	const renderContent = () => {
 		if (!cannedResponsesScopeName.length && !loading) {

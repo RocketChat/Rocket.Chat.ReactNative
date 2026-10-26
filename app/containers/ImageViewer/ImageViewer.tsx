@@ -1,14 +1,20 @@
 import { useRef, useState, type ReactElement } from 'react';
 import { type LayoutChangeEvent, StyleSheet, type StyleProp, type ViewStyle, View } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import {
+	GestureDetector,
+	usePanGesture,
+	usePinchGesture,
+	useSimultaneousGestures,
+	useTapGesture
+} from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { Image, type ImageStyle } from 'expo-image';
 
 import Touch from '../Touch';
-import { useUserPreferences } from '../../lib/methods/userPreferences';
-import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants/keys';
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
+import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '~/lib/constants/keys';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
 
 interface ImageViewerProps {
 	style?: StyleProp<ImageStyle>;
@@ -39,16 +45,16 @@ const styles = StyleSheet.create({
 
 export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...props }: ImageViewerProps): ReactElement => {
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
-	const [isPlaying, setIsPlaying] = useState<boolean>(!!autoplayGifs);
+	const isPlayingRef = useRef(!!autoplayGifs);
 	const expoImageRef = useRef<Image>(null);
 
 	const handleGifPlayback = async () => {
-		if (isPlaying) {
-			setIsPlaying(false);
+		if (isPlayingRef.current) {
+			isPlayingRef.current = false;
 			await expoImageRef.current?.stopAnimating();
 			return;
 		}
-		setIsPlaying(true);
+		isPlayingRef.current = true;
 		await expoImageRef.current?.startAnimating();
 	};
 	const [centerX, setCenterX] = useState(0);
@@ -77,12 +83,12 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 	const resetScaleAnimation = () => {
 		'worklet';
 
-		scaleOffset.value = 1;
-		offsetX.value = 0;
-		offsetY.value = 0;
-		scale.value = withSpring(1);
-		translationX.value = withSpring(0, { overshootClamping: true });
-		translationY.value = withSpring(0, { overshootClamping: true });
+		scaleOffset.set(1);
+		offsetX.set(0);
+		offsetY.set(0);
+		scale.set(withSpring(1));
+		translationX.set(withSpring(0, { overshootClamping: true }));
+		translationY.set(withSpring(0, { overshootClamping: true }));
 	};
 
 	const clamp = (value: number, min: number, max: number) => {
@@ -91,46 +97,49 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 		return Math.max(Math.min(value, max), min);
 	};
 
-	const pinchGesture = Gesture.Pinch()
-		.onUpdate(event => {
-			scale.value = clamp(scaleOffset.value * (event.scale > 0 ? event.scale : 1), 1, 4);
-		})
-		.onEnd(() => {
-			scaleOffset.value = scale.value > 0 ? scale.value : 1;
-		});
+	const pinchGesture = usePinchGesture({
+		onUpdate: event => {
+			scale.set(clamp(scaleOffset.get() * (event.scale > 0 ? event.scale : 1), 1, 4));
+		},
+		onDeactivate: () => {
+			scaleOffset.set(scale.get() > 0 ? scale.get() : 1);
+		}
+	});
 
-	const panGesture = Gesture.Pan()
-		.maxPointers(2)
-		.onStart(() => {
-			translationX.value = offsetX.value;
-			translationY.value = offsetY.value;
-		})
-		.onUpdate(event => {
-			const scaleFactor = scale.value - 1;
-			translationX.value = clamp(event.translationX + offsetX.value, -scaleFactor * centerX, scaleFactor * centerX);
-			translationY.value = clamp(event.translationY + offsetY.value, -scaleFactor * centerY, scaleFactor * centerY);
-		})
-		.onEnd(() => {
-			offsetX.value = translationX.value;
-			offsetY.value = translationY.value;
-			if (scale.value === 1) resetScaleAnimation();
-		});
+	const panGesture = usePanGesture({
+		maxPointers: 2,
+		onActivate: () => {
+			translationX.set(offsetX.get());
+			translationY.set(offsetY.get());
+		},
+		onUpdate: event => {
+			const scaleFactor = scale.get() - 1;
+			translationX.set(clamp(event.translationX + offsetX.get(), -scaleFactor * centerX, scaleFactor * centerX));
+			translationY.set(clamp(event.translationY + offsetY.get(), -scaleFactor * centerY, scaleFactor * centerY));
+		},
+		onDeactivate: () => {
+			offsetX.set(translationX.get());
+			offsetY.set(translationY.get());
+			if (scale.get() === 1) resetScaleAnimation();
+		}
+	});
 
-	const doubleTapGesture = Gesture.Tap()
-		.numberOfTaps(2)
-		.maxDelay(120)
-		.maxDistance(70)
-		.onEnd(event => {
-			if (scaleOffset.value > 1) resetScaleAnimation();
+	const doubleTapGesture = useTapGesture({
+		numberOfTaps: 2,
+		maxDelay: 120,
+		maxDistance: 70,
+		onDeactivate: event => {
+			if (scaleOffset.get() > 1) resetScaleAnimation();
 			else {
-				scale.value = withTiming(2, { duration: 200 });
-				translationX.value = withTiming(centerX - event.x, { duration: 200 });
-				offsetX.value = centerX - event.x;
-				scaleOffset.value = 2;
+				scale.set(withTiming(2, { duration: 200 }));
+				translationX.set(withTiming(centerX - event.x, { duration: 200 }));
+				offsetX.set(centerX - event.x);
+				scaleOffset.set(2);
 			}
-		});
+		}
+	});
 
-	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
+	const gesture = useSimultaneousGestures(pinchGesture, panGesture, doubleTapGesture);
 
 	const { colors } = useTheme();
 

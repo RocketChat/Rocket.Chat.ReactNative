@@ -2,9 +2,9 @@ import { memo } from 'react';
 import { Text, View } from 'react-native';
 
 import { CustomIcon } from '../CustomIcon';
-import { useTheme } from '../../theme';
-import EventEmitter from '../../lib/methods/helpers/events';
-import I18n from '../../i18n';
+import { useTheme } from '~/theme';
+import EventEmitter from '~/lib/methods/helpers/events';
+import I18n from '~/i18n';
 import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import { LISTENER } from '../Toast';
@@ -17,8 +17,6 @@ export interface IActionSheetItem {
 }
 
 export const Item = memo(({ item, hide }: IActionSheetItem) => {
-	'use memo';
-
 	const enabled = item?.enabled ?? true;
 	const { colors } = useTheme();
 	const height = useActionSheetItemHeight();

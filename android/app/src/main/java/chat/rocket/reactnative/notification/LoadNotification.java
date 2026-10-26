@@ -1,5 +1,6 @@
 package chat.rocket.reactnative.notification;
 
+import androidx.annotation.Keep;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -9,24 +10,30 @@ import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import com.facebook.react.modules.network.OkHttpClientProvider;
+
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+@Keep
 class JsonResponse {
     Data data;
 
+    @Keep
     class Data {
         Notification notification;
 
+        @Keep
         class Notification {
             String notId;
             String title;
             String text;
             Payload payload;
 
+            @Keep
             class Payload {
                 String host;
                 String rid;
@@ -41,12 +48,14 @@ class JsonResponse {
                 String tmid;
                 Content content;
 
+                @Keep
                 class Sender {
                     String _id;
                     String username;
                     String name;
                 }
                 
+                @Keep
                 class Content {
                     String algorithm;
                     String ciphertext;
@@ -62,7 +71,6 @@ public class LoadNotification {
     private static final String TAG = "RocketChat.LoadNotif";
     private int RETRY_COUNT = 0;
     private int[] TIMEOUT = new int[]{0, 1, 3, 5, 10};
-    private String TOKEN_KEY = "reactnativemeteor_usertoken-";
 
     public void load(final Ejson ejson, Callback callback) {
         Log.i(TAG, "Starting notification load for message-id-only notification");
@@ -108,7 +116,7 @@ public class LoadNotification {
         }
 
         // Configure OkHttpClient with proper timeouts
-        final OkHttpClient client = new OkHttpClient.Builder()
+        final OkHttpClient client = OkHttpClientProvider.createClient().newBuilder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)

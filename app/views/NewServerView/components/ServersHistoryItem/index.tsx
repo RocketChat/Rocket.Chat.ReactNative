@@ -3,11 +3,11 @@ import { PixelRatio, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import styles, { ROW_HEIGHT } from './styles';
-import { useTheme } from '../../../../theme';
-import { ServerItemTouchable as Touchable } from '../../../../containers/ServerItem';
-import { type TServerHistoryModel } from '../../../../definitions';
-import I18n from '../../../../i18n';
-import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useTheme } from '~/theme';
+import { ServerItemTouchable as Touchable } from '~/containers/ServerItem';
+import { type TServerHistoryModel } from '~/definitions';
+import I18n from '~/i18n';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export { ROW_HEIGHT };
 
@@ -17,7 +17,7 @@ export interface IServersHistoryItem {
 	onDeletePress(): void;
 }
 
-const defaultLogo = require('../../../../static/images/logo.png');
+const defaultLogo = require('~/static/images/logo.png');
 
 const ServersHistoryItem = memo(({ item, onPress, onDeletePress }: IServersHistoryItem) => {
 	const { colors } = useTheme();

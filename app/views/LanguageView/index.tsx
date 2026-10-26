@@ -1,29 +1,25 @@
-import { useLayoutEffect } from 'react';
-import { FlatList } from 'react-native';
-import RNRestart from 'react-native-restart';
+import { reloadAppAsync } from 'expo';
+import { Fragment, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import ListRadio from '../../containers/List/ListRadio';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { appStart } from '../../actions/app';
-import { setUser } from '../../actions/login';
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { RootEnum } from '../../definitions';
-import I18n, { isRTL, LANGUAGES } from '../../i18n';
-import database from '../../lib/database';
-import { getUserSelector } from '../../selectors/login';
-import { type SettingsStackParamList } from '../../stacks/types';
-import { showErrorAlert } from '../../lib/methods/helpers/info';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { saveUserPreferences } from '../../lib/services/restApi';
+import ListRadio from '~/containers/List/components/ListRadio';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { appStart } from '~/actions/app';
+import { setUser } from '~/actions/login';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { RootEnum } from '~/definitions';
+import I18n, { isRTL, LANGUAGES } from '~/i18n';
+import database from '~/lib/database';
+import { getUserSelector } from '~/selectors/login';
+import { type SettingsStackParamList } from '~/stacks/types';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { saveUserPreferences } from '~/lib/services/restApi';
 
 const LanguageView = () => {
-	'use memo';
-
 	const { languageDefault, id } = useAppSelector(state => ({
 		languageDefault: getUserSelector(state).language,
 		id: getUserSelector(state).id
@@ -32,9 +28,6 @@ const LanguageView = () => {
 
 	const dispatch = useDispatch();
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'LanguageView'>>();
-	const { bottom } = useSafeAreaInsets();
-
-	const paddingBottom = Math.max(16, bottom);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -55,7 +48,7 @@ const LanguageView = () => {
 		await Promise.all([changeLanguage(language), new Promise(resolve => setTimeout(resolve, 300))]);
 
 		if (shouldRestart) {
-			await RNRestart.Restart();
+			await reloadAppAsync('Language RTL change');
 		} else {
 			dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		}
@@ -94,26 +87,30 @@ const LanguageView = () => {
 		}
 	};
 
+	const renderLanguage = (item: (typeof LANGUAGES)[number]) => (
+		<ListRadio
+			testID={`language-view-${item.value}`}
+			title={item.label}
+			value={item.value}
+			translateTitle={false}
+			isSelected={item.value === language}
+			onPress={() => submit(item.value)}
+		/>
+	);
+
 	return (
 		<SafeAreaView testID='language-view'>
-			<FlatList
-				data={LANGUAGES}
-				keyExtractor={item => item.value}
-				ListHeaderComponent={List.Separator}
-				ListFooterComponent={List.Separator}
-				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom }]}
-				renderItem={({ item }) => (
-					<ListRadio
-						testID={`language-view-${item.value}`}
-						title={item.label}
-						value={item.value}
-						translateTitle={false}
-						isSelected={item.value === (language || languageDefault)}
-						onPress={() => submit(item.value)}
-					/>
-				)}
-				ItemSeparatorComponent={List.Separator}
-			/>
+			<List.Container>
+				<List.Section>
+					<List.Separator />
+					{LANGUAGES.map(item => (
+						<Fragment key={item.value}>
+							{renderLanguage(item)}
+							<List.Separator />
+						</Fragment>
+					))}
+				</List.Section>
+			</List.Container>
 		</SafeAreaView>
 	);
 };

@@ -3,30 +3,31 @@ import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { Keyboard } from 'react-native';
 
-import { type IAttachment, type TAnyMessageModel } from '../../../definitions';
-import { getMessageTranslation } from '../utils';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../lib/constants/keys';
-import { messagesStatus } from '../../../lib/constants/messagesStatus';
-import { useDebounce } from '../../../lib/methods/helpers/debounce';
-import openLink from '../../../lib/methods/helpers/openLink';
-import { useTheme } from '../../../theme';
+import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { getMessageSeparators, getMessageTranslation, type TMessageSeparators } from '../utils';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
+import { messagesStatus } from '~/lib/constants/messagesStatus';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
+import openLink from '~/lib/methods/helpers/openLink';
+import { useTheme } from '~/theme';
 import {
 	useIsArchived,
-	useAutoTranslate,
+	useRoomTranslateLanguage,
 	useBroadcast,
 	useCloseEmojiAndAction,
 	useIsThreadRoom,
 	useJumpToMessage,
 	useMessageGroupingPeriod,
 	useMessageUser,
-	useOnDiscussionPress,
-	useOnThreadPress
+	useOnThreadPress,
+	useOnDiscussionPress
 } from './MessageRoomStore';
 
 type MessageStoreState = {
 	tick: number;
 	item: TAnyMessageModel;
 	previousItem?: TAnyMessageModel;
+	lastSeen: Date | null;
 	isIgnored: boolean;
 	manualUnignored: boolean;
 	reveal: () => void;
@@ -36,7 +37,10 @@ type MessageStoreState = {
 };
 
 const createMessageStore = (
-	initial: Pick<MessageStoreState, 'item' | 'previousItem' | 'isIgnored' | 'onPress' | 'onLongPress' | 'threadBadgeColor'>
+	initial: Pick<
+		MessageStoreState,
+		'item' | 'previousItem' | 'lastSeen' | 'isIgnored' | 'onPress' | 'onLongPress' | 'threadBadgeColor'
+	>
 ) =>
 	createStore<MessageStoreState>(set => ({
 		tick: 0,
@@ -119,6 +123,7 @@ const subscribeModel = (m: TAnyMessageModel, store: MessageStore) => {
 export const MessageProvider = ({
 	item,
 	previousItem,
+	lastSeen = null,
 	onPress,
 	onLongPress,
 	threadBadgeColor,
@@ -127,16 +132,15 @@ export const MessageProvider = ({
 }: {
 	item: TAnyMessageModel;
 	previousItem?: TAnyMessageModel;
+	lastSeen?: Date | null;
 	onPress?: () => void;
 	onLongPress?: (item: TAnyMessageModel) => void;
 	threadBadgeColor?: string;
 	isIgnored?: boolean;
 	children: ReactNode;
 }): ReactElement => {
-	'use memo';
-
 	const [store] = useState(() =>
-		createMessageStore({ item, previousItem, isIgnored: isIgnored ?? false, onPress, onLongPress, threadBadgeColor })
+		createMessageStore({ item, previousItem, lastSeen, isIgnored: isIgnored ?? false, onPress, onLongPress, threadBadgeColor })
 	);
 
 	// Push item/previousItem into the store and (re)subscribe both records to the same tick.
@@ -150,6 +154,10 @@ export const MessageProvider = ({
 			unsubscribePrevious?.();
 		};
 	}, [item, previousItem, store]);
+
+	useEffect(() => {
+		store.setState({ lastSeen });
+	}, [lastSeen, store]);
 
 	// Mirror per-message row handlers so field-level selectors subscribe without churning the context value.
 	useEffect(() => {
@@ -214,6 +222,9 @@ export const useAttachments = (): TAnyMessageModel['attachments'] => useMessageF
 
 export const useMessageHeaderMeta = (): Pick<TAnyMessageModel, 'ts' | 'unread' | 'pinned' | 't'> =>
 	useMessageStore(useShallow(s => ({ ts: s.item.ts, unread: s.item.unread, pinned: s.item.pinned, t: s.item.t })));
+
+export const useMessageSeparators = (): TMessageSeparators =>
+	useMessageStore(useShallow(s => getMessageSeparators(s.previousItem, s.item, s.lastSeen)));
 
 const computeIsHeader = (
 	prev: TAnyMessageModel | undefined,
@@ -293,26 +304,29 @@ export const useMessageId = (): TAnyMessageModel['id'] => useMessageField(item =
 
 export const useReplies = (): TAnyMessageModel['replies'] => useMessageField(item => item.replies);
 
+const autoTranslateLanguageFor = (
+	item: TAnyMessageModel,
+	username: string | undefined,
+	roomTranslateLanguage: string | undefined
+): string | undefined =>
+	roomTranslateLanguage && item.autoTranslate && item.u?.username !== username ? roomTranslateLanguage : undefined;
+
 export const useTranslateLanguage = (): string | undefined => {
-	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
+	const roomTranslateLanguage = useRoomTranslateLanguage();
 	const user = useMessageUser();
-	return useMessageStore(s => {
-		const otherUserMessage = s.item.u?.username !== user?.username;
-		const canTranslate = autoTranslateRoom && autoTranslateLanguage && s.item.autoTranslate && otherUserMessage;
-		return canTranslate ? autoTranslateLanguage : undefined;
-	});
+	return useMessageStore(s => autoTranslateLanguageFor(s.item, user?.username, roomTranslateLanguage));
 };
 
 export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTranslated: boolean } => {
 	const user = useMessageUser();
-	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
+	const roomTranslateLanguage = useRoomTranslateLanguage();
 	return useMessageStore(
 		useShallow(s => {
 			let messageText = s.item.msg;
 			let isTranslated = false;
-			const otherUserMessage = s.item.u?.username !== user?.username;
-			if (autoTranslateRoom && s.item.autoTranslate && autoTranslateLanguage && otherUserMessage) {
-				const translated = getMessageTranslation(s.item, autoTranslateLanguage);
+			const language = autoTranslateLanguageFor(s.item, user?.username, roomTranslateLanguage);
+			if (language) {
+				const translated = getMessageTranslation(s.item, language);
 				isTranslated = !!translated;
 				messageText = translated || messageText;
 			}
@@ -331,8 +345,6 @@ export const useRevealIgnored = (): (() => void) => useMessageStore(s => s.revea
 // press guard. longPressable drops encrypted messages (tap can still open a thread; the action
 // sheet is suppressed); revealsIgnored is tappable ∧ isIgnored (a tap reveals instead of pressing).
 export const useMessageTouchable = (): { tappable: boolean; longPressable: boolean; revealsIgnored: boolean } => {
-	'use memo';
-
 	const isInfo = useIsInfoMessage();
 	const { hasError, isTemp } = useMessageStatus();
 	const isEncrypted = useIsEncrypted();
@@ -348,8 +360,6 @@ export const useMessageTouchable = (): { tappable: boolean; longPressable: boole
 };
 
 export const useMessageLongPress = (): (() => void) => {
-	'use memo';
-
 	const item = useMessageItem();
 	const { longPressable } = useMessageTouchable();
 	const onLongPress = useMessageStore(s => s.onLongPress);
@@ -362,8 +372,6 @@ export const useMessageLongPress = (): (() => void) => {
 };
 
 export const useOnLinkPress = (): ((link: string) => void) => {
-	'use memo';
-
 	const item = useMessageItem();
 	const jumpToMessage = useJumpToMessage();
 	const { theme } = useTheme();
@@ -377,8 +385,6 @@ export const useOnLinkPress = (): ((link: string) => void) => {
 };
 
 export const useMessagePress = (): (() => void) => {
-	'use memo';
-
 	const item = useMessageItem();
 	const isThreadRoom = useIsThreadRoom();
 	const onPress = useMessageStore(s => s.onPress);

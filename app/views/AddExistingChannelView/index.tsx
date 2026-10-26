@@ -5,24 +5,26 @@ import { FlatList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import * as List from '../../containers/List';
-import database from '../../lib/database';
-import I18n from '../../i18n';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import SearchBox from '../../containers/SearchBox';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import { useTheme } from '../../theme';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { sendLoadingEvent } from '../../containers/Loading';
-import { showErrorAlert } from '../../lib/methods/helpers/info';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { type TSubscriptionModel, SubscriptionType } from '../../definitions';
-import { compareServerVersion, getRoomTitle, hasPermission, useDebounce } from '../../lib/methods/helpers';
-import { addRoomsToTeam } from '../../lib/services/restApi';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import Navigation from '../../lib/navigation/appNavigation';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import database from '~/lib/database';
+import I18n from '~/i18n';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import SearchBox from '~/containers/SearchBox';
+import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
+import { useTheme } from '~/theme';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { sendLoadingEvent } from '~/containers/Loading';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { type TSubscriptionModel, SubscriptionType } from '~/definitions';
+import { compareServerVersion, getRoomTitle, hasPermission, useDebounce } from '~/lib/methods/helpers';
+import { addRoomsToTeam } from '~/lib/services/restApi';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import Navigation from '~/lib/navigation/appNavigation';
+import RowSeparator from '~/containers/NativeListRow/components/Separator';
+import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
+import ChannelItem from './ChannelItem';
 
 type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
 type TRoute = RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
@@ -34,6 +36,7 @@ const AddExistingChannelView = () => {
 	const [selected, setSelected] = useState<string[]>([]);
 
 	const { colors } = useTheme();
+	const listBackgroundColor = useListBackgroundColor(colors.surfaceRoom);
 
 	const navigation = useNavigation<TNavigation>();
 	const {
@@ -48,29 +51,46 @@ const AddExistingChannelView = () => {
 	}));
 	const isMasterDetail = useMasterDetail();
 
-	useLayoutEffect(() => {
-		setHeader();
-	}, [selected.length, isMasterDetail]);
+	const isChecked = (rid: string) => selected.includes(rid);
 
-	useEffect(() => {
-		query();
-	}, []);
+	const toggleChannel = (rid: string) => {
+		if (!isChecked(rid)) {
+			logEvent(events.AEC_ADD_CHANNEL);
+			setSelected([...selected, rid]);
+		} else {
+			logEvent(events.AEC_REMOVE_CHANNEL);
+			const filterSelected = selected.filter(el => el !== rid);
+			setSelected(filterSelected);
+		}
+	};
+
+	const submit = async () => {
+		sendLoadingEvent({ visible: true });
+		try {
+			logEvent(events.CT_ADD_ROOM_TO_TEAM);
+			const result = await addRoomsToTeam({ rooms: selected, teamId });
+			if (result.success) {
+				sendLoadingEvent({ visible: false });
+				Navigation.resetTo();
+			}
+		} catch (e: any) {
+			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
+			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
+			sendLoadingEvent({ visible: false });
+		}
+	};
 
 	const setHeader = () => {
 		const options: NativeStackNavigationOptions = {
-			headerTitle: I18n.t('Add_Existing_Channel')
+			headerTitle: I18n.t('Add_Existing_Channel'),
+			...headerRightActions(
+				selected.length > 0 ? [{ label: I18n.t('Next'), testID: 'add-existing-channel-view-submit', onPress: submit }] : []
+			)
 		};
 
 		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+			Object.assign(options, headerLeftCloseModal(navigation));
 		}
-
-		options.headerRight = () =>
-			selected.length > 0 && (
-				<HeaderButton.Container>
-					<HeaderButton.Item title={I18n.t('Next')} onPress={submit} testID='add-existing-channel-view-submit' />
-				</HeaderButton.Container>
-			);
 
 		navigation.setOptions(options);
 	};
@@ -118,38 +138,17 @@ const AddExistingChannelView = () => {
 		}
 	};
 
+	useLayoutEffect(() => {
+		setHeader();
+	}, [selected.length, isMasterDetail]);
+
+	useEffect(() => {
+		query();
+	}, []);
+
 	const onSearchChangeText = useDebounce((text: string) => {
 		query(text);
 	}, textInputDebounceTime);
-
-	const isChecked = (rid: string) => selected.includes(rid);
-
-	const toggleChannel = (rid: string) => {
-		if (!isChecked(rid)) {
-			logEvent(events.AEC_ADD_CHANNEL);
-			setSelected([...selected, rid]);
-		} else {
-			logEvent(events.AEC_REMOVE_CHANNEL);
-			const filterSelected = selected.filter(el => el !== rid);
-			setSelected(filterSelected);
-		}
-	};
-
-	const submit = async () => {
-		sendLoadingEvent({ visible: true });
-		try {
-			logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await addRoomsToTeam({ rooms: selected, teamId });
-			if (result.success) {
-				sendLoadingEvent({ visible: false });
-				Navigation.resetTo();
-			}
-		} catch (e: any) {
-			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
-			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
-			sendLoadingEvent({ visible: false });
-		}
-	};
 
 	return (
 		<SafeAreaView testID='add-existing-channel-view'>
@@ -160,24 +159,23 @@ const AddExistingChannelView = () => {
 				ListHeaderComponent={
 					<SearchBox onChangeText={(text: string) => onSearchChangeText(text)} testID='add-existing-channel-view-search' />
 				}
-				renderItem={({ item }: { item: TSubscriptionModel }) => {
+				renderItem={({ item, index }: { item: TSubscriptionModel; index: number }) => {
 					// TODO: reuse logic inside RoomTypeIcon
 					const icon = item.t === SubscriptionType.GROUP && !item?.teamId ? 'channel-private' : 'channel-public';
 					return (
-						<List.Item
+						<ChannelItem
 							title={getRoomTitle(item)}
-							translateTitle={false}
+							icon={icon}
+							isChecked={isChecked(item.rid)}
 							onPress={() => toggleChannel(item.rid)}
 							testID={`add-existing-channel-view-item-${item.name}`}
-							left={() => <List.Icon name={icon} />}
-							right={() => (isChecked(item.rid) ? <List.Icon name='check' color={colors.fontHint} /> : null)}
-							additionalAccessibilityLabel={isChecked(item.rid)}
-							additionalAccessibilityLabelCheck
+							isFirst={index === 0}
+							isLast={index === channels.length - 1}
 						/>
 					);
 				}}
-				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: colors.surfaceRoom, paddingBottom: bottom }}
+				ItemSeparatorComponent={RowSeparator}
+				contentContainerStyle={{ backgroundColor: listBackgroundColor, paddingBottom: bottom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

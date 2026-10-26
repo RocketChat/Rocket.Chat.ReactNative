@@ -1,6 +1,6 @@
 import { Model } from '@nozbe/watermelondb';
 import { date, field, json } from '@nozbe/watermelondb/decorators';
-import { sanitizer } from '../../utils';
+import { sanitizer } from '~/lib/database/utils';
 
 export const SERVERS_TABLE = 'servers';
 
@@ -32,6 +32,8 @@ export default class Server extends Model {
 	@field('unique_id') uniqueID;
 
 	@field('enterprise_modules') enterpriseModules;
+
+	@field('has_valid_license') hasValidLicense;
 
 	@field('e2e_enable') E2E_Enable;
 

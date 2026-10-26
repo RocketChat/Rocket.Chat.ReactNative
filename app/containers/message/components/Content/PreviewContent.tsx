@@ -1,12 +1,10 @@
-import { MarkdownPreview } from '../../../markdown';
-import { getPreviewMessageFromAttachment } from '../../utils';
-import { useAttachments, useMessageText } from '../../stores/MessageStore';
-import { useAutoTranslate } from '../../stores/MessageRoomStore';
+import { MarkdownPreview } from '~/containers/markdown';
+import { getPreviewMessageFromAttachment } from '~/containers/message/utils';
+import { useAttachments, useMessageText } from '~/containers/message/stores/MessageStore';
+import { useAutoTranslate } from '~/containers/message/stores/MessageRoomStore';
 import ContentWrapper from './ContentWrapper';
 
 const PreviewContent = () => {
-	'use memo';
-
 	const { messageText } = useMessageText();
 	const attachments = useAttachments();
 	const { autoTranslateLanguage } = useAutoTranslate();

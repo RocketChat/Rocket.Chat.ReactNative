@@ -3,7 +3,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { MultiSelect } from './index';
 
-jest.mock('../../../theme', () => ({
+jest.mock('~/theme', () => ({
 	useTheme: () => ({ colors: { fontTitlesLabels: 'black', fontSecondaryInfo: 'gray' } })
 }));
 
@@ -14,7 +14,7 @@ jest.mock('@rocket.chat/ui-kit', () => ({
 	}
 }));
 
-jest.mock('../../ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: () => ({
 		showActionSheet: mockShowActionSheet,
 		hideActionSheet: mockHideActionSheet

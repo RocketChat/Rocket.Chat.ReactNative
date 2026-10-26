@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { isIOS } from '../../lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -35,6 +35,12 @@ export default StyleSheet.create({
 		paddingHorizontal: 15,
 		paddingBottom: 10,
 		paddingTop: 17
+	},
+	nativeHeaderContainer: {
+		paddingBottom: 16
+	},
+	nativeSearchContent: {
+		paddingTop: 16
 	},
 	headerText: {
 		...sharedStyles.textRegular,

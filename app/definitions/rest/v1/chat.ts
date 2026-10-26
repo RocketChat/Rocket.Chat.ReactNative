@@ -1,5 +1,5 @@
-import type { EncryptedContent, IMessage, IMessageFromServer, IReadReceipts } from '../../IMessage';
-import type { IServerRoom } from '../../IRoom';
+import type { EncryptedContent, IMessage, IMessageFromServer, IReadReceipts } from '~/definitions/IMessage';
+import type { IServerRoom } from '~/definitions/IRoom';
 import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 export type ChatEndpoints = {
@@ -48,6 +48,11 @@ export type ChatEndpoints = {
 			total: number;
 		}>;
 	};
+	'chat.getThreadMessages': {
+		GET: (params: { tmid: IMessage['_id']; offset?: number; count?: number; sort?: { ts: number } }) => PaginatedResult<{
+			messages: IMessage[];
+		}>;
+	};
 	'chat.syncThreadsList': {
 		GET: (params: { rid: IServerRoom['_id']; updatedSince: string }) => {
 			threads: {
@@ -92,5 +97,8 @@ export type ChatEndpoints = {
 		GET: (params: { roomId: IServerRoom['_id']; offset: number; count: number }) => {
 			messages: IMessageFromServer[];
 		};
+	};
+	'chat.readThread': {
+		POST: (params: { tmid: IMessage['_id'] }) => void;
 	};
 };

@@ -3,14 +3,14 @@ import { StyleSheet, Text, unstable_batchedUpdates, View } from 'react-native';
 import DateTimePicker, { type BaseProps } from '@react-native-community/datetimepicker';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
-import dayjs from '../../lib/dayjs';
+import dayjs from '~/lib/dayjs';
 import Button from '../Button';
 import { textParser } from './utils';
-import { themes } from '../../lib/constants/colors';
-import sharedStyles from '../../views/Styles';
+import { themes } from '~/lib/constants/colors';
+import sharedStyles from '~/views/Styles';
 import { CustomIcon } from '../CustomIcon';
-import { isAndroid } from '../../lib/methods/helpers';
-import { useTheme } from '../../theme';
+import { isAndroid } from '~/lib/methods/helpers';
+import { useTheme } from '~/theme';
 import ActivityIndicator from '../ActivityIndicator';
 import { type IDatePicker } from './interfaces';
 import Touch from '../Touch';
@@ -43,7 +43,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 	const initial_date = element?.initialDate;
 	const placeholder = element?.placeholder;
 
-	const [currentDate, onChangeDate] = useState(new Date(initial_date || value));
+	const [currentDate, onChangeDate] = useState(() => new Date(initial_date || value));
 
 	const onChange: BaseProps['onChange'] = ({ nativeEvent: { timestamp } }, date?) => {
 		if (date || timestamp) {

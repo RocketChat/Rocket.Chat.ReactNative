@@ -1,9 +1,9 @@
 import { Text } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import { type ReactElement } from 'react';
 
-import { CustomIcon, type TIconsName } from '../../../containers/CustomIcon';
-import { useTheme } from '../../../theme';
+import { BorderlessButton } from '~/containers/GestureButtons';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import { useTheme } from '~/theme';
 import styles from '../styles';
 
 export function BaseButton({
@@ -26,7 +26,7 @@ export function BaseButton({
 
 	if (showIcon)
 		return (
-			<BorderlessButton enabled={enabled} testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
+			<BorderlessButton disabled={!enabled} testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
 				<CustomIcon name={iconName} size={30} color={color} />
 				<Text numberOfLines={1} style={[styles.roomButtonText, { color }]}>
 					{label}

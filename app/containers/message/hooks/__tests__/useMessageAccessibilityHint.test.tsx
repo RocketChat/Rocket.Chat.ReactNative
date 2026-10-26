@@ -2,13 +2,13 @@ import { render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { useMessageAccessibilityHint } from '../useMessageAccessibilityHint';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { MessageProvider } from '../../stores/MessageStore';
-import { type TAnyMessageModel } from '../../../../definitions';
-import { mockedStore } from '../../../../reducers/mockedStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { mockedStore } from '~/reducers/mockedStore';
 
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>
-	({ id: 'msg-1', ...overrides } as TAnyMessageModel);
+	({ id: 'msg-1', ...overrides }) as TAnyMessageModel;
 
 const renderHint = (item: TAnyMessageModel, config: Partial<MessageRoomState> = {}) => {
 	const spy = jest.fn();

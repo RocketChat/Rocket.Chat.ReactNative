@@ -1,16 +1,12 @@
 import { memo, type ReactElement } from 'react';
 
-import SafeAreaView from '../../../containers/SafeAreaView';
-import { useTheme } from '../../../theme';
-import TabletHeader from './TabletHeader';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { useTheme } from '~/theme';
 
 const Container = ({ children }: { children: ReactElement }) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	return (
-		<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: colors.surfaceRoom }}>
-			<TabletHeader />
+		<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: colors.surfaceTint }}>
 			{children}
 		</SafeAreaView>
 	);

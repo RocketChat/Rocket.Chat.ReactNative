@@ -1,11 +1,11 @@
 import { Text, View } from 'react-native';
 
-import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
-import * as List from '../../containers/List';
-import I18n from '../../i18n';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import * as List from '~/containers/List';
+import I18n from '~/i18n';
 import styles from './styles';
-import Switch from '../../containers/Switch';
-import { useTheme } from '../../theme';
+import Switch from '~/containers/Switch';
+import { useTheme } from '~/theme';
 
 interface IDirectoryOptionsProps {
 	type: string;
@@ -50,7 +50,7 @@ const DirectoryOptions = ({
 	};
 
 	return (
-		<List.Container contentContainerStyle={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
+		<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
 			<List.Separator />
 			{renderItem('channels')}
 			<List.Separator />
@@ -72,7 +72,7 @@ const DirectoryOptions = ({
 					</View>
 				</>
 			) : null}
-		</List.Container>
+		</View>
 	);
 };
 

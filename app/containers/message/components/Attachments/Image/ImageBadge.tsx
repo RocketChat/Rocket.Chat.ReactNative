@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import sharedStyles from '../../../../../views/Styles';
-import { useTheme } from '../../../../../theme';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,8 +18,6 @@ interface IImageBadge {
 }
 
 const ImageBadge = ({ title }: IImageBadge) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}>

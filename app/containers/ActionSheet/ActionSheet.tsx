@@ -1,6 +1,6 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
-import { forwardRef, isValidElement, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
+import { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
 import {
 	AccessibilityInfo,
 	findNodeHandle,
@@ -11,13 +11,14 @@ import {
 } from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useTheme } from '../../theme';
-import { isAndroid, isIOS } from '../../lib/methods/helpers';
+import { useTheme } from '~/theme';
+import { isAndroid, isIOS } from '~/lib/methods/helpers';
 import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
-import { HANDLE_HEIGHT, useActionSheetDetents } from './useActionSheetDetents';
+import { HANDLE_HEIGHT, getSheetContentPaddingBottom, useActionSheetDetents } from './useActionSheetDetents';
 import { useActionSheetItemHeight } from './useActionSheetItemHeight';
 import styles from './styles';
 
@@ -32,27 +33,67 @@ const ActionSheet = memo(
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
+		const { bottom } = useSafeAreaInsets();
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
+		const dismissedOnCloseRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
 		const itemHeight = useActionSheetItemHeight();
 
-		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
-			setContentHeight(layout.height);
-		};
+		const phaseRef = useRef<'idle' | 'presenting' | 'presented' | 'dismissing'>('idle');
+		const desiredOptionsRef = useRef<TActionSheetOptions | null>(null);
+		const pendingPresentTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+		useEffect(() => () => clearTimeout(pendingPresentTimeoutRef.current), []);
 
 		const hide = () => {
-			sheetRef.current?.dismiss();
+			desiredOptionsRef.current = null;
+			clearTimeout(pendingPresentTimeoutRef.current);
+			const phase = phaseRef.current;
+			if (phase === 'idle' || phase === 'dismissing') return;
+			phaseRef.current = 'dismissing';
+			if (phase === 'presented') {
+				sheetRef.current?.dismiss();
+			}
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		};
 
-		const show = (options: TActionSheetOptions) => {
+		useEffect(() => {
+			if (isVisible) return;
+			const dismissedOnClose = dismissedOnCloseRef.current;
+			dismissedOnCloseRef.current = undefined;
+			dismissedOnClose?.();
+		}, [isVisible]);
+
+		// Keep contentHeight to avoid flickering on next show
+		const onDidDismiss = () => {
+			phaseRef.current = 'idle';
+			dismissedOnCloseRef.current = onCloseSnapshotRef.current;
+			onCloseSnapshotRef.current = undefined;
+			setIsVisible(false);
+			if (desiredOptionsRef.current && phaseRef.current === 'idle') {
+				pendingPresentTimeoutRef.current = setTimeout(presentDesiredSheet);
+			}
+		};
+
+		const presentDesiredSheet = () => {
+			const options = desiredOptionsRef.current;
+			if (!options || phaseRef.current === 'dismissing') return;
+			desiredOptionsRef.current = null;
 			setData(options);
+			onCloseSnapshotRef.current = options.onClose;
+			if (phaseRef.current !== 'idle') return;
+			phaseRef.current = 'presenting';
 			setIsVisible(true);
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-			onCloseSnapshotRef.current = options.onClose;
-			sheetRef.current?.present();
+			sheetRef.current?.present().catch(onDidDismiss);
+		};
+
+		const show = (options: TActionSheetOptions) => {
+			clearTimeout(pendingPresentTimeoutRef.current);
+			desiredOptionsRef.current = options;
+			presentDesiredSheet();
 		};
 
 		useBackHandler(() => {
@@ -73,6 +114,11 @@ const ActionSheet = memo(
 		};
 
 		const onDidPresent = () => {
+			if (phaseRef.current === 'dismissing') {
+				sheetRef.current?.dismiss();
+				return;
+			}
+			phaseRef.current = 'presented';
 			// On Android the bottom sheet is hosted in a separate window; TalkBack
 			// needs a moment after the present animation before it can target nodes
 			// inside it, so defer the focus call slightly.
@@ -89,14 +135,6 @@ const ActionSheet = memo(
 				{isValidElement(data?.customHeader) ? data.customHeader : null}
 			</GestureHandlerRootView>
 		);
-
-		const onDidDismiss = () => {
-			setIsVisible(false);
-			// Keep contentHeight to avoid flickering on next show
-			const snapshotOnClose = onCloseSnapshotRef.current;
-			onCloseSnapshotRef.current = undefined;
-			snapshotOnClose?.();
-		};
 
 		const isPortrait = windowHeight > windowWidth;
 		const effectiveSnaps = (isPortrait ? data?.portraitSnaps : data?.landscapeSnaps) || data?.snaps;
@@ -115,6 +153,17 @@ const ActionSheet = memo(
 		const hasSnaps = !!effectiveSnaps?.length;
 		const disableContentPanning = data?.enableContentPanningGesture === false;
 		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
+		const contentScrollEnabled = hasOptions ? scrollEnabled : isScrollable;
+
+		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
+			const padding = getSheetContentPaddingBottom({
+				bottom,
+				fullContainer: data.fullContainer,
+				hugContent: data.hugContent,
+				scrollEnabled: contentScrollEnabled
+			});
+			setContentHeight(Math.max(0, layout.height - padding));
+		};
 
 		const contentMinHeight =
 			data.fullContainer && effectiveSnaps?.length
@@ -122,7 +171,7 @@ const ActionSheet = memo(
 						const snap = effectiveSnaps[0];
 						const fraction = typeof snap === 'number' ? Math.min(1, Math.max(0.1, snap)) : (parseFloat(String(snap)) || 50) / 100;
 						return Math.max(0, windowHeight * fraction - HANDLE_HEIGHT);
-				  })()
+					})()
 				: undefined;
 
 		return (
@@ -151,7 +200,7 @@ const ActionSheet = memo(
 							fullContainer={data.fullContainer}
 							hugContent={data.hugContent}
 							contentMinHeight={isIOS ? contentMinHeight : undefined}
-							scrollEnabled={scrollEnabled}>
+							scrollEnabled={contentScrollEnabled}>
 							{data?.children}
 						</BottomSheetContent>
 					</GestureHandlerRootView>

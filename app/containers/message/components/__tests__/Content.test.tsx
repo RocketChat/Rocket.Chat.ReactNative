@@ -2,12 +2,12 @@ import { Provider } from 'react-redux';
 import { render } from '@testing-library/react-native';
 
 import Content from '../Content';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { setUser } from '../../../../actions/login';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type IAttachment, type TAnyMessageModel } from '../../../../definitions';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../../../lib/constants/keys';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { setUser } from '~/actions/login';
+import { mockedStore } from '~/reducers/mockedStore';
+import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
 
 mockedStore.dispatch(
 	setUser({
@@ -48,13 +48,12 @@ const buildItem = (
 		t: isEncrypted ? E2E_MESSAGE_TYPE : undefined,
 		e2e: isEncrypted ? E2E_STATUS.PENDING : undefined,
 		tmid
-	} as unknown as TAnyMessageModel);
+	}) as unknown as TAnyMessageModel;
 
 const tree = (overrides: TOverrides) => {
 	const { msg, attachments, isEncrypted, autoTranslateLanguage, tmid, isIgnored } = overrides;
 	const contextValue: Partial<MessageRoomState> = {
-		user: { username: 'john' },
-		navToRoomInfo: jest.fn(),
+		handlers: { navToRoomInfo: jest.fn() },
 		autoTranslateLanguage
 	};
 	return (
@@ -126,7 +125,7 @@ describe('Content preview branch — Thread Message Attachment fallback', () => 
 		expect(queryByText('secret.pptx')).toBeNull();
 	});
 
-	test('renders "Encrypted message" with no file-name leak when the Thread Message preview is encrypted', () => {
+	test('renders the encrypted placeholder with no file-name leak when the Thread Message preview is encrypted', () => {
 		const { getByTestId, queryByText } = renderContent({
 			tmid: '1',
 			msg: '',

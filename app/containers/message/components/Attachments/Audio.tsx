@@ -1,11 +1,11 @@
 import { View } from 'react-native';
 
-import { type IAttachment, type IUserMessage } from '../../../../definitions';
-import AudioPlayer from '../../../AudioPlayer';
-import Markdown from '../../../markdown';
-import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
-import { useMessageUser, useRid } from '../../stores/MessageRoomStore';
-import { useMessageId } from '../../stores/MessageStore';
+import { type IAttachment, type IUserMessage } from '~/definitions';
+import AudioPlayer from '~/containers/AudioPlayer';
+import Markdown from '~/containers/markdown';
+import { useMediaAutoDownload } from '~/containers/message/hooks/useMediaAutoDownload';
+import { useMessageUser, useRid } from '~/containers/message/stores/MessageRoomStore';
+import { useMessageId } from '~/containers/message/stores/MessageStore';
 
 interface IMessageAudioProps {
 	file: IAttachment;
@@ -14,8 +14,6 @@ interface IMessageAudioProps {
 }
 
 const MessageAudio = ({ file, author, msg }: IMessageAudioProps) => {
-	'use memo';
-
 	const user = useMessageUser();
 	const id = useMessageId();
 	const rid = useRid();

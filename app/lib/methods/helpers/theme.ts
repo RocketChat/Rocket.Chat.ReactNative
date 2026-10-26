@@ -2,11 +2,11 @@ import { Appearance } from 'react-native';
 import * as SystemUI from 'expo-system-ui';
 import { NavigationBar } from '@zoontek/react-native-navigation-bar';
 
-import { type IThemePreference, type TThemeMode } from '../../../definitions/ITheme';
-import { themes } from '../../constants/colors';
-import { THEME_PREFERENCES_KEY } from '../../constants/keys';
+import { type IThemePreference, type TThemeMode } from '~/definitions/ITheme';
+import { themes } from '~/lib/constants/colors';
+import { THEME_PREFERENCES_KEY } from '~/lib/constants/keys';
 import UserPreferences from '../userPreferences';
-import { type TSupportedThemes } from '../../../theme';
+import { type TSupportedThemes } from '~/theme';
 import { isAndroid } from './deviceInfo';
 
 let themeListener: { remove: () => void } | null;
@@ -22,7 +22,7 @@ export const initialTheme = (): IThemePreference => {
 
 export const defaultTheme = (): TThemeMode => {
 	const systemTheme = Appearance.getColorScheme();
-	if (systemTheme) {
+	if (systemTheme === 'light' || systemTheme === 'dark') {
 		return systemTheme;
 	}
 	return 'light';
@@ -57,6 +57,10 @@ export const setNativeTheme = (themePreferences: IThemePreference) => {
 		} catch (error) {
 			// Do nothing
 		}
+	} else {
+		Appearance.setColorScheme(
+			themePreferences.currentTheme === 'automatic' ? 'unspecified' : theme === 'light' ? 'light' : 'dark'
+		);
 	}
 	SystemUI.setBackgroundColorAsync(themes[theme].surfaceNeutral);
 };

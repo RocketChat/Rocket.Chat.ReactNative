@@ -3,10 +3,10 @@ import isEmpty from 'lodash/isEmpty';
 import { Alert } from 'react-native';
 import * as FileSystem from 'expo-file-system/legacy';
 
-import { getUploadByPath } from '../../database/services/Upload';
-import { type IUpload, type TUploadModel } from '../../../definitions';
-import i18n from '../../../i18n';
-import database from '../../database';
+import { getUploadByPath } from '~/lib/database/services/Upload';
+import { type IUpload, type TUploadModel } from '~/definitions';
+import i18n from '~/i18n';
+import database from '~/lib/database';
 import log from '../helpers/log';
 import { type IFileUpload } from '../helpers/fileUpload/definitions';
 
@@ -74,9 +74,18 @@ export const createUploadRecord = async ({
 	let uploadRecord: TUploadModel | null = null;
 	try {
 		uploadRecord = await uploadsCollection.find(uploadPath);
-		if (uploadRecord.id && !isForceTryAgain) {
-			Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
-			return [null, null];
+		if (uploadRecord.id) {
+			if (isUploadActive(fileInfo.path, rid) && !isForceTryAgain) {
+				Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
+				return [null, null];
+			}
+			// Record left behind by a crashed or failed upload: reset and reuse it.
+			await db.write(async () => {
+				await uploadRecord?.update(u => {
+					u.error = false;
+					u.progress = 0;
+				});
+			});
 		}
 	} catch (error) {
 		try {

@@ -1,8 +1,8 @@
 import { type ReactElement } from 'react';
 import { type PressableProps } from 'react-native';
 
-import MessageActionTouchable from '../../Touchable/MessageActionTouchable';
-import styles from '../../../styles';
+import MessageActionTouchable from '~/containers/message/components/Touchable/MessageActionTouchable';
+import styles from '~/containers/message/styles';
 
 interface IMessageButton {
 	children: ReactElement;
@@ -19,8 +19,6 @@ export const Button = ({
 	accessibilityLabel,
 	accessibilityRole = 'imagebutton'
 }: IMessageButton) => {
-	'use memo';
-
 	return (
 		<MessageActionTouchable
 			accessibilityLabel={accessibilityLabel}

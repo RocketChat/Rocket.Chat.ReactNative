@@ -1,11 +1,11 @@
-import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
-import { TextInput, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
+import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { TextInput, StyleSheet, type TextInputProps, InteractionManager, Text, View } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 
-import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
-import I18n from '../../../i18n';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import I18n from '~/i18n';
 import {
 	type IAutocompleteItemProps,
 	type IComposerInput,
@@ -13,45 +13,41 @@ import {
 	type IInputSelection,
 	type TSetInput
 } from '../interfaces';
-import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
+import { useAutocompleteParams, useFocused, useMessageComposerApi } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
 import { useAutoSaveDraft } from '../hooks';
-import sharedStyles from '../../../views/Styles';
-import { useTheme } from '../../../theme';
-import { userTyping } from '../../../actions/room';
-import { parseJson } from '../../../lib/methods/helpers/parseJson';
-import { getRoomTitle } from '../../../lib/methods/helpers/helpers';
-import { isTablet } from '../../../lib/methods/helpers/deviceInfo';
-import {
-	MAX_HEIGHT,
-	MIN_HEIGHT,
-	NO_CANNED_RESPONSES,
-	MARKDOWN_STYLES,
-	COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH
-} from '../constants';
-import database from '../../../lib/database';
-import Navigation from '../../../lib/navigation/appNavigation';
-import { emitter } from '../../../lib/methods/helpers/emitter';
-import { useRoomContext } from '../../../views/RoomView/context';
-import { useMessageAction } from '../../message/stores/MessageActionStore';
-import { getMessageById } from '../../../lib/database/services/Message';
-import { generateTriggerId } from '../../../lib/methods/actions';
-import { executeCommandPreview } from '../../../lib/services/restApi';
-import log from '../../../lib/methods/helpers/log';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
-import { usePrevious } from '../../../lib/hooks/usePrevious';
-import { type ChatsStackParamList } from '../../../stacks/types';
-import { loadDraftMessage } from '../../../lib/methods/draftMessage';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
+import { userTyping } from '~/actions/room';
+import { parseJson } from '~/lib/methods/helpers/parseJson';
+import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, MARKDOWN_STYLES } from '../constants';
+import database from '~/lib/database';
+import Navigation from '~/lib/navigation/appNavigation';
+import { emitter } from '~/lib/methods/helpers/emitter';
+import { useComposerRid, useComposerRoomTitle, useComposerSharing, useComposerTmid, useComposerType } from '../ComposerStore';
+import { useMessageAction, useMessageActionStoreApi } from '~/containers/message/stores/MessageActionStore';
+import { getMessageById } from '~/lib/database/services/Message';
+import { withTriggerId } from '~/lib/apps/actions';
+import { executeCommandPreview } from '~/lib/services/restApi';
+import log from '~/lib/methods/helpers/log';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { useAltTextSupported } from '~/lib/hooks/useAltTextSupported';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { loadDraftMessage } from '~/lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
-import { isExternalKeyboardConnected } from '../../../lib/methods/helpers/externalInput';
+import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
-		const { rid, tmid, sharing, setQuotesAndText, room } = useRoomContext();
+		const rid = useComposerRid();
+		const tmid = useComposerTmid();
+		const sharing = useComposerSharing();
+		const messageActionStore = useMessageActionStoreApi();
+		const roomTitle = useComposerRoomTitle();
+		const t = useComposerType();
 		const action = useMessageAction();
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
@@ -62,23 +58,228 @@ export const ComposerInput = memo(
 		const dispatch = useDispatch();
 		const isMasterDetail = useMasterDetail();
 		const altTextSupported = useAltTextSupported();
-		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
-		if (room && !tmid) {
-			placeholder = I18n.t('Message_roomname', { roomName: (room.t === 'd' ? '@' : '#') + getRoomTitle(room) });
-			if (!isTablet && placeholder.length > COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH) {
-				placeholder = `${placeholder.slice(0, COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH)}...`;
-			}
-		}
+		const [isEmpty, setIsEmpty] = useState(true);
+		const placeholder = tmid
+			? I18n.t('Add_thread_reply')
+			: I18n.t('Message_roomname', { roomName: (t === 'd' ? '@' : '#') + roomTitle });
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
-		const prevAction = usePrevious(action);
+		const previousActionRef = useRef(action);
 
-		// subscribe to changes on mic state to update draft after a message is sent
-		useMicOrSend();
-		const { saveMessageDraft } = useAutoSaveDraft(textRef.current);
+		const { saveDraft } = useAutoSaveDraft(textRef);
 
 		// workaround to handle issues with iOS back swipe navigation
 		const { iOSBackSwipe } = useIOSBackSwipeHandler();
+
+		const syncTextState = useCallback(
+			(text: string) => {
+				const message = text.trim();
+				textRef.current = message;
+				setMicOrSend(message.length === 0 ? 'mic' : 'send');
+				setIsEmpty(text.length === 0);
+			},
+			[setMicOrSend]
+		);
+
+		const setInput: TSetInput = useCallback(
+			(text, selection, forceUpdateDraftMessage) => {
+				if (forceUpdateDraftMessage) {
+					saveDraft();
+				}
+
+				inputRef.current?.setNativeProps?.({ text });
+				if (!text) {
+					inputRef.current?.clear();
+				}
+
+				if (selection) {
+					// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
+					setTimeout(() => {
+						inputRef.current?.setSelection?.(selection.start, selection.end);
+						selectionRef.current = selection;
+					}, 50);
+				}
+				syncTextState(text);
+			},
+			[saveDraft, inputRef, syncTextState]
+		);
+
+		const focus = () => {
+			setTimeout(() => {
+				if (inputRef.current) {
+					inputRef.current.focus();
+				}
+			}, 300);
+		};
+
+		const stopAutocomplete = () => {
+			setAutocompleteParams({ text: '', type: null, params: '' });
+		};
+
+		const handleTyping = (isTyping: boolean) => {
+			if (sharing || !rid) return;
+			dispatch(userTyping(rid, isTyping, tmid ? { tmid } : {}));
+		};
+
+		const debouncedOnChangeText = useDebouncedCallback(async (text: string) => {
+			const isTextEmpty = text.length === 0;
+			handleTyping(!isTextEmpty);
+			if (isTextEmpty || !focused) {
+				stopAutocomplete();
+				return;
+			}
+			const { start, end } = selectionRef.current;
+			const cursor = Math.max(start, end);
+			const whiteSpaceOrBreakLineRegex = /[\s\n]+/;
+			const txt =
+				cursor < text.length ? text.substr(0, cursor).split(whiteSpaceOrBreakLineRegex) : text.split(whiteSpaceOrBreakLineRegex);
+			const lastWord = txt[txt.length - 1];
+			const autocompleteText = lastWord.substring(1);
+
+			if (!lastWord) {
+				stopAutocomplete();
+				return;
+			}
+			if (lastWord.match(/^#/)) {
+				setAutocompleteParams({ text: autocompleteText, type: '#' });
+				return;
+			}
+			if (lastWord.match(/^@/)) {
+				setAutocompleteParams({ text: autocompleteText, type: '@' });
+				return;
+			}
+			if (lastWord.match(/^:/)) {
+				setAutocompleteParams({ text: autocompleteText, type: ':' });
+				return;
+			}
+			if (lastWord.match(/^!/) && t === 'l') {
+				setAutocompleteParams({ text: autocompleteText, type: '!' });
+				return;
+			}
+			if (!sharing && text.match(/^\//)) {
+				const commandParameter = text.match(/^\/([a-z0-9._-]+) (.+)/im);
+				if (commandParameter) {
+					const db = database.active;
+					const [, command, params] = commandParameter;
+					const commandsCollection = db.get('slash_commands');
+					try {
+						const commandRecord = await commandsCollection.find(command);
+						if (commandRecord.providesPreview) {
+							setAutocompleteParams({ params, text: command, type: '/preview' });
+						}
+						return;
+					} catch (e) {
+						// do nothing
+					}
+				}
+				setAutocompleteParams({ text: autocompleteText, type: '/' });
+				return;
+			}
+
+			stopAutocomplete();
+		}, textInputDebounceTime);
+
+		const onChangeText: TextInputProps['onChangeText'] = text => {
+			debouncedOnChangeText(text);
+			syncTextState(text);
+		};
+
+		const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
+			selectionRef.current = e.nativeEvent.selection;
+		};
+
+		const onFocus: TextInputProps['onFocus'] = () => {
+			setFocused(true);
+		};
+
+		const onTouchStart: TextInputProps['onTouchStart'] = () => {
+			setFocused(true);
+		};
+
+		const onBlur: TextInputProps['onBlur'] = () => {
+			if (!iOSBackSwipe.current && !isExternalKeyboardConnected()) {
+				setFocused(false);
+				stopAutocomplete();
+			}
+		};
+
+		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
+			if (item.type === 'loading') {
+				return null;
+			}
+
+			// If it's slash command preview, we need to execute the command
+			if (item.type === '/preview') {
+				try {
+					if (!rid) return;
+					const db = database.active;
+					const commandsCollection = db.get('slash_commands');
+					const commandRecord = await commandsCollection.find(item.text);
+					const { appId } = commandRecord;
+					withTriggerId(appId, triggerId =>
+						executeCommandPreview(item.text, item.params, rid, item.preview, triggerId, tmid)
+					).catch(log);
+				} catch (e) {
+					log(e);
+				}
+				requestAnimationFrame(() => {
+					stopAutocomplete();
+					setInput('', { start: 0, end: 0 });
+				});
+				return;
+			}
+
+			// If it's canned response, but there's no canned responses, we open the canned responses view
+			if (item.type === '!' && item.id === NO_CANNED_RESPONSES) {
+				const params = { rid };
+				if (isMasterDetail) {
+					Navigation.navigate('ModalStackNavigator', { screen: 'CannedResponsesListView', params });
+				} else {
+					Navigation.navigate('CannedResponsesListView', params);
+				}
+				stopAutocomplete();
+				return;
+			}
+
+			const text = textRef.current;
+			const { start, end } = selectionRef.current;
+			const cursor = Math.max(start, end);
+			const regexp = getMentionRegexp();
+			let textBeforeMention = text.substr(0, cursor).replace(regexp, '');
+			// Remove the ! after select the canned response
+			if (item.type === '!') {
+				const lastIndexOfExclamation = text.lastIndexOf('!', cursor);
+				textBeforeMention = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
+			}
+			let mention = '';
+			switch (item.type) {
+				case '@':
+					mention = fetchIsAllOrHere(item) ? item.title : item.subtitle || item.title;
+					break;
+				case '#':
+					mention = item.subtitle ? item.subtitle : '';
+					break;
+				case ':':
+					mention = `${typeof item.emoji === 'string' ? item.emoji : item.emoji.name}:`;
+					break;
+				case '/':
+					mention = item.title;
+					break;
+				case '!':
+					mention = item.subtitle ? item.subtitle : '';
+					break;
+				default:
+					mention = '';
+			}
+			const newText = `${textBeforeMention}${mention} ${text.slice(cursor)}`;
+
+			const newCursor = textBeforeMention.length + mention.length + 1;
+			setInput(newText, { start: newCursor, end: newCursor });
+			focus();
+			requestAnimationFrame(() => {
+				stopAutocomplete();
+			});
+		};
 
 		// Draft/Canned Responses
 		useEffect(() => {
@@ -87,7 +288,9 @@ export const ComposerInput = memo(
 				if (draftMessage) {
 					const parsedDraft = parseJson(draftMessage);
 					if (parsedDraft?.msg || parsedDraft?.quotes) {
-						setQuotesAndText?.(parsedDraft.msg, parsedDraft.quotes);
+						if (sharing) return;
+						messageActionStore.getState().actions.setQuoteMessageIds(parsedDraft.quotes || []);
+						setInput(parsedDraft.msg || '');
 					} else {
 						setInput(draftMessage);
 					}
@@ -111,9 +314,12 @@ export const ComposerInput = memo(
 				}
 			};
 
+			const previousAction = previousActionRef.current;
+			previousActionRef.current = action;
+
 			if (sharing) return;
 
-			if (prevAction?.kind === 'edit' && action?.kind !== 'edit') {
+			if (previousAction?.kind === 'edit' && action?.kind !== 'edit') {
 				setInput('');
 				return;
 			}
@@ -156,7 +362,7 @@ export const ComposerInput = memo(
 					emitter.off('toolbarMention');
 					task?.cancel();
 				};
-			}, [rid, tmid, autocompleteType])
+			}, [autocompleteType, setInput, setAutocompleteParams])
 		);
 
 		useImperativeHandle(ref, () => ({
@@ -172,239 +378,67 @@ export const ComposerInput = memo(
 			focus
 		}));
 
-		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
-			const message = text.trim();
-			textRef.current = message;
-
-			if (forceUpdateDraftMessage) {
-				saveMessageDraft('');
-			}
-
-			inputRef.current?.setNativeProps?.({ text });
-
-			if (selection) {
-				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
-				setTimeout(() => {
-					inputRef.current?.setSelection?.(selection.start, selection.end);
-					selectionRef.current = selection;
-				}, 50);
-			}
-			setMicOrSend(message.length === 0 ? 'mic' : 'send');
-		};
-
-		const focus = () => {
-			setTimeout(() => {
-				if (inputRef.current) {
-					inputRef.current.focus();
-				}
-			}, 300);
-		};
-
-		const onChangeText: TextInputProps['onChangeText'] = text => {
-			textRef.current = text;
-			debouncedOnChangeText(text);
-			setInput(text);
-		};
-
-		const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
-			selectionRef.current = e.nativeEvent.selection;
-		};
-
-		const onFocus: TextInputProps['onFocus'] = () => {
-			setFocused(true);
-		};
-
-		const onTouchStart: TextInputProps['onTouchStart'] = () => {
-			setFocused(true);
-		};
-
-		const onBlur: TextInputProps['onBlur'] = () => {
-			if (!iOSBackSwipe.current && !isExternalKeyboardConnected()) {
-				setFocused(false);
-				stopAutocomplete();
-			}
-		};
-
-		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
-			if (item.type === 'loading') {
-				return null;
-			}
-
-			// If it's slash command preview, we need to execute the command
-			if (item.type === '/preview') {
-				try {
-					if (!rid) return;
-					const db = database.active;
-					const commandsCollection = db.get('slash_commands');
-					const commandRecord = await commandsCollection.find(item.text);
-					const { appId } = commandRecord;
-					const triggerId = generateTriggerId(appId);
-					executeCommandPreview(item.text, item.params, rid, item.preview, triggerId, tmid);
-				} catch (e) {
-					log(e);
-				}
-				requestAnimationFrame(() => {
-					stopAutocomplete();
-					setInput('', { start: 0, end: 0 });
-				});
-				return;
-			}
-
-			// If it's canned response, but there's no canned responses, we open the canned responses view
-			if (item.type === '!' && item.id === NO_CANNED_RESPONSES) {
-				const params = { rid };
-				if (isMasterDetail) {
-					Navigation.navigate('ModalStackNavigator', { screen: 'CannedResponsesListView', params });
-				} else {
-					Navigation.navigate('CannedResponsesListView', params);
-				}
-				stopAutocomplete();
-				return;
-			}
-
-			const text = textRef.current;
-			const { start, end } = selectionRef.current;
-			const cursor = Math.max(start, end);
-			const regexp = getMentionRegexp();
-			let result = text.substr(0, cursor).replace(regexp, '');
-			// Remove the ! after select the canned response
-			if (item.type === '!') {
-				const lastIndexOfExclamation = text.lastIndexOf('!', cursor);
-				result = text.substr(0, lastIndexOfExclamation).replace(regexp, '');
-			}
-			let mention = '';
-			switch (item.type) {
-				case '@':
-					mention = fetchIsAllOrHere(item) ? item.title : item.subtitle || item.title;
-					break;
-				case '#':
-					mention = item.subtitle ? item.subtitle : '';
-					break;
-				case ':':
-					mention = `${typeof item.emoji === 'string' ? item.emoji : item.emoji.name}:`;
-					break;
-				case '/':
-					mention = item.title;
-					break;
-				case '!':
-					mention = item.subtitle ? item.subtitle : '';
-					break;
-				default:
-					mention = '';
-			}
-			const newText = `${result}${mention} ${text.slice(cursor)}`;
-
-			const newCursor = result.length + mention.length + 1;
-			setInput(newText, { start: newCursor, end: newCursor });
-			focus();
-			requestAnimationFrame(() => {
-				stopAutocomplete();
-			});
-		};
-
-		const stopAutocomplete = () => {
-			setAutocompleteParams({ text: '', type: null, params: '' });
-		};
-
-		const debouncedOnChangeText = useDebouncedCallback(async (text: string) => {
-			const isTextEmpty = text.length === 0;
-			handleTyping(!isTextEmpty);
-			if (isTextEmpty || !focused) {
-				stopAutocomplete();
-				return;
-			}
-			const { start, end } = selectionRef.current;
-			const cursor = Math.max(start, end);
-			const whiteSpaceOrBreakLineRegex = /[\s\n]+/;
-			const txt =
-				cursor < text.length ? text.substr(0, cursor).split(whiteSpaceOrBreakLineRegex) : text.split(whiteSpaceOrBreakLineRegex);
-			const lastWord = txt[txt.length - 1];
-			const autocompleteText = lastWord.substring(1);
-
-			if (!lastWord) {
-				stopAutocomplete();
-				return;
-			}
-			if (!sharing && text.match(/^\//)) {
-				const commandParameter = text.match(/^\/([a-z0-9._-]+) (.+)/im);
-				if (commandParameter) {
-					const db = database.active;
-					const [, command, params] = commandParameter;
-					const commandsCollection = db.get('slash_commands');
-					try {
-						const commandRecord = await commandsCollection.find(command);
-						if (commandRecord.providesPreview) {
-							setAutocompleteParams({ params, text: command, type: '/preview' });
-						}
-						return;
-					} catch (e) {
-						// do nothing
-					}
-				}
-				setAutocompleteParams({ text: autocompleteText, type: '/' });
-				return;
-			}
-			if (lastWord.match(/^#/)) {
-				setAutocompleteParams({ text: autocompleteText, type: '#' });
-				return;
-			}
-			if (lastWord.match(/^@/)) {
-				setAutocompleteParams({ text: autocompleteText, type: '@' });
-				return;
-			}
-			if (lastWord.match(/^:/)) {
-				setAutocompleteParams({ text: autocompleteText, type: ':' });
-				return;
-			}
-			if (lastWord.match(/^!/) && room?.t === 'l') {
-				setAutocompleteParams({ text: autocompleteText, type: '!' });
-				return;
-			}
-
-			stopAutocomplete();
-		}, textInputDebounceTime);
-
-		const handleTyping = (isTyping: boolean) => {
-			if (sharing || !rid) return;
-			dispatch(userTyping(rid, isTyping, tmid ? { tmid } : {}));
-		};
-
 		return (
-			<TextInput
-				style={[styles.textInput, { color: colors.fontDefault }]}
-				placeholder={placeholder}
-				placeholderTextColor={colors.fontAnnotation}
-				ref={component => {
-					inputRef.current = component;
-				}}
-				blurOnSubmit={false}
-				onChangeText={onChangeText}
-				onTouchStart={onTouchStart}
-				onSelectionChange={onSelectionChange}
-				onFocus={onFocus}
-				onBlur={onBlur}
-				underlineColorAndroid='transparent'
-				defaultValue=''
-				multiline
-				{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
-				keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
-				// eslint-disable-next-line no-nested-ternary
-				testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
-			/>
+			<View style={styles.container}>
+				<TextInput
+					style={[styles.textInput, { color: colors.fontDefault }]}
+					accessibilityLabel={placeholder}
+					ref={component => {
+						inputRef.current = component;
+					}}
+					blurOnSubmit={false}
+					onChangeText={onChangeText}
+					onTouchStart={onTouchStart}
+					onSelectionChange={onSelectionChange}
+					onFocus={onFocus}
+					onBlur={onBlur}
+					underlineColorAndroid='transparent'
+					defaultValue=''
+					multiline
+					{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
+					keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+					// eslint-disable-next-line no-nested-ternary
+					testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
+				/>
+				{isEmpty ? (
+					<Text
+						style={[styles.placeholder, { color: colors.fontAnnotation }]}
+						numberOfLines={1}
+						pointerEvents='none'
+						accessibilityElementsHidden
+						importantForAccessibility='no-hide-descendants'>
+						{placeholder}
+					</Text>
+				) : null}
+			</View>
 		);
 	})
 );
 
+const composerText = {
+	fontSize: 16,
+	...sharedStyles.textRegular,
+	lineHeight: 22
+};
+
 const styles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
 	textInput: {
-		flex: 1,
 		minHeight: MIN_HEIGHT,
 		maxHeight: MAX_HEIGHT,
 		paddingTop: 12,
 		paddingBottom: 12,
-		fontSize: 16,
+		paddingHorizontal: 0,
 		textAlignVertical: 'center',
-		...sharedStyles.textRegular,
-		lineHeight: 22
+		...composerText
+	},
+	placeholder: {
+		position: 'absolute',
+		top: 12,
+		left: 0,
+		right: 0,
+		...composerText
 	}
 });

@@ -6,19 +6,18 @@ import { connect } from 'react-redux';
 
 import { type TSupportedThemes } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { headerLeftActions, headerRightActions } from '../lib/methods/helpers/navigation/headerActions';
 import { ModalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
-import Navigation from '../lib/navigation/appNavigation';
 import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions, type TModalAction } from '../containers/UIKit/interfaces';
-import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods/triggerActions';
+import { triggerBlockAction, triggerCancel, triggerSubmitView } from '~/lib/apps/actions';
 import { type IApplicationState, type TAnyMessageModel } from '../definitions';
 import KeyboardView from '../containers/KeyboardView';
 import { MessageRoomProvider } from '../containers/message/stores/MessageRoomStore';
+import { A11yGateProvider } from '../containers/message/stores/A11yGate';
 import { MessageProvider } from '../containers/message/stores/MessageStore';
-import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({
 	content: {
@@ -54,8 +53,6 @@ interface IModalBlockViewProps {
 	route: RouteProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
 	theme: TSupportedThemes;
 	language: string;
-	user: ReturnType<typeof getUserSelector>;
-	baseUrl: string;
 }
 
 // eslint-disable-next-line no-sequences
@@ -97,12 +94,14 @@ const LoadingIndicator = ({ loading }: { loading: boolean }) => {
 // A UIKit modal is not a message, but the shared media components it can render
 // (ImageContainer -> Button -> Touchable) assume a per-message context. Provide an
 // empty one: no long-press target, no id-scoped cache. Images still load via the
-// room provider's user/baseUrl. Routed through `unknown` (the repo's convention for
+// user/baseUrl the media hooks now read from redux. Routed through `unknown` (the repo's convention for
 // fake TAnyMessageModel fixtures) so the cast reads as intentional, not a real message.
 const EMPTY_MESSAGE = {} as unknown as TAnyMessageModel;
 
 class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewState> {
 	private submitting: boolean;
+
+	private closed = false;
 
 	private values: IValues;
 
@@ -111,7 +110,8 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { view } = data;
 		const { title } = view;
 		return {
-			title: textParser([title])
+			title: textParser([title]),
+			gestureEnabled: false
 		};
 	};
 
@@ -137,12 +137,13 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { navigation, route } = this.props;
 		const oldData = prevProps.route.params?.data ?? {};
 		const newData = route.params?.data ?? {};
-		if (oldData.viewId !== newData.viewId) {
-			navigation.push('ModalBlockView', { data: newData });
+		if (oldData.triggerId !== newData.triggerId) {
+			navigation.replace('ModalBlockView', { data: newData });
 		}
 	}
 
 	componentWillUnmount() {
+		this.closed = true;
 		const { data } = this.state;
 		const { viewId } = data;
 		EventEmitter.removeListener(viewId, this.handleUpdate);
@@ -155,25 +156,25 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { title, close, submit } = view;
 		navigation.setOptions({
 			title: textParser([title]),
-			headerLeft: close
-				? () => (
-						<HeaderButton.Container>
-							<HeaderButton.Item title={textParser([close.text])} onPress={this.cancel} testID='close-modal-uikit' />
-						</HeaderButton.Container>
-				  )
-				: undefined,
-			headerRight: submit
-				? () => (
-						<HeaderButton.Container>
-							<HeaderButton.Item title={textParser([submit.text])} onPress={this.submit} testID='submit-modal-uikit' />
-						</HeaderButton.Container>
-				  )
-				: undefined
+			...headerLeftActions(close ? [{ label: textParser([close.text]), testID: 'close-modal-uikit', onPress: this.cancel }] : []),
+			...headerRightActions(
+				submit ? [{ label: textParser([submit.text]), testID: 'submit-modal-uikit', onPress: this.submit }] : []
+			)
 		});
 	};
 
+	close = () => {
+		if (this.closed) {
+			return;
+		}
+		this.closed = true;
+		this.props.navigation.goBack();
+	};
+
 	handleUpdate = ({ type, ...data }: { type: TModalAction }) => {
-		if (type === ModalActions.ERRORS) {
+		if (type === ModalActions.CLOSE) {
+			this.close();
+		} else if (type === ModalActions.ERRORS) {
 			const { errors }: any = data;
 			this.setState({ errors });
 		} else {
@@ -186,7 +187,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { data } = this.state;
 		const { appId, viewId, view } = data;
 
-		Navigation.back();
+		this.close();
 
 		try {
 			await triggerCancel({
@@ -215,7 +216,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 		const { appId, viewId } = data;
 		this.setState({ loading: true });
 		try {
-			await triggerSubmitView({
+			const shouldClose = await triggerSubmitView({
 				viewId,
 				appId,
 				payload: {
@@ -225,6 +226,9 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 					}
 				}
 			});
+			if (shouldClose) {
+				this.close();
+			}
 		} catch (e) {
 			// do nothing
 		}
@@ -236,7 +240,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 	action = async ({ actionId, value, blockId }: IActions) => {
 		const { data } = this.state;
 		const { mid, appId, viewId } = data;
-		await triggerBlockAction({
+		const shouldClose = await triggerBlockAction({
 			container: {
 				type: ContainerTypes.VIEW,
 				id: viewId
@@ -247,6 +251,10 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 			blockId,
 			mid
 		});
+		if (shouldClose) {
+			this.close();
+			return;
+		}
 		this.changeState({ actionId, value, blockId });
 	};
 
@@ -260,7 +268,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 
 	render() {
 		const { data, loading, errors } = this.state;
-		const { language, user, baseUrl } = this.props;
+		const { language } = this.props;
 		const { values } = this;
 		const { view } = data;
 		const { blocks } = view;
@@ -273,19 +281,21 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 			<KeyboardView>
 				<ScrollView style={styles.content}>
 					<Fragment key={modalKey}>
-						<MessageRoomProvider user={user} baseUrl={baseUrl}>
-							<MessageProvider item={EMPTY_MESSAGE}>
-								<ModalBlockWithContext
-									action={this.action}
-									state={this.changeState}
-									{...data}
-									blocks={blocks}
-									errors={errors}
-									language={language}
-									values={values}
-								/>
-							</MessageProvider>
-						</MessageRoomProvider>
+						<A11yGateProvider>
+							<MessageRoomProvider>
+								<MessageProvider item={EMPTY_MESSAGE}>
+									<ModalBlockWithContext
+										action={this.action}
+										state={this.changeState}
+										{...data}
+										blocks={blocks}
+										errors={errors}
+										language={language}
+										values={values}
+									/>
+								</MessageProvider>
+							</MessageRoomProvider>
+						</A11yGateProvider>
 					</Fragment>
 				</ScrollView>
 				<LoadingIndicator loading={loading} />
@@ -295,9 +305,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	language: state.login.user.language as string,
-	baseUrl: state.server.server,
-	user: getUserSelector(state)
+	language: state.login.user.language as string
 });
 
 export default connect(mapStateToProps)(ModalBlockView);

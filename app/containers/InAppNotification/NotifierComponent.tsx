@@ -4,14 +4,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Avatar from '../Avatar';
 import { CustomIcon } from '../CustomIcon';
-import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants/colors';
-import { useTheme } from '../../theme';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { type ISubscription, type SubscriptionType } from '../../definitions';
-import { hideNotification } from '../../lib/methods/helpers/notifications';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
+import sharedStyles from '~/views/Styles';
+import { themes } from '~/lib/constants/colors';
+import { useTheme } from '~/theme';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { type ISubscription, type SubscriptionType } from '~/definitions';
+import { hideNotification } from '~/lib/methods/helpers/notifications';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
 import Touch from '../Touch';
 
 export interface INotifierComponent {

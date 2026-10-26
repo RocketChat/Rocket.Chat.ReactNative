@@ -1,4 +1,4 @@
-import i18n from '../../i18n';
+import i18n from '~/i18n';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/cd5cbe2ac60939d4d94a62926b43322be9168ce0/packages/web-ui-registration/src/LoginForm.tsx#L28
 const LOGIN_SUBMIT_ERRORS = {

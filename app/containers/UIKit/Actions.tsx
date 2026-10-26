@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import Button from '../Button';
-import I18n from '../../i18n';
+import I18n from '~/i18n';
 import { type IActions } from './interfaces';
 
 const styles = StyleSheet.create({
@@ -14,6 +14,8 @@ const styles = StyleSheet.create({
 });
 
 export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
+	'use no memo';
+
 	const [showMoreVisible, setShowMoreVisible] = useState(() => elements && elements.length > 5);
 
 	const shouldShowMore = elements && elements.length > 5;

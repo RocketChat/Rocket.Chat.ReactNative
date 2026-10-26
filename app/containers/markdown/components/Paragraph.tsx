@@ -3,8 +3,8 @@ import { type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import Inline from './Inline';
 import styles from '../styles';
-import { useTheme } from '../../../theme';
-import { themes } from '../../../lib/constants/colors';
+import { useTheme } from '~/theme';
+import { themes } from '~/lib/constants/colors';
 
 interface IParagraphProps {
 	value: ParagraphProps['value'];

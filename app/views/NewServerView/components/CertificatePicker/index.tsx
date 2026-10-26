@@ -1,10 +1,10 @@
 import { Text, StyleSheet, View } from 'react-native';
 
-import I18n from '../../../../i18n';
-import { type TCertificatePicker } from '../../definitions';
-import Button from '../../../../containers/Button';
-import sharedStyles from '../../../Styles';
-import { useTheme } from '../../../../theme';
+import I18n from '~/i18n';
+import { type TCertificatePicker } from '~/views/NewServerView/definitions';
+import Button from '~/containers/Button';
+import sharedStyles from '~/views/Styles';
+import { useTheme } from '~/theme';
 
 const styles = StyleSheet.create({
 	container: {

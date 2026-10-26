@@ -1,34 +1,35 @@
 import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { type ReactElement, useCallback, useEffect, useReducer, useRef } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { type ReactElement, useCallback, useEffect, useLayoutEffect, useReducer, useRef } from 'react';
+import { FlatList, Text } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
-import { sendLoadingEvent } from '../../containers/Loading';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import SearchBox from '../../containers/SearchBox';
-import UserItem from '../../containers/UserItem';
-import Radio from '../../containers/Radio';
-import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '../../definitions';
-import I18n from '../../i18n';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { usePermissions } from '../../lib/hooks/usePermissions';
-import { compareServerVersion, getRoomTitle, isGroupChat, useDebounce } from '../../lib/methods/helpers';
-import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
-import { showConfirmationAlert } from '../../lib/methods/helpers/info';
-import log from '../../lib/methods/helpers/log';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { getRoomMembers } from '../../lib/services/restApi';
-import { type TSupportedPermissions } from '../../reducers/permissions';
-import { getUserSelector } from '../../selectors/login';
-import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import { useTheme } from '../../theme';
+import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
+import { sendLoadingEvent } from '~/containers/Loading';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import SafeAreaView from '~/containers/SafeAreaView';
+import RowSeparator from '~/containers/NativeListRow/components/Separator';
+import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
+import SearchBox from '~/containers/SearchBox';
+import UserItem from '~/containers/UserItem';
+import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '~/definitions';
+import I18n from '~/i18n';
+import { stackedSearchBarOptions, nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
+import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { compareServerVersion, getRoomTitle, hasNativeHeaderBar, isGroupChat, useDebounce } from '~/lib/methods/helpers';
+import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
+import { showConfirmationAlert } from '~/lib/methods/helpers/info';
+import log from '~/lib/methods/helpers/log';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import { getRoomMembers } from '~/lib/services/restApi';
+import { type TSupportedPermissions } from '~/reducers/permissions';
+import { getUserSelector } from '~/selectors/login';
+import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
+import { useTheme } from '~/theme';
 import ActionsSection from './components/ActionsSection';
 import {
 	fetchRole,
@@ -58,6 +59,17 @@ interface IRoomMembersViewState {
 	page: number;
 }
 
+const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], page: number) => {
+	const existingIds = new Set(members.map(m => m._id));
+	const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
+
+	// Safety check: if page is 0, we replace the list entirely
+	return {
+		members: page === 0 ? membersResultFiltered : [...members, ...(membersResultFiltered || [])],
+		end: membersResult?.length < PAGE_SIZE
+	};
+};
+
 const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
 	const { colors } = useTheme();
 	return (
@@ -73,6 +85,7 @@ const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
 const RoomMembersView = (): ReactElement => {
 	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const listBackgroundColor = useListBackgroundColor(colors.surfaceHover);
 
 	const { params } = useRoute<RouteProp<ModalStackParamList, 'RoomMembersView'>>();
 	const navigation = useNavigation<NavigationProp<ModalStackParamList, 'RoomMembersView'>>();
@@ -125,12 +138,6 @@ const RoomMembersView = (): ReactElement => {
 		viewAllTeamsPermission
 	] = usePermissions(['mute-user', 'set-leader', 'set-owner', 'set-moderator', 'remove-user', ...teamPermissions], params.rid);
 
-	useEffect(() => {
-		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
-		setHeader(true);
-		return () => subscription?.unsubscribe();
-	}, []);
-
 	const fetchRoles = () => {
 		if (isGroupChat(state.room)) {
 			return;
@@ -160,11 +167,12 @@ const RoomMembersView = (): ReactElement => {
 		const requestId = ++latestSearchRequest.current;
 		updateState({ isLoading: true });
 
+		const type = allUsers ? 'all' : 'online';
 		try {
 			const membersResult = await getRoomMembers({
 				rid: room.rid,
 				roomType: t,
-				type: allUsers ? 'all' : 'online',
+				type,
 				filter,
 				skip: PAGE_SIZE * page,
 				limit: PAGE_SIZE,
@@ -175,17 +183,9 @@ const RoomMembersView = (): ReactElement => {
 				return;
 			}
 
-			const existingIds = new Set(members.map(m => m._id));
-			const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
-
-			// Safety check: if page is 0, we replace the list entirely
-			const newMembers = page === 0 ? membersResultFiltered : [...members, ...(membersResultFiltered || [])];
-			const isEnd = membersResult?.length < PAGE_SIZE;
-
 			updateState({
-				members: newMembers,
+				...mergeMembersPage(members, membersResult, page),
 				isLoading: false,
-				end: isEnd,
 				page: page + 1
 			});
 		} catch (e) {
@@ -226,6 +226,10 @@ const RoomMembersView = (): ReactElement => {
 	const debounceFilterChange = useDebounce((text: string) => {
 		const trimmedFilter = text.trim();
 
+		if (trimmedFilter === state.filter) {
+			return;
+		}
+
 		if (!trimmedFilter) {
 			latestSearchRequest.current += 1;
 		}
@@ -239,50 +243,55 @@ const RoomMembersView = (): ReactElement => {
 		});
 	}, 500);
 
-	const toggleStatus = (status: boolean) => {
-		try {
+	useLayoutEffect(() => {
+		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
+		return () => subscription?.unsubscribe();
+	}, []);
+
+	useLayoutEffect(() => {
+		const toggleStatus = (status: boolean) => {
+			if (status === state.allUsers) {
+				return;
+			}
 			// We only update 'allUsers'. 'filter' remains in state, so the next fetch uses both.
 			updateState({ members: [], allUsers: status, end: false, page: 0 });
-			setHeader(status);
-		} catch (e) {
-			log(e);
-		}
-	};
+		};
 
-	const setHeader = (allUsers: boolean) => {
 		navigation.setOptions({
 			title: I18n.t('Members'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item
-						iconName='filter'
-						onPress={() =>
-							showActionSheet({
-								options: [
-									{
-										title: I18n.t('Online'),
-										onPress: () => toggleStatus(false),
-										right: () => <Radio check={!allUsers} />,
-										testID: 'room-members-view-toggle-status-online'
-									},
-									{
-										title: I18n.t('All'),
-										onPress: () => toggleStatus(true),
-										right: () => <Radio check={allUsers} />,
-										testID: 'room-members-view-toggle-status-all'
-									}
-								],
-								enableContentPanningGesture: false
-							})
+			...(hasNativeHeaderBar && {
+				...translucentHeader,
+				headerSearchBarOptions: { ...stackedSearchBarOptions({ onChangeText: debounceFilterChange }), hideNavigationBar: false }
+			}),
+			...headerRightActions([
+				{
+					label: I18n.t('Filter'),
+					icon: 'filter',
+					testID: 'room-members-view-filter',
+					menu: [
+						{
+							label: I18n.t('Online'),
+							checked: !state.allUsers,
+							testID: 'room-members-view-toggle-status-online',
+							onPress: () => toggleStatus(false)
+						},
+						{
+							label: I18n.t('All'),
+							checked: state.allUsers,
+							testID: 'room-members-view-toggle-status-all',
+							onPress: () => toggleStatus(true)
 						}
-						testID='room-members-view-filter'
-					/>
-				</HeaderButton.Container>
-			)
+					]
+				}
+			])
 		});
-	};
+	}, [navigation, debounceFilterChange, state.allUsers]);
 
-	const getUserDisplayName = (user: TUserModel) => (useRealName ? user.name : user.username) || user.username;
+	const getUserDisplayName = (user: TUserModel) => {
+		const preferred = useRealName ? user.name : user.username;
+		const fallback = useRealName ? user.username : user.name;
+		return preferred || fallback || user._id;
+	};
 
 	const onPressUser = (selectedUser: TUserModel) => {
 		const { room, roomRoles, members } = state;
@@ -425,20 +434,22 @@ const RoomMembersView = (): ReactElement => {
 		<SafeAreaView testID='room-members-view'>
 			<FlatList
 				data={state.members}
-				renderItem={({ item }) => (
-					<View style={{ backgroundColor: colors.surfaceRoom }}>
-						<UserItem
-							name={item.name || item.username}
-							username={item.username}
-							onPress={() => onPressUser(item)}
-							testID={`room-members-view-item-${item.username}`}
-						/>
-					</View>
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
+				renderItem={({ item, index }) => (
+					<UserItem
+						name={getUserDisplayName(item)}
+						username={item.username}
+						onPress={() => onPressUser(item)}
+						testID={`room-members-view-item-${item.username}`}
+						style={{ backgroundColor: colors.surfaceRoom }}
+						isFirst={index === 0}
+						isLast={index === state.members.length - 1}
+					/>
 				)}
-				style={styles.list}
-				contentContainerStyle={{ paddingBottom: bottom }}
+				style={[styles.list, { backgroundColor: listBackgroundColor }]}
+				contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom }}
 				keyExtractor={item => item._id}
-				ItemSeparatorComponent={List.Separator}
+				ItemSeparatorComponent={RowSeparator}
 				ListHeaderComponent={
 					<>
 						<ActionsSection
@@ -447,7 +458,9 @@ const RoomMembersView = (): ReactElement => {
 							t={state.room.t}
 							abacAttributes={state.room.abacAttributes}
 						/>
-						<SearchBox onChangeText={text => debounceFilterChange(text)} testID='room-members-view-search' />
+						{hasNativeHeaderBar ? null : (
+							<SearchBox onChangeText={text => debounceFilterChange(text)} testID='room-members-view-search' />
+						)}
 					</>
 				}
 				ListFooterComponent={() => (state.isLoading ? <ActivityIndicator /> : null)}

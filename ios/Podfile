@@ -1,7 +1,7 @@
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require File.join(File.dirname(`node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
 
-platform :ios, '15.1'
+platform :ios, '16.4'
 install! 'cocoapods', :deterministic_uuids => false
 
 # Pin the generated workspace name so `react-native run-ios` selects it and
@@ -40,7 +40,10 @@ end
 
 $static_framework = [ 
   'WatermelonDB',
-  'simdjson'
+  'simdjson',
+  'RNFBApp',
+  'RNFBAnalytics',
+  'RNFBCrashlytics'
 ]
 pre_install do |installer|
   Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}

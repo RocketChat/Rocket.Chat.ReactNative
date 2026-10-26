@@ -1,0 +1,6 @@
+[
+	{
+		"test": "e2e/tests/some.e2e.ts",
+		"dependsOn": ["app/views/SomeViewExtra/**"]
+	}
+]

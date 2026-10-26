@@ -8,8 +8,6 @@ import MessageTime from '../Time';
 import { ContentLayout } from './ContentLayout';
 
 const StandardLayout = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
-	'use memo';
-
 	return (
 		<>
 			<User />

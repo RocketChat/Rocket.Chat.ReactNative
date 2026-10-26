@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { type StyleProp, View, type ViewStyle, StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 
 const SIZE = 8;
 const MARGIN = 4;
@@ -15,10 +15,12 @@ function Dot({ active }: { active: boolean }) {
 	const scale = useSharedValue(1);
 
 	useEffect(() => {
-		scale.value = withTiming(active ? ANIMATION_SCALE : 1, {
-			duration: ANIMATION_DURATION
-		});
-	}, [active]);
+		scale.set(
+			withTiming(active ? ANIMATION_SCALE : 1, {
+				duration: ANIMATION_DURATION
+			})
+		);
+	}, [active, scale]);
 
 	const animatedStyle = useAnimatedStyle(() => ({
 		transform: [{ scale: scale.value }]

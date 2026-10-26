@@ -1,14 +1,14 @@
 import { CommonActions } from '@react-navigation/native';
 
-import { getSubscriptionByRoomId } from '../../database/services/Subscription';
-import Navigation from '../../navigation/appNavigation';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import Navigation from '~/lib/navigation/appNavigation';
 import {
 	type IOmnichannelRoom,
 	SubscriptionType,
 	type IVisitor,
 	type TSubscriptionModel,
 	type ISubscription
-} from '../../../definitions';
+} from '~/definitions';
 import { getRoomTitle, getUidDirectMessage } from './helpers';
 import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
@@ -21,18 +21,31 @@ interface IGoRoomItem {
 	name?: string;
 	prid?: string;
 	visitor?: IVisitor;
+	joinCodeRequired?: boolean;
 }
 
 export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
+interface RoomRouteParams {
+	rid?: string;
+	name: string;
+	t?: SubscriptionType;
+	prid?: string;
+	visitor?: IVisitor;
+	joinCodeRequired?: boolean;
+	roomUserId?: string;
+}
+
+const ROOMS_LIST_ROUTES = ['RoomsListView', 'CategoryView'];
+
 const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
-	const routeParams = {
+	const routeParams: RoomRouteParams = {
 		rid: item.rid,
 		name: getRoomTitle(item),
 		t: item.t,
 		prid: item.prid,
-		room: item,
 		visitor: item.visitor,
+		joinCodeRequired: item.joinCodeRequired,
 		roomUserId: getUidDirectMessage(item),
 		...props
 	};
@@ -62,17 +75,17 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 	}
 
 	return Navigation.dispatch((state: any) => {
-		const routesRoomsListView = state.routes.filter((r: any) => r.name === 'RoomsListView');
+		const routesRoomsList = state.routes.filter((r: any) => ROOMS_LIST_ROUTES.includes(r.name));
 		return CommonActions.reset({
 			...state,
 			routes: [
-				...routesRoomsListView,
+				...routesRoomsList,
 				{
 					name: 'RoomView',
 					params: routeParams
 				}
 			],
-			index: routesRoomsListView.length
+			index: routesRoomsList.length
 		});
 	});
 };
@@ -113,11 +126,7 @@ export const goRoom = async ({
 		}
 	}
 
-	/**
-	 * Fetches subscription from database to use goRoom with a more complete room object.
-	 * We might want to review this logic in the future, since react-navigation complains about non-serializable data
-	 * https://reactnavigation.org/docs/troubleshooting/#i-get-the-warning-non-serializable-values-were-found-in-the-navigation-state
-	 */
+	// Re-fetch the subscription so scalar route params (name, prid, visitor, roomUserId) are as complete as possible.
 	let _item = item;
 	if (item.rid) {
 		const sub = await getSubscriptionByRoomId(item.rid);

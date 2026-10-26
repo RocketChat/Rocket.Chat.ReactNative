@@ -3,7 +3,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 
 import Button from '.';
 import * as stories from './Button.stories';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
 const onPressMock = jest.fn();
 
@@ -63,7 +63,7 @@ describe('ButtonTests', () => {
 	test('disabled button is in disabled state', async () => {
 		const { findByTestId } = render(<TestButton disabled={true} />);
 		const button = await findByTestId(testProps.testID);
-		expect(button.props.enabled).toBe(false);
+		expect(button).toBeDisabled();
 	});
 
 	test('should trigger onPress function on button press', async () => {

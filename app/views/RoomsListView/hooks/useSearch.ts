@@ -1,9 +1,11 @@
-import { useCallback, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
+import { type SearchBarCommands } from 'react-native-screens';
 
-import { type IRoomItem } from '../../../containers/RoomItem/interfaces';
-import { searchLocal, searchRemote } from '../../../lib/methods/search';
-import { useDebounce } from '../../../lib/methods/helpers/debounce';
-import { announceSearchResultsForAccessibility } from '../../../lib/methods/helpers/announceSearchResultsForAccessibility';
+import { type IRoomItem } from '~/containers/RoomItem/interfaces';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { searchLocal, searchRemote } from '~/lib/methods/search';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
+import { announceSearchResultsForAccessibility } from '~/lib/methods/helpers/announceSearchResultsForAccessibility';
 
 interface SearchState {
 	searchEnabled: boolean;
@@ -69,11 +71,10 @@ const searchReducer = (state: SearchState, action: SearchAction): SearchState =>
 };
 
 export const useSearch = () => {
-	'use memo';
-
 	const [state, dispatch] = useReducer(searchReducer, initialState);
 	// Guards against an older (slower) search overwriting the results of a newer one
 	const searchId = useRef(0);
+	const searchBarRef = useRef<SearchBarCommands>(null);
 
 	const search = useDebounce(async (text: string) => {
 		if (!state.searchEnabled) return;
@@ -103,9 +104,17 @@ export const useSearch = () => {
 		search('');
 	}, [search]);
 
-	const stopSearch = useCallback(() => {
+	const resetSearch = useCallback(() => {
 		dispatch({ type: 'STOP_SEARCH' });
 	}, []);
+
+	const stopSearch = useCallback(() => {
+		searchBarRef.current?.cancelSearch();
+		resetSearch();
+	}, [resetSearch]);
+
+	const server = useAppSelector(state => state.server.server);
+	useEffect(() => stopSearch, [server, stopSearch]);
 
 	return {
 		searching: state.searching,
@@ -113,6 +122,8 @@ export const useSearch = () => {
 		searchResults: state.searchResults,
 		startSearch,
 		stopSearch,
-		search
+		resetSearch,
+		search,
+		searchBarRef
 	};
 };

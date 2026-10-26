@@ -2,14 +2,14 @@ import { Provider } from 'react-redux';
 import { render } from '@testing-library/react-native';
 
 import { useMessageAccessibilityLabel } from '../useMessageAccessibilityLabel';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { updateSettings } from '../../../../actions/settings';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type TAnyMessageModel } from '../../../../definitions';
-import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { updateSettings } from '~/actions/settings';
+import { mockedStore } from '~/reducers/mockedStore';
+import { type TAnyMessageModel } from '~/definitions';
+import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
 
-jest.mock('../../../../lib/hooks/useAltTextSupported', () => ({
+jest.mock('~/lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: () => false
 }));
 
@@ -24,7 +24,7 @@ const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel 
 		u: { _id: 'u1', username: 'alice', name: 'Alice' },
 		unread: false,
 		...overrides
-	} as TAnyMessageModel);
+	}) as TAnyMessageModel;
 
 const renderLabel = (item: TAnyMessageModel, config: Partial<MessageRoomState> = {}, previousItem?: TAnyMessageModel) => {
 	const spy = jest.fn();
@@ -56,7 +56,7 @@ describe('useMessageAccessibilityLabel', () => {
 
 	it('replaces the body with the encrypted placeholder and appends it to the suffix', () => {
 		expect(renderLabel(buildItem({ t: E2E_MESSAGE_TYPE, e2e: 'pending' }))).toBe(
-			`alice ${HOUR} Encrypted message. Encrypted message`
+			`alice ${HOUR} This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key`
 		);
 	});
 
@@ -123,8 +123,7 @@ describe('useMessageAccessibilityLabel', () => {
 		expect(
 			renderLabel(buildItem({ autoTranslate: true, translations: [{ _id: 't1', language: 'en', value: 'translated text' }] }), {
 				autoTranslateRoom: true,
-				autoTranslateLanguage: 'en',
-				user: { username: 'bob' }
+				autoTranslateLanguage: 'en'
 			})
 		).toBe(`alice ${HOUR} Message translated into English.`);
 	});
@@ -139,7 +138,7 @@ describe('useMessageAccessibilityLabel', () => {
 					unread: true,
 					attachments: [{ image_url: 'https://example.com/img.png', altText: 'A wavy pattern' }]
 				}),
-				{ isReadReceiptEnabled: true, autoTranslateRoom: true, autoTranslateLanguage: 'en', user: { username: 'bob' } }
+				{ isReadReceiptEnabled: true, autoTranslateRoom: true, autoTranslateLanguage: 'en' }
 			)
 		).toBe(`alice ${HOUR} Message translated into English. Image description: A wavy pattern Message was not read`);
 	});

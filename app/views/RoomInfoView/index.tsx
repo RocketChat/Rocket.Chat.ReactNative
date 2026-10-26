@@ -1,6 +1,6 @@
 import { type CompositeNavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { uniq } from 'lodash';
+import uniq from 'lodash/uniq';
 import isEmpty from 'lodash/isEmpty';
 import { type ReactElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
@@ -8,29 +8,29 @@ import { type Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
 import { shallowEqual } from 'react-redux';
 
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { type ISubscription, type IUser, SubscriptionType } from '../../definitions';
-import I18n from '../../i18n';
-import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { getRoomInfo, getUserInfo, getVisitorInfo, toggleBlockUser } from '../../lib/services/restApi';
-import { createDirectMessage } from '../../lib/methods/createDirectMessage';
-import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
+import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { type ISubscription, type IUser, SubscriptionType } from '~/definitions';
+import I18n from '~/i18n';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { getRoomTitle, getUidDirectMessage, hasPermission } from '~/lib/methods/helpers';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { getRoomInfo, getUserInfo, getVisitorInfo, toggleBlockUser } from '~/lib/services/restApi';
+import { createDirectMessage } from '~/lib/methods/createDirectMessage';
+import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
 import RoomInfoButtons from './components/RoomInfoButtons';
 import RoomInfoViewAvatar from './components/RoomInfoViewAvatar';
 import RoomInfoViewBody from './components/RoomInfoViewBody';
 import RoomInfoViewTitle from './components/RoomInfoViewTitle';
 import styles from './styles';
-import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
-import Navigation from '../../lib/navigation/appNavigation';
+import { emitErrorCreateDirectMessage } from '~/lib/methods/helpers/emitErrorCreateDirectMessage';
+import Navigation from '~/lib/navigation/appNavigation';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
@@ -39,15 +39,29 @@ type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 
+const fetchVisitorWithUserAgent = async (visitorId: string) => {
+	const result = await getVisitorInfo(visitorId);
+	if (!result.success) return;
+	const { visitor } = result;
+	const params: { os?: string; browser?: string } = {};
+	if (visitor.userAgent) {
+		const ua = new UAParser();
+		ua.setUA(visitor.userAgent);
+		params.os = `${ua.getOS().name} ${ua.getOS().version}`;
+		params.browser = `${ua.getBrowser().name} ${ua.getBrowser().version}`;
+	}
+	return { ...visitor, ...params };
+};
+
 const RoomInfoView = (): ReactElement => {
 	const {
 		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
 	} = useRoute<TRoomInfoViewRouteProp>();
-	const { addListener, setOptions, navigate } = useNavigation<TRoomInfoViewNavigationProp>();
+	const { addListener, setOptions, navigate, dispatch } = useNavigation<TRoomInfoViewNavigationProp>();
 
 	const [room, setRoom] = useState(roomParam || ({ rid, t } as ISubscription));
 	const [roomFromRid, setRoomFromRid] = useState<ISubscription | undefined>();
-	const [roomUser, setRoomUser] = useState(member || {});
+	const [roomUserData, setRoomUserData] = useState(member || {});
 	const [showEdit, setShowEdit] = useState(false);
 
 	const roomType = room?.t || t;
@@ -82,72 +96,38 @@ const RoomInfoView = (): ReactElement => {
 
 	const roomUserId = isDirect ? getUidDirectMessage({ ...(room || { rid, t }), itsMe }) : undefined;
 	const activeUserStatus = useAppSelector(state => (roomUserId ? state.activeUsers[roomUserId] : undefined), shallowEqual);
-	const userStatus = activeUserStatus || roomUser;
+	const userStatus = activeUserStatus || roomUserData;
 
 	const { colors } = useTheme();
 
-	// Prevents from flashing RoomInfoView on the header title before fetching actual room data
-	useLayoutEffect(() => {
-		setHeader(false);
-	}, []);
-
-	useEffect(() => {
-		const listener = addListener('focus', () => (isLivechat ? loadVisitor() : null));
-		return () => listener();
-	}, []);
-
-	useEffect(
-		() => () => {
-			subscription.current?.unsubscribe();
-		},
-		[]
-	);
-
-	useEffect(() => {
-		loadRoom();
-		if (isDirect) loadUser();
-	}, []);
-
 	const setHeader = (canEdit?: boolean) => {
-		const HeaderRight = () => (
-			<HeaderButton.Container>
-				<HeaderButton.Item
-					accessibilityLabel={I18n.t('Room_Info_Edit')}
-					iconName='edit'
-					onPress={() => {
-						if (!room) return;
-						logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
-						const navigationProps = { room, roomUser };
-						if (isLivechat) navigate('LivechatEditView', navigationProps);
-						else navigate('RoomInfoEditView', { rid, ...navigationProps });
-					}}
-					testID='room-info-view-edit-button'
-				/>
-			</HeaderButton.Container>
-		);
+		const editAction = {
+			label: I18n.t('Room_Info_Edit'),
+			icon: 'edit' as const,
+			testID: 'room-info-view-edit-button',
+			onPress: () => {
+				if (!room) return;
+				logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
+				const navigationProps = { room, roomUser };
+				if (isLivechat) navigate('LivechatEditView', navigationProps);
+				else navigate('RoomInfoEditView', { rid, ...navigationProps });
+			}
+		};
 		setOptions({
-			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal /> : undefined,
+			...(showCloseModal ? headerLeftCloseModal({ dispatch }) : { headerLeft: undefined }),
 			title: isDirect ? I18n.t('User_Info') : I18n.t('Room_Info'),
-			headerRight: canEdit ? () => <HeaderRight /> : undefined
+			...headerRightActions(canEdit ? [editAction] : [])
 		});
 	};
 
 	const loadVisitor = async () => {
+		const visitorId = room?.visitor?._id;
+		if (!visitorId) return;
 		try {
-			if (room?.visitor?._id) {
-				const result = await getVisitorInfo(room.visitor._id);
-				if (result.success) {
-					const { visitor } = result;
-					const params: { os?: string; browser?: string } = {};
-					if (visitor.userAgent) {
-						const ua = new UAParser();
-						ua.setUA(visitor.userAgent);
-						params.os = `${ua.getOS().name} ${ua.getOS().version}`;
-						params.browser = `${ua.getBrowser().name} ${ua.getBrowser().version}`;
-					}
-					setRoomUser({ ...visitor, ...params });
-					setHeader();
-				}
+			const visitor = await fetchVisitorWithUserAgent(visitorId);
+			if (visitor) {
+				setRoomUserData(visitor);
+				setHeader();
 			}
 		} catch (error) {
 			// Do nothing
@@ -170,6 +150,8 @@ const RoomInfoView = (): ReactElement => {
 		}
 	};
 
+	const roomUser = isDirect ? { ...roomUserData, roles: handleRoles(roomUserData) } : roomUserData;
+
 	// member may arrive without _id (RoomActionsView forwards it before its own fetch resolves)
 	const resolveRoomUserId = (r?: ISubscription) => {
 		if (roomUser._id) return roomUser._id;
@@ -178,21 +160,18 @@ const RoomInfoView = (): ReactElement => {
 	};
 
 	const loadUser = async () => {
-		if (!roomUser._id) {
-			try {
-				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
-				const result = await getUserInfo(roomUserId);
-				if (result.success) {
-					const { user } = result;
-					const r = handleRoles(user);
-					setRoomUser({ ...roomUser, ...user, roles: r });
-				}
-			} catch {
-				// do nothing
+		if (roomUserData._id) {
+			return;
+		}
+		const roomOrParams = room || { rid, t };
+		try {
+			const roomUserId = getUidDirectMessage({ ...roomOrParams, itsMe });
+			const result = await getUserInfo(roomUserId);
+			if (result.success) {
+				setRoomUserData({ ...roomUserData, ...result.user });
 			}
-		} else {
-			const r = handleRoles(roomUser);
-			if (r) setRoomUser({ ...roomUser, roles: r });
+		} catch {
+			// do nothing
 		}
 	};
 
@@ -229,17 +208,36 @@ const RoomInfoView = (): ReactElement => {
 		setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 	};
 
-	const createDirect = () =>
-		new Promise<void | ISubscription>(async (resolve, reject) => {
-			// We don't need to create a direct
-			if (!isEmpty(member)) return resolve();
-			try {
-				const result = await createDirectMessage(roomUser.username);
-				if (result.success) return resolve({ ...roomUser, rid: result.room.rid });
-			} catch (e) {
-				reject(e);
-			}
-		});
+	// Prevents from flashing RoomInfoView on the header title before fetching actual room data
+	useLayoutEffect(() => {
+		setHeader(false);
+	}, []);
+
+	useEffect(() => {
+		const listener = addListener('focus', () => (isLivechat ? loadVisitor() : null));
+		return () => listener();
+	}, []);
+
+	useEffect(
+		() => () => {
+			subscription.current?.unsubscribe();
+		},
+		[]
+	);
+
+	useEffect(() => {
+		loadRoom();
+		if (isDirect) loadUser();
+	}, []);
+
+	const createDirect = async (): Promise<void | ISubscription> => {
+		if (!isEmpty(member)) return;
+		const result = await createDirectMessage(roomUser.username);
+		if (!result?.success || !result.room?._id) {
+			throw new Error('Failed to create direct message');
+		}
+		return { ...roomUser, rid: result.room._id };
+	};
 
 	const handleGoRoom = (r?: ISubscription) => {
 		logEvent(events.RI_GO_ROOM_USER);
@@ -268,7 +266,7 @@ const RoomInfoView = (): ReactElement => {
 			}
 			handleGoRoom(r);
 		} catch (e: any) {
-			emitErrorCreateDirectMessage(e?.data);
+			emitErrorCreateDirectMessage(e?.data ?? e);
 		}
 	};
 

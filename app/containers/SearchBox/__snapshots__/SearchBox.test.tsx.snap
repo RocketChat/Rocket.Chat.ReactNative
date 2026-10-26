@@ -4,19 +4,19 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#FFFFFF",
+      "backgroundColor": "#F7F8FA",
     }
   }
   testID="searchbox"
 >
   <A11yOrderView
-    orderKey="«r4»"
+    orderKey="_r_4_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r4»"
+      orderKey="_r_4_"
     >
       <View
         style={
@@ -26,9 +26,8 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               "marginBottom": 10,
             },
             {
-              "marginBottom": 16,
-              "marginHorizontal": 12,
-              "marginTop": 16,
+              "marginHorizontal": 16,
+              "marginVertical": 12,
             },
           ]
         }
@@ -65,6 +64,9 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,

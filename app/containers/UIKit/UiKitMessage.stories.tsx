@@ -2,14 +2,15 @@ import { ScrollView, View } from 'react-native';
 import { type ReactElement } from 'react';
 
 import { UiKitMessage } from '.';
-import { colors } from '../../lib/constants/colors';
-import { longText } from '../../../.rnstorybook/utils';
+import Markdown from '../markdown';
+import { colors } from '~/lib/constants/colors';
+import { longText } from '~/.rnstorybook/utils';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
 	ResponsiveLayoutContext
-} from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { ThemeContext, type TSupportedThemes } from '../../theme';
+} from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { ThemeContext, type TSupportedThemes } from '~/theme';
 
 export default {
 	title: 'UIKit/UiKitMessage',
@@ -53,6 +54,39 @@ export const SectionMarkdownList = () =>
 		}
 	]);
 SectionMarkdownList.storyName = 'Section + Markdown List';
+
+// App messages are rendered from blocks, so their mrkdwn goes through
+// MessageParser.mrkdwn instead of the regular message Markdown path. Both must
+// render at the same font size, otherwise app messages look smaller than the
+// user's messages in the same list.
+const appMessageText =
+	'Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2\n\t\tchanges: https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2\n\t';
+
+export const SectionFontSizeParity = () => (
+	<View>
+		<Markdown msg='Regular message: the reference font size' />
+		{UiKitMessage([
+			{
+				type: 'section',
+				text: {
+					type: 'mrkdwn',
+					text: 'Section mrkdwn: must match the message above'
+				}
+			}
+		])}
+		<Markdown msg={appMessageText} />
+		{UiKitMessage([
+			{
+				type: 'section',
+				text: {
+					type: 'mrkdwn',
+					text: appMessageText
+				}
+			}
+		])}
+	</View>
+);
+SectionFontSizeParity.storyName = 'Section + Message font size parity';
 
 export const SectionOverflow = () =>
 	UiKitMessage([

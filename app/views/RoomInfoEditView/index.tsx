@@ -1,37 +1,37 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import { AccessibilityInfo, Alert, Keyboard, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { type SetValueConfig } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { usePermissions } from '../../lib/hooks/usePermissions';
-import { AvatarWithEdit } from '../../containers/Avatar';
-import { sendLoadingEvent } from '../../containers/Loading';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { ControlledFormTextInput } from '../../containers/TextInput';
-import { LISTENER } from '../../containers/Toast';
-import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-import { type IBaseScreen, type IRoomSettings, type ISubscription, SubscriptionType } from '../../definitions';
-import I18n from '../../i18n';
-import KeyboardView from '../../containers/KeyboardView';
-import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
-import EventEmitter from '../../lib/methods/helpers/events';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { AvatarWithEdit } from '~/containers/Avatar';
+import { sendLoadingEvent } from '~/containers/Loading';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import { LISTENER } from '~/containers/Toast';
+import { MultiSelect } from '~/containers/UIKit/MultiSelect';
+import { type IBaseScreen, type IRoomSettings, type ISubscription, SubscriptionType } from '~/definitions';
+import I18n from '~/i18n';
+import KeyboardView from '~/containers/KeyboardView';
+import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
+import EventEmitter from '~/lib/methods/helpers/events';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { MessageTypeValues } from './messageTypes';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
-import { getRoomTitle, compareServerVersion, showErrorAlert, isAndroid, random } from '../../lib/methods/helpers';
-import { saveRoomSettings, toggleArchiveRoom } from '../../lib/services/restApi';
-import Button from '../../containers/Button';
+import { getRoomTitle, compareServerVersion, showErrorAlert, isAndroid, random } from '~/lib/methods/helpers';
+import { saveRoomSettings, toggleArchiveRoom } from '~/lib/services/restApi';
+import Button from '~/containers/Button';
 import useRoomSubscription from './hooks/useRoomSubscription';
 import useRoomDeletionActions from './hooks/useRoomDeletionActions';
 
@@ -57,10 +57,9 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		serverVersion: state.server.version as string,
 		encryptionEnabled: state.encryption.enabled
 	}));
-	const [randomValue, setRandomValue] = useState<string>('');
+	const randomValueRef = useRef('');
 	const {
 		control,
-		watch,
 		clearErrors,
 		setFocus,
 		setError,
@@ -92,7 +91,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		const sysMes = room.sysMes as string[];
 		const newRandomValue = random(15);
 
-		setRandomValue(newRandomValue);
+		randomValueRef.current = newRandomValue;
 		setValue('archived', room.archived);
 		setValue('name', getRoomTitle(room));
 		setValue('description', description || '');
@@ -105,7 +104,10 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setValue('reactWhenReadOnly', !!reactWhenReadOnly);
 		setValue('encrypted', !!encrypted);
 	};
-	const { archived, enableSysMes, encrypted, reactWhenReadOnly, readOnly, systemMessages, t } = watch();
+	const [archived, enableSysMes, encrypted, reactWhenReadOnly, readOnly, systemMessages, t] = useWatch({
+		control,
+		name: ['archived', 'enableSysMes', 'encrypted', 'reactWhenReadOnly', 'readOnly', 'systemMessages', 't']
+	});
 	const { room } = useRoomSubscription({
 		rid: route.params?.rid,
 		initializeRoomState
@@ -182,7 +184,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		}
 
 		// Join Code
-		if (room.joinCodeRequired && randomValue !== joinCode) {
+		if (room.joinCodeRequired && randomValueRef.current !== joinCode) {
 			params.joinCode = joinCode;
 		}
 
@@ -454,7 +456,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 							? [
 									<Text style={styles.broadcast}>{I18n.t('Broadcast')}</Text>,
 									<View style={[styles.divider, { borderColor: colors.strokeLight }]} />
-							  ]
+								]
 							: null}
 						{serverVersion && !compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (
 							<SwitchContainer

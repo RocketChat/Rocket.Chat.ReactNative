@@ -1,12 +1,10 @@
-import { CustomIcon } from '../../../CustomIcon';
-import styles from '../../styles';
-import { useTheme } from '../../../../theme';
-import { useMessageField } from '../../stores/MessageStore';
-import { useIsReadReceiptEnabled } from '../../stores/MessageRoomStore';
+import { CustomIcon } from '~/containers/CustomIcon';
+import styles from '~/containers/message/styles';
+import { useTheme } from '~/theme';
+import { useMessageField } from '~/containers/message/stores/MessageStore';
+import { useIsReadReceiptEnabled } from '~/containers/message/stores/MessageRoomStore';
 
 const ReadReceipt = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const unread = useMessageField(item => item.unread);
 	const isReadReceiptEnabled = useIsReadReceiptEnabled();

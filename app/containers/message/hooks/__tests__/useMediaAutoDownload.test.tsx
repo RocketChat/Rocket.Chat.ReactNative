@@ -3,38 +3,40 @@ import { Provider } from 'react-redux';
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
 import { useMediaAutoDownload } from '../useMediaAutoDownload';
-import { MessageProvider } from '../../stores/MessageStore';
-import { MessageRoomProvider, type MessageRoomState } from '../../stores/MessageRoomStore';
-import { mockedStore } from '../../../../reducers/mockedStore';
-import { type IAttachment, type IUserMessage, type TAnyMessageModel } from '../../../../definitions';
-import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../../../lib/methods/handleMediaDownload';
-import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
-import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
-import { isImageBase64 } from '../../../../lib/methods/isImageBase64';
-import { emitter } from '../../../../lib/methods/helpers/emitter';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { mockedStore } from '~/reducers/mockedStore';
+import { setUser } from '~/actions/login';
+import { selectServerSuccess } from '~/actions/server';
+import { type IAttachment, type IUserMessage, type TAnyMessageModel } from '~/definitions';
+import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '~/lib/methods/handleMediaDownload';
+import { fetchAutoDownloadEnabled } from '~/lib/methods/autoDownloadPreference';
+import { isImageBase64 } from '~/lib/methods/isImageBase64';
+import { emitter } from '~/lib/methods/helpers/emitter';
+import { store } from '~/lib/store/auxStore';
 
-jest.mock('../../../../lib/methods/handleMediaDownload', () => ({
+jest.mock('~/lib/store/auxStore', () => ({
+	store: { getState: jest.fn() }
+}));
+
+jest.mock('~/lib/methods/handleMediaDownload', () => ({
 	downloadMediaFile: jest.fn(),
 	getMediaCache: jest.fn(),
 	isDownloadActive: jest.fn(),
 	cancelDownload: jest.fn()
 }));
 
-jest.mock('../../../../lib/methods/autoDownloadPreference', () => ({
+jest.mock('~/lib/methods/autoDownloadPreference', () => ({
 	fetchAutoDownloadEnabled: jest.fn()
 }));
 
-jest.mock('../../../../lib/methods/helpers/formatAttachmentUrl', () => ({
-	formatAttachmentUrl: jest.fn()
-}));
-
-jest.mock('../../../../lib/methods/isImageBase64', () => ({
+jest.mock('~/lib/methods/isImageBase64', () => ({
 	isImageBase64: jest.fn()
 }));
 
 // Real mitt behind spies so resumeDownload registrations can be observed and the
 // download listener can be driven with emitter.emit.
-jest.mock('../../../../lib/methods/helpers/emitter', () => {
+jest.mock('~/lib/methods/helpers/emitter', () => {
 	const mittModule = require('mitt');
 	const mitt = mittModule.default || mittModule;
 	const instance = mitt();
@@ -47,30 +49,20 @@ jest.mock('../../../../lib/methods/helpers/emitter', () => {
 	};
 });
 
-// The persisted/localFile logic is covered by useFile.test; here useFile is a plain
-// state cell so setCurrentFile merges are observable through the returned currentFile.
-jest.mock('../useFile', () => {
-	const { useState } = require('react');
-	return {
-		useFile: (file: IAttachment) => {
-			const [current, setCurrent] = useState(file);
-			const manage = (partial: Partial<IAttachment>) => setCurrent((prev: IAttachment) => ({ ...prev, ...partial }));
-			return [current, manage];
-		}
-	};
-});
-
 const mockDownloadMediaFile = downloadMediaFile as jest.Mock;
 const mockGetMediaCache = getMediaCache as jest.Mock;
 const mockIsDownloadActive = isDownloadActive as jest.Mock;
 const mockCancelDownload = cancelDownload as jest.Mock;
 const mockFetchAutoDownloadEnabled = fetchAutoDownloadEnabled as jest.Mock;
-const mockFormatAttachmentUrl = formatAttachmentUrl as jest.Mock;
 const mockIsImageBase64 = isImageBase64 as jest.Mock;
 const mockEmitterOn = emitter.on as jest.Mock;
+const mockGetState = store.getState as jest.Mock;
 
 const URL = 'https://open.rocket.chat/file.png';
 const USER = { id: 'user-1', username: 'john', token: 'token' };
+
+mockedStore.dispatch(setUser(USER));
+mockedStore.dispatch(selectServerSuccess({ server: 'https://open.rocket.chat', version: '', name: '' }));
 
 // Flushes the mount effect's async cache/auto-download chain inside act, used when the
 // final status equals the initial 'to-download' so there is no change for waitFor to await.
@@ -92,7 +84,7 @@ const renderMediaHook = ({
 	showAttachment?: (file: IAttachment) => void;
 	ctx?: Partial<MessageRoomState>;
 }) => {
-	const contextValue: Partial<MessageRoomState> = { baseUrl: 'https://open.rocket.chat', user: USER, ...ctx };
+	const contextValue: Partial<MessageRoomState> = { ...ctx };
 	const item = { id: 'msg-1' } as unknown as TAnyMessageModel;
 	const wrapper = ({ children }: { children: ReactNode }) => (
 		<Provider store={mockedStore}>
@@ -101,13 +93,20 @@ const renderMediaHook = ({
 			</MessageRoomProvider>
 		</Provider>
 	);
-	return renderHook(() => useMediaAutoDownload({ file, author, showAttachment }), { wrapper });
+	return renderHook(
+		(props: { file: IAttachment; author?: IUserMessage; showAttachment?: (file: IAttachment) => void }) =>
+			useMediaAutoDownload(props),
+		{
+			wrapper,
+			initialProps: { file, author, showAttachment }
+		}
+	);
 };
 
 describe('useMediaAutoDownload', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockFormatAttachmentUrl.mockReturnValue(URL);
+		mockGetState.mockReturnValue({ settings: { FileUpload_ProtectFiles: false } });
 		mockIsImageBase64.mockReturnValue(false);
 		mockGetMediaCache.mockResolvedValue({ exists: false });
 		mockIsDownloadActive.mockReturnValue(false);
@@ -135,10 +134,11 @@ describe('useMediaAutoDownload', () => {
 			expect(mockFetchAutoDownloadEnabled).toHaveBeenCalledWith('audioPreferenceDownload');
 		});
 
-		it('defaults to the image preference when the file has no media url', async () => {
+		it('does not try to auto-download when the file has no media url', async () => {
 			renderMediaHook({ file: {} });
 			await flushMount();
-			expect(mockFetchAutoDownloadEnabled).toHaveBeenCalledWith('imagePreferenceDownload');
+			expect(mockFetchAutoDownloadEnabled).not.toHaveBeenCalled();
+			expect(mockDownloadMediaFile).not.toHaveBeenCalled();
 		});
 	});
 
@@ -172,9 +172,20 @@ describe('useMediaAutoDownload', () => {
 			expect(result.current.currentFile.title_link).toBe('file://cache');
 		});
 
+		it('keeps the local title_link when the file prop changes back to the remote url', async () => {
+			mockGetMediaCache.mockResolvedValue({ exists: true, uri: 'file://cache' });
+			const { result, rerender } = renderMediaHook({ file: { image_url: '/img', title: 'original.png' } });
+			await waitFor(() => expect(result.current.status).toBe('downloaded'));
+
+			rerender({ file: { image_url: '/img', title: 'renamed.png', title_link: '/remote' } });
+
+			expect(result.current.currentFile.title).toBe('renamed.png');
+			expect(result.current.currentFile.title_link).toBe('file://cache');
+		});
+
 		it('resumes an active download by registering the download listener and showing loading', async () => {
 			mockIsDownloadActive.mockReturnValue(true);
-			const { result } = renderMediaHook({ file: { image_url: '/img' } });
+			const { result } = renderMediaHook({ file: { image_url: '/file.png' } });
 			await waitFor(() => expect(result.current.status).toBe('loading'));
 			expect(mockEmitterOn).toHaveBeenCalledWith(`downloadMedia${URL}`, expect.any(Function));
 		});
@@ -226,7 +237,7 @@ describe('useMediaAutoDownload', () => {
 	describe('onPress', () => {
 		it('cancels the download and returns to to-download while loading', async () => {
 			mockIsDownloadActive.mockReturnValue(true);
-			const { result } = renderMediaHook({ file: { image_url: '/img' } });
+			const { result } = renderMediaHook({ file: { image_url: '/file.png' } });
 			await waitFor(() => expect(result.current.status).toBe('loading'));
 
 			act(() => result.current.onPress());
@@ -266,7 +277,7 @@ describe('useMediaAutoDownload', () => {
 		it('does not open the attachment while it is still encrypted', async () => {
 			mockIsDownloadActive.mockReturnValue(true);
 			const showAttachment = jest.fn();
-			const { result } = renderMediaHook({ file: { image_url: '/img', e2e: 'pending' }, showAttachment });
+			const { result } = renderMediaHook({ file: { image_url: '/file.png', e2e: 'pending' }, showAttachment });
 			await waitFor(() => expect(result.current.status).toBe('loading'));
 
 			act(() => emitter.emit(`downloadMedia${URL}`, 'file://encrypted'));
@@ -275,6 +286,44 @@ describe('useMediaAutoDownload', () => {
 
 			act(() => result.current.onPress());
 			expect(showAttachment).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('attachment credentials', () => {
+		beforeEach(() => {
+			mockGetState.mockReturnValue({ settings: { FileUpload_ProtectFiles: true } });
+		});
+
+		const getUrl = (file: IAttachment) => renderMediaHook({ file }).result.current.url as string;
+
+		it('adds credentials to a file hosted on the workspace', () => {
+			expect(getUrl({ title_link: '/file.png', image_url: URL })).toBe(`${URL}?rc_token=${USER.token}&rc_uid=${USER.id}`);
+		});
+
+		it('does not rewrite the credentials already on an untrusted url', () => {
+			const attackerUrl = 'https://evil.example/x.png?rc_token=attacker&rc_uid=attacker';
+			expect(getUrl({ image_url: attackerUrl })).toBe(attackerUrl);
+			expect(getUrl({ title_link: attackerUrl, image_url: URL })).toBe(attackerUrl);
+		});
+
+		it.each([
+			['plain image_url on attacker host', { image_url: 'https://evil.example/pixel.jpg' }],
+			['title_link on attacker host, image_url on the real server', { title_link: 'https://evil.example/x.jpg', image_url: URL }],
+			[
+				'title_link on attacker host, image_url on a look-alike host',
+				{ title_link: 'https://evil.example/x.jpg', image_url: 'https://open.rocket.chat.evil.example/x.png' }
+			],
+			[
+				'title_link on attacker host, image_url with userinfo',
+				{ title_link: 'https://evil.example/x.jpg', image_url: 'https://open.rocket.chat@evil.example/x.png' }
+			],
+			['title_link on attacker host, no image_url', { title_link: 'https://evil.example/x.jpg', image_type: 'image/png' }],
+			['video title_link on attacker host', { title_link: 'https://evil.example/v.mp4', video_url: URL }],
+			['audio title_link on attacker host', { title_link: 'https://evil.example/a.mp3', audio_url: URL }]
+		] as [string, IAttachment][])('does not send credentials for %s', (_name, file) => {
+			const url = getUrl(file);
+			expect(url).not.toContain('rc_token');
+			expect(url).not.toContain('rc_uid');
 		});
 	});
 });

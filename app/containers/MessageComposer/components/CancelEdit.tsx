@@ -1,15 +1,13 @@
 import { BaseButton } from './Buttons';
-import { useRoomContext } from '../../../views/RoomView/context';
-import { useMessageAction } from '../../message/stores/MessageActionStore';
+import { useEditCancel } from '../ComposerStore';
+import { useMessageActionKind } from '~/containers/message/stores/MessageActionStore';
 import { Gap } from './Gap';
 
 export const CancelEdit = () => {
-	'use memo';
+	const editCancel = useEditCancel();
+	const actionKind = useMessageActionKind();
 
-	const { editCancel } = useRoomContext();
-	const action = useMessageAction();
-
-	if (action?.kind !== 'edit') {
+	if (actionKind !== 'edit') {
 		return null;
 	}
 	return (

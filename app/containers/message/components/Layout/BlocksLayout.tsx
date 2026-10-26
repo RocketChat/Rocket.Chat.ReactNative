@@ -5,8 +5,6 @@ import Reactions from '../Reactions';
 import MessageTime from '../Time';
 
 const BlocksLayout = ({ showTimeLarge }: { showTimeLarge: boolean }) => {
-	'use memo';
-
 	return (
 		<>
 			<User />

@@ -1,20 +1,21 @@
 import { useContext } from 'react';
 
-import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { BaseButton } from './BaseButton';
-import { type TActionSheetOptionsItem, useActionSheet } from '../../../ActionSheet';
-import { MessageInnerContext } from '../../context';
-import I18n from '../../../../i18n';
-import Navigation from '../../../../lib/navigation/appNavigation';
-import { useMasterDetail } from '../../../../lib/hooks/useMasterDetail';
-import { usePermissions } from '../../../../lib/hooks/usePermissions';
-import { useCanUploadFile, useChooseMedia } from '../../hooks';
-import { useRoomContext } from '../../../../views/RoomView/context';
+import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
+import { MessageInnerContext } from '~/containers/MessageComposer/context';
+import I18n from '~/i18n';
+import Navigation from '~/lib/navigation/appNavigation';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { useCanUploadFile, useChooseMedia } from '~/containers/MessageComposer/hooks';
+import { useComposerRid, useComposerTmid, useComposerType } from '~/containers/MessageComposer/ComposerStore';
+import { useComposerAppActionOptions } from '~/containers/MessageComposer/hooks/useComposerAppActionOptions';
 
 export const ActionsButton = () => {
-	'use memo';
-
-	const { rid, tmid, t } = useRoomContext();
+	const rid = useComposerRid();
+	const tmid = useComposerTmid();
+	const t = useComposerType();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);
@@ -25,6 +26,7 @@ export const ActionsButton = () => {
 	});
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useMasterDetail();
+	const appOptions = useComposerAppActionOptions();
 
 	const createDiscussion = async () => {
 		if (!rid) return;
@@ -94,6 +96,8 @@ export const ActionsButton = () => {
 			icon: 'discussions',
 			onPress: () => createDiscussion()
 		});
+
+		options.push(...appOptions);
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
 	};

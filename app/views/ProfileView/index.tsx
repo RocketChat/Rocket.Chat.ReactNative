@@ -5,40 +5,41 @@ import { useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useFocusEffect } from '@react-navigation/native';
 
-import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
-import { setUser } from '../../actions/login';
-import { useActionSheet } from '../../containers/ActionSheet';
-import { AvatarWithEdit } from '../../containers/Avatar';
-import Button from '../../containers/Button';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import KeyboardView from '../../containers/KeyboardView';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { ControlledFormTextInput } from '../../containers/TextInput';
-import { LISTENER } from '../../containers/Toast';
-import { type IProfileParams } from '../../definitions';
-import { TwoFactorMethods } from '../../definitions/ITotp';
-import I18n from '../../i18n';
-import { compareServerVersion } from '../../lib/methods/helpers';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { saveUserProfile } from '../../lib/services/restApi';
-import { twoFactor } from '../../lib/services/twoFactor';
-import { getUserSelector } from '../../selectors/login';
-import { type ProfileStackParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
+import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
+import { setUser } from '~/actions/login';
+import { useActionSheet } from '~/containers/ActionSheet';
+import { AvatarWithEdit } from '~/containers/Avatar';
+import Button from '~/containers/Button';
+import KeyboardView from '~/containers/KeyboardView';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import { LISTENER } from '~/containers/Toast';
+import { type IProfileParams } from '~/definitions';
+import { TwoFactorMethods } from '~/definitions/ITotp';
+import I18n from '~/i18n';
+import { compareServerVersion } from '~/lib/methods/helpers';
+import { headerLeftDrawer, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import { saveUserProfile } from '~/lib/services/restApi';
+import { twoFactor } from '~/lib/services/twoFactor/twoFactor';
+import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
+import { getUserSelector } from '~/selectors/login';
+import { type ProfileStackParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
 import DeleteAccountActionSheetContent from './components/DeleteAccountActionSheetContent';
 import styles from './styles';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
-import CustomFields from '../../containers/CustomFields';
-import ListSeparator from '../../containers/List/ListSeparator';
-import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import useParsedCustomFields from '~/lib/hooks/useParsedCustomFields';
+import CustomFields from '~/containers/CustomFields';
+import ListSeparator from '~/containers/List/components/ListSeparator';
+import handleSaveUserProfileError from '~/lib/methods/helpers/handleSaveUserProfileError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
 import buildProfileParams from './methods/buildProfileParams';
 import ConfirmEmailChangeActionSheetContent from './components/ConfirmEmailChangeActionSheetContent';
@@ -50,6 +51,8 @@ const MAX_NICKNAME_LENGTH = 120;
 interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
+type TwoFactorChallengeOutcome = { status: 'retried' } | { status: 'cancelled' } | { status: 'failed'; error: unknown };
+
 const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const validationSchema = yup.object().shape({
 		name: yup.string().required(I18n.t('Name_required')),
@@ -91,7 +94,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		setValue,
 		reset,
 		setError,
-		watch,
 		formState: { isDirty, errors }
 	} = useForm({
 		mode: 'onChange',
@@ -106,10 +108,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const inputValues = watch();
+	const inputValues = useWatch({ control });
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
-	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
+	const hasPromptedTwoFactorRef = useRef(false);
 	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
 
 	const isCustomFieldsDirty = () => {
@@ -125,8 +127,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		customFieldsRef.current[firstCustomFieldKey]?.focus();
 	};
 
-	const validateFormInfo = () => {
-		const isValid = validationSchema.isValidSync(getValues());
+	const validateFormInfo = (values: typeof inputValues) => {
+		const isValid = validationSchema.isValidSync(values);
 		if (!parsedCustomFields) {
 			return isValid;
 		}
@@ -140,7 +142,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	};
 
 	const enableSaveChangesButton = () => {
-		const isFormInfoValid = validateFormInfo();
+		const isFormInfoValid = validateFormInfo(inputValues);
 		return isFormInfoValid && isDirty;
 	};
 
@@ -174,24 +176,25 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const resetSavingState = () => {
 		setValue('saving', false);
 		setValue('currentPassword', null);
-		setTwoFactorCode(null);
+		hasPromptedTwoFactorRef.current = false;
 	};
 
 	const applySaveSuccess = (params: IProfileParams) => {
 		logEvent(events.PROFILE_SAVE_CHANGES);
 
-		const updatedUser = { ...user, ...params };
+		const emails = params.email ? [{ address: params.email, verified: false }] : user.emails;
+		const updatedUser = { ...user, ...params, emails };
 
 		reset({
 			name: updatedUser.name || '',
 			username: updatedUser.username || '',
-			email: updatedUser.emails?.[0]?.address || updatedUser.email || '',
+			email: updatedUser.emails?.[0]?.address || '',
 			currentPassword: null,
 			bio: updatedUser.bio || '',
 			nickname: updatedUser.nickname || '',
 			saving: false
 		});
-		dispatch(setUser({ ...user, ...params, customFields }));
+		dispatch(setUser({ ...updatedUser, customFields }));
 		EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 	};
 
@@ -205,26 +208,27 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		}
 	};
 
-	// Returns true if a 2FA retry was issued and submit should yield to it.
-	const handleTwoFactorChallenge = async (e: any): Promise<boolean> => {
-		if (e?.error !== 'totp-invalid' || e?.details.method === TwoFactorMethods.PASSWORD) {
-			return false;
+	const handleTwoFactorChallenge = async (e: any): Promise<TwoFactorChallengeOutcome> => {
+		if (e?.error !== 'totp-invalid' || e?.details?.method === TwoFactorMethods.PASSWORD) {
+			return { status: 'failed', error: e };
 		}
 		try {
-			const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
-			setTwoFactorCode(code as any);
+			await twoFactor({ method: e.details.method, invalid: hasPromptedTwoFactorRef.current });
+			hasPromptedTwoFactorRef.current = true;
 			await submit();
-			return true;
-		} catch {
-			// cancelled twoFactor modal
-			return false;
+			return { status: 'retried' };
+		} catch (twoFactorError) {
+			if (isTwoFactorCancelled(twoFactorError)) {
+				return { status: 'cancelled' };
+			}
+			return { status: 'failed', error: twoFactorError };
 		}
 	};
 
 	const submit = async (): Promise<void> => {
 		Keyboard.dismiss();
 
-		if (!validateFormInfo()) {
+		if (!validateFormInfo(getValues())) {
 			return;
 		}
 
@@ -249,12 +253,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 			const { email } = getValues();
 			setFieldErrorsFromResponse(e, email);
 
-			const retried = await handleTwoFactorChallenge(e);
-			if (retried) return;
+			const twoFactorOutcome = await handleTwoFactorChallenge(e);
+			if (twoFactorOutcome.status === 'retried') return;
+
+			resetSavingState();
+			if (twoFactorOutcome.status === 'cancelled') return;
 
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
-			resetSavingState();
-			handleSaveUserProfileError(e, 'saving_profile');
+			handleSaveUserProfileError(twoFactorOutcome.error, 'saving_profile');
 		}
 	};
 
@@ -262,24 +268,19 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 
 	useLayoutEffect(() => {
 		const options: NativeStackNavigationOptions = {
-			title: I18n.t('Profile')
+			title: I18n.t('Profile'),
+			...headerRightActions([
+				{
+					label: I18n.t('Preferences'),
+					icon: 'settings',
+					testID: 'preferences-view-open',
+					onPress: () => navigation.navigate('UserPreferencesView')
+				}
+			])
 		};
 		if (!isMasterDetail) {
-			options.headerLeft = () => (
-				<HeaderButton.Drawer
-					testID='profile-view-open-sidebar'
-					accessibilityLabel={I18n.t('Open_sidebar')}
-					navigation={navigation}
-				/>
-			);
+			Object.assign(options, headerLeftDrawer(navigation, 'profile-view-open-sidebar'));
 		}
-		options.headerRight = () => (
-			<HeaderButton.Preferences
-				accessibilityLabel={I18n.t('Preferences')}
-				onPress={() => navigation?.navigate('UserPreferencesView')}
-				testID='preferences-view-open'
-			/>
-		);
 
 		navigation.setOptions(options);
 	}, [navigation, isMasterDetail]);
@@ -287,7 +288,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	useFocusEffect(
 		useCallback(() => {
 			reset();
-		}, [])
+		}, [reset])
 	);
 
 	return (
@@ -400,10 +401,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 					<Button
 						title={I18n.t('Save_Changes')}
 						type='primary'
-						onPress={handleSubmit(submit)}
+						onPress={() => handleSubmit(submit)()}
 						disabled={!enableSaveChangesButton() && !isCustomFieldsDirty()}
 						testID='profile-view-submit'
-						loading={getValues().saving}
+						loading={inputValues.saving}
 						style={{ marginBottom: 0 }}
 					/>
 
