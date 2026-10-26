@@ -51,13 +51,12 @@ beforeEach(() => {
 
 describe('cancelUpload', () => {
 	it('ends a pending rate limit wait only after it released the upload slot', async () => {
-		const queueKey = getUploadPath('/tmp/pic.jpg', 'GENERAL');
-		uploadQueue[queueKey] = { send: jest.fn(), cancel: jest.fn() };
+		uploadQueue[uploadPath] = { send: jest.fn(), cancel: jest.fn() };
 		let slotWhenWaitEnded: unknown = 'wait not ended';
 		const endWait = jest.fn(() => {
-			slotWhenWaitEnded = uploadQueue[queueKey];
+			slotWhenWaitEnded = uploadQueue[uploadPath];
 		});
-		uploadRetryWaits[queueKey] = endWait;
+		uploadRetryWaits[uploadPath] = endWait;
 
 		await cancelUpload({ path: '/tmp/pic.jpg' } as any, 'GENERAL');
 
@@ -66,14 +65,13 @@ describe('cancelUpload', () => {
 	});
 
 	it('cancels the upload that is running when no rate limit wait is pending', async () => {
-		const queueKey = getUploadPath('/tmp/pic.jpg', 'GENERAL');
 		const running = { send: jest.fn(), cancel: jest.fn() };
-		uploadQueue[queueKey] = running;
+		uploadQueue[uploadPath] = running;
 
 		await cancelUpload({ path: '/tmp/pic.jpg' } as any, 'GENERAL');
 
 		expect(running.cancel).toHaveBeenCalledTimes(1);
-		expect(uploadQueue[queueKey]).toBeUndefined();
+		expect(uploadQueue[uploadPath]).toBeUndefined();
 	});
 });
 
@@ -209,7 +207,7 @@ describe('finalizeFailedUpload', () => {
 				cb(updated);
 			})
 		});
-		await expect(finalizeFailedUpload({ queueKey: uploadPath, error, upload: attempt })).rejects.toBe(error);
+		await expect(finalizeFailedUpload({ uploadPath, error, upload: attempt })).rejects.toBe(error);
 		return updated;
 	};
 
@@ -222,7 +220,7 @@ describe('finalizeFailedUpload', () => {
 
 		await expect(
 			finalizeFailedUpload({
-				queueKey: uploadPath,
+				uploadPath,
 				error: new Error('boom'),
 				upload: attempt
 			})
@@ -235,7 +233,7 @@ describe('finalizeFailedUpload', () => {
 		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
 		const error = new Error('encryption failed');
 
-		await expect(finalizeFailedUpload({ queueKey: uploadPath, error, upload: null })).rejects.toBe(error);
+		await expect(finalizeFailedUpload({ uploadPath, error, upload: null })).rejects.toBe(error);
 
 		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
 	});
@@ -245,7 +243,7 @@ describe('finalizeFailedUpload', () => {
 		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
 		const error = new Error('encryption failed');
 
-		await expect(finalizeFailedUpload({ queueKey: uploadPath, error, upload: null })).rejects.toBe(error);
+		await expect(finalizeFailedUpload({ uploadPath, error, upload: null })).rejects.toBe(error);
 
 		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
 	});
@@ -256,7 +254,7 @@ describe('finalizeFailedUpload', () => {
 
 		await expect(
 			finalizeFailedUpload({
-				queueKey: uploadPath,
+				uploadPath,
 				error: new Error('boom'),
 				upload: {} as any
 			})
@@ -272,7 +270,7 @@ describe('finalizeFailedUpload', () => {
 		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
 		const error = new UploadHttpError(413);
 
-		await expect(finalizeFailedUpload({ queueKey: uploadPath, error, upload: attempt })).rejects.toBe(error);
+		await expect(finalizeFailedUpload({ uploadPath, error, upload: attempt })).rejects.toBe(error);
 
 		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
 		expect(uploadQueue[uploadPath]).toBeUndefined();
@@ -348,15 +346,9 @@ describe('createUploadProgressCallback', () => {
 		const update = jest.fn((cb: (u: any) => void) => cb(record));
 		const db = { write: jest.fn((cb: () => Promise<void>) => cb()) } as any;
 
-		await createUploadProgressCallback(db, { update } as any)(50, 200);
+		await createUploadProgressCallback(db, { update } as any)(1, 3);
 
-		expect(record.progress).toBe(25);
-	});
-
-	it('does nothing when there is no upload record', async () => {
-		const db = { write: jest.fn((cb: () => Promise<void>) => cb()) } as any;
-
-		await expect(createUploadProgressCallback(db, null)(50, 200)).resolves.toBeUndefined();
+		expect(record.progress).toBe(33);
 	});
 
 	it('swallows a write failure instead of throwing', async () => {

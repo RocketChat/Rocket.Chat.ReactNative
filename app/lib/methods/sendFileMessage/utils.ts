@@ -25,9 +25,9 @@ export function isUploadActive(path: string, rid: string): boolean {
 	return !!uploadQueue[getUploadPath(path, rid)];
 }
 
-export const releaseUploadSlot = (queueKey: string, upload: IFileUpload | null) => {
-	if (upload && uploadQueue[queueKey] === upload) {
-		delete uploadQueue[queueKey];
+export const releaseUploadSlot = (uploadPath: string, upload: IFileUpload | null) => {
+	if (upload && uploadQueue[uploadPath] === upload) {
+		delete uploadQueue[uploadPath];
 	}
 };
 
@@ -54,10 +54,10 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
-export const persistUploadError = async (queueKey: string, errorStatus?: number, errorMessage?: string) => {
+export const persistUploadError = async (uploadPath: string, errorStatus?: number, errorMessage?: string) => {
 	try {
 		const db = database.active;
-		const uploadRecord = await getUploadByPath(queueKey);
+		const uploadRecord = await getUploadByPath(uploadPath);
 		if (!uploadRecord) {
 			return;
 		}
@@ -74,22 +74,22 @@ export const persistUploadError = async (queueKey: string, errorStatus?: number,
 };
 
 export const finalizeFailedUpload = async ({
-	queueKey,
+	uploadPath,
 	error,
 	upload
 }: {
-	queueKey: string;
+	uploadPath: string;
 	error: unknown;
 	upload: IFileUpload | null;
 }): Promise<void> => {
-	if (upload && uploadQueue[queueKey] !== upload) {
+	if (upload && uploadQueue[uploadPath] !== upload) {
 		return;
 	}
-	releaseUploadSlot(queueKey, upload);
+	releaseUploadSlot(uploadPath, upload);
 	const httpError = error instanceof UploadHttpError ? error : undefined;
 	const errorStatus = httpError?.status;
 	const errorMessage = httpError?.serverMessage;
-	await persistUploadError(queueKey, errorStatus, errorMessage);
+	await persistUploadError(uploadPath, errorStatus, errorMessage);
 	const reason = getUploadErrorMessage({ errorStatus, errorMessage });
 	if (reason && !isRetryableUploadError(errorStatus)) {
 		showToast(reason);
@@ -98,11 +98,11 @@ export const finalizeFailedUpload = async ({
 };
 
 export const createUploadProgressCallback =
-	(db: Database, uploadRecord: TUploadModel | null) =>
+	(db: Database, uploadRecord: TUploadModel) =>
 	async (loaded: number, total: number): Promise<void> => {
 		try {
 			await db.write(async () => {
-				await uploadRecord?.update(u => {
+				await uploadRecord.update(u => {
 					u.progress = Math.floor((loaded / total) * 100);
 				});
 			});

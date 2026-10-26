@@ -87,6 +87,6 @@ export async function sendFileMessage(
 		});
 		releaseUploadSlot(uploadPath, upload);
 	} catch (e) {
-		await finalizeFailedUpload({ queueKey: uploadPath ?? '', error: e, upload });
+		await finalizeFailedUpload({ uploadPath: uploadPath ?? '', error: e, upload });
 	}
 }

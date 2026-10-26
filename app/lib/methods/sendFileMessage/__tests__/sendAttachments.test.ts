@@ -249,7 +249,7 @@ describe('sendFileMessage', () => {
 
 		await send();
 
-		expect(finalizeFailedUpload).toHaveBeenCalledWith({ queueKey: '', error: expect.any(Error), upload: null });
+		expect(finalizeFailedUpload).toHaveBeenCalledWith({ uploadPath: '', error: expect.any(Error), upload: null });
 		expect(uploadWithRetry).not.toHaveBeenCalled();
 	});
 
@@ -277,7 +277,7 @@ describe('sendFileMessage', () => {
 		await send();
 
 		const [args] = (finalizeFailedUpload as jest.Mock).mock.calls[0];
-		expect(args).toMatchObject({ queueKey: UPLOAD_PATH, error });
+		expect(args).toMatchObject({ uploadPath: UPLOAD_PATH, error });
 		expect(args.upload).toBe(firstAttempt());
 		expect(releaseUploadSlot).not.toHaveBeenCalled();
 	});
@@ -303,7 +303,7 @@ describe('sendFileMessage', () => {
 		await send();
 
 		const [args] = (finalizeFailedUpload as jest.Mock).mock.calls[0];
-		expect(args).toMatchObject({ queueKey: UPLOAD_PATH, error, upload: null });
+		expect(args).toMatchObject({ uploadPath: UPLOAD_PATH, error, upload: null });
 		expect(uploadWithRetry).not.toHaveBeenCalled();
 	});
 });
@@ -334,7 +334,7 @@ describe('sendFileMessageV2', () => {
 
 			await send();
 
-			expect(finalizeFailedUpload).toHaveBeenCalledWith({ queueKey: '', error: expect.any(Error), upload: null });
+			expect(finalizeFailedUpload).toHaveBeenCalledWith({ uploadPath: '', error: expect.any(Error), upload: null });
 			expect(uploadWithRetry).not.toHaveBeenCalled();
 		});
 	});
@@ -381,7 +381,7 @@ describe('sendFileMessageV2', () => {
 			await send();
 
 			const [args] = (finalizeFailedUpload as jest.Mock).mock.calls[0];
-			expect(args).toMatchObject({ queueKey: UPLOAD_PATH, error });
+			expect(args).toMatchObject({ uploadPath: UPLOAD_PATH, error });
 			expect(args.upload).toBe(firstAttempt());
 			expect(releaseUploadSlot).not.toHaveBeenCalled();
 		});
@@ -395,7 +395,7 @@ describe('sendFileMessageV2', () => {
 			await send();
 
 			const [args] = (finalizeFailedUpload as jest.Mock).mock.calls[0];
-			expect(args).toMatchObject({ queueKey: UPLOAD_PATH, error, upload: null });
+			expect(args).toMatchObject({ uploadPath: UPLOAD_PATH, error, upload: null });
 			expect(uploadWithRetry).not.toHaveBeenCalled();
 		});
 
