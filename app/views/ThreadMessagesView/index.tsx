@@ -484,7 +484,7 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 				removeClippedSubviews={isIOS}
 				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={loading ? <ActivityIndicator /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator /> : undefined}
 				scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
 			/>
 		);

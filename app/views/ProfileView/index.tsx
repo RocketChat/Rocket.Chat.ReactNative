@@ -1,6 +1,6 @@
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type ReactElement, useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { Keyboard, ScrollView, View, type TextInput } from 'react-native';
+import { Keyboard, ScrollView, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
@@ -15,7 +15,7 @@ import { AvatarWithEdit } from '~/containers/Avatar';
 import Button from '~/containers/Button';
 import KeyboardView from '~/containers/KeyboardView';
 import SafeAreaView from '~/containers/SafeAreaView';
-import { ControlledFormTextInput } from '~/containers/TextInput';
+import { ControlledFormTextInput, type TextInputInstance } from '~/containers/TextInput';
 import { LISTENER } from '~/containers/Toast';
 import { type IProfileParams } from '~/definitions';
 import { TwoFactorMethods } from '~/definitions/ITotp';
@@ -112,7 +112,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
 	const hasPromptedTwoFactorRef = useRef(false);
-	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
+	const customFieldsRef = useRef<{ [key: string]: TextInputInstance | undefined }>({});
 
 	const isCustomFieldsDirty = () => {
 		if (!parsedCustomFields) return false;

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { StyleSheet, type ViewStyle } from 'react-native';
+import { StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
 import { type ImageStyle } from 'expo-image';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
@@ -45,7 +45,13 @@ const RoomTypeIcon = memo(
 
 		if (type === 'l') {
 			return (
-				<OmnichannelRoomIcon style={iconStyle as ImageStyle} size={size} type={type} status={status} sourceType={sourceType} />
+				<OmnichannelRoomIcon
+					style={iconStyle as StyleProp<ImageStyle>}
+					size={size}
+					type={type}
+					status={status}
+					sourceType={sourceType}
+				/>
 			);
 		}
 

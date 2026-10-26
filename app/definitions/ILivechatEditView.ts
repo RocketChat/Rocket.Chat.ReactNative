@@ -1,4 +1,4 @@
-import { type TextInput } from 'react-native';
+import { type TextInputInstance } from '../containers/TextInput';
 
 import { type TSupportedThemes } from '../theme';
 import { type ILivechatVisitor } from './ILivechatVisitor';
@@ -29,10 +29,10 @@ export interface ILivechat extends ISubscription {
 }
 
 export interface IInputsRefs {
-	[index: string]: TextInput | null;
-	name: TextInput | null;
-	phone: TextInput | null;
-	topic: TextInput | null;
+	[index: string]: TextInputInstance | null;
+	name: TextInputInstance | null;
+	phone: TextInputInstance | null;
+	topic: TextInputInstance | null;
 }
 
 export interface ICustomFields {

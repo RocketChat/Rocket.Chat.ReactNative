@@ -5,7 +5,7 @@ import {
 	type ViewStyle,
 	type StyleProp,
 	type AccessibilityActionEvent,
-	type AccessibilityActionInfo,
+	type AccessibilityProps,
 	TouchableOpacity,
 	TouchableHighlight,
 	type TouchableWithoutFeedbackProps
@@ -20,7 +20,7 @@ export interface ITouchProps extends TouchableWithoutFeedbackProps {
 	accessible?: boolean;
 	accessibilityLabel?: string;
 	accessibilityHint?: string;
-	accessibilityActions?: AccessibilityActionInfo[];
+	accessibilityActions?: AccessibilityProps['accessibilityActions'];
 	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
 	testID?: string;
 	rectButtonStyle?: StyleProp<ViewStyle>;
@@ -29,8 +29,7 @@ export interface ITouchProps extends TouchableWithoutFeedbackProps {
 	componentRef?: RefObject<View | null>;
 }
 
-const Component = isIOS ? TouchableOpacity : TouchableHighlight;
-const KeyboardComponent = withKeyboardFocus(Component);
+const KeyboardComponent = isIOS ? withKeyboardFocus(TouchableOpacity) : withKeyboardFocus(TouchableHighlight);
 
 const Touch = forwardRef<View, ITouchProps>(
 	(

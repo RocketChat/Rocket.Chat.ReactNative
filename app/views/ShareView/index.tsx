@@ -423,7 +423,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				onChangeText={this.onChangeText}
 				defaultValue=''
 				multiline
-				textAlignVertical='top'
 				autoFocus
 				value={text}
 			/>

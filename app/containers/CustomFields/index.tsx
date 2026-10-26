@@ -1,8 +1,7 @@
 import { type MutableRefObject } from 'react';
-import { type TextInput } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
-import { FormTextInput } from '../TextInput';
+import { FormTextInput, type TextInputInstance } from '../TextInput';
 import useParsedCustomFields from '~/lib/hooks/useParsedCustomFields';
 
 interface ICustomFields {
@@ -10,7 +9,7 @@ interface ICustomFields {
 	customFields: any;
 	onCustomFieldChange: (value: any) => void;
 	customFieldsRef: MutableRefObject<{
-		[key: string]: TextInput | undefined;
+		[key: string]: TextInputInstance | undefined;
 	}>;
 	onSubmit?: () => void;
 }

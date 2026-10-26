@@ -1,14 +1,5 @@
 import { useMemo, useState, type ReactElement, type Ref } from 'react';
-import {
-	type StyleProp,
-	StyleSheet,
-	Text,
-	type TextInput as RNTextInput,
-	type TextInputProps,
-	type TextStyle,
-	View,
-	type ViewStyle
-} from 'react-native';
+import { type StyleProp, StyleSheet, Text, type TextInputProps, type TextStyle, View, type ViewStyle } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
 import i18n from '~/i18n';
@@ -16,7 +7,7 @@ import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, type TIconsName } from '../CustomIcon';
-import { TextInput } from './TextInput';
+import { TextInput, type TextInputInstance } from './TextInput';
 import { isIOS } from '~/lib/methods/helpers';
 import Touch from '../Touch';
 
@@ -86,7 +77,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	loading?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
 	inputStyle?: StyleProp<TextStyle>;
-	inputRef?: Ref<RNTextInput>;
+	inputRef?: Ref<TextInputInstance>;
 	iconLeft?: TIconsName;
 	iconRight?: TIconsName;
 	left?: ReactElement;
