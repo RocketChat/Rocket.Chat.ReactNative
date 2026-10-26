@@ -23,6 +23,7 @@ import { themes } from './lib/constants/colors';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
 import { hasNativeHeaderBar } from './lib/methods/helpers/deviceInfo';
 import log, { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
+import { installDebugLogPersistence } from './lib/debugLog/persist';
 import { preloadHeaderIcons } from './lib/methods/helpers/navigation/headerIcon';
 import parseDeepLinking from './lib/methods/helpers/parseDeepLinking';
 import {
@@ -50,6 +51,7 @@ import ScreenLockedView from './views/ScreenLockedView';
 
 enableScreens();
 initStore(store);
+installDebugLogPersistence();
 
 interface IState {
 	theme: TSupportedThemes;

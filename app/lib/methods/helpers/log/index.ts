@@ -4,6 +4,7 @@ import bugsnag from '@bugsnag/react-native';
 
 import events from './events';
 import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
+import { appendDebugLog } from '~/lib/debugLog/debugLog';
 
 export { events };
 
@@ -34,6 +35,7 @@ export const logServerVersion = (serverVersion: string): void => {
 };
 
 export const logEvent = (eventName: string, payload?: { [key: string]: any }): void => {
+	appendDebugLog('info', [`event ${eventName}`, ...(payload ? [payload] : [])]);
 	try {
 		analytics().logEvent(eventName, payload);
 		bugsnag.leaveBreadcrumb(eventName, payload);
@@ -43,6 +45,7 @@ export const logEvent = (eventName: string, payload?: { [key: string]: any }): v
 };
 
 export const setCurrentScreen = (currentScreen: string): void => {
+	appendDebugLog('info', [`screen ${currentScreen}`]);
 	analytics().logScreenView({ screen_class: currentScreen, screen_name: currentScreen });
 	bugsnag.leaveBreadcrumb(currentScreen, { type: 'navigation' });
 };
@@ -62,6 +65,7 @@ const log = (e: any): void => {
 		return;
 	}
 	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
+		appendDebugLog('error', [e]);
 		bugsnag.notify(e, (event: { addMetadata: (arg0: string, arg1: {}) => void }) => {
 			event.addMetadata('details', { ...metadata });
 		});

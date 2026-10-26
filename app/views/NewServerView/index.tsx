@@ -187,6 +187,12 @@ const NewServerView = () => {
 					style={styles.connectButton}
 					testID='new-server-view-button'
 				/>
+				<Button
+					title={I18n.t('Logs')}
+					type='secondary'
+					onPress={() => navigation.navigate('DebugLogsView')}
+					testID='new-server-view-logs'
+				/>
 			</FormContainerInner>
 			<CertificatePicker
 				certificate={certificate}

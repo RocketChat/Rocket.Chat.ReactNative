@@ -5,6 +5,7 @@ import RNCallKeep from 'react-native-callkeep';
 import DeviceInfo from 'react-native-device-info';
 
 import { name as appName } from './app.json';
+import { captureConsole } from './app/lib/debugLog/debugLog';
 
 if (__DEV__) {
 	require('./app/lib/appduct');
@@ -13,16 +14,13 @@ if (__DEV__) {
 if (process.env.USE_STORYBOOK === 'true') {
 	AppRegistry.registerComponent(appName, () => require('./.rnstorybook/index').default);
 } else {
+	captureConsole({ forward: true });
 	if (!__DEV__) {
-		console.log = () => {};
 		console.time = () => {};
 		console.timeLog = () => {};
 		console.timeEnd = () => {};
-		console.warn = () => {};
 		console.count = () => {};
 		console.countReset = () => {};
-		console.error = () => {};
-		console.info = () => {};
 	}
 
 	LogBox.ignoreAllLogs();

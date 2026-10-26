@@ -11,6 +11,7 @@ import ForgotPasswordView from '../views/ForgotPasswordView';
 import SendEmailConfirmationView from '../views/SendEmailConfirmationView';
 import RegisterView from '../views/RegisterView';
 import LegalView from '../views/LegalView';
+import DebugLogsView from '../views/DebugLogsView';
 import AuthenticationWebView from '../views/AuthenticationWebView';
 
 const Outside = createNativeStackNavigator({
@@ -21,7 +22,8 @@ const Outside = createNativeStackNavigator({
 		ForgotPasswordView: createNativeStackScreen({ screen: ForgotPasswordView, options: defaultHeader }),
 		SendEmailConfirmationView: createNativeStackScreen({ screen: SendEmailConfirmationView, options: defaultHeader }),
 		RegisterView: createNativeStackScreen({ screen: RegisterView, options: defaultHeader }),
-		LegalView: createNativeStackScreen({ screen: LegalView, options: defaultHeader })
+		LegalView: createNativeStackScreen({ screen: LegalView, options: defaultHeader }),
+		DebugLogsView: createNativeStackScreen({ screen: DebugLogsView, options: defaultHeader })
 	}
 }).with(({ Navigator }) => {
 	const { theme } = useContext(ThemeContext);
