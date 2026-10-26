@@ -66,6 +66,17 @@ describe('getUploadErrorMessage', () => {
 		expect(getUploadErrorMessage({ errorStatus: 507, errorMessage: 'Storage quota exceeded' })).toBe('Storage quota exceeded');
 	});
 
+	it('drops a bracketed code the app has no copy for and keeps the server reason', () => {
+		expect(
+			getUploadErrorMessage({ errorStatus: 400, errorMessage: 'File upload is disabled [error-file-upload-disabled]' })
+		).toBe('File upload is disabled');
+	});
+
+	it('falls back when the server sends only a code the app has no copy for', () => {
+		expect(getUploadErrorMessage({ errorStatus: 400, errorMessage: '[invalid-field-content]' })).toBe('FileUpload_Error');
+		expect(getUploadErrorMessage({ errorStatus: 503, errorMessage: '[invalid-field-content]' })).toBeUndefined();
+	});
+
 	it('pulls the wait out of a rate limit sentence', () => {
 		expect(
 			getUploadErrorMessage({
