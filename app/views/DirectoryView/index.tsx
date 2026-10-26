@@ -226,7 +226,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 				renderItem={renderItem}
 				ItemSeparatorComponent={RowSeparator}
 				keyboardShouldPersistTaps='always'
-				ListFooterComponent={loading ? <ActivityIndicator /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator /> : undefined}
 				onEndReached={loadMore}
 				onEndReachedThreshold={2}
 			/>

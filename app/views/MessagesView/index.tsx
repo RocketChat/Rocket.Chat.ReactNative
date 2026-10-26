@@ -349,7 +349,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 							keyExtractor={item => item._id}
 							onEndReached={this.load}
 							contentContainerStyle={{ paddingBottom: insets.bottom }}
-							ListFooterComponent={loading ? <ActivityIndicator /> : null}
+							ListFooterComponent={loading ? <ActivityIndicator /> : undefined}
 						/>
 					</MessageRoomProvider>
 				</A11yGateProvider>

@@ -404,7 +404,6 @@ export const ComposerInput = memo(
 					<Text
 						style={[styles.placeholder, { color: colors.fontAnnotation }]}
 						numberOfLines={1}
-						pointerEvents='none'
 						accessibilityElementsHidden
 						importantForAccessibility='no-hide-descendants'>
 						{placeholder}
@@ -439,6 +438,7 @@ const styles = StyleSheet.create({
 		top: 12,
 		left: 0,
 		right: 0,
+		pointerEvents: 'none',
 		...composerText
 	}
 });
