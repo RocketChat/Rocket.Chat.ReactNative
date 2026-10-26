@@ -77,7 +77,8 @@ const TwoFactor = memo(() => {
 		getValues,
 		clearErrors,
 		formState: { errors },
-		setError
+		setError,
+		setFocus
 	} = useForm({
 		defaultValues: {
 			code: ''
@@ -161,7 +162,8 @@ const TwoFactor = memo(() => {
 			useNativeDriver
 			isVisible={visible}
 			hideModalContentWhileAnimating
-			style={styles.modal}>
+			style={styles.modal}
+			onModalShow={() => setFocus('code')}>
 			<KeyboardView backgroundColor='transparent'>
 				<GestureHandlerRootView style={styles.container} testID='two-factor'>
 					<View
@@ -175,7 +177,6 @@ const TwoFactor = memo(() => {
 						<ControlledFormTextInput
 							name='code'
 							control={control}
-							autoFocus
 							returnKeyType='send'
 							autoCapitalize='none'
 							testID='two-factor-input'
