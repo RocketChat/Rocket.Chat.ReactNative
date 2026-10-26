@@ -1978,7 +1978,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - react-native-slider (5.2.0):
+  - react-native-slider (5.2.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1990,7 +1990,7 @@ PODS:
     - React-graphics
     - React-ImageManager
     - React-jsi
-    - react-native-slider/common (= 5.2.0)
+    - react-native-slider/common (= 5.2.1)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-renderercss
@@ -2001,7 +2001,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - react-native-slider/common (5.2.0):
+  - react-native-slider/common (5.2.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2559,7 +2559,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - RNDateTimePicker (9.1.0):
+  - RNDateTimePicker (9.2.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -3589,7 +3589,7 @@ SPEC CHECKSUMS:
   react-native-keyboard-controller: 1a1590c289fbf343f55d06f1835db46d9a02f990
   react-native-netinfo: a05f9b897e76ad24b53f615fed1cbb731932363d
   react-native-safe-area-context: 678f254e77e69986ae9d9e62721f152e73dbc76b
-  react-native-slider: b15258ac3d287a5951f76b11497d659ed20c0def
+  react-native-slider: c4f7a326214094b68c7fe4a924fa0f278147c2d9
   react-native-webrtc: e8f0ce746353adc2744a2b933645e1aeb41eaa74
   react-native-webview: 8ea93f5c9c986e9ce9888953759aa3db77eaa379
   React-NativeModulesApple: 2b658272ca69df0694cf5d54f9510aa7c33977bc
@@ -3634,7 +3634,7 @@ SPEC CHECKSUMS:
   RNCClipboard: 7a7d4557bfd3370b35c99dfecd92ae7b9fc4948a
   RNCMaskedView: 8069b4d4e23b3d28b4fcac70bf266be43ffc3d2e
   RNCPicker: a3921be99ae291e420e3e8940e5b2b53e572c543
-  RNDateTimePicker: afe0288e6c7855994f7f2617b7b2c05799fea7f3
+  RNDateTimePicker: 59657c6f6ad620b34ab1f92ff3ebdc471684985a
   RNDeviceInfo: 900bd20e1fd3bfd894e7384cc4a83880c0341bd3
   RNFBAnalytics: 2e8b8ffcd2bb3d59a43ecbe09571c73c56edef7a
   RNFBApp: a448037d2df74af9d374a0b765be12ff1e844dc0
