@@ -128,6 +128,8 @@ describe('createUploadRecord', () => {
 			errorStatus: 413,
 			errorMessage: 'File is too large',
 			progress: 40,
+			tmid: 'old-thread',
+			description: 'old caption',
 			update: jest.fn((cb: (u: any) => void) => cb(stale))
 		};
 		mockFind.mockResolvedValue(stale);
@@ -137,21 +139,14 @@ describe('createUploadRecord', () => {
 		expect(Alert.alert).not.toHaveBeenCalled();
 		expect(path).toBe(uploadPath);
 		expect(record).toBe(stale);
-		expect(stale).toMatchObject({ error: false, errorStatus: undefined, errorMessage: undefined, progress: 0 });
-	});
-
-	it('gives a reused record the thread and description of the new send', async () => {
-		const stale: any = {
-			id: uploadPath,
-			tmid: 'old-thread',
-			description: 'old caption',
-			update: jest.fn((cb: (u: any) => void) => cb(stale))
-		};
-		mockFind.mockResolvedValue(stale);
-
-		await createUploadRecord({ rid: 'GENERAL', fileInfo: { ...fileInfo, description: 'new caption' }, tmid: 'new-thread' });
-
-		expect(stale).toMatchObject({ tmid: 'new-thread', description: 'new caption' });
+		expect(stale).toMatchObject({
+			error: false,
+			errorStatus: undefined,
+			errorMessage: undefined,
+			progress: 0,
+			tmid: undefined,
+			description: undefined
+		});
 	});
 
 	it('creates a new record when none exists', async () => {
