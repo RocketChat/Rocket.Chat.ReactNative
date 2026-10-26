@@ -38,6 +38,7 @@ export const useTeamChannelsHeader = ({
 	const isMasterDetail = useMasterDetail();
 	const searchBarRef = useRef<SearchBarCommands>(null);
 	const showCreate = useCanCreateTeamChannel(team?.rid ?? '', (team?.t ?? 'c') as 'c' | 'p');
+	const isSearchHeaderActive = !hasNativeHeaderBar && isSearching;
 
 	useLayoutEffect(() => {
 		if (!team) {
@@ -76,7 +77,7 @@ export const useTeamChannelsHeader = ({
 
 		navigation.setOptions(
 			searchHeaderOptions({
-				isSearching,
+				isSearching: isSearchHeaderActive,
 				searchBarRef,
 				onSearchPress: startSearch,
 				onChangeText: onSearchChangeText,
@@ -86,5 +87,16 @@ export const useTeamChannelsHeader = ({
 				rightActions: showCreate ? [createAction] : []
 			})
 		);
-	}, [team, teamId, joined, isSearching, showCreate, isMasterDetail, navigation, startSearch, cancelSearch, onSearchChangeText]);
+	}, [
+		team,
+		teamId,
+		joined,
+		isSearchHeaderActive,
+		showCreate,
+		isMasterDetail,
+		navigation,
+		startSearch,
+		cancelSearch,
+		onSearchChangeText
+	]);
 };

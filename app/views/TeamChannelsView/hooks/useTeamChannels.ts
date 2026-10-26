@@ -114,17 +114,18 @@ export const useTeamChannels = (teamId: string) => {
 
 	const cancelSearch = () => {
 		logEvent(events.TC_CANCEL_SEARCH);
-		if (!isSearching) {
-			return;
-		}
 		Keyboard.dismiss();
-		updateState({
-			searchText: null,
-			isSearching: false,
-			search: [],
-			loadingMore: false,
-			end: false
-		});
+		updateState(prev =>
+			prev.isSearching
+				? {
+						searchText: null,
+						isSearching: false,
+						search: [],
+						loadingMore: false,
+						end: false
+					}
+				: {}
+		);
 	};
 
 	const updateItem = (id: IItem['_id'], patch: Partial<IItem>) => {
