@@ -4,17 +4,17 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp } from '@react-navigation/core';
 
-import { type OutsideModalParamList, type OutsideParamList } from '../../stacks/types';
-import I18n from '../../i18n';
-import Button from '../../containers/Button';
-import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
-import { useTheme } from '../../theme';
-import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import { type IAssetsFavicon512 } from '../../definitions/IAssetsFavicon512';
-import { getShowLoginButton } from '../../selectors/login';
+import { type OutsideModalParamList, type OutsideParamList } from '~/stacks/types';
+import I18n from '~/i18n';
+import Button from '~/containers/Button';
+import { useWorkspaceDomain } from '~/lib/hooks/useWorkspaceDomain';
+import { useTheme } from '~/theme';
+import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
+import { type IAssetsFavicon512 } from '~/definitions/IAssetsFavicon512';
+import { getShowLoginButton } from '~/selectors/login';
 import ServerAvatar from './ServerAvatar';
 import styles from './styles';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import RegisterDisabledComponent from './RegisterDisabledComponent';
 
 type TNavigation = CompositeNavigationProp<

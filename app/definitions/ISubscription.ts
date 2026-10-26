@@ -105,6 +105,7 @@ export interface ISubscription {
 	teamMain?: boolean;
 	unsubscribe: () => Promise<any>;
 	separator?: boolean;
+	empty?: boolean;
 	onHold?: boolean;
 	source?: IOmnichannelSource;
 	hideMentionStatus?: boolean;
@@ -116,6 +117,7 @@ export interface ISubscription {
 	uploads: RelationModified<TUploadModel>;
 	disableNotifications?: boolean;
 	federated?: boolean;
+	category?: string;
 	abacAttributes?: { key: string; values: string[] }[];
 	federation?: {
 		version: number;
@@ -151,6 +153,7 @@ export interface IServerSubscription extends IRocketChatRecord {
 	t: RoomType;
 	ls: Date;
 	f?: true;
+	category?: string;
 	lr: Date;
 	hideUnreadStatus?: true;
 	teamMain?: boolean;

@@ -1,16 +1,17 @@
-import { useEffect, useLayoutEffect, useRef, useState, memo, type ReactElement } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type ReactElement } from 'react';
 import { FlatList, StyleSheet, Switch } from 'react-native';
 import { type Subscription } from 'rxjs';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { type ISubscription } from '../../definitions';
-import I18n from '../../i18n';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { getSupportedLanguagesAutoTranslate, saveAutoTranslate } from '../../lib/services/restApi';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { type ISubscription } from '~/definitions';
+import I18n from '~/i18n';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { getSupportedLanguagesAutoTranslate, saveAutoTranslate } from '~/lib/services/restApi';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
 
 const styles = StyleSheet.create({
 	list: {
@@ -24,6 +25,7 @@ const AutoTranslateView = (): ReactElement => {
 		params: { rid, room }
 	} = useRoute<RouteProp<ChatsStackParamList, 'AutoTranslateView'>>();
 	const { colors } = useTheme();
+	const { bottom } = useSafeAreaInsets();
 
 	const [languages, setLanguages] = useState<{ language: string; name: string }[]>([]);
 	const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(room?.autoTranslateLanguage);
@@ -70,7 +72,7 @@ const AutoTranslateView = (): ReactElement => {
 			await saveAutoTranslate({
 				rid,
 				field: 'autoTranslate',
-				value: enableAutoTranslate ? '0' : '1',
+				value: !enableAutoTranslate,
 				options: { defaultLanguage: 'en' }
 			});
 		} catch (error) {
@@ -93,29 +95,27 @@ const AutoTranslateView = (): ReactElement => {
 		}
 	};
 
-	const LanguageItem = memo(({ language, name }: { language: string; name?: string }) => (
-		<List.Item
-			title={name || language}
-			onPress={() => saveAutoTranslateLanguage(language)}
-			testID={`auto-translate-view-${language}`}
-			right={() =>
-				selectedLanguage === language ? (
-					<List.Icon testID={`auto-translate-view-${language}-check`} name='check' color={colors.badgeBackgroundLevel2} />
-				) : null
-			}
-			translateTitle={false}
-			additionalAccessibilityLabel={selectedLanguage === language}
-			additionalAccessibilityLabelCheck
-		/>
-	));
-
 	return (
 		<SafeAreaView>
 			<FlatList
 				testID='auto-translate-view'
 				data={languages}
 				keyExtractor={item => item.name || item.language}
-				renderItem={({ item: { language, name } }) => <LanguageItem language={language} name={name} />}
+				renderItem={({ item: { language, name } }) => (
+					<List.Item
+						title={name || language}
+						onPress={() => saveAutoTranslateLanguage(language)}
+						testID={`auto-translate-view-${language}`}
+						right={() =>
+							selectedLanguage === language ? (
+								<List.Icon testID={`auto-translate-view-${language}-check`} name='check' color={colors.badgeBackgroundLevel2} />
+							) : null
+						}
+						translateTitle={false}
+						additionalAccessibilityLabel={selectedLanguage === language}
+						additionalAccessibilityLabelCheck
+					/>
+				)}
 				ListHeaderComponent={
 					<>
 						<List.Separator />
@@ -131,7 +131,7 @@ const AutoTranslateView = (): ReactElement => {
 				}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={List.Separator}
-				contentContainerStyle={[List.styles.contentContainerStyleFlatList, styles.list]}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, styles.list, { paddingBottom: bottom }]}
 			/>
 		</SafeAreaView>
 	);

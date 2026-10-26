@@ -1,7 +1,7 @@
 import { StyleSheet, Text, type TextStyle } from 'react-native';
 
-import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../Styles';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
 
 const styles = StyleSheet.create({
 	text: {

@@ -2,8 +2,8 @@ import { useState, type ReactElement } from 'react';
 import { shallowEqual } from 'react-redux';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import { type IServices } from '../../selectors/login';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { type IServices } from '~/selectors/login';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { SERVICES_COLLAPSED_HEIGHT, SERVICE_HEIGHT } from './styles';
 import ServicesSeparator from './ServicesSeparator';
 import ServiceList from './ServiceList';
@@ -36,7 +36,7 @@ const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 	}));
 
 	const onPressButtonSeparator = () => {
-		heightButtons.value = collapsed ? SERVICE_HEIGHT * totalServices : SERVICES_COLLAPSED_HEIGHT;
+		heightButtons.set(collapsed ? SERVICE_HEIGHT * totalServices : SERVICES_COLLAPSED_HEIGHT);
 		setCollapsed(prevState => !prevState);
 	};
 

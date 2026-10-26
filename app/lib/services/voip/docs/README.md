@@ -12,4 +12,4 @@ Entry point for documentation of the peer-to-peer audio call subsystem. VoIP is 
 
 ## Glossary
 
-Domain terms used throughout these docs are defined in the project glossary at `../../../../UBIQUITOUS_LANGUAGE.md` under "Video & Voice".
+Domain terms used throughout these docs are defined in the project glossary at `../../../../CONTEXT.md` under "Video & Voice".

@@ -92,6 +92,14 @@ class UserPreferences {
 		this.mmkv = MMKV_INSTANCE;
 	}
 
+	private tryParseJson(value: string): unknown {
+		try {
+			return JSON.parse(value);
+		} catch {
+			return undefined;
+		}
+	}
+
 	getString(key: string): string | null {
 		try {
 			return this.mmkv.getString(key) || null;
@@ -106,6 +114,11 @@ class UserPreferences {
 
 	getBool(key: string): boolean | null {
 		try {
+			const storedString = this.mmkv.getString(key);
+			if (storedString !== undefined) {
+				const parsed = this.tryParseJson(storedString);
+				return typeof parsed === 'boolean' ? parsed : null;
+			}
 			return this.mmkv.getBoolean(key) ?? null;
 		} catch {
 			return null;

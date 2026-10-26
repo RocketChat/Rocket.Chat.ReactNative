@@ -50,7 +50,7 @@ Can't help coding? Triaging issues is a **great** way of helping.
 
 ## Code style
 
-We use [ESLint](https://eslint.org/) to enforce code style and best practices. We have a pre-commit hook enforcing commits to follow our lint rules.
+We use [Oxlint](https://oxc.rs/docs/guide/usage/linter) to enforce code style and best practices. We have a pre-commit hook enforcing commits to follow our lint rules.
 
 To check for lint issues on your code, run this on your terminal:
 
@@ -60,15 +60,15 @@ pnpm lint
 
 ## Code formatting
 
-We use [Prettier](https://prettier.io) to format the code style in our project. We have a pre-commit hook enforcing commits to follow our style guides.
+We use [Oxfmt](https://oxc.rs/docs/guide/usage/formatter) to format the code style in our project. We have a pre-commit hook enforcing commits to follow our style guides.
 
 To fix your code formatting issues, run this on your terminal:
 
 ```sh
-pnpm exec prettier --write .
+pnpm exec oxfmt
 ```
 
-[Check this link](https://prettier.io/docs/en/editors.html) to see how to integrate Prettier with your preferred code editor, and run Prettier when save your file for example.
+[Check this link](https://oxc.rs/docs/guide/usage/formatter/editors.html) to see how to integrate Oxfmt with your preferred code editor, and run Oxfmt when you save a file for example.
 
 ## Tests
 

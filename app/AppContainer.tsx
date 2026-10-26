@@ -57,13 +57,12 @@ const RootNavigator = createNativeStackNavigator({
 		ShareExtension: { if: useIsShareExtension, screens: { ShareExtensionStack } }
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={{ navigationBarColor: themes[theme].surfaceLight }} />;
 });
 
 const AppNavigation = createStaticNavigation(RootNavigator);
+const { navigationRef } = Navigation;
 
 const AppContainer = () => {
 	const { theme } = useContext(ThemeContext);
@@ -87,7 +86,7 @@ const AppContainer = () => {
 			<MediaCallHeader />
 			<AppNavigation
 				theme={navigationTheme(theme)}
-				ref={Navigation.navigationRef}
+				ref={navigationRef}
 				onReady={() => {
 					emitter.emit('navigationReady');
 				}}

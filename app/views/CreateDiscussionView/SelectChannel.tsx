@@ -1,15 +1,15 @@
 import { useEffect, useState, type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 
-import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-import { type ISearchLocal } from '../../definitions';
-import I18n from '../../i18n';
-import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
+import { MultiSelect } from '~/containers/UIKit/MultiSelect';
+import { type ISearchLocal } from '~/definitions';
+import I18n from '~/i18n';
+import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
 import { type ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
-import { localSearchSubscription } from '../../lib/methods/search';
-import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
-import { useTheme } from '../../theme';
+import { localSearchSubscription } from '~/lib/methods/search';
+import { getRoomAvatar, getRoomTitle } from '~/lib/methods/helpers';
+import { useTheme } from '~/theme';
 
 const SelectChannel = ({
 	server,
@@ -22,6 +22,19 @@ const SelectChannel = ({
 }: ICreateDiscussionViewSelectChannel): ReactElement => {
 	const [channels, setChannels] = useState<ISearchLocal[]>([]);
 	const { colors } = useTheme();
+
+	const getAvatar = (item: ISearchLocal) =>
+		getAvatarURL({
+			text: getRoomAvatar(item),
+			type: item.t,
+			userId,
+			token,
+			server,
+			avatarETag: item.avatarETag,
+			rid: item.rid,
+			blockUnauthenticatedAccess,
+			serverVersion
+		});
 
 	const getChannels = async (keyword = '') => {
 		try {
@@ -40,19 +53,6 @@ const SelectChannel = ({
 	useEffect(() => {
 		getChannels('');
 	}, []);
-
-	const getAvatar = (item: ISearchLocal) =>
-		getAvatarURL({
-			text: getRoomAvatar(item),
-			type: item.t,
-			userId,
-			token,
-			server,
-			avatarETag: item.avatarETag,
-			rid: item.rid,
-			blockUnauthenticatedAccess,
-			serverVersion
-		});
 
 	return (
 		<View accessibilityLabel={`${I18n.t('Parent_channel_or_group')}, ${I18n.t('Required')}`}>

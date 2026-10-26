@@ -1,6 +1,6 @@
 import database from '../index';
 import { SUBSCRIPTIONS_TABLE } from '../model/Subscription';
-import { type TSubscriptionModel } from '../../../definitions';
+import { type TSubscriptionModel } from '~/definitions';
 import { getDMSubscriptionByUsername } from './Subscription';
 
 jest.mock('../index', () => ({

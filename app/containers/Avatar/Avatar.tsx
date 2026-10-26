@@ -4,12 +4,13 @@ import { Image } from 'expo-image';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import Emoji from '../markdown/components/emoji/Emoji';
-import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
-import { SubscriptionType } from '../../definitions';
+import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
+import { headers } from '~/lib/methods/helpers/fetch';
+import { SubscriptionType } from '~/definitions';
 import { type IAvatar } from './interfaces';
-import MarkdownContext from '../markdown/contexts/MarkdownContext';
-import I18n from '../../i18n';
+import I18n from '~/i18n';
 import Touch from '../Touch';
+import { AVATAR_BORDER_RADIUS } from './constants';
 
 const Avatar = memo(
 	({
@@ -21,7 +22,6 @@ const Avatar = memo(
 		token,
 		onPress,
 		emoji,
-		getCustomEmoji,
 		avatarETag,
 		isStatic,
 		rid,
@@ -29,7 +29,7 @@ const Avatar = memo(
 		serverVersion,
 		text,
 		size = 25,
-		borderRadius = 4,
+		borderRadius = AVATAR_BORDER_RADIUS,
 		type = SubscriptionType.DIRECT,
 		avatarExternalProviderUrl,
 		roomAvatarExternalProviderUrl,
@@ -51,16 +51,11 @@ const Avatar = memo(
 		let image;
 		if (emoji) {
 			image = (
-				<MarkdownContext.Provider
-					value={{
-						getCustomEmoji
-					}}>
-					<Emoji
-						block={{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: emoji }, shortCode: emoji }}
-						style={avatarStyle}
-						isAvatar={true}
-					/>
-				</MarkdownContext.Provider>
+				<Emoji
+					block={{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: emoji }, shortCode: emoji }}
+					style={avatarStyle}
+					isAvatar={true}
+				/>
 			);
 		} else {
 			let uri = avatar;
@@ -88,7 +83,7 @@ const Avatar = memo(
 					style={avatarStyle}
 					source={{
 						uri,
-						headers: RocketChatSettings.customHeaders
+						headers: RocketChatSettings.customHeaders ?? headers
 					}}
 					priority='high'
 				/>

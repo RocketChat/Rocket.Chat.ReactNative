@@ -15,6 +15,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 20,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "700",
           "lineHeight": 28,
           "marginTop": 4,
@@ -37,13 +40,13 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     }
   >
     <A11yOrderView
-      orderKey="«r2»"
+      orderKey="_r_2_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r2»"
+        orderKey="_r_2_"
       >
         <View
           style={
@@ -87,6 +90,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                       "borderWidth": 1,
                       "fontFamily": "Inter",
                       "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "paddingHorizontal": 16,
                       "paddingVertical": 14,
@@ -160,6 +166,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "400",
           "lineHeight": 24,
           "marginBottom": 16,
@@ -191,6 +200,9 @@ exports[`Story Snapshots: WithFilter should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 20,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "700",
           "lineHeight": 28,
           "marginTop": 4,
@@ -213,13 +225,13 @@ exports[`Story Snapshots: WithFilter should match snapshot 1`] = `
     }
   >
     <A11yOrderView
-      orderKey="«r3»"
+      orderKey="_r_3_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="«r3»"
+        orderKey="_r_3_"
       >
         <View
           style={
@@ -263,6 +275,9 @@ exports[`Story Snapshots: WithFilter should match snapshot 1`] = `
                       "borderWidth": 1,
                       "fontFamily": "Inter",
                       "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
                       "fontWeight": "400",
                       "paddingHorizontal": 16,
                       "paddingVertical": 14,
@@ -336,6 +351,9 @@ exports[`Story Snapshots: WithFilter should match snapshot 1`] = `
           "backgroundColor": "transparent",
           "fontFamily": "Inter",
           "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
           "fontWeight": "400",
           "lineHeight": 24,
           "marginBottom": 16,

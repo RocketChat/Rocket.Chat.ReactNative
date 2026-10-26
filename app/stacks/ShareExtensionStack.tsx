@@ -25,8 +25,6 @@ const ShareExtension = createNativeStackNavigator({
 		SelectServerView
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });

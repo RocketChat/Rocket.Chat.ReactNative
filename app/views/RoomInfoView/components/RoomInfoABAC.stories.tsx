@@ -2,9 +2,9 @@ import { ScrollView, View } from 'react-native';
 import { type ReactNode } from 'react';
 
 import { RoomInfoABAC } from './RoomInfoABAC';
-import type { TSupportedThemes } from '../../../theme';
-import { ThemeContext } from '../../../theme';
-import { colors } from '../../../lib/constants/colors';
+import type { TSupportedThemes } from '~/theme';
+import { ThemeContext } from '~/theme';
+import { colors } from '~/lib/constants/colors';
 
 export default {
 	title: 'RoomInfoView/RoomInfoABAC',

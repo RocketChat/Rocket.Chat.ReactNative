@@ -1,7 +1,7 @@
 import { Text } from 'react-native';
 
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useTheme } from '../../theme';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useTheme } from '~/theme';
 import styles from './styles';
 
 const RegisterDisabledComponent = () => {

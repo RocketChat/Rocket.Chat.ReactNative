@@ -1,32 +1,58 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import { createChannelRequest } from '../../actions/createChannel';
-import { themes } from '../../lib/constants/colors';
-import SearchBox from '../../containers/SearchBox';
-import I18n from '../../i18n';
-import Navigation from '../../lib/navigation/appNavigation';
-import { useTheme } from '../../theme';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { type NewMessageStackParamList } from '../../stacks/types';
-import { compareServerVersion } from '../../lib/methods/helpers';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { usePermissions } from '../../lib/hooks/usePermissions';
+import { createChannelRequest } from '~/actions/createChannel';
+import SearchBox from '~/containers/SearchBox';
+import { type TIconsName } from '~/containers/CustomIcon';
+import I18n from '~/i18n';
+import Navigation from '~/lib/navigation/appNavigation';
+import { useTheme } from '~/theme';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { type NewMessageStackParamList } from '~/stacks/types';
+import { compareServerVersion } from '~/lib/methods/helpers';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { startCategoryDraft } from '~/views/CreateCategoryView/hooks/useCategoryDraftStore';
+import { useIsCustomCategoriesAvailable } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import ButtonCreate from './ButtonCreate';
+import sharedStyles from '~/views/Styles';
 
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: 16
+	},
+	categoryDescription: {
+		fontSize: 14,
+		lineHeight: 20,
+		paddingHorizontal: 16,
+		paddingBottom: 12,
+		...sharedStyles.textRegular
 	}
 });
 
-const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChangeText: (text: string) => void }) => {
+interface IButtonConfig {
+	visible: boolean;
+	onPress: () => void;
+	title: string;
+	icon: TIconsName;
+	testID: string;
+}
+
+interface IHeaderNewMessage {
+	maxUsers: number;
+	onChangeText: (text: string) => void;
+	categoryId?: string;
+	categoryName?: string;
+}
+
+const HeaderNewMessage = ({ maxUsers, onChangeText, categoryId, categoryName }: IHeaderNewMessage) => {
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 	const dispatch = useDispatch();
-	const { theme } = useTheme();
+	const { colors } = useTheme();
+	const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
 
 	const serverVersion = useAppSelector(state => state.server.version as string);
 
@@ -40,67 +66,97 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	const createChannel = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_CHANNEL);
-		navigation.navigate('SelectedUsersView', { nextAction: () => navigation.navigate('CreateChannelView') });
-	}, [navigation]);
+		navigation.navigate('SelectedUsersView', { nextAction: () => navigation.navigate('CreateChannelView', { categoryId }) });
+	}, [navigation, categoryId]);
 
 	const createTeam = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_TEAM);
 		navigation.navigate('SelectedUsersView', {
-			nextAction: () => navigation.navigate('CreateChannelView', { isTeam: true })
+			nextAction: () => navigation.navigate('CreateChannelView', { isTeam: true, categoryId })
 		});
-	}, [navigation]);
+	}, [navigation, categoryId]);
 
 	const createGroupChat = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
 		navigation.navigate('SelectedUsersView', {
-			nextAction: () => dispatch(createChannelRequest({ group: true })),
+			nextAction: () => dispatch(createChannelRequest({ group: true, category: categoryId })),
 			buttonText: I18n.t('Create'),
 			maxUsers
 		});
-	}, [dispatch, maxUsers, navigation]);
+	}, [dispatch, maxUsers, navigation, categoryId]);
 
 	const createDiscussion = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_DISCUSSION);
 		navigation.navigate('SelectedUsersView', {
-			nextAction: () => Navigation.navigate('CreateDiscussionView'),
+			nextAction: () => Navigation.navigate('CreateDiscussionView', { categoryId }),
 			title: I18n.t('Create_Discussion'),
 			buttonText: I18n.t('Next')
 		});
+	}, [navigation, categoryId]);
+
+	const createCategory = useCallback(() => {
+		startCategoryDraft();
+		navigation.navigate('CreateCategoryView');
 	}, [navigation]);
 
+	const buttons = [
+		{
+			visible: createPublicChannelPermission || createPrivateChannelPermission,
+			onPress: createChannel,
+			title: 'Channel',
+			icon: 'channel-public',
+			testID: 'new-message-view-create-channel'
+		},
+		{
+			visible: compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && createTeamPermission,
+			onPress: createTeam,
+			title: 'Team',
+			icon: 'teams',
+			testID: 'new-message-view-create-team'
+		},
+		{
+			visible: maxUsers > 2 && createDirectMessagePermission,
+			onPress: createGroupChat,
+			title: 'Direct_message',
+			icon: 'message',
+			testID: 'new-message-view-create-direct-message'
+		},
+		{
+			visible: createDiscussionPermission,
+			onPress: createDiscussion,
+			title: 'Discussion',
+			icon: 'discussions',
+			testID: 'new-message-view-create-discussion'
+		},
+		{
+			visible: isCustomCategoriesAvailable && !categoryId,
+			onPress: createCategory,
+			title: 'Category',
+			icon: 'folder-plus',
+			testID: 'new-message-view-create-category'
+		}
+	].filter((button): button is IButtonConfig => Boolean(button.visible));
+
 	return (
-		<>
-			<View style={[styles.container, { backgroundColor: themes[theme].surfaceTint }]}>
-				{createPublicChannelPermission || createPrivateChannelPermission ? (
-					<ButtonCreate
-						onPress={createChannel}
-						title={'Channel'}
-						icon={'channel-public'}
-						testID={'new-message-view-create-channel'}
-					/>
-				) : null}
-				{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && createTeamPermission ? (
-					<ButtonCreate onPress={createTeam} title={'Team'} icon={'teams'} testID={'new-message-view-create-team'} />
-				) : null}
-				{maxUsers > 2 && createDirectMessagePermission ? (
-					<ButtonCreate
-						onPress={createGroupChat}
-						title={'Direct_message'}
-						icon={'message'}
-						testID={'new-message-view-create-direct-message'}
-					/>
-				) : null}
-				{createDiscussionPermission ? (
-					<ButtonCreate
-						onPress={createDiscussion}
-						title={'Discussion'}
-						icon={'discussions'}
-						testID={'new-message-view-create-discussion'}
-					/>
-				) : null}
-				<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='new-message-view-search' />
-			</View>
-		</>
+		<View style={[styles.container, { backgroundColor: colors.surfaceTint }]}>
+			{categoryName ? (
+				<Text style={[styles.categoryDescription, { color: colors.fontSecondaryInfo }]}>
+					{I18n.t('Create_New_Room_Inside_Category', { name: categoryName })}
+				</Text>
+			) : null}
+			{buttons.map((button, index) => (
+				<ButtonCreate
+					key={button.testID}
+					onPress={button.onPress}
+					title={button.title}
+					icon={button.icon}
+					testID={button.testID}
+					isFirst={index === 0}
+					isLast={index === buttons.length - 1}
+				/>
+			))}
+			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='new-message-view-search' />
+		</View>
 	);
 };
 

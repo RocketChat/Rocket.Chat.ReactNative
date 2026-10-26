@@ -1,24 +1,18 @@
 import { useRef, memo, type ReactElement } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import {
-	Gesture,
-	GestureDetector,
-	type GestureUpdateEvent,
-	type PanGestureHandlerEventPayload
-} from 'react-native-gesture-handler';
+import { GestureDetector, type PanGestureActiveEvent, usePanGesture } from 'react-native-gesture-handler';
 import { View, type AccessibilityActionEvent } from 'react-native';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import Touch from '../../Touch';
+import Touch from '~/containers/Touch';
 import { DeleteAction } from './Actions';
-import { useTheme } from '../../../theme';
-import I18n from '../../../i18n';
+import { useTheme } from '~/theme';
+import I18n from '~/i18n';
 
 export interface ISwipeableDeleteTouchableProps {
 	children: ReactElement;
 	testID: string;
 	width: number;
-	rowHeight: number;
 	actionWidth: number;
 	longSwipe: number;
 	smallSwipe: number;
@@ -33,7 +27,6 @@ const SwipeableDeleteTouchable = ({
 	width,
 	children,
 	testID,
-	rowHeight,
 	actionWidth,
 	longSwipe,
 	smallSwipe,
@@ -51,7 +44,7 @@ const SwipeableDeleteTouchable = ({
 	const valueRef = useRef(0);
 
 	const handlePress = () => {
-		if (rowState.value !== 0) {
+		if (rowState.get() !== 0) {
 			close();
 			return;
 		}
@@ -62,9 +55,9 @@ const SwipeableDeleteTouchable = ({
 	};
 
 	const close = () => {
-		rowState.value = 0;
-		transX.value = withSpring(0, { overshootClamping: true });
-		rowOffSet.value = 0;
+		rowState.set(0);
+		transX.set(withSpring(0, { overshootClamping: true }));
+		rowOffSet.set(0);
 		valueRef.current = 0;
 	};
 
@@ -83,23 +76,23 @@ const SwipeableDeleteTouchable = ({
 		}
 	};
 
-	const handleRelease = (event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
+	const handleRelease = (event: PanGestureActiveEvent) => {
 		const { translationX } = event;
 		valueRef.current += translationX;
 		let toValue = 0;
 
-		if (rowState.value === 0) {
+		if (rowState.get() === 0) {
 			// if no option is opened
 			if (I18n.isRTL) {
 				// RTL: swipe right (positive translationX) to show delete
 				if (translationX > 0 && translationX < longSwipe) {
 					// open delete action if swipe right
 					toValue = actionWidth;
-					rowState.value = 1;
+					rowState.set(1);
 				} else if (translationX >= longSwipe) {
 					// long swipe right - trigger delete immediately
 					toValue = 0;
-					rowState.value = 1;
+					rowState.set(1);
 					handleDeletePress();
 				} else {
 					// any other gesture (including left swipes) - stay closed
@@ -108,23 +101,23 @@ const SwipeableDeleteTouchable = ({
 			} else if (translationX < 0 && translationX > -longSwipe) {
 				// LTR: open delete action if swipe left
 				toValue = -actionWidth;
-				rowState.value = 1;
+				rowState.set(1);
 			} else if (translationX <= -longSwipe) {
 				// LTR: long swipe left - trigger delete immediately
 				toValue = 0;
-				rowState.value = 1;
+				rowState.set(1);
 				handleDeletePress();
 			} else {
 				// LTR: any other gesture (including right swipes) - stay closed
 				toValue = 0;
 			}
-		} else if (rowState.value === 1) {
+		} else if (rowState.get() === 1) {
 			// if delete option is opened
 			if (I18n.isRTL) {
 				// RTL: delete is on the left (positive translation)
 				if (valueRef.current < smallSwipe) {
 					toValue = 0;
-					rowState.value = 0;
+					rowState.set(0);
 				} else if (valueRef.current > longSwipe) {
 					handleDeletePress();
 				} else {
@@ -133,7 +126,7 @@ const SwipeableDeleteTouchable = ({
 			} else if (valueRef.current > -smallSwipe) {
 				// LTR: close if swipe back right
 				toValue = 0;
-				rowState.value = 0;
+				rowState.set(0);
 			} else if (valueRef.current < -longSwipe) {
 				// LTR: trigger delete on long swipe
 				handleDeletePress();
@@ -144,39 +137,40 @@ const SwipeableDeleteTouchable = ({
 		}
 
 		// Use spring animation exactly like RoomItem
-		transX.value = withSpring(toValue, { overshootClamping: true });
-		rowOffSet.value = toValue;
+		transX.set(withSpring(toValue, { overshootClamping: true }));
+		rowOffSet.set(toValue);
 		valueRef.current = toValue;
 	};
 
-	const panGesture = Gesture.Pan()
-		.activeOffsetX([-10, 10]) // More sensitive horizontal detection
-		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
-		.onUpdate(event => {
-			const newValue = event.translationX + rowOffSet.value;
+	const panGesture = usePanGesture({
+		activeOffsetX: [-10, 10], // More sensitive horizontal detection
+		failOffsetY: [-20, 20], // Fail on vertical movement to distinguish scrolling
+		onUpdate: event => {
+			const newValue = event.translationX + rowOffSet.get();
 
 			if (I18n.isRTL) {
 				// RTL: allow right swipes (positive values), prevent left swipes
 				if (newValue < 0) {
-					transX.value = 0;
+					transX.set(0);
 				} else {
-					transX.value = newValue;
+					transX.set(newValue);
 					// Limit how far right it can stretch
-					if (transX.value > width) transX.value = width;
+					if (transX.get() > width) transX.set(width);
 				}
 			} else if (newValue > 0) {
 				// LTR: prevent right swipes
-				transX.value = 0;
+				transX.set(0);
 			} else {
 				// LTR: allow left swipes (negative values)
-				transX.value = newValue;
+				transX.set(newValue);
 				// Limit how far left it can stretch
-				if (transX.value < -width) transX.value = -width;
+				if (transX.get() < -width) transX.set(-width);
 			}
-		})
-		.onEnd(event => {
+		},
+		onDeactivate: event => {
 			scheduleOnRN(handleRelease, event);
-		});
+		}
+	});
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
@@ -188,7 +182,6 @@ const SwipeableDeleteTouchable = ({
 				<DeleteAction
 					width={width}
 					transX={transX}
-					rowHeight={rowHeight}
 					actionWidth={actionWidth}
 					longSwipe={longSwipe}
 					onDeletePress={handleDeletePress}

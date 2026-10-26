@@ -3,7 +3,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
 import coerce from 'semver/functions/coerce';
-import { call } from 'typed-redux-saga';
+import { call, delay, race } from 'typed-redux-saga';
 
 import Navigation from '../lib/navigation/appNavigation';
 import { SERVER } from '../actions/actionsTypes';
@@ -22,14 +22,16 @@ import { clearActiveUsers } from '../actions/activeUsers';
 import database from '../lib/database';
 import log, { logServerVersion } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
+import { applyBasicAuth } from '../lib/methods/serverBasicAuth';
 import { appStart } from '../actions/app';
 import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER } from '../lib/constants/keys';
+import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
+import { getStoredSession } from '../lib/methods/loggedInServer';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
 import { getServerInfo } from '../lib/methods/getServerInfo';
@@ -42,7 +44,7 @@ import sdk from '../lib/services/sdk';
 import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
-import SSLPinning from '../lib/methods/helpers/sslPinning';
+import { applyServerCertificate } from '../lib/methods/helpers/sslPinning';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -94,15 +96,23 @@ const upsertServer = async function ({ server, serverInfo }: { server: string; s
 	throw new Error('Error creating server record');
 };
 
-const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = true }: { server: string; raiseError?: boolean }) {
+const getServerInfoSaga = function* getServerInfoSaga({
+	server,
+	raiseError = true,
+	signal
+}: {
+	server: string;
+	raiseError?: boolean;
+	signal?: AbortSignal;
+}) {
 	try {
-		const serverInfoResult = yield* call(getServerInfo, server);
+		const serverInfoResult = yield* call(getServerInfo, server, signal);
 		if (raiseError) {
 			if (!serverInfoResult.success) {
 				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
-			const websocketInfo = yield* call(getWebsocketInfo, { server });
+			const websocketInfo = yield* call(getWebsocketInfo, { server, signal });
 			if (!websocketInfo.success) {
 				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
@@ -137,49 +147,42 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
-		if (sdk.current?.client?.host === server) {
+		yield* call(applyServerCertificate, server);
+		if (sdk.host === server) {
+			applyBasicAuth(server);
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 			yield put(selectServerCancel());
 			return;
 		}
-		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-		if (certificate) {
-			SSLPinning?.setCertificate(certificate, server);
-		}
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
-		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		yield* call(migrateTokenKeysToServerScoped);
+		const { userId, token } = getStoredSession(server);
 		let user = null;
-		if (userId) {
+		if (userId && token) {
 			// search credentials on database
 			const userRecord = yield* call(getLoggedUserById, userId);
-			if (userRecord) {
-				user = {
-					id: userRecord.id,
-					token: userRecord.token,
-					username: userRecord.username,
-					name: userRecord.name,
-					language: userRecord.language,
-					status: userRecord.status,
-					statusText: userRecord.statusText,
-					roles: userRecord.roles,
-					avatarETag: userRecord.avatarETag,
-					bio: userRecord.bio,
-					nickname: userRecord.nickname,
-					requirePasswordChange: userRecord.requirePasswordChange
-				};
-			} else {
-				const token = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
-				if (token) {
-					user = { token };
-				}
-			}
+			user = userRecord
+				? {
+						id: userRecord.id,
+						token,
+						username: userRecord.username,
+						name: userRecord.name,
+						language: userRecord.language,
+						status: userRecord.status,
+						statusText: userRecord.statusText,
+						roles: userRecord.roles,
+						avatarETag: userRecord.avatarETag,
+						bio: userRecord.bio,
+						nickname: userRecord.nickname,
+						requirePasswordChange: userRecord.requirePasswordChange,
+						sidebarCategories: userRecord.sidebarCategories
+					}
+				: { token };
 		}
 
-		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
-		setBasicAuth(basicAuth);
+		applyBasicAuth(server);
 
 		if (user) {
 			yield put(clearSettings());
@@ -218,23 +221,41 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(selectServerSuccess({ server, version: serverVersion, name: serverInfo?.name || 'Rocket.Chat' }));
 	} catch (e) {
 		yield put(selectServerFailure());
+		const currentRoot = yield* appSelector(state => state.app.root);
+		if (currentRoot !== RootEnum.ROOT_INSIDE && currentRoot !== RootEnum.ROOT_SHARE_EXTENSION) {
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		}
 		log(e);
 	}
 };
 
+const UNANSWERED_HOST_PROBE_TIMEOUT_MS = 30000;
+
+const probeServer = function* probeServer(server: string, signal: AbortSignal) {
+	const serverInfo = yield* getServerInfoSaga({ server, signal });
+	if (serverInfo) {
+		yield* call(getLoginServices, server, signal);
+		yield* call(getLoginSettings, { server, serverVersion: serverInfo.version, signal });
+	}
+	return serverInfo;
+};
+
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
+	const probeController = new AbortController();
 	try {
-		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-		if (certificate) {
-			SSLPinning?.setCertificate(certificate, server);
+		yield* call(applyServerCertificate, server);
+		const { serverInfo, timedOut } = yield* race({
+			serverInfo: call(probeServer, server, probeController.signal),
+			timedOut: delay(UNANSWERED_HOST_PROBE_TIMEOUT_MS)
+		});
+		if (timedOut) {
+			yield put(serverFailure(I18n.t('Connection_timed_out')));
+			return;
 		}
-		const serverInfo = yield* getServerInfoSaga({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');
 
 		if (serverInfo) {
-			yield getLoginServices(server);
-			yield getLoginSettings({ server, serverVersion: serverInfo.version });
 			Navigation.navigate('WorkspaceView');
 
 			const Accounts_iframe_enabled = yield* appSelector(state => state.settings.Accounts_iframe_enabled);
@@ -260,6 +281,8 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 	} catch (e) {
 		yield put(serverFailure());
 		log(e);
+	} finally {
+		probeController.abort();
 	}
 };
 

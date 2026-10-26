@@ -1,11 +1,20 @@
 import { type NavigatorScreenParams } from '@react-navigation/core';
 
-import { type IAttachment } from '../../definitions/IAttachment';
-import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { type ILivechatTag } from '../../definitions/ILivechatTag';
-import { type IMessage, type TAnyMessageModel } from '../../definitions/IMessage';
-import { type ISubscription, type SubscriptionType, type TSubscriptionModel } from '../../definitions/ISubscription';
-import { type TChangeAvatarViewContext } from '../../definitions/TChangeAvatarViewContext';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
+import { type ILivechatTag } from '~/definitions/ILivechatTag';
+import { type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
+import { type ISubscription, type SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type TChangeAvatarViewContext } from '~/definitions/TChangeAvatarViewContext';
+import { type CategoryViewParams } from '~/views/CategoryView';
+import { type CategorySettingsViewParams } from '~/views/CategorySettingsView';
+import { type ConfirmCategoryRoomsViewParams } from '~/views/CategorySettingsView/ConfirmCategoryRoomsView';
+import { type ManageCategoryRoomsViewParams } from '~/views/CategorySettingsView/ManageCategoryRoomsView';
+import { type RenameCategoryViewParams } from '~/views/CategorySettingsView/RenameCategoryView';
+import { type CreateCategoryViewParams } from '~/views/CreateCategoryView';
+import { type NewMessageViewParams } from '~/views/NewMessageView';
+import { type CategoryRoomsViewParams } from '~/views/CreateCategoryView/CategoryRoomsView';
+import { type ConfirmCategoryViewParams } from '~/views/CreateCategoryView/ConfirmCategoryView';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -23,7 +32,8 @@ export type MasterDetailChatsStackParamList = {
 	};
 };
 
-export type MasterDetailDrawerParamList = {
+export type MasterDetailSplitParamList = {
+	RoomsListStackNavigator: NavigatorScreenParams<{ RoomsListView: undefined; CategoryView: CategoryViewParams }>;
 	ChatsStackNavigator: NavigatorScreenParams<MasterDetailChatsStackParamList>;
 };
 
@@ -42,11 +52,13 @@ export type ModalStackParamList = {
 		};
 	};
 	RoomInfoView: {
-		room: ISubscription;
-		member: any;
+		room?: ISubscription;
+		member?: any;
 		rid: string;
 		t: SubscriptionType;
 		showCloseModal?: boolean;
+		fromRid?: string;
+		itsMe?: boolean;
 	};
 	SelectListView: {
 		data: any;
@@ -169,16 +181,26 @@ export type ModalStackParamList = {
 	ProfileView: undefined;
 	ChangePasswordView: undefined;
 	DisplayPrefsView: undefined;
+	CategoryOrderView: undefined;
+	CategorySettingsView: CategorySettingsViewParams;
+	ManageCategoryRoomsView: ManageCategoryRoomsViewParams;
+	ConfirmCategoryRoomsView: ConfirmCategoryRoomsViewParams;
+	RenameCategoryView: RenameCategoryViewParams;
 	AdminPanelView: undefined;
-	NewMessageView: undefined;
+	NewMessageView: NewMessageViewParams;
+	CreateCategoryView: CreateCategoryViewParams;
+	CategoryRoomsView: CategoryRoomsViewParams;
+	ConfirmCategoryView: ConfirmCategoryViewParams;
 	CreateChannelView: {
 		isTeam?: boolean; // TODO: To check
 		teamId?: string;
+		categoryId?: string;
 	};
 	CreateDiscussionView: {
 		channel: ISubscription;
 		message: IMessage;
 		showCloseModal: boolean;
+		categoryId?: string;
 	};
 	E2ESaveYourPasswordView: undefined;
 	E2EHowItWorksView: {
@@ -204,7 +226,7 @@ export type ModalStackParamList = {
 };
 
 export type MasterDetailInsideStackParamList = {
-	DrawerNavigator: NavigatorScreenParams<Partial<MasterDetailDrawerParamList>>; // TODO: Change
+	DrawerNavigator: NavigatorScreenParams<Partial<MasterDetailSplitParamList>>;
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
 	ModalBlockView: {
 		data: any; // TODO: Change
@@ -214,6 +236,7 @@ export type MasterDetailInsideStackParamList = {
 		url: string;
 		onlyAudio?: boolean;
 	};
+	ConferenceView: undefined;
 	ShareView: {
 		attachments: IAttachment[];
 		isShareView?: boolean;

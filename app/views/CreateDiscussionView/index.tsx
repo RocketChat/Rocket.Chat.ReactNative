@@ -1,35 +1,35 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import KeyboardView from '../../containers/KeyboardView';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import I18n from '../../i18n';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import { getUserSelector } from '../../selectors/login';
-import { ControlledFormTextInput } from '../../containers/TextInput';
-import { createDiscussionRequest, type ICreateDiscussionRequestData } from '../../actions/createDiscussion';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { events, logEvent } from '../../lib/methods/helpers/log';
+import KeyboardView from '~/containers/KeyboardView';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import I18n from '~/i18n';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
+import { getUserSelector } from '~/selectors/login';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import { createDiscussionRequest, type ICreateDiscussionRequestData } from '~/actions/createDiscussion';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { events, logEvent } from '~/lib/methods/helpers/log';
 import styles from './styles';
 import SelectChannel from './SelectChannel';
 import { type ICreateChannelViewProps, type IResult, type IError } from './interfaces';
-import { type ISearchLocal, type ISubscription } from '../../definitions';
-import { E2E_ROOM_TYPES } from '../../lib/constants/keys';
-import { getRoomTitle } from '../../lib/methods/helpers';
-import * as List from '../../containers/List';
-import Switch from '../../containers/Switch';
-import Button from '../../containers/Button';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { useTheme } from '../../theme';
+import { type ISearchLocal, type ISubscription } from '~/definitions';
+import { E2E_ROOM_TYPES } from '~/lib/constants/keys';
+import { getRoomTitle } from '~/lib/methods/helpers';
+import * as List from '~/containers/List';
+import Switch from '~/containers/Switch';
+import Button from '~/containers/Button';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { useTheme } from '~/theme';
 import handleSubmitEvent from './utils/handleSubmitEvent';
-import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
-import SelectedUsers from '../../containers/SelectedUsers';
-import { type ISelectedUser } from '../../reducers/selectedUsers';
+import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
+import SelectedUsers from '~/containers/SelectedUsers';
+import { type ISelectedUser } from '~/reducers/selectedUsers';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
 	const schema = yup.object().shape({
@@ -71,7 +71,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	const {
 		control,
 		handleSubmit,
-		watch,
 		formState: { errors }
 	} = useForm({
 		defaultValues: {
@@ -80,7 +79,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		resolver: yupResolver(schema)
 	});
 
-	const inputValues = watch();
+	const inputValues = useWatch({ control });
 	const prevLoading = useRef<boolean>(loading);
 	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 
@@ -113,7 +112,8 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 			pmid,
 			t_name,
 			reply,
-			users: users.map(item => item.name)
+			users: users.map(item => item.name),
+			category: route.params?.categoryId
 		};
 		if (isEncryptionEnabled) {
 			params.encrypted = encrypted ?? false;
@@ -137,7 +137,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
 			title: I18n.t('Create_Discussion'),
-			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
+			...(showCloseModal ? headerLeftCloseModal(navigation) : { headerLeft: undefined })
 		});
 	}, [navigation, route]);
 
@@ -168,13 +168,14 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 					</View>
 
 					{isEncryptionEnabled ? (
-						<>
+						<View style={styles.encryptionContainer}>
 							<List.Item
 								title='Encrypted'
 								right={() => <Switch value={encrypted} onValueChange={onEncryptedChange} testID='room-actions-encrypt' />}
 								additionalAccessibilityLabel={encrypted}
+								backgroundColor={colors.surfaceTint}
 							/>
-						</>
+						</View>
 					) : null}
 
 					{users.length > 0 ? <SelectedUsers onPress={removeUser} users={users} useRealName={useRealName} /> : null}

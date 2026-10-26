@@ -31,14 +31,6 @@ Submit a new Beta Build to Apple TestFlight
 
 Build app
 
-### ios build_fork
-
-```sh
-[bundle exec] fastlane ios build_fork
-```
-
-Build fork app
-
 ### ios build_simulator
 
 ```sh

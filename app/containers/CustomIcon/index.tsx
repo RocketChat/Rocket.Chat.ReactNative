@@ -3,8 +3,8 @@ import { createIconSetFromIcoMoon } from '@expo/vector-icons';
 import type { StyleProp, TextStyle } from 'react-native';
 
 import { type mappedIcons } from './mappedIcons';
-import { useTheme } from '../../theme';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useTheme } from '~/theme';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import icoMoonConfig from './selection.json';
 
 export const IconSet = createIconSetFromIcoMoon(icoMoonConfig, 'custom', 'custom.ttf');
@@ -14,7 +14,7 @@ const glyphMap = IconSet.getRawGlyphMap
 	: icoMoonConfig.icons?.reduce((map: Record<string, string | number>, glyph: any) => {
 			map[glyph.icon.name] = glyph.icon.code;
 			return map;
-	  }, {}) || {};
+		}, {}) || {};
 
 export const hasIcon = (name: string) => Object.prototype.hasOwnProperty.call(glyphMap, name);
 
