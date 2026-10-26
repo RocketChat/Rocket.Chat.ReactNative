@@ -77,13 +77,8 @@ export const useJsRoomsListHeader = () => {
 			return;
 		}
 		let immediate: ReturnType<typeof setImmediate> | undefined;
-		const cancelPendingFocus = () => {
-			if (immediate !== undefined) {
-				clearImmediate(immediate);
-			}
-		};
 		const focusDrawerButton = () => {
-			cancelPendingFocus();
+			clearImmediate(immediate);
 			immediate = setImmediate(() => {
 				drawerButtonRef.current?.focus();
 			});
@@ -94,7 +89,7 @@ export const useJsRoomsListHeader = () => {
 		const unsubscribe = focusNavigation.addListener('focus', focusDrawerButton);
 		return () => {
 			unsubscribe();
-			cancelPendingFocus();
+			clearImmediate(immediate);
 		};
 	}, [focusNavigation, isAccessibilityNavigationEnabled]);
 };
