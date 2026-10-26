@@ -207,7 +207,7 @@ const SelectedUsersView = () => {
 					);
 				}}
 				ItemSeparatorComponent={RowSeparator}
-				ListFooterComponent={searching ? <ActivityIndicator /> : hasNativeHeaderBar ? null : <List.Separator />}
+				ListFooterComponent={searching ? <ActivityIndicator /> : hasNativeHeaderBar ? undefined : <List.Separator />}
 				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
 				contentContainerStyle={{
 					backgroundColor: listBackgroundColor,

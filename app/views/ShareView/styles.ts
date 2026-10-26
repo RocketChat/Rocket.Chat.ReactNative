@@ -14,7 +14,8 @@ export default StyleSheet.create({
 		marginBottom: 0
 	},
 	textInput: {
-		height: '100%'
+		height: '100%',
+		textAlignVertical: 'top'
 	},
 	centered: {
 		justifyContent: 'center',

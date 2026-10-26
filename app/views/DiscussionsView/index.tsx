@@ -171,7 +171,7 @@ const DiscussionsView = () => {
 				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				onEndReached={() => isSearching && offset.current < total.current && load()}
 				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={loading ? <ActivityIndicator /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator /> : undefined}
 				scrollIndicatorInsets={{ right: 1 }}
 			/>
 		</SafeAreaView>
