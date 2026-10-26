@@ -188,41 +188,6 @@ describe('sendAttachments', () => {
 		expect(outcome).toBe('still pending');
 		await expect(pending).resolves.toHaveLength(2);
 	});
-
-	it('reports an attachment as sent as soon as its own upload is done, while another is still running', async () => {
-		let finishSecond!: () => void;
-		(sendFileMessage as jest.Mock)
-			.mockResolvedValueOnce(undefined)
-			.mockImplementationOnce(() => new Promise<void>(resolve => (finishSecond = resolve)));
-		const onSent = jest.fn();
-		const first = attachment();
-		const second = attachment({ path: '/tmp/b.jpg' });
-
-		const pending = sendAttachments({ ...base, attachments: [first, second], onSent });
-		await new Promise(resolve => setTimeout(resolve, 0));
-
-		expect(onSent).toHaveBeenCalledTimes(1);
-		expect(onSent).toHaveBeenCalledWith(first);
-
-		finishSecond();
-		await pending;
-
-		expect(onSent).toHaveBeenCalledTimes(2);
-		expect(onSent).toHaveBeenLastCalledWith(second);
-	});
-
-	it('does not report a skipped or a failed attachment as sent', async () => {
-		(sendFileMessage as jest.Mock).mockRejectedValueOnce(new Error('upload failed'));
-		const onSent = jest.fn();
-
-		await sendAttachments({
-			...base,
-			attachments: [attachment({ canUpload: false }), attachment({ path: '/tmp/b.jpg' })],
-			onSent
-		});
-
-		expect(onSent).not.toHaveBeenCalled();
-	});
 });
 
 describe('sendFileMessage', () => {

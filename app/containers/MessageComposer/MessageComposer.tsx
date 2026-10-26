@@ -61,7 +61,7 @@ export const MessageComposer = ({
 	const actionKind = useMessageActionKind();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
-	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments, removeAttachment } = useMessageComposerApi();
+	const { setAlsoSendThreadToChannel, setAutocompleteParams, addAttachments, clearAttachments } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const { colors } = useTheme();
@@ -94,6 +94,9 @@ export const MessageComposer = ({
 		const { height } = event.nativeEvent.layout;
 		contentHeight.set(height);
 	};
+
+	const restoreFailedAttachments = (results: PromiseSettledResult<void>[]) =>
+		addAttachments(attachments.filter((attachment, index) => !attachment.canUpload || results[index].status === 'rejected'));
 
 	const restoreCaptionAfterFailure = (results: PromiseSettledResult<void>[], textFromInput: string) => {
 		const captionSent = attachments[0].canUpload && results[0].status === 'fulfilled';
@@ -138,6 +141,7 @@ export const MessageComposer = ({
 		}
 
 		if (attachments.length) {
+			clearAttachments();
 			let quotedMessage: string | undefined;
 
 			if (quotedMessageIds.length) {
@@ -151,16 +155,15 @@ export const MessageComposer = ({
 				server,
 				user: { id: user.id, token: user.token },
 				altTextSupported,
-				getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description),
-				onSent: ({ path }) => removeAttachment(path)
+				getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
 			});
 			const rejected = results.filter((result): result is PromiseRejectedResult => result.status === 'rejected');
 			if (rejected.length) {
 				rejected.forEach(({ reason }) => log(reason));
+				restoreFailedAttachments(results);
 				restoreCaptionAfterFailure(results, textFromInput);
 				return;
 			}
-			clearAttachments();
 			messageActionStore.getState().actions.setQuoteMessageIds([]);
 			composerInputComponentRef.current?.setInput('');
 			return;

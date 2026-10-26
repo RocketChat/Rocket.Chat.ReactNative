@@ -948,28 +948,21 @@ describe('MessageComposer', () => {
 
 			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
 			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
+			expect(screen.getByLabelText('IMG_2444.png')).toBeOnTheScreen();
 		});
 
-		test('does not send an attachment again when Send is pressed while another one is still uploading', async () => {
-			const pending = { ...attachment, filename: 'pending.png', path: 'file:///tmp/pending.png' } as IShareAttachment;
-			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockImplementationOnce(() => new Promise<void>(() => {}));
+		test('clears the tray as soon as Send is pressed so an upload in flight cannot be sent again', async () => {
+			(sendFileMessage as jest.Mock).mockImplementationOnce(() => new Promise<void>(() => {}));
 			render(
 				<Render>
-					<AttachmentSeeder attachments={[sent, pending]} />
+					<AttachmentSeeder attachments={[attachment]} />
 				</Render>
 			);
-			await screen.findByTestId('message-composer-attachment-1');
-			await user.press(screen.getByTestId('message-composer-send'));
-			await waitFor(() => expect(screen.queryByLabelText('sent.png')).not.toBeOnTheScreen());
-
+			await screen.findByTestId('message-composer-attachment-0');
 			await user.press(screen.getByTestId('message-composer-send'));
 
-			await waitFor(() => expect(sendFileMessage).toHaveBeenCalledTimes(3));
-			expect((sendFileMessage as jest.Mock).mock.calls.map(([, fileInfo]) => fileInfo.name)).toEqual([
-				'sent.png',
-				'pending.png',
-				'pending.png'
-			]);
+			await waitFor(() => expect(sendFileMessage).toHaveBeenCalledTimes(1));
+			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
 		});
 
 		test('does not throw when the composer is gone before a failed upload settles', async () => {
