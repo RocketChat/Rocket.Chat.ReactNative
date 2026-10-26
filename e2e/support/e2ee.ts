@@ -18,7 +18,7 @@ import {
 	tapUntilVisible,
 	tapWhenVisible
 } from './flows';
-import { tapHeaderItem } from './header';
+import { selectRoomMenuOption } from './header';
 import { openSidebar } from './settings';
 import { createAndOpenChannel } from './teams';
 
@@ -169,7 +169,7 @@ export const resetRoomKey = async (fixtures: Fixtures) => {
 	const { screen } = fixtures;
 	await expect(screen.getByText(/Check back in a few moments/)).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(screen.getByText(/The encryption keys for the room need to be updated/)).toBeVisible({ timeout: LONG_TIMEOUT });
-	await tapHeaderItem(fixtures, 'room-view-header-encryption', 'Encrypted');
+	await selectRoomMenuOption(fixtures, { testId: 'room-view-header-encryption', iosLabel: 'Encrypted' });
 	await expect(screen.getByTestId('e2ee-toggle-room-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await tapWhenVisible(fixtures, 'e2ee-toggle-room-reset-key');
 	await expect(screen.getByText(/Reset encryption key/).first()).toBeVisible({ timeout: LONG_TIMEOUT });

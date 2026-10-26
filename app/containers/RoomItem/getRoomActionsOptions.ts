@@ -11,6 +11,7 @@ export interface IRoomActionsParams {
 	isRead: boolean;
 	favorite: boolean;
 	serverVersion: string;
+	onMoveToCategoryPress?: () => void;
 }
 
 export const getRoomActionsOptions = ({
@@ -18,7 +19,8 @@ export const getRoomActionsOptions = ({
 	type,
 	isRead,
 	favorite,
-	serverVersion
+	serverVersion,
+	onMoveToCategoryPress
 }: IRoomActionsParams): TActionSheetOptionsItem[] => [
 	{
 		title: I18n.t(isRead ? 'Mark_unread' : 'Mark_read'),
@@ -26,12 +28,19 @@ export const getRoomActionsOptions = ({
 		onPress: () => toggleRead(rid, isRead, serverVersion),
 		testID: `action-sheet-${isRead ? 'mark-unread' : 'mark-read'}`
 	},
-	{
-		title: I18n.t(favorite ? 'Unfavorite' : 'Favorite'),
-		icon: favorite ? 'star-filled' : 'star',
-		onPress: () => toggleFav(rid, favorite),
-		testID: `action-sheet-${favorite ? 'unfavorite' : 'favorite'}`
-	},
+	onMoveToCategoryPress
+		? {
+				title: I18n.t('Move_to_category'),
+				icon: 'folder-star',
+				onPress: onMoveToCategoryPress,
+				testID: 'action-sheet-move-to-category'
+			}
+		: {
+				title: I18n.t(favorite ? 'Unfavorite' : 'Favorite'),
+				icon: favorite ? 'star-filled' : 'star',
+				onPress: () => toggleFav(rid, favorite),
+				testID: `action-sheet-${favorite ? 'unfavorite' : 'favorite'}`
+			},
 	{
 		title: I18n.t('Hide'),
 		icon: 'unread-on-top-disabled',
