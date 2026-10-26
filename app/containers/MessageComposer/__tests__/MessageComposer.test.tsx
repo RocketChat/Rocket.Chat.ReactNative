@@ -3,8 +3,8 @@ import { act, render, renderHook, screen, fireEvent, waitFor, userEvent } from '
 import { Provider } from 'react-redux';
 import { getRecordingPermissionsAsync, requestRecordingPermissionsAsync, useAudioRecorder, PermissionStatus } from 'expo-audio';
 
-import { MessageComposerContainer } from './MessageComposerContainer';
-import { ComposerAttachments } from './components/Attachments/ComposerAttachments';
+import { MessageComposerContainer } from '../MessageComposerContainer';
+import { ComposerAttachments } from '../components/Attachments/ComposerAttachments';
 import { setPermissions } from '~/actions/permissions';
 import { addSettings } from '~/actions/settings';
 import { selectServerRequest } from '~/actions/server';
@@ -13,15 +13,15 @@ import { mockedStore } from '~/reducers/mockedStore';
 import { type IPermissionsState } from '~/reducers/permissions';
 import { type IMessage, type IShareAttachment, type TMessageActionState } from '~/definitions';
 import { colors } from '~/lib/constants/colors';
-import { type ComposerState } from './ComposerStore';
-import { ComposerProvider } from './ComposerStore';
-import { MessageActionProvider } from '../message/stores/MessageActionStore';
-import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
+import { type ComposerState } from '../ComposerStore';
+import { ComposerProvider } from '../ComposerStore';
+import { MessageActionProvider } from '../../message/stores/MessageActionStore';
+import * as EmojiKeyboardHook from '../hooks/useEmojiKeyboard';
 import { initStore } from '~/lib/store/auxStore';
 import { searchRemote } from '~/lib/methods/search';
 import database from '~/lib/database';
-import { useMessageComposerApi } from './context';
-import { type IMessageComposerRef } from './interfaces';
+import { useMessageComposerApi } from '../context';
+import { type IMessageComposerRef } from '../interfaces';
 import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
@@ -718,7 +718,7 @@ describe('MessageComposer', () => {
 	});
 
 	const messageIds = ['abc', 'def'];
-	jest.mock('./hooks/useMessage', () => ({
+	jest.mock('../hooks/useMessage', () => ({
 		useMessage: (messageId: string) => {
 			if (!messageIds.includes(messageId)) {
 				return null;
