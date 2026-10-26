@@ -105,7 +105,7 @@
 		"react-native-easy-toast": "2.3.0",
 		"react-native-external-keyboard": "^0.9.0",
 		"react-native-gesture-handler": "~3.3.0",
-		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker#47092e8c90550a54d45fe307f7cb2a24c9535ed5",
+		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker#95fcd679af2487b9c7f9553d3b4f1f8af3a43675",
 		"react-native-incall-manager": "^4.2.1",
 		"react-native-katex": "git+https://github.com/RocketChat/react-native-katex.git",
 		"react-native-keyboard-controller": "1.22.9",
