@@ -1,11 +1,10 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
-import { usePermissions } from './usePermissions';
-import { getSubscriptionByRoomId } from '../database/services/Subscription';
+import { usePermissions } from '../usePermissions';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 
 const mockGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.Mock;
 
-// Drive Redux-derived values (user roles + permission roles) deterministically.
 const mockState = {
 	login: { user: { roles: ['user'] } },
 	permissions: {
@@ -14,15 +13,14 @@ const mockState = {
 	}
 };
 
-jest.mock('./useAppSelector', () => ({
+jest.mock('../useAppSelector', () => ({
 	useAppSelector: (selector: (state: any) => any) => selector(mockState)
 }));
 
-jest.mock('../database/services/Subscription', () => ({
+jest.mock('~/lib/database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn()
 }));
 
-// A subscription stub whose observe() emits the given roles synchronously.
 const makeSub = (roles: string[]) => ({
 	observe: () => ({
 		subscribe: (cb: (s: any) => void) => {
@@ -60,14 +58,12 @@ describe('usePermissions — useSubscriptionRoles rid dependency', () => {
 	});
 
 	it('grants permission when a room role from the late-arriving rid matches', async () => {
-		// 'edit-room' is granted to role 'room-role', which the user only has via the room subscription.
 		mockGetSubscriptionByRoomId.mockResolvedValue(makeSub(['room-role']));
 
 		const { result, rerender } = renderHook(({ rid }: { rid?: string }) => usePermissions(['edit-room'], rid), {
 			initialProps: { rid: undefined as string | undefined }
 		});
 
-		// No rid yet => user roles only => not granted.
 		expect(result.current).toEqual([false]);
 
 		await act(async () => {

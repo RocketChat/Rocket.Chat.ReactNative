@@ -1,8 +1,8 @@
-import { type TSubscriptionModel } from '../../definitions';
-import { hasPermission } from '../../lib/methods/helpers';
-import { type IItem } from './useTeamChannels';
+import { type TSubscriptionModel } from '~/definitions';
+import { hasPermission } from '~/lib/methods/helpers';
+import { type IItem } from './hooks/useTeamChannels';
 
-interface IChannelActionPerms {
+interface IChannelActionRoles {
 	edit: string[];
 	remove: string[];
 	deleteC: string[];
@@ -18,17 +18,13 @@ interface IChannelActionPermissions {
 export const getChannelActionPermissions = async (
 	item: IItem,
 	team: TSubscriptionModel,
-	perms: IChannelActionPerms
+	roles: IChannelActionRoles
 ): Promise<IChannelActionPermissions> => {
-	const [editResult, removeResult, deleteResult] = await Promise.all([
-		hasPermission([perms.edit], team.rid),
-		hasPermission([perms.remove], team.rid),
-		hasPermission([item.t === 'c' ? perms.deleteC : perms.deleteP], item._id)
+	const [[canAutoJoin], [canRemove], [canDelete]] = await Promise.all([
+		hasPermission([roles.edit], team.rid),
+		hasPermission([roles.remove], team.rid),
+		hasPermission([item.t === 'c' ? roles.deleteC : roles.deleteP], item._id)
 	]);
 
-	return {
-		canAutoJoin: editResult[0],
-		canRemove: removeResult[0],
-		canDelete: deleteResult[0]
-	};
+	return { canAutoJoin, canRemove, canDelete };
 };

@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { useCreateNewPermission, useAddExistingPermission, useCanCreateTeamChannel } from './useTeamChannelPermissions';
+import { useCreateNewPermission, useAddExistingPermission, useCanCreateTeamChannel } from '../useTeamChannelPermissions';
 
 const mockUsePermissions = jest.fn();
 let mockServerVersion: string | undefined;
 
-jest.mock('./usePermissions', () => ({
+jest.mock('../usePermissions', () => ({
 	usePermissions: (permissions: string[], rid?: string) => mockUsePermissions(permissions, rid)
 }));
 
@@ -14,8 +14,6 @@ jest.mock('react-redux', () => ({
 	useSelector: (selector: (state: any) => any) => selector({ server: { version: mockServerVersion } })
 }));
 
-// Resolve the granted result by which permissions were requested, so a single
-// mock can serve both hooks regardless of call order.
 const grant = (granted: string[]) => (permissions: string[]) => permissions.map(p => granted.includes(p));
 
 const RID = 'room-1';
@@ -88,9 +86,6 @@ describe('useTeamChannelPermissions', () => {
 	});
 
 	describe('useCanCreateTeamChannel — equivalence with the old async logic', () => {
-		// Old v7+: t=c => moveRoomToTeam || createC || createTeamChannel ; t=p => moveRoomToTeam || createP || createTeamGroup
-		// Old pre-v7: t=c => addTeamChannel || createC ; t=p => addTeamChannel || createP
-
 		it('v7+ t=c true when only moveRoomToTeam granted', () => {
 			mockUsePermissions.mockImplementation(grant(['move-room-to-team']));
 			const { result } = renderHook(() => useCanCreateTeamChannel(RID, 'c'));

@@ -1,11 +1,11 @@
 import { Keyboard } from 'react-native';
 import { useEffect, useReducer } from 'react';
 
-import { type ERoomType } from '../../definitions/ERoomType';
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import { useDebounce } from '../../lib/methods/helpers';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { getTeamListRoom } from '../../lib/services/restApi';
+import { type ERoomType } from '~/definitions/ERoomType';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import { useDebounce } from '~/lib/methods/helpers';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { getTeamListRoom } from '~/lib/services/restApi';
 
 const API_FETCH_COUNT = 25;
 
@@ -57,16 +57,12 @@ const initialState: ITeamChannelsState = {
 };
 
 export const useTeamChannels = (teamId: string) => {
-	'use memo';
-
 	const [state, updateState] = useReducer(stateReducer, initialState);
 	const { loading, loadingMore, data, isSearching, searchText, search } = state;
+	const isFiltering = isSearching && !!searchText;
 
 	const load = useDebounce(async () => {
-		// useDebounce keeps a ref to the latest callback, so this always reads fresh state
-		const { loadingMore, data, search, isSearching, searchText, end } = state;
-		const length = isSearching ? search.length : data.length;
-		if (loadingMore || end) {
+		if (state.loadingMore || state.end) {
 			return;
 		}
 
@@ -74,29 +70,24 @@ export const useTeamChannels = (teamId: string) => {
 		try {
 			const result = await getTeamListRoom({
 				teamId,
-				offset: length,
+				offset: isFiltering ? search.length : data.length,
 				count: API_FETCH_COUNT,
 				type: 'all',
 				filter: searchText
 			});
 
-			if (result.success) {
-				const newState: Partial<ITeamChannelsState> = {
-					loading: false,
-					loadingMore: false,
-					end: result.rooms.length < API_FETCH_COUNT
-				};
-
-				if (isSearching) {
-					newState.search = [...search, ...result.rooms] as IItem[];
-				} else {
-					newState.data = [...data, ...result.rooms] as IItem[];
-				}
-
-				updateState(newState);
-			} else {
+			if (!result.success) {
 				updateState({ loading: false, loadingMore: false });
+				return;
 			}
+
+			const { rooms } = result;
+			updateState({
+				loading: false,
+				loadingMore: false,
+				end: rooms.length < API_FETCH_COUNT,
+				...(isFiltering ? { search: [...search, ...rooms] as IItem[] } : { data: [...data, ...rooms] as IItem[] })
+			});
 		} catch (e) {
 			log(e);
 			updateState({ loading: false, loadingMore: false });
@@ -137,24 +128,24 @@ export const useTeamChannels = (teamId: string) => {
 	};
 
 	const updateItem = (id: IItem['_id'], patch: Partial<IItem>) => {
-		updateState(prev => ({ data: prev.data.map(item => (item._id === id ? { ...item, ...patch } : item)) }));
+		const patchItem = (item: IItem) => (item._id === id ? { ...item, ...patch } : item);
+		updateState(prev => ({ data: prev.data.map(patchItem), search: prev.search.map(patchItem) }));
 	};
 
 	const removeItem = (id: string) => {
-		updateState(prev => ({ data: prev.data.filter(item => item._id !== id) }));
+		const keepItem = (item: IItem) => item._id !== id;
+		updateState(prev => ({ data: prev.data.filter(keepItem), search: prev.search.filter(keepItem) }));
 	};
 
-	// Run the initial channels load when the hook mounts; `load` is a stable debounced ref, so this fires once
 	useEffect(() => {
 		load();
 	}, [load]);
 
 	return {
-		list: isSearching ? search : data,
+		list: isFiltering ? search : data,
 		loading,
 		loadingMore,
 		isSearching,
-		searchText,
 		loadMore: load,
 		startSearch,
 		cancelSearch,

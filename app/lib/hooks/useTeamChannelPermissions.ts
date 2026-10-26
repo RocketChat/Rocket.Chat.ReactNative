@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
 
-import { type IApplicationState } from '../../definitions';
+import { type IApplicationState } from '~/definitions';
 import { usePermissions } from './usePermissions';
 import { compareServerVersion } from '../methods/helpers';
-import { type TSupportedPermissions } from '../../reducers/permissions';
+import { type TSupportedPermissions } from '~/reducers/permissions';
 
 export const useCreateNewPermission = (rid: string, t: 'c' | 'p') => {
 	const permissions: TSupportedPermissions[] = t === 'c' ? ['create-c'] : ['create-p'];

@@ -1,8 +1,8 @@
 import { Alert } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import { BorderlessButton } from '~/containers/GestureButtons';
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 
-import TeamChannelsView, { type IItem } from '.';
+import TeamChannelsView, { type IItem } from '..';
 
 const mockShowActionSheet = jest.fn();
 const mockPop = jest.fn();
@@ -21,20 +21,20 @@ const defaultRouteParams = {
 	joined: true
 };
 
-jest.mock('../../lib/hooks/navigation', () => ({
+jest.mock('~/lib/hooks/navigation', () => ({
 	useAppNavigation: () => mockNavigation,
 	useAppRoute: () => ({
 		params: defaultRouteParams
 	})
 }));
 
-jest.mock('../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: () => ({
 		showActionSheet: mockShowActionSheet
 	})
 }));
 
-jest.mock('../../theme', () => ({
+jest.mock('~/theme', () => ({
 	useTheme: () => ({
 		colors: {
 			surfaceRoom: 'white',
@@ -69,17 +69,17 @@ const mockReduxState = {
 	}
 };
 
-jest.mock('../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: any) => unknown) => selector(mockReduxState)
 }));
 
-jest.mock('../../lib/hooks/useMasterDetail', () => ({
+jest.mock('~/lib/hooks/useMasterDetail', () => ({
 	useMasterDetail: () => false
 }));
 
 const mockUseCanCreateTeamChannel = jest.fn();
 
-jest.mock('../../lib/hooks/useTeamChannelPermissions', () => ({
+jest.mock('~/lib/hooks/useTeamChannelPermissions', () => ({
 	useCanCreateTeamChannel: (...args: any[]) => mockUseCanCreateTeamChannel(...args)
 }));
 
@@ -111,7 +111,7 @@ const mockFind = jest.fn();
 const mockQuery = jest.fn(() => ({ fetch: mockFetch }));
 const mockGet = jest.fn(() => ({ query: mockQuery, find: mockFind }));
 
-jest.mock('../../lib/database', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		get active() {
@@ -126,31 +126,31 @@ const mockUpdateTeamRoom = jest.fn();
 const mockRemoveTeamRoom = jest.fn();
 const mockHasPermission = jest.fn();
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	getTeamListRoom: (...args: any[]) => mockGetTeamListRoom(...args),
 	getRoomInfo: (...args: any[]) => mockGetRoomInfo(...args),
 	updateTeamRoom: (...args: any[]) => mockUpdateTeamRoom(...args),
 	removeTeamRoom: (...args: any[]) => mockRemoveTeamRoom(...args)
 }));
 
-jest.mock('../../lib/methods/helpers', () => ({
-	...jest.requireActual('../../lib/methods/helpers'),
+jest.mock('~/lib/methods/helpers', () => ({
+	...jest.requireActual('~/lib/methods/helpers'),
 	hasPermission: (...args: any[]) => mockHasPermission(...args),
 	getRoomTitle: (room: any) => room.fname || room.name,
 	getRoomAvatar: () => '',
 	isIOS: false,
-	compareServerVersion: jest.requireActual('../../lib/methods/helpers').compareServerVersion
+	compareServerVersion: jest.requireActual('~/lib/methods/helpers').compareServerVersion
 }));
 
-jest.mock('../../lib/methods/helpers/goRoom', () => ({
+jest.mock('~/lib/methods/helpers/goRoom', () => ({
 	goRoom: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/info', () => ({
+jest.mock('~/lib/methods/helpers/info', () => ({
 	showErrorAlert: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn(),
 	logEvent: jest.fn(),
@@ -167,7 +167,7 @@ jest.mock('../../lib/methods/helpers/log', () => ({
 	}
 }));
 
-jest.mock('../../actions/room', () => ({
+jest.mock('~/actions/room', () => ({
 	deleteRoom: jest.fn(() => ({ type: 'DELETE_ROOM' }))
 }));
 
@@ -176,7 +176,7 @@ jest.mock('react-redux', () => ({
 	useDispatch: () => jest.fn()
 }));
 
-jest.mock('../../containers/RoomItem', () => {
+jest.mock('~/containers/RoomItem', () => {
 	const { TouchableOpacity, Text } = require('react-native');
 	return ({ item, onPress, onLongPress }: any) => (
 		<TouchableOpacity testID={`room-item-${item._id}`} onPress={() => onPress(item)} onLongPress={() => onLongPress(item)}>
@@ -185,9 +185,9 @@ jest.mock('../../containers/RoomItem', () => {
 	);
 });
 
-jest.mock('../../containers/RoomHeader', () => () => null);
+jest.mock('~/containers/RoomHeader', () => () => null);
 
-jest.mock('../../containers/BackgroundContainer', () => {
+jest.mock('~/containers/BackgroundContainer', () => {
 	const { View, Text } = require('react-native');
 	return ({ loading, text }: any) => (
 		<View testID='background-container'>
@@ -197,14 +197,14 @@ jest.mock('../../containers/BackgroundContainer', () => {
 	);
 });
 
-jest.mock('../../containers/ActivityIndicator', () => () => null);
+jest.mock('~/containers/ActivityIndicator', () => () => null);
 
-jest.mock('../../containers/SafeAreaView', () => {
+jest.mock('~/containers/SafeAreaView', () => {
 	const { View } = require('react-native');
 	return ({ children, testID }: any) => <View testID={testID}>{children}</View>;
 });
 
-jest.mock('../../containers/SearchHeader', () => {
+jest.mock('~/containers/SearchHeader', () => {
 	const { TextInput } = require('react-native');
 	return ({ onSearchChangeText, testID }: any) => <TextInput testID={testID} onChangeText={onSearchChangeText} />;
 });
@@ -237,15 +237,27 @@ const setupSuccessfulLoad = (rooms: IItem[] = [makeRoom()]) => {
 	mockGetTeamListRoom.mockResolvedValue({ success: true, rooms });
 };
 
-// The most recent navigation options applied by the reactive header effect.
 const lastSetOptions = () => mockSetOptions.mock.calls[mockSetOptions.mock.calls.length - 1][0];
 
-// Render a header slot (headerLeft/headerTitle/headerRight) so its real buttons/inputs are queryable.
 const renderHeaderSlot = (slot: () => any) => render(slot());
 
 describe('TeamChannelsView', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		[
+			mockShowActionSheet,
+			mockFetch,
+			mockGetTeamListRoom,
+			mockGetRoomInfo,
+			mockUpdateTeamRoom,
+			mockRemoveTeamRoom,
+			mockHasPermission,
+			mockUseCanCreateTeamChannel
+		].forEach(mock => mock.mockReset());
+	});
+
+	afterEach(() => {
+		jest.restoreAllMocks();
 	});
 
 	describe('1. Renders team-channels-view; shows loading while loading', () => {
@@ -261,7 +273,6 @@ describe('TeamChannelsView', () => {
 		it('shows loading background container while loading=true', async () => {
 			mockFetch.mockResolvedValue([mockTeamSubscription]);
 			mockHasPermission.mockResolvedValue([false]);
-			// Never resolves during this test phase
 			mockGetTeamListRoom.mockReturnValue(new Promise(() => {}));
 
 			const { getByTestId } = render(<TeamChannelsView />);
@@ -271,7 +282,7 @@ describe('TeamChannelsView', () => {
 
 	describe('2. loadTeam — team from DB; not-found → pop + alert', () => {
 		it('pops and shows error when team subscription is not found', async () => {
-			const { showErrorAlert } = require('../../lib/methods/helpers/info');
+			const { showErrorAlert } = require('~/lib/methods/helpers/info');
 			mockFetch.mockResolvedValue([mockChildSubscription]);
 			mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: [] });
 
@@ -282,7 +293,7 @@ describe('TeamChannelsView', () => {
 		});
 
 		it('pops and shows error when DB query throws', async () => {
-			const { showErrorAlert } = require('../../lib/methods/helpers/info');
+			const { showErrorAlert } = require('~/lib/methods/helpers/info');
 			mockFetch.mockRejectedValue(new Error('DB error'));
 			mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: [] });
 
@@ -313,7 +324,6 @@ describe('TeamChannelsView', () => {
 			const { findByTestId } = render(<TeamChannelsView />);
 			await findByTestId('room-item-r1');
 
-			// Second load attempt should not fire (end=true, only 1 item < 25)
 			const callCount = mockGetTeamListRoom.mock.calls.length;
 			expect(callCount).toBe(1);
 		});
@@ -361,14 +371,12 @@ describe('TeamChannelsView', () => {
 			const { findByTestId } = render(<TeamChannelsView />);
 			await findByTestId('room-item-r1');
 
-			// Press the search button rendered in the normal header (drives onSearchPress).
 			const normalHeader = lastSetOptions();
 			const searchButton = await renderHeaderSlot(normalHeader.headerRight).findByTestId('team-channels-view-search');
 			await act(() => {
 				fireEvent.press(searchButton);
 			});
 
-			// The reactive header effect re-applies options with the SearchHeader title.
 			await waitFor(() => expect(lastSetOptions().headerTitle).toBeDefined());
 			mockGetTeamListRoom.mockClear();
 
@@ -390,24 +398,20 @@ describe('TeamChannelsView', () => {
 			const { findByTestId } = render(<TeamChannelsView />);
 			await findByTestId('room-item-r1');
 
-			// Enter search mode.
 			const searchButton = await renderHeaderSlot(lastSetOptions().headerRight).findByTestId('team-channels-view-search');
 			await act(() => {
 				fireEvent.press(searchButton);
 			});
 
-			// Confirm the search header is now active.
 			await waitFor(() =>
 				expect(renderHeaderSlot(lastSetOptions().headerTitle).getByTestId('team-channels-view-search-header')).toBeTruthy()
 			);
 
-			// Press the close button in the search headerLeft slot.
 			const closeButton = renderHeaderSlot(lastSetOptions().headerLeft).UNSAFE_getAllByType(BorderlessButton)[0];
 			await act(() => {
 				fireEvent.press(closeButton);
 			});
 
-			// Normal header is restored: search button is back, search header is gone.
 			await waitFor(() =>
 				expect(renderHeaderSlot(lastSetOptions().headerRight).getByTestId('team-channels-view-search')).toBeTruthy()
 			);
@@ -443,12 +447,10 @@ describe('TeamChannelsView', () => {
 			setupSuccessfulLoad([room]);
 			mockRemoveTeamRoom.mockResolvedValue({ success: true, room: { _id: 'r1' } });
 
-			// Action sheet: press the "remove from team" option.
 			mockShowActionSheet.mockImplementation(({ options }: any) => {
 				options.find((o: any) => o.testID === 'action-sheet-remove-from-team')?.onPress();
 			});
-			// Confirmation alert: press the destructive button.
-			const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation((_title, _message, buttons) => {
+			jest.spyOn(Alert, 'alert').mockImplementation((_title, _message, buttons) => {
 				buttons?.find(b => b.style === 'destructive')?.onPress?.();
 			});
 
@@ -461,8 +463,6 @@ describe('TeamChannelsView', () => {
 
 			await waitFor(() => expect(mockRemoveTeamRoom).toHaveBeenCalledWith({ roomId: 'r1', teamId: 'team-123' }));
 			await waitFor(() => expect(queryByTestId('room-item-r1')).toBeNull());
-
-			alertSpy.mockRestore();
 		});
 	});
 
@@ -531,7 +531,6 @@ describe('TeamChannelsView', () => {
 
 			render(<TeamChannelsView />);
 
-			// The header is still applied (search button present) but the create button is absent.
 			await waitFor(() =>
 				expect(renderHeaderSlot(lastSetOptions().headerRight).getByTestId('team-channels-view-search')).toBeTruthy()
 			);

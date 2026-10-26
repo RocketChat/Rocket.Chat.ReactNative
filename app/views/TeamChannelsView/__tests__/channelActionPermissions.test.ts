@@ -1,10 +1,10 @@
-import { getChannelActionPermissions } from './channelActionPermissions';
-import { type IItem } from './useTeamChannels';
-import { type TSubscriptionModel } from '../../definitions';
+import { getChannelActionPermissions } from '../channelActionPermissions';
+import { type IItem } from '../hooks/useTeamChannels';
+import { type TSubscriptionModel } from '~/definitions';
 
 const mockHasPermission = jest.fn();
 
-jest.mock('../../lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers', () => ({
 	hasPermission: (...args: any[]) => mockHasPermission(...args)
 }));
 
@@ -15,7 +15,7 @@ const makeItem = (overrides: Partial<IItem> = {}): IItem =>
 		_id: 'item-id',
 		t: 'c',
 		...overrides
-	} as unknown as IItem);
+	}) as unknown as IItem;
 
 const perms = {
 	edit: ['edit-perm'],
@@ -60,9 +60,9 @@ describe('getChannelActionPermissions', () => {
 
 	it('maps each returned boolean from its call’s [0] element', async () => {
 		mockHasPermission
-			.mockImplementationOnce(() => Promise.resolve([true])) // edit -> canAutoJoin
-			.mockImplementationOnce(() => Promise.resolve([false])) // remove -> canRemove
-			.mockImplementationOnce(() => Promise.resolve([true])); // delete -> canDelete
+			.mockImplementationOnce(() => Promise.resolve([true]))
+			.mockImplementationOnce(() => Promise.resolve([false]))
+			.mockImplementationOnce(() => Promise.resolve([true]));
 
 		const result = await getChannelActionPermissions(makeItem(), team, perms);
 
@@ -82,7 +82,6 @@ describe('getChannelActionPermissions', () => {
 
 		const promise = getChannelActionPermissions(makeItem(), team, perms);
 
-		// All three synchronous dispatches happened before any awaited resolution.
 		expect(mockHasPermission).toHaveBeenCalledTimes(3);
 		expect(callOrder).toEqual(['edit-perm', 'remove-perm', 'delete-c-perm']);
 		expect(resolveCount).toBe(3);

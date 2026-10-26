@@ -1,14 +1,14 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
-import { useTeamChannels, type IItem } from './useTeamChannels';
+import { useTeamChannels, type IItem } from '../useTeamChannels';
 
 const mockGetTeamListRoom = jest.fn();
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	getTeamListRoom: (...args: any[]) => mockGetTeamListRoom(...args)
 }));
 
-jest.mock('../../lib/methods/helpers/log', () => ({
+jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: jest.fn(),
 	logEvent: jest.fn(),
@@ -26,7 +26,7 @@ const makeRoom = (overrides: Partial<IItem> = {}): IItem =>
 		teamDefault: false,
 		t: 'c',
 		...overrides
-	} as IItem);
+	}) as IItem;
 
 const makePage = (count: number, prefix = 'r') =>
 	Array.from({ length: count }, (_, i) => makeRoom({ _id: `${prefix}${i}` as any, fname: `Room ${i}` }));
@@ -129,7 +129,6 @@ describe('useTeamChannels', () => {
 			{ timeout: 2000 }
 		);
 		await waitFor(() => expect(result.current.list).toEqual([expect.objectContaining({ _id: 'match' })]));
-		expect(result.current.searchText).toBe('design');
 	});
 
 	it('cancelSearch restores the preserved browse bucket without a new fetch', async () => {
