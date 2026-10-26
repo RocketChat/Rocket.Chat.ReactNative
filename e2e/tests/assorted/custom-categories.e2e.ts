@@ -2,7 +2,7 @@ import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createCategory, createRandomRoom, createUser, deleteCreatedUsers, randomCategoryName } from '~e2e/support/api';
-import { openRoom } from '~e2e/support/appduct';
+import { openRoomScreen } from '~e2e/support/appduct';
 import {
 	expectCategoryDeleted,
 	expectCategoryNamed,
@@ -23,7 +23,6 @@ import {
 	expectVisible,
 	LONG_TIMEOUT,
 	loginWithDeepLink,
-	openRoomActions,
 	scrollAndTap,
 	tapWhenVisible
 } from '~e2e/support/flows';
@@ -71,8 +70,7 @@ test('moves a room to a category, collapses, renames and deletes it', { tags: ['
 
 	await loginWithDeepLink(fixtures, user);
 	await groupRoomsByCategory(fixtures);
-	await openRoom(fixtures, room.name);
-	await openRoomActions(fixtures);
+	await openRoomScreen(fixtures, 'RoomActionsView', room.name);
 	await moveOpenRoomToCategory(fixtures, category);
 	await expectRoomInCategory(user, room._id, category._id);
 	await expect(screen.getByLabel(new RegExp(`^Category.*${category.name}`))).toBeVisible({ timeout: LONG_TIMEOUT });

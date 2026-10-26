@@ -1,7 +1,7 @@
 import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
-import { openRoom } from '~e2e/support/appduct';
+import { openRoom, openRoomScreen } from '~e2e/support/appduct';
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
 	goBackUntil,
@@ -42,15 +42,12 @@ const createBroadcastChannel = async (fixtures: Fixtures, room: string, member: 
 	await expectRoomTitle(fixtures, room);
 };
 
-const expectBroadcastInRoomInfo = async (fixtures: Fixtures) => {
-	await tapWhenVisible(fixtures, 'room-header');
-	await tapWhenVisible(fixtures, 'room-actions-info');
-	await expect(fixtures.screen.getByTestId('room-info-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+const expectBroadcastInRoomInfo = async (fixtures: Fixtures, room: string) => {
+	await openRoomScreen(fixtures, 'RoomInfoView', room);
 	await expect(fixtures.screen.getByTestId('room-info-view-broadcast').first()).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
 const returnToRoom = async (fixtures: Fixtures, room: string) => {
-	await goBackUntil(fixtures, 'room-actions-view');
 	await goBackUntil(fixtures, 'room-view');
 	await expectRoomTitle(fixtures, room);
 };
@@ -63,7 +60,7 @@ test('creates a broadcast room and replies to its message', { tags: ['test-7'] }
 
 	await loginWithDeepLink(fixtures, owner);
 	await createBroadcastChannel(fixtures, room, member.username);
-	await expectBroadcastInRoomInfo(fixtures);
+	await expectBroadcastInRoomInfo(fixtures, room);
 	await returnToRoom(fixtures, room);
 	await sendMessage(fixtures, 'message');
 

@@ -2,6 +2,7 @@ import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { openScreen } from '~e2e/support/appduct';
 import { isVisibleNow, loginWithDeepLink, LONG_TIMEOUT, succeeds, type Fixtures, headerItem } from '~e2e/support/flows';
 import { goToDisplayPreferences, goToRoomListFromDisplayPreferences } from '~e2e/support/settings';
 
@@ -61,14 +62,14 @@ test('changes the rooms list display preferences', { tags: ['test-5'] }, async f
 	await goToRoomListFromDisplayPreferences(fixtures);
 	await expect(lastMessages.first()).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await goToDisplayPreferences(fixtures);
+	await openScreen(fixtures, 'DisplayPrefsView');
 	await switchRow(fixtures, 'display-pref-view-condensed', 'Condensed', true);
 	await goToRoomListFromDisplayPreferences(fixtures);
 	await expect(generalRow).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(lastMessages).toHaveCount(0, { timeout: LONG_TIMEOUT });
 	await expect(avatars.first()).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await goToDisplayPreferences(fixtures);
+	await openScreen(fixtures, 'DisplayPrefsView');
 	await switchRow(fixtures, 'display-pref-view-avatars', 'Avatars', false);
 	await goToRoomListFromDisplayPreferences(fixtures);
 	await expect(generalRow).toBeVisible({ timeout: LONG_TIMEOUT });

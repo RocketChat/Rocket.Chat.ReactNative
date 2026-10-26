@@ -2,10 +2,19 @@ import '@appduct/react-native/auto';
 import { jsonSchema, registerTool } from '@appduct/react-native';
 import { Q } from '@nozbe/watermelondb';
 import { first, firstValueFrom, fromEvent, takeUntil } from 'rxjs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as RNLocalize from 'react-native-localize';
 
+import { appStart } from '~/actions/app';
 import { deepLinkingOpen } from '~/actions/deepLinking';
+import { logout } from '~/actions/login';
 import database from '~/lib/database';
+import { LANGUAGES, setLanguage } from '~/i18n';
 import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
+import { SERVERS_TABLE } from '~/lib/database/model/servers/Server';
+import { SERVERS_HISTORY_TABLE } from '~/lib/database/model/ServersHistory';
+import { removeServer } from '~/lib/methods/logout';
+import { initialState as defaultSortPreferences } from '~/reducers/sortPreferences';
 import { getIsMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { RootEnum, type IApplicationState, type IPreferences, type TSubscriptionModel } from '~/definitions';
 import { normalizeDeepLinkingServerHost } from '~/lib/methods/helpers/normalizeDeepLinkingServerHost';
@@ -15,7 +24,7 @@ import Navigation from '~/lib/navigation/appNavigation';
 import { clearCacheAndReconnect } from '~/lib/methods/clearCache';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { store } from '~/lib/store/auxStore';
-import { setPreference } from '~/actions/sortPreferences';
+import { setAllPreferences, setPreference } from '~/actions/sortPreferences';
 import { saveSortPreference } from '~/lib/methods/userPreferencesMethods';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { initialTheme } from '~/lib/methods/helpers/theme';
@@ -573,5 +582,75 @@ registerTool({
 		}
 		preference.write(value);
 		return { name, previous, value: preference.read() };
+	}
+});
+
+const waitForLogout = (signal: AbortSignal) => {
+	let loggingOut = false;
+	return waitForState(state => {
+		loggingOut ||= state.app.root === RootEnum.ROOT_LOADING;
+		return loggingOut && state.app.root === RootEnum.ROOT_OUTSIDE;
+	}, signal);
+};
+
+const removeServersExcept = async (keptServer: string | null) => {
+	const servers = await database.servers.get(SERVERS_TABLE).query().fetch();
+	for (const { id } of servers) {
+		if (id !== keptServer) {
+			await removeServer({ server: id });
+		}
+	}
+};
+
+const clearServersHistory = async () => {
+	const serversDatabase = database.servers;
+	const history = await serversDatabase.get(SERVERS_HISTORY_TABLE).query().fetch();
+	await serversDatabase.write(() => serversDatabase.batch(history.map(entry => entry.prepareDestroyPermanently())));
+};
+
+const isRootRouteMounted = (name: string) => () =>
+	!!Navigation.navigationRef.current?.getRootState()?.routes.some(route => route.name === name);
+
+const remountOutside = async (signal: AbortSignal) => {
+	store.dispatch(appStart({ root: RootEnum.ROOT_LOADING }));
+	await waitForNavigationState(isRootRouteMounted('AuthLoading'), signal);
+	store.dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+	await waitForNavigationState(isRootRouteMounted('OutsideStack'), signal);
+};
+
+const deviceLanguage = () => RNLocalize.findBestLanguageTag(LANGUAGES.map(({ value }) => value))?.languageTag ?? 'en';
+
+const clearLocalStorage = async () => {
+	UserPreferences.getAllKeys().forEach(key => UserPreferences.removeItem(key));
+	setLanguage(deviceLanguage());
+	store.dispatch(setAllPreferences(defaultSortPreferences));
+	await AsyncStorage.clear();
+};
+
+registerTool({
+	name: 'reset_app',
+	description:
+		'Return the running app to a first launch without restarting it: log out of every workspace, remove their data and the workspace history, and clear stored preferences. Resolves on the add workspace screen.',
+	timeoutMs: 60_000,
+	inputSchema: jsonSchema<Record<string, never>>({ type: 'object', properties: {}, additionalProperties: false }),
+	outputSchema: jsonSchema<{ root: string }>({
+		type: 'object',
+		properties: { root: { type: 'string' } },
+		required: ['root']
+	}),
+	handler: async (_input, { signal }) => {
+		await waitUntil(hasLeftShareExtension, signal);
+		const isInside = store.getState().app.root === RootEnum.ROOT_INSIDE;
+		await removeServersExcept(isInside ? store.getState().server.server : null);
+		if (isInside) {
+			const loggedOut = waitForLogout(signal);
+			store.dispatch(logout());
+			await loggedOut;
+		}
+		await clearServersHistory();
+		await clearLocalStorage();
+		await waitForNavigatorReady(signal);
+		await remountOutside(signal);
+		return { root: RootEnum.ROOT_OUTSIDE };
 	}
 });

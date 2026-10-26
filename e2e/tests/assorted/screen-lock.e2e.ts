@@ -2,6 +2,7 @@ import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { openScreen } from '~e2e/support/appduct';
 import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
 import { enterPasscode, openSettings } from '~e2e/support/settings';
 import { delay } from '~e2e/support/timing';
@@ -12,10 +13,12 @@ const FIRST_PASSCODE = '123456';
 const SECOND_PASSCODE = '345678';
 const AUTO_LOCK_WAIT = 7000;
 
-const openScreenLockSettings = async (fixtures: Fixtures) => {
+const openScreenLock = (fixtures: Fixtures) => tapWhenVisible(fixtures, 'security-privacy-view-screen-lock');
+
+const openScreenLockFromSettings = async (fixtures: Fixtures) => {
 	await openSettings(fixtures);
 	await tapWhenVisible(fixtures, 'settings-view-security-privacy');
-	await tapWhenVisible(fixtures, 'security-privacy-view-screen-lock');
+	await openScreenLock(fixtures);
 };
 
 const chooseNewPasscode = async (fixtures: Fixtures, passcode: string) => {
@@ -38,7 +41,8 @@ test('locks the app with a passcode and changes it', { tags: ['test-8'], timeout
 	const user = await createUser();
 
 	await loginWithDeepLink(fixtures, user);
-	await openScreenLockSettings(fixtures);
+	await openScreen(fixtures, 'SecurityPrivacyView');
+	await openScreenLock(fixtures);
 	await expect(screenLockConfig).toBeVisible({ timeout: LONG_TIMEOUT });
 
 	await screen.getByTestId('screen-lock-config-view-auto-lock').tap();
@@ -49,7 +53,7 @@ test('locks the app with a passcode and changes it', { tags: ['test-8'], timeout
 	await enterPasscode(fixtures, FIRST_PASSCODE);
 	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await openScreenLockSettings(fixtures);
+	await openScreenLockFromSettings(fixtures);
 	await enterPasscode(fixtures, FIRST_PASSCODE);
 	await expect(screenLockConfig).toBeVisible({ timeout: LONG_TIMEOUT });
 	await tapWhenVisible(fixtures, 'screen-lock-config-view-change-passcode');

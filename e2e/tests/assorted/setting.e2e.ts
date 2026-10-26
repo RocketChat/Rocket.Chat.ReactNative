@@ -2,6 +2,7 @@ import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { openScreen } from '~e2e/support/appduct';
 import {
 	expectAllVisible,
 	goBack,
@@ -76,7 +77,7 @@ test('shows settings, clears cache and opens legal', { tags: ['test-2'] }, async
 	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(screen.getByTestId(`rooms-list-view-item-${room.name}`)).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await openSettings(fixtures);
+	await openScreen(fixtures, 'SettingsView');
 	await tapWhenVisible(fixtures, 'settings-view-legal');
 	await expect(screen.getByTestId('legal-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expectAllVisible(fixtures, ['legal-terms-button', 'legal-privacy-button']);

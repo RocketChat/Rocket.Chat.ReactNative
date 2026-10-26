@@ -2,6 +2,7 @@ import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { openScreen } from '~e2e/support/appduct';
 import {
 	expectAllVisible,
 	loginWithDeepLink,
@@ -54,7 +55,7 @@ test('shows notification preferences', { tags: ['test-2'] }, async fixtures => {
 	const user = await createUser();
 
 	await loginWithDeepLink(fixtures, user);
-	await goToUserPreferences(fixtures);
+	await openScreen(fixtures, 'UserPreferencesView');
 	for (const testId of ['preferences-view-notifications', 'preferences-view-enable-message-parser']) {
 		await expect(screen.getByTestId(testId)).toBeVisible({ timeout: LONG_TIMEOUT });
 	}
