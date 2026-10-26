@@ -819,6 +819,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
                 "width": 15,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -883,6 +884,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
                 "width": 15,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -947,6 +949,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
                 "width": 15,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -1057,6 +1060,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               "width": 30,
             }
           }
+          svgVariables={null}
           symbolSize={null}
           symbolWeight={null}
           transition={null}
@@ -4183,6 +4187,7 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
               "width": 300,
             }
           }
+          svgVariables={null}
           symbolSize={null}
           symbolWeight={null}
           transition={null}
