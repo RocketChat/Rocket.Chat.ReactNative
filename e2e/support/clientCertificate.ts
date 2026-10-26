@@ -257,6 +257,8 @@ export const trustCertificateAuthority = async ({ platform }: Fixtures, certific
 const installAndroidClientCertificate = async ({ app, screen }: Fixtures, certificate: ClientCertificate) => {
 	await adb('push', certificate.p12Path, `${androidDownloads}/${certificate.fileName}`);
 	await adb('shell', 'am', 'start', '-a', 'android.credentials.INSTALL');
+	await screen.getByLabel('Show roots').tap();
+	await tapWhenUncovered(screen.getByText('Downloads'));
 	await tapWhenUncovered(screen.getByText(certificate.fileName));
 	await fillWhenUncovered(screen.getByTestId('com.android.certinstaller:id/credential_password'), certificate.password);
 	await screen.getByRole('button', { name: /^OK$/i }).tap();
