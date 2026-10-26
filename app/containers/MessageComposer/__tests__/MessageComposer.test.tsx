@@ -922,13 +922,15 @@ describe('MessageComposer', () => {
 			expect(messageActionStore.getState().action).toEqual({ kind: 'quote', messageIds: ['def'] });
 		});
 
-		test('restores input and keeps attachments after a failed upload', async () => {
-			(sendFileMessage as jest.Mock).mockRejectedValueOnce(new Error('upload failed'));
-			const { composerRef } = await sendWithCaptionAndQuote([attachment]);
+		test('restores the caption and keeps the reaction picker open when an upload fails while reacting', async () => {
+			const upload = holdUpload();
+			const { composerRef, messageActionStore } = await sendWithCaptionAndQuote([attachment]);
+			await act(() => messageActionStore.getState().actions.startReacting('def'));
+			await act(async () => upload.reject());
 
 			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
 			expect(screen.getByTestId('message-composer-attachments')).toBeOnTheScreen();
-			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
+			expect(messageActionStore.getState().action).toEqual({ kind: 'react', messageId: 'def' });
 		});
 
 		test('keeps only the attachments that failed so the ones already sent are not sent again', async () => {

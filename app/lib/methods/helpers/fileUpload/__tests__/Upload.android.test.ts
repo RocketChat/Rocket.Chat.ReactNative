@@ -42,7 +42,7 @@ describe('Upload (android)', () => {
 		});
 	});
 
-	it('carries Retry-After whatever case the server used', async () => {
+	it('carries Retry-After from the response headers', async () => {
 		mockUpload({ status: 429, body: '{}', headers: { 'Retry-After': '12' } });
 
 		await expect(send()).rejects.toMatchObject({ status: 429, retryAfterSeconds: 12 });

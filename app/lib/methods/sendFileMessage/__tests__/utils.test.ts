@@ -160,7 +160,7 @@ describe('persistUploadError', () => {
 	const { getUploadByPath } = require('~/lib/database/services/Upload');
 
 	const persist = async (errorStatus?: number, errorMessage?: string) => {
-		const updated: any = {};
+		const updated: any = { errorStatus: 500, errorMessage: 'stale' };
 		(getUploadByPath as jest.Mock).mockResolvedValue({
 			update: jest.fn((cb: (u: any) => void) => {
 				cb(updated);
@@ -199,7 +199,7 @@ describe('finalizeFailedUpload', () => {
 	const { showToast } = require('~/lib/methods/helpers/showToast');
 
 	const finalize = async (error: unknown) => {
-		const updated: any = {};
+		const updated: any = { errorStatus: 500, errorMessage: 'stale' };
 		const attempt = {} as any;
 		uploadQueue[uploadPath] = attempt;
 		(getUploadByPath as jest.Mock).mockResolvedValue({
@@ -297,7 +297,11 @@ describe('finalizeFailedUpload', () => {
 	});
 
 	it('stays quiet about a failure that may still resolve itself', async () => {
-		const updated = await finalize(new UploadHttpError(429, { serverMessage: 'error-too-many-requests' }));
+		const updated = await finalize(
+			new UploadHttpError(429, {
+				serverMessage: 'You must wait 37 seconds before trying this endpoint again. [error-too-many-requests]'
+			})
+		);
 
 		expect(updated).toMatchObject({ errorStatus: 429 });
 		expect(showToast).not.toHaveBeenCalled();

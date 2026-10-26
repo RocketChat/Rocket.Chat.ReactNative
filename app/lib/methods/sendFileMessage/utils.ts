@@ -26,7 +26,7 @@ export function isUploadActive(path: string, rid: string): boolean {
 }
 
 export const releaseUploadSlot = (uploadPath: string, upload: IFileUpload | null) => {
-	if (upload && uploadQueue[uploadPath] === upload) {
+	if (uploadQueue[uploadPath] === upload) {
 		delete uploadQueue[uploadPath];
 	}
 };

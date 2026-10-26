@@ -104,10 +104,11 @@ export const MessageComposer = ({
 		quotedMessageIds: string[]
 	) => {
 		const captionSent = attachments[0].canUpload && results[0].status === 'fulfilled';
-		const composerIdle = !composerInputComponentRef.current?.getText() && !messageActionStore.getState().action;
+		const { action, actions } = messageActionStore.getState();
+		const composerIdle = !composerInputComponentRef.current?.getText() && (!action || action.kind === 'react');
 		if (captionSent || !composerIdle) return;
 		composerInputComponentRef.current?.setInput(textFromInput);
-		messageActionStore.getState().actions.setQuoteMessageIds(quotedMessageIds);
+		if (!action) actions.setQuoteMessageIds(quotedMessageIds);
 	};
 
 	const handleSendMessage = async () => {

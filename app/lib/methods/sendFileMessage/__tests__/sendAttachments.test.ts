@@ -37,6 +37,7 @@ const UPLOAD_PATH = '/tmp/pic.jpg-GENERAL';
 const firstAttempt = () => (FileUpload as jest.Mock).mock.instances[0];
 
 beforeEach(() => jest.clearAllMocks());
+afterEach(() => jest.restoreAllMocks());
 
 const base = {
 	rid: 'rid1',
