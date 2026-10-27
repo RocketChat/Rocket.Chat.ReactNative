@@ -119,14 +119,41 @@ describe('ComposerInput', () => {
 		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  programmatic text  ' });
 	});
 
-	it('resets the native text prop when clearing so the same text can be set again', () => {
+	it('clears without setting an empty native text so a multi-line input shrinks back after sending', () => {
+		const { composerRef, inputRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+
+		fireEvent.changeText(input, 'line 1\nline 2\nline 3\nline 4');
+		inputRef.current?.setNativeProps.mockClear();
+		act(() => {
+			composerRef.current?.getTextAndClear();
+		});
+
+		expect(inputRef.current?.clear).toHaveBeenCalledTimes(1);
+		expect(inputRef.current?.setNativeProps).not.toHaveBeenCalled();
+	});
+
+	it('sets the same text again after clearing, as when editing the same message twice', () => {
 		const { composerRef, inputRef } = renderInput();
 
 		act(() => composerRef.current?.setInput('edit'));
 		act(() => composerRef.current?.setInput(''));
+		inputRef.current?.setNativeProps.mockClear();
+		act(() => composerRef.current?.setInput('edit'));
 
-		expect(inputRef.current?.setNativeProps).toHaveBeenLastCalledWith({ text: '' });
-		expect(inputRef.current?.clear).toHaveBeenCalledTimes(1);
+		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: '' }], [{ text: 'edit' }]]);
+	});
+
+	it('does not blank the input when the same text is typed again after clearing', () => {
+		const { composerRef, inputRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+
+		fireEvent.changeText(input, 'a');
+		act(() => composerRef.current?.setInput(''));
+		inputRef.current?.setNativeProps.mockClear();
+		fireEvent.changeText(input, 'a');
+
+		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: 'a' }]]);
 	});
 
 	it('passes the typed raw value to debounced autocomplete before the input text is trimmed', () => {
