@@ -246,8 +246,8 @@ importers:
         specifier: ~3.3.0
         version: 3.3.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       react-native-image-crop-picker:
-        specifier: RocketChat/react-native-image-crop-picker#95fcd679af2487b9c7f9553d3b4f1f8af3a43675
-        version: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/95fcd679af2487b9c7f9553d3b4f1f8af3a43675(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
+        specifier: RocketChat/react-native-image-crop-picker#cba321c5a6a0c2b1a931dc9b1cce33e4d2bf1add
+        version: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/cba321c5a6a0c2b1a931dc9b1cce33e4d2bf1add(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       react-native-incall-manager:
         specifier: ^4.2.1
         version: 4.2.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))
@@ -7498,8 +7498,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-image-crop-picker@https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/95fcd679af2487b9c7f9553d3b4f1f8af3a43675:
-    resolution: {gitHosted: true, integrity: sha512-OpOHIKF1C7K6OyoVD1lN2SfwsSsJVUKKjE6MKJQFFtDjiD8Z+VhpBRStLf52CiQT8q443keeB+qPhpXnbYGR+A==, tarball: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/95fcd679af2487b9c7f9553d3b4f1f8af3a43675}
+  react-native-image-crop-picker@https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/cba321c5a6a0c2b1a931dc9b1cce33e4d2bf1add:
+    resolution: {gitHosted: true, integrity: sha512-oJLZniezKR0rxXSHLokXzdmPMQSdHavZ95VbuyAhLSA4SUilB686CrS56ykf5EsjllXZb9DLbnPdB/oi6K0EBw==, tarball: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/cba321c5a6a0c2b1a931dc9b1cce33e4d2bf1add}
     version: 0.52.0
     peerDependencies:
       react: '*'
@@ -17243,7 +17243,7 @@ snapshots:
       react: 19.2.3
       react-native: 0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
 
-  react-native-image-crop-picker@https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/95fcd679af2487b9c7f9553d3b4f1f8af3a43675(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3):
+  react-native-image-crop-picker@https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/cba321c5a6a0c2b1a931dc9b1cce33e4d2bf1add(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3):
     dependencies:
       react: 19.2.3
       react-native: 0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
