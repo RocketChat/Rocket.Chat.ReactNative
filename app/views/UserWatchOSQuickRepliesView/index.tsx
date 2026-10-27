@@ -65,6 +65,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 					onChangeText={setInput}
 					placeholder={I18n.t('Add_Quick_Reply')}
 					onSubmitEditing={addQuickReply}
+					submitBehavior='submit'
 					returnKeyType='done'
 					containerStyle={styles.inputContainer}
 					maxLength={QUICK_REPLY_MAX_LENGTH}

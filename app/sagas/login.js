@@ -273,7 +273,6 @@ const fetchWatchReplies = function* fetchWatchRepliesFork() {
 		const server = yield select(s => s.server.server);
 		const settingsLoaded = yield select(s => s.settings.Apple_Watch_Quick_Actions !== undefined);
 		if (!settingsLoaded) {
-			// the settings fetch may never complete for this login, so don't outlive it
 			const { stop } = yield race({
 				loaded: take(types.SETTINGS.FETCH_COMPLETE),
 				stop: take([types.LOGOUT, types.LOGIN.SUCCESS, types.SERVER.SELECT_REQUEST])

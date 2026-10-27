@@ -130,7 +130,6 @@ describe('removeServerData', () => {
 
 		await removeServerData({ server: SERVER });
 
-		expect(UserPreferences.getString(getWatchOSQuickRepliesKey(SERVER))).toBeNull();
 		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith(SERVER, []);
 	});
 

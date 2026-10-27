@@ -303,7 +303,6 @@ jest.mock('./app/lib/native/NativeWatchModule', () => ({
 	__esModule: true,
 	default: {
 		syncQuickReplies: jest.fn(),
-		isWatchSupported: jest.fn(() => false),
 		isWatchAppInstalled: jest.fn(() => false)
 	}
 }));

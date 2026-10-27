@@ -103,9 +103,10 @@ jest.mock('~/lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer',
 }));
 
 import loginRoot from '../login';
-import { loginSuccess } from '~/actions/login';
+import { loginSuccess, logout } from '~/actions/login';
 import { selectServerRequest, selectServerSuccess } from '~/actions/server';
 import { addSettings, fetchSettingsComplete } from '~/actions/settings';
+import { shouldShowWatchAppOptions } from '~/lib/methods/watchOSQuickReplies/getWatchStatus';
 import { syncWatchOSQuickRepliesWithServer } from '~/lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 import type { TSettingsState } from '~/reducers/settings';
@@ -136,6 +137,16 @@ describe('login saga — watch quick replies', () => {
 		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'Yes,No');
 	});
 
+	it('does not sync without a watch app', async () => {
+		jest.mocked(shouldShowWatchAppOptions).mockReturnValueOnce(false);
+		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No' });
+
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+
+		expect(syncWatchOSQuickRepliesWithServer).not.toHaveBeenCalled();
+	});
+
 	it('waits for the settings fetch when the setting is not loaded yet', async () => {
 		const { store } = setupStore();
 
@@ -156,13 +167,41 @@ describe('login saga — watch quick replies', () => {
 
 		store.dispatch(loginSuccess(USER));
 		await flushSagaMicrotasks();
-		// past the window in which the root saga cancels the whole login task
 		jest.advanceTimersByTime(2500);
 		await flushSagaMicrotasks();
 		store.dispatch(selectServerRequest('https://other.rocket.chat', '7.0.0'));
 		store.dispatch(fetchSettingsComplete());
 		await flushSagaMicrotasks();
 		jest.useRealTimers();
+
+		expect(syncWatchOSQuickRepliesWithServer).not.toHaveBeenCalled();
+	});
+
+	it('stops waiting when the user logs in again', async () => {
+		jest.useFakeTimers();
+		const { store } = setupStore();
+
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+		jest.advanceTimersByTime(2500);
+		await flushSagaMicrotasks();
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+		store.dispatch(fetchSettingsComplete());
+		await flushSagaMicrotasks();
+		jest.useRealTimers();
+
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledTimes(1);
+	});
+
+	it('stops waiting when the user logs out', async () => {
+		const { store } = setupStore();
+
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+		store.dispatch(logout());
+		store.dispatch(fetchSettingsComplete());
+		await flushSagaMicrotasks();
 
 		expect(syncWatchOSQuickRepliesWithServer).not.toHaveBeenCalled();
 	});

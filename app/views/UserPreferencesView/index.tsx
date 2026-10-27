@@ -163,7 +163,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 					) : null}
 				</List.Section>
 				{showWatchAppOptions ? (
-					<List.Section title='WatchOS_Quick_Replies'>
+					<List.Section>
 						<List.Separator />
 						<List.Item
 							title='WatchOS_Quick_Replies'
