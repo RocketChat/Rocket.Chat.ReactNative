@@ -27,7 +27,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 
 	useEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('WatchOS_Quick_Replies')
+			title: I18n.t('Apple_Watch_Quick_Replies')
 		});
 	}, [navigation]);
 
@@ -60,7 +60,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 				keyboardShouldPersistTaps='handled'
 				keyboardDismissMode='interactive'>
 				<FormTextInput
-					label={I18n.t('WatchOS_Quick_Replies')}
+					label={I18n.t('Apple_Watch_Quick_Replies')}
 					value={input}
 					onChangeText={setInput}
 					placeholder={I18n.t('Add_Quick_Reply')}
@@ -71,7 +71,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 					maxLength={QUICK_REPLY_MAX_LENGTH}
 				/>
 				<Text style={[styles.info, { color: colors.fontHint }]}>
-					{I18n.t('WatchOS_Quick_Replies_Description', { max: QUICK_REPLIES_MAX, length: QUICK_REPLY_MAX_LENGTH })}
+					{I18n.t('Apple_Watch_Quick_Replies_Description', { max: QUICK_REPLIES_MAX, length: QUICK_REPLY_MAX_LENGTH })}
 				</Text>
 				{quickReplies.length !== 0 && (
 					<View style={styles.chipContainer}>

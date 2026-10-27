@@ -166,7 +166,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 					<List.Section>
 						<List.Separator />
 						<List.Item
-							title='WatchOS_Quick_Replies'
+							title='Apple_Watch_Quick_Replies'
 							onPress={() => navigateToScreen('UserWatchOSQuickRepliesView', events.UP_GO_WATCHOS_QUICK_REPLIES)}
 							showActionIndicator
 							testID='preferences-view-watchos-quickreplies'
