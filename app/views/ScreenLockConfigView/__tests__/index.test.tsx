@@ -238,6 +238,21 @@ describe('ScreenLockConfigView', () => {
 		expect(autoLockSwitch().props.disabled).toBe(true);
 	});
 
+	it('ignores the auto-lock row and switch while the admin forces screen lock', async () => {
+		mockSettings = { Force_Screen_Lock: true, Force_Screen_Lock_After: 120 };
+		mockServerRecord = { autoLock: true, autoLockTime: 120, update: mockUpdate };
+		await renderView();
+		await screen.findByText('After 120 seconds (set by admin)');
+
+		await act(async () => {
+			fireEvent.press(screen.getByTestId('screen-lock-config-view-auto-lock'));
+			fireEvent(autoLockSwitch(), 'onValueChange', false);
+		});
+
+		expect(mockUpdate).not.toHaveBeenCalled();
+		expect(autoLockSwitch().props.value).toBe(true);
+	});
+
 	it('offers an admin time that is not a default option once forcing is lifted', async () => {
 		mockSettings = { Force_Screen_Lock: false, Force_Screen_Lock_After: 120 };
 		mockServerRecord = { autoLock: true, autoLockTime: 120, update: mockUpdate };
