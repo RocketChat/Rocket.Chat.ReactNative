@@ -1,4 +1,4 @@
-import { act, fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render, userEvent } from '@testing-library/react-native';
 
 import UserWatchOSQuickRepliesView from '..';
 import I18n from '~/i18n';
@@ -40,7 +40,7 @@ describe('UserWatchOSQuickRepliesView', () => {
 
 		act(() => fireEvent.press(getByText('Yes')));
 
-		expect(stored()).toEqual([]);
+		expect(UserPreferences.getString(key)).toBe('[]');
 		expect(syncWatchOSQuickReplies).toHaveBeenCalledTimes(1);
 	});
 
@@ -56,9 +56,11 @@ describe('UserWatchOSQuickRepliesView', () => {
 		expect(stored()).toEqual(full);
 	});
 
-	it('limits typed replies to the max length', () => {
+	it('stops typing at the max length', async () => {
 		const { getByPlaceholderText } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
 
-		expect(getByPlaceholderText(I18n.t('Add_Quick_Reply')).props.maxLength).toBe(QUICK_REPLY_MAX_LENGTH);
+		await userEvent.setup().type(getByPlaceholderText(I18n.t('Add_Quick_Reply')), 'a'.repeat(QUICK_REPLY_MAX_LENGTH + 5));
+
+		expect(getByPlaceholderText(I18n.t('Add_Quick_Reply')).props.value).toBe('a'.repeat(QUICK_REPLY_MAX_LENGTH));
 	});
 });
