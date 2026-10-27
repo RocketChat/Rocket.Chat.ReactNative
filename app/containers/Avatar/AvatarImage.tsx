@@ -32,7 +32,7 @@ const AvatarImage = ({ uri, style }: IAvatarImage) => {
 				onLoad={onSettled}
 				onError={onSettled}
 			/>
-			{showSkeleton ? <AvatarSkeleton borderRadius={style.borderRadius} /> : null}
+			{showSkeleton ? <AvatarSkeleton style={style} /> : null}
 		</>
 	);
 };
