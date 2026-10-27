@@ -6,7 +6,11 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import AvatarImage from '../AvatarImage';
 
 const styles = StyleSheet.create({
-	avatar: { width: 25, height: 25, borderRadius: 4 }
+	avatar: {
+		width: 25,
+		height: 25,
+		borderRadius: 4
+	}
 });
 const showDelay = () => act(() => jest.advanceTimersByTime(150));
 
