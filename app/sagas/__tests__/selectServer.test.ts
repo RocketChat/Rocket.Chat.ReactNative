@@ -23,6 +23,7 @@ jest.mock('~/lib/methods/getServerInfo', () => ({
 }));
 
 jest.mock('~/lib/methods/getSettings', () => ({
+	clearWorkspaceSettings: jest.fn(),
 	getLoginSettings: jest.fn(),
 	setSettings: jest.fn()
 }));
@@ -80,7 +81,7 @@ import { applyBasicAuth } from '~/lib/methods/serverBasicAuth';
 import { CURRENT_SERVER, TOKEN_KEY, getBasicAuthKey, getUserTokenKey } from '~/lib/constants/keys';
 import { getLoggedUserById } from '~/lib/database/services/LoggedUser';
 import { getServerInfo } from '~/lib/methods/getServerInfo';
-import { getLoginSettings } from '~/lib/methods/getSettings';
+import { clearWorkspaceSettings, getLoginSettings } from '~/lib/methods/getSettings';
 import { connect, getLoginServices } from '~/lib/services/connect';
 import sdk from '~/lib/services/sdk';
 import { getServerById } from '~/lib/database/services/Server';
@@ -184,6 +185,17 @@ describe('selectServer saga — resolving the target workspace user', () => {
 		expect(getLoggedUserById).not.toHaveBeenCalled();
 		expect(store.getState().login.user).toEqual({});
 		expect(UserPreferences.getString(CURRENT_SERVER)).toBe(OLD_SERVER);
+	});
+
+	it('clears the previous workspace settings before connecting when the target workspace has no credentials', async () => {
+		const { store } = setupStore();
+		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(clearWorkspaceSettings).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(clearWorkspaceSettings).mock.invocationCallOrder[0]).toBeLessThan(
+			jest.mocked(connect).mock.invocationCallOrder[0]
+		);
 	});
 
 	it('leaves CURRENT_SERVER on the previous workspace when the switch fails', async () => {

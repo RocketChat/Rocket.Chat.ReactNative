@@ -1,6 +1,6 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { getLoginSettings, getSettings } from '../getSettings';
+import { clearWorkspaceSettings, getLoginSettings, getSettings } from '../getSettings';
 import { headers } from '~/lib/methods/helpers/fetch';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
@@ -156,5 +156,17 @@ describe('getSettings — active workspace', () => {
 		await getSettings(SERVER);
 
 		expect(store.dispatch).not.toHaveBeenCalled();
+	});
+});
+
+describe('clearWorkspaceSettings', () => {
+	it('unsets the workspace settings and leaves the login settings alone', () => {
+		jest.mocked(store.dispatch).mockClear();
+
+		clearWorkspaceSettings();
+
+		const [[cleared]] = jest.mocked(store.dispatch).mock.calls;
+		expect(cleared).toHaveProperty('payload.Apple_Watch_Quick_Actions', undefined);
+		expect(cleared).not.toHaveProperty('payload.Site_Url');
 	});
 });

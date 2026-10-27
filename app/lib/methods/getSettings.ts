@@ -160,21 +160,25 @@ export async function subscribeSettings(): Promise<void> {
 
 type IData = ISettingsIcon | IPreparedSettings;
 
-const isActiveServer = (server: string): boolean => reduxStore.getState().server.server === server;
+const isActiveWorkspace = (server: string): boolean => reduxStore.getState().server.server === server;
+
+const workspaceSettingKeys = Object.keys(defaultSettings).filter(key => !loginSettings.includes(key));
+
+export function clearWorkspaceSettings(): void {
+	reduxStore.dispatch(addSettings(Object.fromEntries(workspaceSettingKeys.map(key => [key, undefined]))));
+}
 
 export async function getSettings(server: string): Promise<void> {
 	try {
 		const db = database.active;
-		const loginSettingKeys = new Set(loginSettings);
-		const settingsParams = Object.keys(defaultSettings).filter(key => !loginSettingKeys.has(key));
 		// RC 0.60.0
 		let offset = 0;
 		let remaining;
 		let settings: IData[] = [];
 		const serverVersion = reduxStore.getState().server.version;
 		const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
-			? `${server}/api/v1/settings.public?_id=${settingsParams.join(',')}`
-			: `${server}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}`;
+			? `${server}/api/v1/settings.public?_id=${workspaceSettingKeys.join(',')}`
+			: `${server}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(workspaceSettingKeys)}}}`;
 		// Iterate over paginated results to retrieve all settings
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
@@ -192,7 +196,7 @@ export async function getSettings(server: string): Promise<void> {
 			/* eslint-enable no-await-in-loop */
 		} while (remaining > 0);
 
-		if (!isActiveServer(server)) {
+		if (!isActiveWorkspace(server)) {
 			return;
 		}
 
@@ -253,7 +257,7 @@ export async function getSettings(server: string): Promise<void> {
 	} catch (e) {
 		log(e);
 	} finally {
-		if (isActiveServer(server)) {
+		if (isActiveWorkspace(server)) {
 			reduxStore.dispatch(fetchSettingsComplete());
 		}
 	}

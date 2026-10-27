@@ -33,7 +33,7 @@ import { CURRENT_SERVER } from '../lib/constants/keys';
 import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { getStoredSession } from '../lib/methods/loggedInServer';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
-import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
+import { clearWorkspaceSettings, getLoginSettings, setSettings } from '../lib/methods/getSettings';
 import { getServerInfo } from '../lib/methods/getServerInfo';
 import { setCustomEmojis } from '../lib/methods/getCustomEmojis';
 import { setEnterpriseModules } from '../lib/methods/enterpriseModules';
@@ -195,6 +195,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			UserPreferences.setString(CURRENT_SERVER, server); // only set server after have a user
 		} else {
 			yield put(clearUser());
+			clearWorkspaceSettings();
 			yield connect({ server });
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
