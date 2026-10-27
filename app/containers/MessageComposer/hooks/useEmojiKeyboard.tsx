@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, type ReactElement } from 'react';
+import { Keyboard } from 'react-native';
 import { useKeyboardHandler } from 'react-native-keyboard-controller';
 import { type SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -122,6 +123,11 @@ export const useEmojiKeyboard = () => {
 		focus && focus();
 	};
 
+	const backToEmojiPicker = () => {
+		showEmojiSearchbarSharedValue.value = false;
+		Keyboard.dismiss();
+	};
+
 	const resetKeyboard = () => {
 		updateHeight(true);
 		closeEmojiKeyboard();
@@ -194,6 +200,7 @@ export const useEmojiKeyboard = () => {
 		closeEmojiKeyboard,
 		openEmojiSearchbar,
 		closeEmojiSearchbar,
+		backToEmojiPicker,
 		resetKeyboard
 	};
 };

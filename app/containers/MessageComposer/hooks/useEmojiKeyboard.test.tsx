@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
 import { renderHook, act } from '@testing-library/react-native';
+import { Keyboard } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import * as KeyboardController from 'react-native-keyboard-controller';
 
@@ -167,6 +168,23 @@ describe('useEmojiKeyboard', () => {
 
 			expect(mockSearchbarSharedValue.value).toBe(false);
 			expect(mockFocusForTest).not.toHaveBeenCalled();
+		});
+
+		test('back from emoji search keeps the emoji picker open without focusing the composer', () => {
+			const dismiss = jest.spyOn(Keyboard, 'dismiss');
+			mockSharedValue.value = true;
+			mockSearchbarSharedValue.value = true;
+			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
+
+			act(() => {
+				result.current.backToEmojiPicker();
+			});
+
+			expect(mockSearchbarSharedValue.value).toBe(false);
+			expect(mockSharedValue.value).toBe(true);
+			expect(dismiss).toHaveBeenCalledTimes(1);
+			expect(mockFocus).not.toHaveBeenCalled();
+			dismiss.mockRestore();
 		});
 
 		test('should reset keyboard (close emoji keyboard and searchbar)', () => {

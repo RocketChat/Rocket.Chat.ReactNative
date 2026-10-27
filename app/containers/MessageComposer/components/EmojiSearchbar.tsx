@@ -21,7 +21,7 @@ const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 export const EmojiSearchbar = (): ReactElement => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
-	const { closeEmojiSearchbar } = useEmojiKeyboard();
+	const { backToEmojiPicker } = useEmojiKeyboard();
 	const { onEmojiSelected } = useContext(MessageInnerContext);
 	const { frequentlyUsed } = useFrequentlyUsedEmoji(true);
 	const [emojis, setEmojis] = useState<IEmoji[]>([]);
@@ -58,7 +58,7 @@ export const EmojiSearchbar = (): ReactElement => {
 			<View style={styles.searchContainer}>
 				<Pressable
 					style={({ pressed }: { pressed: boolean }) => [styles.backButton, { opacity: pressed ? 0.7 : 1 }]}
-					onPress={closeEmojiSearchbar}
+					onPress={backToEmojiPicker}
 					hitSlop={BUTTON_HIT_SLOP}
 					testID='openback-emoji-keyboard'>
 					<CustomIcon name='chevron-left' size={24} />

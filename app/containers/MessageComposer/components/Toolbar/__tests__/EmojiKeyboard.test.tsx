@@ -1,6 +1,7 @@
 import { type ReactElement } from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { KeyboardController } from 'react-native-keyboard-controller';
 
 import { EmojiKeyboard } from '../EmojiKeyboard';
 import { MessageComposerProvider, MessageInnerContext } from '~/containers/MessageComposer/context';
@@ -47,6 +48,7 @@ describe('EmojiKeyboard toolbar', () => {
 		fireEvent.press(roomButton);
 
 		await waitFor(() => expect(focusRoom).toHaveBeenCalledTimes(1));
+		expect(KeyboardController.setFocusTo).toHaveBeenCalledWith('current');
 		expect(focusThread).not.toHaveBeenCalled();
 	});
 });

@@ -204,6 +204,7 @@ beforeEach(() => {
 		showEmojiSearchbar,
 		openEmojiSearchbar: jest.fn(),
 		closeEmojiSearchbar: jest.fn(),
+		backToEmojiPicker: jest.fn(),
 		resetKeyboard: jest.fn(),
 		keyboardHeight: keyboardHeightSharedValue
 	});
@@ -240,6 +241,7 @@ describe('MessageComposer', () => {
 				showEmojiSearchbar,
 				openEmojiSearchbar: jest.fn(),
 				closeEmojiSearchbar: jest.fn(),
+				backToEmojiPicker: jest.fn(),
 				resetKeyboard: jest.fn(),
 				keyboardHeight: keyboardHeightSharedValue
 			});
