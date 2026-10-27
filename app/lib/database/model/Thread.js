@@ -18,13 +18,13 @@ export default class Thread extends Model {
 
 	@date('ts') ts;
 
-	@json('u', sanitizer) u;
+	@json('u', sanitizer, { memo: true }) u;
 
 	@relation('subscriptions', 'rid') subscription;
 
 	@field('alias') alias;
 
-	@json('parse_urls', sanitizer) parseUrls;
+	@json('parse_urls', sanitizer, { memo: true }) parseUrls;
 
 	@field('groupable') groupable;
 
@@ -32,9 +32,9 @@ export default class Thread extends Model {
 
 	@field('emoji') emoji;
 
-	@json('attachments', sanitizer) attachments;
+	@json('attachments', sanitizer, { memo: true }) attachments;
 
-	@json('urls', sanitizer) urls;
+	@json('urls', sanitizer, { memo: true }) urls;
 
 	@date('_updated_at') _updatedAt;
 
@@ -44,9 +44,9 @@ export default class Thread extends Model {
 
 	@field('starred') starred;
 
-	@json('edited_by', sanitizer) editedBy;
+	@json('edited_by', sanitizer, { memo: true }) editedBy;
 
-	@json('reactions', sanitizer) reactions;
+	@json('reactions', sanitizer, { memo: true }) reactions;
 
 	@field('role') role;
 
@@ -62,19 +62,19 @@ export default class Thread extends Model {
 
 	@date('tlm') tlm;
 
-	@json('replies', sanitizer) replies;
+	@json('replies', sanitizer, { memo: true }) replies;
 
-	@json('mentions', sanitizer) mentions;
+	@json('mentions', sanitizer, { memo: true }) mentions;
 
-	@json('channels', sanitizer) channels;
+	@json('channels', sanitizer, { memo: true }) channels;
 
 	@field('unread') unread;
 
 	@field('auto_translate') autoTranslate;
 
-	@json('translations', sanitizer) translations;
+	@json('translations', sanitizer, { memo: true }) translations;
 
-	@json('content', sanitizer) content;
+	@json('content', sanitizer, { memo: true }) content;
 
 	@field('e2e') e2e;
 

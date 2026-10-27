@@ -1,12 +1,12 @@
-import { useState, useRef, createRef, type ReactElement } from 'react';
-import { StyleSheet, Text, type TextInputProps, View } from 'react-native';
+import { useState, createRef, type ReactElement } from 'react';
+import { StyleSheet, Text, type TextInput, type TextInputProps, View } from 'react-native';
 
-import { CustomIcon, type TIconsName } from '../../CustomIcon';
-import i18n from '../../../i18n';
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../../views/Styles';
-import Button from '../../Button';
-import { FormTextInput } from '../../TextInput/FormTextInput';
+import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import i18n from '~/i18n';
+import { useTheme } from '~/theme';
+import sharedStyles from '~/views/Styles';
+import Button from '~/containers/Button';
+import { FormTextInput } from '~/containers/TextInput/FormTextInput';
 import { useActionSheet } from '../Provider';
 
 const styles = StyleSheet.create({
@@ -105,8 +105,8 @@ const ActionSheetContentWithInputAndSubmit = ({
 	autoComplete?: TextInputProps['autoComplete'];
 }): ReactElement => {
 	const { colors } = useTheme();
-	const [inputValues, setInputValues] = useState(inputs.map(() => ''));
-	const inputRefs = useRef(inputs.map(() => createRef()));
+	const [inputValues, setInputValues] = useState(() => inputs.map(() => ''));
+	const [inputRefs] = useState(() => inputs.map(() => createRef<TextInput>()));
 
 	const handleInputChange = (value: string, index: number) => {
 		const newInputValues = [...inputValues];
@@ -125,7 +125,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 					onChangeText={value => handleInputChange(value, index)}
 					onSubmitEditing={() => {
 						if (index < inputs.length - 1) {
-							(inputRefs.current[index + 1] as any).current.focus();
+							inputRefs[index + 1].current?.focus();
 						} else {
 							setTimeout(() => {
 								hideActionSheet();
@@ -133,7 +133,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 							if (inputValues.every(value => value)) onSubmit(inputValues);
 						}
 					}}
-					inputRef={inputRefs.current[index] as any}
+					inputRef={inputRefs[index]}
 					testID={`${testID}-input-${inputConfig.key}`}
 					secureTextEntry={inputConfig.secureTextEntry}
 				/>

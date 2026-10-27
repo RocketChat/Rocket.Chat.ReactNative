@@ -1,0 +1,46 @@
+{
+	"ignore": {
+		"overrides": [
+			{
+				// Safe-area bottom inset for Android edge-to-edge; contentInset is iOS-only.
+				"files": [
+					"app/containers/ActionSheet/BottomSheetContent.tsx",
+					"app/views/AddExistingChannelView/index.tsx",
+					"app/views/CannedResponsesListView/index.tsx",
+					"app/views/MessagesView/index.tsx",
+					"app/views/NewMessageView/index.tsx",
+					"app/views/PickerView.tsx",
+					"app/views/RoomMembersView/index.tsx",
+					"app/views/RoomsListView/index.tsx",
+					"app/views/SearchMessagesView/index.tsx",
+					"app/views/SelectListView.tsx",
+					"app/views/SelectedUsersView/index.tsx",
+					"app/views/ShareListView/index.tsx",
+					"app/views/StatusView/index.tsx",
+					"app/views/TeamChannelsView.tsx"
+				],
+				"rules": ["react-doctor/rn-scrollview-dynamic-padding"]
+			},
+			{
+				// The observation is torn down via the subscription ref and a generation counter on every refetch and unmount.
+				"files": ["app/views/RoomView/List/hooks/useMessages.ts"],
+				"rules": ["react-doctor/effect-needs-cleanup"]
+			},
+			{
+				// getIsMasterDetail is a non-hook getter for sagas and reads fresh dimensions on each call.
+				"files": ["app/lib/hooks/useMasterDetail.tsx"],
+				"rules": ["react-doctor/rn-no-dimensions-get"]
+			},
+			{
+				// Media call signals must replay in order; each depends on the state the previous one left.
+				"files": ["app/lib/services/voip/MediaSessionInstance.ts"],
+				"rules": ["react-doctor/async-await-in-loop"]
+			},
+			{
+				// Error codes are matched as substrings of the server message, which a Set lookup cannot do.
+				"files": ["app/views/LoginView/handleLoginErrors.ts"],
+				"rules": ["react-doctor/js-set-map-lookups"]
+			}
+		]
+	}
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import { AccessibilityInfo, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
@@ -10,20 +10,20 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { ControlledFormTextInput } from '../TextInput';
-import I18n from '../../i18n';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { useTheme } from '../../theme';
+import I18n from '~/i18n';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { useTheme } from '~/theme';
 import Button from '../Button';
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 import styles from './styles';
-import { type ICredentials } from '../../definitions';
-import { sendEmailCode } from '../../lib/services/restApi';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
+import { type ILoginCredentials } from '~/definitions';
+import { sendEmailCode } from '~/lib/services/restApi';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import Toast from '../Toast';
-import { showToast } from '../../lib/methods/helpers/showToast';
-import log from '../../lib/methods/helpers/log';
-
-export const TWO_FACTOR = 'TWO_FACTOR';
+import KeyboardView from '../KeyboardView';
+import { showToast } from '~/lib/methods/helpers/showToast';
+import log from '~/lib/methods/helpers/log';
+import { TWO_FACTOR } from '~/lib/constants/twoFactor';
 
 interface IMethodsProp {
 	text: string;
@@ -38,7 +38,7 @@ interface IMethods {
 }
 
 interface EventListenerMethod {
-	params?: ICredentials;
+	params?: ILoginCredentials;
 	method?: keyof IMethods;
 	submit?: (param: string) => void;
 	cancel?: () => void;
@@ -70,6 +70,7 @@ const TwoFactor = memo(() => {
 	const isMasterDetail = useMasterDetail();
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<EventListenerMethod>({});
+	const pendingCancel = useRef<EventListenerMethod['cancel']>(undefined);
 	const {
 		control,
 		setValue,
@@ -87,12 +88,13 @@ const TwoFactor = memo(() => {
 	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
 	const params = data?.params;
+	const emailCodeRecipient = params && 'user' in params ? params.user : undefined;
 
 	const sendEmail = async () => {
 		try {
-			if (params?.user) {
+			if (emailCodeRecipient) {
 				clearErrors();
-				const response = await sendEmailCode(params?.user);
+				const response = await sendEmailCode(emailCodeRecipient);
 
 				if (response.success) {
 					showToast(I18n.t('Two_Factor_Success_message'));
@@ -113,6 +115,8 @@ const TwoFactor = memo(() => {
 	}, [data]);
 
 	const showTwoFactor = (args: EventListenerMethod) => {
+		pendingCancel.current?.();
+		pendingCancel.current = args.cancel;
 		setData(args);
 		if (args.invalid) {
 			setError('code', { message: I18n.t('Invalid_code'), type: 'validate' });
@@ -128,6 +132,7 @@ const TwoFactor = memo(() => {
 
 	const onCancel = () => {
 		const { cancel } = data;
+		pendingCancel.current = undefined;
 		if (cancel) {
 			cancel();
 		}
@@ -136,6 +141,7 @@ const TwoFactor = memo(() => {
 
 	const onSubmit = () => {
 		const { submit } = data;
+		pendingCancel.current = undefined;
 		if (submit) {
 			const { code } = getValues();
 			if (data.method === 'password') {
@@ -152,52 +158,54 @@ const TwoFactor = memo(() => {
 	return (
 		<Modal
 			customBackdrop={<View aria-hidden style={[styles.overlay, { backgroundColor: colors.overlayBackground }]} />}
-			avoidKeyboard
 			useNativeDriver
 			isVisible={visible}
-			hideModalContentWhileAnimating>
-			<GestureHandlerRootView style={styles.container} testID='two-factor'>
-				<View
-					style={[
-						styles.content,
-						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
-						{ backgroundColor: colors.surfaceTint }
-					]}>
-					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
-					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
-					<ControlledFormTextInput
-						name='code'
-						control={control}
-						autoFocus
-						returnKeyType='send'
-						autoCapitalize='none'
-						testID='two-factor-input'
-						accessibilityLabel={I18n.t(
-							data?.method === 'password' ? 'Label_Input_Two_Factor_Password' : 'Label_Input_Two_Factor_Code'
-						)}
-						onSubmitEditing={onSubmit}
-						keyboardType={method?.keyboardType}
-						secureTextEntry={method?.secureTextEntry}
-						error={errors.code?.message}
-						containerStyle={styles.containerInput}
-					/>
-
-					{isEmail ? (
-						<Button
-							small
-							title={I18n.t('Resend_email')}
-							style={[styles.button, { marginTop: 12 }]}
-							type='secondary'
-							onPress={sendEmail}
+			hideModalContentWhileAnimating
+			style={styles.modal}>
+			<KeyboardView backgroundColor='transparent'>
+				<GestureHandlerRootView style={styles.container} testID='two-factor'>
+					<View
+						style={[
+							styles.content,
+							isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
+							{ backgroundColor: colors.surfaceTint }
+						]}>
+						<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
+						{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
+						<ControlledFormTextInput
+							name='code'
+							control={control}
+							autoFocus
+							returnKeyType='send'
+							autoCapitalize='none'
+							testID='two-factor-input'
+							accessibilityLabel={I18n.t(
+								data?.method === 'password' ? 'Label_Input_Two_Factor_Password' : 'Label_Input_Two_Factor_Code'
+							)}
+							onSubmitEditing={onSubmit}
+							keyboardType={method?.keyboardType}
+							secureTextEntry={method?.secureTextEntry}
+							error={errors.code?.message}
+							containerStyle={styles.containerInput}
 						/>
-					) : null}
-					<View style={styles.buttonContainer}>
-						<Button title={I18n.t('Cancel')} type='secondary' style={styles.button} onPress={onCancel} />
-						<Button title={I18n.t('Verify')} type='primary' style={styles.button} onPress={onSubmit} testID='two-factor-send' />
+
+						{isEmail ? (
+							<Button
+								small
+								title={I18n.t('Resend_email')}
+								style={[styles.button, { marginTop: 12 }]}
+								type='secondary'
+								onPress={sendEmail}
+							/>
+						) : null}
+						<View style={styles.buttonContainer}>
+							<Button title={I18n.t('Cancel')} type='secondary' style={styles.button} onPress={onCancel} />
+							<Button title={I18n.t('Verify')} type='primary' style={styles.button} onPress={onSubmit} testID='two-factor-send' />
+						</View>
 					</View>
-				</View>
-				<Toast />
-			</GestureHandlerRootView>
+					<Toast />
+				</GestureHandlerRootView>
+			</KeyboardView>
 		</Modal>
 	);
 });

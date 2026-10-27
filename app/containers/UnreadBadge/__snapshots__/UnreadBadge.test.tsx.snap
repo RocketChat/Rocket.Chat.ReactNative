@@ -19,8 +19,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "justifyContent": "center",
         },
         {
-          "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
+          "backgroundColor": "#6C727A",
+          "borderRadius": 10,
           "minWidth": 16,
         },
         undefined,
@@ -35,12 +35,12 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
+            "fontSize": 10,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "textAlign": "left",
-          },
-          {
-            "fontSize": 10,
           },
           {
             "color": "#FFFFFF",
@@ -59,8 +59,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "justifyContent": "center",
         },
         {
-          "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
+          "backgroundColor": "#6C727A",
+          "borderRadius": 10,
           "minWidth": 26,
         },
         undefined,
@@ -75,12 +75,12 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
+            "fontSize": 10,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "textAlign": "left",
-          },
-          {
-            "fontSize": 10,
           },
           {
             "color": "#FFFFFF",
@@ -97,14 +97,12 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "backgroundColor": "#6C727A",
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -118,11 +116,14 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -138,14 +139,12 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "backgroundColor": "#6C727A",
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -159,11 +158,14 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -179,14 +181,12 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
           "backgroundColor": "#F5455C",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -200,11 +200,14 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -220,14 +223,12 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
           "backgroundColor": "#F38C39",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -241,11 +242,14 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -261,14 +265,12 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
           "backgroundColor": "#095AD2",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -282,11 +284,14 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -316,14 +321,12 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "backgroundColor": "#6C727A",
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -337,11 +340,14 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -357,14 +363,12 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
           "backgroundColor": "#F5455C",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -378,11 +382,14 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -398,14 +405,12 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
           "backgroundColor": "#F38C39",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -419,11 +424,14 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -439,14 +447,12 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
           "backgroundColor": "#F5455C",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -460,11 +466,14 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -480,14 +489,12 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
           "backgroundColor": "#095AD2",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -501,11 +508,14 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -521,14 +531,12 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
           "backgroundColor": "#F5455C",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -542,11 +550,14 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -562,14 +573,12 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
           "backgroundColor": "#F38C39",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -583,11 +592,14 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -617,14 +629,12 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "backgroundColor": "#6C727A",
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -638,11 +648,14 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -658,14 +671,12 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
         {
           "alignItems": "center",
           "justifyContent": "center",
-          "marginLeft": 10,
-          "paddingHorizontal": 5,
-          "paddingVertical": 3,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
-          "minWidth": 21,
+          "backgroundColor": "#6C727A",
+          "borderRadius": 10,
+          "minWidth": 18,
         },
         undefined,
       ]
@@ -679,11 +690,14 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
-            "fontWeight": "600",
+            "fontSize": 12,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "700",
+            "lineHeight": 18,
             "textAlign": "left",
           },
-          undefined,
           {
             "color": "#FFFFFF",
           },
@@ -715,8 +729,8 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
           "justifyContent": "center",
         },
         {
-          "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
+          "backgroundColor": "#6C727A",
+          "borderRadius": 10,
           "minWidth": 16,
         },
         undefined,
@@ -731,12 +745,12 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
+            "fontSize": 10,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "textAlign": "left",
-          },
-          {
-            "fontSize": 10,
           },
           {
             "color": "#FFFFFF",
@@ -755,8 +769,8 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
           "justifyContent": "center",
         },
         {
-          "backgroundColor": "#9EA2A8",
-          "borderRadius": 10.5,
+          "backgroundColor": "#6C727A",
+          "borderRadius": 10,
           "minWidth": 26,
         },
         undefined,
@@ -771,12 +785,12 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
-            "fontSize": 13,
+            "fontSize": 10,
+            "fontVariant": [
+              "tabular-nums",
+            ],
             "fontWeight": "600",
             "textAlign": "left",
-          },
-          {
-            "fontSize": 10,
           },
           {
             "color": "#FFFFFF",
@@ -808,14 +822,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
+            "paddingHorizontal": 4,
           },
           {
-            "backgroundColor": "#9EA2A8",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "backgroundColor": "#6C727A",
+            "borderRadius": 10,
+            "minWidth": 18,
           },
           undefined,
         ]
@@ -829,11 +841,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -849,14 +864,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
+            "paddingHorizontal": 4,
           },
           {
             "backgroundColor": "#F5455C",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "borderRadius": 10,
+            "minWidth": 18,
           },
           undefined,
         ]
@@ -870,11 +883,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -890,14 +906,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
+            "paddingHorizontal": 4,
           },
           {
             "backgroundColor": "#F38C39",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "borderRadius": 10,
+            "minWidth": 18,
           },
           undefined,
         ]
@@ -911,11 +925,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -931,14 +948,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
+            "paddingHorizontal": 4,
           },
           {
             "backgroundColor": "#095AD2",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "borderRadius": 10,
+            "minWidth": 18,
           },
           undefined,
         ]
@@ -952,11 +967,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -983,14 +1001,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
+            "paddingHorizontal": 4,
           },
           {
-            "backgroundColor": "#9EA2A8",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "backgroundColor": "#484C51",
+            "borderRadius": 10,
+            "minWidth": 18,
           },
           undefined,
         ]
@@ -1004,11 +1020,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1024,14 +1043,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
+            "paddingHorizontal": 4,
           },
           {
             "backgroundColor": "#B43C4C",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "borderRadius": 10,
+            "minWidth": 18,
           },
           undefined,
         ]
@@ -1045,11 +1062,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1065,14 +1085,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
+            "paddingHorizontal": 4,
           },
           {
             "backgroundColor": "#955828",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "borderRadius": 10,
+            "minWidth": 18,
           },
           undefined,
         ]
@@ -1086,11 +1104,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1106,14 +1127,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
+            "paddingHorizontal": 4,
           },
           {
             "backgroundColor": "#245399",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "borderRadius": 10,
+            "minWidth": 18,
           },
           undefined,
         ]
@@ -1127,11 +1146,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1158,14 +1180,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
+            "paddingHorizontal": 4,
           },
           {
-            "backgroundColor": "#9EA2A8",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "backgroundColor": "#484848",
+            "borderRadius": 10,
+            "minWidth": 18,
           },
           undefined,
         ]
@@ -1179,11 +1199,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1199,14 +1222,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
+            "paddingHorizontal": 4,
           },
           {
             "backgroundColor": "#B43C4C",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "borderRadius": 10,
+            "minWidth": 18,
           },
           undefined,
         ]
@@ -1220,11 +1241,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1240,14 +1264,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
+            "paddingHorizontal": 4,
           },
           {
             "backgroundColor": "#955828",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "borderRadius": 10,
+            "minWidth": 18,
           },
           undefined,
         ]
@@ -1261,11 +1283,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },
@@ -1281,14 +1306,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           {
             "alignItems": "center",
             "justifyContent": "center",
-            "marginLeft": 10,
-            "paddingHorizontal": 5,
-            "paddingVertical": 3,
+            "paddingHorizontal": 4,
           },
           {
-            "backgroundColor": "#245399",
-            "borderRadius": 10.5,
-            "minWidth": 21,
+            "backgroundColor": "#10529E",
+            "borderRadius": 10,
+            "minWidth": 18,
           },
           undefined,
         ]
@@ -1302,11 +1325,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 13,
-              "fontWeight": "600",
+              "fontSize": 12,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "700",
+              "lineHeight": 18,
               "textAlign": "left",
             },
-            undefined,
             {
               "color": "#FFFFFF",
             },

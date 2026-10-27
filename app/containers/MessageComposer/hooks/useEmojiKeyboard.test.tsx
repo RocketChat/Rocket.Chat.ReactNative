@@ -50,7 +50,7 @@ describe('useEmojiKeyboard', () => {
 		(useSharedValue as jest.Mock)
 			.mockReturnValueOnce(mockSharedValue) // showEmojiPickerSharedValue
 			.mockReturnValueOnce(mockSearchbarSharedValue) // showEmojiSearchbarSharedValue
-			.mockReturnValueOnce({ value: 0 }) // height from useKeyboardAnimation
+			.mockReturnValueOnce({ value: 0, get: () => 0, set: jest.fn() }) // height from useKeyboardAnimation
 			.mockReturnValueOnce(mockKeyboardHeightSharedValue) // keyboardHeight
 			.mockReturnValueOnce(mockKeyboardHeightSharedValue); // previousHeight
 	});
@@ -64,7 +64,9 @@ describe('useEmojiKeyboard', () => {
 			sendMessage: jest.fn(),
 			onEmojiSelected: jest.fn(),
 			closeEmojiKeyboardAndAction: jest.fn(),
-			focus
+			focus,
+			getText: jest.fn(() => ''),
+			setInput: jest.fn()
 		};
 
 		return ({ children }: { children: ReactElement }) => (
@@ -222,7 +224,9 @@ describe('useEmojiKeyboard', () => {
 				sendMessage: jest.fn(),
 				onEmojiSelected: jest.fn(),
 				closeEmojiKeyboardAndAction: jest.fn(),
-				focus: mockFocus
+				focus: mockFocus,
+				getText: jest.fn(() => ''),
+				setInput: jest.fn()
 			};
 
 			const wrapper = ({ children }: { children: ReactElement }) => (

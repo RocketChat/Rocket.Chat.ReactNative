@@ -3,31 +3,31 @@ import { AccessibilityInfo, Keyboard, Text, type TextInput, View } from 'react-n
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { loginRequest } from '../../actions/login';
-import Button from '../../containers/Button';
-import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import LoginServices from '../../containers/LoginServices';
-import { ControlledFormTextInput } from '../../containers/TextInput';
-import I18n from '../../i18n';
-import { getShowLoginButton } from '../../selectors/login';
-import { type OutsideParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
-import { showErrorAlert, isValidEmail, isAndroid } from '../../lib/methods/helpers';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { register } from '../../lib/services/restApi';
-import UGCRules from '../../containers/UserGeneratedContentRules';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import PasswordPolicies from '../../containers/PasswordPolicies';
-import getCustomFields from '../../lib/methods/getCustomFields';
-import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
-import CustomFields from '../../containers/CustomFields';
-import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
+import { loginRequest } from '~/actions/login';
+import Button from '~/containers/Button';
+import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
+import LoginServices from '~/containers/LoginServices';
+import { ControlledFormTextInput } from '~/containers/TextInput';
+import I18n from '~/i18n';
+import { outsideHeaderRightLegal } from '~/lib/methods/helpers/navigation';
+import { getShowLoginButton } from '~/selectors/login';
+import { type OutsideParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
+import { showErrorAlert, isValidEmail, isAndroid } from '~/lib/methods/helpers';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { register } from '~/lib/services/restApi';
+import UGCRules from '~/containers/UserGeneratedContentRules';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import PasswordPolicies from '~/containers/PasswordPolicies';
+import getCustomFields from '~/lib/methods/getCustomFields';
+import useVerifyPassword from '~/lib/hooks/useVerifyPassword';
+import CustomFields from '~/containers/CustomFields';
+import useParsedCustomFields from '~/lib/hooks/useParsedCustomFields';
 import styles from './styles';
 
 type RegisterViewProps = StaticScreenProps<{ title: string; username?: string }>;
@@ -62,8 +62,6 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 		handleSubmit,
 		setFocus,
 		setError,
-		getValues,
-		watch,
 		formState: { isValid, dirtyFields, errors }
 	} = useForm({
 		mode: 'onChange',
@@ -76,10 +74,10 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const inputValues = watch();
-	const { password, confirmPassword } = inputValues;
+	const inputValues = useWatch({ control });
+	const { password = '', confirmPassword = '' } = inputValues;
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
-	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
+	const [customFields, setCustomFields] = useState(() => getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
 	const { passwordPolicies, isPasswordValid } = useVerifyPassword(password, confirmPassword);
 	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
@@ -96,7 +94,7 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 	};
 
 	const validateDefaultFormInfo = () => {
-		const isValid = validationSchema.isValidSync(getValues());
+		const isValid = validationSchema.isValidSync(inputValues);
 		if (!parsedCustomFields) {
 			return isValid;
 		}
@@ -147,32 +145,24 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 			}
 		} catch (error: any) {
 			if (error.data?.errorType === 'username-invalid') {
-				return dispatch(loginRequest({ user: email, password }));
-			}
-
-			if (error.data.error === 'Username is already in use') {
+				dispatch(loginRequest({ user: email, password }));
+			} else if (error.data?.error === 'Username is already in use') {
 				setError('username', { message: `${I18n.t('Username_is_already_in_use')}`, type: 'validate' });
 				AccessibilityInfo.announceForAccessibility(I18n.t('Username_is_already_in_use'));
-				return;
-			}
-
-			if (error.data?.error) {
+			} else if (error.data?.error) {
 				logEvent(events.REGISTER_DEFAULT_SIGN_UP_F);
 				showErrorAlert(error.data.error, I18n.t('Oops'));
 			}
-		} finally {
-			setSaving(false);
 		}
+		setSaving(false);
 	};
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: route?.params?.title,
-			headerRight: () => (
-				<HeaderButton.Legal accessibilityLabel={I18n.t('Legal')} testID='register-view-more' navigation={navigation} />
-			)
+			...outsideHeaderRightLegal(navigation, 'register-view-more')
 		});
-	}, []);
+	}, [navigation, route?.params?.title]);
 
 	return (
 		<FormContainer testID='register-view'>

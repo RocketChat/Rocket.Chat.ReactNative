@@ -1,0 +1,6 @@
+[
+	{
+		"test": "e2e/tests/flow.e2e.ts",
+		"dependsOn": ["app/views/Nope/**"]
+	}
+]

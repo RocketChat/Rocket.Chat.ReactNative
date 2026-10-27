@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { type ComponentType } from 'react';
 
-import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 import { FilterHeader } from './FilterHeader';
 
 const styles = StyleSheet.create({

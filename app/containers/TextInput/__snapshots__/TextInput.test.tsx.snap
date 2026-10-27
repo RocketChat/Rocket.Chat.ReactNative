@@ -9,13 +9,13 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
   }
 >
   <A11yOrderView
-    orderKey="«r0»"
+    orderKey="_r_0_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r0»"
+      orderKey="_r_0_"
     >
       <View
         style={
@@ -36,6 +36,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -78,6 +81,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -142,13 +148,13 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <A11yOrderView
-    orderKey="«r1»"
+    orderKey="_r_1_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r1»"
+      orderKey="_r_1_"
     >
       <View
         style={
@@ -169,6 +175,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -211,6 +220,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -274,13 +286,13 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <A11yOrderView
-    orderKey="«r2»"
+    orderKey="_r_2_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r2»"
+      orderKey="_r_2_"
     >
       <View
         style={
@@ -301,6 +313,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -343,6 +358,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -442,13 +460,13 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <A11yOrderView
-    orderKey="«r3»"
+    orderKey="_r_3_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r3»"
+      orderKey="_r_3_"
     >
       <View
         style={
@@ -469,6 +487,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -511,6 +532,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -570,61 +594,63 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 ]
               }
             >
-              <RNGestureHandlerButton
-                activeOpacity={1}
+              <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                activeUnderlayOpacity={1}
+                animationDuration={0}
                 collapsable={false}
-                delayLongPress={600}
-                enabled={true}
-                handlerTag={-1}
-                handlerType="NativeViewGestureHandler"
-                innerRef={null}
-                onActiveStateChange={[Function]}
-                onGestureHandlerEvent={[Function]}
-                onGestureHandlerStateChange={[Function]}
-                onPress={[Function]}
-                rippleColor="#E4E7EA"
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   [
-                    {
-                      "backgroundColor": undefined,
-                      "borderRadius": undefined,
-                      "margin": undefined,
-                      "marginBottom": undefined,
-                      "marginEnd": undefined,
-                      "marginHorizontal": undefined,
-                      "marginLeft": undefined,
-                      "marginRight": undefined,
-                      "marginStart": undefined,
-                      "marginTop": undefined,
-                      "marginVertical": undefined,
-                    },
-                    {
-                      "cursor": undefined,
-                    },
+                    [
+                      undefined,
+                      {
+                        "margin": undefined,
+                        "marginBottom": undefined,
+                        "marginEnd": undefined,
+                        "marginHorizontal": undefined,
+                        "marginLeft": undefined,
+                        "marginRight": undefined,
+                        "marginStart": undefined,
+                        "marginTop": undefined,
+                        "marginVertical": undefined,
+                      },
+                      {
+                        "backgroundColor": undefined,
+                        "borderRadius": undefined,
+                      },
+                    ],
+                    undefined,
                   ]
                 }
-                testID="clear-text-input"
                 underlayColor="#E4E7EA"
               >
-                <View
-                  collapsable={false}
-                  style={
-                    {
-                      "backgroundColor": "#E4E7EA",
-                      "borderBottomLeftRadius": undefined,
-                      "borderBottomRightRadius": undefined,
-                      "borderRadius": undefined,
-                      "borderTopLeftRadius": undefined,
-                      "borderTopRightRadius": undefined,
-                      "bottom": 0,
-                      "left": 0,
-                      "opacity": 0,
-                      "position": "absolute",
-                      "right": 0,
-                      "top": 0,
-                    }
-                  }
-                />
                 <View
                   accessibilityLabel="Clear input"
                   accessible={true}
@@ -634,6 +660,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                       "width": 20,
                     }
                   }
+                  testID="clear-text-input"
                 >
                   <Text
                     allowFontScaling={false}
@@ -662,7 +689,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                     
                   </Text>
                 </View>
-              </RNGestureHandlerButton>
+              </View>
             </ExternalKeyboardView>
           </View>
         </View>
@@ -681,13 +708,13 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
   }
 >
   <A11yOrderView
-    orderKey="«r4»"
+    orderKey="_r_4_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r4»"
+      orderKey="_r_4_"
     >
       <View
         style={
@@ -708,6 +735,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -750,6 +780,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -778,13 +811,13 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <A11yOrderView
-    orderKey="«r5»"
+    orderKey="_r_5_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r5»"
+      orderKey="_r_5_"
     >
       <View
         style={
@@ -805,6 +838,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -847,6 +883,9 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -899,13 +938,13 @@ exports[`Story Snapshots: Multiline should match snapshot 1`] = `
   }
 >
   <A11yOrderView
-    orderKey="«r6»"
+    orderKey="_r_6_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r6»"
+      orderKey="_r_6_"
     >
       <View
         style={
@@ -926,6 +965,9 @@ exports[`Story Snapshots: Multiline should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -972,6 +1014,9 @@ https://open.rocket.chat/images/logo/android-chrome-512x512.png
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -1014,13 +1059,13 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
   }
 >
   <A11yOrderView
-    orderKey="«r7»"
+    orderKey="_r_7_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r7»"
+      orderKey="_r_7_"
     >
       <View
         style={
@@ -1041,6 +1086,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1083,6 +1131,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -1111,13 +1162,13 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <A11yOrderView
-    orderKey="«r8»"
+    orderKey="_r_8_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r8»"
+      orderKey="_r_8_"
     >
       <View
         style={
@@ -1138,6 +1189,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1181,6 +1235,9 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -1210,7 +1267,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
             importantForAccessibility="yes"
             orderFocusType={0}
             orderIndex={2}
-            orderKey="«r8»"
+            orderKey="_r_8_"
             style={
               [
                 {
@@ -1244,60 +1301,63 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                 ]
               }
             >
-              <RNGestureHandlerButton
-                activeOpacity={1}
+              <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                activeUnderlayOpacity={1}
+                animationDuration={0}
                 collapsable={false}
-                delayLongPress={600}
-                enabled={true}
-                handlerTag={-1}
-                handlerType="NativeViewGestureHandler"
-                innerRef={null}
-                onActiveStateChange={[Function]}
-                onGestureHandlerEvent={[Function]}
-                onGestureHandlerStateChange={[Function]}
-                onPress={[Function]}
-                rippleColor="#E4E7EA"
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   [
-                    {
-                      "backgroundColor": undefined,
-                      "borderRadius": undefined,
-                      "margin": undefined,
-                      "marginBottom": undefined,
-                      "marginEnd": undefined,
-                      "marginHorizontal": undefined,
-                      "marginLeft": undefined,
-                      "marginRight": undefined,
-                      "marginStart": undefined,
-                      "marginTop": undefined,
-                      "marginVertical": undefined,
-                    },
-                    {
-                      "cursor": undefined,
-                    },
+                    [
+                      undefined,
+                      {
+                        "margin": undefined,
+                        "marginBottom": undefined,
+                        "marginEnd": undefined,
+                        "marginHorizontal": undefined,
+                        "marginLeft": undefined,
+                        "marginRight": undefined,
+                        "marginStart": undefined,
+                        "marginTop": undefined,
+                        "marginVertical": undefined,
+                      },
+                      {
+                        "backgroundColor": undefined,
+                        "borderRadius": undefined,
+                      },
+                    ],
+                    undefined,
                   ]
                 }
                 underlayColor="#E4E7EA"
               >
-                <View
-                  collapsable={false}
-                  style={
-                    {
-                      "backgroundColor": "#E4E7EA",
-                      "borderBottomLeftRadius": undefined,
-                      "borderBottomRightRadius": undefined,
-                      "borderRadius": undefined,
-                      "borderTopLeftRadius": undefined,
-                      "borderTopRightRadius": undefined,
-                      "bottom": 0,
-                      "left": 0,
-                      "opacity": 0,
-                      "position": "absolute",
-                      "right": 0,
-                      "top": 0,
-                    }
-                  }
-                />
                 <View
                   accessibilityLabel="Show Password"
                   accessible={true}
@@ -1330,7 +1390,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                     
                   </Text>
                 </View>
-              </RNGestureHandlerButton>
+              </View>
             </ExternalKeyboardView>
           </A11yIndexView>
         </View>
@@ -1349,13 +1409,13 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
   }
 >
   <A11yOrderView
-    orderKey="«r9»"
+    orderKey="_r_9_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«r9»"
+      orderKey="_r_9_"
     >
       <View
         style={
@@ -1376,6 +1436,9 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1418,6 +1481,9 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,
@@ -1446,13 +1512,13 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <A11yOrderView
-    orderKey="«ra»"
+    orderKey="_r_a_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="«ra»"
+      orderKey="_r_a_"
     >
       <View
         style={
@@ -1473,6 +1539,9 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "Inter",
                 "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
                 "fontWeight": "500",
                 "lineHeight": 22,
                 "textAlign": "left",
@@ -1515,6 +1584,9 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
                     "borderWidth": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
                     "fontWeight": "400",
                     "paddingHorizontal": 16,
                     "paddingVertical": 14,

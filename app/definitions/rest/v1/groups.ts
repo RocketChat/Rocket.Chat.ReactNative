@@ -1,9 +1,9 @@
-import { type ITeam } from '../../ITeam';
-import type { IMessageFromServer } from '../../IMessage';
-import type { IServerRoom } from '../../IRoom';
-import type { IUser } from '../../IUser';
-import { type IGetRoomRoles } from '../../IRole';
-import { type IServerAttachment } from '../../IAttachment';
+import { type ITeam } from '~/definitions/ITeam';
+import type { IMessageFromServer } from '~/definitions/IMessage';
+import type { IServerRoom } from '~/definitions/IRoom';
+import type { IUser } from '~/definitions/IUser';
+import { type IGetRoomRoles } from '~/definitions/IRole';
+import { type IServerAttachment } from '~/definitions/IAttachment';
 import { type PaginatedRequest } from '../helpers/PaginatedRequest';
 
 export type GroupsEndpoints = {
@@ -52,7 +52,7 @@ export type GroupsEndpoints = {
 		};
 	};
 	'groups.convertToTeam': {
-		POST: (params: { roomId: string; roomName: string }) => { team: ITeam };
+		POST: (params: { roomId: string }) => { team: ITeam };
 	};
 	'groups.counters': {
 		GET: (params: { roomId: string }) => {
@@ -64,6 +64,9 @@ export type GroupsEndpoints = {
 			latest: Date;
 			userMentions: number;
 		};
+	};
+	'groups.invite': {
+		POST: (params: { roomId: string; usernames: string[] }) => { group: IServerRoom };
 	};
 	'groups.close': {
 		POST: (params: { roomId: string }) => {};
@@ -88,6 +91,11 @@ export type GroupsEndpoints = {
 			sort: { ts: number };
 		}) => {
 			messages: IMessageFromServer[];
+		};
+	};
+	'groups.open': {
+		POST: (params: { roomId: IServerRoom['_id'] }) => {
+			success: boolean;
 		};
 	};
 };

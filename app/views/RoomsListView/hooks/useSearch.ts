@@ -1,9 +1,11 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
+import { type SearchBarCommands } from 'react-native-screens';
 
-import { type IRoomItem } from '../../../containers/RoomItem/interfaces';
-import { search as searchLib } from '../../../lib/methods/search';
-import { useDebounce } from '../../../lib/methods/helpers/debounce';
-import { announceSearchResultsForAccessibility } from '../../../lib/methods/helpers/announceSearchResultsForAccessibility';
+import { type IRoomItem } from '~/containers/RoomItem/interfaces';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { searchLocal, searchRemote } from '~/lib/methods/search';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
+import { announceSearchResultsForAccessibility } from '~/lib/methods/helpers/announceSearchResultsForAccessibility';
 
 interface SearchState {
 	searchEnabled: boolean;
@@ -13,7 +15,9 @@ interface SearchState {
 
 type SearchAction =
 	| { type: 'START_SEARCH' }
+	| { type: 'SEARCH_LOCAL'; payload: IRoomItem[] }
 	| { type: 'SEARCH_SUCCESS'; payload: IRoomItem[] }
+	| { type: 'SEARCH_FAILURE' }
 	| { type: 'STOP_SEARCH' }
 	| { type: 'SET_SEARCHING' };
 
@@ -31,6 +35,12 @@ const searchReducer = (state: SearchState, action: SearchAction): SearchState =>
 				searchEnabled: true,
 				searching: true
 			};
+		case 'SEARCH_LOCAL':
+			// Paint local results immediately while the backend request is still in flight
+			return {
+				...state,
+				searchResults: action.payload
+			};
 		case 'SEARCH_SUCCESS':
 			return {
 				...state,
@@ -44,6 +54,12 @@ const searchReducer = (state: SearchState, action: SearchAction): SearchState =>
 				searching: false,
 				searchResults: []
 			};
+		case 'SEARCH_FAILURE':
+			// Clear the loading state but keep whatever results we already painted
+			return {
+				...state,
+				searching: false
+			};
 		case 'SET_SEARCHING':
 			return {
 				...state,
@@ -55,16 +71,32 @@ const searchReducer = (state: SearchState, action: SearchAction): SearchState =>
 };
 
 export const useSearch = () => {
-	'use memo';
-
 	const [state, dispatch] = useReducer(searchReducer, initialState);
+	// Guards against an older (slower) search overwriting the results of a newer one
+	const searchId = useRef(0);
+	const searchBarRef = useRef<SearchBarCommands>(null);
 
 	const search = useDebounce(async (text: string) => {
 		if (!state.searchEnabled) return;
+		searchId.current += 1;
+		const currentSearchId = searchId.current;
+		const isStale = () => currentSearchId !== searchId.current;
+
 		dispatch({ type: 'SET_SEARCHING' });
-		const result = await searchLib({ text });
-		dispatch({ type: 'SEARCH_SUCCESS', payload: result as IRoomItem[] });
-		announceSearchResultsForAccessibility(result.length);
+
+		try {
+			const localData = await searchLocal({ text });
+			if (isStale()) return;
+			dispatch({ type: 'SEARCH_LOCAL', payload: localData as IRoomItem[] });
+
+			const result = await searchRemote({ text, localData });
+			if (isStale()) return;
+			dispatch({ type: 'SEARCH_SUCCESS', payload: result as IRoomItem[] });
+			announceSearchResultsForAccessibility(result.length);
+		} catch (e) {
+			if (isStale()) return;
+			dispatch({ type: 'SEARCH_FAILURE' });
+		}
 	}, 500);
 
 	const startSearch = useCallback(() => {
@@ -72,9 +104,17 @@ export const useSearch = () => {
 		search('');
 	}, [search]);
 
-	const stopSearch = useCallback(() => {
+	const resetSearch = useCallback(() => {
 		dispatch({ type: 'STOP_SEARCH' });
 	}, []);
+
+	const stopSearch = useCallback(() => {
+		searchBarRef.current?.cancelSearch();
+		resetSearch();
+	}, [resetSearch]);
+
+	const server = useAppSelector(state => state.server.server);
+	useEffect(() => stopSearch, [server, stopSearch]);
 
 	return {
 		searching: state.searching,
@@ -82,6 +122,8 @@ export const useSearch = () => {
 		searchResults: state.searchResults,
 		startSearch,
 		stopSearch,
-		search
+		resetSearch,
+		search,
+		searchBarRef
 	};
 };

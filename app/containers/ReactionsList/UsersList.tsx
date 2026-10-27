@@ -2,9 +2,10 @@ import { memo, type ReactElement } from 'react';
 import { Text, View, FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { useTheme } from '../../theme';
-import { type IApplicationState } from '../../definitions';
+import { useTheme } from '~/theme';
+import { type IApplicationState } from '~/definitions';
 import Avatar from '../Avatar';
+import { isAndroid } from '~/lib/methods/helpers';
 import styles from './styles';
 
 const UsersList = ({ emoji, usernames, names }: { emoji: string; usernames: string[]; names: string[] }): ReactElement => {
@@ -20,6 +21,7 @@ const UsersList = ({ emoji, usernames, names }: { emoji: string; usernames: stri
 		<FlatList
 			data={users}
 			contentContainerStyle={styles.listContainer}
+			nestedScrollEnabled={isAndroid}
 			ListHeaderComponent={
 				<View style={styles.emojiNameContainer}>
 					<Text style={[styles.emojiName, { color: colors.fontSecondaryInfo }]} testID='usersListEmojiName'>

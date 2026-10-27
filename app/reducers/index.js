@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import inquiry from '../ee/omnichannel/reducers/inquiry';
+import routingConfig from '../ee/omnichannel/reducers/routingConfig';
 import settings from './settings';
 import login from './login';
 import meteor from './connect';
@@ -18,6 +19,7 @@ import usersTyping from './usersTyping';
 import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
 import enterpriseModules from './enterpriseModules';
+import hasValidLicense from './hasValidLicense';
 import encryption from './encryption';
 import permissions from './permissions';
 import roles from './roles';
@@ -45,7 +47,9 @@ export default combineReducers({
 	inviteLinks,
 	createDiscussion,
 	inquiry,
+	routingConfig,
 	enterpriseModules,
+	hasValidLicense,
 	encryption,
 	permissions,
 	roles,

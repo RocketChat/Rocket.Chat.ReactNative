@@ -1,16 +1,16 @@
 import { type ReactElement, useState } from 'react';
 import { Alert } from 'react-native';
 
-import * as List from '../../../containers/List';
-import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { usePermissions } from '../../../lib/hooks/usePermissions';
-import { compareServerVersion, showErrorAlertWithEMessage } from '../../../lib/methods/helpers';
-import { pushTest } from '../../../lib/services/restApi';
-import { useTheme } from '../../../theme';
-import CustomListSection from './CustomListSection';
+import * as List from '~/containers/List';
+import i18n from '~/i18n';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { compareServerVersion, showErrorAlertWithEMessage } from '~/lib/methods/helpers';
+import { pushTest } from '~/lib/services/restApi';
+import { useTheme } from '~/theme';
+import StatusDot from './StatusDot';
 
-export default function PushGatewayConnection(): ReactElement | null {
+function PushGatewayConnection(): ReactElement | null {
 	const [loading, setLoading] = useState(false);
 	const { colors } = useTheme();
 	const [testPushNotificationsPermission] = usePermissions(['test-push-notifications']);
@@ -48,9 +48,9 @@ export default function PushGatewayConnection(): ReactElement | null {
 	}
 
 	return (
-		<CustomListSection
+		<List.Section
 			title={!defaultPushGateway ? 'Custom_push_gateway_connection' : 'Push_gateway_connection'}
-			statusColor={statusColor}>
+			headerTrailing={<StatusDot color={statusColor} />}>
 			<List.Separator />
 			<List.Item
 				title='Test_push_notification'
@@ -60,6 +60,8 @@ export default function PushGatewayConnection(): ReactElement | null {
 			/>
 			<List.Separator />
 			<List.Info info={infoColor} />
-		</CustomListSection>
+		</List.Section>
 	);
 }
+
+export default PushGatewayConnection;

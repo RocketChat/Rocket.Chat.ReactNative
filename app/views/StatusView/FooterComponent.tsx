@@ -1,8 +1,8 @@
 import { type ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import Button from '../../containers/Button';
-import I18n from '../../i18n';
+import Button from '~/containers/Button';
+import I18n from '~/i18n';
 import ClearAfterPicker, { type ClearAfterValue } from './ClearAfterPicker';
 
 const styles = StyleSheet.create({
@@ -32,8 +32,6 @@ const FooterComponent = ({
 	disabled,
 	onSubmit
 }: IFooterComponentProps): ReactElement => {
-	'use memo';
-
 	return (
 		<View>
 			{supportsStatusExpiry && <ClearAfterPicker value={clearAfter} customDate={clearAfterDate} onChange={onClearAfterChange} />}

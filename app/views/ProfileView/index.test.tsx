@@ -3,12 +3,13 @@ import { useDispatch } from 'react-redux';
 import { sha256 } from 'js-sha256';
 
 import ProfileView from './index';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { saveUserProfile } from '../../lib/services/restApi';
-import { twoFactor } from '../../lib/services/twoFactor';
-import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { setUser } from '../../actions/login';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { saveUserProfile } from '~/lib/services/restApi';
+import { twoFactor } from '~/lib/services/twoFactor/twoFactor';
+import { TwoFactorCancelledError } from '~/lib/services/twoFactor/twoFactorCancelled';
+import handleSaveUserProfileError from '~/lib/methods/helpers/handleSaveUserProfileError';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { setUser } from '~/actions/login';
 
 jest.mock('react-redux', () => ({
 	useDispatch: jest.fn()
@@ -19,23 +20,23 @@ jest.mock('@react-navigation/native', () => ({
 	useFocusEffect: jest.fn()
 }));
 
-jest.mock('../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn()
 }));
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	saveUserProfile: jest.fn()
 }));
 
-jest.mock('../../lib/services/twoFactor', () => ({
+jest.mock('~/lib/services/twoFactor/twoFactor', () => ({
 	twoFactor: jest.fn()
 }));
 
-jest.mock('../../lib/methods/helpers/handleSaveUserProfileError', () => jest.fn());
+jest.mock('~/lib/methods/helpers/handleSaveUserProfileError', () => jest.fn());
 
 const mockShowActionSheet = jest.fn();
 const mockHideActionSheet = jest.fn();
-jest.mock('../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
 }));
 
@@ -46,8 +47,8 @@ jest.mock('react-native-keyboard-controller', () => {
 
 jest.mock('./components/DeleteAccountActionSheetContent', () => () => null);
 jest.mock('./components/ConfirmEmailChangeActionSheetContent', () => () => null);
-jest.mock('../../containers/CustomFields', () => () => null);
-jest.mock('../../containers/Avatar', () => ({ AvatarWithEdit: () => null }));
+jest.mock('~/containers/CustomFields', () => () => null);
+jest.mock('~/containers/Avatar', () => ({ AvatarWithEdit: () => null }));
 
 const user = {
 	id: 'user-id',
@@ -86,10 +87,13 @@ const renderProfile = () => {
 };
 
 // Make the form dirty + valid so the Save button is enabled, then press it.
-const changeNameAndSubmit = (getByTestId: (id: string) => any, newName = 'Jane Doe') => {
-	fireEvent.changeText(getByTestId('profile-view-name'), newName);
+const changeAndSubmit = async (getByTestId: (id: string) => any, inputTestId: string, value: string) => {
+	fireEvent.changeText(getByTestId(inputTestId), value);
+	await waitFor(() => expect(getByTestId('profile-view-submit')).toBeEnabled());
 	fireEvent.press(getByTestId('profile-view-submit'));
 };
+
+const changeNameAndSubmit = (getByTestId: (id: string) => any) => changeAndSubmit(getByTestId, 'profile-view-name', 'Jane Doe');
 
 beforeEach(() => {
 	jest.clearAllMocks();
@@ -102,7 +106,7 @@ describe('ProfileView submit', () => {
 		const emitSpy = jest.spyOn(EventEmitter, 'emit');
 
 		const { getByTestId } = renderProfile();
-		changeNameAndSubmit(getByTestId);
+		await changeNameAndSubmit(getByTestId);
 
 		await waitFor(() => expect(saveUserProfile).toHaveBeenCalledWith({ name: 'Jane Doe' }, {}));
 		expect(dispatch).toHaveBeenCalledWith(setUser({ ...user, name: 'Jane Doe', customFields: {} }));
@@ -113,8 +117,7 @@ describe('ProfileView submit', () => {
 	it('asks for the current password before changing the email', async () => {
 		const { getByTestId } = renderProfile();
 
-		fireEvent.changeText(getByTestId('profile-view-email'), 'jane@rocket.chat');
-		fireEvent.press(getByTestId('profile-view-submit'));
+		await changeAndSubmit(getByTestId, 'profile-view-email', 'jane@rocket.chat');
 
 		await waitFor(() => expect(mockShowActionSheet).toHaveBeenCalled());
 		expect(saveUserProfile).not.toHaveBeenCalled();
@@ -127,11 +130,47 @@ describe('ProfileView submit', () => {
 		(twoFactor as jest.Mock).mockResolvedValue({ twoFactorCode: '123456', twoFactorMethod: 'totp' });
 
 		const { getByTestId } = renderProfile();
-		changeNameAndSubmit(getByTestId);
+		await changeNameAndSubmit(getByTestId);
 
 		await waitFor(() => expect(twoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: false }));
 		await waitFor(() => expect(saveUserProfile).toHaveBeenCalledTimes(2));
 		expect(handleSaveUserProfileError).not.toHaveBeenCalled();
+	});
+
+	it('flags the next 2FA prompt as invalid when the entered code is rejected', async () => {
+		(saveUserProfile as jest.Mock).mockRejectedValue({ error: 'totp-invalid', details: { method: 'totp' } });
+		(twoFactor as jest.Mock)
+			.mockResolvedValueOnce({ twoFactorCode: '123456', twoFactorMethod: 'totp' })
+			.mockRejectedValue(new TwoFactorCancelledError());
+
+		const { getByTestId } = renderProfile();
+		await changeNameAndSubmit(getByTestId);
+
+		await waitFor(() => expect(twoFactor).toHaveBeenCalledTimes(2));
+		expect(twoFactor).toHaveBeenNthCalledWith(1, { method: 'totp', invalid: false });
+		expect(twoFactor).toHaveBeenNthCalledWith(2, { method: 'totp', invalid: true });
+	});
+
+	it('stays silent when the user cancels the 2FA challenge', async () => {
+		(saveUserProfile as jest.Mock).mockRejectedValue({ error: 'totp-invalid', details: { method: 'totp' } });
+		(twoFactor as jest.Mock).mockRejectedValue(new TwoFactorCancelledError());
+
+		const { getByTestId } = renderProfile();
+		await changeNameAndSubmit(getByTestId);
+
+		await waitFor(() => expect(twoFactor).toHaveBeenCalled());
+		expect(handleSaveUserProfileError).not.toHaveBeenCalled();
+	});
+
+	it('reports the 2FA error itself when the challenge fails for a reason other than cancelling', async () => {
+		const twoFactorError = { error: 'totp-required' };
+		(saveUserProfile as jest.Mock).mockRejectedValue({ error: 'totp-invalid', details: { method: 'totp' } });
+		(twoFactor as jest.Mock).mockRejectedValue(twoFactorError);
+
+		const { getByTestId } = renderProfile();
+		await changeNameAndSubmit(getByTestId);
+
+		await waitFor(() => expect(handleSaveUserProfileError).toHaveBeenCalledWith(twoFactorError, 'saving_profile'));
 	});
 
 	it('handles the save error after a cancelled/non-2FA failure', async () => {
@@ -139,7 +178,7 @@ describe('ProfileView submit', () => {
 		(saveUserProfile as jest.Mock).mockRejectedValue(error);
 
 		const { getByTestId } = renderProfile();
-		changeNameAndSubmit(getByTestId);
+		await changeNameAndSubmit(getByTestId);
 
 		await waitFor(() => expect(handleSaveUserProfileError).toHaveBeenCalledWith(error, 'saving_profile'));
 		expect(twoFactor).not.toHaveBeenCalled();
@@ -154,8 +193,7 @@ describe('ProfileView submit', () => {
 		});
 
 		const { getByTestId } = renderProfile();
-		fireEvent.changeText(getByTestId('profile-view-email'), 'jane@rocket.chat');
-		fireEvent.press(getByTestId('profile-view-submit'));
+		await changeAndSubmit(getByTestId, 'profile-view-email', 'jane@rocket.chat');
 
 		await waitFor(() => expect(confirmOnSubmit).toBeDefined());
 		await act(async () => {
@@ -166,5 +204,26 @@ describe('ProfileView submit', () => {
 			expect(saveUserProfile).toHaveBeenCalledWith({ email: 'jane@rocket.chat', currentPassword: sha256('my-secret') }, {})
 		);
 		expect(mockHideActionSheet).toHaveBeenCalled();
+	});
+
+	it('keeps the new email in the form and the stored user after saving it', async () => {
+		(saveUserProfile as jest.Mock).mockResolvedValue(true);
+		let confirmOnSubmit: ((password: string) => Promise<void>) | undefined;
+		mockShowActionSheet.mockImplementation(({ children }: any) => {
+			confirmOnSubmit = children?.props?.onSubmit;
+		});
+
+		const { getByTestId } = renderProfile();
+		await changeAndSubmit(getByTestId, 'profile-view-email', 'jane@rocket.chat');
+
+		await waitFor(() => expect(confirmOnSubmit).toBeDefined());
+		await act(async () => {
+			await confirmOnSubmit!('my-secret');
+		});
+
+		await waitFor(() => expect(getByTestId('profile-view-email').props.value).toBe('jane@rocket.chat'));
+		expect(dispatch).toHaveBeenCalledWith(
+			setUser(expect.objectContaining({ emails: [{ address: 'jane@rocket.chat', verified: false }] }))
+		);
 	});
 });

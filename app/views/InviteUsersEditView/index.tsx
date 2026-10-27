@@ -4,13 +4,13 @@ import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
-import { inviteLinksCreate } from '../../actions/inviteLinks';
-import Button from '../../containers/Button';
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import I18n from '../../i18n';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { events, logEvent } from '../../lib/methods/helpers/log';
+import { inviteLinksCreate } from '~/actions/inviteLinks';
+import Button from '~/containers/Button';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
+import I18n from '~/i18n';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { events, logEvent } from '~/lib/methods/helpers/log';
 import styles from './styles';
 import Picker from './Picker';
 
@@ -41,9 +41,11 @@ const InviteUsersEditView = () => {
 					<List.Item title='Max_number_of_uses' right={() => <Picker param='maxUses' first='No_limit' />} />
 					<List.Separator />
 				</List.Section>
-				<View style={styles.innerContainer}>
-					<Button title={I18n.t('Generate_New_Link')} type='primary' onPress={createInviteLink} />
-				</View>
+				<List.Section>
+					<View style={styles.innerContainer}>
+						<Button title={I18n.t('Generate_New_Link')} type='primary' onPress={createInviteLink} />
+					</View>
+				</List.Section>
 			</List.Container>
 		</SafeAreaView>
 	);

@@ -1,4 +1,4 @@
-import { type TAttachmentEncryption, type TSendFileMessageFileInfo } from '../../definitions';
+import { type TAttachmentEncryption, type TSendFileMessageFileInfo } from '~/definitions';
 
 export type TGetContentResult = {
 	algorithm: 'rc.v1.aes-sha2' | 'rc.v2.aes-sha2';
@@ -26,4 +26,10 @@ export interface IDecryptionFileQueue {
 	params: Parameters<TDecryptFile>;
 	resolve: (value: string | null | PromiseLike<string | null>) => void;
 	reject: (reason?: any) => void;
+}
+
+export interface IEncryption {
+	privateKey: string | null;
+	publicKey: string | null;
+	deleteRoomInstance: (rid: string) => void;
 }

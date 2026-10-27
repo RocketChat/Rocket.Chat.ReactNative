@@ -1,8 +1,8 @@
 import removeMarkdown from 'remove-markdown';
 
 import useShortnameToUnicode from '../useShortnameToUnicode';
-import { formatText } from '../../helpers/formatText';
-import { formatHyperlink } from '../../helpers/formatHyperlink';
+import { formatText } from '~/lib/helpers/formatText';
+import { formatHyperlink } from '~/lib/helpers/formatHyperlink';
 
 const usePreviewFormatText = (msg: string) => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode();

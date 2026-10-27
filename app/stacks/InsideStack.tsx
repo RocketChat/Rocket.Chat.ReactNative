@@ -6,16 +6,22 @@ import {
 	type NativeStackNavigationOptions
 } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { type StaticScreenProps } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute, type StaticScreenProps } from '@react-navigation/native';
 
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import withNavigation from '../lib/navigation/withNavigation';
 import Sidebar from '../views/SidebarView';
 import { isIOS } from '../lib/methods/helpers';
+import { DRAWER_SWIPE_EDGE_WIDTH } from '../lib/constants/gestures';
 import { type TNavigation } from './stackType';
 import RoomView from '../views/RoomView';
 import RoomsListView from '../views/RoomsListView';
+import CategoryView from '../views/CategoryView';
+import CategorySettingsView from '../views/CategorySettingsView';
+import ManageCategoryRoomsView from '../views/CategorySettingsView/ManageCategoryRoomsView';
+import ConfirmCategoryRoomsView from '../views/CategorySettingsView/ConfirmCategoryRoomsView';
+import RenameCategoryView from '../views/CategorySettingsView/RenameCategoryView';
 import RoomActionsView from '../views/RoomActionsView';
 import RoomInfoView from '../views/RoomInfoView';
 import ReportUserView from '../views/ReportUserView';
@@ -39,6 +45,7 @@ import TeamChannelsView from '../views/TeamChannelsView';
 import ReadReceiptsView from '../views/ReadReceiptView';
 import CannedResponsesListView from '../views/CannedResponsesListView';
 import CannedResponseDetail from '../views/CannedResponseDetail';
+import ConferenceView from '../views/ConferenceView';
 import JitsiMeetView from '../views/JitsiMeetView';
 import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
@@ -62,10 +69,14 @@ import MediaAutoDownloadView from '../views/MediaAutoDownloadView';
 import LegalView from '../views/LegalView';
 import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
 import DisplayPrefsView from '../views/DisplayPrefsView';
+import CategoryOrderView from '../views/CategoryOrderView';
 import ThemeView from '../views/ThemeView';
 import AdminPanelView from '../views/AdminPanelView';
-import NewMessageView from '../views/NewMessageView';
+import NewMessageView, { type NewMessageViewParams } from '../views/NewMessageView';
 import CreateChannelView from '../views/CreateChannelView';
+import CreateCategoryView from '../views/CreateCategoryView';
+import CategoryRoomsView from '../views/CreateCategoryView/CategoryRoomsView';
+import ConfirmCategoryView from '../views/CreateCategoryView/ConfirmCategoryView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
 import ForwardMessageView from '../views/ForwardMessageView';
 import E2ESaveYourPasswordView from '../views/E2ESaveYourPasswordView';
@@ -122,6 +133,7 @@ const AddChannelTeamViewScreen = AddChannelTeamView as any;
 const AddExistingChannelViewScreen = AddExistingChannelView as any;
 const CannedResponseDetailScreen = CannedResponseDetail as any;
 const JitsiMeetViewScreen = JitsiMeetView as any;
+const ConferenceViewScreen = ConferenceView as any;
 const ChangeAvatarViewScreen = ChangeAvatarView as any;
 const UserNotificationPrefViewScreen: ComponentType<StaticScreenProps<undefined>> = UserNotificationPrefView as any;
 const SettingsViewScreen: ComponentType<StaticScreenProps<undefined>> = SettingsView as any;
@@ -135,7 +147,7 @@ const AccessibilityAndAppearanceViewScreen: ComponentType<StaticScreenProps<unde
 const DisplayPrefsViewScreen: ComponentType<StaticScreenProps<undefined>> = DisplayPrefsView as any;
 const ThemeViewScreen: ComponentType<StaticScreenProps<undefined>> = ThemeView as any;
 const AdminPanelViewScreen: ComponentType<StaticScreenProps<undefined>> = AdminPanelView as any;
-const NewMessageViewScreen: ComponentType<StaticScreenProps<undefined>> = NewMessageView as any;
+const NewMessageViewScreen: ComponentType<StaticScreenProps<NewMessageViewParams>> = NewMessageView as any;
 const ForwardMessageViewScreen = ForwardMessageView as any;
 const E2ESaveYourPasswordViewScreen: ComponentType<StaticScreenProps<undefined>> = E2ESaveYourPasswordView as any;
 const E2EHowItWorksViewScreen = E2EHowItWorksView as any;
@@ -156,6 +168,14 @@ const ChatsStack = createNativeStackNavigator({
 			screen: RoomsListView,
 			options: { freezeOnBlur: true }
 		}),
+		CategoryView: createNativeStackScreen({
+			screen: CategoryView,
+			options: ({ route }) => ({ title: route.params.title })
+		}),
+		CategorySettingsView,
+		ManageCategoryRoomsView,
+		ConfirmCategoryRoomsView,
+		RenameCategoryView,
 		RoomView: RoomViewScreen,
 		RoomActionsView: createNativeStackScreen({
 			screen: RoomActionsViewScreen,
@@ -178,6 +198,8 @@ const ChatsStack = createNativeStackNavigator({
 		MessagesView: MessagesViewScreen,
 		AutoTranslateView: AutoTranslateViewScreen,
 		DirectoryView: DirectoryViewScreen,
+		DisplayPrefsView: DisplayPrefsViewScreen,
+		CategoryOrderView,
 		NotificationPrefView: NotificationPrefViewScreen,
 		E2EEToggleRoomView: E2EEToggleRoomViewScreen,
 		PushTroubleshootView: PushTroubleshootViewScreen,
@@ -203,8 +225,6 @@ const ChatsStack = createNativeStackNavigator({
 		})
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -221,8 +241,6 @@ const ProfileStack = createNativeStackNavigator({
 		PickerView: PickerViewScreen
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -245,8 +263,6 @@ const SettingsStack = createNativeStackNavigator({
 		})
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -257,8 +273,6 @@ const AdminPanelStack = createNativeStackNavigator({
 		AdminPanelView: AdminPanelViewScreen
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -268,23 +282,36 @@ const AccessibilityStack = createNativeStackNavigator({
 	screens: {
 		AccessibilityAndAppearanceView: AccessibilityAndAppearanceViewScreen,
 		DisplayPrefsView: DisplayPrefsViewScreen,
+		CategoryOrderView,
 		ThemeView: ThemeViewScreen
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
+const DRAWER_STACK_ROOT_SCREENS = [
+	'RoomsListView',
+	'ProfileView',
+	'SettingsView',
+	'AdminPanelView',
+	'AccessibilityAndAppearanceView'
+];
+
+const isNestedStackAtRoot = (route: Parameters<typeof getFocusedRouteNameFromRoute>[0]) => {
+	const focusedScreen = getFocusedRouteNameFromRoute(route);
+	return !focusedScreen || DRAWER_STACK_ROOT_SCREENS.includes(focusedScreen);
+};
+
 const DrawerStack = createDrawerNavigator({
-	screenOptions: {
-		swipeEnabled: false,
+	screenOptions: ({ route }) => ({
+		swipeEnabled: isNestedStackAtRoot(route),
+		swipeEdgeWidth: DRAWER_SWIPE_EDGE_WIDTH,
 		headerShown: false,
 		drawerPosition: I18nManager.isRTL ? 'right' : 'left',
 		drawerType: 'slide',
 		freezeOnBlur: true
-	},
+	}),
 	screens: {
 		ChatsStackNavigator: ChatsStack,
 		ProfileStackNavigator: ProfileStack,
@@ -293,8 +320,6 @@ const DrawerStack = createDrawerNavigator({
 		AccessibilityStackNavigator: AccessibilityStack
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { colors } = useContext(ThemeContext);
 	return (
 		<Navigator
@@ -311,11 +336,12 @@ const NewMessageStack = createNativeStackNavigator({
 		SelectedUsersView: SelectedUsersViewScreen,
 		CreateChannelView: CreateChannelViewScreen,
 		CreateDiscussionView: CreateDiscussionViewScreen,
-		ForwardMessageView: ForwardMessageViewScreen
+		ForwardMessageView: ForwardMessageViewScreen,
+		CreateCategoryView,
+		CategoryRoomsView,
+		ConfirmCategoryView
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -327,8 +353,6 @@ const E2ESaveYourPasswordStack = createNativeStackNavigator({
 		E2EHowItWorksView: E2EHowItWorksViewScreen
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -340,8 +364,6 @@ const E2EEnterYourPasswordStack = createNativeStackNavigator({
 		E2EEncryptionSecurityView: E2EEncryptionSecurityViewScreen
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
@@ -375,11 +397,15 @@ const InsideStack = createNativeStackNavigator({
 		CallView: createNativeStackScreen({
 			screen: CallViewScreen,
 			options: { headerShown: false }
+		}),
+		// Lives at the root, not in ChatsStack: the conference header is mounted app-wide, so
+		// "return to call" has to resolve from Settings, Profile and Admin too.
+		ConferenceView: createNativeStackScreen({
+			screen: ConferenceViewScreen,
+			options: { headerShown: false, animation: isIOS ? 'default' : 'none' }
 		})
 	}
 }).with(({ Navigator }) => {
-	'use memo';
-
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });

@@ -1,8 +1,9 @@
 import { usersAutoComplete } from '../restApi';
 import { getPeerAutocompleteOptions, type TPeerItem } from './getPeerAutocompleteOptions';
-import { mockedStore } from '../../../reducers/mockedStore';
-import { initStore } from '../../store/auxStore';
-import { setUser } from '../../../actions/login';
+import { mockedStore } from '~/reducers/mockedStore';
+import { initStore } from '~/lib/store/auxStore';
+import { setUser } from '~/actions/login';
+import { selectServerSuccess } from '~/actions/server';
 
 jest.mock('../restApi', () => ({
 	usersAutoComplete: jest.fn()
@@ -21,7 +22,11 @@ type TAutoCompleteItem = {
 	name?: string;
 	username?: string;
 	freeSwitchExtension?: string;
+	sipExtension?: string;
 };
+
+const setServerVersion = (version: string) =>
+	mockedStore.dispatch(selectServerSuccess({ server: 'https://open.rocket.chat', version, name: 'Rocket.Chat' }));
 
 const mockUsersAutoCompleteResponse = (
 	items: TAutoCompleteItem[] = [],
@@ -34,6 +39,7 @@ const mockUsersAutoCompleteResponse = (
 describe('getPeerAutocompleteOptions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		setServerVersion('8.9.0');
 	});
 
 	it('returns empty array and skips API call when filter is empty', async () => {
@@ -276,6 +282,86 @@ describe('getPeerAutocompleteOptions', () => {
 				username: 'other',
 				callerId: undefined
 			}
+		] satisfies TPeerItem[]);
+	});
+
+	describe('server >= 9.0.0 (sipExtension)', () => {
+		beforeEach(() => {
+			setServerVersion('9.0.0');
+		});
+
+		it('SIP branch: when sipEnabled, adds sipExtension exists condition', async () => {
+			mockedUsersAutoComplete.mockResolvedValue(mockUsersAutoCompleteResponse());
+
+			await getPeerAutocompleteOptions({ filter: '123', peerInfo: null, username: 'me', sipEnabled: true });
+
+			expect(mockedUsersAutoComplete).toHaveBeenCalledWith({
+				term: '123',
+				exceptions: ['me'],
+				conditions: {
+					$and: [{ sipExtension: { $exists: true } }]
+				}
+			});
+		});
+
+		it('SIP branch: excludes the selected peer by sipExtension', async () => {
+			mockedUsersAutoComplete.mockResolvedValue(mockUsersAutoCompleteResponse());
+
+			const peerInfo: TPeerItem = { type: 'user', value: 'other', label: 'Other', username: 'other.user', callerId: '2002' };
+
+			await getPeerAutocompleteOptions({ filter: '99', peerInfo, username: 'me', sipEnabled: true });
+
+			expect(mockedUsersAutoComplete).toHaveBeenCalledWith({
+				term: '99',
+				exceptions: ['me', 'other.user'],
+				conditions: {
+					$and: [{ sipExtension: { $exists: true } }, { sipExtension: { $ne: '2002' } }]
+				}
+			});
+		});
+
+		it('SIP disabled with a selected peer: only excludes by sipExtension', async () => {
+			mockedUsersAutoComplete.mockResolvedValue(mockUsersAutoCompleteResponse());
+
+			const peerInfo: TPeerItem = { type: 'user', value: 'other', label: 'Other', username: 'peer', callerId: '3003' };
+
+			await getPeerAutocompleteOptions({ filter: 'x', peerInfo, username: undefined, sipEnabled: false });
+
+			expect(mockedUsersAutoComplete).toHaveBeenCalledWith({
+				term: 'x',
+				exceptions: ['peer'],
+				conditions: {
+					$and: [{ sipExtension: { $ne: '3003' } }]
+				}
+			});
+		});
+
+		it('maps callerId from sipExtension', async () => {
+			mockedUsersAutoComplete.mockResolvedValue(
+				mockUsersAutoCompleteResponse([
+					{ _id: 'u1', name: 'Alice', username: 'alice', sipExtension: '1001', freeSwitchExtension: 'stale' }
+				])
+			);
+
+			const result = await getPeerAutocompleteOptions({ filter: 'ali', peerInfo: null, username: 'me', sipEnabled: false });
+
+			expect(result).toEqual([
+				{ type: 'sip', value: 'ali', label: 'ali' },
+				{ type: 'user', value: 'u1', label: 'Alice', username: 'alice', callerId: '1001' }
+			] satisfies TPeerItem[]);
+		});
+	});
+
+	it('server < 9.0.0: maps callerId from freeSwitchExtension', async () => {
+		mockedUsersAutoComplete.mockResolvedValue(
+			mockUsersAutoCompleteResponse([{ _id: 'u1', name: 'Alice', username: 'alice', freeSwitchExtension: '1001' }])
+		);
+
+		const result = await getPeerAutocompleteOptions({ filter: 'ali', peerInfo: null, username: 'me', sipEnabled: false });
+
+		expect(result).toEqual([
+			{ type: 'sip', value: 'ali', label: 'ali' },
+			{ type: 'user', value: 'u1', label: 'Alice', username: 'alice', callerId: '1001' }
 		] satisfies TPeerItem[]);
 	});
 });

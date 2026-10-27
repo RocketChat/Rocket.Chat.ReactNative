@@ -4,23 +4,23 @@ import * as Haptics from 'expo-haptics';
 import { type ReactNode } from 'react';
 
 import Dialpad from './Dialpad';
-import { useCallStore } from '../../../../lib/services/voip/useCallStore';
-import { mockedStore } from '../../../../reducers/mockedStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './Dialpad.stories';
-import { generateSnapshots } from '../../../../../.rnstorybook/generateSnapshots';
-import { useCallLayoutMode } from '../../useCallLayoutMode';
+import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
+import { useCallLayoutMode } from '~/views/CallView/useCallLayoutMode';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
 	useResponsiveLayout
-} from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+} from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
-jest.mock('../../useCallLayoutMode', () => ({
+jest.mock('~/views/CallView/useCallLayoutMode', () => ({
 	useCallLayoutMode: jest.fn(() => ({ layoutMode: 'narrow' }))
 }));
 
-jest.mock('../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
-	const actual = jest.requireActual('../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout');
+jest.mock('~/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
+	const actual = jest.requireActual('~/lib/hooks/useResponsiveLayout/useResponsiveLayout');
 	return {
 		...actual,
 		// Delegate to real hook so Storybook snapshots keep ResponsiveLayoutContext.Provider working.
@@ -28,7 +28,7 @@ jest.mock('../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () =>
 	};
 });
 
-jest.mock('../../../../containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet', () => ({
 	hideActionSheetRef: jest.fn()
 }));
 
@@ -81,7 +81,7 @@ const mockResponsiveLayout = (width: number, height: number) =>
 describe('Dialpad', () => {
 	beforeEach(() => {
 		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
-		const actual = jest.requireActual('../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout');
+		const actual = jest.requireActual('~/lib/hooks/useResponsiveLayout/useResponsiveLayout');
 		(useResponsiveLayout as jest.Mock).mockImplementation(() => actual.useResponsiveLayout());
 		useCallStore.getState().reset();
 		sendDTMFMock.mockClear();

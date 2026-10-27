@@ -1,0 +1,13 @@
+diff --git a/node_modules/@react-navigation/core/lib/typescript/src/types.d.ts b/node_modules/@react-navigation/core/lib/typescript/src/types.d.ts
+index 1111111..2222222 100644
+--- a/node_modules/@react-navigation/core/lib/typescript/src/types.d.ts
++++ b/node_modules/@react-navigation/core/lib/typescript/src/types.d.ts
+@@ -57,7 +57,7 @@
+ /**
+  * Infer the param list from the static navigation config.
+  */
+-export type StaticParamList<T extends StaticNavigationConfig> = FlatType<ParamListForScreens<T['config']['screens']> & ParamListForGroups<T['config']['groups']>>;
++export type StaticParamList<T extends StaticNavigationConfig> = ParamListForScreens<T['config']['screens']> & ParamListForGroups<T['config']['groups']>;
+ type ParamListForStaticNavigator<T> = T extends StaticNavigationConfig ? StaticParamList<T> : {};
+ type ParamListForTypedNavigator<T> = T extends {
+     Screen: any;

@@ -1,0 +1,41 @@
+import { type ReactNode } from 'react';
+import { Provider } from 'react-redux';
+
+import { createMockedStore } from '~/reducers/mockedStore';
+import { setUser } from '~/actions/login';
+import { type TAnyMessageModel } from '~/definitions';
+import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
+import { MessageProvider } from '~/containers/message/stores/MessageStore';
+import ContentLeaf from '../Content';
+
+const store = createMockedStore();
+store.dispatch(setUser({ id: 'reader-id', username: 'reader' }));
+
+const item = {
+	id: 'msg-id',
+	msg: 'This is a plain text message',
+	t: undefined,
+	u: { _id: 'author-id', username: 'rocket.cat' },
+	autoTranslate: false
+} as unknown as TAnyMessageModel;
+
+const room: Partial<MessageRoomState> = {};
+
+const StoryWrapper = ({ children }: { children: ReactNode }) => (
+	<Provider store={store}>
+		<MessageRoomProvider {...room}>
+			<MessageProvider item={item}>{children}</MessageProvider>
+		</MessageRoomProvider>
+	</Provider>
+);
+
+export default {
+	title: 'Message/Content'
+};
+
+// A regular text message renders its Markdown body.
+export const Content = () => (
+	<StoryWrapper>
+		<ContentLeaf />
+	</StoryWrapper>
+);

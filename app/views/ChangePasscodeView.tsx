@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react';
+import { useCallback, useEffect, useState, memo } from 'react';
 import { StyleSheet } from 'react-native';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
@@ -10,6 +10,7 @@ import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../lib/methods/helpers/events';
 import { CustomIcon } from '../containers/CustomIcon';
 import { CHANGE_PASSCODE_EMITTER } from '../lib/constants/localAuthentication';
+import { useDeferredModalSettle } from '../lib/hooks/useDeferredModalSettle';
 import Touch from '../containers/Touch';
 
 const styles = StyleSheet.create({
@@ -35,6 +36,8 @@ interface IArgs {
 const ChangePasscodeView = memo(() => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<Partial<IArgs>>({});
+	const [requestId, setRequestId] = useState(0);
+	const { onShow, defer, onModalHide } = useDeferredModalSettle<Partial<IArgs>>();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -44,23 +47,23 @@ const ChangePasscodeView = memo(() => {
 		}
 	}, [data]);
 
-	const showChangePasscode = (args: IArgs) => {
-		setData(args);
-	};
+	const showChangePasscode = useCallback(
+		(args: IArgs) => {
+			onShow(args);
+			setRequestId(current => current + 1);
+			setData(args);
+		},
+		[onShow]
+	);
 
 	const onSubmit = (passcode: string) => {
 		const { submit } = data;
-		if (submit) {
-			submit(passcode);
-		}
+		defer(submit ? () => submit(passcode) : null);
 		setData({});
 	};
 
 	const onCancel = () => {
-		const { cancel } = data;
-		if (cancel) {
-			cancel();
-		}
+		defer(data.cancel || null);
 		setData({});
 	};
 
@@ -69,12 +72,12 @@ const ChangePasscodeView = memo(() => {
 		return () => {
 			EventEmitter.removeListener(CHANGE_PASSCODE_EMITTER, listener);
 		};
-	}, []);
+	}, [showChangePasscode]);
 
 	return (
-		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal}>
+		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal} onModalHide={onModalHide}>
 			<GestureHandlerRootView style={styles.container}>
-				<PasscodeChoose finishProcess={onSubmit} force={data?.force} />
+				<PasscodeChoose key={requestId} finishProcess={onSubmit} force={data?.force} />
 				{!data?.force ? (
 					<Touch onPress={onCancel} style={styles.close}>
 						<CustomIcon name='close' size={30} />

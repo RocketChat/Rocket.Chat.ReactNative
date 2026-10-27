@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { themes } from '../../lib/constants/colors';
+import { themes } from '~/lib/constants/colors';
 import { getUnreadStyle } from './getUnreadStyle';
 
 const testsForTheme = theme => {
@@ -15,7 +15,7 @@ const testsForTheme = theme => {
 				unread: 1
 			})
 		).toEqual({
-			backgroundColor: themes[theme].fontAnnotation,
+			backgroundColor: themes[theme].badgeBackgroundLevel1,
 			color: themes[theme].fontWhite
 		});
 	});

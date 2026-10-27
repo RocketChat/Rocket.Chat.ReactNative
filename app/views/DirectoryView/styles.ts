@@ -3,10 +3,14 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
+	container: {
+		paddingVertical: 0
+	},
 	list: {
 		flex: 1
 	},
 	listContainer: {
+		paddingTop: 16,
 		paddingBottom: 30
 	},
 	filterItemContainer: {

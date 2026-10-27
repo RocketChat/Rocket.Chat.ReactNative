@@ -95,3 +95,8 @@ AGENTS.md
 /docs/
 .superset/
 .jest-cache/
+.sniffler/cache.json
+
+# e2e
+.e2e/*
+!.e2e/cache/

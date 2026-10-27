@@ -3,10 +3,14 @@ name: Generate Release Changelog
 on:
   workflow_call:
 
+permissions: {}
+
 jobs:
   generate-changelog:
     name: Generate changelog
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -19,16 +23,13 @@ jobs:
         run: |
           LATEST_RELEASE_TAG=$(git tag --sort=-creatordate | head -n 1)
 
-          if [ -z "$LATEST_RELEASE_TAG" ]; then
-            echo "- Improvements and bug fixes" > changelog.txt
-            exit 0
+          NOTES=""
+          if [ -n "$LATEST_RELEASE_TAG" ]; then
+            NOTES=$(git log "$LATEST_RELEASE_TAG"..HEAD --pretty=format:"- %s" --no-merges)
           fi
+          NOTES=${NOTES:-"- Improvements and bug fixes"}
 
-          git log "$LATEST_RELEASE_TAG"..HEAD --pretty=format:"- %s" --no-merges > changelog.txt
-
-          if [ ! -s changelog.txt ]; then
-            echo "- Improvements and bug fixes" > changelog.txt
-          fi
+          printf 'DEVELOP BUILD\n\n%s\n' "$NOTES" > changelog.txt
 
       - name: Upload changelog artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

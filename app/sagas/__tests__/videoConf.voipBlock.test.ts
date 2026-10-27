@@ -1,26 +1,26 @@
-jest.mock('../../lib/services/voip/isInActiveVoipCall', () => ({
+jest.mock('~/lib/services/voip/isInActiveVoipCall', () => ({
 	isInActiveVoipCall: jest.fn(() => false)
 }));
 
-jest.mock('../../lib/services/restApi', () => ({
+jest.mock('~/lib/services/restApi', () => ({
 	videoConferenceStart: jest.fn(() => Promise.resolve({ success: false })),
 	videoConferenceCancel: jest.fn(() => Promise.resolve({ success: true })),
 	notifyUser: jest.fn(() => Promise.resolve(true))
 }));
 
-jest.mock('../../lib/methods/helpers/info', () => ({
+jest.mock('~/lib/methods/helpers/info', () => ({
 	showErrorAlert: jest.fn()
 }));
 
 import { applyMiddleware, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import { handleVideoConfIncomingWebsocketMessages, initVideoCall } from '../../actions/videoConf';
-import reducers from '../../reducers';
+import { handleVideoConfIncomingWebsocketMessages, initVideoCall } from '~/actions/videoConf';
+import reducers from '~/reducers';
 import videoConfRootSaga from '../videoConf';
-import { isInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
-import { videoConferenceStart } from '../../lib/services/restApi';
-import { showErrorAlert } from '../../lib/methods/helpers/info';
+import { isInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
+import { videoConferenceStart } from '~/lib/services/restApi';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
 
 /** Drains pending saga microtasks (takeEvery → call(onDirectCall) completes synchronously today). */
 async function flushSagaMicrotasks(): Promise<void> {

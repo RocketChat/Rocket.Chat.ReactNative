@@ -1,4 +1,4 @@
-import { type ISetting, type ISettingColor } from '../../ISetting';
+import { type ISetting, type ISettingColor } from '~/definitions/ISetting';
 import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 type SettingsUpdateProps = SettingsUpdatePropDefault | SettingsUpdatePropsActions | SettingsUpdatePropsColor;

@@ -1,7 +1,7 @@
-import { type TIconsName } from '../../containers/CustomIcon';
-import { type IMessage, type SubscriptionType } from '../../definitions';
-import { Encryption } from '../../lib/encryption';
-import { getFiles, getMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
+import { type TIconsName } from '~/containers/CustomIcon';
+import { type IMessage, type SubscriptionType } from '~/definitions';
+import { Encryption } from '~/lib/encryption';
+import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '~/lib/services/restApi';
 
 export type TMessagesViewScreen = 'Files' | 'Mentions' | 'Starred' | 'Pinned';
 
@@ -57,7 +57,7 @@ export const messagesViewContent: Record<TMessagesViewScreen, IMessagesViewConte
 	Pinned: {
 		testID: 'pinned-messages-view',
 		emptyMessageI18n: 'No_pinned_messages',
-		fetch: ({ rid, t, offset }) => getMessages({ roomId: rid, type: t, offset, pinned: true }),
+		fetch: ({ rid, offset }) => getPinnedMessages({ roomId: rid, offset, count: 50 }),
 		action: {
 			titleI18n: 'Unpin',
 			icon: 'pin',

@@ -1,4 +1,4 @@
-import { type IServerRoom } from '../../IRoom';
+import { type IServerRoom } from '~/definitions/IRoom';
 import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 export type DirectoryEndpoint = {

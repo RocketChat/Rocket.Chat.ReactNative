@@ -1,70 +1,64 @@
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { FlatList, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { themes } from '../../lib/constants/colors';
-import { useTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
-import { useActionSheet } from '../../containers/ActionSheet';
-import { type IRoomInfoParam } from '../SearchMessagesView';
-import { SubscriptionType, type IAttachment, type IMessage, type TGetCustomEmoji } from '../../definitions';
+import Message from '~/containers/message';
+import { MessageRoomProvider } from '~/containers/message/stores/MessageRoomStore';
+import { A11yGateProvider } from '~/containers/message/stores/A11yGate';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import { useActionSheet } from '~/containers/ActionSheet';
+import SafeAreaView from '~/containers/SafeAreaView';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
+import { getUserSelector } from '~/selectors/login';
+import { SubscriptionType, type IAttachment, type IMessage, type IRoomInfoParam } from '~/definitions';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import Navigation from '~/lib/navigation/appNavigation';
+import AudioManager from '~/lib/methods/AudioManager';
+import getThreadName from '~/lib/methods/getThreadName';
+import log from '~/lib/methods/helpers/log';
 import { type IMessagesViewProps, type IParams } from './definitions';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import Navigation from '../../lib/navigation/appNavigation';
-import Message from '../../containers/message';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import getFileUrlAndTypeFromMessage from './methods/getFileUrlAndTypeFromMessage';
-import AudioManager from '../../lib/methods/AudioManager';
-import SafeAreaView from '../../containers/SafeAreaView';
-import getThreadName from '../../lib/methods/getThreadName';
 import useMessages from './hooks/useMessages';
-import { messagesViewContent, type TMessagesViewScreen } from './messagesViewContent';
+import { messagesViewContent } from './messagesViewContent';
 import styles from './styles';
 
+const TIME_FORMAT = 'MMM Do YYYY, h:mm:ss a';
+
 const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
-	const rid: string = route.params?.rid;
-	const t: SubscriptionType = route.params?.t;
-	const screenName = route.params?.name as TMessagesViewScreen;
+	const { rid, t, name: screenName } = route.params;
 	const content = messagesViewContent[screenName];
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const { showActionSheet } = useActionSheet();
 	const isMasterDetail = useMasterDetail();
-	const { baseUrl, customEmojis, useRealName, user } = useAppSelector(state => ({
-		baseUrl: state.server.server,
-		user: getUserSelector(state),
-		customEmojis: state.customEmojis,
-		useRealName: state.settings.UI_Use_Real_Name as boolean
-	}));
-	const { messages, loading, loadMore, updateMessageOnActionPress } = useMessages({
-		fetchMessages: offset => (content ? content.fetch({ rid, t, userId: user.id, offset }) : Promise.resolve(undefined))
-	});
+	const insets = useSafeAreaInsets();
+	const userId = useAppSelector(state => getUserSelector(state).id);
+	const { messages, loading, loadMore, removeMessage } = useMessages({ rid, t, userId, screenName });
 
-	const handleShowActionSheet = (message: IMessage) => {
-		if (!content.action) return;
-		showActionSheet({
-			options: [
-				{
-					title: I18n.t(content.action.titleI18n),
-					icon: content.action.icon,
-					onPress: () => onActionPress(message)
-				}
-			],
-			hasCancel: true
-		});
-	};
+	useLayoutEffect(() => {
+		navigation.setOptions({ title: I18n.t(screenName) });
+	}, [navigation, screenName]);
+
+	useEffect(() => () => AudioManager.pauseAudio(), []);
 
 	const onActionPress = async (message: IMessage) => {
 		try {
 			const result = await content.action?.press(message);
-
 			if (result?.success) {
-				updateMessageOnActionPress(message?._id);
+				removeMessage(message._id);
 			}
-		} catch {
-			// Do nothing
+		} catch (error) {
+			log(error);
 		}
+	};
+
+	const showMessageActions = (message: IMessage) => {
+		if (!content.action) return;
+		showActionSheet({
+			options: [{ title: I18n.t(content.action.titleI18n), icon: content.action.icon, onPress: () => onActionPress(message) }],
+			hasCancel: true
+		});
 	};
 
 	const showAttachment = (attachment: IAttachment) => {
@@ -75,120 +69,67 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 		navigation.navigate('RoomInfoView', navParam);
 	};
 
-	const jumpToMessage = async ({ item }: { item: IMessage }) => {
-		let params: IParams = {
-			rid,
-			jumpToMessageId: item._id,
-			t
-		};
-
+	const jumpToMessage = async (item: IMessage) => {
+		Navigation.popToRoom(isMasterDetail);
+		const params: IParams = { rid, t, jumpToMessageId: item._id };
 		if (item.tmid) {
-			Navigation.popToRoom(isMasterDetail);
-			params = {
+			Navigation.push('RoomView', {
 				...params,
 				tmid: item.tmid,
 				name: await getThreadName(rid, item.tmid, item._id),
 				t: SubscriptionType.THREAD
-			};
-			Navigation.push('RoomView', params);
-		} else {
-			Navigation.popToRoom(isMasterDetail);
-			Navigation.setParams(params);
+			});
+			return;
 		}
-	};
-
-	const getCustomEmoji: TGetCustomEmoji = name => {
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
+		Navigation.setParams(params);
 	};
 
 	const renderItem = ({ item }: { item: any }) => {
-		const renderItemCommonProps = {
-			item,
-			baseUrl,
-			user,
-			author: item.u || item.user,
-			timeFormat: 'MMM Do YYYY, h:mm:ss a',
-			isEdited: !!item.editedAt,
-			isHeader: true,
-			isThreadRoom: true,
-			attachments: item.attachments || [],
-			useRealName,
-			showAttachment,
-			getCustomEmoji,
-			navToRoomInfo,
-			onPress: () => jumpToMessage({ item }),
-			rid
-		};
-
 		if (screenName === 'Files') {
 			return (
 				<Message
-					{...renderItemCommonProps}
-					theme={theme}
 					item={{
 						...item,
 						u: item.user,
 						ts: item.ts || item.uploadedAt,
-						attachments: [
-							{
-								title: item.name,
-								description: item.description,
-								...item,
-								...getFileUrlAndTypeFromMessage(item)
-							}
-						]
+						attachments: [{ title: item.name, description: item.description, ...item, ...getFileUrlAndTypeFromMessage(item) }]
 					}}
+					onPress={() => jumpToMessage(item)}
 				/>
 			);
 		}
-
 		return (
 			<Message
-				{...renderItemCommonProps}
-				msg={item.msg}
-				theme={theme}
-				onLongPress={content.action ? () => handleShowActionSheet(item) : undefined}
+				item={item}
+				onPress={() => jumpToMessage(item)}
+				onLongPress={content.action ? () => showMessageActions(item) : undefined}
 			/>
 		);
 	};
 
-	useLayoutEffect(() => {
-		navigation.setOptions({
-			title: I18n.t(screenName)
-		});
-
-		return () => {
-			AudioManager.pauseAudio();
-		};
-	}, []);
-
-	if (!content) {
-		return null;
-	}
-
 	if (!loading && messages.length === 0) {
 		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={content.testID}>
-				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{I18n.t(content.emptyMessageI18n)}</Text>
+			<View style={[styles.listEmptyContainer, { backgroundColor: colors.surfaceRoom }]} testID={content.testID}>
+				<Text style={[styles.noDataFound, { color: colors.fontTitlesLabels }]}>{I18n.t(content.emptyMessageI18n)}</Text>
 			</View>
 		);
 	}
 
 	return (
-		<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={content.testID}>
-			<StatusBar />
-			<FlatList
-				data={messages}
-				renderItem={renderItem}
-				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-				keyExtractor={item => item._id}
-				onEndReached={loadMore}
-				ListFooterComponent={loading ? <ActivityIndicator /> : null}
-			/>
+		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID={content.testID}>
+			<A11yGateProvider>
+				<MessageRoomProvider handlers={{ navToRoomInfo, showAttachment }} rid={rid} isThreadRoom timeFormat={TIME_FORMAT}>
+					<FlatList
+						data={messages}
+						renderItem={renderItem}
+						style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
+						keyExtractor={item => item._id}
+						onEndReached={loadMore}
+						contentContainerStyle={{ paddingBottom: insets.bottom }}
+						ListFooterComponent={loading ? <ActivityIndicator /> : null}
+					/>
+				</MessageRoomProvider>
+			</A11yGateProvider>
 		</SafeAreaView>
 	);
 };

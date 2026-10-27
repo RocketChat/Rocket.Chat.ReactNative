@@ -1,40 +1,59 @@
 import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { memo, useContext, useEffect } from 'react';
-import { BackHandler, FlatList, RefreshControl } from 'react-native';
-import { useSafeAreaFrame } from 'react-native-safe-area-context';
-import { shallowEqual } from 'react-redux';
+import { BackHandler, Platform, RefreshControl } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { shallowEqual, useStore } from 'react-redux';
 
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import BackgroundContainer from '../../containers/BackgroundContainer';
-import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
-import RoomItem from '../../containers/RoomItem';
-import { type IRoomItem } from '../../containers/RoomItem/interfaces';
-import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
-import i18n from '../../i18n';
-import { MAX_SIDEBAR_WIDTH } from '../../lib/constants/tablet';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead, isTablet } from '../../lib/methods/helpers';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { getUserSelector } from '../../selectors/login';
-import { useTheme } from '../../theme';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import BackgroundContainer from '~/containers/BackgroundContainer';
+import { ChangePasswordRequired } from '~/containers/ChangePasswordRequired';
+import { FLOATING_ACTION_BUTTON_CLEARANCE } from '~/containers/FloatingActionButton';
+import RoomItem from '~/containers/RoomItem';
+import { type IRoomItem } from '~/containers/RoomItem/interfaces';
+import { type IApplicationState } from '~/definitions';
+import { SupportedVersionsExpired } from '~/containers/SupportedVersions';
+import i18n from '~/i18n';
+import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
+import { DRAWER_SWIPE_EDGE_WIDTH } from '~/lib/constants/gestures';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import {
+	getRoomAvatar,
+	getRoomTitle,
+	getUidDirectMessage,
+	hasNativeHeaderBar,
+	isIOS,
+	isRead,
+	isTablet
+} from '~/lib/methods/helpers';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import { getUserSelector } from '~/selectors/login';
+import { type ChatsStackParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
 import Container from './components/Container';
 import ListHeader from './components/ListHeader';
+import NewMessageButton from './components/NewMessageButton';
 import SectionHeader from './components/SectionHeader';
+import SectionRevealFooter from './components/SectionRevealFooter';
 import RoomsSearchProvider, { RoomsSearchContext } from './contexts/RoomsSearchProvider';
+import { useCollapsedGroups } from './hooks/useCollapsedGroups';
 import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useHeader } from './hooks/useHeader';
+import { useNewMessage } from './hooks/useNewMessage';
 import { useRefresh } from './hooks/useRefresh';
+import { SECTION_REFLOW, useSectionToggleAnimation } from './hooks/useSectionToggleAnimation';
 import { useSubscriptions } from './hooks/useSubscriptions';
+import { useWarmUpMessageBlocks } from './hooks/useWarmUpMessageBlocks';
 import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(function RoomsListView() {
-	'use memo';
-
 	useHeader();
+	useWarmUpMessageBlocks();
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
@@ -43,14 +62,21 @@ const RoomsListView = memo(function RoomsListView() {
 	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message) as boolean;
 	const { displayMode, showAvatar } = useAppSelector(state => state.sortPreferences, shallowEqual);
 	const isMasterDetail = useMasterDetail();
-	const navigation = useNavigation();
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList>>();
 	const { width } = useSafeAreaFrame();
+	const { bottom } = useSafeAreaInsets();
 	const getItemLayout = useGetItemLayout();
-	const { subscriptions, loading } = useSubscriptions();
-	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
+	const { collapsedGroups, toggleGroup } = useCollapsedGroups();
+	const { subscriptions, loading } = useSubscriptions(collapsedGroups);
+	const { onToggle, rowEntering, rowExiting, badgeEntering, badgeExiting, revealKey, coverEntering, coverExiting } =
+		useSectionToggleAnimation(collapsedGroups, toggleGroup, subscriptions.length);
+	const store = useStore<IApplicationState>();
+	const focusedRoom = useAppSelector(state => (isMasterDetail ? state.room.subscribedRoom : undefined));
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
+	const { canCreateRoom, goToNewMessage } = useNewMessage();
+	const showNewMessageButton = !hasNativeHeaderBar && canCreateRoom && !searchEnabled;
 
 	useEffect(() => {
 		const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -65,10 +91,10 @@ const RoomsListView = memo(function RoomsListView() {
 	}, [searchEnabled]);
 
 	const onPressItem = (item = {} as IRoomItem) => {
-		if (!navigation.isFocused()) {
+		if (!isMasterDetail && !navigation.isFocused()) {
 			return;
 		}
-		if (item.rid === subscribedRoom) {
+		if (item.rid === store.getState().room.subscribedRoom) {
 			return;
 		}
 
@@ -77,9 +103,31 @@ const RoomsListView = memo(function RoomsListView() {
 		goRoom({ item, isMasterDetail });
 	};
 
+	const onOpenSection = (header: string, title: string) => {
+		stopSearch();
+		navigation.navigate('CategoryView', { header, title });
+	};
+
 	const renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
-			return <SectionHeader header={item.rid} />;
+			return (
+				<SectionHeader
+					header={item.rid}
+					title={item.name}
+					collapsed={collapsedGroups.has(item.rid)}
+					empty={item.empty}
+					unread={item.unread}
+					userMentions={item.userMentions}
+					groupMentions={item.groupMentions}
+					tunread={item.tunread}
+					tunreadUser={item.tunreadUser}
+					tunreadGroup={item.tunreadGroup}
+					onToggle={onToggle}
+					onOpen={onOpenSection}
+					badgeEntering={badgeEntering}
+					badgeExiting={badgeExiting}
+				/>
+			);
 		}
 
 		const id = item.search && item.t === 'd' ? item._id : getUidDirectMessage(item);
@@ -87,34 +135,28 @@ const RoomsListView = memo(function RoomsListView() {
 		const swipeEnabled = !(item?.search || item?.joinCodeRequired || item?.outside);
 
 		return (
-			<RoomItem
-				item={item}
-				id={id}
-				username={username}
-				showLastMessage={showLastMessage}
-				onPress={onPressItem}
-				// TODO: move to RoomItem
-				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
-				useRealName={useRealName}
-				getRoomTitle={getRoomTitle}
-				getRoomAvatar={getRoomAvatar}
-				getIsRead={isRead}
-				isFocused={subscribedRoom === item.rid}
-				swipeEnabled={swipeEnabled}
-				showAvatar={showAvatar}
-				displayMode={displayMode}
-			/>
+			<Animated.View entering={rowEntering} exiting={rowExiting}>
+				<RoomItem
+					item={item}
+					id={id}
+					username={username}
+					showLastMessage={showLastMessage}
+					onPress={onPressItem}
+					// TODO: move to RoomItem
+					width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
+					useRealName={useRealName}
+					getRoomTitle={getRoomTitle}
+					getRoomAvatar={getRoomAvatar}
+					getIsRead={isRead}
+					isFocused={focusedRoom === item.rid}
+					swipeEnabled={swipeEnabled}
+					navigationSwipeEdgeWidth={isMasterDetail ? 0 : DRAWER_SWIPE_EDGE_WIDTH}
+					showAvatar={showAvatar}
+					displayMode={displayMode}
+				/>
+			</Animated.View>
 		);
 	};
-
-	if (searchEnabled) {
-		if (searching) {
-			return <ActivityIndicator />;
-		}
-		if (searchResults.length === 0) {
-			return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
-		}
-	}
 
 	if (loading || changingServer) {
 		return <ActivityIndicator />;
@@ -128,23 +170,49 @@ const RoomsListView = memo(function RoomsListView() {
 		return <ChangePasswordRequired navigation={navigation} />;
 	}
 
+	if (searchEnabled && searchResults.length === 0) {
+		if (searching) {
+			return <ActivityIndicator />;
+		}
+		return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
+	}
+
 	return (
-		<FlatList
-			data={searchEnabled ? searchResults : subscriptions}
-			extraData={searchEnabled ? searchResults : subscriptions}
-			keyExtractor={item => `${item.rid}-${searchEnabled}`}
-			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
-			renderItem={renderItem}
-			ListHeaderComponent={ListHeader}
-			getItemLayout={getItemLayout}
-			removeClippedSubviews={isIOS}
-			keyboardShouldPersistTaps='always'
-			initialNumToRender={INITIAL_NUM_TO_RENDER}
-			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
-			windowSize={9}
-			onEndReachedThreshold={0.5}
-			keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
-		/>
+		<>
+			<Animated.FlatList
+				data={searchEnabled ? searchResults : subscriptions}
+				keyExtractor={item => `${item.rid}-${searchEnabled}`}
+				style={[styles.list, { backgroundColor: hasNativeHeaderBar ? colors.surfaceNeutral : colors.surfaceTint }]}
+				contentContainerStyle={[
+					hasNativeHeaderBar && [styles.listContent, { backgroundColor: colors.surfaceTint }],
+					{
+						paddingBottom:
+							Platform.select({ ios: 0, default: bottom }) + (showNewMessageButton ? FLOATING_ACTION_BUTTON_CLEARANCE : 0)
+					}
+				]}
+				renderItem={renderItem}
+				strictMode
+				itemLayoutAnimation={SECTION_REFLOW}
+				ListHeaderComponent={ListHeader}
+				ListFooterComponent={
+					searching ? (
+						<ActivityIndicator />
+					) : (
+						<SectionRevealFooter revealKey={revealKey} entering={coverEntering} exiting={coverExiting} />
+					)
+				}
+				removeClippedSubviews={false}
+				getItemLayout={getItemLayout}
+				contentInsetAdjustmentBehavior={isIOS ? 'automatic' : undefined}
+				keyboardShouldPersistTaps='always'
+				initialNumToRender={INITIAL_NUM_TO_RENDER}
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
+				windowSize={9}
+				onEndReachedThreshold={0.5}
+				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
+			/>
+			{showNewMessageButton ? <NewMessageButton onPress={goToNewMessage} /> : null}
+		</>
 	);
 });
 

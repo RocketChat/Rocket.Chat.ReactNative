@@ -4,16 +4,17 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import * as List from '../../containers/List';
-import I18n from '../../i18n';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { useTheme } from '../../theme';
-import SafeAreaView from '../../containers/SafeAreaView';
-import Button from '../../containers/Button';
-import { logout } from '../../actions/login';
-import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
-import { e2eResetOwnKey } from '../../lib/services/restApi';
-import { type SettingsStackParamList } from '../../stacks/types';
+import * as List from '~/containers/List';
+import I18n from '~/i18n';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { useTheme } from '~/theme';
+import SafeAreaView from '~/containers/SafeAreaView';
+import Button from '~/containers/Button';
+import { logout } from '~/actions/login';
+import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
+import { e2eResetOwnKey } from '~/lib/services/restApi';
+import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
+import { type SettingsStackParamList } from '~/stacks/types';
 import ChangePassword from './ChangePassword';
 import { styles } from './styles';
 
@@ -42,6 +43,9 @@ const E2EEncryptionSecurityView = () => {
 						dispatch(logout());
 					}
 				} catch (e) {
+					if (isTwoFactorCancelled(e)) {
+						return;
+					}
 					log(e);
 					showErrorAlert(I18n.t('E2E_encryption_reset_error'));
 				}
@@ -52,20 +56,22 @@ const E2EEncryptionSecurityView = () => {
 	return (
 		<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: colors.surfaceRoom }}>
 			<List.Container>
-				<View style={styles.container}>
-					<ChangePassword />
+				<List.Section>
+					<View style={styles.container}>
+						<ChangePassword />
 
-					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
-					<View style={styles.content}>
-						<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Reset_E2EE_Password_Description')}</Text>
-						<Button
-							onPress={resetOwnKey}
-							title={I18n.t('E2E_encryption_reset_button')}
-							type='primary'
-							testID='e2e-encryption-security-view-reset-key'
-						/>
+						<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
+						<View style={styles.content}>
+							<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Reset_E2EE_Password_Description')}</Text>
+							<Button
+								onPress={resetOwnKey}
+								title={I18n.t('E2E_encryption_reset_button')}
+								type='primary'
+								testID='e2e-encryption-security-view-reset-key'
+							/>
+						</View>
 					</View>
-				</View>
+				</List.Section>
 			</List.Container>
 		</SafeAreaView>
 	);

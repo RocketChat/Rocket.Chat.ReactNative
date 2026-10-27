@@ -28,9 +28,11 @@ const OrSeparator = memo(() => {
 	const text = { color: colors.fontSecondaryInfo };
 
 	return (
-		<View accessible style={styles.container}>
+		<View importantForAccessibility='no' style={styles.container}>
 			<View style={[styles.line, line]} />
-			<Text style={[styles.text, text]}>{I18n.t('OR')}</Text>
+			<Text accessible={false} style={[styles.text, text]}>
+				{I18n.t('OR')}
+			</Text>
 			<View style={[styles.line, line]} />
 		</View>
 	);

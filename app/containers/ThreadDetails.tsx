@@ -46,7 +46,7 @@ interface IThreadDetails {
 		id: string;
 	};
 	badgeColor?: string;
-	toggleFollowThread: Function;
+	toggleFollowThread?: (isFollowingThread: boolean, tmid: string) => Promise<void> | void;
 	style: ViewStyle;
 }
 
@@ -62,7 +62,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 		replies = '+999';
 	}
 
-	const isFollowing = item.replies?.find((u: string) => u === user?.id);
+	const isFollowing = !!item.replies?.find((u: string) => u === user?.id);
 
 	return (
 		<View style={[styles.container, style]}>

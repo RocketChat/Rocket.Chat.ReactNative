@@ -1,0 +1,12 @@
+diff --git a/node_modules/js-base64/package.json b/node_modules/js-base64/package.json
+index d3b3c37..86a6925 100644
+--- a/node_modules/js-base64/package.json
++++ b/node_modules/js-base64/package.json
+@@ -12,6 +12,7 @@
+   ],
+   "exports": {
+     ".": {
++      "types": "./base64.d.ts",
+       "import": "./base64.mjs",
+       "require": "./base64.js"
+     },

@@ -12,7 +12,7 @@ final class Storage {
         // Read credentials from MMKV (shared via app group)
         // Credentials are stored during login in React Native
         guard let userId = mmkv.userId(for: server),
-              let userToken = mmkv.userToken(for: userId) else {
+              let userToken = mmkv.userToken(for: userId, server: server) else {
             return nil
         }
         return Credentials(userId: userId, userToken: userToken)
