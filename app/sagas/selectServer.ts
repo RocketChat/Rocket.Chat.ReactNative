@@ -202,7 +202,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
 		// and block the selectServerSuccess raising multiples errors
-		setSettings();
+		setSettings(server);
 		setCustomEmojis();
 		setPermissions();
 		setRoles();

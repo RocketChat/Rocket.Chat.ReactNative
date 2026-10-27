@@ -1,13 +1,14 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { clearWorkspaceSettings, getLoginSettings, getSettings } from '../getSettings';
+import { clearWorkspaceSettings, getLoginSettings, getSettings, setSettings } from '../getSettings';
 import { headers } from '~/lib/methods/helpers/fetch';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
 import log from '~/lib/methods/helpers/log';
 import { mockGlobalFetch } from '~/lib/testUtils/mockGlobalFetch';
 import { store } from '~/lib/store/auxStore';
-import { fetchSettingsComplete } from '~/actions/settings';
+import { addSettings, fetchSettingsComplete } from '~/actions/settings';
+import database from '~/lib/database';
 
 jest.mock('~/lib/database', () => ({
 	__esModule: true,
@@ -168,5 +169,29 @@ describe('clearWorkspaceSettings', () => {
 		const [[cleared]] = jest.mocked(store.dispatch).mock.calls;
 		expect(cleared).toHaveProperty('payload.Apple_Watch_Quick_Actions', undefined);
 		expect(cleared).not.toHaveProperty('payload.Site_Url');
+	});
+});
+
+describe('setSettings', () => {
+	beforeEach(() => {
+		jest.mocked(store.dispatch).mockClear();
+		mockActiveServer = SERVER;
+		jest.mocked(database.active.get).mockReturnValue({
+			query: () => ({ fetch: () => Promise.resolve([{ id: 'Site_Name', valueAsString: 'Cached' }]) })
+		} as any);
+	});
+
+	it('loads the cached settings of the active workspace', async () => {
+		await setSettings(SERVER);
+
+		expect(store.dispatch).toHaveBeenCalledWith(addSettings({ Site_Name: 'Cached' }));
+	});
+
+	it('drops the cached settings once another workspace is selected', async () => {
+		mockActiveServer = 'https://other.example';
+
+		await setSettings(SERVER);
+
+		expect(store.dispatch).not.toHaveBeenCalled();
 	});
 });

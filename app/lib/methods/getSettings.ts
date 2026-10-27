@@ -139,7 +139,7 @@ export async function getLoginSettings({
 	}
 }
 
-export async function setSettings(): Promise<void> {
+export async function setSettings(server: string): Promise<void> {
 	const db = database.active;
 	const settingsCollection = db.get('settings');
 	const settingsRecords = await settingsCollection.query().fetch();
@@ -151,6 +151,9 @@ export async function setSettings(): Promise<void> {
 		valueAsArray: item.valueAsArray,
 		_updatedAt: item._updatedAt
 	}));
+	if (!isActiveWorkspace(server)) {
+		return;
+	}
 	reduxStore.dispatch(addSettings(parseSettings(parsed.slice(0, parsed.length))));
 }
 
@@ -160,7 +163,7 @@ export async function subscribeSettings(): Promise<void> {
 
 type IData = ISettingsIcon | IPreparedSettings;
 
-const isActiveWorkspace = (server: string): boolean => reduxStore.getState().server.server === server;
+export const isActiveWorkspace = (server: string): boolean => reduxStore.getState().server.server === server;
 
 const workspaceSettingKeys = Object.keys(defaultSettings).filter(key => !loginSettings.includes(key));
 
