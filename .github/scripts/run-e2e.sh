@@ -112,6 +112,8 @@ wait_for_gms_module_update() {
 }
 
 if [ "$PLATFORM" = "android" ]; then
+  adb -s "$ANDROID_DEVICE" root
+  adb -s "$ANDROID_DEVICE" wait-for-device
   ensure_android_window_focus
   wait_for_gms_module_update
   android_shell settings put system show_touches 1 || true
