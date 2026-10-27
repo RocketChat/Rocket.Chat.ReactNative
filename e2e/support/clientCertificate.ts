@@ -8,8 +8,9 @@ import { promisify } from 'node:util';
 
 import { expect } from 'e2e';
 
+import { adb } from './adb';
 import { data } from './data';
-import { type Fixtures, LONG_TIMEOUT, fillWhenUncovered, succeeds, tapWhenUncovered } from './flows';
+import { type Fixtures, LONG_TIMEOUT, fillWhenUncovered, succeeds, tapIfVisible, tapWhenUncovered } from './flows';
 
 const runCommand = promisify(execFile);
 
@@ -107,8 +108,10 @@ export const createClientCertificate = async (): Promise<ClientCertificate> => {
 	return { directory, alias, password, certificateAuthorityPath, p12Path, fileName };
 };
 
+export const deleteClientCertificate = ({ directory }: ClientCertificate) => rm(directory, { recursive: true, force: true });
+
 export interface ClientCertificateProxy {
-	url: (platform: string) => string;
+	url: (platform: Fixtures['platform']) => string;
 	close: () => Promise<void>;
 }
 
@@ -144,7 +147,12 @@ const proxyRequests = (server: Server) => {
 			path: request.url,
 			headers: forwardedHeaders(request.headers)
 		});
+		socket.on('error', () => upstream.destroy());
 		upstream.on('upgrade', (upstreamResponse, upstreamSocket, upstreamHead) => {
+			if (socket.destroyed) {
+				upstreamSocket.destroy();
+				return;
+			}
 			socket.write(
 				rawResponseHead(upstreamResponse.statusCode ?? 101, upstreamResponse.statusMessage ?? '', upstreamResponse.rawHeaders)
 			);
@@ -164,11 +172,14 @@ const proxyRequests = (server: Server) => {
 	});
 };
 
-export const startClientCertificateProxy = async ({ directory }: ClientCertificate): Promise<ClientCertificateProxy> => {
+export const startClientCertificateProxy = async ({
+	directory,
+	certificateAuthorityPath
+}: ClientCertificate): Promise<ClientCertificateProxy> => {
 	const server = createServer({
 		key: await readFile(join(directory, 'server.key')),
 		cert: await readFile(join(directory, 'server.pem')),
-		ca: await readFile(join(directory, 'ca.pem')),
+		ca: await readFile(certificateAuthorityPath),
 		requestCert: true,
 		rejectUnauthorized: true
 	});
@@ -190,9 +201,6 @@ export const startClientCertificateProxy = async ({ directory }: ClientCertifica
 			})
 	};
 };
-
-const androidSerial = () => process.env.E2E_ANDROID_DEVICE ?? 'emulator-5554';
-const adb = (...args: string[]) => runCommand('adb', ['-s', androidSerial(), ...args]);
 
 const iosDevice = () => process.env.E2E_IOS_DEVICE ?? 'iPhone 17 Pro';
 
@@ -242,11 +250,15 @@ const filesAppStorage = async () => {
 	throw new Error('The simulator has no Files app local storage');
 };
 
+const rootAdb = async () => {
+	await adb('root');
+	await adb('wait-for-device');
+};
+
 export const trustCertificateAuthority = async ({ platform }: Fixtures, certificate: ClientCertificate) => {
 	if (platform === 'android') {
 		const installedPath = await androidCertificateAuthorityPath(certificate);
-		await adb('root');
-		await adb('wait-for-device');
+		await rootAdb();
 		await adb('push', certificate.certificateAuthorityPath, installedPath);
 		await adb('shell', `chown system:system ${installedPath} && chmod 644 ${installedPath}`);
 		return;
@@ -257,15 +269,16 @@ export const trustCertificateAuthority = async ({ platform }: Fixtures, certific
 const installAndroidClientCertificate = async ({ app, screen }: Fixtures, certificate: ClientCertificate) => {
 	await adb('push', certificate.p12Path, `${androidDownloads}/${certificate.fileName}`);
 	await adb('shell', 'am', 'start', '-a', 'android.credentials.INSTALL');
-	await screen.getByLabel('Show roots').tap();
+	await tapWhenUncovered(screen.getByLabel('Show roots'));
 	await tapWhenUncovered(screen.getByText('Downloads'));
 	await tapWhenUncovered(screen.getByText(certificate.fileName));
+	const okButton = screen.getByRole('button', { name: /^OK$/i });
 	await fillWhenUncovered(screen.getByTestId('com.android.certinstaller:id/credential_password'), certificate.password);
-	await screen.getByRole('button', { name: /^OK$/i }).tap();
+	await okButton.tap();
 	await expect(screen.getByText('VPN & app user certificate')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByRole('button', { name: /^OK$/i }).tap();
+	await okButton.tap();
 	await expect(screen.getByText('Certificate name')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByRole('button', { name: /^OK$/i }).tap();
+	await okButton.tap();
 	await expect(screen.getByText('Certificate name')).toBeHidden({ timeout: LONG_TIMEOUT });
 	await app.open();
 	await expect(screen.getByText('Add workspace')).toBeVisible({ timeout: LONG_TIMEOUT });
@@ -283,6 +296,7 @@ export const installClientCertificate = async (fixtures: Fixtures, certificate: 
 
 export const removeClientCertificateFiles = async ({ platform }: Fixtures, certificate: ClientCertificate) => {
 	if (platform === 'android') {
+		await rootAdb();
 		await adb(
 			'shell',
 			'rm',
@@ -319,8 +333,9 @@ const PASSWORD_PROMPT_DISMISS_TIMEOUT = 5_000;
 
 const submitPasswordPrompt = async ({ screen }: Fixtures) => {
 	const passwordPrompt = screen.getByText('Certificate password');
+	const okButton = screen.getByRole('button', { name: /^OK$/i });
 	for (let attempt = 1; attempt <= PASSWORD_PROMPT_SUBMIT_ATTEMPTS; attempt += 1) {
-		await screen.getByRole('button', { name: 'OK' }).tap();
+		await tapIfVisible(okButton);
 		if (await succeeds(expect(passwordPrompt).toBeHidden({ timeout: PASSWORD_PROMPT_DISMISS_TIMEOUT }))) {
 			return;
 		}

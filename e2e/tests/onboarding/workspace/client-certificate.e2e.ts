@@ -5,6 +5,7 @@ import { createRandomRoom, createUser, deleteCreatedUsers, sendMessage as sendMe
 import {
 	chooseClientCertificate,
 	createClientCertificate,
+	deleteClientCertificate,
 	installClientCertificate,
 	removeClientCertificateFiles,
 	startClientCertificateProxy,
@@ -23,7 +24,12 @@ beforeAll(async () => {
 	proxy = await startClientCertificateProxy(certificate);
 });
 
-afterAll(() => proxy.close());
+afterAll(async () => {
+	await proxy?.close();
+	if (certificate) {
+		await deleteClientCertificate(certificate);
+	}
+});
 
 afterEach(deleteCreatedUsers);
 

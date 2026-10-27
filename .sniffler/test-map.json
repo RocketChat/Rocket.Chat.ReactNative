@@ -245,7 +245,14 @@
 	},
 	{
 		"test": "e2e/tests/onboarding/workspace/client-certificate.e2e.ts",
-		"dependsOn": ["app/views/NewServerView/**", "app/lib/methods/helpers/sslPinning.ts", "app/sagas/login.js"]
+		"dependsOn": [
+			"app/views/NewServerView/**",
+			"app/lib/methods/helpers/sslPinning.ts",
+			"app/lib/native/NativeSSLPinningAndroid.ts",
+			"app/sagas/selectServer.ts",
+			"app/sagas/init.js",
+			"app/sagas/login.js"
+		]
 	},
 	{
 		"test": "e2e/tests/onboarding/workspace/invalid-workspace.e2e.ts",
