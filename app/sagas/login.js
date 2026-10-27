@@ -270,9 +270,11 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 const fetchWatchReplies = function* fetchWatchRepliesFork() {
 	try {
 		if (!shouldShowWatchAppOptions()) return;
+		const isAuthenticated = yield select(s => s.login.isAuthenticated);
+		if (!isAuthenticated) return;
 		const server = yield select(s => s.server.server);
-		const settingsReady = yield select(s => s.settings.Apple_Watch_Quick_Actions !== undefined || s.server.settingsFetched);
-		if (!settingsReady) {
+		const settingsFetched = yield select(s => s.server.settingsFetched);
+		if (!settingsFetched) {
 			const { stop } = yield race({
 				loaded: take(types.SETTINGS.FETCH_COMPLETE),
 				stop: take([types.LOGOUT, types.LOGIN.SUCCESS, types.SERVER.SELECT_REQUEST])
