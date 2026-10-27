@@ -79,7 +79,7 @@ const List = ({ flatListRef, jumpToBottom, onDragStart, isAnchored, ...props }: 
 						? props => <InvertedScrollView {...props} exitFocusNativeId={MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID} />
 						: undefined
 				}
-				removeClippedSubviews={isIOS}
+				removeClippedSubviews
 				initialNumToRender={20}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}

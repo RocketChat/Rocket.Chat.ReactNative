@@ -35,6 +35,7 @@ const ActionSheet = memo(
 		const [contentHeight, setContentHeight] = useState(0);
 		const { bottom } = useSafeAreaInsets();
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
+		const dismissedOnCloseRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
 		const itemHeight = useActionSheetItemHeight();
 
@@ -57,12 +58,19 @@ const ActionSheet = memo(
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		};
 
+		useEffect(() => {
+			if (isVisible) return;
+			const dismissedOnClose = dismissedOnCloseRef.current;
+			dismissedOnCloseRef.current = undefined;
+			dismissedOnClose?.();
+		}, [isVisible]);
+
+		// Keep contentHeight to avoid flickering on next show
 		const onDidDismiss = () => {
 			phaseRef.current = 'idle';
-			setIsVisible(false);
-			const snapshotOnClose = onCloseSnapshotRef.current;
+			dismissedOnCloseRef.current = onCloseSnapshotRef.current;
 			onCloseSnapshotRef.current = undefined;
-			snapshotOnClose?.();
+			setIsVisible(false);
 			if (desiredOptionsRef.current && phaseRef.current === 'idle') {
 				pendingPresentTimeoutRef.current = setTimeout(presentDesiredSheet);
 			}

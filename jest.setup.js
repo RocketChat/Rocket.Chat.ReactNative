@@ -286,6 +286,15 @@ jest.mock('react-native-keychain', () => ({
 	hasGenericPassword: jest.fn(() => Promise.resolve(false))
 }));
 
+jest.mock('./app/lib/native/NativeSSLPinningAndroid', () => ({
+	__esModule: true,
+	default: {
+		setCertificate: jest.fn(() => Promise.resolve(null)),
+		removeCertificate: jest.fn(),
+		pickCertificate: jest.fn()
+	}
+}));
+
 jest.mock('./app/lib/methods/helpers/externalInput', () => ({
 	isExternalKeyboardConnected: jest.fn(() => false)
 }));

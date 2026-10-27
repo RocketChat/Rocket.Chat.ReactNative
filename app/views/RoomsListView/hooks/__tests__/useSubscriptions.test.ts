@@ -12,6 +12,8 @@ const mockState = {
 	enterpriseModules: []
 };
 
+const UNREAD_STATE_COLUMNS = ['alert', 'unread', 'tunread', 'hide_unread_status'];
+
 jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: typeof mockState) => unknown) => selector(mockState)
 }));
@@ -44,9 +46,12 @@ const renderSubscriptions = () =>
 describe('RoomsListView useSubscriptions', () => {
 	beforeEach(() => {
 		mockQueries.length = 0;
+		mockState.login.user.roles = ['livechat-agent'];
+		mockState.sortPreferences.showUnread = false;
 	});
 
-	it('watches unread counts only while a section is collapsed', async () => {
+	it('watches unread counts of an ungrouped list only while a section is collapsed', async () => {
+		mockState.login.user.roles = [];
 		const { rerender } = renderSubscriptions();
 		await flushQuerySetup();
 		expect(latestQuery().columns).not.toContain('unread');
@@ -57,6 +62,22 @@ describe('RoomsListView useSubscriptions', () => {
 		expect(latestQuery().columns).toEqual(
 			expect.arrayContaining(['unread', 'user_mentions', 'group_mentions', 'tunread', 'tunread_user', 'tunread_group'])
 		);
+	});
+
+	it('watches the unread state of rooms while grouping, with every section expanded', async () => {
+		mockState.login.user.roles = [];
+		mockState.sortPreferences.showUnread = true;
+		renderSubscriptions();
+		await flushQuerySetup();
+
+		expect(latestQuery().columns).toEqual(expect.arrayContaining(UNREAD_STATE_COLUMNS));
+	});
+
+	it('watches the unread state of rooms in the omnichannel sections, with every section expanded', async () => {
+		renderSubscriptions();
+		await flushQuerySetup();
+
+		expect(latestQuery().columns).toEqual(expect.arrayContaining(UNREAD_STATE_COLUMNS));
 	});
 
 	it('keeps showing the list while re-querying after a section collapses', async () => {
