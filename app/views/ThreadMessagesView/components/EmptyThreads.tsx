@@ -2,20 +2,19 @@ import I18n from '~/i18n';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { Filter } from '../filters';
 
-type TEmptyThreads = {
-	currentFilter: Filter;
+const emptyTextKeys: Record<Filter, string> = {
+	[Filter.All]: 'No_threads',
+	[Filter.Following]: 'No_threads_following',
+	[Filter.Unread]: 'No_threads_unread'
 };
 
-const EmptyThreads = ({ currentFilter }: TEmptyThreads) => {
-	let text;
-	if (currentFilter === Filter.Following) {
-		text = I18n.t('No_threads_following');
-	} else if (currentFilter === Filter.Unread) {
-		text = I18n.t('No_threads_unread');
-	} else {
-		text = I18n.t('No_threads');
-	}
-	return <BackgroundContainer text={text} />;
-};
+interface IEmptyThreads {
+	currentFilter: Filter;
+	loading: boolean;
+}
+
+const EmptyThreads = ({ currentFilter, loading }: IEmptyThreads) => (
+	<BackgroundContainer text={I18n.t(emptyTextKeys[currentFilter])} loading={loading} />
+);
 
 export default EmptyThreads;

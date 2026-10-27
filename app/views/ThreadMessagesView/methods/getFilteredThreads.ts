@@ -1,17 +1,14 @@
-import { type IUser, type TSubscriptionModel, type TThreadModel } from '~/definitions';
+import { type IThreadUnreads } from '../hooks/useRoomSubscription';
 import { Filter } from '../filters';
+import { type TThreadRow } from '../types';
 
-const getFilteredThreads = (
-	user: IUser,
-	threads: TThreadModel[],
-	subscription?: TSubscriptionModel,
-	currentFilter?: Filter
-): TThreadModel[] => {
-	if (currentFilter === Filter.Following) {
-		return threads.filter(item => item?.replies?.find(u => u === user.id));
+const getFilteredThreads = <T extends TThreadRow>(threads: T[], userId: string, unreads: IThreadUnreads, filter: Filter): T[] => {
+	if (filter === Filter.Following) {
+		return threads.filter(thread => thread.replies?.includes(userId));
 	}
-	if (currentFilter === Filter.Unread) {
-		return threads?.filter(item => subscription?.tunread?.includes(item?.id));
+	if (filter === Filter.Unread) {
+		const unreadThreadIds = new Set(unreads.tunread);
+		return threads.filter(thread => unreadThreadIds.has(thread.id));
 	}
 	return threads;
 };

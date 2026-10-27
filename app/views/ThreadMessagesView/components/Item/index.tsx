@@ -7,16 +7,16 @@ import { themes } from '~/lib/constants/colors';
 import { MarkdownPreview } from '~/containers/markdown';
 import { formatDateThreads, makeThreadName } from '~/lib/methods/helpers/room';
 import ThreadDetails from '~/containers/ThreadDetails';
-import { type TThreadModel } from '~/definitions';
 import Touch from '~/containers/Touch';
 import styles from './styles';
+import { type TThreadRow } from '~/views/ThreadMessagesView/types';
 
 export interface IItem {
-	item: TThreadModel;
+	item: TThreadRow;
 	useRealName: boolean;
 	user: { id: string };
 	badgeColor?: string;
-	onPress: (item: TThreadModel) => void;
+	onPress: (item: TThreadRow) => void;
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
 
