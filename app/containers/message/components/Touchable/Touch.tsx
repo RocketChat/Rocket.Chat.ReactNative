@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode, type RefObject } from 'react';
+import { type ComponentRef, forwardRef, type ReactNode, type RefObject } from 'react';
 import {
 	View,
 	StyleSheet,
@@ -26,12 +26,12 @@ export interface ITouchProps extends TouchableWithoutFeedbackProps {
 	rectButtonStyle?: StyleProp<ViewStyle>;
 	enabled?: boolean;
 	android_rippleColor?: string;
-	componentRef?: RefObject<View | null>;
+	componentRef?: RefObject<ComponentRef<typeof View> | null>;
 }
 
 const KeyboardComponent = isIOS ? withKeyboardFocus(TouchableOpacity) : withKeyboardFocus(TouchableHighlight);
 
-const Touch = forwardRef<View, ITouchProps>(
+const Touch = forwardRef<ComponentRef<typeof View>, ITouchProps>(
 	(
 		{
 			children,
@@ -86,8 +86,7 @@ const Touch = forwardRef<View, ITouchProps>(
 		return (
 			<KeyboardComponent
 				ref={ref}
-				// Library types componentRef as RefObject<View>, but useRef<View>(null) yields RefObject<View | null>. The lib only reads .current with a null check, so the cast is safe.
-				componentRef={componentRef as RefObject<View>}
+				componentRef={componentRef as unknown as RefObject<View>}
 				onPress={onPress}
 				accessible={accessible}
 				accessibilityRole={props.accessibilityRole}
