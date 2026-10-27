@@ -1,15 +1,15 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import dayjs from '../../lib/dayjs';
-import { useTheme } from '../../theme';
-import Avatar from '../../containers/Avatar';
+import dayjs from '~/lib/dayjs';
+import { useTheme } from '~/theme';
+import Avatar from '~/containers/Avatar';
 import sharedStyles from '../Styles';
-import { MarkdownPreview } from '../../containers/markdown';
-import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
+import { MarkdownPreview } from '~/containers/markdown';
+import { formatDateThreads, makeThreadName } from '~/lib/methods/helpers/room';
 import DiscussionDetails from './DiscussionDetails';
-import { type IMessageFromServer } from '../../definitions';
-import Touch from '../../containers/Touch';
+import { type IMessageFromServer } from '~/definitions';
+import Touch from '~/containers/Touch';
 
 const styles = StyleSheet.create({
 	container: {

@@ -3,12 +3,12 @@ import { Q } from '@nozbe/watermelondb';
 import { type Subscription } from 'rxjs';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { getSyncThreadsList, getThreadsList } from '../../../lib/services/restApi';
-import { type TSubscriptionModel, type TThreadModel } from '../../../definitions';
-import { sanitizeLikeString } from '../../../lib/database/utils';
+import { getSyncThreadsList, getThreadsList } from '~/lib/services/restApi';
+import { type TSubscriptionModel, type TThreadModel } from '~/definitions';
+import { sanitizeLikeString } from '~/lib/database/utils';
 import { type ISearchThreadMessages } from '../definitions';
-import log from '../../../lib/methods/helpers/log';
-import database from '../../../lib/database';
+import log from '~/lib/methods/helpers/log';
+import database from '~/lib/database';
 import updateThreads from '../methods/updateThreads';
 
 interface IUseThreadsProps {

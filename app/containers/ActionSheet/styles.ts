@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 
 export default StyleSheet.create({
 	container: {
@@ -39,7 +39,7 @@ export default StyleSheet.create({
 		margin: 8
 	},
 	backdrop: {
-		...StyleSheet.absoluteFillObject
+		...StyleSheet.absoluteFill
 	},
 	button: {
 		marginHorizontal: 16,

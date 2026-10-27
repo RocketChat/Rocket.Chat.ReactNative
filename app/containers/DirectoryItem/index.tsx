@@ -1,13 +1,13 @@
 import { memo, type ReactElement } from 'react';
-import { Text, View, type ViewStyle } from 'react-native';
+import { PixelRatio, Text, View, type ViewStyle } from 'react-native';
 
 import Touch from '../Touch';
 import Avatar from '../Avatar';
 import RoomTypeIcon from '../RoomTypeIcon';
 import styles from './styles';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import { MarkdownPreview } from '../markdown';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export const ROW_HEIGHT = 54;
 interface IDirectoryItemLabel {
@@ -15,7 +15,7 @@ interface IDirectoryItemLabel {
 	color: string;
 }
 
-interface IDirectoryItem {
+export interface IDirectoryItem {
 	title: string;
 	description?: string;
 	avatar?: string;
@@ -26,6 +26,8 @@ interface IDirectoryItem {
 	rightLabel?: string;
 	rid?: string;
 	teamMain?: boolean;
+	isFirst?: boolean;
+	isLast?: boolean;
 }
 
 const DirectoryItemLabel = memo(({ text, color }: IDirectoryItemLabel) => {
@@ -49,7 +51,7 @@ const DirectoryItem = ({
 }: IDirectoryItem): ReactElement => {
 	const { colors } = useTheme();
 	const { fontScale } = useResponsiveLayout();
-	const height = ROW_HEIGHT * fontScale;
+	const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
 
 	return (
 		<View testID={testID} accessible accessibilityLabel={`${title || ''} ${rightLabel || ''}`} importantForAccessibility='yes'>

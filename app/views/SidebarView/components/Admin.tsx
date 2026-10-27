@@ -1,47 +1,31 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 
-import * as List from '../../../containers/List';
-import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
-import { usePermissions } from '../../../lib/hooks/usePermissions';
-import { useTheme } from '../../../theme';
+import * as List from '~/containers/List';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { usePermissions } from '~/lib/hooks/usePermissions';
+import { useTheme } from '~/theme';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
-const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
-	'use memo';
-
-	const isMasterDetail = useMasterDetail();
-	const { colors } = useTheme();
-	const [
-		viewStatisticsPermission,
-		viewRoomAdministrationPermission,
-		viewUserAdministrationPermission,
-		viewPrivilegedSettingPermission
-	] = usePermissions(['view-statistics', 'view-room-administration', 'view-user-administration', 'view-privileged-setting']);
-
-	const isAdmin = useMemo(
-		() =>
-			[
-				viewStatisticsPermission,
-				viewRoomAdministrationPermission,
-				viewUserAdministrationPermission,
-				viewPrivilegedSettingPermission
-			].some(permission => permission),
-		[
-			viewStatisticsPermission,
-			viewRoomAdministrationPermission,
-			viewUserAdministrationPermission,
-			viewPrivilegedSettingPermission
-		]
+export const useIsAdmin = () =>
+	usePermissions(['view-statistics', 'view-room-administration', 'view-user-administration', 'view-privileged-setting']).some(
+		Boolean
 	);
+
+export const useAdminRoute = () => (useMasterDetail() ? 'AdminPanelView' : 'AdminPanelStackNavigator');
+
+const Admin = ({ currentScreen }: { currentScreen: string }) => {
+	const routeName = useAdminRoute();
+	const { colors } = useTheme();
+	const isAdmin = useIsAdmin();
 
 	if (!isAdmin) {
 		return null;
 	}
-	const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelStackNavigator';
 	return (
 		<>
 			<List.Item
 				title={'Admin_Panel'}
+				testID='sidebar-admin'
 				left={() => <List.Icon name='settings' />}
 				onPress={() => sidebarNavigate(routeName)}
 				backgroundColor={currentScreen === routeName ? colors.strokeLight : undefined}

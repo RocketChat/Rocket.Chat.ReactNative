@@ -1,10 +1,11 @@
 import { loadMessagesForRoom } from './loadMessagesForRoom';
 import sdk from '../services/sdk';
-import { ROOM } from '../../actions/actionsTypes';
+import { ROOM } from '~/actions/actionsTypes';
 import { getMessageById } from '../database/services/Message';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import updateMessages from './updateMessages';
 import { store } from '../store/auxStore';
+import { updateLastOpen } from './updateLastOpen';
 
 jest.mock('../services/sdk', () => ({
 	__esModule: true,
@@ -31,6 +32,10 @@ jest.mock('../store/auxStore', () => ({
 }));
 
 jest.mock('./updateMessages', () => jest.fn());
+jest.mock('./updateLastOpen', () => ({
+	...jest.requireActual('./updateLastOpen'),
+	updateLastOpen: jest.fn()
+}));
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 const mockedGetMessageById = getMessageById as jest.MockedFunction<typeof getMessageById>;
@@ -44,7 +49,7 @@ const buildMessage = ({ id, ts, t }: { id: string; ts: string; t?: string }) =>
 		rid: 'ROOM_ID',
 		ts,
 		...(t ? { t } : {})
-	} as any);
+	}) as any;
 
 describe('loadMessagesForRoom', () => {
 	beforeEach(() => {
@@ -165,6 +170,46 @@ describe('loadMessagesForRoom', () => {
 		expect(mockedDispatch).not.toHaveBeenCalledWith(expect.objectContaining({ type: ROOM.HISTORY_UI_LOADER_PUSH }));
 	});
 
+	const buildMillisecondBatch = (prefix: string, baseSeconds: number, t?: string) =>
+		Array.from({ length: 50 }, (_, index) =>
+			buildMessage({
+				id: `${prefix}-${index + 1}`,
+				ts: new Date(Date.UTC(2024, 0, 1, 0, 0, baseSeconds, 999 - index * 7)).toISOString(),
+				t
+			})
+		);
+
+	it('stamps the trailing Older Loader one millisecond before the oldest Message of the Chunk', async () => {
+		const batch = buildMillisecondBatch('visible', 30);
+		const oldest = batch[batch.length - 1];
+
+		mockedSdkGet.mockResolvedValueOnce({ success: true, messages: batch } as any);
+
+		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+		const { update } = mockedUpdateMessages.mock.calls[0][0] as { update: { _id: string; t?: string; ts: string | Date }[] };
+		const loaderRow = update.find(m => m.t === 'load_more');
+		expect(loaderRow?._id).toBe('load-more-visible-50');
+		expect(new Date(loaderRow?.ts as string | Date).getTime()).toBe(new Date(oldest.ts).getTime() - 1);
+	});
+
+	it('stamps the intermediate Older Loader one millisecond before the oldest Message of the first batch', async () => {
+		const firstBatch = buildMillisecondBatch('first', 30, 'uj');
+		const secondBatch = buildMillisecondBatch('second', 10);
+		const oldest = firstBatch[firstBatch.length - 1];
+
+		mockedSdkGet
+			.mockResolvedValueOnce({ success: true, messages: firstBatch } as any)
+			.mockResolvedValueOnce({ success: true, messages: secondBatch } as any);
+
+		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+		const { update } = mockedUpdateMessages.mock.calls[0][0] as { update: { _id: string; t?: string; ts: string | Date }[] };
+		const loaderRow = update.find(m => m.t === 'load_more');
+		expect(loaderRow?._id).toBe('load-more-first-50');
+		expect(new Date(loaderRow?.ts as string | Date).getTime()).toBe(new Date(oldest.ts).getTime() - 1);
+	});
+
 	it('pops the ui loader when a recursive batch fetch fails after the loader was pushed', async () => {
 		const firstBatch = buildHiddenBatch('first', 50);
 		const networkError = new Error('boom');
@@ -231,5 +276,77 @@ describe('loadMessagesForRoom', () => {
 		expect(mockedUpdateMessages).toHaveBeenCalledTimes(1);
 		expect(mockedDispatch).not.toHaveBeenCalledWith(expect.objectContaining({ type: ROOM.HISTORY_UI_LOADER_PUSH }));
 		expect(mockedDispatch).not.toHaveBeenCalledWith(expect.objectContaining({ type: ROOM.HISTORY_UI_LOADER_POP }));
+	});
+
+	describe('last open', () => {
+		const mockedUpdateLastOpen = updateLastOpen as jest.MockedFunction<typeof updateLastOpen>;
+
+		const buildStampedBatch = (prefix: string, hour: number, length: number) =>
+			Array.from(
+				{ length },
+				(_, index) =>
+					({
+						_id: `${prefix}-${index + 1}`,
+						rid: 'ROOM_ID',
+						ts: new Date(Date.UTC(2024, 0, 1, hour, 0, length - index)).toISOString(),
+						_updatedAt: new Date(Date.UTC(2024, 0, 1, hour, 0, length - index)).toISOString(),
+						t: 'uj'
+					}) as any
+			);
+
+		it('writes the Last Open from every fetched batch on the initial tail load', async () => {
+			const firstBatch = buildStampedBatch('first', 11, 50);
+			const secondBatch = buildStampedBatch('second', 10, 50);
+
+			mockedSdkGet
+				.mockResolvedValueOnce({ success: true, messages: firstBatch } as any)
+				.mockResolvedValueOnce({ success: true, messages: secondBatch } as any);
+
+			await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+			expect(mockedUpdateLastOpen).toHaveBeenCalledTimes(1);
+			// Every batch's server stamps contribute to the cursor, not just the newest page.
+			expect(mockedUpdateLastOpen).toHaveBeenCalledWith(
+				'ROOM_ID',
+				expect.arrayContaining([
+					...firstBatch.map(message => ({ _updatedAt: message._updatedAt })),
+					...secondBatch.map(message => ({ _updatedAt: message._updatedAt }))
+				])
+			);
+		});
+
+		it('uses the highest _updatedAt even when it arrives in an older batch', async () => {
+			const firstBatch = buildStampedBatch('first', 11, 50);
+			const secondBatch = buildStampedBatch('second', 10, 50).map(message => ({
+				...message,
+				_updatedAt: new Date(Date.UTC(2024, 0, 1, 12, 0, 0)).toISOString()
+			}));
+
+			mockedSdkGet
+				.mockResolvedValueOnce({ success: true, messages: firstBatch } as any)
+				.mockResolvedValueOnce({ success: true, messages: secondBatch } as any);
+
+			await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+			const received = mockedUpdateLastOpen.mock.calls[0][1];
+			const timestamps = received.map(m => new Date(m._updatedAt as string | Date).getTime()).filter(t => !Number.isNaN(t));
+			expect(new Date(Math.max(...timestamps))).toEqual(new Date(Date.UTC(2024, 0, 1, 12, 0, 0)));
+		});
+
+		it('does not write when loading an older page (latest)', async () => {
+			mockedSdkGet.mockResolvedValueOnce({ success: true, messages: buildStampedBatch('older', 9, 10) } as any);
+
+			await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c', latest: new Date(Date.UTC(2024, 0, 1, 10, 0, 0)) });
+
+			expect(mockedUpdateLastOpen).not.toHaveBeenCalled();
+		});
+
+		it('does not write when filling a gap (loaderItem)', async () => {
+			mockedSdkGet.mockResolvedValueOnce({ success: true, messages: buildStampedBatch('gap', 9, 10) } as any);
+
+			await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c', loaderItem: { id: 'tapped-load-more' } as any });
+
+			expect(mockedUpdateLastOpen).not.toHaveBeenCalled();
+		});
 	});
 });

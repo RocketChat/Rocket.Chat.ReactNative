@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { type Subscription } from 'rxjs';
 
-import { type TSubscriptionModel } from '../../../definitions';
-import log from '../../../lib/methods/helpers/log';
-import database from '../../../lib/database';
+import { type TSubscriptionModel } from '~/definitions';
+import log from '~/lib/methods/helpers/log';
+import database from '~/lib/database';
 
 interface IUseSubscriptionProps {
 	rid: string;

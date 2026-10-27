@@ -6,35 +6,38 @@ jest.mock('expo-document-picker', () => ({
 	getDocumentAsync: jest.fn()
 }));
 
-jest.mock('../../../lib/hooks/useAppSelector', () => ({
+jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn()
 }));
 
 jest.mock('../context', () => ({
-	useMessageComposerApi: jest.fn()
+	useMessageComposerApi: jest.fn(),
+	MessageInnerContext: require('react').createContext({ getText: jest.fn(() => 'draft'), setInput: jest.fn() })
 }));
 
-jest.mock('../../../views/RoomView/context', () => ({
-	useRoomContext: jest.fn()
+jest.mock('~/containers/message/stores/MessageActionStore', () => ({
+	useMessageActionKind: jest.fn(),
+	useQuotedMessageIds: jest.fn(() => []),
+	useMessageActionStoreApi: jest.fn(() => ({ getState: () => ({ actions: { setQuoteMessageIds: jest.fn() } }) }))
 }));
 
-jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
+jest.mock('~/lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: jest.fn()
 }));
 
-jest.mock('../../../lib/database/services/Subscription', () => ({
+jest.mock('~/lib/database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn()
 }));
 
-jest.mock('../../../lib/database/services/Thread', () => ({
+jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn()
 }));
 
-jest.mock('../../../lib/navigation/appNavigation', () => ({
+jest.mock('~/lib/navigation/appNavigation', () => ({
 	navigate: jest.fn()
 }));
 
-jest.mock('../../../lib/methods/helpers/ImagePicker/ImagePicker', () => ({
+jest.mock('~/lib/methods/helpers/ImagePicker/ImagePicker', () => ({
 	__esModule: true,
 	default: {
 		openCamera: jest.fn(),
@@ -43,13 +46,14 @@ jest.mock('../../../lib/methods/helpers/ImagePicker/ImagePicker', () => ({
 }));
 
 const mockGetDocumentAsync = require('expo-document-picker').getDocumentAsync as jest.Mock;
-const mockUseAppSelector = require('../../../lib/hooks/useAppSelector').useAppSelector as jest.Mock;
+const mockUseAppSelector = require('~/lib/hooks/useAppSelector').useAppSelector as jest.Mock;
 const mockUseMessageComposerApi = require('../context').useMessageComposerApi as jest.Mock;
-const mockUseRoomContext = require('../../../views/RoomView/context').useRoomContext as jest.Mock;
-const mockUseAltTextSupported = require('../../../lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
-const mockGetSubscriptionByRoomId = require('../../../lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
-const mockGetThreadById = require('../../../lib/database/services/Thread').getThreadById as jest.Mock;
-const mockNavigate = require('../../../lib/navigation/appNavigation').navigate as jest.Mock;
+const mockUseMessageActionKind = require('~/containers/message/stores/MessageActionStore').useMessageActionKind as jest.Mock;
+const mockUseQuotedMessageIds = require('~/containers/message/stores/MessageActionStore').useQuotedMessageIds as jest.Mock;
+const mockUseAltTextSupported = require('~/lib/hooks/useAltTextSupported').useAltTextSupported as jest.Mock;
+const mockGetSubscriptionByRoomId = require('~/lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
+const mockGetThreadById = require('~/lib/database/services/Thread').getThreadById as jest.Mock;
+const mockNavigate = require('~/lib/navigation/appNavigation').navigate as jest.Mock;
 
 describe('useChooseMedia', () => {
 	const addAttachments = jest.fn();
@@ -66,12 +70,7 @@ describe('useChooseMedia', () => {
 			})
 		);
 		mockUseMessageComposerApi.mockReturnValue({ addAttachments });
-		mockUseRoomContext.mockReturnValue({
-			action: null,
-			setQuotesAndText: jest.fn(),
-			selectedMessages: [],
-			getText: jest.fn(() => 'draft')
-		});
+		mockUseMessageActionKind.mockReturnValue(null);
 		mockGetSubscriptionByRoomId.mockResolvedValue({ rid: 'room-id', t: 'c' });
 		mockGetThreadById.mockResolvedValue({ id: 'thread-id' });
 	});
@@ -126,5 +125,82 @@ describe('useChooseMedia', () => {
 			]);
 		});
 		expect(mockNavigate).not.toHaveBeenCalled();
+	});
+
+	it('derives a decoded filename from the path when the picker gives no name', async () => {
+		mockUseAltTextSupported.mockReturnValue(true);
+		mockGetDocumentAsync.mockResolvedValue({
+			canceled: false,
+			assets: [{ size: 12, mimeType: 'application/pdf', uri: 'file:///tmp/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf' }]
+		});
+
+		const { result } = renderHook(() => useChooseMedia({ rid: 'room-id', tmid: 'thread-id', permissionToUpload: true }));
+
+		await result.current.chooseFile();
+
+		await waitFor(() => {
+			expect(addAttachments).toHaveBeenCalledWith([expect.objectContaining({ filename: 'Пример.pdf' })]);
+		});
+	});
+
+	it('keeps the picker name instead of deriving one from an encoded path', async () => {
+		mockUseAltTextSupported.mockReturnValue(true);
+		mockGetDocumentAsync.mockResolvedValue({
+			canceled: false,
+			assets: [
+				{
+					name: 'Пример.pdf',
+					size: 12,
+					mimeType: 'application/pdf',
+					uri: 'file:///tmp/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80-copy.pdf'
+				}
+			]
+		});
+
+		const { result } = renderHook(() => useChooseMedia({ rid: 'room-id', tmid: 'thread-id', permissionToUpload: true }));
+
+		await result.current.chooseFile();
+
+		await waitFor(() => {
+			expect(addAttachments).toHaveBeenCalledWith([expect.objectContaining({ filename: 'Пример.pdf' })]);
+		});
+	});
+
+	it('forwards quoted message ids to ShareView as selectedMessages', async () => {
+		mockUseAltTextSupported.mockReturnValue(false);
+		mockUseMessageActionKind.mockReturnValue('quote');
+		mockUseQuotedMessageIds.mockReturnValue(['msg-1', 'msg-2']);
+		mockGetDocumentAsync.mockResolvedValue({
+			canceled: false,
+			assets: [{ name: 'legacy.pdf', size: 12, mimeType: 'application/pdf', uri: 'file:///tmp/legacy.pdf' }]
+		});
+
+		const { result } = renderHook(() => useChooseMedia({ rid: 'room-id', tmid: 'thread-id', permissionToUpload: true }));
+
+		await result.current.chooseFile();
+
+		await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
+		const { action, startShareView } = mockNavigate.mock.calls[0][1];
+		expect(action).toBe('quote');
+		expect(startShareView().selectedMessages).toEqual(['msg-1', 'msg-2']);
+	});
+
+	it('does not quote the message when the action is edit', async () => {
+		mockUseAltTextSupported.mockReturnValue(false);
+		mockUseMessageActionKind.mockReturnValue('edit');
+		mockUseQuotedMessageIds.mockReturnValue([]);
+		mockGetDocumentAsync.mockResolvedValue({
+			canceled: false,
+			assets: [{ name: 'legacy.pdf', size: 12, mimeType: 'application/pdf', uri: 'file:///tmp/legacy.pdf' }]
+		});
+
+		const { result } = renderHook(() => useChooseMedia({ rid: 'room-id', tmid: 'thread-id', permissionToUpload: true }));
+
+		await result.current.chooseFile();
+
+		await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
+		const { action, startShareView } = mockNavigate.mock.calls[0][1];
+		expect(action).toBe('edit');
+		expect(startShareView().selectedMessages).toEqual([]);
 	});
 });

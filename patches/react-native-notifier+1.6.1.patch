@@ -1,24 +1,25 @@
 diff --git a/node_modules/react-native-notifier/src/Notifier.tsx b/node_modules/react-native-notifier/src/Notifier.tsx
-index 56c5819..4f31e78 100644
 --- a/node_modules/react-native-notifier/src/Notifier.tsx
 +++ b/node_modules/react-native-notifier/src/Notifier.tsx
-@@ -44,6 +44,7 @@ export class NotifierRoot extends React.PureComponent<ShowNotificationParams, St
+@@ -44,6 +44,8 @@
        Component: NotificationComponent,
        swipeEnabled: DEFAULT_SWIPE_ENABLED,
        componentProps: {},
 +      visible: false,
++      pressable: false,
      };
      this.isShown = false;
      this.isHiding = false;
-@@ -146,6 +147,7 @@ export class NotifierRoot extends React.PureComponent<ShowNotificationParams, St
+@@ -146,6 +148,8 @@
        Component: Component ?? NotificationComponent,
        swipeEnabled: swipeEnabled ?? DEFAULT_SWIPE_ENABLED,
        componentProps: componentProps,
 +      visible: true,
++      pressable: !!restParams.onPress || restParams.hideOnPress !== false,
      });
  
      this.showParams = restParams;
-@@ -188,6 +190,7 @@ export class NotifierRoot extends React.PureComponent<ShowNotificationParams, St
+@@ -188,6 +192,7 @@
    }
  
    private onHidden() {
@@ -26,24 +27,52 @@ index 56c5819..4f31e78 100644
      this.showParams?.onHidden?.();
      this.isShown = false;
      this.isHiding = false;
-@@ -259,7 +262,7 @@ export class NotifierRoot extends React.PureComponent<ShowNotificationParams, St
+@@ -241,7 +246,7 @@
+   }
+ 
+   render() {
+-    const { title, description, swipeEnabled, Component, componentProps } = this.state;
++    const { title, description, swipeEnabled, Component, componentProps, pressable } = this.state;
+ 
+     return (
+       <PanGestureHandler
+@@ -257,11 +262,23 @@
+             },
+           ]}
          >
-           <TouchableWithoutFeedback onPress={this.onPress}>
-             <View onLayout={this.onLayout}>
+-          <TouchableWithoutFeedback onPress={this.onPress}>
+-            <View onLayout={this.onLayout}>
 -              <Component title={title} description={description} {...componentProps} />
++          {/* The RN Touchable wrapper is only mounted when the notification actually needs a
++              wrapper-level press. An RN Pressability ancestor claims the RN responder as soon as the
++              touch stream contains any movement, which cancels the native touch on any
++              react-native-gesture-handler button rendered inside the notification: the button's
++              Android pressed flag is cleared, so NativeViewGestureHandler.canActivate() is false at
++              ACTION_UP and onPress never fires. See Rocket.Chat.ReactNative#115357. */}
++          {pressable ? (
++            <TouchableWithoutFeedback onPress={this.onPress}>
++              <View onLayout={this.onLayout}>
++               {this.state.visible? <Component title={title} description={description} {...componentProps} /> : null}
++              </View>
++            </TouchableWithoutFeedback>
++          ) : (
++            <View onLayout={this.onLayout}>
 +             {this.state.visible? <Component title={title} description={description} {...componentProps} /> : null}
              </View>
-           </TouchableWithoutFeedback>
+-          </TouchableWithoutFeedback>
++          )}
          </Animated.View>
+       </PanGestureHandler>
+     );
 diff --git a/node_modules/react-native-notifier/src/types.ts b/node_modules/react-native-notifier/src/types.ts
-index 229e19c..e16a943 100644
 --- a/node_modules/react-native-notifier/src/types.ts
 +++ b/node_modules/react-native-notifier/src/types.ts
-@@ -95,6 +95,7 @@ export interface StateInterface {
+@@ -95,6 +95,8 @@
    swipeEnabled: boolean;
    Component: ElementType;
    componentProps: Record<string, any>;
 +  visible: boolean;
++  pressable: boolean;
  }
  
  export interface NotifierInterface {

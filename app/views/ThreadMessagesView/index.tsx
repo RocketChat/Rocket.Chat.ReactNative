@@ -1,38 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
-import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { type SearchBarCommands } from 'react-native-screens';
 
 import { type IThreadMessagesViewProps, type ISearchThreadMessages } from './definitions';
 import { Filter } from './filters';
-import { themes, colors } from '../../lib/constants/colors';
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { showActionSheetRef } from '../../containers/ActionSheet';
-import { CustomIcon } from '../../containers/CustomIcon';
-import { getBadgeColor, makeThreadName } from '../../lib/methods/helpers/room';
-import { getUidDirectMessage, isIOS, useDebounce } from '../../lib/methods/helpers';
-import { getUserSelector } from '../../selectors/login';
-import { LISTENER } from '../../containers/Toast';
-import { useTheme } from '../../theme';
-import { SubscriptionType, type TThreadModel } from '../../definitions';
-import UserPreferences from '../../lib/methods/userPreferences';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import SafeAreaView from '../../containers/SafeAreaView';
-import * as List from '../../containers/List';
-import log from '../../lib/methods/helpers/log';
-import EventEmitter from '../../lib/methods/helpers/events';
-import I18n from '../../i18n';
+import { themes, colors } from '~/lib/constants/colors';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { getBadgeColor, makeThreadName } from '~/lib/methods/helpers/room';
+import { getUidDirectMessage, hasNativeHeaderBar, isIOS, useDebounce } from '~/lib/methods/helpers';
+import { getUserSelector } from '~/selectors/login';
+import { useTheme } from '~/theme';
+import { SubscriptionType, type TThreadModel } from '~/definitions';
+import UserPreferences from '~/lib/methods/userPreferences';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import SafeAreaView from '~/containers/SafeAreaView';
+import * as List from '~/containers/List';
+import I18n from '~/i18n';
 import Item from './components/Item';
 import EmptyThreads from './components/EmptyThreads';
 import styles from './styles';
 import useSubscription from './hooks/useSubscription';
 import useThreads from './hooks/useThreads';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import SearchHeader from '../../containers/SearchHeader';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
+import { nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
+import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import getFilteredThreads from './methods/getFilteredThreads';
-import Navigation from '../../lib/navigation/appNavigation';
-import { toggleFollowMessage } from '../../lib/services/restApi';
+import Navigation from '~/lib/navigation/appNavigation';
+import { toggleFollowThread as toggleFollowThreadService } from '~/lib/methods/toggleFollowThread';
 
 const THREADS_FILTER = 'threadsFilter';
 
@@ -45,6 +42,8 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 	});
 	const { theme } = useTheme();
 	const isMasterDetail = useMasterDetail();
+	const insets = useSafeAreaInsets();
+	const searchBarRef = useRef<SearchBarCommands>(null);
 	const { user, useRealName } = useAppSelector(state => ({
 		user: getUserSelector(state),
 		useRealName: state.settings.UI_Use_Real_Name as boolean
@@ -57,52 +56,34 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 		subscriptionLoaded
 	});
 
-	const getHeader = (triggerSearch?: boolean): NativeStackNavigationOptions => {
-		if (search.isSearching || triggerSearch) {
-			return {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <SearchHeader onSearchChangeText={onSearchChangeText} testID='thread-messages-view-search-header' />,
-				headerRight: () => null
-			};
-		}
-
-		const options: NativeStackNavigationOptions = {
-			headerLeft: undefined,
-			headerTitle: I18n.t('Threads'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item
-						accessibilityLabel={I18n.t('Filter')}
-						iconName='filter'
-						onPress={showFilters}
-						badge={() =>
-							currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} /> : null
-						}
-					/>
-					<HeaderButton.Item
-						accessibilityLabel={I18n.t('Search')}
-						iconName='search'
-						onPress={onSearchPress}
-						testID='thread-messages-view-search-icon'
-					/>
-				</HeaderButton.Container>
-			)
-		};
-
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
-
-		return options;
-	};
-
-	const setHeader = () => {
-		const options = getHeader();
-		navigation.setOptions(options);
+	const setHeader = (isSearching = search.isSearching) => {
+		navigation.setOptions(
+			searchHeaderOptions({
+				isSearching,
+				searchBarRef,
+				onSearchPress,
+				onChangeText: onSearchChangeText,
+				onCancel: onCancelSearchPress,
+				testIDPrefix: 'thread-messages-view',
+				options: {
+					headerTitle: I18n.t('Threads'),
+					...translucentHeader,
+					...(isMasterDetail ? headerLeftCloseModal(navigation) : { headerLeft: undefined })
+				},
+				rightActions: [
+					{
+						label: I18n.t('Filter'),
+						icon: 'filter',
+						badge: currentFilter !== Filter.All ? { color: colors[theme].buttonBackgroundDangerDefault } : undefined,
+						menu: [Filter.All, Filter.Following, Filter.Unread].map(filter => ({
+							label: I18n.t(filter),
+							checked: currentFilter === filter,
+							onPress: () => onFilterSelected(filter)
+						}))
+					}
+				]
+			})
+		);
 	};
 
 	const initFilter = () => {
@@ -112,28 +93,6 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 		}
 	};
 
-	const showFilters = () => {
-		showActionSheetRef({
-			options: [
-				{
-					title: I18n.t(Filter.All),
-					right: currentFilter === Filter.All ? () => <CustomIcon name='check' size={24} /> : undefined,
-					onPress: () => onFilterSelected(Filter.All)
-				},
-				{
-					title: I18n.t(Filter.Following),
-					right: currentFilter === Filter.Following ? () => <CustomIcon name='check' size={24} /> : undefined,
-					onPress: () => onFilterSelected(Filter.Following)
-				},
-				{
-					title: I18n.t(Filter.Unread),
-					right: currentFilter === Filter.Unread ? () => <CustomIcon name='check' size={24} /> : undefined,
-					onPress: () => onFilterSelected(Filter.Unread)
-				}
-			]
-		});
-	};
-
 	const onFilterSelected = (filter: Filter) => {
 		setCurrentFilter(filter);
 		UserPreferences.setString(THREADS_FILTER, filter);
@@ -141,8 +100,9 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 
 	const onSearchPress = () => {
 		setSearch({ ...search, isSearching: true });
-		const options = getHeader(true);
-		navigation.setOptions(options);
+		if (!hasNativeHeaderBar) {
+			setHeader(true);
+		}
 	};
 
 	const onSearchChangeText = useDebounce((searchText: string) => {
@@ -155,7 +115,9 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 			isSearching: false,
 			searchText: ''
 		});
-		setHeader();
+		if (!hasNativeHeaderBar) {
+			setHeader(false);
+		}
 		handleThreadsSubscription({});
 	};
 
@@ -175,13 +137,8 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 	);
 
 	const toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
-		try {
-			await toggleFollowMessage(tmid, !isFollowingThread);
-			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
-			handleThreadsSubscription({ searchText: search.searchText });
-		} catch (e) {
-			log(e);
-		}
+		await toggleFollowThreadService(tmid, isFollowingThread);
+		handleThreadsSubscription({ searchText: search.searchText });
 	};
 
 	const renderItem = ({ item }: { item: TThreadModel }) => {
@@ -216,13 +173,14 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 				data={getFilteredThreads(user, threads, subscription, currentFilter)}
 				renderItem={renderItem}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-				contentContainerStyle={styles.contentContainer}
+				contentContainerStyle={[styles.contentContainer, { paddingBottom: hasNativeHeaderBar ? 0 : insets.bottom }]}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}
 				windowSize={10}
 				initialNumToRender={7}
 				onEndReached={loadMore}
 				removeClippedSubviews={isIOS}
+				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				ListEmptyComponent={<EmptyThreads currentFilter={currentFilter} />}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}

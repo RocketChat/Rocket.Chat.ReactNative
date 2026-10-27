@@ -1,9 +1,9 @@
 import { type ReactElement } from 'react';
 
-import { AvatarWithEdit } from '../../../containers/Avatar';
-import { SubscriptionType } from '../../../definitions';
+import { AvatarWithEdit } from '~/containers/Avatar';
+import { SubscriptionType } from '~/definitions';
 import styles from '../styles';
-import I18n from '../../../i18n';
+import I18n from '~/i18n';
 
 const RoomInfoViewAvatar = ({
 	showEdit,

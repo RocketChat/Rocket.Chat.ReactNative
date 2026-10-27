@@ -1,10 +1,10 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { type IMessage, type TSubscriptionModel, type TThreadModel } from '../../../definitions';
-import database from '../../../lib/database';
-import protectedFunction from '../../../lib/methods/helpers/protectedFunction';
-import buildMessage from '../../../lib/methods/helpers/buildMessage';
-import log from '../../../lib/methods/helpers/log';
+import { type IMessage, type TSubscriptionModel, type TThreadModel } from '~/definitions';
+import database from '~/lib/database';
+import protectedFunction from '~/lib/methods/helpers/protectedFunction';
+import buildMessage from '~/lib/methods/helpers/buildMessage';
+import log from '~/lib/methods/helpers/log';
 
 const updateThreads = async ({
 	subscription,

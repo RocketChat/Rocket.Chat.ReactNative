@@ -2,13 +2,13 @@ import { View, StyleSheet } from 'react-native';
 import { type ComponentType, type ReactNode } from 'react';
 
 import CallSection from './CallSection';
-import type { ISubscription, TSubscriptionModel } from '../../../definitions';
-import { SubscriptionType } from '../../../definitions';
-import { clearEnterpriseModules, setEnterpriseModules } from '../../../actions/enterpriseModules';
-import { setPermissions } from '../../../actions/permissions';
-import { setUser } from '../../../actions/login';
-import { mockedStore } from '../../../reducers/mockedStore';
-import { addSettings } from '../../../actions/settings';
+import type { ISubscription, TSubscriptionModel } from '~/definitions';
+import { SubscriptionType } from '~/definitions';
+import { clearEnterpriseModules, setEnterpriseModules } from '~/actions/enterpriseModules';
+import { setPermissions } from '~/actions/permissions';
+import { setUser } from '~/actions/login';
+import { mockedStore } from '~/reducers/mockedStore';
+import { addSettings } from '~/actions/settings';
 
 const styles = StyleSheet.create({
 	container: {
@@ -43,7 +43,7 @@ const createMockRoom = (overrides: Partial<ISubscription> = {}): TSubscriptionMo
 		roomUpdatedAt: new Date(),
 		ro: false,
 		...overrides
-	} as TSubscriptionModel);
+	}) as TSubscriptionModel;
 
 const withVoiceAndVideoCallEnabled = (Story: ComponentType) => {
 	mockedStore.dispatch(setEnterpriseModules(['teams-voip']));

@@ -4,7 +4,7 @@ import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';
-import { checkAndReopen } from '../lib/services/connect';
+import { recoverSocket } from '../lib/services/socketHealth';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';
 
@@ -19,18 +19,18 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	if (appRoot !== RootEnum.ROOT_INSIDE) {
 		return;
 	}
-	const login = yield select(state => state.login);
-	if (!login.isAuthenticated) {
+	// Socket state is deliberately not checked here: a closed socket is the case
+	// recoverSocket below exists for.
+	const { isAuthenticated } = yield select(state => state.login);
+	if (!isAuthenticated) {
 		return;
 	}
 	try {
 		const server = yield select(state => state.server.server);
 		yield localAuthenticate(server);
-		// Always reconnect on foreground; gating on meteor.connected would skip
-		// the call precisely when the socket died silently in background.
-		checkAndReopen().catch(e => {
-			log('[state.js] checkAndReopen failed:', e);
-		});
+
+		recoverSocket().catch(e => log(e));
+
 		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
 		checkPendingNotification().catch(e => {
 			log('[state.js] Error checking pending notification:', e);

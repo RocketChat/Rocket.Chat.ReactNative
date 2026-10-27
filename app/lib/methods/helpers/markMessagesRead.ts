@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 
-import database from '../../database';
+import database from '~/lib/database';
 
 interface IMarkMessagesReadParams {
 	rid: string;

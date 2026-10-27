@@ -1,10 +1,10 @@
 import { Linking } from 'react-native';
 import { type ReactElement } from 'react';
 
-import NewWindowIcon from '../../../containers/NewWindowIcon';
-import * as List from '../../../containers/List';
+import NewWindowIcon from '~/containers/NewWindowIcon';
+import * as List from '~/containers/List';
 
-export default function NotificationDelay(): ReactElement {
+function NotificationDelay(): ReactElement {
 	const openNotificationDocumentation = () => Linking.openURL('https://go.rocket.chat/i/push-notifications');
 
 	return (
@@ -22,3 +22,5 @@ export default function NotificationDelay(): ReactElement {
 		</List.Section>
 	);
 }
+
+export default NotificationDelay;

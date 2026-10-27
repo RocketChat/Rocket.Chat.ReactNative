@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 
 export default StyleSheet.create({
 	directoryItemContainer: {
@@ -30,6 +30,12 @@ export default StyleSheet.create({
 	directoryItemUsername: {
 		fontSize: 14,
 		...sharedStyles.textRegular
+	},
+	titleIcon: {
+		marginRight: 0
+	},
+	nativeRowLabel: {
+		marginTop: StyleSheet.hairlineWidth
 	},
 	directoryItemLabel: {
 		fontSize: 14,

@@ -13,7 +13,7 @@ import type {
 } from '@rocket.chat/ui-kit';
 import { type ReactElement } from 'react';
 
-import { type TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '~/theme';
 
 export const ActionTypes = {
 	ACTION: 'blockAction',
@@ -99,7 +99,7 @@ export interface IContainer {
 	id: string;
 }
 
-type TModalServerInteraction = Extract<ServerInteraction, { type: 'modal.open' | 'modal.update' | 'errors' }>;
+type TModalServerInteraction = Extract<ServerInteraction, { type: 'modal.open' | 'modal.update' | 'modal.close' | 'errors' }>;
 export type IUserInteraction = Omit<TModalServerInteraction, 'type'>;
 export type IEmitUserInteraction = TModalServerInteraction | ({ type: 'modal' } & IUserInteraction);
 

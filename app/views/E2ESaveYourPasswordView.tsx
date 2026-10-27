@@ -4,10 +4,11 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { encryptionSetBanner } from '../actions/encryption';
 import Button from '../containers/Button';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import SafeAreaView from '../containers/SafeAreaView';
 import { LISTENER } from '../containers/Toast';
 import I18n from '../i18n';
@@ -64,11 +65,12 @@ const E2ESaveYourPasswordView = () => {
 	const dispatch = useDispatch();
 	const [password, setPassword] = useState('');
 	const { colors } = useTheme();
+	const { bottom } = useSafeAreaInsets();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Save_Your_E2E_Password'),
-			headerLeft: () => <HeaderButton.CloseModal testID='e2e-save-your-password-view-close' />
+			...headerLeftCloseModal(navigation, 'e2e-save-your-password-view-close')
 		});
 	}, [navigation]);
 
@@ -105,7 +107,7 @@ const E2ESaveYourPasswordView = () => {
 			<ScrollView
 				{...scrollPersistTaps}
 				style={sharedStyles.container}
-				contentContainerStyle={[sharedStyles.containerScrollView, { flexGrow: 1 }]}>
+				contentContainerStyle={[sharedStyles.containerScrollView, { flexGrow: 1, paddingBottom: bottom }]}>
 				<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
 					<View style={{ flex: 1, gap: 64 }}>
 						<Text style={[styles.warning, { color: colors.fontDanger }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>

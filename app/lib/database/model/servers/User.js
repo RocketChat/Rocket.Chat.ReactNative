@@ -1,7 +1,7 @@
 import { Model } from '@nozbe/watermelondb';
 import { field, json } from '@nozbe/watermelondb/decorators';
 
-import { sanitizer } from '../../utils';
+import { sanitizer } from '~/lib/database/utils';
 
 export const LOGGED_USERS_TABLE = 'users';
 
@@ -20,7 +20,7 @@ export default class User extends Model {
 
 	@field('statusText') statusText;
 
-	@json('roles', sanitizer) roles;
+	@json('roles', sanitizer, { memo: true }) roles;
 
 	@field('avatar_etag') avatarETag;
 
@@ -35,4 +35,6 @@ export default class User extends Model {
 	@field('bio') bio;
 
 	@field('require_password_change') requirePasswordChange;
+
+	@json('sidebar_categories', sanitizer) sidebarCategories;
 }

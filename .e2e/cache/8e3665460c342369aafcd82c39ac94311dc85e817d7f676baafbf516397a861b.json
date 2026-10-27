@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "trace-1",
+  "createdAt": "2026-10-02T12:41:53.161Z",
+  "payload": {
+    "actions": [
+      {
+        "name": "scroll",
+        "summary": "scroll down on group \"room-view-messages\" in \"142\"",
+        "direction": "down",
+        "target": {
+          "role": "group",
+          "testId": "room-view-messages",
+          "selector": "id=room-view-messages",
+          "within": "142"
+        },
+        "spans": 0.7955
+      },
+      {
+        "name": "tap",
+        "summary": "tap text \"Load newer\"",
+        "target": {
+          "role": "text",
+          "name": "Load newer"
+        }
+      }
+    ],
+    "executor": {
+      "name": "claude-subscription",
+      "version": "1"
+    },
+    "recordedFor": {
+      "testId": "e2e/tests/room/jump-to-message.e2e.ts::jumps%20to%20messages",
+      "targetId": "android",
+      "instructionDigest": "9628bad2431589203d04aa7f0390657b946c80f9da9e68235c049662dd3a17b3"
+    },
+    "summary": "Tapped \"Load newer\" once and the message with text \"202\" (testid message-content-202) is now visible on screen.",
+    "startPath": "chat.rocket.android",
+    "endPath": "chat.rocket.android",
+    "endAnchors": [
+      {
+        "role": "group",
+        "testId": "message-7wBSxqPG3zAauR7rN"
+      },
+      {
+        "role": "group",
+        "testId": "message-content-192"
+      },
+      {
+        "role": "group",
+        "testId": "message-vXbeRFtDP2XKhGgHP"
+      },
+      {
+        "role": "group",
+        "testId": "message-content-193"
+      },
+      {
+        "role": "group",
+        "testId": "message-tobihsv5tFZLNG8Xc"
+      },
+      {
+        "role": "group",
+        "testId": "message-content-194"
+      },
+      {
+        "role": "group",
+        "testId": "message-xjtgcm3AaeCPo9hbX"
+      },
+      {
+        "role": "group",
+        "testId": "message-content-195"
+      }
+    ],
+    "endWaitMs": 18050
+  }
+}

@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, type ReactElement } from 'react';
-import { Platform } from 'react-native';
 import { useKeyboardHandler } from 'react-native-keyboard-controller';
 import { type SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,8 +21,6 @@ const EmojiKeyboardContext = createContext<IEmojiKeyboardContextProps>({
 });
 
 export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
-	'use memo';
-
 	const showEmojiPickerSharedValue = useSharedValue(false);
 	const showEmojiSearchbarSharedValue = useSharedValue(false);
 
@@ -38,8 +35,6 @@ const IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD = 70;
 const EMOJI_KEYBOARD_FIXED_HEIGHT = 250;
 
 const useKeyboardAnimation = () => {
-	'use memo';
-
 	const height = useSharedValue(0);
 
 	useKeyboardHandler(
@@ -50,17 +45,17 @@ const useKeyboardAnimation = () => {
 				if (e.duration === 0) {
 					return;
 				}
-				height.value = e.height;
+				height.set(e.height);
 			},
 			onInteractive: e => {
 				'worklet';
 
-				height.value = e.height;
+				height.set(e.height);
 			},
 			onEnd: e => {
 				'worklet';
 
-				height.value = Math.max(e.height, 0);
+				height.set(Math.max(e.height, 0));
 			}
 		},
 		[]
@@ -70,8 +65,6 @@ const useKeyboardAnimation = () => {
 };
 
 export const useEmojiKeyboard = () => {
-	'use memo';
-
 	const { showEmojiPickerSharedValue, showEmojiSearchbarSharedValue } = useContext(EmojiKeyboardContext);
 	const { focus } = useContext(MessageInnerContext);
 	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
@@ -79,41 +72,40 @@ export const useEmojiKeyboard = () => {
 
 	const { bottom } = useSafeAreaInsets();
 	const { height } = useKeyboardAnimation();
-	const initialHeight = Platform.OS === 'ios' ? bottom : 0;
-	const keyboardHeight = useSharedValue(initialHeight);
-	const previousHeight = useSharedValue(initialHeight);
+	const keyboardHeight = useSharedValue(bottom);
+	const previousHeight = useSharedValue(bottom);
 
 	const updateHeight = (force: boolean = false) => {
 		'worklet';
 
 		if (
 			!force &&
-			(showEmojiPickerSharedValue.value === true || showEmojiSearchbarSharedValue.value === true) &&
-			previousHeight.value !== EMOJI_KEYBOARD_FIXED_HEIGHT
+			(showEmojiPickerSharedValue.get() === true || showEmojiSearchbarSharedValue.get() === true) &&
+			previousHeight.get() !== EMOJI_KEYBOARD_FIXED_HEIGHT
 		) {
 			return;
 		}
-		// On iOS, keyboard controller doesn't include bottom inset, so we add it when keyboard is closed
-		// On Android, keyboard controller already includes it, so we don't add it
-		const notch = Platform.OS === 'ios' && height.value === 0 ? bottom : 0;
-		keyboardHeight.value = height.value + notch;
-		previousHeight.value = keyboardHeight.value;
+		// When keyboard is closed, add bottom safe area inset to ensure content is visible above
+		// navigation bars/home indicator. When keyboard is open, keyboard height already covers it.
+		const notch = height.get() === 0 ? bottom : 0;
+		keyboardHeight.set(height.get() + notch);
+		previousHeight.set(keyboardHeight.get());
 	};
 
 	const openEmojiKeyboard = () => {
-		showEmojiPickerSharedValue.value = true;
+		showEmojiPickerSharedValue.set(true);
 	};
 
 	const closeEmojiKeyboard = () => {
-		showEmojiPickerSharedValue.value = false;
+		showEmojiPickerSharedValue.set(false);
 	};
 
 	const openEmojiSearchbar = () => {
-		showEmojiSearchbarSharedValue.value = true;
+		showEmojiSearchbarSharedValue.set(true);
 	};
 
 	const closeEmojiSearchbar = () => {
-		showEmojiSearchbarSharedValue.value = false;
+		showEmojiSearchbarSharedValue.set(false);
 		focus && focus();
 	};
 
@@ -139,9 +131,9 @@ export const useEmojiKeyboard = () => {
 	const openEmojiPicker = () => {
 		'worklet';
 
-		if (height.value < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
-			keyboardHeight.value = EMOJI_KEYBOARD_FIXED_HEIGHT;
-			previousHeight.value = keyboardHeight.value;
+		if (height.get() < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
+			keyboardHeight.set(EMOJI_KEYBOARD_FIXED_HEIGHT);
+			previousHeight.set(keyboardHeight.get());
 		}
 	};
 

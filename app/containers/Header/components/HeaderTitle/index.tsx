@@ -1,8 +1,8 @@
 import { memo, type ReactNode } from 'react';
 import { Text, View } from 'react-native';
 
-import { isAndroid } from '../../../../lib/methods/helpers';
-import { useTheme } from '../../../../theme';
+import { isAndroid } from '~/lib/methods/helpers';
+import { useTheme } from '~/theme';
 import { styles } from './styles';
 
 interface IHeaderTitle {
@@ -10,8 +10,6 @@ interface IHeaderTitle {
 }
 
 const HeaderTitle = memo(({ headerTitle }: IHeaderTitle) => {
-	'use memo';
-
 	const { colors } = useTheme();
 	if (!headerTitle) {
 		return null;

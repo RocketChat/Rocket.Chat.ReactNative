@@ -1,13 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Fragment, type ReactElement } from 'react';
 
-import * as List from '../../containers/List';
-import I18n from '../../i18n';
-import { useTheme } from '../../theme';
+import * as List from '~/containers/List';
+import I18n from '~/i18n';
+import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
-import { useActionSheet } from '../../containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -37,10 +36,9 @@ const ListPicker = ({
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const option = value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0];
-	const insets = useSafeAreaInsets();
 
 	const getOptions = (): ReactElement => (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<View style={{ backgroundColor: colors.surfaceRoom }}>
 			<List.Separator />
 			{OPTIONS[preference].map(i => (
 				<Fragment key={i.value}>
@@ -63,13 +61,24 @@ const ListPicker = ({
 	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label;
 
 	return (
-		<List.Item
-			title={title}
+		<List.Picker
+			title={I18n.t(title)}
 			testID={testID}
-			onPress={() => showActionSheet({ children: getOptions() })}
-			right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</Text>}
-			additionalAccessibilityLabel={label}
-		/>
+			options={OPTIONS[preference].map(i => ({
+				label: I18n.t(i.label, { defaultValue: i.label }),
+				value: i.value.toString(),
+				testID: `notification-preferences-${preference}-${i.value}`
+			}))}
+			selection={option?.value.toString() ?? ''}
+			onSelectionChange={selected => onChangeValue({ [preference]: selected })}>
+			<List.Item
+				title={title}
+				testID={testID}
+				onPress={() => showActionSheet({ children: getOptions() })}
+				right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</Text>}
+				additionalAccessibilityLabel={label}
+			/>
+		</List.Picker>
 	);
 };
 

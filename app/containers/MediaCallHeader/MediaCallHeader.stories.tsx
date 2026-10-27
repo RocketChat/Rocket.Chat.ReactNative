@@ -2,7 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import { type ComponentType, type ReactNode } from 'react';
 
 import MediaCallHeader from './MediaCallHeader';
-import { useCallStore } from '../../lib/services/voip/useCallStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
 
 const styles = StyleSheet.create({
 	container: {
@@ -68,37 +68,44 @@ export default {
 	]
 };
 
-export const NoCall = () => {
-	useCallStore.setState({ call: null });
-	return <MediaCallHeader />;
+export const NoCall = {
+	beforeEach: () => {
+		useCallStore.setState({ call: null });
+	}
 };
 
-export const ActiveCall = () => {
-	setStoreState({ callState: 'active', callStartTime: mockCallStartTime });
-	return <MediaCallHeader />;
+export const ActiveCall = {
+	beforeEach: () => {
+		setStoreState({ callState: 'active', callStartTime: mockCallStartTime });
+	}
 };
 
-export const ConnectingCall = () => {
-	setStoreState({ callState: 'accepted', callStartTime: null });
-	return <MediaCallHeader />;
+export const ConnectingCall = {
+	beforeEach: () => {
+		setStoreState({ callState: 'accepted', callStartTime: null });
+	}
 };
 
-export const Focused = () => {
-	setStoreState({ focused: true });
-	return <MediaCallHeader />;
+export const Focused = {
+	beforeEach: () => {
+		setStoreState({ focused: true });
+	}
 };
 
-export const Collapsed = () => {
-	setStoreState({ focused: false });
-	return <MediaCallHeader />;
+export const Collapsed = {
+	beforeEach: () => {
+		setStoreState({ focused: false });
+	}
 };
 
-export const WithRemoteHeld = () => {
-	setStoreState({ callState: 'active', remoteHeld: true });
-	return <MediaCallHeader />;
+export const WithRemoteHeld = {
+	beforeEach: () => {
+		setStoreState({ callState: 'active', remoteHeld: true });
+	}
 };
 
-export const WithRemoteMuted = () => {
-	setStoreState({ callState: 'active', remoteMute: true });
-	return <MediaCallHeader />;
+export const WithRemoteMuted = {
+	beforeEach: () => {
+		setStoreState({ callState: 'active', remoteMute: true });
+	}
 };

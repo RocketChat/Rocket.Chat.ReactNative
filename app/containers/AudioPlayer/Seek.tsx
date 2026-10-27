@@ -1,5 +1,5 @@
 import { type LayoutChangeEvent, View, TextInput, type TextInputProps, TouchableNativeFeedback } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
 import Animated, {
 	type SharedValue,
 	useAnimatedProps,
@@ -11,7 +11,7 @@ import Animated, {
 import { scheduleOnRN } from 'react-native-worklets';
 
 import styles from './styles';
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE, ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -20,7 +20,7 @@ interface ISeek {
 	duration: SharedValue<number>;
 	currentTime: SharedValue<number>;
 	loaded: boolean;
-	onChangeTime: (time: number) => Promise<void>;
+	onChangeTime: (time: number) => void;
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -49,6 +49,8 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const scale = useSharedValue(1);
 	const isPanning = useSharedValue(false);
 	const contextX = useSharedValue(0);
+	const savedTranslateX = useSharedValue(0);
+	const savedCurrentTime = useSharedValue(0);
 
 	const styleLine = useAnimatedStyle(() => ({
 		width: translateX.value
@@ -60,43 +62,43 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 
 	const onLayout = (event: LayoutChangeEvent) => {
 		const { width } = event.nativeEvent.layout;
-		maxWidth.value = width;
+		maxWidth.set(width);
 	};
 
-	const panGesture = Gesture.Pan()
-		.enabled(loaded)
-		.activeOffsetX([-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X])
-		.onStart(() => {
-			isPanning.value = true;
-			contextX.value = translateX.value;
-			scale.value = withTiming(1.3, { duration: 150 });
-		})
-		.onUpdate(event => {
-			const newX = contextX.value + event.translationX;
-			translateX.value = clamp(newX, 0, maxWidth.value);
-		})
-		.onEnd(() => {
-			scheduleOnRN(onChangeTime, Math.round(currentTime.value * 1000));
-		})
-		.onFinalize((_, didSucceed) => {
-			if (isPanning.value && !didSucceed) {
-				translateX.value = contextX.value;
-				currentTime.value = (contextX.value * duration.value) / maxWidth.value || 0;
+	const panGesture = usePanGesture({
+		enabled: loaded,
+		activeOffsetX: [-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X],
+		onActivate: () => {
+			isPanning.set(true);
+			contextX.set(translateX.get());
+			savedTranslateX.set(translateX.get());
+			savedCurrentTime.set(currentTime.get());
+			scale.set(withTiming(1.3, { duration: 150 }));
+		},
+		onUpdate: event => {
+			const newX = contextX.get() + event.translationX;
+			translateX.set(clamp(newX, 0, maxWidth.get()));
+		},
+		onFinalize: event => {
+			if (!isPanning.get()) return;
+			isPanning.set(false);
+			scale.set(withTiming(1, { duration: 150 }));
+			if (event.canceled) {
+				translateX.set(savedTranslateX.get());
+				currentTime.set(savedCurrentTime.get());
+			} else {
+				scheduleOnRN(onChangeTime, currentTime.get());
 			}
-
-			isPanning.value = false;
-			scale.value = withTiming(1, { duration: 150 });
-		});
+		}
+	});
 
 	useDerivedValue(() => {
-		if (isPanning.value) {
-			// When the user is panning, always the currentTime.value is been set different from the currentTime provided by
-			// the audio in progress
-			currentTime.value = (translateX.value * duration.value) / maxWidth.value || 0;
+		if (isPanning.get()) {
+			currentTime.set((translateX.get() * duration.get()) / maxWidth.get() || 0);
 		} else {
-			translateX.value = (currentTime.value * maxWidth.value) / duration.value || 0;
+			translateX.set((currentTime.get() * maxWidth.get()) / duration.get() || 0);
 		}
-		timeLabel.value = formatTime(currentTime.value);
+		timeLabel.set(formatTime(currentTime.get()));
 	}, [translateX, maxWidth, duration, isPanning, currentTime]);
 
 	const timeLabelAnimatedProps = useAnimatedProps(() => {

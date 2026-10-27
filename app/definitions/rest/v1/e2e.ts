@@ -1,8 +1,11 @@
-import { type IUser } from '../../IUser';
+import { type IUser } from '~/definitions/IUser';
 
 export type E2eEndpoints = {
 	'e2e.setUserPublicAndPrivateKeys': {
 		POST: (params: { public_key: string; private_key: string; force?: boolean }) => void;
+	};
+	'e2e.requestSubscriptionKeys': {
+		POST: () => void;
 	};
 	'e2e.getUsersOfRoomWithoutKey': {
 		GET: (params: { rid: string }) => {

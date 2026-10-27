@@ -2,7 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import type { ReactNode, ComponentType } from 'react';
 
 import CallerInfo from './CallerInfo';
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
 
 const styles = StyleSheet.create({
 	container: {

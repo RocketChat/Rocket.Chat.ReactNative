@@ -1,15 +1,11 @@
-import { NewMediaCall } from '../../../containers/NewMediaCall';
-import { showActionSheetRef } from '../../../containers/ActionSheet';
-import { getUidDirectMessage } from '../../methods/helpers/helpers';
-import { usePeerAutocompleteStore } from '../../services/voip/usePeerAutocompleteStore';
-import { useIsInActiveVoipCall } from '../../services/voip/isInActiveVoipCall';
-import { mediaSessionInstance } from '../../services/voip/MediaSessionInstance';
-import { isSelfUserId } from '../../services/voip/isSelfUserId';
-import { showErrorAlert } from '../../methods/helpers/info';
-import I18n from '../../../i18n';
+import { NewMediaCall } from '~/containers/NewMediaCall';
+import { showActionSheetRef } from '~/containers/ActionSheet';
+import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
+import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { useSubscription } from '../useSubscription';
 import { useMediaCallPermission } from '../useMediaCallPermission';
-import { isAndroid } from '../../methods/helpers/deviceInfo';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 
 export const useNewMediaCall = (rid?: string) => {
 	const room = useSubscription(rid);
@@ -30,20 +26,5 @@ export const useNewMediaCall = (rid?: string) => {
 		});
 	};
 
-	const startCallImmediate = async () => {
-		if (isInActiveCall) return;
-		const otherUserId = room ? getUidDirectMessage(room) : undefined;
-		if (!otherUserId || isSelfUserId(otherUserId)) {
-			openNewMediaCall();
-			return;
-		}
-		try {
-			await mediaSessionInstance.startCall(otherUserId, 'user');
-		} catch (e) {
-			const message = e instanceof Error && e.message ? e.message : I18n.t('VoIP_Call_Issue');
-			showErrorAlert(message, I18n.t('Oops'));
-		}
-	};
-
-	return { openNewMediaCall, startCallImmediate, hasMediaCallPermission, isInActiveCall };
+	return { openNewMediaCall, hasMediaCallPermission, isInActiveCall };
 };

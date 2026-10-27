@@ -1,0 +1,30 @@
+import { settings } from '@rocket.chat/sdk';
+
+import { TWO_FACTOR } from '~/lib/constants/twoFactor';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { type ILoginCredentials } from '~/definitions';
+import { TwoFactorCancelledError } from './twoFactorCancelled';
+
+interface ITwoFactor {
+	method: string;
+	invalid: boolean;
+	params?: ILoginCredentials;
+}
+
+export const twoFactor = ({ method, invalid, params }: ITwoFactor): Promise<{ twoFactorCode: string; twoFactorMethod: string }> =>
+	new Promise((resolve, reject) => {
+		EventEmitter.emit(TWO_FACTOR, {
+			method,
+			invalid,
+			params,
+			cancel: () => reject(new TwoFactorCancelledError()),
+			submit: (code: string) => {
+				settings.customHeaders = {
+					...settings.customHeaders,
+					'x-2fa-code': code,
+					'x-2fa-method': method
+				};
+				resolve({ twoFactorCode: code, twoFactorMethod: method });
+			}
+		});
+	});

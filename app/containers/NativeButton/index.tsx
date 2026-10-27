@@ -1,6 +1,6 @@
 import { TouchableNativeFeedback, TouchableOpacity, type TouchableOpacityProps, View } from 'react-native';
 
-import { isIOS } from '../../lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers';
 
 const NativeButton = (props: TouchableOpacityProps) => {
 	if (isIOS) {

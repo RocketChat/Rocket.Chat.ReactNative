@@ -2,41 +2,33 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
 import { type ReactElement, useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
-import { Image } from 'expo-image';
 import { useDispatch } from 'react-redux';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { appStart } from '../../actions/app';
-import { logout } from '../../actions/login';
-import { selectServerRequest } from '../../actions/server';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import NewWindowIcon from '../../containers/NewWindowIcon';
-import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { LISTENER } from '../../containers/Toast';
-import { RootEnum } from '../../definitions';
-import I18n from '../../i18n';
-import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants/links';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
-import { clearCache } from '../../lib/methods/clearCache';
-import { deleteMediaFiles } from '../../lib/methods/handleMediaDownload';
-import { getDeviceModel, getReadableVersion, isAndroid } from '../../lib/methods/helpers';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import openLink from '../../lib/methods/helpers/openLink';
-import { onReviewPress } from '../../lib/methods/helpers/review';
-import { type SettingsStackParamList } from '../../stacks/types';
-import { useTheme } from '../../theme';
-import { disconnect } from '../../lib/services/connect';
-import SidebarView from '../SidebarView';
+import { logout } from '~/actions/login';
+import NewWindowIcon from '~/containers/NewWindowIcon';
+import * as List from '~/containers/List';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { LISTENER } from '~/containers/Toast';
+import I18n from '~/i18n';
+import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '~/lib/constants/links';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { clearCacheAndReconnect } from '~/lib/methods/clearCache';
+import { getDeviceModel, getReadableVersion, isAndroid } from '~/lib/methods/helpers';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { headerLeftCloseModal, headerLeftDrawer } from '~/lib/methods/helpers/navigation/headerActions';
+import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
+import { events, logEvent } from '~/lib/methods/helpers/log';
+import openLink from '~/lib/methods/helpers/openLink';
+import { onReviewPress } from '~/lib/methods/helpers/review';
+import { type SettingsStackParamList } from '~/stacks/types';
+import { useTheme } from '~/theme';
+import SidebarSections from '../SidebarView/SidebarSections';
 
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
 const SettingsView = (): ReactElement => {
-	'use memo';
-
 	const { colors, theme } = useTheme();
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'SettingsView'>>();
 	const dispatch = useDispatch();
@@ -45,12 +37,9 @@ const SettingsView = (): ReactElement => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () =>
-				isMasterDetail ? (
-					<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
-				) : (
-					<HeaderButton.Drawer navigation={navigation} testID='settings-view-drawer' />
-				),
+			...(isMasterDetail
+				? headerLeftCloseModal(navigation, 'settings-view-close')
+				: headerLeftDrawer(navigation, 'settings-view-drawer')),
 			title: I18n.t('Settings')
 		});
 	}, [navigation, isMasterDetail]);
@@ -69,15 +58,7 @@ const SettingsView = (): ReactElement => {
 		showConfirmationAlert({
 			message: I18n.t('This_will_clear_all_your_offline_data'),
 			confirmationText: I18n.t('Clear'),
-			onPress: async () => {
-				dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') }));
-				await deleteMediaFiles(server);
-				await clearCache({ server });
-				await Image.clearMemoryCache();
-				await Image.clearDiskCache();
-				disconnect();
-				dispatch(selectServerRequest(server, version, true));
-			}
+			onPress: () => clearCacheAndReconnect({ server, version, dispatch })
 		});
 	};
 
@@ -139,9 +120,7 @@ const SettingsView = (): ReactElement => {
 			<List.Container>
 				{isMasterDetail ? (
 					<>
-						<List.Section>
-							<SidebarView navigation={navigation as any} />
-						</List.Section>
+						<SidebarSections navigation={navigation as any} />
 						<List.Section>
 							<List.Separator />
 							<List.Item

@@ -1,4 +1,6 @@
-import { type TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
+import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
+
+export type TUploadHeaders = Record<string, string | undefined>;
 
 export interface IFormData {
 	name: string;

@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet, View, Text, type StyleProp, type ViewStyle } from 'react-native';
 
-import { useTheme } from '../../theme';
+import { useTheme } from '~/theme';
 import { CustomIcon } from '../CustomIcon';
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '~/views/Styles';
 import Avatar from '../Avatar';
 
 const styles = StyleSheet.create({
@@ -34,6 +34,8 @@ const styles = StyleSheet.create({
 
 export interface IChip {
 	avatar?: string;
+	avatarType?: string;
+	rid?: string;
 	text: string;
 	onPress?: Function;
 	testID?: string;
@@ -41,7 +43,7 @@ export interface IChip {
 	fullWidth?: boolean;
 }
 
-const Chip = ({ avatar, text, onPress, testID, style, fullWidth }: IChip) => {
+const Chip = ({ avatar, avatarType, rid, text, onPress, testID, style, fullWidth }: IChip) => {
 	const { colors } = useTheme();
 
 	return (
@@ -61,7 +63,7 @@ const Chip = ({ avatar, text, onPress, testID, style, fullWidth }: IChip) => {
 				color: colors.surfaceNeutral
 			}}>
 			<View style={styles.container}>
-				{avatar ? <Avatar text={avatar} size={28} style={styles.avatar} /> : null}
+				{avatar ? <Avatar text={avatar} type={avatarType} rid={rid} size={28} style={styles.avatar} /> : null}
 				<View style={[styles.textContainer, fullWidth && { maxWidth: undefined }]}>
 					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
 						{text}

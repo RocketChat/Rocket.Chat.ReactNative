@@ -4,44 +4,45 @@ import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+import { type EdgeInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
+import parse from 'url-parse';
 
-import { FormTextInput } from '../../containers/TextInput';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import Markdown from '../../containers/markdown';
-import Message from '../../containers/message';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import I18n from '../../i18n';
-import log from '../../lib/methods/helpers/log';
-import { themes } from '../../lib/constants/colors';
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import { type TSupportedThemes, withTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
-import SafeAreaView from '../../containers/SafeAreaView';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import database from '../../lib/database';
-import { sanitizeLikeString } from '../../lib/database/utils';
-import getThreadName from '../../lib/methods/getThreadName';
-import getRoomInfo, { type IRoomInfoResult } from '../../lib/methods/getRoomInfo';
+import { withSafeAreaInsets } from '~/lib/hooks/withSafeAreaInsets';
+import { FormTextInput } from '~/containers/TextInput';
+import ActivityIndicator from '~/containers/ActivityIndicator';
+import Markdown from '~/containers/markdown';
+import Message from '~/containers/message';
+import { MessageRoomProvider } from '~/containers/message/stores/MessageRoomStore';
+import { A11yGateProvider } from '~/containers/message/stores/A11yGate';
+import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import I18n from '~/i18n';
+import log from '~/lib/methods/helpers/log';
+import { themes } from '~/lib/constants/colors';
+import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
+import { type TSupportedThemes, withTheme } from '~/theme';
+import { getUserSelector } from '~/selectors/login';
+import SafeAreaView from '~/containers/SafeAreaView';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
+import database from '~/lib/database';
+import { sanitizeLikeString } from '~/lib/database/utils';
+import getThreadName from '~/lib/methods/getThreadName';
 import styles from './styles';
-import { type InsideStackParamList, type ChatsStackParamList } from '../../stacks/types';
-import { compareServerVersion, debounce, isIOS } from '../../lib/methods/helpers';
+import { type InsideStackParamList, type ChatsStackParamList } from '~/stacks/types';
+import { compareServerVersion, debounce, isIOS } from '~/lib/methods/helpers';
 import {
 	type IMessageFromServer,
 	type IUser,
 	type TMessageModel,
 	type IUrl,
 	type IAttachment,
-	type ISubscription,
-	SubscriptionType,
-	type TSubscriptionModel,
-	type TGetCustomEmoji,
-	type ICustomEmoji
-} from '../../definitions';
-import { searchMessages } from '../../lib/services/restApi';
-import { type TNavigation } from '../../stacks/stackType';
-import Navigation from '../../lib/navigation/appNavigation';
-import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
+	type IRoomInfoParam,
+	SubscriptionType
+} from '~/definitions';
+import { searchMessages } from '~/lib/services/restApi';
+import { type TNavigation } from '~/stacks/stackType';
+import Navigation from '~/lib/navigation/appNavigation';
+import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
 
 const QUERY_SIZE = 50;
 
@@ -49,15 +50,6 @@ interface ISearchMessagesViewState {
 	loading: boolean;
 	messages: (IMessageFromServer | TMessageModel)[];
 	searchText: string;
-}
-
-export interface IRoomInfoParam {
-	room?: ISubscription;
-	member?: any;
-	rid: string;
-	t: SubscriptionType;
-	joined?: boolean;
-	itsMe?: boolean;
 }
 
 interface INavigationOption {
@@ -70,14 +62,10 @@ interface INavigationOption {
 
 interface ISearchMessagesViewProps extends INavigationOption {
 	user: IUser;
-	baseUrl: string;
 	serverVersion: string;
-	customEmojis: {
-		[key: string]: ICustomEmoji;
-	};
 	theme: TSupportedThemes;
-	useRealName: boolean;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
 class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
 	private offset: number;
@@ -88,15 +76,13 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	private encrypted: boolean | undefined;
 
-	private room?: IRoomInfoResult;
-
 	static navigationOptions = ({ navigation, route }: INavigationOption) => {
 		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Search')
 		};
 		const showCloseModal = route.params?.showCloseModal;
 		if (showCloseModal) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+			Object.assign(options, headerLeftCloseModal(navigation));
 		}
 		return options;
 	};
@@ -112,10 +98,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		this.rid = props.route.params.rid;
 		this.t = props.route.params?.t;
 		this.encrypted = props.route.params?.encrypted;
-	}
-
-	async componentDidMount() {
-		this.room = (await getRoomInfo(this.rid)) ?? undefined;
 	}
 
 	shouldComponentUpdate(nextProps: ISearchMessagesViewProps, nextState: ISearchMessagesViewState) {
@@ -207,15 +189,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		await this.getMessages(searchText, true);
 	}, textInputDebounceTime);
 
-	getCustomEmoji: TGetCustomEmoji = name => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
-	};
-
 	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
@@ -229,20 +202,20 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		navigation.navigate('RoomInfoView', navParam);
 	};
 
+	messageHandlers = { navToRoomInfo: this.navToRoomInfo, showAttachment: this.showAttachment };
+
 	jumpToMessage = async ({ item }: { item: IMessageFromServer | TMessageModel }) => {
 		const { isMasterDetail } = this.props;
 		let params: {
 			rid: string;
 			jumpToMessageId: string;
 			t: SubscriptionType;
-			room: TSubscriptionModel | undefined;
 			tmid?: string;
 			name?: string;
 		} = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
-			t: this.t,
-			room: this.room as TSubscriptionModel
+			t: this.t
 		};
 		if ('tmid' in item && item.tmid) {
 			Navigation.popToRoom(isMasterDetail);
@@ -256,6 +229,24 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		} else {
 			Navigation.popToRoom(isMasterDetail);
 			Navigation.setParams(params);
+		}
+	};
+
+	jumpToMessageByUrl = (messageUrl: string) => {
+		try {
+			const messageId = parse(messageUrl, true).query.msg;
+			if (!messageId) {
+				return;
+			}
+			const { isMasterDetail } = this.props;
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.setParams({
+				rid: this.rid,
+				jumpToMessageId: messageId,
+				t: this.t
+			});
+		} catch (e) {
+			log(e);
 		}
 	};
 
@@ -285,46 +276,39 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	renderItem = ({ item }: { item: IMessageFromServer | TMessageModel }) => {
 		const message = item as TMessageModel;
-		const { user, baseUrl, theme, useRealName } = this.props;
-		return (
-			<Message
-				item={message}
-				baseUrl={baseUrl}
-				user={user}
-				timeFormat='MMM Do YYYY, h:mm:ss a'
-				isThreadRoom
-				showAttachment={this.showAttachment}
-				getCustomEmoji={this.getCustomEmoji}
-				navToRoomInfo={this.navToRoomInfo}
-				useRealName={useRealName}
-				theme={theme}
-				onPress={() => this.jumpToMessage({ item })}
-				jumpToMessage={() => this.jumpToMessage({ item })}
-				rid={message.rid}
-			/>
-		);
+		return <Message item={message} onPress={() => this.jumpToMessage({ item })} />;
 	};
 
 	renderList = () => {
 		const { messages, loading, searchText } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 
 		if (!loading && messages.length === 0 && searchText.length) {
 			return this.renderEmpty();
 		}
 
 		return (
-			<FlatList
-				data={messages}
-				renderItem={this.renderItem}
-				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-				keyExtractor={item => item._id}
-				onEndReached={this.onEndReached}
-				ListFooterComponent={loading ? <ActivityIndicator /> : null}
-				onEndReachedThreshold={0.5}
-				removeClippedSubviews={isIOS}
-				{...scrollPersistTaps}
-			/>
+			<A11yGateProvider>
+				<MessageRoomProvider
+					handlers={this.messageHandlers}
+					jumpToMessage={this.jumpToMessageByUrl}
+					rid={this.rid}
+					isThreadRoom
+					timeFormat={'MMM Do YYYY, h:mm:ss a'}>
+					<FlatList
+						data={messages}
+						renderItem={this.renderItem}
+						style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+						contentContainerStyle={{ paddingBottom: insets.bottom }}
+						keyExtractor={item => item._id}
+						onEndReached={this.onEndReached}
+						ListFooterComponent={loading ? <ActivityIndicator /> : null}
+						onEndReachedThreshold={0.5}
+						removeClippedSubviews={isIOS}
+						{...scrollPersistTaps}
+					/>
+				</MessageRoomProvider>
+			</A11yGateProvider>
 		);
 	};
 
@@ -351,10 +335,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
-	baseUrl: state.server.server,
-	user: getUserSelector(state),
-	useRealName: state.settings.UI_Use_Real_Name,
-	customEmojis: state.customEmojis
+	user: getUserSelector(state)
 });
 
-export default connect(mapStateToProps)(withTheme(withMasterDetail(SearchMessagesView)));
+export default connect(mapStateToProps)(withTheme(withMasterDetail(withSafeAreaInsets(SearchMessagesView))));

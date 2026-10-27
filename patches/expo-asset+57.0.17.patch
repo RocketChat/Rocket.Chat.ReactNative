@@ -1,0 +1,23 @@
+diff --git a/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt b/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
+index cff5e41..a57e8a8 100644
+--- a/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
++++ b/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
+@@ -2,6 +2,7 @@ package expo.modules.asset
+ 
+ import android.content.Context
+ import android.net.Uri
++import android.os.Build
+ import android.util.Log
+ import expo.modules.kotlin.AppContext
+ import expo.modules.kotlin.exception.CodedException
+@@ -83,6 +84,10 @@ class AssetModule : Module() {
+     Name("ExpoAsset")
+ 
+     AsyncFunction("downloadAsync") Coroutine { uri: URI, md5Hash: String?, type: String ->
++      if (uri.scheme == null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
++        return@Coroutine uri
++      }
++
+       if (uri.scheme == "file" && !uri.toString().startsWith(ANDROID_EMBEDDED_URL_BASE_RESOURCE)) {
+         return@Coroutine uri
+       }

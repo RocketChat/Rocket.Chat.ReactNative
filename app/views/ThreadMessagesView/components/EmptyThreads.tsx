@@ -1,5 +1,5 @@
-import I18n from '../../../i18n';
-import BackgroundContainer from '../../../containers/BackgroundContainer';
+import I18n from '~/i18n';
+import BackgroundContainer from '~/containers/BackgroundContainer';
 import { Filter } from '../filters';
 
 type TEmptyThreads = {
