@@ -35,6 +35,7 @@ import { getStoredSession } from '../lib/methods/loggedInServer';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
 import { getServerInfo } from '../lib/methods/getServerInfo';
+import { appendDebugLog } from '../lib/debugLog/debugLog';
 import { setCustomEmojis } from '../lib/methods/getCustomEmojis';
 import { setEnterpriseModules } from '../lib/methods/enterpriseModules';
 import { setPermissions } from '../lib/methods/getPermissions';
@@ -109,11 +110,13 @@ const getServerInfoSaga = function* getServerInfoSaga({
 		const serverInfoResult = yield* call(getServerInfo, server, signal);
 		if (raiseError) {
 			if (!serverInfoResult.success) {
+				appendDebugLog('error', [`[serverRequest] ${server} Invalid_URL from /api/info: ${serverInfoResult.message}`]);
 				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
 			const websocketInfo = yield* call(getWebsocketInfo, { server, signal });
 			if (!websocketInfo.success) {
+				appendDebugLog('error', [`[serverRequest] ${server} Invalid_URL from websocket: ${websocketInfo.message}`]);
 				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
@@ -140,6 +143,7 @@ const getServerInfoSaga = function* getServerInfoSaga({
 
 		return serverRecord;
 	} catch (e) {
+		appendDebugLog('error', [`[serverRequest] ${server} getServerInfoSaga threw`, e]);
 		log(e);
 		yield put(serverFailure());
 	}
@@ -242,6 +246,7 @@ const probeServer = function* probeServer(server: string, signal: AbortSignal) {
 
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
 	const probeController = new AbortController();
+	appendDebugLog('info', [`[serverRequest] connecting to ${server}`, { username, fromServerHistory }]);
 	try {
 		yield* call(applyServerCertificate, server);
 		const { serverInfo, timedOut } = yield* race({
@@ -249,12 +254,16 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 			timedOut: delay(UNANSWERED_HOST_PROBE_TIMEOUT_MS)
 		});
 		if (timedOut) {
+			appendDebugLog('error', [`[serverRequest] ${server} timed out after ${UNANSWERED_HOST_PROBE_TIMEOUT_MS}ms`]);
 			yield put(serverFailure(I18n.t('Connection_timed_out')));
 			return;
 		}
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');
 
+		appendDebugLog(serverInfo ? 'info' : 'warn', [
+			`[serverRequest] ${server} probe finished, server ${serverInfo ? 'found' : 'not found'}`
+		]);
 		if (serverInfo) {
 			Navigation.navigate('WorkspaceView');
 
@@ -279,6 +288,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}
 	} catch (e) {
+		appendDebugLog('error', [`[serverRequest] ${server} failed`, e]);
 		yield put(serverFailure());
 		log(e);
 	} finally {

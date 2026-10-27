@@ -16,6 +16,7 @@ import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants/supportedVers
 import { getServerById } from '../database/services/Server';
 import { compareServerVersion } from './helpers';
 import log from './helpers/log';
+import { appendDebugLog } from '../debugLog/debugLog';
 import { fetchForWorkspace } from './serverBasicAuth';
 import { getStoredSession } from './loggedInServer';
 
@@ -65,6 +66,7 @@ export async function getServerInfo(server: string, signal?: AbortSignal): Promi
 		try {
 			const serverInfo: IApiServerInfo = await response.json();
 			if (!serverInfo?.success) {
+				appendDebugLog('warn', [`[getServerInfo] ${server}/api/info answered without success`, serverInfo]);
 				return {
 					success: false,
 					message: I18n.t('Not_RC_Server')
@@ -115,8 +117,13 @@ export async function getServerInfo(server: string, signal?: AbortSignal): Promi
 			};
 		} catch (error) {
 			// Request is successful, but response isn't a json
+			appendDebugLog('error', [
+				`[getServerInfo] ${server}/api/info returned ${response.status} (${response.headers.get('content-type')}) that is not a server info JSON`,
+				error
+			]);
 		}
 	} catch (e: any) {
+		appendDebugLog('error', [`[getServerInfo] ${server}/api/info request failed (aborted: ${!!signal?.aborted})`, e]);
 		if (e?.message && !signal?.aborted) {
 			if (e.message === 'Aborted') {
 				store.dispatch(selectServerFailure());

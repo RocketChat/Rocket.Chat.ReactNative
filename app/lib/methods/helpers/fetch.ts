@@ -3,6 +3,7 @@ import DeviceInfo from 'react-native-device-info';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { getOrigin, isSameOrigin } from './getOrigin';
+import { appendDebugLog } from '~/lib/debugLog/debugLog';
 
 export type TMethods = 'POST' | 'GET' | 'DELETE' | 'PUT' | 'post' | 'get' | 'delete' | 'put';
 
@@ -46,5 +47,20 @@ export default (url: string, options: IOptions = {}): Promise<Response> => {
 		...options,
 		headers: withoutEmptyValues({ ...sharedHeaders, ...sharedAuthorization, ...options.headers })
 	};
-	return fetch(url, customOptions);
+	const method = (options.method ?? 'GET').toUpperCase();
+	const loggedUrl = url.split('?')[0];
+	const startedAt = Date.now();
+	appendDebugLog('info', [`[fetch] ${method} ${loggedUrl}`]);
+	return fetch(url, customOptions).then(
+		response => {
+			appendDebugLog(response.ok ? 'info' : 'warn', [
+				`[fetch] ${method} ${loggedUrl} -> ${response.status} in ${Date.now() - startedAt}ms`
+			]);
+			return response;
+		},
+		error => {
+			appendDebugLog('error', [`[fetch] ${method} ${loggedUrl} failed in ${Date.now() - startedAt}ms`, error]);
+			throw error;
+		}
+	);
 };

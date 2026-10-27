@@ -9,6 +9,7 @@ import { type ISubmitParams } from '../definitions';
 import basicAuth from '../methods/basicAuth';
 import userPreferences from '~/lib/methods/userPreferences';
 import { CERTIFICATE_KEY } from '~/lib/constants/keys';
+import { appendDebugLog } from '~/lib/debugLog/debugLog';
 
 type TUseNewServerProps = {
 	workspaceUrl: string;
@@ -30,6 +31,10 @@ const useConnectServer = ({ workspaceUrl, certificate, previousServer }: TUseNew
 		if (workspaceUrl || serverUrl) {
 			Keyboard.dismiss();
 			const server = completeUrl(serverUrl ?? workspaceUrl);
+			appendDebugLog('info', [
+				`[NewServerView] submit "${serverUrl ?? workspaceUrl}" -> ${server}`,
+				{ fromServerHistory, hasCertificate: !!certificate }
+			]);
 
 			// Save info - SSL Pinning
 			if (certificate) {

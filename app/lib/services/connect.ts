@@ -40,6 +40,7 @@ import { isSsl } from '../methods/helpers/isSsl';
 import { onAbort } from '../methods/helpers/onAbort';
 import { normalizeStatusExpiresAt } from '../methods/helpers/normalizeStatusExpiresAt';
 import { fetchForWorkspace, withBasicAuth } from '../methods/serverBasicAuth';
+import { appendDebugLog } from '../debugLog/debugLog';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -445,7 +446,9 @@ async function getWebsocketInfo({
 
 	try {
 		await withBasicAuth(server, () => websocketSdk.connect());
+		appendDebugLog('info', [`[getWebsocketInfo] ${server} websocket connected`]);
 	} catch (err: any) {
+		appendDebugLog('error', [`[getWebsocketInfo] ${server} websocket connect failed`, err]);
 		if (err.message && err.message.includes('400')) {
 			return {
 				success: false,
