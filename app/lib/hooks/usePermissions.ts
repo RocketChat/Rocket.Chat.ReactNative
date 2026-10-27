@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { dequal } from 'dequal';
 import { type Subscription } from 'rxjs';
 import { createSelector } from 'reselect';
@@ -20,7 +20,6 @@ const EMPTY_ROLES: TSubscriptionModel['roles'] = [];
 
 const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 	const [rolesByRid, setRolesByRid] = useState<{ rid?: string; roles: TSubscriptionModel['roles'] }>({ roles: EMPTY_ROLES });
-	const rolesByRidRef = useRef(rolesByRid);
 
 	useEffect(() => {
 		if (!rid) {
@@ -29,16 +28,17 @@ const useSubscriptionRoles = (rid?: string): TSubscriptionModel['roles'] => {
 		let isCancelled = false;
 		let subSubscription: Subscription;
 		getSubscriptionByRoomId(rid).then(sub => {
-			if (isCancelled || !sub) {
+			if (isCancelled) {
+				return;
+			}
+			if (!sub) {
+				setRolesByRid({ rid, roles: EMPTY_ROLES });
 				return;
 			}
 			const observable = sub.observe();
 			subSubscription = observable.subscribe(s => {
 				const newRoles = orderBy(s.roles);
-				if (rolesByRidRef.current.rid !== rid || !dequal(rolesByRidRef.current.roles, newRoles)) {
-					rolesByRidRef.current = { rid, roles: newRoles };
-					setRolesByRid(rolesByRidRef.current);
-				}
+				setRolesByRid(prev => (prev.rid === rid && dequal(prev.roles, newRoles) ? prev : { rid, roles: newRoles }));
 			});
 		});
 
