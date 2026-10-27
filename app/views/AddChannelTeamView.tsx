@@ -7,7 +7,7 @@ import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
 import { type ChatsStackParamList, type DrawerParamList, type NewMessageStackParamList } from '../stacks/types';
-import { useCreateNewPermission, useAddExistingPermission } from '../lib/hooks/useTeamChannelPermissions';
+import { useTeamChannelPermissions } from '../lib/hooks/useTeamChannelPermissions';
 import { useMasterDetail } from '../lib/hooks/useMasterDetail';
 
 type TRoute = RouteProp<ChatsStackParamList, 'AddChannelTeamView'>;
@@ -24,8 +24,7 @@ const AddChannelTeamView = () => {
 		params: { teamId, rid, t }
 	} = useRoute<TRoute>();
 
-	const canCreateNew = useCreateNewPermission(rid, t);
-	const canAddExisting = useAddExistingPermission(rid);
+	const { canCreateNew, canAddExisting } = useTeamChannelPermissions(rid, t);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({ title: I18n.t('Add_Channel_to_Team') });
