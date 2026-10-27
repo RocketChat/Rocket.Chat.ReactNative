@@ -12,10 +12,6 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => ({ setOptions: mockSetOptions })
 }));
 
-jest.mock('~/theme', () => ({
-	useTheme: () => ({ theme: 'light', colors: {} })
-}));
-
 let mockSettings = { Force_Screen_Lock: false, Force_Screen_Lock_After: 0 };
 
 jest.mock('~/lib/hooks/useAppSelector', () => ({
@@ -91,10 +87,18 @@ const renderView = async () => {
 	await screen.findByText('Unlock with passcode');
 };
 
-const switches = () => screen.UNSAFE_getAllByType(Switch);
+const switchById = (testID: string) => {
+	const found = screen.UNSAFE_getAllByType(Switch).find(element => element.props.testID === testID);
+	if (!found) {
+		throw new Error(`No Switch with testID ${testID}`);
+	}
+	return found;
+};
+const autoLockSwitch = () => switchById('screen-lock-config-view-auto-lock-switch');
+const biometrySwitch = () => switchById('screen-lock-config-view-biometry-switch');
 
 const enableAutoLock = async () => {
-	fireEvent(switches()[0], 'onValueChange', true);
+	fireEvent(autoLockSwitch(), 'onValueChange', true);
 	await waitFor(() => expect(persisted.autoLock).toBe(true));
 };
 
@@ -128,7 +132,7 @@ describe('ScreenLockConfigView', () => {
 		mockCheckHasPasscode.mockRejectedValue(new UserCanceledError());
 		await renderView();
 
-		fireEvent(switches()[0], 'onValueChange', true);
+		fireEvent(autoLockSwitch(), 'onValueChange', true);
 
 		await waitFor(() => expect(persisted.autoLock).toBe(false));
 		expect(mockUpdate).toHaveBeenCalledTimes(1);
@@ -139,7 +143,7 @@ describe('ScreenLockConfigView', () => {
 		await renderView();
 
 		await act(async () => {
-			fireEvent(switches()[0], 'onValueChange', true);
+			fireEvent(autoLockSwitch(), 'onValueChange', true);
 			fireEvent.press(screen.getByTestId('screen-lock-config-view-auto-lock'));
 		});
 
@@ -162,10 +166,10 @@ describe('ScreenLockConfigView', () => {
 		await renderView();
 		await enableAutoLock();
 
-		fireEvent(switches()[1], 'onValueChange', true);
+		fireEvent(biometrySwitch(), 'onValueChange', true);
 
 		await waitFor(() => expect(mockEnableBiometry).toHaveBeenCalledTimes(1));
-		await waitFor(() => expect(switches()[1].props.value).toBe(true));
+		await waitFor(() => expect(biometrySwitch().props.value).toBe(true));
 		expect(mockShowErrorAlert).not.toHaveBeenCalled();
 	});
 
@@ -174,10 +178,10 @@ describe('ScreenLockConfigView', () => {
 		await renderView();
 		await enableAutoLock();
 
-		fireEvent(switches()[1], 'onValueChange', true);
+		fireEvent(biometrySwitch(), 'onValueChange', true);
 
 		await waitFor(() => expect(mockShowErrorAlert).toHaveBeenCalledTimes(1));
-		expect(switches()[1].props.value).toBe(false);
+		expect(biometrySwitch().props.value).toBe(false);
 	});
 
 	it('turns biometry back off silently when consent is canceled', async () => {
@@ -185,10 +189,10 @@ describe('ScreenLockConfigView', () => {
 		await renderView();
 		await enableAutoLock();
 
-		fireEvent(switches()[1], 'onValueChange', true);
+		fireEvent(biometrySwitch(), 'onValueChange', true);
 
 		await waitFor(() => expect(mockEnableBiometry).toHaveBeenCalledTimes(1));
-		await waitFor(() => expect(switches()[1].props.value).toBe(false));
+		await waitFor(() => expect(biometrySwitch().props.value).toBe(false));
 		expect(mockShowErrorAlert).not.toHaveBeenCalled();
 	});
 
@@ -197,7 +201,7 @@ describe('ScreenLockConfigView', () => {
 		await renderView();
 		await enableAutoLock();
 
-		fireEvent(switches()[1], 'onValueChange', false);
+		fireEvent(biometrySwitch(), 'onValueChange', false);
 
 		await waitFor(() => expect(mockDisableBiometry).toHaveBeenCalledTimes(1));
 		expect(mockEnableBiometry).not.toHaveBeenCalled();
@@ -231,7 +235,7 @@ describe('ScreenLockConfigView', () => {
 
 		expect(await screen.findByText('After 120 seconds (set by admin)')).toBeTruthy();
 		expect(screen.queryByText('After 1 minute')).toBeNull();
-		expect(switches()[0].props.disabled).toBe(true);
+		expect(autoLockSwitch().props.disabled).toBe(true);
 	});
 
 	it('offers an admin time that is not a default option once forcing is lifted', async () => {

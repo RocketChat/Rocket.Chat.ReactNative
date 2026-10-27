@@ -16,8 +16,9 @@ import { events, logEvent } from '~/lib/methods/helpers/log';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { type TServerModel } from '~/definitions';
+import { type TrustResult } from '~/definitions/IBiometricTrustStore';
 
-export interface IAutoLockOption {
+interface IAutoLockOption {
 	title: string;
 	value: number;
 	disabled?: boolean;
@@ -36,7 +37,7 @@ const getAutoLockOptions = ({
 	forceScreenLock,
 	forceScreenLockAfter
 }: {
-	autoLockTime: number | null;
+	autoLockTime: number;
 	forceScreenLock: boolean;
 	forceScreenLockAfter: number;
 }): IAutoLockOption[] => {
@@ -53,7 +54,7 @@ const getAutoLockOptions = ({
 	return options;
 };
 
-const showBiometryEnableError = (kind: string) => {
+const showBiometryEnableError = (kind: TrustResult['kind']) => {
 	if (kind === 'unavailable') {
 		showErrorAlert(I18n.t('Local_authentication_biometry_unavailable'), I18n.t('Oops'));
 	} else if (kind !== 'canceled') {
@@ -70,7 +71,7 @@ export const useScreenLockConfig = () => {
 	const latestAutoLock = useRef(false);
 
 	const [autoLock, setAutoLock] = useState(false);
-	const [autoLockTime, setAutoLockTime] = useState<number | null>(null);
+	const [autoLockTime, setAutoLockTime] = useState(DEFAULT_AUTO_LOCK);
 	const [biometry, setBiometry] = useState(false);
 	const [biometryLabel, setBiometryLabel] = useState<string | null>(null);
 	const [biometryBusy, setBiometryBusy] = useState(false);
@@ -85,7 +86,7 @@ export const useScreenLockConfig = () => {
 				serverRecord.current = record;
 				latestAutoLock.current = record.autoLock;
 				setAutoLock(record.autoLock);
-				setAutoLockTime(record.autoLockTime === null ? DEFAULT_AUTO_LOCK : (record.autoLockTime ?? null));
+				setAutoLockTime(record.autoLockTime ?? DEFAULT_AUTO_LOCK);
 				setBiometry(biometricTrustStore.isEnabled());
 			}
 			setBiometryLabel(await supportedBiometryLabel());
@@ -93,12 +94,12 @@ export const useScreenLockConfig = () => {
 		load();
 	}, [server]);
 
-	const save = async (nextAutoLock: boolean, nextAutoLockTime: number | null) => {
+	const save = async (nextAutoLock: boolean, nextAutoLockTime: number) => {
 		logEvent(events.SLC_SAVE_SCREEN_LOCK);
 		await database.servers.write(async () => {
 			await serverRecord.current?.update(record => {
 				record.autoLock = nextAutoLock;
-				record.autoLockTime = nextAutoLockTime === null ? DEFAULT_AUTO_LOCK : nextAutoLockTime;
+				record.autoLockTime = nextAutoLockTime;
 			});
 		});
 	};
@@ -110,45 +111,39 @@ export const useScreenLockConfig = () => {
 		logEvent(events.SLC_TOGGLE_AUTOLOCK);
 	};
 
-	const toggleAutoLock = async (value?: boolean) => {
-		if (forceScreenLock) {
-			return;
-		}
-		const nextAutoLock = typeof value === 'boolean' ? value : !autoLock;
-		if (latestAutoLock.current === nextAutoLock) {
+	const toggleAutoLock = async (nextAutoLock: boolean) => {
+		if (forceScreenLock || latestAutoLock.current === nextAutoLock) {
 			return;
 		}
 		applyAutoLock(nextAutoLock);
+		let savedAutoLock = nextAutoLock;
 		if (nextAutoLock) {
 			try {
 				await checkHasPasscode({ force: false });
 				setBiometry(biometricTrustStore.isEnabled());
 			} catch {
 				applyAutoLock(false);
-				await save(false, DEFAULT_AUTO_LOCK);
-				return;
+				savedAutoLock = false;
 			}
 		}
-		await save(nextAutoLock, DEFAULT_AUTO_LOCK);
+		await save(savedAutoLock, DEFAULT_AUTO_LOCK);
 	};
 
-	const toggleBiometry = async () => {
+	const toggleBiometry = async (nextBiometry: boolean) => {
 		if (biometryBusy) {
 			return;
 		}
 		logEvent(events.SLC_TOGGLE_BIOMETRY);
-		const nextBiometry = !biometry;
 		setBiometry(nextBiometry);
 		setBiometryBusy(true);
-		if (!nextBiometry) {
+		if (nextBiometry) {
+			const result = await enableBiometry();
+			if (result.kind !== 'success') {
+				setBiometry(false);
+				showBiometryEnableError(result.kind);
+			}
+		} else {
 			await biometricTrustStore.disableBiometry();
-			setBiometryBusy(false);
-			return;
-		}
-		const result = await enableBiometry();
-		if (result.kind !== 'success') {
-			setBiometry(false);
-			showBiometryEnableError(result.kind);
 		}
 		setBiometryBusy(false);
 	};

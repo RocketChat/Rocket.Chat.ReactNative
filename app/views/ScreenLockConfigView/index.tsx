@@ -37,9 +37,16 @@ const ScreenLockConfigView = (): ReactElement => {
 					<List.Item
 						testID='screen-lock-config-view-auto-lock'
 						title='Local_authentication_unlock_option'
-						right={() => <Switch value={autoLock} onValueChange={toggleAutoLock} disabled={forceScreenLock} />}
+						right={() => (
+							<Switch
+								testID='screen-lock-config-view-auto-lock-switch'
+								value={autoLock}
+								onValueChange={toggleAutoLock}
+								disabled={forceScreenLock}
+							/>
+						)}
 						additionalAccessibilityLabel={autoLock}
-						onPress={forceScreenLock ? undefined : () => toggleAutoLock()}
+						onPress={() => toggleAutoLock(!autoLock)}
 						disabled={forceScreenLock}
 						accessibilityRole='switch'
 					/>
@@ -64,7 +71,14 @@ const ScreenLockConfigView = (): ReactElement => {
 							title={I18n.t('Local_authentication_unlock_with_label', {
 								label: biometryLabel
 							})}
-							right={() => <Switch value={biometry} onValueChange={toggleBiometry} disabled={biometryBusy} />}
+							right={() => (
+								<Switch
+									testID='screen-lock-config-view-biometry-switch'
+									value={biometry}
+									onValueChange={toggleBiometry}
+									disabled={biometryBusy}
+								/>
+							)}
 							translateTitle={false}
 							additionalAccessibilityLabel={biometry ? I18n.t('Enabled') : I18n.t('Disabled')}
 						/>
