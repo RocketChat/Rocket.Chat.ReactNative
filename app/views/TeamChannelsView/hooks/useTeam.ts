@@ -21,7 +21,11 @@ export const useTeam = (teamId: string) => {
 	const [team, setTeam] = useState<TSubscriptionModel | null>(null);
 
 	useEffect(() => {
+		let isCancelled = false;
 		const failNotFound = () => {
+			if (isCancelled) {
+				return;
+			}
 			navigation.pop();
 			showErrorAlert(I18n.t('Team_not_found'));
 		};
@@ -29,6 +33,9 @@ export const useTeam = (teamId: string) => {
 		findTeamMain(teamId)
 			.then(teamMain => (teamMain ? setTeam(teamMain) : failNotFound()))
 			.catch(failNotFound);
+		return () => {
+			isCancelled = true;
+		};
 	}, [teamId, navigation]);
 
 	return team;

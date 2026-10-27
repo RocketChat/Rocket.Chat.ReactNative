@@ -7,7 +7,7 @@ import { type TSubscriptionModel } from '~/definitions';
 import I18n from '~/i18n';
 import { useAppNavigation } from '~/lib/hooks/navigation';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { useCanCreateTeamChannel } from '~/lib/hooks/useTeamChannelPermissions';
+import { useTeamChannelPermissions } from '~/lib/hooks/useTeamChannelPermissions';
 import { getRoomTitle, hasNativeHeaderBar } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { translucentHeader } from '~/lib/methods/helpers/navigation';
@@ -37,15 +37,15 @@ export const useTeamChannelsHeader = ({
 	const navigation = useAppNavigation<ChatsStackParamList, 'TeamChannelsView'>();
 	const isMasterDetail = useMasterDetail();
 	const searchBarRef = useRef<SearchBarCommands>(null);
-	const showCreate = useCanCreateTeamChannel(team?.rid ?? '', (team?.t ?? 'c') as 'c' | 'p');
+	const { canCreateNew, canAddExisting } = useTeamChannelPermissions(team?.rid, team?.t);
+	const canCreate = canCreateNew || canAddExisting;
 	const isSearchHeaderActive = !hasNativeHeaderBar && isSearching;
 
 	useLayoutEffect(() => {
-		if (!team) {
-			return;
-		}
-
 		const goRoomActionsView = (screen?: string) => {
+			if (!team) {
+				return;
+			}
 			logEvent(events.TC_GO_ACTIONS);
 			const params = { rid: team.rid, t: team.t, room: team, joined };
 			if (isMasterDetail && screen) {
@@ -55,23 +55,29 @@ export const useTeamChannelsHeader = ({
 			}
 		};
 
-		const createAction: IHeaderAction = {
-			label: I18n.t('Add_Channel_to_Team'),
-			icon: 'create',
-			testID: 'team-channels-view-create',
-			onPress: () => navigation.navigate('AddChannelTeamView', { teamId, rid: team.rid, t: team.t as 'c' | 'p' })
-		};
+		const rightActions: IHeaderAction[] =
+			team && canCreate
+				? [
+						{
+							label: I18n.t('Add_Channel_to_Team'),
+							icon: 'create',
+							testID: 'team-channels-view-create',
+							onPress: () => navigation.navigate('AddChannelTeamView', { teamId, rid: team.rid, t: team.t as 'c' | 'p' })
+						}
+					]
+				: [];
 
+		const title = team ? getRoomTitle(team) : '';
 		const titleOptions: NativeStackNavigationOptions = hasNativeHeaderBar
 			? {
 					...translucentHeader,
-					headerTitle: getRoomTitle(team),
-					headerSubtitle: team.topic,
+					headerTitle: title,
+					headerSubtitle: team?.topic,
 					onHeaderTitlePress: () => goRoomActionsView()
 				}
 			: {
 					headerTitle: () => (
-						<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={goRoomActionsView} teamMain />
+						<RoomHeader title={title} subtitle={team?.topic} type={team?.t ?? ''} onPress={goRoomActionsView} teamMain />
 					)
 				};
 
@@ -84,7 +90,7 @@ export const useTeamChannelsHeader = ({
 				onCancel: cancelSearch,
 				testIDPrefix: 'team-channels-view',
 				options: { headerLeft: undefined, ...titleOptions },
-				rightActions: showCreate ? [createAction] : []
+				rightActions
 			})
 		);
 	}, [
@@ -92,7 +98,7 @@ export const useTeamChannelsHeader = ({
 		teamId,
 		joined,
 		isSearchHeaderActive,
-		showCreate,
+		canCreate,
 		isMasterDetail,
 		navigation,
 		startSearch,

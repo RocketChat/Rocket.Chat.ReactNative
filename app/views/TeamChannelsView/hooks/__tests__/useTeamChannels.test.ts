@@ -1,6 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
-import { useTeamChannels, type IItem } from '../useTeamChannels';
+import { type TTeamChannel } from '../../types';
+import { useTeamChannels } from '../useTeamChannels';
 
 const mockGetTeamListRoom = jest.fn();
 
@@ -18,7 +19,7 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 	}
 }));
 
-const makeRoom = (overrides: Partial<IItem> = {}): IItem =>
+const makeRoom = (overrides: Partial<TTeamChannel> = {}): TTeamChannel =>
 	({
 		_id: 'room-1',
 		fname: 'Room One',
@@ -26,37 +27,53 @@ const makeRoom = (overrides: Partial<IItem> = {}): IItem =>
 		teamDefault: false,
 		t: 'c',
 		...overrides
-	}) as IItem;
+	}) as TTeamChannel;
 
 const makePage = (count: number, prefix = 'r') =>
-	Array.from({ length: count }, (_, i) => makeRoom({ _id: `${prefix}${i}` as any, fname: `Room ${i}` }));
+	Array.from({ length: count }, (_, i) => makeRoom({ _id: `${prefix}${i}`, fname: `Room ${i}` }));
+
+const deferred = () => {
+	let resolve: (value: any) => void = () => {};
+	const promise = new Promise(res => {
+		resolve = res;
+	});
+	return { promise, resolve };
+};
+
+const renderTeamChannels = () => renderHook(() => useTeamChannels('team-123'));
+
+const searchFor = async (result: { current: ReturnType<typeof useTeamChannels> }, text: string) => {
+	act(() => {
+		result.current.startSearch();
+	});
+	act(() => {
+		result.current.onSearchChangeText(text);
+	});
+	await waitFor(() => expect(mockGetTeamListRoom).toHaveBeenCalledWith(expect.objectContaining({ filter: text })));
+};
 
 describe('useTeamChannels', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
 
-	it('loads channels on mount and exposes them via `list`', async () => {
-		const rooms = [makeRoom({ _id: 'r1' as any })];
+	it('loads the first page of channels on mount', async () => {
+		const rooms = [makeRoom({ _id: 'r1' })];
 		mockGetTeamListRoom.mockResolvedValue({ success: true, rooms });
 
-		const { result } = renderHook(() => useTeamChannels('team-123'));
+		const { result } = renderTeamChannels();
 
 		await waitFor(() => expect(result.current.list).toEqual(rooms));
-		expect(mockGetTeamListRoom).toHaveBeenCalledWith(
-			expect.objectContaining({ teamId: 'team-123', offset: 0, count: 25, type: 'all' })
-		);
+		expect(mockGetTeamListRoom).toHaveBeenCalledWith(expect.objectContaining({ teamId: 'team-123', offset: 0, count: 25 }));
 		expect(result.current.loading).toBe(false);
 	});
 
-	it('loadMore appends the next page and advances the offset by the browse-bucket length', async () => {
-		const page1 = makePage(25);
-		const page2 = [makeRoom({ _id: 'r-extra' as any })];
+	it('appends the next page from the current list length', async () => {
 		mockGetTeamListRoom
-			.mockResolvedValueOnce({ success: true, rooms: page1 })
-			.mockResolvedValueOnce({ success: true, rooms: page2 });
+			.mockResolvedValueOnce({ success: true, rooms: makePage(25) })
+			.mockResolvedValueOnce({ success: true, rooms: [makeRoom({ _id: 'r-extra' })] });
 
-		const { result } = renderHook(() => useTeamChannels('team-123'));
+		const { result } = renderTeamChannels();
 		await waitFor(() => expect(result.current.list).toHaveLength(25));
 
 		act(() => {
@@ -64,13 +81,13 @@ describe('useTeamChannels', () => {
 		});
 
 		await waitFor(() => expect(result.current.list).toHaveLength(26));
-		expect(mockGetTeamListRoom).toHaveBeenNthCalledWith(2, expect.objectContaining({ offset: 25 }));
+		expect(mockGetTeamListRoom).toHaveBeenLastCalledWith(expect.objectContaining({ offset: 25 }));
 	});
 
-	it('stops loading once a short page sets `end` (no further fetch)', async () => {
+	it('stops paginating after a short page', async () => {
 		mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: makePage(1) });
 
-		const { result } = renderHook(() => useTeamChannels('team-123'));
+		const { result } = renderTeamChannels();
 		await waitFor(() => expect(result.current.list).toHaveLength(1));
 
 		act(() => {
@@ -81,99 +98,116 @@ describe('useTeamChannels', () => {
 		expect(mockGetTeamListRoom).toHaveBeenCalledTimes(1);
 	});
 
-	it('the loadingMore guard prevents a concurrent fetch while one is in flight', async () => {
-		let resolveFirst: (value: any) => void = () => {};
-		mockGetTeamListRoom
-			.mockImplementationOnce(
-				() =>
-					new Promise(res => {
-						resolveFirst = res;
-					})
-			)
-			.mockResolvedValue({ success: true, rooms: makePage(1) });
-
-		const { result } = renderHook(() => useTeamChannels('team-123'));
-		await waitFor(() => expect(result.current.loadingMore).toBe(true));
-
-		act(() => {
-			result.current.loadMore();
-		});
-		expect(mockGetTeamListRoom).toHaveBeenCalledTimes(1);
-
-		act(() => {
-			resolveFirst({ success: true, rooms: makePage(25) });
-		});
-		await waitFor(() => expect(result.current.list).toHaveLength(25));
-	});
-
-	it('onSearchChangeText resets the search bucket, marks loading, and loads filtered results', async () => {
-		mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: makePage(2, 'browse') });
-
-		const { result } = renderHook(() => useTeamChannels('team-123'));
-		await waitFor(() => expect(result.current.list).toHaveLength(2));
-
-		act(() => {
-			result.current.startSearch();
-		});
-		expect(result.current.isSearching).toBe(true);
-
-		mockGetTeamListRoom.mockClear();
-		mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: [makeRoom({ _id: 'match' as any })] });
-
-		act(() => {
-			result.current.onSearchChangeText('design');
-		});
-
-		await waitFor(
-			() => expect(mockGetTeamListRoom).toHaveBeenCalledWith(expect.objectContaining({ offset: 0, filter: 'design' })),
-			{ timeout: 2000 }
-		);
-		await waitFor(() => expect(result.current.list).toEqual([expect.objectContaining({ _id: 'match' })]));
-	});
-
-	it('cancelSearch restores the preserved browse bucket without a new fetch', async () => {
+	it('shows the filtered results while searching and the browse list again after cancel, without refetching', async () => {
 		const browse = makePage(2, 'browse');
 		mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: browse });
+		const { result } = renderTeamChannels();
+		await waitFor(() => expect(result.current.list).toEqual(browse));
 
-		const { result } = renderHook(() => useTeamChannels('team-123'));
-		await waitFor(() => expect(result.current.list).toHaveLength(2));
-
-		act(() => {
-			result.current.startSearch();
-		});
-
-		mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: [makeRoom({ _id: 'match' as any })] });
-		act(() => {
-			result.current.onSearchChangeText('design');
-		});
-		await waitFor(() => expect(result.current.list).toEqual([expect.objectContaining({ _id: 'match' })]));
-
+		mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: [makeRoom({ _id: 'match' })] });
+		await searchFor(result, 'design');
+		await waitFor(() => expect(result.current.list.map(room => room._id)).toEqual(['match']));
 		const callsBeforeCancel = mockGetTeamListRoom.mock.calls.length;
 
 		act(() => {
 			result.current.cancelSearch();
 		});
 
-		await waitFor(() => expect(result.current.isSearching).toBe(false));
+		expect(result.current.isSearching).toBe(false);
 		expect(result.current.list).toEqual(browse);
 		expect(mockGetTeamListRoom).toHaveBeenCalledTimes(callsBeforeCancel);
 	});
 
-	it('updateItem patches a matching browse item; removeItem drops it', async () => {
-		const browse = [makeRoom({ _id: 'r1' as any, teamDefault: false }), makeRoom({ _id: 'r2' as any })];
-		mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: browse });
+	it('ignores a late response for a previous search query', async () => {
+		mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: [] });
+		const { result } = renderTeamChannels();
+		await waitFor(() => expect(result.current.loading).toBe(false));
 
-		const { result } = renderHook(() => useTeamChannels('team-123'));
+		const firstQuery = deferred();
+		mockGetTeamListRoom.mockReturnValueOnce(firstQuery.promise);
+		await searchFor(result, 'a');
+
+		mockGetTeamListRoom.mockResolvedValueOnce({ success: true, rooms: [makeRoom({ _id: 'ab-match' })] });
+		act(() => {
+			result.current.onSearchChangeText('ab');
+		});
+		await waitFor(() => expect(result.current.list.map(room => room._id)).toEqual(['ab-match']));
+
+		await act(async () => {
+			firstQuery.resolve({ success: true, rooms: [makeRoom({ _id: 'a-match' })] });
+			await firstQuery.promise;
+		});
+
+		expect(result.current.list.map(room => room._id)).toEqual(['ab-match']);
+	});
+
+	it('keeps paginating the browse list when a search is cancelled mid-request', async () => {
+		mockGetTeamListRoom.mockResolvedValueOnce({ success: true, rooms: makePage(25) });
+		const { result } = renderTeamChannels();
+		await waitFor(() => expect(result.current.list).toHaveLength(25));
+
+		const searchRequest = deferred();
+		mockGetTeamListRoom.mockReturnValueOnce(searchRequest.promise);
+		await searchFor(result, 'design');
+		act(() => {
+			result.current.cancelSearch();
+		});
+		await act(async () => {
+			searchRequest.resolve({ success: true, rooms: [makeRoom({ _id: 'match' })] });
+			await searchRequest.promise;
+		});
+
+		mockGetTeamListRoom.mockResolvedValueOnce({ success: true, rooms: [makeRoom({ _id: 'r-extra' })] });
+		act(() => {
+			result.current.loadMore();
+		});
+
+		await waitFor(() => expect(result.current.list).toHaveLength(26));
+		expect(mockGetTeamListRoom).toHaveBeenLastCalledWith(expect.objectContaining({ offset: 25, filter: '' }));
+	});
+
+	it('keeps an auto-join change made while the next page is loading', async () => {
+		mockGetTeamListRoom.mockResolvedValueOnce({ success: true, rooms: makePage(25) });
+		const { result } = renderTeamChannels();
+		await waitFor(() => expect(result.current.list).toHaveLength(25));
+
+		const nextPage = deferred();
+		mockGetTeamListRoom.mockReturnValueOnce(nextPage.promise);
+		act(() => {
+			result.current.loadMore();
+		});
+		await waitFor(() => expect(result.current.loadingMore).toBe(true));
+
+		act(() => {
+			result.current.updateItem('r0', { teamDefault: true });
+		});
+		await act(async () => {
+			nextPage.resolve({ success: true, rooms: [makeRoom({ _id: 'r-extra' })] });
+			await nextPage.promise;
+		});
+
+		expect(result.current.list).toHaveLength(26);
+		expect(result.current.list[0].teamDefault).toBe(true);
+	});
+
+	it('applies auto-join changes and removals to both the search results and the browse list', async () => {
+		const browse = [makeRoom({ _id: 'r1' }), makeRoom({ _id: 'r2' })];
+		mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: browse });
+		const { result } = renderTeamChannels();
+		await waitFor(() => expect(result.current.list).toHaveLength(2));
+
+		await searchFor(result, 'r');
 		await waitFor(() => expect(result.current.list).toHaveLength(2));
 
 		act(() => {
-			result.current.updateItem('r1' as any, { teamDefault: true });
+			result.current.updateItem('r1', { teamDefault: true });
+			result.current.removeItem('r2');
 		});
-		await waitFor(() => expect(result.current.list.find(i => i._id === ('r1' as any))?.teamDefault).toBe(true));
+		expect(result.current.list).toEqual([expect.objectContaining({ _id: 'r1', teamDefault: true })]);
 
 		act(() => {
-			result.current.removeItem('r1' as any);
+			result.current.cancelSearch();
 		});
-		await waitFor(() => expect(result.current.list.map(i => i._id)).toEqual(['r2']));
+		expect(result.current.list).toEqual([expect.objectContaining({ _id: 'r1', teamDefault: true })]);
 	});
 });
