@@ -160,6 +160,8 @@ export async function subscribeSettings(): Promise<void> {
 
 type IData = ISettingsIcon | IPreparedSettings;
 
+const isActiveServer = (server: string): boolean => reduxStore.getState().server.server === server;
+
 export async function getSettings(server: string): Promise<void> {
 	try {
 		const db = database.active;
@@ -189,6 +191,10 @@ export async function getSettings(server: string): Promise<void> {
 			remaining = result.total - settings.length;
 			/* eslint-enable no-await-in-loop */
 		} while (remaining > 0);
+
+		if (!isActiveServer(server)) {
+			return;
+		}
 
 		const data: IData[] = settings;
 		const filteredSettings: IPreparedSettings[] = _prepareSettings(data);
@@ -247,6 +253,8 @@ export async function getSettings(server: string): Promise<void> {
 	} catch (e) {
 		log(e);
 	} finally {
-		reduxStore.dispatch(fetchSettingsComplete());
+		if (isActiveServer(server)) {
+			reduxStore.dispatch(fetchSettingsComplete());
+		}
 	}
 }

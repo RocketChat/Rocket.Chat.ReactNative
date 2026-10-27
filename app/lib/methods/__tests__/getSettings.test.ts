@@ -6,6 +6,8 @@ import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
 import log from '~/lib/methods/helpers/log';
 import { mockGlobalFetch } from '~/lib/testUtils/mockGlobalFetch';
+import { store } from '~/lib/store/auxStore';
+import { fetchSettingsComplete } from '~/actions/settings';
 
 jest.mock('~/lib/database', () => ({
 	__esModule: true,
@@ -21,8 +23,10 @@ jest.mock('~/lib/methods/getUsersPresence', () => ({
 	setPresenceCap: jest.fn()
 }));
 
+let mockActiveServer = 'https://settings.example';
+
 jest.mock('~/lib/store/auxStore', () => ({
-	store: { dispatch: jest.fn(), getState: jest.fn(() => ({ server: { version: '7.0.0' } })) }
+	store: { dispatch: jest.fn(), getState: jest.fn(() => ({ server: { version: '7.0.0', server: mockActiveServer } })) }
 }));
 
 jest.mock('~/lib/methods/helpers/log', () => ({
@@ -124,5 +128,33 @@ describe('getSettings — per-page basic auth', () => {
 		sentToNetwork.mock.calls.forEach(([, options]) => {
 			expect(options.headers).not.toHaveProperty('Authorization');
 		});
+	});
+});
+
+describe('getSettings — active workspace', () => {
+	let response: object;
+
+	mockGlobalFetch(() => Promise.resolve({ json: () => Promise.resolve(response) } as Response));
+
+	beforeEach(() => {
+		jest.mocked(store.dispatch).mockClear();
+		mockActiveServer = SERVER;
+	});
+
+	it('reports the settings fetch as complete when it fails', async () => {
+		response = { success: false };
+
+		await getSettings(SERVER);
+
+		expect(store.dispatch).toHaveBeenCalledWith(fetchSettingsComplete());
+	});
+
+	it('drops the settings of a workspace that is no longer active', async () => {
+		response = { success: true, settings: [{ _id: 'Site_Name', value: 'Old' }], total: 1 };
+		mockActiveServer = 'https://other.example';
+
+		await getSettings(SERVER);
+
+		expect(store.dispatch).not.toHaveBeenCalled();
 	});
 });
