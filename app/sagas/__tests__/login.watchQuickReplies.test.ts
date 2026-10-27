@@ -161,6 +161,16 @@ describe('login saga — watch quick replies', () => {
 		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'OK');
 	});
 
+	it('syncs without waiting when the settings fetch already finished without the setting', async () => {
+		const { store } = setupStore();
+		store.dispatch(fetchSettingsComplete());
+
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, undefined);
+	});
+
 	it('stops waiting when the user switches workspace after login finished', async () => {
 		jest.useFakeTimers();
 		const { store } = setupStore();

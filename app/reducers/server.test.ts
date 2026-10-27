@@ -7,6 +7,7 @@ import {
 	serverFinishAdd,
 	selectServerFailure
 } from '../actions/server';
+import { fetchSettingsComplete } from '../actions/settings';
 import { mockedStore } from './mockedStore';
 import { initialState } from './server';
 
@@ -59,6 +60,14 @@ describe('test server reducer', () => {
 		mockedStore.dispatch(serverFinishAdd());
 		const state = mockedStore.getState().server.previousServer;
 		expect(state).toEqual(null);
+	});
+
+	it('marks the settings as fetched until another server is selected', () => {
+		mockedStore.dispatch(fetchSettingsComplete());
+		expect(mockedStore.getState().server.settingsFetched).toBe(true);
+
+		mockedStore.dispatch(selectServerRequest('https://other.rocket.chat/', '4.1.0'));
+		expect(mockedStore.getState().server.settingsFetched).toBe(false);
 	});
 
 	it('should return modified store after serverRequestFailure', () => {

@@ -271,8 +271,8 @@ const fetchWatchReplies = function* fetchWatchRepliesFork() {
 	try {
 		if (!shouldShowWatchAppOptions()) return;
 		const server = yield select(s => s.server.server);
-		const settingsLoaded = yield select(s => s.settings.Apple_Watch_Quick_Actions !== undefined);
-		if (!settingsLoaded) {
+		const settingsReady = yield select(s => s.settings.Apple_Watch_Quick_Actions !== undefined || s.server.settingsFetched);
+		if (!settingsReady) {
 			const { stop } = yield race({
 				loaded: take(types.SETTINGS.FETCH_COMPLETE),
 				stop: take([types.LOGOUT, types.LOGIN.SUCCESS, types.SERVER.SELECT_REQUEST])

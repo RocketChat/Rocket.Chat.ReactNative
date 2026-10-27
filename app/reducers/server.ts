@@ -1,5 +1,5 @@
 import { type TActionServer } from '../actions/server';
-import { SERVER } from '../actions/actionsTypes';
+import { SERVER, SETTINGS } from '../actions/actionsTypes';
 
 export interface IServer {
 	connecting: boolean;
@@ -12,6 +12,7 @@ export interface IServer {
 	loading: boolean;
 	previousServer: string | null;
 	changingServer: boolean;
+	settingsFetched: boolean;
 }
 
 export const initialState: IServer = {
@@ -23,7 +24,8 @@ export const initialState: IServer = {
 	name: null,
 	loading: true,
 	previousServer: null,
-	changingServer: false
+	changingServer: false,
+	settingsFetched: false
 };
 
 export default function server(state = initialState, action: TActionServer): IServer {
@@ -61,7 +63,8 @@ export default function server(state = initialState, action: TActionServer): ISe
 				connected: false,
 				loading: false,
 				changingServer: false,
-				failure: false
+				failure: false,
+				settingsFetched: false
 			};
 		case SERVER.SELECT_REQUEST:
 			return {
@@ -71,7 +74,13 @@ export default function server(state = initialState, action: TActionServer): ISe
 				connecting: true,
 				connected: false,
 				loading: true,
-				changingServer: action.changeServer
+				changingServer: action.changeServer,
+				settingsFetched: false
+			};
+		case SETTINGS.FETCH_COMPLETE:
+			return {
+				...state,
+				settingsFetched: true
 			};
 		case SERVER.SELECT_SUCCESS:
 			return {
