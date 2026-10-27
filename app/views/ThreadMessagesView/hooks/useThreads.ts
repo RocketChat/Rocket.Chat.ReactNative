@@ -1,5 +1,6 @@
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
+import { map } from 'rxjs/operators';
 
 import { type TSubscriptionModel } from '~/definitions';
 import database from '~/lib/database';
@@ -9,7 +10,7 @@ import { useObservable } from '~/lib/hooks/useObservable';
 import log from '~/lib/methods/helpers/log';
 import { getSyncThreadsList, getThreadsList } from '~/lib/services/restApi';
 import updateThreads from '../methods/updateThreads';
-import { type TThreadRow } from '../types';
+import { toThreadRow, type TThreadRow } from '../types';
 
 const API_FETCH_COUNT = 50;
 
@@ -28,7 +29,8 @@ const observeThreads = (rid: string, searchText: string) => {
 	return database.active
 		.get('threads')
 		.query(...clauses)
-		.observeWithColumns(['_updated_at']);
+		.observeWithColumns(['_updated_at'])
+		.pipe(map(threads => threads.map(toThreadRow)));
 };
 
 export const useThreads = ({ rid, subscription, searchText }: IUseThreads) => {
