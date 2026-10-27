@@ -31,7 +31,7 @@ The shard jobs in [e2e-android.yml](workflows/e2e-android.yml) and [e2e-ios.yml]
 
 ## Appduct in E2E builds
 
-The E2E build jobs set `RUNNING_E2E_TESTS=true`, which also links Appduct into their Release builds (`react-native.config.js` for iOS, `android/build.gradle` for Android) so e2e tests can do setup, such as opening rooms, through the app's Appduct tools instead of the UI. No other build sets it. The E2E APK is signed with a keystore generated for the run, so it can't install over a store build, and its artifact is kept for one day.
+The E2E build workflows set `APPDUCT_ENABLED=1`, which links Appduct into their Release builds, and `RUNNING_E2E_TESTS=true`, which loads the app's Appduct tools, so e2e tests can do setup, such as opening rooms, through those tools instead of the UI. Never set either in a workflow whose build can ship. The E2E APK is signed with a keystore generated for the run, so it can't install over a store build, and its artifact is kept for one day.
 
 ## E2E native build cache
 

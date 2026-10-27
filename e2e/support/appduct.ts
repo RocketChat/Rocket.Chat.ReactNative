@@ -28,8 +28,9 @@ const ROOM_SCREEN_TEST_IDS = {
 type OpenedRoom = { rid: string };
 
 export const openRoom = async (fixtures: Fixtures, room: string) => {
-	await fixtures.appduct.call('open_room', { name: room });
+	const { rid } = (await fixtures.appduct.call('open_room', { name: room })) as OpenedRoom;
 	await expectRoomTitle(fixtures, room);
+	return rid;
 };
 
 const waitForDrawerClosed = ({ screen }: Fixtures) =>
@@ -42,7 +43,7 @@ export const openScreen = async (fixtures: Fixtures, screen: keyof typeof SCREEN
 };
 
 export const openRoomScreen = async (fixtures: Fixtures, screen: keyof typeof ROOM_SCREEN_TEST_IDS, room: string) => {
-	const { rid } = (await fixtures.appduct.call('open_room', { name: room })) as OpenedRoom;
+	const rid = await openRoom(fixtures, room);
 	await fixtures.appduct.call('navigate', { screen, rid });
 	await expectVisible(fixtures, ROOM_SCREEN_TEST_IDS[screen]);
 };

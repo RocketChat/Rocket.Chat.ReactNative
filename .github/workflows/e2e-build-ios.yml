@@ -27,14 +27,15 @@ on:
 
 permissions: {}
 
+env:
+  RUNNING_E2E_TESTS: true
+  APPDUCT_ENABLED: 1
+
 jobs:
   native-fingerprint:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      # Must match ios-build, so the fingerprint sees Appduct linked into Release.
-      RUNNING_E2E_TESTS: true
 
     outputs:
       cache-key: ${{ steps.fingerprint.outputs.cache-key }}
@@ -63,9 +64,6 @@ jobs:
 
     env:
       APP_PATH: .native-cache/Rocket.Chat.app
-      # Also links Appduct into the Release build so e2e tests can drive setup through it.
-      # Never set it in a job whose build can ship.
-      RUNNING_E2E_TESTS: true
 
     steps:
       - name: Checkout repository

@@ -50,7 +50,7 @@ export const selectUser = async (fixtures: Fixtures, username: string) => {
 	}
 };
 
-export const navigateToInfoView = async (fixtures: Fixtures) => {
+const navigateToInfoView = async (fixtures: Fixtures) => {
 	await openRoomActions(fixtures);
 	await tapWhenVisible(fixtures, 'room-actions-info');
 	await expectVisible(fixtures, 'room-info-view');

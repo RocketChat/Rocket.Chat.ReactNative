@@ -3,13 +3,12 @@ import { jsonSchema, registerTool } from '@appduct/react-native';
 import { Q } from '@nozbe/watermelondb';
 import { first, firstValueFrom, fromEvent, takeUntil } from 'rxjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as RNLocalize from 'react-native-localize';
 
 import { appStart } from '~/actions/app';
 import { deepLinkingOpen } from '~/actions/deepLinking';
 import { logout } from '~/actions/login';
 import database from '~/lib/database';
-import { LANGUAGES, setLanguage } from '~/i18n';
+import { setDeviceLanguage } from '~/i18n';
 import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
 import { SERVERS_TABLE } from '~/lib/database/model/servers/Server';
 import { SERVERS_HISTORY_TABLE } from '~/lib/database/model/ServersHistory';
@@ -101,10 +100,10 @@ const waitForNavigationState = <T>(find: () => T | null, signal: AbortSignal) =>
 		resolveIfFound();
 	});
 
-const insideNavigators = ['InsideStack', 'MasterDetailStack'];
-
-const isInsideNavigatorMounted = () =>
-	!!Navigation.navigationRef.current?.getRootState()?.routes.some(route => insideNavigators.includes(route.name));
+const isRootRouteMounted =
+	(...names: string[]) =>
+	() =>
+		!!Navigation.navigationRef.current?.getRootState()?.routes.some(route => names.includes(route.name));
 
 const isInShareExtension = (state: IApplicationState) =>
 	state.app.root === RootEnum.ROOT_SHARE_EXTENSION || state.app.root === RootEnum.ROOT_LOADING_SHARE_EXTENSION;
@@ -117,7 +116,7 @@ const waitForInside = async (signal: AbortSignal) => {
 		throw new Error('Not logged in to a workspace');
 	}
 	await waitForNavigatorReady(signal);
-	await waitForNavigationState(isInsideNavigatorMounted, signal);
+	await waitForNavigationState(isRootRouteMounted('InsideStack', 'MasterDetailStack'), signal);
 };
 
 const showDrawer = () => Navigation.popTo('DrawerNavigator');
@@ -372,8 +371,12 @@ const waitForSubscription = async (name: string, signal: AbortSignal) => {
 			.pipe(
 				first(subscriptions => subscriptions.length > 0),
 				takeUntil(fromEvent(signal, 'abort'))
-			)
+			),
+		{ defaultValue: [] }
 	);
+	if (!subscription) {
+		throw new Error(`No subscribed room named ${name}`);
+	}
 	return subscription;
 };
 
@@ -608,9 +611,6 @@ const clearServersHistory = async () => {
 	await serversDatabase.write(() => serversDatabase.batch(history.map(entry => entry.prepareDestroyPermanently())));
 };
 
-const isRootRouteMounted = (name: string) => () =>
-	!!Navigation.navigationRef.current?.getRootState()?.routes.some(route => route.name === name);
-
 const remountOutside = async (signal: AbortSignal) => {
 	store.dispatch(appStart({ root: RootEnum.ROOT_LOADING }));
 	await waitForNavigationState(isRootRouteMounted('AuthLoading'), signal);
@@ -618,11 +618,9 @@ const remountOutside = async (signal: AbortSignal) => {
 	await waitForNavigationState(isRootRouteMounted('OutsideStack'), signal);
 };
 
-const deviceLanguage = () => RNLocalize.findBestLanguageTag(LANGUAGES.map(({ value }) => value))?.languageTag ?? 'en';
-
 const clearLocalStorage = async () => {
 	UserPreferences.getAllKeys().forEach(key => UserPreferences.removeItem(key));
-	setLanguage(deviceLanguage());
+	setDeviceLanguage();
 	store.dispatch(setAllPreferences(defaultSortPreferences));
 	await AsyncStorage.clear();
 };

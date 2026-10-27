@@ -13,6 +13,10 @@ on:
 
 permissions: {}
 
+env:
+  RUNNING_E2E_TESTS: true
+  APPDUCT_ENABLED: 1
+
 jobs:
   native-fingerprint:
     runs-on: ubuntu-latest
@@ -47,10 +51,6 @@ jobs:
     env:
       APK_PATH: android/app/build/outputs/apk/release/app-release.apk
       REACT_RES_DIR: android/app/build/generated/res/react/release
-      # Also links Appduct into the Release build so e2e tests can drive setup through it.
-      # Never set it in a job whose build can ship.
-      RUNNING_E2E_TESTS: true
-      # The APK is signed with a key made for this run, so it can't install over a store build.
       KEYSTORE_PATH: android/app/release.keystore
       KEYSTORE_PASSWORD: e2e-throwaway
       KEY_PASSWORD: e2e-throwaway
