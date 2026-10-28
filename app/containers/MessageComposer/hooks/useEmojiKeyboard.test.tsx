@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { renderHook, act } from '@testing-library/react-native';
 import { Keyboard } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
+import { useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import * as KeyboardController from 'react-native-keyboard-controller';
 
 import { EmojiKeyboardProvider, useEmojiKeyboard } from './useEmojiKeyboard';
@@ -250,6 +250,51 @@ describe('useEmojiKeyboard', () => {
 			keyboardStartsShowing(50);
 
 			expect(mockSharedValue.value).toBe(true);
+		});
+	});
+
+	describe('system keyboard finished hiding while the emoji picker is open', () => {
+		afterEach(() => {
+			jest.mocked(useAnimatedReaction).mockReset();
+		});
+
+		const renderAndCaptureHeightReaction = () => {
+			const reactions: Parameters<typeof useAnimatedReaction>[1][] = [];
+			jest.mocked(useAnimatedReaction).mockImplementation((_prepare, react) => {
+				reactions.push(react);
+			});
+			renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
+			const [heightReaction] = reactions;
+			return { keyboardHidden: () => heightReaction(0, 336) };
+		};
+
+		test('restores the fixed picker height after going back from emoji search', () => {
+			const { keyboardHidden } = renderAndCaptureHeightReaction();
+			mockSharedValue.value = true;
+
+			keyboardHidden();
+
+			expect(mockKeyboardHeightSharedValue.value).toBe(250);
+		});
+
+		test('keeps the keyboard height the picker opened with', () => {
+			const { keyboardHidden } = renderAndCaptureHeightReaction();
+			mockSharedValue.value = true;
+			mockKeyboardHeightSharedValue.value = 336;
+
+			keyboardHidden();
+
+			expect(mockKeyboardHeightSharedValue.value).toBe(336);
+		});
+
+		test('leaves the emoji search height alone', () => {
+			const { keyboardHidden } = renderAndCaptureHeightReaction();
+			mockSharedValue.value = true;
+			mockSearchbarSharedValue.value = true;
+
+			keyboardHidden();
+
+			expect(mockKeyboardHeightSharedValue.value).toBe(20);
 		});
 	});
 

@@ -130,6 +130,15 @@ export const useEmojiKeyboard = () => {
 		focus();
 	};
 
+	const openEmojiPicker = () => {
+		'worklet';
+
+		if (keyboardHeight.value < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
+			keyboardHeight.value = EMOJI_KEYBOARD_FIXED_HEIGHT;
+			previousHeight.value = keyboardHeight.value;
+		}
+	};
+
 	useAnimatedReaction(
 		() => height.value,
 		(currentValue, previousValue) => {
@@ -139,18 +148,12 @@ export const useEmojiKeyboard = () => {
 			if (currentValue !== previousValue) {
 				updateHeight();
 			}
+			if (currentValue === 0 && showEmojiPickerSharedValue.value && !showEmojiSearchbarSharedValue.value) {
+				openEmojiPicker();
+			}
 		},
 		[height]
 	);
-
-	const openEmojiPicker = () => {
-		'worklet';
-
-		if (height.value < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
-			keyboardHeight.value = EMOJI_KEYBOARD_FIXED_HEIGHT;
-			previousHeight.value = keyboardHeight.value;
-		}
-	};
 
 	useAnimatedReaction(
 		() => showEmojiPickerSharedValue.value,
