@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, type ListRenderItem, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Message from '~/containers/message';
@@ -11,7 +11,7 @@ import SafeAreaView from '~/containers/SafeAreaView';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import { getUserSelector } from '~/selectors/login';
-import { SubscriptionType, type IAttachment, type IMessage, type IRoomInfoParam } from '~/definitions';
+import { SubscriptionType, type IAttachment, type IMessage, type IRoomInfoParam, type TMessageModel } from '~/definitions';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import Navigation from '~/lib/navigation/appNavigation';
@@ -19,9 +19,8 @@ import AudioManager from '~/lib/methods/AudioManager';
 import getThreadName from '~/lib/methods/getThreadName';
 import log from '~/lib/methods/helpers/log';
 import { type IMessagesViewProps, type IParams } from './definitions';
-import getFileUrlAndTypeFromMessage from './methods/getFileUrlAndTypeFromMessage';
 import useMessages from './hooks/useMessages';
-import { messagesViewContent } from './messagesViewContent';
+import { type IMessageAction, messagesViewContent } from './messagesViewContent';
 import styles from './styles';
 
 const TIME_FORMAT = 'MMM Do YYYY, h:mm:ss a';
@@ -29,6 +28,7 @@ const TIME_FORMAT = 'MMM Do YYYY, h:mm:ss a';
 const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	const { rid, t, name: screenName } = route.params;
 	const content = messagesViewContent[screenName];
+	const { action } = content;
 	const { colors } = useTheme();
 	const { showActionSheet } = useActionSheet();
 	const isMasterDetail = useMasterDetail();
@@ -42,10 +42,10 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 
 	useEffect(() => () => AudioManager.pauseAudio(), []);
 
-	const onActionPress = async (message: IMessage) => {
+	const onActionPress = async (action: IMessageAction, message: IMessage) => {
 		try {
-			const result = await content.action?.press(message);
-			if (result?.success) {
+			const result = await action.press(message);
+			if (result.success) {
 				removeMessage(message._id);
 			}
 		} catch (error) {
@@ -53,10 +53,9 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 		}
 	};
 
-	const showMessageActions = (message: IMessage) => {
-		if (!content.action) return;
+	const showMessageActions = (action: IMessageAction, message: IMessage) => {
 		showActionSheet({
-			options: [{ title: I18n.t(content.action.titleI18n), icon: content.action.icon, onPress: () => onActionPress(message) }],
+			options: [{ title: I18n.t(action.titleI18n), icon: action.icon, onPress: () => onActionPress(action, message) }],
 			hasCancel: true
 		});
 	};
@@ -84,28 +83,13 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 		Navigation.setParams(params);
 	};
 
-	const renderItem = ({ item }: { item: any }) => {
-		if (screenName === 'Files') {
-			return (
-				<Message
-					item={{
-						...item,
-						u: item.user,
-						ts: item.ts || item.uploadedAt,
-						attachments: [{ title: item.name, description: item.description, ...item, ...getFileUrlAndTypeFromMessage(item) }]
-					}}
-					onPress={() => jumpToMessage(item)}
-				/>
-			);
-		}
-		return (
-			<Message
-				item={item}
-				onPress={() => jumpToMessage(item)}
-				onLongPress={content.action ? () => showMessageActions(item) : undefined}
-			/>
-		);
-	};
+	const renderItem: ListRenderItem<IMessage> = ({ item }) => (
+		<Message
+			item={item as TMessageModel}
+			onPress={() => jumpToMessage(item)}
+			onLongPress={action ? () => showMessageActions(action, item) : undefined}
+		/>
+	);
 
 	if (!loading && messages.length === 0) {
 		return (
