@@ -689,6 +689,7 @@
   "Push_Notifications": "Push-Benachrichtigungen",
   "Push_Notifications_Alert_Info": "Diese Benachrichtigungen werden Ihnen zugestellt, wenn die App nicht geöffnet ist.",
   "Queued_chats": "Chats in der Warteschlange",
+  "Quick_replies_limit_reached": "Sie können bis zu {{max}} Schnellantworten hinzufügen.",
   "Quote": "Zitat",
   "React_with_emojjname": "Reagiere mit {{emojiName}}",
   "Reactions_are_disabled": "Reaktionen sind deaktiviert",

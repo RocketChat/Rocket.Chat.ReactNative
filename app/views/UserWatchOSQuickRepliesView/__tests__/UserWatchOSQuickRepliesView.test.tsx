@@ -6,8 +6,10 @@ import { CURRENT_SERVER, getWatchOSQuickRepliesKey } from '~/lib/constants/keys'
 import UserPreferences from '~/lib/methods/userPreferences';
 import { QUICK_REPLIES_MAX, QUICK_REPLY_MAX_LENGTH } from '~/lib/methods/watchOSQuickReplies/constants';
 import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncReplies';
+import { showToast } from '~/lib/methods/helpers/showToast';
 
 jest.mock('~/lib/methods/watchOSQuickReplies/syncReplies', () => ({ syncWatchOSQuickReplies: jest.fn() }));
+jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
 
 const server = 'https://open.rocket.chat';
 const key = getWatchOSQuickRepliesKey(server);
@@ -54,7 +56,7 @@ describe('UserWatchOSQuickRepliesView', () => {
 		expect(syncWatchOSQuickReplies).not.toHaveBeenCalled();
 	});
 
-	it('stops adding once the list is full', () => {
+	it('stops adding once the list is full and says why', () => {
 		const full = Array.from({ length: QUICK_REPLIES_MAX }, (_, i) => `Reply ${i}`);
 		UserPreferences.setString(key, JSON.stringify(full));
 		const { getByPlaceholderText } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
@@ -64,6 +66,7 @@ describe('UserWatchOSQuickRepliesView', () => {
 		act(() => fireEvent(input, 'submitEditing'));
 
 		expect(stored()).toEqual(full);
+		expect(showToast).toHaveBeenCalledWith(I18n.t('Quick_replies_limit_reached', { max: QUICK_REPLIES_MAX }));
 	});
 
 	it('stops typing at the max length', async () => {

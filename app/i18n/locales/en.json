@@ -765,6 +765,7 @@
   "Push_Notifications": "Push notifications",
   "Push_Notifications_Alert_Info": "These notifications are delivered to you when the app is not open",
   "Queued_chats": "Queued chats",
+  "Quick_replies_limit_reached": "You can add up to {{max}} quick replies.",
   "Quote": "Quote",
   "React_with_emojjname": "React with {{emojiName}}",
   "Reactions_are_disabled": "Reactions are disabled",

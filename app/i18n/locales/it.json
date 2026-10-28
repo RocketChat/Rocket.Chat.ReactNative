@@ -562,6 +562,7 @@
   "Push_Notifications": "Notifiche Push",
   "Push_Notifications_Alert_Info": "Queste notifiche ti vengono recapitate quando l'app non è aperta",
   "Queued_chats": "Chat in coda",
+  "Quick_replies_limit_reached": "Puoi aggiungere fino a {{max}} risposte rapide.",
   "Quote": "Cita",
   "React_with_emojjname": "Reagisci con {{nomeEmoji}}",
   "Reactions_are_disabled": "Le reazioni sono disabilitate",

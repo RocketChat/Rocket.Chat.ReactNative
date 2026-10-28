@@ -625,6 +625,7 @@
   "Push_Notifications": "Notifications Push",
   "Push_Notifications_Alert_Info": "Ces notifications vous sont envoyées lorsque l'application n'est pas ouverte",
   "Queued_chats": "Discussions en file d'attente",
+  "Quick_replies_limit_reached": "Vous pouvez ajouter jusqu'à {{max}} réponses rapides.",
   "Quote": "Citation",
   "React_with_emojjname": "Réagir avec {{emojiName}}",
   "Reactions_are_disabled": "Les réactions sont désactivées",

@@ -13,6 +13,7 @@ import { CURRENT_SERVER, getWatchOSQuickRepliesKey } from '~/lib/constants/keys'
 import { QUICK_REPLIES_MAX, QUICK_REPLY_MAX_LENGTH } from '~/lib/methods/watchOSQuickReplies/constants';
 import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncReplies';
 import log from '~/lib/methods/helpers/log';
+import { showToast } from '~/lib/methods/helpers/showToast';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
 
@@ -48,7 +49,11 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 			return;
 		}
 		const value = input.trim();
-		if (!value || quickReplies.length >= QUICK_REPLIES_MAX) return;
+		if (!value) return;
+		if (quickReplies.length >= QUICK_REPLIES_MAX) {
+			showToast(I18n.t('Quick_replies_limit_reached', { max: QUICK_REPLIES_MAX }));
+			return;
+		}
 		if (!quickReplies.includes(value)) setQuickReplies([...quickReplies, value]);
 		setInput('');
 		syncWatchOSQuickReplies(currentServer);

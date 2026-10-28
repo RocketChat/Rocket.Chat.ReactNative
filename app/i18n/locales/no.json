@@ -731,6 +731,7 @@
   "Push_Notifications": "Push-varsler",
   "Push_Notifications_Alert_Info": "Disse varslene leveres til deg når appen ikke er åpen",
   "Queued_chats": "Chatter i kø",
+  "Quick_replies_limit_reached": "Du kan legge til opptil {{max}} hurtigsvar.",
   "Quote": "Sitere",
   "Reactions_are_disabled": "Reaksjoner er deaktivert",
   "Reactions_are_enabled": "Reaksjoner er aktivert",

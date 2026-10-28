@@ -383,6 +383,7 @@
   "Profile": "Profil",
   "Public": "Offentlig",
   "Queued_chats": "Innkommende Livechats",
+  "Quick_replies_limit_reached": "Du kan leggje til opptil {{max}} snøggsvar.",
   "Quote": "Sitat",
   "Receive_Group_Mentions_Info": "Motta @all og @here nevner",
   "Register": "Registrer en ny konto",

@@ -483,6 +483,7 @@
   "Public_channel": "パブリックチャンネル",
   "Push_Notifications": "プッシュ通知",
   "Push_Notifications_Alert_Info": "通知はアプリを開いていない時に送られます。",
+  "Quick_replies_limit_reached": "クイック返信は最大 {{max}} 件まで追加できます。",
   "Quote": "引用",
   "React_with_emojjname": "{{emojiName}}でリアクションする",
   "Reactions_are_disabled": "リアクションは無効化されています",

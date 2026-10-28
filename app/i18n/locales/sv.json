@@ -663,6 +663,7 @@
   "Push_Notifications": "Pushmeddelanden",
   "Push_Notifications_Alert_Info": "De här meddelandena levereras till dig när appen är stängd",
   "Queued_chats": "Köplacerade chattar",
+  "Quick_replies_limit_reached": "Du kan lägga till upp till {{max}} snabbsvar.",
   "Quote": "Citat",
   "React_with_emojjname": "Reagera med {{emojiName}}",
   "Reactions_are_disabled": "Reaktioner är inaktiverade",

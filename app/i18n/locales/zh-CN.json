@@ -528,6 +528,7 @@
   "Push_Notifications": "推送通知",
   "Push_Notifications_Alert_Info": "这些通知将在未开启 App 时发送给您",
   "Queued_chats": "聊天队列",
+  "Quick_replies_limit_reached": "最多可添加 {{max}} 条快速回复。",
   "Quote": "引用",
   "React_with_emojjname": "用{{emojiName}}回应",
   "Reactions_are_disabled": "表情貼被禁用",

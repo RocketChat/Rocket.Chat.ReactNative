@@ -654,6 +654,7 @@
   "Push_Notifications": "Push Уведомления",
   "Push_Notifications_Alert_Info": "Эти уведомления доставляются вам, когда приложение не открыто",
   "Queued_chats": "Чаты в очереди",
+  "Quick_replies_limit_reached": "Можно добавить не более {{max}} быстрых ответов.",
   "Quote": "Цитата",
   "React_with_emojjname": "Реагируйте с {{emojiName}}",
   "Reactions_are_disabled": "Реакции отключены",

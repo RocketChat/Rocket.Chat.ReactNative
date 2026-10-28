@@ -702,6 +702,7 @@
   "Push_Notifications": "पुश सूचनाएँ",
   "Push_Notifications_Alert_Info": "ये सूचनाएँ आपको इस समय पहुंचती हैं जब ऐप खुला नहीं है",
   "Queued_chats": "कतारबद्ध चैट",
+  "Quick_replies_limit_reached": "आप अधिकतम {{max}} त्वरित उत्तर जोड़ सकते हैं।",
   "Quote": "उद्धृति",
   "React_with_emojjname": "{{emojiName}} के साथ प्रतिक्रिया दें",
   "Reactions_are_disabled": "प्रतिक्रियाएँ निष्क्रिय हैं",

@@ -499,6 +499,7 @@
   "Public_channel": "canal público",
   "Push_Notifications": "Notificações Push",
   "Push_Notifications_Alert_Info": "Estas notificações são entregues quando o aplicativo não está aberto",
+  "Quick_replies_limit_reached": "Pode adicionar até {{max}} respostas rápidas.",
   "Quote": "Citar",
   "React_with_emojjname": "Reagir com {{emojiName}}",
   "Reactions_are_disabled": "Reacções desactivadas",

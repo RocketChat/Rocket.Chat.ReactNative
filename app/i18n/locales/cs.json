@@ -744,6 +744,7 @@
   "Push_Notifications": "Oznámení push",
   "Push_Notifications_Alert_Info": "Tato oznámení se vám doručují, když aplikace není otevřená",
   "Queued_chats": "Chaty ve frontě",
+  "Quick_replies_limit_reached": "Můžete přidat nejvýše {{max}} rychlých odpovědí.",
   "Quote": "Citát",
   "React_with_emojjname": "Reagujte pomocí {{emojiName}}",
   "Reactions_are_disabled": "Reakce jsou zakázány",

@@ -527,6 +527,7 @@
   "Public_channel": "قناة عامة",
   "Push_Notifications_Alert_Info": "يتم إرسال هذه الإشعارات إليك عندما لا يكون التطبيق مفتوحاً",
   "Queued_chats": "محادثات في قائمى الانتظار",
+  "Quick_replies_limit_reached": "يمكنك إضافة ما يصل إلى {{max}} ردود سريعة.",
   "Quote": "اقتباس",
   "React_with_emojjname": "تفاعل مع {{emojiName}}",
   "Reactions_are_disabled": "التفاعل معطل",

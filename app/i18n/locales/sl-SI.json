@@ -637,6 +637,7 @@
   "Push_Notifications": "Potisna obvestila",
   "Push_Notifications_Alert_Info": "Ta obvestila so vam dostavljena, ko aplikacija ni odprta",
   "Queued_chats": "V čakalni vrsti",
+  "Quick_replies_limit_reached": "Dodate lahko največ {{max}} hitrih odgovorov.",
   "Quote": "Citat",
   "React_with_emojjname": "Reagiraj z {{emojiName}}",
   "Reactions_are_disabled": "Reakcije so onemogočene",

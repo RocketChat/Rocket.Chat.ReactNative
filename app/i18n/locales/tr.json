@@ -545,6 +545,7 @@
   "Push_Notifications": "Anlık Bildirimler",
   "Push_Notifications_Alert_Info": "Bu bildirimler, uygulama açık olmadığında size teslim edilir",
   "Queued_chats": "Sıralı sohbetler",
+  "Quick_replies_limit_reached": "En fazla {{max}} hızlı yanıt ekleyebilirsiniz.",
   "Quote": "Alıntı",
   "React_with_emojjname": "{{emojiName}} ile tepki ver",
   "Reactions_are_disabled": "Tepkiler devre dışı bırakıldı",

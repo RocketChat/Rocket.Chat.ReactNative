@@ -701,6 +701,7 @@
   "Push_Notifications": "పుష్ నోటిఫికేషన్లు",
   "Push_Notifications_Alert_Info": "ఈ నోటిఫికేషన్లు మీకు అప్లికేషన్ ప్రారంభించలేకపోతే అందివేయబడింది",
   "Queued_chats": "క్యూ చాట్‌లు",
+  "Quick_replies_limit_reached": "మీరు గరిష్టంగా {{max}} త్వరిత ప్రత్యుత్తరాలను జోడించవచ్చు.",
   "Quote": "ఉదాహరణ",
   "React_with_emojjname": "{{emojiName}} తో ప్రతిస్పందించండి",
   "Reactions_are_disabled": "ప్రతిక్రియలు నిషేధించబడినవి",

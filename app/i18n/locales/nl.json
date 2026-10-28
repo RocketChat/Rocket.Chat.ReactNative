@@ -625,6 +625,7 @@
   "Push_Notifications": "Pushmeldingen",
   "Push_Notifications_Alert_Info": "Deze notificaties worden aan jouw enkel geleverd als de app niet geopend is",
   "Queued_chats": "Chats in de wachtrij",
+  "Quick_replies_limit_reached": "U kunt maximaal {{max}} snelle antwoorden toevoegen.",
   "Quote": "Citaat",
   "React_with_emojjname": "Reageer met {{emojiName}}",
   "Reactions_are_disabled": "Reacties zijn uitgeschakeld",

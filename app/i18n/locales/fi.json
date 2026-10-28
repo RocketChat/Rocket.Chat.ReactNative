@@ -664,6 +664,7 @@
   "Push_Notifications": "Push-ilmoitukset",
   "Push_Notifications_Alert_Info": "Saat näitä ilmoituksia, kun sovellus ei ole auki",
   "Queued_chats": "Jonossa olevat keskustelut",
+  "Quick_replies_limit_reached": "Voit lisätä enintään {{max}} pikavastausta.",
   "Quote": "Lainaus",
   "React_with_emojjname": "Reagoi {{emojiName}}",
   "Reactions_are_disabled": "Reaktiot eivät ole käytössä",

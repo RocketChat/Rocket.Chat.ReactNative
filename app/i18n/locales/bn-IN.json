@@ -702,6 +702,7 @@
   "Push_Notifications": "পুশ বিজ্ঞপ্তি",
   "Push_Notifications_Alert_Info": "এই বিজ্ঞপ্তি অ্যাপটি খোলা থাকতে না থাকতে আপনার কাছে পৌঁছানো হয়",
   "Queued_chats": "অপেক্ষা করা চ্যাট",
+  "Quick_replies_limit_reached": "আপনি সর্বোচ্চ {{max}}টি দ্রুত উত্তর যোগ করতে পারেন।",
   "Quote": "উদ্ধৃতি",
   "React_with_emojjname": "{{emojiName}} দিয়ে প্রতিক্রিয়া জানান",
   "Reactions_are_disabled": "রিয়েকশনগুলি অক্ষম করা হয়েছে",
