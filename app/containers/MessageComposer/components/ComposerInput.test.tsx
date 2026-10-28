@@ -156,6 +156,18 @@ describe('ComposerInput', () => {
 		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: 'a' }]]);
 	});
 
+	it('sets the same text again after the user deleted it, as when tapping mention after erasing an @', () => {
+		const { composerRef, inputRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+
+		fireEvent.changeText(input, '@');
+		fireEvent.changeText(input, '');
+		inputRef.current?.setNativeProps.mockClear();
+		act(() => composerRef.current?.setInput('@'));
+
+		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: '' }], [{ text: '@' }]]);
+	});
+
 	it('passes the typed raw value to debounced autocomplete before the input text is trimmed', () => {
 		const { composerRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');

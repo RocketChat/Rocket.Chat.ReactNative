@@ -28,7 +28,7 @@ export interface IComposerInput {
 	getSelection: () => IInputSelection;
 	setInput: TSetInput;
 	onAutocompleteItemSelected: (item: TAutocompleteItem) => void;
-	focus: () => void;
+	focus: (delay?: number) => void;
 }
 
 export interface IComposerInputProps {

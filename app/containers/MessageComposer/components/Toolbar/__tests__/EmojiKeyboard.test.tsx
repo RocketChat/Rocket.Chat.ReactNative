@@ -10,7 +10,7 @@ import { EmojiKeyboardProvider } from '~/containers/MessageComposer/hooks/useEmo
 import { mockedStore } from '~/reducers/mockedStore';
 import { MessageActionProvider } from '~/containers/message/stores/MessageActionStore';
 
-const innerContext = (focus: () => void) => ({
+const innerContext = (focus: (delay?: number) => void) => ({
 	sendMessage: jest.fn(),
 	onEmojiSelected: jest.fn(),
 	getText: jest.fn(),
@@ -19,7 +19,7 @@ const innerContext = (focus: () => void) => ({
 	focus
 });
 
-const Composer = ({ focus, tmid }: { focus: () => void; tmid?: string }): ReactElement => (
+const Composer = ({ focus, tmid }: { focus: (delay?: number) => void; tmid?: string }): ReactElement => (
 	<ComposerProvider rid='rid' roomTitle='Rocket Chat' tmid={tmid} sharing={false}>
 		<MessageComposerProvider>
 			<EmojiKeyboardProvider>
@@ -47,7 +47,7 @@ describe('EmojiKeyboard toolbar', () => {
 		const [roomButton] = screen.getAllByTestId('message-composer-close-emoji');
 		fireEvent.press(roomButton);
 
-		await waitFor(() => expect(focusRoom).toHaveBeenCalledTimes(1));
+		await waitFor(() => expect(focusRoom).toHaveBeenCalledWith(0));
 		expect(KeyboardController.setFocusTo).toHaveBeenCalledWith('current');
 		expect(focusThread).not.toHaveBeenCalled();
 	});

@@ -198,17 +198,19 @@ export const ComposerInput = memo(
 			setIsEmpty(text.length === 0);
 		};
 
-		const focus = () => {
+		const focus = (delay = 300) => {
 			setTimeout(() => {
 				if (inputRef.current) {
 					inputRef.current.focus();
 				}
-			}, 300);
+			}, delay);
 		};
 
 		const onChangeText: TextInputProps['onChangeText'] = text => {
 			textRef.current = text;
-			nativeTextRef.current = '';
+			if (text) {
+				nativeTextRef.current = '';
+			}
 			debouncedOnChangeText(text);
 			setInput(text);
 		};

@@ -224,7 +224,7 @@ export const MessageComposer = ({
 		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
-	const focusComposerInput = () => composerInputComponentRef.current?.focus();
+	const focusComposerInput = (delay?: number) => composerInputComponentRef.current?.focus(delay);
 
 	const accessibilityFocusOnInput = () => {
 		const node = findNodeHandle(composerInputRef.current);
