@@ -125,6 +125,17 @@ describe('removeServerData', () => {
 		serverKeys(SERVER).forEach(key => expect(UserPreferences.getString(key)).toBeNull());
 	});
 
+	it('clears the per-server keys and the watch replies even when the server record lookup fails', async () => {
+		seedServer(SERVER, USER_ID);
+		jest.mocked(database.servers.get).mockReturnValue({ find: jest.fn(() => Promise.reject(new Error('not found'))) } as any);
+
+		await removeServerData({ server: SERVER });
+
+		serverKeys(SERVER).forEach(key => expect(UserPreferences.getString(key)).toBeNull());
+		expect(UserPreferences.getString(tokenKey(USER_ID))).toBeNull();
+		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith(SERVER);
+	});
+
 	it('clears the watch quick replies on the watch too, after removing them from storage', async () => {
 		seedServer(SERVER, USER_ID);
 		let repliesStoredAtSync: boolean | undefined;

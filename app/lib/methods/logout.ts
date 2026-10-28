@@ -43,10 +43,10 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 }
 
 export async function removeServerData({ server }: { server: string }): Promise<void> {
+	const userId = UserPreferences.getString(getServerUserIdKey(server));
 	try {
 		const batch: Model[] = [];
 		const serversDB = database.servers;
-		const userId = UserPreferences.getString(getServerUserIdKey(server));
 
 		const usersCollection = serversDB.get('users');
 		if (userId) {
@@ -58,9 +58,10 @@ export async function removeServerData({ server }: { server: string }): Promise<
 		batch.push(serverRecord.prepareDestroyPermanently());
 
 		await serversDB.write(() => serversDB.batch(batch));
-		removeServerKeys({ server, userId });
 	} catch (e) {
 		log(e);
+	} finally {
+		removeServerKeys({ server, userId });
 	}
 }
 
