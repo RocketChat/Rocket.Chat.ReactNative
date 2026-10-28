@@ -30,7 +30,7 @@ import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '~/actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
-import { getSettings, isActiveWorkspace } from '../methods/getSettings';
+import { getSettings } from '../methods/getSettings';
 import { onRolesChanged } from '../methods/getRoles';
 import { setPresenceCap } from '../methods/getUsersPresence';
 import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../methods/setUser';
@@ -148,38 +148,36 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			'stream-notify-all',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
 				const { eventName } = ddpMessage.fields;
-				if (!/public-settings-changed/.test(eventName) || !isActiveWorkspace(server)) {
-					return;
-				}
-				const { _id, value } = ddpMessage.fields.args[1];
-				if (!defaultSettings.hasOwnProperty(_id)) {
-					console.warn(`Setting with _id '${_id}' is not present in defaultSettings.`);
-					return;
-				}
-				const db = database.active;
-				const settingsCollection = db.get('settings');
-				try {
-					const settingsRecord = await settingsCollection.find(_id);
-					// @ts-ignore
-					const { type } = defaultSettings[_id];
-					if (type) {
-						await db.write(async () => {
-							await settingsRecord.update(u => {
-								// @ts-ignore
-								u[type] = value;
-							});
-						});
-					}
-					if (!isActiveWorkspace(server)) {
-						return;
-					}
-					store.dispatch(updateSettings(_id, value));
+				if (/public-settings-changed/.test(eventName)) {
+					const { _id, value } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const settingsCollection = db.get('settings');
 
-					if (_id === 'Presence_broadcast_disabled') {
-						setPresenceCap(value);
+					// Check if the _id exists in defaultSettings
+					if (defaultSettings.hasOwnProperty(_id)) {
+						try {
+							const settingsRecord = await settingsCollection.find(_id);
+							// @ts-ignore
+							const { type } = defaultSettings[_id];
+							if (type) {
+								await db.write(async () => {
+									await settingsRecord.update(u => {
+										// @ts-ignore
+										u[type] = value;
+									});
+								});
+							}
+							store.dispatch(updateSettings(_id, value));
+
+							if (_id === 'Presence_broadcast_disabled') {
+								setPresenceCap(value);
+							}
+						} catch (e) {
+							log(e);
+						}
+					} else {
+						console.warn(`Setting with _id '${_id}' is not present in defaultSettings.`);
 					}
-				} catch (e) {
-					log(e);
 				}
 			})
 		);

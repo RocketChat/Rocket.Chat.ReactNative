@@ -173,7 +173,7 @@ export async function settleUntil(isSettled: () => boolean, maxRounds = 20): Pro
 interface IMockReduxState {
 	meteor: { connected: boolean };
 	login: { user: Record<string, unknown> | null; isAuthenticated: boolean };
-	server: { version: string; server: string };
+	server: { version: string };
 	settings: Record<string, unknown>;
 	room: { subscribedRoom: string | null };
 }
@@ -188,7 +188,7 @@ export function makeReduxStore(): IMockReduxStore {
 	const state: IMockReduxState = {
 		meteor: { connected: false },
 		login: { user: null, isAuthenticated: false },
-		server: { version: '5.0.0', server: '' },
+		server: { version: '5.0.0' },
 		settings: {},
 		room: { subscribedRoom: null }
 	};

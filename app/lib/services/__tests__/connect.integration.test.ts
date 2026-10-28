@@ -270,50 +270,18 @@ describe('login() over the real SDK', () => {
 });
 
 describe('onStreamData handlers over real frames', () => {
-	const receiveSiteNameChange = () =>
+	it('public-settings-changed dispatches updateSettings', async () => {
+		await connectAndDriveHandshake();
+		database.active.get('settings').find.mockResolvedValue({ update: jest.fn(async (fn: (u: unknown) => void) => fn({})) });
+
 		receiveFrame(mockConnections[0], {
 			msg: 'changed',
 			collection: 'stream-notify-all',
 			fields: { eventName: 'public-settings-changed', args: [null, { _id: 'Site_Name', value: 'New Name' }] }
 		});
-
-	it('public-settings-changed dispatches updateSettings', async () => {
-		redux.state.server.server = 'https://example.com';
-		await connectAndDriveHandshake();
-		database.active.get('settings').find.mockResolvedValue({ update: jest.fn(async (fn: (u: unknown) => void) => fn({})) });
-
-		receiveSiteNameChange();
 		await flushMicrotasksAndTimers();
 
 		expect(redux.store.dispatch).toHaveBeenCalledWith(updateSettings('Site_Name', 'New Name'));
-	});
-
-	it('public-settings-changed from a workspace that is no longer active changes nothing', async () => {
-		await connectAndDriveHandshake();
-		database.active.get('settings').find.mockResolvedValue({ update: jest.fn(async (fn: (u: unknown) => void) => fn({})) });
-		redux.state.server.server = 'https://other.example.com';
-
-		receiveSiteNameChange();
-		await flushMicrotasksAndTimers();
-
-		expect(database.active.get('settings').find).not.toHaveBeenCalled();
-		expect(redux.store.dispatch).not.toHaveBeenCalledWith(updateSettings('Site_Name', 'New Name'));
-	});
-
-	it('public-settings-changed keeps its own database write but skips redux after a workspace switch', async () => {
-		redux.state.server.server = 'https://example.com';
-		await connectAndDriveHandshake();
-		const update = jest.fn(async (fn: (u: unknown) => void) => {
-			redux.state.server.server = 'https://other.example.com';
-			fn({});
-		});
-		database.active.get('settings').find.mockResolvedValue({ update });
-
-		receiveSiteNameChange();
-		await flushMicrotasksAndTimers();
-
-		expect(update).toHaveBeenCalled();
-		expect(redux.store.dispatch).not.toHaveBeenCalledWith(updateSettings('Site_Name', 'New Name'));
 	});
 
 	it('stream-user-presence sets the active user and the logged user', async () => {

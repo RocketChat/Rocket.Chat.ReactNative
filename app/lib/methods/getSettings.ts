@@ -164,7 +164,7 @@ export async function subscribeSettings(): Promise<void> {
 
 type IData = ISettingsIcon | IPreparedSettings;
 
-export const isActiveWorkspace = (server: string): boolean => reduxStore.getState().server.server === server;
+const isActiveWorkspace = (server: string): boolean => reduxStore.getState().server.server === server;
 
 const workspaceSettingKeys = Object.keys(defaultSettings).filter(key => !loginSettings.includes(key));
 
