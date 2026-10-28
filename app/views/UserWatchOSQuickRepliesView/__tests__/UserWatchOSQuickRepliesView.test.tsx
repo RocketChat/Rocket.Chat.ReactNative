@@ -29,7 +29,6 @@ describe('UserWatchOSQuickRepliesView', () => {
 		const storedAtSync: string[][] = [];
 		jest.mocked(syncWatchOSQuickReplies).mockImplementation(() => {
 			storedAtSync.push(stored());
-			return true;
 		});
 		const { getByPlaceholderText } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
 		const input = getByPlaceholderText(I18n.t('Add_Quick_Reply'));
@@ -50,7 +49,6 @@ describe('UserWatchOSQuickRepliesView', () => {
 		const storedAtSync: string[][] = [];
 		jest.mocked(syncWatchOSQuickReplies).mockImplementation(() => {
 			storedAtSync.push(stored());
-			return true;
 		});
 		const { getByTestId } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
 

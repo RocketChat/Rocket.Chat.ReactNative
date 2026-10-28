@@ -12,7 +12,7 @@ export interface IServer {
 	loading: boolean;
 	previousServer: string | null;
 	changingServer: boolean;
-	settingsFetched: boolean;
+	settingsFetchedFor: string | null;
 }
 
 export const initialState: IServer = {
@@ -25,7 +25,7 @@ export const initialState: IServer = {
 	loading: true,
 	previousServer: null,
 	changingServer: false,
-	settingsFetched: false
+	settingsFetchedFor: null
 };
 
 export default function server(state = initialState, action: TActionServer): IServer {
@@ -64,7 +64,7 @@ export default function server(state = initialState, action: TActionServer): ISe
 				loading: false,
 				changingServer: false,
 				failure: false,
-				settingsFetched: false
+				settingsFetchedFor: null
 			};
 		case SERVER.SELECT_REQUEST:
 			return {
@@ -74,18 +74,17 @@ export default function server(state = initialState, action: TActionServer): ISe
 				connecting: true,
 				connected: false,
 				loading: true,
-				changingServer: action.changeServer,
-				settingsFetched: action.server === state.server && state.settingsFetched
+				changingServer: action.changeServer
 			};
 		case SETTINGS.FETCH_START:
 			return {
 				...state,
-				settingsFetched: false
+				settingsFetchedFor: null
 			};
 		case SETTINGS.FETCH_COMPLETE:
 			return {
 				...state,
-				settingsFetched: true
+				settingsFetchedFor: action.server
 			};
 		case SERVER.SELECT_SUCCESS:
 			return {

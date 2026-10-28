@@ -25,7 +25,7 @@ describe('syncWatchOSQuickRepliesWithServer', () => {
 			return 'SUCCESS';
 		});
 
-		expect(syncWatchOSQuickRepliesWithServer(server, 'Yes, No ,,On my way')).toBe(true);
+		syncWatchOSQuickRepliesWithServer(server, 'Yes, No ,,On my way');
 		expect(syncQuickReplies).toHaveBeenCalledWith(server);
 		expect(storedAtSync).toBe(JSON.stringify(['Yes', 'No', 'On my way']));
 	});
@@ -36,7 +36,7 @@ describe('syncWatchOSQuickRepliesWithServer', () => {
 	});
 
 	it('leaves the list unset but still syncs the watch when the server has no setting', () => {
-		expect(syncWatchOSQuickRepliesWithServer(server, undefined)).toBe(true);
+		syncWatchOSQuickRepliesWithServer(server, undefined);
 		expect(UserPreferences.contains(key)).toBe(false);
 		expect(syncQuickReplies).toHaveBeenCalledWith(server);
 	});
@@ -49,7 +49,7 @@ describe('syncWatchOSQuickRepliesWithServer', () => {
 
 	it('does nothing when no watch app is available', () => {
 		(shouldShowWatchAppOptions as jest.Mock).mockReturnValue(false);
-		expect(syncWatchOSQuickRepliesWithServer(server, 'Yes,No')).toBe(false);
+		syncWatchOSQuickRepliesWithServer(server, 'Yes,No');
 		expect(UserPreferences.contains(key)).toBe(false);
 		expect(syncQuickReplies).not.toHaveBeenCalled();
 	});

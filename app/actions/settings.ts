@@ -11,6 +11,10 @@ interface IUpdateSettings extends Action {
 	payload: { id: TSupportedSettings; value: TSettingsValues };
 }
 
+interface IFetchSettingsComplete extends Action {
+	server: string;
+}
+
 export type IActionSettings = IAddSettings & IUpdateSettings;
 
 export function addSettings(settings: TSettingsState): IAddSettings {
@@ -39,8 +43,9 @@ export function fetchSettingsStart(): Action {
 	};
 }
 
-export function fetchSettingsComplete(): Action {
+export function fetchSettingsComplete(server: string): IFetchSettingsComplete {
 	return {
-		type: SETTINGS.FETCH_COMPLETE
+		type: SETTINGS.FETCH_COMPLETE,
+		server
 	};
 }

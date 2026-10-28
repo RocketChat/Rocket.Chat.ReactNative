@@ -273,11 +273,16 @@ const fetchWatchReplies = function* fetchWatchRepliesFork() {
 		const isAuthenticated = yield select(s => s.login.isAuthenticated);
 		if (!isAuthenticated) return;
 		const server = yield select(s => s.server.server);
-		const settingsFetched = yield select(s => s.server.settingsFetched);
-		if (!settingsFetched) {
+		const settingsFetchedFor = yield select(s => s.server.settingsFetchedFor);
+		if (settingsFetchedFor !== server) {
 			const { stop } = yield race({
 				loaded: take(types.SETTINGS.FETCH_COMPLETE),
-				stop: take([types.LOGOUT, types.LOGIN.SUCCESS, types.SERVER.SELECT_REQUEST])
+				stop: take([
+					types.LOGOUT,
+					types.DELETE_ACCOUNT,
+					types.LOGIN.SUCCESS,
+					action => action.type === types.SERVER.SELECT_REQUEST && action.server !== server
+				])
 			});
 			if (stop) return;
 		}
@@ -408,7 +413,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(getUserTokenKey(server, user.id), user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
 		EventEmitter.emit('connected');
-		yield fork(fetchWatchReplies);
+		yield spawn(fetchWatchReplies);
 		const currentRoot = yield select(state => state.app.root);
 		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));

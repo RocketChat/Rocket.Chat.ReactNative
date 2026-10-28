@@ -267,7 +267,7 @@ export async function getSettings(server: string): Promise<void> {
 		log(e);
 	} finally {
 		if (isLatestFetch()) {
-			reduxStore.dispatch(fetchSettingsComplete());
+			reduxStore.dispatch(fetchSettingsComplete(server));
 		}
 	}
 }

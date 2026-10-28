@@ -148,7 +148,7 @@ describe('getSettings — active workspace', () => {
 
 		await getSettings(SERVER);
 
-		expect(store.dispatch).toHaveBeenCalledWith(fetchSettingsComplete());
+		expect(store.dispatch).toHaveBeenCalledWith(fetchSettingsComplete(SERVER));
 	});
 
 	it('marks the settings as not fetched before it fetches them', async () => {
@@ -199,7 +199,7 @@ describe('getSettings — the same workspace fetched twice', () => {
 		expect(store.dispatch).toHaveBeenCalledWith(addSettings({ Site_Name: 'New' }));
 		expect(store.dispatch).not.toHaveBeenCalledWith(addSettings({ Site_Name: 'Old' }));
 		expect(
-			jest.mocked(store.dispatch).mock.calls.filter(([action]) => action.type === fetchSettingsComplete().type)
+			jest.mocked(store.dispatch).mock.calls.filter(([action]) => action.type === fetchSettingsComplete(SERVER).type)
 		).toHaveLength(1);
 	});
 });

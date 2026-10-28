@@ -62,27 +62,23 @@ describe('test server reducer', () => {
 		expect(state).toEqual(null);
 	});
 
-	it('marks the settings as fetched until another server is selected', () => {
-		mockedStore.dispatch(fetchSettingsComplete());
-		expect(mockedStore.getState().server.settingsFetched).toBe(true);
+	it('records which workspace the settings were fetched for', () => {
+		mockedStore.dispatch(fetchSettingsComplete('https://open.rocket.chat/'));
+		expect(mockedStore.getState().server.settingsFetchedFor).toBe('https://open.rocket.chat/');
+	});
+
+	it('keeps the fetched workspace when another one is selected', () => {
+		mockedStore.dispatch(fetchSettingsComplete('https://open.rocket.chat/'));
 
 		mockedStore.dispatch(selectServerRequest('https://other.rocket.chat/', '4.1.0'));
-		expect(mockedStore.getState().server.settingsFetched).toBe(false);
+		expect(mockedStore.getState().server.settingsFetchedFor).toBe('https://open.rocket.chat/');
 	});
 
-	it('keeps the settings marked as fetched when the same server is selected again', () => {
-		mockedStore.dispatch(selectServerRequest('https://same.rocket.chat/', '4.1.0'));
-		mockedStore.dispatch(fetchSettingsComplete());
-
-		mockedStore.dispatch(selectServerRequest('https://same.rocket.chat/', '4.1.0'));
-		expect(mockedStore.getState().server.settingsFetched).toBe(true);
-	});
-
-	it('marks the settings as not fetched while a settings fetch runs', () => {
-		mockedStore.dispatch(fetchSettingsComplete());
+	it('clears the fetched workspace while a settings fetch runs', () => {
+		mockedStore.dispatch(fetchSettingsComplete('https://open.rocket.chat/'));
 
 		mockedStore.dispatch(fetchSettingsStart());
-		expect(mockedStore.getState().server.settingsFetched).toBe(false);
+		expect(mockedStore.getState().server.settingsFetchedFor).toBeNull();
 	});
 
 	it('should return modified store after serverRequestFailure', () => {

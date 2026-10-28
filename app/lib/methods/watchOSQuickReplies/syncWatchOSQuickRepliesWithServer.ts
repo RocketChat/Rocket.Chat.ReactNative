@@ -4,9 +4,9 @@ import { syncWatchOSQuickReplies } from './syncReplies';
 import { shouldShowWatchAppOptions } from './getWatchStatus';
 import { QUICK_REPLIES_MAX, QUICK_REPLY_MAX_LENGTH } from './constants';
 
-export const syncWatchOSQuickRepliesWithServer = (server: string, appleWatchReplies?: unknown): boolean => {
-	if (!shouldShowWatchAppOptions()) return false;
-	if (!server) return false;
+export const syncWatchOSQuickRepliesWithServer = (server: string, appleWatchReplies?: unknown): void => {
+	if (!shouldShowWatchAppOptions()) return;
+	if (!server) return;
 
 	const quickRepliesMMKVKey = getWatchOSQuickRepliesKey(server);
 
@@ -21,5 +21,5 @@ export const syncWatchOSQuickRepliesWithServer = (server: string, appleWatchRepl
 		].slice(0, QUICK_REPLIES_MAX);
 		if (replies.length) UserPreferences.setMap(quickRepliesMMKVKey, replies);
 	}
-	return syncWatchOSQuickReplies(server);
+	syncWatchOSQuickReplies(server);
 };
