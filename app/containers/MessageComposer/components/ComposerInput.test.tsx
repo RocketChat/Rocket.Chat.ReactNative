@@ -100,9 +100,16 @@ describe('ComposerInput', () => {
 		jest.useRealTimers();
 	});
 
+	it('sets non-empty native text once on mount and empties it again so iOS sizes the input by its typed text', () => {
+		const { inputRef } = renderInput();
+
+		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: ' ' }], [{ text: '' }]]);
+	});
+
 	it('updates getText synchronously and trims typed text without writing it back to the native input', () => {
 		const { composerRef, inputRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');
+		inputRef.current?.setNativeProps.mockClear();
 
 		fireEvent.changeText(input, '  typed text  ');
 
@@ -131,7 +138,7 @@ describe('ComposerInput', () => {
 		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  programmatic text  ' });
 	});
 
-	it('moves the native text prop off the sent text and back to empty after clearing so a multi-line input shrinks back', () => {
+	it('clears the native input without re-setting the sent text so a multi-line input shrinks back without flashing', () => {
 		const { composerRef, inputRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');
 
@@ -141,9 +148,9 @@ describe('ComposerInput', () => {
 			composerRef.current?.getTextAndClear();
 		});
 
-		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: 'line 1\nline 2\nline 3\nline 4' }], [{ text: '' }]]);
+		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: '' }]]);
 		expect(inputRef.current?.clear.mock.invocationCallOrder[0]).toBeLessThan(
-			inputRef.current?.setNativeProps.mock.invocationCallOrder[1]
+			inputRef.current?.setNativeProps.mock.invocationCallOrder[0]
 		);
 	});
 

@@ -90,7 +90,6 @@ export const ComposerInput = memo(
 				if (text) {
 					inputRef.current?.setNativeProps?.({ text });
 				} else {
-					inputRef.current?.setNativeProps?.({ text: textRef.current });
 					inputRef.current?.clear();
 					inputRef.current?.setNativeProps?.({ text: '' });
 				}
@@ -286,6 +285,12 @@ export const ComposerInput = memo(
 				stopAutocomplete();
 			});
 		};
+
+		// iOS only measures a multiline input by its typed text once JS has set non-empty text on it
+		useEffect(() => {
+			inputRef.current?.setNativeProps?.({ text: ' ' });
+			inputRef.current?.setNativeProps?.({ text: '' });
+		}, []);
 
 		// Draft/Canned Responses
 		useEffect(() => {
