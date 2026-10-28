@@ -297,6 +297,54 @@ describe('useEmojiKeyboard', () => {
 		});
 	});
 
+	describe('emoji search opened from the fixed-height picker', () => {
+		const defaultUseSharedValue = jest.mocked(useSharedValue).getMockImplementation();
+
+		afterEach(() => {
+			jest.mocked(useAnimatedReaction).mockReset();
+			jest.mocked(useSharedValue).mockImplementation(defaultUseSharedValue);
+		});
+
+		const createValue = <T,>(initial: T) => {
+			const sharedValue = {
+				value: initial,
+				get: () => sharedValue.value,
+				set: (next: T) => {
+					sharedValue.value = next;
+				},
+				addListener: jest.fn(),
+				removeListener: jest.fn(),
+				modify: jest.fn()
+			};
+			return sharedValue;
+		};
+
+		test('resizes the composer to the keyboard the search input brings up', () => {
+			const systemKeyboardHeight = createValue(0);
+			const keyboardHeight = createValue(250);
+			jest
+				.mocked(useSharedValue)
+				.mockReset()
+				.mockReturnValueOnce(createValue(true)) // showEmojiPickerSharedValue
+				.mockReturnValueOnce(createValue(false)) // showEmojiSearchbarSharedValue
+				.mockReturnValueOnce(systemKeyboardHeight)
+				.mockReturnValueOnce(keyboardHeight)
+				.mockReturnValueOnce(createValue(250)); // previousHeight
+			const reactions: Parameters<typeof useAnimatedReaction>[1][] = [];
+			jest.mocked(useAnimatedReaction).mockImplementation((_prepare, react) => {
+				reactions.push(react);
+			});
+			renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
+			const [heightReaction, , searchbarReaction] = reactions;
+
+			searchbarReaction(true, false);
+			systemKeyboardHeight.set(336);
+			heightReaction(336, 0);
+
+			expect(keyboardHeight.value).toBe(336);
+		});
+	});
+
 	describe('Context without provider', () => {
 		test('should work when used without EmojiKeyboardProvider', () => {
 			const messageInnerContextValue = {

@@ -174,7 +174,9 @@ export const useEmojiKeyboard = () => {
 				return;
 			}
 			if (currentValue === true && previousHeight.value === EMOJI_KEYBOARD_FIXED_HEIGHT) {
-				updateHeight();
+				// previousHeight stays fixed so the keyboard the search input brings up still resizes the composer
+				const notch = height.get() === 0 ? bottom : 0;
+				keyboardHeight.set(height.get() + notch);
 			} else if (currentValue === false && showEmojiPickerSharedValue.value === true) {
 				openEmojiPicker();
 			}
