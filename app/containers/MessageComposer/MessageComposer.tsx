@@ -71,7 +71,7 @@ export const MessageComposer = ({
 	const attachments = useComposerAttachments();
 
 	useBackHandler(() => {
-		if (showEmojiSearchbar) {
+		if (showEmojiSearchbar || showEmojiKeyboard) {
 			resetKeyboard();
 			return true;
 		}

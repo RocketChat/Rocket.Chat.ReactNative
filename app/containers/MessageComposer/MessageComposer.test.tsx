@@ -26,8 +26,14 @@ import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { RECORDING_SETTINGS } from '~/lib/constants/audio';
+import { useBackHandler } from '@react-native-community/hooks';
 
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+
+jest.mock('@react-native-community/hooks', () => ({
+	...jest.requireActual('@react-native-community/hooks'),
+	useBackHandler: jest.fn()
+}));
 
 jest.useFakeTimers();
 
@@ -213,6 +219,48 @@ beforeEach(() => {
 });
 
 describe('MessageComposer', () => {
+	describe('Android back button', () => {
+		const pressBack = () => jest.mocked(useBackHandler).mock.lastCall?.[0]();
+
+		const renderWithEmojiKeyboard = (state: { showEmojiKeyboard: boolean; showEmojiSearchbar: boolean }) => {
+			const resetKeyboard = jest.fn();
+			jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
+				showEmojiPickerSharedValue: sharedValue,
+				openEmojiKeyboard: jest.fn(),
+				closeEmojiKeyboard: jest.fn(),
+				showEmojiSearchbarSharedValue: sharedValueSearchbar,
+				openEmojiSearchbar: jest.fn(),
+				backToEmojiPicker: jest.fn(),
+				resetKeyboard,
+				keyboardHeight: keyboardHeightSharedValue,
+				...state
+			});
+			render(<Render />);
+			return { resetKeyboard };
+		};
+
+		test('closes the emoji picker instead of leaving the room', () => {
+			const { resetKeyboard } = renderWithEmojiKeyboard({ showEmojiKeyboard: true, showEmojiSearchbar: false });
+
+			expect(pressBack()).toBe(true);
+			expect(resetKeyboard).toHaveBeenCalledTimes(1);
+		});
+
+		test('closes the emoji search', () => {
+			const { resetKeyboard } = renderWithEmojiKeyboard({ showEmojiKeyboard: false, showEmojiSearchbar: true });
+
+			expect(pressBack()).toBe(true);
+			expect(resetKeyboard).toHaveBeenCalledTimes(1);
+		});
+
+		test('leaves the room when no emoji keyboard is open', () => {
+			const { resetKeyboard } = renderWithEmojiKeyboard({ showEmojiKeyboard: false, showEmojiSearchbar: false });
+
+			expect(pressBack()).toBe(false);
+			expect(resetKeyboard).not.toHaveBeenCalled();
+		});
+	});
+
 	describe('Toolbar', () => {
 		test('tap actions', async () => {
 			render(<Render />);
