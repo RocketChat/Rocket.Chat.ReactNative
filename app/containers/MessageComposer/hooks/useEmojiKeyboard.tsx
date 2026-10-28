@@ -118,11 +118,6 @@ export const useEmojiKeyboard = () => {
 		showEmojiSearchbarSharedValue.value = true;
 	};
 
-	const closeEmojiSearchbar = () => {
-		showEmojiSearchbarSharedValue.value = false;
-		focus && focus();
-	};
-
 	const backToEmojiPicker = () => {
 		showEmojiSearchbarSharedValue.value = false;
 		Keyboard.dismiss();
@@ -131,7 +126,8 @@ export const useEmojiKeyboard = () => {
 	const resetKeyboard = () => {
 		updateHeight(true);
 		closeEmojiKeyboard();
-		closeEmojiSearchbar();
+		showEmojiSearchbarSharedValue.value = false;
+		focus();
 	};
 
 	useAnimatedReaction(
@@ -199,7 +195,6 @@ export const useEmojiKeyboard = () => {
 		openEmojiKeyboard,
 		closeEmojiKeyboard,
 		openEmojiSearchbar,
-		closeEmojiSearchbar,
 		backToEmojiPicker,
 		resetKeyboard
 	};

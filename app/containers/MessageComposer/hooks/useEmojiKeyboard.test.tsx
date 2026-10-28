@@ -91,7 +91,6 @@ describe('useEmojiKeyboard', () => {
 			expect(typeof result.current.openEmojiKeyboard).toBe('function');
 			expect(typeof result.current.closeEmojiKeyboard).toBe('function');
 			expect(typeof result.current.openEmojiSearchbar).toBe('function');
-			expect(typeof result.current.closeEmojiSearchbar).toBe('function');
 			expect(typeof result.current.resetKeyboard).toBe('function');
 		});
 	});
@@ -142,52 +141,29 @@ describe('useEmojiKeyboard', () => {
 			expect(mockSearchbarSharedValue.value).toBe(true);
 		});
 
-		test('should close emoji searchbar and call focus', () => {
-			const mockFocusForTest = jest.fn();
-			const wrapper = createWrapper(mockFocusForTest);
-			mockSearchbarSharedValue.value = true;
-			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
-
-			act(() => {
-				result.current.closeEmojiSearchbar();
+		describe('back from emoji search', () => {
+			afterEach(() => {
+				jest.mocked(Keyboard.dismiss).mockRestore();
 			});
 
-			expect(mockSearchbarSharedValue.value).toBe(false);
-			expect(mockFocusForTest).toHaveBeenCalledTimes(1);
-		});
+			test('keeps the emoji picker open without focusing the composer', () => {
+				const dismiss = jest.spyOn(Keyboard, 'dismiss');
+				mockSharedValue.value = true;
+				mockSearchbarSharedValue.value = true;
+				const { result } = renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
 
-		test('should close emoji searchbar without calling focus when focus is not available', () => {
-			const mockFocusForTest = jest.fn();
-			const wrapper = createWrapper(undefined);
-			mockSearchbarSharedValue.value = true;
-			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
+				act(() => {
+					result.current.backToEmojiPicker();
+				});
 
-			act(() => {
-				result.current.closeEmojiSearchbar();
+				expect(mockSearchbarSharedValue.value).toBe(false);
+				expect(mockSharedValue.value).toBe(true);
+				expect(dismiss).toHaveBeenCalledTimes(1);
+				expect(mockFocus).not.toHaveBeenCalled();
 			});
-
-			expect(mockSearchbarSharedValue.value).toBe(false);
-			expect(mockFocusForTest).not.toHaveBeenCalled();
 		});
 
-		test('back from emoji search keeps the emoji picker open without focusing the composer', () => {
-			const dismiss = jest.spyOn(Keyboard, 'dismiss');
-			mockSharedValue.value = true;
-			mockSearchbarSharedValue.value = true;
-			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
-
-			act(() => {
-				result.current.backToEmojiPicker();
-			});
-
-			expect(mockSearchbarSharedValue.value).toBe(false);
-			expect(mockSharedValue.value).toBe(true);
-			expect(dismiss).toHaveBeenCalledTimes(1);
-			expect(mockFocus).not.toHaveBeenCalled();
-			dismiss.mockRestore();
-		});
-
-		test('should reset keyboard (close emoji keyboard and searchbar)', () => {
+		test('should reset keyboard (close emoji keyboard and searchbar) and focus the composer', () => {
 			const wrapper = createWrapper();
 			mockSharedValue.value = true;
 			mockSearchbarSharedValue.value = true;
@@ -199,6 +175,7 @@ describe('useEmojiKeyboard', () => {
 
 			expect(mockSharedValue.value).toBe(false);
 			expect(mockSearchbarSharedValue.value).toBe(false);
+			expect(mockFocus).toHaveBeenCalledTimes(1);
 		});
 
 		test('should handle multiple open/close operations', () => {
@@ -222,12 +199,6 @@ describe('useEmojiKeyboard', () => {
 				result.current.openEmojiSearchbar();
 			});
 			expect(mockSearchbarSharedValue.value).toBe(true);
-
-			// Close emoji searchbar
-			act(() => {
-				result.current.closeEmojiSearchbar();
-			});
-			expect(mockSearchbarSharedValue.value).toBe(false);
 
 			// Open emoji keyboard again
 			act(() => {
