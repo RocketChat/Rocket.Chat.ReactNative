@@ -18,6 +18,7 @@ const SectionRevealFooter = ({ revealKey, entering, exiting }: ISectionRevealFoo
 			key={revealKey}
 			entering={entering}
 			exiting={exiting}
+			pointerEvents='none'
 			style={[styles.cover, { height, backgroundColor: colors.surfaceTint }]}
 		/>
 	);
