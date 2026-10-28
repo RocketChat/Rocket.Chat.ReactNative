@@ -145,7 +145,7 @@ const getServerInfoSaga = function* getServerInfoSaga({
 	}
 };
 
-const startInsideUnlessSharing = function* startInsideUnlessSharing() {
+export const startInsideUnlessSharing = function* startInsideUnlessSharing() {
 	const currentRoot = yield* appSelector(state => state.app.root);
 	if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
 		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
