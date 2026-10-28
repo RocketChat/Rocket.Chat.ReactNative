@@ -370,6 +370,15 @@ describe('useEmojiKeyboard', () => {
 			return { systemKeyboardHeight, keyboardHeight, heightReaction, searchbarReaction };
 		};
 
+		test('stays open when a hardware keyboard toolbar shows', () => {
+			const { systemKeyboardHeight, keyboardHeight, heightReaction } = renderFixedHeightPicker();
+
+			systemKeyboardHeight.set(48);
+			heightReaction(48, 0);
+
+			expect(keyboardHeight.value).toBe(250);
+		});
+
 		test('resizes the composer to the keyboard the search input brings up', () => {
 			const { systemKeyboardHeight, keyboardHeight, heightReaction, searchbarReaction } = renderFixedHeightPicker();
 

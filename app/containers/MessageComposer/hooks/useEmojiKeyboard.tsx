@@ -158,7 +158,11 @@ export const useEmojiKeyboard = () => {
 			if (currentValue !== previousValue) {
 				updateHeight();
 			}
-			if (currentValue === 0 && showEmojiPickerSharedValue.value && !showEmojiSearchbarSharedValue.value) {
+			if (
+				currentValue < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD &&
+				showEmojiPickerSharedValue.value &&
+				!showEmojiSearchbarSharedValue.value
+			) {
 				openEmojiPicker();
 			}
 		},
