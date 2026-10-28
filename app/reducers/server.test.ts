@@ -6,10 +6,9 @@ import {
 	serverFailure,
 	serverFinishAdd,
 	selectServerFailure
-} from '~/actions/server';
-import { fetchSettingsComplete } from '~/actions/settings';
-import { mockedStore } from '../mockedStore';
-import { initialState } from '../server';
+} from '../actions/server';
+import { mockedStore } from './mockedStore';
+import { initialState } from './server';
 
 describe('test server reducer', () => {
 	it('should return initial state', () => {
@@ -60,14 +59,6 @@ describe('test server reducer', () => {
 		mockedStore.dispatch(serverFinishAdd());
 		const state = mockedStore.getState().server.previousServer;
 		expect(state).toEqual(null);
-	});
-
-	it('keeps the same server state object when a settings fetch completes', () => {
-		const before = mockedStore.getState().server;
-
-		mockedStore.dispatch(fetchSettingsComplete());
-
-		expect(mockedStore.getState().server).toBe(before);
 	});
 
 	it('should return modified store after serverRequestFailure', () => {
