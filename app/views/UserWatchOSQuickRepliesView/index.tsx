@@ -50,11 +50,12 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 		}
 		const value = input.trim();
 		if (!value) return;
-		if (quickReplies.length >= QUICK_REPLIES_MAX) {
+		const isNew = !quickReplies.includes(value);
+		if (isNew && quickReplies.length >= QUICK_REPLIES_MAX) {
 			showToast(I18n.t('Quick_replies_limit_reached', { max: QUICK_REPLIES_MAX }));
 			return;
 		}
-		if (!quickReplies.includes(value)) setQuickReplies([...quickReplies, value]);
+		if (isNew) setQuickReplies([...quickReplies, value]);
 		setInput('');
 		syncWatchOSQuickReplies(currentServer);
 	};

@@ -19,12 +19,18 @@ const stored = () => JSON.parse(UserPreferences.getString(key) ?? '[]');
 
 describe('UserWatchOSQuickRepliesView', () => {
 	beforeEach(() => {
-		(syncWatchOSQuickReplies as jest.Mock).mockClear();
+		(syncWatchOSQuickReplies as jest.Mock).mockReset();
+		(showToast as jest.Mock).mockClear();
 		UserPreferences.setString(CURRENT_SERVER, server);
 		UserPreferences.setString(key, JSON.stringify(['Yes']));
 	});
 
-	it('adds a trimmed reply, skips duplicates and syncs', () => {
+	it('adds a trimmed reply, skips duplicates and syncs after saving', () => {
+		const storedAtSync: string[][] = [];
+		jest.mocked(syncWatchOSQuickReplies).mockImplementation(() => {
+			storedAtSync.push(stored());
+			return true;
+		});
 		const { getByPlaceholderText } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
 		const input = getByPlaceholderText(I18n.t('Add_Quick_Reply'));
 
@@ -34,16 +40,24 @@ describe('UserWatchOSQuickRepliesView', () => {
 		act(() => fireEvent(input, 'submitEditing'));
 
 		expect(stored()).toEqual(['Yes', 'On my way']);
-		expect(syncWatchOSQuickReplies).toHaveBeenCalledTimes(2);
+		expect(storedAtSync).toEqual([
+			['Yes', 'On my way'],
+			['Yes', 'On my way']
+		]);
 	});
 
-	it('removes a reply from its delete action and syncs', () => {
+	it('removes a reply from its delete action and syncs after saving', () => {
+		const storedAtSync: string[][] = [];
+		jest.mocked(syncWatchOSQuickReplies).mockImplementation(() => {
+			storedAtSync.push(stored());
+			return true;
+		});
 		const { getByTestId } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
 
 		act(() => fireEvent.press(getByTestId('watchos-quick-reply-Yes-delete')));
 
 		expect(UserPreferences.getString(key)).toBe('[]');
-		expect(syncWatchOSQuickReplies).toHaveBeenCalledTimes(1);
+		expect(storedAtSync).toEqual([[]]);
 		expect(syncWatchOSQuickReplies).toHaveBeenCalledWith(server);
 	});
 
@@ -67,6 +81,20 @@ describe('UserWatchOSQuickRepliesView', () => {
 
 		expect(stored()).toEqual(full);
 		expect(showToast).toHaveBeenCalledWith(I18n.t('Quick_replies_limit_reached', { max: QUICK_REPLIES_MAX }));
+	});
+
+	it('skips a duplicate without the limit toast once the list is full', () => {
+		const full = Array.from({ length: QUICK_REPLIES_MAX }, (_, i) => `Reply ${i}`);
+		UserPreferences.setString(key, JSON.stringify(full));
+		const { getByPlaceholderText } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
+		const input = getByPlaceholderText(I18n.t('Add_Quick_Reply'));
+
+		act(() => fireEvent.changeText(input, 'Reply 0'));
+		act(() => fireEvent(input, 'submitEditing'));
+
+		expect(stored()).toEqual(full);
+		expect(showToast).not.toHaveBeenCalled();
+		expect(input.props.value).toBe('');
 	});
 
 	it('stops typing at the max length', async () => {
