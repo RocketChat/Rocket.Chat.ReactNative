@@ -11,7 +11,7 @@ import { PlainSeparator } from '~/containers/NativeListRow/components/Separator'
 import { useUserPreferences } from '~/lib/methods/userPreferences';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
-import { QUICK_REPLIES_MAX, QUICK_REPLY_MAX_LENGTH } from '~/lib/methods/watchOSQuickReplies/constants';
+import { getQuickRepliesLimits } from '~/lib/methods/watchOSQuickReplies/getQuickRepliesLimits';
 import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncReplies';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import sharedStyles from '~/views/Styles';
@@ -23,6 +23,8 @@ interface IUserWatchOSQuickRepliesViewProps {
 
 const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesViewProps): JSX.Element => {
 	const server = useAppSelector(state => state.server.server);
+	const settings = useAppSelector(state => state.settings);
+	const { max, maxLength } = getQuickRepliesLimits(settings);
 	const [quickReplies = [], setQuickReplies] = useUserPreferences<string[]>(getWatchOSQuickRepliesKey(server), []);
 	const [input, setInput] = useState<string>('');
 	const { colors } = useTheme();
@@ -43,8 +45,8 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 		const value = input.trim();
 		if (!value) return;
 		const isNew = !quickReplies.includes(value);
-		if (isNew && quickReplies.length >= QUICK_REPLIES_MAX) {
-			showToast(I18n.t('Quick_replies_limit_reached', { max: QUICK_REPLIES_MAX }));
+		if (isNew && quickReplies.length >= max) {
+			showToast(I18n.t('Quick_replies_limit_reached', { max }));
 			return;
 		}
 		if (isNew) setQuickReplies([...quickReplies, value]);
@@ -72,10 +74,10 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 							submitBehavior='submit'
 							returnKeyType='done'
 							containerStyle={styles.inputContainer}
-							maxLength={QUICK_REPLY_MAX_LENGTH}
+							maxLength={maxLength}
 						/>
 						<Text style={[styles.info, { color: colors.fontHint }]}>
-							{I18n.t('Apple_Watch_Quick_Replies_Description', { max: QUICK_REPLIES_MAX, length: QUICK_REPLY_MAX_LENGTH })}
+							{I18n.t('Apple_Watch_Quick_Replies_Description', { max, length: maxLength })}
 						</Text>
 					</View>
 				}

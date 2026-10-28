@@ -12,7 +12,7 @@ interface IUpdateSettings extends Action {
 }
 
 interface IFetchSettingsComplete extends Action {
-	appleWatchQuickActions?: TSettingsValues;
+	settings?: TSettingsState;
 }
 
 export type IActionSettings = IAddSettings & IUpdateSettings;
@@ -37,9 +37,9 @@ export function clearSettings(): Action {
 	};
 }
 
-export function fetchSettingsComplete(appleWatchQuickActions?: TSettingsValues): IFetchSettingsComplete {
+export function fetchSettingsComplete(settings?: TSettingsState): IFetchSettingsComplete {
 	return {
 		type: SETTINGS.FETCH_COMPLETE,
-		appleWatchQuickActions
+		settings
 	};
 }

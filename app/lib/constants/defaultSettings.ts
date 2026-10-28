@@ -252,6 +252,12 @@ export const defaultSettings = {
 	Apple_Watch_Quick_Actions: {
 		type: 'valueAsString'
 	},
+	Apple_Watch_Quick_Actions_Max_Count: {
+		type: 'valueAsNumber'
+	},
+	Apple_Watch_Quick_Actions_Max_Length: {
+		type: 'valueAsNumber'
+	},
 	Accounts_AllowInvisibleStatusOption: {
 		type: 'valueAsString'
 	},

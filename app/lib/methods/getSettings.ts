@@ -5,7 +5,7 @@ import { addSettings, clearSettings, fetchSettingsComplete } from '~/actions/set
 import { defaultSettings } from '../constants/defaultSettings';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import { type IPreparedSettings, type ISettingsIcon } from '~/definitions';
-import { type TSettingsValues } from '~/reducers/settings';
+import { type TSettingsState } from '~/reducers/settings';
 import log from './helpers/log';
 import { fetchForWorkspace } from './serverBasicAuth';
 import { store as reduxStore } from '../store/auxStore';
@@ -181,7 +181,7 @@ export async function getSettings(server: string): Promise<void> {
 	latestSettingsFetch += 1;
 	const settingsFetch = latestSettingsFetch;
 	const isLatestFetch = () => settingsFetch === latestSettingsFetch && isActiveWorkspace(server);
-	let appleWatchQuickActions: TSettingsValues | undefined;
+	let fetchedSettings: TSettingsState | undefined;
 	settingsFetchedFor = null;
 	try {
 		const db = database.active;
@@ -218,7 +218,7 @@ export async function getSettings(server: string): Promise<void> {
 		const filteredSettings: IPreparedSettings[] = _prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 		const parsedSettings = parseSettings(filteredSettings);
-		appleWatchQuickActions = parsedSettings.Apple_Watch_Quick_Actions;
+		fetchedSettings = parsedSettings;
 
 		reduxStore.dispatch(addSettings(parsedSettings));
 
@@ -278,7 +278,7 @@ export async function getSettings(server: string): Promise<void> {
 	} finally {
 		if (isLatestFetch()) {
 			settingsFetchedFor = server;
-			reduxStore.dispatch(fetchSettingsComplete(appleWatchQuickActions));
+			reduxStore.dispatch(fetchSettingsComplete(fetchedSettings));
 		}
 	}
 }

@@ -134,9 +134,9 @@ const setupStore = (settings?: TSettingsState) => {
 	return recording;
 };
 
-const finishFetch = (store: Store, server: string, appleWatchReplies?: string) => {
+const finishFetch = (store: Store, server: string, fetchedSettings?: TSettingsState) => {
 	mockFetchedFor = server;
-	store.dispatch(fetchSettingsComplete(appleWatchReplies));
+	store.dispatch(fetchSettingsComplete(fetchedSettings));
 };
 
 describe('login saga — watch quick replies', () => {
@@ -146,13 +146,16 @@ describe('login saga — watch quick replies', () => {
 	});
 
 	it('seeds with the server setting once it is fetched', async () => {
-		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No' });
+		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No', Apple_Watch_Quick_Actions_Max_Count: 3 });
 		finishFetch(store, SERVER);
 
 		store.dispatch(loginSuccess(USER));
 		await flushSagaMicrotasks();
 
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'Yes,No');
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, {
+			Apple_Watch_Quick_Actions: 'Yes,No',
+			Apple_Watch_Quick_Actions_Max_Count: 3
+		});
 	});
 
 	it('does not sync without a watch app', async () => {
@@ -177,7 +180,7 @@ describe('login saga — watch quick replies', () => {
 		finishFetch(store, SERVER);
 		await flushSagaMicrotasks();
 
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'OK');
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'OK' });
 	});
 
 	it('seeds with the setting the finished fetch carried when the stored settings were cleared meanwhile', async () => {
@@ -186,10 +189,13 @@ describe('login saga — watch quick replies', () => {
 		store.dispatch(loginSuccess(USER));
 		await flushSagaMicrotasks();
 		store.dispatch(clearSettings());
-		finishFetch(store, SERVER, 'Yes,No');
+		finishFetch(store, SERVER, { Apple_Watch_Quick_Actions: 'Yes,No', Apple_Watch_Quick_Actions_Max_Count: 3 });
 		await flushSagaMicrotasks();
 
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'Yes,No');
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, {
+			Apple_Watch_Quick_Actions: 'Yes,No',
+			Apple_Watch_Quick_Actions_Max_Count: 3
+		});
 	});
 
 	it('seeds when the same workspace is selected again while login is still loading permissions', async () => {
@@ -204,7 +210,7 @@ describe('login saga — watch quick replies', () => {
 		finishPermissions();
 		await flushSagaMicrotasks();
 
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'Yes,No');
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'Yes,No' });
 	});
 
 	it('syncs without waiting when the settings fetch already finished without the setting', async () => {
@@ -214,7 +220,7 @@ describe('login saga — watch quick replies', () => {
 		store.dispatch(loginSuccess(USER));
 		await flushSagaMicrotasks();
 
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, undefined);
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, {});
 	});
 
 	it('stops waiting when the user switches workspace after login finished', async () => {
@@ -246,7 +252,7 @@ describe('login saga — watch quick replies', () => {
 		await flushSagaMicrotasks();
 		jest.useRealTimers();
 
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'Yes,No');
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'Yes,No' });
 	});
 
 	it('keeps waiting when the same workspace is selected again right after login', async () => {
@@ -258,7 +264,7 @@ describe('login saga — watch quick replies', () => {
 		finishFetch(store, SERVER);
 		await flushSagaMicrotasks();
 
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'Yes,No');
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'Yes,No' });
 	});
 
 	it('seeds after switching back from a workspace that never connected', async () => {
@@ -270,7 +276,7 @@ describe('login saga — watch quick replies', () => {
 		store.dispatch(loginSuccess(USER));
 		await flushSagaMicrotasks();
 
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'Yes,No');
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'Yes,No' });
 	});
 
 	it('waits when the fetched settings belong to another workspace', async () => {
@@ -283,7 +289,7 @@ describe('login saga — watch quick replies', () => {
 
 		finishFetch(store, SERVER);
 		await flushSagaMicrotasks();
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'Yes,No');
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'Yes,No' });
 	});
 
 	it('stops waiting when the user deletes the account', async () => {

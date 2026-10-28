@@ -274,7 +274,7 @@ const fetchWatchReplies = function* fetchWatchRepliesFork() {
 		if (!isAuthenticated) return;
 		const server = yield select(s => s.server.server);
 		const settingsFetchedFor = yield call(getSettingsFetchedFor);
-		let fetchedReplies;
+		let fetchedSettings;
 		if (settingsFetchedFor !== server) {
 			const { loaded, stop } = yield race({
 				loaded: take(types.SETTINGS.FETCH_COMPLETE),
@@ -286,10 +286,10 @@ const fetchWatchReplies = function* fetchWatchRepliesFork() {
 				])
 			});
 			if (stop) return;
-			fetchedReplies = loaded.appleWatchQuickActions;
+			fetchedSettings = loaded.settings;
 		}
-		const appleWatchReplies = fetchedReplies ?? (yield select(s => s.settings.Apple_Watch_Quick_Actions));
-		syncWatchOSQuickRepliesWithServer(server, appleWatchReplies);
+		const settings = fetchedSettings ?? (yield select(s => s.settings));
+		syncWatchOSQuickRepliesWithServer(server, settings);
 	} catch (e) {
 		log(e);
 	}
