@@ -1,13 +1,13 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { clearWorkspaceSettings, getLoginSettings, getSettings, setSettings } from '../getSettings';
+import { clearWorkspaceSettings, getLoginSettings, getSettings, getSettingsFetchedFor, setSettings } from '../getSettings';
 import { headers } from '~/lib/methods/helpers/fetch';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
 import log from '~/lib/methods/helpers/log';
 import { mockGlobalFetch } from '~/lib/testUtils/mockGlobalFetch';
 import { store } from '~/lib/store/auxStore';
-import { addSettings, fetchSettingsComplete, fetchSettingsStart } from '~/actions/settings';
+import { addSettings, fetchSettingsComplete } from '~/actions/settings';
 import { flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 import database from '~/lib/database';
 
@@ -148,7 +148,8 @@ describe('getSettings — active workspace', () => {
 
 		await getSettings(SERVER);
 
-		expect(store.dispatch).toHaveBeenCalledWith(fetchSettingsComplete(SERVER));
+		expect(store.dispatch).toHaveBeenCalledWith(fetchSettingsComplete());
+		expect(getSettingsFetchedFor()).toBe(SERVER);
 	});
 
 	it('reports the quick actions it fetched when it completes', async () => {
@@ -157,16 +158,20 @@ describe('getSettings — active workspace', () => {
 		await getSettings(SERVER);
 
 		expect(store.dispatch).toHaveBeenCalledWith(
-			expect.objectContaining({ type: fetchSettingsComplete(SERVER).type, server: SERVER, appleWatchQuickActions: 'Yes,No' })
+			expect.objectContaining({ type: fetchSettingsComplete().type, appleWatchQuickActions: 'Yes,No' })
 		);
 	});
 
-	it('marks the settings as not fetched before it fetches them', async () => {
+	it('marks the settings as not fetched while it fetches them', async () => {
 		response = { success: false };
-
 		await getSettings(SERVER);
+		expect(getSettingsFetchedFor()).toBe(SERVER);
 
-		expect(jest.mocked(store.dispatch).mock.calls[0]).toEqual([fetchSettingsStart()]);
+		const fetching = getSettings(SERVER);
+		expect(getSettingsFetchedFor()).toBeNull();
+		await fetching;
+
+		expect(getSettingsFetchedFor()).toBe(SERVER);
 	});
 
 	it('drops the settings of a workspace that is no longer active', async () => {
@@ -175,7 +180,8 @@ describe('getSettings — active workspace', () => {
 
 		await getSettings(SERVER);
 
-		expect(jest.mocked(store.dispatch).mock.calls).toEqual([[fetchSettingsStart()]]);
+		expect(store.dispatch).not.toHaveBeenCalled();
+		expect(getSettingsFetchedFor()).toBeNull();
 	});
 });
 
@@ -209,7 +215,7 @@ describe('getSettings — the same workspace fetched twice', () => {
 		expect(store.dispatch).toHaveBeenCalledWith(addSettings({ Site_Name: 'New' }));
 		expect(store.dispatch).not.toHaveBeenCalledWith(addSettings({ Site_Name: 'Old' }));
 		expect(
-			jest.mocked(store.dispatch).mock.calls.filter(([action]) => action.type === fetchSettingsComplete(SERVER).type)
+			jest.mocked(store.dispatch).mock.calls.filter(([action]) => action.type === fetchSettingsComplete().type)
 		).toHaveLength(1);
 	});
 

@@ -8,11 +8,11 @@ import { type ProfileStackParamList } from '~/stacks/types';
 import { FormTextInput } from '~/containers/TextInput';
 import NativeListRow from '~/containers/NativeListRow';
 import { PlainSeparator } from '~/containers/NativeListRow/components/Separator';
-import userPreferences, { useUserPreferences } from '~/lib/methods/userPreferences';
-import { CURRENT_SERVER, getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
+import { useUserPreferences } from '~/lib/methods/userPreferences';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
 import { QUICK_REPLIES_MAX, QUICK_REPLY_MAX_LENGTH } from '~/lib/methods/watchOSQuickReplies/constants';
 import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncReplies';
-import log from '~/lib/methods/helpers/log';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
@@ -22,8 +22,8 @@ interface IUserWatchOSQuickRepliesViewProps {
 }
 
 const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesViewProps): JSX.Element => {
-	const currentServer = userPreferences.getString(CURRENT_SERVER);
-	const [quickReplies = [], setQuickReplies] = useUserPreferences<string[]>(getWatchOSQuickRepliesKey(currentServer ?? ''), []);
+	const server = useAppSelector(state => state.server.server);
+	const [quickReplies = [], setQuickReplies] = useUserPreferences<string[]>(getWatchOSQuickRepliesKey(server), []);
 	const [input, setInput] = useState<string>('');
 	const { colors } = useTheme();
 
@@ -34,20 +34,12 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 	}, [navigation]);
 
 	const removeQuickReply = (reply: string) => {
-		if (!currentServer) {
-			log(new Error('Error: cannot set quick replies, current server is undefined'));
-			return;
-		}
 		const newReplies = quickReplies.filter(quickreply => quickreply !== reply);
 		setQuickReplies(newReplies);
-		syncWatchOSQuickReplies(currentServer);
+		syncWatchOSQuickReplies(server);
 	};
 
 	const addQuickReply = () => {
-		if (!currentServer) {
-			log(new Error('Error: cannot set quick replies, current server is undefined'));
-			return;
-		}
 		const value = input.trim();
 		if (!value) return;
 		const isNew = !quickReplies.includes(value);
@@ -57,7 +49,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 		}
 		if (isNew) setQuickReplies([...quickReplies, value]);
 		setInput('');
-		syncWatchOSQuickReplies(currentServer);
+		syncWatchOSQuickReplies(server);
 	};
 
 	return (

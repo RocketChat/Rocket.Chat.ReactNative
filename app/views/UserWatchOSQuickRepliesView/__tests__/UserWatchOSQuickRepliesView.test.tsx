@@ -1,12 +1,16 @@
 import { act, fireEvent, render, userEvent } from '@testing-library/react-native';
+import { type ReactNode } from 'react';
+import { Provider } from 'react-redux';
 
 import UserWatchOSQuickRepliesView from '..';
 import I18n from '~/i18n';
-import { CURRENT_SERVER, getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
+import { selectServerSuccess } from '~/actions/server';
+import { getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { QUICK_REPLIES_MAX, QUICK_REPLY_MAX_LENGTH } from '~/lib/methods/watchOSQuickReplies/constants';
 import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncReplies';
 import { showToast } from '~/lib/methods/helpers/showToast';
+import { createMockedStore } from '~/reducers/mockedStore';
 
 jest.mock('~/lib/methods/watchOSQuickReplies/syncReplies', () => ({ syncWatchOSQuickReplies: jest.fn() }));
 jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
@@ -15,13 +19,19 @@ const server = 'https://open.rocket.chat';
 const key = getWatchOSQuickRepliesKey(server);
 const navigation = { setOptions: jest.fn() } as any;
 
+const renderView = () => {
+	const store = createMockedStore();
+	store.dispatch(selectServerSuccess({ server, version: '8.9.0', name: 'Open' }));
+	const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={store}>{children}</Provider>;
+	return render(<UserWatchOSQuickRepliesView navigation={navigation} />, { wrapper: Wrapper });
+};
+
 const stored = () => JSON.parse(UserPreferences.getString(key) ?? '[]');
 
 describe('UserWatchOSQuickRepliesView', () => {
 	beforeEach(() => {
 		(syncWatchOSQuickReplies as jest.Mock).mockReset();
 		(showToast as jest.Mock).mockClear();
-		UserPreferences.setString(CURRENT_SERVER, server);
 		UserPreferences.setString(key, JSON.stringify(['Yes']));
 	});
 
@@ -30,7 +40,7 @@ describe('UserWatchOSQuickRepliesView', () => {
 		jest.mocked(syncWatchOSQuickReplies).mockImplementation(() => {
 			storedAtSync.push(stored());
 		});
-		const { getByPlaceholderText } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
+		const { getByPlaceholderText } = renderView();
 		const input = getByPlaceholderText(I18n.t('Add_Quick_Reply'));
 
 		act(() => fireEvent.changeText(input, '  On my way  '));
@@ -50,7 +60,7 @@ describe('UserWatchOSQuickRepliesView', () => {
 		jest.mocked(syncWatchOSQuickReplies).mockImplementation(() => {
 			storedAtSync.push(stored());
 		});
-		const { getByTestId } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
+		const { getByTestId } = renderView();
 
 		act(() => fireEvent.press(getByTestId('watchos-quick-reply-Yes-delete')));
 
@@ -60,7 +70,7 @@ describe('UserWatchOSQuickRepliesView', () => {
 	});
 
 	it('keeps a reply when its row is tapped', () => {
-		const { getByTestId } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
+		const { getByTestId } = renderView();
 
 		act(() => fireEvent.press(getByTestId('watchos-quick-reply-Yes')));
 
@@ -71,7 +81,7 @@ describe('UserWatchOSQuickRepliesView', () => {
 	it('stops adding once the list is full and says why', () => {
 		const full = Array.from({ length: QUICK_REPLIES_MAX }, (_, i) => `Reply ${i}`);
 		UserPreferences.setString(key, JSON.stringify(full));
-		const { getByPlaceholderText } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
+		const { getByPlaceholderText } = renderView();
 		const input = getByPlaceholderText(I18n.t('Add_Quick_Reply'));
 
 		act(() => fireEvent.changeText(input, 'One more'));
@@ -84,7 +94,7 @@ describe('UserWatchOSQuickRepliesView', () => {
 	it('skips a duplicate without the limit toast once the list is full', () => {
 		const full = Array.from({ length: QUICK_REPLIES_MAX }, (_, i) => `Reply ${i}`);
 		UserPreferences.setString(key, JSON.stringify(full));
-		const { getByPlaceholderText } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
+		const { getByPlaceholderText } = renderView();
 		const input = getByPlaceholderText(I18n.t('Add_Quick_Reply'));
 
 		act(() => fireEvent.changeText(input, 'Reply 0'));
@@ -96,7 +106,7 @@ describe('UserWatchOSQuickRepliesView', () => {
 	});
 
 	it('stops typing at the max length', async () => {
-		const { getByPlaceholderText } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
+		const { getByPlaceholderText } = renderView();
 
 		await userEvent.setup().type(getByPlaceholderText(I18n.t('Add_Quick_Reply')), 'a'.repeat(QUICK_REPLY_MAX_LENGTH + 5));
 

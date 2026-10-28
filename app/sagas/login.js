@@ -33,7 +33,7 @@ import { isTwoFactorCancelled } from '../lib/services/twoFactor/twoFactorCancell
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
-import { subscribeSettings } from '../lib/methods/getSettings';
+import { getSettingsFetchedFor, subscribeSettings } from '../lib/methods/getSettings';
 import { disconnect, loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
@@ -273,7 +273,7 @@ const fetchWatchReplies = function* fetchWatchRepliesFork() {
 		const isAuthenticated = yield select(s => s.login.isAuthenticated);
 		if (!isAuthenticated) return;
 		const server = yield select(s => s.server.server);
-		const settingsFetchedFor = yield select(s => s.server.settingsFetchedFor);
+		const settingsFetchedFor = yield call(getSettingsFetchedFor);
 		let fetchedReplies;
 		if (settingsFetchedFor !== server) {
 			const { loaded, stop } = yield race({
