@@ -39,13 +39,14 @@ import { all, fork } from 'redux-saga/effects';
 
 import { deepLinkingOpen } from '~/actions/deepLinking';
 import { selectServerRequest } from '~/actions/server';
-import { SERVER } from '~/actions/actionsTypes';
+import { APP } from '~/actions/actionsTypes';
 import { RootEnum } from '~/definitions';
 import deepLinkingRoot from '../deepLinking';
 import selectServerRoot from '../selectServer';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getServerById } from '~/lib/database/services/Server';
 import sdk from '~/lib/services/sdk';
+import { localAuthenticate, UserCanceledError } from '~/lib/methods/helpers/localAuthentication';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 import type { PreloadedState } from '~/lib/testUtils/sagaStore';
 
@@ -77,15 +78,19 @@ describe('share extension opened while connected to the same Workspace', () => {
 		expect(store.getState().share.params).toMatchObject({ mediaUris: 'file:///photo.jpg' });
 	});
 
-	it('still opens the Inside Stack when the same Workspace is selected outside the share extension', async () => {
-		const { store, dispatchedActions } = createRecordingStore(selectServerRoot, {
-			app: { root: RootEnum.ROOT_OUTSIDE }
+	it('opens the Inside Stack after the share unlock is canceled and the app restarts', async () => {
+		jest.mocked(localAuthenticate).mockRejectedValueOnce(new UserCanceledError());
+		const { store, dispatchedActions } = createRecordingStore(shareAndSelectServerRoot, {
+			app: { root: RootEnum.ROOT_INSIDE }
 		} as PreloadedState);
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension', mediaUris: 'file:///photo.jpg' } as any));
+		await flushSagaMicrotasks();
+		expect(dispatchedActions.some(action => action.type === APP.INIT)).toBe(true);
 
 		store.dispatch(selectServerRequest(HOST, '7.0.0'));
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_INSIDE);
-		expect(dispatchedActions.some(action => action.type === SERVER.SELECT_CANCEL)).toBe(true);
 	});
 });
