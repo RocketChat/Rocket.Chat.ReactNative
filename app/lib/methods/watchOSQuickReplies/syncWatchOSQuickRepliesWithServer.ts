@@ -15,7 +15,7 @@ export const syncWatchOSQuickRepliesWithServer = (server: string, appleWatchRepl
 			...new Set(
 				appleWatchReplies
 					.split(',')
-					.map(reply => Array.from(reply.trim()).slice(0, QUICK_REPLY_MAX_LENGTH).join(''))
+					.map(reply => Array.from(reply.trim()).slice(0, QUICK_REPLY_MAX_LENGTH).join('').trim())
 					.filter(Boolean)
 			)
 		].slice(0, QUICK_REPLIES_MAX);

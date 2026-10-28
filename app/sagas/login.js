@@ -364,6 +364,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		// On warm relaunch, redux is already populated by selectServer; on cold login, it re-checks
 		// when PERMISSIONS.SET / ENTERPRISE_MODULES.SET land.
 		yield spawn(startVoipFork);
+		yield spawn(fetchWatchReplies);
 		yield call(fetchPermissions);
 		yield call(fetchEnterpriseModules, { user });
 		yield fork(fetchCustomEmojisFork);
@@ -413,7 +414,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(getUserTokenKey(server, user.id), user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
 		EventEmitter.emit('connected');
-		yield spawn(fetchWatchReplies);
 		const currentRoot = yield select(state => state.app.root);
 		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));

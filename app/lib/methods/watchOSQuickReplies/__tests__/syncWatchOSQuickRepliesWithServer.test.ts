@@ -59,6 +59,11 @@ describe('syncWatchOSQuickRepliesWithServer', () => {
 		expect(UserPreferences.getString(key)).toBe(JSON.stringify(['a'.repeat(30), 'No']));
 	});
 
+	it('does not end a trimmed reply with a space', () => {
+		syncWatchOSQuickRepliesWithServer(server, `${'a'.repeat(29)} bb`);
+		expect(UserPreferences.getString(key)).toBe(JSON.stringify(['a'.repeat(29)]));
+	});
+
 	it('never splits an emoji when trimming', () => {
 		syncWatchOSQuickRepliesWithServer(server, `Say${'😀'.repeat(30)}`);
 		expect(UserPreferences.getString(key)).toBe(JSON.stringify([`Say${'😀'.repeat(27)}`]));

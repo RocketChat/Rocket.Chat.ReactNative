@@ -89,7 +89,6 @@ struct MessageListView: View {
 						.id(messageComposer)
 						.padding(.top, 8)
 					}
-					// the first batch renders one frame before it can be scrolled, so keep that frame hidden
 					.opacity(positionedCount == 0 && messages.count > 0 ? 0 : 1)
 					.onAppear {
 						positionedCount = messages.count
@@ -143,7 +142,6 @@ struct MessageListView: View {
 	}
 	
 	private func scrollToBottom(proxy: ScrollViewProxy) {
-		// the rotated scroll view used before watchOS 10 already starts at the bottom and can't be targeted
 		guard #available(watchOS 10.0, *) else { return }
 		
 		proxy.scrollTo(bottomAnchor, anchor: .bottom)

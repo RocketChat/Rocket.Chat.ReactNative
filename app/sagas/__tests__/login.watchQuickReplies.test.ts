@@ -168,7 +168,7 @@ describe('login saga — watch quick replies', () => {
 		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'OK');
 	});
 
-	it('does not sync when the user logged out before login finished', async () => {
+	it('seeds when the same workspace is selected again while login is still loading permissions', async () => {
 		let finishPermissions = () => {};
 		jest.mocked(getPermissions).mockReturnValueOnce(new Promise<void>(resolve => (finishPermissions = resolve)));
 		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No' });
@@ -176,11 +176,11 @@ describe('login saga — watch quick replies', () => {
 
 		store.dispatch(loginSuccess(USER));
 		await flushSagaMicrotasks();
-		store.dispatch(logout());
+		store.dispatch(selectServerRequest(SERVER, '7.0.0'));
 		finishPermissions();
 		await flushSagaMicrotasks();
 
-		expect(syncWatchOSQuickRepliesWithServer).not.toHaveBeenCalled();
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'Yes,No');
 	});
 
 	it('syncs without waiting when the settings fetch already finished without the setting', async () => {
