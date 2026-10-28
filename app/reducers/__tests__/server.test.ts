@@ -6,10 +6,10 @@ import {
 	serverFailure,
 	serverFinishAdd,
 	selectServerFailure
-} from '../actions/server';
-import { fetchSettingsComplete } from '../actions/settings';
-import { mockedStore } from './mockedStore';
-import { initialState } from './server';
+} from '~/actions/server';
+import { fetchSettingsComplete } from '~/actions/settings';
+import { mockedStore } from '../mockedStore';
+import { initialState } from '../server';
 
 describe('test server reducer', () => {
 	it('should return initial state', () => {
