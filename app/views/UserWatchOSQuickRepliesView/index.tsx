@@ -1,12 +1,13 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import I18n from '~/i18n';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { type ProfileStackParamList } from '~/stacks/types';
 import { FormTextInput } from '~/containers/TextInput';
-import Chip from '~/containers/Chip';
+import NativeListRow from '~/containers/NativeListRow';
+import { PlainSeparator } from '~/containers/NativeListRow/components/Separator';
 import userPreferences, { useUserPreferences } from '~/lib/methods/userPreferences';
 import { CURRENT_SERVER, getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
 import { QUICK_REPLIES_MAX, QUICK_REPLY_MAX_LENGTH } from '~/lib/methods/watchOSQuickReplies/constants';
@@ -38,7 +39,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 		}
 		const newReplies = quickReplies.filter(quickreply => quickreply !== reply);
 		setQuickReplies(newReplies);
-		syncWatchOSQuickReplies();
+		syncWatchOSQuickReplies(currentServer);
 	};
 
 	const addQuickReply = () => {
@@ -50,45 +51,75 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 		if (!value || quickReplies.length >= QUICK_REPLIES_MAX) return;
 		if (!quickReplies.includes(value)) setQuickReplies([...quickReplies, value]);
 		setInput('');
-		syncWatchOSQuickReplies();
+		syncWatchOSQuickReplies(currentServer);
 	};
 
 	return (
 		<SafeAreaView testID='watchos-quick-replies-view'>
-			<ScrollView
-				contentContainerStyle={[sharedStyles.containerScrollView, styles.content, { backgroundColor: colors.surfaceTint }]}
+			<FlatList
+				data={quickReplies}
+				keyExtractor={reply => reply}
+				contentContainerStyle={[styles.content, { backgroundColor: colors.surfaceTint }]}
 				keyboardShouldPersistTaps='handled'
-				keyboardDismissMode='interactive'>
-				<FormTextInput
-					label={I18n.t('Apple_Watch_Quick_Replies')}
-					value={input}
-					onChangeText={setInput}
-					placeholder={I18n.t('Add_Quick_Reply')}
-					onSubmitEditing={addQuickReply}
-					submitBehavior='submit'
-					returnKeyType='done'
-					containerStyle={styles.inputContainer}
-					maxLength={QUICK_REPLY_MAX_LENGTH}
-				/>
-				<Text style={[styles.info, { color: colors.fontHint }]}>
-					{I18n.t('Apple_Watch_Quick_Replies_Description', { max: QUICK_REPLIES_MAX, length: QUICK_REPLY_MAX_LENGTH })}
-				</Text>
-				{quickReplies.length !== 0 && (
-					<View style={styles.chipContainer}>
-						{quickReplies.map(reply => (
-							<Chip key={reply} text={reply} fullWidth onPress={() => removeQuickReply(reply)} />
-						))}
+				keyboardDismissMode='interactive'
+				ItemSeparatorComponent={PlainSeparator}
+				ListHeaderComponent={
+					<View style={styles.header}>
+						<FormTextInput
+							label={I18n.t('Apple_Watch_Quick_Replies')}
+							value={input}
+							onChangeText={setInput}
+							placeholder={I18n.t('Add_Quick_Reply')}
+							onSubmitEditing={addQuickReply}
+							submitBehavior='submit'
+							returnKeyType='done'
+							containerStyle={styles.inputContainer}
+							maxLength={QUICK_REPLY_MAX_LENGTH}
+						/>
+						<Text style={[styles.info, { color: colors.fontHint }]}>
+							{I18n.t('Apple_Watch_Quick_Replies_Description', { max: QUICK_REPLIES_MAX, length: QUICK_REPLY_MAX_LENGTH })}
+						</Text>
 					</View>
+				}
+				renderItem={({ item, index }) => (
+					<NativeListRow
+						title={item}
+						testID={`watchos-quick-reply-${item}`}
+						accessibilityLabel={item}
+						isFirst={index === 0}
+						isLast={index === quickReplies.length - 1}
+						trailingAction={{
+							icon: 'delete',
+							onPress: () => removeQuickReply(item),
+							testID: `watchos-quick-reply-${item}-delete`,
+							accessibilityLabel: I18n.t('Delete')
+						}}
+					/>
 				)}
-			</ScrollView>
+			/>
 		</SafeAreaView>
 	);
 };
 
 const styles = StyleSheet.create({
-	content: { flexGrow: 1, paddingTop: 32, gap: 12 },
-	inputContainer: { marginBottom: 0 },
-	info: { fontSize: 14, lineHeight: 20, ...sharedStyles.textRegular },
-	chipContainer: { flexDirection: 'row', flexWrap: 'wrap', rowGap: 8, marginHorizontal: -4 }
+	content: {
+		flexGrow: 1,
+		paddingTop: 32,
+		paddingBottom: 24
+	},
+	header: {
+		gap: 12,
+		paddingHorizontal: 16,
+		paddingBottom: 16
+	},
+	inputContainer: {
+		marginBottom: 0
+	},
+	info: {
+		fontSize: 14,
+		lineHeight: 20,
+		...sharedStyles.textRegular
+	}
 });
+
 export default UserWatchOSQuickRepliesView;

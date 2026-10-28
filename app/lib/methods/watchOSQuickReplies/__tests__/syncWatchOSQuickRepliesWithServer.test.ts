@@ -1,4 +1,4 @@
-import { CURRENT_SERVER, getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
+import { getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
 import NativeWatchModule from '~/lib/native/NativeWatchModule';
 import UserPreferences from '../../userPreferences';
 import { shouldShowWatchAppOptions } from '../getWatchStatus';
@@ -15,14 +15,19 @@ describe('syncWatchOSQuickRepliesWithServer', () => {
 	beforeEach(() => {
 		(shouldShowWatchAppOptions as jest.Mock).mockReturnValue(true);
 		syncQuickReplies.mockReset().mockReturnValue('SUCCESS');
-		UserPreferences.setString(CURRENT_SERVER, server);
 		UserPreferences.removeItem(key);
 	});
 
 	it('seeds replies from the server setting on first login and sends them to the watch', () => {
+		let storedAtSync: string | null | undefined;
+		syncQuickReplies.mockImplementationOnce(() => {
+			storedAtSync = UserPreferences.getString(key);
+			return 'SUCCESS';
+		});
+
 		expect(syncWatchOSQuickRepliesWithServer(server, 'Yes, No ,,On my way')).toBe(true);
-		expect(UserPreferences.getString(key)).toBe(JSON.stringify(['Yes', 'No', 'On my way']));
-		expect(syncQuickReplies).toHaveBeenCalledWith(server, ['Yes', 'No', 'On my way']);
+		expect(syncQuickReplies).toHaveBeenCalledWith(server);
+		expect(storedAtSync).toBe(JSON.stringify(['Yes', 'No', 'On my way']));
 	});
 
 	it('dedupes seeded replies', () => {
@@ -33,7 +38,7 @@ describe('syncWatchOSQuickRepliesWithServer', () => {
 	it('leaves the list unset but still syncs the watch when the server has no setting', () => {
 		expect(syncWatchOSQuickRepliesWithServer(server, undefined)).toBe(true);
 		expect(UserPreferences.contains(key)).toBe(false);
-		expect(syncQuickReplies).toHaveBeenCalledWith(server, []);
+		expect(syncQuickReplies).toHaveBeenCalledWith(server);
 	});
 
 	it('caps seeded replies at the max count after deduping', () => {

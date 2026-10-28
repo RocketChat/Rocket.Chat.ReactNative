@@ -125,12 +125,18 @@ describe('removeServerData', () => {
 		serverKeys(SERVER).forEach(key => expect(UserPreferences.getString(key)).toBeNull());
 	});
 
-	it('clears the watch quick replies on the watch too', async () => {
+	it('clears the watch quick replies on the watch too, after removing them from storage', async () => {
 		seedServer(SERVER, USER_ID);
+		let repliesStoredAtSync: boolean | undefined;
+		jest.mocked(NativeWatchModule!.syncQuickReplies).mockImplementationOnce(() => {
+			repliesStoredAtSync = UserPreferences.contains(getWatchOSQuickRepliesKey(SERVER));
+			return 'SUCCESS';
+		});
 
 		await removeServerData({ server: SERVER });
 
-		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith(SERVER, []);
+		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith(SERVER);
+		expect(repliesStoredAtSync).toBe(false);
 	});
 
 	it('leaves another workspace keys untouched', async () => {

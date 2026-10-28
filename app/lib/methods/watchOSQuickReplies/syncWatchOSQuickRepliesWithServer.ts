@@ -21,5 +21,5 @@ export const syncWatchOSQuickRepliesWithServer = (server: string, appleWatchRepl
 		].slice(0, QUICK_REPLIES_MAX);
 		if (replies.length) UserPreferences.setMap(quickRepliesMMKVKey, replies);
 	}
-	return syncWatchOSQuickReplies();
+	return syncWatchOSQuickReplies(server);
 };

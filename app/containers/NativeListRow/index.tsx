@@ -201,7 +201,6 @@ export const NativeListRowContent = ({
 
 export interface INativeListRow extends Omit<INativeListRowContent, 'title' | 'titleStyle' | 'style'> {
 	title: string;
-	onPress: () => void;
 	testID: string;
 	isFirst?: boolean;
 	isLast?: boolean;

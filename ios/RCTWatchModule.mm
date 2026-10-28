@@ -1,8 +1,15 @@
 #import "RCTWatchModule.h"
 #import <WatchConnectivity/WCSession.h>
+#import "Shared/RocketChat/MMKVBridge.h"
+
+@interface MMKVBridge (WatchQuickReplies)
++ (MMKVBridge * _Nonnull)build;
+- (NSArray<NSString *> * _Nonnull)watchQuickRepliesFor:(NSString * _Nonnull)server;
+@end
 
 @interface RCTWatchModule ()
 @property(nonatomic, strong) WCSession *session;
+@property(nonatomic, strong) MMKVBridge *mmkv;
 @end
 
 @implementation RCTWatchModule
@@ -13,6 +20,7 @@
     if (self = [super init]) {
         // activated by WatchConnection in AppDelegate
         _session = WCSession.defaultSession;
+        _mmkv = [MMKVBridge build];
     }
     return self;
 }
@@ -28,7 +36,7 @@
 }
 
 #pragma mark - spec methods (declared in spec)
-- (NSString *)syncQuickReplies:(NSString *)server replies:(NSArray *)replies {
+- (NSString *)syncQuickReplies:(NSString *)server {
     if (![WCSession isSupported] || !_session.isWatchAppInstalled) {
         return @"[ERROR]: WatchApp not supported or not installed";
     }
@@ -37,6 +45,7 @@
         return @"[ERROR]: Watch session not activated";
     }
 
+    NSArray<NSString *> *replies = [_mmkv watchQuickRepliesFor:server];
     NSError *error = nil;
     BOOL success = [_session updateApplicationContext:@{
         @"quickReplies" : replies,

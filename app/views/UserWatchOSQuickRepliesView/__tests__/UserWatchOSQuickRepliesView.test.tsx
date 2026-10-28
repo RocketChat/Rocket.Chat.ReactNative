@@ -35,13 +35,23 @@ describe('UserWatchOSQuickRepliesView', () => {
 		expect(syncWatchOSQuickReplies).toHaveBeenCalledTimes(2);
 	});
 
-	it('removes a reply on press and syncs', () => {
-		const { getByText } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
+	it('removes a reply from its delete action and syncs', () => {
+		const { getByTestId } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
 
-		act(() => fireEvent.press(getByText('Yes')));
+		act(() => fireEvent.press(getByTestId('watchos-quick-reply-Yes-delete')));
 
 		expect(UserPreferences.getString(key)).toBe('[]');
 		expect(syncWatchOSQuickReplies).toHaveBeenCalledTimes(1);
+		expect(syncWatchOSQuickReplies).toHaveBeenCalledWith(server);
+	});
+
+	it('keeps a reply when its row is tapped', () => {
+		const { getByTestId } = render(<UserWatchOSQuickRepliesView navigation={navigation} />);
+
+		act(() => fireEvent.press(getByTestId('watchos-quick-reply-Yes')));
+
+		expect(stored()).toEqual(['Yes']);
+		expect(syncWatchOSQuickReplies).not.toHaveBeenCalled();
 	});
 
 	it('stops adding once the list is full', () => {

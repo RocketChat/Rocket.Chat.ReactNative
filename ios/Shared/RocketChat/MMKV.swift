@@ -1,7 +1,7 @@
 import Foundation
 
 extension MMKVBridge {
-	static func build() -> MMKVBridge {
+	@objc(build) static func build() -> MMKVBridge {
 		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
 		let groupDir = FileManager.default.groupDir()
 		
@@ -40,7 +40,7 @@ extension MMKVBridge {
 	}
 	
 	// Keep in sync with getWatchOSQuickRepliesKey() (JS)
-	func watchQuickReplies(for server: String) -> [String] {
+	@objc(watchQuickRepliesFor:) func watchQuickReplies(for server: String) -> [String] {
 		guard let json = string(forKey: "\(server)-RC_WATCHOS_QUICKREPLIES"), let data = json.data(using: .utf8) else {
 			return []
 		}

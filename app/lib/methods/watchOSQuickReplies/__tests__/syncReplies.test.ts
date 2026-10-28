@@ -1,6 +1,5 @@
 import NativeWatchModule from '~/lib/native/NativeWatchModule';
-import { CURRENT_SERVER, getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
-import UserPreferences from '../../userPreferences';
+import { shouldShowWatchAppOptions } from '../getWatchStatus';
 import { syncWatchOSQuickReplies } from '../syncReplies';
 
 jest.mock('../getWatchStatus', () => ({ shouldShowWatchAppOptions: jest.fn(() => true) }));
@@ -10,24 +9,23 @@ const syncQuickReplies = NativeWatchModule!.syncQuickReplies as jest.Mock;
 
 describe('syncWatchOSQuickReplies', () => {
 	beforeEach(() => {
+		(shouldShowWatchAppOptions as jest.Mock).mockReturnValue(true);
 		syncQuickReplies.mockReset().mockReturnValue('SUCCESS');
-		UserPreferences.setString(CURRENT_SERVER, server);
-		UserPreferences.removeItem(getWatchOSQuickRepliesKey(server));
 	});
 
-	it('sends the current server replies to the watch', () => {
-		UserPreferences.setString(getWatchOSQuickRepliesKey(server), JSON.stringify(['Yes', 'No']));
-		expect(syncWatchOSQuickReplies()).toBe(true);
-		expect(syncQuickReplies).toHaveBeenCalledWith(server, ['Yes', 'No']);
+	it('asks the watch module to sync the given server', () => {
+		expect(syncWatchOSQuickReplies(server)).toBe(true);
+		expect(syncQuickReplies).toHaveBeenCalledWith(server);
 	});
 
-	it('sends an empty list when there are no replies', () => {
-		syncWatchOSQuickReplies();
-		expect(syncQuickReplies).toHaveBeenCalledWith(server, []);
+	it('does nothing when no watch app is available', () => {
+		(shouldShowWatchAppOptions as jest.Mock).mockReturnValue(false);
+		expect(syncWatchOSQuickReplies(server)).toBe(false);
+		expect(syncQuickReplies).not.toHaveBeenCalled();
 	});
 
 	it('reports native errors as failures', () => {
 		syncQuickReplies.mockReturnValue('[ERROR]: Watch session not activated');
-		expect(syncWatchOSQuickReplies()).toBe(false);
+		expect(syncWatchOSQuickReplies(server)).toBe(false);
 	});
 });
