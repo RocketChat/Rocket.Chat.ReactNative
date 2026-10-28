@@ -62,6 +62,7 @@ const renderSubscriptions = () =>
 describe('RoomsListView useSubscriptions', () => {
 	beforeEach(() => {
 		mockQueries.length = 0;
+		mockActiveDatabase = mockOpenDatabase('https://open.rocket.chat');
 		mockState.server = { server: 'https://open.rocket.chat', connected: false };
 		mockState.login.user.roles = ['livechat-agent'];
 		mockState.sortPreferences.showUnread = false;
@@ -123,9 +124,11 @@ describe('RoomsListView useSubscriptions', () => {
 	});
 
 	it('shows loading and re-queries when the active database switches', async () => {
+		const openRoom = { rid: 'open-room', name: 'open-room', t: 'c' } as TSubscriptionModel;
+		const otherRoom = { rid: 'other-room', name: 'other-room', t: 'c' } as TSubscriptionModel;
 		const { result } = renderSubscriptions();
 		await flushQuerySetup();
-		act(() => latestQuery().emissions.next([]));
+		act(() => latestQuery().emissions.next([openRoom]));
 
 		act(() => switchActiveDatabase('https://other.rocket.chat'));
 		await flushQuerySetup();
@@ -133,7 +136,9 @@ describe('RoomsListView useSubscriptions', () => {
 		expect(result.current.loading).toBe(true);
 		expect(latestQuery().database).toBe('https://other.rocket.chat');
 
-		act(() => latestQuery().emissions.next([]));
+		act(() => latestQuery().emissions.next([otherRoom]));
 		expect(result.current.loading).toBe(false);
+		expect(result.current.subscriptions).toContain(otherRoom);
+		expect(result.current.subscriptions).not.toContain(openRoom);
 	});
 });
