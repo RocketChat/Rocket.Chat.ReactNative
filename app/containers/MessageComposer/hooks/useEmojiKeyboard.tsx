@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, type ReactElement } from 'react';
 import { Keyboard } from 'react-native';
-import { useKeyboardHandler } from 'react-native-keyboard-controller';
+import { KeyboardController, useKeyboardHandler } from 'react-native-keyboard-controller';
 import { type SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scheduleOnRN } from 'react-native-worklets';
@@ -22,6 +22,8 @@ const EmojiKeyboardContext = createContext<IEmojiKeyboardContextProps>({
 const IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD = 70;
 const EMOJI_KEYBOARD_FIXED_HEIGHT = 250;
 
+const dismissKeepingFocus = () => KeyboardController.dismiss({ keepFocus: true });
+
 export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 	const showEmojiPickerSharedValue = useSharedValue(false);
 	const showEmojiSearchbarSharedValue = useSharedValue(false);
@@ -33,6 +35,18 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 
 				if (e.height > IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD && !showEmojiSearchbarSharedValue.get()) {
 					showEmojiPickerSharedValue.set(false);
+				}
+			},
+			onEnd: e => {
+				'worklet';
+
+				// the picker was opened while the keyboard was still showing, so the dismiss it asked for was dropped
+				if (
+					e.height > IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD &&
+					showEmojiPickerSharedValue.get() &&
+					!showEmojiSearchbarSharedValue.get()
+				) {
+					scheduleOnRN(dismissKeepingFocus);
 				}
 			}
 		},

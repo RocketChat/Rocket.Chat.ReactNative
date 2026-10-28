@@ -220,7 +220,11 @@ describe('useEmojiKeyboard', () => {
 			renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
 			const keyboardStartsShowing = (height: number) =>
 				keyboardHandlers.forEach(handler => handler.onStart?.({ height, duration: 250, progress: 1, target: 1 }));
-			return { keyboardStartsShowing };
+			const keyboardFinishesShowing = async (height: number) => {
+				keyboardHandlers.forEach(handler => handler.onEnd?.({ height, duration: 250, progress: 1, target: 1 }));
+				await Promise.resolve();
+			};
+			return { keyboardStartsShowing, keyboardFinishesShowing };
 		};
 
 		test('closes the emoji picker', () => {
@@ -249,6 +253,33 @@ describe('useEmojiKeyboard', () => {
 			keyboardStartsShowing(50);
 
 			expect(mockSharedValue.value).toBe(true);
+		});
+
+		test('dismisses it again when the emoji picker was opened while it was still showing', async () => {
+			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
+			mockSharedValue.value = true;
+
+			await keyboardFinishesShowing(336);
+
+			expect(KeyboardController.KeyboardController.dismiss).toHaveBeenCalledWith({ keepFocus: true });
+		});
+
+		test('stays up once it finished showing for the emoji search bar', async () => {
+			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
+			mockSharedValue.value = true;
+			mockSearchbarSharedValue.value = true;
+
+			await keyboardFinishesShowing(336);
+
+			expect(KeyboardController.KeyboardController.dismiss).not.toHaveBeenCalled();
+		});
+
+		test('stays up once it finished showing with the emoji picker closed', async () => {
+			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
+
+			await keyboardFinishesShowing(336);
+
+			expect(KeyboardController.KeyboardController.dismiss).not.toHaveBeenCalled();
 		});
 	});
 
@@ -297,7 +328,7 @@ describe('useEmojiKeyboard', () => {
 		});
 	});
 
-	describe('emoji search opened from the fixed-height picker', () => {
+	describe('fixed-height emoji picker', () => {
 		const defaultUseSharedValue = jest.mocked(useSharedValue).getMockImplementation();
 
 		afterEach(() => {
@@ -319,7 +350,7 @@ describe('useEmojiKeyboard', () => {
 			return sharedValue;
 		};
 
-		test('resizes the composer to the keyboard the search input brings up', () => {
+		const renderFixedHeightPicker = () => {
 			const systemKeyboardHeight = createValue(0);
 			const keyboardHeight = createValue(250);
 			jest
@@ -336,6 +367,11 @@ describe('useEmojiKeyboard', () => {
 			});
 			renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
 			const [heightReaction, , searchbarReaction] = reactions;
+			return { systemKeyboardHeight, keyboardHeight, heightReaction, searchbarReaction };
+		};
+
+		test('resizes the composer to the keyboard the search input brings up', () => {
+			const { systemKeyboardHeight, keyboardHeight, heightReaction, searchbarReaction } = renderFixedHeightPicker();
 
 			searchbarReaction(true, false);
 			systemKeyboardHeight.set(336);
