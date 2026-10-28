@@ -5,8 +5,6 @@ import { type SharedValue, useAnimatedReaction, useSharedValue } from 'react-nat
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { MessageInnerContext } from '../context';
-
 interface IEmojiKeyboardProvider {
 	children: ReactElement | null;
 }
@@ -80,7 +78,6 @@ const useKeyboardAnimation = () => {
 
 export const useEmojiKeyboard = () => {
 	const { showEmojiPickerSharedValue, showEmojiSearchbarSharedValue } = useContext(EmojiKeyboardContext);
-	const { focus } = useContext(MessageInnerContext);
 	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
 	const [showEmojiSearchbar, setShowEmojiSearchbar] = useState(false);
 
@@ -127,7 +124,6 @@ export const useEmojiKeyboard = () => {
 		updateHeight(true);
 		closeEmojiKeyboard();
 		showEmojiSearchbarSharedValue.set(false);
-		focus();
 	};
 
 	const openEmojiPicker = () => {

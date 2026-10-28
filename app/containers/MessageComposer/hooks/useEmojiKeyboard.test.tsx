@@ -163,7 +163,7 @@ describe('useEmojiKeyboard', () => {
 			});
 		});
 
-		test('should reset keyboard (close emoji keyboard and searchbar) and focus the composer', () => {
+		test('should reset keyboard (close emoji keyboard and searchbar)', () => {
 			const wrapper = createWrapper();
 			mockSharedValue.value = true;
 			mockSearchbarSharedValue.value = true;
@@ -175,7 +175,6 @@ describe('useEmojiKeyboard', () => {
 
 			expect(mockSharedValue.value).toBe(false);
 			expect(mockSearchbarSharedValue.value).toBe(false);
-			expect(mockFocus).toHaveBeenCalledTimes(1);
 		});
 
 		test('should handle multiple open/close operations', () => {
