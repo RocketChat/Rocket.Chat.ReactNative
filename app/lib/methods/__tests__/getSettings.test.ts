@@ -151,6 +151,16 @@ describe('getSettings — active workspace', () => {
 		expect(store.dispatch).toHaveBeenCalledWith(fetchSettingsComplete(SERVER));
 	});
 
+	it('reports the quick actions it fetched when it completes', async () => {
+		response = { success: true, settings: [{ _id: 'Apple_Watch_Quick_Actions', value: 'Yes,No' }], total: 1 };
+
+		await getSettings(SERVER);
+
+		expect(store.dispatch).toHaveBeenCalledWith(
+			expect.objectContaining({ type: fetchSettingsComplete(SERVER).type, server: SERVER, appleWatchQuickActions: 'Yes,No' })
+		);
+	});
+
 	it('marks the settings as not fetched before it fetches them', async () => {
 		response = { success: false };
 

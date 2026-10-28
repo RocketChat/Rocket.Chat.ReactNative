@@ -109,7 +109,7 @@ jest.mock('~/lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer',
 import loginRoot from '../login';
 import { deleteAccount, loginSuccess, logout } from '~/actions/login';
 import { selectServerRequest, selectServerSuccess } from '~/actions/server';
-import { addSettings, fetchSettingsComplete } from '~/actions/settings';
+import { addSettings, clearSettings, fetchSettingsComplete } from '~/actions/settings';
 import { getPermissions } from '~/lib/methods/getPermissions';
 import { shouldShowWatchAppOptions } from '~/lib/methods/watchOSQuickReplies/getWatchStatus';
 import { syncWatchOSQuickRepliesWithServer } from '~/lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer';
@@ -166,6 +166,18 @@ describe('login saga — watch quick replies', () => {
 		await flushSagaMicrotasks();
 
 		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'OK');
+	});
+
+	it('seeds with the setting the finished fetch carried when the stored settings were cleared meanwhile', async () => {
+		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Old' });
+
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+		store.dispatch(clearSettings());
+		store.dispatch(fetchSettingsComplete(SERVER, 'Yes,No'));
+		await flushSagaMicrotasks();
+
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, 'Yes,No');
 	});
 
 	it('seeds when the same workspace is selected again while login is still loading permissions', async () => {
