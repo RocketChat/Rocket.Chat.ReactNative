@@ -131,6 +131,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
                 "width": 30,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -364,6 +365,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                 "width": 30,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -597,6 +599,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                 "width": 30,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -797,6 +800,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
                 "width": 30,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -1227,6 +1231,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
                 "width": 30,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -1460,6 +1465,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
                 "width": 30,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -1729,6 +1735,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
                 "width": 30,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}

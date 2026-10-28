@@ -115,6 +115,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   "width": 28,
                 }
               }
+              svgVariables={null}
               symbolSize={null}
               symbolWeight={null}
               transition={null}
@@ -556,6 +557,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                   "width": 28,
                 }
               }
+              svgVariables={null}
               symbolSize={null}
               symbolWeight={null}
               transition={null}
@@ -822,6 +824,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
                   "width": 28,
                 }
               }
+              svgVariables={null}
               symbolSize={null}
               symbolWeight={null}
               transition={null}
@@ -1289,6 +1292,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   "width": 28,
                 }
               }
+              svgVariables={null}
               symbolSize={null}
               symbolWeight={null}
               transition={null}

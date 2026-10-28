@@ -123,6 +123,7 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
             "width": 30,
           }
         }
+        svgVariables={null}
         symbolSize={null}
         symbolWeight={null}
         transition={null}
@@ -307,6 +308,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "width": 30,
             }
           }
+          svgVariables={null}
           symbolSize={null}
           symbolWeight={null}
           transition={null}
@@ -554,6 +556,7 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
               "width": 30,
             }
           }
+          svgVariables={null}
           symbolSize={null}
           symbolWeight={null}
           transition={null}
@@ -801,6 +804,7 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
               "width": 30,
             }
           }
+          svgVariables={null}
           symbolSize={null}
           symbolWeight={null}
           transition={null}

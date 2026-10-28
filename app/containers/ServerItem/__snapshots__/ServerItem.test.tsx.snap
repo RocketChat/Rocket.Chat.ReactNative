@@ -142,6 +142,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 "width": 44,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -385,6 +386,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 "width": 44,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -628,6 +630,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 "width": 44,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -1017,6 +1020,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                       "width": 44,
                     }
                   }
+                  svgVariables={null}
                   symbolSize={null}
                   symbolWeight={null}
                   transition={null}
@@ -1404,6 +1408,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                       "width": 44,
                     }
                   }
+                  svgVariables={null}
                   symbolSize={null}
                   symbolWeight={null}
                   transition={null}
@@ -1655,6 +1660,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 "width": 44,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -1898,6 +1904,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 "width": 44,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -2141,6 +2148,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 "width": 44,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}

@@ -140,6 +140,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -1038,6 +1039,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -1942,6 +1944,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -2840,6 +2843,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -3738,6 +3742,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -4636,6 +4641,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -5517,6 +5523,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -6387,6 +6394,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -7263,6 +7271,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -8133,6 +8142,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -9003,6 +9013,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -9873,6 +9884,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -10743,6 +10755,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}
@@ -11630,6 +11643,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
                 "width": 120,
               }
             }
+            svgVariables={null}
             symbolSize={null}
             symbolWeight={null}
             transition={null}

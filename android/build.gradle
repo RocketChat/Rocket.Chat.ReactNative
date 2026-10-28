@@ -1,11 +1,11 @@
 buildscript {
     ext {
-        buildToolsVersion = "36.0.0"
+        buildToolsVersion = "37.0.0"
         minSdkVersion = 24
-        compileSdkVersion = 36
+        compileSdkVersion = 37
         targetSdkVersion = 36
         ndkVersion = "27.1.12297006"
-        kotlinVersion = "2.1.20"
+        kotlinVersion = "2.2.0"
         kotlin_version = kotlinVersion
         glideVersion = "4.11.0"
         supportLibVersion = "28.0.0"
@@ -41,3 +41,9 @@ subprojects { subproject ->
 }
 
 apply plugin: "com.facebook.react.rootproject"
+
+subprojects {
+    plugins.withId("com.android.library") {
+        android.buildFeatures.buildConfig = true
+    }
+}
