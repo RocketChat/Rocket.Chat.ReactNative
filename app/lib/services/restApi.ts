@@ -1,9 +1,10 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getUniqueId } from 'react-native-device-info';
+import EJSON from 'ejson';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 
 import {
 	type IAvatarSuggestion,
+	type IMessage,
 	type IMessagePreferences,
 	type INotificationPreferences,
 	type IPreviewItem,
@@ -12,6 +13,7 @@ import {
 	type IRoom,
 	type IRoomNotifications,
 	type IServerRoom,
+	type ISidebarCategory,
 	type RoomType,
 	type SubscriptionType
 } from '~/definitions';
@@ -29,6 +31,7 @@ import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
+import { fetchForWorkspace } from '../methods/serverBasicAuth';
 import log from '../methods/helpers/log';
 
 export const createChannel = ({
@@ -65,9 +68,14 @@ export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: 
 	// RC 2.2.0
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key, ...(force && { force: true }) });
 
-export const e2eRequestSubscriptionKeys = (): Promise<boolean> =>
+export const e2eRequestSubscriptionKeys = () => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('e2e.requestSubscriptionKeys');
+	}
 	// RC 0.72.0
-	sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
+	return sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
+};
 
 export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 	// RC 0.70.0
@@ -124,11 +132,22 @@ export const spotlight = (
 	usernames: string[],
 	type: { users: boolean; rooms: boolean; mentions: boolean },
 	rid?: string
-): Promise<ISpotlight> =>
+): Promise<ISpotlight> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
+		const cappedUsernames = usernames.filter(name => !name.includes(',')).slice(0, 50);
+		return sdk.get('spotlight', {
+			query: search,
+			type: JSON.stringify(type),
+			...(cappedUsernames.length ? { usernames: cappedUsernames.join(',') } : {}),
+			...(rid ? { rid } : {})
+		}) as Promise<ISpotlight>;
+	}
 	// RC 0.51.0
-	rid
+	return rid
 		? sdk.methodCallWrapper('spotlight', search, usernames, type, rid)
 		: sdk.methodCallWrapper('spotlight', search, usernames, type);
+};
 
 export const createDirectMessage = (username: string) =>
 	// RC 0.59.0
@@ -263,10 +282,7 @@ export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: s
 					channelName: name
 				};
 	} else {
-		params = {
-			roomId: rid,
-			roomName: name
-		};
+		params = { roomId: rid };
 	}
 
 	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
@@ -281,9 +297,13 @@ export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; sel
 };
 
 export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p') => {
-	// RC 0.48.0
 	if (type === 'p') {
-		return sdk.methodCallWrapper('joinRoom', roomId) as Promise<boolean>;
+		const serverVersion = reduxStore.getState().server.version;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+			return sdk.post('rooms.join', { roomId, joinCode });
+		}
+		// RC 0.48.0
+		return sdk.methodCallWrapper('joinRoom', roomId);
 	}
 	return sdk.post('channels.join', { roomId, joinCode });
 };
@@ -542,7 +562,11 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	return sdk.get('canned-responses', params);
 };
 
-export const toggleBlockUser = (rid: string, blocked: string, block: boolean): Promise<boolean> => {
+export const toggleBlockUser = (rid: string, blocked: string, block: boolean) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('im.blockUser', { roomId: rid, block });
+	}
 	if (block) {
 		// RC 0.49.0
 		return sdk.methodCallWrapper('blockUser', { rid, blocked });
@@ -692,6 +716,31 @@ export const saveUserProfile = (
 export const saveUserPreferences = (data: Partial<INotificationPreferences & IMessagePreferences>) =>
 	// RC 0.62.0
 	sdk.post('users.setPreferences', { data });
+
+export const saveSidebarCategories = (sidebarCategories: ISidebarCategory[]) =>
+	sdk.post('users.setPreferences', { data: { sidebarCategories } });
+
+const postAuthenticated = async (path: string, body: object) => {
+	const { login, server } = reduxStore.getState();
+	const response = await fetchForWorkspace(server.server, `${server.server}/api/${path}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-Auth-Token': login.user.token,
+			'X-User-Id': login.user.id
+		},
+		body: JSON.stringify(body)
+	});
+	if (!response.ok) {
+		const errorBody = await response.json().catch(() => undefined);
+		throw new Error(errorBody?.error || errorBody?.message || `${response.status} ${response.statusText}`);
+	}
+	return response;
+};
+
+export const setRoomsCategory = async (roomIds: string[], category: string | null) => {
+	await postAuthenticated('experimental/rooms.setCategory', { roomIds, category });
+};
 
 export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0
@@ -891,12 +940,65 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 	return sdk.get('chat.getThreadsList', params);
 };
 
+export const getThreadMessages = async ({ tmid, offset, count }: { tmid: string; offset: number; count: number }) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.8.0')) {
+		const result = await sdk.get('chat.getThreadMessages', { tmid, count, offset, sort: { ts: -1 } });
+		if (!result.success) {
+			throw new Error('Unable to load thread messages');
+		}
+		return { messages: result.messages, total: result.total, threadParent: null };
+	}
+	const result = await sdk.methodCallWrapper('getThreadMessages', { tmid });
+	const thread: IMessage[] = result ? EJSON.fromJSONValue(result) : [];
+	const messages = thread.filter(m => m._id !== tmid);
+	return { messages, total: messages.length, threadParent: thread.find(m => m._id === tmid) ?? null };
+};
+
 export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>
 	// RC 1.0
 	sdk.get('chat.syncThreadsList', {
 		rid,
 		updatedSince
 	});
+
+const getRoomHistory = async (roomId: string, position: { next: string } | { aroundId: string }, count: number) => {
+	const history = await sdk.get('rooms.history', { roomId, ...position, count, showThreadMessages: true });
+	if (!history.success) {
+		throw new Error('Unable to load room history');
+	}
+	const messages = history.messages.map(message => ({ ...message, _updatedAt: new Date(message._updatedAt) }));
+	return { messages: messages as IMessage[], cursor: history.cursor };
+};
+
+export const getNextMessages = async ({ rid, after, count }: { rid: string; after: Date; count: number }) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
+		const newestLoadedTs = after.getTime() - 1;
+		const { messages, cursor } = await getRoomHistory(rid, { next: String(newestLoadedTs) }, count);
+		return { messages, hasMore: cursor.next !== null };
+	}
+	const result = await sdk.methodCallWrapper('loadNextMessages', rid, after, count);
+	if (!result?.messages) {
+		throw new Error('Unable to load newer messages');
+	}
+	const messages: IMessage[] = EJSON.fromJSONValue(result.messages);
+	return { messages, hasMore: messages.length === count };
+};
+
+export const getSurroundingMessages = async ({ rid, messageId, count }: { rid: string; messageId: string; count: number }) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.9.0')) {
+		const { messages, cursor } = await getRoomHistory(rid, { aroundId: messageId }, count);
+		return { messages, moreBefore: cursor.previous !== null, moreAfter: cursor.next !== null };
+	}
+	const result = await sdk.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, count);
+	if (!result?.messages) {
+		throw new Error('Unable to load surrounding messages');
+	}
+	const messages: IMessage[] = EJSON.fromJSONValue(result.messages);
+	return { messages, moreBefore: !!result.moreBefore, moreAfter: !!result.moreAfter };
+};
 
 export const runSlashCommand = (command: string, roomId: string, params: string, triggerId?: string, tmid?: string) =>
 	// RC 0.60.2
@@ -970,12 +1072,17 @@ export const saveAutoTranslate = ({
 	field,
 	value,
 	options
-}: {
-	rid: string;
-	field: string;
-	value: string;
-	options?: { defaultLanguage: string };
-}) => sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options ?? null);
+}: { rid: string; options?: { defaultLanguage: string } } & (
+	| { field: 'autoTranslate'; value: boolean }
+	| { field: 'autoTranslateLanguage'; value: string }
+)) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('autotranslate.saveSettings', { roomId: rid, field, value, ...options });
+	}
+	const ddpValue = typeof value === 'boolean' ? (value ? '1' : '0') : value;
+	return sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, ddpValue, options ?? null);
+};
 
 export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
 	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
@@ -1001,8 +1108,11 @@ export const inviteToken = (token: string): any =>
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
 
-export const readThreads = (tmid: string): Promise<void> => {
+export const readThreads = (tmid: string) => {
 	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.8.0')) {
+		return sdk.post('chat.readThread', { tmid });
+	}
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
 		// RC 3.4.0
 		return sdk.methodCallWrapper('readThreads', tmid);
@@ -1018,9 +1128,15 @@ export const createGroupChat = () => {
 	return sdk.post('im.create', { usernames });
 };
 
-export const addUsersToRoom = (rid: string): Promise<boolean> => {
-	const { users: selectedUsers } = reduxStore.getState().selectedUsers;
-	const users = selectedUsers.map(u => u.name);
+export const addUsersToRoom = (rid: string, t: 'c' | 'p') => {
+	const { selectedUsers, server } = reduxStore.getState();
+	const users = selectedUsers.users.map(u => u.name);
+	if (t === 'p' && compareServerVersion(server.version, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('groups.invite', { roomId: rid, usernames: users });
+	}
+	if (compareServerVersion(server.version, 'greaterThanOrEqualTo', '9.0.0')) {
+		return sdk.post('channels.invite', { roomId: rid, usernames: users });
+	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
 };
@@ -1052,36 +1168,17 @@ export const editMediaMessage = async (
 	fileId: string,
 	body: { description?: string; filename: string; msg?: string }
 ) => {
-	const { login, server } = reduxStore.getState();
-	const { user } = login;
 	// RC 8.4.0
-	const response = await fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
-		method: 'POST',
-		headers: {
-			...RocketChatSettings.customHeaders,
-			'Content-Type': 'application/json',
-			'X-Auth-Token': user.token,
-			'X-User-Id': user.id
-		},
-		body: JSON.stringify({
+	try {
+		const response = await postAuthenticated(`v1/rooms.mediaConfirm/${rid}/${fileId}`, {
 			description: body.description,
 			filename: body.filename,
 			msg: body.msg || ''
-		})
-	});
-
-	if (!response.ok) {
-		let errorReason = `${response.status} ${response.statusText}`;
-		try {
-			const errorBody = await response.json();
-			errorReason = errorBody?.error || errorBody?.message || errorReason;
-		} catch {
-			// Best effort only: keep default HTTP reason when body is not JSON.
-		}
-		throw new Error(`Failed to edit media message: ${errorReason}`);
+		});
+		return response.json();
+	} catch (error) {
+		throw new Error(`Failed to edit media message: ${(error as Error).message}`);
 	}
-
-	return response.json();
 };
 
 let lastToken = '';
@@ -1268,8 +1365,10 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 	return sdk.methodCall('getUserRoles');
 };
 
-export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
-	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
+export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string, signal?: AbortSignal) =>
+	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`, {
+		signal
+	});
 
 export const mediaCallsStateSignals = async (contractId: string): Promise<{ signals: ServerMediaSignal[]; success: boolean }> => {
 	try {

@@ -44,7 +44,7 @@ jest.mock('../hooks/useIOSBackSwipeHandler', () => ({
 	__esModule: true,
 	default: jest.fn(() => ({ iOSBackSwipe: { current: false } }))
 }));
-jest.mock('../hooks/useAutoSaveDraft', () => ({ useAutoSaveDraft: jest.fn(() => ({ saveMessageDraft: jest.fn() })) }));
+jest.mock('../hooks/useAutoSaveDraft', () => ({ useAutoSaveDraft: jest.fn(() => ({ saveDraft: jest.fn() })) }));
 jest.mock('~/lib/methods/draftMessage', () => ({ loadDraftMessage: jest.fn(() => Promise.resolve(undefined)) }));
 
 const mockLoadDraftMessage = loadDraftMessage as jest.Mock;
@@ -100,14 +100,26 @@ describe('ComposerInput', () => {
 		jest.useRealTimers();
 	});
 
-	it('updates getText synchronously and trims typed text while preserving raw native text', () => {
+	it('updates getText synchronously and trims typed text without writing it back to the native input', () => {
 		const { composerRef, inputRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');
 
 		fireEvent.changeText(input, '  typed text  ');
 
 		expect(composerRef.current?.getText()).toBe('typed text');
-		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  typed text  ' });
+		expect(inputRef.current?.setNativeProps).not.toHaveBeenCalled();
+		expect(inputRef.current?.clear).not.toHaveBeenCalled();
+	});
+
+	it('keeps text typed right after a clear', () => {
+		const { composerRef, inputRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+
+		fireEvent.changeText(input, '');
+		fireEvent.changeText(input, 'm6');
+
+		expect(composerRef.current?.getText()).toBe('m6');
+		expect(inputRef.current?.clear).not.toHaveBeenCalled();
 	});
 
 	it('updates getText and the native input immediately for programmatic input', () => {

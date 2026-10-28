@@ -23,6 +23,19 @@ const SelectChannel = ({
 	const [channels, setChannels] = useState<ISearchLocal[]>([]);
 	const { colors } = useTheme();
 
+	const getAvatar = (item: ISearchLocal) =>
+		getAvatarURL({
+			text: getRoomAvatar(item),
+			type: item.t,
+			userId,
+			token,
+			server,
+			avatarETag: item.avatarETag,
+			rid: item.rid,
+			blockUnauthenticatedAccess,
+			serverVersion
+		});
+
 	const getChannels = async (keyword = '') => {
 		try {
 			const res = (await localSearchSubscription({ text: keyword, filterUsers: false })) as ISearchLocal[];
@@ -40,19 +53,6 @@ const SelectChannel = ({
 	useEffect(() => {
 		getChannels('');
 	}, []);
-
-	const getAvatar = (item: ISearchLocal) =>
-		getAvatarURL({
-			text: getRoomAvatar(item),
-			type: item.t,
-			userId,
-			token,
-			server,
-			avatarETag: item.avatarETag,
-			rid: item.rid,
-			blockUnauthenticatedAccess,
-			serverVersion
-		});
 
 	return (
 		<View accessibilityLabel={`${I18n.t('Parent_channel_or_group')}, ${I18n.t('Required')}`}>

@@ -4,17 +4,23 @@ import {
 	createNativeStackScreen,
 	type NativeStackNavigationProp
 } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { type StaticScreenProps, useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/theme';
-import { defaultHeader, themedHeader, drawerStyle } from '~/lib/methods/helpers/navigation';
+import { defaultHeader, themedHeader } from '~/lib/methods/helpers/navigation';
 import withNavigation from '~/lib/navigation/withNavigation';
 import { isIOS } from '~/lib/methods/helpers';
+import { MASTER_DETAIL_INSIDE_STACK_ID } from './constants';
 import { ModalContainer } from './ModalContainer';
+import { createSplitNavigator } from './SplitNavigator';
 import { type MasterDetailChatsStackParamList, type MasterDetailInsideStackParamList, type ModalStackParamList } from './types';
 import RoomView from '~/views/RoomView';
 import RoomsListView from '~/views/RoomsListView';
+import CategoryView from '~/views/CategoryView';
+import CategorySettingsView from '~/views/CategorySettingsView';
+import ManageCategoryRoomsView from '~/views/CategorySettingsView/ManageCategoryRoomsView';
+import ConfirmCategoryRoomsView from '~/views/CategorySettingsView/ConfirmCategoryRoomsView';
+import RenameCategoryView from '~/views/CategorySettingsView/RenameCategoryView';
 import RoomActionsView from '~/views/RoomActionsView';
 import RoomInfoView from '~/views/RoomInfoView';
 import ReportUserView from '~/views/ReportUserView';
@@ -45,6 +51,7 @@ import ReadReceiptsView from '~/views/ReadReceiptView';
 import ProfileView from '~/views/ProfileView';
 import ChangePasswordView from '~/views/ChangePasswordView';
 import DisplayPrefsView from '~/views/DisplayPrefsView';
+import CategoryOrderView from '~/views/CategoryOrderView';
 import SettingsView from '~/views/SettingsView';
 import LanguageView from '~/views/LanguageView';
 import ThemeView from '~/views/ThemeView';
@@ -53,6 +60,9 @@ import ScreenLockConfigView from '~/views/ScreenLockConfigView';
 import AdminPanelView from '~/views/AdminPanelView';
 import NewMessageView from '~/views/NewMessageView';
 import CreateChannelView from '~/views/CreateChannelView';
+import CreateCategoryView from '~/views/CreateCategoryView';
+import CategoryRoomsView from '~/views/CreateCategoryView/CategoryRoomsView';
+import ConfirmCategoryView from '~/views/CreateCategoryView/ConfirmCategoryView';
 import UserPreferencesView from '~/views/UserPreferencesView';
 import UserNotificationPrefView from '~/views/UserNotificationPreferencesView';
 import LegalView from '~/views/LegalView';
@@ -72,6 +82,7 @@ import AccessibilityAndAppearanceView from '~/views/AccessibilityAndAppearanceVi
 import { SupportedVersionsWarning } from '~/containers/SupportedVersions';
 import AttachmentView from '~/views/AttachmentView';
 import ModalBlockView from '~/views/ModalBlockView';
+import ConferenceView from '~/views/ConferenceView';
 import JitsiMeetView from '~/views/JitsiMeetView';
 import ShareView from '~/views/ShareView';
 import CallView from '~/views/CallView';
@@ -168,10 +179,26 @@ const ChatsStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
-const DrawerNav = createDrawerNavigator({
-	screenOptions: { drawerType: 'permanent', headerShown: false, drawerStyle: { ...drawerStyle } },
-	drawerContent: () => <RoomsListView />,
+const RoomsListStack = createNativeStackNavigator({
+	screenOptions: defaultHeader,
 	screens: {
+		RoomsListView: createNativeStackScreen({
+			screen: RoomsListView
+		}),
+		CategoryView: createNativeStackScreen({
+			screen: CategoryView,
+			options: ({ route }) => ({ title: route.params.title })
+		})
+	}
+}).with(({ Navigator }) => {
+	const { theme } = useContext(ThemeContext);
+	return <Navigator screenOptions={themedHeader(theme)} />;
+});
+
+const SplitNav = createSplitNavigator({
+	initialRouteName: 'ChatsStackNavigator',
+	screens: {
+		RoomsListStackNavigator: RoomsListStack,
 		ChatsStackNavigator: ChatsStack
 	}
 });
@@ -231,8 +258,16 @@ const ModalStack = createNativeStackNavigator({
 		ProfileView: ProfileViewScreen,
 		ChangePasswordView: ChangePasswordViewScreen,
 		DisplayPrefsView,
+		CategoryOrderView,
+		CategorySettingsView,
+		ManageCategoryRoomsView,
+		ConfirmCategoryRoomsView,
+		RenameCategoryView,
 		AdminPanelView,
 		NewMessageView,
+		CreateCategoryView,
+		CategoryRoomsView,
+		ConfirmCategoryView,
 		CreateChannelView,
 		CreateDiscussionView: CreateDiscussionViewScreen,
 		E2ESaveYourPasswordView,
@@ -258,13 +293,14 @@ const ModalStack = createNativeStackNavigator({
 });
 
 const InsideStack = createNativeStackNavigator({
+	id: MASTER_DETAIL_INSIDE_STACK_ID,
 	screenOptions: {
 		...defaultHeader,
 		presentation: isIOS ? 'containedTransparentModal' : 'containedModal'
 	},
 	screens: {
 		DrawerNavigator: createNativeStackScreen({
-			screen: DrawerNav as any,
+			screen: SplitNav as any,
 			options: { headerShown: false }
 		}),
 		ModalStackNavigator: createNativeStackScreen({
@@ -278,6 +314,13 @@ const InsideStack = createNativeStackNavigator({
 		}),
 		JitsiMeetView: createNativeStackScreen({
 			screen: JitsiMeetView,
+			options: {
+				headerShown: false,
+				animation: isIOS ? 'default' : 'none'
+			}
+		}),
+		ConferenceView: createNativeStackScreen({
+			screen: ConferenceView,
 			options: {
 				headerShown: false,
 				animation: isIOS ? 'default' : 'none'

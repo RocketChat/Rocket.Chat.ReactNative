@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
+const List = ({ flatListRef, jumpToBottom, onDragStart, isAnchored, ...props }: IListProps) => {
 	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const isAutocompleteVisible = useIsAutocompleteVisible();
 	const wasScrolledPastLimit = useSharedValue(false);
@@ -41,14 +41,17 @@ const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) =
 
 	// Spelled out rather than spread: the worklets babel plugin has to see an object hook's properties statically.
 	const scrollHandler = useAnimatedScrollHandler({
-		onBeginDrag,
+		onBeginDrag: () => {
+			onBeginDrag();
+			scheduleOnRN(onDragStart);
+		},
 		onMomentumBegin,
 		onEndDrag,
 		onMomentumEnd,
 		onScroll: event => {
 			const isPastLimit = event.contentOffset.y > SCROLL_LIMIT;
-			if (isPastLimit !== wasScrolledPastLimit.value) {
-				wasScrolledPastLimit.value = isPastLimit;
+			if (isPastLimit !== wasScrolledPastLimit.get()) {
+				wasScrolledPastLimit.set(isPastLimit);
 				scheduleOnRN(setScrolledPastLimit, isPastLimit);
 			}
 		}
@@ -76,7 +79,7 @@ const List = ({ flatListRef, jumpToBottom, isAnchored, ...props }: IListProps) =
 						? props => <InvertedScrollView {...props} exitFocusNativeId={MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID} />
 						: undefined
 				}
-				removeClippedSubviews={isIOS}
+				removeClippedSubviews
 				initialNumToRender={20}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}

@@ -30,12 +30,14 @@ const Touchable = ({
 	type,
 	onPress,
 	onLongPress,
+	onMoveToCategoryPress,
 	width,
 	favorite,
 	isRead,
 	rid,
 	isFocused,
 	swipeEnabled,
+	navigationSwipeEdgeWidth = 0,
 	displayMode
 }: ITouchableProps): ReactElement => {
 	const { colors } = useTheme();
@@ -66,6 +68,11 @@ const Touchable = ({
 		close();
 	};
 
+	const handleMoveToCategory = () => {
+		onMoveToCategoryPress?.();
+		close();
+	};
+
 	const toggleReadRoom = () => toggleRead(rid, isRead, serverVersion);
 
 	const hideChannel = () => hideRoom(rid, type);
@@ -81,12 +88,12 @@ const Touchable = ({
 	};
 
 	const guardTouch = (action?: () => void) => () => {
-		if (rowOffSet.value !== 0) {
+		if (rowOffSet.get() !== 0) {
 			close();
 			return;
 		}
-		if (touchClosedOtherRow.value || runOnUISync(closeOpenSwipeItem, rid)) {
-			touchClosedOtherRow.value = false;
+		if (touchClosedOtherRow.get() || runOnUISync(closeOpenSwipeItem, rid)) {
+			touchClosedOtherRow.set(false);
 			return;
 		}
 		action?.();
@@ -100,28 +107,29 @@ const Touchable = ({
 		activeOffsetX: [-10, 10], // More sensitive horizontal detection
 		failOffsetY: [-20, 20], // Fail on vertical movement to distinguish scrolling
 		enabled: swipeEnabled,
+		hitSlop: I18nManager.isRTL ? { right: -navigationSwipeEdgeWidth } : { left: -navigationSwipeEdgeWidth },
 		onBegin: () => {
-			crossedFullSwipe.value = false;
-			touchClosedOtherRow.value = closeOpenSwipeItem(rid);
+			crossedFullSwipe.set(false);
+			touchClosedOtherRow.set(closeOpenSwipeItem(rid));
 		},
 		onActivate: () => {
 			scheduleOnRN(setActionsMounted, true);
 		},
 		onUpdate: event => {
-			const next = rowOffSet.value + direction * event.translationX;
+			const next = rowOffSet.get() + direction * event.translationX;
 			const threshold = getFullSwipeThreshold(width);
 			const overshoot = Math.abs(next) - threshold;
-			transX.value = overshoot > 0 ? Math.sign(next) * (threshold + rubberband(overshoot, width)) : next;
+			transX.set(overshoot > 0 ? Math.sign(next) * (threshold + rubberband(overshoot, width)) : next);
 			const crossed = overshoot >= 0;
-			if (crossed !== crossedFullSwipe.value) {
-				crossedFullSwipe.value = crossed;
+			if (crossed !== crossedFullSwipe.get()) {
+				crossedFullSwipe.set(crossed);
 				scheduleOnRN(triggerThresholdHaptic);
 			}
 		},
 		onDeactivate: event => {
 			const release = getSwipeRelease({
-				restingOffset: rowOffSet.value,
-				offset: rowOffSet.value + direction * event.translationX,
+				restingOffset: rowOffSet.get(),
+				offset: rowOffSet.get() + direction * event.translationX,
 				width
 			});
 			settleSwipeRow(row, release.restingOffset, direction * event.velocityX);
@@ -154,6 +162,7 @@ const Touchable = ({
 							favorite={favorite}
 							width={width}
 							toggleFav={handleToggleFav}
+							onMoveToCategoryPress={onMoveToCategoryPress ? handleMoveToCategory : undefined}
 							onHidePress={onHidePress}
 							displayMode={displayMode}
 						/>
@@ -164,7 +173,7 @@ const Touchable = ({
 						onPress={handlePress}
 						onLongPress={handleLongPress}
 						style={{
-							backgroundColor: isFocused ? colors.surfaceTint : colors.surfaceRoom
+							backgroundColor: isFocused ? colors.surfaceSelected : colors.surfaceTint
 						}}>
 						{children}
 					</Touch>

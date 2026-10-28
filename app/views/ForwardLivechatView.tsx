@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import { useEffect, useState, type ReactElement } from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -23,57 +23,69 @@ const styles = StyleSheet.create({
 
 const COUNT_DEPARTMENT = 50;
 
+const fetchDepartmentsPage = async (text: string, offset: number) => {
+	try {
+		const result = await getDepartments({ count: COUNT_DEPARTMENT, text, offset });
+		if (result.success) {
+			const parsedDepartments = result.departments.map(department => ({
+				label: department.name,
+				value: department._id
+			}));
+			return { data: parsedDepartments, total: result?.total, offset: result?.offset };
+		}
+	} catch {
+		// do nothing
+	}
+};
+
+const fetchAvailableAgents = async (room: IServerRoom, term: string) => {
+	try {
+		const { servedBy: { _id: agentId } = {} } = room;
+		const _id = agentId && { $ne: agentId };
+		const result = await usersAutoComplete({
+			conditions: { _id, status: { $ne: 'offline' }, statusLivechat: 'available' },
+			term
+		});
+		if (result.success) {
+			return result.items.flatMap(user => (user.username ? [{ label: user.username, value: user._id }] : []));
+		}
+	} catch {
+		// do nothing
+	}
+};
+
 const ForwardLivechatView = (): ReactElement => {
 	const { navigate, setOptions } = useAppNavigation<TNavigation, 'PickerView'>();
 	const {
 		params: { rid }
 	} = useAppRoute<TNavigation, 'ForwardLivechatView'>();
-	const [departments, setDepartments] = useState<IOptionsField[]>([]);
+	const departmentsRef = useRef<IOptionsField[]>([]);
 	const [departmentId, setDepartment] = useState('');
-	const [departmentTotal, setDepartmentTotal] = useState(0);
-	const [users, setUsers] = useState<IOptionsField[]>([]);
+	const departmentTotalRef = useRef(0);
+	const usersRef = useRef<IOptionsField[]>([]);
 	const [userId, setUser] = useState();
 	const [room, setRoom] = useState({} as IServerRoom);
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
 
 	const handleGetDepartments = async (text = '', offset = 0) => {
-		try {
-			const result = await getDepartments({ count: COUNT_DEPARTMENT, text, offset });
-			if (result.success) {
-				const parsedDepartments = result.departments.map(department => ({
-					label: department.name,
-					value: department._id
-				}));
-				if (!text && !offset) {
-					setDepartments(parsedDepartments);
-					setDepartmentTotal(result?.total);
-				}
-				return { data: parsedDepartments, total: result?.total, offset: result?.offset };
-			}
-		} catch {
-			// do nothing
+		const page = await fetchDepartmentsPage(text, offset);
+		if (page && !text && !offset) {
+			departmentsRef.current = page.data;
+			departmentTotalRef.current = page.total;
 		}
+		return page;
 	};
 
 	const getUsers = async (term = '') => {
-		try {
-			const { servedBy: { _id: agentId } = {} } = room;
-			const _id = agentId && { $ne: agentId };
-			const result = await usersAutoComplete({
-				conditions: { _id, status: { $ne: 'offline' }, statusLivechat: 'available' },
-				term
-			});
-			if (result.success) {
-				const parsedUsers = result.items.flatMap(user => (user.username ? [{ label: user.username, value: user._id }] : []));
-				if (!term) {
-					setUsers(parsedUsers);
-				}
-				return { data: parsedUsers };
-			}
-		} catch {
-			// do nothing
+		const users = await fetchAvailableAgents(room, term);
+		if (!users) {
+			return;
 		}
+		if (!term) {
+			usersRef.current = users;
+		}
+		return { data: users };
 	};
 
 	const getRoom = async () => {
@@ -127,18 +139,18 @@ const ForwardLivechatView = (): ReactElement => {
 		navigate('PickerView', {
 			title: I18n.t('Forward_to_department'),
 			value: room?.departmentId,
-			data: departments,
+			data: departmentsRef.current,
 			onChangeValue: setDepartment,
 			onSearch: handleGetDepartments,
 			onEndReached: handleGetDepartments,
-			total: departmentTotal
+			total: departmentTotalRef.current
 		});
 	};
 
 	const onPressUser = () => {
 		navigate('PickerView', {
 			title: I18n.t('Forward_to_user'),
-			data: users,
+			data: usersRef.current,
 			onChangeValue: setUser,
 			onSearch: getUsers
 		});

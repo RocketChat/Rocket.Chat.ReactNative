@@ -202,7 +202,8 @@ describe('login() over the real SDK', () => {
 				roles: ['user', 'admin'],
 				avatarETag: 'etag-123',
 				bio: 'hi',
-				nickname: 'nick'
+				nickname: 'nick',
+				settings: { preferences: { alsoSendThreadToChannel: 'default' } }
 			})
 		);
 	});

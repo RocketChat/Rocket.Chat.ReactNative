@@ -12,26 +12,31 @@ import SafeAreaView from '../containers/SafeAreaView';
 import Radio from '../containers/Radio';
 import { type IPreferences } from '../definitions';
 import I18n from '../i18n';
-import { type SettingsStackParamList } from '../stacks/types';
-import { useTheme } from '../theme';
+import { type DisplayPrefStackParamList } from '../stacks/types';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
+import { useIsCustomCategoriesAvailable } from './RoomsListView/hooks/useSidebarCategories';
+import { useMasterDetail } from '../lib/hooks/useMasterDetail';
+import { headerLeftCloseModal } from '../lib/methods/helpers/navigation/headerActions';
 
 const DisplayPrefsView = (): ReactElement => {
-	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
-	const { colors } = useTheme();
+	const navigation = useNavigation<NativeStackNavigationProp<DisplayPrefStackParamList, 'DisplayPrefsView'>>();
 
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useAppSelector(
 		state => state.sortPreferences
 	);
+	const isCustomCategoriesAvailable = useIsCustomCategoriesAvailable();
 	const dispatch = useDispatch();
+	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {
+		const isModalRoot = navigation.getState().index === 0;
 		navigation.setOptions({
-			title: I18n.t('Display')
+			title: I18n.t('Display'),
+			...(isMasterDetail && isModalRoot ? headerLeftCloseModal(navigation, 'display-view-close') : {})
 		});
-	}, []);
+	}, [navigation, isMasterDetail]);
 
 	const setSortPreference = (param: Partial<IPreferences>) => {
 		dispatch(setPreference(param));
@@ -78,8 +83,8 @@ const DisplayPrefsView = (): ReactElement => {
 		setSortPreference({ displayMode: DisplayMode.Condensed });
 	};
 
-	const renderCheckBox = (value: boolean) => (
-		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? colors.strokeHighlight : ''} />
+	const renderCheckBox = (value: boolean, onValueChange: () => void) => (
+		<List.Checkbox value={value} onValueChange={onValueChange} />
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (
@@ -91,6 +96,19 @@ const DisplayPrefsView = (): ReactElement => {
 	return (
 		<SafeAreaView>
 			<List.Container testID='display-view-list'>
+				{isCustomCategoriesAvailable ? (
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							left={() => <List.Icon name='order' />}
+							title='Category_order'
+							testID='display-pref-view-category-order'
+							onPress={() => navigation.navigate('CategoryOrderView')}
+							showActionIndicator
+						/>
+						<List.Separator />
+					</List.Section>
+				) : null}
 				<List.Section title='Display'>
 					<List.Separator />
 					<List.Item
@@ -152,11 +170,11 @@ const DisplayPrefsView = (): ReactElement => {
 				<List.Section title='Group_by'>
 					<List.Separator />
 					<List.Item
-						title='Unread_on_top'
+						title='Unread'
 						testID='display-pref-view-unread'
 						left={() => <List.Icon name='flag' />}
 						onPress={toggleUnread}
-						right={() => renderCheckBox(showUnread)}
+						right={() => renderCheckBox(showUnread, toggleUnread)}
 						additionalAccessibilityLabel={showUnread}
 						accessibilityRole='checkbox'
 					/>
@@ -166,7 +184,7 @@ const DisplayPrefsView = (): ReactElement => {
 						testID='display-pref-view-favorites'
 						left={() => <List.Icon name='star' />}
 						onPress={toggleGroupByFavorites}
-						right={() => renderCheckBox(showFavorites)}
+						right={() => renderCheckBox(showFavorites, toggleGroupByFavorites)}
 						additionalAccessibilityLabel={showFavorites}
 						accessibilityRole='checkbox'
 					/>
@@ -176,7 +194,7 @@ const DisplayPrefsView = (): ReactElement => {
 						testID='display-pref-view-categories'
 						left={() => <List.Icon name='group-by-type' />}
 						onPress={toggleCategories}
-						right={() => renderCheckBox(groupByType)}
+						right={() => renderCheckBox(groupByType, toggleCategories)}
 						additionalAccessibilityLabel={groupByType}
 						accessibilityRole='checkbox'
 					/>

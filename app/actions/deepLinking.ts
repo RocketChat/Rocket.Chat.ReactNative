@@ -17,12 +17,14 @@ interface IParams {
 
 interface IDeepLinkingOpen extends Action {
 	params: Partial<IParams>;
+	skipLoginConsent?: boolean;
 }
 
-export function deepLinkingOpen(params: Partial<IParams>): IDeepLinkingOpen {
+export function deepLinkingOpen(params: Partial<IParams>, { skipLoginConsent = false } = {}): IDeepLinkingOpen {
 	return {
 		type: DEEP_LINKING.OPEN,
-		params
+		params,
+		skipLoginConsent
 	};
 }
 

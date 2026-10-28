@@ -1,0 +1,36 @@
+appId: ${APP_ID}
+name: Check media auto-download options
+tags:
+  - 'util'
+
+---
+- tapOn:
+    id: 'media-auto-download-${MEDIA}'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - assertVisible:
+          id: 'media-auto-download-${MEDIA}-wifi_mobile_data'
+      - assertVisible:
+          id: 'media-auto-download-${MEDIA}-wifi'
+      - assertVisible:
+          id: 'media-auto-download-${MEDIA}-never'
+      - tapOn:
+          id: 'action-sheet-handle'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Wi-Fi and mobile data'
+          timeout: 60000
+      - assertVisible:
+          text: 'Wi-Fi'
+      - assertVisible:
+          text: 'Never'
+      - runFlow:
+          file: './dismiss-menu.yaml'
+          env:
+            MENU_ITEM: 'Never'

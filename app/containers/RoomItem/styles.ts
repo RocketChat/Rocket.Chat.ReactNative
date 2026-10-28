@@ -9,29 +9,31 @@ export default StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingLeft: 14
+		gap: 8,
+		paddingHorizontal: 16
 	},
 	centerContainer: {
-		flex: 1,
-		paddingVertical: 10,
-		paddingRight: 14,
-		borderBottomWidth: StyleSheet.hairlineWidth
+		flex: 1
 	},
 	title: {
 		flex: 1,
-		fontSize: 17,
-		...sharedStyles.textMedium
+		fontSize: 16,
+		lineHeight: 20,
+		...sharedStyles.textRegular
 	},
 	alert: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textBold
 	},
 	row: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
+		gap: 4
 	},
 	wrapUpdatedAndBadge: {
-		alignItems: 'flex-end'
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8
 	},
 	titleContainer: {
 		width: '100%',
@@ -40,12 +42,13 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	date: {
-		fontSize: 13,
+		fontSize: 12,
+		lineHeight: 18,
 		marginLeft: 4,
-		...sharedStyles.textRegular
+		...sharedStyles.textMedium
 	},
 	updateAlert: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textBold
 	},
 	status: {
 		marginRight: 2
@@ -53,10 +56,12 @@ export default StyleSheet.create({
 	markdownText: {
 		flex: 1,
 		fontSize: 14,
+		lineHeight: 20,
 		...sharedStyles.textRegular
 	},
-	avatar: {
-		marginRight: 10
+	containerTopAligned: {
+		alignItems: 'flex-start',
+		paddingTop: 8
 	},
 	upperContainer: {
 		overflow: 'hidden'
@@ -107,8 +112,5 @@ export default StyleSheet.create({
 		fontSize: 13,
 		paddingHorizontal: 4,
 		...sharedStyles.textSemibold
-	},
-	typeIcon: {
-		justifyContent: 'center'
 	}
 });

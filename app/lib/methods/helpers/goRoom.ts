@@ -36,6 +36,8 @@ interface RoomRouteParams {
 	roomUserId?: string;
 }
 
+const ROOMS_LIST_ROUTES = ['RoomsListView', 'CategoryView'];
+
 const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
 	const routeParams: RoomRouteParams = {
 		rid: item.rid,
@@ -73,17 +75,17 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 	}
 
 	return Navigation.dispatch((state: any) => {
-		const routesRoomsListView = state.routes.filter((r: any) => r.name === 'RoomsListView');
+		const routesRoomsList = state.routes.filter((r: any) => ROOMS_LIST_ROUTES.includes(r.name));
 		return CommonActions.reset({
 			...state,
 			routes: [
-				...routesRoomsListView,
+				...routesRoomsList,
 				{
 					name: 'RoomView',
 					params: routeParams
 				}
 			],
-			index: routesRoomsListView.length
+			index: routesRoomsList.length
 		});
 	});
 };

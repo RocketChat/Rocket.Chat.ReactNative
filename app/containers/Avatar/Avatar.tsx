@@ -10,6 +10,7 @@ import { SubscriptionType } from '~/definitions';
 import { type IAvatar } from './interfaces';
 import I18n from '~/i18n';
 import Touch from '../Touch';
+import { AVATAR_BORDER_RADIUS } from './constants';
 
 const Avatar = memo(
 	({
@@ -28,7 +29,7 @@ const Avatar = memo(
 		serverVersion,
 		text,
 		size = 25,
-		borderRadius = 4,
+		borderRadius = AVATAR_BORDER_RADIUS,
 		type = SubscriptionType.DIRECT,
 		avatarExternalProviderUrl,
 		roomAvatarExternalProviderUrl,
