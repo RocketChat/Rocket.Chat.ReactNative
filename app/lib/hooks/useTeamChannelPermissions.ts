@@ -1,9 +1,7 @@
-import { useSelector } from 'react-redux';
-
-import { type IApplicationState } from '~/definitions';
-import { usePermissions } from './usePermissions';
-import { compareServerVersion } from '../methods/helpers';
 import { type TSupportedPermissions } from '~/reducers/permissions';
+import { compareServerVersion } from '../methods/helpers';
+import { useAppSelector } from './useAppSelector';
+import { usePermissions } from './usePermissions';
 
 const getCreatePermissions = (t: string | undefined, isV7: boolean): TSupportedPermissions[] => {
 	if (t === 'p') {
@@ -13,7 +11,7 @@ const getCreatePermissions = (t: string | undefined, isV7: boolean): TSupportedP
 };
 
 export const useTeamChannelPermissions = (rid: string | undefined, t: string | undefined) => {
-	const serverVersion = useSelector((state: IApplicationState) => state.server.version);
+	const serverVersion = useAppSelector(state => state.server.version);
 	const isV7 = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0');
 	const addExistingPermission: TSupportedPermissions = isV7 ? 'move-room-to-team' : 'add-team-channel';
 

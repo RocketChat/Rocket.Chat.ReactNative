@@ -6,7 +6,6 @@ import RoomHeader from '~/containers/RoomHeader';
 import { type TSubscriptionModel } from '~/definitions';
 import I18n from '~/i18n';
 import { useAppNavigation } from '~/lib/hooks/navigation';
-import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useTeamChannelPermissions } from '~/lib/hooks/useTeamChannelPermissions';
 import { getRoomTitle, hasNativeHeaderBar } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
@@ -35,24 +34,18 @@ export const useTeamChannelsHeader = ({
 	onSearchChangeText
 }: IUseTeamChannelsHeader) => {
 	const navigation = useAppNavigation<ChatsStackParamList, 'TeamChannelsView'>();
-	const isMasterDetail = useMasterDetail();
 	const searchBarRef = useRef<SearchBarCommands>(null);
 	const { canCreateNew, canAddExisting } = useTeamChannelPermissions(team?.rid, team?.t);
 	const canCreate = canCreateNew || canAddExisting;
 	const isSearchHeaderActive = !hasNativeHeaderBar && isSearching;
 
 	useLayoutEffect(() => {
-		const goRoomActionsView = (screen?: string) => {
+		const goRoomActionsView = () => {
 			if (!team) {
 				return;
 			}
 			logEvent(events.TC_GO_ACTIONS);
-			const params = { rid: team.rid, t: team.t, room: team, joined };
-			if (isMasterDetail && screen) {
-				navigation.navigate('ModalStackNavigator', { screen: 'RoomActionsView', params });
-			} else {
-				navigation.navigate('RoomActionsView', params);
-			}
+			navigation.navigate('RoomActionsView', { rid: team.rid, t: team.t, room: team, joined });
 		};
 
 		const rightActions: IHeaderAction[] =
@@ -73,7 +66,7 @@ export const useTeamChannelsHeader = ({
 					...translucentHeader,
 					headerTitle: title,
 					headerSubtitle: team?.topic,
-					onHeaderTitlePress: () => goRoomActionsView()
+					onHeaderTitlePress: goRoomActionsView
 				}
 			: {
 					headerTitle: () => (
@@ -93,16 +86,5 @@ export const useTeamChannelsHeader = ({
 				rightActions
 			})
 		);
-	}, [
-		team,
-		teamId,
-		joined,
-		isSearchHeaderActive,
-		canCreate,
-		isMasterDetail,
-		navigation,
-		startSearch,
-		cancelSearch,
-		onSearchChangeText
-	]);
+	}, [team, teamId, joined, isSearchHeaderActive, canCreate, navigation, startSearch, cancelSearch, onSearchChangeText]);
 };

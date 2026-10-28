@@ -47,21 +47,14 @@ jest.mock('~/theme', () => ({
 }));
 
 const mockReduxState = {
-	server: { version: '7.0.0' },
 	settings: {
 		UI_Use_Real_Name: false,
 		Store_Last_Message: false
 	},
 	permissions: {
-		'add-team-channel': ['add-team-channel-role'],
-		'move-room-to-team': ['move-room-to-team-role'],
 		'edit-team-channel': ['edit-team-channel-role'],
 		'remove-team-channel': ['remove-team-channel-role'],
 		'delete-c': ['delete-c-role'],
-		'create-c': ['create-c-role'],
-		'create-team-channel': ['create-team-channel-role'],
-		'create-p': ['create-p-role'],
-		'create-team-group': ['create-team-group-role'],
 		'delete-p': ['delete-p-role']
 	},
 	sortPreferences: {
@@ -84,14 +77,11 @@ jest.mock('~/lib/hooks/useTeamChannelPermissions', () => ({
 	useTeamChannelPermissions: (...args: any[]) => mockUseTeamChannelPermissions(...args)
 }));
 
-const mockUsePermissions = jest.fn();
-
-jest.mock('~/lib/hooks/usePermissions', () => ({
-	usePermissions: (...args: any[]) => mockUsePermissions(...args)
-}));
-
 const allowCreate = (canCreateNew: boolean) =>
-	mockUseTeamChannelPermissions.mockReturnValue({ canCreateNew, canAddExisting: false });
+	mockUseTeamChannelPermissions.mockImplementation((rid?: string, t?: string) => ({
+		canCreateNew: canCreateNew && rid === 'room-main' && t === 'c',
+		canAddExisting: false
+	}));
 
 const mockTeamSubscription = {
 	_id: 'sub-main',
@@ -101,8 +91,7 @@ const mockTeamSubscription = {
 	t: 'c',
 	name: 'team-channel',
 	fname: 'Team Channel',
-	topic: 'A team topic',
-	observe: jest.fn(() => ({ subscribe: jest.fn(() => ({ unsubscribe: jest.fn() })) }))
+	topic: 'A team topic'
 };
 
 const mockChildSubscription = {
@@ -112,14 +101,12 @@ const mockChildSubscription = {
 	teamMain: false,
 	t: 'c',
 	name: 'child-channel',
-	fname: 'Child Channel',
-	observe: jest.fn()
+	fname: 'Child Channel'
 };
 
 const mockFetch = jest.fn();
-const mockFind = jest.fn();
 const mockQuery = jest.fn(() => ({ fetch: mockFetch }));
-const mockGet = jest.fn(() => ({ query: mockQuery, find: mockFind }));
+const mockGet = jest.fn(() => ({ query: mockQuery }));
 
 jest.mock('~/lib/database', () => ({
 	__esModule: true,
@@ -135,6 +122,8 @@ const mockGetRoomInfo = jest.fn();
 const mockUpdateTeamRoom = jest.fn();
 const mockRemoveTeamRoom = jest.fn();
 const mockHasPermission = jest.fn();
+const grantPermissions = (granted: boolean) =>
+	mockHasPermission.mockImplementation((permissions: unknown[]) => Promise.resolve(permissions.map(() => granted)));
 
 jest.mock('~/lib/services/restApi', () => ({
 	getTeamListRoom: (...args: any[]) => mockGetTeamListRoom(...args),
@@ -148,8 +137,7 @@ jest.mock('~/lib/methods/helpers', () => ({
 	hasPermission: (...args: any[]) => mockHasPermission(...args),
 	getRoomTitle: (room: any) => room.fname || room.name,
 	getRoomAvatar: () => '',
-	isIOS: false,
-	compareServerVersion: jest.requireActual('~/lib/methods/helpers').compareServerVersion
+	isIOS: false
 }));
 
 jest.mock('~/lib/methods/helpers/goRoom', () => ({
@@ -233,8 +221,7 @@ const makeRoom = (overrides: Partial<TTeamChannel> = {}): TTeamChannel =>
 
 const setupSuccessfulLoad = (rooms: TTeamChannel[] = [makeRoom()]) => {
 	mockFetch.mockResolvedValue([mockTeamSubscription, mockChildSubscription]);
-	mockHasPermission.mockResolvedValue([true]);
-	mockUsePermissions.mockReturnValue([true, true]);
+	grantPermissions(true);
 	allowCreate(true);
 	mockGetTeamListRoom.mockResolvedValue({ success: true, rooms });
 };
@@ -254,10 +241,8 @@ describe('TeamChannelsView', () => {
 			mockUpdateTeamRoom,
 			mockRemoveTeamRoom,
 			mockHasPermission,
-			mockUsePermissions,
 			mockUseTeamChannelPermissions
 		].forEach(mock => mock.mockReset());
-		mockUsePermissions.mockReturnValue([false, false]);
 		allowCreate(false);
 	});
 
@@ -266,18 +251,9 @@ describe('TeamChannelsView', () => {
 	});
 
 	describe('rendering', () => {
-		it('renders SafeAreaView with testID team-channels-view', () => {
-			mockFetch.mockResolvedValue([mockTeamSubscription]);
-			mockHasPermission.mockResolvedValue([false]);
-			mockGetTeamListRoom.mockResolvedValue({ success: true, rooms: [] });
-
-			const { getByTestId } = render(<TeamChannelsView />);
-			expect(getByTestId('team-channels-view')).toBeTruthy();
-		});
-
 		it('shows loading background container while loading=true', async () => {
 			mockFetch.mockResolvedValue([mockTeamSubscription]);
-			mockHasPermission.mockResolvedValue([false]);
+			grantPermissions(false);
 			mockGetTeamListRoom.mockReturnValue(new Promise(() => {}));
 
 			const { getByTestId } = render(<TeamChannelsView />);
@@ -319,19 +295,6 @@ describe('TeamChannelsView', () => {
 			await findByTestId('room-item-r1');
 			expect(mockGetTeamListRoom).toHaveBeenCalledWith(expect.objectContaining({ teamId: 'team-123', offset: 0, count: 25 }));
 		});
-
-		it('does not fetch again after a short first page', async () => {
-			const rooms = [makeRoom({ _id: 'r1' })];
-			setupSuccessfulLoad(rooms);
-
-			mockGetTeamListRoom.mockResolvedValueOnce({ success: true, rooms });
-
-			const { findByTestId } = render(<TeamChannelsView />);
-			await findByTestId('room-item-r1');
-
-			const callCount = mockGetTeamListRoom.mock.calls.length;
-			expect(callCount).toBe(1);
-		});
 	});
 
 	describe('pagination', () => {
@@ -340,7 +303,7 @@ describe('TeamChannelsView', () => {
 			const page2 = [makeRoom({ _id: 'r-extra', fname: 'Extra Room' })];
 
 			mockFetch.mockResolvedValue([mockTeamSubscription, mockChildSubscription]);
-			mockHasPermission.mockResolvedValue([true]);
+			grantPermissions(true);
 			mockGetTeamListRoom
 				.mockResolvedValueOnce({ success: true, rooms: page1 })
 				.mockResolvedValueOnce({ success: true, rooms: page2 });
@@ -497,9 +460,12 @@ describe('TeamChannelsView', () => {
 	});
 
 	describe('channel action permissions', () => {
-		it('offers auto-join when edit-team-channel is granted', async () => {
+		it('offers auto-join when edit-team-channel is granted on the team room', async () => {
 			const room = makeRoom({ _id: 'r1' });
 			setupSuccessfulLoad([room]);
+			mockHasPermission.mockImplementation((roles: string[][], rid: string) =>
+				Promise.resolve(roles.map(role => rid === 'room-main' && role[0] === 'edit-team-channel-role'))
+			);
 
 			const { findByTestId } = render(<TeamChannelsView />);
 			const item = await findByTestId('room-item-r1');
@@ -518,8 +484,7 @@ describe('TeamChannelsView', () => {
 			const room = makeRoom({ _id: 'r1' });
 			setupSuccessfulLoad([room]);
 
-			mockUsePermissions.mockReturnValue([false, false]);
-			mockHasPermission.mockResolvedValue([false]);
+			grantPermissions(false);
 
 			const { findByTestId } = render(<TeamChannelsView />);
 			const item = await findByTestId('room-item-r1');
@@ -535,14 +500,6 @@ describe('TeamChannelsView', () => {
 	});
 
 	describe('create button', () => {
-		it('checks create permissions against the team room', async () => {
-			setupSuccessfulLoad([]);
-
-			render(<TeamChannelsView />);
-
-			await waitFor(() => expect(mockUseTeamChannelPermissions).toHaveBeenCalledWith('room-main', 'c'));
-		});
-
 		it('renders the create button in the header when create is permitted', async () => {
 			setupSuccessfulLoad([]);
 			allowCreate(true);

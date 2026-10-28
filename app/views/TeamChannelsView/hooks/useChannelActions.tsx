@@ -8,7 +8,6 @@ import { type TSubscriptionModel } from '~/definitions';
 import { ERoomType } from '~/definitions/ERoomType';
 import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { usePermissions } from '~/lib/hooks/usePermissions';
 import { hasPermission } from '~/lib/methods/helpers';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { removeTeamRoom, updateTeamRoom } from '~/lib/services/restApi';
@@ -17,17 +16,22 @@ import { type TTeamChannel } from '../types';
 
 interface IUseChannelActions {
 	team: TSubscriptionModel | null;
+	teamId: string;
 	updateItem: (id: string, patch: Partial<TTeamChannel>) => void;
 	removeItem: (id: string) => void;
 }
 
-export const useChannelActions = ({ team, updateItem, removeItem }: IUseChannelActions) => {
+export const useChannelActions = ({ team, teamId, updateItem, removeItem }: IUseChannelActions) => {
 	const { colors } = useTheme();
 	const { showActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
-	const [canAutoJoin, canRemove] = usePermissions(['edit-team-channel', 'remove-team-channel'], team?.rid);
-	const deleteRoles = useAppSelector(
-		state => ({ c: state.permissions['delete-c'], p: state.permissions['delete-p'] }),
+	const roles = useAppSelector(
+		state => ({
+			editTeamChannel: state.permissions['edit-team-channel'],
+			removeTeamChannel: state.permissions['remove-team-channel'],
+			deleteC: state.permissions['delete-c'],
+			deleteP: state.permissions['delete-p']
+		}),
 		shallowEqual
 	);
 
@@ -44,7 +48,7 @@ export const useChannelActions = ({ team, updateItem, removeItem }: IUseChannelA
 		}
 	};
 
-	const removeRoom = async (item: TTeamChannel, teamId: string) => {
+	const removeRoom = async (item: TTeamChannel) => {
 		logEvent(events.TC_DELETE_ROOM);
 		try {
 			const result = await removeTeamRoom({ roomId: item._id, teamId });
@@ -57,7 +61,7 @@ export const useChannelActions = ({ team, updateItem, removeItem }: IUseChannelA
 		}
 	};
 
-	const confirmRemove = (item: TTeamChannel, teamId: string) => {
+	const confirmRemove = (item: TTeamChannel) => {
 		Alert.alert(
 			I18n.t('Confirmation'),
 			I18n.t('Remove_Team_Room_Warning'),
@@ -66,7 +70,7 @@ export const useChannelActions = ({ team, updateItem, removeItem }: IUseChannelA
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
 					style: 'destructive',
-					onPress: () => removeRoom(item, teamId)
+					onPress: () => removeRoom(item)
 				}
 			],
 			{ cancelable: false }
@@ -95,7 +99,10 @@ export const useChannelActions = ({ team, updateItem, removeItem }: IUseChannelA
 		if (!team) {
 			return;
 		}
-		const [canDelete] = await hasPermission([item.t === 'c' ? deleteRoles.c : deleteRoles.p], item._id);
+		const [[canAutoJoin, canRemove], [canDelete]] = await Promise.all([
+			hasPermission([roles.editTeamChannel, roles.removeTeamChannel], team.rid),
+			hasPermission([item.t === 'c' ? roles.deleteC : roles.deleteP], item._id)
+		]);
 		const isAutoJoinChecked = item.teamDefault;
 		const options: TActionSheetOptionsItem[] = [];
 
@@ -121,7 +128,7 @@ export const useChannelActions = ({ team, updateItem, removeItem }: IUseChannelA
 				title: I18n.t('Remove_from_Team'),
 				icon: 'close',
 				danger: true,
-				onPress: () => confirmRemove(item, team.teamId as string),
+				onPress: () => confirmRemove(item),
 				testID: 'action-sheet-remove-from-team'
 			});
 		}

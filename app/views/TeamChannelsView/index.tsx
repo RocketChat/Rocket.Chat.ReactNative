@@ -53,7 +53,7 @@ const TeamChannelsView = () => {
 		removeItem
 	} = useTeamChannels(teamId);
 	useTeamChannelsHeader({ team, teamId, joined, isSearching, startSearch, cancelSearch, onSearchChangeText });
-	const showChannelActions = useChannelActions({ team, updateItem, removeItem });
+	const showChannelActions = useChannelActions({ team, teamId, updateItem, removeItem });
 
 	const onPressItem = useOpenTeamChannel();
 

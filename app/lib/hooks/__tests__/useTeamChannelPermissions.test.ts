@@ -9,9 +9,8 @@ jest.mock('../usePermissions', () => ({
 	usePermissions: (permissions: string[]) => permissions.map(permission => mockGranted.includes(permission))
 }));
 
-jest.mock('react-redux', () => ({
-	...jest.requireActual('react-redux'),
-	useSelector: (selector: (state: any) => any) => selector({ server: { version: mockServerVersion } })
+jest.mock('../useAppSelector', () => ({
+	useAppSelector: (selector: (state: any) => any) => selector({ server: { version: mockServerVersion } })
 }));
 
 const renderPermissions = (t: string | undefined) => renderHook(() => useTeamChannelPermissions('room-1', t)).result.current;
