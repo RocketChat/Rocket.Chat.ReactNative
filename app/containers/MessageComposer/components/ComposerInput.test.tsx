@@ -119,7 +119,7 @@ describe('ComposerInput', () => {
 		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  programmatic text  ' });
 	});
 
-	it('clears without setting an empty native text so a multi-line input shrinks back after sending', () => {
+	it('resets the native text prop only after clearing so a multi-line input shrinks back after sending', () => {
 		const { composerRef, inputRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');
 
@@ -129,43 +129,20 @@ describe('ComposerInput', () => {
 			composerRef.current?.getTextAndClear();
 		});
 
-		expect(inputRef.current?.clear).toHaveBeenCalledTimes(1);
-		expect(inputRef.current?.setNativeProps).not.toHaveBeenCalled();
+		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: '' }]]);
+		expect(inputRef.current?.clear.mock.invocationCallOrder[0]).toBeLessThan(
+			inputRef.current?.setNativeProps.mock.invocationCallOrder[0]
+		);
 	});
 
-	it('sets the same text again after clearing, as when editing the same message twice', () => {
-		const { composerRef, inputRef } = renderInput();
-
-		act(() => composerRef.current?.setInput('edit'));
-		act(() => composerRef.current?.setInput(''));
-		inputRef.current?.setNativeProps.mockClear();
-		act(() => composerRef.current?.setInput('edit'));
-
-		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: '' }], [{ text: 'edit' }]]);
-	});
-
-	it('does not blank the input when the same text is typed again after clearing', () => {
-		const { composerRef, inputRef } = renderInput();
-		const input = screen.getByTestId('message-composer-input');
-
-		fireEvent.changeText(input, 'a');
-		act(() => composerRef.current?.setInput(''));
-		inputRef.current?.setNativeProps.mockClear();
-		fireEvent.changeText(input, 'a');
-
-		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: 'a' }]]);
-	});
-
-	it('sets the same text again after the user deleted it, as when tapping mention after erasing an @', () => {
-		const { composerRef, inputRef } = renderInput();
+	it('resets the native text prop when the user erases everything, so the same text can be set again', () => {
+		const { inputRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');
 
 		fireEvent.changeText(input, '@');
 		fireEvent.changeText(input, '');
-		inputRef.current?.setNativeProps.mockClear();
-		act(() => composerRef.current?.setInput('@'));
 
-		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: '' }], [{ text: '@' }]]);
+		expect(inputRef.current?.setNativeProps).toHaveBeenLastCalledWith({ text: '' });
 	});
 
 	it('passes the typed raw value to debounced autocomplete before the input text is trimmed', () => {

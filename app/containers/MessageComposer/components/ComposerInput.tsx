@@ -54,7 +54,6 @@ export const ComposerInput = memo(
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 		const autocompleteType = useAutocompleteParams()?.type;
 		const textRef = useRef('');
-		const nativeTextRef = useRef('');
 		const firstRender = useRef(true);
 		const selectionRef = useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
@@ -178,13 +177,10 @@ export const ComposerInput = memo(
 			}
 
 			if (text) {
-				if (text === nativeTextRef.current) {
-					inputRef.current?.setNativeProps?.({ text: '' });
-				}
 				inputRef.current?.setNativeProps?.({ text });
-				nativeTextRef.current = text;
 			} else {
 				inputRef.current?.clear();
+				inputRef.current?.setNativeProps?.({ text: '' });
 			}
 
 			if (selection) {
@@ -208,9 +204,6 @@ export const ComposerInput = memo(
 
 		const onChangeText: TextInputProps['onChangeText'] = text => {
 			textRef.current = text;
-			if (text) {
-				nativeTextRef.current = '';
-			}
 			debouncedOnChangeText(text);
 			setInput(text);
 		};
