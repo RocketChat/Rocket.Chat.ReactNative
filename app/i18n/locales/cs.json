@@ -21,6 +21,8 @@
   "ABAC_disabled_action_reason": "Není k dispozici v místnostech spravovaných systémem ABAC",
   "ABAC_managed": "Spravováno ABAC",
   "ABAC_managed_description": "Pouze vyhovující uživatelé mají přístup k místnostem řízeným přístupem na základě atributů. Atributy určují přístup k místnosti.",
+  "abac_removed__count__member_from_the_room": "změnil(a) atributy místnosti a ABAC odebral {{count}} člena",
+  "abac_removed__count__members_from_the_room": "změnil(a) atributy místnosti a ABAC odebral členy: {{count}}",
   "abac_removed_user_from_the_room": "byl odstraněn pomocí ABAC",
   "ABAC_room_attributes": "Atributy místnosti",
   "accept": "Akceptovat",
