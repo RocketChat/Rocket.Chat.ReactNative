@@ -8,26 +8,24 @@ import { type TTeamChannel } from '../types';
 import { usePaginatedTeamRooms } from './usePaginatedTeamRooms';
 
 export const useTeamChannels = (teamId: string) => {
-	const [isSearching, setIsSearching] = useState(false);
-	const [searchText, setSearchText] = useState('');
-	const isFiltering = isSearching && !!searchText;
+	const [searchText, setSearchText] = useState<string | null>(null);
+	const isSearching = searchText !== null;
 	const browse = usePaginatedTeamRooms(teamId, '');
-	const filtered = usePaginatedTeamRooms(teamId, isFiltering ? searchText : null);
-	const visible = isFiltering ? filtered : browse;
+	const filtered = usePaginatedTeamRooms(teamId, searchText || null);
+	const visible = searchText ? filtered : browse;
 
 	const onSearchChangeText = useDebounce((text: string) => setSearchText(text), textInputDebounceTime);
 
 	const startSearch = () => {
 		logEvent(events.TC_SEARCH);
-		setIsSearching(true);
+		setSearchText(text => text ?? '');
 	};
 
 	const cancelSearch = () => {
 		logEvent(events.TC_CANCEL_SEARCH);
 		Keyboard.dismiss();
 		onSearchChangeText.cancel();
-		setIsSearching(false);
-		setSearchText('');
+		setSearchText(null);
 	};
 
 	const updateItem = (id: string, patch: Partial<TTeamChannel>) => {
