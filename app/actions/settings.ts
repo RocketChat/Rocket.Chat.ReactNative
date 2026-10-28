@@ -33,6 +33,12 @@ export function clearSettings(): Action {
 	};
 }
 
+export function fetchSettingsStart(): Action {
+	return {
+		type: SETTINGS.FETCH_START
+	};
+}
+
 export function fetchSettingsComplete(): Action {
 	return {
 		type: SETTINGS.FETCH_COMPLETE

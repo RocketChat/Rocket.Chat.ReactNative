@@ -75,6 +75,11 @@ export default function server(state = initialState, action: TActionServer): ISe
 				connected: false,
 				loading: true,
 				changingServer: action.changeServer,
+				settingsFetched: action.server === state.server && state.settingsFetched
+			};
+		case SETTINGS.FETCH_START:
+			return {
+				...state,
 				settingsFetched: false
 			};
 		case SETTINGS.FETCH_COMPLETE:

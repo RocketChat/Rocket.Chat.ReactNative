@@ -7,7 +7,8 @@ import { getBasicAuthKey } from '~/lib/constants/keys';
 import log from '~/lib/methods/helpers/log';
 import { mockGlobalFetch } from '~/lib/testUtils/mockGlobalFetch';
 import { store } from '~/lib/store/auxStore';
-import { addSettings, fetchSettingsComplete } from '~/actions/settings';
+import { addSettings, fetchSettingsComplete, fetchSettingsStart } from '~/actions/settings';
+import { flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 import database from '~/lib/database';
 
 jest.mock('~/lib/database', () => ({
@@ -150,13 +151,56 @@ describe('getSettings — active workspace', () => {
 		expect(store.dispatch).toHaveBeenCalledWith(fetchSettingsComplete());
 	});
 
+	it('marks the settings as not fetched before it fetches them', async () => {
+		response = { success: false };
+
+		await getSettings(SERVER);
+
+		expect(jest.mocked(store.dispatch).mock.calls[0]).toEqual([fetchSettingsStart()]);
+	});
+
 	it('drops the settings of a workspace that is no longer active', async () => {
 		response = { success: true, settings: [{ _id: 'Site_Name', value: 'Old' }], total: 1 };
 		mockActiveServer = 'https://other.example';
 
 		await getSettings(SERVER);
 
-		expect(store.dispatch).not.toHaveBeenCalled();
+		expect(jest.mocked(store.dispatch).mock.calls).toEqual([[fetchSettingsStart()]]);
+	});
+});
+
+describe('getSettings — the same workspace fetched twice', () => {
+	const pendingResponses: ((body: object) => void)[] = [];
+	const settingsResponse = (value: string) => ({ success: true, settings: [{ _id: 'Site_Name', value }], total: 1 });
+
+	mockGlobalFetch(
+		() =>
+			new Promise<Response>(resolve => {
+				pendingResponses.push(body => resolve({ json: () => Promise.resolve(body) } as Response));
+			})
+	);
+
+	beforeEach(() => {
+		pendingResponses.length = 0;
+		jest.mocked(store.dispatch).mockClear();
+		mockActiveServer = SERVER;
+	});
+
+	it('drops a response from the earlier fetch when it arrives last', async () => {
+		const earlier = getSettings(SERVER);
+		const later = getSettings(SERVER);
+		await flushSagaMicrotasks();
+
+		pendingResponses[1](settingsResponse('New'));
+		await later;
+		pendingResponses[0](settingsResponse('Old'));
+		await earlier;
+
+		expect(store.dispatch).toHaveBeenCalledWith(addSettings({ Site_Name: 'New' }));
+		expect(store.dispatch).not.toHaveBeenCalledWith(addSettings({ Site_Name: 'Old' }));
+		expect(
+			jest.mocked(store.dispatch).mock.calls.filter(([action]) => action.type === fetchSettingsComplete().type)
+		).toHaveLength(1);
 	});
 });
 

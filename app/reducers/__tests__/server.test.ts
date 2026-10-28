@@ -7,7 +7,7 @@ import {
 	serverFinishAdd,
 	selectServerFailure
 } from '~/actions/server';
-import { fetchSettingsComplete } from '~/actions/settings';
+import { fetchSettingsComplete, fetchSettingsStart } from '~/actions/settings';
 import { mockedStore } from '../mockedStore';
 import { initialState } from '../server';
 
@@ -67,6 +67,21 @@ describe('test server reducer', () => {
 		expect(mockedStore.getState().server.settingsFetched).toBe(true);
 
 		mockedStore.dispatch(selectServerRequest('https://other.rocket.chat/', '4.1.0'));
+		expect(mockedStore.getState().server.settingsFetched).toBe(false);
+	});
+
+	it('keeps the settings marked as fetched when the same server is selected again', () => {
+		mockedStore.dispatch(selectServerRequest('https://same.rocket.chat/', '4.1.0'));
+		mockedStore.dispatch(fetchSettingsComplete());
+
+		mockedStore.dispatch(selectServerRequest('https://same.rocket.chat/', '4.1.0'));
+		expect(mockedStore.getState().server.settingsFetched).toBe(true);
+	});
+
+	it('marks the settings as not fetched while a settings fetch runs', () => {
+		mockedStore.dispatch(fetchSettingsComplete());
+
+		mockedStore.dispatch(fetchSettingsStart());
 		expect(mockedStore.getState().server.settingsFetched).toBe(false);
 	});
 

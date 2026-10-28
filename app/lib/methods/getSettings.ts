@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { addSettings, clearSettings, fetchSettingsComplete } from '~/actions/settings';
+import { addSettings, clearSettings, fetchSettingsComplete, fetchSettingsStart } from '~/actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import { type IPreparedSettings, type ISettingsIcon } from '~/definitions';
@@ -171,7 +171,13 @@ export function clearWorkspaceSettings(): void {
 	reduxStore.dispatch(addSettings(Object.fromEntries(workspaceSettingKeys.map(key => [key, undefined]))));
 }
 
+let latestSettingsFetch = 0;
+
 export async function getSettings(server: string): Promise<void> {
+	latestSettingsFetch += 1;
+	const settingsFetch = latestSettingsFetch;
+	const isLatestFetch = () => settingsFetch === latestSettingsFetch && isActiveWorkspace(server);
+	reduxStore.dispatch(fetchSettingsStart());
 	try {
 		const db = database.active;
 		// RC 0.60.0
@@ -199,7 +205,7 @@ export async function getSettings(server: string): Promise<void> {
 			/* eslint-enable no-await-in-loop */
 		} while (remaining > 0);
 
-		if (!isActiveWorkspace(server)) {
+		if (!isLatestFetch()) {
 			return;
 		}
 
@@ -260,7 +266,7 @@ export async function getSettings(server: string): Promise<void> {
 	} catch (e) {
 		log(e);
 	} finally {
-		if (isActiveWorkspace(server)) {
+		if (isLatestFetch()) {
 			reduxStore.dispatch(fetchSettingsComplete());
 		}
 	}
