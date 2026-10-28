@@ -18,7 +18,6 @@
 
 - (id)init {
     if (self = [super init]) {
-        // activated by WatchConnection in AppDelegate
         _session = WCSession.defaultSession;
         _mmkv = [MMKVBridge build];
     }
@@ -50,7 +49,6 @@
     BOOL success = [_session updateApplicationContext:@{
         @"quickReplies" : replies,
         @"server" : server,
-        // the watch only receives a context that differs from the last one
         @"_t" : [NSUUID UUID].UUIDString
     }
                                                 error:&error];

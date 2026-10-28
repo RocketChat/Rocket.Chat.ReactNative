@@ -227,6 +227,10 @@ export async function getSettings(server: string): Promise<void> {
 			// Server not found
 		}
 
+		if (!isLatestFetch()) {
+			return;
+		}
+
 		await db.write(async () => {
 			const settingsCollection = db.get('settings');
 			const allSettingsRecords = await settingsCollection.query(Q.where('id', Q.oneOf(filteredSettingsIds))).fetch();

@@ -202,6 +202,32 @@ describe('getSettings — the same workspace fetched twice', () => {
 			jest.mocked(store.dispatch).mock.calls.filter(([action]) => action.type === fetchSettingsComplete(SERVER).type)
 		).toHaveLength(1);
 	});
+
+	it('does not persist the settings of an earlier fetch that a later one overtook while it read the server record', async () => {
+		const write = jest.fn();
+		Object.assign(database.active, { write });
+		let releaseEarlierRead = () => {};
+		const record = { update: jest.fn() };
+		jest.mocked(database.servers.get).mockReturnValue({
+			find: jest
+				.fn()
+				.mockReturnValueOnce(new Promise(resolve => (releaseEarlierRead = () => resolve(record))))
+				.mockResolvedValue(record)
+		} as any);
+
+		const earlier = getSettings(SERVER);
+		await flushSagaMicrotasks();
+		pendingResponses[0](settingsResponse('Old'));
+		await flushSagaMicrotasks();
+		const later = getSettings(SERVER);
+		await flushSagaMicrotasks();
+		pendingResponses[1](settingsResponse('New'));
+		await later;
+		releaseEarlierRead();
+		await earlier;
+
+		expect(write).toHaveBeenCalledTimes(1);
+	});
 });
 
 describe('clearWorkspaceSettings', () => {
