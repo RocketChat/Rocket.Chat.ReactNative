@@ -1,7 +1,8 @@
 jest.mock('~/lib/methods/userPreferences', () => ({
 	__esModule: true,
 	default: {
-		getString: jest.fn()
+		getString: jest.fn(),
+		getBool: jest.fn()
 	}
 }));
 
@@ -22,7 +23,20 @@ jest.mock('~/lib/services/sdk', () => ({
 }));
 
 jest.mock('~/lib/methods/helpers/sslPinning', () => ({
-	applyServerCertificate: jest.fn(() => Promise.resolve())
+	applyServerCertificate: jest.fn(() => Promise.resolve()),
+	registerCertificates: jest.fn(() => Promise.resolve())
+}));
+
+jest.mock('~/lib/methods/migrateTokenKeysToServerScoped', () => ({
+	migrateTokenKeysToServerScoped: jest.fn(() => Promise.resolve())
+}));
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+	__esModule: true,
+	default: {
+		getItem: jest.fn(() => Promise.resolve(null)),
+		removeItem: jest.fn(() => Promise.resolve(null))
+	}
 }));
 
 jest.mock('~/lib/services/voip/resetVoipState', () => ({
@@ -38,10 +52,10 @@ jest.mock('~/lib/services/connect', () => ({
 import { all, fork } from 'redux-saga/effects';
 
 import { deepLinkingOpen } from '~/actions/deepLinking';
-import { selectServerRequest } from '~/actions/server';
-import { APP } from '~/actions/actionsTypes';
+import { SERVER } from '~/actions/actionsTypes';
 import { RootEnum } from '~/definitions';
 import deepLinkingRoot from '../deepLinking';
+import initRoot from '../init';
 import selectServerRoot from '../selectServer';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getServerById } from '~/lib/database/services/Server';
@@ -53,7 +67,7 @@ import type { PreloadedState } from '~/lib/testUtils/sagaStore';
 const HOST = 'https://open.rocket.chat';
 
 const shareAndSelectServerRoot = function* shareAndSelectServerRoot() {
-	yield all([fork(deepLinkingRoot), fork(selectServerRoot)]);
+	yield all([fork(deepLinkingRoot), fork(initRoot), fork(selectServerRoot)]);
 };
 
 describe('share extension opened while connected to the same Workspace', () => {
@@ -86,11 +100,10 @@ describe('share extension opened while connected to the same Workspace', () => {
 
 		store.dispatch(deepLinkingOpen({ type: 'shareextension', mediaUris: 'file:///photo.jpg' } as any));
 		await flushSagaMicrotasks();
-		expect(dispatchedActions.some(action => action.type === APP.INIT)).toBe(true);
 
-		store.dispatch(selectServerRequest(HOST, '7.0.0'));
-		await flushSagaMicrotasks();
-
+		expect(dispatchedActions.filter(action => action.type === SERVER.SELECT_REQUEST)).toEqual([
+			expect.objectContaining({ server: HOST, version: '7.0.0' })
+		]);
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_INSIDE);
 	});
 });

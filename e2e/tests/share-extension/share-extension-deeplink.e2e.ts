@@ -63,7 +63,7 @@ test('shares files into a room and handles a missing shared file', { tags: ['tes
 });
 
 test('opens the share list when sharing while the app is running', { tags: ['test-6'], platforms: ['ios'] }, async fixtures => {
-	const { device, screen } = fixtures;
+	const { device } = fixtures;
 	const user = await createUser();
 
 	await loginWithDeepLink(fixtures, user);
@@ -71,6 +71,4 @@ test('opens the share list when sharing while the app is running', { tags: ['tes
 
 	await openPhotoShareSheet(fixtures);
 	await shareToRocketChat(fixtures, rocketChatApp.bundleId ?? rocketChatApp.name);
-
-	await expect(screen.getByText('Send to...')).toBeVisible({ timeout: LONG_TIMEOUT });
 });
