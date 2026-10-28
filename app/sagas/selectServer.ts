@@ -145,12 +145,19 @@ const getServerInfoSaga = function* getServerInfoSaga({
 	}
 };
 
+const startInsideUnlessSharing = function* startInsideUnlessSharing() {
+	const currentRoot = yield* appSelector(state => state.app.root);
+	if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+	}
+};
+
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
 		yield* call(applyServerCertificate, server);
 		if (sdk.host === server) {
 			applyBasicAuth(server);
-			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			yield* startInsideUnlessSharing();
 			yield put(selectServerCancel());
 			return;
 		}
@@ -188,10 +195,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(clearSettings());
 			yield put(setUser(user));
 			yield connect({ server, logoutOnError: true });
-			const currentRoot = yield* appSelector(state => state.app.root);
-			if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
-				yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
-			}
+			yield* startInsideUnlessSharing();
 			UserPreferences.setString(CURRENT_SERVER, server); // only set server after have a user
 		} else {
 			yield put(clearUser());
