@@ -89,6 +89,7 @@ export const ComposerInput = memo(
 
 				if (!text) {
 					inputRef.current?.clear();
+					inputRef.current?.setNativeProps?.({ text: ' ' });
 				}
 				inputRef.current?.setNativeProps?.({ text });
 

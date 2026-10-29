@@ -138,7 +138,7 @@ describe('ComposerInput', () => {
 		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  programmatic text  ' });
 	});
 
-	it('clears the native input without re-setting the sent text so a multi-line input shrinks back without flashing', () => {
+	it('clears the native input through a blank text instead of the sent text so a multi-line input shrinks back without flashing', () => {
 		const { composerRef, inputRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');
 
@@ -148,7 +148,7 @@ describe('ComposerInput', () => {
 			composerRef.current?.getTextAndClear();
 		});
 
-		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: '' }]]);
+		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: ' ' }], [{ text: '' }]]);
 		expect(inputRef.current?.clear.mock.invocationCallOrder[0]).toBeLessThan(
 			inputRef.current?.setNativeProps.mock.invocationCallOrder[0]
 		);
