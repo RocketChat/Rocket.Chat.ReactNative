@@ -87,12 +87,10 @@ export const ComposerInput = memo(
 					saveDraft();
 				}
 
-				if (text) {
-					inputRef.current?.setNativeProps?.({ text });
-				} else {
+				if (!text) {
 					inputRef.current?.clear();
-					inputRef.current?.setNativeProps?.({ text: '' });
 				}
+				inputRef.current?.setNativeProps?.({ text });
 
 				if (selection) {
 					// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
@@ -286,11 +284,13 @@ export const ComposerInput = memo(
 			});
 		};
 
-		// iOS only measures a multiline input by its typed text once JS has set non-empty text on it
-		useEffect(() => {
-			inputRef.current?.setNativeProps?.({ text: ' ' });
-			inputRef.current?.setNativeProps?.({ text: '' });
-		}, []);
+		useEffect(
+			function sizeByTypedTextFromTheStart() {
+				inputRef.current?.setNativeProps?.({ text: ' ' });
+				inputRef.current?.setNativeProps?.({ text: '' });
+			},
+			[inputRef]
+		);
 
 		// Draft/Canned Responses
 		useEffect(() => {
