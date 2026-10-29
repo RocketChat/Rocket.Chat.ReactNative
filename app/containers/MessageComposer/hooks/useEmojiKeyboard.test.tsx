@@ -5,6 +5,8 @@ import * as KeyboardController from 'react-native-keyboard-controller';
 
 import { EmojiKeyboardProvider, useEmojiKeyboard } from './useEmojiKeyboard';
 
+jest.mock('react-native-keyboard-controller', () => require('react-native-keyboard-controller/jest'));
+
 describe('useEmojiKeyboard', () => {
 	let mockSharedValue: any;
 	let mockSearchbarSharedValue: any;
@@ -242,12 +244,41 @@ describe('useEmojiKeyboard', () => {
 		});
 
 		test('dismisses it again when the emoji picker was opened while it was still showing', async () => {
+			jest.mocked(KeyboardController.KeyboardController.isVisible).mockReturnValueOnce(true);
 			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
 			mockSharedValue.value = true;
 
 			await keyboardFinishesShowing(336);
 
 			expect(KeyboardController.KeyboardController.dismiss).toHaveBeenCalledWith({ keepFocus: true });
+		});
+
+		const keyboardDidShowListener = () => {
+			const [eventName, listener] = jest.mocked(KeyboardController.KeyboardEvents.addListener).mock.lastCall!;
+			expect(eventName).toBe('keyboardDidShow');
+			return listener as () => void;
+		};
+
+		test('waits for iOS to report the keyboard shown before dismissing it again', async () => {
+			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
+			mockSharedValue.value = true;
+
+			await keyboardFinishesShowing(336);
+			expect(KeyboardController.KeyboardController.dismiss).not.toHaveBeenCalled();
+			keyboardDidShowListener()();
+
+			expect(KeyboardController.KeyboardController.dismiss).toHaveBeenCalledWith({ keepFocus: true });
+		});
+
+		test('leaves the keyboard up when the emoji picker closed before iOS reported it shown', async () => {
+			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
+			mockSharedValue.value = true;
+
+			await keyboardFinishesShowing(336);
+			mockSharedValue.value = false;
+			keyboardDidShowListener()();
+
+			expect(KeyboardController.KeyboardController.dismiss).not.toHaveBeenCalled();
 		});
 
 		test('stays up once it finished showing for the emoji search bar', async () => {

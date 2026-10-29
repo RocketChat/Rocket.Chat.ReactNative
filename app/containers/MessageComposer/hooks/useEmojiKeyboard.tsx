@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, type ReactElement } from 'react';
 import { Keyboard } from 'react-native';
-import { KeyboardController, useKeyboardHandler } from 'react-native-keyboard-controller';
+import { KeyboardController, KeyboardEvents, useKeyboardHandler } from 'react-native-keyboard-controller';
 import { type SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scheduleOnRN } from 'react-native-worklets';
@@ -22,11 +22,25 @@ const EmojiKeyboardContext = createContext<IEmojiKeyboardContextProps>({
 const MAX_ACCESSORY_BAR_HEIGHT = 120;
 const EMOJI_KEYBOARD_FIXED_HEIGHT = 250;
 
-const dismissKeyboardThatOutranPicker = () => KeyboardController.dismiss({ keepFocus: true });
-
 export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 	const showEmojiPickerSharedValue = useSharedValue(false);
 	const showEmojiSearchbarSharedValue = useSharedValue(false);
+
+	const dismissKeyboardThatOutranPicker = () => {
+		const dismissIfPickerStillOpen = () => {
+			if (showEmojiPickerSharedValue.get()) {
+				KeyboardController.dismiss({ keepFocus: true });
+			}
+		};
+		if (KeyboardController.isVisible()) {
+			dismissIfPickerStillOpen();
+			return;
+		}
+		const subscription = KeyboardEvents.addListener('keyboardDidShow', () => {
+			subscription.remove();
+			dismissIfPickerStillOpen();
+		});
+	};
 
 	useKeyboardHandler(
 		{
