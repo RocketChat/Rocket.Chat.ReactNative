@@ -1,5 +1,3 @@
-import { InteractionManager } from 'react-native';
-
 import { setActiveUsers } from '~/actions/activeUsers';
 import { setUser } from '~/actions/login';
 import { type IUser, type TStatusSource, type TUserStatus } from '~/definitions';
@@ -54,10 +52,8 @@ export function _setUser(ddpMessage: IActiveUsers): void {
 		if (!_setUserTimer.setUserTimer) {
 			_setUserTimer.setUserTimer = setTimeout(() => {
 				const activeUsersBatch = _activeUsers.activeUsers;
-				InteractionManager.runAfterInteractions(() => {
-					// @ts-ignore
-					reduxStore.dispatch(setActiveUsers(activeUsersBatch));
-				});
+				// @ts-ignore
+				reduxStore.dispatch(setActiveUsers(activeUsersBatch));
 				_setUserTimer.setUserTimer = null;
 				_activeUsers.activeUsers = {} as IActiveUsers;
 			}, 10000);

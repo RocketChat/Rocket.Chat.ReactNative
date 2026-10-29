@@ -109,7 +109,7 @@ const SetUsernameView = () => {
 						autoFocus
 						placeholder={I18n.t('Username')}
 						returnKeyType='send'
-						onSubmitEditing={handleSubmit(submit)}
+						onSubmitEditing={() => handleSubmit(submit)()}
 						testID='set-username-view-input'
 						clearButtonMode='while-editing'
 						containerStyle={sharedStyles.inputLastChild}
@@ -129,7 +129,7 @@ const SetUsernameView = () => {
 						autoFocus
 						placeholder={I18n.t('Name')}
 						returnKeyType='send'
-						onSubmitEditing={handleSubmit(submit)}
+						onSubmitEditing={() => handleSubmit(submit)()}
 						testID='set-name-view-input'
 						clearButtonMode='while-editing'
 						containerStyle={sharedStyles.inputLastChild}
