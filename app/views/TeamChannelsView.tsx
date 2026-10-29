@@ -16,7 +16,6 @@ import BackgroundContainer from '../containers/BackgroundContainer';
 import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
 import { type IApplicationState, type IBaseScreen, type TSubscriptionModel } from '../definitions';
-import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../lib/hooks/withDimensions';
 import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 import { BASE_ROW_HEIGHT, BASE_ROW_HEIGHT_CONDENSED } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -48,7 +47,7 @@ const API_FETCH_COUNT = 25;
 const keyExtractor = (item: IItem) => item._id;
 
 export interface IItem {
-	_id: ERoomType;
+	_id: string;
 	fname: string;
 	customFields: object;
 	broadcast: boolean;
@@ -451,7 +450,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => dispatch(deleteRoom(ERoomType.c, item))
+					onPress: () => dispatch(deleteRoom('room', item))
 				}
 			],
 			{ cancelable: false }

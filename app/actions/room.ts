@@ -1,6 +1,6 @@
 import { type Action } from 'redux';
 
-import { type ERoomType, type RoomType } from '../definitions';
+import { type RoomType } from '../definitions';
 import { ROOM } from './actionsTypes';
 
 // TYPE RETURN RELATED
@@ -22,14 +22,16 @@ type TUnsubscribeRoom = IBaseReturn;
 
 type TRoom = Record<string, any>;
 
+export type TRoomRemovalScope = 'room' | 'team';
+
 interface ILeaveRoom extends Action {
-	roomType: ERoomType;
+	scope: TRoomRemovalScope;
 	room: TRoom;
 	selected?: ISelected;
 }
 
 interface IDeleteRoom extends Action {
-	roomType: ERoomType;
+	scope: TRoomRemovalScope;
 	room: TRoom;
 	selected?: ISelected;
 }
@@ -92,20 +94,20 @@ export function unsubscribeRoom(rid: string): TUnsubscribeRoom {
 	};
 }
 
-export function leaveRoom(roomType: ERoomType, room: TRoom, selected?: ISelected): ILeaveRoom {
+export function leaveRoom(scope: TRoomRemovalScope, room: TRoom, selected?: ISelected): ILeaveRoom {
 	return {
 		type: ROOM.LEAVE,
 		room,
-		roomType,
+		scope,
 		selected
 	};
 }
 
-export function deleteRoom(roomType: ERoomType, room: TRoom, selected?: ISelected): IDeleteRoom {
+export function deleteRoom(scope: TRoomRemovalScope, room: TRoom, selected?: ISelected): IDeleteRoom {
 	return {
 		type: ROOM.DELETE,
 		room,
-		roomType,
+		scope,
 		selected
 	};
 }
