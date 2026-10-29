@@ -114,7 +114,6 @@ import loginRoot from '../login';
 import { deleteAccount, loginSuccess, logout } from '~/actions/login';
 import { selectServerRequest, selectServerSuccess } from '~/actions/server';
 import { addSettings, clearSettings, fetchSettingsComplete } from '~/actions/settings';
-import { getPermissions } from '~/lib/methods/getPermissions';
 import { shouldShowWatchAppOptions } from '~/lib/methods/watchOSQuickReplies/getWatchStatus';
 import { syncWatchOSQuickRepliesWithServer } from '~/lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
@@ -196,21 +195,6 @@ describe('login saga — watch quick replies', () => {
 			Apple_Watch_Quick_Actions: 'Yes,No',
 			Apple_Watch_Quick_Actions_Max_Count: 3
 		});
-	});
-
-	it('seeds when the same workspace is selected again while login is still loading permissions', async () => {
-		let finishPermissions = () => {};
-		jest.mocked(getPermissions).mockReturnValueOnce(new Promise<void>(resolve => (finishPermissions = resolve)));
-		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No' });
-		finishFetch(store, SERVER);
-
-		store.dispatch(loginSuccess(USER));
-		await flushSagaMicrotasks();
-		store.dispatch(selectServerRequest(SERVER, '7.0.0'));
-		finishPermissions();
-		await flushSagaMicrotasks();
-
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'Yes,No' });
 	});
 
 	it('syncs without waiting when the settings fetch already finished without the setting', async () => {

@@ -15,8 +15,6 @@
 
 @implementation RCTWatchModule
 
-#pragma mark - initialisation
-
 - (id)init {
     if (self = [super init]) {
         _session = WCSession.defaultSession;
@@ -25,7 +23,6 @@
     return self;
 }
 
-#pragma mark - turbo modules register
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
     (const facebook::react::ObjCTurboModule::InitParams &)params {
     return std::make_shared<facebook::react::NativeWatchModuleSpecJSI>(params);
@@ -35,7 +32,6 @@
     return @"WatchModule";
 }
 
-#pragma mark - spec methods (declared in spec)
 - (NSString *)syncQuickReplies:(NSString *)server {
     if (![WCSession isSupported] || !_session.isWatchAppInstalled) {
         return @"[ERROR]: WatchApp not supported or not installed";
