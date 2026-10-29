@@ -104,6 +104,11 @@ export const ComposerInput = memo(
 			[saveDraft, inputRef, syncTextState]
 		);
 
+		const allowGrowingFromEmptyText = () => {
+			inputRef.current?.setNativeProps?.({ text: ' ' });
+			inputRef.current?.setNativeProps?.({ text: '' });
+		};
+
 		const focus = (delay = 300) => {
 			setTimeout(() => {
 				if (inputRef.current) {
@@ -284,13 +289,7 @@ export const ComposerInput = memo(
 			});
 		};
 
-		useEffect(
-			function sizeByTypedTextFromTheStart() {
-				inputRef.current?.setNativeProps?.({ text: ' ' });
-				inputRef.current?.setNativeProps?.({ text: '' });
-			},
-			[inputRef]
-		);
+		useEffect(allowGrowingFromEmptyText, [inputRef]);
 
 		// Draft/Canned Responses
 		useEffect(() => {
