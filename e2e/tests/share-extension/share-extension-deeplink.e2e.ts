@@ -61,3 +61,14 @@ test('shares files into a room and handles a missing shared file', { tags: ['tes
 	await expect(missingFileToast).toBeVisible({ timeout: 15_000 });
 	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 });
+
+test('opens the share list when sharing while the app is running', { tags: ['test-6'], platforms: ['ios'] }, async fixtures => {
+	const { device } = fixtures;
+	const user = await createUser();
+
+	await loginWithDeepLink(fixtures, user);
+	const rocketChatApp = await device.foregroundApp();
+
+	await openPhotoShareSheet(fixtures);
+	await shareToRocketChat(fixtures, rocketChatApp.bundleId ?? rocketChatApp.name);
+});
