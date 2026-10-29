@@ -39,6 +39,11 @@ import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
+const allowGrowingFromEmptyText = (input: TextInput | null) => {
+	input?.setNativeProps?.({ text: ' ' });
+	input?.setNativeProps?.({ text: '' });
+};
+
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
@@ -87,11 +92,12 @@ export const ComposerInput = memo(
 					saveDraft();
 				}
 
-				if (!text) {
+				if (text) {
+					inputRef.current?.setNativeProps?.({ text });
+				} else {
 					inputRef.current?.clear();
-					inputRef.current?.setNativeProps?.({ text: ' ' });
+					allowGrowingFromEmptyText(inputRef.current);
 				}
-				inputRef.current?.setNativeProps?.({ text });
 
 				if (selection) {
 					// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
@@ -104,11 +110,6 @@ export const ComposerInput = memo(
 			},
 			[saveDraft, inputRef, syncTextState]
 		);
-
-		const allowGrowingFromEmptyText = () => {
-			inputRef.current?.setNativeProps?.({ text: ' ' });
-			inputRef.current?.setNativeProps?.({ text: '' });
-		};
 
 		const focus = (delay = 300) => {
 			setTimeout(() => {
@@ -290,7 +291,7 @@ export const ComposerInput = memo(
 			});
 		};
 
-		useEffect(allowGrowingFromEmptyText, [inputRef]);
+		useEffect(() => allowGrowingFromEmptyText(inputRef.current), [inputRef]);
 
 		// Draft/Canned Responses
 		useEffect(() => {
