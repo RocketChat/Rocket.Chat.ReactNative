@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactElement } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactElement } from 'react';
 import { Keyboard } from 'react-native';
 import { KeyboardController, KeyboardEvents, useKeyboardHandler } from 'react-native-keyboard-controller';
 import { type SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
@@ -26,22 +26,6 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 	const showEmojiPickerSharedValue = useSharedValue(false);
 	const showEmojiSearchbarSharedValue = useSharedValue(false);
 
-	const dismissKeyboardThatOutranPicker = () => {
-		const dismissIfPickerStillOpen = () => {
-			if (showEmojiPickerSharedValue.get() && !showEmojiSearchbarSharedValue.get()) {
-				KeyboardController.dismiss({ keepFocus: true });
-			}
-		};
-		if (KeyboardController.isVisible()) {
-			dismissIfPickerStillOpen();
-			return;
-		}
-		const subscription = KeyboardEvents.addListener('keyboardDidShow', () => {
-			subscription.remove();
-			dismissIfPickerStillOpen();
-		});
-	};
-
 	useKeyboardHandler(
 		{
 			onStart: e => {
@@ -50,17 +34,19 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 				if (e.height > MAX_ACCESSORY_BAR_HEIGHT && !showEmojiSearchbarSharedValue.get()) {
 					showEmojiPickerSharedValue.set(false);
 				}
-			},
-			onEnd: e => {
-				'worklet';
-
-				if (e.height > MAX_ACCESSORY_BAR_HEIGHT && showEmojiPickerSharedValue.get()) {
-					scheduleOnRN(dismissKeyboardThatOutranPicker);
-				}
 			}
 		},
 		[]
 	);
+
+	useEffect(() => {
+		const subscription = KeyboardEvents.addListener('keyboardDidShow', function dismissKeyboardThatOutranPicker(e) {
+			if (e.height > MAX_ACCESSORY_BAR_HEIGHT && showEmojiPickerSharedValue.get() && !showEmojiSearchbarSharedValue.get()) {
+				KeyboardController.dismiss({ keepFocus: true });
+			}
+		});
+		return () => subscription.remove();
+	}, [showEmojiPickerSharedValue, showEmojiSearchbarSharedValue]);
 
 	return (
 		<EmojiKeyboardContext.Provider value={{ showEmojiPickerSharedValue, showEmojiSearchbarSharedValue }}>
@@ -123,9 +109,7 @@ export const useEmojiKeyboard = () => {
 		// navigation bars/home indicator. When keyboard is open, keyboard height already covers it.
 		const notch = height.get() === 0 ? bottom : 0;
 		keyboardHeight.set(height.get() + notch);
-		const searchingFromFixedPicker =
-			showEmojiSearchbarSharedValue.get() === true && previousHeight.get() === EMOJI_KEYBOARD_FIXED_HEIGHT;
-		if (!searchingFromFixedPicker) {
+		if (!showEmojiSearchbarSharedValue.get()) {
 			previousHeight.set(keyboardHeight.get());
 		}
 	};

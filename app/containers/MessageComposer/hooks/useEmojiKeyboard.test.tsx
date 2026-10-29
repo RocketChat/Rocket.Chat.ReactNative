@@ -5,8 +5,6 @@ import * as KeyboardController from 'react-native-keyboard-controller';
 
 import { EmojiKeyboardProvider, useEmojiKeyboard } from './useEmojiKeyboard';
 
-jest.mock('react-native-keyboard-controller', () => require('react-native-keyboard-controller/jest'));
-
 describe('useEmojiKeyboard', () => {
 	let mockSharedValue: any;
 	let mockSearchbarSharedValue: any;
@@ -199,11 +197,7 @@ describe('useEmojiKeyboard', () => {
 			renderHook(() => useEmojiKeyboard(), { wrapper: EmojiKeyboardProvider });
 			const keyboardStartsShowing = (height: number) =>
 				keyboardHandlers.forEach(handler => handler.onStart?.({ height, duration: 250, progress: 1, target: 1 }));
-			const keyboardFinishesShowing = async (height: number) => {
-				keyboardHandlers.forEach(handler => handler.onEnd?.({ height, duration: 250, progress: 1, target: 1 }));
-				await Promise.resolve();
-			};
-			return { keyboardStartsShowing, keyboardFinishesShowing };
+			return { keyboardStartsShowing };
 		};
 
 		test('closes the emoji picker', () => {
@@ -243,69 +237,44 @@ describe('useEmojiKeyboard', () => {
 			expect(mockSharedValue.value).toBe(true);
 		});
 
-		test('dismisses it again when the emoji picker was opened while it was still showing', async () => {
-			jest.mocked(KeyboardController.KeyboardController.isVisible).mockReturnValueOnce(true);
-			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
-			mockSharedValue.value = true;
-
-			await keyboardFinishesShowing(336);
-
-			expect(KeyboardController.KeyboardController.dismiss).toHaveBeenCalledWith({ keepFocus: true });
-		});
-
-		const keyboardDidShowListener = () => {
+		const keyboardFinishesShowing = (height: number) => {
 			const [eventName, listener] = jest.mocked(KeyboardController.KeyboardEvents.addListener).mock.lastCall!;
 			expect(eventName).toBe('keyboardDidShow');
-			return listener as () => void;
+			(listener as (e: { height: number }) => void)({ height });
 		};
 
-		test('waits for iOS to report the keyboard shown before dismissing it again', async () => {
-			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
+		test('dismisses it again when the emoji picker was opened while it was still showing', () => {
+			renderAndCaptureKeyboardHandlers();
 			mockSharedValue.value = true;
 
-			await keyboardFinishesShowing(336);
-			expect(KeyboardController.KeyboardController.dismiss).not.toHaveBeenCalled();
-			keyboardDidShowListener()();
+			keyboardFinishesShowing(336);
 
 			expect(KeyboardController.KeyboardController.dismiss).toHaveBeenCalledWith({ keepFocus: true });
 		});
 
-		test('leaves the keyboard up when emoji search opened before iOS reported it shown', async () => {
-			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
-			mockSharedValue.value = true;
-
-			await keyboardFinishesShowing(336);
-			mockSearchbarSharedValue.value = true;
-			keyboardDidShowListener()();
-
-			expect(KeyboardController.KeyboardController.dismiss).not.toHaveBeenCalled();
-		});
-
-		test('leaves the keyboard up when the emoji picker closed before iOS reported it shown', async () => {
-			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
-			mockSharedValue.value = true;
-
-			await keyboardFinishesShowing(336);
-			mockSharedValue.value = false;
-			keyboardDidShowListener()();
-
-			expect(KeyboardController.KeyboardController.dismiss).not.toHaveBeenCalled();
-		});
-
-		test('stays up once it finished showing for the emoji search bar', async () => {
-			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
+		test('leaves the keyboard up when it finished showing for the emoji search bar', () => {
+			renderAndCaptureKeyboardHandlers();
 			mockSharedValue.value = true;
 			mockSearchbarSharedValue.value = true;
 
-			await keyboardFinishesShowing(336);
+			keyboardFinishesShowing(336);
 
 			expect(KeyboardController.KeyboardController.dismiss).not.toHaveBeenCalled();
 		});
 
-		test('stays up once it finished showing with the emoji picker closed', async () => {
-			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
+		test('leaves the keyboard up when it finished showing with the emoji picker closed', () => {
+			renderAndCaptureKeyboardHandlers();
 
-			await keyboardFinishesShowing(336);
+			keyboardFinishesShowing(336);
+
+			expect(KeyboardController.KeyboardController.dismiss).not.toHaveBeenCalled();
+		});
+
+		test('leaves the picker alone when only an accessory bar finished showing', () => {
+			renderAndCaptureKeyboardHandlers();
+			mockSharedValue.value = true;
+
+			keyboardFinishesShowing(82);
 
 			expect(KeyboardController.KeyboardController.dismiss).not.toHaveBeenCalled();
 		});
