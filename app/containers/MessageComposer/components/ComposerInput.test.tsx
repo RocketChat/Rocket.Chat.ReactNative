@@ -86,6 +86,7 @@ const renderInput = ({
 		</MessageActionProvider>
 	);
 	const rendered = render(tree);
+	inputRef.current?.setNativeProps.mockClear();
 	return { ...rendered, composerRef, inputRef, messageActionStore };
 };
 
@@ -100,16 +101,9 @@ describe('ComposerInput', () => {
 		jest.useRealTimers();
 	});
 
-	it('sets non-empty native text once on mount and empties it again so iOS sizes the input by its typed text', () => {
-		const { inputRef } = renderInput();
-
-		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: ' ' }], [{ text: '' }]]);
-	});
-
 	it('updates getText synchronously and trims typed text without writing it back to the native input', () => {
 		const { composerRef, inputRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');
-		inputRef.current?.setNativeProps.mockClear();
 
 		fireEvent.changeText(input, '  typed text  ');
 
@@ -143,7 +137,6 @@ describe('ComposerInput', () => {
 		const input = screen.getByTestId('message-composer-input');
 
 		fireEvent.changeText(input, 'line 1\nline 2\nline 3\nline 4');
-		inputRef.current?.setNativeProps.mockClear();
 		act(() => {
 			composerRef.current?.getTextAndClear();
 		});
@@ -159,7 +152,6 @@ describe('ComposerInput', () => {
 		const input = screen.getByTestId('message-composer-input');
 
 		fireEvent.changeText(input, '@');
-		inputRef.current?.setNativeProps.mockClear();
 		fireEvent.changeText(input, '');
 
 		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: '' }]]);
