@@ -68,7 +68,12 @@ let mockWindowWidth = 350;
 let mockWindowHeight = 800;
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 	__esModule: true,
-	default: () => ({ width: mockWindowWidth, height: mockWindowHeight, scale: 1, fontScale: 1 })
+	default: () => ({
+		width: mockWindowWidth,
+		height: mockWindowHeight,
+		scale: 1,
+		fontScale: 1
+	})
 }));
 
 const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
@@ -334,9 +339,65 @@ describe('CallView/CallView', () => {
 
 		fireEvent.press(getByTestId('call-view-more'));
 		const { options } = mockShowActionSheetRef.mock.calls.at(-1)[0];
+		expect(options.map((option: { testID: string }) => option.testID)).toEqual([
+			'call-view-more-video',
+			'call-view-more-message'
+		]);
 		const message = options.find((option: { testID: string }) => option.testID === 'call-view-more-message');
 		message.onPress();
 		expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
+	});
+
+	it('should not offer video when the call has no DM and no server escalation', () => {
+		setStoreState({ callState: 'active', roomId: null });
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		expect(getByTestId('call-view-more').props.accessibilityState?.disabled).toBe(true);
+	});
+
+	it('should offer video escalation when the call supports it', () => {
+		setStoreState({
+			callState: 'active',
+			call: {
+				...createMockCall(),
+				features: ['audio', 'conference-escalation']
+			} as any
+		});
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		fireEvent.press(getByTestId('call-view-more'));
+		const { options } = mockShowActionSheetRef.mock.calls[0][0];
+		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-video', 'call-view-more-message']);
+	});
+
+	it('should prompt to join the conference once the call was escalated', () => {
+		setStoreState({
+			callState: 'active',
+			escalated: true,
+			call: {
+				...createMockCall(),
+				features: ['audio', 'conference-escalation']
+			} as any
+		});
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		expect(getByTestId('call-view-join-video')).toBeTruthy();
+		expect(getByTestId('call-view-hold').props.accessibilityState?.disabled).toBe(true);
+		fireEvent.press(getByTestId('call-view-more'));
+		const { options } = mockShowActionSheetRef.mock.calls[0][0];
+		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-message']);
 	});
 
 	it('should show action sheet with dialpad when dialpad button is pressed', () => {

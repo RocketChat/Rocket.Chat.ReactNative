@@ -1340,7 +1340,10 @@ export const videoConferenceHeartbeat = (callId: string) => sdk.post('video-conf
 
 export const videoConferenceGetCapabilities = () => sdk.get('video-conference.capabilities');
 
-export const videoConferenceStart = (roomId: string) => sdk.post('video-conference.start', { roomId, allowRinging: true });
+export const videoConferenceStart = (roomId: string, allowRinging = true) =>
+	sdk.post('video-conference.start', { roomId, allowRinging });
+
+export const mediaCallsEscalate = (callId: string) => sdk.post('media-calls.escalate', { callId });
 
 export const videoConferenceCancel = (callId: string) => sdk.post('video-conference.cancel', { callId });
 
