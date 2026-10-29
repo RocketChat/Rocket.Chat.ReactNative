@@ -161,9 +161,12 @@ describe('getSettings — active workspace', () => {
 			],
 			total: 2
 		};
+		const write = jest.fn();
+		Object.assign(database.active, { write });
 
 		await getSettings(SERVER);
 
+		expect(write).toHaveBeenCalledTimes(1);
 		expect(store.dispatch).toHaveBeenCalledWith(
 			fetchSettingsComplete({ Apple_Watch_Quick_Actions: 'Yes,No', Apple_Watch_Quick_Actions_Max_Count: 4 })
 		);

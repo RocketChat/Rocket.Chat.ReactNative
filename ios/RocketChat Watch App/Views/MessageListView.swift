@@ -15,7 +15,7 @@ struct MessageListView: View {
 	
 	@State private var lastOpen: Date?
 	@State private var info: Room?
-	@State private var followsLatest = true
+	@State private var followsLiveTail = true
 	@State private var positionedCount = 0
 	
 	@Environment(\.scenePhase) private var scenePhase
@@ -51,7 +51,7 @@ struct MessageListView: View {
 							Button("Load more...") {
 								guard let oldestMessage = room.firstMessage?.ts else { return }
 								
-								followsLatest = false
+								followsLiveTail = false
 								messagesLoader.loadMore(from: oldestMessage)
 							}
 							.padding(.bottom, 8)
@@ -84,7 +84,7 @@ struct MessageListView: View {
 							messageSender.sendMessage($0, in: room)
 							
 							lastOpen = nil
-							followsLatest = true
+							followsLiveTail = true
 						}
 						.id(messageComposer)
 						.padding(.top, 8)
@@ -96,7 +96,7 @@ struct MessageListView: View {
 					}
 					.onChange(of: messages.count) { count in
 						positionedCount = count
-						if followsLatest {
+						if followsLiveTail {
 							scrollToBottom(proxy: proxy)
 						}
 					}

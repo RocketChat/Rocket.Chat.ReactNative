@@ -8,10 +8,6 @@ struct MessageComposerView: View {
 	let anchorID: String
 	let onSend: (String) -> Void
 	
-	private var quickReplies: [String] {
-		server.quickReplies
-	}
-	
 	var body: some View {
 		if room.isReadOnly {
 			VStack(spacing: 0) {
@@ -38,9 +34,9 @@ struct MessageComposerView: View {
 					.frame(height: 1)
 					.id(anchorID)
 				
-				if !quickReplies.isEmpty {
+				if !server.quickReplies.isEmpty {
 					VStack(spacing: 6) {
-						ForEach(quickReplies, id: \.self) { reply in
+						ForEach(server.quickReplies, id: \.self) { reply in
 							Text(reply)
 								.font(.caption)
 								.foregroundStyle(.white)

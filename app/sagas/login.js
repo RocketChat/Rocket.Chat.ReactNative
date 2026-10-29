@@ -271,8 +271,6 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 const fetchWatchReplies = function* fetchWatchRepliesFork() {
 	try {
 		if (!shouldShowWatchAppOptions()) return;
-		const isAuthenticated = yield select(s => s.login.isAuthenticated);
-		if (!isAuthenticated) return;
 		const server = yield select(s => s.server.server);
 		const settingsFetchedFor = yield call(getSettingsFetchedFor);
 		let fetchedSettings;

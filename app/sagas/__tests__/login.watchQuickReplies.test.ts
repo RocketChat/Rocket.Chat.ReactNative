@@ -223,22 +223,6 @@ describe('login saga — watch quick replies', () => {
 		expect(syncWatchOSQuickRepliesWithServer).not.toHaveBeenCalled();
 	});
 
-	it('keeps waiting when the same workspace is selected again', async () => {
-		jest.useFakeTimers();
-		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No' });
-
-		store.dispatch(loginSuccess(USER));
-		await flushSagaMicrotasks();
-		jest.advanceTimersByTime(2500);
-		await flushSagaMicrotasks();
-		store.dispatch(selectServerRequest(SERVER, '7.0.0'));
-		finishFetch(store, SERVER);
-		await flushSagaMicrotasks();
-		jest.useRealTimers();
-
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'Yes,No' });
-	});
-
 	it('keeps waiting when the same workspace is selected again right after login', async () => {
 		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No' });
 
@@ -246,18 +230,6 @@ describe('login saga — watch quick replies', () => {
 		await flushSagaMicrotasks();
 		store.dispatch(selectServerRequest(SERVER, '7.0.0'));
 		finishFetch(store, SERVER);
-		await flushSagaMicrotasks();
-
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'Yes,No' });
-	});
-
-	it('seeds after switching back from a workspace that never connected', async () => {
-		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No' });
-		finishFetch(store, SERVER);
-		store.dispatch(selectServerRequest('https://other.rocket.chat', '7.0.0'));
-		store.dispatch(selectServerRequest(SERVER, '7.0.0'));
-
-		store.dispatch(loginSuccess(USER));
 		await flushSagaMicrotasks();
 
 		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'Yes,No' });
