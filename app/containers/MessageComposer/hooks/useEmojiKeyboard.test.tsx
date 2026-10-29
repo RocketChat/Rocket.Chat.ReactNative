@@ -255,6 +255,15 @@ describe('useEmojiKeyboard', () => {
 			expect(mockSharedValue.value).toBe(true);
 		});
 
+		test('keeps the emoji picker when the iOS 27 iPad shortcut bar shows', () => {
+			const { keyboardStartsShowing } = renderAndCaptureKeyboardHandlers();
+			mockSharedValue.value = true;
+
+			keyboardStartsShowing(82);
+
+			expect(mockSharedValue.value).toBe(true);
+		});
+
 		test('dismisses it again when the emoji picker was opened while it was still showing', async () => {
 			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
 			mockSharedValue.value = true;

@@ -19,7 +19,8 @@ const EmojiKeyboardContext = createContext<IEmojiKeyboardContextProps>({
 	showEmojiSearchbarSharedValue: { value: false } as SharedValue<boolean>
 });
 
-const IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD = 70;
+// the iPad shortcut bar is ~80 on iOS 27
+const IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD = 120;
 const EMOJI_KEYBOARD_FIXED_HEIGHT = 250;
 
 const dismissKeepingFocus = () => KeyboardController.dismiss({ keepFocus: true });
