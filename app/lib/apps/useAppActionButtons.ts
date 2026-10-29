@@ -15,7 +15,7 @@ import log from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { type TPermissionModel, type TSubscriptionModel } from '~/definitions';
 
-type TAppActionButtonContext = { room: IAppActionButtonRoom } & Omit<IAppActionButtonAuth, 'userRoles'>;
+type TAppActionButtonContext = { room?: IAppActionButtonRoom } & Omit<IAppActionButtonAuth, 'userRoles'>;
 
 export interface IAppActionButtonItem {
 	id: string;
@@ -33,16 +33,15 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 	const hasButtons = buttons.length > 0;
 
 	const context$ = useMemo(() => {
-		if (!hasButtons || !rid) {
+		if (!hasButtons) {
 			return undefined;
 		}
 
 		const db = database.active;
 		const permissionIds = permissionKey ? permissionKey.split(',') : [];
-		const subscription$ = db
-			.get('subscriptions')
-			.query(Q.where('id', rid))
-			.observeWithColumns(['t', 'roles', 'team_main', 'prid', 'uids']);
+		const subscription$ = rid
+			? db.get('subscriptions').query(Q.where('id', rid)).observeWithColumns(['t', 'roles', 'team_main', 'prid', 'uids'])
+			: of([]);
 		const permissions$ = permissionIds.length
 			? db
 					.get('permissions')
@@ -54,7 +53,7 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 			map(([subscriptions, permissionRecords]): TAppActionButtonContext => {
 				const [sub] = subscriptions as TSubscriptionModel[];
 				return {
-					room: sub ?? {},
+					room: rid ? (sub ?? {}) : undefined,
 					roomRoles: sub?.roles ?? [],
 					permissions: (permissionRecords as TPermissionModel[]).reduce<{ [permission: string]: string[] }>((acc, record) => {
 						acc[record.id] = record.roles ?? [];
@@ -76,7 +75,9 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 		}
 		const { room, roomRoles, permissions } = filterContext;
 		return buttons
-			.filter(button => applyRoomFilter(button, room) && applyAuthFilter(button, { userRoles, roomRoles, permissions }))
+			.filter(
+				button => (!room || applyRoomFilter(button, room)) && applyAuthFilter(button, { userRoles, roomRoles, permissions })
+			)
 			.map(button => ({
 				id: getIdForActionButton(button),
 				label: translateAppKey({ appId: button.appId, key: button.labelI18n, translations, locale: language }),
