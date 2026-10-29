@@ -30,7 +30,7 @@ export default function VideoConferenceBlock({ callId, blockId }: { callId: stri
 		if (type === 'direct' && status === VideoConferenceStatus.CALLING)
 			return <VideoConferenceDirect discussionRid={discussionRid} />;
 
-		return <VideoConferenceOutgoing blockId={blockId} users={participants} discussionRid={discussionRid} />;
+		return <VideoConferenceOutgoing blockId={blockId} rid={rid} users={participants} discussionRid={discussionRid} />;
 	}
 
 	if (result?.error || error) return <VideoConferenceIssue />;

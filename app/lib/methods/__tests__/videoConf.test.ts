@@ -4,6 +4,7 @@ import i18n from '~/i18n';
 import { mockedStore } from '~/reducers/mockedStore';
 import navigation from '../../navigation/appNavigation';
 import { videoConferenceGetCapabilities, videoConferenceJoin } from '../../services/restApi';
+import { usePexipCallStore } from '../../services/videoConf/usePexipCallStore';
 import { initStore } from '../../store/auxStore';
 import { showErrorAlert } from '../helpers/info';
 import openLink from '../helpers/openLink';
@@ -31,6 +32,7 @@ describe('videoConfJoin', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
+		usePexipCallStore.getState().leave();
 		mockedStore.dispatch(clearSettings());
 		mockedStore.dispatch(selectServerRequest('https://open.rocket.chat', '8.0.0'));
 		mockedCapabilities.mockResolvedValue({ success: true, providerName: 'jitsi' });
@@ -57,14 +59,18 @@ describe('videoConfJoin', () => {
 			expect(openLink).toHaveBeenCalledWith('https://bbb.example.com/x');
 		});
 
-		test('opens a pexip call in the video conference webview', async () => {
+		test('opens a pexip call in the in-app call overlay', async () => {
 			mockedCapabilities.mockResolvedValue({ success: true, providerName: 'core.pexip' });
 			mockedJoin.mockResolvedValue({ success: true, url: 'https://pexip.example/call', providerName: 'core.pexip' });
 
-			await videoConfJoin('call1', true, true);
+			await videoConfJoin('call1', true, true, { rid: 'GENERAL' });
 
-			expect(requestVoipCallPermissions).toHaveBeenCalled();
-			expect(navigation.navigate).toHaveBeenCalledWith('VideoConfWebView', { url: 'https://pexip.example/call' });
+			expect(usePexipCallStore.getState().call).toMatchObject({
+				callId: 'call1',
+				url: 'https://pexip.example/call',
+				rid: 'GENERAL'
+			});
+			expect(navigation.navigate).not.toHaveBeenCalled();
 			expect(openLink).not.toHaveBeenCalled();
 		});
 

@@ -6,7 +6,7 @@ import { VideoConferenceStatus, type VideoConferenceType } from '~/definitions/I
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useVideoConf } from '~/lib/hooks/useVideoConf';
-import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
+import { useIsInAnyCall } from '~/lib/services/isInAnyCall';
 import { CallParticipants, type TCallUsers } from './CallParticipants';
 import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
@@ -30,7 +30,7 @@ export default function VideoConferenceEnded({
 	const style = useStyle();
 	const username = useAppSelector(state => state.login.user.username);
 	const { showInitCallActionSheet } = useVideoConf(rid);
-	const isInActiveVoipCall = useIsInActiveVoipCall();
+	const isInAnyCall = useIsInAnyCall();
 
 	const showParticipants = users.some(user => user.username !== createdBy.username);
 	const notAnswered = status === VideoConferenceStatus.EXPIRED || status === VideoConferenceStatus.DECLINED;
@@ -39,7 +39,7 @@ export default function VideoConferenceEnded({
 		<VideoConferenceBaseContainer variant='ended' discussionRid={discussionRid}>
 			{type === 'direct' ? (
 				<>
-					<Touch style={style.callToActionCallBack} onPress={showInitCallActionSheet} disabled={isInActiveVoipCall}>
+					<Touch style={style.callToActionCallBack} onPress={showInitCallActionSheet} disabled={isInAnyCall}>
 						<Text style={style.callToActionCallBackText}>
 							{createdBy.username === username ? i18n.t('Call_again') : i18n.t('Call_back')}
 						</Text>
