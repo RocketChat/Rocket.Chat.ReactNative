@@ -37,7 +37,7 @@ import {
 	type IUrl,
 	type IAttachment,
 	type IRoomInfoParam,
-	type SubscriptionType
+	type RoomType
 } from '~/definitions';
 import { searchMessages } from '~/lib/services/restApi';
 import { type TNavigation } from '~/stacks/stackType';
@@ -72,7 +72,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	private rid: string;
 
-	private t: SubscriptionType;
+	private t: RoomType;
 
 	private encrypted: boolean | undefined;
 
@@ -209,7 +209,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		let params: {
 			rid: string;
 			jumpToMessageId: string;
-			t: SubscriptionType;
+			t: RoomType;
 			tmid?: string;
 			name?: string;
 		} = {

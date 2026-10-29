@@ -1,10 +1,11 @@
 import { type NewMessageStackParamList } from '~/stacks/types';
-import { type ISubscription, type SubscriptionType } from '~/definitions/ISubscription';
+import { type RoomType } from '~/definitions/IRoom';
+import { type ISubscription } from '~/definitions/ISubscription';
 import { type IBaseScreen, type IMessage, type ISearchLocal, type IUser } from '~/definitions';
 
 export interface IResult {
 	rid: string;
-	t: SubscriptionType;
+	t: RoomType;
 	prid: string;
 }
 

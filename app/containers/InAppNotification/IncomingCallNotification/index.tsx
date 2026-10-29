@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { A11y } from 'react-native-a11y-order';
 
 import { acceptCall, cancelCall } from '~/actions/videoConf';
-import { type ISubscription, type SubscriptionType } from '~/definitions';
+import { type ISubscription, type RoomType } from '~/definitions';
 import i18n from '~/i18n';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useEndpointData } from '~/lib/hooks/useEndpointData';
@@ -22,7 +22,7 @@ export interface INotifierComponent {
 		text: string;
 		payload: {
 			sender: { username: string };
-			type: SubscriptionType;
+			type: RoomType;
 		} & Pick<ISubscription, '_id' | 'name' | 'rid' | 'prid'>;
 		title: string;
 		avatar: string;

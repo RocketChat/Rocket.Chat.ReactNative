@@ -3,7 +3,7 @@ import type Model from '@nozbe/watermelondb/Model';
 import { type IMessage } from './IMessage';
 import { type IRocketChatRecord } from './IRocketChatRecord';
 import { type IServedBy } from './IServedBy';
-import { type ISubscription, type IVisitor, type SubscriptionType } from './ISubscription';
+import { type ISubscription, type IVisitor } from './ISubscription';
 import { type IUser, type TNotifications } from './IUser';
 
 interface IRequestTranscript {
@@ -19,7 +19,7 @@ export interface IRoomInfoParam {
 	room?: ISubscription;
 	member?: any;
 	rid: string;
-	t: SubscriptionType;
+	t: RoomType;
 	joined?: boolean;
 	itsMe?: boolean;
 }
@@ -30,7 +30,7 @@ export interface IRoom {
 	id: string;
 	rid: string;
 	prid: string;
-	t: SubscriptionType;
+	t: RoomType;
 	name: string;
 	teamMain: boolean;
 	alert?: boolean;
@@ -79,7 +79,7 @@ export interface IRoomSettings {
 	roomDescription?: string;
 	roomTopic?: string;
 	roomAnnouncement?: string;
-	roomType?: SubscriptionType;
+	roomType?: RoomType;
 	readOnly?: boolean;
 	reactWhenReadOnly?: boolean;
 	systemMessages?: string[];
@@ -116,7 +116,7 @@ export interface IOmnichannelSource {
 export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featured' | 'broadcast'>> {
 	_id: string;
 	rid: string;
-	t: SubscriptionType.OMNICHANNEL;
+	t: 'l';
 	v: IVisitor;
 	email?: {
 		// Data used when the room is created from an email, via email Integration.

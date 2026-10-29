@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 
 import { AvatarWithEdit } from '~/containers/Avatar';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import styles from '../styles';
 import I18n from '~/i18n';
 
@@ -13,12 +13,12 @@ const RoomInfoViewAvatar = ({
 	handleEditAvatar
 }: {
 	showEdit: boolean;
-	type: SubscriptionType;
+	type: RoomType;
 	username: string;
 	rid?: string;
 	handleEditAvatar: () => void;
 }): ReactElement => {
-	const showAvatarEdit = showEdit && type !== SubscriptionType.OMNICHANNEL;
+	const showAvatarEdit = showEdit && type !== RoomType.OMNICHANNEL;
 
 	return (
 		<AvatarWithEdit

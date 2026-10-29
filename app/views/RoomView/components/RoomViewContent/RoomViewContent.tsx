@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { getRoomTitle } from '~/lib/methods/helpers';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { getInvitationActions, getInvitationText } from '~/lib/methods/getInvitationData';
-import { type IInviteSubscription } from '~/definitions';
+import { type IInviteSubscription, type RoomType } from '~/definitions';
 import { isSubscriptionModel } from '~/definitions/TRoom';
 import { type IRoomViewProps, type RoomStore } from '~/views/RoomView/definitions';
 import RoomScreen from '~/views/RoomView/RoomScreen';
@@ -16,7 +16,7 @@ import { RoomBackground } from '../RoomBackground';
 
 interface IRoomViewContentProps extends IRoomViewProps {
 	rid?: string;
-	t?: string;
+	t?: RoomType;
 	tmid?: string;
 	roomStore: RoomStore;
 	ready: boolean;

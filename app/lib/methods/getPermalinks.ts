@@ -1,11 +1,11 @@
 import log from './helpers/log';
-import { type RoomType, type TAnyMessageModel, type TSubscriptionModel, type SubscriptionType } from '~/definitions';
+import { type RoomType, type TAnyMessageModel, type TSubscriptionModel } from '~/definitions';
 import { store } from '../store/auxStore';
 import { isGroupChat } from './helpers';
 import { getRoom } from './getRoom';
 
 interface ISubscription {
-	t: SubscriptionType;
+	t: RoomType;
 	name: string;
 	rid: string;
 }

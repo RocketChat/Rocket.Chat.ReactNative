@@ -22,7 +22,7 @@ import {
 	type IBaseScreen,
 	type ISubscription,
 	type IUser,
-	SubscriptionType,
+	RoomType,
 	type TSubscriptionModel
 } from '~/definitions';
 import { type IActiveUser } from '~/reducers/activeUsers';
@@ -224,7 +224,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		const { encryptionEnabled } = this.props;
 		if (room.rid) {
 			if (!room.id) {
-				if (room.t === SubscriptionType.OMNICHANNEL) {
+				if (room.t === RoomType.OMNICHANNEL) {
 					if (!this.isOmnichannelPreview) {
 						await this.loadOmnichannelRoom(room.rid);
 					}
@@ -1077,7 +1077,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		const { isMasterDetail, navigation, userId } = this.props;
 		const { rid, t, prid, teamId } = room;
 		const isGroupChatHandler = isGroupChat(room);
-		const itsMe = t === SubscriptionType.DIRECT && !isGroupChatHandler && !!userId && getUidDirectMessage(room) === userId;
+		const itsMe = t === RoomType.DIRECT && !isGroupChatHandler && !!userId && getUidDirectMessage(room) === userId;
 
 		return (
 			<SafeAreaView testID='room-actions-view'>

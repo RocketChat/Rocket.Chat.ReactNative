@@ -2,7 +2,7 @@ import { goRoom } from '~/lib/methods/helpers/goRoom';
 import Navigation from '~/lib/navigation/appNavigation';
 import { useCallStore } from './useCallStore';
 import { navigateToCallRoom } from './navigateToCallRoom';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
@@ -73,7 +73,7 @@ describe('navigateToCallRoom', () => {
 		await navigateToCallRoom({ isMasterDetail: true });
 
 		expect(mockGoRoom).toHaveBeenCalledWith({
-			item: { rid: 'rid-1', name: 'u', t: SubscriptionType.DIRECT },
+			item: { rid: 'rid-1', name: 'u', t: RoomType.DIRECT },
 			isMasterDetail: true
 		});
 	});
@@ -109,7 +109,7 @@ describe('navigateToCallRoom', () => {
 
 		expect(toggleFocus).toHaveBeenCalledTimes(1);
 		expect(mockGoRoom).toHaveBeenCalledWith({
-			item: { rid: 'rid-1', name: 'alice', t: SubscriptionType.DIRECT },
+			item: { rid: 'rid-1', name: 'alice', t: RoomType.DIRECT },
 			isMasterDetail: true
 		});
 		expect(toggleFocus.mock.invocationCallOrder[0]).toBeLessThan(mockGoRoom.mock.invocationCallOrder[0]);
@@ -129,7 +129,7 @@ describe('navigateToCallRoom', () => {
 
 		expect(toggleFocus).not.toHaveBeenCalled();
 		expect(mockGoRoom).toHaveBeenCalledWith({
-			item: { rid: 'rid-1', name: 'alice', t: SubscriptionType.DIRECT },
+			item: { rid: 'rid-1', name: 'alice', t: RoomType.DIRECT },
 			isMasterDetail: true
 		});
 	});
@@ -149,7 +149,7 @@ describe('navigateToCallRoom', () => {
 
 		expect(mockNavigation.navigate).toHaveBeenCalledWith('ChatsStackNavigator');
 		expect(mockGoRoom).toHaveBeenCalledWith({
-			item: { rid: 'rid-1', name: 'alice', t: SubscriptionType.DIRECT },
+			item: { rid: 'rid-1', name: 'alice', t: RoomType.DIRECT },
 			isMasterDetail: true
 		});
 		expect(mockNavigation.navigate.mock.invocationCallOrder[0]).toBeLessThan(mockGoRoom.mock.invocationCallOrder[0]);
@@ -221,7 +221,7 @@ describe('navigateToCallRoom', () => {
 		await navigateToCallRoom({ isMasterDetail: false });
 
 		expect(mockGoRoom).toHaveBeenCalledWith({
-			item: { rid: 'rid-1', name: 'alice', t: SubscriptionType.DIRECT },
+			item: { rid: 'rid-1', name: 'alice', t: RoomType.DIRECT },
 			isMasterDetail: false
 		});
 	});

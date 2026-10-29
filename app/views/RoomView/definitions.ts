@@ -25,7 +25,7 @@ export type IRoomViewProps = Pick<IBaseScreen<ChatsStackParamList, 'RoomView'>, 
 
 export interface IRoomScreenInput {
 	rid?: string;
-	t?: string;
+	t?: RoomType;
 	tmid?: string;
 	name?: string;
 	initialRoom: TRoomOrPreview;
@@ -34,7 +34,7 @@ export interface IRoomScreenInput {
 
 export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'> {
 	rid: string;
-	t: string;
+	t: RoomType;
 	tmid?: string;
 	roomStore: RoomStore;
 	ready: boolean;
@@ -231,7 +231,7 @@ export type IRoomMessageActionsProps = Pick<
 
 export interface IUseRoomMessagingParams {
 	rid?: string;
-	t?: string;
+	t?: RoomType;
 	tmid?: string;
 	ready: boolean;
 	roomStore: RoomStore;
@@ -249,7 +249,7 @@ export interface IUseSubscriptionUnreadsResult {
 export interface IUseJumpToMessageParams {
 	rid?: string;
 	tmid?: string;
-	t?: string;
+	t?: RoomType;
 	isMasterDetail: boolean;
 	listContainerRef: RefObject<IListContainerRef | null>;
 	roomUserIdRef: RefObject<string | null | undefined>;
@@ -263,6 +263,6 @@ export interface IUseJumpToMessageResult {
 
 export interface IUseOmnichannelPermissionsParams {
 	rid?: string;
-	t?: string;
+	t?: RoomType;
 	roomStore: RoomStore;
 }

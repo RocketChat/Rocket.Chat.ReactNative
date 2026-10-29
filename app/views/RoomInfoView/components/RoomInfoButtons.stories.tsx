@@ -3,7 +3,7 @@ import { type ComponentType, type ReactNode } from 'react';
 
 import { RoomInfoButtons } from './RoomInfoButtons';
 import type { ISubscription } from '~/definitions';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import { clearEnterpriseModules, setEnterpriseModules } from '~/actions/enterpriseModules';
 import { setPermissions } from '~/actions/permissions';
 import { setUser } from '~/actions/login';
@@ -24,7 +24,7 @@ const createMockRoom = (overrides: Partial<ISubscription> = {}): ISubscription =
 		_id: 'room1',
 		rid: 'room1',
 		id: 'room1',
-		t: SubscriptionType.DIRECT,
+		t: RoomType.DIRECT,
 		name: 'john.doe',
 		fname: 'John Doe',
 		uids: ['abc', 'user123'],

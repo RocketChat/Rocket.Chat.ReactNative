@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 
 import { appInit } from '~/actions/app';
 import { deepLinkingClickCallPush, deepLinkingOpen } from '~/actions/deepLinking';
-import { type INotification, SubscriptionType } from '~/definitions';
+import { type INotification, RoomType } from '~/definitions';
 import { store } from '../store/auxStore';
 import { pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
 
@@ -59,9 +59,9 @@ export const onNotification = (push: INotification): void => {
 				l: 'channels'
 			};
 			let roomName = name;
-			if (type === SubscriptionType.DIRECT) {
+			if (type === RoomType.DIRECT) {
 				roomName = sender?.username ?? name;
-			} else if (type === SubscriptionType.OMNICHANNEL) {
+			} else if (type === RoomType.OMNICHANNEL) {
 				roomName = sender?.name ?? name;
 			}
 

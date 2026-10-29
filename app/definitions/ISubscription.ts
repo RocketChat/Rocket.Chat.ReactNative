@@ -10,13 +10,6 @@ import { type TThreadMessageModel } from './IThreadMessage';
 import { type TUploadModel } from './IUpload';
 import { type IUser } from './IUser';
 
-export enum SubscriptionType {
-	GROUP = 'p',
-	DIRECT = 'd',
-	CHANNEL = 'c',
-	OMNICHANNEL = 'l'
-}
-
 export interface IVisitor {
 	_id?: string;
 	token?: string;
@@ -41,7 +34,7 @@ export interface ISubscription {
 	_updatedAt?: string;
 	v?: IVisitor;
 	f: boolean;
-	t: SubscriptionType; // TODO: we need to review this type later
+	t: RoomType;
 	ts: string | Date;
 	ls: Date;
 	name: string;

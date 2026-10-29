@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 
-import { type ISubscription, SubscriptionType, type IUser } from '~/definitions';
+import { type ISubscription, RoomType, type IUser } from '~/definitions';
 import { type ILivechatVisitorModified } from '~/definitions/ILivechatVisitor';
 import Channel from '../Channel';
 import Direct from '../Direct';
@@ -19,7 +19,7 @@ const RoomInfoViewBody = ({
 		return <Direct roomUser={roomUser as IUser} />;
 	}
 
-	if (room?.t === SubscriptionType.OMNICHANNEL && room) {
+	if (room?.t === RoomType.OMNICHANNEL && room) {
 		return <Livechat room={room} roomUser={roomUser as ILivechatVisitorModified} />;
 	}
 

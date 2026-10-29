@@ -1,7 +1,7 @@
 import database from '../database';
 import { SUBSCRIPTIONS_TABLE } from '../database/model/Subscription';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import { store as reduxStore } from '../store/auxStore';
 import log from './helpers/log';
 
@@ -62,7 +62,7 @@ export const createDirectMessageSubscriptionStub = async ({
 				s._raw.id = rid;
 				s._raw._id = rid;
 				s.rid = rid;
-				s.t = SubscriptionType.DIRECT;
+				s.t = RoomType.DIRECT;
 				s.name = username;
 				s.fname = fname || username;
 				s.uids = otherUserId ? [currentUserId, otherUserId] : [currentUserId];

@@ -14,7 +14,7 @@ import {
 	type IMessage,
 	type IRoomInfoParam,
 	type IUseRoomMessageHandlersResult,
-	SubscriptionType,
+	RoomType,
 	type TAnyMessageModel
 } from '~/definitions';
 import { useActionSheet } from '~/containers/ActionSheet';
@@ -52,7 +52,7 @@ export function useRoomMessageHandlers({
 	};
 
 	const navToRoomInfo = (navParam: IRoomInfoParam) => {
-		logEvent(events[`ROOM_GO_${navParam.t === SubscriptionType.DIRECT ? 'USER' : 'ROOM'}_INFO`]);
+		logEvent(events[`ROOM_GO_${navParam.t === RoomType.DIRECT ? 'USER' : 'ROOM'}_INFO`]);
 		const params = { ...navParam, fromRid: rid };
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: { ...params, showCloseModal: true } });

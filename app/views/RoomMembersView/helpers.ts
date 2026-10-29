@@ -2,14 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { Alert } from 'react-native';
 
 import { LISTENER } from '~/containers/Toast';
-import {
-	type IGetRoomRoles,
-	type IUser,
-	type RoomType,
-	SubscriptionType,
-	type TSubscriptionModel,
-	type TUserModel
-} from '~/definitions';
+import { type IGetRoomRoles, type IUser, RoomType, type TSubscriptionModel, type TUserModel } from '~/definitions';
 import I18n from '~/i18n';
 import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import EventEmitter from '~/lib/methods/helpers/events';
@@ -105,7 +98,7 @@ export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): 
 		} else {
 			const result = await createDirectMessage(item.username);
 			if (result.success) {
-				handleGoRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT }, isMasterDetail);
+				handleGoRoom({ rid: result.room?._id as string, name: item.username, t: RoomType.DIRECT }, isMasterDetail);
 			}
 		}
 	} catch (e: any) {
@@ -222,7 +215,7 @@ export const handleRemoveUserFromRoom = async (
 ): Promise<void> => {
 	try {
 		const userId = selectedUser._id;
-		await removeUserFromRoom({ roomId: room.rid, t: room.t as RoomType, userId });
+		await removeUserFromRoom({ roomId: room.rid, t: room.t, userId });
 		const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 		EventEmitter.emit(LISTENER, { message });
 		callback();
