@@ -13,7 +13,6 @@ jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: typeof mockState) => unknown) => selector(mockState)
 }));
 jest.mock('~/lib/store/auxStore', () => ({ store: { getState: () => mockState } }));
-jest.mock('@rocket.chat/mobile-crypto', () => ({}));
 
 const createRoomStore = (room: RoomState['room']) => createStore(() => ({ room })) as RoomStore;
 
