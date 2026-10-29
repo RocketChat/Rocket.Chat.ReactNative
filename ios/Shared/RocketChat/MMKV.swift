@@ -39,9 +39,12 @@ extension MMKVBridge {
 		return userId
 	}
 	
-	// Same key as getWatchOSQuickRepliesKey() in JS: the two languages can't share one constant, so rename both together
+	@objc(watchQuickRepliesKeyFor:) static func watchQuickRepliesKey(for server: String) -> String {
+		"\(server)-RC_WATCHOS_QUICKREPLIES"
+	}
+	
 	@objc(watchQuickRepliesFor:) func watchQuickReplies(for server: String) -> [String] {
-		guard let json = string(forKey: "\(server)-RC_WATCHOS_QUICKREPLIES"), let data = json.data(using: .utf8) else {
+		guard let json = string(forKey: MMKVBridge.watchQuickRepliesKey(for: server)), let data = json.data(using: .utf8) else {
 			return []
 		}
 		return (try? JSONDecoder().decode([String].self, from: data)) ?? []

@@ -15,9 +15,9 @@ import {
 	getBasicAuthKey,
 	getLegacyUserTokenKey,
 	getServerUserIdKey,
-	getUserTokenKey,
-	getWatchOSQuickRepliesKey
+	getUserTokenKey
 } from '../constants/keys';
+import NativeWatchModule from '../native/NativeWatchModule';
 import UserPreferences from './userPreferences';
 import { syncWatchOSQuickReplies } from './watchOSQuickReplies/syncReplies';
 import { removePushToken } from '../services/restApi';
@@ -38,7 +38,9 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
-	UserPreferences.removeItem(getWatchOSQuickRepliesKey(server));
+	if (NativeWatchModule) {
+		UserPreferences.removeItem(NativeWatchModule.getQuickRepliesKey(server));
+	}
 	syncWatchOSQuickReplies(server);
 }
 

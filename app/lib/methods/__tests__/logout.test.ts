@@ -61,10 +61,10 @@ import {
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
 	TOKEN_KEY,
-	getBasicAuthKey,
-	getWatchOSQuickRepliesKey
+	getBasicAuthKey
 } from '~/lib/constants/keys';
 import NativeWatchModule from '~/lib/native/NativeWatchModule';
+import * as NativeWatchModuleModule from '~/lib/native/NativeWatchModule';
 
 const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
 
@@ -81,7 +81,7 @@ const serverKeys = (server: string): string[] => [
 	`${server}-${E2E_PUBLIC_KEY}`,
 	`${server}-${E2E_PRIVATE_KEY}`,
 	`${server}-${E2E_RANDOM_PASSWORD_KEY}`,
-	getWatchOSQuickRepliesKey(server)
+	NativeWatchModule!.getQuickRepliesKey(server)
 ];
 
 const keysToClear = [
@@ -140,7 +140,7 @@ describe('removeServerData', () => {
 		seedServer(SERVER, USER_ID);
 		let repliesStoredAtSync: boolean | undefined;
 		jest.mocked(NativeWatchModule!.syncQuickReplies).mockImplementationOnce(() => {
-			repliesStoredAtSync = UserPreferences.contains(getWatchOSQuickRepliesKey(SERVER));
+			repliesStoredAtSync = UserPreferences.contains(NativeWatchModule!.getQuickRepliesKey(SERVER));
 			return 'SUCCESS';
 		});
 
@@ -148,6 +148,23 @@ describe('removeServerData', () => {
 
 		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith(SERVER);
 		expect(repliesStoredAtSync).toBe(false);
+	});
+
+	it('clears the other per-server keys on a platform without the watch module', async () => {
+		seedServer(SERVER, USER_ID);
+		const syncQuickReplies = NativeWatchModule!.syncQuickReplies;
+		const replaced = jest.replaceProperty(NativeWatchModuleModule, 'default', null);
+
+		try {
+			await removeServerData({ server: SERVER });
+		} finally {
+			replaced.restore();
+		}
+
+		expect(UserPreferences.getString(tokenKey(SERVER))).toBeNull();
+		expect(UserPreferences.getString(tokenKey(USER_ID))).toBeNull();
+		expect(UserPreferences.getString(getBasicAuthKey(SERVER))).toBeNull();
+		expect(syncQuickReplies).not.toHaveBeenCalled();
 	});
 
 	it('leaves another workspace keys untouched', async () => {

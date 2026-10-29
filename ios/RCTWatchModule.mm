@@ -4,6 +4,7 @@
 
 @interface MMKVBridge (WatchQuickReplies)
 + (MMKVBridge * _Nonnull)build;
++ (NSString * _Nonnull)watchQuickRepliesKeyFor:(NSString * _Nonnull)server;
 - (NSArray<NSString *> * _Nonnull)watchQuickRepliesFor:(NSString * _Nonnull)server;
 @end
 
@@ -58,6 +59,10 @@
     }
 
     return @"SUCCESS";
+}
+
+- (NSString *)getQuickRepliesKey:(NSString *)server {
+    return [MMKVBridge watchQuickRepliesKeyFor:server];
 }
 
 - (nonnull NSNumber *)isWatchAppInstalled {

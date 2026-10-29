@@ -10,7 +10,7 @@ import NativeListRow from '~/containers/NativeListRow';
 import { PlainSeparator } from '~/containers/NativeListRow/components/Separator';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
+import { getQuickRepliesKey } from '~/lib/methods/watchOSQuickReplies/getQuickRepliesKey';
 import { getQuickRepliesLimits } from '~/lib/methods/watchOSQuickReplies/getQuickRepliesLimits';
 import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncReplies';
 import { showToast } from '~/lib/methods/helpers/showToast';
@@ -25,7 +25,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 	const server = useAppSelector(state => state.server.server);
 	const settings = useAppSelector(state => state.settings);
 	const { max, maxLength } = getQuickRepliesLimits(settings);
-	const [quickReplies = [], setQuickReplies] = useUserPreferences<string[]>(getWatchOSQuickRepliesKey(server), []);
+	const [quickReplies = [], setQuickReplies] = useUserPreferences<string[]>(getQuickRepliesKey(server), []);
 	const [input, setInput] = useState<string>('');
 	const { colors } = useTheme();
 

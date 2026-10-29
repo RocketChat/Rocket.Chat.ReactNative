@@ -1,11 +1,11 @@
-import { getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
 import type { TSettingsState } from '~/reducers/settings';
 import UserPreferences from '../userPreferences';
 import { syncWatchOSQuickReplies } from './syncReplies';
+import { getQuickRepliesKey } from './getQuickRepliesKey';
 import { getQuickRepliesLimits } from './getQuickRepliesLimits';
 
 export const syncWatchOSQuickRepliesWithServer = (server: string, settings: TSettingsState): void => {
-	const quickRepliesMMKVKey = getWatchOSQuickRepliesKey(server);
+	const quickRepliesMMKVKey = getQuickRepliesKey(server);
 	const appleWatchReplies = settings.Apple_Watch_Quick_Actions;
 
 	if (!UserPreferences.contains(quickRepliesMMKVKey) && typeof appleWatchReplies === 'string') {

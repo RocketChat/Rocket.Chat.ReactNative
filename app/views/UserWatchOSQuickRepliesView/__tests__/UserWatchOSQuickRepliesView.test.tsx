@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import UserWatchOSQuickRepliesView from '..';
 import I18n from '~/i18n';
 import { selectServerSuccess } from '~/actions/server';
-import { getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
+import NativeWatchModule from '~/lib/native/NativeWatchModule';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { DEFAULT_QUICK_REPLIES_MAX, DEFAULT_QUICK_REPLY_MAX_LENGTH } from '~/lib/methods/watchOSQuickReplies/constants';
 import { addSettings } from '~/actions/settings';
@@ -18,7 +18,7 @@ jest.mock('~/lib/methods/watchOSQuickReplies/syncReplies', () => ({ syncWatchOSQ
 jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
 
 const server = 'https://open.rocket.chat';
-const key = getWatchOSQuickRepliesKey(server);
+const key = NativeWatchModule!.getQuickRepliesKey(server);
 const navigation = { setOptions: jest.fn() } as any;
 
 const renderView = (settings: TSettingsState = {}) => {

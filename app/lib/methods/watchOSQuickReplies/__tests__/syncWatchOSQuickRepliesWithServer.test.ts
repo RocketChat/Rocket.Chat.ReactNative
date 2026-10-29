@@ -1,4 +1,3 @@
-import { getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
 import NativeWatchModule from '~/lib/native/NativeWatchModule';
 import type { TSettingsState } from '~/reducers/settings';
 import UserPreferences from '../../userPreferences';
@@ -8,7 +7,7 @@ import { DEFAULT_QUICK_REPLIES_MAX, DEFAULT_QUICK_REPLY_MAX_LENGTH } from '../co
 jest.mock('../getWatchStatus', () => ({ shouldShowWatchAppOptions: jest.fn(() => true) }));
 
 const server = 'https://open.rocket.chat';
-const key = getWatchOSQuickRepliesKey(server);
+const key = NativeWatchModule!.getQuickRepliesKey(server);
 const syncQuickReplies = NativeWatchModule!.syncQuickReplies as jest.Mock;
 
 const withReplies = (replies: string, limits: TSettingsState = {}): TSettingsState => ({
