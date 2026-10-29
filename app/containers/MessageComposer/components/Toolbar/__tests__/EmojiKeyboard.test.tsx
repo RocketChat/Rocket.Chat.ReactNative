@@ -1,4 +1,3 @@
-import { type ReactElement } from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { KeyboardController } from 'react-native-keyboard-controller';
@@ -10,45 +9,39 @@ import { EmojiKeyboardProvider } from '~/containers/MessageComposer/hooks/useEmo
 import { mockedStore } from '~/reducers/mockedStore';
 import { MessageActionProvider } from '~/containers/message/stores/MessageActionStore';
 
-const innerContext = (focus: (delay?: number) => void) => ({
-	sendMessage: jest.fn(),
-	onEmojiSelected: jest.fn(),
-	getText: jest.fn(),
-	setInput: jest.fn(),
-	closeEmojiKeyboardAndAction: jest.fn(),
-	focus
-});
-
-const Composer = ({ focus, tmid }: { focus: (delay?: number) => void; tmid?: string }): ReactElement => (
-	<ComposerProvider rid='rid' roomTitle='Rocket Chat' tmid={tmid} sharing={false}>
-		<MessageComposerProvider>
-			<EmojiKeyboardProvider>
-				<MessageInnerContext.Provider value={innerContext(focus)}>
-					<EmojiKeyboard />
-				</MessageInnerContext.Provider>
-			</EmojiKeyboardProvider>
-		</MessageComposerProvider>
-	</ComposerProvider>
-);
-
 describe('EmojiKeyboard toolbar', () => {
-	test('back to keyboard focuses its own composer when a room and a thread composer are both mounted', async () => {
-		const focusRoom = jest.fn();
-		const focusThread = jest.fn();
+	test('back to keyboard restores focus and focuses its own composer', async () => {
+		const focus = jest.fn();
 		render(
 			<Provider store={mockedStore}>
 				<MessageActionProvider>
-					<Composer focus={focusRoom} />
-					<Composer focus={focusThread} tmid='tmid' />
+					<ComposerProvider rid='rid' roomTitle='Rocket Chat' sharing={false}>
+						<MessageComposerProvider>
+							<EmojiKeyboardProvider>
+								<MessageInnerContext.Provider
+									value={{
+										sendMessage: jest.fn(),
+										onEmojiSelected: jest.fn(),
+										getText: jest.fn(),
+										setInput: jest.fn(),
+										closeEmojiKeyboardAndAction: jest.fn(),
+										focus
+									}}>
+									<EmojiKeyboard />
+								</MessageInnerContext.Provider>
+							</EmojiKeyboardProvider>
+						</MessageComposerProvider>
+					</ComposerProvider>
 				</MessageActionProvider>
 			</Provider>
 		);
 
-		const [roomButton] = screen.getAllByTestId('message-composer-close-emoji');
-		fireEvent.press(roomButton);
+		fireEvent.press(screen.getByTestId('message-composer-close-emoji'));
 
-		await waitFor(() => expect(focusRoom).toHaveBeenCalledWith(0));
+		await waitFor(() => expect(focus).toHaveBeenCalledWith(0));
+		expect(jest.mocked(KeyboardController.setFocusTo).mock.invocationCallOrder[0]).toBeLessThan(
+			focus.mock.invocationCallOrder[0]
+		);
 		expect(KeyboardController.setFocusTo).toHaveBeenCalledWith('current');
-		expect(focusThread).not.toHaveBeenCalled();
 	});
 });

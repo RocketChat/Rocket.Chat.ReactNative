@@ -132,7 +132,7 @@ describe('ComposerInput', () => {
 		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  programmatic text  ' });
 	});
 
-	it('clears the native input after sending without writing the sent text back', () => {
+	it('clears the native input after sending through a blank text, never the sent one, so a multi-line input shrinks back', () => {
 		const { composerRef, inputRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');
 		const message = 'line 1\nline 2\nline 3\nline 4';
@@ -145,9 +145,11 @@ describe('ComposerInput', () => {
 
 		expect(sent).toBe(message);
 		expect(composerRef.current?.getText()).toBe('');
+		const nativeTexts: string[] = inputRef.current?.setNativeProps.mock.calls.map(([props]: [{ text: string }]) => props.text);
 		expect(inputRef.current?.clear).toHaveBeenCalled();
-		expect(inputRef.current?.setNativeProps.mock.lastCall).toEqual([{ text: '' }]);
-		expect(inputRef.current?.setNativeProps).not.toHaveBeenCalledWith({ text: message });
+		expect(nativeTexts.at(-1)).toBe('');
+		expect(nativeTexts.slice(0, -1).some(text => text && text !== message)).toBe(true);
+		expect(nativeTexts).not.toContain(message);
 	});
 
 	it('resets the native text prop when the user erases everything, so the same text can be set again', () => {
