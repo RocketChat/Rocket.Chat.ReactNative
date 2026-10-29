@@ -189,7 +189,7 @@ describe('CallView/CallView', () => {
 		expect(getByTestId('call-view-speaker')).toBeTruthy();
 		expect(getByTestId('call-view-hold')).toBeTruthy();
 		expect(getByTestId('call-view-mute')).toBeTruthy();
-		expect(getByTestId('call-view-message')).toBeTruthy();
+		expect(getByTestId('call-view-more')).toBeTruthy();
 		expect(getByTestId('call-view-end')).toBeTruthy();
 		expect(getByTestId('call-view-dialpad')).toBeTruthy();
 	});
@@ -324,7 +324,7 @@ describe('CallView/CallView', () => {
 		expect(endCall).toHaveBeenCalledTimes(1);
 	});
 
-	it('should call navigateToCallRoom when message button is pressed', () => {
+	it('should open the more action sheet with direct message when more button is pressed', () => {
 		setStoreState({ callState: 'active' });
 		const { getByTestId } = render(
 			<Wrapper>
@@ -332,7 +332,10 @@ describe('CallView/CallView', () => {
 			</Wrapper>
 		);
 
-		fireEvent.press(getByTestId('call-view-message'));
+		fireEvent.press(getByTestId('call-view-more'));
+		const { options } = mockShowActionSheetRef.mock.calls.at(-1)[0];
+		const message = options.find((option: { testID: string }) => option.testID === 'call-view-more-message');
+		message.onPress();
 		expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
 	});
 
@@ -524,7 +527,7 @@ describe('CallView (tablet/wide layout)', () => {
 		expect(getByTestId('call-view-speaker')).toBeTruthy();
 		expect(getByTestId('call-view-hold')).toBeTruthy();
 		expect(getByTestId('call-view-mute')).toBeTruthy();
-		expect(getByTestId('call-view-message')).toBeTruthy();
+		expect(getByTestId('call-view-more')).toBeTruthy();
 		expect(getByTestId('call-view-end')).toBeTruthy();
 		expect(getByTestId('call-view-dialpad')).toBeTruthy();
 	});
@@ -538,14 +541,7 @@ describe('CallView (tablet/wide layout)', () => {
 		);
 
 		const row0 = getByTestId('call-buttons-row-0');
-		const ids = [
-			'call-view-speaker',
-			'call-view-hold',
-			'call-view-mute',
-			'call-view-message',
-			'call-view-end',
-			'call-view-dialpad'
-		];
+		const ids = ['call-view-speaker', 'call-view-hold', 'call-view-mute', 'call-view-more', 'call-view-end', 'call-view-dialpad'];
 		ids.forEach(id => {
 			expect(within(row0).getByTestId(id)).toBeTruthy();
 		});
