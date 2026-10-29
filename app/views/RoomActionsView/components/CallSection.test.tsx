@@ -17,7 +17,6 @@ const noopOpenNewMediaCall = () => undefined;
 
 const mockUseVideoConf = jest.fn();
 const mockUseNewMediaCall = jest.fn();
-const mockUseIsInActiveVoipCall = jest.fn();
 
 mockUseVideoConf.mockReturnValue({
 	callEnabled: true,
@@ -29,7 +28,6 @@ mockUseNewMediaCall.mockReturnValue({
 	hasMediaCallPermission: true,
 	isInActiveCall: false
 });
-mockUseIsInActiveVoipCall.mockReturnValue(false);
 
 jest.mock('~/lib/hooks/useVideoConf', () => ({
 	useVideoConf: (...args: unknown[]) => mockUseVideoConf(...args)
@@ -37,10 +35,6 @@ jest.mock('~/lib/hooks/useVideoConf', () => ({
 
 jest.mock('~/lib/hooks/useNewMediaCall', () => ({
 	useNewMediaCall: (...args: unknown[]) => mockUseNewMediaCall(...args)
-}));
-
-jest.mock('~/lib/services/voip/isInActiveVoipCall', () => ({
-	useIsInActiveVoipCall: () => mockUseIsInActiveVoipCall()
 }));
 
 jest.mock('~/lib/services/restApi', () => ({
@@ -91,7 +85,6 @@ describe('CallSection', () => {
 			hasMediaCallPermission: true,
 			isInActiveCall: false
 		});
-		mockUseIsInActiveVoipCall.mockReturnValue(false);
 		mockVideoConferenceGetCapabilities.mockRejectedValue(new Error('test capabilities'));
 	});
 
@@ -232,8 +225,12 @@ describe('CallSection', () => {
 		expect(mockShowInitCallActionSheet).not.toHaveBeenCalled();
 	});
 
-	it('should disable video call row when an active VoIP call is in progress', () => {
-		mockUseIsInActiveVoipCall.mockReturnValue(true);
+	it('should disable video call row while in another call', () => {
+		mockUseNewMediaCall.mockReturnValue({
+			openNewMediaCall: noopOpenNewMediaCall,
+			hasMediaCallPermission: true,
+			isInActiveCall: true
+		});
 		const { getByTestId } = render(
 			<Wrapper>
 				<CallSection room={createMockRoom()} disabled={false} />

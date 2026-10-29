@@ -189,12 +189,6 @@ export type ChatsStackParamList = {
 		cannedResponse: ICannedResponse;
 		room: ISubscription;
 	};
-	JitsiMeetView: {
-		rid: string;
-		url: string;
-		onlyAudio?: boolean;
-		videoConf?: boolean;
-	};
 	ChangeAvatarView: {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
@@ -327,6 +321,15 @@ export type InsideStackParamList = {
 		data: any;
 	};
 	CallView: undefined;
+	JitsiMeetView: {
+		rid: string;
+		url: string;
+		onlyAudio?: boolean;
+		videoConf?: boolean;
+	};
+	VideoConfWebView: {
+		url: string;
+	};
 	ConferenceView: undefined;
 };
 
