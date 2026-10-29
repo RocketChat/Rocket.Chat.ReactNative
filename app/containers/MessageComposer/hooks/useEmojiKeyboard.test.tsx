@@ -56,11 +56,9 @@ describe('useEmojiKeyboard', () => {
 		jest.clearAllMocks();
 	});
 
-	const createWrapper = () => EmojiKeyboardProvider;
-
 	describe('EmojiKeyboardProvider', () => {
 		test('should provide context with shared values', () => {
-			const wrapper = createWrapper();
+			const wrapper = EmojiKeyboardProvider;
 			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
 
 			expect(result.current.showEmojiPickerSharedValue).toBeDefined();
@@ -77,7 +75,7 @@ describe('useEmojiKeyboard', () => {
 
 	describe('useEmojiKeyboard hook', () => {
 		test('should initialize with correct default values', () => {
-			const wrapper = createWrapper();
+			const wrapper = EmojiKeyboardProvider;
 			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
 
 			expect(result.current.showEmojiKeyboard).toBe(false);
@@ -88,7 +86,7 @@ describe('useEmojiKeyboard', () => {
 		});
 
 		test('should open emoji keyboard', () => {
-			const wrapper = createWrapper();
+			const wrapper = EmojiKeyboardProvider;
 			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
 
 			act(() => {
@@ -99,7 +97,7 @@ describe('useEmojiKeyboard', () => {
 		});
 
 		test('should close emoji keyboard', () => {
-			const wrapper = createWrapper();
+			const wrapper = EmojiKeyboardProvider;
 			mockSharedValue.value = true;
 			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
 
@@ -111,7 +109,7 @@ describe('useEmojiKeyboard', () => {
 		});
 
 		test('should open emoji searchbar', () => {
-			const wrapper = createWrapper();
+			const wrapper = EmojiKeyboardProvider;
 			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
 
 			act(() => {
@@ -130,7 +128,7 @@ describe('useEmojiKeyboard', () => {
 				const dismiss = jest.spyOn(Keyboard, 'dismiss');
 				mockSharedValue.value = true;
 				mockSearchbarSharedValue.value = true;
-				const { result } = renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
+				const { result } = renderHook(() => useEmojiKeyboard(), { wrapper: EmojiKeyboardProvider });
 
 				act(() => {
 					result.current.backToEmojiPicker();
@@ -143,7 +141,7 @@ describe('useEmojiKeyboard', () => {
 		});
 
 		test('should reset keyboard (close emoji keyboard and searchbar)', () => {
-			const wrapper = createWrapper();
+			const wrapper = EmojiKeyboardProvider;
 			mockSharedValue.value = true;
 			mockSearchbarSharedValue.value = true;
 			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
@@ -157,7 +155,7 @@ describe('useEmojiKeyboard', () => {
 		});
 
 		test('should handle multiple open/close operations', () => {
-			const wrapper = createWrapper();
+			const wrapper = EmojiKeyboardProvider;
 			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
 
 			// Open emoji keyboard
@@ -196,7 +194,7 @@ describe('useEmojiKeyboard', () => {
 			jest.spyOn(KeyboardController, 'useKeyboardHandler').mockImplementation(handler => {
 				keyboardHandlers.push(handler);
 			});
-			renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
+			renderHook(() => useEmojiKeyboard(), { wrapper: EmojiKeyboardProvider });
 			const keyboardStartsShowing = (height: number) =>
 				keyboardHandlers.forEach(handler => handler.onStart?.({ height, duration: 250, progress: 1, target: 1 }));
 			const keyboardFinishesShowing = async (height: number) => {
@@ -281,7 +279,7 @@ describe('useEmojiKeyboard', () => {
 			jest.mocked(useAnimatedReaction).mockImplementation((_prepare, react) => {
 				reactions.push(react);
 			});
-			renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
+			renderHook(() => useEmojiKeyboard(), { wrapper: EmojiKeyboardProvider });
 			const [heightReaction] = reactions;
 			return { keyboardHidden: () => heightReaction(0, 336) };
 		};
@@ -339,22 +337,24 @@ describe('useEmojiKeyboard', () => {
 		};
 
 		const renderFixedHeightPicker = () => {
+			const showEmojiPicker = createValue(true);
+			const showEmojiSearchbar = createValue(false);
 			const systemKeyboardHeight = createValue(0);
 			const keyboardHeight = createValue(250);
-			const showEmojiSearchbar = createValue(false);
+			const previousHeight = createValue(250);
 			jest
 				.mocked(useSharedValue)
 				.mockReset()
-				.mockReturnValueOnce(createValue(true)) // showEmojiPickerSharedValue
+				.mockReturnValueOnce(showEmojiPicker)
 				.mockReturnValueOnce(showEmojiSearchbar)
 				.mockReturnValueOnce(systemKeyboardHeight)
 				.mockReturnValueOnce(keyboardHeight)
-				.mockReturnValueOnce(createValue(250)); // previousHeight
+				.mockReturnValueOnce(previousHeight);
 			const reactions: Parameters<typeof useAnimatedReaction>[1][] = [];
 			jest.mocked(useAnimatedReaction).mockImplementation((_prepare, react) => {
 				reactions.push(react);
 			});
-			renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
+			renderHook(() => useEmojiKeyboard(), { wrapper: EmojiKeyboardProvider });
 			const [heightReaction, , searchbarReaction] = reactions;
 			const openSearch = () => {
 				showEmojiSearchbar.set(true);

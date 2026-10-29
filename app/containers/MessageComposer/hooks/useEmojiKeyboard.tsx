@@ -134,9 +134,9 @@ export const useEmojiKeyboard = () => {
 	};
 
 	const resetKeyboard = () => {
+		showEmojiSearchbarSharedValue.set(false);
 		updateHeight(true);
 		closeEmojiKeyboard();
-		showEmojiSearchbarSharedValue.set(false);
 	};
 
 	const openEmojiPicker = () => {
