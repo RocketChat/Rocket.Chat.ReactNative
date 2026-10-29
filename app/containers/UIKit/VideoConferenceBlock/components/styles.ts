@@ -7,7 +7,9 @@ export default function useStyle() {
 	const { colors } = useTheme();
 	const style = StyleSheet.create({
 		container: { height: 108, flex: 1, borderWidth: 1, borderRadius: 4, marginTop: 8, borderColor: colors.surfaceNeutral },
+		headerRow: { flex: 1, flexDirection: 'row', alignItems: 'center', paddingRight: 8 },
 		callInfoContainer: { flex: 1, alignItems: 'center', paddingLeft: 16, flexDirection: 'row' },
+		actionButton: { width: 44, height: 44, borderRadius: 4, alignItems: 'center', justifyContent: 'center' },
 		infoContainerText: {
 			fontSize: 12,
 			marginLeft: 8,
