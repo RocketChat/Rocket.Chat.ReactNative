@@ -159,9 +159,10 @@ describe('ComposerInput', () => {
 		const input = screen.getByTestId('message-composer-input');
 
 		fireEvent.changeText(input, '@');
+		inputRef.current?.setNativeProps.mockClear();
 		fireEvent.changeText(input, '');
 
-		expect(inputRef.current?.setNativeProps).toHaveBeenLastCalledWith({ text: '' });
+		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: '' }]]);
 	});
 
 	it('passes the typed raw value to debounced autocomplete before the input text is trimmed', () => {
