@@ -34,6 +34,10 @@
     return @"WatchModule";
 }
 
++ (BOOL)requiresMainQueueSetup {
+    return NO;
+}
+
 #pragma mark - spec methods (declared in spec)
 - (NSString *)syncQuickReplies:(NSString *)server {
     if (![WCSession isSupported] || !_session.isWatchAppInstalled) {

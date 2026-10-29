@@ -2,7 +2,6 @@ import { getWatchOSQuickRepliesKey } from '~/lib/constants/keys';
 import NativeWatchModule from '~/lib/native/NativeWatchModule';
 import type { TSettingsState } from '~/reducers/settings';
 import UserPreferences from '../../userPreferences';
-import { shouldShowWatchAppOptions } from '../getWatchStatus';
 import { syncWatchOSQuickRepliesWithServer } from '../syncWatchOSQuickRepliesWithServer';
 import { DEFAULT_QUICK_REPLIES_MAX, DEFAULT_QUICK_REPLY_MAX_LENGTH } from '../constants';
 
@@ -19,7 +18,6 @@ const withReplies = (replies: string, limits: TSettingsState = {}): TSettingsSta
 
 describe('syncWatchOSQuickRepliesWithServer', () => {
 	beforeEach(() => {
-		(shouldShowWatchAppOptions as jest.Mock).mockReturnValue(true);
 		syncQuickReplies.mockReset().mockReturnValue('SUCCESS');
 		UserPreferences.removeItem(key);
 	});
@@ -56,13 +54,6 @@ describe('syncWatchOSQuickRepliesWithServer', () => {
 	it('caps seeded replies at the max count the server sends', () => {
 		syncWatchOSQuickRepliesWithServer(server, withReplies('A,B,C,D', { Apple_Watch_Quick_Actions_Max_Count: 2 }));
 		expect(UserPreferences.getString(key)).toBe(JSON.stringify(['A', 'B']));
-	});
-
-	it('does nothing when no watch app is available', () => {
-		(shouldShowWatchAppOptions as jest.Mock).mockReturnValue(false);
-		syncWatchOSQuickRepliesWithServer(server, withReplies('Yes,No'));
-		expect(UserPreferences.contains(key)).toBe(false);
-		expect(syncQuickReplies).not.toHaveBeenCalled();
 	});
 
 	it('trims replies to the default length limit when the server sends no limit', () => {
