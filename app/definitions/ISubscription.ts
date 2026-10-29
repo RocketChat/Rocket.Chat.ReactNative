@@ -18,12 +18,6 @@ export interface IVisitor {
 	lastMessageTs?: Date;
 }
 
-export enum ERoomTypes {
-	DIRECT = 'direct',
-	GROUP = 'group',
-	CHANNEL = 'channel'
-}
-
 type RelationModified<T extends Model> = { fetch(): Promise<T[]> } & Relation<T>;
 
 type OldKey = { e2eKeyId: string; ts: Date; E2EKey: string };

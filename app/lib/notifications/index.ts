@@ -5,6 +5,7 @@ import { appInit } from '~/actions/app';
 import { deepLinkingClickCallPush, deepLinkingOpen } from '~/actions/deepLinking';
 import { type INotification, RoomType } from '~/definitions';
 import { store } from '../store/auxStore';
+import { roomTypeToPathSegment } from '../methods/roomTypePath';
 import { pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
 
 export { getDeviceToken } from './deviceToken';
@@ -13,7 +14,7 @@ interface IEjson {
 	rid: string;
 	name: string;
 	sender: { username: string; name: string };
-	type: string;
+	type: RoomType;
 	host: string;
 	messageId: string;
 }
@@ -52,12 +53,6 @@ export const onNotification = (push: INotification): void => {
 				return;
 			}
 			const { rid, name, sender, type, host, messageId }: IEjson = notification;
-			const types: Record<string, string> = {
-				c: 'channel',
-				d: 'direct',
-				p: 'group',
-				l: 'channels'
-			};
 			let roomName = name;
 			if (type === RoomType.DIRECT) {
 				roomName = sender?.username ?? name;
@@ -69,7 +64,7 @@ export const onNotification = (push: INotification): void => {
 				host,
 				rid,
 				messageId,
-				path: `${types[type]}/${roomName}`
+				path: `${roomTypeToPathSegment(type)}/${roomName}`
 			};
 			store.dispatch(deepLinkingOpen(params));
 			return;
