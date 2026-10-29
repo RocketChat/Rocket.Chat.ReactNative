@@ -68,5 +68,3 @@ export const getBadgeColor = ({
 
 export const makeThreadName = (messageRecord: { id?: string; msg?: string; attachments?: IAttachment[] }): string | undefined =>
 	messageRecord.msg || messageRecord?.attachments?.[0]?.title;
-
-export const isTeamRoom = ({ teamId, joined }: { teamId?: string; joined?: boolean }): boolean => (!!teamId && joined) ?? false;

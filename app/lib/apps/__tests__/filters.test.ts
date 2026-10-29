@@ -23,6 +23,7 @@ describe('applyRoomFilter', () => {
 		[RoomTypeFilter.PRIVATE_DISCUSSION, { t: 'p', prid: 'parent' }],
 		[RoomTypeFilter.DIRECT, { t: 'd' }],
 		[RoomTypeFilter.DIRECT_MULTIPLE, { t: 'd', uids: ['a', 'b', 'c'] }],
+		[RoomTypeFilter.DIRECT_MULTIPLE, { t: 'd', usernames: ['a', 'b', 'c'] }],
 		[RoomTypeFilter.LIVE_CHAT, { t: 'l' }]
 	])('%s matches its room', (roomType, room) => {
 		expect(applyRoomFilter(button({ when: { roomTypes: [roomType] } }), room)).toBe(true);

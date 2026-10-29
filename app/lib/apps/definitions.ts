@@ -46,6 +46,7 @@ export interface IAppActionButtonRoom {
 	teamMain?: boolean;
 	prid?: string;
 	uids?: string[];
+	usernames?: string[];
 }
 
 export interface IAppLanguages {

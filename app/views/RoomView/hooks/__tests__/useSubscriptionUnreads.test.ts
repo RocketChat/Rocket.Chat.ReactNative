@@ -14,7 +14,6 @@ jest.mock('~/lib/methods/readMessages', () => ({ readMessages: jest.fn() }));
 jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn() }));
 jest.mock('~/lib/methods/helpers/helpers', () => ({
 	getUidDirectMessage: jest.fn(),
-	isGroupChat: jest.fn(() => false),
 	canAutoTranslate: jest.fn(() => false)
 }));
 
