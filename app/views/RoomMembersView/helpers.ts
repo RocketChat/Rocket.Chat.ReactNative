@@ -2,7 +2,14 @@ import { Q } from '@nozbe/watermelondb';
 import { Alert } from 'react-native';
 
 import { LISTENER } from '~/containers/Toast';
-import { type IGetRoomRoles, type IUser, SubscriptionType, type TSubscriptionModel, type TUserModel } from '~/definitions';
+import {
+	type IGetRoomRoles,
+	type IUser,
+	type RoomType,
+	SubscriptionType,
+	type TSubscriptionModel,
+	type TUserModel
+} from '~/definitions';
 import I18n from '~/i18n';
 import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import EventEmitter from '~/lib/methods/helpers/events';
@@ -21,10 +28,7 @@ import {
 } from '~/lib/services/restApi';
 import { createDirectMessage } from '~/lib/methods/createDirectMessage';
 import database from '~/lib/database';
-import { type RoomTypes } from '~/lib/methods/roomTypeToApiType';
 import { emitErrorCreateDirectMessage } from '~/lib/methods/helpers/emitErrorCreateDirectMessage';
-
-export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
 
 const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
 	goRoom({ item, isMasterDetail });
@@ -35,7 +39,7 @@ export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles?: IG
 	return !!userRoleResult?.roles.includes(role);
 };
 
-export const fetchRoomMembersRoles = async (roomType: TRoomType, rid: string, updateState: any): Promise<void> => {
+export const fetchRoomMembersRoles = async (roomType: Exclude<RoomType, 'd'>, rid: string, updateState: any): Promise<void> => {
 	try {
 		const type = roomType;
 		const result = await getRoomRoles(rid, type);
@@ -218,7 +222,7 @@ export const handleRemoveUserFromRoom = async (
 ): Promise<void> => {
 	try {
 		const userId = selectedUser._id;
-		await removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
+		await removeUserFromRoom({ roomId: room.rid, t: room.t as RoomType, userId });
 		const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 		EventEmitter.emit(LISTENER, { message });
 		callback();

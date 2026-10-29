@@ -23,7 +23,7 @@ import { type ISpotlight } from '~/definitions/ISpotlight';
 import { TEAM_TYPE } from '~/definitions/ITeam';
 import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers';
 import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';
-import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
+import { roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications/deviceToken';
@@ -575,11 +575,11 @@ export const toggleBlockUser = (rid: string, blocked: string, block: boolean) =>
 	return sdk.methodCallWrapper('unblockUser', { rid, blocked });
 };
 
-export const leaveRoom = (roomId: string, t: RoomTypes) =>
+export const leaveRoom = (roomId: string, t: RoomType) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.leave`, { roomId });
 
-export const deleteRoom = (roomId: string, t: RoomTypes) =>
+export const deleteRoom = (roomId: string, t: RoomType) =>
 	// RC 0.49.0
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
@@ -655,7 +655,7 @@ export const toggleRoomModerator = ({
 	return sdk.post(`${roomTypeToApiType(type)}.removeModerator`, { roomId, userId });
 };
 
-export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomTypes; userId: string }) =>
+export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomType; userId: string }) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.kick`, { roomId, userId });
 
@@ -673,7 +673,7 @@ export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: 
 	return sdk.post(`${roomTypeToApiType(type)}.unarchive`, { roomId });
 };
 
-export const hideRoom = (roomId: string, t: RoomTypes) =>
+export const hideRoom = (roomId: string, t: RoomType) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
@@ -750,10 +750,7 @@ export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
 	sdk.get('chat.getMessage', { msgId });
 
-export const getRoomRoles = (
-	roomId: string,
-	type: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
-) =>
+export const getRoomRoles = (roomId: string, type: Exclude<RoomType, 'd'>) =>
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 

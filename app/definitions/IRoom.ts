@@ -153,7 +153,13 @@ export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featu
 
 export type TRoomModel = IRoom & Model;
 
-export type RoomType = 'c' | 'd' | 'p' | 'l';
+export const RoomType = {
+	CHANNEL: 'c',
+	GROUP: 'p',
+	DIRECT: 'd',
+	OMNICHANNEL: 'l'
+} as const;
+export type RoomType = (typeof RoomType)[keyof typeof RoomType];
 export type RoomID = string;
 export type ChannelName = string;
 
