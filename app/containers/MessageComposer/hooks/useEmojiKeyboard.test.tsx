@@ -270,6 +270,17 @@ describe('useEmojiKeyboard', () => {
 			expect(KeyboardController.KeyboardController.dismiss).toHaveBeenCalledWith({ keepFocus: true });
 		});
 
+		test('leaves the keyboard up when emoji search opened before iOS reported it shown', async () => {
+			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
+			mockSharedValue.value = true;
+
+			await keyboardFinishesShowing(336);
+			mockSearchbarSharedValue.value = true;
+			keyboardDidShowListener()();
+
+			expect(KeyboardController.KeyboardController.dismiss).not.toHaveBeenCalled();
+		});
+
 		test('leaves the keyboard up when the emoji picker closed before iOS reported it shown', async () => {
 			const { keyboardFinishesShowing } = renderAndCaptureKeyboardHandlers();
 			mockSharedValue.value = true;

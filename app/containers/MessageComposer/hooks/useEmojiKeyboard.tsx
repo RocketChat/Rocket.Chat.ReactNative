@@ -28,7 +28,7 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 
 	const dismissKeyboardThatOutranPicker = () => {
 		const dismissIfPickerStillOpen = () => {
-			if (showEmojiPickerSharedValue.get()) {
+			if (showEmojiPickerSharedValue.get() && !showEmojiSearchbarSharedValue.get()) {
 				KeyboardController.dismiss({ keepFocus: true });
 			}
 		};
@@ -54,7 +54,7 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 			onEnd: e => {
 				'worklet';
 
-				if (e.height > MAX_ACCESSORY_BAR_HEIGHT && showEmojiPickerSharedValue.get() && !showEmojiSearchbarSharedValue.get()) {
+				if (e.height > MAX_ACCESSORY_BAR_HEIGHT && showEmojiPickerSharedValue.get()) {
 					scheduleOnRN(dismissKeyboardThatOutranPicker);
 				}
 			}
