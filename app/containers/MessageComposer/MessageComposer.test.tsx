@@ -193,14 +193,7 @@ const keyboardHeightSharedValue = {
 let showEmojiKeyboard = false;
 let showEmojiSearchbar = false;
 
-beforeEach(() => {
-	showEmojiKeyboard = false;
-	showEmojiSearchbar = false;
-	(runSlashCommand as jest.Mock).mockClear();
-	// Default DB mocks used by autocomplete
-	(database.active.get as unknown as jest.Mock).mockImplementation(() => ({
-		query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) }))
-	}));
+const mockEmojiKeyboard = (overrides: Partial<ReturnType<typeof EmojiKeyboardHook.useEmojiKeyboard>> = {}) =>
 	jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
 		showEmojiPickerSharedValue: sharedValue,
 		showEmojiKeyboard,
@@ -211,8 +204,19 @@ beforeEach(() => {
 		openEmojiSearchbar: jest.fn(),
 		backToEmojiPicker: jest.fn(),
 		resetKeyboard: jest.fn(),
-		keyboardHeight: keyboardHeightSharedValue
+		keyboardHeight: keyboardHeightSharedValue,
+		...overrides
 	});
+
+beforeEach(() => {
+	showEmojiKeyboard = false;
+	showEmojiSearchbar = false;
+	(runSlashCommand as jest.Mock).mockClear();
+	// Default DB mocks used by autocomplete
+	(database.active.get as unknown as jest.Mock).mockImplementation(() => ({
+		query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) }))
+	}));
+	mockEmojiKeyboard();
 	sharedValue.value = false; // reset before each test
 	sharedValueSearchbar.value = false;
 	keyboardHeightSharedValue.value = 0;
@@ -224,17 +228,7 @@ describe('MessageComposer', () => {
 
 		const renderWithEmojiKeyboard = (state: { showEmojiKeyboard: boolean; showEmojiSearchbar: boolean }) => {
 			const resetKeyboard = jest.fn();
-			jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
-				showEmojiPickerSharedValue: sharedValue,
-				openEmojiKeyboard: jest.fn(),
-				closeEmojiKeyboard: jest.fn(),
-				showEmojiSearchbarSharedValue: sharedValueSearchbar,
-				openEmojiSearchbar: jest.fn(),
-				backToEmojiPicker: jest.fn(),
-				resetKeyboard,
-				keyboardHeight: keyboardHeightSharedValue,
-				...state
-			});
+			mockEmojiKeyboard({ resetKeyboard, ...state });
 			render(<Render />);
 			return { resetKeyboard };
 		};
@@ -287,18 +281,7 @@ describe('MessageComposer', () => {
 			// Simulate the state change that would happen when emoji button is pressed
 			sharedValue.value = true;
 			showEmojiKeyboard = true;
-			jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
-				showEmojiPickerSharedValue: sharedValue,
-				showEmojiKeyboard,
-				openEmojiKeyboard: jest.fn(),
-				closeEmojiKeyboard: jest.fn(),
-				showEmojiSearchbarSharedValue: sharedValueSearchbar,
-				showEmojiSearchbar,
-				openEmojiSearchbar: jest.fn(),
-				backToEmojiPicker: jest.fn(),
-				resetKeyboard: jest.fn(),
-				keyboardHeight: keyboardHeightSharedValue
-			});
+			mockEmojiKeyboard();
 
 			rerender(<Render />);
 

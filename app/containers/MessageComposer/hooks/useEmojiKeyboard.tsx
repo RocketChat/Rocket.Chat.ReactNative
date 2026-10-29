@@ -137,7 +137,7 @@ export const useEmojiKeyboard = () => {
 		closeEmojiKeyboard();
 	};
 
-	const openEmojiPicker = () => {
+	const applyFixedPickerHeight = () => {
 		'worklet';
 
 		if (keyboardHeight.get() < MAX_ACCESSORY_BAR_HEIGHT) {
@@ -156,7 +156,7 @@ export const useEmojiKeyboard = () => {
 				updateHeight();
 			}
 			if (currentValue < MAX_ACCESSORY_BAR_HEIGHT && showEmojiPickerSharedValue.value && !showEmojiSearchbarSharedValue.value) {
-				openEmojiPicker();
+				applyFixedPickerHeight();
 			}
 		},
 		[height]
@@ -169,7 +169,7 @@ export const useEmojiKeyboard = () => {
 				return;
 			}
 			if (currentValue === true) {
-				openEmojiPicker();
+				applyFixedPickerHeight();
 			} else if (previousHeight.value === EMOJI_KEYBOARD_FIXED_HEIGHT) {
 				updateHeight();
 			}
@@ -187,7 +187,7 @@ export const useEmojiKeyboard = () => {
 			if (currentValue === true && previousHeight.value === EMOJI_KEYBOARD_FIXED_HEIGHT) {
 				updateHeight();
 			} else if (currentValue === false && showEmojiPickerSharedValue.value === true) {
-				openEmojiPicker();
+				applyFixedPickerHeight();
 			}
 			scheduleOnRN(setShowEmojiSearchbar, currentValue);
 		},

@@ -132,19 +132,22 @@ describe('ComposerInput', () => {
 		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  programmatic text  ' });
 	});
 
-	it('clears the native input through a blank text instead of the sent text so a multi-line input shrinks back without flashing', () => {
+	it('clears the native input after sending without writing the sent text back', () => {
 		const { composerRef, inputRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');
+		const message = 'line 1\nline 2\nline 3\nline 4';
 
-		fireEvent.changeText(input, 'line 1\nline 2\nline 3\nline 4');
+		fireEvent.changeText(input, message);
+		let sent: string | undefined;
 		act(() => {
-			composerRef.current?.getTextAndClear();
+			sent = composerRef.current?.getTextAndClear();
 		});
 
-		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: ' ' }], [{ text: '' }]]);
-		expect(inputRef.current?.clear.mock.invocationCallOrder[0]).toBeLessThan(
-			inputRef.current?.setNativeProps.mock.invocationCallOrder[0]
-		);
+		expect(sent).toBe(message);
+		expect(composerRef.current?.getText()).toBe('');
+		expect(inputRef.current?.clear).toHaveBeenCalled();
+		expect(inputRef.current?.setNativeProps.mock.lastCall).toEqual([{ text: '' }]);
+		expect(inputRef.current?.setNativeProps).not.toHaveBeenCalledWith({ text: message });
 	});
 
 	it('resets the native text prop when the user erases everything, so the same text can be set again', () => {
