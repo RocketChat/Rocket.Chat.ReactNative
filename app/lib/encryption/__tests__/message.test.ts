@@ -61,6 +61,7 @@ describe('message encryption', () => {
 
 		const encrypted = await room.encrypt({ _id: 'message-id', rid: 'room-id', msg: messages.plaintext.msg } as IMessage);
 
+		expect(encrypted).toMatchObject({ t: 'e2e', e2e: 'pending' });
 		expect(encrypted.msg).toBeUndefined();
 		expect(encrypted.content).toEqual({
 			algorithm: 'rc.v1.aes-sha2',
@@ -75,6 +76,7 @@ describe('message encryption', () => {
 
 		const encrypted = await room.encrypt({ _id: 'message-id', rid: 'room-id', msg: messages.plaintext.msg } as IMessage);
 
+		expect(encrypted).toMatchObject({ t: 'e2e', e2e: 'pending' });
 		expect(encrypted.msg).toBeUndefined();
 		expect(encrypted.content).toEqual({
 			algorithm: 'rc.v2.aes-sha2',
@@ -82,6 +84,7 @@ describe('message encryption', () => {
 			iv: expect.any(String),
 			ciphertext: expect.any(String)
 		});
+		expect(Buffer.from((encrypted.content as { iv: string }).iv, 'base64')).toHaveLength(12);
 		await expect(webClientDecrypt(roomKeys.v2, encrypted.content)).resolves.toEqual(messages.plaintext);
 		expect(await room.decrypt(encrypted)).toMatchObject({ msg: messages.plaintext.msg, e2e: 'done' });
 	});
