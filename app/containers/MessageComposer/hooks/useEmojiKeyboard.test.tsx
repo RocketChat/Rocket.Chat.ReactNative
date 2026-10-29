@@ -1,17 +1,14 @@
-import { type ReactElement } from 'react';
 import { renderHook, act } from '@testing-library/react-native';
 import { Keyboard } from 'react-native';
 import { useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import * as KeyboardController from 'react-native-keyboard-controller';
 
 import { EmojiKeyboardProvider, useEmojiKeyboard } from './useEmojiKeyboard';
-import { MessageInnerContext } from '../context';
 
 describe('useEmojiKeyboard', () => {
 	let mockSharedValue: any;
 	let mockSearchbarSharedValue: any;
 	let mockKeyboardHeightSharedValue: any;
-	let mockFocus: jest.Mock;
 
 	beforeEach(() => {
 		mockSharedValue = {
@@ -47,8 +44,6 @@ describe('useEmojiKeyboard', () => {
 			modify: jest.fn()
 		};
 
-		mockFocus = jest.fn();
-
 		(useSharedValue as jest.Mock)
 			.mockReturnValueOnce(mockSharedValue) // showEmojiPickerSharedValue
 			.mockReturnValueOnce(mockSearchbarSharedValue) // showEmojiSearchbarSharedValue
@@ -61,22 +56,7 @@ describe('useEmojiKeyboard', () => {
 		jest.clearAllMocks();
 	});
 
-	const createWrapper = (focus = mockFocus) => {
-		const messageInnerContextValue = {
-			sendMessage: jest.fn(),
-			onEmojiSelected: jest.fn(),
-			closeEmojiKeyboardAndAction: jest.fn(),
-			focus,
-			getText: jest.fn(() => ''),
-			setInput: jest.fn()
-		};
-
-		return ({ children }: { children: ReactElement }) => (
-			<EmojiKeyboardProvider>
-				<MessageInnerContext.Provider value={messageInnerContextValue}>{children}</MessageInnerContext.Provider>
-			</EmojiKeyboardProvider>
-		);
-	};
+	const createWrapper = () => EmojiKeyboardProvider;
 
 	describe('EmojiKeyboardProvider', () => {
 		test('should provide context with shared values', () => {
@@ -146,7 +126,7 @@ describe('useEmojiKeyboard', () => {
 				jest.mocked(Keyboard.dismiss).mockRestore();
 			});
 
-			test('keeps the emoji picker open without focusing the composer', () => {
+			test('keeps the emoji picker open and dismisses the system keyboard', () => {
 				const dismiss = jest.spyOn(Keyboard, 'dismiss');
 				mockSharedValue.value = true;
 				mockSearchbarSharedValue.value = true;
@@ -159,7 +139,6 @@ describe('useEmojiKeyboard', () => {
 				expect(mockSearchbarSharedValue.value).toBe(false);
 				expect(mockSharedValue.value).toBe(true);
 				expect(dismiss).toHaveBeenCalledTimes(1);
-				expect(mockFocus).not.toHaveBeenCalled();
 			});
 		});
 
@@ -307,7 +286,7 @@ describe('useEmojiKeyboard', () => {
 			return { keyboardHidden: () => heightReaction(0, 336) };
 		};
 
-		test('restores the fixed picker height after going back from emoji search', () => {
+		test('restores the fixed picker height when the keyboard hides', () => {
 			const { keyboardHidden } = renderAndCaptureHeightReaction();
 			mockSharedValue.value = true;
 
@@ -362,11 +341,12 @@ describe('useEmojiKeyboard', () => {
 		const renderFixedHeightPicker = () => {
 			const systemKeyboardHeight = createValue(0);
 			const keyboardHeight = createValue(250);
+			const showEmojiSearchbar = createValue(false);
 			jest
 				.mocked(useSharedValue)
 				.mockReset()
 				.mockReturnValueOnce(createValue(true)) // showEmojiPickerSharedValue
-				.mockReturnValueOnce(createValue(false)) // showEmojiSearchbarSharedValue
+				.mockReturnValueOnce(showEmojiSearchbar)
 				.mockReturnValueOnce(systemKeyboardHeight)
 				.mockReturnValueOnce(keyboardHeight)
 				.mockReturnValueOnce(createValue(250)); // previousHeight
@@ -376,45 +356,54 @@ describe('useEmojiKeyboard', () => {
 			});
 			renderHook(() => useEmojiKeyboard(), { wrapper: createWrapper() });
 			const [heightReaction, , searchbarReaction] = reactions;
-			return { systemKeyboardHeight, keyboardHeight, heightReaction, searchbarReaction };
+			const openSearch = () => {
+				showEmojiSearchbar.set(true);
+				searchbarReaction(true, false);
+			};
+			const closeSearch = () => {
+				showEmojiSearchbar.set(false);
+				searchbarReaction(false, true);
+			};
+			const keyboardChanges = (to: number) => {
+				const from = systemKeyboardHeight.get();
+				systemKeyboardHeight.set(to);
+				heightReaction(to, from);
+			};
+			return { keyboardHeight, openSearch, closeSearch, keyboardChanges };
 		};
 
 		test('stays open when a hardware keyboard toolbar shows', () => {
-			const { systemKeyboardHeight, keyboardHeight, heightReaction } = renderFixedHeightPicker();
+			const { keyboardHeight, keyboardChanges } = renderFixedHeightPicker();
 
-			systemKeyboardHeight.set(48);
-			heightReaction(48, 0);
+			keyboardChanges(48);
 
 			expect(keyboardHeight.value).toBe(250);
 		});
 
 		test('resizes the composer to the keyboard the search input brings up', () => {
-			const { systemKeyboardHeight, keyboardHeight, heightReaction, searchbarReaction } = renderFixedHeightPicker();
+			const { keyboardHeight, openSearch, keyboardChanges } = renderFixedHeightPicker();
 
-			searchbarReaction(true, false);
-			systemKeyboardHeight.set(336);
-			heightReaction(336, 0);
+			openSearch();
+			keyboardChanges(336);
 
 			expect(keyboardHeight.value).toBe(336);
+		});
+
+		test('comes back at the fixed height after going back from emoji search', () => {
+			const { keyboardHeight, openSearch, closeSearch, keyboardChanges } = renderFixedHeightPicker();
+
+			openSearch();
+			keyboardChanges(336);
+			closeSearch();
+			keyboardChanges(0);
+
+			expect(keyboardHeight.value).toBe(250);
 		});
 	});
 
 	describe('Context without provider', () => {
 		test('should work when used without EmojiKeyboardProvider', () => {
-			const messageInnerContextValue = {
-				sendMessage: jest.fn(),
-				onEmojiSelected: jest.fn(),
-				closeEmojiKeyboardAndAction: jest.fn(),
-				focus: mockFocus,
-				getText: jest.fn(() => ''),
-				setInput: jest.fn()
-			};
-
-			const wrapper = ({ children }: { children: ReactElement }) => (
-				<MessageInnerContext.Provider value={messageInnerContextValue}>{children}</MessageInnerContext.Provider>
-			);
-
-			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
+			const { result } = renderHook(() => useEmojiKeyboard());
 
 			// Should still provide all expected functions and values
 			expect(result.current.showEmojiPickerSharedValue).toBeDefined();
