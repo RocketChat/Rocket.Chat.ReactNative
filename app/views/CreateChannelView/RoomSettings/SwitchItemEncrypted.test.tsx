@@ -28,8 +28,12 @@ describe('SwitchItemEncrypted', () => {
 		expect(screen.getByTestId(switchTestID)).toBeOnTheScreen();
 	});
 
-	it('label when encrypted and isTeam are true and is a private team', () => {
-		renderSwitchItemEncrypted({ encryptionEnabled: true, isTeam: true, type: true, encrypted: true });
-		expect(screen.getByTestId(hintTestID)).toHaveTextContent(i18n.t('Team_hint_encrypted'));
+	it.each([
+		{ isTeam: true, type: true, hint: 'Team_hint_encrypted' },
+		{ isTeam: true, type: false, hint: 'Team_hint_encrypted_not_available' },
+		{ isTeam: false, type: true, hint: 'Channel_hint_encrypted' }
+	])('shows $hint when isTeam is $isTeam and type is $type', ({ isTeam, type, hint }) => {
+		renderSwitchItemEncrypted({ encryptionEnabled: true, isTeam, type });
+		expect(screen.getByTestId(hintTestID)).toHaveTextContent(i18n.t(hint));
 	});
 });
