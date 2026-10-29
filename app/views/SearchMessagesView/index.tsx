@@ -37,7 +37,7 @@ import {
 	type IUrl,
 	type IAttachment,
 	type IRoomInfoParam,
-	SubscriptionType
+	type SubscriptionType
 } from '~/definitions';
 import { searchMessages } from '~/lib/services/restApi';
 import { type TNavigation } from '~/stacks/stackType';
@@ -222,8 +222,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 			params = {
 				...params,
 				tmid: item.tmid,
-				name: await getThreadName(this.rid, item.tmid as string, item._id),
-				t: SubscriptionType.THREAD
+				name: await getThreadName(this.rid, item.tmid as string, item._id)
 			};
 			Navigation.push('RoomView', params);
 		} else {

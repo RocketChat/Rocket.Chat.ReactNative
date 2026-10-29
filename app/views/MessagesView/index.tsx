@@ -25,7 +25,7 @@ import {
 	type IApplicationState,
 	type IRoomInfoParam,
 	type TMessageModel,
-	SubscriptionType,
+	type SubscriptionType,
 	type IAttachment,
 	type IMessage,
 	type TAnyMessageModel,
@@ -145,8 +145,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 			params = {
 				...params,
 				tmid: item.tmid,
-				name: await getThreadName(this.rid, item.tmid, item._id),
-				t: SubscriptionType.THREAD
+				name: await getThreadName(this.rid, item.tmid, item._id)
 			};
 			Navigation.push('RoomView', params);
 		} else {
