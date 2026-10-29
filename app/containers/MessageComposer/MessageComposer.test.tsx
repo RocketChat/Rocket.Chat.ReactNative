@@ -253,6 +253,14 @@ describe('MessageComposer', () => {
 			expect(resetKeyboard).toHaveBeenCalledTimes(1);
 		});
 
+		test('leaves back to the screen on top when the room is not focused', () => {
+			jest.spyOn(jest.requireMock('@react-navigation/native'), 'useIsFocused').mockReturnValueOnce(false);
+			const { resetKeyboard } = renderWithEmojiKeyboard({ showEmojiKeyboard: true, showEmojiSearchbar: false });
+
+			expect(pressBack()).toBe(false);
+			expect(resetKeyboard).not.toHaveBeenCalled();
+		});
+
 		test('leaves the room when no emoji keyboard is open', () => {
 			const { resetKeyboard } = renderWithEmojiKeyboard({ showEmojiKeyboard: false, showEmojiSearchbar: false });
 
