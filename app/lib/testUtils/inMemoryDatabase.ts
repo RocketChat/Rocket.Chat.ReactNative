@@ -28,7 +28,8 @@ export const createInMemoryAppDatabase = (): TAppDatabase =>
 			migrations,
 			useWebWorker: false,
 			useIncrementalIndexedDB: false,
-			dbName: `test-${Math.random()}`
+			dbName: `test-${Math.random()}`,
+			extraLokiOptions: { autosave: false }
 		}),
 		modelClasses: [
 			Subscription,
