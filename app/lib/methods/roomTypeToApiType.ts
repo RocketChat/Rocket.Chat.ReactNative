@@ -16,7 +16,7 @@ type ApiTypes<T> = T extends 'c'
 				? ETypes.Channels
 				: never;
 
-export const types: { [K in RoomType]: ApiTypes<K> } = {
+const types: { [K in RoomType]: ApiTypes<K> } = {
 	c: ETypes.Channels,
 	d: ETypes.Im,
 	p: ETypes.Groups,
@@ -24,5 +24,3 @@ export const types: { [K in RoomType]: ApiTypes<K> } = {
 };
 
 export const roomTypeToApiType = <T extends RoomType>(t: T) => types[t];
-
-export const isRoomType = (t: unknown): t is RoomType => typeof t === 'string' && t in types;

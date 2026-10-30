@@ -9,7 +9,8 @@ describe('roomTypePath', () => {
 	it.each([
 		['channel', RoomType.CHANNEL],
 		['group', RoomType.GROUP],
-		['direct', RoomType.DIRECT]
+		['direct', RoomType.DIRECT],
+		['channels', RoomType.OMNICHANNEL]
 	])('reads the permalink segment %s as room type %s', (segment, roomType) => {
 		expect(pathSegmentToRoomType(segment)).toBe(roomType);
 	});

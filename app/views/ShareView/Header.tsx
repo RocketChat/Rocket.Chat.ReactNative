@@ -8,7 +8,7 @@ import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '~/lib/methods/helpers/room';
 import { type TThreadModel } from '~/definitions';
-import { isSubscriptionModel, type TRoomOrPreview } from '~/definitions/TRoom';
+import { type TRoomOrPreview } from '~/definitions/TRoom';
 import { getRoomTitle, isGroupChat, isAndroid, isTablet } from '~/lib/methods/helpers';
 import { getMessageById } from '~/lib/database/services/Message';
 
@@ -64,7 +64,7 @@ const Header = memo(({ room, thread }: IHeader) => {
 	} else if (type === 'l') {
 		icon = 'omnichannel';
 	} else if (type === 'd') {
-		if (isSubscriptionModel(room) && isGroupChat(room)) {
+		if (isGroupChat(room)) {
 			icon = 'team';
 		} else {
 			icon = 'mention';

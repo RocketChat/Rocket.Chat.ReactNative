@@ -1,5 +1,7 @@
 // https://github.com/RocketChat/Rocket.Chat/tree/develop/packages/apps-engine/src/definition/ui
 
+import { type RoomType } from '~/definitions/IRoom';
+
 export const UIActionButtonContext = {
 	ROOM_ACTION: 'roomAction',
 	MESSAGE_BOX_ACTION: 'messageBoxAction'
@@ -42,7 +44,7 @@ export interface IAppActionButton {
 }
 
 export interface IAppActionButtonRoom {
-	t?: string;
+	t?: RoomType;
 	teamMain?: boolean;
 	prid?: string;
 	uids?: string[];

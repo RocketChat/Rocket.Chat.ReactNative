@@ -7,6 +7,8 @@ export type TPreviewRoom = {
 	name?: string;
 	fname?: string;
 	prid?: string;
+	uids?: string[];
+	usernames?: string[];
 	visitor?: IVisitor;
 	joinCodeRequired?: boolean;
 	lastMessage?: ILastMessage;

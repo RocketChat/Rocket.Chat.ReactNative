@@ -7,7 +7,7 @@ const pathSegmentByRoomType = {
 	[RoomType.OMNICHANNEL]: 'channels'
 } as const satisfies Record<RoomType, string>;
 
-const roomTypes = Object.keys(pathSegmentByRoomType) as RoomType[];
+const roomTypes = Object.values(RoomType);
 
 export const roomTypeToPathSegment = (t: RoomType) => pathSegmentByRoomType[t];
 
