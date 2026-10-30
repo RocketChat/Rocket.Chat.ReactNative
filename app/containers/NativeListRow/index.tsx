@@ -14,7 +14,7 @@ import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import { LISTENER } from '~/containers/Toast';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { useTheme } from '~/theme';
-import { CONTENT_SPACING, ROW_MARGIN_HORIZONTAL, ROW_PADDING_HORIZONTAL, ROW_RADIUS } from './constants';
+import { CONTENT_SPACING, ROW_MARGIN_HORIZONTAL, ROW_PADDING_HORIZONTAL, ROW_PADDING_VERTICAL, ROW_RADIUS } from './constants';
 import { useNativeListRowHeight } from './hooks/useNativeListRowHeight';
 
 const TRAILING_ACTION_HIT_SLOP = 12;
@@ -218,6 +218,7 @@ const NativeListRow = ({
 	testID,
 	accessibilityLabel,
 	isSelected,
+	titleNumberOfLines = 1,
 	isFirst,
 	isLast,
 	disabled,
@@ -225,6 +226,7 @@ const NativeListRow = ({
 }: INativeListRow) => {
 	const { colors } = useTheme();
 	const height = useNativeListRowHeight();
+	const sizeStyle = titleNumberOfLines === 1 ? { height } : { minHeight: height, paddingVertical: ROW_PADDING_VERTICAL };
 
 	return (
 		<NativeListRowContent
@@ -239,11 +241,13 @@ const NativeListRow = ({
 			testID={testID}
 			accessibilityLabel={accessibilityLabel}
 			isSelected={isSelected}
+			titleNumberOfLines={titleNumberOfLines}
 			disabled={disabled}
 			disabledReason={disabledReason}
 			style={[
 				styles.card,
-				{ height, backgroundColor: colors.surfaceLight },
+				sizeStyle,
+				{ backgroundColor: colors.surfaceLight },
 				isFirst && styles.firstCard,
 				isLast && styles.lastCard
 			]}

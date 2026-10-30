@@ -38,7 +38,13 @@ describe('UserWatchOSQuickRepliesView', () => {
 		UserPreferences.setString(key, JSON.stringify(['Yes']));
 	});
 
-	it('adds a trimmed reply, skips duplicates and syncs after saving', () => {
+	it('lets a long reply wrap onto several lines', () => {
+		const { getByText } = renderView();
+
+		expect(getByText('Yes').props.numberOfLines).toBe(0);
+	});
+
+	it('adds a trimmed reply, skips duplicates without syncing and syncs after saving', () => {
 		const storedAtSync: string[][] = [];
 		jest.mocked(syncWatchOSQuickReplies).mockImplementation(() => {
 			storedAtSync.push(stored());
@@ -52,10 +58,7 @@ describe('UserWatchOSQuickRepliesView', () => {
 		act(() => fireEvent(input, 'submitEditing'));
 
 		expect(stored()).toEqual(['Yes', 'On my way']);
-		expect(storedAtSync).toEqual([
-			['Yes', 'On my way'],
-			['Yes', 'On my way']
-		]);
+		expect(storedAtSync).toEqual([['Yes', 'On my way']]);
 	});
 
 	it('removes a reply from its delete action and syncs after saving', () => {

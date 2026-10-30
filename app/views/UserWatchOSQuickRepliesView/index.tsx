@@ -44,14 +44,15 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 	const addQuickReply = () => {
 		const value = input.trim();
 		if (!value) return;
-		const isNew = !quickReplies.includes(value);
-		if (isNew && quickReplies.length >= max) {
-			showToast(I18n.t('Quick_replies_limit_reached', { max }));
-			return;
+		if (!quickReplies.includes(value)) {
+			if (quickReplies.length >= max) {
+				showToast(I18n.t('Quick_replies_limit_reached', { max }));
+				return;
+			}
+			setQuickReplies([...quickReplies, value]);
+			syncWatchOSQuickReplies(server);
 		}
-		if (isNew) setQuickReplies([...quickReplies, value]);
 		setInput('');
-		syncWatchOSQuickReplies(server);
 	};
 
 	return (
@@ -86,6 +87,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 						title={item}
 						testID={`watchos-quick-reply-${item}`}
 						accessibilityLabel={item}
+						titleNumberOfLines={0}
 						isFirst={index === 0}
 						isLast={index === quickReplies.length - 1}
 						trailingAction={{
