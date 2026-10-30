@@ -494,7 +494,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 
 	render = () => {
 		const { chats, loading, searchResults, searching, serversCount } = this.state;
-		const { theme, insets } = this.props;
+		const { theme, insets, encryptionEnabled } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator />;
@@ -533,6 +533,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 			<SafeAreaView testID='share-list-view'>
 				<FlatList
 					data={searching ? searchResults : chats}
+					extraData={encryptionEnabled}
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
 					contentContainerStyle={hasNativeHeaderBar ? searching && styles.nativeSearchContent : { paddingBottom: insets.bottom }}

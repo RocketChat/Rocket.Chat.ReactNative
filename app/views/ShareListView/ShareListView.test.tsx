@@ -147,7 +147,7 @@ describe('ShareListView', () => {
 	});
 
 	it('lists encrypted rooms alongside unencrypted ones', async () => {
-		database.active.get.mockReturnValue({
+		database.active.get.mockReturnValueOnce({
 			query: () => ({
 				fetch: () =>
 					Promise.resolve([

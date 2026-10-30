@@ -250,18 +250,13 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		if (this.isShareExtension) {
 			this.setState({ loading: true });
 			sendLoadingEvent({ visible: true });
-		}
-
-		if (!(await Encryption.canSendToRoom(room.rid))) {
-			if (this.isShareExtension) {
+			if (!(await Encryption.canSendToRoom(room.rid))) {
 				sendLoadingEvent({ visible: false });
 				this.setState({ loading: false });
+				showErrorAlert(I18n.t('missing_room_e2ee_description'), I18n.t('missing_room_e2ee_title'));
+				return;
 			}
-			showErrorAlert(I18n.t('missing_room_e2ee_description'), I18n.t('missing_room_e2ee_title'));
-			return;
-		}
-
-		if (!this.isShareExtension) {
+		} else {
 			this.sentMessage = true;
 			this.finishShareView('', []);
 			navigation.pop();

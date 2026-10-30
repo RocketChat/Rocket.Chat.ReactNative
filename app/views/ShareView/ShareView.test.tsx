@@ -459,9 +459,10 @@ describe('ShareView', () => {
 		shareView.state.attachments[0].canUpload = true;
 
 		await shareView.send();
-
-		expect(sendFileMessage).not.toHaveBeenCalled();
+		const sendFileMessageCalls = sendFileMessage.mock.calls.length;
 		sendFileMessage.mockRestore();
+
+		expect(sendFileMessageCalls).toBe(0);
 		expect(showErrorAlert).toHaveBeenCalledTimes(1);
 		expect(shareView.state.loading).toBe(false);
 		expect(shareView.props.dispatch).not.toHaveBeenCalled();
@@ -479,6 +480,17 @@ describe('ShareView', () => {
 
 		expect(sendMessage).toHaveBeenCalledWith('room-id', 'ordinary shared text', '', expect.objectContaining({ id: 'user-id' }));
 		expect(finishShareView).toHaveBeenCalledWith('', []);
+		expect(shareView.props.navigation.pop).toHaveBeenCalledTimes(1);
+	});
+
+	it('pops ordinary ShareView before the first await so a second tap cannot send again', () => {
+		const shareView = makeInstance({ mime: 'text/plain', serverVersion: '8.5.0' });
+		shareView.state.attachments = [];
+		shareView.state.text = 'ordinary shared text';
+		(shareView as any).finishShareView = jest.fn();
+
+		shareView.send();
+
 		expect(shareView.props.navigation.pop).toHaveBeenCalledTimes(1);
 	});
 
