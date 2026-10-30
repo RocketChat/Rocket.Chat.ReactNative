@@ -657,6 +657,8 @@
   "Settings": "Impostazioni",
   "Settings_succesfully_changed": "Impostazioni modificate correttamente!",
   "Share": "Condividi",
+  "Share_encrypted_room_key_missing": "In attesa delle chiavi di crittografia",
+  "Share_encrypted_room_password_required": "Inserisci la tua password E2EE per condividere qui",
   "Share_Link": "Condividi link",
   "Share_no_valid_attachments": "Impossibile trovare il file condiviso",
   "Share_this_app": "Condividi questa app",

@@ -832,6 +832,8 @@
   "Settings": "सेटिंग्स",
   "Settings_succesfully_changed": "सेटिंग्स सफलतापूर्वक बदल गईं!",
   "Share": "शेयर",
+  "Share_encrypted_room_key_missing": "एन्क्रिप्शन कुंजियों की प्रतीक्षा की जा रही है",
+  "Share_encrypted_room_password_required": "यहां शेयर करने के लिए अपना E2EE पासवर्ड डालें",
   "Share_Link": "शेयर लिंक",
   "Share_no_valid_attachments": "साझा की गई फ़ाइल नहीं मिली",
   "Share_this_app": "इस ऐप को शेयर करें",

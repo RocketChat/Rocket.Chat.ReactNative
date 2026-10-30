@@ -750,6 +750,8 @@
   "Settings": "Nastavitve",
   "Settings_succesfully_changed": "Nastavitve so se uspešno spremenile!",
   "Share": "Deliti",
+  "Share_encrypted_room_key_missing": "Čakanje na šifrirne ključe",
+  "Share_encrypted_room_password_required": "Vnesite svoje geslo E2EE za deljenje tukaj",
   "Share_Link": "Deliti povezavo",
   "Share_no_valid_attachments": "Deljene datoteke ni bilo mogoče najti",
   "Share_this_app": "Delite to aplikacijo",
