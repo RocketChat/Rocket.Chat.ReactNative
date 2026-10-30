@@ -51,7 +51,7 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 	};
 
 	const currentRoute = Navigation.getCurrentRoute() as any;
-	if (currentRoute?.name === 'RoomView' && currentRoute?.params?.rid === item.rid) {
+	if (currentRoute?.name === 'RoomView' && currentRoute?.params?.rid === item.rid && !currentRoute?.params?.tmid) {
 		Navigation.setParams(routeParams);
 		return;
 	}
