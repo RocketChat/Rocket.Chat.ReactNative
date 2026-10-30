@@ -8,7 +8,7 @@ import { type Dispatch } from 'redux';
 
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
-import { getRoomTitle } from '~/lib/methods/helpers/helpers';
+import { getRoomTitle, hasPermission } from '~/lib/methods/helpers/helpers';
 import { type IMessageComposerRef, ComposerProvider, MessageComposerContainer } from '~/containers/MessageComposer';
 import { type InsideStackParamList } from '~/stacks/types';
 import { themes } from '~/lib/constants/colors';
@@ -38,7 +38,6 @@ import {
 import { type TRoomOrPreview } from '~/definitions/TRoom';
 import { sendAttachments } from '~/lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '~/lib/methods/sendMessage';
-import { hasPermission } from '~/lib/methods/helpers/helpers';
 import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import { canUploadFile } from '~/lib/methods/helpers/media';
 import { isReadOnly } from '~/lib/methods/helpers/isReadOnly';
