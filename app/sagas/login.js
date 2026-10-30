@@ -33,7 +33,7 @@ import { isTwoFactorCancelled } from '../lib/services/twoFactor/twoFactorCancell
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
-import { subscribeSettings } from '../lib/methods/getSettings';
+import { getSettingsFetchedFor, subscribeSettings } from '../lib/methods/getSettings';
 import { disconnect, loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
@@ -42,6 +42,8 @@ import { useAppsStore } from '../lib/apps/appsStore';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
+import { syncWatchOSQuickRepliesWithServer } from '../lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer';
+import { isWatchAppInstalled } from '../lib/methods/watchOSQuickReplies/isWatchAppInstalled';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
@@ -266,6 +268,32 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const seedWatchQuickReplies = function* seedWatchQuickRepliesFork() {
+	try {
+		if (!isWatchAppInstalled()) return;
+		const server = yield select(s => s.server.server);
+		const settingsFetchedFor = yield call(getSettingsFetchedFor);
+		let fetchedSettings;
+		if (settingsFetchedFor !== server) {
+			const { loaded, stop } = yield race({
+				loaded: take(types.SETTINGS.FETCH_COMPLETE),
+				stop: take([
+					types.LOGOUT,
+					types.DELETE_ACCOUNT,
+					types.LOGIN.SUCCESS,
+					action => action.type === types.SERVER.SELECT_REQUEST && action.server !== server
+				])
+			});
+			if (stop) return;
+			fetchedSettings = loaded.settings;
+		}
+		const settings = fetchedSettings ?? (yield select(s => s.settings));
+		syncWatchOSQuickRepliesWithServer(server, settings);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
 	try {
 		const { background, root } = yield select(state => state.app);
@@ -337,6 +365,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		// On warm relaunch, redux is already populated by selectServer; on cold login, it re-checks
 		// when PERMISSIONS.SET / ENTERPRISE_MODULES.SET land.
 		yield spawn(startVoipFork);
+		yield spawn(seedWatchQuickReplies);
 		yield call(fetchPermissions);
 		yield call(fetchEnterpriseModules, { user });
 		yield fork(fetchCustomEmojisFork);

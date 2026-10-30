@@ -17,7 +17,9 @@ import {
 	getServerUserIdKey,
 	getUserTokenKey
 } from '../constants/keys';
+import NativeWatchModule from '../native/NativeWatchModule';
 import UserPreferences from './userPreferences';
+import { syncWatchOSQuickReplies } from './watchOSQuickReplies/syncWatchOSQuickReplies';
 import { removePushToken } from '../services/restApi';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
 import { clearServerCookies } from './helpers/setServerCookies';
@@ -36,13 +38,17 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
+	if (NativeWatchModule) {
+		UserPreferences.removeItem(NativeWatchModule.getQuickRepliesKey(server));
+	}
+	syncWatchOSQuickReplies(server);
 }
 
 export async function removeServerData({ server }: { server: string }): Promise<void> {
+	const userId = UserPreferences.getString(getServerUserIdKey(server));
 	try {
 		const batch: Model[] = [];
 		const serversDB = database.servers;
-		const userId = UserPreferences.getString(getServerUserIdKey(server));
 
 		const usersCollection = serversDB.get('users');
 		if (userId) {
@@ -54,9 +60,10 @@ export async function removeServerData({ server }: { server: string }): Promise<
 		batch.push(serverRecord.prepareDestroyPermanently());
 
 		await serversDB.write(() => serversDB.batch(batch));
-		removeServerKeys({ server, userId });
 	} catch (e) {
 		log(e);
+	} finally {
+		removeServerKeys({ server, userId });
 	}
 }
 

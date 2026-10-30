@@ -30,6 +30,10 @@ jest.mock('~/lib/services/restApi', () => ({
 	removePushToken: jest.fn()
 }));
 
+jest.mock('~/lib/methods/watchOSQuickReplies/isWatchAppInstalled', () => ({
+	isWatchAppInstalled: jest.fn(() => true)
+}));
+
 jest.mock('~/lib/methods/helpers/sslPinning', () => ({
 	clearRemovedWorkspaceCertificate: jest.fn()
 }));
@@ -59,6 +63,8 @@ import {
 	TOKEN_KEY,
 	getBasicAuthKey
 } from '~/lib/constants/keys';
+import NativeWatchModule from '~/lib/native/NativeWatchModule';
+import * as NativeWatchModuleModule from '~/lib/native/NativeWatchModule';
 
 const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
 
@@ -74,7 +80,8 @@ const serverKeys = (server: string): string[] => [
 	getBasicAuthKey(server),
 	`${server}-${E2E_PUBLIC_KEY}`,
 	`${server}-${E2E_PRIVATE_KEY}`,
-	`${server}-${E2E_RANDOM_PASSWORD_KEY}`
+	`${server}-${E2E_RANDOM_PASSWORD_KEY}`,
+	NativeWatchModule!.getQuickRepliesKey(server)
 ];
 
 const keysToClear = [
@@ -116,6 +123,48 @@ describe('removeServerData', () => {
 		expect(UserPreferences.getString(tokenKey(SERVER))).toBeNull();
 		expect(UserPreferences.getString(tokenKey(USER_ID))).toBeNull();
 		serverKeys(SERVER).forEach(key => expect(UserPreferences.getString(key)).toBeNull());
+	});
+
+	it('clears the per-server keys and the watch replies even when the server record lookup fails', async () => {
+		seedServer(SERVER, USER_ID);
+		jest.mocked(database.servers.get).mockReturnValue({ find: jest.fn(() => Promise.reject(new Error('not found'))) } as any);
+
+		await removeServerData({ server: SERVER });
+
+		serverKeys(SERVER).forEach(key => expect(UserPreferences.getString(key)).toBeNull());
+		expect(UserPreferences.getString(tokenKey(USER_ID))).toBeNull();
+		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith(SERVER);
+	});
+
+	it('clears the watch quick replies on the watch too, after removing them from storage', async () => {
+		seedServer(SERVER, USER_ID);
+		let repliesStoredAtSync: boolean | undefined;
+		jest.mocked(NativeWatchModule!.syncQuickReplies).mockImplementationOnce(() => {
+			repliesStoredAtSync = UserPreferences.contains(NativeWatchModule!.getQuickRepliesKey(SERVER));
+			return 'SUCCESS';
+		});
+
+		await removeServerData({ server: SERVER });
+
+		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith(SERVER);
+		expect(repliesStoredAtSync).toBe(false);
+	});
+
+	it('clears the other per-server keys on a platform without the watch module', async () => {
+		seedServer(SERVER, USER_ID);
+		const syncQuickReplies = NativeWatchModule!.syncQuickReplies;
+		const replaced = jest.replaceProperty(NativeWatchModuleModule, 'default', null);
+
+		try {
+			await removeServerData({ server: SERVER });
+		} finally {
+			replaced.restore();
+		}
+
+		expect(UserPreferences.getString(tokenKey(SERVER))).toBeNull();
+		expect(UserPreferences.getString(tokenKey(USER_ID))).toBeNull();
+		expect(UserPreferences.getString(getBasicAuthKey(SERVER))).toBeNull();
+		expect(syncQuickReplies).not.toHaveBeenCalled();
 	});
 
 	it('leaves another workspace keys untouched', async () => {

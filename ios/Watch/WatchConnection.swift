@@ -72,7 +72,8 @@ final class WatchConnection: NSObject {
                         password: $0.password
                     )
                 },
-                version: item.version
+                version: item.version,
+                quickReplies: mmkv.watchQuickReplies(for: item.identifier)
             )
         }
 
