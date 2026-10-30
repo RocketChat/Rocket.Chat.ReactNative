@@ -56,7 +56,11 @@ const SectionHeader = ({
 
 	const onPressToggle = (event: GestureResponderEvent) => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-		event.currentTarget.measureInWindow((_x, y, _width, height) => onToggle(header, y + height));
+		const { currentTarget } = event;
+		if (typeof currentTarget === 'number') {
+			return;
+		}
+		currentTarget.measureInWindow((_x, y, _width, height) => onToggle(header, y + height));
 	};
 
 	return (

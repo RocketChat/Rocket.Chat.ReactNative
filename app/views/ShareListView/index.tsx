@@ -530,7 +530,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 					getItemLayout={getItemLayout}
 					ItemSeparatorComponent={RowSeparator}
 					ListHeaderComponent={this.renderHeader}
-					ListFooterComponent={!isIOS && (!searching || searchResults.length > 0) ? <List.Separator /> : null}
+					ListFooterComponent={!isIOS && (!searching || searchResults.length > 0) ? <List.Separator /> : undefined}
 					ListEmptyComponent={this.renderEmptyComponent}
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'

@@ -1,4 +1,4 @@
-import { type ReactNode, type Ref } from 'react';
+import { type ComponentRef, type ReactNode, type Ref } from 'react';
 import { type TouchableProps } from 'react-native-gesture-handler';
 import {
 	type AccessibilityRole,
@@ -11,7 +11,7 @@ import {
 
 export interface IGestureButtonProps {
 	children?: ReactNode;
-	ref?: Ref<View>;
+	ref?: Ref<ComponentRef<typeof View>>;
 	onPress?: TouchableProps['onPress'];
 	onLongPress?: TouchableProps['onLongPress'];
 	disabled?: boolean;

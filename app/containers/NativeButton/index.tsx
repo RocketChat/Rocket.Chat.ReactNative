@@ -1,8 +1,19 @@
-import { TouchableNativeFeedback, TouchableOpacity, type TouchableOpacityProps, View } from 'react-native';
+import {
+	type StyleProp,
+	TouchableNativeFeedback,
+	TouchableOpacity,
+	type TouchableOpacityProps,
+	View,
+	type ViewStyle
+} from 'react-native';
 
 import { isIOS } from '~/lib/methods/helpers';
 
-const NativeButton = (props: TouchableOpacityProps) => {
+interface INativeButtonProps extends Omit<TouchableOpacityProps, 'style'> {
+	style?: StyleProp<ViewStyle>;
+}
+
+const NativeButton = (props: INativeButtonProps) => {
 	if (isIOS) {
 		return <TouchableOpacity {...props}>{props.children}</TouchableOpacity>;
 	}

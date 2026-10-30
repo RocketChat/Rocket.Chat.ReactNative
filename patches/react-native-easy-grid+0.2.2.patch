@@ -1,0 +1,28 @@
+diff --git a/node_modules/react-native-easy-grid/index.d.ts b/node_modules/react-native-easy-grid/index.d.ts
+index 9eedbc5..67d4d21 100644
+--- a/node_modules/react-native-easy-grid/index.d.ts
++++ b/node_modules/react-native-easy-grid/index.d.ts
+@@ -1,19 +1,19 @@
+ declare module "react-native-easy-grid" {
+ 
+     import {Component} from "react";
+-    import {ViewProperties} from "react-native";
++    import {ViewProps} from "react-native";
+ 
+-    export interface RowProps extends ViewProperties {
++    export interface RowProps extends ViewProps {
+         size?: number
+         onPress?: () => void
+     }
+ 
+-    export interface ColProps extends ViewProperties {
++    export interface ColProps extends ViewProps {
+         size?: number
+         onPress?: () => void
+     }
+ 
+-    export class Grid extends Component<ViewProperties, any> {}
++    export class Grid extends Component<ViewProps, any> {}
+     export class Row extends Component<RowProps, any> {}
+     export class Col extends Component<ColProps, any> {}
+ }
