@@ -1,12 +1,13 @@
 import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { type ReactElement, useCallback, useEffect, useLayoutEffect, useReducer, useRef } from 'react';
-import { FlatList, Text } from 'react-native';
+import { type ReactElement, useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from 'react';
+import { SectionList, Text } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { sendLoadingEvent } from '~/containers/Loading';
 import ActivityIndicator from '~/containers/ActivityIndicator';
+import Button from '~/containers/Button';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import SafeAreaView from '~/containers/SafeAreaView';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
@@ -20,8 +21,18 @@ import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActio
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { compareServerVersion, getRoomTitle, hasNativeHeaderBar, isGroupChat, useDebounce } from '~/lib/methods/helpers';
+import {
+	compareServerVersion,
+	getRoomTitle,
+	hasNativeHeaderBar,
+	isAndroid,
+	isGroupChat,
+	useDebounce
+} from '~/lib/methods/helpers';
 import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
+import { groupMembersByRole, type TMemberRoleGroup } from '~/lib/methods/helpers/groupMembersByRole';
+import { isMembersOrderedByRoleSupported } from '~/lib/methods/helpers/isMembersOrderedByRoleSupported';
+import { setMemberRole } from '~/lib/methods/helpers/setMemberRole';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import log from '~/lib/methods/helpers/log';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
@@ -31,6 +42,7 @@ import { getUserSelector } from '~/selectors/login';
 import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
 import { useTheme } from '~/theme';
 import ActionsSection from './components/ActionsSection';
+import RoleGroupHeader from './components/RoleGroupHeader';
 import {
 	fetchRole,
 	fetchRoomMembersRoles,
@@ -57,17 +69,31 @@ interface IRoomMembersViewState {
 	roomRoles?: IGetRoomRoles[];
 	filter: string;
 	page: number;
+	removedRows: number;
+	loadFailed: boolean;
 }
 
-const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], page: number) => {
-	const existingIds = new Set(members.map(m => m._id));
-	const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
+type TStateUpdate = Partial<IRoomMembersViewState> | ((state: IRoomMembersViewState) => Partial<IRoomMembersViewState>);
 
-	// Safety check: if page is 0, we replace the list entirely
+type TMembersSection = { key?: TMemberRoleGroup; data: TUserModel[] };
+
+const firstPageState = { members: [], end: false, page: 0, removedRows: 0, loadFailed: false };
+
+const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], page: number) => {
+	const loadedMembers = page === 0 ? [] : members;
+	const loadedIds = new Set(loadedMembers.map(member => member._id));
+
 	return {
-		members: page === 0 ? membersResultFiltered : [...members, ...(membersResultFiltered || [])],
-		end: membersResult?.length < PAGE_SIZE
+		members: [...loadedMembers, ...membersResult.filter(member => !loadedIds.has(member._id))],
+		end: membersResult.length < PAGE_SIZE
 	};
+};
+
+const getSections = (members: TUserModel[], hasRoles: boolean): TMembersSection[] => {
+	if (hasRoles) {
+		return groupMembersByRole(members);
+	}
+	return members.length ? [{ data: members }] : [];
 };
 
 const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
@@ -109,17 +135,18 @@ const RoomMembersView = (): ReactElement => {
 	}, [loading]);
 
 	const [state, updateState] = useReducer(
-		(state: IRoomMembersViewState, newState: Partial<IRoomMembersViewState>) => ({ ...state, ...newState }),
+		(state: IRoomMembersViewState, newState: TStateUpdate) => ({
+			...state,
+			...(typeof newState === 'function' ? newState(state) : newState)
+		}),
 		{
 			isLoading: false,
 			allUsers: true,
 			filtering: '',
-			members: [],
+			...firstPageState,
 			room: params.room || ({} as TSubscriptionModel),
-			end: false,
 			roomRoles: undefined,
-			filter: '',
-			page: 0
+			filter: ''
 		}
 	);
 
@@ -138,8 +165,12 @@ const RoomMembersView = (): ReactElement => {
 		viewAllTeamsPermission
 	] = usePermissions(['mute-user', 'set-leader', 'set-owner', 'set-moderator', 'remove-user', ...teamPermissions], params.rid);
 
+	const membersHaveRoles = isMembersOrderedByRoleSupported(serverVersion, state.room.t);
+
+	const needsRoomRoles = !membersHaveRoles && !isGroupChat(state.room);
+
 	const fetchRoles = () => {
-		if (isGroupChat(state.room)) {
+		if (!needsRoomRoles) {
 			return;
 		}
 		if (
@@ -157,10 +188,10 @@ const RoomMembersView = (): ReactElement => {
 	};
 
 	const fetchMembers = useCallback(async () => {
-		const { members, isLoading, end, room, filter, page, allUsers } = state;
+		const { isLoading, end, room, filter, page, allUsers, removedRows, loadFailed } = state;
 		const { t } = room;
 
-		if (isLoading || end) {
+		if (isLoading || end || loadFailed) {
 			return;
 		}
 
@@ -174,7 +205,7 @@ const RoomMembersView = (): ReactElement => {
 				roomType: t,
 				type,
 				filter,
-				skip: PAGE_SIZE * page,
+				skip: Math.max(PAGE_SIZE * page - removedRows, 0),
 				limit: PAGE_SIZE,
 				allUsers
 			});
@@ -183,22 +214,28 @@ const RoomMembersView = (): ReactElement => {
 				return;
 			}
 
-			updateState({
-				...mergeMembersPage(members, membersResult, page),
+			if (!membersResult) {
+				updateState({ isLoading: false, loadFailed: true });
+				return;
+			}
+
+			updateState(current => ({
+				...mergeMembersPage(current.members, membersResult, page),
 				isLoading: false,
+				loadFailed: false,
 				page: page + 1
-			});
+			}));
 		} catch (e) {
 			log(e);
 			if (requestId === latestSearchRequest.current) {
-				updateState({ isLoading: false });
+				updateState({ isLoading: false, loadFailed: true });
 			}
 		}
-	}, [state.isLoading, state.end, state.room.t, state.filter, state.page, state.allUsers]);
+	}, [state.isLoading, state.end, state.room.t, state.filter, state.page, state.allUsers, state.removedRows, state.loadFailed]);
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			fetchMembers();
+			updateState({ loadFailed: false });
 		});
 
 		return unsubscribe;
@@ -216,12 +253,33 @@ const RoomMembersView = (): ReactElement => {
 		viewAllTeamChannelsPermission,
 		viewAllTeamsPermission,
 		state.room?.rid,
-		state.room?.t
+		state.room?.t,
+		needsRoomRoles
 	]);
 
 	useEffect(() => {
 		fetchMembers();
-	}, [state.filter, state.allUsers]);
+	}, [state.filter, state.allUsers, state.loadFailed]);
+
+	const applyRoleChange = async (userId: string, role: string, isAdded: boolean) => {
+		if (!membersHaveRoles) {
+			await fetchRoomMembersRoles(state.room.t as TRoomType, state.room.rid, updateState);
+			return;
+		}
+		updateState(({ members, removedRows }) => ({
+			members: setMemberRole(members, userId, role, isAdded),
+			removedRows: isAdded ? removedRows : removedRows + 1
+		}));
+	};
+
+	const hasRole = (role: string, selectedUser: TUserModel) =>
+		membersHaveRoles ? !!selectedUser.roles?.includes(role) : fetchRole(role, selectedUser, state.roomRoles);
+
+	const removeMember = (userId: string) =>
+		updateState(({ members, removedRows }) => ({
+			members: members.filter(member => member._id !== userId),
+			removedRows: removedRows + 1
+		}));
 
 	const debounceFilterChange = useDebounce((text: string) => {
 		const trimmedFilter = text.trim();
@@ -235,10 +293,8 @@ const RoomMembersView = (): ReactElement => {
 		}
 
 		updateState({
+			...firstPageState,
 			filter: trimmedFilter,
-			page: 0,
-			members: [],
-			end: false,
 			isLoading: false
 		});
 	}, 500);
@@ -254,7 +310,7 @@ const RoomMembersView = (): ReactElement => {
 				return;
 			}
 			// We only update 'allUsers'. 'filter' remains in state, so the next fetch uses both.
-			updateState({ members: [], allUsers: status, end: false, page: 0 });
+			updateState({ ...firstPageState, allUsers: status, isLoading: false });
 		};
 
 		navigation.setOptions({
@@ -294,7 +350,7 @@ const RoomMembersView = (): ReactElement => {
 	};
 
 	const onPressUser = (selectedUser: TUserModel) => {
-		const { room, roomRoles, members } = state;
+		const { room } = state;
 
 		const options: TActionSheetOptionsItem[] = [
 			{
@@ -306,13 +362,13 @@ const RoomMembersView = (): ReactElement => {
 
 		// Owner
 		if (setOwnerPermission) {
-			const isOwner = fetchRole('owner', selectedUser, roomRoles);
+			const isOwner = hasRole('owner', selectedUser);
 			options.push({
 				icon: 'shield-check',
 				title: I18n.t('Owner'),
 				onPress: () =>
 					handleOwner(selectedUser, !isOwner, getUserDisplayName(selectedUser), room, () =>
-						fetchRoomMembersRoles(room.t as TRoomType, room.rid, updateState)
+						applyRoleChange(selectedUser._id, 'owner', !isOwner)
 					),
 				right: () => <RightIcon check={isOwner} label='owner' />,
 				testID: 'action-sheet-set-owner'
@@ -321,13 +377,13 @@ const RoomMembersView = (): ReactElement => {
 
 		// Leader
 		if (setLeaderPermission) {
-			const isLeader = fetchRole('leader', selectedUser, roomRoles);
+			const isLeader = hasRole('leader', selectedUser);
 			options.push({
 				icon: 'shield-alt',
 				title: I18n.t('Leader'),
 				onPress: () =>
 					handleLeader(selectedUser, !isLeader, room, getUserDisplayName(selectedUser), () =>
-						fetchRoomMembersRoles(room.t as TRoomType, room.rid, updateState)
+						applyRoleChange(selectedUser._id, 'leader', !isLeader)
 					),
 				right: () => <RightIcon check={isLeader} label='leader' />,
 				testID: 'action-sheet-set-leader'
@@ -336,13 +392,13 @@ const RoomMembersView = (): ReactElement => {
 
 		// Moderator
 		if (setModeratorPermission) {
-			const isModerator = fetchRole('moderator', selectedUser, roomRoles);
+			const isModerator = hasRole('moderator', selectedUser);
 			options.push({
 				icon: 'shield',
 				title: I18n.t('Moderator'),
 				onPress: () =>
 					handleModerator(selectedUser, !isModerator, room, getUserDisplayName(selectedUser), () =>
-						fetchRoomMembersRoles(room.t as TRoomType, room.rid, updateState)
+						applyRoleChange(selectedUser._id, 'moderator', !isModerator)
 					),
 				right: () => <RightIcon check={isModerator} label='moderator' />,
 				testID: 'action-sheet-set-moderator'
@@ -396,7 +452,7 @@ const RoomMembersView = (): ReactElement => {
 				icon: 'logout',
 				danger: true,
 				title: I18n.t('Remove_from_Team'),
-				onPress: () => handleRemoveFromTeam(selectedUser, updateState, room, members),
+				onPress: () => handleRemoveFromTeam(selectedUser, () => removeMember(selectedUser._id), room),
 				testID: 'action-sheet-remove-from-team'
 			});
 		}
@@ -412,11 +468,7 @@ const RoomMembersView = (): ReactElement => {
 						message: I18n.t('The_user_will_be_removed_from_s', { s: getRoomTitle(room) }),
 						confirmationText: I18n.t('Yes_remove_user'),
 						onPress: () => {
-							handleRemoveUserFromRoom(selectedUser, room, () =>
-								updateState({
-									members: members.filter(member => member._id !== selectedUser._id)
-								})
-							);
+							handleRemoveUserFromRoom(selectedUser, room, () => removeMember(selectedUser._id));
 						}
 					});
 				},
@@ -430,22 +482,42 @@ const RoomMembersView = (): ReactElement => {
 		});
 	};
 
+	const sections = useMemo(() => getSections(state.members, membersHaveRoles), [state.members, membersHaveRoles]);
+
+	let footer: ReactElement | null = null;
+	if (state.isLoading) {
+		footer = <ActivityIndicator />;
+	} else if (state.loadFailed && state.members.length) {
+		footer = (
+			<Button
+				title={I18n.t('Try_again')}
+				type='secondary'
+				small
+				onPress={() => updateState({ loadFailed: false })}
+				testID='room-members-view-retry'
+			/>
+		);
+	}
+
 	return (
 		<SafeAreaView testID='room-members-view'>
-			<FlatList
-				data={state.members}
+			<SectionList
+				sections={sections}
 				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
-				renderItem={({ item, index }) => (
+				renderSectionHeader={({ section }) => (section.key ? <RoleGroupHeader group={section.key} /> : null)}
+				renderItem={({ item, index, section }) => (
 					<UserItem
 						name={getUserDisplayName(item)}
-						username={item.username}
+						username={item.username ?? ''}
 						onPress={() => onPressUser(item)}
 						testID={`room-members-view-item-${item.username}`}
 						style={{ backgroundColor: colors.surfaceRoom }}
 						isFirst={index === 0}
-						isLast={index === state.members.length - 1}
+						isLast={index === section.data.length - 1}
 					/>
 				)}
+				stickySectionHeadersEnabled={!hasNativeHeaderBar && membersHaveRoles}
+				removeClippedSubviews={isAndroid && !membersHaveRoles}
 				style={[styles.list, { backgroundColor: listBackgroundColor }]}
 				contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom }}
 				keyExtractor={item => item._id}
@@ -463,11 +535,11 @@ const RoomMembersView = (): ReactElement => {
 						)}
 					</>
 				}
-				ListFooterComponent={() => (state.isLoading ? <ActivityIndicator /> : null)}
+				ListFooterComponent={footer}
 				onEndReachedThreshold={0.1}
 				onEndReached={() => fetchMembers()}
 				ListEmptyComponent={() =>
-					state.end ? (
+					state.end || state.loadFailed ? (
 						<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_members_found')}</Text>
 					) : null
 				}
