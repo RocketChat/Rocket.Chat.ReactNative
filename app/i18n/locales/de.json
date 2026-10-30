@@ -818,6 +818,8 @@
   "Settings": "Einstellungen",
   "Settings_succesfully_changed": "Einstellungen erfolgreich geändert!",
   "Share": "Teilen",
+  "Share_encrypted_room_key_missing": "Warten auf Verschlüsselungsschlüssel",
+  "Share_encrypted_room_password_required": "Geben Sie Ihr E2EE-Passwort ein, um hier zu teilen",
   "Share_Link": "Link teilen",
   "Share_no_valid_attachments": "Die geteilte Datei konnte nicht gefunden werden",
   "Share_this_app": "App teilen",
