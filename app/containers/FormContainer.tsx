@@ -7,7 +7,7 @@ import sharedStyles from '../views/Styles';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { useTheme } from '../theme';
 import AppVersion from './AppVersion';
-import { isTablet } from '../lib/methods/helpers';
+import { isTablet } from '../lib/methods/helpers/deviceInfo';
 import SafeAreaView from './SafeAreaView';
 
 interface IFormContainer extends ScrollViewProps {

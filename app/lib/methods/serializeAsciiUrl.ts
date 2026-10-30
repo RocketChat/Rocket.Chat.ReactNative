@@ -1,6 +1,6 @@
 import * as uri from 'uri-js';
 
-import { isIOS } from './helpers';
+import { isIOS } from './helpers/deviceInfo';
 
 export const serializeAsciiUrl = (url: string): string => {
 	let newUrl = url;

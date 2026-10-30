@@ -1,5 +1,5 @@
 import { usersAutoComplete } from '../restApi';
-import { compareServerVersion } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { store as reduxStore } from '~/lib/store/auxStore';
 
 export type TPeerItem =

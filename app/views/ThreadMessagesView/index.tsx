@@ -38,7 +38,9 @@ import {
 	type TSubscriptionModel,
 	type TThreadModel
 } from '~/definitions';
-import { getUidDirectMessage, debounce, hasNativeHeaderBar, isIOS } from '~/lib/methods/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import { debounce } from '~/lib/methods/helpers/debounce';
+import { hasNativeHeaderBar, isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { getSyncThreadsList, getThreadsList } from '~/lib/services/restApi';
 import { toggleFollowThread as toggleFollowThreadService } from '~/lib/methods/toggleFollowThread';
 import UserPreferences from '~/lib/methods/userPreferences';

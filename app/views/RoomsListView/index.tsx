@@ -19,15 +19,8 @@ import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
 import { DRAWER_SWIPE_EDGE_WIDTH } from '~/lib/constants/gestures';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import {
-	getRoomAvatar,
-	getRoomTitle,
-	getUidDirectMessage,
-	hasNativeHeaderBar,
-	isIOS,
-	isRead,
-	isTablet
-} from '~/lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isRead } from '~/lib/methods/helpers/helpers';
+import { hasNativeHeaderBar, isIOS, isTablet } from '~/lib/methods/helpers/deviceInfo';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';

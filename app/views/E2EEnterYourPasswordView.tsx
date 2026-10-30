@@ -19,7 +19,8 @@ import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { useTheme } from '../theme';
 import sharedStyles from './Styles';
 import { showToast } from '../lib/methods/helpers/showToast';
-import { showErrorAlert, useDebounce } from '../lib/methods/helpers';
+import { showErrorAlert } from '../lib/methods/helpers/info';
+import { useDebounce } from '../lib/methods/helpers/debounce';
 import { Separator } from '../containers/List';
 
 const styles = StyleSheet.create({

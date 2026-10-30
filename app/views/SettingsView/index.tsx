@@ -15,7 +15,7 @@ import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '~/lib/constants/
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { clearCacheAndReconnect } from '~/lib/methods/clearCache';
-import { getDeviceModel, getReadableVersion, isAndroid } from '~/lib/methods/helpers';
+import { getDeviceModel, getReadableVersion, isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { headerLeftCloseModal, headerLeftDrawer } from '~/lib/methods/helpers/navigation/headerActions';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';

@@ -12,7 +12,8 @@ import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelle
 import { type ProfileStackParamList } from '~/stacks/types';
 import { ControlledFormTextInput } from '~/containers/TextInput';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { isAndroid, showErrorAlert } from '~/lib/methods/helpers';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { useTheme } from '~/theme';
 import { TwoFactorMethods } from '~/definitions/ITotp';
 import { saveUserProfile, setPassword } from '~/lib/services/restApi';

@@ -3,7 +3,7 @@ import { Pressable, PixelRatio, type StyleProp, StyleSheet, Text, View, type Vie
 import Avatar from './Avatar';
 import { CustomIcon, type TIconsName } from './CustomIcon';
 import sharedStyles from '../views/Styles';
-import { isIOS } from '../lib/methods/helpers';
+import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import { useTheme } from '../theme';
 import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import i18n from '../i18n';

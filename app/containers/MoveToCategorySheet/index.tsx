@@ -6,7 +6,7 @@ import * as List from '~/containers/List';
 import { type TSubscriptionModel } from '~/definitions';
 import I18n from '~/i18n';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { getRoomTitle } from '~/lib/methods/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/helpers';
 import Navigation from '~/lib/navigation/appNavigation';
 import { useTheme } from '~/theme';
 import { startCategoryDraft } from '~/views/CreateCategoryView/hooks/useCategoryDraftStore';

@@ -6,7 +6,7 @@ import ActionsSection from '../ActionsSection';
 import { SubscriptionType } from '~/definitions';
 import { mockedStore } from '~/reducers/mockedStore';
 import { addUsersToRoom } from '~/lib/services/restApi';
-import { showErrorAlertWithEMessage } from '~/lib/methods/helpers';
+import { showErrorAlertWithEMessage } from '~/lib/methods/helpers/info';
 
 const mockNavigate = jest.fn();
 const mockPop = jest.fn();
@@ -24,8 +24,8 @@ jest.mock('~/lib/hooks/usePermissions', () => ({
 	usePermissions: () => [true, false, false, false]
 }));
 
-jest.mock('~/lib/methods/helpers', () => ({
-	...jest.requireActual('~/lib/methods/helpers'),
+jest.mock('~/lib/methods/helpers/info', () => ({
+	...jest.requireActual('~/lib/methods/helpers/info'),
 	showErrorAlertWithEMessage: jest.fn()
 }));
 

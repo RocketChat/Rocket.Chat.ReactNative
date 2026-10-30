@@ -38,7 +38,11 @@ import {
 import { type TRoomOrPreview } from '~/definitions/TRoom';
 import { sendAttachments } from '~/lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '~/lib/methods/sendMessage';
-import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '~/lib/methods/helpers';
+import { hasPermission } from '~/lib/methods/helpers/helpers';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
+import { canUploadFile } from '~/lib/methods/helpers/media';
+import { isReadOnly } from '~/lib/methods/helpers/isReadOnly';
+import { isBlocked } from '~/lib/methods/helpers/room';
 import {
 	createMessageActionStore,
 	MessageActionProvider,

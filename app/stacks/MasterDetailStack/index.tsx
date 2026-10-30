@@ -9,7 +9,7 @@ import { type StaticScreenProps, useNavigation } from '@react-navigation/native'
 import { ThemeContext } from '~/theme';
 import { defaultHeader, themedHeader } from '~/lib/methods/helpers/navigation';
 import withNavigation from '~/lib/navigation/withNavigation';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { MASTER_DETAIL_INSIDE_STACK_ID } from './constants';
 import { ModalContainer } from './ModalContainer';
 import { createSplitNavigator } from './SplitNavigator';

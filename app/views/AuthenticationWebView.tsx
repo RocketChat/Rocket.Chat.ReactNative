@@ -10,7 +10,7 @@ import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerAct
 import { type ILoginCredentials } from '../definitions';
 import { userAgent } from '../lib/constants/userAgent';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
-import { useDebounce } from '../lib/methods/helpers';
+import { useDebounce } from '../lib/methods/helpers/debounce';
 import { loginOAuthOrSso } from '../lib/services/connect';
 import { type OutsideModalParamList } from '../stacks/types';
 import { type TMethods } from '../lib/methods/helpers/fetch';

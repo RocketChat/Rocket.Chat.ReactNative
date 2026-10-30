@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useTheme } from '~/theme';
 import { type IApplicationState } from '~/definitions';
 import Avatar from '../Avatar';
-import { isAndroid } from '~/lib/methods/helpers';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import styles from './styles';
 
 const UsersList = ({ emoji, usernames, names }: { emoji: string; usernames: string[]; names: string[] }): ReactElement => {

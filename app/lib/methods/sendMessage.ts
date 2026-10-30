@@ -3,7 +3,7 @@ import { type Model } from '@nozbe/watermelondb';
 
 import database from '../database';
 import log from './helpers/log';
-import { random } from './helpers';
+import { random } from './helpers/random';
 import normalizeMessage from './helpers/normalizeMessage';
 import { closeUnclosedCodeBlock } from './helpers/closeUnclosedCodeBlock';
 import { Encryption } from '../encryption';

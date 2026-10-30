@@ -15,7 +15,7 @@ import I18n from '~/i18n';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { getRoomTitle, getUidDirectMessage, hasPermission } from '~/lib/methods/helpers';
+import { getRoomTitle, getUidDirectMessage, hasPermission } from '~/lib/methods/helpers/helpers';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';

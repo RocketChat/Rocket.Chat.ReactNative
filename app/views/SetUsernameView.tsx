@@ -16,7 +16,7 @@ import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
 import { useTheme } from '../theme';
-import { showErrorAlert } from '../lib/methods/helpers';
+import { showErrorAlert } from '../lib/methods/helpers/info';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 import { getUsernameSuggestion, saveUserProfile } from '../lib/services/restApi';

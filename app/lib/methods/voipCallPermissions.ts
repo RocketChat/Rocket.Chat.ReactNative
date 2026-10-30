@@ -1,6 +1,6 @@
 import { PermissionsAndroid, Platform } from 'react-native';
 
-import { isAndroid } from './helpers';
+import { isAndroid } from './helpers/deviceInfo';
 
 export const requestVoipCallPermissions = async (): Promise<boolean> => {
 	if (!isAndroid) {

@@ -2,7 +2,7 @@ import { act, render } from '@testing-library/react-native';
 import { BehaviorSubject } from 'rxjs';
 
 import RoomItemContainer from '..';
-import { isRead } from '~/lib/methods/helpers';
+import { isRead } from '~/lib/methods/helpers/helpers';
 
 jest.mock('../RoomItem', () => {
 	const { Text: MockText } = jest.requireActual('react-native');

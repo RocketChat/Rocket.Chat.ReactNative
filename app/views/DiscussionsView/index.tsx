@@ -14,7 +14,8 @@ import { nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpe
 import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import log from '~/lib/methods/helpers/log';
-import { hasNativeHeaderBar, isIOS, useDebounce } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar, isIOS } from '~/lib/methods/helpers/deviceInfo';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
 import SafeAreaView from '~/containers/SafeAreaView';
 import * as List from '~/containers/List';
 import BackgroundContainer from '~/containers/BackgroundContainer';

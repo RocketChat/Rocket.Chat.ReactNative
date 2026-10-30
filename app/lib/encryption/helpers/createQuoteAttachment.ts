@@ -1,6 +1,6 @@
 import { store } from '~/lib/store/auxStore';
 import { type IAttachment, type IAttachmentTranslations, type IMessage } from '~/definitions';
-import { getAvatarURL } from '~/lib/methods/helpers';
+import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
 
 export function createQuoteAttachment(message: IMessage, messageLink: string): IAttachment {
 	const { server, version: serverVersion } = store.getState().server;

@@ -5,7 +5,7 @@ import Emoji from '../message/components/Emoji';
 import { useTheme } from '~/theme';
 import { type IReaction } from '~/definitions';
 import I18n from '~/i18n';
-import { isAndroid } from '~/lib/methods/helpers';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import styles from './styles';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 

@@ -25,7 +25,8 @@ import type {
 	ISubscription
 } from '~/definitions';
 import Deferred from './helpers/deferred';
-import { compareServerVersion, debounce } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { debounce } from '../methods/helpers/debounce';
 import log from '../methods/helpers/log';
 import {
 	b64ToBuffer,

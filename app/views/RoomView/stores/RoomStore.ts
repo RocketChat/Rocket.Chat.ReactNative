@@ -7,7 +7,7 @@ import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
 import { loadThreadMessages, releaseUnretainedThreadPagination } from '~/lib/methods/loadThreadMessages';
 import { readMessages } from '~/lib/methods/readMessages';
 import { getUserInfo } from '~/lib/services/restApi';
-import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateMethod } from '~/lib/methods/helpers';
+import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateMethod } from '~/lib/methods/helpers/helpers';
 import log from '~/lib/methods/helpers/log';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { type RoomType, type TSubscriptionModel } from '~/definitions';

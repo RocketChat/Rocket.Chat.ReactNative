@@ -12,7 +12,7 @@ import { getThreadMessageById } from '../database/services/ThreadMessage';
 import { tsToMs } from '../dayjs';
 import { getSingleMessage, getThreadMessages } from '../services/restApi';
 import { store as reduxStore } from '../store/auxStore';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion } from './helpers/compareServerVersion';
 
 interface IThreadLocation {
 	tmid: string;

@@ -10,7 +10,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useSetting } from '~/lib/hooks/useSetting';
-import { getRoomTitle, isGroupChat } from '~/lib/methods/helpers';
+import { getRoomTitle, isGroupChat } from '~/lib/methods/helpers/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { type RoomStore } from '~/views/RoomView/definitions';

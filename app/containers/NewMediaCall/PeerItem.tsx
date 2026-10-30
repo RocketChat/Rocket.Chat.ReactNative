@@ -3,7 +3,7 @@ import { Pressable, StyleSheet } from 'react-native';
 import type { TPeerItem } from '~/lib/services/voip/getPeerAutocompleteOptions';
 import { PeerItemInner } from './PeerItemInner';
 import { useTheme } from '~/theme';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 
 export const PeerItem = ({ item, onSelectOption }: { item: TPeerItem; onSelectOption: (item: TPeerItem) => void }) => {
 	const { colors } = useTheme();

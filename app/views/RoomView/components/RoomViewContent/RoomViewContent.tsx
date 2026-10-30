@@ -1,7 +1,7 @@
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { getRoomTitle } from '~/lib/methods/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/helpers';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { getInvitationActions, getInvitationText } from '~/lib/methods/getInvitationData';
 import { type IInviteSubscription } from '~/definitions';

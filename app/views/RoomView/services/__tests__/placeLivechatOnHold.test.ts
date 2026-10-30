@@ -1,9 +1,9 @@
-import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
 import { onHoldLivechat } from '~/lib/services/restApi';
 import { placeLivechatOnHold } from '../placeLivechatOnHold';
 import { type TRoomStackNavigation } from '../navigateToScreen';
 
-jest.mock('~/lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers/info', () => ({
 	showConfirmationAlert: jest.fn(),
 	showErrorAlert: jest.fn()
 }));

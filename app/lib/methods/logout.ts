@@ -2,7 +2,7 @@ import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import type Model from '@nozbe/watermelondb/Model';
 
 import { getDeviceToken } from '../notifications';
-import { isSsl } from './helpers';
+import { isSsl } from './helpers/isSsl';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import { disconnect } from '../services/connect';

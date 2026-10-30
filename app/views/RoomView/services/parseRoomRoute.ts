@@ -1,4 +1,4 @@
-import { getUidDirectMessage } from '~/lib/methods/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
 import { type IRoomScreenInput, type IRoomViewProps } from '../definitions';
 import { type TRoomOrPreview } from '~/definitions/TRoom';
 

@@ -11,8 +11,10 @@ const mockSetOptions = jest.fn();
 jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => ({ setOptions: mockSetOptions })
 }));
-jest.mock('~/lib/methods/helpers', () => ({
-	hasNativeHeaderBar: false,
+jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
+	hasNativeHeaderBar: false
+}));
+jest.mock('~/lib/methods/helpers/helpers', () => ({
 	getUidDirectMessage: jest.fn(),
 	getRoomTitle: () => 'general',
 	isGroupChat: () => false

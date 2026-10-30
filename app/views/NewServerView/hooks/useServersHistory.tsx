@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
-import { useDebounce } from '~/lib/methods/helpers';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
 import { sanitizeLikeString } from '~/lib/database/utils';
 import { type TServerHistoryModel } from '~/definitions';
 import database from '~/lib/database';

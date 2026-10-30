@@ -23,7 +23,7 @@ jest.mock('~/lib/database', () => ({
 jest.mock('~/views/RoomView/services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/readMessages', () => ({ readMessages: jest.fn(() => Promise.resolve()) }));
-jest.mock('~/lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers/helpers', () => ({
 	getUidDirectMessage: jest.fn(),
 	isGroupChat: jest.fn(() => false),
 	canAutoTranslate: jest.fn(() => false)

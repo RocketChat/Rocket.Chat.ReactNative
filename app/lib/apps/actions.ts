@@ -15,7 +15,7 @@ import I18n from '~/i18n';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import log from '~/lib/methods/helpers/log';
-import { random } from '~/lib/methods/helpers';
+import { random } from '~/lib/methods/helpers/random';
 import Navigation from '~/lib/navigation/appNavigation';
 import { appsApiFetch } from '~/lib/services/appsApiFetch';
 import { type IAppActionButton, UIActionButtonContext } from './definitions';

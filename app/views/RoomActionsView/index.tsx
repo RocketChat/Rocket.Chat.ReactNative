@@ -48,11 +48,11 @@ import {
 	getRoomTitle,
 	getUidDirectMessage,
 	hasPermission,
-	isGroupChat,
-	compareServerVersion,
-	isIOS,
-	isTeamRoom
-} from '~/lib/methods/helpers';
+	isGroupChat
+} from '~/lib/methods/helpers/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
+import { isTeamRoom } from '~/lib/methods/helpers/room';
 import {
 	getUserInfo,
 	toggleBlockUser,

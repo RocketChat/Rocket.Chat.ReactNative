@@ -1,7 +1,7 @@
 import log from './helpers/log';
 import { type TAnyMessageModel, type TSubscriptionModel, type SubscriptionType } from '~/definitions';
 import { store } from '../store/auxStore';
-import { isGroupChat } from './helpers';
+import { isGroupChat } from './helpers/helpers';
 import { getRoom } from './getRoom';
 
 type TRoomType = 'p' | 'c' | 'd';

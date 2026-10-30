@@ -3,7 +3,7 @@ import { store } from '~/lib/store/auxStore';
 import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '~/ee/omnichannel/actions/inquiry';
 import sdk from '~/lib/services/sdk';
 import { type IOmnichannelRoom } from '~/definitions';
-import { hasRole } from '~/lib/methods/helpers';
+import { hasRole } from '~/lib/methods/helpers/helpers';
 import { getAgentDepartments } from '~/lib/services/restApi';
 
 interface IArgsQueueOmnichannel extends IOmnichannelRoom {

@@ -89,10 +89,14 @@ jest.mock('../lib/hooks/useAppSelector', () => ({
 		})
 }));
 
-jest.mock('../lib/methods/helpers', () => ({
+jest.mock('../lib/methods/helpers/formatAttachmentUrl', () => ({
 	formatAttachmentUrl: (url: string) => url,
-	encodeAttachmentUrl: (url: string) => url,
-	isAndroid: false,
+	encodeAttachmentUrl: (url: string) => url
+}));
+jest.mock('../lib/methods/helpers/deviceInfo', () => ({
+	isAndroid: false
+}));
+jest.mock('../lib/methods/helpers/info', () => ({
 	showErrorAlert: jest.fn()
 }));
 

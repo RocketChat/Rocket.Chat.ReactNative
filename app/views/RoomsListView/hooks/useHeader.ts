@@ -1,4 +1,4 @@
-import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import { useJsRoomsListHeader } from './useJsRoomsListHeader';
 import { useNativeRoomsListHeader } from './useNativeRoomsListHeader';
 

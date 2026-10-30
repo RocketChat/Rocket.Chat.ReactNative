@@ -25,7 +25,8 @@ import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers
 import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
-import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { getBundleId, isIOS } from '../methods/helpers/deviceInfo';
 import { getDeviceToken } from '../notifications/deviceToken';
 import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';

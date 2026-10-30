@@ -14,8 +14,8 @@ describe('requestVoipCallPermissions', () => {
 
 	it('returns true on non-Android without prompting', async () => {
 		jest.resetModules();
-		jest.doMock('./helpers', () => ({
-			...jest.requireActual('./helpers'),
+		jest.doMock('./helpers/deviceInfo', () => ({
+			...jest.requireActual('./helpers/deviceInfo'),
 			isAndroid: false
 		}));
 		const spy = jest.spyOn(PermissionsAndroid, 'request').mockResolvedValue(PermissionsAndroid.RESULTS.GRANTED);
@@ -30,8 +30,8 @@ describe('requestVoipCallPermissions', () => {
 	it('requests only RECORD_AUDIO on Android', async () => {
 		jest.resetModules();
 		setApiLevel(30);
-		jest.doMock('./helpers', () => ({
-			...jest.requireActual('./helpers'),
+		jest.doMock('./helpers/deviceInfo', () => ({
+			...jest.requireActual('./helpers/deviceInfo'),
 			isAndroid: true
 		}));
 		const spy = jest.spyOn(PermissionsAndroid, 'request').mockResolvedValue(PermissionsAndroid.RESULTS.GRANTED);
@@ -47,8 +47,8 @@ describe('requestVoipCallPermissions', () => {
 	it('also requests BLUETOOTH_CONNECT for BT headsets on API 31+', async () => {
 		jest.resetModules();
 		setApiLevel(34);
-		jest.doMock('./helpers', () => ({
-			...jest.requireActual('./helpers'),
+		jest.doMock('./helpers/deviceInfo', () => ({
+			...jest.requireActual('./helpers/deviceInfo'),
 			isAndroid: true
 		}));
 		const spy = jest.spyOn(PermissionsAndroid, 'request').mockResolvedValue(PermissionsAndroid.RESULTS.GRANTED);
@@ -64,8 +64,8 @@ describe('requestVoipCallPermissions', () => {
 	it('still joins when the BT grant is denied', async () => {
 		jest.resetModules();
 		setApiLevel(34);
-		jest.doMock('./helpers', () => ({
-			...jest.requireActual('./helpers'),
+		jest.doMock('./helpers/deviceInfo', () => ({
+			...jest.requireActual('./helpers/deviceInfo'),
 			isAndroid: true
 		}));
 		jest
@@ -86,8 +86,8 @@ describe('requestVoipCallPermissions', () => {
 
 	it('returns false when RECORD_AUDIO is denied', async () => {
 		jest.resetModules();
-		jest.doMock('./helpers', () => ({
-			...jest.requireActual('./helpers'),
+		jest.doMock('./helpers/deviceInfo', () => ({
+			...jest.requireActual('./helpers/deviceInfo'),
 			isAndroid: true
 		}));
 		jest.spyOn(PermissionsAndroid, 'request').mockResolvedValue(PermissionsAndroid.RESULTS.DENIED);
@@ -100,8 +100,8 @@ describe('requestVoipCallPermissions', () => {
 
 	it('returns false when RECORD_AUDIO is set to never ask again', async () => {
 		jest.resetModules();
-		jest.doMock('./helpers', () => ({
-			...jest.requireActual('./helpers'),
+		jest.doMock('./helpers/deviceInfo', () => ({
+			...jest.requireActual('./helpers/deviceInfo'),
 			isAndroid: true
 		}));
 		jest.spyOn(PermissionsAndroid, 'request').mockResolvedValue(PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN);

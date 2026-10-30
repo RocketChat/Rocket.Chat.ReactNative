@@ -7,7 +7,7 @@ import Switch from '~/containers/Switch';
 import I18n from '~/i18n';
 import { useIsMissingRoomE2EEKey } from '~/lib/encryption/helpers/hooks';
 import { toggleRoomE2EE } from '~/lib/encryption/helpers/toggleRoomE2EE';
-import { getRoomTitle } from '~/lib/methods/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/helpers';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
 import { resetRoomKey } from './resetRoomKey';

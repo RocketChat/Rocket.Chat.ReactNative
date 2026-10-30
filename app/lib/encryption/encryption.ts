@@ -39,7 +39,7 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import log from '../methods/helpers/log';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import UserPreferences from '../methods/userPreferences';
-import { compareServerVersion } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import {
 	e2eSetUserPublicAndPrivateKeys,
 	e2eRequestSubscriptionKeys,

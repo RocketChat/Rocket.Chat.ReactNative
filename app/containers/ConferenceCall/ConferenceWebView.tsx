@@ -13,7 +13,7 @@ import {
 import i18n from '~/i18n';
 import { userAgent } from '~/lib/constants/userAgent';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { isConferenceUrl, isHttpsUrl } from '~/lib/methods/helpers/isConferenceUrl';
 import log from '~/lib/methods/helpers/log';
 import openLink from '~/lib/methods/helpers/openLink';

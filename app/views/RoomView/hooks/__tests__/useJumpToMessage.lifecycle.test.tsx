@@ -19,7 +19,7 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => mockCurrentNavigation,
 	useRoute: () => ({ params: mockCurrentParams })
 }));
-jest.mock('~/lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers/debounce', () => ({
 	useDebounce: jest.requireActual('~/lib/methods/helpers/debounce').useDebounce
 }));
 jest.mock('~/containers/Loading', () => ({ sendLoadingEvent: jest.fn() }));

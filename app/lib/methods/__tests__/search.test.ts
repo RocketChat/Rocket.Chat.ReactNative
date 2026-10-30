@@ -33,8 +33,10 @@ jest.mock('../../database/utils', () => ({
 	sanitizeLikeString: jest.fn((str?: string) => str)
 }));
 
-jest.mock('../helpers', () => ({
-	isGroupChat: jest.fn(() => false),
+jest.mock('../helpers/helpers', () => ({
+	isGroupChat: jest.fn(() => false)
+}));
+jest.mock('../helpers/isReadOnly', () => ({
 	isReadOnly: jest.fn(() => Promise.resolve(false))
 }));
 

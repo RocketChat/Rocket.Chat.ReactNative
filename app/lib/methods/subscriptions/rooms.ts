@@ -35,7 +35,8 @@ import { getMessageById } from '~/lib/database/services/Message';
 import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
 import { getRoom } from '../getRoom';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
-import { getRoomAvatar, getRoomTitle, getSenderName, random } from '../helpers';
+import { getRoomAvatar, getRoomTitle, getSenderName } from '../helpers/helpers';
+import { random } from '../helpers/random';
 import { handleVideoConfIncomingWebsocketMessages } from '~/actions/videoConf';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();

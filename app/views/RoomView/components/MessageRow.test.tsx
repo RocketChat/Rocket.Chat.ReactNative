@@ -24,7 +24,7 @@ jest.mock('~/lib/methods/readMessages', () => ({
 jest.mock('~/lib/services/restApi', () => ({
 	getUserInfo: jest.fn()
 }));
-jest.mock('~/lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers/helpers', () => ({
 	getUidDirectMessage: jest.fn(() => 'uid-1'),
 	isGroupChat: jest.fn(() => false),
 	canAutoTranslate: jest.fn(() => true)

@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import * as List from '~/containers/List';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
-import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import { type ICategoryRoom } from '../types';
 import NativeRoomCheckItem from './NativeRoomCheckItem';
 import RoomCheckItem from './RoomCheckItem';

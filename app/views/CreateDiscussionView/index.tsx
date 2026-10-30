@@ -19,7 +19,7 @@ import SelectChannel from './SelectChannel';
 import { type ICreateChannelViewProps, type IResult, type IError } from './interfaces';
 import { type ISearchLocal, type ISubscription } from '~/definitions';
 import { E2E_ROOM_TYPES } from '~/lib/constants/keys';
-import { getRoomTitle } from '~/lib/methods/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/helpers';
 import * as List from '~/containers/List';
 import Switch from '~/containers/Switch';
 import Button from '~/containers/Button';

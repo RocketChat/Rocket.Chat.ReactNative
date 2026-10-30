@@ -1,5 +1,5 @@
 import I18n from '~/i18n';
-import { showErrorAlert } from '.';
+import { showErrorAlert } from './info';
 import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
 
 const handleSaveUserProfileError = (e: any, action: string) => {

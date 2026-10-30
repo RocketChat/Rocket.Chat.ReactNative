@@ -28,7 +28,8 @@ import { useTheme } from '~/theme';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { search as runSearch, type TSearch } from '~/lib/methods/search';
-import { hasNativeHeaderBar, isGroupChat as isGroupChatMethod } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
+import { isGroupChat as isGroupChatMethod } from '~/lib/methods/helpers/helpers';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import Header from './Header';
 

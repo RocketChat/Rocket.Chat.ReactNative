@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 
 import SafeAreaView from '~/containers/SafeAreaView';
 import I18n from '~/i18n';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { type NewMessageStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';

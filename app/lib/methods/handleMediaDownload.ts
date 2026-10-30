@@ -7,7 +7,7 @@ import { type IAttachment, type TAttachmentEncryption, type TMessageModel } from
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
-import { emitter } from './helpers';
+import { emitter } from './helpers/emitter';
 import { Encryption } from '../encryption';
 import { getMessageById } from '../database/services/Message';
 import { getThreadMessageById } from '../database/services/ThreadMessage';

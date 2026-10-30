@@ -11,7 +11,7 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 	default: (...args: unknown[]) => mockLog(...args)
 }));
 
-jest.mock('~/lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
 	isIOS: true
 }));
 
