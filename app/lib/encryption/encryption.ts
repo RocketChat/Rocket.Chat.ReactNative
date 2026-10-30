@@ -628,7 +628,10 @@ class Encryption {
 
 	canSendToRoom = async (rid: string): Promise<boolean> => {
 		const subscription = await getSubscriptionByRoomId(rid);
-		if (!subscription?.encrypted || !store.getState().settings.E2E_Enable) {
+		if (!subscription) {
+			return false;
+		}
+		if (!subscription.encrypted || !store.getState().settings.E2E_Enable) {
 			return true;
 		}
 		try {

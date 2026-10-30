@@ -234,6 +234,14 @@ describe('Encryption.canSendToRoom', () => {
 		await expect(encryption.canSendToRoom('r1')).resolves.toBe(true);
 	});
 
+	it('blocks rooms without a subscription', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true }, encryption: { enabled: true, banner: '' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue(null);
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(false);
+		expect(mockHandshake).not.toHaveBeenCalled();
+	});
+
 	it('allows encrypted rooms when workspace E2E is disabled', async () => {
 		mockGetState.mockReturnValue({ settings: { E2E_Enable: false }, encryption: { enabled: false, banner: '' } });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
