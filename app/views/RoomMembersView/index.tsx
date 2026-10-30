@@ -68,20 +68,23 @@ interface IRoomMembersViewState {
 	roomRoles?: IGetRoomRoles[];
 	filter: string;
 	page: number;
+	removedRows: number;
+	loadFailed: boolean;
 }
 
 type TStateUpdate = Partial<IRoomMembersViewState> | ((state: IRoomMembersViewState) => Partial<IRoomMembersViewState>);
 
 type TMembersSection = { key?: TMemberRoleGroup; data: TUserModel[] };
 
-const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], page: number) => {
-	const existingIds = new Set(members.map(m => m._id));
-	const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
+const firstPageState = { members: [], end: false, page: 0, removedRows: 0, loadFailed: false };
 
-	// Safety check: if page is 0, we replace the list entirely
+const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], page: number) => {
+	const loadedMembers = page === 0 ? [] : members;
+	const loadedIds = new Set(loadedMembers.map(member => member._id));
+
 	return {
-		members: page === 0 ? membersResultFiltered : [...members, ...(membersResultFiltered || [])],
-		end: membersResult?.length < PAGE_SIZE
+		members: [...loadedMembers, ...membersResult.filter(member => !loadedIds.has(member._id))],
+		end: membersResult.length < PAGE_SIZE
 	};
 };
 
@@ -132,12 +135,10 @@ const RoomMembersView = (): ReactElement => {
 			isLoading: false,
 			allUsers: true,
 			filtering: '',
-			members: [],
+			...firstPageState,
 			room: params.room || ({} as TSubscriptionModel),
-			end: false,
 			roomRoles: undefined,
-			filter: '',
-			page: 0
+			filter: ''
 		}
 	);
 
@@ -177,10 +178,10 @@ const RoomMembersView = (): ReactElement => {
 	};
 
 	const fetchMembers = useCallback(async () => {
-		const { isLoading, end, room, filter, page, allUsers } = state;
+		const { isLoading, end, room, filter, page, allUsers, removedRows, loadFailed } = state;
 		const { t } = room;
 
-		if (isLoading || end) {
+		if (isLoading || end || loadFailed) {
 			return;
 		}
 
@@ -194,7 +195,7 @@ const RoomMembersView = (): ReactElement => {
 				roomType: t,
 				type,
 				filter,
-				skip: PAGE_SIZE * page,
+				skip: PAGE_SIZE * page - removedRows,
 				limit: PAGE_SIZE,
 				allUsers
 			});
@@ -204,22 +205,22 @@ const RoomMembersView = (): ReactElement => {
 			}
 
 			if (!membersResult) {
-				updateState({ isLoading: false });
+				updateState({ isLoading: false, loadFailed: true });
 				return;
 			}
 
 			updateState(current => ({
-				...mergeMembersPage(page === 0 ? [] : current.members, membersResult, page),
+				...mergeMembersPage(current.members, membersResult, page),
 				isLoading: false,
 				page: page + 1
 			}));
 		} catch (e) {
 			log(e);
 			if (requestId === latestSearchRequest.current) {
-				updateState({ isLoading: false });
+				updateState({ isLoading: false, loadFailed: true });
 			}
 		}
-	}, [state.isLoading, state.end, state.room.t, state.filter, state.page, state.allUsers]);
+	}, [state.isLoading, state.end, state.room.t, state.filter, state.page, state.allUsers, state.removedRows, state.loadFailed]);
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
@@ -253,7 +254,10 @@ const RoomMembersView = (): ReactElement => {
 			await fetchRoomMembersRoles(state.room.t as TRoomType, state.room.rid, updateState);
 			return;
 		}
-		updateState(({ members }) => ({ members: setMemberRole(members, userId, role, isAdded) }));
+		updateState(({ members, removedRows }) => ({
+			members: setMemberRole(members, userId, role, isAdded),
+			removedRows: isAdded ? removedRows : removedRows + 1
+		}));
 	};
 
 	const hasRole = (role: string, selectedUser: TUserModel) =>
@@ -271,10 +275,8 @@ const RoomMembersView = (): ReactElement => {
 		}
 
 		updateState({
+			...firstPageState,
 			filter: trimmedFilter,
-			page: 0,
-			members: [],
-			end: false,
 			isLoading: false
 		});
 	}, 500);
@@ -290,7 +292,7 @@ const RoomMembersView = (): ReactElement => {
 				return;
 			}
 			// We only update 'allUsers'. 'filter' remains in state, so the next fetch uses both.
-			updateState({ members: [], allUsers: status, end: false, page: 0 });
+			updateState({ ...firstPageState, allUsers: status });
 		};
 
 		navigation.setOptions({
@@ -449,8 +451,9 @@ const RoomMembersView = (): ReactElement => {
 						confirmationText: I18n.t('Yes_remove_user'),
 						onPress: () => {
 							handleRemoveUserFromRoom(selectedUser, room, () =>
-								updateState(({ members }) => ({
-									members: members.filter(member => member._id !== selectedUser._id)
+								updateState(({ members, removedRows }) => ({
+									members: members.filter(member => member._id !== selectedUser._id),
+									removedRows: removedRows + 1
 								}))
 							);
 						}
@@ -485,7 +488,7 @@ const RoomMembersView = (): ReactElement => {
 						isLast={index === section.data.length - 1}
 					/>
 				)}
-				stickySectionHeadersEnabled={membersHaveRoles && !hasNativeHeaderBar}
+				stickySectionHeadersEnabled={!hasNativeHeaderBar}
 				removeClippedSubviews={isAndroid && !membersHaveRoles}
 				style={[styles.list, { backgroundColor: listBackgroundColor }]}
 				contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom }}

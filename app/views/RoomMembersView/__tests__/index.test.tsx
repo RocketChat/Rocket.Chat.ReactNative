@@ -250,6 +250,19 @@ describe('RoomMembersView roles', () => {
 			expect(queryByText('No members found')).toBeNull();
 		});
 
+		it.each([
+			['rejects', () => jest.mocked(getRoomMembers).mockRejectedValue(new Error('network'))],
+			['returns nothing', () => jest.mocked(getRoomMembers).mockResolvedValue(undefined as any)]
+		])('does not request the page again when the request %s', async (_, failRequest) => {
+			failRequest();
+			const { UNSAFE_getByType } = render(<RoomMembersView />, { wrapper: Wrapper });
+			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(1));
+
+			await act(async () => UNSAFE_getByType(SectionList).props.onEndReached());
+
+			expect(getRoomMembers).toHaveBeenCalledTimes(1);
+		});
+
 		it('does not fetch room roles separately', async () => {
 			const { getByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
 			await waitFor(() => getByTestId('room-members-view-item-owner.user'));
@@ -334,6 +347,56 @@ describe('RoomMembersView roles', () => {
 				await waitFor(() => expect(memberIds(UNSAFE_getByType(SectionList).props.sections)).toHaveLength(25));
 				expect(memberIds(UNSAFE_getByType(SectionList).props.sections)).toContain('id-25');
 				expect(memberIds(UNSAFE_getByType(SectionList).props.sections)).not.toContain('id-3');
+			});
+
+			describe('when a loaded member moves later in the server order', () => {
+				const ownerFirstPage = firstPage.map(item => (item._id === 'id-3' ? { ...item, roles: ['owner'] } : item));
+				const fullNextPage = Array.from({ length: 25 }, (_, index) => ({
+					_id: `id-${25 + index}`,
+					username: `user${25 + index}`
+				}));
+
+				const loadFirstPageAndRequestNext = async (removeUser: (options: TActionSheetOptionsItem[]) => Promise<void>) => {
+					jest
+						.mocked(getRoomMembers)
+						.mockResolvedValueOnce(ownerFirstPage as any)
+						.mockResolvedValueOnce(fullNextPage as any)
+						.mockResolvedValue([] as any);
+					const view = render(<RoomMembersView />, { wrapper: Wrapper });
+					await removeUser(await openActionSheetFor(view.getByTestId, 'user3'));
+					await act(async () => view.UNSAFE_getByType(SectionList).props.onEndReached());
+					await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(2));
+					return view;
+				};
+
+				it('requests the next page one row earlier after an owner is demoted', async () => {
+					await loadFirstPageAndRequestNext(async options => {
+						await act(() => ownerOption(options)?.onPress?.());
+					});
+
+					expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 24 }));
+				});
+
+				it('requests the next page one row earlier after a member is removed from the room', async () => {
+					mockPermissions = mockPermissions.map((allowed, index) => allowed || index === 4);
+					await loadFirstPageAndRequestNext(async options => {
+						await act(async () => options.find(option => option.testID === 'action-sheet-remove-from-room')?.onPress?.());
+						await act(async () => jest.mocked(showConfirmationAlert).mock.calls[0][0].onPress());
+					});
+
+					expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 24 }));
+				});
+
+				it('keeps the shift for the pages after it', async () => {
+					const { UNSAFE_getByType } = await loadFirstPageAndRequestNext(async options => {
+						await act(() => ownerOption(options)?.onPress?.());
+					});
+					await waitFor(() => expect(memberIds(UNSAFE_getByType(SectionList).props.sections)).toContain('id-25'));
+
+					await act(async () => UNSAFE_getByType(SectionList).props.onEndReached());
+
+					expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 49 }));
+				});
 			});
 
 			it('keeps the role change when the next page was already loading', async () => {
