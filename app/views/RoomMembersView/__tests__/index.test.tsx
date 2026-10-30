@@ -18,6 +18,7 @@ let mockHasNativeHeaderBar = false;
 let mockIsAndroid = false;
 let mockPermissions = [false, false, true, false, false, false];
 const mockShowActionSheet = jest.fn();
+const mockAddListener = jest.fn(() => jest.fn());
 
 jest.mock('~/lib/methods/helpers/deviceInfo', () =>
 	Object.defineProperties(
@@ -32,7 +33,7 @@ jest.mock('~/lib/methods/helpers/deviceInfo', () =>
 jest.mock('@react-navigation/native', () => ({
 	...jest.requireActual('@react-navigation/native'),
 	useRoute: () => ({ params: { rid: 'room-id', room: { rid: 'room-id', t: 'c', name: 'general' }, joined: true } }),
-	useNavigation: () => ({ addListener: jest.fn(() => jest.fn()), setOptions: jest.fn(), navigate: jest.fn() })
+	useNavigation: () => ({ addListener: mockAddListener, setOptions: jest.fn(), navigate: jest.fn() })
 }));
 
 jest.mock('~/lib/services/restApi', () => ({
@@ -240,14 +241,13 @@ describe('RoomMembersView roles', () => {
 			]);
 		});
 
-		it('does not crash when the ordered endpoint fails', async () => {
+		it('shows no members found instead of a blank list when the ordered endpoint fails', async () => {
 			jest.mocked(getRoomMembers).mockResolvedValue(undefined as any);
-			const { queryByTestId, queryByText } = render(<RoomMembersView />, { wrapper: Wrapper });
+			const { queryByTestId, findByText } = render(<RoomMembersView />, { wrapper: Wrapper });
 
-			await waitFor(() => expect(getRoomMembers).toHaveBeenCalled());
+			expect(await findByText('No members found')).toBeTruthy();
 			expect(queryByTestId('room-members-view-header-owner')).toBeNull();
 			expect(queryByTestId('room-members-view-header-member')).toBeNull();
-			expect(queryByText('No members found')).toBeNull();
 		});
 
 		it.each([
@@ -261,6 +261,24 @@ describe('RoomMembersView roles', () => {
 			await act(async () => UNSAFE_getByType(SectionList).props.onEndReached());
 
 			expect(getRoomMembers).toHaveBeenCalledTimes(1);
+		});
+
+		it('requests the next page again after the screen is focused following a failed request', async () => {
+			jest
+				.mocked(getRoomMembers)
+				.mockResolvedValueOnce(undefined as any)
+				.mockResolvedValueOnce(
+					Array.from({ length: 25 }, (_, index) => ({ _id: `id-${index}`, username: `user${index}` })) as any
+				);
+			const { UNSAFE_getByType } = render(<RoomMembersView />, { wrapper: Wrapper });
+			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(1));
+
+			const [, onFocus] = mockAddListener.mock.calls.find(([event]: any[]) => event === 'focus') as any[];
+			await act(async () => onFocus());
+			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(2));
+			await act(async () => UNSAFE_getByType(SectionList).props.onEndReached());
+
+			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(3));
 		});
 
 		it('does not fetch room roles separately', async () => {
@@ -377,10 +395,14 @@ describe('RoomMembersView roles', () => {
 					expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 24 }));
 				});
 
-				it('requests the next page one row earlier after a member is removed from the room', async () => {
-					mockPermissions = mockPermissions.map((allowed, index) => allowed || index === 4);
+				it.each([
+					['room', 4, 'action-sheet-remove-from-room'],
+					['team', 5, 'action-sheet-remove-from-team']
+				])('requests the next page one row earlier after a member is removed from the %s', async (_, permissionIndex, testID) => {
+					mockPermissions = mockPermissions.map((allowed, index) => allowed || index === permissionIndex);
+					jest.mocked(teamListRoomsOfUser).mockResolvedValue({ success: true, rooms: [] } as any);
 					await loadFirstPageAndRequestNext(async options => {
-						await act(async () => options.find(option => option.testID === 'action-sheet-remove-from-room')?.onPress?.());
+						await act(async () => options.find(option => option.testID === testID)?.onPress?.());
 						await act(async () => jest.mocked(showConfirmationAlert).mock.calls[0][0].onPress());
 					});
 

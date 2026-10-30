@@ -109,14 +109,7 @@ export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): 
 	}
 };
 
-type TRemoveMemberUpdate = (update: (state: { members: TUserModel[] }) => { members: TUserModel[] }) => void;
-
-const removeFromTeam = async (
-	selectedUser: IUser,
-	updateState: TRemoveMemberUpdate,
-	room: TSubscriptionModel,
-	selected?: any
-) => {
+const removeFromTeam = async (selectedUser: IUser, onRemoved: () => void, room: TSubscriptionModel, selected?: any) => {
 	try {
 		const userId = selectedUser._id;
 		const result = await removeTeamMember({
@@ -127,9 +120,7 @@ const removeFromTeam = async (
 		if (result.success) {
 			const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 			EventEmitter.emit(LISTENER, { message });
-			updateState(({ members }) => ({
-				members: members.filter(member => member._id !== userId)
-			}));
+			onRemoved();
 			Navigation.resetTo('RoomMembersView');
 		}
 	} catch (e: any) {
@@ -143,7 +134,7 @@ const removeFromTeam = async (
 
 export const handleRemoveFromTeam = async (
 	selectedUser: TUserModel,
-	updateState: TRemoveMemberUpdate,
+	onRemoved: () => void,
 	room: TSubscriptionModel
 ): Promise<void> => {
 	try {
@@ -161,14 +152,14 @@ export const handleRemoveFromTeam = async (
 					title: 'Remove_Member',
 					infoText: 'Remove_User_Team_Channels',
 					data: teamChannels,
-					nextAction: (selected: any) => removeFromTeam(selectedUser, updateState, room, selected),
+					nextAction: (selected: any) => removeFromTeam(selectedUser, onRemoved, room, selected),
 					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_remove'))
 				});
 			} else {
 				showConfirmationAlert({
 					message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-					onPress: () => removeFromTeam(selectedUser, updateState, room)
+					onPress: () => removeFromTeam(selectedUser, onRemoved, room)
 				});
 			}
 		}
@@ -176,7 +167,7 @@ export const handleRemoveFromTeam = async (
 		showConfirmationAlert({
 			message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
 			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-			onPress: () => removeFromTeam(selectedUser, updateState, room)
+			onPress: () => removeFromTeam(selectedUser, onRemoved, room)
 		});
 	}
 };

@@ -212,6 +212,7 @@ const RoomMembersView = (): ReactElement => {
 			updateState(current => ({
 				...mergeMembersPage(current.members, membersResult, page),
 				isLoading: false,
+				loadFailed: false,
 				page: page + 1
 			}));
 		} catch (e) {
@@ -259,6 +260,12 @@ const RoomMembersView = (): ReactElement => {
 			removedRows: isAdded ? removedRows : removedRows + 1
 		}));
 	};
+
+	const removeMember = (userId: string) =>
+		updateState(({ members, removedRows }) => ({
+			members: members.filter(member => member._id !== userId),
+			removedRows: removedRows + 1
+		}));
 
 	const hasRole = (role: string, selectedUser: TUserModel) =>
 		membersHaveRoles ? !!selectedUser.roles?.includes(role) : fetchRole(role, selectedUser, state.roomRoles);
@@ -434,7 +441,7 @@ const RoomMembersView = (): ReactElement => {
 				icon: 'logout',
 				danger: true,
 				title: I18n.t('Remove_from_Team'),
-				onPress: () => handleRemoveFromTeam(selectedUser, updateState, room),
+				onPress: () => handleRemoveFromTeam(selectedUser, () => removeMember(selectedUser._id), room),
 				testID: 'action-sheet-remove-from-team'
 			});
 		}
@@ -450,12 +457,7 @@ const RoomMembersView = (): ReactElement => {
 						message: I18n.t('The_user_will_be_removed_from_s', { s: getRoomTitle(room) }),
 						confirmationText: I18n.t('Yes_remove_user'),
 						onPress: () => {
-							handleRemoveUserFromRoom(selectedUser, room, () =>
-								updateState(({ members, removedRows }) => ({
-									members: members.filter(member => member._id !== selectedUser._id),
-									removedRows: removedRows + 1
-								}))
-							);
+							handleRemoveUserFromRoom(selectedUser, room, () => removeMember(selectedUser._id));
 						}
 					});
 				},
@@ -511,7 +513,7 @@ const RoomMembersView = (): ReactElement => {
 				onEndReachedThreshold={0.1}
 				onEndReached={() => fetchMembers()}
 				ListEmptyComponent={() =>
-					state.end ? (
+					state.end || state.loadFailed ? (
 						<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_members_found')}</Text>
 					) : null
 				}
