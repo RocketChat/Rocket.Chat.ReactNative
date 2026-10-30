@@ -12,8 +12,8 @@ export type TOpenThreadTarget = TAnyMessageModel | { tmid: string } | TGetMessag
 
 interface IOpenThreadDeps {
 	navigation: IRoomViewProps['navigation'];
-	rid?: string;
-	t?: RoomType;
+	rid: string;
+	t: RoomType;
 	roomUserId?: string | null;
 	cancelJumpToMessage: () => void;
 }
@@ -25,9 +25,6 @@ export const openThread = async (
 	message: TOpenThreadTarget,
 	{ navigation, rid, t, roomUserId, cancelJumpToMessage }: IOpenThreadDeps
 ): Promise<void> => {
-	if (!rid || !t) {
-		return;
-	}
 	const { tmid } = message;
 	if (!tmid) {
 		if ('tlm' in message) {

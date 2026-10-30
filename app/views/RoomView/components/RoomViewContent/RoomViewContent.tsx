@@ -12,11 +12,10 @@ import { useE2EEStatus } from '~/views/RoomView/hooks/useE2EEStatus';
 import { EncryptedRoom } from '../EncryptedRoom';
 import { InvitedRoomScreen } from '../InvitedRoomScreen';
 import { MissingRoomE2EEKey } from '../MissingRoomE2EEKey';
-import { RoomBackground } from '../RoomBackground';
 
 interface IRoomViewContentProps extends IRoomViewProps {
-	rid?: string;
-	t?: RoomType;
+	rid: string;
+	t: RoomType;
 	tmid?: string;
 	roomStore: RoomStore;
 	ready: boolean;
@@ -31,10 +30,6 @@ export const RoomViewContent = ({ route, navigation, rid, t, tmid, roomStore, re
 	const roomTitle = useStore(roomStore, s => getRoomTitle(s.room));
 
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(roomStore);
-
-	if (!rid || !t) {
-		return <RoomBackground />;
-	}
 
 	if (invitation) {
 		return (

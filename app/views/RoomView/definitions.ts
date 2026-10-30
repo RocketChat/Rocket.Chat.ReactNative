@@ -24,8 +24,8 @@ import { type MessageRoomState } from '~/containers/message/stores/MessageRoomSt
 export type IRoomViewProps = Pick<IBaseScreen<ChatsStackParamList, 'RoomView'>, 'navigation' | 'route'>;
 
 export interface IRoomScreenInput {
-	rid?: string;
-	t?: RoomType;
+	rid: string;
+	t: RoomType;
 	tmid?: string;
 	name?: string;
 	initialRoom: TRoomOrPreview;
@@ -230,8 +230,8 @@ export type IRoomMessageActionsProps = Pick<
 };
 
 export interface IUseRoomMessagingParams {
-	rid?: string;
-	t?: RoomType;
+	rid: string;
+	t: RoomType;
 	tmid?: string;
 	ready: boolean;
 	roomStore: RoomStore;
@@ -247,9 +247,9 @@ export interface IUseSubscriptionUnreadsResult {
 }
 
 export interface IUseJumpToMessageParams {
-	rid?: string;
+	rid: string;
 	tmid?: string;
-	t?: RoomType;
+	t: RoomType;
 	isMasterDetail: boolean;
 	listContainerRef: RefObject<IListContainerRef | null>;
 	roomUserIdRef: RefObject<string | null | undefined>;

@@ -1,9 +1,10 @@
 import { type ILastMessage } from './IMessage';
+import { type RoomType } from './IRoom';
 import { type IVisitor, type TSubscriptionModel } from './ISubscription';
 
 export type TPreviewRoom = {
 	rid: string;
-	t: string;
+	t: RoomType;
 	name?: string;
 	fname?: string;
 	prid?: string;
