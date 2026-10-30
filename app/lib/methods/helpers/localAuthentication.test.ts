@@ -409,6 +409,77 @@ describe('localAuthenticate', () => {
 		expect(lastEmitPayload()?.reason).toBeUndefined();
 		expect(mockedInvalidate).not.toHaveBeenCalled();
 	});
+
+	describe('auto-lock threshold', () => {
+		const serverTime = 1_000_000;
+		const originalRunningE2ETests = process.env.RUNNING_E2E_TESTS;
+
+		const createServerRecord = ({
+			autoLock,
+			secondsSinceLastSession
+		}: {
+			autoLock: boolean;
+			secondsSinceLastSession: number;
+		}) => {
+			const serverRecord = {
+				autoLock,
+				autoLockTime: 120,
+				lastLocalAuthenticatedSession: new Date(serverTime - secondsSinceLastSession * 1000),
+				update: jest.fn(updater => {
+					updater(serverRecord);
+					return Promise.resolve();
+				})
+			};
+			return serverRecord;
+		};
+
+		beforeEach(() => {
+			delete process.env.RUNNING_E2E_TESTS;
+			mockedIsEnabled.mockReturnValue(false);
+			mockedGetServerTimeSync.mockReset();
+			mockedGetServerTimeSync.mockResolvedValue(serverTime);
+		});
+
+		afterEach(() => {
+			if (originalRunningE2ETests === undefined) {
+				delete process.env.RUNNING_E2E_TESTS;
+			} else {
+				process.env.RUNNING_E2E_TESTS = originalRunningE2ETests;
+			}
+		});
+
+		it('locks when the last session is older than the auto-lock time', async () => {
+			mockedFindServer.mockResolvedValue(createServerRecord({ autoLock: true, secondsSinceLastSession: 200 }));
+
+			await localAuthenticate('server-id');
+
+			expect(lastEmitPayload()).toMatchObject({ hasBiometry: false });
+			expect(mockedDispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ isLocalAuthenticated: false }));
+			expect(mockedDispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ isLocalAuthenticated: true }));
+		});
+
+		it('does not lock when the last session is within the auto-lock time', async () => {
+			const serverRecord = createServerRecord({ autoLock: true, secondsSinceLastSession: 60 });
+			mockedFindServer.mockResolvedValue(serverRecord);
+
+			await localAuthenticate('server-id');
+
+			expect(lastEmitPayload()).toBeNull();
+			expect(mockedDispatch).not.toHaveBeenCalled();
+			expect(serverRecord.lastLocalAuthenticatedSession).toEqual(new Date(serverTime));
+		});
+
+		it('never locks when auto-lock is disabled, however old the last session is', async () => {
+			const serverRecord = createServerRecord({ autoLock: false, secondsSinceLastSession: 200 });
+			mockedFindServer.mockResolvedValue(serverRecord);
+
+			await localAuthenticate('server-id');
+
+			expect(lastEmitPayload()).toBeNull();
+			expect(mockedDispatch).not.toHaveBeenCalled();
+			expect(serverRecord.update).not.toHaveBeenCalled();
+		});
+	});
 });
 
 // First-passcode setup must keep biometry opt-in: enroll writes the sentinel silently, then a single
