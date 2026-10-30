@@ -26,8 +26,14 @@ import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { RECORDING_SETTINGS } from '~/lib/constants/audio';
+import { useBackHandler } from '@react-native-community/hooks';
 
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+
+jest.mock('@react-native-community/hooks', () => ({
+	...jest.requireActual('@react-native-community/hooks'),
+	useBackHandler: jest.fn()
+}));
 
 jest.useFakeTimers();
 
@@ -184,35 +190,83 @@ const keyboardHeightSharedValue = {
 	modify: jest.fn()
 };
 
-let showEmojiKeyboard = false;
-let showEmojiSearchbar = false;
+const mockEmojiKeyboard = (overrides: Partial<ReturnType<typeof EmojiKeyboardHook.useEmojiKeyboard>> = {}) =>
+	jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
+		showEmojiPickerSharedValue: sharedValue,
+		showEmojiKeyboard: false,
+		openEmojiKeyboard: jest.fn(),
+		closeEmojiKeyboard: jest.fn(),
+		showEmojiSearchbarSharedValue: sharedValueSearchbar,
+		showEmojiSearchbar: false,
+		openEmojiSearchbar: jest.fn(),
+		backToEmojiPicker: jest.fn(),
+		resetKeyboard: jest.fn(),
+		keyboardHeight: keyboardHeightSharedValue,
+		...overrides
+	});
 
 beforeEach(() => {
-	showEmojiKeyboard = false;
-	showEmojiSearchbar = false;
 	(runSlashCommand as jest.Mock).mockClear();
 	// Default DB mocks used by autocomplete
 	(database.active.get as unknown as jest.Mock).mockImplementation(() => ({
 		query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) }))
 	}));
-	jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
-		showEmojiPickerSharedValue: sharedValue,
-		showEmojiKeyboard,
-		openEmojiKeyboard: jest.fn(),
-		closeEmojiKeyboard: jest.fn(),
-		showEmojiSearchbarSharedValue: sharedValueSearchbar,
-		showEmojiSearchbar,
-		openEmojiSearchbar: jest.fn(),
-		closeEmojiSearchbar: jest.fn(),
-		resetKeyboard: jest.fn(),
-		keyboardHeight: keyboardHeightSharedValue
-	});
+	mockEmojiKeyboard();
 	sharedValue.value = false; // reset before each test
 	sharedValueSearchbar.value = false;
 	keyboardHeightSharedValue.value = 0;
 });
 
 describe('MessageComposer', () => {
+	describe('Android back button', () => {
+		const pressBack = () => jest.mocked(useBackHandler).mock.lastCall?.[0]();
+		let isFocusedSpy: jest.SpyInstance | undefined;
+		const mockIsFocused = (isFocused: boolean) => {
+			isFocusedSpy = jest.spyOn(jest.requireMock('@react-navigation/native'), 'useIsFocused').mockReturnValue(isFocused);
+		};
+
+		afterEach(() => {
+			isFocusedSpy?.mockRestore();
+			isFocusedSpy = undefined;
+		});
+
+		const renderWithEmojiKeyboard = (state: { showEmojiKeyboard: boolean; showEmojiSearchbar: boolean }) => {
+			const resetKeyboard = jest.fn();
+			mockEmojiKeyboard({ resetKeyboard, ...state });
+			render(<Render />);
+			return { resetKeyboard };
+		};
+
+		test('closes the emoji picker instead of leaving the room', () => {
+			const { resetKeyboard } = renderWithEmojiKeyboard({ showEmojiKeyboard: true, showEmojiSearchbar: false });
+
+			expect(pressBack()).toBe(true);
+			expect(resetKeyboard).toHaveBeenCalledTimes(1);
+		});
+
+		test('closes the emoji search', () => {
+			const { resetKeyboard } = renderWithEmojiKeyboard({ showEmojiKeyboard: false, showEmojiSearchbar: true });
+
+			expect(pressBack()).toBe(true);
+			expect(resetKeyboard).toHaveBeenCalledTimes(1);
+		});
+
+		test('leaves back to the screen on top when the room is not focused', () => {
+			mockIsFocused(false);
+			const { resetKeyboard } = renderWithEmojiKeyboard({ showEmojiKeyboard: true, showEmojiSearchbar: false });
+
+			expect(pressBack()).toBe(false);
+			expect(resetKeyboard).not.toHaveBeenCalled();
+		});
+
+		test('leaves the room when no emoji keyboard is open', () => {
+			const { resetKeyboard } = renderWithEmojiKeyboard({ showEmojiKeyboard: false, showEmojiSearchbar: false });
+
+			expect(pressBack()).toBe(false);
+			expect(resetKeyboard).not.toHaveBeenCalled();
+		});
+	});
+
 	describe('Toolbar', () => {
 		test('tap actions', async () => {
 			render(<Render />);
@@ -230,19 +284,7 @@ describe('MessageComposer', () => {
 
 			// Simulate the state change that would happen when emoji button is pressed
 			sharedValue.value = true;
-			showEmojiKeyboard = true;
-			jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
-				showEmojiPickerSharedValue: sharedValue,
-				showEmojiKeyboard,
-				openEmojiKeyboard: jest.fn(),
-				closeEmojiKeyboard: jest.fn(),
-				showEmojiSearchbarSharedValue: sharedValueSearchbar,
-				showEmojiSearchbar,
-				openEmojiSearchbar: jest.fn(),
-				closeEmojiSearchbar: jest.fn(),
-				resetKeyboard: jest.fn(),
-				keyboardHeight: keyboardHeightSharedValue
-			});
+			mockEmojiKeyboard({ showEmojiKeyboard: true });
 
 			rerender(<Render />);
 

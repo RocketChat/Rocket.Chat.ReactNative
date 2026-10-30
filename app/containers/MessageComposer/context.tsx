@@ -88,7 +88,7 @@ type TMessageInnerContext = {
 	setInput(text: string): void;
 	// TODO: onClosed should be required
 	closeEmojiKeyboardAndAction(onClosed?: Function, params?: any): void;
-	focus(): void;
+	focus(delay?: number): void;
 };
 
 // TODO: rename
