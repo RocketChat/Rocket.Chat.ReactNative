@@ -2,6 +2,7 @@
 // importing directly from the file. We exercise the real `encryptMessage` here.
 import encryption from './encryption';
 import database from '../database';
+import Deferred from './helpers/deferred';
 
 jest.unmock('./encryption');
 
@@ -232,7 +233,9 @@ describe('Encryption.canSendToRoom', () => {
 		jest.clearAllMocks();
 		mockHandshake.mockResolvedValue(undefined);
 		(encryption as any).roomInstances = {};
-		(encryption as any).readyPromise = Promise.resolve();
+		const readyPromise = new Deferred();
+		readyPromise.resolve();
+		(encryption as any).readyPromise = readyPromise;
 	});
 
 	it('allows rooms that are not encrypted', async () => {
