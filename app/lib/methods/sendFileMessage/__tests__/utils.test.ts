@@ -14,6 +14,7 @@ import {
 	uploadRetryWaits
 } from '../utils';
 import { UploadHttpError } from '~/lib/methods/helpers/fileUpload/UploadHttpError';
+import { getUploadByPath } from '~/lib/database/services/Upload';
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ t: (k: string) => k, isTranslated: () => false }));
@@ -23,14 +24,13 @@ jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() 
 jest.mock('@nozbe/watermelondb/RawRecord', () => ({ sanitizedRaw: (raw: unknown) => raw }));
 jest.mock('expo-file-system/legacy', () => ({ cacheDirectory: 'file://cache', copyAsync: jest.fn(() => Promise.resolve()) }));
 
-const mockFind = jest.fn();
 const mockCreate = jest.fn();
 
 jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {
-			get: () => ({ find: mockFind, create: mockCreate, schema: {} }),
+			get: () => ({ create: mockCreate, schema: {} }),
 			write: (cb: () => Promise<unknown>) => cb()
 		}
 	}
@@ -40,7 +40,7 @@ const fileInfo = { rid: 'GENERAL', path: '/tmp/pic.jpg', name: 'pic.jpg' } as an
 const uploadPath = getUploadPath(fileInfo.path, fileInfo.rid);
 
 beforeEach(() => {
-	mockFind.mockReset();
+	(getUploadByPath as jest.Mock).mockReset();
 	mockCreate.mockReset();
 	(Alert.alert as jest.Mock).mockReset();
 	(require('expo-file-system/legacy').copyAsync as jest.Mock).mockClear();
@@ -112,12 +112,13 @@ describe('copyFileToCacheDirectoryIfNeeded', () => {
 
 describe('createUploadRecord', () => {
 	it('blocks with alert when the upload is actively in progress', async () => {
-		mockFind.mockResolvedValue({ id: uploadPath });
+		(getUploadByPath as jest.Mock).mockResolvedValue({ id: uploadPath });
 		uploadQueue[uploadPath] = {} as any;
 
-		const result = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
+		await expect(createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined })).rejects.toThrow(
+			"Couldn't create upload record"
+		);
 
-		expect(result).toEqual([null, null]);
 		expect(Alert.alert).toHaveBeenCalled();
 	});
 
@@ -132,12 +133,11 @@ describe('createUploadRecord', () => {
 			description: 'old caption',
 			update: jest.fn((cb: (u: any) => void) => cb(stale))
 		};
-		mockFind.mockResolvedValue(stale);
+		(getUploadByPath as jest.Mock).mockResolvedValue(stale);
 
-		const [path, record] = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
+		const record = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
 
 		expect(Alert.alert).not.toHaveBeenCalled();
-		expect(path).toBe(uploadPath);
 		expect(record).toBe(stale);
 		expect(stale).toMatchObject({
 			error: false,
@@ -150,7 +150,7 @@ describe('createUploadRecord', () => {
 	});
 
 	it('creates a new record when none exists', async () => {
-		mockFind.mockRejectedValue(new Error('not found'));
+		(getUploadByPath as jest.Mock).mockResolvedValue(null);
 		const created = { id: uploadPath };
 		mockCreate.mockImplementation((cb: (u: any) => void) => {
 			const u: any = {};
@@ -158,16 +158,13 @@ describe('createUploadRecord', () => {
 			return created;
 		});
 
-		const [path, record] = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
+		const record = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
 
-		expect(path).toBe(uploadPath);
 		expect(record).toBe(created);
 	});
 });
 
 describe('persistUploadError', () => {
-	const { getUploadByPath } = require('~/lib/database/services/Upload');
-
 	const persist = async (errorStatus?: number, errorMessage?: string) => {
 		const updated: any = { errorStatus: 500, errorMessage: 'stale' };
 		(getUploadByPath as jest.Mock).mockResolvedValue({

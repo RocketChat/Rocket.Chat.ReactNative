@@ -24,10 +24,8 @@ export async function uploadFileMessage({
 	tmid: string | undefined;
 	prepare: () => Promise<IPreparedUpload>;
 }): Promise<void> {
-	const [uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid });
-	if (!uploadPath || !uploadRecord) {
-		throw new Error("Couldn't create upload record");
-	}
+	const uploadRecord = await createUploadRecord({ rid, fileInfo, tmid });
+	const uploadPath = uploadRecord.id;
 
 	let upload: IFileUpload | null = null;
 	try {

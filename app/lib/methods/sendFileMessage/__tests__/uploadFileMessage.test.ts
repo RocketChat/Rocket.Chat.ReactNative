@@ -31,8 +31,8 @@ beforeEach(() => {
 });
 
 const arrange = () => {
-	const record = { destroyPermanently: jest.fn() };
-	(createUploadRecord as jest.Mock).mockResolvedValue([UPLOAD_PATH, record]);
+	const record = { id: UPLOAD_PATH, destroyPermanently: jest.fn() };
+	(createUploadRecord as jest.Mock).mockResolvedValue(record);
 	return record;
 };
 
@@ -49,7 +49,7 @@ const run = (prepared: { afterUpload?: (response: unknown) => Promise<void> } = 
 
 describe('uploadFileMessage', () => {
 	it('rejects a send skipped because the upload is already in progress without touching the running upload', async () => {
-		(createUploadRecord as jest.Mock).mockResolvedValue([null, null]);
+		(createUploadRecord as jest.Mock).mockRejectedValue(new Error("Couldn't create upload record"));
 
 		const { result, prepare } = run();
 
