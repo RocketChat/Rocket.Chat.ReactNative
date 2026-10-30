@@ -1,15 +1,13 @@
 import { memo } from 'react';
 import { View } from 'react-native';
-import { Image } from 'expo-image';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import Emoji from '../markdown/components/emoji/Emoji';
 import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
-import { headers } from '~/lib/methods/helpers/fetch';
 import { SubscriptionType } from '~/definitions';
 import { type IAvatar } from './interfaces';
 import I18n from '~/i18n';
 import Touch from '../Touch';
+import AvatarImage from './AvatarImage';
 import { AVATAR_BORDER_RADIUS } from './constants';
 
 const Avatar = memo(
@@ -78,16 +76,7 @@ const Avatar = memo(
 				});
 			}
 
-			image = (
-				<Image
-					style={avatarStyle}
-					source={{
-						uri,
-						headers: RocketChatSettings.customHeaders ?? headers
-					}}
-					priority='high'
-				/>
-			);
+			image = <AvatarImage size={size} borderRadius={borderRadius} uri={uri} />;
 		}
 
 		if (onPress) {

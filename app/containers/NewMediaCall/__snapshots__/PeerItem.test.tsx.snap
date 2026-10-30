@@ -99,6 +99,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -116,6 +117,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/alice.johnson?format=png&size=56"
             sfEffect={null}
             source={
               [
@@ -129,6 +131,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 8,
                 "height": 28,
                 "width": 28,
@@ -438,6 +441,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={8}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -455,6 +459,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/very.long.username?format=png&size=56"
             sfEffect={null}
             source={
               [
@@ -468,6 +473,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 8,
                 "height": 28,
                 "width": 28,

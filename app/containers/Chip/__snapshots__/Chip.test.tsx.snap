@@ -191,6 +191,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
         testID="avatar"
       >
         <ViewManagerAdapter_ExpoImage
+          backgroundColor={4293191658}
           borderRadius={8}
           containerViewRef={{"current":"Object"}}
           contentFit="cover"
@@ -208,6 +209,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=56"
           sfEffect={null}
           source={
             [
@@ -221,6 +223,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
           }
           style={
             {
+              "backgroundColor": "#E4E7EA",
               "borderRadius": 8,
               "height": 28,
               "width": 28,
@@ -382,6 +385,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
         testID="avatar"
       >
         <ViewManagerAdapter_ExpoImage
+          backgroundColor={4293191658}
           borderRadius={8}
           containerViewRef={{"current":"Object"}}
           contentFit="cover"
@@ -399,6 +403,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=56"
           sfEffect={null}
           source={
             [
@@ -412,6 +417,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
           }
           style={
             {
+              "backgroundColor": "#E4E7EA",
               "borderRadius": 8,
               "height": 28,
               "width": 28,
@@ -809,6 +815,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
         testID="avatar"
       >
         <ViewManagerAdapter_ExpoImage
+          backgroundColor={4293191658}
           borderRadius={8}
           containerViewRef={{"current":"Object"}}
           contentFit="cover"
@@ -826,6 +833,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=56"
           sfEffect={null}
           source={
             [
@@ -839,6 +847,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
           }
           style={
             {
+              "backgroundColor": "#E4E7EA",
               "borderRadius": 8,
               "height": 28,
               "width": 28,
