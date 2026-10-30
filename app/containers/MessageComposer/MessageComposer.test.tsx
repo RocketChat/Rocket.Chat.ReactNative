@@ -220,6 +220,15 @@ beforeEach(() => {
 describe('MessageComposer', () => {
 	describe('Android back button', () => {
 		const pressBack = () => jest.mocked(useBackHandler).mock.lastCall?.[0]();
+		let isFocusedSpy: jest.SpyInstance | undefined;
+		const mockIsFocused = (isFocused: boolean) => {
+			isFocusedSpy = jest.spyOn(jest.requireMock('@react-navigation/native'), 'useIsFocused').mockReturnValue(isFocused);
+		};
+
+		afterEach(() => {
+			isFocusedSpy?.mockRestore();
+			isFocusedSpy = undefined;
+		});
 
 		const renderWithEmojiKeyboard = (state: { showEmojiKeyboard: boolean; showEmojiSearchbar: boolean }) => {
 			const resetKeyboard = jest.fn();
@@ -243,7 +252,7 @@ describe('MessageComposer', () => {
 		});
 
 		test('leaves back to the screen on top when the room is not focused', () => {
-			jest.spyOn(jest.requireMock('@react-navigation/native'), 'useIsFocused').mockReturnValueOnce(false);
+			mockIsFocused(false);
 			const { resetKeyboard } = renderWithEmojiKeyboard({ showEmojiKeyboard: true, showEmojiSearchbar: false });
 
 			expect(pressBack()).toBe(false);
