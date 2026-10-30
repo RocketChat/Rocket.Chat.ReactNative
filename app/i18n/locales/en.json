@@ -400,6 +400,7 @@
   "error-invalid-password": "Invalid password",
   "error-invalid-room-name": "{{room_name}} is not a valid room name",
   "error-invitation-reply-action": "Error while sending invitation reply",
+  "error-message-size-exceeded": "Message is too long",
   "error-no-tokens-for-this-user": "There are no tokens for this user",
   "error-not-allowed": "Not allowed",
   "error-not-permission-to-upload-file": "You don't have permission to upload files",

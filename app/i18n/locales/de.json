@@ -352,6 +352,7 @@
   "error-invalid-password": "Ungültiges Passwort",
   "error-invalid-room-name": "{{room_name}} ist kein gültiger Room-Name",
   "error-invitation-reply-action": "Fehler beim Senden der Einladungsantwort",
+  "error-message-size-exceeded": "Nachricht ist zu lang",
   "error-not-allowed": "Nicht erlaubt",
   "error-not-permission-to-upload-file": "Sie haben keine Berechtigung zum Hochladen von Dateien",
   "error-save-image": "Fehler beim Speichern des Bildes",

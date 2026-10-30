@@ -304,6 +304,7 @@
   "error-invalid-password": "Mot de passe incorrect",
   "error-invalid-room-name": "{{room_name}} n'est pas un nom de salon valide",
   "error-invitation-reply-action": "Erreur lors de l'envoi de la réponse à l'invitation",
+  "error-message-size-exceeded": "Le message est trop long",
   "error-not-allowed": "Interdit",
   "error-not-permission-to-upload-file": "Vous n'êtes pas autorisé à envoyer des fichiers",
   "error-save-image": "Erreur lors de l'enregistrement de l'image",

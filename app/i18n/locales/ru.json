@@ -328,6 +328,7 @@
   "error-invalid-password": "Неверный пароль",
   "error-invalid-room-name": "{{room_name}} не является допустимым именем чата",
   "error-invitation-reply-action": "Ошибка при отправке ответа на приглашение",
+  "error-message-size-exceeded": "Сообщение слишком длинное",
   "error-not-allowed": "Не допускается",
   "error-not-permission-to-upload-file": "У вас нет разрешения на загрузку файлов",
   "error-save-image": "Ошибка при попытке сохранить изображение",

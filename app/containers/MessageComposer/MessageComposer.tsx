@@ -61,7 +61,7 @@ export const MessageComposer = ({
 	const actionKind = useMessageActionKind();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
-	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
+	const { setAlsoSendThreadToChannel, setAutocompleteParams, addAttachments, clearAttachments } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const { colors } = useTheme();
@@ -93,6 +93,22 @@ export const MessageComposer = ({
 	const handleLayout = (event: LayoutChangeEvent) => {
 		const { height } = event.nativeEvent.layout;
 		contentHeight.set(height);
+	};
+
+	const restoreFailedAttachments = (results: PromiseSettledResult<void>[]) =>
+		addAttachments(attachments.filter((attachment, index) => !attachment.canUpload || results[index].status === 'rejected'));
+
+	const restoreCaptionAfterFailure = (
+		results: PromiseSettledResult<void>[],
+		textFromInput: string,
+		quotedMessageIds: string[]
+	) => {
+		const captionSent = attachments[0].canUpload && results[0].status === 'fulfilled';
+		const { action, actions } = messageActionStore.getState();
+		const composerIdle = !composerInputComponentRef.current?.getText() && (!action || action.kind === 'react');
+		if (captionSent || !composerIdle) return;
+		composerInputComponentRef.current?.setInput(textFromInput);
+		if (!action) actions.setQuoteMessageIds(quotedMessageIds);
 	};
 
 	const handleSendMessage = async () => {
@@ -129,30 +145,29 @@ export const MessageComposer = ({
 		}
 
 		if (attachments.length) {
+			clearAttachments();
+			messageActionStore.getState().actions.setQuoteMessageIds([]);
 			let quotedMessage: string | undefined;
 
 			if (quotedMessageIds.length) {
 				quotedMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
 			}
 
-			try {
-				await sendAttachments({
-					attachments,
-					rid,
-					tmid,
-					server,
-					user: { id: user.id, token: user.token },
-					altTextSupported,
-					getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
-				});
-			} catch (e) {
-				log(e);
-				composerInputComponentRef.current.setInput(textFromInput);
-				return;
+			const results = await sendAttachments({
+				attachments,
+				rid,
+				tmid,
+				server,
+				user: { id: user.id, token: user.token },
+				altTextSupported,
+				getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
+			});
+			const rejected = results.filter((result): result is PromiseRejectedResult => result.status === 'rejected');
+			if (rejected.length) {
+				rejected.forEach(({ reason }) => log(reason));
+				restoreFailedAttachments(results);
+				restoreCaptionAfterFailure(results, textFromInput, quotedMessageIds);
 			}
-			clearAttachments();
-			messageActionStore.getState().actions.setQuoteMessageIds([]);
-			composerInputComponentRef.current?.setInput('');
 			return;
 		}
 

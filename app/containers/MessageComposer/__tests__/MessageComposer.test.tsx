@@ -3,8 +3,8 @@ import { act, render, renderHook, screen, fireEvent, waitFor, userEvent } from '
 import { Provider } from 'react-redux';
 import { getRecordingPermissionsAsync, requestRecordingPermissionsAsync, useAudioRecorder, PermissionStatus } from 'expo-audio';
 
-import { MessageComposerContainer } from './MessageComposerContainer';
-import { ComposerAttachments } from './components/Attachments/ComposerAttachments';
+import { MessageComposerContainer } from '../MessageComposerContainer';
+import { ComposerAttachments } from '../components/Attachments/ComposerAttachments';
 import { setPermissions } from '~/actions/permissions';
 import { addSettings } from '~/actions/settings';
 import { selectServerRequest } from '~/actions/server';
@@ -13,15 +13,16 @@ import { mockedStore } from '~/reducers/mockedStore';
 import { type IPermissionsState } from '~/reducers/permissions';
 import { type IMessage, type IShareAttachment, type TMessageActionState } from '~/definitions';
 import { colors } from '~/lib/constants/colors';
-import { type ComposerState } from './ComposerStore';
-import { ComposerProvider } from './ComposerStore';
-import { MessageActionProvider } from '../message/stores/MessageActionStore';
-import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
+import { type ComposerState } from '../ComposerStore';
+import { ComposerProvider } from '../ComposerStore';
+import { createMessageActionStore, MessageActionProvider } from '../../message/stores/MessageActionStore';
+import { type TMessageActionStore } from '../../message/stores/MessageActionStore';
+import * as EmojiKeyboardHook from '../hooks/useEmojiKeyboard';
 import { initStore } from '~/lib/store/auxStore';
 import { searchRemote } from '~/lib/methods/search';
 import database from '~/lib/database';
-import { useMessageComposerApi } from './context';
-import { type IMessageComposerRef } from './interfaces';
+import { useMessageComposerApi } from '../context';
+import { type IMessageComposerRef } from '../interfaces';
 import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
@@ -119,16 +120,18 @@ const initialContext = {
 const Render = ({
 	context,
 	action,
+	store,
 	children,
 	forwardedRef
 }: {
 	context?: Partial<ComposerState>;
 	action?: TMessageActionState;
+	store?: TMessageActionStore;
 	children?: ReactElement;
 	forwardedRef?: RefObject<IMessageComposerRef | null>;
 }) => (
 	<Provider store={mockedStore}>
-		<MessageActionProvider initialAction={action}>
+		<MessageActionProvider store={store} initialAction={action}>
 			<ComposerProvider {...initialContext} {...context}>
 				<MessageComposerContainer ref={forwardedRef}>
 					<>
@@ -718,7 +721,7 @@ describe('MessageComposer', () => {
 	});
 
 	const messageIds = ['abc', 'def'];
-	jest.mock('./hooks/useMessage', () => ({
+	jest.mock('../hooks/useMessage', () => ({
 		useMessage: (messageId: string) => {
 			if (!messageIds.includes(messageId)) {
 				return null;
@@ -812,9 +815,35 @@ describe('MessageComposer', () => {
 			canUpload: true
 		} as IShareAttachment;
 
+		const sent = { ...attachment, filename: 'sent.png', path: 'file:///tmp/sent.png' } as IShareAttachment;
+		const failed = { ...attachment, filename: 'failed.png', path: 'file:///tmp/failed.png' } as IShareAttachment;
+
 		beforeEach(() => {
 			(sendFileMessage as jest.Mock).mockClear();
 		});
+
+		const sendWithCaptionAndQuote = async (attachments: IShareAttachment[]) => {
+			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
+			const messageActionStore = createMessageActionStore({ kind: 'quote', messageIds: ['abc'] });
+			render(
+				<Render forwardedRef={composerRef} store={messageActionStore}>
+					<AttachmentSeeder attachments={attachments} />
+				</Render>
+			);
+			await screen.findByTestId(`message-composer-attachment-${attachments.length - 1}`);
+			await screen.findByTestId('composer-quote-abc');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
+			await user.press(screen.getByTestId('message-composer-send'));
+			return { composerRef, messageActionStore };
+		};
+
+		const holdUpload = () => {
+			const upload = { resolve: () => {}, reject: () => {} };
+			(sendFileMessage as jest.Mock).mockImplementationOnce(
+				() => new Promise<void>((resolve, reject) => Object.assign(upload, { resolve, reject }))
+			);
+			return upload;
+		};
 
 		test('shows inline attachments and remove button', async () => {
 			render(
@@ -864,46 +893,106 @@ describe('MessageComposer', () => {
 			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
 		});
 
-		test('clears input after a delayed successful upload, including text typed while uploading', async () => {
-			let resolveUpload!: () => void;
-			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
-			(sendFileMessage as jest.Mock).mockImplementationOnce(() => new Promise<void>(resolve => (resolveUpload = resolve)));
-			render(
-				<Render forwardedRef={composerRef} action={{ kind: 'quote', messageIds: ['abc'] }}>
-					<AttachmentSeeder attachments={[attachment]} />
-				</Render>
-			);
-			await screen.findByTestId('message-composer-attachment-0');
-			await screen.findByTestId('composer-quote-abc');
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
-			await user.press(screen.getByTestId('message-composer-send'));
-			await waitFor(() => expect(sendFileMessage).toHaveBeenCalled());
+		test.each(['resolve', 'reject'] as const)('keeps text typed while the upload runs when it %ss', async outcome => {
+			const upload = holdUpload();
+			const { composerRef } = await sendWithCaptionAndQuote([attachment]);
 			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'typed while uploading');
-			await act(() => {
-				resolveUpload();
-				return Promise.resolve();
-			});
+			await act(async () => upload[outcome]());
 
-			await waitFor(() => expect(composerRef.current?.getText()).toBe(''));
-			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();
-			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
+			expect(composerRef.current?.getText()).toBe('typed while uploading');
 		});
 
-		test('restores input and keeps attachments after a failed upload', async () => {
-			(sendFileMessage as jest.Mock).mockRejectedValueOnce(new Error('upload failed'));
-			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
-			render(
-				<Render forwardedRef={composerRef} action={{ kind: 'quote', messageIds: ['abc'] }}>
-					<AttachmentSeeder attachments={[attachment]} />
-				</Render>
-			);
-			await screen.findByTestId('message-composer-attachment-0');
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
-			await user.press(screen.getByTestId('message-composer-send'));
+		test.each(['resolve', 'reject'] as const)('keeps an edit started while the upload runs when it %ss', async outcome => {
+			const upload = holdUpload();
+			const { composerRef, messageActionStore } = await sendWithCaptionAndQuote([attachment]);
+			await act(() => messageActionStore.getState().actions.requestEditing('started-during-upload'));
+			await waitFor(() => expect(composerRef.current?.getText()).toBe('Message started-during-upload'));
+			await act(async () => upload[outcome]());
+
+			expect(composerRef.current?.getText()).toBe('Message started-during-upload');
+			expect(messageActionStore.getState().action).toEqual({ kind: 'edit', messageId: 'started-during-upload' });
+		});
+
+		test('keeps a quote picked while the upload runs when it fails', async () => {
+			const upload = holdUpload();
+			const { composerRef, messageActionStore } = await sendWithCaptionAndQuote([attachment]);
+			await act(() => messageActionStore.getState().actions.requestQuote('def'));
+			await act(async () => upload.reject());
+
+			expect(messageActionStore.getState().action).toEqual({ kind: 'quote', messageIds: ['def'] });
+			expect(composerRef.current?.getText()).toBe('');
+		});
+
+		test('restores the caption but not the quote when an upload fails while reacting', async () => {
+			const upload = holdUpload();
+			const { composerRef, messageActionStore } = await sendWithCaptionAndQuote([attachment]);
+			await act(() => messageActionStore.getState().actions.startReacting('def'));
+			await act(async () => upload.reject());
 
 			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
 			expect(screen.getByTestId('message-composer-attachments')).toBeOnTheScreen();
+			expect(messageActionStore.getState().action).toEqual({ kind: 'react', messageId: 'def' });
+		});
+
+		test('keeps only the attachments that failed so the ones already sent are not sent again', async () => {
+			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('upload failed'));
+			await sendWithCaptionAndQuote([sent, failed]);
+
+			await waitFor(() => expect(screen.queryByTestId('message-composer-attachment-1')).not.toBeOnTheScreen());
+			expect(screen.getByLabelText('failed.png')).toBeOnTheScreen();
+			expect(screen.queryByLabelText('sent.png')).not.toBeOnTheScreen();
+		});
+
+		test('does not restore the caption or the quote when the first attachment, which carried them, was sent', async () => {
+			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('upload failed'));
+			const { composerRef } = await sendWithCaptionAndQuote([sent, failed]);
+
+			await waitFor(() => expect(screen.queryByTestId('message-composer-attachment-1')).not.toBeOnTheScreen());
+			expect(composerRef.current?.getText()).toBe('');
+			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();
+		});
+
+		test('restores the caption and the quote when the first attachment was skipped and a later one failed', async () => {
+			const skipped = { ...attachment, path: 'file:///tmp/skipped.png', canUpload: false } as IShareAttachment;
+			(sendFileMessage as jest.Mock).mockRejectedValueOnce(new Error('upload failed'));
+			const { composerRef } = await sendWithCaptionAndQuote([skipped, failed]);
+
+			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
 			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
+			expect(screen.getByLabelText('IMG_2444.png')).toBeOnTheScreen();
+		});
+
+		test('clears the tray as soon as Send is pressed so an upload in flight cannot be sent again', async () => {
+			holdUpload();
+			await sendWithCaptionAndQuote([attachment]);
+
+			await waitFor(() => expect(sendFileMessage).toHaveBeenCalledTimes(1));
+			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
+		});
+
+		test('does not throw when the composer is gone before a failed upload settles', async () => {
+			let failUpload!: (error: Error) => void;
+			(sendFileMessage as jest.Mock).mockImplementationOnce(() => new Promise<void>((_, reject) => (failUpload = reject)));
+			const error = new Error('upload failed');
+			const unhandled = jest.fn();
+			process.on('unhandledRejection', unhandled);
+			const { unmount } = render(
+				<Render>
+					<AttachmentSeeder attachments={[attachment]} />
+				</Render>
+			);
+			await screen.findByTestId('message-composer-attachment-0');
+			await user.press(screen.getByTestId('message-composer-send'));
+
+			unmount();
+			failUpload(error);
+			await waitFor(() => expect(log).toHaveBeenCalledWith(error));
+			await act(async () => {
+				await Promise.resolve();
+			});
+			process.off('unhandledRejection', unhandled);
+
+			expect(unhandled).not.toHaveBeenCalled();
 		});
 	});
 });

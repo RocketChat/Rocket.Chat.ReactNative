@@ -315,6 +315,7 @@
   "error-invalid-password": "Neveljavno geslo",
   "error-invalid-room-name": "{{room_name}} ni veljavno ime sobe",
   "error-invitation-reply-action": "Napaka pri pošiljanju odgovora na povabilo",
+  "error-message-size-exceeded": "Sporočilo je predolgo",
   "error-not-allowed": "Ni dovoljeno",
   "error-not-permission-to-upload-file": "Nimate pooblastil za nalaganje datotek",
   "error-save-image": "Napaka pri shranjevanju slike",

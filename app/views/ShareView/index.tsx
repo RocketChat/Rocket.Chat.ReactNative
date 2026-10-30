@@ -269,7 +269,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			// Send attachment
 			if (attachments.length) {
 				// On server >= 8.4, description = alt text; caption moves to msg
-				await sendAttachments({
+				const results = await sendAttachments({
 					attachments,
 					rid: room.rid,
 					tmid: this.getThreadId(thread),
@@ -278,6 +278,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					altTextSupported: isAltTextSupported,
 					getMsg: ({ description }) => (isAltTextSupported ? description || msg : msg)
 				});
+				const failed = results.find((result): result is PromiseRejectedResult => result.status === 'rejected');
+				if (failed) {
+					throw failed.reason;
+				}
 
 				// Send text message
 			} else if (text.length) {

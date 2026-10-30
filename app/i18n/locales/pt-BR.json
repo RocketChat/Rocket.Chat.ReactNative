@@ -387,6 +387,7 @@
   "error-invalid-password": "Senha inválida",
   "error-invalid-room-name": "{{room_name}} não é um nome de sala válido",
   "error-invitation-reply-action": "Erro ao enviar resposta do convite",
+  "error-message-size-exceeded": "A mensagem é muito longa",
   "error-no-tokens-for-this-user": "Não existem tokens para este usuário",
   "error-not-allowed": "Não permitido",
   "error-not-permission-to-upload-file": "Você não tem permissão para enviar arquivos",

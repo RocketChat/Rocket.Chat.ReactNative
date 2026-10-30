@@ -253,6 +253,7 @@
   "error-invalid-password": "不正なパスワードです",
   "error-invalid-room-name": "{{room_name}}は正しいルーム名ではありません。",
   "error-invitation-reply-action": "招待への返信送信中にエラーが発生しました",
+  "error-message-size-exceeded": "メッセージが長すぎます",
   "error-not-allowed": "許可されていません。",
   "error-not-permission-to-upload-file": "ファイルをアップロードする権限がありません",
   "error-save-image": "画像の保存に失敗しました。",
