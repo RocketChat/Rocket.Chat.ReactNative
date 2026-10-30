@@ -15,7 +15,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import Switch from '~/containers/Switch';
 import { type IUser } from '~/definitions';
-import { shouldShowWatchAppOptions } from '~/lib/methods/watchOSQuickReplies/getWatchStatus';
+import { isWatchAppInstalled } from '~/lib/methods/watchOSQuickReplies/isWatchAppInstalled';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
@@ -27,7 +27,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 	);
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
-	const [showWatchAppOptions] = useState(shouldShowWatchAppOptions);
+	const [showWatchAppOptions] = useState(isWatchAppInstalled);
 	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
 	const enableMobileRinging = settings?.preferences?.enableMobileRinging;
 

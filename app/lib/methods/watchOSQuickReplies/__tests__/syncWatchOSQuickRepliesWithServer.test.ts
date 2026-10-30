@@ -4,7 +4,7 @@ import UserPreferences from '../../userPreferences';
 import { syncWatchOSQuickRepliesWithServer } from '../syncWatchOSQuickRepliesWithServer';
 import { DEFAULT_QUICK_REPLIES_MAX, DEFAULT_QUICK_REPLY_MAX_LENGTH } from '../constants';
 
-jest.mock('../getWatchStatus', () => ({ shouldShowWatchAppOptions: jest.fn(() => true) }));
+jest.mock('../isWatchAppInstalled', () => ({ isWatchAppInstalled: jest.fn(() => true) }));
 
 const server = 'https://open.rocket.chat';
 const key = NativeWatchModule!.getQuickRepliesKey(server);

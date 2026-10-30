@@ -43,7 +43,7 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { syncWatchOSQuickRepliesWithServer } from '../lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer';
-import { shouldShowWatchAppOptions } from '../lib/methods/watchOSQuickReplies/getWatchStatus';
+import { isWatchAppInstalled } from '../lib/methods/watchOSQuickReplies/isWatchAppInstalled';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
@@ -268,9 +268,9 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
-const fetchWatchReplies = function* fetchWatchRepliesFork() {
+const seedWatchQuickReplies = function* seedWatchQuickRepliesFork() {
 	try {
-		if (!shouldShowWatchAppOptions()) return;
+		if (!isWatchAppInstalled()) return;
 		const server = yield select(s => s.server.server);
 		const settingsFetchedFor = yield call(getSettingsFetchedFor);
 		let fetchedSettings;
@@ -365,7 +365,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		// On warm relaunch, redux is already populated by selectServer; on cold login, it re-checks
 		// when PERMISSIONS.SET / ENTERPRISE_MODULES.SET land.
 		yield spawn(startVoipFork);
-		yield spawn(fetchWatchReplies);
+		yield spawn(seedWatchQuickReplies);
 		yield call(fetchPermissions);
 		yield call(fetchEnterpriseModules, { user });
 		yield fork(fetchCustomEmojisFork);

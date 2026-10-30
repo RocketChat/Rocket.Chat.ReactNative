@@ -30,8 +30,8 @@ jest.mock('~/lib/services/restApi', () => ({
 	removePushToken: jest.fn()
 }));
 
-jest.mock('~/lib/methods/watchOSQuickReplies/getWatchStatus', () => ({
-	shouldShowWatchAppOptions: jest.fn(() => true)
+jest.mock('~/lib/methods/watchOSQuickReplies/isWatchAppInstalled', () => ({
+	isWatchAppInstalled: jest.fn(() => true)
 }));
 
 jest.mock('~/lib/methods/helpers/sslPinning', () => ({

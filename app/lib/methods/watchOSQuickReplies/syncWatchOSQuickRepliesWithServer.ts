@@ -1,6 +1,6 @@
 import type { TSettingsState } from '~/reducers/settings';
 import UserPreferences from '../userPreferences';
-import { syncWatchOSQuickReplies } from './syncReplies';
+import { syncWatchOSQuickReplies } from './syncWatchOSQuickReplies';
 import { getQuickRepliesKey } from './getQuickRepliesKey';
 import { getQuickRepliesLimits } from './getQuickRepliesLimits';
 

@@ -12,7 +12,7 @@ import { useUserPreferences } from '~/lib/methods/userPreferences';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { getQuickRepliesKey } from '~/lib/methods/watchOSQuickReplies/getQuickRepliesKey';
 import { getQuickRepliesLimits } from '~/lib/methods/watchOSQuickReplies/getQuickRepliesLimits';
-import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncReplies';
+import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncWatchOSQuickReplies';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';

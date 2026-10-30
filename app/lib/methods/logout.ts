@@ -19,7 +19,7 @@ import {
 } from '../constants/keys';
 import NativeWatchModule from '../native/NativeWatchModule';
 import UserPreferences from './userPreferences';
-import { syncWatchOSQuickReplies } from './watchOSQuickReplies/syncReplies';
+import { syncWatchOSQuickReplies } from './watchOSQuickReplies/syncWatchOSQuickReplies';
 import { removePushToken } from '../services/restApi';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
 import { clearServerCookies } from './helpers/setServerCookies';

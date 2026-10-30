@@ -101,8 +101,8 @@ jest.mock('~/lib/database', () => ({
 	}
 }));
 
-jest.mock('~/lib/methods/watchOSQuickReplies/getWatchStatus', () => ({
-	shouldShowWatchAppOptions: jest.fn(() => true)
+jest.mock('~/lib/methods/watchOSQuickReplies/isWatchAppInstalled', () => ({
+	isWatchAppInstalled: jest.fn(() => true)
 }));
 
 jest.mock('~/lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer', () => ({
@@ -114,7 +114,7 @@ import loginRoot from '../login';
 import { deleteAccount, loginSuccess, logout } from '~/actions/login';
 import { selectServerRequest, selectServerSuccess } from '~/actions/server';
 import { addSettings, clearSettings, fetchSettingsComplete } from '~/actions/settings';
-import { shouldShowWatchAppOptions } from '~/lib/methods/watchOSQuickReplies/getWatchStatus';
+import { isWatchAppInstalled } from '~/lib/methods/watchOSQuickReplies/isWatchAppInstalled';
 import { syncWatchOSQuickRepliesWithServer } from '~/lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 import type { TSettingsState } from '~/reducers/settings';
@@ -158,7 +158,7 @@ describe('login saga — watch quick replies', () => {
 	});
 
 	it('does not sync without a watch app', async () => {
-		jest.mocked(shouldShowWatchAppOptions).mockReturnValueOnce(false);
+		jest.mocked(isWatchAppInstalled).mockReturnValueOnce(false);
 		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No' });
 		finishFetch(store, SERVER);
 

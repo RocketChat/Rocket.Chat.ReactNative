@@ -10,11 +10,11 @@ import UserPreferences from '~/lib/methods/userPreferences';
 import { DEFAULT_QUICK_REPLIES_MAX, DEFAULT_QUICK_REPLY_MAX_LENGTH } from '~/lib/methods/watchOSQuickReplies/constants';
 import { addSettings } from '~/actions/settings';
 import type { TSettingsState } from '~/reducers/settings';
-import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncReplies';
+import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncWatchOSQuickReplies';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { createMockedStore } from '~/reducers/mockedStore';
 
-jest.mock('~/lib/methods/watchOSQuickReplies/syncReplies', () => ({ syncWatchOSQuickReplies: jest.fn() }));
+jest.mock('~/lib/methods/watchOSQuickReplies/syncWatchOSQuickReplies', () => ({ syncWatchOSQuickReplies: jest.fn() }));
 jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
 
 const server = 'https://open.rocket.chat';
