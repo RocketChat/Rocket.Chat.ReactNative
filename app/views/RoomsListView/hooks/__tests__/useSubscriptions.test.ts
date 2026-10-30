@@ -6,7 +6,7 @@ import { useSubscriptions } from '../useSubscriptions';
 
 const mockState = {
 	settings: { UI_Use_Real_Name: false },
-	server: { server: 'https://open.rocket.chat' },
+	server: { server: 'https://open.rocket.chat', connected: false },
 	login: { user: { roles: ['livechat-agent'] } },
 	sortPreferences: { sortBy: 'activity', showUnread: false, showFavorites: false, groupByType: false },
 	enterpriseModules: []
@@ -18,21 +18,37 @@ jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: (selector: (state: typeof mockState) => unknown) => selector(mockState)
 }));
 
-const mockQueries: { columns: string[]; emissions: MockSubject<TSubscriptionModel[]> }[] = [];
+const mockQueries: { database: string; columns: string[]; emissions: MockSubject<TSubscriptionModel[]> }[] = [];
+const mockActiveDatabaseListeners = new Set<() => void>();
+
+const mockOpenDatabase = (name: string) => ({
+	get: () => ({
+		query: () => ({
+			observeWithColumns: (columns: string[]) => {
+				const emissions = new MockSubject<TSubscriptionModel[]>();
+				mockQueries.push({ database: name, columns, emissions });
+				return emissions;
+			}
+		})
+	})
+});
+
+let mockActiveDatabase = mockOpenDatabase('https://open.rocket.chat');
 
 jest.mock('~/lib/database', () => ({
-	active: {
-		get: () => ({
-			query: () => ({
-				observeWithColumns: (columns: string[]) => {
-					const emissions = new MockSubject<TSubscriptionModel[]>();
-					mockQueries.push({ columns, emissions });
-					return emissions;
-				}
-			})
-		})
+	get active() {
+		return mockActiveDatabase;
+	},
+	subscribeToActiveDB: (listener: () => void) => {
+		mockActiveDatabaseListeners.add(listener);
+		return () => mockActiveDatabaseListeners.delete(listener);
 	}
 }));
+
+const switchActiveDatabase = (name: string) => {
+	mockActiveDatabase = mockOpenDatabase(name);
+	mockActiveDatabaseListeners.forEach(listener => listener());
+};
 
 const latestQuery = () => mockQueries[mockQueries.length - 1];
 
@@ -46,6 +62,8 @@ const renderSubscriptions = () =>
 describe('RoomsListView useSubscriptions', () => {
 	beforeEach(() => {
 		mockQueries.length = 0;
+		mockActiveDatabase = mockOpenDatabase('https://open.rocket.chat');
+		mockState.server = { server: 'https://open.rocket.chat', connected: false };
 		mockState.login.user.roles = ['livechat-agent'];
 		mockState.sortPreferences.showUnread = false;
 	});
@@ -90,5 +108,37 @@ describe('RoomsListView useSubscriptions', () => {
 		await flushQuerySetup();
 
 		expect(result.current.loading).toBe(false);
+	});
+
+	it('keeps the list on screen while the active server connects', async () => {
+		const { result, rerender } = renderSubscriptions();
+		await flushQuerySetup();
+		act(() => latestQuery().emissions.next([]));
+
+		mockState.server = { ...mockState.server, connected: true };
+		rerender({ collapsedGroups: new Set<string>() });
+		await flushQuerySetup();
+
+		expect(result.current.loading).toBe(false);
+		expect(mockQueries).toHaveLength(1);
+	});
+
+	it('shows loading and re-queries when the active database switches', async () => {
+		const openRoom = { rid: 'open-room', name: 'open-room', t: 'c' } as TSubscriptionModel;
+		const otherRoom = { rid: 'other-room', name: 'other-room', t: 'c' } as TSubscriptionModel;
+		const { result } = renderSubscriptions();
+		await flushQuerySetup();
+		act(() => latestQuery().emissions.next([openRoom]));
+
+		act(() => switchActiveDatabase('https://other.rocket.chat'));
+		await flushQuerySetup();
+
+		expect(result.current.loading).toBe(true);
+		expect(latestQuery().database).toBe('https://other.rocket.chat');
+
+		act(() => latestQuery().emissions.next([otherRoom]));
+		expect(result.current.loading).toBe(false);
+		expect(result.current.subscriptions).toContain(otherRoom);
+		expect(result.current.subscriptions).not.toContain(openRoom);
 	});
 });
