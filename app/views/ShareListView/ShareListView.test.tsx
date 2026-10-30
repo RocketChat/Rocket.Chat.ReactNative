@@ -169,7 +169,7 @@ describe('ShareListView', () => {
 
 		const row = shareListView.renderItem({ item: { rid: 'encrypted-room', t: 'p', encrypted: true }, index: 0 });
 
-		expect(row.props.disabled).toBe(true);
+		expect(row.props.disabledReason).toBe('Enter your E2EE password to share here');
 		expect(row.props.description).toBe('Enter your E2EE password to share here');
 	});
 
@@ -179,7 +179,7 @@ describe('ShareListView', () => {
 
 		const row = shareListView.renderItem({ item: { rid: 'encrypted-room', t: 'p', encrypted: true }, index: 0 });
 
-		expect(row.props.disabled).toBe(true);
+		expect(row.props.disabledReason).toBe('Waiting for encryption keys');
 		expect(row.props.description).toBe('Waiting for encryption keys');
 	});
 
@@ -191,7 +191,7 @@ describe('ShareListView', () => {
 			index: 0
 		});
 
-		expect(row.props.disabled).toBe(false);
+		expect(row.props.disabledReason).toBeUndefined();
 		expect(row.props.description).toBe('Room topic');
 	});
 });

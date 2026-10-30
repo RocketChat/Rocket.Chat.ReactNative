@@ -440,7 +440,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 				description={unavailableReason ?? description}
 				type={item.prid ? 'discussion' : item.t}
 				onPress={() => this.shareMessage(item)}
-				disabled={!!unavailableReason}
+				disabledReason={unavailableReason}
 				testID={`share-extension-item-${item.name}`}
 				teamMain={item.teamMain}
 				isFirst={index === 0}

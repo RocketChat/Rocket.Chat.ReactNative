@@ -40,7 +40,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": false,
             "expanded": undefined,
             "selected": undefined,
           }
@@ -75,7 +75,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
               "gap": 12,
             },
             false,
-            undefined,
+            false,
           ]
         }
         testID="directory-item-style"
@@ -273,7 +273,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": false,
             "expanded": undefined,
             "selected": undefined,
           }
@@ -308,7 +308,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "gap": 12,
             },
             false,
-            undefined,
+            false,
           ]
         }
         testID="directory-item"
@@ -506,7 +506,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": false,
             "expanded": undefined,
             "selected": undefined,
           }
@@ -541,7 +541,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
               "gap": 12,
             },
             false,
-            undefined,
+            false,
           ]
         }
         testID="directory-item-dm"
@@ -666,6 +666,242 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
 </RCTScrollView>
 `;
 
+exports[`Story Snapshots: Disabled should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "gap": 12,
+          },
+          [
+            {
+              "marginHorizontal": 16,
+              "overflow": "hidden",
+              "paddingHorizontal": 16,
+            },
+            {
+              "backgroundColor": "#FFFFFF",
+              "height": 54,
+            },
+            undefined,
+            undefined,
+          ],
+        ]
+      }
+    >
+      <View
+        accessibilityHint="Waiting for encryption keys"
+        accessibilityLabel="Encrypted room "
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "stretch",
+              "flex": 1,
+              "flexDirection": "row",
+              "gap": 12,
+            },
+            false,
+            {
+              "opacity": 0.3,
+            },
+          ]
+        }
+        testID="directory-item-disabled"
+      >
+        <View
+          accessibilityLabel="E's avatar"
+          accessible={false}
+          style={
+            [
+              {
+                "borderRadius": 8,
+                "height": 30,
+                "width": 30,
+              },
+              undefined,
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={8}
+            containerViewRef={{"current":"Object"}}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={30}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            sfEffect={null}
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/@E?format=png&size=60",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 8,
+                "height": 30,
+                "width": 30,
+              }
+            }
+            symbolSize={null}
+            symbolWeight={null}
+            transition={null}
+            width={30}
+          />
+        </View>
+        <View
+          style={
+            [
+              {
+                "flex": 1,
+                "marginRight": 20,
+              },
+              {
+                "gap": undefined,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      {
+                        "marginRight": 0,
+                      },
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 17,
+                    "fontWeight": "500",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Encrypted room
+            </Text>
+          </View>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            Waiting for encryption keys
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
 exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
 <RCTScrollView
   style={
@@ -706,7 +942,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": false,
             "expanded": undefined,
             "selected": undefined,
           }
@@ -741,7 +977,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
               "gap": 12,
             },
             false,
-            undefined,
+            false,
           ]
         }
         testID="directory-item-long"
@@ -975,7 +1211,7 @@ exports[`Story Snapshots: OnlyTitle should match snapshot 1`] = `
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": false,
             "expanded": undefined,
             "selected": undefined,
           }
@@ -1010,7 +1246,7 @@ exports[`Story Snapshots: OnlyTitle should match snapshot 1`] = `
               "gap": 12,
             },
             false,
-            undefined,
+            false,
           ]
         }
         testID="directory-item-title"
@@ -1136,7 +1372,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": false,
             "expanded": undefined,
             "selected": undefined,
           }
@@ -1171,7 +1407,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
               "gap": 12,
             },
             false,
-            undefined,
+            false,
           ]
         }
         testID="directory-item-team"
@@ -1369,7 +1605,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": false,
             "expanded": undefined,
             "selected": undefined,
           }
@@ -1404,7 +1640,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
               "gap": 12,
             },
             false,
-            undefined,
+            false,
           ]
         }
         testID="directory-item-label"
@@ -1638,7 +1874,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": false,
             "expanded": undefined,
             "selected": undefined,
           }
@@ -1673,7 +1909,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
               "gap": 12,
             },
             false,
-            undefined,
+            false,
           ]
         }
         testID="directory-item-no-desc"

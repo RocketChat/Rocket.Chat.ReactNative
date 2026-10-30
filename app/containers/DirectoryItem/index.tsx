@@ -8,6 +8,7 @@ import styles from './styles';
 import { useTheme } from '~/theme';
 import { MarkdownPreview } from '../markdown';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { showToast } from '~/lib/methods/helpers/showToast';
 
 export const ROW_HEIGHT = 54;
 interface IDirectoryItemLabel {
@@ -28,7 +29,7 @@ export interface IDirectoryItem {
 	teamMain?: boolean;
 	isFirst?: boolean;
 	isLast?: boolean;
-	disabled?: boolean;
+	disabledReason?: string;
 }
 
 const DirectoryItemLabel = memo(({ text, color }: IDirectoryItemLabel) => {
@@ -49,7 +50,7 @@ const DirectoryItem = ({
 	type,
 	rid,
 	teamMain,
-	disabled
+	disabledReason
 }: IDirectoryItem): ReactElement => {
 	const { colors } = useTheme();
 	const { fontScale } = useResponsiveLayout();
@@ -60,10 +61,14 @@ const DirectoryItem = ({
 			testID={testID}
 			accessible
 			accessibilityLabel={`${title || ''} ${rightLabel || ''}`}
-			accessibilityState={{ disabled }}
+			accessibilityHint={disabledReason}
+			accessibilityState={{ disabled: !!disabledReason }}
 			importantForAccessibility='yes'>
-			<Touch onPress={onPress} disabled={disabled} style={{ backgroundColor: colors.surfaceRoom }} testID={testID}>
-				<View style={[styles.directoryItemContainer, { height }, disabled && styles.disabled, style]}>
+			<Touch
+				onPress={disabledReason ? () => showToast(disabledReason) : onPress}
+				style={{ backgroundColor: colors.surfaceRoom }}
+				testID={testID}>
+				<View style={[styles.directoryItemContainer, { height }, !!disabledReason && styles.disabled, style]}>
 					<Avatar accessible={false} text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
 					<View style={styles.directoryItemTextContainer}>
 						<View style={styles.directoryItemTextTitle}>

@@ -24,7 +24,7 @@ const DirectoryItem = ({
 	teamMain,
 	isFirst,
 	isLast,
-	disabled
+	disabledReason
 }: IDirectoryItem): ReactElement => {
 	const { colors } = useTheme();
 	const formattedDescription = usePreviewFormatText(description ?? '');
@@ -37,7 +37,8 @@ const DirectoryItem = ({
 			accessibilityLabel={`${title || ''} ${rightLabel || ''}`}
 			isFirst={isFirst}
 			isLast={isLast}
-			disabled={disabled}
+			disabled={!!disabledReason}
+			disabledReason={disabledReason}
 			leading={<Avatar accessible={false} text={avatar} size={AVATAR_SIZE} type={type} rid={rid} />}
 			titleLeading={type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} style={styles.titleIcon} /> : undefined}
 			trailing={
