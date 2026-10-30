@@ -82,7 +82,13 @@ jest.mock('../database', () => {
 	};
 });
 
+const mockGetSubscriptionByRoomId = jest.fn();
+jest.mock('../database/services/Subscription', () => ({
+	getSubscriptionByRoomId: (rid: string) => mockGetSubscriptionByRoomId(rid)
+}));
+
 const mockRoomEncrypt = jest.fn();
+const mockRoomEncryptFile = jest.fn();
 const mockHasSessionKey = jest.fn();
 const mockHandshake = jest.fn().mockResolvedValue(undefined);
 jest.mock('./room', () => ({
@@ -90,7 +96,8 @@ jest.mock('./room', () => ({
 	default: jest.fn().mockImplementation(() => ({
 		handshake: mockHandshake,
 		hasSessionKey: () => mockHasSessionKey(),
-		encrypt: (m: any) => mockRoomEncrypt(m)
+		encrypt: (m: any) => mockRoomEncrypt(m),
+		encryptFile: (rid: string, file: any) => mockRoomEncryptFile(rid, file)
 	}))
 }));
 
@@ -164,6 +171,98 @@ describe('Encryption.encryptMessage', () => {
 
 		expect(result).toBe(baseMessage);
 		expect(mockRoomEncrypt).not.toHaveBeenCalled();
+	});
+});
+
+describe('Encryption.encryptFile', () => {
+	const file = { rid: 'r1', name: 'photo.jpg', path: '/tmp/photo.jpg', size: 1, type: 'image/jpeg' } as any;
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockHandshake.mockResolvedValue(undefined);
+		(encryption as any).roomInstances = {};
+	});
+
+	it('uploads the plain file when the room is not encrypted', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: false });
+
+		await expect(encryption.encryptFile('r1', file)).resolves.toEqual({ file });
+	});
+
+	it('uploads the plain file when workspace E2E is disabled, even if the local subscription is flagged as encrypted', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: false } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+
+		await expect(encryption.encryptFile('r1', file)).resolves.toEqual({ file });
+		expect(mockRoomEncryptFile).not.toHaveBeenCalled();
+	});
+
+	it('throws instead of uploading the plain file when the room is encrypted but no session key is available', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		mockHasSessionKey.mockReturnValue(false);
+
+		await expect(encryption.encryptFile('r1', file)).rejects.toThrow('Room encryption key is not available');
+		expect(mockRoomEncryptFile).not.toHaveBeenCalled();
+	});
+
+	it('encrypts the file when the room is encrypted and a session key is available', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		mockHasSessionKey.mockReturnValue(true);
+		const encrypted = { file: { ...file, path: '/tmp/encrypted' } };
+		mockRoomEncryptFile.mockResolvedValue(encrypted);
+
+		await expect(encryption.encryptFile('r1', file)).resolves.toBe(encrypted);
+		expect(mockRoomEncryptFile).toHaveBeenCalledWith('r1', file);
+	});
+});
+
+describe('Encryption.canSendToRoom', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockHandshake.mockResolvedValue(undefined);
+		(encryption as any).roomInstances = {};
+		(encryption as any).readyPromise = Promise.resolve();
+	});
+
+	it('allows rooms that are not encrypted', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true }, encryption: { enabled: false, banner: '' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: false });
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(true);
+	});
+
+	it('allows encrypted rooms when workspace E2E is disabled', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: false }, encryption: { enabled: false, banner: '' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(true);
+	});
+
+	it('blocks encrypted rooms while the E2EE password has not been entered', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true }, encryption: { enabled: false, banner: 'REQUEST_PASSWORD' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(false);
+		expect(mockHandshake).not.toHaveBeenCalled();
+	});
+
+	it('blocks encrypted rooms without a session key', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true }, encryption: { enabled: true, banner: '' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		mockHasSessionKey.mockReturnValue(false);
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(false);
+	});
+
+	it('allows encrypted rooms with a session key', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true }, encryption: { enabled: true, banner: '' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		mockHasSessionKey.mockReturnValue(true);
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(true);
 	});
 });
 

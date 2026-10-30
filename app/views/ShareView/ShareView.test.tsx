@@ -56,6 +56,13 @@ jest.mock('~/containers/MessageComposer/components/Attachments/AttachmentActionS
 jest.mock('~/lib/methods/sendMessage', () => ({
 	sendMessage: jest.fn()
 }));
+jest.mock('~/lib/encryption', () => ({
+	Encryption: { canSendToRoom: jest.fn(() => Promise.resolve(true)) }
+}));
+jest.mock('~/lib/methods/helpers/info', () => ({
+	...jest.requireActual('~/lib/methods/helpers/info'),
+	showErrorAlert: jest.fn()
+}));
 
 const { showActionSheetRef } = require('~/containers/ActionSheet');
 const { AttachmentActionSheet } = require('~/containers/MessageComposer/components/Attachments/AttachmentActionSheet');
@@ -441,6 +448,23 @@ describe('ShareView', () => {
 		resolveSend();
 		await sendPromise;
 		expect(shareView.props.dispatch).toHaveBeenCalledWith(appStart({ root: RootEnum.ROOT_INSIDE }));
+	});
+
+	it('keeps the share extension open and sends nothing when the encrypted room is not ready', async () => {
+		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0', isShareExtension: true });
+		const { Encryption } = require('~/lib/encryption');
+		Encryption.canSendToRoom.mockResolvedValueOnce(false);
+		const { showErrorAlert } = require('~/lib/methods/helpers/info');
+		const sendFileMessage = jest.spyOn(require('~/lib/methods/sendFileMessage'), 'sendFileMessage');
+		shareView.state.attachments[0].canUpload = true;
+
+		await shareView.send();
+
+		expect(sendFileMessage).not.toHaveBeenCalled();
+		sendFileMessage.mockRestore();
+		expect(showErrorAlert).toHaveBeenCalledTimes(1);
+		expect(shareView.state.loading).toBe(false);
+		expect(shareView.props.dispatch).not.toHaveBeenCalled();
 	});
 
 	it('sends ordinary ShareView text-only content before popping', async () => {

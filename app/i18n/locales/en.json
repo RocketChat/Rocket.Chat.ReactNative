@@ -907,6 +907,8 @@
   "Settings": "Settings",
   "Settings_succesfully_changed": "Settings succesfully changed!",
   "Share": "Share",
+  "Share_encrypted_room_key_missing": "Waiting for encryption keys",
+  "Share_encrypted_room_password_required": "Enter your E2EE password to share here",
   "Share_Link": "Share link",
   "Share_no_valid_attachments": "The shared file could not be found",
   "Share_this_app": "Share this app",

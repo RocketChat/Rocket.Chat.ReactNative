@@ -28,6 +28,7 @@ export interface IDirectoryItem {
 	teamMain?: boolean;
 	isFirst?: boolean;
 	isLast?: boolean;
+	disabled?: boolean;
 }
 
 const DirectoryItemLabel = memo(({ text, color }: IDirectoryItemLabel) => {
@@ -47,16 +48,22 @@ const DirectoryItem = ({
 	rightLabel,
 	type,
 	rid,
-	teamMain
+	teamMain,
+	disabled
 }: IDirectoryItem): ReactElement => {
 	const { colors } = useTheme();
 	const { fontScale } = useResponsiveLayout();
 	const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
 
 	return (
-		<View testID={testID} accessible accessibilityLabel={`${title || ''} ${rightLabel || ''}`} importantForAccessibility='yes'>
-			<Touch onPress={onPress} style={{ backgroundColor: colors.surfaceRoom }} testID={testID}>
-				<View style={[styles.directoryItemContainer, { height }, style]}>
+		<View
+			testID={testID}
+			accessible
+			accessibilityLabel={`${title || ''} ${rightLabel || ''}`}
+			accessibilityState={{ disabled }}
+			importantForAccessibility='yes'>
+			<Touch onPress={onPress} disabled={disabled} style={{ backgroundColor: colors.surfaceRoom }} testID={testID}>
+				<View style={[styles.directoryItemContainer, { height }, disabled && styles.disabled, style]}>
 					<Avatar accessible={false} text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
 					<View style={styles.directoryItemTextContainer}>
 						<View style={styles.directoryItemTextTitle}>

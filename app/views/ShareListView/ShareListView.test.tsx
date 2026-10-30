@@ -19,7 +19,17 @@ jest.mock('expo-file-system/legacy', () => ({
 	EncodingType: { Base64: 'base64', UTF8: 'utf8' }
 }));
 
+jest.mock('~/lib/encryption/utils', () => ({
+	isE2EEDisabledEncryptedRoom: jest.fn(() => false),
+	isMissingRoomE2EEKey: jest.fn(() => false)
+}));
+
 const { showToast } = require('~/lib/methods/helpers/showToast');
+const database = require('~/lib/database');
+const EncryptionUtils = require('~/lib/encryption/utils') as {
+	isE2EEDisabledEncryptedRoom: jest.Mock;
+	isMissingRoomE2EEKey: jest.Mock;
+};
 const ExpoFileSystem = require('expo-file-system/legacy') as { getInfoAsync: jest.Mock; readAsStringAsync: jest.Mock };
 const { ShareListView } = require('./index');
 
@@ -134,5 +144,54 @@ describe('ShareListView', () => {
 				attachments: [expect.objectContaining({ filename: '550e8400-e29b-41d4-a716-446655440000-Пример.pdf', path: uri })]
 			})
 		);
+	});
+
+	it('lists encrypted rooms alongside unencrypted ones', async () => {
+		database.active.get.mockReturnValue({
+			query: () => ({
+				fetch: () =>
+					Promise.resolve([
+						{ rid: 'encrypted-room', encrypted: true, E2EKey: 'key' },
+						{ rid: 'plain-room', encrypted: false }
+					])
+			})
+		});
+		const shareListView = makeInstance({ attachments: [] });
+
+		const rooms = await shareListView.query();
+
+		expect(rooms.map((room: { rid: string }) => room.rid)).toEqual(['encrypted-room', 'plain-room']);
+	});
+
+	it('disables an encrypted room and explains why when the E2EE password was not entered', () => {
+		EncryptionUtils.isE2EEDisabledEncryptedRoom.mockReturnValueOnce(true);
+		const shareListView = makeInstance({ attachments: [] });
+
+		const row = shareListView.renderItem({ item: { rid: 'encrypted-room', t: 'p', encrypted: true }, index: 0 });
+
+		expect(row.props.disabled).toBe(true);
+		expect(row.props.description).toBe('Enter your E2EE password to share here');
+	});
+
+	it('disables an encrypted room and explains why when its key has not arrived yet', () => {
+		EncryptionUtils.isMissingRoomE2EEKey.mockReturnValueOnce(true);
+		const shareListView = makeInstance({ attachments: [] });
+
+		const row = shareListView.renderItem({ item: { rid: 'encrypted-room', t: 'p', encrypted: true }, index: 0 });
+
+		expect(row.props.disabled).toBe(true);
+		expect(row.props.description).toBe('Waiting for encryption keys');
+	});
+
+	it('keeps a shareable encrypted room enabled with its own description', () => {
+		const shareListView = makeInstance({ attachments: [] });
+
+		const row = shareListView.renderItem({
+			item: { rid: 'encrypted-room', t: 'p', encrypted: true, E2EKey: 'key', topic: 'Room topic' },
+			index: 0
+		});
+
+		expect(row.props.disabled).toBe(false);
+		expect(row.props.description).toBe('Room topic');
 	});
 });
