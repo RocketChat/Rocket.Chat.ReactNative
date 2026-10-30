@@ -4,7 +4,7 @@ import database from '~/lib/database';
 import FileUpload from '../helpers/fileUpload';
 import { type IFileUpload, type IFormData, type TUploadHeaders } from '../helpers/fileUpload/definitions';
 import { createUploadProgressCallback, createUploadRecord, finalizeFailedUpload, releaseUploadSlot } from './utils';
-import { uploadWithRetry } from './uploadWithRetry';
+import { retryWhileRateLimited, uploadWithRetry } from './uploadWithRetry';
 
 interface IPreparedUpload {
 	url: string;
@@ -41,7 +41,11 @@ export async function uploadFileMessage({
 			},
 			() => updateProgress(0, 1)
 		);
-		await afterUpload?.(response);
+		await retryWhileRateLimited(
+			uploadPath,
+			() => ({ slot: upload, result: Promise.resolve(afterUpload?.(response)) }),
+			async () => {}
+		);
 		await db.write(async () => {
 			await uploadRecord.destroyPermanently();
 		});

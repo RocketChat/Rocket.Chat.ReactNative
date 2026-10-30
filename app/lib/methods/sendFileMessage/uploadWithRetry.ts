@@ -3,6 +3,11 @@ import { type IFileUpload } from '../helpers/fileUpload/definitions';
 import { getUploadRetryDelay } from '../helpers/getUploadRetryDelay';
 import { ownsUploadSlot, uploadQueue, uploadRetryWaits } from './utils';
 
+interface IRateLimitedStep<T> {
+	slot: IFileUpload | null;
+	result: Promise<T>;
+}
+
 const waitForRetry = (uploadPath: string, delay: number) =>
 	new Promise<void>(resolve => {
 		const timer = setTimeout(resolve, delay);
@@ -14,31 +19,45 @@ const waitForRetry = (uploadPath: string, delay: number) =>
 		delete uploadRetryWaits[uploadPath];
 	});
 
-export const uploadWithRetry = async (
+export const retryWhileRateLimited = async <T>(
 	uploadPath: string,
-	createUpload: () => IFileUpload,
+	startStep: () => IRateLimitedStep<T>,
 	onRetryWait: () => Promise<void>
-): Promise<TRoomsMediaResponse> => {
+): Promise<T> => {
 	let waited = 0;
 	for (let attempt = 1; ; attempt += 1) {
-		const upload = createUpload();
-		uploadQueue[uploadPath] = upload;
+		const { slot, result } = startStep();
 		try {
-			const response = await upload.send();
-			if (!ownsUploadSlot(uploadPath, upload)) {
+			const value = await result;
+			if (!ownsUploadSlot(uploadPath, slot)) {
 				throw new Error('Upload superseded by a newer attempt on the same path');
 			}
-			return response;
+			return value;
 		} catch (error) {
-			const delay = ownsUploadSlot(uploadPath, upload) ? getUploadRetryDelay(error, attempt, waited) : undefined;
+			const delay = ownsUploadSlot(uploadPath, slot) ? getUploadRetryDelay(error, attempt, waited) : undefined;
 			if (delay === undefined) {
 				throw error;
 			}
 			waited += delay;
 			await Promise.all([onRetryWait(), waitForRetry(uploadPath, delay)]);
-			if (!ownsUploadSlot(uploadPath, upload)) {
+			if (!ownsUploadSlot(uploadPath, slot)) {
 				throw error;
 			}
 		}
 	}
 };
+
+export const uploadWithRetry = (
+	uploadPath: string,
+	createUpload: () => IFileUpload,
+	onRetryWait: () => Promise<void>
+): Promise<TRoomsMediaResponse> =>
+	retryWhileRateLimited(
+		uploadPath,
+		() => {
+			const upload = createUpload();
+			uploadQueue[uploadPath] = upload;
+			return { slot: upload, result: upload.send() };
+		},
+		onRetryWait
+	);

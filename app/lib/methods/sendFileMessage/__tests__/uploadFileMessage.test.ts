@@ -2,14 +2,17 @@ import { uploadFileMessage } from '../uploadFileMessage';
 import { createUploadProgressCallback, createUploadRecord, finalizeFailedUpload, releaseUploadSlot } from '../utils';
 import { uploadWithRetry } from '../uploadWithRetry';
 import FileUpload from '../../helpers/fileUpload';
+import { UploadHttpError } from '../../helpers/fileUpload/UploadHttpError';
 
 jest.mock('../utils', () => ({
 	createUploadProgressCallback: jest.fn(),
 	createUploadRecord: jest.fn(),
 	finalizeFailedUpload: jest.fn(),
-	releaseUploadSlot: jest.fn()
+	releaseUploadSlot: jest.fn(),
+	ownsUploadSlot: jest.fn(() => true),
+	uploadRetryWaits: {}
 }));
-jest.mock('../uploadWithRetry', () => ({ uploadWithRetry: jest.fn() }));
+jest.mock('../uploadWithRetry', () => ({ ...jest.requireActual('../uploadWithRetry'), uploadWithRetry: jest.fn() }));
 jest.mock('../../helpers/fileUpload', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/database', () => ({
 	__esModule: true,
@@ -159,5 +162,24 @@ describe('uploadFileMessage', () => {
 		await run().result;
 
 		expect(updateProgress).toHaveBeenCalledWith(0, 1);
+	});
+
+	describe('when the server rate limits the step after the upload', () => {
+		beforeEach(() => jest.useFakeTimers());
+		afterEach(() => jest.useRealTimers());
+
+		it('retries that step without uploading the file again', async () => {
+			const record = arrange();
+			const afterUpload = jest.fn().mockRejectedValueOnce(new UploadHttpError(429)).mockResolvedValueOnce(undefined);
+
+			const { result } = run({ afterUpload });
+			await jest.advanceTimersByTimeAsync(2000);
+			await result;
+
+			expect(afterUpload).toHaveBeenCalledTimes(2);
+			expect(uploadWithRetry).toHaveBeenCalledTimes(1);
+			expect(finalizeFailedUpload).not.toHaveBeenCalled();
+			expect(record.destroyPermanently).toHaveBeenCalledTimes(1);
+		});
 	});
 });
