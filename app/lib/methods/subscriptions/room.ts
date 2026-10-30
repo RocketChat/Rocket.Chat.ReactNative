@@ -1,6 +1,5 @@
 import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { type ISubscription } from '@rocket.chat/sdk/interfaces';
 
@@ -140,7 +139,7 @@ export default class RoomSubscription {
 				}
 			}
 		} else if (ev === 'deleteMessage') {
-			InteractionManager.runAfterInteractions(async () => {
+			setImmediate(async () => {
 				if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
 					try {
 						const { _id } = ddpMessage.fields.args[0];
@@ -184,7 +183,7 @@ export default class RoomSubscription {
 				}
 			});
 		} else if (ev === 'deleteMessageBulk') {
-			InteractionManager.runAfterInteractions(async () => {
+			setImmediate(async () => {
 				try {
 					const { rid, excludePinned, ignoreDiscussion, ts, users, ids } = ddpMessage.fields.args[0] as IDeleteMessageBulkParams;
 					const { $gt, $lt, $gte, $lte } = ts || {};

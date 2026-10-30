@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { InteractionManager } from 'react-native';
 
 import log from '~/lib/methods/helpers/log';
 import RoomClass from '~/lib/methods/subscriptions/room';
@@ -19,9 +18,9 @@ export function useRoomSubscription(rid: string | undefined, tmid: string | unde
 		if (!sub) {
 			return;
 		}
-		const task = InteractionManager.runAfterInteractions(() => safeSubscribe(sub));
+		const immediate = setImmediate(() => safeSubscribe(sub));
 		return () => {
-			task.cancel();
+			clearImmediate(immediate);
 			sub.unsubscribe?.();
 		};
 	}, [sub]);

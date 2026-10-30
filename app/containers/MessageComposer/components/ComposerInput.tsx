@@ -1,5 +1,5 @@
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { TextInput, StyleSheet, type TextInputProps, InteractionManager, Text, View } from 'react-native';
+import { TextInput, StyleSheet, type TextInputProps, Text, View } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
@@ -347,32 +347,29 @@ export const ComposerInput = memo(
 
 		useFocusEffect(
 			useCallback(() => {
-				const task = InteractionManager.runAfterInteractions(() => {
-					emitter.on('addMarkdown', ({ style }) => {
-						const { start, end } = selectionRef.current;
-						const text = textRef.current;
-						const markdown = MARKDOWN_STYLES[style];
-						const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
-						setInput(newText, {
-							start: start + markdown.length,
-							end: start === end ? start + markdown.length : end + markdown.length
-						});
+				emitter.on('addMarkdown', ({ style }) => {
+					const { start, end } = selectionRef.current;
+					const text = textRef.current;
+					const markdown = MARKDOWN_STYLES[style];
+					const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
+					setInput(newText, {
+						start: start + markdown.length,
+						end: start === end ? start + markdown.length : end + markdown.length
 					});
-					emitter.on('toolbarMention', () => {
-						if (autocompleteType) {
-							return;
-						}
-						const { start, end } = selectionRef.current;
-						const text = textRef.current;
-						const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
-						setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
-						setAutocompleteParams({ text: '', type: '@' });
-					});
+				});
+				emitter.on('toolbarMention', () => {
+					if (autocompleteType) {
+						return;
+					}
+					const { start, end } = selectionRef.current;
+					const text = textRef.current;
+					const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
+					setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
+					setAutocompleteParams({ text: '', type: '@' });
 				});
 				return () => {
 					emitter.off('addMarkdown');
 					emitter.off('toolbarMention');
-					task?.cancel();
 				};
 			}, [autocompleteType, setInput, setAutocompleteParams])
 		);
