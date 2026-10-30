@@ -76,7 +76,7 @@ const Avatar = memo(
 				});
 			}
 
-			image = <AvatarImage style={avatarStyle} uri={uri} />;
+			image = <AvatarImage size={size} borderRadius={borderRadius} uri={uri} />;
 		}
 
 		if (onPress) {
