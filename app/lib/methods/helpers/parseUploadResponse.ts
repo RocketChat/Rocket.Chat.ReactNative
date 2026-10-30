@@ -1,6 +1,18 @@
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import { UploadHttpError } from './fileUpload/UploadHttpError';
-import { parseServerMessage } from './parseServerMessage';
+
+export const parseServerMessage = (responseText?: string): string | undefined => {
+	if (!responseText) {
+		return undefined;
+	}
+	try {
+		const parsed = JSON.parse(responseText);
+		const serverMessage = parsed?.error ?? parsed?.message;
+		return typeof serverMessage === 'string' && serverMessage.length > 0 ? serverMessage : undefined;
+	} catch {
+		return undefined;
+	}
+};
 
 export const parseUploadResponse = (status: number, body: string, retryAfterSeconds?: number): TRoomsMediaResponse => {
 	if (status < 200 || status >= 300) {

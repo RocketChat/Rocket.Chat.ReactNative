@@ -1,5 +1,5 @@
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { parseRetryAfter } from '../parseRetryAfter';
+import { parseRetryAfter } from '../retryAfter';
 import { parseUploadResponse } from '../parseUploadResponse';
 import { type IFormData } from './definitions';
 

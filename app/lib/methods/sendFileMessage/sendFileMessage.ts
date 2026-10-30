@@ -1,17 +1,9 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { type IUser, type TSendFileMessageFileInfo, type TUploadModel } from '~/definitions';
-import database from '~/lib/database';
-import FileUpload from '../helpers/fileUpload';
-import {
-	copyFileToCacheDirectoryIfNeeded,
-	createUploadProgressCallback,
-	createUploadRecord,
-	finalizeFailedUpload,
-	releaseUploadSlot
-} from './utils';
-import { uploadWithRetry } from './uploadWithRetry';
-import { type IFileUpload, type IFormData } from '../helpers/fileUpload/definitions';
+import { type IUser, type TSendFileMessageFileInfo } from '~/definitions';
+import { copyFileToCacheDirectoryIfNeeded } from './utils';
+import { uploadFileMessage } from './uploadFileMessage';
+import { type IFormData } from '../helpers/fileUpload/definitions';
 
 export async function sendFileMessage(
 	rid: string,
@@ -20,73 +12,55 @@ export async function sendFileMessage(
 	server: string,
 	user: Partial<Pick<IUser, 'id' | 'token'>>
 ): Promise<void> {
-	let uploadPath: string | null = '';
-	let upload: IFileUpload | null = null;
-	let uploadRecord: TUploadModel | null;
-	try {
-		const { id, token } = user;
-		const uploadUrl = `${server}/api/v1/rooms.upload/${rid}`;
-		fileInfo.rid = rid;
+	fileInfo.rid = rid;
 
-		const db = database.active;
+	await uploadFileMessage({
+		rid,
+		fileInfo,
+		tmid,
+		prepare: async () => {
+			const { id, token } = user;
+			const uploadUrl = `${server}/api/v1/rooms.upload/${rid}`;
 
-		[uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid });
-		if (!uploadPath || !uploadRecord) {
-			throw new Error("Couldn't create upload record");
-		}
+			fileInfo.path = await copyFileToCacheDirectoryIfNeeded(fileInfo.path, fileInfo.name);
 
-		fileInfo.path = await copyFileToCacheDirectoryIfNeeded(fileInfo.path, fileInfo.name);
-
-		const formData: IFormData[] = [];
-		formData.push({
-			name: 'file',
-			type: fileInfo.type,
-			filename: fileInfo.name || 'fileMessage',
-			uri: fileInfo.path
-		});
-
-		if (fileInfo.description) {
+			const formData: IFormData[] = [];
 			formData.push({
-				name: 'description',
-				data: fileInfo.description
+				name: 'file',
+				type: fileInfo.type,
+				filename: fileInfo.name || 'fileMessage',
+				uri: fileInfo.path
 			});
+
+			if (fileInfo.description) {
+				formData.push({
+					name: 'description',
+					data: fileInfo.description
+				});
+			}
+
+			if (fileInfo.msg) {
+				formData.push({
+					name: 'msg',
+					data: fileInfo.msg
+				});
+			}
+
+			if (tmid) {
+				formData.push({
+					name: 'tmid',
+					data: tmid
+				});
+			}
+
+			const headers = {
+				...RocketChatSettings.customHeaders,
+				'Content-Type': 'multipart/form-data',
+				'X-Auth-Token': token,
+				'X-User-Id': id
+			};
+
+			return { url: uploadUrl, headers, formData };
 		}
-
-		if (fileInfo.msg) {
-			formData.push({
-				name: 'msg',
-				data: fileInfo.msg
-			});
-		}
-
-		if (tmid) {
-			formData.push({
-				name: 'tmid',
-				data: tmid
-			});
-		}
-
-		const headers = {
-			...RocketChatSettings.customHeaders,
-			'Content-Type': 'multipart/form-data',
-			'X-Auth-Token': token,
-			'X-User-Id': id
-		};
-
-		const updateProgress = createUploadProgressCallback(db, uploadRecord);
-		await uploadWithRetry(
-			uploadPath,
-			() => {
-				upload = new FileUpload(uploadUrl, headers, formData, updateProgress);
-				return upload;
-			},
-			() => updateProgress(0, 1)
-		);
-		await db.write(async () => {
-			await uploadRecord?.destroyPermanently();
-		});
-		releaseUploadSlot(uploadPath, upload);
-	} catch (e) {
-		await finalizeFailedUpload({ uploadPath: uploadPath ?? '', error: e, upload });
-	}
+	});
 }

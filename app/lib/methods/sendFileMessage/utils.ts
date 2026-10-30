@@ -10,8 +10,7 @@ import i18n from '~/i18n';
 import database from '~/lib/database';
 import log from '../helpers/log';
 import { showToast } from '../helpers/showToast';
-import { getUploadErrorMessage } from '../helpers/getUploadErrorMessage';
-import { isRetryableUploadError } from '../helpers/isRetryableUploadError';
+import { getUploadErrorMessage, isRetryableUploadError } from '../helpers/uploadError';
 import { type IFileUpload } from '../helpers/fileUpload/definitions';
 import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
 

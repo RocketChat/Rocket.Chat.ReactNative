@@ -1,5 +1,5 @@
 import { UploadHttpError } from './fileUpload/UploadHttpError';
-import { parseRetryAfterFromMessage } from './parseRetryAfterFromMessage';
+import { parseRetryAfterFromMessage } from './retryAfter';
 
 const MAX_UPLOAD_ATTEMPTS = 4;
 

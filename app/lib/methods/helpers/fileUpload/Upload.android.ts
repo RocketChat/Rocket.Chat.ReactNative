@@ -1,7 +1,7 @@
 import * as FileSystem from 'expo-file-system/legacy';
 
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { getRetryAfterFromHeaders } from '../getRetryAfterFromHeaders';
+import { getRetryAfterFromHeaders } from '../retryAfter';
 import { parseUploadResponse } from '../parseUploadResponse';
 import { type IFormData } from './definitions';
 

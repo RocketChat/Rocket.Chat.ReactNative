@@ -1,4 +1,4 @@
-import { getUploadErrorMessage } from '../getUploadErrorMessage';
+import { getUploadErrorMessage, isRetryableUploadError } from '../uploadError';
 
 const TRANSLATED = ['error-file-too-large', 'error-too-many-requests', 'error-invalid-file-type', 'error-message-size-exceeded'];
 
@@ -102,5 +102,15 @@ describe('getUploadErrorMessage', () => {
 
 	it('falls back to a generic notice when a permanent failure carries a rate limit message with no wait', () => {
 		expect(getUploadErrorMessage({ errorStatus: 400, errorMessage: 'error-too-many-requests' })).toBe('FileUpload_Error');
+	});
+});
+
+describe('isRetryableUploadError', () => {
+	it.each([[undefined], [null], [0], [200], [401], [403], [408], [429], [500], [502], [503]])('allows a retry for %p', status => {
+		expect(isRetryableUploadError(status)).toBe(true);
+	});
+
+	it.each([[400], [404], [405], [410], [413], [415], [422]])('refuses a retry for %p', status => {
+		expect(isRetryableUploadError(status)).toBe(false);
 	});
 });

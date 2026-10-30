@@ -14,8 +14,7 @@ import { type TSupportedThemes, withTheme } from '~/theme';
 import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '~/definitions';
 import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import { cancelUpload, isUploadActive } from '~/lib/methods/sendFileMessage/utils';
-import { getUploadErrorMessage } from '~/lib/methods/helpers/getUploadErrorMessage';
-import { isRetryableUploadError } from '~/lib/methods/helpers/isRetryableUploadError';
+import { getUploadErrorMessage, isRetryableUploadError } from '~/lib/methods/helpers/uploadError';
 
 const styles = StyleSheet.create({
 	container: {

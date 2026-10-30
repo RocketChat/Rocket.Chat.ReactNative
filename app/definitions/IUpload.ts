@@ -12,8 +12,8 @@ export interface IUpload {
 	store?: string;
 	progress?: number;
 	error?: boolean;
-	errorStatus?: number;
-	errorMessage?: string;
+	errorStatus?: number | null;
+	errorMessage?: string | null;
 	subscription?: { id: string };
 	msg?: string;
 	width?: number;
