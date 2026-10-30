@@ -1,9 +1,8 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-
 import { type IUser, type TSendFileMessageFileInfo } from '~/definitions';
 import { copyFileToCacheDirectoryIfNeeded } from './utils';
 import { uploadFileMessage } from './uploadFileMessage';
 import { type IFormData } from '../helpers/fileUpload/definitions';
+import { getUploadHeaders } from '../helpers/getUploadHeaders';
 
 export async function sendFileMessage(
 	rid: string,
@@ -19,7 +18,6 @@ export async function sendFileMessage(
 		fileInfo,
 		tmid,
 		prepare: async () => {
-			const { id, token } = user;
 			const uploadUrl = `${server}/api/v1/rooms.upload/${rid}`;
 
 			fileInfo.path = await copyFileToCacheDirectoryIfNeeded(fileInfo.path, fileInfo.name);
@@ -53,14 +51,7 @@ export async function sendFileMessage(
 				});
 			}
 
-			const headers = {
-				...RocketChatSettings.customHeaders,
-				'Content-Type': 'multipart/form-data',
-				'X-Auth-Token': token,
-				'X-User-Id': id
-			};
-
-			return { url: uploadUrl, headers, formData };
+			return { url: uploadUrl, headers: getUploadHeaders(user), formData };
 		}
 	});
 }

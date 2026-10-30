@@ -1,10 +1,9 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-
 import { type TSendFileMessageFileInfo, type IUser } from '~/definitions';
 import { Encryption } from '~/lib/encryption';
 import { copyFileToCacheDirectoryIfNeeded } from './utils';
 import { uploadFileMessage } from './uploadFileMessage';
 import { type IFormData } from '../helpers/fileUpload/definitions';
+import { getUploadHeaders } from '../helpers/getUploadHeaders';
 import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
 import { parseServerMessage } from '../helpers/parseUploadResponse';
 import fetch from '../helpers/fetch';
@@ -21,13 +20,7 @@ export async function sendFileMessageV2(
 		fileInfo,
 		tmid,
 		prepare: async () => {
-			const { id, token } = user;
-			const headers = {
-				...RocketChatSettings.customHeaders,
-				'Content-Type': 'multipart/form-data',
-				'X-Auth-Token': token,
-				'X-User-Id': id
-			};
+			const headers = getUploadHeaders(user);
 
 			const { file, getContent, fileContent } = await Encryption.encryptFile(rid, fileInfo);
 			file.path = await copyFileToCacheDirectoryIfNeeded(file.path, file.name);
