@@ -9,6 +9,7 @@ import styles from './styles';
 import { useTheme } from '~/theme';
 import usePreviewFormatText from '~/lib/hooks/usePreviewFormatText';
 import { type IDirectoryItem } from './index';
+import { getAccessibilityLabel } from './getAccessibilityLabel';
 
 export { ROW_HEIGHT } from '../NativeListRow/constants';
 
@@ -34,7 +35,7 @@ const DirectoryItem = ({
 			subtitle={formattedDescription || undefined}
 			onPress={onPress}
 			testID={testID}
-			accessibilityLabel={`${title || ''} ${rightLabel || ''}`}
+			accessibilityLabel={getAccessibilityLabel({ title, rightLabel, disabledReason })}
 			isFirst={isFirst}
 			isLast={isLast}
 			disabled={!!disabledReason}

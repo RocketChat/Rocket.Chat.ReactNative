@@ -614,7 +614,11 @@ class Encryption {
 		}
 
 		const { E2E_Enable, E2E_Enable_Encrypt_Files } = store.getState().settings;
-		if (!E2E_Enable || !subscription.encrypted || (E2E_Enable_Encrypt_Files !== undefined && !E2E_Enable_Encrypt_Files)) {
+		if (
+			E2E_Enable === false ||
+			!subscription.encrypted ||
+			(E2E_Enable_Encrypt_Files !== undefined && !E2E_Enable_Encrypt_Files)
+		) {
 			// Send a non encrypted message
 			return { file };
 		}
@@ -631,7 +635,7 @@ class Encryption {
 		if (!subscription) {
 			return false;
 		}
-		if (!subscription.encrypted || !store.getState().settings.E2E_Enable) {
+		if (!subscription.encrypted || store.getState().settings.E2E_Enable === false) {
 			return true;
 		}
 		try {

@@ -28,7 +28,7 @@ describe.each([
 			</Provider>
 		);
 
-		expect(screen.getByHintText('Waiting for encryption keys')).toBeOnTheScreen();
+		expect(screen.getByLabelText('Encrypted room  Waiting for encryption keys')).toBeOnTheScreen();
 		fireEvent.press(screen.getAllByTestId('directory-item').at(-1)!);
 
 		expect(onPress).not.toHaveBeenCalled();

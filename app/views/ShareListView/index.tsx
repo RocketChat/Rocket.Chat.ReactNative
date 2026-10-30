@@ -26,13 +26,14 @@ import { getSubscriptionSearchClause } from '~/lib/database/utils';
 import styles from './styles';
 import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '~/definitions';
 import { type ShareInsideStackParamList } from '~/definitions/navigationTypes';
-import { getRoomAvatar, hasNativeHeaderBar, isAndroid, isIOS } from '~/lib/methods/helpers';
+import { compareServerVersion, getRoomAvatar, hasNativeHeaderBar, isAndroid, isIOS } from '~/lib/methods/helpers';
 import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
 import { nativeHeaderContentInset } from '~/lib/methods/helpers/navigation';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { shareSetParams } from '~/actions/share';
 import { appStart } from '~/actions/app';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '~/lib/encryption/utils';
+import { E2E_BANNER_TYPE } from '~/lib/constants/keys';
 
 interface IFileToShare {
 	filename: string;
@@ -60,6 +61,7 @@ interface INavigationOption {
 
 interface IShareListViewProps extends INavigationOption {
 	server: string;
+	serverVersion: string;
 	connecting: boolean;
 	isAuthenticated: boolean;
 	token: string;
@@ -67,6 +69,7 @@ interface IShareListViewProps extends INavigationOption {
 	theme: TSupportedThemes;
 	airGappedRestrictionRemainingDays: number | undefined;
 	encryptionEnabled: boolean;
+	encryptionPasswordRequired: boolean;
 	shareExtensionParams: Record<string, any>;
 	dispatch: Dispatch;
 	insets: EdgeInsets;
@@ -184,7 +187,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		if (nextState.searching !== searching) {
 			return true;
 		}
-		const { server, userId, isAuthenticated, connecting, encryptionEnabled } = this.props;
+		const { server, userId, isAuthenticated, connecting, encryptionEnabled, encryptionPasswordRequired } = this.props;
 		if (server !== nextProps.server) {
 			return true;
 		}
@@ -198,6 +201,9 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 			return true;
 		}
 		if (encryptionEnabled !== nextProps.encryptionEnabled) {
+			return true;
+		}
+		if (encryptionPasswordRequired !== nextProps.encryptionPasswordRequired) {
 			return true;
 		}
 
@@ -246,6 +252,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 	};
 
 	query = async (text?: string) => {
+		const { serverVersion } = this.props;
 		const db = database.active;
 		const defaultWhereClause = [
 			Q.where('archived', false),
@@ -256,6 +263,9 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		] as (Q.WhereDescription | Q.Skip | Q.Take | Q.SortBy | Q.Or)[];
 		if (text) {
 			defaultWhereClause.push(getSubscriptionSearchClause(text));
+		}
+		if (compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
+			defaultWhereClause.push(Q.where('encrypted', Q.notEq(true)));
 		}
 		const data = (await db
 			.get('subscriptions')
@@ -405,9 +415,9 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 	};
 
 	getUnavailableReason = (item: TSubscriptionModel) => {
-		const { encryptionEnabled } = this.props;
+		const { encryptionEnabled, encryptionPasswordRequired } = this.props;
 		if (isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: item.encrypted })) {
-			return I18n.t('Share_encrypted_room_password_required');
+			return I18n.t(encryptionPasswordRequired ? 'Share_encrypted_room_password_required' : 'Share_encrypted_room_key_missing');
 		}
 		if (isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: item.encrypted, E2EKey: item.E2EKey })) {
 			return I18n.t('Share_encrypted_room_key_missing');
@@ -494,7 +504,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 
 	render = () => {
 		const { chats, loading, searchResults, searching, serversCount } = this.state;
-		const { theme, insets, encryptionEnabled } = this.props;
+		const { theme, insets, encryptionEnabled, encryptionPasswordRequired } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator />;
@@ -533,7 +543,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 			<SafeAreaView testID='share-list-view'>
 				<FlatList
 					data={searching ? searchResults : chats}
-					extraData={encryptionEnabled}
+					extraData={[encryptionEnabled, encryptionPasswordRequired]}
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
 					contentContainerStyle={hasNativeHeaderBar ? searching && styles.nativeSearchContent : { paddingBottom: insets.bottom }}
@@ -557,9 +567,11 @@ const mapStateToProps = ({ login, server, share, settings, encryption }: IApplic
 	token: login?.user?.token as string,
 	isAuthenticated: login?.isAuthenticated,
 	server: server?.server,
+	serverVersion: server?.version,
 	connecting: server?.connecting,
 	shareExtensionParams: share?.params,
 	encryptionEnabled: encryption.enabled,
+	encryptionPasswordRequired: encryption.banner === E2E_BANNER_TYPE.REQUEST_PASSWORD,
 	airGappedRestrictionRemainingDays:
 		typeof settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days === 'number'
 			? settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days

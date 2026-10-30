@@ -207,6 +207,14 @@ describe('Encryption.encryptFile', () => {
 		expect(mockRoomEncryptFile).not.toHaveBeenCalled();
 	});
 
+	it('does not upload the plain file while workspace settings are still loading', async () => {
+		mockGetState.mockReturnValue({ settings: {} });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		mockHasSessionKey.mockReturnValue(false);
+
+		await expect(encryption.encryptFile('r1', file)).rejects.toThrow('Room encryption key is not available');
+	});
+
 	it('encrypts the file when the room is encrypted and a session key is available', async () => {
 		mockGetState.mockReturnValue({ settings: { E2E_Enable: true } });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
@@ -259,6 +267,14 @@ describe('Encryption.canSendToRoom', () => {
 
 	it('blocks encrypted rooms without a session key', async () => {
 		mockGetState.mockReturnValue({ settings: { E2E_Enable: true }, encryption: { enabled: true, banner: '' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		mockHasSessionKey.mockReturnValue(false);
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(false);
+	});
+
+	it('blocks encrypted rooms without a session key while workspace settings are still loading', async () => {
+		mockGetState.mockReturnValue({ settings: {}, encryption: { enabled: true, banner: '' } });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
 		mockHasSessionKey.mockReturnValue(false);
 

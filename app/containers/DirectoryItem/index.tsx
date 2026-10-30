@@ -9,6 +9,7 @@ import { useTheme } from '~/theme';
 import { MarkdownPreview } from '../markdown';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { showToast } from '~/lib/methods/helpers/showToast';
+import { getAccessibilityLabel } from './getAccessibilityLabel';
 
 export const ROW_HEIGHT = 54;
 interface IDirectoryItemLabel {
@@ -60,8 +61,7 @@ const DirectoryItem = ({
 		<View
 			testID={testID}
 			accessible
-			accessibilityLabel={`${title || ''} ${rightLabel || ''}`}
-			accessibilityHint={disabledReason}
+			accessibilityLabel={getAccessibilityLabel({ title, rightLabel, disabledReason })}
 			accessibilityState={{ disabled: !!disabledReason }}
 			importantForAccessibility='yes'>
 			<Touch

@@ -1296,7 +1296,7 @@ describe('handshake', () => {
 		const waiting = room.handshake();
 		failImport(new Error('cannot decrypt'));
 
-		await expect(waiting).rejects.toThrow('Room handshake failed');
+		await expect(waiting).rejects.toBeUndefined();
 		await running;
 		expect(room.ready).toBe(false);
 		expect(room.establishing).toBe(false);

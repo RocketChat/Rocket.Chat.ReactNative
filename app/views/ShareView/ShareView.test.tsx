@@ -483,15 +483,16 @@ describe('ShareView', () => {
 		expect(shareView.props.navigation.pop).toHaveBeenCalledTimes(1);
 	});
 
-	it('pops ordinary ShareView before the first await so a second tap cannot send again', () => {
+	it('pops ordinary ShareView before the first await so a second tap cannot send again', async () => {
 		const shareView = makeInstance({ mime: 'text/plain', serverVersion: '8.5.0' });
 		shareView.state.attachments = [];
 		shareView.state.text = 'ordinary shared text';
 		(shareView as any).finishShareView = jest.fn();
 
-		shareView.send();
+		const sending = shareView.send();
 
 		expect(shareView.props.navigation.pop).toHaveBeenCalledTimes(1);
+		await sending;
 	});
 
 	it('bridges real origin media callbacks into ShareView and restores current text and Quotes', async () => {

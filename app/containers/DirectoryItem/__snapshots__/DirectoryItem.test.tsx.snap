@@ -701,7 +701,7 @@ exports[`Story Snapshots: Disabled should match snapshot 1`] = `
     >
       <View
         accessibilityHint="Waiting for encryption keys"
-        accessibilityLabel="Encrypted room "
+        accessibilityLabel="Encrypted room  Waiting for encryption keys"
         accessibilityRole="button"
         accessibilityState={
           {

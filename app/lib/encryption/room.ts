@@ -107,7 +107,7 @@ export default class EncryptionRoom {
 
 	failHandshake = () => {
 		this.establishing = false;
-		this.readyPromise.reject(new Error('Room handshake failed'));
+		this.readyPromise.reject();
 		this.readyPromise = this.createReadyPromise();
 	};
 
