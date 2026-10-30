@@ -41,11 +41,13 @@ export async function uploadFileMessage({
 			},
 			() => updateProgress(0, 1)
 		);
-		await retryWhileRateLimited(
-			uploadPath,
-			() => ({ slot: upload, result: Promise.resolve(afterUpload?.(response)) }),
-			async () => {}
-		);
+		if (afterUpload) {
+			await retryWhileRateLimited(
+				uploadPath,
+				() => ({ slot: upload, result: afterUpload(response) }),
+				async () => {}
+			);
+		}
 		await db.write(async () => {
 			await uploadRecord.destroyPermanently();
 		});
