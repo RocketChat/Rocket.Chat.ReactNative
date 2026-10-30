@@ -833,6 +833,8 @@
   "Settings": "Beállítások",
   "Settings_succesfully_changed": "A beállítások sikeresen megváltoztak!",
   "Share": "Megosztás",
+  "Share_encrypted_room_key_missing": "Várakozás a titkosítási kulcsokra",
+  "Share_encrypted_room_password_required": "Adja meg az E2EE jelszavát az ide történő megosztáshoz",
   "Share_Link": "Megosztás link",
   "Share_no_valid_attachments": "A megosztott fájl nem található",
   "Share_this_app": "Ezen alkalmazás megosztása",

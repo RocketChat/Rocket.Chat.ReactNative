@@ -38,7 +38,8 @@ import {
 import { type TRoomOrPreview } from '~/definitions/TRoom';
 import { sendAttachments } from '~/lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '~/lib/methods/sendMessage';
-import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '~/lib/methods/helpers';
+import { Encryption } from '~/lib/encryption';
+import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked, showErrorAlert } from '~/lib/methods/helpers';
 import {
 	createMessageActionStore,
 	MessageActionProvider,
@@ -249,8 +250,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		if (this.isShareExtension) {
 			this.setState({ loading: true });
 			sendLoadingEvent({ visible: true });
-
-			// if it's not share extension this can close
+			if (!(await Encryption.canSendToRoom(room.rid))) {
+				sendLoadingEvent({ visible: false });
+				this.setState({ loading: false });
+				showErrorAlert(I18n.t('missing_room_e2ee_description'), I18n.t('missing_room_e2ee_title'));
+				return;
+			}
 		} else {
 			this.sentMessage = true;
 			this.finishShareView('', []);

@@ -621,6 +621,8 @@
   "Settings": "设置",
   "Settings_succesfully_changed": "设置更改成功！",
   "Share": "分享",
+  "Share_encrypted_room_key_missing": "正在等待加密密钥",
+  "Share_encrypted_room_password_required": "输入您的 E2EE 密码以在此分享",
   "Share_Link": "分享链接",
   "Share_no_valid_attachments": "找不到共享的文件",
   "Share_this_app": "分享此 app",

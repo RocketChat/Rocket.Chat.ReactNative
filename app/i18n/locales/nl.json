@@ -736,6 +736,8 @@
   "Settings": "Instellingen",
   "Settings_succesfully_changed": "Instellingen succesvol gewijzigd!",
   "Share": "Delen",
+  "Share_encrypted_room_key_missing": "Wachten op versleutelingssleutels",
+  "Share_encrypted_room_password_required": "Voer je E2EE-wachtwoord in om hier te delen",
   "Share_Link": "Deel link",
   "Share_no_valid_attachments": "Het gedeelde bestand kon niet worden gevonden",
   "Share_this_app": "Deel deze app",

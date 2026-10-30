@@ -56,6 +56,13 @@ jest.mock('~/containers/MessageComposer/components/Attachments/AttachmentActionS
 jest.mock('~/lib/methods/sendMessage', () => ({
 	sendMessage: jest.fn()
 }));
+jest.mock('~/lib/encryption', () => ({
+	Encryption: { canSendToRoom: jest.fn(() => Promise.resolve(true)) }
+}));
+jest.mock('~/lib/methods/helpers/info', () => ({
+	...jest.requireActual('~/lib/methods/helpers/info'),
+	showErrorAlert: jest.fn()
+}));
 
 const { showActionSheetRef } = require('~/containers/ActionSheet');
 const { AttachmentActionSheet } = require('~/containers/MessageComposer/components/Attachments/AttachmentActionSheet');
@@ -443,6 +450,24 @@ describe('ShareView', () => {
 		expect(shareView.props.dispatch).toHaveBeenCalledWith(appStart({ root: RootEnum.ROOT_INSIDE }));
 	});
 
+	it('keeps the share extension open and sends nothing when the encrypted room is not ready', async () => {
+		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0', isShareExtension: true });
+		const { Encryption } = require('~/lib/encryption');
+		Encryption.canSendToRoom.mockResolvedValueOnce(false);
+		const { showErrorAlert } = require('~/lib/methods/helpers/info');
+		const sendFileMessage = jest.spyOn(require('~/lib/methods/sendFileMessage'), 'sendFileMessage');
+		shareView.state.attachments[0].canUpload = true;
+
+		await shareView.send();
+		const sendFileMessageCalls = sendFileMessage.mock.calls.length;
+		sendFileMessage.mockRestore();
+
+		expect(sendFileMessageCalls).toBe(0);
+		expect(showErrorAlert).toHaveBeenCalledTimes(1);
+		expect(shareView.state.loading).toBe(false);
+		expect(shareView.props.dispatch).not.toHaveBeenCalled();
+	});
+
 	it('sends ordinary ShareView text-only content before popping', async () => {
 		const shareView = makeInstance({ mime: 'text/plain', serverVersion: '8.5.0' });
 		shareView.state.attachments = [];
@@ -456,6 +481,18 @@ describe('ShareView', () => {
 		expect(sendMessage).toHaveBeenCalledWith('room-id', 'ordinary shared text', '', expect.objectContaining({ id: 'user-id' }));
 		expect(finishShareView).toHaveBeenCalledWith('', []);
 		expect(shareView.props.navigation.pop).toHaveBeenCalledTimes(1);
+	});
+
+	it('pops ordinary ShareView before the first await so a second tap cannot send again', async () => {
+		const shareView = makeInstance({ mime: 'text/plain', serverVersion: '8.5.0' });
+		shareView.state.attachments = [];
+		shareView.state.text = 'ordinary shared text';
+		(shareView as any).finishShareView = jest.fn();
+
+		const sending = shareView.send();
+
+		expect(shareView.props.navigation.pop).toHaveBeenCalledTimes(1);
+		await sending;
 	});
 
 	it('bridges real origin media callbacks into ShareView and restores current text and Quotes', async () => {
