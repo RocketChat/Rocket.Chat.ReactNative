@@ -1,0 +1,13 @@
+{
+	"plaintext": "UGxhaW4gZmlsZSBieXRlcyB3cml0dGVuIGJ5IHRoZSB3ZWIgY2xpZW50LgpQbGFpbiBmaWxlIGJ5dGVzIHdyaXR0ZW4gYnkgdGhlIHdlYiBjbGllbnQuClBsYWluIGZpbGUgYnl0ZXMgd3JpdHRlbiBieSB0aGUgd2ViIGNsaWVudC4KUGxhaW4gZmlsZSBieXRlcyB3cml0dGVuIGJ5IHRoZSB3ZWIgY2xpZW50Lgo=",
+	"key": {
+		"key_ops": ["encrypt", "decrypt"],
+		"ext": true,
+		"alg": "A256CTR",
+		"kty": "oct",
+		"k": "9UqYMe0QLXOoNsP-1iJmbEO623Z7q2-tdeByJ7WHUtU"
+	},
+	"iv": "OBBb8CNY4N1mVcgIS4U8Cw==",
+	"hash": "74b90e8492574a38c1b70e1cda6153da85d7ee6cba3625f0f2d3175327dea91c",
+	"encrypted": "UbioHG+Y9dp/DpABdKd92O93BRowBarfLPfyS2GFqPioqlATp+5INwF1d9H1DKJUPR3xaUIAB+PMBbC8/gB8AGp7+KxvZHAXQgeHvkjvYsOUZ5ZD65K6ICkw6rXYLVjy4sQxfL2WPKaK2Kv6kmnFaY/crRVlvr/fevzhuauu537sjIE3BvtKx3DEGw6Chcnth3yYcZFpjG3cBkV9nUjf6Kv5rt7RLA+bkLToPDtLyyc="
+}

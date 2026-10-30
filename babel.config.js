@@ -25,6 +25,9 @@ module.exports = {
 		}
 	],
 	env: {
+		test: {
+			plugins: ['@babel/plugin-transform-dynamic-import']
+		},
 		production: {
 			plugins: ['transform-remove-console']
 		}

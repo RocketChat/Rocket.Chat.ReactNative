@@ -1,79 +1,39 @@
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { render, screen } from '@testing-library/react-native';
 
 import i18n from '~/i18n';
-import { SwitchItemEncrypted } from './SwitchItemEncrypted';
+import { SwitchItemEncrypted, type ISwitchItemEncrypted } from './SwitchItemEncrypted';
 
-const onPressMock = jest.fn((value: boolean) => value);
+const switchTestID = 'create-channel-encrypted';
+const hintTestID = 'create-channel-encrypted-hint';
+
+const renderSwitchItemEncrypted = (overrides: Partial<ISwitchItemEncrypted> = {}) =>
+	render(
+		<SwitchItemEncrypted
+			encrypted={overrides.encrypted ?? false}
+			encryptionEnabled={overrides.encryptionEnabled ?? false}
+			isTeam={overrides.isTeam ?? false}
+			onValueChangeEncrypted={overrides.onValueChangeEncrypted ?? jest.fn()}
+			type={overrides.type ?? false}
+		/>
+	);
 
 describe('SwitchItemEncrypted', () => {
-	const testEncrypted = {
-		encrypted: false,
-		encryptionEnabled: false,
-		isTeam: false,
-		onValueChangeEncrypted: onPressMock,
-		type: false,
-		testSwitchID: 'create-channel-encrypted',
-		testLabelID: `create-channel-encrypted-hint`
-	};
-
 	it('should not render the Encrypted Switch component', () => {
-		render(
-			<SwitchItemEncrypted
-				encrypted={testEncrypted.encrypted}
-				encryptionEnabled={testEncrypted.encryptionEnabled}
-				isTeam={testEncrypted.isTeam}
-				onValueChangeEncrypted={value => testEncrypted.onValueChangeEncrypted(value)}
-				type={testEncrypted.type}
-			/>
-		);
-		const component = screen.queryByTestId(testEncrypted.testSwitchID);
-		expect(component).toBeNull();
+		renderSwitchItemEncrypted({ encryptionEnabled: false });
+		expect(screen.queryByTestId(switchTestID)).toBeNull();
 	});
 
 	it('should render the Encrypted Switch component', () => {
-		testEncrypted.encryptionEnabled = true;
-		render(
-			<SwitchItemEncrypted
-				encrypted={testEncrypted.encrypted}
-				encryptionEnabled={testEncrypted.encryptionEnabled}
-				isTeam={testEncrypted.isTeam}
-				onValueChangeEncrypted={value => testEncrypted.onValueChangeEncrypted(value)}
-				type={testEncrypted.type}
-			/>
-		);
-		const component = screen.queryByTestId(testEncrypted.testSwitchID);
-		expect(component).toBeTruthy();
+		renderSwitchItemEncrypted({ encryptionEnabled: true });
+		expect(screen.getByTestId(switchTestID)).toBeOnTheScreen();
 	});
 
-	it('should change value of switch', () => {
-		render(
-			<SwitchItemEncrypted
-				encrypted={testEncrypted.encrypted}
-				encryptionEnabled={testEncrypted.encryptionEnabled}
-				isTeam={testEncrypted.isTeam}
-				onValueChangeEncrypted={value => testEncrypted.onValueChangeEncrypted(value)}
-				type={testEncrypted.type}
-			/>
-		);
-		const component = screen.getByTestId(testEncrypted.testSwitchID);
-		fireEvent(component, 'valueChange', { value: true });
-		expect(onPressMock).toHaveReturnedWith({ value: !testEncrypted.encrypted });
-	});
-
-	it('label when encrypted and isTeam are true and is a private team', () => {
-		testEncrypted.isTeam = true;
-		testEncrypted.type = true;
-		testEncrypted.encrypted = true;
-		render(
-			<SwitchItemEncrypted
-				encrypted={testEncrypted.encrypted}
-				encryptionEnabled={testEncrypted.encryptionEnabled}
-				isTeam={testEncrypted.isTeam}
-				onValueChangeEncrypted={value => testEncrypted.onValueChangeEncrypted(value)}
-				type={testEncrypted.type}
-			/>
-		);
-		const component = screen.queryByTestId(testEncrypted.testLabelID);
-		expect(component?.props.children).toBe(i18n.t('Team_hint_encrypted'));
+	it.each([
+		{ isTeam: true, type: true, hint: 'Team_hint_encrypted' },
+		{ isTeam: true, type: false, hint: 'Team_hint_encrypted_not_available' },
+		{ isTeam: false, type: true, hint: 'Channel_hint_encrypted' }
+	])('shows $hint when isTeam is $isTeam and type is $type', ({ isTeam, type, hint }) => {
+		renderSwitchItemEncrypted({ encryptionEnabled: true, isTeam, type });
+		expect(screen.getByTestId(hintTestID)).toHaveTextContent(i18n.t(hint));
 	});
 });

@@ -1,0 +1,12 @@
+{
+	"v1": {
+		"keyID": "0785902a6c22",
+		"sessionKeyExportedString": "{\"key_ops\":[\"encrypt\",\"decrypt\"],\"ext\":true,\"alg\":\"A128CBC\",\"kty\":\"oct\",\"k\":\"VfBCjgfnkswP4znb-00Sbg\"}",
+		"E2EKey": "0785902a6c22F1XcinGbl5T2I4NQF/SVmBZ7JtwLCYqSrcGE5n1/8RHN9jiKTFUah2qKO45SDie2nI3m+GDwLYgFshk8U9O4DlXUrc8ysKWS7iJ2ED2aXPgIbwko6KqZ78gcRCsnDTkCcA7oHkip1zrkhnbPxV5IXlOv5wX4S6W5zbXj7z7vsilUmYUKmIrqFxlVYQuf27KrCX/ekQNapA1E+kgbE6Vkb27Q8+OCta/ize9bIUqmNzaiKXdeIWicKWfdeDtma6CmutpTsfp2O+xqpQtAq02e3ZcoNlBtaZwKRQe8q26rU22DvhSPcx122xuK+l7qcmq1fDWzzaTQk6ZVFEQMUXOD2Q=="
+	},
+	"v2": {
+		"keyID": "38eda34e-82f1-42dc-9430-53cb350b1b8c",
+		"sessionKeyExportedString": "{\"key_ops\":[\"encrypt\",\"decrypt\"],\"ext\":true,\"alg\":\"A256GCM\",\"kty\":\"oct\",\"k\":\"7_rOlBByOD7clU0W0OoimNNEyh6TdiYyu4HxUarW3Ws\"}",
+		"E2EKey": "38eda34e-82f1-42dc-9430-53cb350b1b8cMxPJcvlRDnBJeAHqQa2hmtmgEUlwhMYL8nxTRI3xiu4Ew+dhIWlwYxbrB6Abpuip6ZpKl+pvjE3Z3RENvM+Ji2db9C1zXs+2dAacHGMDWdsaEoZIM/j/iF6T1vDMclh6b+yl2PwmNMYI5j5VwhZewhTTeRNr/UST/L0wUmSqE2jFJOM5LIw73j/M2z55KVczWaRaWWzb29OMuckpMRSJPcFfCV/qdcIpelKuKciMzkTmjDrYmMYFCwvpCiYDkkGBP6Kythu48nOM40KZ8AKN6Ypno6RCxc0YMnpH283NP1otU/mML4hl+AH151NNBKX+rN6JPCiKhdEik3R+3O2Hmw=="
+	}
+}
