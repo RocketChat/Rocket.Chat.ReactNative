@@ -1,5 +1,5 @@
 import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { type ReactElement, useCallback, useEffect, useLayoutEffect, useReducer, useRef } from 'react';
+import { type ReactElement, useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from 'react';
 import { SectionList, Text } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { sendLoadingEvent } from '~/containers/Loading';
 import ActivityIndicator from '~/containers/ActivityIndicator';
+import Button from '~/containers/Button';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import SafeAreaView from '~/containers/SafeAreaView';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
@@ -88,6 +89,13 @@ const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], pa
 	};
 };
 
+const getSections = (members: TUserModel[], hasRoles: boolean): TMembersSection[] => {
+	if (hasRoles) {
+		return groupMembersByRole(members);
+	}
+	return members.length ? [{ data: members }] : [];
+};
+
 const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
 	const { colors } = useTheme();
 	return (
@@ -159,8 +167,10 @@ const RoomMembersView = (): ReactElement => {
 
 	const membersHaveRoles = isMembersOrderedByRoleSupported(serverVersion, state.room.t);
 
+	const needsRoomRoles = !membersHaveRoles && !isGroupChat(state.room);
+
 	const fetchRoles = () => {
-		if (isGroupChat(state.room) || membersHaveRoles) {
+		if (!needsRoomRoles) {
 			return;
 		}
 		if (
@@ -195,7 +205,7 @@ const RoomMembersView = (): ReactElement => {
 				roomType: t,
 				type,
 				filter,
-				skip: PAGE_SIZE * page - removedRows,
+				skip: Math.max(PAGE_SIZE * page - removedRows, 0),
 				limit: PAGE_SIZE,
 				allUsers
 			});
@@ -225,7 +235,7 @@ const RoomMembersView = (): ReactElement => {
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			fetchMembers();
+			updateState({ loadFailed: false });
 		});
 
 		return unsubscribe;
@@ -243,12 +253,13 @@ const RoomMembersView = (): ReactElement => {
 		viewAllTeamChannelsPermission,
 		viewAllTeamsPermission,
 		state.room?.rid,
-		state.room?.t
+		state.room?.t,
+		needsRoomRoles
 	]);
 
 	useEffect(() => {
 		fetchMembers();
-	}, [state.filter, state.allUsers]);
+	}, [state.filter, state.allUsers, state.loadFailed]);
 
 	const applyRoleChange = async (userId: string, role: string, isAdded: boolean) => {
 		if (!membersHaveRoles) {
@@ -261,14 +272,14 @@ const RoomMembersView = (): ReactElement => {
 		}));
 	};
 
+	const hasRole = (role: string, selectedUser: TUserModel) =>
+		membersHaveRoles ? !!selectedUser.roles?.includes(role) : fetchRole(role, selectedUser, state.roomRoles);
+
 	const removeMember = (userId: string) =>
 		updateState(({ members, removedRows }) => ({
 			members: members.filter(member => member._id !== userId),
 			removedRows: removedRows + 1
 		}));
-
-	const hasRole = (role: string, selectedUser: TUserModel) =>
-		membersHaveRoles ? !!selectedUser.roles?.includes(role) : fetchRole(role, selectedUser, state.roomRoles);
 
 	const debounceFilterChange = useDebounce((text: string) => {
 		const trimmedFilter = text.trim();
@@ -299,7 +310,7 @@ const RoomMembersView = (): ReactElement => {
 				return;
 			}
 			// We only update 'allUsers'. 'filter' remains in state, so the next fetch uses both.
-			updateState({ ...firstPageState, allUsers: status });
+			updateState({ ...firstPageState, allUsers: status, isLoading: false });
 		};
 
 		navigation.setOptions({
@@ -471,12 +482,27 @@ const RoomMembersView = (): ReactElement => {
 		});
 	};
 
-	const sections: TMembersSection[] = membersHaveRoles ? groupMembersByRole(state.members) : [{ data: state.members }];
+	const sections = useMemo(() => getSections(state.members, membersHaveRoles), [state.members, membersHaveRoles]);
+
+	let footer: ReactElement | null = null;
+	if (state.isLoading) {
+		footer = <ActivityIndicator />;
+	} else if (state.loadFailed && state.members.length) {
+		footer = (
+			<Button
+				title={I18n.t('Try_again')}
+				type='secondary'
+				small
+				onPress={() => updateState({ loadFailed: false })}
+				testID='room-members-view-retry'
+			/>
+		);
+	}
 
 	return (
 		<SafeAreaView testID='room-members-view'>
 			<SectionList
-				sections={sections.filter(section => section.data.length)}
+				sections={sections}
 				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				renderSectionHeader={({ section }) => (section.key ? <RoleGroupHeader group={section.key} /> : null)}
 				renderItem={({ item, index, section }) => (
@@ -490,7 +516,7 @@ const RoomMembersView = (): ReactElement => {
 						isLast={index === section.data.length - 1}
 					/>
 				)}
-				stickySectionHeadersEnabled={!hasNativeHeaderBar}
+				stickySectionHeadersEnabled={!hasNativeHeaderBar && membersHaveRoles}
 				removeClippedSubviews={isAndroid && !membersHaveRoles}
 				style={[styles.list, { backgroundColor: listBackgroundColor }]}
 				contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom }}
@@ -509,7 +535,7 @@ const RoomMembersView = (): ReactElement => {
 						)}
 					</>
 				}
-				ListFooterComponent={() => (state.isLoading ? <ActivityIndicator /> : null)}
+				ListFooterComponent={footer}
 				onEndReachedThreshold={0.1}
 				onEndReached={() => fetchMembers()}
 				ListEmptyComponent={() =>

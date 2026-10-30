@@ -19,6 +19,7 @@ let mockIsAndroid = false;
 let mockPermissions = [false, false, true, false, false, false];
 const mockShowActionSheet = jest.fn();
 const mockAddListener = jest.fn(() => jest.fn());
+const mockSetOptions = jest.fn();
 
 jest.mock('~/lib/methods/helpers/deviceInfo', () =>
 	Object.defineProperties(
@@ -33,7 +34,7 @@ jest.mock('~/lib/methods/helpers/deviceInfo', () =>
 jest.mock('@react-navigation/native', () => ({
 	...jest.requireActual('@react-navigation/native'),
 	useRoute: () => ({ params: { rid: 'room-id', room: { rid: 'room-id', t: 'c', name: 'general' }, joined: true } }),
-	useNavigation: () => ({ addListener: mockAddListener, setOptions: jest.fn(), navigate: jest.fn() })
+	useNavigation: () => ({ addListener: mockAddListener, setOptions: mockSetOptions, navigate: jest.fn() })
 }));
 
 jest.mock('~/lib/services/restApi', () => ({
@@ -281,6 +282,55 @@ describe('RoomMembersView roles', () => {
 			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(3));
 		});
 
+		it('shows Try again after a next page fails and requests that page again when pressed', async () => {
+			jest
+				.mocked(getRoomMembers)
+				.mockResolvedValueOnce(
+					Array.from({ length: 25 }, (_, index) => ({ _id: `id-${index}`, username: `user${index}` })) as any
+				)
+				.mockResolvedValueOnce(undefined as any)
+				.mockResolvedValueOnce([{ _id: 'id-25', username: 'user25' }] as any);
+			const { UNSAFE_getByType, findByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(1));
+			await act(async () => UNSAFE_getByType(SectionList).props.onEndReached());
+
+			fireEvent.press(await findByTestId('room-members-view-retry'));
+
+			await waitFor(() =>
+				expect(
+					UNSAFE_getByType(SectionList).props.sections.flatMap((section: any) => section.data.map((item: any) => item._id))
+				).toContain('id-25')
+			);
+			expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 25 }));
+		});
+
+		it('does not request the members again when the screen is focused with the list loaded', async () => {
+			const { findByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+			await findByTestId('room-members-view-item-owner.user');
+
+			const [, onFocus] = mockAddListener.mock.calls.find(([event]: any[]) => event === 'focus') as any[];
+			await act(async () => onFocus());
+
+			expect(getRoomMembers).toHaveBeenCalledTimes(1);
+		});
+
+		it('shows only the members of the status selected while the previous status was still loading', async () => {
+			let resolveAllMembers: (members: unknown[]) => void = () => {};
+			jest
+				.mocked(getRoomMembers)
+				.mockReturnValueOnce(new Promise(resolve => (resolveAllMembers = resolve)) as any)
+				.mockResolvedValueOnce([member] as any);
+			const { findByTestId, queryByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(1));
+
+			const [{ headerRight }] = mockSetOptions.mock.lastCall;
+			await act(async () => headerRight().props.actions[0].menu[0].onPress());
+			await findByTestId('room-members-view-item-member.user');
+			await act(async () => resolveAllMembers([owner]));
+
+			expect(queryByTestId('room-members-view-item-owner.user')).toBeNull();
+		});
+
 		it('does not fetch room roles separately', async () => {
 			const { getByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
 			await waitFor(() => getByTestId('room-members-view-item-owner.user'));
@@ -499,6 +549,13 @@ describe('RoomMembersView roles', () => {
 
 			expect(queryByTestId('room-members-view-header-owner')).toBeNull();
 			expect(queryByTestId('room-members-view-header-member')).toBeNull();
+		});
+
+		it('does not stick section headers when there are no role headers', async () => {
+			const { getByTestId, UNSAFE_getByType } = render(<RoomMembersView />, { wrapper: Wrapper });
+			await waitFor(() => getByTestId('room-members-view-item-owner.user'));
+
+			expect(UNSAFE_getByType(SectionList).props.stickySectionHeadersEnabled).toBe(false);
 		});
 
 		it('reads the owner checkmark from room roles', async () => {

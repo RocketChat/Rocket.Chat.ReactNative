@@ -1,6 +1,6 @@
-import { getMemberRoleGroup, groupMembersByRole } from '../groupMembersByRole';
+import { groupMembersByRole } from '../groupMembersByRole';
 
-describe('getMemberRoleGroup', () => {
+describe('groupMembersByRole', () => {
 	it.each([
 		[['owner'], 'owner'],
 		[['leader'], 'leader'],
@@ -10,13 +10,13 @@ describe('getMemberRoleGroup', () => {
 		[['leader', 'moderator'], 'leader'],
 		[[], 'member'],
 		[undefined, 'member']
-	])('maps %p to %s', (roles, group) => {
-		expect(getMemberRoleGroup(roles)).toBe(group);
-	});
-});
+	])('places a member with roles %p under %s', (roles, group) => {
+		const member = { _id: '1', roles };
 
-describe('groupMembersByRole', () => {
-	it('returns every role group, in role order, empty when no member has that role', () => {
+		expect(groupMembersByRole([member])).toEqual([{ key: group, data: [member] }]);
+	});
+
+	it('returns the groups that have members, in role order', () => {
 		const owner = { _id: '1', roles: ['owner'] };
 		const moderatorA = { _id: '3', roles: ['moderator'] };
 		const moderatorB = { _id: '4', roles: ['moderator'] };
@@ -24,7 +24,6 @@ describe('groupMembersByRole', () => {
 
 		expect(groupMembersByRole([owner, moderatorA, moderatorB, member])).toEqual([
 			{ key: 'owner', data: [owner] },
-			{ key: 'leader', data: [] },
 			{ key: 'moderator', data: [moderatorA, moderatorB] },
 			{ key: 'member', data: [member] }
 		]);
@@ -37,9 +36,11 @@ describe('groupMembersByRole', () => {
 
 		expect(groupMembersByRole([memberA, owner, memberB])).toEqual([
 			{ key: 'owner', data: [owner] },
-			{ key: 'leader', data: [] },
-			{ key: 'moderator', data: [] },
 			{ key: 'member', data: [memberA, memberB] }
 		]);
+	});
+
+	it('returns no groups when there are no members', () => {
+		expect(groupMembersByRole([])).toEqual([]);
 	});
 });
