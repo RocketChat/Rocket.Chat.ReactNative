@@ -6,7 +6,7 @@ import { type ISubscription, SubscriptionType } from '~/definitions';
 import i18n from '~/i18n';
 import { useVideoConf } from '~/lib/hooks/useVideoConf';
 import styles from '../styles';
-import { compareServerVersion } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { useE2EEWarning } from '../hooks';
 import { useActionSheet } from '~/containers/ActionSheet';
 import type { TActionSheetOptionsItem } from '~/containers/ActionSheet';

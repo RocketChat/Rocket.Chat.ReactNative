@@ -7,7 +7,7 @@ import { useTheme } from '~/theme';
 import { FormTextInput } from '../TextInput';
 import sharedStyles from '~/views/Styles';
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
-import { useDebounce } from '~/lib/methods/helpers';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
 import type { IApplicationState } from '~/definitions';
 import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 

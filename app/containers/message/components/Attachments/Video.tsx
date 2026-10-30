@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { type IUserMessage } from '~/definitions';
 import { type IAttachment } from '~/definitions/IAttachment';
 import I18n from '~/i18n';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { fileDownload } from '~/lib/methods/helpers/fileDownload';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { useTheme } from '~/theme';

@@ -15,16 +15,6 @@ jest.mock('@react-navigation/native', () => ({
 
 let mockIsIOS = true;
 let mockIsTablet = false;
-jest.mock('~/lib/methods/helpers', () =>
-	Object.defineProperties(
-		{ ...jest.requireActual('~/lib/methods/helpers') },
-		{
-			hasNativeHeaderBar: { get: () => mockIsIOS, configurable: true },
-			isTablet: { get: () => mockIsTablet, configurable: true }
-		}
-	)
-);
-
 jest.mock('~/lib/methods/helpers/deviceInfo', () =>
 	Object.defineProperties(
 		{ ...jest.requireActual('~/lib/methods/helpers/deviceInfo') },

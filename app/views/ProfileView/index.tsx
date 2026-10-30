@@ -20,7 +20,7 @@ import { LISTENER } from '~/containers/Toast';
 import { type IProfileParams } from '~/definitions';
 import { TwoFactorMethods } from '~/definitions/ITotp';
 import I18n from '~/i18n';
-import { compareServerVersion } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { headerLeftDrawer, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { events, logEvent } from '~/lib/methods/helpers/log';

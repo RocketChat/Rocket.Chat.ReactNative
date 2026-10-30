@@ -8,7 +8,7 @@ jest.mock('~/lib/database', () => ({
 	default: { active: { get: jest.fn() } }
 }));
 
-jest.mock('~/lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
 	__esModule: true,
 	isIOS: true
 }));

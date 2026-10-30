@@ -13,7 +13,7 @@ import fetch from '~/lib/methods/helpers/fetch';
 import Navigation from '~/lib/navigation/appNavigation';
 import { showToast } from '~/lib/methods/helpers/showToast';
 
-jest.mock('~/lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers/random', () => ({
 	random: jest.fn(() => 'trigger-fixed-id')
 }));
 

@@ -13,7 +13,7 @@ import { getThreadById } from '~/lib/database/services/Thread';
 import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
 import { store as reduxStore } from '~/lib/store/auxStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '~/actions/usersTyping';
-import { debounce } from '../helpers';
+import { debounce } from '../helpers/debounce';
 import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
 import { Encryption } from '~/lib/encryption';
 import {

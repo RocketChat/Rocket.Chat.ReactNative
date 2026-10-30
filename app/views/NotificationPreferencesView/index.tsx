@@ -11,7 +11,8 @@ import { type IRoomNotifications, type TRoomNotificationsModel } from '~/definit
 import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { isIOS, showErrorAlertWithEMessage } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
+import { showErrorAlertWithEMessage } from '~/lib/methods/helpers/info';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { saveNotificationSettings } from '~/lib/services/restApi';

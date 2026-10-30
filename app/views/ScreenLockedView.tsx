@@ -8,7 +8,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PasscodeEnter } from '../containers/Passcode';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants/localAuthentication';
 import { CustomIcon } from '../containers/CustomIcon';
-import { hasNotch } from '../lib/methods/helpers';
+import { hasNotch } from '../lib/methods/helpers/deviceInfo';
 import EventEmitter from '../lib/methods/helpers/events';
 import { useDeferredModalSettle } from '../lib/hooks/useDeferredModalSettle';
 import { type BiometricInvalidationReason } from '../definitions';

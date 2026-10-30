@@ -12,7 +12,7 @@ import Navigation from '~/lib/navigation/appNavigation';
 import { useTheme } from '~/theme';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { type NewMessageStackParamList } from '~/stacks/types';
-import { compareServerVersion } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { startCategoryDraft } from '~/views/CreateCategoryView/hooks/useCategoryDraftStore';

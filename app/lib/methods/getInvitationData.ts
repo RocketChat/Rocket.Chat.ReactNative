@@ -1,6 +1,6 @@
 import { type IInviteSubscription } from '~/definitions';
 import I18n from '~/i18n';
-import { getRoomTitle } from './helpers';
+import { getRoomTitle } from './helpers/helpers';
 import { replyRoomInvite } from './replyRoomInvite';
 
 export const getInvitationText = (room: Pick<IInviteSubscription, 't' | 'name' | 'fname' | 'inviter'>) => {

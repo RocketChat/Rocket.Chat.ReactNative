@@ -4,7 +4,7 @@ import { Base64 } from 'js-base64';
 
 import Navigation from '~/lib/navigation/appNavigation';
 import { type IItemService, type IOpenSSOWebView, type IServiceLogin } from './interfaces';
-import { random } from '~/lib/methods/helpers';
+import { random } from '~/lib/methods/helpers/random';
 import { loginOAuthOrSso } from '~/lib/services/connect';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { store } from '~/lib/store/auxStore';

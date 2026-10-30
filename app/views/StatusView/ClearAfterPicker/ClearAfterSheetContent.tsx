@@ -4,7 +4,7 @@ import { View } from 'react-native';
 
 import { useActionSheet } from '~/containers/ActionSheet';
 import * as List from '~/containers/List';
-import { isAndroid } from '~/lib/methods/helpers';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import { useTheme } from '~/theme';
 import DatePickerSheetContent from './DatePickerSheetContent';
 import styles from './styles';

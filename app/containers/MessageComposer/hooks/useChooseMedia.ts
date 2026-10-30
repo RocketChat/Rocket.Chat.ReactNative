@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
 import { forceJpgExtension } from '../helpers';
 import I18n from '~/i18n';
-import { canUploadFile } from '~/lib/methods/helpers';
+import { canUploadFile } from '~/lib/methods/helpers/media';
 import log from '~/lib/methods/helpers/log';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { getThreadById } from '~/lib/database/services/Thread';

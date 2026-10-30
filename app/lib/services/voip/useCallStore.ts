@@ -3,7 +3,7 @@ import type { CallState, CallContact, IClientMediaCall } from '@rocket.chat/medi
 import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import log from '~/lib/methods/helpers/log';
 import NativeVoipModule from '~/lib/native/NativeVoip';
 import { pendingHangups } from './pendingHangups';

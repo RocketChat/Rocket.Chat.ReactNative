@@ -13,7 +13,7 @@ import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
 import { type TServerHistoryModel } from '~/definitions';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
-import { isAndroid, isTablet } from '~/lib/methods/helpers';
+import { isAndroid, isTablet } from '~/lib/methods/helpers/deviceInfo';
 import { headerLeftClose } from '~/lib/methods/helpers/navigation/headerActions';
 import EventEmitter from '~/lib/methods/helpers/events';
 import ServerInput from './components/ServerInput';

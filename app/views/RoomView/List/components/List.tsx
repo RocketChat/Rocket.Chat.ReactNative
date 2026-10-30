@@ -4,7 +4,7 @@ import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { useIsScreenReaderEnabled } from '~/lib/hooks/useIsScreenReaderEnabled';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '~/lib/constants/accessibility';

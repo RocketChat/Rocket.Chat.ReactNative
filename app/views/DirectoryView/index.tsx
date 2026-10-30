@@ -31,7 +31,7 @@ import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useDirectorySearch } from './hooks/useDirectorySearch';
-import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import { headerIcon } from '~/lib/methods/helpers/navigation/headerIcon';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';

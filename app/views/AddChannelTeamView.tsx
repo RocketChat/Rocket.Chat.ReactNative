@@ -11,7 +11,7 @@ import { type ChatsStackParamList, type DrawerParamList, type NewMessageStackPar
 import { type IApplicationState } from '../definitions';
 import { usePermissions } from '../lib/hooks/usePermissions';
 import { useMasterDetail } from '../lib/hooks/useMasterDetail';
-import { compareServerVersion } from '../lib/methods/helpers';
+import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 import { type TSupportedPermissions } from '../reducers/permissions';
 
 type TRoute = RouteProp<ChatsStackParamList, 'AddChannelTeamView'>;

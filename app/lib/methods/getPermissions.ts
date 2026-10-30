@@ -9,7 +9,7 @@ import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import sdk from '../services/sdk';
 import protectedFunction from './helpers/protectedFunction';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion } from './helpers/compareServerVersion';
 
 export const SUPPORTED_PERMISSIONS = [
 	'add-user-to-any-c-room',

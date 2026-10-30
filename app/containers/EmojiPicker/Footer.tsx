@@ -5,7 +5,7 @@ import { useTheme } from '~/theme';
 import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import { type IFooterProps } from './interfaces';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 
 const Footer = ({ onSearchPressed, onBackspacePressed }: IFooterProps): ReactElement => {
 	const { colors } = useTheme();

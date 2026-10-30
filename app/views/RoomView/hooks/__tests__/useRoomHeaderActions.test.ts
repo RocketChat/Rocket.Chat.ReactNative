@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-native';
 
 import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { events, logEvent } from '~/lib/methods/helpers/log';
-import { showConfirmationAlert } from '~/lib/methods/helpers';
+import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
 import { returnLivechat } from '~/lib/services/restApi';
 import { type RoomStore } from '~/views/RoomView/definitions';
@@ -27,8 +27,8 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 	logEvent: jest.fn()
 }));
 
-jest.mock('~/lib/methods/helpers', () => ({
-	...jest.requireActual('~/lib/methods/helpers'),
+jest.mock('~/lib/methods/helpers/info', () => ({
+	...jest.requireActual('~/lib/methods/helpers/info'),
 	showConfirmationAlert: jest.fn(),
 	showErrorAlert: jest.fn()
 }));

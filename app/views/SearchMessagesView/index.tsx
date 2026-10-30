@@ -29,7 +29,9 @@ import { sanitizeLikeString } from '~/lib/database/utils';
 import getThreadName from '~/lib/methods/getThreadName';
 import styles from './styles';
 import { type InsideStackParamList, type ChatsStackParamList } from '~/stacks/types';
-import { compareServerVersion, debounce, isIOS } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { debounce } from '~/lib/methods/helpers/debounce';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import {
 	type IMessageFromServer,
 	type IUser,

@@ -22,10 +22,13 @@ let mockIsMasterDetail = false;
 jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => mockIsMasterDetail }));
 jest.mock('~/theme', () => ({ useTheme: () => ({ theme: 'light', colors: { buttonBackgroundDangerDefault: '#f00' } }) }));
 jest.mock('~/lib/helpers/getRoomAccessibilityLabel', () => ({ __esModule: true, default: () => 'label' }));
-jest.mock('~/lib/methods/helpers', () => ({
-	...jest.requireActual('~/lib/methods/helpers'),
+jest.mock('~/lib/methods/helpers/helpers', () => ({
+	...jest.requireActual('~/lib/methods/helpers/helpers'),
 	getRoomTitle: () => 'Room Title',
-	isGroupChat: () => false,
+	isGroupChat: () => false
+}));
+jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
+	...jest.requireActual('~/lib/methods/helpers/deviceInfo'),
 	hasNativeHeaderBar: false
 }));
 jest.mock('~/lib/methods/helpers/log', () => ({

@@ -7,7 +7,7 @@ import { setTroubleshootingNotification } from '../actions/troubleshootingNotifi
 import { pushInfo } from '../lib/services/restApi';
 import log from '../lib/methods/helpers/log';
 import { appSelector } from '../lib/hooks/useAppSelector';
-import { compareServerVersion } from '../lib/methods/helpers';
+import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 
 interface IGenericAction extends Action {
 	type: string;

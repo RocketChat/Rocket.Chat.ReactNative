@@ -8,7 +8,7 @@ import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
 import { type ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
 import { localSearchSubscription } from '~/lib/methods/search';
-import { getRoomAvatar, getRoomTitle } from '~/lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle } from '~/lib/methods/helpers/helpers';
 import { useTheme } from '~/theme';
 
 const SelectChannel = ({

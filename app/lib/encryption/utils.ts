@@ -1,7 +1,7 @@
 import ByteBuffer from 'bytebuffer';
 import { aesDecryptFile, aesEncryptFile, randomBytes } from '@rocket.chat/mobile-crypto';
 
-import { compareServerVersion } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
 import * as hexLite from './helpers/hex-lite';
 import { type TSubscriptionModel } from '~/definitions';

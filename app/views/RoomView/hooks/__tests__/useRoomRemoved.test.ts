@@ -8,7 +8,9 @@ import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { type TRoomOrPreview } from '~/definitions/TRoom';
 import { useRoomRemoved } from '../useRoomRemoved';
 
-jest.mock('~/lib/methods/helpers', () => ({ getRoomTitle: jest.fn(() => 'Room') }));
+jest.mock('~/lib/methods/helpers/helpers', () => ({
+	getRoomTitle: jest.fn(() => 'Room')
+}));
 jest.mock('~/lib/navigation/appNavigation', () => ({ __esModule: true, default: { popToTop: jest.fn() } }));
 jest.mock('~/lib/methods/helpers/info', () => ({ showErrorAlert: jest.fn() }));
 

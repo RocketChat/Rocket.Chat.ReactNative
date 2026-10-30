@@ -4,7 +4,7 @@ import { useEffect, useLayoutEffect } from 'react';
 
 import i18n from '~/i18n';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import Navigation from '~/lib/navigation/appNavigation';
 import { headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { type ChatsStackParamList } from '~/stacks/types';

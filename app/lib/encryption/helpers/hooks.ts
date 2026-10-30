@@ -1,4 +1,4 @@
-import { compareServerVersion } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { type TSubscriptionModel } from '~/definitions';
 

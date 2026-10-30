@@ -1,7 +1,7 @@
 import { memo, type ReactNode } from 'react';
 import { Text, View } from 'react-native';
 
-import { isAndroid } from '~/lib/methods/helpers';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import { useTheme } from '~/theme';
 import { styles } from './styles';
 

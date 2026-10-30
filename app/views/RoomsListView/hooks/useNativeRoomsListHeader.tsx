@@ -3,7 +3,7 @@ import { useContext, useLayoutEffect } from 'react';
 import { showActionSheetRef } from '~/containers/ActionSheet';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { isTablet } from '~/lib/methods/helpers';
+import { isTablet } from '~/lib/methods/helpers/deviceInfo';
 import { headerLeftActions, headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { stackedSearchBarOptions, translucentHeader } from '~/lib/methods/helpers/navigation';
 import { useTheme } from '~/theme';

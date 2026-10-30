@@ -19,9 +19,6 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => mockCurrentNavigation,
 	useRoute: () => ({ params: mockCurrentParams })
 }));
-jest.mock('~/lib/methods/helpers', () => ({
-	useDebounce: jest.requireActual('~/lib/methods/helpers/debounce').useDebounce
-}));
 jest.mock('~/containers/Loading', () => ({ sendLoadingEvent: jest.fn() }));
 jest.mock('~/lib/methods/getRoomInfo', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));

@@ -32,15 +32,10 @@ import { withTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import {
-	getRoomAvatar,
-	getRoomTitle,
-	hasPermission,
-	debounce,
-	hasNativeHeaderBar,
-	isIOS,
-	compareServerVersion
-} from '../lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle, hasPermission } from '../lib/methods/helpers/helpers';
+import { debounce } from '../lib/methods/helpers/debounce';
+import { hasNativeHeaderBar, isIOS } from '../lib/methods/helpers/deviceInfo';
+import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 import { getRoomInfo, getTeamListRoom, updateTeamRoom, removeTeamRoom } from '../lib/services/restApi';
 
 const API_FETCH_COUNT = 25;

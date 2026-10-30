@@ -13,7 +13,7 @@ import {
 import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import { useTheme } from '~/theme';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 
 export interface ITouchProps extends TouchableWithoutFeedbackProps {
 	children: ReactNode;

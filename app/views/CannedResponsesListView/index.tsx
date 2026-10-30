@@ -22,7 +22,7 @@ import DepartmentFilter from './DepartmentFilter';
 import styles from './styles';
 import { type ICannedResponse } from '~/definitions/ICannedResponse';
 import { type ChatsStackParamList } from '~/stacks/types';
-import { useDebounce } from '~/lib/methods/helpers';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
 import { getListCannedResponse, getDepartments } from '~/lib/services/restApi';
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';

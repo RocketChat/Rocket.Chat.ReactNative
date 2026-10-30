@@ -1,5 +1,5 @@
 import { type ILastMessage } from '~/definitions';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion } from './helpers/compareServerVersion';
 import updateMessages from './updateMessages';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';

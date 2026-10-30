@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import I18n from '~/i18n';
-import { getRoomTitle } from '~/lib/methods/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/helpers';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import Navigation from '~/lib/navigation/appNavigation';

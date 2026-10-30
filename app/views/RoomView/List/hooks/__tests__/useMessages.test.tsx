@@ -52,8 +52,8 @@ jest.mock('~/lib/services/restApi', () => ({
 	readThreads: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('~/lib/methods/helpers', () => {
-	const actual = jest.requireActual('~/lib/methods/helpers');
+jest.mock('~/lib/methods/helpers/debounce', () => {
+	const actual = jest.requireActual('~/lib/methods/helpers/debounce');
 	return {
 		...actual,
 		useDebounce: (fn: (...args: unknown[]) => unknown) => Object.assign(fn, { cancel: jest.fn() })

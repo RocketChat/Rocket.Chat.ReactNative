@@ -46,8 +46,10 @@ jest.mock('../helpers/log', () => ({
 	default: jest.fn()
 }));
 
-jest.mock('../helpers', () => ({
-	debounce: (fn: (...args: unknown[]) => unknown) => fn,
+jest.mock('../helpers/debounce', () => ({
+	debounce: (fn: (...args: unknown[]) => unknown) => fn
+}));
+jest.mock('../helpers/compareServerVersion', () => ({
 	compareServerVersion: jest.fn()
 }));
 

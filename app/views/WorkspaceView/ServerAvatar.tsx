@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import { Image } from 'expo-image';
 import { memo } from 'react';
 
-import { isTablet } from '~/lib/methods/helpers';
+import { isTablet } from '~/lib/methods/helpers/deviceInfo';
 import { useTheme } from '~/theme';
 
 const SIZE = 96;

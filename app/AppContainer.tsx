@@ -16,7 +16,7 @@ import SetUsernameView from './views/SetUsernameView';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
-import { emitter } from './lib/methods/helpers';
+import { emitter } from './lib/methods/helpers/emitter';
 import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
 
 const useIsLoading = () =>

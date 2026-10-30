@@ -3,7 +3,7 @@ import { AccessibilityInfo } from 'react-native';
 
 import { useActionSheet } from '../ActionSheet';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { isGroupChat } from '~/lib/methods/helpers';
+import { isGroupChat } from '~/lib/methods/helpers/helpers';
 import { formatDate, formatDateAccessibility } from '~/lib/methods/helpers/room';
 import { type IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';

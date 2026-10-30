@@ -4,8 +4,8 @@ import { resetMediaCallEventsStateForTesting, setupMediaCallEvents, type MediaCa
 import { resetVoipState } from './resetVoipState';
 import { useCallStore } from './useCallStore';
 
-jest.mock('~/lib/methods/helpers', () => ({
-	...jest.requireActual('~/lib/methods/helpers'),
+jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
+	...jest.requireActual('~/lib/methods/helpers/deviceInfo'),
 	isIOS: false
 }));
 

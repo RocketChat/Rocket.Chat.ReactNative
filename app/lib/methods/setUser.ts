@@ -4,7 +4,8 @@ import { setActiveUsers } from '~/actions/activeUsers';
 import { setUser } from '~/actions/login';
 import { type IUser, type TStatusSource, type TUserStatus } from '~/definitions';
 import { store as reduxStore } from '../store/auxStore';
-import { compareServerVersion, normalizeStatusExpiresAt } from './helpers';
+import { compareServerVersion } from './helpers/compareServerVersion';
+import { normalizeStatusExpiresAt } from './helpers/normalizeStatusExpiresAt';
 
 export interface IActiveUsers {
 	[key: string]:

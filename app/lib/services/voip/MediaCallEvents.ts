@@ -1,7 +1,8 @@
 import RNCallKeep from 'react-native-callkeep';
 import { DeviceEventEmitter, NativeEventEmitter } from 'react-native';
 
-import { isIOS, normalizeDeepLinkingServerHost } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
+import { normalizeDeepLinkingServerHost } from '~/lib/methods/helpers/normalizeDeepLinkingServerHost';
 import { useCallStore } from './useCallStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 import type { VoipPayload } from '~/definitions/Voip';
