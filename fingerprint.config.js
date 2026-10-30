@@ -2,7 +2,7 @@ const fs = require('fs');
 const { SourceSkips } = require('@expo/fingerprint');
 
 const { patchFilesFor } = require('./.github/scripts/platform-patches');
-const { codegenConfig } = require('./package.json');
+const { codegenConfig, reanimated } = require('./package.json');
 const expoModulesAutolinking = require('expo-modules-autolinking/package.json');
 
 const platform = process.env.FINGERPRINT_PLATFORM;
@@ -28,6 +28,7 @@ module.exports = {
 		})),
 		{ type: 'dir', filePath: codegenConfig.jsSrcsDir.replace(/^\.\//, ''), reasons: ['codegenSpecs'] },
 		{ type: 'contents', id: 'codegenConfig', contents: JSON.stringify(codegenConfig), reasons: ['codegenConfig'] },
+		{ type: 'contents', id: 'reanimatedConfig', contents: JSON.stringify(reanimated), reasons: ['reanimatedConfig'] },
 		...(platform === 'ios' ? [] : androidResourceAssetFiles()).map(filePath => ({
 			type: 'file',
 			filePath,
