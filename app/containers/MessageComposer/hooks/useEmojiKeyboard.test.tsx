@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { renderHook, act } from '@testing-library/react-native';
 import { Keyboard } from 'react-native';
-import { useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
+import { type SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import * as KeyboardController from 'react-native-keyboard-controller';
 
 import { EmojiKeyboardProvider, useEmojiKeyboard } from './useEmojiKeyboard';
@@ -266,14 +267,17 @@ describe('useEmojiKeyboard', () => {
 			const systemKeyboardHeight = createValue(systemKeyboard);
 			const keyboardHeight = createValue(pickerHeight);
 			const previousHeight = createValue(pickerHeight);
+			const values: SharedValue<unknown>[] = [
+				showEmojiPicker,
+				showEmojiSearchbar,
+				systemKeyboardHeight,
+				keyboardHeight,
+				previousHeight
+			];
 			jest
 				.mocked(useSharedValue)
 				.mockReset()
-				.mockReturnValueOnce(showEmojiPicker)
-				.mockReturnValueOnce(showEmojiSearchbar)
-				.mockReturnValueOnce(systemKeyboardHeight)
-				.mockReturnValueOnce(keyboardHeight)
-				.mockReturnValueOnce(previousHeight);
+				.mockImplementation(() => useState(() => values.shift()!)[0]);
 			const reactions = new Map<unknown, Parameters<typeof useAnimatedReaction>[1]>();
 			jest.mocked(useAnimatedReaction).mockImplementation((_prepare, react, dependencies) => {
 				reactions.set(dependencies?.[0], react);
@@ -281,13 +285,15 @@ describe('useEmojiKeyboard', () => {
 			renderHook(() => useEmojiKeyboard(), { wrapper: EmojiKeyboardProvider });
 			const heightReaction = reactions.get(systemKeyboardHeight)!;
 			const searchbarReaction = reactions.get(showEmojiSearchbar)!;
-			const openSearch = () => {
+			const openSearch = async () => {
 				showEmojiSearchbar.set(true);
 				searchbarReaction(true, false);
+				await act(async () => {});
 			};
-			const closeSearch = () => {
+			const closeSearch = async () => {
 				showEmojiSearchbar.set(false);
 				searchbarReaction(false, true);
+				await act(async () => {});
 			};
 			const keyboardChanges = (to: number) => {
 				const from = systemKeyboardHeight.get();
@@ -329,21 +335,21 @@ describe('useEmojiKeyboard', () => {
 			expect(keyboardHeight.value).toBe(250);
 		});
 
-		test('resizes the composer to the keyboard the search input brings up', () => {
+		test('resizes the composer to the keyboard the search input brings up', async () => {
 			const { keyboardHeight, openSearch, keyboardChanges } = renderPicker();
 
-			openSearch();
+			await openSearch();
 			keyboardChanges(336);
 
 			expect(keyboardHeight.value).toBe(336);
 		});
 
-		test('comes back at the fixed height after going back from emoji search', () => {
+		test('comes back at the fixed height after going back from emoji search', async () => {
 			const { keyboardHeight, openSearch, closeSearch, keyboardChanges } = renderPicker();
 
-			openSearch();
+			await openSearch();
 			keyboardChanges(336);
-			closeSearch();
+			await closeSearch();
 			keyboardChanges(0);
 
 			expect(keyboardHeight.value).toBe(250);
