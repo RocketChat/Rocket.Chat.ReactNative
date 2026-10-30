@@ -144,7 +144,7 @@ describe('useJumpToMessage composed entry points', () => {
 			rid: 'rid-1',
 			tmid: 'thread-1',
 			name: 'Thread title',
-			t: 'thread',
+			t: 'c',
 			roomUserId: 'user-1',
 			jumpToMessageId: 'reply-1'
 		});
@@ -468,7 +468,7 @@ describe('useJumpToMessage composed entry points', () => {
 	it('uses the existing Thread-to-main destination rules for plain and other-parent Messages', async () => {
 		mockGetMessageInfo.mockResolvedValueOnce({ id: 'plain-main', rid: 'rid-1', replies: undefined });
 		mockGetMessageInfo.mockResolvedValueOnce({ id: 'other-parent', rid: 'rid-1', replies: ['reply'] });
-		const { result } = renderNavigation({ t: 'thread', tmid: 'current-thread' });
+		const { result } = renderNavigation({ t: 'c', tmid: 'current-thread' });
 
 		await act(async () => await result.current.jumpToMessageByUrl('https://open.rocket.chat/room?msg=plain-main'));
 		await act(async () => await result.current.jumpToMessageByUrl('https://open.rocket.chat/room?msg=other-parent'));
@@ -478,7 +478,7 @@ describe('useJumpToMessage composed entry points', () => {
 	it('jumps in place when the target is the current Thread Parent', async () => {
 		const listRef = makeListRef();
 		mockGetMessageInfo.mockResolvedValue({ id: 'current-thread', rid: 'rid-1', replies: ['reply'] });
-		const { result } = renderNavigation({ t: 'thread', tmid: 'current-thread', listContainerRef: listRef });
+		const { result } = renderNavigation({ t: 'c', tmid: 'current-thread', listContainerRef: listRef });
 
 		await act(async () => await result.current.jumpToMessageByUrl('https://open.rocket.chat/room?msg=current-thread'));
 		expect(mockNavigation.push).not.toHaveBeenCalled();

@@ -34,7 +34,6 @@ import {
 	type IApplicationState,
 	type IBaseScreen,
 	type IMessage,
-	SubscriptionType,
 	type TSubscriptionModel,
 	type TThreadModel
 } from '~/definitions';
@@ -392,13 +391,13 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 	onThreadPress = debounce(
 		(item: any) => {
 			const { subscription } = this.state;
-			const { isMasterDetail } = this.props;
+			const { isMasterDetail, route } = this.props;
 			Navigation.popToRoom(isMasterDetail);
 			Navigation.push('RoomView', {
 				rid: item.subscription.id,
 				tmid: item.id,
 				name: makeThreadName(item),
-				t: SubscriptionType.THREAD,
+				t: route.params.t,
 				roomUserId: getUidDirectMessage(subscription)
 			});
 		},

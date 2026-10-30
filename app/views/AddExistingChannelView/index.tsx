@@ -16,7 +16,7 @@ import SafeAreaView from '~/containers/SafeAreaView';
 import { sendLoadingEvent } from '~/containers/Loading';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { type ChatsStackParamList } from '~/stacks/types';
-import { type TSubscriptionModel, SubscriptionType } from '~/definitions';
+import { type TSubscriptionModel, RoomType } from '~/definitions';
 import { compareServerVersion, getRoomTitle, hasPermission, useDebounce } from '~/lib/methods/helpers';
 import { addRoomsToTeam } from '~/lib/services/restApi';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
@@ -161,7 +161,7 @@ const AddExistingChannelView = () => {
 				}
 				renderItem={({ item, index }: { item: TSubscriptionModel; index: number }) => {
 					// TODO: reuse logic inside RoomTypeIcon
-					const icon = item.t === SubscriptionType.GROUP && !item?.teamId ? 'channel-private' : 'channel-public';
+					const icon = item.t === RoomType.GROUP && !item?.teamId ? 'channel-private' : 'channel-public';
 					return (
 						<ChannelItem
 							title={getRoomTitle(item)}

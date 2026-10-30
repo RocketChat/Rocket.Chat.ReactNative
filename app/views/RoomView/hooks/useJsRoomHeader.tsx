@@ -1,5 +1,4 @@
 import { useLayoutEffect } from 'react';
-import { PixelRatio, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useStore } from 'zustand';
 
@@ -10,7 +9,7 @@ import { useGoRoomActionsView } from './useGoRoomActionsView';
 import { useHeaderFields } from './useHeaderFields';
 
 interface IUseJsRoomHeaderParams {
-	rid?: string;
+	rid: string;
 	tmid?: string;
 	name?: string;
 	roomStore: RoomStore;
@@ -23,20 +22,10 @@ export const useJsRoomHeader = ({ rid, tmid, name: threadName, roomStore }: IUse
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
 
 	useLayoutEffect(() => {
-		if (!rid) {
-			const height = 37 * PixelRatio.getFontScale();
-			navigation.setOptions({ headerLeft: () => <View style={{ height }} /> });
-			return;
-		}
-
 		navigation.setOptions({ headerLeft: () => <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} /> });
 	}, [rid, tmid, navigation, roomStore]);
 
 	useLayoutEffect(() => {
-		if (!rid) {
-			return;
-		}
-
 		navigation.setOptions({
 			headerTitle: () => (
 				<RoomHeader

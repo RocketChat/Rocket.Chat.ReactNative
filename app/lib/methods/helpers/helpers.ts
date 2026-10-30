@@ -2,10 +2,7 @@
 import log from './log';
 import { store as reduxStore } from '~/lib/store/auxStore';
 import database from '~/lib/database';
-
-export function isGroupChat(room): boolean {
-	return ((room?.uids && room.uids.length > 2) || (room?.usernames && room.usernames.length > 2)) ?? false;
-}
+import { isGroupChat } from './roomKind';
 
 export function getRoomAvatar(room) {
 	if (isGroupChat(room) && room.uids && room.usernames) {

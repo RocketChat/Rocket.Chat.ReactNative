@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
+import { type RoomType } from '~/definitions';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useOmnichannelPermissions } from '../useOmnichannelPermissions';
@@ -45,7 +46,7 @@ describe('useOmnichannelPermissions', () => {
 		mockUsePermissions.mockReturnValue([true, true]);
 		const roomStore = makeRoomStore();
 
-		const { rerender } = renderHook(({ t }: { t: string }) => useOmnichannelPermissions({ rid: 'rid-1', t, roomStore }), {
+		const { rerender } = renderHook(({ t }: { t: RoomType }) => useOmnichannelPermissions({ rid: 'rid-1', t, roomStore }), {
 			initialProps: { t: 'l' }
 		});
 		expect(roomStore.getState().canForwardGuest).toBe(true);

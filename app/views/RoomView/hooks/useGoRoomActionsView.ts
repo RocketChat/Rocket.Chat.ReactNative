@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
-import type { ISubscription, SubscriptionType, TSubscriptionModel } from '~/definitions';
+import type { ISubscription, TSubscriptionModel } from '~/definitions';
 import { type TNavigation } from '~/stacks/stackType';
 import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
 import { type IRoomViewProps } from '../definitions';
@@ -36,8 +36,8 @@ export const useGoRoomActionsView = (roomStore: RoomStore): ((screen?: keyof Mod
 		logEvent(events.ROOM_GO_RA);
 		const room = roomStore.getState().room;
 		const params = {
-			rid: rid as string,
-			t: t as SubscriptionType,
+			rid,
+			t,
 			member,
 			joined: membership === 'subscribed',
 			omnichannelPermissions

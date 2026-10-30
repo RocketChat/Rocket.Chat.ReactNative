@@ -22,7 +22,7 @@ import {
 	type IBaseScreen,
 	type ISubscription,
 	type IUser,
-	SubscriptionType,
+	RoomType,
 	type TSubscriptionModel
 } from '~/definitions';
 import { type IActiveUser } from '~/reducers/activeUsers';
@@ -38,7 +38,6 @@ import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/inf
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import Touch from '~/containers/Touch';
 import styles from './styles';
-import { ERoomType } from '~/definitions/ERoomType';
 import { E2E_ROOM_TYPES } from '~/lib/constants/keys';
 import { themes } from '~/lib/constants/colors';
 import { getPermalinkChannel } from '~/lib/methods/getPermalinks';
@@ -224,7 +223,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		const { encryptionEnabled } = this.props;
 		if (room.rid) {
 			if (!room.id) {
-				if (room.t === SubscriptionType.OMNICHANNEL) {
+				if (room.t === RoomType.OMNICHANNEL) {
 					if (!this.isOmnichannelPreview) {
 						await this.loadOmnichannelRoom(room.rid);
 					}
@@ -512,7 +511,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		showConfirmationAlert({
 			message: I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: getRoomTitle(room) }),
 			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-			onPress: () => dispatch(leaveRoom(ERoomType.c, room))
+			onPress: () => dispatch(leaveRoom('room', room))
 		});
 	};
 
@@ -601,14 +600,14 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 						title: 'Leave_Team',
 						data: teamChannels as any,
 						infoText: 'Select_Team_Channels',
-						nextAction: data => dispatch(leaveRoom(ERoomType.t, room, data)),
+						nextAction: data => dispatch(leaveRoom('team', room, data)),
 						showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 					});
 				} else {
 					showConfirmationAlert({
 						message: I18n.t('You_are_leaving_the_team', { team: getRoomTitle(room) }),
 						confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-						onPress: () => dispatch(leaveRoom(ERoomType.t, room))
+						onPress: () => dispatch(leaveRoom('team', room))
 					});
 				}
 			}
@@ -617,7 +616,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 			showConfirmationAlert({
 				message: I18n.t('You_are_leaving_the_team', { team: getRoomTitle(room) }),
 				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-				onPress: () => dispatch(leaveRoom(ERoomType.t, room))
+				onPress: () => dispatch(leaveRoom('team', room))
 			});
 		}
 	};
@@ -1077,7 +1076,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		const { isMasterDetail, navigation, userId } = this.props;
 		const { rid, t, prid, teamId } = room;
 		const isGroupChatHandler = isGroupChat(room);
-		const itsMe = t === SubscriptionType.DIRECT && !isGroupChatHandler && !!userId && getUidDirectMessage(room) === userId;
+		const itsMe = t === RoomType.DIRECT && !isGroupChatHandler && !!userId && getUidDirectMessage(room) === userId;
 
 		return (
 			<SafeAreaView testID='room-actions-view'>

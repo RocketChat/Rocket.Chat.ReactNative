@@ -2,7 +2,7 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { useNavigation } from '@react-navigation/native';
 
-import { type SubscriptionType, type TUserStatus } from '~/definitions';
+import { type TUserStatus } from '~/definitions';
 import { isSubscriptionModel } from '~/definitions/TRoom';
 import i18n from '~/i18n';
 import getRoomAccessibilityLabel from '~/lib/helpers/getRoomAccessibilityLabel';
@@ -45,10 +45,10 @@ export const useRoomActionsState = (rid: string, roomStore: RoomStore) => {
 		useShallow(s => {
 			const room = s.room;
 			return {
-				t: room.t as SubscriptionType,
+				t: room.t,
 				status: fromSubscription(r => r.status, undefined)(s),
 				roomName: getRoomTitle(room),
-				roomIsGroupChat: isGroupChat(room),
+				roomIsGroupChat: fromSubscription(isGroupChat, false)(s),
 				teamMain: fromSubscription(r => !!r.teamMain, false)(s),
 				encrypted: fromSubscription(r => r.encrypted, undefined)(s),
 				disableNotifications: fromSubscription(r => r.disableNotifications, undefined)(s)

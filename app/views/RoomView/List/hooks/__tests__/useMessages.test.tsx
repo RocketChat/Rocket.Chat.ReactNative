@@ -4,7 +4,7 @@ import { type ReactNode } from 'react';
 
 import { ROOM } from '~/actions/actionsTypes';
 import { type IRoomHistoryRequest } from '~/actions/room';
-import { type RoomType, type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions';
 import database from '~/lib/database';
 import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadById } from '~/lib/database/services/Thread';
@@ -72,7 +72,7 @@ const baseArgs = {
 	showMessageInMainThread: true,
 	hideSystemMessages: [] as string[],
 	serverVersion: '3.0.0' as string | null,
-	t: 'c' as RoomType
+	t: 'c' as const
 };
 
 const msg = (overrides: Partial<TAnyMessageModel> & { id: string }): TAnyMessageModel =>

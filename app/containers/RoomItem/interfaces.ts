@@ -2,13 +2,7 @@ import { type SharedValue } from 'react-native-reanimated';
 import { type ReactElement } from 'react';
 
 import { type TSupportedThemes } from '~/theme';
-import {
-	type TUserStatus,
-	type ILastMessage,
-	type SubscriptionType,
-	type IOmnichannelSource,
-	type ISubscription
-} from '~/definitions';
+import { type TUserStatus, type ILastMessage, type RoomType, type IOmnichannelSource, type ISubscription } from '~/definitions';
 
 export interface ILeftActionsProps {
 	transX: SharedValue<number>;
@@ -66,7 +60,7 @@ export interface ITypeIconProps {
 interface IRoomItemTouchables {
 	toggleFav?: (rid: string, favorite: boolean) => Promise<void>;
 	toggleRead?: (rid: string, tIsRead: boolean) => Promise<void>;
-	hideChannel?: (rid: string, type: SubscriptionType) => Promise<void>;
+	hideChannel?: (rid: string, type: RoomType) => Promise<void>;
 	onPress: (item?: any) => void;
 	onLongPress?: (item?: any) => void;
 	onMoveToCategoryPress?: () => void;
@@ -96,7 +90,7 @@ export interface IRoomItemContainerProps extends IBaseRoomItem {
 
 export interface IRoomItemProps extends IBaseRoomItem {
 	rid: string;
-	type: SubscriptionType;
+	type: RoomType;
 	prid: string;
 	name: string;
 	avatar: string;
@@ -126,7 +120,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 
 export interface ILastMessageProps {
 	lastMessage: ILastMessage;
-	type: SubscriptionType;
+	type: RoomType;
 	showLastMessage: boolean;
 	username: string;
 	useRealName: boolean;
@@ -134,7 +128,7 @@ export interface ILastMessageProps {
 
 export interface ITouchableProps extends IRoomItemTouchables {
 	children: ReactElement;
-	type: SubscriptionType;
+	type: RoomType;
 	width: number;
 	favorite: boolean;
 	isRead: boolean;

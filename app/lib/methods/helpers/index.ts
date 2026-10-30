@@ -12,6 +12,7 @@ export * from './normalizeDeepLinkingServerHost';
 export * from './normalizeStatusExpiresAt';
 export * from './onAbort';
 export * from './room';
+export * from './roomKind';
 export * from './server';
 export * from './isSsl';
 export * from './isValidEmail';

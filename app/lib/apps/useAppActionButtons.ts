@@ -42,7 +42,7 @@ export const useAppActionButtons = (rid?: string): IAppActionButtonItem[] => {
 		const subscription$ = db
 			.get('subscriptions')
 			.query(Q.where('id', rid))
-			.observeWithColumns(['t', 'roles', 'team_main', 'prid', 'uids']);
+			.observeWithColumns(['t', 'roles', 'team_main', 'prid', 'uids', 'usernames']);
 		const permissions$ = permissionIds.length
 			? db
 					.get('permissions')

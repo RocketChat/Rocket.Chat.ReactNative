@@ -1,8 +1,8 @@
-import { SubscriptionType, type TSubscriptionModel } from '~/definitions';
+import { RoomType, type TSubscriptionModel } from '~/definitions';
 import { buildRoomList, categoryIdOfHeader, roomsInSection } from '../groupRooms';
 import { DEFAULT_GROUP_ORDER, SYSTEM_GROUPS } from '../sidebarGroupOrder';
 
-const room = (fields: Partial<TSubscriptionModel>) => ({ t: SubscriptionType.CHANNEL, ...fields }) as TSubscriptionModel;
+const room = (fields: Partial<TSubscriptionModel>) => ({ t: RoomType.CHANNEL, ...fields }) as TSubscriptionModel;
 
 const options = {
 	groupOrder: ['work', ...DEFAULT_GROUP_ORDER],
@@ -23,7 +23,7 @@ describe('groupRooms', () => {
 		const chats = [
 			room({ rid: 'general', f: true, category: 'work' }),
 			room({ rid: 'random', f: true }),
-			room({ rid: 'dm', t: SubscriptionType.DIRECT })
+			room({ rid: 'dm', t: RoomType.DIRECT })
 		];
 
 		expect(layout(buildRoomList(chats, options))).toEqual([
@@ -55,7 +55,7 @@ describe('groupRooms', () => {
 		const chats = [
 			room({ rid: 'general', category: 'work' }),
 			room({ rid: 'random', f: true, category: 'work' }),
-			room({ rid: 'dm', t: SubscriptionType.DIRECT })
+			room({ rid: 'dm', t: RoomType.DIRECT })
 		];
 
 		expect(layout(buildRoomList(chats, { ...options, groupByType: false }))).toEqual([
@@ -68,7 +68,7 @@ describe('groupRooms', () => {
 	});
 
 	it('lists rooms in a flat list when categories, favorites and unread are off', () => {
-		const chats = [room({ rid: 'general', category: 'work' }), room({ rid: 'dm', t: SubscriptionType.DIRECT })];
+		const chats = [room({ rid: 'general', category: 'work' }), room({ rid: 'dm', t: RoomType.DIRECT })];
 
 		expect(layout(buildRoomList(chats, { ...options, groupByType: false, showFavorites: false }))).toEqual(['general', 'dm']);
 	});
@@ -89,9 +89,9 @@ describe('groupRooms', () => {
 
 	it('places omnichannel rooms before unread rooms and regular groups', () => {
 		const chats = [
-			room({ rid: 'open-livechat', t: SubscriptionType.OMNICHANNEL, onHold: false }),
+			room({ rid: 'open-livechat', t: RoomType.OMNICHANNEL, onHold: false }),
 			room({ rid: 'unread', alert: true }),
-			room({ rid: 'on-hold-livechat', t: SubscriptionType.OMNICHANNEL, onHold: true }),
+			room({ rid: 'on-hold-livechat', t: RoomType.OMNICHANNEL, onHold: true }),
 			room({ rid: 'regular' })
 		];
 
@@ -118,7 +118,7 @@ describe('groupRooms', () => {
 	});
 
 	it('keeps the header of a collapsed group and hides its rooms', () => {
-		const chats = [room({ rid: 'general', category: 'work' }), room({ rid: 'dm', t: SubscriptionType.DIRECT })];
+		const chats = [room({ rid: 'general', category: 'work' }), room({ rid: 'dm', t: RoomType.DIRECT })];
 
 		expect(layout(buildRoomList(chats, { ...options, collapsedGroups: new Set(['work']) }))).toEqual([
 			'# Work',
@@ -234,7 +234,7 @@ describe('groupRooms', () => {
 	});
 
 	it('leaves out the sections the admin removed from the sections order', () => {
-		const chats = [room({ rid: 'unread', unread: 1 }), room({ rid: 'livechat', t: SubscriptionType.OMNICHANNEL })];
+		const chats = [room({ rid: 'unread', unread: 1 }), room({ rid: 'livechat', t: RoomType.OMNICHANNEL })];
 		const sectionsOrder = SYSTEM_GROUPS.filter(key => key !== 'Unread' && key !== 'Open_Livechats');
 
 		expect(
@@ -255,7 +255,7 @@ describe('roomsInSection', () => {
 	const chats = [
 		room({ rid: 'general', category: 'work' }),
 		room({ rid: 'random', f: true }),
-		room({ rid: 'dm', t: SubscriptionType.DIRECT })
+		room({ rid: 'dm', t: RoomType.DIRECT })
 	];
 	const roomList = buildRoomList(chats, options);
 

@@ -10,27 +10,12 @@ import { type TThreadMessageModel } from './IThreadMessage';
 import { type TUploadModel } from './IUpload';
 import { type IUser } from './IUser';
 
-export enum SubscriptionType {
-	GROUP = 'p',
-	DIRECT = 'd',
-	CHANNEL = 'c',
-	OMNICHANNEL = 'l',
-	E2E = 'e2e', // FIXME: this is not a type of subscription
-	THREAD = 'thread' // FIXME: this is not a type of subscription
-}
-
 export interface IVisitor {
 	_id?: string;
 	token?: string;
 	status: 'online' | 'busy' | 'away' | 'offline';
 	username?: string;
 	lastMessageTs?: Date;
-}
-
-export enum ERoomTypes {
-	DIRECT = 'direct',
-	GROUP = 'group',
-	CHANNEL = 'channel'
 }
 
 type RelationModified<T extends Model> = { fetch(): Promise<T[]> } & Relation<T>;
@@ -43,7 +28,7 @@ export interface ISubscription {
 	_updatedAt?: string;
 	v?: IVisitor;
 	f: boolean;
-	t: SubscriptionType; // TODO: we need to review this type later
+	t: RoomType;
 	ts: string | Date;
 	ls: Date;
 	name: string;

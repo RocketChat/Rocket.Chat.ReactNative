@@ -1,8 +1,8 @@
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import { filterRoomsByTitle } from '../useCategoryRoomCandidates';
 
-const general = { rid: 'general', title: 'general', avatar: 'general', t: SubscriptionType.CHANNEL };
-const designReviews = { rid: 'design-reviews', title: 'Design reviews', avatar: 'design-reviews', t: SubscriptionType.GROUP };
+const general = { rid: 'general', title: 'general', avatar: 'general', t: RoomType.CHANNEL };
+const designReviews = { rid: 'design-reviews', title: 'Design reviews', avatar: 'design-reviews', t: RoomType.GROUP };
 
 describe('filterRoomsByTitle', () => {
 	it('returns every room for a blank search', () => {

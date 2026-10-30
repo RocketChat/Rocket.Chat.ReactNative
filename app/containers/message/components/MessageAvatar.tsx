@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import Avatar from '~/containers/Avatar';
 import styles from '../styles';
 import { type IMessageAvatar } from '../interfaces';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useAvatar, useMessageField, useMessageGrouping } from '../stores/MessageStore';
 import { useMessageUser, useNavToRoomInfo } from '../stores/MessageRoomStore';
@@ -31,7 +31,7 @@ const MessageAvatar = ({ small }: IMessageAvatar) => {
 	if (isHeader && author) {
 		const onPress = () =>
 			navToRoomInfo?.({
-				t: SubscriptionType.DIRECT,
+				t: RoomType.DIRECT,
 				rid: author._id,
 				itsMe: author._id === user?.id
 			});

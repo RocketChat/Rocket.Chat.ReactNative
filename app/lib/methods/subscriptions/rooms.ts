@@ -26,7 +26,7 @@ import {
 	type TRoomModel,
 	type TThreadMessageModel,
 	type TThreadModel,
-	SubscriptionType
+	RoomType
 } from '~/definitions';
 import sdk from '~/lib/services/sdk';
 import { type IDDPMessage } from '~/definitions/IDDPMessage';
@@ -254,7 +254,7 @@ const debouncedUpdate = (subscription: ISubscription) => {
 							const room = batch[key] as IRoom;
 							// If the omnichannel's chat is onHold and waitingResponse we shouldn't create or update the chat,
 							// because it should go to Queue
-							if (room.t === SubscriptionType.OMNICHANNEL && room.onHold && room.waitingResponse) {
+							if (room.t === RoomType.OMNICHANNEL && room.onHold && room.waitingResponse) {
 								return null;
 							}
 							const subQueueId = getSubQueueId(room._id);

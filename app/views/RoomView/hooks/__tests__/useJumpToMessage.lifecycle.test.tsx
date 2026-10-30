@@ -279,7 +279,7 @@ it('hands loading to a destination Thread, waits for readiness and settles only 
 	expect(params).toEqual({
 		rid: 'room',
 		tmid: 'thread',
-		t: 'thread',
+		t: 'c',
 		name: 'Thread title',
 		roomUserId: 'user',
 		jumpToMessageId: 'reply'
@@ -339,7 +339,7 @@ it('preserves Message then Thread execution when both initial targets are presen
 
 it('keeps the initial Thread destination blocked when a Thread Message target still awaits readiness', async () => {
 	lookup.mockResolvedValue(message('reply', { tmid: 'current' }) as any);
-	const view = screen({ tmid: 'current', t: 'thread' }, { jumpToMessageId: 'reply', jumpToThreadId: 'other' });
+	const view = screen({ tmid: 'current', t: 'c' }, { jumpToMessageId: 'reply', jumpToThreadId: 'other' });
 	expect(lookup).not.toHaveBeenCalled();
 	expect(view.navigation.push).not.toHaveBeenCalled();
 	act(() => view.result.current.onThreadMessagesLoaded());
@@ -349,8 +349,8 @@ it('keeps the initial Thread destination blocked when a Thread Message target st
 });
 
 it('opens updated Thread route targets immediately without waiting for Thread readiness', async () => {
-	const view = screen({ tmid: 'unloaded', t: 'thread' });
-	view.rerender({ options: { tmid: 'unloaded', t: 'thread' }, params: { jumpToThreadId: 'other' } });
+	const view = screen({ tmid: 'unloaded', t: 'c' });
+	view.rerender({ options: { tmid: 'unloaded', t: 'c' }, params: { jumpToThreadId: 'other' } });
 	await flush();
 	expect(view.navigation.push).toHaveBeenCalledWith('RoomView', expect.objectContaining({ tmid: 'other', jumpToMessageId: '' }));
 	expect(view.navigation.setParams).not.toHaveBeenCalled();
@@ -385,7 +385,7 @@ it('opens a Thread Parent directly without showing or dismissing loading', async
 	expect(view.navigation.push).toHaveBeenCalledWith('RoomView', {
 		rid: 'room',
 		tmid: 'parent',
-		t: 'thread',
+		t: 'c',
 		name: 'Parent title',
 		roomUserId: 'user'
 	});
