@@ -1,7 +1,7 @@
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import { UploadHttpError } from './fileUpload/UploadHttpError';
 
-export const parseServerMessage = (responseText?: string): string | undefined => {
+const parseServerMessage = (responseText?: string): string | undefined => {
 	if (!responseText) {
 		return undefined;
 	}
@@ -14,10 +14,14 @@ export const parseServerMessage = (responseText?: string): string | undefined =>
 	}
 };
 
-export const parseUploadResponse = (status: number, body: string, retryAfterSeconds?: number): TRoomsMediaResponse => {
+export const throwIfUploadFailed = (status: number, body: string, retryAfterSeconds?: number): void => {
 	if (status < 200 || status >= 300) {
 		throw new UploadHttpError(status, { serverMessage: parseServerMessage(body), retryAfterSeconds });
 	}
+};
+
+export const parseUploadResponse = (status: number, body: string, retryAfterSeconds?: number): TRoomsMediaResponse => {
+	throwIfUploadFailed(status, body, retryAfterSeconds);
 	try {
 		return JSON.parse(body);
 	} catch {

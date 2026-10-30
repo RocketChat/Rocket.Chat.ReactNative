@@ -4,8 +4,7 @@ import { copyFileToCacheDirectoryIfNeeded } from './utils';
 import { uploadFileMessage } from './uploadFileMessage';
 import { type IFormData } from '../helpers/fileUpload/definitions';
 import { getUploadHeaders } from '../helpers/getUploadHeaders';
-import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
-import { parseServerMessage } from '../helpers/parseUploadResponse';
+import { throwIfUploadFailed } from '../helpers/parseUploadResponse';
 import fetch from '../helpers/fetch';
 
 export async function sendFileMessageV2(
@@ -63,9 +62,7 @@ export async function sendFileMessageV2(
 						})
 					});
 					if (!confirmResponse.ok) {
-						throw new UploadHttpError(confirmResponse.status, {
-							serverMessage: parseServerMessage(await confirmResponse.text())
-						});
+						throwIfUploadFailed(confirmResponse.status, await confirmResponse.text());
 					}
 				}
 			};
