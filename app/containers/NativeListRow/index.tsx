@@ -246,8 +246,7 @@ const NativeListRow = ({
 			disabledReason={disabledReason}
 			style={[
 				styles.card,
-				sizeStyle,
-				{ backgroundColor: colors.surfaceLight },
+				{ ...sizeStyle, backgroundColor: colors.surfaceLight },
 				isFirst && styles.firstCard,
 				isLast && styles.lastCard
 			]}
