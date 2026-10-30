@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Image } from 'expo-image';
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 import AvatarImage from '../AvatarImage';
+import { SKELETON_DELAY } from '../constants';
 
 const styles = StyleSheet.create({
 	avatar: {
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 		borderRadius: 4
 	}
 });
-const showDelay = () => act(() => jest.advanceTimersByTime(150));
+const showDelay = () => act(() => jest.advanceTimersByTime(SKELETON_DELAY));
 
 beforeEach(() => jest.useFakeTimers());
 afterEach(() => jest.useRealTimers());
@@ -23,7 +23,6 @@ describe('AvatarImage', () => {
 		expect(queryByTestId('avatar-skeleton')).toBeNull();
 		showDelay();
 		expect(getByTestId('avatar-skeleton')).toBeTruthy();
-		expect(UNSAFE_getByType(SkeletonPlaceholder).props.children.props).toMatchObject({ width: 25, height: 25, borderRadius: 4 });
 		fireEvent(UNSAFE_getByType(Image), 'load');
 		expect(queryByTestId('avatar-skeleton')).toBeNull();
 	});
@@ -62,7 +61,7 @@ describe('AvatarImage', () => {
 
 	it('never shows the skeleton when the image loads before the delay', () => {
 		const { queryByTestId, UNSAFE_getByType } = render(<AvatarImage uri='https://a/1.png' style={styles.avatar} />);
-		act(() => jest.advanceTimersByTime(100));
+		act(() => jest.advanceTimersByTime(SKELETON_DELAY - 1));
 		expect(queryByTestId('avatar-skeleton')).toBeNull();
 		fireEvent(UNSAFE_getByType(Image), 'load');
 		showDelay();

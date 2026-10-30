@@ -14,10 +14,10 @@ interface IAvatarImage {
 
 const AvatarImage = ({ uri, style }: IAvatarImage) => {
 	const { colors } = useTheme();
-	const [settledUri, setSettledUri] = useState<string | undefined>();
-	const showSkeleton = !!uri && settledUri !== uri;
+	const [finishedUri, setFinishedUri] = useState<string | undefined>();
+	const showSkeleton = !!uri && finishedUri !== uri;
 
-	const onSettled = () => setSettledUri(uri);
+	const onFinish = () => setFinishedUri(uri);
 
 	return (
 		<>
@@ -29,8 +29,8 @@ const AvatarImage = ({ uri, style }: IAvatarImage) => {
 				}}
 				priority='high'
 				recyclingKey={uri}
-				onLoad={onSettled}
-				onError={onSettled}
+				onLoad={onFinish}
+				onError={onFinish}
 			/>
 			{showSkeleton ? <AvatarSkeleton style={style} /> : null}
 		</>

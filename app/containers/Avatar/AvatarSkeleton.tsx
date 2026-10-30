@@ -3,12 +3,11 @@ import { type ImageStyle, StyleSheet, View } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 import { useTheme } from '~/theme';
+import { SKELETON_DELAY } from './constants';
 
 interface IAvatarSkeleton {
 	style: ImageStyle;
 }
-
-const SKELETON_DELAY = 150;
 
 const AvatarSkeleton = ({ style }: IAvatarSkeleton) => {
 	const { colors } = useTheme();
