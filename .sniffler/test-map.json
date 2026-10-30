@@ -50,6 +50,19 @@
 		]
 	},
 	{
+		"test": "e2e/tests/assorted/custom-categories.e2e.ts",
+		"dependsOn": [
+			"app/views/CreateCategoryView/**",
+			"app/views/CategoryView/**",
+			"app/views/CategorySettingsView/**",
+			"app/containers/MoveToCategorySheet/**",
+			"app/views/RoomsListView/**",
+			"app/views/NewMessageView/**",
+			"app/views/RoomActionsView/**",
+			"app/lib/methods/assignRoomToCategory.ts"
+		]
+	},
+	{
 		"test": "e2e/tests/assorted/deeplink.e2e.ts",
 		"dependsOn": [
 			"app/views/NewServerView/**",

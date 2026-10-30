@@ -1,6 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
 import {
@@ -8,12 +9,11 @@ import {
 	expectAllHidden,
 	expectAllVisible,
 	loginWithDeepLink,
-	navigateToRoom,
-	navigateToRoomActions,
 	searchAndNavigateRoom,
 	sendMessage,
 	LONG_TIMEOUT
 } from '~e2e/support/flows';
+import { navigateToRoomActions } from '~e2e/support/room';
 import { random } from '~e2e/support/random';
 
 afterEach(deleteCreatedUsers);
@@ -50,7 +50,7 @@ test('previews, joins and leaves a public room', { tags: ['test-3'] }, async fix
 	await screen.getByTestId('room-view-join-button').tap();
 	await expect(screen.getByTestId('room-view-join-button')).toBeHidden({ timeout: LONG_TIMEOUT });
 	await backToRoomsList(fixtures);
-	await navigateToRoom(fixtures, room);
+	await openRoom(fixtures, room);
 	await expectAllVisible(fixtures, ['room-view', 'message-composer']);
 	await expect(screen.getByTestId('room-view-join')).toBeHidden();
 

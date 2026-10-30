@@ -1,9 +1,10 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { openScreen } from '~e2e/support/appduct';
 import { expectTexts, goBackUntil, loginWithDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
-import { goToAccessibilityAndAppearance, toggleAccessibilitySwitchAndOpenRoom } from '~e2e/support/settings';
+import { toggleAccessibilitySwitchAndOpenRoom } from '~e2e/support/settings';
 
 const MENTIONS_SWITCH = 'accessibility-mentions-with-at-symbol-switch';
 const HASHTAG_SWITCH = 'accessibility-rooms-with-hashtag-symbol-switch';
@@ -24,7 +25,7 @@ test(
 		const { screen } = fixtures;
 		const user = await createUser();
 		await loginWithDeepLink(fixtures, user);
-		await goToAccessibilityAndAppearance(fixtures);
+		await openScreen(fixtures, 'AccessibilityAndAppearanceView');
 
 		for (const testId of [
 			'accessibility-view-drawer',
@@ -41,7 +42,7 @@ test(
 			await toggleAccessibilitySwitchAndOpenRoom(fixtures, switchTestId);
 			await expectTexts(fixtures, texts);
 			await goBackUntil(fixtures, 'rooms-list-view');
-			await goToAccessibilityAndAppearance(fixtures);
+			await openScreen(fixtures, 'AccessibilityAndAppearanceView');
 		}
 	}
 );

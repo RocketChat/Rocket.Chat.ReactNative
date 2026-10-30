@@ -1,6 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createRandomRoom, createRandomTeam, createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
 	backToRoomsList,
@@ -9,7 +10,6 @@ import {
 	goBackUntil,
 	hideKeyboard,
 	loginWithDeepLink,
-	navigateToRoom,
 	type Fixtures,
 	LONG_TIMEOUT,
 	fillWhenUncovered,
@@ -154,7 +154,7 @@ test('manages a team', { tags: ['test-3'] }, async fixtures => {
 	const privateChannel = `private${random()}-channel-team`;
 
 	await loginWithDeepLink(fixtures, owner);
-	await navigateToRoom(fixtures, team);
+	await openRoom(fixtures, team);
 	await expectRoomHeaderButtons(fixtures);
 
 	await openTeamChannels(fixtures);
@@ -166,7 +166,7 @@ test('manages a team', { tags: ['test-3'] }, async fixtures => {
 	await expectRoomHeaderButtons(fixtures);
 	await backToRoomsList(fixtures);
 
-	await navigateToRoom(fixtures, team);
+	await openRoom(fixtures, team);
 	await openTeamChannels(fixtures);
 	await addExistingChannel(fixtures, team, room.name);
 	await openTeamChannels(fixtures);

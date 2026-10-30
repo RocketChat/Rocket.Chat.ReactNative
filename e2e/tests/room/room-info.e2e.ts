@@ -1,4 +1,4 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect, type Locator } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers, get } from '~e2e/support/api';
@@ -17,6 +17,7 @@ import {
 	headerItem
 } from '~e2e/support/flows';
 import { tapHeaderItem } from '~e2e/support/header';
+import { openRoomScreen } from '~e2e/support/appduct';
 import { navigateToRoomInfo } from '~e2e/support/room';
 
 afterEach(deleteCreatedUsers);
@@ -156,7 +157,7 @@ test('shows and edits room info', { tags: ['test-8'], timeout: 600_000 }, async 
 	const newRoomName = `${room.name}new`;
 
 	await loginWithDeepLink(fixtures, user);
-	await navigateToRoomInfo(fixtures, room.name);
+	await openRoomScreen(fixtures, 'RoomInfoView', room.name);
 	await expectInfoView(fixtures);
 
 	await openEditView(fixtures);

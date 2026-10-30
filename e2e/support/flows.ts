@@ -1,13 +1,14 @@
 import type { Locator, TestFixtures } from 'e2e';
 import type { Device } from '@e2e-dev/mobile';
+import type { Appduct } from '@appduct/e2e';
 import { expect } from 'e2e';
 import { TestError } from 'e2e/engine';
 
-import { getDeepLink, login, type Credentials } from './api';
+import { getDeepLink, login, serverHost, type Credentials } from './api';
 import { data } from './data';
 import { delay } from './timing';
 
-export type Fixtures = TestFixtures & { device: Device };
+export type Fixtures = TestFixtures & { device: Device; appduct: Appduct };
 
 export const LONG_TIMEOUT = 60_000;
 
@@ -121,7 +122,7 @@ export const hideKeyboard = async ({ platform, device, screen }: Fixtures, iosTa
 	await screen.tapAt({ x: 4, y: 175 });
 };
 
-let androidAppInstalled = false;
+let appInstalled = false;
 
 const LEFTOVER_OPEN_PROMPT = /^Open in .Rocket\.Chat.\?$/;
 const NO_APP_SESSION_ERRORS = ['APP_NOT_OPEN', 'ENGINE_FAILURE'];
@@ -141,11 +142,12 @@ const resetApp = async ({ app, device, platform, screen }: Fixtures) => {
 			await tapIfVisible(screen.getByRole('button', 'Cancel'));
 		}
 		await device.installApp(undefined, { reinstall: true });
+		appInstalled = true;
 		return;
 	}
-	if (!androidAppInstalled) {
+	if (!appInstalled) {
 		await device.installApp();
-		androidAppInstalled = true;
+		appInstalled = true;
 	}
 	await device.closeApp();
 	await app.clearState();
@@ -520,7 +522,31 @@ const expectAddWorkspaceOverPhotosPrompt = async ({ device, screen }: Fixtures) 
 	await expect(addWorkspace).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credentials, server = data.server) => {
+const IN_APP_LOGIN_TIMEOUT = 10_000;
+
+const dismissLeftoverAlert = ({ screen }: Fixtures) => tapIfVisible(screen.getByRole('button', /^OK$/i));
+
+const loginInApp = async (fixtures: Fixtures, credentials: Credentials, server: string) => {
+	const session = await login(credentials);
+	await fixtures.appduct.call('reset_app');
+	await dismissLeftoverAlert(fixtures);
+	await fixtures.appduct.call('login_with_token', { host: serverHost(server), token: session.authToken });
+	await expect(fixtures.screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: IN_APP_LOGIN_TIMEOUT });
+};
+
+const loggedInApp = async (fixtures: Fixtures, credentials: Credentials, server: string) => {
+	if (!appInstalled) {
+		return false;
+	}
+	try {
+		await loginInApp(fixtures, credentials, server);
+		return true;
+	} catch {
+		return false;
+	}
+};
+
+const loginAfterReset = async (fixtures: Fixtures, credentials: Credentials, server: string) => {
 	await resetApp(fixtures);
 	if (fixtures.platform === 'android') {
 		await fixtures.device.closeApp();
@@ -534,6 +560,12 @@ export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credent
 		getDeepLink('auth', server, { userId: session.userId, token: session.authToken }),
 		fixtures.screen.getByTestId('rooms-list-view')
 	);
+};
+
+export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credentials, server = data.server) => {
+	if (!(await loggedInApp(fixtures, credentials, server))) {
+		await loginAfterReset(fixtures, credentials, server);
+	}
 	await dismissAndroidSystemDialogs(fixtures);
 	await expect(fixtures.screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expectServerConnected(fixtures);
@@ -562,7 +594,14 @@ export const goBack = async ({ screen, platform }: Fixtures) => {
 	if (platform === 'ios') {
 		backButtons.push(screen.getByRole('button', { name: IOS_BACK_LABEL }).first());
 	}
-	await tapWhenUncovered(await firstVisible(backButtons, BACK_STEP_TIMEOUT));
+	for (let attempt = 1; ; attempt += 1) {
+		try {
+			await tapWhenUncovered(await firstVisible(backButtons, BACK_STEP_TIMEOUT));
+			return;
+		} catch (error) {
+			if (errorCode(error) !== 'LOCATOR_NOT_FOUND' || attempt >= BACK_ATTEMPTS) throw error;
+		}
+	}
 };
 
 export const goBackUntil = async (
@@ -659,14 +698,6 @@ export const openRoomActions = async (fixtures: Fixtures) => {
 	await expectVisible(fixtures, 'room-header');
 	await fixtures.screen.getByTestId('room-header').first().tap();
 	await expectVisible(fixtures, 'room-actions-view');
-};
-
-export const navigateToRoomActions = async (fixtures: Fixtures, room: string) => {
-	if (!(await isVisibleNow(fixtures.screen.getByTestId('room-view')))) {
-		await searchAndNavigateRoom(fixtures, room);
-	}
-	await expectVisible(fixtures, 'room-view');
-	await openRoomActions(fixtures);
 };
 
 const SEND_RESPONSE_TIMEOUT = 10_000;

@@ -1,16 +1,9 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
-import {
-	loginWithDeepLink,
-	navigateToRoom,
-	sendMessage,
-	LONG_TIMEOUT,
-	tapWhenVisible,
-	expectVisible,
-	tapSend
-} from '~e2e/support/flows';
+import { loginWithDeepLink, sendMessage, LONG_TIMEOUT, tapWhenVisible, expectVisible, tapSend } from '~e2e/support/flows';
 import { replyInThread, sendThreadReply, typeThreadReply } from '~e2e/support/threads';
 
 afterEach(deleteCreatedUsers);
@@ -20,7 +13,7 @@ test('quotes a message inside a thread', { tags: ['test-1'] }, async fixtures =>
 	const user = await createUser();
 	const room = await createRandomRoom(user);
 	await loginWithDeepLink(fixtures, user);
-	await navigateToRoom(fixtures, room.name);
+	await openRoom(fixtures, room.name);
 
 	await sendMessage(fixtures, 'thread');
 	await screen.getByTestId('room-view-messages').tap();
@@ -28,7 +21,7 @@ test('quotes a message inside a thread', { tags: ['test-1'] }, async fixtures =>
 	await sendThreadReply(fixtures, 'quotable');
 
 	await loginWithDeepLink(fixtures, user);
-	await navigateToRoom(fixtures, room.name);
+	await openRoom(fixtures, room.name);
 	await tapWhenVisible(fixtures, 'message-thread-button-thread');
 	const quotable = screen.getByTestId('message-content-quotable').first();
 	await expect(quotable).toBeVisible({ timeout: LONG_TIMEOUT });

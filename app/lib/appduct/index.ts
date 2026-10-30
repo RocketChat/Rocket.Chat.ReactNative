@@ -1,10 +1,19 @@
 import '@appduct/react-native/auto';
 import { jsonSchema, registerTool } from '@appduct/react-native';
 import { Q } from '@nozbe/watermelondb';
+import { first, firstValueFrom, fromEvent, takeUntil } from 'rxjs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { appStart } from '~/actions/app';
 import { deepLinkingOpen } from '~/actions/deepLinking';
+import { logout } from '~/actions/login';
 import database from '~/lib/database';
+import { setDeviceLanguage } from '~/i18n';
 import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
+import { SERVERS_TABLE } from '~/lib/database/model/servers/Server';
+import { SERVERS_HISTORY_TABLE } from '~/lib/database/model/ServersHistory';
+import { removeServer } from '~/lib/methods/logout';
+import { initialState as defaultSortPreferences } from '~/reducers/sortPreferences';
 import { getIsMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { RootEnum, type IApplicationState, type IPreferences, type TSubscriptionModel } from '~/definitions';
 import { normalizeDeepLinkingServerHost } from '~/lib/methods/helpers/normalizeDeepLinkingServerHost';
@@ -14,7 +23,7 @@ import Navigation from '~/lib/navigation/appNavigation';
 import { clearCacheAndReconnect } from '~/lib/methods/clearCache';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { store } from '~/lib/store/auxStore';
-import { setPreference } from '~/actions/sortPreferences';
+import { setAllPreferences, setPreference } from '~/actions/sortPreferences';
 import { saveSortPreference } from '~/lib/methods/userPreferencesMethods';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { initialTheme } from '~/lib/methods/helpers/theme';
@@ -73,11 +82,41 @@ const waitForNavigatorReady = (signal: AbortSignal) =>
 		});
 	});
 
+const waitForNavigationState = <T>(find: () => T | null, signal: AbortSignal) =>
+	new Promise<T>((resolve, reject) => {
+		const navigation = Navigation.navigationRef.current!;
+		const resolveIfFound = () => {
+			const found = find();
+			if (found) {
+				unsubscribe();
+				resolve(found);
+			}
+		};
+		const unsubscribe = navigation.addListener('state', resolveIfFound);
+		signal.addEventListener('abort', () => {
+			unsubscribe();
+			reject(signal.reason);
+		});
+		resolveIfFound();
+	});
+
+const isRootRouteMounted =
+	(...names: string[]) =>
+	() =>
+		!!Navigation.navigationRef.current?.getRootState()?.routes.some(route => names.includes(route.name));
+
+const isInShareExtension = (state: IApplicationState) =>
+	state.app.root === RootEnum.ROOT_SHARE_EXTENSION || state.app.root === RootEnum.ROOT_LOADING_SHARE_EXTENSION;
+
+const hasLeftShareExtension = (state: IApplicationState) => hasStarted(state) && !isInShareExtension(state);
+
 const waitForInside = async (signal: AbortSignal) => {
-	await waitForAppStart(signal);
+	await waitUntil(hasLeftShareExtension, signal);
 	if (store.getState().app.root !== RootEnum.ROOT_INSIDE) {
 		throw new Error('Not logged in to a workspace');
 	}
+	await waitForNavigatorReady(signal);
+	await waitForNavigationState(isRootRouteMounted('InsideStack', 'MasterDetailStack'), signal);
 };
 
 const showDrawer = () => Navigation.popTo('DrawerNavigator');
@@ -87,6 +126,7 @@ const openRoom = (room: TSubscriptionModel, isMasterDetail: boolean) => {
 		showDrawer();
 		Navigation.navigate('ChatsStackNavigator');
 	}
+	Navigation.popToTop(isMasterDetail);
 	navigateToRoom({ item: room, isMasterDetail });
 };
 
@@ -171,22 +211,7 @@ const findRoute = (screen: string, rid: string | undefined) => {
 };
 
 const waitForRoute = (screen: string, rid: string | undefined, signal: AbortSignal) =>
-	new Promise<{ route: string; rid: string | null }>((resolve, reject) => {
-		const navigation = Navigation.navigationRef.current!;
-		const resolveIfFocused = () => {
-			const focused = findRoute(screen, rid);
-			if (focused) {
-				unsubscribe();
-				resolve(focused);
-			}
-		};
-		const unsubscribe = navigation.addListener('state', resolveIfFocused);
-		signal.addEventListener('abort', () => {
-			unsubscribe();
-			reject(signal.reason);
-		});
-		resolveIfFocused();
-	});
+	waitForNavigationState(() => findRoute(screen, rid), signal);
 
 const isConnected = (state: IApplicationState) =>
 	state.meteor.connected && state.login.isAuthenticated && state.app.root === RootEnum.ROOT_INSIDE;
@@ -337,9 +362,29 @@ registerTool({
 	}
 });
 
+const waitForSubscription = async (name: string, signal: AbortSignal) => {
+	const [subscription] = await firstValueFrom(
+		database.active
+			.get<TSubscriptionModel>(SUBSCRIPTIONS_TABLE)
+			.query(Q.or(Q.where('name', name), Q.where('fname', name)), Q.take(1))
+			.observe()
+			.pipe(
+				first(subscriptions => subscriptions.length > 0),
+				takeUntil(fromEvent(signal, 'abort'))
+			),
+		{ defaultValue: [] }
+	);
+	if (!subscription) {
+		throw new Error(`No subscribed room named ${name}`);
+	}
+	return subscription;
+};
+
 registerTool({
 	name: 'open_room',
-	description: 'Open a room the logged-in user is subscribed to, matched by its name or display name.',
+	description:
+		'Open a room the logged-in user is subscribed to, matched by its name or display name. Waits for the subscription to reach the local database, so a room created through the REST API just before can be opened.',
+	timeoutMs: 30_000,
 	inputSchema: jsonSchema<{ name: string }>({
 		type: 'object',
 		properties: {
@@ -355,13 +400,7 @@ registerTool({
 	}),
 	handler: async ({ name }, { signal }) => {
 		await waitForInside(signal);
-		const [subscription] = await database.active
-			.get(SUBSCRIPTIONS_TABLE)
-			.query(Q.or(Q.where('name', name), Q.where('fname', name)), Q.take(1))
-			.fetch();
-		if (!subscription) {
-			throw new Error(`No subscribed room named ${name}`);
-		}
+		const subscription = await waitForSubscription(name, signal);
 		openRoom(subscription, getIsMasterDetail());
 		return { rid: subscription.rid, name: subscription.name, type: subscription.t };
 	}
@@ -437,7 +476,6 @@ registerTool({
 			throw new Error(`Unsupported screen ${screen}. Supported: ${supportedScreens.join(', ')}`);
 		}
 		await waitForInside(signal);
-		await waitForNavigatorReady(signal);
 		const isMasterDetail = getIsMasterDetail();
 		const isRoomScreen = screen in roomScreenParams;
 		if (isRoomScreen) {
@@ -547,5 +585,70 @@ registerTool({
 		}
 		preference.write(value);
 		return { name, previous, value: preference.read() };
+	}
+});
+
+const waitForLogout = (signal: AbortSignal) => {
+	let loggingOut = false;
+	return waitForState(state => {
+		loggingOut ||= state.app.root === RootEnum.ROOT_LOADING;
+		return loggingOut && state.app.root === RootEnum.ROOT_OUTSIDE;
+	}, signal);
+};
+
+const removeServersExcept = async (keptServer: string | null) => {
+	const servers = await database.servers.get(SERVERS_TABLE).query().fetch();
+	for (const { id } of servers) {
+		if (id !== keptServer) {
+			await removeServer({ server: id });
+		}
+	}
+};
+
+const clearServersHistory = async () => {
+	const serversDatabase = database.servers;
+	const history = await serversDatabase.get(SERVERS_HISTORY_TABLE).query().fetch();
+	await serversDatabase.write(() => serversDatabase.batch(history.map(entry => entry.prepareDestroyPermanently())));
+};
+
+const remountOutside = async (signal: AbortSignal) => {
+	store.dispatch(appStart({ root: RootEnum.ROOT_LOADING }));
+	await waitForNavigationState(isRootRouteMounted('AuthLoading'), signal);
+	store.dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+	await waitForNavigationState(isRootRouteMounted('OutsideStack'), signal);
+};
+
+const clearLocalStorage = async () => {
+	UserPreferences.getAllKeys().forEach(key => UserPreferences.removeItem(key));
+	setDeviceLanguage();
+	store.dispatch(setAllPreferences(defaultSortPreferences));
+	await AsyncStorage.clear();
+};
+
+registerTool({
+	name: 'reset_app',
+	description:
+		'Return the running app to a first launch without restarting it: log out of every workspace, remove their data and the workspace history, and clear stored preferences. Resolves on the add workspace screen.',
+	timeoutMs: 60_000,
+	inputSchema: jsonSchema<Record<string, never>>({ type: 'object', properties: {}, additionalProperties: false }),
+	outputSchema: jsonSchema<{ root: string }>({
+		type: 'object',
+		properties: { root: { type: 'string' } },
+		required: ['root']
+	}),
+	handler: async (_input, { signal }) => {
+		await waitUntil(hasLeftShareExtension, signal);
+		const isInside = store.getState().app.root === RootEnum.ROOT_INSIDE;
+		await removeServersExcept(isInside ? store.getState().server.server : null);
+		if (isInside) {
+			const loggedOut = waitForLogout(signal);
+			store.dispatch(logout());
+			await loggedOut;
+		}
+		await clearServersHistory();
+		await clearLocalStorage();
+		await waitForNavigatorReady(signal);
+		await remountOutside(signal);
+		return { root: RootEnum.ROOT_OUTSIDE };
 	}
 });

@@ -1,14 +1,14 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { openScreen } from '~e2e/support/appduct';
 import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
 import { navigateToLanguage, openSidebar } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
 
 const selectLanguage = async (fixtures: Fixtures, language: string) => {
-	await navigateToLanguage(fixtures);
 	await fixtures.screen.getByTestId(`language-view-${language}`).tap();
 	await expect(fixtures.screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
@@ -28,9 +28,11 @@ test('translates the app and falls back to English', { tags: ['test-5'] }, async
 
 	await loginWithDeepLink(fixtures, user);
 
+	await openScreen(fixtures, 'LanguageView');
 	await selectLanguage(fixtures, 'en');
 	await expectSidebarLabels(fixtures, ['Chats', 'Profile', 'Settings']);
 
+	await navigateToLanguage(fixtures);
 	await selectLanguage(fixtures, 'nl');
 	await expectSidebarLabels(fixtures, ['Chats', 'Profiel', 'Instellingen']);
 });
