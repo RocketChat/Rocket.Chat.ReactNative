@@ -52,6 +52,21 @@ android_shell() {
   adb -s "$ANDROID_DEVICE" shell "$@"
 }
 
+ANDROID_ROOT_ATTEMPTS=3
+
+root_android_adbd() {
+  for attempt in $(seq 1 "$ANDROID_ROOT_ATTEMPTS"); do
+    adb -s "$ANDROID_DEVICE" root || true
+    adb -s "$ANDROID_DEVICE" wait-for-device
+    if [ "$(android_shell id -u 2>/dev/null | tr -d '\r')" = "0" ]; then
+      return 0
+    fi
+    echo "adbd is not root yet (attempt $attempt)"
+    sleep 2
+  done
+  echo "::warning title=adbd not root::adb root did not take effect after ${ANDROID_ROOT_ATTEMPTS} attempts. Tests that root adbd themselves restart it, which ends the logcat capture."
+}
+
 wait_for_android_boot() {
   adb -s "$ANDROID_DEVICE" wait-for-device
   until [ "$(android_shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ]; do
@@ -112,6 +127,7 @@ wait_for_gms_module_update() {
 }
 
 if [ "$PLATFORM" = "android" ]; then
+  root_android_adbd
   ensure_android_window_focus
   wait_for_gms_module_update
   android_shell settings put system show_touches 1 || true
