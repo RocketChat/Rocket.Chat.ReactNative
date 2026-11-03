@@ -200,7 +200,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 			const { code, reason } = getServerError(e);
 
 			if (code === 'error-invalid-room-name') {
-				setError('name', { message: e, type: 'validate' });
+				setError('name', { message: I18n.t('error-invalid-room-name', { room_name: name }), type: 'validate' });
 				setFocus('name');
 			}
 
