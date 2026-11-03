@@ -214,7 +214,7 @@ describe('RoomView room and thread screens on the same rid', () => {
 
 		openThread();
 
-		await waitFor(() => expect(screen.getAllByTestId('room-view-join-button')).toHaveLength(2));
+		await waitFor(() => expect(screen.getAllByTestId('room-view-join-button').length).toBe(2));
 		await waitFor(() => {
 			const [, roomButton] = screen.getAllByTestId('room-view-join-button');
 			expect(roomButton).toBeEnabled();
