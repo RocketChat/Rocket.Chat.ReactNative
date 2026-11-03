@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { parse } from '@rocket.chat/message-parser';
 import { Image as ExpoImage } from 'expo-image';
@@ -13,6 +13,9 @@ jest.mock('~/lib/methods/userPreferences', () => ({
 	useUserPreferences: jest.fn(() => [true])
 }));
 
+const setFontScale = (fontScale: number) =>
+	jest.mocked(useWindowDimensions).mockReturnValue({ width: 390, height: 844, scale: 3, fontScale });
+
 const renderMarkdown = async (lines: string[], onLinkPress?: jest.Mock) => {
 	const msg = lines.join('\n');
 	const result = render(<Markdown msg={msg} md={parse(msg)} onLinkPress={onLinkPress} />);
@@ -21,6 +24,10 @@ const renderMarkdown = async (lines: string[], onLinkPress?: jest.Mock) => {
 };
 
 describe('Table', () => {
+	beforeEach(() => {
+		setFontScale(1);
+	});
+
 	it('renders the header and every body cell', async () => {
 		const { getByText } = await renderMarkdown(['| Name | Score |', '| - | - |', '| Alice | 9 |', '| Bob | 7 |']);
 
@@ -55,6 +62,24 @@ describe('Table', () => {
 		expect(getByText('r')).toHaveStyle({ textAlign: 'right' });
 		expect(getByText('l')).not.toHaveStyle({ textAlign: 'center' });
 		expect(getByText('l')).not.toHaveStyle({ textAlign: 'right' });
+	});
+
+	it('aligns the cell box of centered and right aligned columns', async () => {
+		const { UNSAFE_getAllByType } = await renderMarkdown(['| L | C | R |', '| :--- | :---: | ---: |', '| l | c | r |']);
+		const cellsAligned = (alignItems: string) =>
+			UNSAFE_getAllByType(View).filter(view => StyleSheet.flatten(view.props.style)?.alignItems === alignItems);
+
+		expect(cellsAligned('center')).toHaveLength(2);
+		expect(cellsAligned('flex-end')).toHaveLength(2);
+	});
+
+	it('scales column widths with the font scale', async () => {
+		setFontScale(2);
+		const { UNSAFE_getAllByType } = await renderMarkdown(['| a |', '| - |', '| b |']);
+
+		const widths = UNSAFE_getAllByType(View).map(view => StyleSheet.flatten(view.props.style)?.width);
+
+		expect(widths).toContain(160);
 	});
 
 	it('keeps links inside cells pressable', async () => {

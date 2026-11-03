@@ -7,7 +7,7 @@ const MAX_WIDTH = 240;
 const TEN_CHARACTERS_WIDTH = 106;
 
 const getWidths = (lines: string[]): number[] => {
-	const [block] = parse(lines.join('\n'));
+	const [block] = parse(lines.join('\n'), { katex: { parenthesisSyntax: true } });
 	if (block.type !== 'TABLE') {
 		throw new Error('not a table');
 	}
@@ -46,7 +46,11 @@ describe('getTableColumnWidths', () => {
 		['user mention', '@aaaaaaaaa', TEN_CHARACTERS_WIDTH],
 		['channel mention', '#aaaaaaaaa', TEN_CHARACTERS_WIDTH],
 		['emoji', ':smile: aaaaaaa', TEN_CHARACTERS_WIDTH],
-		['timestamp', '<t:1735689600:t>', TEN_CHARACTERS_WIDTH]
+		['inline math', '\\(aaaaaaaaaa\\)', TEN_CHARACTERS_WIDTH],
+		['CJK text', '一二三四五', TEN_CHARACTERS_WIDTH],
+		['CJK inline code', '`一二三四五`', TEN_CHARACTERS_WIDTH],
+		['short timestamp', '<t:1735689600:t>', TEN_CHARACTERS_WIDTH],
+		['long timestamp', '<t:1735689600:D>', MAX_WIDTH]
 	])('counts %s content towards the column width', (_name, cell, expected) => {
 		expect(getWidths(['| h |', '| - |', `| ${cell} |`])).toEqual([expected]);
 	});

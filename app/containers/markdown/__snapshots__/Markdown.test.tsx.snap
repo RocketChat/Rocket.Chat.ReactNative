@@ -9735,7 +9735,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               undefined,
                             ],
                           ]
@@ -9822,7 +9824,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                     "lineHeight": 20,
                                   },
                                   undefined,
-                                  undefined,
+                                  {
+                                    "color": "#6C727A",
+                                  },
                                   {
                                     "textAlign": "center",
                                   },
@@ -9895,7 +9899,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "right",
                               },
@@ -9970,7 +9976,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               undefined,
                             ],
                           ]
@@ -10088,7 +10096,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "right",
                               },
@@ -10161,7 +10171,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               undefined,
                             ],
                           ]
@@ -10224,7 +10236,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "center",
                               },
@@ -10267,7 +10281,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                     "lineHeight": 20,
                                   },
                                   undefined,
-                                  undefined,
+                                  {
+                                    "color": "#6C727A",
+                                  },
                                   {
                                     "textAlign": "center",
                                   },
@@ -10334,7 +10350,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "right",
                               },
@@ -10409,7 +10427,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               undefined,
                             ],
                           ]
@@ -10490,7 +10510,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                     "lineHeight": 20,
                                   },
                                   undefined,
-                                  undefined,
+                                  {
+                                    "color": "#6C727A",
+                                  },
                                   {
                                     "textAlign": "center",
                                   },
@@ -10523,7 +10545,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "center",
                               },
@@ -10572,7 +10596,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                     "lineHeight": 20,
                                   },
                                   undefined,
-                                  undefined,
+                                  {
+                                    "color": "#6C727A",
+                                  },
                                   {
                                     "textAlign": "center",
                                   },
@@ -10605,7 +10631,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "center",
                               },
@@ -10663,7 +10691,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "center",
                               },
@@ -10693,7 +10723,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "center",
                               },
@@ -10724,7 +10756,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "center",
                               },
@@ -10754,7 +10788,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "center",
                               },
@@ -10819,7 +10855,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "right",
                               },
@@ -11534,7 +11572,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               undefined,
                             ],
                           ]
@@ -11594,7 +11634,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "right",
                               },
@@ -11656,7 +11698,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "right",
                               },
@@ -11718,7 +11762,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "right",
                               },
@@ -11780,7 +11826,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "right",
                               },
@@ -11842,7 +11890,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "right",
                               },
@@ -11904,7 +11954,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               {
                                 "textAlign": "center",
                               },
@@ -11964,7 +12016,9 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                                 "lineHeight": 20,
                               },
                               undefined,
-                              undefined,
+                              {
+                                "color": "#6C727A",
+                              },
                               undefined,
                             ],
                           ]

@@ -39,7 +39,7 @@ const Cell = ({ cell, width, isHeader }: ICellProps): ReactElement => {
 	const textContext = useMarkdownContext([
 		styles.tableText,
 		isHeader ? sharedStyles.textSemibold : undefined,
-		isHeader ? { color: colors.fontSecondaryInfo } : undefined,
+		{ color: colors.fontSecondaryInfo },
 		alignStyles.text
 	]);
 	const context = { ...textContext, imageSize: IMAGE_SIZE };
