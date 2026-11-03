@@ -9452,12 +9452,14 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                       {
                         "flexDirection": "row",
                       },
-                      {
-                        "borderBottomWidth": 1,
-                      },
-                      {
-                        "borderColor": "#CBCED1",
-                      },
+                      [
+                        {
+                          "borderBottomWidth": 1,
+                        },
+                        {
+                          "borderColor": "#CBCED1",
+                        },
+                      ],
                       undefined,
                     ]
                   }
@@ -9681,7 +9683,6 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                       {
                         "flexDirection": "row",
                       },
-                      undefined,
                       undefined,
                       undefined,
                     ]
@@ -9921,7 +9922,6 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                         "flexDirection": "row",
                       },
                       undefined,
-                      undefined,
                       {
                         "backgroundColor": "rgba(47, 52, 61, 0.05)",
                       },
@@ -10117,7 +10117,6 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                       {
                         "flexDirection": "row",
                       },
-                      undefined,
                       undefined,
                       undefined,
                     ]
@@ -10371,7 +10370,6 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                       {
                         "flexDirection": "row",
                       },
-                      undefined,
                       undefined,
                       {
                         "backgroundColor": "rgba(47, 52, 61, 0.05)",
@@ -10933,12 +10931,14 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                       {
                         "flexDirection": "row",
                       },
-                      {
-                        "borderBottomWidth": 1,
-                      },
-                      {
-                        "borderColor": "#CBCED1",
-                      },
+                      [
+                        {
+                          "borderBottomWidth": 1,
+                        },
+                        {
+                          "borderColor": "#CBCED1",
+                        },
+                      ],
                       undefined,
                     ]
                   }
@@ -11518,7 +11518,6 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                       {
                         "flexDirection": "row",
                       },
-                      undefined,
                       undefined,
                       undefined,
                     ]

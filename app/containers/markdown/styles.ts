@@ -63,10 +63,6 @@ export default StyleSheet.create({
 		alignItems: 'flex-start',
 		justifyContent: 'flex-start'
 	},
-	inlineImage: {
-		width: 300,
-		height: 300
-	},
 	codeInline: {
 		fontSize: 16,
 		lineHeight: 22,

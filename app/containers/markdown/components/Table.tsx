@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 import { transparentize } from 'color2k';
-import { type TextStyle, useWindowDimensions, View, type ViewStyle } from 'react-native';
+import { type StyleProp, type TextStyle, useWindowDimensions, View, type ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { type Table as TableProps, type TableCell } from '@rocket.chat/message-parser';
 
@@ -61,10 +61,9 @@ const Table = ({ value }: ITableProps): ReactElement => {
 	const widths = getTableColumnWidths(value);
 	const tableRows = [value.header, ...value.rows.map(row => row.value)];
 
-	const getRowStyle = (rowIndex: number): (ViewStyle | undefined)[] => [
+	const getRowStyle = (rowIndex: number): StyleProp<ViewStyle>[] => [
 		styles.row,
-		rowIndex === 0 ? styles.rowBottomBorder : undefined,
-		rowIndex === 0 ? { borderColor: colors.strokeLight } : undefined,
+		rowIndex === 0 ? [styles.rowBottomBorder, { borderColor: colors.strokeLight }] : undefined,
 		rowIndex > 0 && rowIndex % 2 === 0
 			? { backgroundColor: transparentize(colors.fontDefault, ROW_STRIPE_TRANSPARENCY) }
 			: undefined
