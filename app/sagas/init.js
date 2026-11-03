@@ -2,11 +2,11 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { CURRENT_SERVER } from '../lib/constants/keys';
+import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import UserPreferences from '../lib/methods/userPreferences';
 import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
-import { findLoggedInServer, isLoggedInServer } from '../lib/methods/loggedInServer';
-import { selectServerRequest } from '../actions/server';
+import { isLoggedInServer } from '../lib/methods/loggedInServer';
+import { selectServerRequest, serverRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import log from '../lib/methods/helpers/log';
@@ -19,6 +19,9 @@ import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
 import { registerCertificates } from '../lib/methods/helpers/sslPinning';
 
+// eslint-disable-next-line no-restricted-imports
+import appConfig from '../../app.json';
+
 const PUSH_NOTIFICATION_KEY = 'pushNotification';
 
 export const initLocalSettings = function* initLocalSettings() {
@@ -27,8 +30,8 @@ export const initLocalSettings = function* initLocalSettings() {
 };
 
 const restoreServer = async () => {
-	const server = UserPreferences.getString(CURRENT_SERVER);
-	const restoredServer = isLoggedInServer(server) ? await getServerById(server) : await findLoggedInServer();
+	const { server } = appConfig;
+	const restoredServer = isLoggedInServer(server) ? await getServerById(server) : null;
 
 	if (restoredServer) {
 		try {
@@ -80,6 +83,9 @@ const restore = function* restore() {
 	if (restoredServer) {
 		yield put(selectServerRequest(restoredServer.id, restoredServer.version));
 	} else {
+		UserPreferences.removeItem(TOKEN_KEY);
+		UserPreferences.removeItem(CURRENT_SERVER);
+		yield put(serverRequest(appConfig.server));
 		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 	}
 

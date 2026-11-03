@@ -1,14 +1,14 @@
 import { memo } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { Touchable } from 'react-native-gesture-handler';
+// import { Touchable } from 'react-native-gesture-handler';
 
-import { showActionSheetRef } from '~/containers/ActionSheet';
+// import { showActionSheetRef } from '~/containers/ActionSheet';
 import SearchHeader from '~/containers/SearchHeader';
 import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
-import ServersList from './ServersList';
+// import ServersList from './ServersList';
 import { useRoomsListSubtitle } from '../hooks/useRoomsListSubtitle';
 
 const styles = StyleSheet.create({
@@ -40,9 +40,9 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
 
-	const onPress = () => {
-		showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false });
-	};
+	// const onPress = () => {
+	// 	showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false });
+	// };
 
 	if (searchEnabled) {
 		// This value is necessary to keep the alignment in MasterDetail.
@@ -50,28 +50,22 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 		return <SearchHeader onSearchChangeText={search} testID='rooms-list-view-search-input' style={{ height }} />;
 	}
 	return (
-		<View style={styles.container}>
-			<Touchable
-				activeOpacity={0.2}
-				animationDuration={{ in: 0, out: 150 }}
-				onPress={onPress}
-				testID='rooms-list-header-servers-list-button'
-				accessibilityLabel={`${serverName} ${subtitle}`}
-				accessibilityRole='header'>
-				<View style={styles.button}>
-					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
-						{serverName}
-					</Text>
-				</View>
-				{subtitle ? (
-					<Text
-						testID='rooms-list-header-server-subtitle'
-						style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
-						numberOfLines={1}>
-						{subtitle}
-					</Text>
-				) : null}
-			</Touchable>
+		<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
+			{/* <Touchable onPress={onPress} testID='rooms-list-header-servers-list-button'> */}
+			<View style={styles.button}>
+				<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+					{serverName}
+				</Text>
+			</View>
+			{subtitle ? (
+				<Text
+					testID='rooms-list-header-server-subtitle'
+					style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
+					numberOfLines={1}>
+					{subtitle}
+				</Text>
+			) : null}
+			{/* </Touchable> */}
 		</View>
 	);
 };
