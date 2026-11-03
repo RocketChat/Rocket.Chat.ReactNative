@@ -12,6 +12,7 @@ import {
 	type IRoleUser,
 	type IRoom,
 	type IRoomNotifications,
+	type IRoomSettings,
 	type IServerRoom,
 	type ISidebarCategory,
 	type RoomType,
@@ -677,24 +678,15 @@ export const hideRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
-export const saveRoomSettings = (
-	rid: string,
-	params: {
-		roomName?: string;
-		roomAvatar?: string | null;
-		roomDescription?: string;
-		roomTopic?: string;
-		roomAnnouncement?: string;
-		roomType?: SubscriptionType;
-		readOnly?: boolean;
-		reactWhenReadOnly?: boolean;
-		systemMessages?: string[];
-		joinCode?: string;
-		encrypted?: boolean;
+export const saveRoomSettings = async (rid: string, params: IRoomSettings): Promise<{ result: boolean; rid: string }> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '9.0.0')) {
+		const response = await sdk.post('rooms.saveRoomSettings', { rid, ...params });
+		return { result: response.success, rid };
 	}
-): Promise<{ result: boolean; rid: string }> =>
 	// RC 0.55.0
-	sdk.methodCallWrapper('saveRoomSettings', rid, params);
+	return sdk.methodCallWrapper('saveRoomSettings', rid, params);
+};
 
 export const setPassword = (newPassword: string) => {
 	const serverVersion = reduxStore.getState().server.version;

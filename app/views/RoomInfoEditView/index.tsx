@@ -24,6 +24,7 @@ import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
 import EventEmitter from '~/lib/methods/helpers/events';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { getServerError } from '~/lib/methods/helpers/getServerError';
 import { MessageTypeValues } from './messageTypes';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '../Styles';
@@ -196,17 +197,19 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		try {
 			await saveRoomSettings(room.rid, params);
 		} catch (e: any) {
-			if (e.error === 'error-invalid-room-name') {
+			const { code, reason } = getServerError(e);
+
+			if (code === 'error-invalid-room-name') {
 				setError('name', { message: e, type: 'validate' });
 				setFocus('name');
 			}
 
-			if (e.error === 'error-duplicate-channel-name') {
+			if (code === 'error-duplicate-channel-name') {
 				setError('name', { message: I18n.t('Channel_name_already_taken'), type: 'validate' });
 				setFocus('name');
 			}
 
-			const a11yAnnouncement = e.error === 'error-duplicate-channel-name' ? I18n.t('Channel_name_already_taken') : e.reason;
+			const a11yAnnouncement = code === 'error-duplicate-channel-name' ? I18n.t('Channel_name_already_taken') : reason;
 			AccessibilityInfo.announceForAccessibility(a11yAnnouncement);
 
 			error = true;
