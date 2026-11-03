@@ -242,6 +242,28 @@ export const Timestamp = () => (
 	</View>
 );
 
+const tableMsg = [
+	'| Name | Status | Score |',
+	'| :--- | :----: | ----: |',
+	'| Alice | **done** | 9.5 |',
+	'| Bob | :smile: | 7 |',
+	'| Carol | [profile](https://rocket.chat) | 12 |',
+	'| Dan | _italic_ ~strike~ `code` @rocket.cat #general | 3 |'
+].join('\n');
+
+const wideTableMsg = [
+	'| Region | Q1 | Q2 | Q3 | Q4 | Total | Owner | Notes |',
+	'| :--- | ---: | ---: | ---: | ---: | ---: | :---: | :--- |',
+	'| North America | 120 | 135 | 150 | 170 | 575 | Alice | Strongest quarter ever recorded for this region |'
+].join('\n');
+
+export const Table = () => (
+	<ScrollView style={styles.container}>
+		<Markdown msg={tableMsg} />
+		<Markdown msg={wideTableMsg} />
+	</ScrollView>
+);
+
 const textStyle = { fontSize: 10, color: 'red' };
 export const TextStyle = () => (
 	<View style={styles.container}>

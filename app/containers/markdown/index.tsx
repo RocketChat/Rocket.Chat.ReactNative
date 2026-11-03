@@ -16,6 +16,7 @@ import Quote from './components/Quote';
 import Paragraph from './components/Paragraph';
 import { Code } from './components/code';
 import Heading from './components/Heading';
+import Table from './components/Table';
 import log from '~/lib/methods/helpers/log';
 import styles from './styles';
 
@@ -84,6 +85,8 @@ const MarkdownBlockView = ({ block }: { block: MarkdownBlock }) => {
 			return <Code value={block.value} />;
 		case 'HEADING':
 			return <Heading value={block.value} level={block.level} />;
+		case 'TABLE':
+			return <Table value={block.value} />;
 		case 'LINE_BREAK':
 			return <LineBreak />;
 		// This prop exists, but not even on the web it is treated, so...

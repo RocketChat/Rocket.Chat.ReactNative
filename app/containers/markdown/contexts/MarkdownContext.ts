@@ -11,6 +11,7 @@ interface IMarkdownContext {
 	navToRoomInfo?: Function;
 	onLinkPress?: Function;
 	textStyle?: StyleProp<TextStyle>;
+	imageSize?: number;
 }
 
 const defaultState = {

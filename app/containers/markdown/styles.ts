@@ -142,6 +142,17 @@ export default StyleSheet.create({
 		borderBottomWidth: 1,
 		borderRightWidth: 1
 	},
+	tableContent: {
+		minWidth: '100%'
+	},
+	tableContainer: {
+		flexGrow: 1,
+		marginVertical: 4
+	},
+	tableText: {
+		fontSize: 14,
+		lineHeight: 20
+	},
 	row: {
 		flexDirection: 'row'
 	},
@@ -149,12 +160,19 @@ export default StyleSheet.create({
 		borderBottomWidth: 1
 	},
 	cell: {
-		justifyContent: 'flex-start',
-		paddingHorizontal: 13,
-		paddingVertical: 6
+		flexGrow: 1,
+		flexShrink: 0,
+		justifyContent: 'center',
+		padding: 8
 	},
 	cellRightBorder: {
 		borderRightWidth: 1
+	},
+	cellAlignCenter: {
+		alignItems: 'center'
+	},
+	cellAlignRight: {
+		alignItems: 'flex-end'
 	},
 	alignCenter: {
 		textAlign: 'center'
