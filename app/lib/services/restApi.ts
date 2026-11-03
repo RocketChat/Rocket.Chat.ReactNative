@@ -1076,8 +1076,17 @@ export const saveAutoTranslate = ({
 	return sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, ddpValue, options ?? null);
 };
 
-export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
-	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+export const getSupportedLanguagesAutoTranslate = async (): Promise<{ language: string; name: string }[]> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '9.0.0')) {
+		const result = await sdk.get('autotranslate.getSupportedLanguages', { targetLanguage: 'en' });
+		if (!result.success) {
+			throw new Error('Unable to load supported languages');
+		}
+		return result.languages;
+	}
+	return sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+};
 
 export const translateMessage = (messageId: string, targetLanguage: string) =>
 	sdk.post('autotranslate.translateMessage', { messageId, targetLanguage });

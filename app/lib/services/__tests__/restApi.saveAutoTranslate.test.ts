@@ -1,6 +1,6 @@
 import { store as reduxStore } from '~/lib/store/auxStore';
 import sdk from '../sdk';
-import { saveAutoTranslate } from '../restApi';
+import { getSupportedLanguagesAutoTranslate, saveAutoTranslate } from '../restApi';
 
 jest.mock('~/lib/store/auxStore', () => ({
 	store: {
@@ -12,6 +12,7 @@ jest.mock('../sdk', () => ({
 	__esModule: true,
 	default: {
 		methodCallWrapper: jest.fn().mockResolvedValue(true),
+		get: jest.fn(),
 		post: jest.fn().mockResolvedValue({ success: true })
 	}
 }));
@@ -70,5 +71,32 @@ describe('saveAutoTranslate', () => {
 			'autotranslate.saveSettings',
 			{ roomId: 'rid1', field: 'autoTranslateLanguage', value: 'pt-BR' }
 		]);
+	});
+});
+
+describe('getSupportedLanguagesAutoTranslate', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		setServerVersion('9.0.0');
+	});
+
+	it('calls the autoTranslate.getSupportedLanguages DDP method below 9.0.0', async () => {
+		setServerVersion('8.9.0');
+		await getSupportedLanguagesAutoTranslate();
+		expect(sdk.methodCallWrapper).toHaveBeenCalledWith('autoTranslate.getSupportedLanguages', 'en');
+		expect(sdk.get).not.toHaveBeenCalled();
+	});
+
+	it('gets autotranslate.getSupportedLanguages and returns its languages on 9.0.0+', async () => {
+		const languages = [{ language: 'en', name: 'English' }];
+		(sdk.get as jest.Mock).mockResolvedValueOnce({ success: true, languages });
+		await expect(getSupportedLanguagesAutoTranslate()).resolves.toEqual(languages);
+		expect(sdk.get).toHaveBeenCalledWith('autotranslate.getSupportedLanguages', { targetLanguage: 'en' });
+		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
+	});
+
+	it('rejects on 9.0.0+ when the server reports a failure', async () => {
+		(sdk.get as jest.Mock).mockResolvedValueOnce({ success: false });
+		await expect(getSupportedLanguagesAutoTranslate()).rejects.toThrow();
 	});
 });
