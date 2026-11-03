@@ -1,5 +1,5 @@
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
-import { act, fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render, within } from '@testing-library/react-native';
 import { parse } from '@rocket.chat/message-parser';
 import { Image as ExpoImage } from 'expo-image';
 
@@ -95,12 +95,12 @@ describe('Table', () => {
 			);
 			await act(async () => {});
 
-			const backgrounds = UNSAFE_getAllByType(View)
-				.map(view => StyleSheet.flatten(view.props.style)?.backgroundColor)
-				.filter(Boolean);
+			const stripes = UNSAFE_getAllByType(View).filter(view => StyleSheet.flatten(view.props.style)?.backgroundColor);
 
-			expect(backgrounds).toHaveLength(1);
-			expect(backgrounds[0]).not.toBe(colors[theme].surfaceRoom);
+			expect(stripes).toHaveLength(1);
+			expect(StyleSheet.flatten(stripes[0].props.style).backgroundColor).not.toBe(colors[theme].surfaceRoom);
+			expect(within(stripes[0]).getByText('Bob')).toBeTruthy();
+			expect(within(stripes[0]).queryByText('Alice')).toBeNull();
 		}
 	);
 
