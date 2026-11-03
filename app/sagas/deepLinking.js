@@ -236,6 +236,7 @@ const handleShareExtension = function* handleOpen({ params }) {
 			}
 			// Unlock canceled or superseded by another lock request — restart the normal flow instead
 			// of leaving the share extension stuck on the loading root.
+			yield put(appStart({ root: RootEnum.ROOT_LOADING }));
 			yield put(appInit());
 			return;
 		}

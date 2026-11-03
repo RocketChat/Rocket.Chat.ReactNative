@@ -47,6 +47,7 @@ import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
 import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
 import { store as reduxStore } from '../lib/store/auxStore';
+import { startInsideUnlessSharing } from './selectServer';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -385,10 +386,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(getUserTokenKey(server, user.id), user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
 		EventEmitter.emit('connected');
-		const currentRoot = yield select(state => state.app.root);
-		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
-			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
-		}
+		yield* startInsideUnlessSharing();
 		const inviteLinkToken = yield select(state => state.inviteLinks.token);
 		if (inviteLinkToken) {
 			yield put(inviteLinksRequest(inviteLinkToken));

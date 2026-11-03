@@ -8,6 +8,7 @@ import { dismissBrowserFirstRunPrompts, dismissPasswordManagerPrompt } from '~e2
 const SAFARI_APP = 'com.apple.mobilesafari';
 const APP_SWITCH_ATTEMPTS = 3;
 const APP_SWITCH_TIMEOUT_ERROR = 'xcrun timed out';
+const SAML_WORKSPACE_DOWN = 'The SAML workspace on the QA server is temporarily down';
 
 const switchToApp = async ({ device }: Fixtures, app: string) => {
 	for (let attempt = 1; ; attempt++) {
@@ -34,7 +35,7 @@ const fillSamlField = async (fixtures: Fixtures, label: string, text: string) =>
 	await fillWhenUncovered(field, text);
 };
 
-test('logs in with SAML', { tags: ['test-7'] }, async fixtures => {
+test('logs in with SAML', { tags: ['test-7'], skip: SAML_WORKSPACE_DOWN }, async fixtures => {
 	const { device, screen } = fixtures;
 	const isIOS = fixtures.platform === 'ios';
 	await launchApp(fixtures);
