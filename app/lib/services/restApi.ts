@@ -680,7 +680,7 @@ export const hideRoom = (roomId: string, t: RoomTypes) =>
 
 export const saveRoomSettings = async (rid: string, params: IRoomSettings): Promise<{ result: boolean; rid: string }> => {
 	const serverVersion = reduxStore.getState().server.version;
-	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '9.0.0')) {
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.3.0')) {
 		const response = await sdk.post('rooms.saveRoomSettings', { rid, ...params });
 		return { result: response.success, rid };
 	}
@@ -1078,7 +1078,7 @@ export const saveAutoTranslate = ({
 
 export const getSupportedLanguagesAutoTranslate = async (): Promise<{ language: string; name: string }[]> => {
 	const serverVersion = reduxStore.getState().server.version;
-	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '9.0.0')) {
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '2.0.0')) {
 		const result = await sdk.get('autotranslate.getSupportedLanguages', { targetLanguage: 'en' });
 		if (!result.success) {
 			throw new Error('Unable to load supported languages');

@@ -77,17 +77,17 @@ describe('saveAutoTranslate', () => {
 describe('getSupportedLanguagesAutoTranslate', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		setServerVersion('9.0.0');
+		setServerVersion('2.0.0');
 	});
 
-	it('calls the autoTranslate.getSupportedLanguages DDP method below 9.0.0', async () => {
-		setServerVersion('8.9.0');
+	it('calls the autoTranslate.getSupportedLanguages DDP method below 2.0.0', async () => {
+		setServerVersion('1.9.9');
 		await getSupportedLanguagesAutoTranslate();
 		expect(sdk.methodCallWrapper).toHaveBeenCalledWith('autoTranslate.getSupportedLanguages', 'en');
 		expect(sdk.get).not.toHaveBeenCalled();
 	});
 
-	it('gets autotranslate.getSupportedLanguages and returns its languages on 9.0.0+', async () => {
+	it('gets autotranslate.getSupportedLanguages and returns its languages on 2.0.0+', async () => {
 		const languages = [{ language: 'en', name: 'English' }];
 		(sdk.get as jest.Mock).mockResolvedValueOnce({ success: true, languages });
 		await expect(getSupportedLanguagesAutoTranslate()).resolves.toEqual(languages);
@@ -95,7 +95,7 @@ describe('getSupportedLanguagesAutoTranslate', () => {
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
 
-	it('rejects on 9.0.0+ when the server reports a failure', async () => {
+	it('rejects on 2.0.0+ when the server reports a failure', async () => {
 		(sdk.get as jest.Mock).mockResolvedValueOnce({ success: false });
 		await expect(getSupportedLanguagesAutoTranslate()).rejects.toThrow();
 	});

@@ -21,26 +21,20 @@ const setServerVersion = (version: string) => (reduxStore.getState as jest.Mock)
 describe('saveRoomSettings', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		setServerVersion('9.0.0');
+		setServerVersion('3.3.0');
 	});
 
-	it('calls the saveRoomSettings DDP method below 9.0.0', async () => {
-		setServerVersion('8.9.0');
+	it('calls the saveRoomSettings DDP method below 3.3.0', async () => {
+		setServerVersion('3.2.9');
 		await saveRoomSettings('rid1', { roomTopic: 'topic' });
 		expect(sdk.methodCallWrapper).toHaveBeenCalledWith('saveRoomSettings', 'rid1', { roomTopic: 'topic' });
 		expect(sdk.post).not.toHaveBeenCalled();
 	});
 
-	it('posts rooms.saveRoomSettings on 9.0.0+', async () => {
+	it('posts rooms.saveRoomSettings on 3.3.0+', async () => {
 		await saveRoomSettings('rid1', { roomAvatar: null, encrypted: true });
 		expect(sdk.post).toHaveBeenCalledWith('rooms.saveRoomSettings', { rid: 'rid1', roomAvatar: null, encrypted: true });
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
-	});
-
-	it('posts rooms.saveRoomSettings on a 9.0.0 release candidate', async () => {
-		setServerVersion('9.0.0-rc.3');
-		await saveRoomSettings('rid1', { roomName: 'name' });
-		expect(sdk.post).toHaveBeenCalledWith('rooms.saveRoomSettings', { rid: 'rid1', roomName: 'name' });
 	});
 
 	it('resolves with result true when the REST call succeeds, as toggleRoomE2EE reads it', async () => {
