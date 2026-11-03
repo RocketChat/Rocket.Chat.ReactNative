@@ -1,4 +1,5 @@
 import { type ReactElement } from 'react';
+import { transparentize } from 'color2k';
 import { type TextStyle, useWindowDimensions, View, type ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { type Table as TableProps, type TableCell } from '@rocket.chat/message-parser';
@@ -11,6 +12,7 @@ import styles from '../styles';
 import Inline from './Inline';
 
 const IMAGE_SIZE = 48;
+const ROW_STRIPE_TRANSPARENCY = 0.95;
 
 interface ITableProps {
 	value: TableProps['value'];
@@ -63,7 +65,9 @@ const Table = ({ value }: ITableProps): ReactElement => {
 		styles.row,
 		rowIndex === 0 ? styles.rowBottomBorder : undefined,
 		rowIndex === 0 ? { borderColor: colors.strokeLight } : undefined,
-		rowIndex > 0 && rowIndex % 2 === 0 ? { backgroundColor: colors.surfaceTint } : undefined
+		rowIndex > 0 && rowIndex % 2 === 0
+			? { backgroundColor: transparentize(colors.fontDefault, ROW_STRIPE_TRANSPARENCY) }
+			: undefined
 	];
 
 	return (

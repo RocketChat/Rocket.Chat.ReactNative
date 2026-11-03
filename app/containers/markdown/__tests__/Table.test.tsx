@@ -4,6 +4,8 @@ import { parse } from '@rocket.chat/message-parser';
 import { Image as ExpoImage } from 'expo-image';
 
 import Markdown from '~/containers/markdown';
+import { ThemeContext } from '~/theme';
+import { colors } from '~/lib/constants/colors';
 
 jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn(() => false)
@@ -81,6 +83,26 @@ describe('Table', () => {
 
 		expect(widths).toContain(160);
 	});
+
+	it.each(['light', 'dark', 'black'] as const)(
+		'stripes the even rows with a color that differs from the room in the %s theme',
+		async theme => {
+			const msg = ['| Name |', '| - |', '| Alice |', '| Bob |'].join('\n');
+			const { UNSAFE_getAllByType } = render(
+				<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+					<Markdown msg={msg} md={parse(msg)} />
+				</ThemeContext.Provider>
+			);
+			await act(async () => {});
+
+			const backgrounds = UNSAFE_getAllByType(View)
+				.map(view => StyleSheet.flatten(view.props.style)?.backgroundColor)
+				.filter(Boolean);
+
+			expect(backgrounds).toHaveLength(1);
+			expect(backgrounds[0]).not.toBe(colors[theme].surfaceRoom);
+		}
+	);
 
 	it('keeps links inside cells pressable', async () => {
 		const onLinkPress = jest.fn();

@@ -9923,7 +9923,7 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                       undefined,
                       undefined,
                       {
-                        "backgroundColor": "#F7F8FA",
+                        "backgroundColor": "rgba(47, 52, 61, 0.05)",
                       },
                     ]
                   }
@@ -10374,7 +10374,7 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
                       undefined,
                       undefined,
                       {
-                        "backgroundColor": "#F7F8FA",
+                        "backgroundColor": "rgba(47, 52, 61, 0.05)",
                       },
                     ]
                   }
