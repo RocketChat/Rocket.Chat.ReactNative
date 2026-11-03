@@ -56,6 +56,13 @@ jest.mock('~/views/RoomView/hooks/useCanPlaceLivechatOnHold', () => ({ useCanPla
 jest.mock('~/views/RoomView/services/closeLivechat', () => ({ closeLivechat: jest.fn() }));
 jest.mock('~/lib/methods/toggleFollowThread', () => ({ toggleFollowThread: jest.fn() }));
 
+let mockCanTakeOverCall = false;
+jest.mock('~/lib/services/voip/useCanTakeOverCall', () => ({ useCanTakeOverCall: () => mockCanTakeOverCall }));
+const mockTakeOverCall = jest.fn(() => Promise.resolve());
+jest.mock('~/lib/services/voip/MediaSessionInstance', () => ({
+	mediaSessionInstance: { takeOverCall: () => mockTakeOverCall() }
+}));
+
 let mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false };
 jest.mock('~/views/RoomView/hooks/useE2EEStatus', () => ({ useE2EEStatus: () => mockE2EEStatus }));
 
@@ -104,6 +111,7 @@ jest.mock('~/containers/Header/components/HeaderButton', () => {
 
 const allTestIDs = [
 	'room-view-search',
+	'room-view-header-take-over-call',
 	'room-view-header-threads',
 	'room-view-header-call',
 	'room-view-header-encryption',
@@ -163,6 +171,7 @@ describe('RoomHeaderActions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockIsMasterDetail = false;
+		mockCanTakeOverCall = false;
 		mockVideoConf.callEnabled = true;
 		mockAppState = {
 			login: { user: { id: 'u1', username: 'user', token: 'tok' } },
@@ -362,6 +371,23 @@ describe('RoomHeaderActions', () => {
 			fireEvent.press(screen.getByTestId('room-view-header-threads'));
 
 			expect(mockNavigation.navigate).toHaveBeenCalledWith('ThreadMessagesView', { rid: 'rid-1', t: 'c' });
+		});
+
+		it('shows continue call here before threads while another session carries a call', () => {
+			mockCanTakeOverCall = true;
+			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
+
+			expect(renderedTestIDs()).toEqual(['room-view-header-take-over-call', ...ROOM_BUTTONS]);
+			expect(screen.getByTestId('room-view-header-take-over-call')).toHaveProp('accessibilityLabel', 'Continue call here');
+		});
+
+		it('takes the call over from the header', () => {
+			mockCanTakeOverCall = true;
+			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
+
+			fireEvent.press(screen.getByTestId('room-view-header-take-over-call'));
+
+			expect(mockTakeOverCall).toHaveBeenCalledTimes(1);
 		});
 
 		it('badges the threads button with the unread thread count', () => {
