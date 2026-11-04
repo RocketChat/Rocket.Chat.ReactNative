@@ -46,10 +46,7 @@ jest.mock('~/lib/hooks/usePermissions', () => ({ usePermissions: () => [true, fa
 jest.mock('~/selectors/login', () => ({ getUserSelector: () => ({ requirePasswordChange: false }) }));
 const mockColors = { fontDanger: '#f00', buttonBackgroundDangerDefault: '#f00', userPresenceDisabled: '#f00' };
 jest.mock('~/theme', () => ({ useTheme: () => ({ colors: mockColors }) }));
-const mockShowActionSheetRef = jest.fn();
-jest.mock('~/containers/ActionSheet', () => ({ showActionSheetRef: (...args: unknown[]) => mockShowActionSheetRef(...args) }));
 jest.mock('../../components/Header', () => ({ __esModule: true, default: 'RoomsListHeaderView' }));
-jest.mock('../../components/ServersList', () => ({ __esModule: true, default: 'ServersList' }));
 
 jest.mock('~/containers/Header/components/HeaderButton', () => {
 	const ReactActual = jest.requireActual('react');
@@ -223,12 +220,11 @@ describe('RoomsListView useHeader', () => {
 		expect(leftItems[0].icon).toEqual({ type: 'image', source: { uri: 'hamburguer' } });
 	});
 
-	it('opens the server switcher when the header title is pressed', () => {
+	it('does not open the server switcher from the header title', () => {
 		renderUseHeader();
 
 		const options = mockSetOptions.mock.calls[0][0];
-		options.onHeaderTitlePress();
-		expect(mockShowActionSheetRef).toHaveBeenCalledWith(expect.objectContaining({ enableContentPanningGesture: false }));
+		expect(options.onHeaderTitlePress).toBeUndefined();
 	});
 
 	it('configures a system search bar instead of a right-cluster search item', () => {

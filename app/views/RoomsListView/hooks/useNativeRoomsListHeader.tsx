@@ -1,19 +1,15 @@
 import { useContext, useLayoutEffect } from 'react';
 
-import { showActionSheetRef } from '~/containers/ActionSheet';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isTablet } from '~/lib/methods/helpers';
 import { headerLeftActions, headerRightActions, type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
 import { stackedSearchBarOptions, translucentHeader } from '~/lib/methods/helpers/navigation';
 import { useTheme } from '~/theme';
-import ServersList from '../components/ServersList';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 import { useNewMessage } from './useNewMessage';
 import { useRoomsListHeaderState } from './useRoomsListHeaderState';
 import { useRoomsListSubtitle } from './useRoomsListSubtitle';
-
-const openServersList = () => showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false });
 
 export const useNativeRoomsListHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch, resetSearch, searchBarRef } = useContext(RoomsSearchContext);
@@ -48,7 +44,6 @@ export const useNativeRoomsListHeader = () => {
 			headerTitle: serverName ?? '',
 			headerSubtitle: subtitle,
 			headerTitleTestID: 'rooms-list-header-servers-list-button',
-			onHeaderTitlePress: openServersList,
 			headerSearchBarOptions: disabled
 				? undefined
 				: {
