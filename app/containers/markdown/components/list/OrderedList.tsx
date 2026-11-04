@@ -16,8 +16,8 @@ const OrderedList = ({ value, renderList }: IOrderedListProps): ReactElement => 
 	const { colors } = useTheme();
 	return (
 		<View>
-			{value.map(item => (
-				<View key={item.number?.toString()}>
+			{value.map((item, index) => (
+				<View key={index}>
 					<View style={styles.row}>
 						<Text style={[styles.text, styles.listPrefix, { color: colors.fontDefault }]}>{item.number}. </Text>
 						<Text style={[styles.text, styles.inline, { color: colors.fontDefault }]}>

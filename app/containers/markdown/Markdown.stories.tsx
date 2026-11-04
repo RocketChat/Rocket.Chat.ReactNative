@@ -1,8 +1,9 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import type { Root } from '@rocket.chat/message-parser';
+import type { ListItem, Plain, Root, Task } from '@rocket.chat/message-parser';
 
 import Markdown, { MarkdownPreview } from '.';
+import type { NestedList, WithNested } from './components/list/NestedLists';
 import { setCustomEmojis } from '~/actions/customEmojis';
 import { mockedStore } from '~/reducers/mockedStore';
 import { themes } from '~/lib/constants/colors';
@@ -221,46 +222,48 @@ export const Lists = () => (
 	</View>
 );
 
-const plain = (value: string) => [{ type: 'PLAIN_TEXT' as const, value }];
-const item = (value: string, nested?: object[]) => ({
-	type: 'LIST_ITEM' as const,
+const plain = (value: string): Plain[] => [{ type: 'PLAIN_TEXT', value }];
+const item = (value: string, extra?: { number?: number; nested?: NestedList[] }): WithNested<ListItem> => ({
+	type: 'LIST_ITEM',
+	value: plain(value),
+	...extra
+});
+const task = (status: boolean, value: string, nested?: NestedList[]): WithNested<Task> => ({
+	type: 'TASK',
+	status,
 	value: plain(value),
 	...(nested && { nested })
 });
-const nestedListsMd = [
+const nestedListsMd: Root = [
 	{
 		type: 'UNORDERED_LIST',
-		value: [item('item 1', [{ type: 'UNORDERED_LIST', value: [item('subitem A'), item('subitem B')] }]), item('item 2')]
+		value: [
+			item('item 1', { nested: [{ type: 'UNORDERED_LIST', value: [item('subitem A'), item('subitem B')] }] }),
+			item('item 2')
+		]
 	},
 	{
 		type: 'ORDERED_LIST',
 		value: [
-			{
-				...item('first'),
+			item('first', {
 				number: 1,
 				nested: [
 					{
 						type: 'TASKS',
-						value: [
-							{ type: 'TASK', status: true, value: plain('done') },
-							{
-								type: 'TASK',
-								status: false,
-								value: plain('todo'),
-								nested: [{ type: 'ORDERED_LIST', value: [{ ...item('deep'), number: 1 }] }]
-							}
-						]
+						value: [task(true, 'done'), task(false, 'todo', [{ type: 'ORDERED_LIST', value: [item('deep', { number: 1 })] }])]
 					}
 				]
-			},
-			{ ...item('second'), number: 2 }
+			}),
+			item('second', { number: 2 })
 		]
 	}
-] as unknown as Root;
+];
+const nestedListsMsg =
+	'- item 1\n  - subitem A\n  - subitem B\n- item 2\n\n1. first\n   - [x] done\n   - [ ] todo\n     1. deep\n2. second';
 
 export const NestedLists = () => (
 	<View style={styles.container}>
-		<Markdown msg={'- item 1\n  - subitem A\n  - subitem B\n- item 2'} md={nestedListsMd} />
+		<Markdown msg={nestedListsMsg} md={nestedListsMd} />
 	</View>
 );
 
