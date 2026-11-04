@@ -66552,253 +66552,259 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         }
                       >
                         <View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              • 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                • 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="Dogs"
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  Dogs
+                                  <Text
+                                    accessibilityLabel="Dogs"
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    Dogs
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              • 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                • 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="cats"
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  cats
+                                  <Text
+                                    accessibilityLabel="cats"
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    cats
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
                         </View>
                         <View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              • 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                • 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="cats"
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  cats
+                                  <Text
+                                    accessibilityLabel="cats"
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    cats
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -67207,203 +67213,207 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         }
                       >
                         <View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              1
-                              . 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                1
+                                . 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="Dogs "
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  Dogs 
+                                  <Text
+                                    accessibilityLabel="Dogs "
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    Dogs 
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              2
-                              . 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                2
+                                . 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="Cats"
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  Cats
+                                  <Text
+                                    accessibilityLabel="Cats"
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    Cats
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -67810,104 +67820,106 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         }
                       >
                         <View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              1
-                              . 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                1
+                                . 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="Dogs"
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  Dogs
+                                  <Text
+                                    accessibilityLabel="Dogs"
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    Dogs
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -68063,104 +68075,106 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         }
                       >
                         <View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              2
-                              . 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                2
+                                . 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="Cats"
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  Cats
+                                  <Text
+                                    accessibilityLabel="Cats"
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    Cats
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -68591,253 +68605,259 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                         }
                       >
                         <View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              • 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                • 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="Dogs"
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  Dogs
+                                  <Text
+                                    accessibilityLabel="Dogs"
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    Dogs
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              • 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                • 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="cats"
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  cats
+                                  <Text
+                                    accessibilityLabel="cats"
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    cats
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
                         </View>
                         <View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              • 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                • 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="cats"
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  cats
+                                  <Text
+                                    accessibilityLabel="cats"
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    cats
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -69246,203 +69266,207 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                         }
                       >
                         <View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              1
-                              . 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                1
+                                . 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="Dogs "
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  Dogs 
+                                  <Text
+                                    accessibilityLabel="Dogs "
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    Dogs 
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              2
-                              . 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                2
+                                . 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="Cats"
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  Cats
+                                  <Text
+                                    accessibilityLabel="Cats"
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    Cats
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -69849,104 +69873,106 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                         }
                       >
                         <View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              1
-                              . 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                1
+                                . 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="Dogs"
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  Dogs
+                                  <Text
+                                    accessibilityLabel="Dogs"
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    Dogs
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -70102,104 +70128,106 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                         }
                       >
                         <View>
-                          <View
-                            style={
-                              {
-                                "flexDirection": "row",
-                              }
-                            }
-                          >
-                            <Text
+                          <View>
+                            <View
                               style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
-                              }
-                            >
-                              2
-                              . 
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#2F343D",
-                                  },
-                                ]
+                                {
+                                  "flexDirection": "row",
+                                }
                               }
                             >
                               <Text
                                 style={
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "400",
-                                    "textAlign": "left",
-                                  }
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                2
+                                . 
+                              </Text>
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 16,
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "lineHeight": 22,
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
                                 }
                               >
                                 <Text
-                                  accessibilityLabel="Cats"
                                   style={
-                                    [
-                                      {
-                                        "flexShrink": 1,
-                                        "fontSize": 16,
-                                        "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
-                                      },
-                                    ]
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "flexShrink": 1,
+                                      "fontFamily": "Inter",
+                                      "fontVariant": [
+                                        "tabular-nums",
+                                      ],
+                                      "fontWeight": "400",
+                                      "textAlign": "left",
+                                    }
                                   }
                                 >
-                                  Cats
+                                  <Text
+                                    accessibilityLabel="Cats"
+                                    style={
+                                      [
+                                        {
+                                          "flexShrink": 1,
+                                          "fontSize": 16,
+                                          "lineHeight": 22,
+                                        },
+                                        {
+                                          "color": "#2F343D",
+                                        },
+                                      ]
+                                    }
+                                  >
+                                    Cats
+                                  </Text>
                                 </Text>
                               </Text>
-                            </Text>
+                            </View>
                           </View>
                         </View>
                       </View>
