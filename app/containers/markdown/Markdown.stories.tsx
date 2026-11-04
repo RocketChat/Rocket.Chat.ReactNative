@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import type { Root } from '@rocket.chat/message-parser';
 
 import Markdown, { MarkdownPreview } from '.';
 import { setCustomEmojis } from '~/actions/customEmojis';
@@ -217,6 +218,49 @@ export const Lists = () => (
 				'- *bold* \n- _italic_ \n- ~strikethrough~ \n- _*bold italic*_ \n- *~bold strikethrough~* \n- _~italic strikethrough~_ \n- _*~bold italic strikethrough~*_'
 			}
 		/>
+	</View>
+);
+
+const plain = (value: string) => [{ type: 'PLAIN_TEXT' as const, value }];
+const item = (value: string, nested?: object[]) => ({
+	type: 'LIST_ITEM' as const,
+	value: plain(value),
+	...(nested && { nested })
+});
+const nestedListsMd = [
+	{
+		type: 'UNORDERED_LIST',
+		value: [item('item 1', [{ type: 'UNORDERED_LIST', value: [item('subitem A'), item('subitem B')] }]), item('item 2')]
+	},
+	{
+		type: 'ORDERED_LIST',
+		value: [
+			{
+				...item('first'),
+				number: 1,
+				nested: [
+					{
+						type: 'TASKS',
+						value: [
+							{ type: 'TASK', status: true, value: plain('done') },
+							{
+								type: 'TASK',
+								status: false,
+								value: plain('todo'),
+								nested: [{ type: 'ORDERED_LIST', value: [{ ...item('deep'), number: 1 }] }]
+							}
+						]
+					}
+				]
+			},
+			{ ...item('second'), number: 2 }
+		]
+	}
+] as unknown as Root;
+
+export const NestedLists = () => (
+	<View style={styles.container}>
+		<Markdown msg={'- item 1\n  - subitem A\n  - subitem B\n- item 2'} md={nestedListsMd} />
 	</View>
 );
 
