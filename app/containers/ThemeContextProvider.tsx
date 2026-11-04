@@ -8,17 +8,15 @@ import { type IThemeContextProps, type TSupportedThemes, ThemeContext } from '..
 const ThemeContextProvider = ({
 	theme,
 	themePreferences,
-	setTheme,
 	children
 }: {
 	theme: TSupportedThemes;
 	themePreferences: IThemePreference;
-	setTheme: IThemeContextProps['setTheme'];
 	children: ReactNode;
 }) => {
 	const value = useMemo<IThemeContextProps>(
-		() => ({ theme, themePreferences, setTheme, colors: colors[theme] }),
-		[theme, themePreferences, setTheme]
+		() => ({ theme, themePreferences, colors: colors[theme] }),
+		[theme, themePreferences]
 	);
 	return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };

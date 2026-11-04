@@ -38,6 +38,8 @@ const roomTypes = {
 	channels: 'l'
 };
 
+const DEEP_LINK_SIGN_IN_TIMEOUT = 60_000;
+
 export const shouldAutoConfirmDeepLinkLogin = (isE2E, params = {}) => isE2E && params.forceLoginPrompt !== 'true';
 
 const consentCopy = {
@@ -234,6 +236,7 @@ const handleShareExtension = function* handleOpen({ params }) {
 			}
 			// Unlock canceled or superseded by another lock request — restart the normal flow instead
 			// of leaving the share extension stuck on the loading root.
+			yield put(appStart({ root: RootEnum.ROOT_LOADING }));
 			yield put(appInit());
 			return;
 		}
@@ -290,33 +293,53 @@ const handleKnownServerDeepLink = function* handleKnownServerDeepLink({ params, 
 	}
 };
 
-const loginWithDeepLinkToken = function* loginWithDeepLinkToken({ params, hostAlreadyConnected }) {
+const waitForServerConnection = function* waitForServerConnection() {
+	yield take(types.SERVER.SELECT_SUCCESS);
+	const connected = yield select(state => state.meteor.connected);
+	if (!connected) {
+		yield take(types.METEOR.SUCCESS);
+	}
+	return true;
+};
+
+const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, hostAlreadyConnected = false }) {
 	if (!hostAlreadyConnected) {
-		yield take(types.SERVER.SELECT_SUCCESS);
-		const connected = yield select(state => state.meteor.connected);
+		const { connected, failed, timedOut } = yield race({
+			connected: call(waitForServerConnection),
+			failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE]),
+			loggedOut: take(types.LOGOUT),
+			timedOut: delay(DEEP_LINK_SIGN_IN_TIMEOUT)
+		});
+		if (timedOut) {
+			showToast(I18n.t('Deep_link_login_timed_out'));
+		}
+		if (failed) {
+			showToast(I18n.t('Deep_link_login_failed'));
+		}
 		if (!connected) {
-			yield take(types.METEOR.SUCCESS);
+			return false;
 		}
 	}
 	yield put(loginRequest({ resume: params.token }, true));
-	yield take(types.LOGIN.SUCCESS);
-	yield put(appReady({}));
-
-	const currentRoot = yield select(state => state.app.root);
-	if (currentRoot !== RootEnum.ROOT_INSIDE) {
-		yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
+	const { signedIn, failed } = yield race({
+		signedIn: take(types.LOGIN.SUCCESS),
+		failed: take(types.LOGIN.FAILURE),
+		loggedOut: take(types.LOGOUT)
+	});
+	if (failed) {
+		showToast(I18n.t('Deep_link_login_failed'));
 	}
-	yield completeDeepLinkNavigation(params);
+	return !!signedIn;
 };
 
-const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord }) {
+const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord, skipLoginConsent }) {
 	const { host } = params;
 	// search if deep link's server already exists
 	if (user && serverRecord) {
 		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
 		return;
 	}
-	if (requiresDeepLinkConsent(params, serverRecord) && !(yield ensureDeepLinkConsent(host, params))) {
+	if (!skipLoginConsent && requiresDeepLinkConsent(params, serverRecord) && !(yield ensureDeepLinkConsent(host, params))) {
 		if (params.voipAcceptFailed) {
 			endVoipCall(params.callId);
 		}
@@ -339,14 +362,22 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 		EventEmitter.emit('NewServer', { server: host });
 	}
 
-	if (params.token) {
-		yield loginWithDeepLinkToken({ params, hostAlreadyConnected });
-	} else {
+	if (!params.token) {
 		yield handleInviteLink({ params, requireLogin: true });
+		return;
 	}
+	if (!(yield* signInWithDeepLinkToken({ params, hostAlreadyConnected }))) {
+		return;
+	}
+	yield put(appReady({}));
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot !== RootEnum.ROOT_INSIDE) {
+		yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
+	}
+	yield completeDeepLinkNavigation(params);
 };
 
-const handleOpen = function* handleOpen({ params }) {
+const handleOpen = function* handleOpen({ params, skipLoginConsent }) {
 	if (params.type === 'shareextension') {
 		yield handleShareExtension({ params });
 		return;
@@ -391,7 +422,7 @@ const handleOpen = function* handleOpen({ params }) {
 		}
 		yield completeDeepLinkNavigation(params);
 	} else {
-		yield handleOpenDifferentServer({ params, server, user, serverRecord });
+		yield handleOpenDifferentServer({ params, server, user, serverRecord, skipLoginConsent });
 	}
 };
 
@@ -411,7 +442,7 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 					action: 'accepted',
 					params: { uid, rid, callId }
 				});
-				yield videoConfJoin(callId, true, false, true);
+				yield videoConfJoin(callId, true, false, { fromPush: true, rid });
 			} else if (event === 'decline') {
 				yield call(notifyUser, `${uid}/video-conference`, {
 					action: 'rejected',
@@ -474,10 +505,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 	yield put(serverInitAdd(server));
 	yield delay(1000);
 	EventEmitter.emit('NewServer', { server: host });
-	if (params.token) {
-		yield take(types.SERVER.SELECT_SUCCESS);
-		yield put(loginRequest({ resume: params.token }, true));
-		yield take(types.LOGIN.SUCCESS);
+	if (params.token && (yield* signInWithDeepLinkToken({ params }))) {
 		yield handleNavigateCallRoom({ params });
 	}
 };

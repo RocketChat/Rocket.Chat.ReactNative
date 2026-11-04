@@ -1,5 +1,6 @@
 package chat.rocket.reactnative.notification;
 
+import androidx.annotation.Keep;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Base64;
@@ -17,6 +18,7 @@ import com.nozbe.watermelondb.WMDatabase;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
+@Keep
 class Message {
     String msg;
 
@@ -25,6 +27,7 @@ class Message {
     }
 }
 
+@Keep
 class FallbackMessage {
     String _id;
     String userId;
@@ -32,6 +35,7 @@ class FallbackMessage {
     long ts;
 }
 
+@Keep
 class DecryptedContent {
     String msg;
     String text;
@@ -42,6 +46,7 @@ class DecryptedContent {
     }
 }
 
+@Keep
 class PrivateKey {
     String d;
     String dp;

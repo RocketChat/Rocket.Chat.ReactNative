@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { render } from '@testing-library/react-native';
 
@@ -8,58 +9,63 @@ import { mockedStore } from '~/reducers/mockedStore';
 import { type TAnyMessageModel } from '~/definitions';
 
 jest.mock('~/containers/UIKit/MessageBlock', () => ({
-	messageBlockWithContext: jest.fn(() => () => null)
+	MessageBlock: jest.fn(() => null)
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { messageBlockWithContext } = jest.requireMock('~/containers/UIKit/MessageBlock');
+const { MessageBlock } = jest.requireMock('~/containers/UIKit/MessageBlock');
 
 const buildItem = (blocks: TAnyMessageModel['blocks']) => ({ id: 'msg-1', blocks }) as unknown as TAnyMessageModel;
 
+const buildTree = (blocks: TAnyMessageModel['blocks'], config: Partial<MessageRoomState> = {}) => (
+	<Provider store={mockedStore}>
+		<MessageRoomProvider timeFormat='fixed-format' {...config}>
+			<MessageProvider item={buildItem(blocks)}>
+				<Blocks />
+			</MessageProvider>
+		</MessageRoomProvider>
+	</Provider>
+);
+
 const renderBlocks = (blocks: TAnyMessageModel['blocks'], config: Partial<MessageRoomState> = {}) =>
-	render(
-		<Provider store={mockedStore}>
-			<MessageRoomProvider timeFormat='fixed-format' {...config}>
-				<MessageProvider item={buildItem(blocks)}>
-					<Blocks />
-				</MessageProvider>
-			</MessageRoomProvider>
-		</Provider>
-	);
+	render(buildTree(blocks, config));
+
+const lastContext = () => MessageBlock.mock.lastCall[0].context;
 
 describe('Blocks', () => {
 	beforeEach(() => {
-		messageBlockWithContext.mockClear();
+		MessageBlock.mockReset();
 	});
 
-	it('renders null and skips messageBlockWithContext when blocks is null', () => {
+	it('renders null and skips MessageBlock when blocks is null', () => {
 		const { toJSON } = renderBlocks(null);
 		expect(toJSON()).toBeNull();
-		expect(messageBlockWithContext).not.toHaveBeenCalled();
+		expect(MessageBlock).not.toHaveBeenCalled();
 	});
 
-	it('renders null and skips messageBlockWithContext when blocks is empty', () => {
+	it('renders null and skips MessageBlock when blocks is empty', () => {
 		const { toJSON } = renderBlocks([]);
 		expect(toJSON()).toBeNull();
-		expect(messageBlockWithContext).not.toHaveBeenCalled();
+		expect(MessageBlock).not.toHaveBeenCalled();
 	});
 
-	it('wires appId from the first block and forwards rid', () => {
-		renderBlocks([{ appId: 'app-1' }] as TAnyMessageModel['blocks'], { rid: 'room-1' });
-		expect(messageBlockWithContext).toHaveBeenCalledWith(expect.objectContaining({ appId: 'app-1', rid: 'room-1' }));
+	it('passes the blocks and wires appId from the first block and rid', () => {
+		const blocks = [{ appId: 'app-1' }] as TAnyMessageModel['blocks'];
+		renderBlocks(blocks, { rid: 'room-1' });
+		expect(MessageBlock.mock.lastCall[0].blocks).toEqual(blocks);
+		expect(lastContext()).toEqual(expect.objectContaining({ appId: 'app-1', rid: 'room-1' }));
 	});
 
 	it('falls back appId to an empty string when the first block has none', () => {
 		renderBlocks([{}] as TAnyMessageModel['blocks']);
-		expect(messageBlockWithContext).toHaveBeenCalledWith(expect.objectContaining({ appId: '' }));
+		expect(lastContext()).toEqual(expect.objectContaining({ appId: '' }));
 	});
 
 	it("calls blockAction with the wired params and rid defaulted to '' when absent", async () => {
 		const blockAction = jest.fn();
-		renderBlocks([{ appId: 'app-1' }] as TAnyMessageModel['blocks'], { handlers: { blockAction } });
+		renderBlocks([{ appId: 'app-1' }] as TAnyMessageModel['blocks'], { handlers: { blockAction } as any });
 
-		const { action } = messageBlockWithContext.mock.calls[0][0];
-		await action({ actionId: 'submit', value: 'v', blockId: 'block-1' });
+		await lastContext().action({ actionId: 'submit', value: 'v', blockId: 'block-1' });
 
 		expect(blockAction).toHaveBeenCalledWith({
 			actionId: 'submit',
@@ -74,7 +80,21 @@ describe('Blocks', () => {
 	it('no-ops without throwing when blockAction is undefined', async () => {
 		renderBlocks([{ appId: 'app-1' }] as TAnyMessageModel['blocks']);
 
-		const { action } = messageBlockWithContext.mock.calls[0][0];
-		await expect(action({ actionId: 'submit', value: 'v', blockId: 'block-1' })).resolves.toBeUndefined();
+		await expect(lastContext().action({ actionId: 'submit', value: 'v', blockId: 'block-1' })).resolves.toBeUndefined();
+	});
+
+	it('keeps the block subtree mounted when the block action handler changes', () => {
+		const onMount = jest.fn();
+		MessageBlock.mockImplementation(() => {
+			useEffect(() => onMount(), []);
+			return null;
+		});
+		const blocks = [{ appId: 'app-1' }] as TAnyMessageModel['blocks'];
+
+		const { rerender } = renderBlocks(blocks, { handlers: { blockAction: jest.fn() } as any });
+		rerender(buildTree(blocks, { handlers: { blockAction: jest.fn() } as any }));
+
+		expect(MessageBlock.mock.calls.length).toBeGreaterThan(1);
+		expect(onMount).toHaveBeenCalledTimes(1);
 	});
 });

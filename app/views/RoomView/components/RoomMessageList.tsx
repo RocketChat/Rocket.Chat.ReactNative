@@ -40,10 +40,10 @@ export const RoomMessageList = ({
 	const rid = useRoomStore(s => s.room.rid);
 	const t = useRoomStore(s => s.room.t) as RoomType;
 	const federated = useRoomStore(fromSubscription(room => isRoomFederated(room), false));
-	const archived = useRoomStore(fromSubscription(room => room.archived, undefined));
-	const broadcast = useRoomStore(fromSubscription(room => room.broadcast, undefined));
-	const roomAutoTranslate = useRoomStore(fromSubscription(room => room.autoTranslate, undefined));
-	const autoTranslateLanguage = useRoomStore(fromSubscription(room => room.autoTranslateLanguage, undefined));
+	const archived = useRoomStore(fromSubscription(room => !!room.archived, false));
+	const broadcast = useRoomStore(fromSubscription(room => !!room.broadcast, false));
+	const roomAutoTranslate = useRoomStore(fromSubscription(room => !!room.autoTranslate, false));
+	const autoTranslateLanguage = useRoomStore(fromSubscription(room => room.autoTranslateLanguage || undefined, undefined));
 	const canAutoTranslate = useRoomStore(s => s.canAutoTranslate);
 	const showMessageInMainThread = useAppSelector(state => getUserSelector(state).showMessageInMainThread ?? false);
 	const serverVersion = useAppSelector(state => state.server.version);

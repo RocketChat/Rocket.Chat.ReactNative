@@ -78,6 +78,7 @@ export interface IServer {
 	biometry?: boolean;
 	uniqueID: string;
 	enterpriseModules: IEnterpriseModules;
+	hasValidLicense?: boolean;
 	E2E_Enable: boolean;
 	supportedVersions?: ISupportedVersionsData;
 	supportedVersionsWarningAt?: Date | null;

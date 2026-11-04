@@ -19,6 +19,7 @@ import usersTyping from './usersTyping';
 import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
 import enterpriseModules from './enterpriseModules';
+import hasValidLicense from './hasValidLicense';
 import encryption from './encryption';
 import permissions from './permissions';
 import roles from './roles';
@@ -48,6 +49,7 @@ export default combineReducers({
 	inquiry,
 	routingConfig,
 	enterpriseModules,
+	hasValidLicense,
 	encryption,
 	permissions,
 	roles,

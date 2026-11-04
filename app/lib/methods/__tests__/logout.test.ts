@@ -30,6 +30,10 @@ jest.mock('~/lib/services/restApi', () => ({
 	removePushToken: jest.fn()
 }));
 
+jest.mock('~/lib/methods/helpers/sslPinning', () => ({
+	clearRemovedWorkspaceCertificate: jest.fn()
+}));
+
 const mockSdkLogout = jest.fn();
 
 jest.mock('~/lib/services/sdk', () => {
@@ -37,7 +41,11 @@ jest.mock('~/lib/services/sdk', () => {
 	return { __esModule: true, default: makeSdkMock({ logout: () => mockSdkLogout() }) };
 });
 
-import { logout, removeServerData } from '../logout';
+import CookieManager from '@react-native-cookies/cookies';
+
+import { logout, removeServer, removeServerData } from '../logout';
+import { clearRemovedWorkspaceCertificate } from '~/lib/methods/helpers/sslPinning';
+import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import sdk from '~/lib/services/sdk';
 import { disconnect } from '~/lib/services/connect';
 import database from '~/lib/database';
@@ -150,6 +158,23 @@ describe('removeServerData', () => {
 	});
 });
 
+describe('removeServer', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		keysToClear.forEach(key => UserPreferences.removeItem(key));
+		mockDestroyableServerRecord();
+	});
+
+	it('removes the server certificate after deleting the server record', async () => {
+		await removeServer({ server: SERVER });
+
+		expect(clearRemovedWorkspaceCertificate).toHaveBeenCalledWith(SERVER);
+		expect(jest.mocked(database.servers.batch).mock.invocationCallOrder[0]).toBeLessThan(
+			jest.mocked(clearRemovedWorkspaceCertificate).mock.invocationCallOrder[0]
+		);
+	});
+});
+
 describe('logout', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -186,5 +211,28 @@ describe('logout', () => {
 
 		expect(mockSdkLogout).toHaveBeenCalled();
 		expect(disconnect).toHaveBeenCalled();
+	});
+
+	it('drops an ongoing conference call so it cannot outlive the session', async () => {
+		seedServer(SERVER, USER_ID);
+		useConferenceCallStore.getState().open({ callId: 'call1', url: `${SERVER}/conference/call1` });
+
+		await logout({ server: SERVER });
+
+		expect(useConferenceCallStore.getState().callId).toBeUndefined();
+		expect(useConferenceCallStore.getState().expanded).toBe(false);
+	});
+
+	it('expires the cookies the conference webview was seeded with', async () => {
+		seedServer(SERVER, USER_ID);
+
+		await logout({ server: SERVER });
+
+		const written = (CookieManager.setFromResponse as jest.Mock).mock.calls;
+		expect(written.map(([, cookie]) => cookie)).toEqual([
+			expect.stringContaining('rc_uid=;'),
+			expect.stringContaining('rc_token=;')
+		]);
+		written.forEach(([url]) => expect(url).toEqual(SERVER));
 	});
 });

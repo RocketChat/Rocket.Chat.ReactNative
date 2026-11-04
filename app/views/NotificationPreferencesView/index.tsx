@@ -11,7 +11,7 @@ import { type IRoomNotifications, type TRoomNotificationsModel } from '~/definit
 import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { showErrorAlertWithEMessage } from '~/lib/methods/helpers';
+import { isIOS, showErrorAlertWithEMessage } from '~/lib/methods/helpers';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { saveNotificationSettings } from '~/lib/services/restApi';
@@ -50,12 +50,17 @@ const RenderListPicker = ({
 
 	const [option, setOption] = useState(pref);
 
+	const selectOption = (selected: NonNullable<typeof option>) => {
+		const previous = option;
+		onChangeValue(preference, { [preference]: selected.value.toString() }, () => setOption(previous));
+		setOption(selected);
+	};
+
 	const options: TActionSheetOptionsItem[] = OPTIONS[preference as TOptions].map(i => ({
 		title: I18n.t(i.label, { defaultValue: i.label, second: i.second }),
 		onPress: () => {
 			hideActionSheet();
-			onChangeValue(preference, { [preference]: i.value.toString() }, () => setOption(option));
-			setOption(i);
+			selectOption(i);
 		},
 		right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 	}));
@@ -63,13 +68,28 @@ const RenderListPicker = ({
 	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label;
 
 	return (
-		<List.Item
-			title={title}
+		<List.Picker
+			title={I18n.t(title)}
 			testID={testID}
-			onPress={() => showActionSheet({ options })}
-			right={() => <Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>{label}</Text>}
-			additionalAccessibilityLabel={label}
-		/>
+			options={OPTIONS[preference as TOptions].map(i => ({
+				label: I18n.t(i.label, { defaultValue: i.label, second: i.second }),
+				value: i.value.toString()
+			}))}
+			selection={option?.value.toString() ?? ''}
+			onSelectionChange={selected => {
+				const selectedOption = OPTIONS[preference as TOptions].find(i => i.value.toString() === selected);
+				if (selectedOption) {
+					selectOption(selectedOption);
+				}
+			}}>
+			<List.Item
+				title={title}
+				testID={testID}
+				onPress={() => showActionSheet({ options })}
+				right={() => <Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>{label}</Text>}
+				additionalAccessibilityLabel={label}
+			/>
+		</List.Picker>
 	);
 };
 
@@ -137,7 +157,7 @@ const NotificationPreferencesView = (): ReactElement => {
 	};
 
 	return (
-		<SafeAreaView testID='notification-preference-view'>
+		<SafeAreaView testID='notification-preference-view' style={isIOS ? { paddingTop: 16 } : undefined}>
 			<List.Container testID='notification-preference-view-list'>
 				<List.Section>
 					<List.Separator />

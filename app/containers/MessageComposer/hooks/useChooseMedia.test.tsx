@@ -127,6 +127,45 @@ describe('useChooseMedia', () => {
 		expect(mockNavigate).not.toHaveBeenCalled();
 	});
 
+	it('derives a decoded filename from the path when the picker gives no name', async () => {
+		mockUseAltTextSupported.mockReturnValue(true);
+		mockGetDocumentAsync.mockResolvedValue({
+			canceled: false,
+			assets: [{ size: 12, mimeType: 'application/pdf', uri: 'file:///tmp/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80.pdf' }]
+		});
+
+		const { result } = renderHook(() => useChooseMedia({ rid: 'room-id', tmid: 'thread-id', permissionToUpload: true }));
+
+		await result.current.chooseFile();
+
+		await waitFor(() => {
+			expect(addAttachments).toHaveBeenCalledWith([expect.objectContaining({ filename: 'Пример.pdf' })]);
+		});
+	});
+
+	it('keeps the picker name instead of deriving one from an encoded path', async () => {
+		mockUseAltTextSupported.mockReturnValue(true);
+		mockGetDocumentAsync.mockResolvedValue({
+			canceled: false,
+			assets: [
+				{
+					name: 'Пример.pdf',
+					size: 12,
+					mimeType: 'application/pdf',
+					uri: 'file:///tmp/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80-copy.pdf'
+				}
+			]
+		});
+
+		const { result } = renderHook(() => useChooseMedia({ rid: 'room-id', tmid: 'thread-id', permissionToUpload: true }));
+
+		await result.current.chooseFile();
+
+		await waitFor(() => {
+			expect(addAttachments).toHaveBeenCalledWith([expect.objectContaining({ filename: 'Пример.pdf' })]);
+		});
+	});
+
 	it('forwards quoted message ids to ShareView as selectedMessages', async () => {
 		mockUseAltTextSupported.mockReturnValue(false);
 		mockUseMessageActionKind.mockReturnValue('quote');

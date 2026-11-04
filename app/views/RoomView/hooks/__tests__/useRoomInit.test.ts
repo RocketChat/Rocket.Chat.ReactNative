@@ -64,12 +64,19 @@ const renderRoomInit = (overrides: Partial<IRenderRoomInitParams> = {}, roomStor
 		ready: true,
 		...overrides
 	};
-	const { rerender, result, unmount } = renderHook((props: IRenderRoomInitParams) => useRoomInit(props), {
-		initialProps: defaultProps
-	});
+	const renders: { rid?: string; loading: boolean }[] = [];
+	const { rerender, result, unmount } = renderHook(
+		(props: IRenderRoomInitParams) => {
+			const roomScreen = useRoomInit(props);
+			renders.push({ rid: props.rid, loading: roomScreen.loading });
+			return roomScreen;
+		},
+		{ initialProps: defaultProps }
+	);
 
 	return {
 		roomStore,
+		renders,
 		result,
 		unmount,
 		rerender: (next: Partial<IRenderRoomInitParams> = {}) => rerender({ ...defaultProps, ...next })
@@ -136,6 +143,19 @@ describe('useRoomInit', () => {
 		await resolveInit();
 
 		expect(result.current.loading).toBe(false);
+	});
+
+	it('never renders the new rid as loaded before its init run settles', async () => {
+		const { roomStore, resolveInit } = makeDeferredRoomStore();
+		const { renders, rerender } = renderRoomInit({}, roomStore);
+		await resolveInit();
+
+		runAfterInteractionsSpy.mockImplementation(() => ({ then: jest.fn(), done: jest.fn(), cancel: jest.fn() }) as any);
+		rerender({ rid: 'rid-2' });
+
+		const newRidRenders = renders.filter(render => render.rid === 'rid-2');
+		expect(newRidRenders.length).toBeGreaterThan(0);
+		expect(newRidRenders.every(render => render.loading)).toBe(true);
 	});
 
 	it('keeps the lastSeen returned by init and clears it on demand', async () => {

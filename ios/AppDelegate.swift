@@ -1,4 +1,4 @@
-import Expo
+public import Expo
 import React
 import ReactAppDependencyProvider
 import Firebase
@@ -8,10 +8,10 @@ import PushKit
 
 @UIApplicationMain
 public class AppDelegate: ExpoAppDelegate {
-  var window: UIWindow?
+  public var window: UIWindow?
 
   var reactNativeDelegate: ReactNativeDelegate?
-  var reactNativeFactory: RCTReactNativeFactory?
+  public var reactNativeFactory: RCTReactNativeFactory?
   var watchConnection: WatchConnection?
 
   public override func application(
@@ -38,27 +38,13 @@ public class AppDelegate: ExpoAppDelegate {
     }
       
     let delegate = ReactNativeDelegate()
-    let factory = RCTReactNativeFactory(delegate: delegate)
+    let factory = ExpoReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()
 
     reactNativeDelegate = delegate
     reactNativeFactory = factory
-    bindReactNativeFactory(factory)
-
-#if os(iOS) || os(tvOS)
-    window = UIWindow(frame: UIScreen.main.bounds)
-    factory.startReactNative(
-      withModuleName: "RocketChatRN",
-      in: window,
-      launchOptions: launchOptions)
-#endif
 
     let result = super.application(application, didFinishLaunchingWithOptions: launchOptions)
-
-    // Initialize boot splash
-    if let rootViewController = window?.rootViewController {
-      RNBootSplash.initWithStoryboard("LaunchScreen", rootView: rootViewController.view)
-    }
 
     // Initialize SSL Pinning
      SSLPinning().migrate()
@@ -87,9 +73,30 @@ public class AppDelegate: ExpoAppDelegate {
     let result = RCTLinkingManager.application(application, continue: userActivity, restorationHandler: restorationHandler)
     return super.application(application, continue: userActivity, restorationHandler: restorationHandler) || result
   }
+
+#if os(iOS) || os(tvOS)
+  public func application(
+    _ application: UIApplication,
+    configurationForConnecting connectingSceneSession: UISceneSession,
+    options: UIScene.ConnectionOptions
+  ) -> UISceneConfiguration {
+    return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+  }
+
+  public func application(
+    _ application: UIApplication,
+    didDiscardSceneSessions sceneSessions: Set<UISceneSession>
+  ) {}
+#endif
 }
 
-class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
+extension AppDelegate: ExpoReactNativeFactoryProvider {
+  public var reactNativeFactoryModuleName: String {
+    "RocketChatRN"
+  }
+}
+
+class ReactNativeDelegate: ExpoReactNativeFactoryDelegate {
   override func sourceURL(for bridge: RCTBridge) -> URL? {
     self.bundleURL()
   }

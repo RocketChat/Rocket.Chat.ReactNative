@@ -29,7 +29,7 @@ jest.mock('../components/EncryptedRoom', () => {
 	const { View: RNView } = require('react-native');
 	return { EncryptedRoom: () => createElement(RNView, { testID: 'encrypted-screen' }) };
 });
-jest.mock('../hooks/useHeader', () => ({ useHeader: jest.fn() }));
+jest.mock('../components/RoomViewHeader/RoomViewHeader', () => ({ RoomViewHeader: () => null }));
 jest.mock('../hooks/useE2EEStatus', () => ({
 	useE2EEStatus: jest.fn(() => ({ showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false }))
 }));

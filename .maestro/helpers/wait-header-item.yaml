@@ -1,0 +1,23 @@
+appId: ${APP_ID}
+name: Wait for header item
+tags:
+  - 'util'
+
+---
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: ${ANDROID_ID}
+          timeout: 60000
+
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: ${IOS_LABEL}
+          timeout: 60000

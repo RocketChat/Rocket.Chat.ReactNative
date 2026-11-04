@@ -3,22 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
+import { checkedStateLabel } from '~/containers/List/native/utils/itemProps';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import { type TAlertDisplayType } from '..';
 
 const styles = StyleSheet.create({
-	leftTitleContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'flex-start'
-	},
-	leftTitle: {
-		...sharedStyles.textMedium,
-		fontSize: 16,
-		lineHeight: 24
-	},
 	rightContainer: {
 		flex: 1
 	},
@@ -70,9 +61,7 @@ const ListPicker = ({
 		OPTIONS.map(i => ({
 			title: i.label,
 			subtitle: i?.description || undefined,
-			accessibilityLabel: `${i.label}. ${i?.description || ''}. ${
-				option?.value === i.value ? I18n.t('Checked') : I18n.t('Unchecked')
-			}`,
+			accessibilityLabel: `${i.label}. ${i?.description || ''}. ${checkedStateLabel(option?.value === i.value)}`,
 			onPress: () => {
 				hideActionSheet();
 				onChangeValue(i.value);
@@ -80,27 +69,26 @@ const ListPicker = ({
 			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 		}));
 
-	const openOptions = () => {
-		const options = getOptions();
-		showActionSheet({ options });
-	};
 	return (
-		<List.Item
-			accessibilityLabel={`${title}. ${option?.label}`}
-			onPress={openOptions}
-			title={() => (
-				<View style={styles.leftTitleContainer}>
-					<Text style={[styles.leftTitle, { color: colors.fontDefault }]}>{title}</Text>
-				</View>
-			)}
-			right={() => (
-				<View style={styles.rightTitleContainer}>
-					<Text style={[styles.rightTitle, { color: colors.fontInfo }]}>{option?.label}</Text>
-				</View>
-			)}
-			rightContainerStyle={styles.rightContainer}
-			additionalAccessibilityLabel={option?.label}
-		/>
+		<List.Picker
+			title={title}
+			options={OPTIONS.map(i => ({ label: i.label, value: i.value }))}
+			selection={option.value}
+			onSelectionChange={onChangeValue}>
+			<List.Item
+				accessibilityLabel={`${title}. ${option?.label}`}
+				onPress={() => showActionSheet({ options: getOptions() })}
+				title={title}
+				translateTitle={false}
+				right={() => (
+					<View style={styles.rightTitleContainer}>
+						<Text style={[styles.rightTitle, { color: colors.fontInfo }]}>{option?.label}</Text>
+					</View>
+				)}
+				rightContainerStyle={styles.rightContainer}
+				additionalAccessibilityLabel={option?.label}
+			/>
+		</List.Picker>
 	);
 };
 

@@ -21,6 +21,7 @@ export async function loadNextMessages(args: ILoadNextMessages): Promise<void> {
 	try {
 		const { messages: fetched, hasMore } = await getNextMessages({ rid: args.rid, after: args.ts, count: COUNT });
 		const messages = orderBy(fetched, 'ts');
+		console.log(`[history] loadNextMessages returned ${messages.length} messages`);
 		if (!messages.length) {
 			await updateMessages({ rid: args.rid, update: [], remove: [{ _id: args.loaderItem.id }] });
 			return;

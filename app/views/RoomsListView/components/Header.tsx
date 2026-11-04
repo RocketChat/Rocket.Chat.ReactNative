@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Touchable } from 'react-native-gesture-handler';
 
 import { showActionSheetRef } from '~/containers/ActionSheet';
 import SearchHeader from '~/containers/SearchHeader';
@@ -9,6 +9,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import ServersList from './ServersList';
+import { useRoomsListSubtitle } from '../hooks/useRoomsListSubtitle';
 
 const styles = StyleSheet.create({
 	container: {
@@ -32,13 +33,10 @@ const styles = StyleSheet.create({
 
 // search and searchEnabled need to be props because Header is used on react-navigation, which does not support context
 const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string) => void; searchEnabled: boolean }) => {
-	const connecting = useAppSelector(state => state.meteor.connecting || state.server.loading);
-	const connected = useAppSelector(state => state.meteor.connected);
-	const isLoggingIn = useAppSelector(state => state.login.isFetching);
-	const isFetching = useAppSelector(state => state.rooms.isFetching);
 	const serverName = useAppSelector(state => state.settings.Site_Name as string);
-	const server = useAppSelector(state => state.server.server);
-	const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
+	const supportedVersionsExpired = useAppSelector(state => state.supportedVersions.status === 'expired');
+	const connectionSubtitle = useRoomsListSubtitle();
+	const subtitle = supportedVersionsExpired ? I18n.t('Cannot_connect') : connectionSubtitle;
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
 
@@ -51,21 +49,15 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 		const height = 37 * fontScale;
 		return <SearchHeader onSearchChangeText={search} testID='rooms-list-view-search-input' style={{ height }} />;
 	}
-	let subtitle;
-	if (supportedVersionsStatus === 'expired') {
-		subtitle = 'Cannot connect';
-	} else if (connecting || isLoggingIn) {
-		subtitle = I18n.t('Connecting');
-	} else if (isFetching) {
-		subtitle = I18n.t('Updating');
-	} else if (!connected) {
-		subtitle = I18n.t('Waiting_for_network');
-	} else {
-		subtitle = server?.replace(/(^\w+:|^)\/\//, '');
-	}
 	return (
-		<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
-			<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
+		<View style={styles.container}>
+			<Touchable
+				activeOpacity={0.2}
+				animationDuration={{ in: 0, out: 150 }}
+				onPress={onPress}
+				testID='rooms-list-header-servers-list-button'
+				accessibilityLabel={`${serverName} ${subtitle}`}
+				accessibilityRole='header'>
 				<View style={styles.button}>
 					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 						{serverName}
@@ -79,7 +71,7 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 						{subtitle}
 					</Text>
 				) : null}
-			</TouchableOpacity>
+			</Touchable>
 		</View>
 	);
 };

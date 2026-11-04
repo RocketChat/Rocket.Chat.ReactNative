@@ -21,6 +21,13 @@ import * as pinned from '../RightIcons/Pinned.stories';
 import * as readReceipt from '../RightIcons/ReadReceipt.stories';
 import * as translated from '../RightIcons/Translated.stories';
 
+jest.mock('~/lib/methods/handleMediaDownload.ts', () => ({
+	...jest.requireActual('~/lib/methods/handleMediaDownload.ts'),
+	getMediaCache: jest.fn(() => Promise.resolve({ exists: false })),
+	downloadMediaFile: jest.fn(() => Promise.resolve('')),
+	isDownloadActive: jest.fn(() => false)
+}));
+
 generateSnapshots(attachments);
 generateSnapshots(broadcast);
 generateSnapshots(callButton);

@@ -9,13 +9,12 @@ import { useTheme } from '~/theme';
 interface IPasscodeButton {
 	text?: string;
 	icon?: TIconsName;
-	disabled?: boolean;
 	onPress?: Function;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 }
 
-const Button = memo(({ style, text, disabled, onPress, icon, testID }: IPasscodeButton) => {
+const Button = memo(({ style, text, onPress, icon, testID }: IPasscodeButton) => {
 	const { colors } = useTheme();
 
 	const press = () => onPress && onPress(text);
@@ -26,7 +25,6 @@ const Button = memo(({ style, text, disabled, onPress, icon, testID }: IPasscode
 			style={[styles.buttonView, { backgroundColor: 'transparent' }, style]}
 			underlayColor={colors.buttonBackgroundSecondaryDefault}
 			rippleColor={colors.buttonBackgroundSecondaryPress}
-			enabled={!disabled}
 			onPress={press}>
 			{icon ? (
 				<CustomIcon name={icon} size={36} />

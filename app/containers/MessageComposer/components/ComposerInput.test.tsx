@@ -14,6 +14,7 @@ jest.mock('react-native', () => {
 	const React = jest.requireActual('react');
 	const NativeTextInput = React.forwardRef((props: Record<string, unknown>, ref: unknown) => {
 		const nativeNode = React.useRef({
+			clear: jest.fn(),
 			focus: jest.fn(),
 			setNativeProps: jest.fn(),
 			setSelection: jest.fn()
@@ -43,7 +44,7 @@ jest.mock('../hooks/useIOSBackSwipeHandler', () => ({
 	__esModule: true,
 	default: jest.fn(() => ({ iOSBackSwipe: { current: false } }))
 }));
-jest.mock('../hooks/useAutoSaveDraft', () => ({ useAutoSaveDraft: jest.fn(() => ({ saveMessageDraft: jest.fn() })) }));
+jest.mock('../hooks/useAutoSaveDraft', () => ({ useAutoSaveDraft: jest.fn(() => ({ saveDraft: jest.fn() })) }));
 jest.mock('~/lib/methods/draftMessage', () => ({ loadDraftMessage: jest.fn(() => Promise.resolve(undefined)) }));
 
 const mockLoadDraftMessage = loadDraftMessage as jest.Mock;
@@ -85,6 +86,7 @@ const renderInput = ({
 		</MessageActionProvider>
 	);
 	const rendered = render(tree);
+	inputRef.current?.setNativeProps.mockClear();
 	return { ...rendered, composerRef, inputRef, messageActionStore };
 };
 
@@ -99,14 +101,26 @@ describe('ComposerInput', () => {
 		jest.useRealTimers();
 	});
 
-	it('updates getText synchronously and trims typed text while preserving raw native text', () => {
+	it('updates getText synchronously and trims typed text without writing it back to the native input', () => {
 		const { composerRef, inputRef } = renderInput();
 		const input = screen.getByTestId('message-composer-input');
 
 		fireEvent.changeText(input, '  typed text  ');
 
 		expect(composerRef.current?.getText()).toBe('typed text');
-		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  typed text  ' });
+		expect(inputRef.current?.setNativeProps).not.toHaveBeenCalled();
+		expect(inputRef.current?.clear).not.toHaveBeenCalled();
+	});
+
+	it('keeps text typed right after a clear', () => {
+		const { composerRef, inputRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+
+		fireEvent.changeText(input, '');
+		fireEvent.changeText(input, 'm6');
+
+		expect(composerRef.current?.getText()).toBe('m6');
+		expect(inputRef.current?.clear).not.toHaveBeenCalled();
 	});
 
 	it('updates getText and the native input immediately for programmatic input', () => {
@@ -116,6 +130,36 @@ describe('ComposerInput', () => {
 
 		expect(composerRef.current?.getText()).toBe('programmatic text');
 		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  programmatic text  ' });
+	});
+
+	it('clears the native input after sending through a blank text, never the sent one, so a multi-line input shrinks back', () => {
+		const { composerRef, inputRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+		const message = 'line 1\nline 2\nline 3\nline 4';
+
+		fireEvent.changeText(input, message);
+		let sent: string | undefined;
+		act(() => {
+			sent = composerRef.current?.getTextAndClear();
+		});
+
+		expect(sent).toBe(message);
+		expect(composerRef.current?.getText()).toBe('');
+		const nativeTexts: string[] = inputRef.current?.setNativeProps.mock.calls.map(([props]: [{ text: string }]) => props.text);
+		expect(inputRef.current?.clear).toHaveBeenCalled();
+		expect(nativeTexts.at(-1)).toBe('');
+		expect(nativeTexts.slice(0, -1).some(text => text && text !== message)).toBe(true);
+		expect(nativeTexts).not.toContain(message);
+	});
+
+	it('resets the native text prop when the user erases everything, so the same text can be set again', () => {
+		const { inputRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+
+		fireEvent.changeText(input, '@');
+		fireEvent.changeText(input, '');
+
+		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: '' }]]);
 	});
 
 	it('passes the typed raw value to debounced autocomplete before the input text is trimmed', () => {
@@ -177,5 +221,18 @@ describe('ComposerInput', () => {
 
 		expect(room.messageActionStore.getState().action).toEqual({ kind: 'quote', messageIds: ['room-quote'] });
 		expect(room.composerRef.current?.getText()).toBe('room draft');
+	});
+
+	it('shows the room placeholder only while the raw input text is empty', () => {
+		const { composerRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+
+		expect(screen.getByText('Message #Room', { includeHiddenElements: true })).toBeOnTheScreen();
+
+		fireEvent.changeText(input, ' ');
+		expect(screen.queryByText('Message #Room', { includeHiddenElements: true })).not.toBeOnTheScreen();
+
+		act(() => composerRef.current?.setInput(''));
+		expect(screen.getByText('Message #Room', { includeHiddenElements: true })).toBeOnTheScreen();
 	});
 });

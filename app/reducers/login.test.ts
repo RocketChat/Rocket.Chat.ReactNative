@@ -10,7 +10,7 @@ import {
 	setUser
 } from '../actions/login';
 import { initialState } from './login';
-import { mockedStore } from './mockedStore';
+import { createMockedStore, mockedStore } from './mockedStore';
 
 describe('test selectedUsers reducer', () => {
 	it('should return initial state', () => {
@@ -78,6 +78,58 @@ describe('test selectedUsers reducer', () => {
 		mockedStore.dispatch(setUser(user));
 		const state = mockedStore.getState().login.user.username;
 		expect(state).toEqual(user.username);
+	});
+
+	it('should keep the same user object when setUser changes nothing', () => {
+		const before = mockedStore.getState().login.user;
+		mockedStore.dispatch(setUser({ username: before.username, status: before.status }));
+		expect(mockedStore.getState().login.user).toBe(before);
+	});
+
+	it('should replace the user object when setUser changes a field', () => {
+		const before = mockedStore.getState().login.user;
+		mockedStore.dispatch(setUser({ statusText: 'Lunch' }));
+		const after = mockedStore.getState().login.user;
+		expect(after).not.toBe(before);
+		expect(after.statusText).toEqual('Lunch');
+		expect(after.username).toEqual(before.username);
+	});
+
+	it('should take the server settings when the same user logs in again', () => {
+		const store = createMockedStore();
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: true } } }));
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: false } } }));
+		expect(store.getState().login.user.settings).toEqual({ preferences: { convertAsciiEmoji: false } });
+	});
+
+	it('should keep the same user object when the same user logs in with unchanged fields', () => {
+		const store = createMockedStore();
+		const settings = { preferences: { convertAsciiEmoji: true } };
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'], settings }));
+		const before = store.getState().login.user;
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'], settings: { ...settings } }));
+		expect(store.getState().login.user).toBe(before);
+	});
+
+	it('should drop the user settings when a different user logs in', () => {
+		const store = createMockedStore();
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: true } } }));
+		store.dispatch(loginSuccess({ id: 'other-id', username: 'other' }));
+		expect(store.getState().login.user.settings).toBeUndefined();
+	});
+
+	it('should not carry the previous server settings when switching to another server', () => {
+		const store = createMockedStore();
+		store.dispatch(
+			loginSuccess({
+				id: 'user-id',
+				username: 'carlito',
+				settings: { preferences: { convertAsciiEmoji: true, enableMobileRinging: true } }
+			})
+		);
+		store.dispatch(setUser({ id: 'other-server-user-id', username: 'carlito' }));
+		store.dispatch(loginSuccess({ id: 'other-server-user-id', username: 'carlito' }));
+		expect(store.getState().login.user.settings).toBeUndefined();
 	});
 
 	it('should clear user after clearUser', () => {

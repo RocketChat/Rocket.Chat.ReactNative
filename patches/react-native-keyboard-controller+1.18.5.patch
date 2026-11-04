@@ -1,0 +1,58 @@
+diff --git a/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/views/EdgeToEdgeReactViewGroup.kt b/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/views/EdgeToEdgeReactViewGroup.kt
+index e13177c..45bc4e6 100644
+--- a/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/views/EdgeToEdgeReactViewGroup.kt
++++ b/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/views/EdgeToEdgeReactViewGroup.kt
+@@ -91,7 +91,7 @@ class EdgeToEdgeReactViewGroup(
+     this.deactivate()
+   }
+
+-  override fun onConfigurationChanged(newConfig: Configuration?) {
++  override fun onConfigurationChanged(newConfig: Configuration) {
+     this.reApplyWindowInsets()
+   }
+   // endregion
+diff --git a/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/views/background/KeyboardBackgroundViewGroup.kt b/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/views/background/KeyboardBackgroundViewGroup.kt
+index f19514f..8de0cf7 100644
+--- a/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/views/background/KeyboardBackgroundViewGroup.kt
++++ b/node_modules/react-native-keyboard-controller/android/src/main/java/com/reactnativekeyboardcontroller/views/background/KeyboardBackgroundViewGroup.kt
+@@ -17,7 +17,7 @@ class KeyboardBackgroundViewGroup(
+   }
+
+   // theme changed
+-  override fun onConfigurationChanged(newConfig: Configuration?) {
++  override fun onConfigurationChanged(newConfig: Configuration) {
+     super.onConfigurationChanged(newConfig)
+     super.setBackgroundColor(reactContext.getInputMethodColor())
+   }
+diff --git a/node_modules/react-native-keyboard-controller/ios/KeyboardControllerModuleImpl.swift b/node_modules/react-native-keyboard-controller/ios/KeyboardControllerModuleImpl.swift
+index a452576..c108d1f 100644
+--- a/node_modules/react-native-keyboard-controller/ios/KeyboardControllerModuleImpl.swift
++++ b/node_modules/react-native-keyboard-controller/ios/KeyboardControllerModuleImpl.swift
+@@ -25,12 +25,14 @@ public class KeyboardControllerModuleImpl: NSObject {
+       input.inputView = UIView()
+       input.reloadInputViews()
+ 
+-      NotificationCenter.default.addObserver(
+-        self,
+-        selector: #selector(onResponderResigned(_:)),
+-        name: UITextField.textDidEndEditingNotification,
+-        object: input
+-      )
++      for name in [UITextField.textDidEndEditingNotification, UITextView.textDidEndEditingNotification] {
++        NotificationCenter.default.addObserver(
++          self,
++          selector: #selector(onResponderResigned(_:)),
++          name: name,
++          object: input
++        )
++      }
+     } else {
+       responder?.resignFirstResponder()
+     }
+@@ -63,5 +65,6 @@ public class KeyboardControllerModuleImpl: NSObject {
+     }
+ 
+     NotificationCenter.default.removeObserver(self, name: UITextField.textDidEndEditingNotification, object: input)
++    NotificationCenter.default.removeObserver(self, name: UITextView.textDidEndEditingNotification, object: input)
+   }
+ }

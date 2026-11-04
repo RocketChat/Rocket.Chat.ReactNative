@@ -1,5 +1,6 @@
 package chat.rocket.reactnative.notification;
 
+import androidx.annotation.Keep;
 import android.util.Log;
 
 import com.tencent.mmkv.MMKV;
@@ -21,6 +22,7 @@ class Utils {
     }
 }
 
+@Keep
 public class Ejson {
     private static final String TAG = "RocketChat.Ejson";
     private static final String TOKEN_KEY = "reactnativemeteor_usertoken-";
@@ -259,18 +261,21 @@ public class Ejson {
         return url;
     }
 
+    @Keep
     static class Sender {
         String _id;
         String username;
         String name;
     }
 
+    @Keep
     static class Caller {
         String _id;
         String name;
         String username;
     }
 
+    @Keep
     static class Content {
         String algorithm;
         String ciphertext;

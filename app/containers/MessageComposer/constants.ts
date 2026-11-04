@@ -33,5 +33,3 @@ export const MARKDOWN_STYLES: Record<TMarkdownStyle, string> = {
 	code: '`',
 	'code-block': '```'
 };
-
-export const COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH = 30;

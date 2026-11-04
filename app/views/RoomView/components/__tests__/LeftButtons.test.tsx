@@ -1,19 +1,25 @@
 import { render, screen } from '@testing-library/react-native';
+import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { type ReactNode } from 'react';
+import { Text } from 'react-native';
 
 import LeftButtons from '../LeftButtons';
 import { type RoomStore } from '~/views/RoomView/definitions';
 
 jest.mock('@react-navigation/native', () => ({
+	...jest.requireActual('@react-navigation/native'),
 	useNavigation: () => ({ navigate: jest.fn() })
 }));
 jest.mock('~/lib/hooks/navigation', () => ({
 	useAppNavigation: () => ({ goBack: jest.fn() })
 }));
+let mockIsMasterDetail = true;
 jest.mock('~/lib/hooks/useMasterDetail', () => ({
-	useMasterDetail: () => true
+	useMasterDetail: () => mockIsMasterDetail
 }));
+let mockUnreadsCount: number | null = null;
 jest.mock('~/views/RoomView/hooks/useUnreadsCount', () => ({
-	useUnreadsCount: () => null
+	useUnreadsCount: () => mockUnreadsCount
 }));
 jest.mock('~/views/RoomView/hooks/useGoRoomActionsView', () => ({
 	useGoRoomActionsView: () => jest.fn()
@@ -40,9 +46,15 @@ jest.mock('zustand', () => ({
 
 const roomStore = {} as RoomStore;
 
+const NavigationThemeWrapper = ({ children }: { children: ReactNode }) => (
+	<ThemeProvider value={DefaultTheme}>{children}</ThemeProvider>
+);
+
 describe('LeftButtons', () => {
 	beforeEach(() => {
 		mockRoomState = { room: { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general' } };
+		mockIsMasterDetail = true;
+		mockUnreadsCount = null;
 	});
 
 	it('reflects the current room name from the store', () => {
@@ -66,5 +78,21 @@ describe('LeftButtons', () => {
 		render(<LeftButtons rid='rid-1' roomStore={roomStore} />);
 
 		expect(screen.getByTestId('left-buttons-avatar')).toHaveProp('text', 'preview-room');
+	});
+
+	it('keeps the back button label elements mounted while unreads come and go', () => {
+		mockIsMasterDetail = false;
+		const { rerender } = render(<LeftButtons rid='rid-1' roomStore={roomStore} />, { wrapper: NavigationThemeWrapper });
+		const countLabelTexts = () => screen.UNSAFE_queryAllByType(Text).length;
+		const labelTextsWithoutUnreads = countLabelTexts();
+
+		mockUnreadsCount = 3;
+		rerender(<LeftButtons rid='rid-1' roomStore={roomStore} />);
+		expect(screen.getAllByText('3').length).toBeGreaterThan(0);
+		expect(countLabelTexts()).toBe(labelTextsWithoutUnreads);
+
+		mockUnreadsCount = 0;
+		rerender(<LeftButtons rid='rid-1' roomStore={roomStore} />);
+		expect(countLabelTexts()).toBe(labelTextsWithoutUnreads);
 	});
 });

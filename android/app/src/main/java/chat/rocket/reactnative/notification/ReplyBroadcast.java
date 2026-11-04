@@ -19,6 +19,9 @@ import com.google.gson.GsonBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import com.facebook.react.modules.network.OkHttpClientProvider;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -73,7 +76,11 @@ public class ReplyBroadcast extends BroadcastReceiver {
             return;
         }
 
-        final OkHttpClient client = new OkHttpClient();
+        final OkHttpClient client = OkHttpClientProvider.createClient().newBuilder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .build();
         final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
         String json = buildMessage(rid, message.toString(), ejson);

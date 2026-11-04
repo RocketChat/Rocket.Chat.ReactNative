@@ -62,40 +62,42 @@ const AddChannelTeamView = () => {
 	return (
 		<SafeAreaView testID='add-channel-team-view'>
 			<List.Container>
-				<List.Separator />
-				{canCreateNew ? (
-					<>
-						<List.Item
-							title='Create_New'
-							onPress={() =>
-								isMasterDetail
-									? navigation.navigate('SelectedUsersView', {
-											nextAction: () => navigation.navigate('CreateChannelView', { teamId })
-										})
-									: navigation.navigate('SelectedUsersView', {
-											nextAction: () =>
-												navigation.navigate('ChatsStackNavigator', { screen: 'CreateChannelView', params: { teamId } })
-										})
-							}
-							testID='add-channel-team-view-create-channel'
-							left={() => <List.Icon name='team' />}
-							right={() => <List.Icon name='chevron-right' />}
-						/>
-						<List.Separator />
-					</>
-				) : null}
-				{canAddExisting ? (
-					<>
-						<List.Item
-							title='Add_Existing'
-							onPress={() => navigation.navigate('AddExistingChannelView', { teamId })}
-							testID='add-channel-team-view-add-existing'
-							left={() => <List.Icon name='channel-public' />}
-							right={() => <List.Icon name='chevron-right' />}
-						/>
-						<List.Separator />
-					</>
-				) : null}
+				<List.Section>
+					<List.Separator />
+					{canCreateNew ? (
+						<>
+							<List.Item
+								title='Create_New'
+								onPress={() =>
+									isMasterDetail
+										? navigation.navigate('SelectedUsersView', {
+												nextAction: () => navigation.navigate('CreateChannelView', { teamId })
+											})
+										: navigation.navigate('SelectedUsersView', {
+												nextAction: () =>
+													navigation.navigate('ChatsStackNavigator', { screen: 'CreateChannelView', params: { teamId } })
+											})
+								}
+								testID='add-channel-team-view-create-channel'
+								left={() => <List.Icon name='team' />}
+								showActionIndicator
+							/>
+							<List.Separator />
+						</>
+					) : null}
+					{canAddExisting ? (
+						<>
+							<List.Item
+								title='Add_Existing'
+								onPress={() => navigation.navigate('AddExistingChannelView', { teamId })}
+								testID='add-channel-team-view-add-existing'
+								left={() => <List.Icon name='channel-public' />}
+								showActionIndicator
+							/>
+							<List.Separator />
+						</>
+					) : null}
+				</List.Section>
 			</List.Container>
 		</SafeAreaView>
 	);

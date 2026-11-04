@@ -109,7 +109,7 @@ function* onDirectCallConfirmed(payload: ICallInfo) {
 		yield put(removeVideoConfCall(currentCall));
 		yield call(hideActionSheetRef);
 		if (currentCall.action === 'accepted') {
-			videoConfJoin(payload.callId, false, true);
+			videoConfJoin(payload.callId, false, true, { rid: payload.rid });
 		} else {
 			hideNotification();
 		}
@@ -123,7 +123,7 @@ function* onDirectCallJoined(payload: ICallInfo) {
 		yield put(setCalling(false));
 		yield put(removeVideoConfCall(currentCall));
 		yield call(hideActionSheetRef);
-		videoConfJoin(payload.callId, false, true);
+		videoConfJoin(payload.callId, false, true, { rid: payload.rid });
 	}
 }
 
@@ -183,7 +183,7 @@ function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps
 				if (direct && videoConfResponse.data.type === 'direct') {
 					yield call(callUser, { rid, uid: videoConfResponse.data.calleeId, callId: videoConfResponse.data.callId });
 				} else {
-					videoConfJoin(videoConfResponse.data.callId, cam, mic);
+					videoConfJoin(videoConfResponse.data.callId, cam, mic, { rid });
 					yield call(hideActionSheetRef);
 					yield put(setCalling(false));
 				}

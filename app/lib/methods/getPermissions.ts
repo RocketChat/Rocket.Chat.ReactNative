@@ -79,7 +79,7 @@ export async function setPermissions(): Promise<void> {
 	const allPermissions = await permissionsCollection
 		.query(Q.where('id', Q.oneOf(SUPPORTED_PERMISSIONS as unknown as string[])))
 		.fetch();
-	const parsed = allPermissions.reduce((acc, item) => ({ ...acc, [item.id]: item.roles }), {});
+	const parsed = Object.fromEntries(allPermissions.map(item => [item.id, item.roles]));
 
 	reduxStore.dispatch(setPermissionsAction(parsed));
 }
