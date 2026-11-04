@@ -64,8 +64,7 @@ jest.mock('~/containers/ActionSheet', () => ({
 
 jest.mock('~/containers/Header/components/HeaderButton', () => ({
 	Container: () => null,
-	Item: () => null,
-	CloseModal: () => null
+	Item: () => null
 }));
 
 jest.mock('./components/RoomInfoViewAvatar', () => () => null);

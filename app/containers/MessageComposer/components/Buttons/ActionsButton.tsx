@@ -10,6 +10,7 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '~/containers/MessageComposer/hooks';
 import { useComposerRid, useComposerTmid, useComposerType } from '~/containers/MessageComposer/ComposerStore';
+import { useComposerAppActionOptions } from '~/containers/MessageComposer/hooks/useComposerAppActionOptions';
 
 export const ActionsButton = () => {
 	const rid = useComposerRid();
@@ -25,6 +26,7 @@ export const ActionsButton = () => {
 	});
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useMasterDetail();
+	const appOptions = useComposerAppActionOptions();
 
 	const createDiscussion = async () => {
 		if (!rid) return;
@@ -94,6 +96,8 @@ export const ActionsButton = () => {
 			icon: 'discussions',
 			onPress: () => createDiscussion()
 		});
+
+		options.push(...appOptions);
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
 	};

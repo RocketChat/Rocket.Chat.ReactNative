@@ -56,7 +56,7 @@ describe('useMessageAccessibilityLabel', () => {
 
 	it('replaces the body with the encrypted placeholder and appends it to the suffix', () => {
 		expect(renderLabel(buildItem({ t: E2E_MESSAGE_TYPE, e2e: 'pending' }))).toBe(
-			`alice ${HOUR} Encrypted message. Encrypted message`
+			`alice ${HOUR} This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key. This message is end-to-end encrypted and cannot be decrypted due to incorrect encryption key`
 		);
 	});
 

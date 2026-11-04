@@ -1,15 +1,16 @@
-export default function (message: { type: string; url: string }) {
-	if (/image/.test(message.type)) {
-		return { image_url: message.url, image_type: message.type };
+export default function (file: { _id: string; name: string; type: string; url?: string }) {
+	const url = `/file-upload/${file._id}/${encodeURIComponent(file.name)}`;
+	if (/image/.test(file.type)) {
+		return { image_url: url, image_type: file.type };
 	}
-	if (/audio/.test(message.type)) {
-		return { audio_url: message.url, audio_type: message.type };
+	if (/audio/.test(file.type)) {
+		return { audio_url: url, audio_type: file.type };
 	}
-	if (/video/.test(message.type)) {
-		return { video_url: message.url, video_type: message.type };
+	if (/video/.test(file.type)) {
+		return { video_url: url, video_type: file.type };
 	}
 	return {
-		title_link: message.url,
+		title_link: url,
 		type: 'file'
 	};
 }

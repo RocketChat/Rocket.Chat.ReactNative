@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { FlatList, Image, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
 
+import { RectButton } from '~/containers/GestureButtons';
 import { BUTTON_HIT_SLOP } from './message/utils';
 import { CustomIcon } from './CustomIcon';
 import { useTheme } from '../theme';

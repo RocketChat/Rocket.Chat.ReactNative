@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { routingConfigRequest } from '../actions/routingConfig';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 
-export function useCanReturnQueue(enabled: boolean): boolean {
+export function useCanReturnQueue(enabled = true): boolean {
 	const dispatch = useDispatch();
 	const returnQueue = useAppSelector(state => state.routingConfig.returnQueue);
 

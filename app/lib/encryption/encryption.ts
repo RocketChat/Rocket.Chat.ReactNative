@@ -14,7 +14,7 @@ import {
 	aesGcmDecrypt,
 	aesGcmEncrypt
 } from '@rocket.chat/mobile-crypto';
-import { sampleSize } from 'lodash';
+import sampleSize from 'lodash/sampleSize';
 
 import {
 	type IMessage,
@@ -290,9 +290,10 @@ class Encryption {
 	getRoomInstance = async (rid: string) => {
 		try {
 			// Prevent handshake again
-			if (this.roomInstances[rid]) {
-				await this.roomInstances[rid].handshake();
-				return this.roomInstances[rid];
+			const existingRoomE2E = this.roomInstances[rid];
+			if (existingRoomE2E) {
+				await existingRoomE2E.handshake();
+				return existingRoomE2E;
 			}
 			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string, this);
 
@@ -612,17 +613,38 @@ class Encryption {
 			throw new Error('Subscription not found');
 		}
 
-		const { E2E_Enable_Encrypt_Files } = store.getState().settings;
-		if (!subscription.encrypted || (E2E_Enable_Encrypt_Files !== undefined && !E2E_Enable_Encrypt_Files)) {
+		const { E2E_Enable, E2E_Enable_Encrypt_Files } = store.getState().settings;
+		if (
+			E2E_Enable === false ||
+			!subscription.encrypted ||
+			(E2E_Enable_Encrypt_Files !== undefined && !E2E_Enable_Encrypt_Files)
+		) {
 			// Send a non encrypted message
 			return { file };
 		}
 
 		const roomE2E = await this.getRoomInstance(rid);
-		if (!roomE2E || !roomE2E?.hasSessionKey()) {
-			return { file };
+		if (!roomE2E?.hasSessionKey()) {
+			throw new Error('Room encryption key is not available');
 		}
 		return roomE2E.encryptFile(rid, file);
+	};
+
+	canSendToRoom = async (rid: string): Promise<boolean> => {
+		const subscription = await getSubscriptionByRoomId(rid);
+		if (!subscription) {
+			return false;
+		}
+		if (!subscription.encrypted || store.getState().settings.E2E_Enable === false) {
+			return true;
+		}
+		try {
+			await this.establishing;
+		} catch {
+			return false;
+		}
+		const roomE2E = await this.getRoomInstance(rid);
+		return !!roomE2E?.hasSessionKey();
 	};
 
 	decryptFile: TDecryptFile = async (_messageId, path, encryption, originalChecksum) => {

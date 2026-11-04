@@ -11,7 +11,7 @@ import styles from './styles';
 
 const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProps);
 
-const LastMessage = memo(({ lastMessage, type, showLastMessage, username, alert, useRealName }: ILastMessageProps) => {
+const LastMessage = memo(({ lastMessage, type, showLastMessage, username, useRealName }: ILastMessageProps) => {
 	const { colors } = useTheme();
 	// Android has a bug with the text align on the markdown preview
 	const alignSelf: TextStyle = isAndroid ? { alignSelf: 'stretch' } : {};
@@ -25,7 +25,7 @@ const LastMessage = memo(({ lastMessage, type, showLastMessage, username, alert,
 				username,
 				useRealName
 			})}
-			style={[styles.markdownText, { color: alert ? colors.fontDefault : colors.fontSecondaryInfo }, alignSelf]}
+			style={[styles.markdownText, { color: colors.fontSecondaryInfo }, alignSelf]}
 			numberOfLines={2}
 		/>
 	);

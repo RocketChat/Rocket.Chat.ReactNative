@@ -10,7 +10,7 @@ import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 import { type IOmnichannelRoom, type IApplicationState } from '~/definitions';
@@ -63,7 +63,7 @@ const QueueListView = memo(() => {
 			title: I18n.t('Queued_chats')
 		};
 		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
+			Object.assign(options, headerLeftCloseModal(navigation, 'directory-view-close'));
 		}
 		navigation.setOptions(options);
 	}, [isMasterDetail, navigation]);
@@ -109,13 +109,13 @@ const QueueListView = memo(() => {
 	};
 
 	return (
-		<SafeAreaView testID='queue-list-view' style={{ backgroundColor: colors.surfaceRoom }}>
+		<SafeAreaView testID='queue-list-view' style={{ backgroundColor: colors.surfaceTint }}>
 			<FlatList
 				ref={getScrollRef}
 				data={queued}
 				extraData={queued}
 				keyExtractor={keyExtractor}
-				style={{ backgroundColor: colors.surfaceRoom }}
+				style={{ backgroundColor: colors.surfaceTint }}
 				renderItem={renderItem}
 				getItemLayout={getItemLayout}
 				removeClippedSubviews={isIOS}

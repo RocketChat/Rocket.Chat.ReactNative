@@ -17,11 +17,12 @@ import {
 } from '~/containers/message/stores/MessageActionStore';
 import { type IShareAttachment } from '~/definitions';
 import ImagePicker, { type ImageOrVideo } from '~/lib/methods/helpers/ImagePicker/ImagePicker';
+import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
 import { MessageInnerContext, useMessageComposerApi } from '../context';
 import { useAltTextSupported } from '~/lib/hooks/useAltTextSupported';
 
 const normalizeAttachment = (item: IShareAttachment) =>
-	item.filename ? item : { ...item, filename: item.path ? item.path.split('/').pop() : undefined };
+	item.filename ? item : { ...item, filename: getFilenameFromUri(item.path) };
 
 export const useChooseMedia = ({
 	rid,

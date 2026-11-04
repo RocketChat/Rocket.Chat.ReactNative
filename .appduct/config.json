@@ -1,0 +1,7 @@
+{
+	"scheme": "rocketchat",
+	"appId": {
+		"ios": "chat.rocket.ios",
+		"android": "chat.rocket.android"
+	}
+}

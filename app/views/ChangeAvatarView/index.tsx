@@ -1,6 +1,6 @@
-import { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
+import { useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { AccessibilityInfo, ScrollView, View } from 'react-native';
-import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type RouteProp, useNavigation, usePreventRemove, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -65,6 +65,23 @@ function reducer(state: IState, action: IReducerAction) {
 	return state;
 }
 
+const pickAvatarImage = async (fromCamera: boolean, includeBase64: boolean) => {
+	const options = {
+		cropping: true,
+		compressImageQuality: 0.8,
+		freeStyleCropEnabled: true,
+		cropperAvoidEmptySpaceAroundImage: false,
+		cropperChooseText: I18n.t('Choose'),
+		cropperCancelText: I18n.t('Cancel'),
+		includeBase64
+	};
+	const response: Image = fromCamera
+		? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
+		: await ImagePicker.openPicker(options);
+	const dataUri = includeBase64 && response.data ? `data:image/jpeg;base64,${response.data}` : '';
+	return { url: response.path, data: dataUri };
+};
+
 const ChangeAvatarView = () => {
 	const {
 		control,
@@ -90,7 +107,8 @@ const ChangeAvatarView = () => {
 		shallowEqual
 	);
 	const includeBase64ForAvatar = compareServerVersion(serverVersion, 'lowerThan', '8.0.0');
-	const isDirty = useRef<boolean>(false);
+	const [isDirty, setIsDirty] = useState(false);
+	const hasSaved = useRef(false);
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
 	const { context, titleHeader, room, t } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
 	const includeBase64InImagePicker = context === 'room' || includeBase64ForAvatar;
@@ -102,27 +120,24 @@ const ChangeAvatarView = () => {
 		});
 	}, [titleHeader, navigation]);
 
-	useEffect(() => {
-		navigation.addListener('beforeRemove', e => {
-			if (!isDirty.current) {
-				return;
+	usePreventRemove(isDirty, ({ data }) => {
+		if (hasSaved.current) {
+			navigation.dispatch(data.action);
+			return;
+		}
+
+		showConfirmationAlert({
+			title: I18n.t('Discard_changes'),
+			message: I18n.t('Discard_changes_description'),
+			confirmationText: I18n.t('Discard'),
+			onPress: () => {
+				navigation.dispatch(data.action);
 			}
-
-			e.preventDefault();
-
-			showConfirmationAlert({
-				title: I18n.t('Discard_changes'),
-				message: I18n.t('Discard_changes_description'),
-				confirmationText: I18n.t('Discard'),
-				onPress: () => {
-					navigation.dispatch(e.data.action);
-				}
-			});
 		});
-	}, [navigation]);
+	});
 
 	const dispatchAvatar = (action: IReducerAction) => {
-		isDirty.current = true;
+		setIsDirty(true);
 		dispatch(action);
 	};
 
@@ -158,51 +173,42 @@ const ChangeAvatarView = () => {
 		setError('rawImageUrl', { message: I18n.t('Invalid_URL'), type: 'validate' });
 	};
 
-	const submit = async () => {
+	const saveAvatar = async () => {
+		const roomId = context === 'room' ? room?.rid : undefined;
 		try {
-			setSaving(true);
-			if (context === 'room' && room?.rid) {
-				// Change Rooms Avatar
-				await changeRoomsAvatar(room.rid, state?.data);
-			} else if (state?.url) {
-				// Change User's Avatar
+			if (roomId) {
+				await changeRoomsAvatar(roomId, state.data);
+			} else if (state.url) {
 				await changeUserAvatar(state);
 			} else if (state.resetUserAvatar) {
-				// Change User's Avatar
 				await resetUserAvatar(userId);
 			}
-			isDirty.current = false;
+			hasSaved.current = true;
+			return true;
 		} catch (e: any) {
-			if (isTwoFactorCancelled(e)) {
-				return;
+			if (!isTwoFactorCancelled(e)) {
+				log(e);
+				showErrorAlert(e.message, I18n.t('Oops'));
 			}
-			log(e);
-			return showErrorAlert(e.message, I18n.t('Oops'));
-		} finally {
-			setSaving(false);
+			return false;
 		}
-		return navigation.goBack();
+	};
+
+	const submit = async () => {
+		setSaving(true);
+		const saved = await saveAvatar();
+		setSaving(false);
+		if (saved) {
+			navigation.goBack();
+		}
 	};
 
 	const pickImage = async (isCam = false) => {
-		const options = {
-			cropping: true,
-			compressImageQuality: 0.8,
-			freeStyleCropEnabled: true,
-			cropperAvoidEmptySpaceAroundImage: false,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: includeBase64InImagePicker
-		};
 		try {
-			const response: Image =
-				isCam === true
-					? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
-					: await ImagePicker.openPicker(options);
-			const dataUri = includeBase64InImagePicker && response.data ? `data:image/jpeg;base64,${response.data}` : '';
+			const { url, data } = await pickAvatarImage(isCam === true, includeBase64InImagePicker);
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
-				payload: { url: response.path, data: dataUri, service: 'upload' }
+				payload: { url, data, service: 'upload' }
 			});
 		} catch (error: any) {
 			if (error?.code !== 'E_PICKER_CANCELLED') {
@@ -314,7 +320,7 @@ const ChangeAvatarView = () => {
 						) : null}
 						<Button
 							title={I18n.t('Save')}
-							disabled={!isDirty.current || saving}
+							disabled={!isDirty || saving}
 							type='primary'
 							loading={saving}
 							onPress={submit}

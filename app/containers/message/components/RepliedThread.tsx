@@ -16,7 +16,7 @@ const RepliedThread = ({ isHeader }: IMessageRepliedThread) => {
 	const fetchThreadName = useFetchThreadName();
 	const { tmid, tmsg, id } = useRepliedThreadData();
 	const isEncrypted = useIsEncrypted();
-	const displayMsg = isEncrypted ? I18n.t('Encrypted_message') : tmsg;
+	const displayMsg = isEncrypted ? I18n.t('E2E_Key_Error') : tmsg;
 	const [fetchedName, setFetchedName] = useState<string | undefined>();
 
 	useEffect(() => {

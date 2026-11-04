@@ -805,6 +805,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
             onLoadStart={[Function]}
             onProgress={[Function]}
             placeholder={[]}
+            sfEffect={null}
             source={
               [
                 {
@@ -818,6 +819,8 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
                 "width": 15,
               }
             }
+            symbolSize={null}
+            symbolWeight={null}
             transition={null}
             width={15}
           />
@@ -866,6 +869,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
             onLoadStart={[Function]}
             onProgress={[Function]}
             placeholder={[]}
+            sfEffect={null}
             source={
               [
                 {
@@ -879,6 +883,8 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
                 "width": 15,
               }
             }
+            symbolSize={null}
+            symbolWeight={null}
             transition={null}
             width={15}
           />
@@ -927,6 +933,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
             onLoadStart={[Function]}
             onProgress={[Function]}
             placeholder={[]}
+            sfEffect={null}
             source={
               [
                 {
@@ -940,6 +947,8 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
                 "width": 15,
               }
             }
+            symbolSize={null}
+            symbolWeight={null}
             transition={null}
             width={15}
           />
@@ -1034,6 +1043,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
           onLoadStart={[Function]}
           onProgress={[Function]}
           placeholder={[]}
+          sfEffect={null}
           source={
             [
               {
@@ -1047,6 +1057,8 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               "width": 30,
             }
           }
+          symbolSize={null}
+          symbolWeight={null}
           transition={null}
           width={30}
         />
@@ -4156,6 +4168,7 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
           onLoadStart={[Function]}
           onProgress={[Function]}
           placeholder={[]}
+          sfEffect={null}
           source={
             [
               {
@@ -4170,6 +4183,8 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
               "width": 300,
             }
           }
+          symbolSize={null}
+          symbolWeight={null}
           transition={null}
           width={300}
         />

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "trace-1",
+  "createdAt": "2026-10-02T12:41:53.161Z",
+  "payload": {
+    "actions": [
+      {
+        "name": "scroll",
+        "summary": "scroll down on group \"room-view-messages\" in \"39\"",
+        "direction": "down",
+        "target": {
+          "role": "group",
+          "testId": "room-view-messages",
+          "selector": "id=room-view-messages",
+          "within": "39"
+        },
+        "spans": 0.7955
+      },
+      {
+        "name": "tap",
+        "summary": "tap text \"Load newer\"",
+        "target": {
+          "role": "text",
+          "name": "Load newer"
+        }
+      }
+    ],
+    "executor": {
+      "name": "claude-subscription",
+      "version": "1"
+    },
+    "recordedFor": {
+      "testId": "e2e/tests/room/jump-to-message.e2e.ts::jumps%20to%20messages",
+      "targetId": "android",
+      "instructionDigest": "9628bad2431589203d04aa7f0390657b946c80f9da9e68235c049662dd3a17b3"
+    },
+    "summary": "Scrolled down and tapped \"Load newer\" once; message \"104\" (testid message-content-104) is now visible on screen.",
+    "startPath": "chat.rocket.android",
+    "endPath": "chat.rocket.android",
+    "endAnchors": [
+      {
+        "role": "group",
+        "testId": "message-Ssw8FQryLZ6vn6YQJ"
+      },
+      {
+        "role": "group",
+        "testId": "message-content-92"
+      },
+      {
+        "role": "group",
+        "testId": "message-6Kw4DQy8dqp2zQH7r"
+      },
+      {
+        "role": "group",
+        "testId": "message-content-93"
+      },
+      {
+        "role": "group",
+        "testId": "message-gnGwTr53T5wanNgWm"
+      },
+      {
+        "role": "group",
+        "testId": "message-content-94"
+      },
+      {
+        "role": "group",
+        "testId": "message-7dw5YEXCcy4vRkioQ"
+      },
+      {
+        "role": "group",
+        "testId": "message-content-95"
+      }
+    ],
+    "endWaitMs": 16839
+  }
+}

@@ -96,4 +96,16 @@ describe('sendAttachments', () => {
 			base.user
 		);
 	});
+
+	it('closes an unclosed code block in the msg before sending', async () => {
+		base.getMsg.mockReturnValueOnce('```js\nconst a = 1;');
+		await sendAttachments({ ...base, altTextSupported: false, attachments: [attachment()] });
+		expect(sendFileMessage).toHaveBeenCalledWith(
+			'rid1',
+			expect.objectContaining({ msg: '```js\nconst a = 1;\n```' }),
+			undefined,
+			base.server,
+			base.user
+		);
+	});
 });

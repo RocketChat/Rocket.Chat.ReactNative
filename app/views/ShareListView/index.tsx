@@ -1,5 +1,5 @@
 import { type Dispatch } from 'redux';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, PixelRatio, StyleSheet, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system/legacy';
 import { connect } from 'react-redux';
@@ -7,16 +7,18 @@ import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
-import { Component } from 'react';
+import { type SearchBarCommands } from 'react-native-screens';
+import { Component, createRef } from 'react';
 
 import database from '~/lib/database';
 import I18n from '~/i18n';
+import { headerLeftClose } from '~/lib/methods/helpers/navigation/headerActions';
+import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import DirectoryItem, { ROW_HEIGHT } from '~/containers/DirectoryItem';
+import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import ServerItem from '~/containers/ServerItem';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import * as List from '~/containers/List';
-import SearchHeader from '~/containers/SearchHeader';
 import { themes } from '~/lib/constants/colors';
 import { type TSupportedThemes, withTheme } from '~/theme';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -24,10 +26,14 @@ import { getSubscriptionSearchClause } from '~/lib/database/utils';
 import styles from './styles';
 import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '~/definitions';
 import { type ShareInsideStackParamList } from '~/definitions/navigationTypes';
-import { getRoomAvatar, isAndroid, isIOS } from '~/lib/methods/helpers';
+import { compareServerVersion, getRoomAvatar, hasNativeHeaderBar, isAndroid, isIOS } from '~/lib/methods/helpers';
+import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
+import { nativeHeaderContentInset } from '~/lib/methods/helpers/navigation';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { shareSetParams } from '~/actions/share';
 import { appStart } from '~/actions/app';
+import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '~/lib/encryption/utils';
+import { E2E_BANNER_TYPE } from '~/lib/constants/keys';
 
 interface IFileToShare {
 	filename: string;
@@ -55,12 +61,15 @@ interface INavigationOption {
 
 interface IShareListViewProps extends INavigationOption {
 	server: string;
+	serverVersion: string;
 	connecting: boolean;
 	isAuthenticated: boolean;
 	token: string;
 	userId: string;
 	theme: TSupportedThemes;
 	airGappedRestrictionRemainingDays: number | undefined;
+	encryptionEnabled: boolean;
+	encryptionPasswordRequired: boolean;
 	shareExtensionParams: Record<string, any>;
 	dispatch: Dispatch;
 	insets: EdgeInsets;
@@ -78,6 +87,8 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 	private unsubscribeBlur: (() => void) | undefined;
 
 	private backHandler: NativeEventSubscription | undefined;
+
+	private searchBarRef = createRef<SearchBarCommands>();
 
 	constructor(props: IShareListViewProps) {
 		super(props);
@@ -125,7 +136,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 							}
 
 							return {
-								filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
+								filename: getFilenameFromUri(file.uri) ?? file.uri.substring(file.uri.lastIndexOf('/') + 1),
 								description: '',
 								size: file.size,
 								mime: mime.lookup(file.uri) || '',
@@ -166,7 +177,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		if (previousProps.connecting !== connecting && connecting) {
 			this.setState({ chats: [], searchResults: [], searching: false, searchText: '' });
 		}
-		if (previousState.searching !== searching) {
+		if (!hasNativeHeaderBar && previousState.searching !== searching) {
 			this.setHeader();
 		}
 	}
@@ -176,7 +187,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		if (nextState.searching !== searching) {
 			return true;
 		}
-		const { server, userId, isAuthenticated, connecting } = this.props;
+		const { server, userId, isAuthenticated, connecting, encryptionEnabled, encryptionPasswordRequired } = this.props;
 		if (server !== nextProps.server) {
 			return true;
 		}
@@ -187,6 +198,12 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 			return true;
 		}
 		if (connecting !== nextProps.connecting) {
+			return true;
+		}
+		if (encryptionEnabled !== nextProps.encryptionEnabled) {
+			return true;
+		}
+		if (encryptionPasswordRequired !== nextProps.encryptionPasswordRequired) {
 			return true;
 		}
 
@@ -214,36 +231,28 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		const { searching } = this.state;
 		const { navigation } = this.props;
 
-		if (searching) {
-			navigation.setOptions({
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <SearchHeader onSearchChangeText={this.search} />,
-				headerRight: () => null
-			});
-			return;
-		}
+		const options: NativeStackNavigationOptions = {
+			...headerLeftClose(this.closeShareExtension, 'share-extension-close'),
+			headerTitle: I18n.t('Send_to')
+		};
 
-		navigation.setOptions({
-			headerLeft: () => (
-				<HeaderButton.Container left>
-					<HeaderButton.Item iconName='close' onPress={this.closeShareExtension} testID='share-extension-close' />
-				</HeaderButton.Container>
-			),
-			headerTitle: I18n.t('Send_to'),
-			headerRight: () =>
-				this.airGappedReadOnly ? null : (
-					<HeaderButton.Container>
-						<HeaderButton.Item iconName='search' onPress={this.initSearch} />
-					</HeaderButton.Container>
-				)
-		});
+		navigation.setOptions(
+			this.airGappedReadOnly
+				? options
+				: searchHeaderOptions({
+						isSearching: searching,
+						searchBarRef: this.searchBarRef,
+						onSearchPress: this.initSearch,
+						onChangeText: this.search,
+						onCancel: this.cancelSearch,
+						testIDPrefix: 'share-list-view',
+						options
+					})
+		);
 	};
 
 	query = async (text?: string) => {
+		const { serverVersion } = this.props;
 		const db = database.active;
 		const defaultWhereClause = [
 			Q.where('archived', false),
@@ -255,32 +264,29 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 		if (text) {
 			defaultWhereClause.push(getSubscriptionSearchClause(text));
 		}
+		if (compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
+			defaultWhereClause.push(Q.where('encrypted', Q.notEq(true)));
+		}
 		const data = (await db
 			.get('subscriptions')
 			.query(...defaultWhereClause)
 			.fetch()) as TSubscriptionModel[];
 
-		return data
-			.map(item => {
-				if (item.encrypted) {
-					return null;
-				}
-
-				return {
-					rid: item.rid,
-					t: item.t,
-					name: item.name,
-					fname: item.fname,
-					blocked: item.blocked,
-					blocker: item.blocker,
-					prid: item.prid,
-					uids: item.uids,
-					usernames: item.usernames,
-					topic: item.topic,
-					teamMain: item.teamMain
-				};
-			})
-			.filter(item => !!item);
+		return data.map(item => ({
+			rid: item.rid,
+			t: item.t,
+			name: item.name,
+			fname: item.fname,
+			blocked: item.blocked,
+			blocker: item.blocker,
+			prid: item.prid,
+			uids: item.uids,
+			usernames: item.usernames,
+			topic: item.topic,
+			teamMain: item.teamMain,
+			encrypted: item.encrypted,
+			E2EKey: item.E2EKey
+		}));
 	};
 
 	getSubscriptions = async () => {
@@ -361,7 +367,9 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 	};
 
 	cancelSearch = () => {
-		this.setState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
+		this.setState({ searching: false, searchResults: [], searchText: '' }, () => {
+			this.setHeader();
+		});
 		Keyboard.dismiss();
 	};
 
@@ -393,16 +401,33 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 
 		return (
 			<>
-				<View style={[styles.headerContainer, { backgroundColor: themes[theme].surfaceHover }]}>
+				<View
+					style={[
+						styles.headerContainer,
+						isIOS && styles.nativeHeaderContainer,
+						{ backgroundColor: themes[theme].surfaceHover }
+					]}>
 					<Text style={[styles.headerText, { color: themes[theme].fontTitlesLabels }]}>{I18n.t(header)}</Text>
 				</View>
-				<List.Separator />
+				{isIOS ? null : <List.Separator />}
 			</>
 		);
 	};
 
-	renderItem = ({ item }: { item: TSubscriptionModel }) => {
-		const { serverInfo } = this.state;
+	getUnavailableReason = (item: TSubscriptionModel) => {
+		const { encryptionEnabled, encryptionPasswordRequired } = this.props;
+		if (isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: item.encrypted })) {
+			return I18n.t(encryptionPasswordRequired ? 'Share_encrypted_room_password_required' : 'Share_encrypted_room_key_missing');
+		}
+		if (isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: item.encrypted, E2EKey: item.E2EKey })) {
+			return I18n.t('Share_encrypted_room_key_missing');
+		}
+	};
+
+	renderItem = ({ item, index }: { item: TSubscriptionModel; index: number }) => {
+		const { serverInfo, chats, searchResults, searching } = this.state;
+		const rowCount = searching ? searchResults.length : chats.length;
+		const unavailableReason = this.getUnavailableReason(item);
 		let description;
 		switch (item.t) {
 			case 'c':
@@ -422,11 +447,14 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 			<DirectoryItem
 				title={this.getRoomTitle(item)}
 				avatar={getRoomAvatar(item)}
-				description={description}
+				description={unavailableReason ?? description}
 				type={item.prid ? 'discussion' : item.t}
 				onPress={() => this.shareMessage(item)}
+				disabledReason={unavailableReason}
 				testID={`share-extension-item-${item.name}`}
 				teamMain={item.teamMain}
+				isFirst={index === 0}
+				isLast={index === rowCount - 1}
 			/>
 		);
 	};
@@ -441,7 +469,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 			<>
 				{this.renderSectionHeader('Select_Server')}
 				<ServerItem onPress={() => navigation.navigate('SelectServerView')} item={serverInfo} />
-				<List.Separator />
+				{isIOS ? null : <List.Separator />}
 			</>
 		);
 	};
@@ -476,7 +504,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 
 	render = () => {
 		const { chats, loading, searchResults, searching, serversCount } = this.state;
-		const { theme, insets } = this.props;
+		const { theme, insets, encryptionEnabled, encryptionPasswordRequired } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator />;
@@ -515,14 +543,16 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 			<SafeAreaView testID='share-list-view'>
 				<FlatList
 					data={searching ? searchResults : chats}
+					extraData={[encryptionEnabled, encryptionPasswordRequired]}
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
-					contentContainerStyle={{ paddingBottom: insets.bottom }}
+					contentContainerStyle={hasNativeHeaderBar ? searching && styles.nativeSearchContent : { paddingBottom: insets.bottom }}
+					contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
-					ItemSeparatorComponent={List.Separator}
+					ItemSeparatorComponent={RowSeparator}
 					ListHeaderComponent={this.renderHeader}
-					ListFooterComponent={!searching || searchResults.length > 0 ? <List.Separator /> : null}
+					ListFooterComponent={!isIOS && (!searching || searchResults.length > 0) ? <List.Separator /> : null}
 					ListEmptyComponent={this.renderEmptyComponent}
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
@@ -532,13 +562,16 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 	};
 }
 
-const mapStateToProps = ({ login, server, share, settings }: IApplicationState) => ({
+const mapStateToProps = ({ login, server, share, settings, encryption }: IApplicationState) => ({
 	userId: login?.user?.id as string,
 	token: login?.user?.token as string,
 	isAuthenticated: login?.isAuthenticated,
 	server: server?.server,
+	serverVersion: server?.version,
 	connecting: server?.connecting,
 	shareExtensionParams: share?.params,
+	encryptionEnabled: encryption.enabled,
+	encryptionPasswordRequired: encryption.banner === E2E_BANNER_TYPE.REQUEST_PASSWORD,
 	airGappedRestrictionRemainingDays:
 		typeof settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days === 'number'
 			? settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days

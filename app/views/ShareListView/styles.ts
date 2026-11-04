@@ -36,6 +36,12 @@ export default StyleSheet.create({
 		paddingBottom: 10,
 		paddingTop: 17
 	},
+	nativeHeaderContainer: {
+		paddingBottom: 16
+	},
+	nativeSearchContent: {
+		paddingTop: 16
+	},
 	headerText: {
 		...sharedStyles.textRegular,
 		fontSize: 17,

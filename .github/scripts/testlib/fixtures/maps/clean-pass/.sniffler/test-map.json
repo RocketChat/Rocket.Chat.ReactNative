@@ -1,6 +1,6 @@
 [
 	{
-		"test": ".maestro/tests/foo.yaml",
+		"test": "e2e/tests/foo.e2e.ts",
 		"dependsOn": ["app/views/Foo/**", "app/sagas/foo.js"]
 	}
 ]

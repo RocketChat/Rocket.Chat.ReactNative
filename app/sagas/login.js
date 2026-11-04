@@ -1,4 +1,4 @@
-import { call, cancel, delay, fork, put, race, select, spawn, take, takeLatest } from 'redux-saga/effects';
+import { all, call, cancel, delay, fork, put, race, select, spawn, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
@@ -38,6 +38,7 @@ import { disconnect, loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
+import { useAppsStore } from '../lib/apps/appsStore';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
@@ -46,6 +47,7 @@ import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
 import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
 import { store as reduxStore } from '../lib/store/auxStore';
+import { startInsideUnlessSharing } from './selectServer';
 
 // eslint-disable-next-line no-restricted-imports
 import appConfig from '../../app.json';
@@ -208,6 +210,16 @@ const fetchRolesFork = function* fetchRolesFork() {
 	}
 };
 
+const fetchAppsFork = function* fetchAppsFork() {
+	try {
+		sdk.subscribe('stream-apps', 'apps').catch(log);
+		const { fetchActionButtons, fetchTranslations } = useAppsStore.getState();
+		yield all([call(fetchActionButtons), call(fetchTranslations)]);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 	try {
 		yield getSlashCommands();
@@ -237,7 +249,8 @@ const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
 	try {
 		yield getEnterpriseModules();
 
-		if (isOmnichannelStatusAvailable(user.statusLivechat) && isOmnichannelModuleAvailable()) {
+		const livechatDisabled = yield select(state => state.settings.Livechat_enabled === false);
+		if (!livechatDisabled && isOmnichannelStatusAvailable(user.statusLivechat) && isOmnichannelModuleAvailable()) {
 			yield put(inquiryRequest());
 		}
 	} catch (e) {
@@ -331,6 +344,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield call(fetchEnterpriseModules, { user });
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
+		yield fork(fetchAppsFork);
 		yield fork(fetchSlashCommandsFork);
 		yield fork(registerPushTokenFork);
 		yield fork(fetchUsersPresenceFork);
@@ -375,10 +389,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(getUserTokenKey(server, user.id), user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
 		EventEmitter.emit('connected');
-		const currentRoot = yield select(state => state.app.root);
-		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
-			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
-		}
+		yield* startInsideUnlessSharing();
 		const inviteLinkToken = yield select(state => state.inviteLinks.token);
 		if (inviteLinkToken) {
 			yield put(inviteLinksRequest(inviteLinkToken));
@@ -441,7 +452,8 @@ const handleSetUser = function* handleSetUser({ user }) {
 
 	setLanguage(user?.language);
 
-	if (user?.statusLivechat && isOmnichannelModuleAvailable()) {
+	const livechatDisabled = yield select(state => state.settings.Livechat_enabled === false);
+	if (!livechatDisabled && user?.statusLivechat && isOmnichannelModuleAvailable()) {
 		if (isOmnichannelStatusAvailable(user.statusLivechat)) {
 			yield put(inquiryRequest());
 		} else {

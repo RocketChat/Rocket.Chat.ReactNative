@@ -10,7 +10,7 @@ import { withSafeAreaInsets } from '~/lib/hooks/withSafeAreaInsets';
 import dayjs from '~/lib/dayjs';
 import * as List from '~/containers/List';
 import Avatar from '~/containers/Avatar';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import I18n from '~/i18n';
 import { type TSupportedThemes, withTheme } from '~/theme';
 import { themes } from '~/lib/constants/colors';
@@ -45,7 +45,7 @@ class ReadReceiptView extends Component<IReadReceiptViewProps, IReadReceiptViewS
 			title: I18n.t('Read_Receipt')
 		};
 		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='read-receipt-view-close' />;
+			Object.assign(options, headerLeftCloseModal(navigation, 'read-receipt-view-close'));
 		}
 		return options;
 	};

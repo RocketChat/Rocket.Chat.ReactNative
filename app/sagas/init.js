@@ -17,6 +17,7 @@ import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
+import { registerCertificates } from '../lib/methods/helpers/sslPinning';
 
 // eslint-disable-next-line no-restricted-imports
 import appConfig from '../../app.json';
@@ -75,6 +76,7 @@ const deliverPendingPushNotification = function* deliverPendingPushNotification(
 
 const restore = function* restore() {
 	yield call(runBiometricTrustMigration);
+	yield call(registerCertificates);
 
 	const restoredServer = yield* getServerToRestore();
 

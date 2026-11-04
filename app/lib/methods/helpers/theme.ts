@@ -22,7 +22,7 @@ export const initialTheme = (): IThemePreference => {
 
 export const defaultTheme = (): TThemeMode => {
 	const systemTheme = Appearance.getColorScheme();
-	if (systemTheme) {
+	if (systemTheme === 'light' || systemTheme === 'dark') {
 		return systemTheme;
 	}
 	return 'light';
@@ -57,6 +57,10 @@ export const setNativeTheme = (themePreferences: IThemePreference) => {
 		} catch (error) {
 			// Do nothing
 		}
+	} else {
+		Appearance.setColorScheme(
+			themePreferences.currentTheme === 'automatic' ? 'unspecified' : theme === 'light' ? 'light' : 'dark'
+		);
 	}
 	SystemUI.setBackgroundColorAsync(themes[theme].surfaceNeutral);
 };

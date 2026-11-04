@@ -64,6 +64,17 @@ describe('RoomHeaderContainer', () => {
 		expect(props.subtitle).toBe('Waiting for network...');
 	});
 
+	it('should pass the connection state instead of presence for DM room when connecting', () => {
+		mockedStore.dispatch(connectRequest());
+		mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '6.0.0', name: 'Test' }));
+		mockedStore.dispatch(setActiveUsers({ 'user-123': { status: 'online', statusText: 'Working', statusExpiresAt: undefined } }));
+
+		renderContainer();
+
+		const props = mockChild.mock.calls[0][0];
+		expect(props.subtitle).toBe('Connecting...');
+	});
+
 	it('should pass presence status for DM room when connected and activeUser exists', () => {
 		connect();
 		mockedStore.dispatch(

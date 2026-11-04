@@ -7,7 +7,6 @@ import { ThemeContext } from '../theme';
 import type { IThemePreference } from '../definitions/ITheme';
 
 const defaultPrefs: IThemePreference = { currentTheme: 'light', darkLevel: 'dark' };
-const setTheme = jest.fn();
 
 function ContextCapture({ onCapture }: { onCapture: (v: object) => void }) {
 	const value = useContext(ThemeContext);
@@ -22,7 +21,7 @@ function ParentWithCounter({ onCapture }: { onCapture: (v: object) => void }) {
 	const [count, setCount] = useState(0);
 	return (
 		<>
-			<ThemeContextProvider theme='light' themePreferences={defaultPrefs} setTheme={setTheme}>
+			<ThemeContextProvider theme='light' themePreferences={defaultPrefs}>
 				<ContextCapture onCapture={onCapture} />
 			</ThemeContextProvider>
 			<TouchableOpacity testID='bump' onPress={() => setCount(c => c + 1)} accessibilityLabel={String(count)} />
@@ -46,7 +45,7 @@ test('value reference is stable across re-renders when theme/prefs unchanged', (
 test('value reference changes when theme prop changes', () => {
 	const captured: object[] = [];
 	const Wrapper = ({ theme }: { theme: 'light' | 'dark' }) => (
-		<ThemeContextProvider theme={theme} themePreferences={defaultPrefs} setTheme={setTheme}>
+		<ThemeContextProvider theme={theme} themePreferences={defaultPrefs}>
 			<ContextCapture onCapture={v => captured.push(v)} />
 		</ThemeContextProvider>
 	);

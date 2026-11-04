@@ -160,6 +160,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
               onLoadStart={[Function]}
               onProgress={[Function]}
               placeholder={[]}
+              sfEffect={null}
               source={
                 [
                   {
@@ -173,6 +174,8 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   "width": 24,
                 }
               }
+              symbolSize={null}
+              symbolWeight={null}
               transition={null}
               width={24}
             />
@@ -262,6 +265,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
               onLoadStart={[Function]}
               onProgress={[Function]}
               placeholder={[]}
+              sfEffect={null}
               source={
                 [
                   {
@@ -275,6 +279,8 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   "width": 24,
                 }
               }
+              symbolSize={null}
+              symbolWeight={null}
               transition={null}
               width={24}
             />
@@ -364,6 +370,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
               onLoadStart={[Function]}
               onProgress={[Function]}
               placeholder={[]}
+              sfEffect={null}
               source={
                 [
                   {
@@ -377,6 +384,8 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   "width": 24,
                 }
               }
+              symbolSize={null}
+              symbolWeight={null}
               transition={null}
               width={24}
             />
@@ -647,6 +656,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
           getItem={[Function]}
           getItemCount={[Function]}
           keyExtractor={[Function]}
+          nestedScrollEnabled={false}
           onContentSizeChange={[Function]}
           onLayout={[Function]}
           onMomentumScrollBegin={[Function]}
@@ -691,6 +701,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   onLoadStart={[Function]}
                   onProgress={[Function]}
                   placeholder={[]}
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -704,6 +715,8 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                       "width": 36,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={36}
                 />
@@ -791,6 +804,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   onLoadStart={[Function]}
                   onProgress={[Function]}
                   placeholder={[]}
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -804,6 +818,8 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                       "width": 36,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={36}
                 />
@@ -891,6 +907,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                   onLoadStart={[Function]}
                   onProgress={[Function]}
                   placeholder={[]}
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -904,6 +921,8 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                       "width": 36,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={36}
                 />
@@ -1289,6 +1308,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
               onLoadStart={[Function]}
               onProgress={[Function]}
               placeholder={[]}
+              sfEffect={null}
               source={
                 [
                   {
@@ -1302,6 +1322,8 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   "width": 24,
                 }
               }
+              symbolSize={null}
+              symbolWeight={null}
               transition={null}
               width={24}
             />
@@ -1391,6 +1413,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
               onLoadStart={[Function]}
               onProgress={[Function]}
               placeholder={[]}
+              sfEffect={null}
               source={
                 [
                   {
@@ -1404,6 +1427,8 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   "width": 24,
                 }
               }
+              symbolSize={null}
+              symbolWeight={null}
               transition={null}
               width={24}
             />
@@ -1493,6 +1518,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
               onLoadStart={[Function]}
               onProgress={[Function]}
               placeholder={[]}
+              sfEffect={null}
               source={
                 [
                   {
@@ -1506,6 +1532,8 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   "width": 24,
                 }
               }
+              symbolSize={null}
+              symbolWeight={null}
               transition={null}
               width={24}
             />
@@ -1776,6 +1804,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
           getItem={[Function]}
           getItemCount={[Function]}
           keyExtractor={[Function]}
+          nestedScrollEnabled={false}
           onContentSizeChange={[Function]}
           onLayout={[Function]}
           onMomentumScrollBegin={[Function]}
@@ -1820,6 +1849,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   onLoadStart={[Function]}
                   onProgress={[Function]}
                   placeholder={[]}
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -1833,6 +1863,8 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                       "width": 36,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={36}
                 />
@@ -1920,6 +1952,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   onLoadStart={[Function]}
                   onProgress={[Function]}
                   placeholder={[]}
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -1933,6 +1966,8 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                       "width": 36,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={36}
                 />
@@ -2020,6 +2055,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                   onLoadStart={[Function]}
                   onProgress={[Function]}
                   placeholder={[]}
+                  sfEffect={null}
                   source={
                     [
                       {
@@ -2033,6 +2069,8 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                       "width": 36,
                     }
                   }
+                  symbolSize={null}
+                  symbolWeight={null}
                   transition={null}
                   width={36}
                 />
