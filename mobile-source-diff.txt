@@ -1,0 +1,140 @@
+﻿diff --git a/app/lib/methods/loadMissedMessages.ts b/app/lib/methods/loadMissedMessages.ts
+index 9ad7d5dc3..de82fdbde 100644
+--- a/app/lib/methods/loadMissedMessages.ts
++++ b/app/lib/methods/loadMissedMessages.ts
+@@ -9,9 +9,11 @@ import { snapshotServerTimestamps, type TServerTimestamps, updateLastOpen } from
+ import { loadMessagesForRoom } from './loadMessagesForRoom';
+ import { isRoomType } from './roomTypeToApiType';
+ 
++type SyncCursor = number | string;
++
+ const count = 50;
+ 
+-const syncMessages = async ({ roomId, next, type }: { roomId: string; next: number; type: 'UPDATED' | 'DELETED' }) => {
++const syncMessages = async ({ roomId, next, type }: { roomId: string; next: SyncCursor; type: 'UPDATED' | 'DELETED' }) => {
+ 	// @ts-ignore // this method dont have type
+ 	const { result } = await sdk.get('chat.syncMessages', { roomId, next, count, type });
+ 	return result;
+@@ -19,25 +21,32 @@ const syncMessages = async ({ roomId, next, type }: { roomId: string; next: numb
+ 
+ const getSyncMessagesFromCursor = async (
+ 	roomId: string,
+-	cursor?: number,
+-	updatedNext?: number | null,
+-	deletedNext?: number | null
++	cursor?: SyncCursor,
++	updatedNext?: SyncCursor | null,
++	deletedNext?: SyncCursor | null
+ ) => {
+ 	let updatedPromise;
+ 	let deletedPromise;
+ 
+ 	if (cursor && !updatedNext && !deletedNext) {
+-		updatedPromise = syncMessages({ roomId, next: cursor, type: 'UPDATED' });
+-		deletedPromise = syncMessages({ roomId, next: cursor, type: 'DELETED' });
++		// Empty ID opts in to compound cursor pagination.
++		// Older servers can still parse the timestamp prefix.
++		const initialCursor = `${cursor}_`;
++
++		updatedPromise = syncMessages({ roomId, next: initialCursor, type: 'UPDATED' });
++		deletedPromise = syncMessages({ roomId, next: initialCursor, type: 'DELETED' });
+ 	}
++
+ 	if (updatedNext) {
+ 		updatedPromise = syncMessages({ roomId, next: updatedNext, type: 'UPDATED' });
+ 	}
++
+ 	if (deletedNext) {
+ 		deletedPromise = syncMessages({ roomId, next: deletedNext, type: 'DELETED' });
+ 	}
+ 
+ 	const [updatedMessages, deletedMessages] = await Promise.all([updatedPromise, deletedPromise]);
++
+ 	return {
+ 		deleted: deletedMessages?.deleted ?? [],
+ 		deletedNext: deletedMessages?.cursor.next,
+@@ -52,16 +61,19 @@ async function load({
+ 	deletedNext
+ }: {
+ 	rid: string;
+-	updatedNext?: number | null;
+-	deletedNext?: number | null;
++	updatedNext?: SyncCursor | null;
++	deletedNext?: SyncCursor | null;
+ }) {
+ 	const sub = await getSubscriptionByRoomId(roomId);
++
+ 	if (!sub) {
+ 		return;
+ 	}
++
+ 	const cursor = sub.lastOpen;
+ 
+ 	const { version: serverVersion } = store.getState().server;
++
+ 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.1.0')) {
+ 		const result = await getSyncMessagesFromCursor(roomId, cursor?.getTime(), updatedNext, deletedNext);
+ 		return result;
+@@ -75,34 +87,44 @@ async function load({
+ 
+ export async function loadMissedMessages(args: {
+ 	rid: string;
+-	updatedNext?: number | null;
+-	deletedNext?: number | null;
++	updatedNext?: SyncCursor | null;
++	deletedNext?: SyncCursor | null;
+ 	serverTimestamps?: TServerTimestamps;
+ }): Promise<void> {
+ 	const isFirstPage = !args.updatedNext && !args.deletedNext;
++
+ 	if (isFirstPage) {
+-		// A room whose history load fetched no messages has no cursor to sync from, and syncing is what
+-		// would write one. Load its history instead: it fetches the same gap and seeds the cursor.
++		// A room whose history load fetched no messages has no cursor to sync from,
++		// and syncing is what would write one. Load its history instead.
+ 		const sub = await getSubscriptionByRoomId(args.rid);
++
+ 		if (sub && !sub.lastOpen && isRoomType(sub.t)) {
+ 			return loadMessagesForRoom({ rid: args.rid, t: sub.t });
+ 		}
+ 	}
+ 
+-	// A DELETED-only continuation fetches no UPDATED page, so it must not write the cursor again.
++	// A DELETED-only continuation fetches no UPDATED page,
++	// so it must not write the cursor again.
+ 	const fetchedUpdatedPage = !!args.updatedNext || !args.deletedNext;
++
+ 	const data = await load({
+ 		rid: args.rid,
+ 		updatedNext: args.updatedNext,
+ 		deletedNext: args.deletedNext
+ 	});
++
+ 	if (data) {
+ 		const {
+ 			updated,
+ 			updatedNext,
+ 			deleted,
+ 			deletedNext
+-		}: { updated: ILastMessage[]; deleted: ILastMessage[]; updatedNext: number | null; deletedNext: number | null } = data;
++		}: {
++			updated: ILastMessage[];
++			deleted: ILastMessage[];
++			updatedNext: SyncCursor | null;
++			deletedNext: SyncCursor | null;
++		} = data;
+ 
+ 		const serverTimestamps = [...(args.serverTimestamps ?? []), ...snapshotServerTimestamps(updated)];
+ 
+@@ -118,10 +140,7 @@ export async function loadMissedMessages(args: {
+ 			}).catch(log);
+ 		}
+ 
+-		// Only once the UPDATED cursor has drained, from the stamps of every page walked: the
+-		// pages descend from the newest, so the last one alone would lower the cursor. Advancing
+-		// mid-pagination would skip pages not yet fetched; `deleted` is never a source, its rows
+-		// carry no new history.
++		// Only once the UPDATED cursor has drained, from the stamps of every page walked.
+ 		if (fetchedUpdatedPage && !updatedNext) {
+ 			await updateLastOpen(args.rid, serverTimestamps);
+ 		}

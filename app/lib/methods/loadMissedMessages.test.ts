@@ -249,6 +249,96 @@ describe('loadMissedMessages', () => {
 		expect(mockedSdkGet).toHaveBeenCalledTimes(3);
 	});
 
+	it('passes the returned DELETED compound cursor unchanged to the next page', async () => {
+		const CURSOR = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
+		const COMPOUND_CURSOR = '1704108600000_deleted-id-123';
+
+		const flush = () => new Promise(resolve => setImmediate(resolve));
+
+		mockedGetSubscriptionByRoomId.mockResolvedValue({
+			lastOpen: CURSOR,
+			t: 'c'
+		} as never);
+
+		mockedSdkGet.mockImplementation(((
+			_endpoint: string,
+			params: {
+				type?: string;
+				next?: number | string;
+			}
+		) => {
+			if (params.type === 'UPDATED') {
+				return Promise.resolve({
+					result: {
+						updated: [],
+						cursor: { next: null }
+					}
+				});
+			}
+
+			if (params.next === COMPOUND_CURSOR) {
+				return Promise.resolve({
+					result: {
+						deleted: [],
+						cursor: { next: null }
+					}
+				});
+			}
+
+			return Promise.resolve({
+				result: {
+					deleted: [],
+					cursor: { next: COMPOUND_CURSOR }
+				}
+			});
+		}) as never);
+
+		await loadMissedMessages({ rid: RID });
+		await flush();
+
+		expect(mockedSdkGet).toHaveBeenCalledWith(
+			'chat.syncMessages',
+			expect.objectContaining({
+				roomId: RID,
+				next: COMPOUND_CURSOR,
+				type: 'DELETED'
+			})
+		);
+
+		expect(mockedSdkGet).toHaveBeenCalledTimes(3);
+	});
+
+	it('syncs with a DELETED string cursor on continuation without delegating', async () => {
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'p' } as never);
+
+		const DELETED_NEXT = '1704110400000_deleted-id-123';
+
+		mockedSdkGet.mockResolvedValue({
+			result: {
+				updated: [],
+				deleted: [],
+				cursor: { next: null }
+			}
+		} as never);
+
+		await loadMissedMessages({
+			rid: RID,
+			deletedNext: DELETED_NEXT
+		});
+
+		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
+		expect(mockedSdkGet).toHaveBeenCalledTimes(1);
+
+		expect(mockedSdkGet).toHaveBeenCalledWith(
+			'chat.syncMessages',
+			expect.objectContaining({
+				roomId: RID,
+				next: DELETED_NEXT,
+				type: 'DELETED'
+			})
+		);
+	});
+
 	it('never delegates on an updated continuation page, even without a cursor', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'p' } as never);
 
