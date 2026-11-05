@@ -4,6 +4,7 @@ import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
 import NativeVoipModule from '~/lib/native/NativeVoip';
+import Navigation from '~/lib/navigation/appNavigation';
 import { pendingHangups } from './pendingHangups';
 import { useCallStore } from './useCallStore';
 
@@ -111,6 +112,7 @@ function createMockCall(callId: string, options?: { initialState?: string }) {
 		callId,
 		state: initialState,
 		hidden: false,
+		escalated: false,
 		localParticipant,
 		remoteParticipants,
 		emitter,
@@ -558,5 +560,37 @@ describe('useCallStore endCall — pendingHangups recording', () => {
 		useCallStore.getState().endCall();
 
 		expect(pendingHangups.drainAll()).toEqual(['end-record']);
+	});
+});
+
+describe('useCallStore video escalation', () => {
+	beforeEach(() => {
+		mockPlayCallEndedSound.mockClear();
+		jest.mocked(Navigation.back).mockClear();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('flags the call as escalated when the SDK reports it', () => {
+		const { call, emit } = createMockCall('esc-1');
+		useCallStore.getState().setCall(call);
+		expect(useCallStore.getState().escalated).toBe(false);
+
+		emit('escalated');
+
+		expect(useCallStore.getState().escalated).toBe(true);
+	});
+
+	it('ends quietly when the server hangs up an escalated call', () => {
+		const { call, emit } = createMockCall('esc-2');
+		useCallStore.getState().setCall(call);
+		useCallStore.setState({ focused: false });
+
+		(call as { hangupReason: string }).hangupReason = 'conference-escalation';
+		emit('ended');
+
+		expect(mockPlayCallEndedSound).not.toHaveBeenCalled();
+		expect(Navigation.back).not.toHaveBeenCalled();
+		expect(useCallStore.getState().call).toBeNull();
 	});
 });

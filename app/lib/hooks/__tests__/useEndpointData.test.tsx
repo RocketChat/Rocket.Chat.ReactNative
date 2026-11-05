@@ -1,8 +1,8 @@
 import { act, render, renderHook, waitFor } from '@testing-library/react-native';
 import { View, Text } from 'react-native';
 
-import { useEndpointData } from './useEndpointData';
-import sdk from '../services/sdk';
+import sdk from '~/lib/services/sdk';
+import { useEndpointData } from '../useEndpointData';
 
 const url = 'chat.getMessage';
 
@@ -21,10 +21,18 @@ const message = {
 	_updatedAt: '2022-07-05T19:34:30.146Z'
 };
 
-// mock sdk
-jest.mock('../services/sdk', () => ({
-	get: jest.fn(() => new Promise(resolve => setTimeout(() => resolve({ success: true, message }), 100)))
+jest.mock('~/lib/services/sdk', () => ({
+	__esModule: true,
+	default: { get: jest.fn(() => new Promise(resolve => setTimeout(() => resolve({ success: true, message }), 100))) }
 }));
+
+const deferred = () => {
+	let resolve!: (value: unknown) => void;
+	const promise = new Promise(r => {
+		resolve = r;
+	});
+	return { promise, resolve };
+};
 
 function Render() {
 	const { loading } = useEndpointData(url, { msgId: message._id });
@@ -65,9 +73,9 @@ describe('useFetch', () => {
 	});
 
 	it('should return error after fetch', async () => {
-		const spy = jest
-			.spyOn(sdk, 'get')
-			.mockImplementation(jest.fn(() => new Promise(resolve => setTimeout(() => resolve({ success: false, error: null }), 100))));
+		(sdk.get as jest.Mock).mockImplementationOnce(
+			() => new Promise(resolve => setTimeout(() => resolve({ success: false, error: null }), 100))
+		);
 
 		const { result } = renderHook(() => useEndpointData(url, { msgId: message._id }));
 		expect(result.current.loading).toEqual(true);
@@ -77,8 +85,27 @@ describe('useFetch', () => {
 		expect(result.current.loading).toEqual(false);
 		expect(result.current.result).toEqual(undefined);
 		expect(result.current.error).toEqual({ success: false, error: null });
+	});
 
-		spy.mockRestore();
+	it('ignores a response that resolves after a newer request', async () => {
+		const first = deferred();
+		const second = deferred();
+		(sdk.get as jest.Mock).mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise);
+
+		const { result } = renderHook(() => useEndpointData('video-conference.info', { callId: 'c1' }));
+		act(() => result.current.reload());
+
+		await act(async () => {
+			second.resolve({ success: true, status: 3 });
+			await second.promise;
+		});
+		await act(async () => {
+			first.resolve({ success: true, status: 1 });
+			await first.promise;
+		});
+
+		expect(result.current.result).toEqual({ success: true, status: 3 });
+		expect(result.current.loading).toBe(false);
 	});
 
 	it('refetches only when params change by value', async () => {

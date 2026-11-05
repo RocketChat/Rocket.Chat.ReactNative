@@ -25,6 +25,7 @@ import { showConfirmationAlert } from '../lib/methods/helpers/info';
 import { showToast } from '../lib/methods/helpers/showToast';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
+import { usePexipCallStore } from '../lib/services/videoConf/usePexipCallStore';
 import { loginOAuthOrSso } from '../lib/services/connect';
 import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
@@ -438,6 +439,10 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 			const uid = params.caller?._id;
 			const { rid, callId, event } = params;
 			if (event === 'accept') {
+				const pexipCall = usePexipCallStore.getState().call;
+				if (pexipCall && pexipCall.callId !== callId) {
+					usePexipCallStore.getState().leave();
+				}
 				yield call(notifyUser, `${uid}/video-conference`, {
 					action: 'accepted',
 					params: { uid, rid, callId }

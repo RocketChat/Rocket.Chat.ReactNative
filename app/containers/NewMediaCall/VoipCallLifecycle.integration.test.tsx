@@ -171,6 +171,9 @@ jest.mock('~/lib/services/voip/acceptNativeCall', () => ({
 jest.mock('~/lib/services/voip/playCallEndedSound', () => ({
 	playCallEndedSound: jest.fn()
 }));
+jest.mock('~/views/CallView/useMediaCallAppActions', () => ({
+	useMediaCallAppActions: () => []
+}));
 
 const mockHideActionSheet = jest.fn();
 jest.mock('../ActionSheet', () => ({

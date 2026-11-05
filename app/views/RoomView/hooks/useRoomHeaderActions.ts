@@ -7,6 +7,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
 import { useSetting } from '~/lib/hooks/useSetting';
+import { useVideoConf } from '~/lib/hooks/useVideoConf';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { type IHeaderAction, type IHeaderMenuItem } from '~/lib/methods/helpers/navigation/headerActions';
@@ -116,6 +117,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 		hasE2EEWarning,
 		canToggleEncryption,
 		isSelfDm,
+		isDirect,
 		tunread,
 		tunreadUser,
 		tunreadGroup,
@@ -127,6 +129,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 		threadsAccessibilityLabel
 	} = useRoomActionsState(rid, roomStore);
 	const { callPresent, isCallDisabled, onPressCall } = useHeaderCallPress(rid);
+	const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);
 
 	const threadsAction: IHeaderAction = {
 		label: threadsAccessibilityLabel,
@@ -142,7 +145,8 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 		onPress: goThreadsView
 	};
 
-	const showCall = !isSelfDm && callPresent;
+	const showCall = !isSelfDm && isDirect && callPresent;
+	const showVideoCall = !isSelfDm && callEnabled;
 	const showNotifications = issuesWithNotifications || disableNotifications;
 
 	const menu: IHeaderMenuItem[] = [
@@ -154,6 +158,17 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 						testID: 'room-view-header-call',
 						disabled: hasE2EEWarning || isCallDisabled,
 						onPress: onPressCall
+					}
+				]
+			: []),
+		...(showVideoCall
+			? [
+					{
+						label: i18n.t('Video_call'),
+						icon: 'video' as const,
+						testID: 'room-view-header-video-call',
+						disabled: hasE2EEWarning || disabledTooltip || isCallDisabled,
+						onPress: showInitCallActionSheet
 					}
 				]
 			: []),

@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useStore } from 'zustand';
 
 import RoomHeader from '~/containers/RoomHeader';
+import { usePexipCallStore } from '~/lib/services/videoConf/usePexipCallStore';
 import LeftButtons from '../components/LeftButtons';
 import { type IRoomViewProps, type RoomStore } from '../definitions';
 import { useGoRoomActionsView } from './useGoRoomActionsView';
@@ -21,6 +22,7 @@ export const useJsRoomHeader = ({ rid, tmid, name: threadName, roomStore }: IUse
 	const headerFields = useHeaderFields(roomStore, tmid, threadName);
 	const roomUserId = useStore(roomStore, s => s.roomUserId);
 	const goRoomActionsView = useGoRoomActionsView(roomStore);
+	const isPexipSplit = usePexipCallStore(state => !!rid && state.layout === 'split' && state.call?.rid === rid);
 
 	useLayoutEffect(() => {
 		if (!rid) {
@@ -29,8 +31,11 @@ export const useJsRoomHeader = ({ rid, tmid, name: threadName, roomStore }: IUse
 			return;
 		}
 
-		navigation.setOptions({ headerLeft: () => <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} /> });
-	}, [rid, tmid, navigation, roomStore]);
+		navigation.setOptions({
+			headerShown: !isPexipSplit,
+			headerLeft: () => <LeftButtons rid={rid} tmid={tmid} roomStore={roomStore} />
+		});
+	}, [rid, tmid, isPexipSplit, navigation, roomStore]);
 
 	useLayoutEffect(() => {
 		if (!rid) {

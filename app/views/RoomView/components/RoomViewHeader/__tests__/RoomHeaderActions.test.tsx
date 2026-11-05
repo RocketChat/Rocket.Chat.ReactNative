@@ -106,6 +106,7 @@ const allTestIDs = [
 	'room-view-search',
 	'room-view-header-threads',
 	'room-view-header-call',
+	'room-view-header-video-call',
 	'room-view-header-encryption',
 	'room-view-push-troubleshoot',
 	'room-view-header-kebab',
@@ -254,10 +255,10 @@ describe('RoomHeaderActions', () => {
 	});
 
 	describe('room', () => {
-		it('lists call and search in the more menu', () => {
+		it('lists video call and search in the more menu', () => {
 			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
 
-			expect(openMoreMenu().map(option => option.testID)).toEqual(['room-view-header-call', 'room-view-search']);
+			expect(openMoreMenu().map(option => option.testID)).toEqual(['room-view-header-video-call', 'room-view-search']);
 		});
 
 		it('enables encryption while the e2ee warning disables the other actions', () => {
@@ -348,10 +349,10 @@ describe('RoomHeaderActions', () => {
 			expect(openMoreMenu().map(option => option.testID)).toEqual(['room-view-search']);
 		});
 
-		it('starts a video conference from the call option', () => {
+		it('starts a video conference from the video call option', () => {
 			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
 
-			pickOption(moreMenuOption('room-view-header-call'));
+			pickOption(moreMenuOption('room-view-header-video-call'));
 
 			expect(mockVideoConf.showInitCallActionSheet).toHaveBeenCalled();
 		});

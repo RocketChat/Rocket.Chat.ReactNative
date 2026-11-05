@@ -2,6 +2,7 @@ import { act, render } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
 import { type IHeaderAction } from '~/lib/methods/helpers/navigation/headerActions';
+import { usePexipCallStore } from '~/lib/services/videoConf/usePexipCallStore';
 import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useOmnichannelActions, useRoomActions, useThreadActions } from '~/views/RoomView/hooks/useRoomHeaderActions';
 import { useNativeRoomHeader } from '~/views/RoomView/hooks/useNativeRoomHeader';
@@ -73,6 +74,36 @@ beforeEach(() => {
 	mockHasNativeHeaderBar = true;
 	mockIsMasterDetail = false;
 	mockActionsStore.setState({ roomActions: [{ label: 'Threads', icon: 'threads', onPress: jest.fn() }] });
+	usePexipCallStore.getState().leave();
+});
+
+describe('with a split Pexip call', () => {
+	it('hides the header while this room is docked beside the call', () => {
+		render(<RoomViewHeader rid='rid-1' roomStore={makeRoomStore()} />);
+		expect(lastOptionsWith('headerShown').headerShown).toBe(true);
+
+		act(() => {
+			usePexipCallStore
+				.getState()
+				.open({ callId: 'call-1', url: 'https://pexip.example/call', rid: 'rid-1', server: 'https://open.rocket.chat' });
+			usePexipCallStore.getState().split();
+		});
+
+		expect(lastOptionsWith('headerShown').headerShown).toBe(false);
+	});
+
+	it('keeps the header when the split call belongs to another room', () => {
+		act(() => {
+			usePexipCallStore
+				.getState()
+				.open({ callId: 'call-1', url: 'https://pexip.example/call', rid: 'other-rid', server: 'https://open.rocket.chat' });
+			usePexipCallStore.getState().split();
+		});
+
+		render(<RoomViewHeader rid='rid-1' roomStore={makeRoomStore()} />);
+
+		expect(lastOptionsWith('headerShown').headerShown).toBe(true);
+	});
 });
 
 describe('on the JS header', () => {
