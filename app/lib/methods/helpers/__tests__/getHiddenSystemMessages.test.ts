@@ -1,4 +1,4 @@
-import { getHiddenSystemMessages } from './getHiddenSystemMessages';
+import { getHiddenSystemMessages } from '../getHiddenSystemMessages';
 
 describe('getHiddenSystemMessages', () => {
 	it('combines the workspace and room lists', () => {
