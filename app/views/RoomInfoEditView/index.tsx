@@ -198,19 +198,18 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 			await saveRoomSettings(room.rid, params);
 		} catch (e: any) {
 			const { code, reason } = getServerError(e);
+			const nameErrors: Record<string, string> = {
+				'error-invalid-room-name': I18n.t('error-invalid-room-name', { room_name: name }),
+				'error-duplicate-channel-name': I18n.t('Channel_name_already_taken')
+			};
+			const nameError = code ? nameErrors[code] : undefined;
 
-			if (code === 'error-invalid-room-name') {
-				setError('name', { message: I18n.t('error-invalid-room-name', { room_name: name }), type: 'validate' });
+			if (nameError) {
+				setError('name', { message: nameError, type: 'validate' });
 				setFocus('name');
 			}
 
-			if (code === 'error-duplicate-channel-name') {
-				setError('name', { message: I18n.t('Channel_name_already_taken'), type: 'validate' });
-				setFocus('name');
-			}
-
-			const a11yAnnouncement = code === 'error-duplicate-channel-name' ? I18n.t('Channel_name_already_taken') : reason;
-			AccessibilityInfo.announceForAccessibility(a11yAnnouncement);
+			AccessibilityInfo.announceForAccessibility(nameError ?? reason);
 
 			error = true;
 			log(e);

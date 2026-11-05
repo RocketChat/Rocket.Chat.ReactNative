@@ -8,14 +8,14 @@ describe('getServerError', () => {
 		});
 	});
 
-	it('reads the code and message of a REST error', () => {
+	it('reads the code and the message without its code suffix of a REST error', () => {
 		expect(
 			getServerError({
 				data: { errorType: 'error-duplicate-channel-name', error: 'A channel with name exists [error-duplicate-channel-name]' }
 			})
 		).toEqual({
 			code: 'error-duplicate-channel-name',
-			reason: 'A channel with name exists [error-duplicate-channel-name]'
+			reason: 'A channel with name exists'
 		});
 	});
 });
