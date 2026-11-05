@@ -62,11 +62,8 @@ export const toggleRoomE2EE = async (rid: string): Promise<void> => {
 					try {
 						try {
 							// Send new room setting value to server
-							const { result } = await saveRoomSettings(rid, { encrypted: newValue });
-							// If it was saved successfully
-							if (result) {
-								return;
-							}
+							await saveRoomSettings(rid, { encrypted: newValue });
+							return;
 						} catch {
 							// do nothing
 						}

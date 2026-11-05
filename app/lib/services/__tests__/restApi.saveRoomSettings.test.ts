@@ -36,9 +36,4 @@ describe('saveRoomSettings', () => {
 		expect(sdk.post).toHaveBeenCalledWith('rooms.saveRoomSettings', { rid: 'rid1', roomAvatar: null, encrypted: true });
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
-
-	it('resolves with result true and the rid on 3.3.0+', async () => {
-		const response = await saveRoomSettings('rid1', { encrypted: true });
-		expect(response).toEqual({ result: true, rid: 'rid1' });
-	});
 });

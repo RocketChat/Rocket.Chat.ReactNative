@@ -678,14 +678,14 @@ export const hideRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
-export const saveRoomSettings = async (rid: string, params: IRoomSettings): Promise<{ result: boolean; rid: string }> => {
+export const saveRoomSettings = async (rid: string, params: IRoomSettings) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.3.0')) {
-		const response = await sdk.post('rooms.saveRoomSettings', { rid, ...params });
-		return { result: response.success, rid };
+		await sdk.post('rooms.saveRoomSettings', { rid, ...params });
+		return;
 	}
 	// RC 0.55.0
-	return sdk.methodCallWrapper('saveRoomSettings', rid, params);
+	await sdk.methodCallWrapper('saveRoomSettings', rid, params);
 };
 
 export const setPassword = (newPassword: string) => {
