@@ -6,7 +6,7 @@ import { initStore } from '~/lib/store/auxStore';
 import { mockedStore } from '~/reducers/mockedStore';
 import { appStart } from '~/actions/app';
 import { RootEnum } from '~/definitions';
-import { RoomProviders } from '../RoomView/components/RoomProviders';
+import { RoomProviders } from '../../RoomView/components/RoomProviders';
 import { MessageComposerContainer, type IMessageComposerRef } from '~/containers/MessageComposer';
 import { createMessageActionStore, type TMessageActionStore } from '~/containers/message/stores/MessageActionStore';
 import { useChooseMedia } from '~/containers/MessageComposer/hooks/useChooseMedia';
@@ -44,7 +44,7 @@ jest.mock('~/lib/database', () => ({
 	}
 }));
 
-jest.mock('./Preview', () => () => null);
+jest.mock('../Preview', () => () => null);
 jest.mock('~/containers/Thumbs', () => () => null);
 jest.mock('~/containers/ActionSheet', () => ({
 	showActionSheetRef: jest.fn(),
@@ -66,7 +66,7 @@ jest.mock('~/lib/methods/helpers/info', () => ({
 
 const { showActionSheetRef } = require('~/containers/ActionSheet');
 const { AttachmentActionSheet } = require('~/containers/MessageComposer/components/Attachments/AttachmentActionSheet');
-const { ShareView } = require('./index');
+const { ShareView } = require('../index');
 const mockGetSubscriptionByRoomId = require('~/lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
 
 initStore(mockedStore);
