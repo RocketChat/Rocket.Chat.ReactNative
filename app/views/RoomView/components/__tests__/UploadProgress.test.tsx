@@ -79,6 +79,11 @@ describe('UploadProgress', () => {
 	});
 
 	it('ignores a second tap on Try again while the retry is starting', async () => {
+		(isUploadActive as jest.Mock).mockReturnValue(false);
+		(sendFileMessage as jest.Mock).mockImplementationOnce(() => {
+			(isUploadActive as jest.Mock).mockReturnValue(true);
+			return new Promise(() => {});
+		});
 		show([upload({ error: true, errorStatus: 503 })]);
 		const retry = screen.getByRole('button', { name: 'Try_again' });
 

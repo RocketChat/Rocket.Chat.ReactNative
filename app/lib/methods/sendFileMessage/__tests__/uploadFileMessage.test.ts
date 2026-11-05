@@ -6,6 +6,7 @@ import {
 	createUploadRecord,
 	isUploadActive,
 	recordUploadFailure,
+	showUploadFailureToast,
 	uploadQueue
 } from '../utils';
 import FileUpload from '../../helpers/fileUpload';
@@ -15,7 +16,8 @@ jest.mock('../utils', () => ({
 	...jest.requireActual('../utils'),
 	createUploadProgressCallback: jest.fn(),
 	createUploadRecord: jest.fn(),
-	recordUploadFailure: jest.fn()
+	recordUploadFailure: jest.fn(),
+	showUploadFailureToast: jest.fn()
 }));
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ t: (k: string) => k }));
@@ -25,10 +27,6 @@ jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() 
 jest.mock('expo-file-system/legacy', () => ({}));
 jest.mock('@nozbe/watermelondb/RawRecord', () => ({ sanitizedRaw: jest.fn() }));
 jest.mock('../../helpers/fileUpload', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('~/lib/database', () => ({
-	__esModule: true,
-	default: { active: { write: (cb: () => Promise<unknown>) => cb() } }
-}));
 
 const UPLOAD_PATH = '/tmp/pic.jpg-GENERAL';
 const RESPONSE = { file: { _id: 'file1', url: '/file/1' } };
@@ -37,7 +35,7 @@ const PREPARED = { url: 'https://open.rocket.chat/api/v1/rooms.media/GENERAL', h
 const uploadSending = (send: jest.Mock) => (FileUpload as jest.Mock).mockImplementation(() => ({ send, cancel: jest.fn() }));
 
 const arrange = () => {
-	const record = { id: UPLOAD_PATH, destroyPermanently: jest.fn() };
+	const record = { id: UPLOAD_PATH, db: { write: (cb: () => Promise<unknown>) => cb() }, destroyPermanently: jest.fn() };
 	(createUploadRecord as jest.Mock).mockResolvedValue(record);
 	return record;
 };
@@ -65,7 +63,7 @@ describe('uploadFileMessage', () => {
 		const running = claimUploadSlot(UPLOAD_PATH);
 		const prepare = jest.fn();
 
-		await expect(run({}, prepare)).rejects.toThrow("Couldn't create upload record");
+		await expect(run({}, prepare)).rejects.toThrow('Upload in progress');
 
 		expect(createUploadRecord).not.toHaveBeenCalled();
 		expect(prepare).not.toHaveBeenCalled();
@@ -82,6 +80,15 @@ describe('uploadFileMessage', () => {
 		});
 
 		expect(activeWhilePreparing).toBe(true);
+	});
+
+	it('takes the slot before its first await, so a second Try again tap sees the upload as active', async () => {
+		arrange();
+
+		const sending = run();
+
+		expect(isActive()).toBe(true);
+		await sending;
 	});
 
 	it('uploads what the sender prepared, reporting progress on the upload record', async () => {
@@ -129,7 +136,7 @@ describe('uploadFileMessage', () => {
 		expect(record.destroyPermanently).toHaveBeenCalledTimes(1);
 	});
 
-	it('records and rethrows a failed upload, then frees the slot', async () => {
+	it('records, announces and rethrows a failed upload, then frees the slot', async () => {
 		const record = arrange();
 		const error = new UploadHttpError(413);
 		uploadSending(jest.fn().mockRejectedValue(error));
@@ -137,6 +144,7 @@ describe('uploadFileMessage', () => {
 		await expect(run()).rejects.toBe(error);
 
 		expect(recordUploadFailure).toHaveBeenCalledWith(record, error);
+		expect(showUploadFailureToast).toHaveBeenCalledWith(error);
 		expect(record.destroyPermanently).not.toHaveBeenCalled();
 		expect(isActive()).toBe(false);
 	});
@@ -212,6 +220,7 @@ describe('uploadFileMessage', () => {
 
 		await expect(pending).resolves.toBeUndefined();
 		expect(recordUploadFailure).not.toHaveBeenCalled();
+		expect(showUploadFailureToast).not.toHaveBeenCalled();
 	});
 
 	describe('when the server rate limits', () => {

@@ -29,7 +29,7 @@ export function isUploadActive(path: string, rid: string): boolean {
 export const claimUploadSlot = (uploadPath: string): IUploadSlot => {
 	if (uploadQueue[uploadPath]) {
 		Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
-		throw new Error("Couldn't create upload record");
+		throw new Error('Upload in progress');
 	}
 	const slot = { controller: new AbortController() };
 	uploadQueue[uploadPath] = slot;
@@ -66,12 +66,13 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
+const getUploadFailure = (error: unknown): Pick<IUpload, 'errorStatus' | 'errorMessage'> =>
+	error instanceof UploadHttpError ? { errorStatus: error.status, errorMessage: error.serverMessage } : {};
+
 export const recordUploadFailure = async (uploadRecord: TUploadModel, error: unknown): Promise<void> => {
-	const httpError = error instanceof UploadHttpError ? error : undefined;
-	const errorStatus = httpError?.status;
-	const errorMessage = httpError?.serverMessage;
+	const { errorStatus, errorMessage } = getUploadFailure(error);
 	try {
-		await database.active.write(async () => {
+		await uploadRecord.db.write(async () => {
 			await uploadRecord.update(u => {
 				u.error = true;
 				u.errorStatus = errorStatus;
@@ -81,8 +82,12 @@ export const recordUploadFailure = async (uploadRecord: TUploadModel, error: unk
 	} catch (e) {
 		log(e);
 	}
-	const reason = getUploadErrorMessage({ errorStatus, errorMessage });
-	if (reason && !isRetryableUploadError(errorStatus)) {
+};
+
+export const showUploadFailureToast = (error: unknown): void => {
+	const failure = getUploadFailure(error);
+	const reason = getUploadErrorMessage(failure);
+	if (reason && !isRetryableUploadError(failure.errorStatus)) {
 		showToast(reason);
 	}
 };

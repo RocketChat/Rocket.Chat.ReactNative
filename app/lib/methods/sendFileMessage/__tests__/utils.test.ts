@@ -9,6 +9,7 @@ import {
 	getUploadPath,
 	isUploadActive,
 	recordUploadFailure,
+	showUploadFailureToast,
 	releaseUploadSlot,
 	uploadQueue
 } from '../utils';
@@ -164,7 +165,7 @@ describe('claimUploadSlot', () => {
 	it('blocks with an alert while the same file is already uploading to the room', () => {
 		const running = claimUploadSlot(uploadPath);
 
-		expect(() => claimUploadSlot(uploadPath)).toThrow("Couldn't create upload record");
+		expect(() => claimUploadSlot(uploadPath)).toThrow('Upload in progress');
 		expect(Alert.alert).toHaveBeenCalledWith('FileUpload_Error', 'Upload_in_progress');
 		expect(uploadQueue[uploadPath]).toBe(running);
 	});
@@ -183,11 +184,10 @@ describe('releaseUploadSlot', () => {
 });
 
 describe('recordUploadFailure', () => {
-	const { showToast } = require('~/lib/methods/helpers/showToast');
-
 	const record = async (error: unknown) => {
 		const updated: any = { errorStatus: 500, errorMessage: 'stale' };
 		const uploadRecord = {
+			db: { write: (cb: () => Promise<unknown>) => cb() },
 			update: jest.fn((cb: (u: any) => void) => {
 				cb(updated);
 			})
@@ -196,49 +196,72 @@ describe('recordUploadFailure', () => {
 		return updated;
 	};
 
-	it('saves the HTTP status and server message of the failure and announces a file that is too large', async () => {
+	it('saves the HTTP status and server message of the failure', async () => {
 		const updated = await record(new UploadHttpError(413, { serverMessage: 'File is too large' }));
 
 		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: 'File is too large' });
+	});
+
+	it('saves only the error flag for a failure that is not an http error', async () => {
+		const updated = await record(new Error('boom'));
+
+		expect(updated).toMatchObject({ error: true, errorStatus: undefined, errorMessage: undefined });
+	});
+
+	it('writes the failure through the database the record belongs to', async () => {
+		const write = jest.fn((cb: () => Promise<unknown>) => cb());
+		const uploadRecord = { db: { write }, update: jest.fn() } as any;
+
+		await recordUploadFailure(uploadRecord, new UploadHttpError(500));
+
+		expect(write).toHaveBeenCalled();
+	});
+
+	it('settles quietly when the record can no longer be written', async () => {
+		const uploadRecord = {
+			db: { write: (cb: () => Promise<unknown>) => cb() },
+			update: jest.fn().mockRejectedValue(new Error('record gone'))
+		} as any;
+
+		await expect(recordUploadFailure(uploadRecord, new UploadHttpError(413))).resolves.toBeUndefined();
+	});
+});
+
+describe('showUploadFailureToast', () => {
+	const { showToast } = require('~/lib/methods/helpers/showToast');
+
+	it('announces a file that is too large', () => {
+		showUploadFailureToast(new UploadHttpError(413, { serverMessage: 'File is too large' }));
+
 		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
 	});
 
-	it('announces a failure the user cannot retry away', async () => {
-		await record(new UploadHttpError(415, { serverMessage: 'Not allowed' }));
+	it('announces a failure the user cannot retry away', () => {
+		showUploadFailureToast(new UploadHttpError(415, { serverMessage: 'Not allowed' }));
 
 		expect(showToast).toHaveBeenCalledWith('Not allowed');
 	});
 
-	it('announces a permanent failure even when the server sent no usable message', async () => {
-		const updated = await record(new UploadHttpError(405));
+	it('announces a permanent failure even when the server sent no usable message', () => {
+		showUploadFailureToast(new UploadHttpError(405));
 
-		expect(updated).toMatchObject({ errorStatus: 405 });
 		expect(showToast).toHaveBeenCalledWith('FileUpload_Error');
 	});
 
-	it('stays quiet about a failure that may still resolve itself', async () => {
-		const updated = await record(
+	it('stays quiet about a failure that may still resolve itself', () => {
+		showUploadFailureToast(
 			new UploadHttpError(429, {
 				serverMessage: 'You must wait 37 seconds before trying this endpoint again. [error-too-many-requests]'
 			})
 		);
 
-		expect(updated).toMatchObject({ errorStatus: 429 });
 		expect(showToast).not.toHaveBeenCalled();
 	});
 
-	it('saves only the error flag and stays quiet for a failure that is not an http error', async () => {
-		const updated = await record(new Error('boom'));
+	it('stays quiet for a failure that is not an http error', () => {
+		showUploadFailureToast(new Error('boom'));
 
-		expect(updated).toMatchObject({ error: true, errorStatus: undefined, errorMessage: undefined });
 		expect(showToast).not.toHaveBeenCalled();
-	});
-
-	it('still announces the failure when the record can no longer be written', async () => {
-		const uploadRecord = { update: jest.fn().mockRejectedValue(new Error('record gone')) } as any;
-
-		await expect(recordUploadFailure(uploadRecord, new UploadHttpError(413))).resolves.toBeUndefined();
-		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
 	});
 });
 

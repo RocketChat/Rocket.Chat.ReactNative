@@ -1,6 +1,5 @@
 import { type TSendFileMessageFileInfo, type TUploadModel } from '~/definitions';
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import database from '~/lib/database';
 import FileUpload from '../helpers/fileUpload';
 import { type IFormData, type TUploadHeaders } from '../helpers/fileUpload/definitions';
 import {
@@ -10,7 +9,8 @@ import {
 	getUploadPath,
 	type IUploadSlot,
 	recordUploadFailure,
-	releaseUploadSlot
+	releaseUploadSlot,
+	showUploadFailureToast
 } from './utils';
 import { retryWhileRateLimited } from './retryWhileRateLimited';
 
@@ -26,7 +26,7 @@ const sendPreparedUpload = async (
 	slot: IUploadSlot,
 	prepare: () => Promise<IPreparedUpload>
 ): Promise<void> => {
-	const db = database.active;
+	const { db } = uploadRecord;
 	const { signal } = slot.controller;
 	const { url, headers, formData, afterUpload } = await prepare();
 
@@ -71,6 +71,7 @@ export async function uploadFileMessage({
 		}
 		if (uploadRecord) {
 			await recordUploadFailure(uploadRecord, e);
+			showUploadFailureToast(e);
 		}
 		throw e;
 	} finally {
