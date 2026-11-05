@@ -265,36 +265,25 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		const { isAltTextSupported } = this;
 
-		try {
-			// Send attachment
-			if (attachments.length) {
-				// On server >= 8.4, description = alt text; caption moves to msg
-				const results = await sendAttachments({
-					attachments,
-					rid: room.rid,
-					tmid: this.getThreadId(thread),
-					server,
-					user: { id: user.id, token: user.token },
-					altTextSupported: isAltTextSupported,
-					getMsg: ({ description }) => (isAltTextSupported ? description || msg : msg)
-				});
-				const failed = results.find((result): result is PromiseRejectedResult => result.status === 'rejected');
-				if (failed) {
-					throw failed.reason;
-				}
+		// Send attachment
+		if (attachments.length) {
+			// On server >= 8.4, description = alt text; caption moves to msg
+			await sendAttachments({
+				attachments,
+				rid: room.rid,
+				tmid: this.getThreadId(thread),
+				server,
+				user: { id: user.id, token: user.token },
+				altTextSupported: isAltTextSupported,
+				getMsg: ({ description }) => (isAltTextSupported ? description || msg : msg)
+			});
 
-				// Send text message
-			} else if (text.length) {
-				await sendMessage(room.rid, text, this.getThreadId(thread), {
-					id: user.id,
-					token: user.token
-				} as IUser);
-			}
-		} catch {
-			if (!this.isShareExtension) {
-				const text = this.messageComposerRef.current?.getText();
-				this.finishShareView(text, this.getSelectedMessageIds());
-			}
+			// Send text message
+		} else if (text.length) {
+			await sendMessage(room.rid, text, this.getThreadId(thread), {
+				id: user.id,
+				token: user.token
+			} as IUser);
 		}
 
 		// if it's share extension this should close

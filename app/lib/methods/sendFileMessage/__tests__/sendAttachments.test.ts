@@ -1,8 +1,10 @@
 import { sendAttachments } from '../sendAttachments';
 import { sendFileMessage } from '../index';
 import { type IShareAttachment } from '~/definitions';
+import log from '../../helpers/log';
 
 jest.mock('../index', () => ({ sendFileMessage: jest.fn(() => Promise.resolve()) }));
+jest.mock('../../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 beforeEach(() => jest.clearAllMocks());
 
@@ -44,21 +46,32 @@ describe('sendAttachments', () => {
 		expect(sendFileMessage).toHaveBeenCalledTimes(1);
 	});
 
-	it('reports a synchronous throw from sendFileMessage as that attachment rejected', async () => {
-		const error = new Error('sync failure');
+	it('returns an attachment whose sendFileMessage threw synchronously as unsent', async () => {
+		const failing = attachment();
 		(sendFileMessage as jest.Mock).mockImplementationOnce(() => {
-			throw error;
+			throw new Error('sync failure');
 		});
 
-		const results = await sendAttachments({
+		const unsent = await sendAttachments({
 			...base,
-			attachments: [attachment(), attachment({ filename: 'b.jpg', path: '/tmp/b.jpg' })]
+			attachments: [failing, attachment({ filename: 'b.jpg', path: '/tmp/b.jpg' })]
 		});
 
-		expect(results).toEqual([
-			{ status: 'rejected', reason: error },
-			{ status: 'fulfilled', value: undefined }
-		]);
+		expect(unsent).toEqual([failing]);
+	});
+
+	it('returns the attachments it could not upload as unsent, even when every other upload succeeded', async () => {
+		const skipped = attachment({ canUpload: false, path: '/tmp/skipped.jpg' });
+
+		const unsent = await sendAttachments({ ...base, attachments: [attachment(), skipped] });
+
+		expect(unsent).toEqual([skipped]);
+	});
+
+	it('returns nothing when every attachment was sent', async () => {
+		await expect(sendAttachments({ ...base, attachments: [attachment(), attachment({ path: '/tmp/b.jpg' })] })).resolves.toEqual(
+			[]
+		);
 	});
 
 	it.each([['5'], ['6'], ['7'], ['8']])('swaps width/height for rotated EXIF orientation %s', async orientation => {
@@ -128,16 +141,15 @@ describe('sendAttachments', () => {
 		);
 	});
 
-	it('reports each upload outcome in attachment order instead of rejecting on the first failure', async () => {
+	it('returns only the attachments that failed, and logs each failure, instead of rejecting on the first one', async () => {
 		const failure = new Error('upload failed');
-		(sendFileMessage as jest.Mock).mockRejectedValueOnce(failure).mockResolvedValueOnce(undefined);
+		const failing = attachment({ path: '/tmp/b.jpg' });
+		(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockRejectedValueOnce(failure);
 
-		const results = await sendAttachments({ ...base, attachments: [attachment(), attachment({ path: '/tmp/b.jpg' })] });
+		const unsent = await sendAttachments({ ...base, attachments: [attachment(), failing] });
 
-		expect(results).toEqual([
-			{ status: 'rejected', reason: failure },
-			{ status: 'fulfilled', value: undefined }
-		]);
+		expect(unsent).toEqual([failing]);
+		expect(log).toHaveBeenCalledWith(failure);
 	});
 
 	it('does not settle while another upload is still running', async () => {
@@ -154,6 +166,6 @@ describe('sendAttachments', () => {
 		finishSecond();
 
 		expect(outcome).toBe('still pending');
-		await expect(pending).resolves.toHaveLength(2);
+		await expect(pending).resolves.toHaveLength(1);
 	});
 });

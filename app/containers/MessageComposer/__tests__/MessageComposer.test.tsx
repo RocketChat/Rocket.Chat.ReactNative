@@ -952,14 +952,15 @@ describe('MessageComposer', () => {
 			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();
 		});
 
-		test('restores the caption and the quote when the first attachment was skipped and a later one failed', async () => {
+		test('puts a skipped first attachment back with the caption and the quote even when the other upload was sent', async () => {
 			const skipped = { ...attachment, path: 'file:///tmp/skipped.png', canUpload: false } as IShareAttachment;
-			(sendFileMessage as jest.Mock).mockRejectedValueOnce(new Error('upload failed'));
-			const { composerRef } = await sendWithCaptionAndQuote([skipped, failed]);
+			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined);
+			const { composerRef } = await sendWithCaptionAndQuote([skipped, sent]);
 
 			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
 			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
 			expect(screen.getByLabelText('IMG_2444.png')).toBeOnTheScreen();
+			expect(screen.queryByLabelText('sent.png')).not.toBeOnTheScreen();
 		});
 
 		test('clears the tray as soon as Send is pressed so an upload in flight cannot be sent again', async () => {

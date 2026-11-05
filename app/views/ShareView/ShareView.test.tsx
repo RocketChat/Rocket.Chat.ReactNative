@@ -328,7 +328,7 @@ describe('ShareView', () => {
 		uploadSpy.mockRestore();
 	});
 
-	it('send() attempts to return current text when an upload fails after closing', async () => {
+	it('send() leaves the room composer alone when an upload fails after closing', async () => {
 		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
 		shareView.state.attachments[0].canUpload = true;
 		const finishShareView = jest.fn();
@@ -348,8 +348,8 @@ describe('ShareView', () => {
 		rejectUpload(new Error('upload failed'));
 		await sendPromise;
 
-		expect(finishShareView).toHaveBeenNthCalledWith(1, '', []);
-		expect(finishShareView).toHaveBeenNthCalledWith(2, undefined, ['quote-after-send']);
+		expect(finishShareView).toHaveBeenCalledTimes(1);
+		expect(finishShareView).toHaveBeenCalledWith('', []);
 		uploadSpy.mockRestore();
 	});
 
@@ -585,8 +585,7 @@ describe('ShareView', () => {
 
 		expect(originComposerRef.current?.getText()).toBe('');
 		expect(shareView.getSelectedMessageIds()).toEqual(['share-quote']);
-		const expectedOriginAction = outcome === 'failure' ? { kind: 'quote', messageIds: ['share-quote'] } : null;
-		expect(originStore.getState().action).toEqual(expectedOriginAction);
+		expect(originStore.getState().action).toBeNull();
 		uploadSpy.mockRestore();
 	});
 

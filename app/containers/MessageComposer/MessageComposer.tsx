@@ -17,7 +17,7 @@ import {
 } from './context';
 import { type IComposerInput, type IMessageComposerRef } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
-import { type IEmoji } from '~/definitions';
+import { type IEmoji, type IShareAttachment } from '~/definitions';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
 import { withTriggerId } from '~/lib/apps/actions';
@@ -95,15 +95,8 @@ export const MessageComposer = ({
 		contentHeight.set(height);
 	};
 
-	const restoreFailedAttachments = (results: PromiseSettledResult<void>[]) =>
-		addAttachments(attachments.filter((attachment, index) => !attachment.canUpload || results[index].status === 'rejected'));
-
-	const restoreCaptionAfterFailure = (
-		results: PromiseSettledResult<void>[],
-		textFromInput: string,
-		quotedMessageIds: string[]
-	) => {
-		const captionSent = attachments[0].canUpload && results[0].status === 'fulfilled';
+	const restoreCaptionAfterFailure = (unsent: IShareAttachment[], textFromInput: string, quotedMessageIds: string[]) => {
+		const captionSent = !unsent.includes(attachments[0]);
 		const { action, actions } = messageActionStore.getState();
 		const composerIdle = !composerInputComponentRef.current?.getText() && (!action || action.kind === 'react');
 		if (captionSent || !composerIdle) return;
@@ -153,7 +146,7 @@ export const MessageComposer = ({
 				quotedMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
 			}
 
-			const results = await sendAttachments({
+			const unsent = await sendAttachments({
 				attachments,
 				rid,
 				tmid,
@@ -162,11 +155,9 @@ export const MessageComposer = ({
 				altTextSupported,
 				getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
 			});
-			const rejected = results.filter((result): result is PromiseRejectedResult => result.status === 'rejected');
-			if (rejected.length) {
-				rejected.forEach(({ reason }) => log(reason));
-				restoreFailedAttachments(results);
-				restoreCaptionAfterFailure(results, textFromInput, quotedMessageIds);
+			if (unsent.length) {
+				addAttachments(unsent);
+				restoreCaptionAfterFailure(unsent, textFromInput, quotedMessageIds);
 			}
 			return;
 		}
