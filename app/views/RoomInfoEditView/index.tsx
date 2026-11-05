@@ -136,6 +136,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 
 	const submit = async () => {
 		const { name, description, topic, announcement, joinCode } = getValues();
+		const saveFailedMessage = I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') });
 		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
 
@@ -209,9 +210,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 				setFocus('name');
 			}
 
-			AccessibilityInfo.announceForAccessibility(
-				nameError || reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') })
-			);
+			AccessibilityInfo.announceForAccessibility(nameError || reason || saveFailedMessage);
 
 			error = true;
 			log(e);
@@ -221,7 +220,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setTimeout(() => {
 			if (error) {
 				logEvent(events.RI_EDIT_SAVE_F);
-				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') }));
+				showErrorAlert(saveFailedMessage);
 			} else {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Settings_succesfully_changed') });
 			}
