@@ -1,5 +1,4 @@
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { parseRetryAfter } from '../retryAfter';
 import { parseUploadResponse } from '../parseUploadResponse';
 import { type IFormData } from './definitions';
 
@@ -63,8 +62,7 @@ export class Upload {
 		return new Promise((resolve, reject) => {
 			this.xhr.onload = () => {
 				try {
-					const retryAfterSeconds = parseRetryAfter(this.xhr.getResponseHeader('Retry-After'));
-					resolve(parseUploadResponse(this.xhr.status, this.xhr.responseText, retryAfterSeconds));
+					resolve(parseUploadResponse(this.xhr.status, this.xhr.responseText, this.xhr.getResponseHeader('Retry-After')));
 				} catch (error) {
 					reject(error);
 				}

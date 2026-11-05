@@ -16,12 +16,12 @@ export const parseRetryAfter = (value?: string | null): number | undefined => {
 	return delta > 0 ? delta : undefined;
 };
 
-export const getRetryAfterFromHeaders = (headers?: Record<string, string>): number | undefined => {
+export const getRetryAfterHeader = (headers?: Record<string, string>): string | undefined => {
 	if (!headers) {
 		return undefined;
 	}
 	const key = Object.keys(headers).find(name => name.toLowerCase() === 'retry-after');
-	return key ? parseRetryAfter(headers[key]) : undefined;
+	return key ? headers[key] : undefined;
 };
 
 export const parseRetryAfterFromMessage = (message?: string): number | undefined => {

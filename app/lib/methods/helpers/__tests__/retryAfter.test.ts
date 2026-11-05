@@ -1,4 +1,4 @@
-import { getRetryAfterFromHeaders, parseRetryAfter, parseRetryAfterFromMessage } from '../retryAfter';
+import { getRetryAfterHeader, parseRetryAfter, parseRetryAfterFromMessage } from '../retryAfter';
 
 describe('parseRetryAfter', () => {
 	it.each([
@@ -30,14 +30,14 @@ describe('parseRetryAfter', () => {
 	});
 });
 
-describe('getRetryAfterFromHeaders', () => {
+describe('getRetryAfterHeader', () => {
 	it.each([['Retry-After'], ['retry-after'], ['RETRY-AFTER']])('finds the header spelled %s', name => {
-		expect(getRetryAfterFromHeaders({ [name]: '12' })).toBe(12);
+		expect(getRetryAfterHeader({ [name]: '12' })).toBe('12');
 	});
 
 	it('returns nothing without headers', () => {
-		expect(getRetryAfterFromHeaders(undefined)).toBeUndefined();
-		expect(getRetryAfterFromHeaders({ 'content-type': 'application/json' })).toBeUndefined();
+		expect(getRetryAfterHeader(undefined)).toBeUndefined();
+		expect(getRetryAfterHeader({ 'content-type': 'application/json' })).toBeUndefined();
 	});
 });
 

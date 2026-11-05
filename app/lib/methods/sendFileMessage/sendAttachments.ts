@@ -20,10 +20,10 @@ export const sendAttachments = async ({
 	server: string;
 	user: Partial<Pick<IUser, 'id' | 'token'>>;
 	altTextSupported: boolean;
-	getMsg: (attachment: IShareAttachment, index: number) => string | undefined;
+	getMsg: (attachment: IShareAttachment) => string | undefined;
 }): Promise<IShareAttachment[]> => {
 	const results = await Promise.allSettled(
-		attachments.map(async (attachment, index) => {
+		attachments.map(async attachment => {
 			const { filename: name, mime: type, description, altText, size, path, canUpload, exif } = attachment;
 			let { height, width } = attachment;
 
@@ -35,7 +35,7 @@ export const sendAttachments = async ({
 				[width, height] = [height, width];
 			}
 
-			const msg = getMsg(attachment, index);
+			const msg = getMsg(attachment);
 
 			await sendFileMessage(
 				rid,

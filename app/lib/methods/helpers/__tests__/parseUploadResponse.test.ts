@@ -1,14 +1,4 @@
-import { HttpError } from '../HttpError';
-import { parseUploadResponse, throwIfHttpError } from '../parseUploadResponse';
-
-const getError = (status: number, body: string, retryAfterSeconds?: number) => {
-	try {
-		parseUploadResponse(status, body, retryAfterSeconds);
-	} catch (error) {
-		return error;
-	}
-	return undefined;
-};
+import { parseUploadResponse } from '../parseUploadResponse';
 
 describe('parseUploadResponse', () => {
 	it('returns the parsed body of a 2xx response', () => {
@@ -19,62 +9,7 @@ describe('parseUploadResponse', () => {
 		expect(() => parseUploadResponse(200, 'not json')).toThrow('Upload failed: invalid server response');
 	});
 
-	it('throws an HttpError carrying the status and the server message', () => {
-		const error = getError(413, '{"error":"File is too large"}');
-
-		expect(error).toBeInstanceOf(HttpError);
-		expect(error).toMatchObject({ status: 413, serverMessage: 'File is too large' });
-	});
-
-	it('carries the retry wait on the HttpError', () => {
-		expect(getError(429, '{}', 12)).toMatchObject({ status: 429, retryAfterSeconds: 12 });
-	});
-
-	it('takes the retry wait from the server message when no Retry-After header came', () => {
-		const body = '{"error":"You must wait 60 seconds before trying this endpoint again. [error-too-many-requests]"}';
-
-		expect(getError(429, body)).toMatchObject({ status: 429, retryAfterSeconds: 60 });
-	});
-
-	it('prefers the Retry-After header over the wait in the server message', () => {
-		const body = '{"error":"You must wait 12 seconds before trying this endpoint again."}';
-
-		expect(getError(429, body, 5)).toMatchObject({ retryAfterSeconds: 5 });
-	});
-
-	it('treats a 3xx as an HTTP error instead of a success', () => {
-		expect(getError(302, '<html>Found</html>')).toMatchObject({ name: 'HttpError', status: 302 });
-	});
-});
-
-describe('server message of a failed response', () => {
-	const parseServerMessage = (body: string) => {
-		try {
-			throwIfHttpError(500, body);
-		} catch (error) {
-			return (error as HttpError).serverMessage;
-		}
-		return undefined;
-	};
-
-	it('returns nothing for an empty body', () => {
-		expect(parseServerMessage('')).toBeUndefined();
-	});
-
-	it('reads the error field', () => {
-		expect(parseServerMessage('{"error":"File is too large"}')).toBe('File is too large');
-	});
-
-	it('falls back to the message field', () => {
-		expect(parseServerMessage('{"message":"boom"}')).toBe('boom');
-	});
-
-	it('returns nothing for a non-JSON body', () => {
-		expect(parseServerMessage('<html>413</html>')).toBeUndefined();
-	});
-
-	it('returns nothing for a JSON body with no usable message', () => {
-		expect(parseServerMessage('{"success":false}')).toBeUndefined();
-		expect(parseServerMessage('{"error":""}')).toBeUndefined();
+	it('passes the Retry-After header of a failed response on to the error', () => {
+		expect(() => parseUploadResponse(429, '{}', '12')).toThrow(expect.objectContaining({ retryAfterSeconds: 12 }));
 	});
 });

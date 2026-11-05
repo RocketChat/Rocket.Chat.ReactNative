@@ -13,7 +13,7 @@ const base = {
 	tmid: undefined,
 	server: 'https://open.rocket.chat',
 	user: { id: 'u1', token: 't1' },
-	getMsg: jest.fn((_a: IShareAttachment, i: number) => `msg-${i}`)
+	getMsg: jest.fn((a: IShareAttachment) => `msg-${a.filename}`)
 } as any;
 
 const attachment = (extra?: Partial<IShareAttachment>): IShareAttachment =>
@@ -33,7 +33,7 @@ const attachment = (extra?: Partial<IShareAttachment>): IShareAttachment =>
 describe('sendAttachments', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		base.getMsg.mockImplementation((_: unknown, i: number) => `msg-${i}`);
+		base.getMsg.mockImplementation((a: IShareAttachment) => `msg-${a.filename}`);
 	});
 
 	it('maps each IShareAttachment to a sendFileMessage call', async () => {
@@ -119,7 +119,7 @@ describe('sendAttachments', () => {
 	it('derives msg from the injected getMsg callback', async () => {
 		base.getMsg.mockReturnValueOnce('hello');
 		await sendAttachments({ ...base, altTextSupported: false, attachments: [attachment()] });
-		expect(base.getMsg).toHaveBeenCalledWith(expect.objectContaining({ filename: 'a.jpg' }), 0);
+		expect(base.getMsg).toHaveBeenCalledWith(expect.objectContaining({ filename: 'a.jpg' }));
 		expect(sendFileMessage).toHaveBeenCalledWith(
 			'rid1',
 			expect.objectContaining({ msg: 'hello' }),

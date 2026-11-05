@@ -1,7 +1,7 @@
 import * as FileSystem from 'expo-file-system/legacy';
 
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
-import { getRetryAfterFromHeaders } from '../retryAfter';
+import { getRetryAfterHeader } from '../retryAfter';
 import { parseUploadResponse } from '../parseUploadResponse';
 import { type IFormData } from './definitions';
 
@@ -74,7 +74,7 @@ export class Upload {
 		if (!response) {
 			throw new Error('Upload failed: no response');
 		}
-		return parseUploadResponse(response.status, response.body, getRetryAfterFromHeaders(response.headers));
+		return parseUploadResponse(response.status, response.body, getRetryAfterHeader(response.headers));
 	}
 
 	public cancel(): void {
