@@ -7,7 +7,7 @@ const SERVER_ERROR_CODE = /\s*\[([\w-]+)\]$/;
 const RETRYABLE_CLIENT_ERRORS = [401, 403, 408, 429];
 
 export const isRetryableUploadError = (status: IUpload['errorStatus']): boolean =>
-	status === undefined || status === null || status < 400 || status >= 500 || RETRYABLE_CLIENT_ERRORS.includes(status);
+	status === undefined || status === null || status < 300 || status >= 500 || RETRYABLE_CLIENT_ERRORS.includes(status);
 
 export const getUploadErrorMessage = ({
 	errorStatus,

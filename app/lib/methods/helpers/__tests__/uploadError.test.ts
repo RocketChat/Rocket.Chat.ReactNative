@@ -110,7 +110,7 @@ describe('isRetryableUploadError', () => {
 		expect(isRetryableUploadError(status)).toBe(true);
 	});
 
-	it.each([[400], [404], [405], [410], [413], [415], [422]])('refuses a retry for %p', status => {
+	it.each([[300], [304], [400], [404], [405], [410], [413], [415], [422]])('refuses a retry for %p', status => {
 		expect(isRetryableUploadError(status)).toBe(false);
 	});
 });
