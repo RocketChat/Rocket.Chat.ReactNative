@@ -60,18 +60,9 @@ export const toggleRoomE2EE = async (rid: string): Promise<void> => {
 				style: isEncrypted ? 'destructive' : 'default',
 				onPress: async () => {
 					try {
-						try {
-							// Send new room setting value to server
-							await saveRoomSettings(rid, { encrypted: newValue });
-							return;
-						} catch {
-							// do nothing
-						}
-
-						// If something goes wrong we go back to the previous value
-						await optimisticUpdate(rid, !newValue);
-					} catch (e) {
-						log(e);
+						await saveRoomSettings(rid, { encrypted: newValue });
+					} catch {
+						await optimisticUpdate(rid, !newValue).catch(log);
 					}
 				}
 			}
