@@ -66,7 +66,9 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 }
 
 const getUploadFailure = (error: unknown): Pick<IUpload, 'errorStatus' | 'errorMessage'> =>
-	error instanceof UploadHttpError ? { errorStatus: error.status, errorMessage: error.serverMessage } : {};
+	error instanceof UploadHttpError
+		? { errorStatus: error.status, errorMessage: error.serverMessage ?? null }
+		: { errorStatus: null, errorMessage: null };
 
 export const recordUploadFailure = async (uploadRecord: TUploadModel, error: unknown): Promise<void> => {
 	const { errorStatus, errorMessage } = getUploadFailure(error);
@@ -123,8 +125,8 @@ export const createUploadRecord = async ({
 		await db.write(async () => {
 			await existing.update(u => {
 				u.error = false;
-				u.errorStatus = undefined;
-				u.errorMessage = undefined;
+				u.errorStatus = null;
+				u.errorMessage = null;
 				u.progress = 0;
 				u.tmid = tmid;
 				u.description = fileInfo.description;

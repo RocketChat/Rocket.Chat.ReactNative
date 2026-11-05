@@ -130,8 +130,8 @@ describe('createUploadRecord', () => {
 		expect(record).toBe(stale);
 		expect(stale).toMatchObject({
 			error: false,
-			errorStatus: undefined,
-			errorMessage: undefined,
+			errorStatus: null,
+			errorMessage: null,
 			progress: 0,
 			tmid: undefined,
 			description: undefined
@@ -205,7 +205,7 @@ describe('recordUploadFailure', () => {
 	it('saves only the error flag for a failure that is not an http error', async () => {
 		const updated = await record(new Error('boom'));
 
-		expect(updated).toMatchObject({ error: true, errorStatus: undefined, errorMessage: undefined });
+		expect(updated).toMatchObject({ error: true, errorStatus: null, errorMessage: null });
 	});
 
 	it('writes the failure through the database the record belongs to', async () => {
