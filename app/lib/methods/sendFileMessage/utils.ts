@@ -1,16 +1,12 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Alert } from 'react-native';
 import * as FileSystem from 'expo-file-system/legacy';
 
 import { getUploadByPath } from '~/lib/database/services/Upload';
 import { type IUpload, type TUploadModel } from '~/definitions';
-import i18n from '~/i18n';
 import database from '~/lib/database';
 import log from '../helpers/log';
-import { showToast } from '../helpers/showToast';
-import { getUploadErrorMessage, isRetryableUploadError } from '../helpers/uploadError';
+import { type TUploadFailure } from '../helpers/uploadError';
 import { type IFileUpload } from '../helpers/fileUpload/definitions';
-import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
 
 export interface IUploadSlot {
 	controller: AbortController;
@@ -25,10 +21,9 @@ export function isUploadActive(path: string, rid: string): boolean {
 	return !!uploadQueue[getUploadPath(path, rid)];
 }
 
-export const claimUploadSlot = (uploadPath: string): IUploadSlot => {
+export const claimUploadSlot = (uploadPath: string): IUploadSlot | undefined => {
 	if (uploadQueue[uploadPath]) {
-		Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
-		throw new Error('Upload in progress');
+		return undefined;
 	}
 	const slot = { controller: new AbortController() };
 	uploadQueue[uploadPath] = slot;
@@ -65,13 +60,10 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
-const getUploadFailure = (error: unknown): Pick<IUpload, 'errorStatus' | 'errorMessage'> =>
-	error instanceof UploadHttpError
-		? { errorStatus: error.status, errorMessage: error.serverMessage ?? null }
-		: { errorStatus: null, errorMessage: null };
-
-export const recordUploadFailure = async (uploadRecord: TUploadModel, error: unknown): Promise<void> => {
-	const { errorStatus, errorMessage } = getUploadFailure(error);
+export const recordUploadFailure = async (
+	uploadRecord: TUploadModel,
+	{ errorStatus, errorMessage }: TUploadFailure
+): Promise<void> => {
 	try {
 		await uploadRecord.db.write(async () => {
 			await uploadRecord.update(u => {
@@ -82,14 +74,6 @@ export const recordUploadFailure = async (uploadRecord: TUploadModel, error: unk
 		});
 	} catch (e) {
 		log(e);
-	}
-};
-
-export const showUploadFailureToast = (error: unknown): void => {
-	const failure = getUploadFailure(error);
-	const reason = getUploadErrorMessage(failure);
-	if (reason && !isRetryableUploadError(failure.errorStatus)) {
-		showToast(reason);
 	}
 };
 

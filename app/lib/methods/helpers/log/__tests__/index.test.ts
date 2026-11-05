@@ -1,7 +1,7 @@
 import bugsnag from '@bugsnag/react-native';
 
 import log from '..';
-import { UploadHttpError } from '../../fileUpload/UploadHttpError';
+import { HttpError } from '../../HttpError';
 
 jest.mock('@react-native-firebase/crashlytics', () => ({
 	getCrashlytics: () => ({ recordError: jest.fn() })
@@ -27,8 +27,8 @@ describe('log', () => {
 	});
 
 	it('groups upload failures by status', () => {
-		expect(reportedGroupingHash(new UploadHttpError(413))).toBe(reportedGroupingHash(new UploadHttpError(413)));
-		expect(reportedGroupingHash(new UploadHttpError(413))).not.toBe(reportedGroupingHash(new UploadHttpError(500)));
+		expect(reportedGroupingHash(new HttpError(413))).toBe(reportedGroupingHash(new HttpError(413)));
+		expect(reportedGroupingHash(new HttpError(413))).not.toBe(reportedGroupingHash(new HttpError(500)));
 	});
 
 	it('leaves other errors to the default grouping', () => {

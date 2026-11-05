@@ -1,4 +1,4 @@
-import { UploadHttpError } from '../fileUpload/UploadHttpError';
+import { HttpError } from '../HttpError';
 import { parseUploadResponse, throwIfHttpError } from '../parseUploadResponse';
 
 const getError = (status: number, body: string, retryAfterSeconds?: number) => {
@@ -19,19 +19,31 @@ describe('parseUploadResponse', () => {
 		expect(() => parseUploadResponse(200, 'not json')).toThrow('Upload failed: invalid server response');
 	});
 
-	it('throws an UploadHttpError carrying the status and the server message', () => {
+	it('throws an HttpError carrying the status and the server message', () => {
 		const error = getError(413, '{"error":"File is too large"}');
 
-		expect(error).toBeInstanceOf(UploadHttpError);
+		expect(error).toBeInstanceOf(HttpError);
 		expect(error).toMatchObject({ status: 413, serverMessage: 'File is too large' });
 	});
 
-	it('carries the retry wait on the UploadHttpError', () => {
+	it('carries the retry wait on the HttpError', () => {
 		expect(getError(429, '{}', 12)).toMatchObject({ status: 429, retryAfterSeconds: 12 });
 	});
 
+	it('takes the retry wait from the server message when no Retry-After header came', () => {
+		const body = '{"error":"You must wait 60 seconds before trying this endpoint again. [error-too-many-requests]"}';
+
+		expect(getError(429, body)).toMatchObject({ status: 429, retryAfterSeconds: 60 });
+	});
+
+	it('prefers the Retry-After header over the wait in the server message', () => {
+		const body = '{"error":"You must wait 12 seconds before trying this endpoint again."}';
+
+		expect(getError(429, body, 5)).toMatchObject({ retryAfterSeconds: 5 });
+	});
+
 	it('treats a 3xx as an HTTP error instead of a success', () => {
-		expect(getError(302, '<html>Found</html>')).toMatchObject({ name: 'UploadHttpError', status: 302 });
+		expect(getError(302, '<html>Found</html>')).toMatchObject({ name: 'HttpError', status: 302 });
 	});
 });
 
@@ -40,7 +52,7 @@ describe('server message of a failed response', () => {
 		try {
 			throwIfHttpError(500, body);
 		} catch (error) {
-			return (error as UploadHttpError).serverMessage;
+			return (error as HttpError).serverMessage;
 		}
 		return undefined;
 	};

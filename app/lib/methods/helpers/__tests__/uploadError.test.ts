@@ -1,4 +1,5 @@
-import { getUploadErrorMessage, isRetryableUploadError } from '../uploadError';
+import { HttpError } from '../HttpError';
+import { getUploadErrorMessage, getUploadFailure, isRetryableUploadError } from '../uploadError';
 
 const TRANSLATED = ['error-file-too-large', 'error-too-many-requests', 'error-invalid-file-type', 'error-message-size-exceeded'];
 
@@ -112,5 +113,18 @@ describe('isRetryableUploadError', () => {
 
 	it.each([[300], [304], [400], [403], [404], [405], [410], [413], [415], [422]])('refuses a retry for %p', status => {
 		expect(isRetryableUploadError(status)).toBe(false);
+	});
+});
+
+describe('getUploadFailure', () => {
+	it('takes the HTTP status and server message of an http error', () => {
+		expect(getUploadFailure(new HttpError(413, { serverMessage: 'File is too large' }))).toEqual({
+			errorStatus: 413,
+			errorMessage: 'File is too large'
+		});
+	});
+
+	it('gives no status and no message for a failure that is not an http error', () => {
+		expect(getUploadFailure(new Error('boom'))).toEqual({ errorStatus: null, errorMessage: null });
 	});
 });

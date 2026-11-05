@@ -1,5 +1,5 @@
 import { retryWhileRateLimited } from '../retryWhileRateLimited';
-import { UploadHttpError } from '../../helpers/fileUpload/UploadHttpError';
+import { HttpError } from '../../helpers/HttpError';
 
 const RESPONSE = { file: { _id: 'abc', url: '/file/abc' } };
 
@@ -11,7 +11,7 @@ const run = (startStep: jest.Mock) => retryWhileRateLimited(controller.signal, s
 
 const settle = (startStep: jest.Mock) => run(startStep).catch((e: unknown) => e);
 
-const rateLimited = (options?: { serverMessage?: string; retryAfterSeconds?: number }) => new UploadHttpError(429, options);
+const rateLimited = (options?: { serverMessage?: string; retryAfterSeconds?: number }) => new HttpError(429, options);
 
 beforeEach(() => {
 	jest.useFakeTimers();
@@ -76,8 +76,10 @@ describe('retryWhileRateLimited', () => {
 	});
 
 	it('does not retry before the rate limit window the server asked for has passed', async () => {
-		const serverMessage = 'You must wait 60 seconds before trying this endpoint again. [error-too-many-requests]';
-		const step = jest.fn().mockRejectedValueOnce(rateLimited({ serverMessage })).mockResolvedValueOnce(RESPONSE);
+		const step = jest
+			.fn()
+			.mockRejectedValueOnce(rateLimited({ retryAfterSeconds: 60 }))
+			.mockResolvedValueOnce(RESPONSE);
 
 		const pending = run(step);
 		await jest.advanceTimersByTimeAsync(59999);
@@ -87,23 +89,8 @@ describe('retryWhileRateLimited', () => {
 		await expect(pending).resolves.toBe(RESPONSE);
 	});
 
-	it('prefers the Retry-After header over the wait in the server message', async () => {
-		const serverMessage = 'You must wait 12 seconds before trying this endpoint again.';
-		const step = jest
-			.fn()
-			.mockRejectedValueOnce(rateLimited({ serverMessage, retryAfterSeconds: 5 }))
-			.mockResolvedValueOnce(RESPONSE);
-
-		const pending = run(step);
-		await jest.advanceTimersByTimeAsync(5000);
-
-		await expect(pending).resolves.toBe(RESPONSE);
-		expect(step).toHaveBeenCalledTimes(2);
-	});
-
 	it('stops and surfaces the failure when the rate limit wait is longer than two minutes', async () => {
-		const serverMessage = 'You must wait 3600 seconds before trying this endpoint again. [error-too-many-requests]';
-		const step = jest.fn().mockRejectedValue(rateLimited({ serverMessage }));
+		const step = jest.fn().mockRejectedValue(rateLimited({ retryAfterSeconds: 3600 }));
 
 		await expect(run(step)).rejects.toMatchObject({ status: 429 });
 		expect(step).toHaveBeenCalledTimes(1);
@@ -124,7 +111,7 @@ describe('retryWhileRateLimited', () => {
 	});
 
 	it.each([[400], [413], [500], [503]])('does not retry a %p', async status => {
-		const step = jest.fn().mockRejectedValue(new UploadHttpError(status));
+		const step = jest.fn().mockRejectedValue(new HttpError(status));
 
 		await expect(run(step)).rejects.toMatchObject({ status });
 		expect(step).toHaveBeenCalledTimes(1);

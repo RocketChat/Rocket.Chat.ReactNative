@@ -1,5 +1,5 @@
 import { Upload } from '../Upload';
-import { UploadHttpError } from '../UploadHttpError';
+import { HttpError } from '../../HttpError';
 
 class MockXHR {
 	static instance: MockXHR;
@@ -57,7 +57,7 @@ describe('Upload', () => {
 
 	it('rejects a 413 with the status and the server message', async () => {
 		await expect(send({ status: 413, responseText: '{"error":"File is too large"}' })).rejects.toMatchObject({
-			name: 'UploadHttpError',
+			name: 'HttpError',
 			status: 413,
 			serverMessage: 'File is too large'
 		});
@@ -73,7 +73,7 @@ describe('Upload', () => {
 	it('never rejects with "Error: undefined" when statusText is missing', async () => {
 		const error = await send({ status: 413 }).catch(e => e);
 
-		expect(error).toBeInstanceOf(UploadHttpError);
+		expect(error).toBeInstanceOf(HttpError);
 		expect(error.message).toBe('Error: 413');
 	});
 

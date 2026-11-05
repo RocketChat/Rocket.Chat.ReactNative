@@ -96,7 +96,7 @@ describe('sendFileMessageV2', () => {
 		const { afterUpload } = await prepare();
 
 		await expect(afterUpload(RESPONSE)).rejects.toMatchObject({
-			name: 'UploadHttpError',
+			name: 'HttpError',
 			status: 429,
 			serverMessage: expect.stringContaining('wait 12 seconds')
 		});

@@ -1,3 +1,5 @@
+import { Alert } from 'react-native';
+
 import { uploadFileMessage } from '../uploadFileMessage';
 import {
 	cancelUpload,
@@ -6,21 +8,20 @@ import {
 	createUploadRecord,
 	isUploadActive,
 	recordUploadFailure,
-	releaseUploadSlot,
-	showUploadFailureToast
+	releaseUploadSlot
 } from '../utils';
+import { showToast } from '../../helpers/showToast';
 import FileUpload from '../../helpers/fileUpload';
-import { UploadHttpError } from '../../helpers/fileUpload/UploadHttpError';
+import { HttpError } from '../../helpers/HttpError';
 
 jest.mock('../utils', () => ({
 	...jest.requireActual('../utils'),
 	createUploadProgressCallback: jest.fn(),
 	createUploadRecord: jest.fn(),
-	recordUploadFailure: jest.fn(),
-	showUploadFailureToast: jest.fn()
+	recordUploadFailure: jest.fn()
 }));
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
-jest.mock('~/i18n', () => ({ t: (k: string) => k }));
+jest.mock('~/i18n', () => ({ t: (k: string) => k, isTranslated: () => false }));
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
 jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
@@ -60,11 +61,12 @@ beforeEach(async () => {
 
 describe('uploadFileMessage', () => {
 	it('rejects a send skipped because the same file is already uploading, without touching the running upload', async () => {
-		const running = claimUploadSlot(UPLOAD_PATH);
+		const running = claimUploadSlot(UPLOAD_PATH)!;
 		const prepare = jest.fn();
 
 		await expect(run({}, prepare)).rejects.toThrow('Upload in progress');
 
+		expect(Alert.alert).toHaveBeenCalledWith('FileUpload_Error', 'Upload_in_progress');
 		expect(createUploadRecord).not.toHaveBeenCalled();
 		expect(prepare).not.toHaveBeenCalled();
 		expect(isActive()).toBe(true);
@@ -140,13 +142,14 @@ describe('uploadFileMessage', () => {
 
 	it('records, announces and rethrows a failed upload, then frees the slot', async () => {
 		const record = arrange();
-		const error = new UploadHttpError(413);
+		const error = new HttpError(413, { serverMessage: 'Payload too large' });
 		uploadSending(jest.fn().mockRejectedValue(error));
 
 		await expect(run()).rejects.toBe(error);
 
-		expect(recordUploadFailure).toHaveBeenCalledWith(record, error);
-		expect(showUploadFailureToast).toHaveBeenCalledWith(error);
+		const failure = { errorStatus: 413, errorMessage: 'Payload too large' };
+		expect(recordUploadFailure).toHaveBeenCalledWith(record, failure);
+		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
 		expect(record.destroyPermanently).not.toHaveBeenCalled();
 		expect(isActive()).toBe(false);
 	});
@@ -157,7 +160,7 @@ describe('uploadFileMessage', () => {
 
 		await expect(run({ afterUpload: jest.fn().mockRejectedValue(error) })).rejects.toBe(error);
 
-		expect(recordUploadFailure).toHaveBeenCalledWith(record, error);
+		expect(recordUploadFailure).toHaveBeenCalledWith(record, expect.anything());
 		expect(record.destroyPermanently).not.toHaveBeenCalled();
 	});
 
@@ -167,7 +170,7 @@ describe('uploadFileMessage', () => {
 
 		await expect(run({}, () => Promise.reject(error))).rejects.toBe(error);
 
-		expect(recordUploadFailure).toHaveBeenCalledWith(record, error);
+		expect(recordUploadFailure).toHaveBeenCalledWith(record, expect.anything());
 		expect(FileUpload).not.toHaveBeenCalled();
 	});
 
@@ -222,7 +225,7 @@ describe('uploadFileMessage', () => {
 
 		await expect(pending).resolves.toBeUndefined();
 		expect(recordUploadFailure).not.toHaveBeenCalled();
-		expect(showUploadFailureToast).not.toHaveBeenCalled();
+		expect(showToast).not.toHaveBeenCalled();
 	});
 
 	describe('when the server rate limits', () => {
@@ -233,7 +236,7 @@ describe('uploadFileMessage', () => {
 			arrange();
 			const updateProgress = jest.fn();
 			(createUploadProgressCallback as jest.Mock).mockReturnValueOnce(updateProgress);
-			uploadSending(jest.fn().mockRejectedValueOnce(new UploadHttpError(429)).mockResolvedValueOnce(RESPONSE));
+			uploadSending(jest.fn().mockRejectedValueOnce(new HttpError(429)).mockResolvedValueOnce(RESPONSE));
 
 			const pending = run();
 			await jest.advanceTimersByTimeAsync(2000);
@@ -245,7 +248,7 @@ describe('uploadFileMessage', () => {
 
 		it('retries the step after the upload without uploading the file again', async () => {
 			const record = arrange();
-			const afterUpload = jest.fn().mockRejectedValueOnce(new UploadHttpError(429)).mockResolvedValueOnce(undefined);
+			const afterUpload = jest.fn().mockRejectedValueOnce(new HttpError(429)).mockResolvedValueOnce(undefined);
 
 			const pending = run({ afterUpload });
 			await jest.advanceTimersByTimeAsync(2000);
@@ -261,7 +264,7 @@ describe('uploadFileMessage', () => {
 			arrange();
 			const updateProgress = jest.fn();
 			(createUploadProgressCallback as jest.Mock).mockReturnValueOnce(updateProgress);
-			const afterUpload = jest.fn().mockRejectedValueOnce(new UploadHttpError(429)).mockResolvedValueOnce(undefined);
+			const afterUpload = jest.fn().mockRejectedValueOnce(new HttpError(429)).mockResolvedValueOnce(undefined);
 
 			const pending = run({ afterUpload });
 			await jest.advanceTimersByTimeAsync(2000);
@@ -269,5 +272,17 @@ describe('uploadFileMessage', () => {
 
 			expect(updateProgress).toHaveBeenCalledWith(0, 1);
 		});
+	});
+
+	it.each([
+		['a failure that may still resolve itself', new HttpError(503, { serverMessage: 'Service unavailable' })],
+		['a failure that is not an http error', new Error('boom')]
+	])('stays quiet about %s', async (_, error) => {
+		arrange();
+		uploadSending(jest.fn().mockRejectedValue(error));
+
+		await expect(run()).rejects.toBe(error);
+
+		expect(showToast).not.toHaveBeenCalled();
 	});
 });

@@ -1,4 +1,7 @@
+import { Alert } from 'react-native';
+
 import { type TSendFileMessageFileInfo, type TUploadModel } from '~/definitions';
+import i18n from '~/i18n';
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import FileUpload from '../helpers/fileUpload';
 import { type IFormData, type TUploadHeaders } from '../helpers/fileUpload/definitions';
@@ -9,9 +12,10 @@ import {
 	getUploadPath,
 	type IUploadSlot,
 	recordUploadFailure,
-	releaseUploadSlot,
-	showUploadFailureToast
+	releaseUploadSlot
 } from './utils';
+import { getUploadErrorMessage, getUploadFailure, isRetryableUploadError, type TUploadFailure } from '../helpers/uploadError';
+import { showToast } from '../helpers/showToast';
 import { retryWhileRateLimited } from './retryWhileRateLimited';
 
 interface IPreparedUpload {
@@ -20,6 +24,13 @@ interface IPreparedUpload {
 	formData: IFormData[];
 	afterUpload?: (response: TRoomsMediaResponse) => Promise<void>;
 }
+
+const showUploadFailureToast = (failure: TUploadFailure): void => {
+	const reason = getUploadErrorMessage(failure);
+	if (reason && !isRetryableUploadError(failure.errorStatus)) {
+		showToast(reason);
+	}
+};
 
 const sendPreparedUpload = async (
 	uploadRecord: TUploadModel,
@@ -61,6 +72,10 @@ export async function uploadFileMessage({
 }): Promise<void> {
 	const uploadPath = getUploadPath(fileInfo.path, rid);
 	const slot = claimUploadSlot(uploadPath);
+	if (!slot) {
+		Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
+		throw new Error('Upload in progress');
+	}
 	let uploadRecord: TUploadModel | undefined;
 	try {
 		uploadRecord = await createUploadRecord({ rid, fileInfo, tmid });
@@ -70,8 +85,9 @@ export async function uploadFileMessage({
 			return;
 		}
 		if (uploadRecord) {
-			await recordUploadFailure(uploadRecord, e);
-			showUploadFailureToast(e);
+			const failure = getUploadFailure(e);
+			await recordUploadFailure(uploadRecord, failure);
+			showUploadFailureToast(failure);
 		}
 		throw e;
 	} finally {

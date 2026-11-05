@@ -1,18 +1,23 @@
 import I18n from '~/i18n';
 import { type IUpload } from '~/definitions';
+import { HttpError } from './HttpError';
 import { parseRetryAfterFromMessage } from './retryAfter';
 
 const SERVER_ERROR_CODE = /\s*\[([\w-]+)\]$/;
 
 const RETRYABLE_CLIENT_ERRORS = [401, 408, 429];
 
+export type TUploadFailure = Pick<IUpload, 'errorStatus' | 'errorMessage'>;
+
+export const getUploadFailure = (error: unknown): TUploadFailure =>
+	error instanceof HttpError
+		? { errorStatus: error.status, errorMessage: error.serverMessage ?? null }
+		: { errorStatus: null, errorMessage: null };
+
 export const isRetryableUploadError = (status: IUpload['errorStatus']): boolean =>
 	status === undefined || status === null || status < 300 || status >= 500 || RETRYABLE_CLIENT_ERRORS.includes(status);
 
-export const getUploadErrorMessage = ({
-	errorStatus,
-	errorMessage
-}: Pick<IUpload, 'errorStatus' | 'errorMessage'>): string | undefined => {
+export const getUploadErrorMessage = ({ errorStatus, errorMessage }: TUploadFailure): string | undefined => {
 	if (errorStatus === 413) {
 		return I18n.t('error-file-too-large');
 	}

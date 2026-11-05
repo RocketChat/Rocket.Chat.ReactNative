@@ -1,6 +1,6 @@
-import { type IGroupedError } from '../log';
+import { type IGroupedError } from './log';
 
-export class UploadHttpError extends Error implements IGroupedError {
+export class HttpError extends Error implements IGroupedError {
 	readonly status: number;
 
 	readonly serverMessage?: string;
@@ -11,10 +11,10 @@ export class UploadHttpError extends Error implements IGroupedError {
 
 	constructor(status: number, options?: { serverMessage?: string; retryAfterSeconds?: number }) {
 		super(`Error: ${status}`);
-		this.name = 'UploadHttpError';
+		this.name = 'HttpError';
 		this.status = status;
 		this.serverMessage = options?.serverMessage;
 		this.retryAfterSeconds = options?.retryAfterSeconds;
-		this.groupingHash = `UploadHttpError:${status}`;
+		this.groupingHash = `HttpError:${status}`;
 	}
 }

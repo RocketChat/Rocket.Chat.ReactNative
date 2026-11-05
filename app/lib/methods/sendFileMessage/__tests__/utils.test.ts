@@ -1,5 +1,3 @@
-import { Alert } from 'react-native';
-
 import {
 	cancelUpload,
 	claimUploadSlot,
@@ -9,16 +7,11 @@ import {
 	getUploadPath,
 	isUploadActive,
 	recordUploadFailure,
-	showUploadFailureToast,
 	releaseUploadSlot
 } from '../utils';
-import { UploadHttpError } from '~/lib/methods/helpers/fileUpload/UploadHttpError';
 import { getUploadByPath } from '~/lib/database/services/Upload';
 
-jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
-jest.mock('~/i18n', () => ({ t: (k: string) => k, isTranslated: () => false }));
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
 jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
 jest.mock('@nozbe/watermelondb/RawRecord', () => ({ sanitizedRaw: (raw: unknown) => raw }));
 jest.mock('expo-file-system/legacy', () => ({ cacheDirectory: 'file://cache', copyAsync: jest.fn(() => Promise.resolve()) }));
@@ -42,15 +35,13 @@ beforeEach(async () => {
 	await cancelUpload({ path: fileInfo.path } as any, fileInfo.rid);
 	(getUploadByPath as jest.Mock).mockReset();
 	mockCreate.mockReset();
-	(Alert.alert as jest.Mock).mockReset();
 	(require('expo-file-system/legacy').copyAsync as jest.Mock).mockClear();
-	(require('~/lib/methods/helpers/showToast').showToast as jest.Mock).mockClear();
 });
 
 describe('cancelUpload', () => {
 	it('aborts the send and frees its slot before cancelling the running upload', async () => {
 		let abortedWhenCancelled: boolean | undefined;
-		const slot = claimUploadSlot(uploadPath);
+		const slot = claimUploadSlot(uploadPath)!;
 		slot.upload = {
 			send: jest.fn(),
 			cancel: jest.fn(() => {
@@ -65,7 +56,7 @@ describe('cancelUpload', () => {
 	});
 
 	it('aborts a send that is still preparing its upload', async () => {
-		const slot = claimUploadSlot(uploadPath);
+		const slot = claimUploadSlot(uploadPath)!;
 
 		await cancelUpload({ path: '/tmp/pic.jpg' } as any, 'GENERAL');
 
@@ -125,7 +116,6 @@ describe('createUploadRecord', () => {
 
 		const record = await createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined });
 
-		expect(Alert.alert).not.toHaveBeenCalled();
 		expect(record).toBe(stale);
 		expect(stale).toMatchObject({
 			error: false,
@@ -154,18 +144,17 @@ describe('createUploadRecord', () => {
 
 describe('claimUploadSlot', () => {
 	it('marks the upload active until its slot is released', () => {
-		const slot = claimUploadSlot(uploadPath);
+		const slot = claimUploadSlot(uploadPath)!;
 
 		expect(isUploadActive(fileInfo.path, 'GENERAL')).toBe(true);
 		releaseUploadSlot(uploadPath, slot);
 		expect(isUploadActive(fileInfo.path, 'GENERAL')).toBe(false);
 	});
 
-	it('blocks with an alert while the same file is already uploading to the room', () => {
-		const running = claimUploadSlot(uploadPath);
+	it('gives no slot while the same file is already uploading to the room', () => {
+		const running = claimUploadSlot(uploadPath)!;
 
-		expect(() => claimUploadSlot(uploadPath)).toThrow('Upload in progress');
-		expect(Alert.alert).toHaveBeenCalledWith('FileUpload_Error', 'Upload_in_progress');
+		expect(claimUploadSlot(uploadPath)).toBeUndefined();
 		expect(isUploadActive(fileInfo.path, fileInfo.rid)).toBe(true);
 		releaseUploadSlot(uploadPath, running);
 		expect(isUploadActive(fileInfo.path, fileInfo.rid)).toBe(false);
@@ -174,9 +163,9 @@ describe('claimUploadSlot', () => {
 
 describe('releaseUploadSlot', () => {
 	it('leaves the slot of a newer send alone', async () => {
-		const cancelled = claimUploadSlot(uploadPath);
+		const cancelled = claimUploadSlot(uploadPath)!;
 		await cancelUpload({ path: fileInfo.path } as any, fileInfo.rid);
-		const newer = claimUploadSlot(uploadPath);
+		const newer = claimUploadSlot(uploadPath)!;
 
 		releaseUploadSlot(uploadPath, cancelled);
 
@@ -187,7 +176,7 @@ describe('releaseUploadSlot', () => {
 });
 
 describe('recordUploadFailure', () => {
-	const record = async (error: unknown) => {
+	it('saves the HTTP status and server message of the failure', async () => {
 		const updated: any = { errorStatus: 500, errorMessage: 'stale' };
 		const uploadRecord = {
 			db: { write: (cb: () => Promise<unknown>) => cb() },
@@ -195,27 +184,17 @@ describe('recordUploadFailure', () => {
 				cb(updated);
 			})
 		} as any;
-		await recordUploadFailure(uploadRecord, error);
-		return updated;
-	};
 
-	it('saves the HTTP status and server message of the failure', async () => {
-		const updated = await record(new UploadHttpError(413, { serverMessage: 'File is too large' }));
+		await recordUploadFailure(uploadRecord, { errorStatus: 413, errorMessage: 'File is too large' });
 
 		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: 'File is too large' });
-	});
-
-	it('saves only the error flag for a failure that is not an http error', async () => {
-		const updated = await record(new Error('boom'));
-
-		expect(updated).toMatchObject({ error: true, errorStatus: null, errorMessage: null });
 	});
 
 	it('writes the failure through the database the record belongs to', async () => {
 		const write = jest.fn((cb: () => Promise<unknown>) => cb());
 		const uploadRecord = { db: { write }, update: jest.fn() } as any;
 
-		await recordUploadFailure(uploadRecord, new UploadHttpError(500));
+		await recordUploadFailure(uploadRecord, { errorStatus: 500, errorMessage: null });
 
 		expect(write).toHaveBeenCalled();
 	});
@@ -226,45 +205,7 @@ describe('recordUploadFailure', () => {
 			update: jest.fn().mockRejectedValue(new Error('record gone'))
 		} as any;
 
-		await expect(recordUploadFailure(uploadRecord, new UploadHttpError(413))).resolves.toBeUndefined();
-	});
-});
-
-describe('showUploadFailureToast', () => {
-	const { showToast } = require('~/lib/methods/helpers/showToast');
-
-	it('announces a file that is too large', () => {
-		showUploadFailureToast(new UploadHttpError(413, { serverMessage: 'File is too large' }));
-
-		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
-	});
-
-	it('announces a failure the user cannot retry away', () => {
-		showUploadFailureToast(new UploadHttpError(415, { serverMessage: 'Not allowed' }));
-
-		expect(showToast).toHaveBeenCalledWith('Not allowed');
-	});
-
-	it('announces a permanent failure even when the server sent no usable message', () => {
-		showUploadFailureToast(new UploadHttpError(405));
-
-		expect(showToast).toHaveBeenCalledWith('FileUpload_Error');
-	});
-
-	it('stays quiet about a failure that may still resolve itself', () => {
-		showUploadFailureToast(
-			new UploadHttpError(429, {
-				serverMessage: 'You must wait 37 seconds before trying this endpoint again. [error-too-many-requests]'
-			})
-		);
-
-		expect(showToast).not.toHaveBeenCalled();
-	});
-
-	it('stays quiet for a failure that is not an http error', () => {
-		showUploadFailureToast(new Error('boom'));
-
-		expect(showToast).not.toHaveBeenCalled();
+		await expect(recordUploadFailure(uploadRecord, { errorStatus: 413, errorMessage: null })).resolves.toBeUndefined();
 	});
 });
 

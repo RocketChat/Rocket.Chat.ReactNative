@@ -36,7 +36,7 @@ describe('Upload (android)', () => {
 		mockUpload({ status: 413, body: '{"error":"File is too large"}' });
 
 		await expect(send()).rejects.toMatchObject({
-			name: 'UploadHttpError',
+			name: 'HttpError',
 			status: 413,
 			serverMessage: 'File is too large'
 		});

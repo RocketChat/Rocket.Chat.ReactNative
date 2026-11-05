@@ -1,5 +1,4 @@
-import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
-import { parseRetryAfterFromMessage } from '../helpers/retryAfter';
+import { HttpError } from '../helpers/HttpError';
 
 const MAX_UPLOAD_ATTEMPTS = 4;
 
@@ -9,11 +8,10 @@ const MAX_TOTAL_RETRY_WAIT = 120000;
 const getBackoffDelay = (attempt: number) => Math.round(BASE_RETRY_DELAY * 2 ** (attempt - 1) * (0.5 + Math.random()));
 
 const getRetryDelay = (error: unknown, attempt: number, waited: number): number | undefined => {
-	if (!(error instanceof UploadHttpError) || error.status !== 429 || attempt >= MAX_UPLOAD_ATTEMPTS) {
+	if (!(error instanceof HttpError) || error.status !== 429 || attempt >= MAX_UPLOAD_ATTEMPTS) {
 		return undefined;
 	}
-	const retryAfterSeconds = error.retryAfterSeconds ?? parseRetryAfterFromMessage(error.serverMessage);
-	const delay = retryAfterSeconds ? retryAfterSeconds * 1000 : getBackoffDelay(attempt);
+	const delay = error.retryAfterSeconds ? error.retryAfterSeconds * 1000 : getBackoffDelay(attempt);
 	return waited + delay <= MAX_TOTAL_RETRY_WAIT ? delay : undefined;
 };
 
