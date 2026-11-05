@@ -11,7 +11,7 @@ import { addSettings, clearSettings } from '~/actions/settings';
 import { selectServerSuccess } from '~/actions/server';
 import { type TActionSheetOptionsItem } from '~/containers/ActionSheet';
 import UserItem from '~/containers/UserItem';
-import { showConfirmationAlert } from '~/lib/methods/helpers/info';
+import { showConfirmationAlert, showErrorAlertWithEMessage } from '~/lib/methods/helpers/info';
 import { getRoomMembers, getRoomRoles, teamListRoomsOfUser, toggleRoomOwner } from '~/lib/services/restApi';
 
 let mockHasNativeHeaderBar = false;
@@ -48,7 +48,8 @@ jest.mock('~/lib/services/restApi', () => ({
 
 jest.mock('~/lib/methods/helpers/info', () => ({
 	...jest.requireActual('~/lib/methods/helpers/info'),
-	showConfirmationAlert: jest.fn()
+	showConfirmationAlert: jest.fn(),
+	showErrorAlertWithEMessage: jest.fn()
 }));
 
 jest.mock('~/lib/navigation/appNavigation', () => ({ resetTo: jest.fn(), navigate: jest.fn() }));
@@ -93,6 +94,11 @@ const openActionSheetFor = async (getByTestId: (id: string) => any, username: st
 	fireEvent.press(item);
 	const [[{ options }]] = mockShowActionSheet.mock.calls.slice(-1);
 	return options as TActionSheetOptionsItem[];
+};
+
+const focusScreen = async () => {
+	const [, onFocus] = mockAddListener.mock.calls.find(([event]: any[]) => event === 'focus') as any[];
+	await act(async () => onFocus());
 };
 
 const ownerOption = (options: TActionSheetOptionsItem[]) => options.find(option => option.testID === 'action-sheet-set-owner');
@@ -242,11 +248,12 @@ describe('RoomMembersView roles', () => {
 			]);
 		});
 
-		it('shows no members found instead of a blank list when the ordered endpoint fails', async () => {
+		it('shows Try again instead of No members found when the first page fails', async () => {
 			jest.mocked(getRoomMembers).mockResolvedValue(undefined as any);
-			const { queryByTestId, findByText } = render(<RoomMembersView />, { wrapper: Wrapper });
+			const { queryByTestId, queryByText, findByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
 
-			expect(await findByText('No members found')).toBeTruthy();
+			expect(await findByTestId('room-members-view-retry')).toBeTruthy();
+			expect(queryByText('No members found')).toBeNull();
 			expect(queryByTestId('room-members-view-header-owner')).toBeNull();
 			expect(queryByTestId('room-members-view-header-member')).toBeNull();
 		});
@@ -264,7 +271,7 @@ describe('RoomMembersView roles', () => {
 			expect(getRoomMembers).toHaveBeenCalledTimes(1);
 		});
 
-		it('requests the next page again after the screen is focused following a failed request', async () => {
+		it('reloads the first page on focus after it failed', async () => {
 			jest
 				.mocked(getRoomMembers)
 				.mockResolvedValueOnce(undefined as any)
@@ -274,8 +281,7 @@ describe('RoomMembersView roles', () => {
 			const { UNSAFE_getByType } = render(<RoomMembersView />, { wrapper: Wrapper });
 			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(1));
 
-			const [, onFocus] = mockAddListener.mock.calls.find(([event]: any[]) => event === 'focus') as any[];
-			await act(async () => onFocus());
+			await focusScreen();
 			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(2));
 			await act(async () => UNSAFE_getByType(SectionList).props.onEndReached());
 
@@ -304,12 +310,48 @@ describe('RoomMembersView roles', () => {
 			expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 25 }));
 		});
 
-		it('does not request the members again when the screen is focused with the list loaded', async () => {
-			const { findByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+		it('reloads the first page with the selected status when the screen is focused with the list loaded', async () => {
+			const addedMember = { _id: 'added-id', username: 'added.user', name: 'Added' };
+			const { findByTestId, getByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+			const [{ headerRight }] = mockSetOptions.mock.lastCall;
+			await act(async () => headerRight().props.actions[0].menu[0].onPress());
 			await findByTestId('room-members-view-item-owner.user');
+			let resolveReload!: (members: unknown) => void;
+			jest.mocked(getRoomMembers).mockReturnValueOnce(new Promise(resolve => (resolveReload = resolve)) as any);
 
-			const [, onFocus] = mockAddListener.mock.calls.find(([event]: any[]) => event === 'focus') as any[];
-			await act(async () => onFocus());
+			await focusScreen();
+			expect(getByTestId('room-members-view-item-owner.user')).toBeTruthy();
+			await act(async () => resolveReload([owner, member, addedMember]));
+
+			expect(await findByTestId('room-members-view-item-added.user')).toBeTruthy();
+			expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 0, type: 'online' }));
+		});
+
+		it('requests the first page again when a role changes while the focus reload loads', async () => {
+			const { findByTestId, getByTestId, queryByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+			await findByTestId('room-members-view-item-member.user');
+			let resolveReload!: (members: unknown) => void;
+			jest
+				.mocked(getRoomMembers)
+				.mockReturnValueOnce(new Promise(resolve => (resolveReload = resolve)) as any)
+				.mockResolvedValue([owner, { ...member, roles: ['owner'] }] as any);
+			await focusScreen();
+
+			const options = await openActionSheetFor(getByTestId, 'member.user');
+			await act(() => ownerOption(options)?.onPress?.());
+			await act(async () => resolveReload([owner, member]));
+
+			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(3));
+			await waitFor(() => expect(queryByTestId('room-members-view-header-member')).toBeNull());
+			expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 0 }));
+		});
+
+		it('does not request the members again when the screen is focused before the first page loads', async () => {
+			jest.mocked(getRoomMembers).mockReturnValue(new Promise(() => {}) as any);
+			render(<RoomMembersView />, { wrapper: Wrapper });
+			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(1));
+
+			await focusScreen();
 
 			expect(getRoomMembers).toHaveBeenCalledTimes(1);
 		});
@@ -402,7 +444,8 @@ describe('RoomMembersView roles', () => {
 				jest
 					.mocked(getRoomMembers)
 					.mockResolvedValueOnce(firstPage as any)
-					.mockResolvedValueOnce(nextPage as any);
+					.mockResolvedValueOnce(nextPage as any)
+					.mockReturnValueOnce(new Promise(() => {}) as any);
 				const { getByTestId, UNSAFE_getByType } = render(<RoomMembersView />, { wrapper: Wrapper });
 				const options = await openActionSheetFor(getByTestId, 'user3');
 				await act(async () => options.find(option => option.testID === testID)?.onPress?.());
@@ -448,15 +491,23 @@ describe('RoomMembersView roles', () => {
 				it.each([
 					['room', 4, 'action-sheet-remove-from-room'],
 					['team', 5, 'action-sheet-remove-from-team']
-				])('requests the next page one row earlier after a member is removed from the %s', async (_, permissionIndex, testID) => {
+				])('reloads the first page after a member is removed from the %s', async (_, permissionIndex, testID) => {
 					mockPermissions = mockPermissions.map((allowed, index) => allowed || index === permissionIndex);
 					jest.mocked(teamListRoomsOfUser).mockResolvedValue({ success: true, rooms: [] } as any);
-					await loadFirstPageAndRequestNext(async options => {
-						await act(async () => options.find(option => option.testID === testID)?.onPress?.());
-						await act(async () => jest.mocked(showConfirmationAlert).mock.calls[0][0].onPress());
-					});
+					const firstPageWithoutUser3 = [...firstPage.filter(item => item._id !== 'id-3'), fullNextPage[0]];
+					jest
+						.mocked(getRoomMembers)
+						.mockResolvedValueOnce(firstPage as any)
+						.mockResolvedValueOnce(firstPageWithoutUser3 as any)
+						.mockResolvedValue([] as any);
+					const { getByTestId, UNSAFE_getByType } = render(<RoomMembersView />, { wrapper: Wrapper });
+					const options = await openActionSheetFor(getByTestId, 'user3');
+					await act(async () => options.find(option => option.testID === testID)?.onPress?.());
+					await act(async () => jest.mocked(showConfirmationAlert).mock.calls[0][0].onPress());
 
-					expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 24 }));
+					await waitFor(() => expect(memberIds(UNSAFE_getByType(SectionList).props.sections)).toContain('id-25'));
+					expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 0 }));
+					expect(memberIds(UNSAFE_getByType(SectionList).props.sections)).not.toContain('id-3');
 				});
 
 				it('keeps the shift for the pages after it', async () => {
@@ -468,6 +519,53 @@ describe('RoomMembersView roles', () => {
 					await act(async () => UNSAFE_getByType(SectionList).props.onEndReached());
 
 					expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 49 }));
+				});
+
+				it('requests the next page from the full offset after an owner is demoted while the focus reload loads', async () => {
+					let resolveReload!: (members: unknown) => void;
+					jest
+						.mocked(getRoomMembers)
+						.mockResolvedValueOnce(ownerFirstPage as any)
+						.mockReturnValueOnce(new Promise(resolve => (resolveReload = resolve)) as any)
+						.mockResolvedValueOnce(firstPage as any)
+						.mockResolvedValue([] as any);
+					const { getByTestId, queryByTestId, UNSAFE_getByType } = render(<RoomMembersView />, { wrapper: Wrapper });
+					await waitFor(() => getByTestId('room-members-view-header-owner'));
+					await focusScreen();
+					const options = await openActionSheetFor(getByTestId, 'user3');
+					await act(() => ownerOption(options)?.onPress?.());
+					await act(async () => resolveReload(ownerFirstPage));
+					await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(3));
+					await waitFor(() => expect(queryByTestId('room-members-view-header-owner')).toBeNull());
+
+					await act(async () => UNSAFE_getByType(SectionList).props.onEndReached());
+
+					expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 25 }));
+				});
+
+				it.each([
+					['a full page', fullNextPage],
+					['the last page', [{ _id: 'id-25', username: 'user25' }]]
+				])('requests the same page one row earlier when an owner is demoted while %s loads', async (_, loadedPage) => {
+					let resolveNextPage!: (members: unknown) => void;
+					jest
+						.mocked(getRoomMembers)
+						.mockResolvedValueOnce(ownerFirstPage as any)
+						.mockReturnValueOnce(new Promise(resolve => (resolveNextPage = resolve)) as any)
+						.mockResolvedValue([] as any);
+					const { getByTestId, UNSAFE_getByType } = render(<RoomMembersView />, { wrapper: Wrapper });
+					await waitFor(() => getByTestId('room-members-view-item-user0'));
+					await act(async () => {
+						UNSAFE_getByType(SectionList).props.onEndReached();
+					});
+					const options = await openActionSheetFor(getByTestId, 'user3');
+					await act(() => ownerOption(options)?.onPress?.());
+					await act(async () => resolveNextPage(loadedPage));
+					await waitFor(() => expect(memberIds(UNSAFE_getByType(SectionList).props.sections)).toContain('id-25'));
+
+					await act(async () => UNSAFE_getByType(SectionList).props.onEndReached());
+
+					expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 24 }));
 				});
 			});
 
@@ -491,16 +589,19 @@ describe('RoomMembersView roles', () => {
 			});
 		});
 
-		it('keeps the member where it was when the role change fails', async () => {
-			jest.mocked(toggleRoomOwner).mockRejectedValueOnce(new Error('error-you-are-last-owner'));
+		it('shows the error and reloads the first page when the role change fails', async () => {
+			const error = new Error('error-user-already-owner');
+			jest.mocked(toggleRoomOwner).mockRejectedValueOnce(error);
 			const { getByTestId, queryByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
 			const options = await openActionSheetFor(getByTestId, 'member.user');
+			jest.mocked(getRoomMembers).mockResolvedValue([owner, { ...member, roles: ['owner'] }] as any);
 
 			await act(() => ownerOption(options)?.onPress?.());
 
-			expect(toggleRoomOwner).toHaveBeenCalledTimes(1);
-			expect(queryByTestId('room-members-view-header-member')).toBeTruthy();
-			expect(isOwnerChecked(await openActionSheetFor(getByTestId, 'member.user'))).toBe(false);
+			expect(showErrorAlertWithEMessage).toHaveBeenCalledWith(error);
+			await waitFor(() => expect(queryByTestId('room-members-view-header-member')).toBeNull());
+			expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 0 }));
+			expect(isOwnerChecked(await openActionSheetFor(getByTestId, 'member.user'))).toBe(true);
 		});
 
 		it('turns off clipped subviews on Android for the sticky role headers', async () => {
@@ -575,6 +676,18 @@ describe('RoomMembersView roles', () => {
 		});
 
 		it('refetches only the room roles after a role change', async () => {
+			const { getByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+			await waitFor(() => expect(getRoomRoles).toHaveBeenCalledTimes(1));
+			const options = await openActionSheetFor(getByTestId, 'member.user');
+
+			await act(() => ownerOption(options)?.onPress?.());
+
+			await waitFor(() => expect(getRoomRoles).toHaveBeenCalledTimes(2));
+			expect(getRoomMembers).toHaveBeenCalledTimes(1);
+		});
+
+		it('refetches the room roles after a failed role change', async () => {
+			jest.mocked(toggleRoomOwner).mockRejectedValueOnce(new Error('error-user-already-owner'));
 			const { getByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
 			await waitFor(() => expect(getRoomRoles).toHaveBeenCalledTimes(1));
 			const options = await openActionSheetFor(getByTestId, 'member.user');

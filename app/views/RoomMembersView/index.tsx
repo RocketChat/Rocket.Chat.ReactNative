@@ -1,5 +1,5 @@
 import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { type ReactElement, useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from 'react';
+import { type ReactElement, useCallback, useEffect, useLayoutEffect, useReducer, useRef } from 'react';
 import { SectionList, Text } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -30,9 +30,7 @@ import {
 	useDebounce
 } from '~/lib/methods/helpers';
 import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
-import { groupMembersByRole, type TMemberRoleGroup } from '~/lib/methods/helpers/groupMembersByRole';
 import { isMembersOrderedByRoleSupported } from '~/lib/methods/helpers/isMembersOrderedByRoleSupported';
-import { setMemberRole } from '~/lib/methods/helpers/setMemberRole';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import log from '~/lib/methods/helpers/log';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
@@ -46,6 +44,7 @@ import RoleGroupHeader from './components/RoleGroupHeader';
 import {
 	fetchRole,
 	fetchRoomMembersRoles,
+	groupMembersByRole,
 	handleLeader,
 	handleModerator,
 	handleMute,
@@ -53,6 +52,8 @@ import {
 	handleRemoveFromTeam,
 	handleRemoveUserFromRoom,
 	navToDirectMessage,
+	setMemberRole,
+	type TMemberRoleGroup,
 	type TRoomType
 } from './helpers';
 import styles from './styles';
@@ -69,15 +70,23 @@ interface IRoomMembersViewState {
 	roomRoles?: IGetRoomRoles[];
 	filter: string;
 	page: number;
-	removedRows: number;
+	shiftedRows: number;
 	loadFailed: boolean;
+	reloadCount: number;
 }
 
 type TStateUpdate = Partial<IRoomMembersViewState> | ((state: IRoomMembersViewState) => Partial<IRoomMembersViewState>);
 
 type TMembersSection = { key?: TMemberRoleGroup; data: TUserModel[] };
 
-const firstPageState = { members: [], end: false, page: 0, removedRows: 0, loadFailed: false };
+const firstPageState = { members: [], end: false, page: 0, shiftedRows: 0, loadFailed: false };
+
+const reloadFromFirstPage = ({ members, reloadCount }: IRoomMembersViewState) => ({
+	...firstPageState,
+	members,
+	isLoading: false,
+	reloadCount: reloadCount + 1
+});
 
 const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], page: number) => {
 	const loadedMembers = page === 0 ? [] : members;
@@ -146,7 +155,8 @@ const RoomMembersView = (): ReactElement => {
 			...firstPageState,
 			room: params.room || ({} as TSubscriptionModel),
 			roomRoles: undefined,
-			filter: ''
+			filter: '',
+			reloadCount: 0
 		}
 	);
 
@@ -188,7 +198,7 @@ const RoomMembersView = (): ReactElement => {
 	};
 
 	const fetchMembers = useCallback(async () => {
-		const { isLoading, end, room, filter, page, allUsers, removedRows, loadFailed } = state;
+		const { members, isLoading, end, room, filter, page, allUsers, shiftedRows, loadFailed } = state;
 		const { t } = room;
 
 		if (isLoading || end || loadFailed) {
@@ -205,7 +215,7 @@ const RoomMembersView = (): ReactElement => {
 				roomType: t,
 				type,
 				filter,
-				skip: Math.max(PAGE_SIZE * page - removedRows, 0),
+				skip: Math.max(PAGE_SIZE * page - shiftedRows, 0),
 				limit: PAGE_SIZE,
 				allUsers
 			});
@@ -219,23 +229,43 @@ const RoomMembersView = (): ReactElement => {
 				return;
 			}
 
-			updateState(current => ({
-				...mergeMembersPage(current.members, membersResult, page),
-				isLoading: false,
-				loadFailed: false,
-				page: page + 1
-			}));
+			updateState(current => {
+				const membersChangedDuringRequest = current.members !== members;
+				if (page === 0 && membersChangedDuringRequest) {
+					return { isLoading: false, reloadCount: current.reloadCount + 1 };
+				}
+				const merged = mergeMembersPage(current.members, membersResult, page);
+				const rowsShiftedDuringRequest = current.shiftedRows !== shiftedRows;
+				return {
+					...merged,
+					end: merged.end && !rowsShiftedDuringRequest,
+					isLoading: false,
+					loadFailed: false,
+					page: rowsShiftedDuringRequest ? page : page + 1,
+					shiftedRows: page === 0 ? 0 : current.shiftedRows
+				};
+			});
 		} catch (e) {
 			log(e);
 			if (requestId === latestSearchRequest.current) {
 				updateState({ isLoading: false, loadFailed: true });
 			}
 		}
-	}, [state.isLoading, state.end, state.room.t, state.filter, state.page, state.allUsers, state.removedRows, state.loadFailed]);
+	}, [
+		state.members,
+		state.isLoading,
+		state.end,
+		state.room.t,
+		state.filter,
+		state.page,
+		state.allUsers,
+		state.shiftedRows,
+		state.loadFailed
+	]);
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			updateState({ loadFailed: false });
+			updateState(current => (current.page || current.loadFailed ? reloadFromFirstPage(current) : {}));
 		});
 
 		return unsubscribe;
@@ -259,16 +289,20 @@ const RoomMembersView = (): ReactElement => {
 
 	useEffect(() => {
 		fetchMembers();
-	}, [state.filter, state.allUsers, state.loadFailed]);
+	}, [state.filter, state.allUsers, state.loadFailed, state.reloadCount]);
 
-	const applyRoleChange = async (userId: string, role: string, isAdded: boolean) => {
+	const applyRoleChange = async (changed: boolean, userId: string, role: string, isAdded: boolean) => {
 		if (!membersHaveRoles) {
 			await fetchRoomMembersRoles(state.room.t as TRoomType, state.room.rid, updateState);
 			return;
 		}
-		updateState(({ members, removedRows }) => ({
+		if (!changed) {
+			updateState(reloadFromFirstPage);
+			return;
+		}
+		updateState(({ members, shiftedRows }) => ({
 			members: setMemberRole(members, userId, role, isAdded),
-			removedRows: isAdded ? removedRows : removedRows + 1
+			shiftedRows: isAdded ? shiftedRows : shiftedRows + 1
 		}));
 	};
 
@@ -276,10 +310,7 @@ const RoomMembersView = (): ReactElement => {
 		membersHaveRoles ? !!selectedUser.roles?.includes(role) : fetchRole(role, selectedUser, state.roomRoles);
 
 	const removeMember = (userId: string) =>
-		updateState(({ members, removedRows }) => ({
-			members: members.filter(member => member._id !== userId),
-			removedRows: removedRows + 1
-		}));
+		updateState(current => reloadFromFirstPage({ ...current, members: current.members.filter(member => member._id !== userId) }));
 
 	const debounceFilterChange = useDebounce((text: string) => {
 		const trimmedFilter = text.trim();
@@ -366,9 +397,12 @@ const RoomMembersView = (): ReactElement => {
 			options.push({
 				icon: 'shield-check',
 				title: I18n.t('Owner'),
-				onPress: () =>
-					handleOwner(selectedUser, !isOwner, getUserDisplayName(selectedUser), room, () =>
-						applyRoleChange(selectedUser._id, 'owner', !isOwner)
+				onPress: async () =>
+					applyRoleChange(
+						await handleOwner(selectedUser, !isOwner, getUserDisplayName(selectedUser), room),
+						selectedUser._id,
+						'owner',
+						!isOwner
 					),
 				right: () => <RightIcon check={isOwner} label='owner' />,
 				testID: 'action-sheet-set-owner'
@@ -381,9 +415,12 @@ const RoomMembersView = (): ReactElement => {
 			options.push({
 				icon: 'shield-alt',
 				title: I18n.t('Leader'),
-				onPress: () =>
-					handleLeader(selectedUser, !isLeader, room, getUserDisplayName(selectedUser), () =>
-						applyRoleChange(selectedUser._id, 'leader', !isLeader)
+				onPress: async () =>
+					applyRoleChange(
+						await handleLeader(selectedUser, !isLeader, room, getUserDisplayName(selectedUser)),
+						selectedUser._id,
+						'leader',
+						!isLeader
 					),
 				right: () => <RightIcon check={isLeader} label='leader' />,
 				testID: 'action-sheet-set-leader'
@@ -396,9 +433,12 @@ const RoomMembersView = (): ReactElement => {
 			options.push({
 				icon: 'shield',
 				title: I18n.t('Moderator'),
-				onPress: () =>
-					handleModerator(selectedUser, !isModerator, room, getUserDisplayName(selectedUser), () =>
-						applyRoleChange(selectedUser._id, 'moderator', !isModerator)
+				onPress: async () =>
+					applyRoleChange(
+						await handleModerator(selectedUser, !isModerator, room, getUserDisplayName(selectedUser)),
+						selectedUser._id,
+						'moderator',
+						!isModerator
 					),
 				right: () => <RightIcon check={isModerator} label='moderator' />,
 				testID: 'action-sheet-set-moderator'
@@ -482,12 +522,12 @@ const RoomMembersView = (): ReactElement => {
 		});
 	};
 
-	const sections = useMemo(() => getSections(state.members, membersHaveRoles), [state.members, membersHaveRoles]);
+	const sections = getSections(state.members, membersHaveRoles);
 
 	let footer: ReactElement | null = null;
 	if (state.isLoading) {
 		footer = <ActivityIndicator />;
-	} else if (state.loadFailed && state.members.length) {
+	} else if (state.loadFailed) {
 		footer = (
 			<Button
 				title={I18n.t('Try_again')}
@@ -539,7 +579,7 @@ const RoomMembersView = (): ReactElement => {
 				onEndReachedThreshold={0.1}
 				onEndReached={() => fetchMembers()}
 				ListEmptyComponent={() =>
-					state.end || state.loadFailed ? (
+					state.end ? (
 						<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_members_found')}</Text>
 					) : null
 				}

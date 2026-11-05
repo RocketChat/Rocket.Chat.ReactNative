@@ -3,9 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import NativeListSectionHeader from '~/containers/List/native/components/SectionHeader';
 import I18n from '~/i18n';
 import { hasNativeHeaderBar } from '~/lib/methods/helpers';
-import { type TMemberRoleGroup } from '~/lib/methods/helpers/groupMembersByRole';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
+import { type TMemberRoleGroup } from '../helpers';
 
 const ROLE_GROUP_TITLES: Record<TMemberRoleGroup, string> = {
 	owner: 'Owners',

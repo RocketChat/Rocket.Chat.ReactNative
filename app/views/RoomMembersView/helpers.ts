@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 import { LISTENER } from '~/containers/Toast';
 import { type IGetRoomRoles, type IUser, SubscriptionType, type TSubscriptionModel, type TUserModel } from '~/definitions';
 import I18n from '~/i18n';
-import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { getRoomTitle, showConfirmationAlert, showErrorAlert, showErrorAlertWithEMessage } from '~/lib/methods/helpers';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
 import log from '~/lib/methods/helpers/log';
@@ -25,6 +25,32 @@ import { type RoomTypes } from '~/lib/methods/roomTypeToApiType';
 import { emitErrorCreateDirectMessage } from '~/lib/methods/helpers/emitErrorCreateDirectMessage';
 
 export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
+
+const ELEVATED_ROLES = ['owner', 'leader', 'moderator'] as const;
+
+export type TMemberRoleGroup = (typeof ELEVATED_ROLES)[number] | 'member';
+
+const ROLE_GROUPS: TMemberRoleGroup[] = [...ELEVATED_ROLES, 'member'];
+
+const getMemberRoleGroup = (roles: string[] = []): TMemberRoleGroup =>
+	ELEVATED_ROLES.find(role => roles.includes(role)) ?? 'member';
+
+export const groupMembersByRole = <T extends { roles?: string[] }>(members: T[]): { key: TMemberRoleGroup; data: T[] }[] =>
+	ROLE_GROUPS.map(key => ({ key, data: members.filter(member => getMemberRoleGroup(member.roles) === key) })).filter(
+		group => group.data.length
+	);
+
+export const setMemberRole = <T extends { _id: string; roles?: string[] }>(
+	members: T[],
+	userId: string,
+	role: string,
+	isAdded: boolean
+): T[] =>
+	members.map(member =>
+		member._id === userId
+			? { ...member, roles: [...(member.roles ?? []).filter(memberRole => memberRole !== role), ...(isAdded ? [role] : [])] }
+			: member
+	);
 
 const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
 	goRoom({ item, isMasterDetail });
@@ -62,9 +88,8 @@ export const handleModerator = async (
 	selectedUser: TUserModel,
 	isModerator: boolean,
 	room: TSubscriptionModel,
-	username: string,
-	callback: () => Promise<void>
-): Promise<void> => {
+	username: string
+): Promise<boolean> => {
 	try {
 		await toggleRoomModerator({
 			roomId: room.rid,
@@ -81,9 +106,11 @@ export const handleModerator = async (
 				room_name: getRoomTitle(room)
 			})
 		});
-		callback();
+		return true;
 	} catch (e) {
 		log(e);
+		showErrorAlertWithEMessage(e);
+		return false;
 	}
 };
 
@@ -176,9 +203,8 @@ export const handleLeader = async (
 	selectedUser: TUserModel,
 	isLeader: boolean,
 	room: TSubscriptionModel,
-	username: string,
-	callback: () => Promise<void>
-): Promise<void> => {
+	username: string
+): Promise<boolean> => {
 	try {
 		await toggleRoomLeader({
 			roomId: room.rid,
@@ -195,9 +221,11 @@ export const handleLeader = async (
 				room_name: getRoomTitle(room)
 			})
 		});
-		callback();
+		return true;
 	} catch (e) {
 		log(e);
+		showErrorAlertWithEMessage(e);
+		return false;
 	}
 };
 
@@ -228,9 +256,8 @@ export const handleOwner = async (
 	selectedUser: TUserModel,
 	isOwner: boolean,
 	username: string,
-	room: TSubscriptionModel,
-	callback: () => Promise<void>
-): Promise<void> => {
+	room: TSubscriptionModel
+): Promise<boolean> => {
 	try {
 		await toggleRoomOwner({
 			roomId: room.rid,
@@ -245,8 +272,10 @@ export const handleOwner = async (
 				room_name: getRoomTitle(room)
 			})
 		});
-		callback();
+		return true;
 	} catch (e) {
 		log(e);
+		showErrorAlertWithEMessage(e);
+		return false;
 	}
 };
