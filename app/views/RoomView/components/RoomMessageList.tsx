@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useSetting } from '~/lib/hooks/useSetting';
 import { isRoomFederated } from '~/lib/methods/isRoomFederated';
@@ -39,10 +37,7 @@ export const RoomMessageList = ({
 	const Message_Read_Receipt_Enabled = useSetting('Message_Read_Receipt_Enabled') as boolean;
 	const Hide_System_Messages = useSetting('Hide_System_Messages');
 	const roomSysMes = useRoomStore(s => s.room.sysMes);
-	const hideSystemMessages = useMemo(
-		() => getHiddenSystemMessages(roomSysMes, Hide_System_Messages),
-		[roomSysMes, Hide_System_Messages]
-	);
+	const hideSystemMessages = getHiddenSystemMessages(roomSysMes, Hide_System_Messages);
 
 	return (
 		<A11yGateProvider>
