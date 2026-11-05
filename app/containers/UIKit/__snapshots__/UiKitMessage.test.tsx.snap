@@ -6572,106 +6572,104 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
         </Text>
       </Text>
       <View>
-        <View>
-          <View
+        <View
+          style={
+            {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
             style={
-              {
-                "flexDirection": "row",
-              }
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            1
+            . 
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
             }
           >
             <Text
               style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontVariant": [
-                      "tabular-nums",
-                    ],
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "fontVariant": [
-                      "tabular-nums",
-                    ],
-                  },
-                  {
-                    "color": "#2F343D",
-                  },
-                ]
-              }
-            >
-              1
-              . 
-            </Text>
-            <Text
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontVariant": [
-                      "tabular-nums",
-                    ],
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontVariant": [
-                      "tabular-nums",
-                    ],
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                  },
-                ]
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                }
               }
             >
               <Text
+                accessibilityLabel="Item"
                 style={
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontVariant": [
-                      "tabular-nums",
-                    ],
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  }
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
                 }
               >
-                <Text
-                  accessibilityLabel="Item"
-                  style={
-                    [
-                      {
-                        "flexShrink": 1,
-                        "fontSize": 16,
-                        "lineHeight": 22,
-                      },
-                      {
-                        "color": "#2F343D",
-                      },
-                    ]
-                  }
-                >
-                  Item
-                </Text>
+                Item
               </Text>
             </Text>
-          </View>
+          </Text>
         </View>
       </View>
     </View>

@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import { Fragment, type ReactElement } from 'react';
 import { View, Text } from 'react-native';
 import { type OrderedList as OrderedListProps } from '@rocket.chat/message-parser';
 
@@ -17,7 +17,7 @@ const OrderedList = ({ value, renderList }: IOrderedListProps): ReactElement => 
 	return (
 		<View>
 			{value.map((item, index) => (
-				<View key={index}>
+				<Fragment key={index}>
 					<View style={styles.row}>
 						<Text style={[styles.text, styles.listPrefix, { color: colors.fontDefault }]}>{item.number}. </Text>
 						<Text style={[styles.text, styles.inline, { color: colors.fontDefault }]}>
@@ -25,7 +25,7 @@ const OrderedList = ({ value, renderList }: IOrderedListProps): ReactElement => 
 						</Text>
 					</View>
 					<NestedLists lists={item.nested} renderList={renderList} />
-				</View>
+				</Fragment>
 			))}
 		</View>
 	);

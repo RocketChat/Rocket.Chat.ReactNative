@@ -4757,213 +4757,209 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
     }
   >
     <View>
-      <View>
-        <View
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
           style={
-            {
-              "flexDirection": "row",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            • 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             <Text
+              accessibilityLabel="Open Source"
               style={
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                }
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
               }
             >
-              <Text
-                accessibilityLabel="Open Source"
-                style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                Open Source
-              </Text>
+              Open Source
             </Text>
           </Text>
-        </View>
+        </Text>
       </View>
-      <View>
-        <View
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
           style={
-            {
-              "flexDirection": "row",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            • 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             <Text
+              onLongPress={[Function]}
+              onPress={[Function]}
               style={
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                }
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                ]
               }
             >
               <Text
-                onLongPress={[Function]}
-                onPress={[Function]}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#095AD2",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
                 <Text
+                  accessibilityLabel="Rocket.Chat"
                   style={
-                    {
-                      "backgroundColor": "transparent",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    }
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "color": "#095AD2",
+                      },
+                    ]
                   }
                 >
-                  <Text
-                    accessibilityLabel="Rocket.Chat"
-                    style={
-                      [
-                        {
-                          "flexShrink": 1,
-                          "fontSize": 16,
-                          "lineHeight": 22,
-                        },
-                        {
-                          "color": "#2F343D",
-                        },
-                        {
-                          "color": "#095AD2",
-                        },
-                      ]
-                    }
-                  >
-                    Rocket.Chat
-                  </Text>
+                  Rocket.Chat
                 </Text>
               </Text>
             </Text>
           </Text>
-        </View>
+        </Text>
       </View>
     </View>
     <Text
@@ -5081,247 +5077,243 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
     }
   >
     <View>
-      <View>
-        <View
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
           style={
-            {
-              "flexDirection": "row",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          1
+          . 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            1
-            . 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             <Text
+              accessibilityLabel="Open Source"
               style={
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                }
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
               }
             >
-              <Text
-                accessibilityLabel="Open Source"
-                style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                Open Source
-              </Text>
+              Open Source
             </Text>
           </Text>
-        </View>
+        </Text>
       </View>
-      <View>
-        <View
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
           style={
-            {
-              "flexDirection": "row",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          2
+          . 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            2
-            . 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             <Text
+              onLongPress={[Function]}
+              onPress={[Function]}
               style={
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                }
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                ]
               }
             >
               <Text
-                onLongPress={[Function]}
-                onPress={[Function]}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#095AD2",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
                 <Text
+                  accessibilityLabel="Rocket.Chat"
                   style={
-                    {
-                      "backgroundColor": "transparent",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    }
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "color": "#095AD2",
+                      },
+                    ]
                   }
                 >
-                  <Text
-                    accessibilityLabel="Rocket.Chat"
-                    style={
-                      [
-                        {
-                          "flexShrink": 1,
-                          "fontSize": 16,
-                          "lineHeight": 22,
-                        },
-                        {
-                          "color": "#2F343D",
-                        },
-                        {
-                          "color": "#095AD2",
-                        },
-                      ]
-                    }
-                  >
-                    Rocket.Chat
-                  </Text>
+                  Rocket.Chat
                 </Text>
               </Text>
             </Text>
           </Text>
-        </View>
+        </Text>
       </View>
     </View>
   </View>
@@ -5333,65 +5325,77 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
     }
   >
     <View>
-      <View>
-        <View
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
           style={
-            {
-              "flexDirection": "row",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            • 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             <Text
               style={
                 {
                   "backgroundColor": "transparent",
-                  "flexShrink": 1,
                   "fontFamily": "Inter",
                   "fontVariant": [
                     "tabular-nums",
                   ],
-                  "fontWeight": "400",
+                  "fontWeight": "700",
                   "textAlign": "left",
                 }
               }
@@ -5400,11 +5404,393 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 style={
                   {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontVariant": [
                       "tabular-nums",
                     ],
-                    "fontWeight": "700",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="bold"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "700",
+                        "textAlign": "left",
+                      },
+                    ]
+                  }
+                >
+                  bold
+                </Text>
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
+          </Text>
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="italic"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "fontStyle": "italic",
+                      },
+                    ]
+                  }
+                >
+                  italic
+                </Text>
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
+          </Text>
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "textDecorationLine": "line-through",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="strikethrough"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "textDecorationLine": "line-through",
+                      },
+                    ]
+                  }
+                >
+                  strikethrough
+                </Text>
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
+          </Text>
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
                     "textAlign": "left",
                   }
                 }
@@ -5413,124 +5799,155 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   style={
                     {
                       "backgroundColor": "transparent",
-                      "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontVariant": [
                         "tabular-nums",
                       ],
-                      "fontWeight": "400",
+                      "fontWeight": "700",
                       "textAlign": "left",
                     }
                   }
                 >
                   <Text
-                    accessibilityLabel="bold"
                     style={
-                      [
-                        {
-                          "flexShrink": 1,
-                          "fontSize": 16,
-                          "lineHeight": 22,
-                        },
-                        {
-                          "color": "#2F343D",
-                        },
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontVariant": [
-                            "tabular-nums",
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    <Text
+                      accessibilityLabel="bold italic"
+                      style={
+                        [
+                          {
+                            "flexShrink": 1,
+                            "fontSize": 16,
+                            "lineHeight": 22,
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                          [
+                            {
+                              "fontStyle": "italic",
+                            },
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
                           ],
-                          "fontWeight": "700",
-                          "textAlign": "left",
-                        },
-                      ]
-                    }
-                  >
-                    bold
+                        ]
+                      }
+                    >
+                      bold italic
+                    </Text>
                   </Text>
                 </Text>
               </Text>
-              <Text
-                accessibilityLabel=" "
-                style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                 
-              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
             </Text>
           </Text>
-        </View>
+        </Text>
       </View>
-      <View>
-        <View
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
           style={
-            {
-              "flexDirection": "row",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            • 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             <Text
               style={
                 {
                   "backgroundColor": "transparent",
-                  "flexShrink": 1,
                   "fontFamily": "Inter",
                   "fontVariant": [
                     "tabular-nums",
                   ],
-                  "fontWeight": "400",
+                  "fontWeight": "700",
                   "textAlign": "left",
                 }
               }
@@ -5538,134 +5955,326 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               <Text
                 style={
                   {
-                    "fontStyle": "italic",
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   }
                 }
               >
                 <Text
                   style={
                     {
-                      "backgroundColor": "transparent",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "textAlign": "left",
+                      "textDecorationLine": "line-through",
                     }
                   }
                 >
                   <Text
-                    accessibilityLabel="italic"
                     style={
-                      [
-                        {
-                          "flexShrink": 1,
-                          "fontSize": 16,
-                          "lineHeight": 22,
-                        },
-                        {
-                          "color": "#2F343D",
-                        },
-                        {
-                          "fontStyle": "italic",
-                        },
-                      ]
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
                     }
                   >
-                    italic
+                    <Text
+                      accessibilityLabel="bold strikethrough"
+                      style={
+                        [
+                          {
+                            "flexShrink": 1,
+                            "fontSize": 16,
+                            "lineHeight": 22,
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                          [
+                            {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "Inter",
+                              "fontVariant": [
+                                "tabular-nums",
+                              ],
+                              "fontWeight": "700",
+                              "textAlign": "left",
+                            },
+                            {
+                              "textDecorationLine": "line-through",
+                            },
+                          ],
+                        ]
+                      }
+                    >
+                      bold strikethrough
+                    </Text>
                   </Text>
                 </Text>
               </Text>
-              <Text
-                accessibilityLabel=" "
-                style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                 
-              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
             </Text>
           </Text>
-        </View>
+        </Text>
       </View>
-      <View>
-        <View
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
           style={
-            {
-              "flexDirection": "row",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            • 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             <Text
               style={
                 {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
+                  "fontStyle": "italic",
                 }
               }
             >
               <Text
                 style={
                   {
-                    "textDecorationLine": "line-through",
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "textDecorationLine": "line-through",
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    <Text
+                      accessibilityLabel="italic strikethrough"
+                      style={
+                        [
+                          {
+                            "flexShrink": 1,
+                            "fontSize": 16,
+                            "lineHeight": 22,
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                          [
+                            {
+                              "fontStyle": "italic",
+                            },
+                            {
+                              "textDecorationLine": "line-through",
+                            },
+                          ],
+                        ]
+                      }
+                    >
+                      italic strikethrough
+                    </Text>
+                  </Text>
+                </Text>
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
+          </Text>
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   }
                 }
               >
@@ -5673,714 +6282,83 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   style={
                     {
                       "backgroundColor": "transparent",
-                      "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontVariant": [
                         "tabular-nums",
                       ],
-                      "fontWeight": "400",
+                      "fontWeight": "700",
                       "textAlign": "left",
                     }
                   }
                 >
                   <Text
-                    accessibilityLabel="strikethrough"
                     style={
-                      [
-                        {
-                          "flexShrink": 1,
-                          "fontSize": 16,
-                          "lineHeight": 22,
-                        },
-                        {
-                          "color": "#2F343D",
-                        },
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    <Text
+                      style={
                         {
                           "textDecorationLine": "line-through",
-                        },
-                      ]
-                    }
-                  >
-                    strikethrough
-                  </Text>
-                </Text>
-              </Text>
-              <Text
-                accessibilityLabel=" "
-                style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                 
-              </Text>
-            </Text>
-          </Text>
-        </View>
-      </View>
-      <View>
-        <View
-          style={
-            {
-              "flexDirection": "row",
-            }
-          }
-        >
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            • 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            <Text
-              style={
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                }
-              }
-            >
-              <Text
-                style={
-                  {
-                    "fontStyle": "italic",
-                  }
-                }
-              >
-                <Text
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "700",
-                        "textAlign": "left",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
-                      }
-                    >
-                      <Text
-                        accessibilityLabel="bold italic"
-                        style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                            [
-                              {
-                                "fontStyle": "italic",
-                              },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontVariant": [
-                                  "tabular-nums",
-                                ],
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                            ],
-                          ]
-                        }
-                      >
-                        bold italic
-                      </Text>
-                    </Text>
-                  </Text>
-                </Text>
-              </Text>
-              <Text
-                accessibilityLabel=" "
-                style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                 
-              </Text>
-            </Text>
-          </Text>
-        </View>
-      </View>
-      <View>
-        <View
-          style={
-            {
-              "flexDirection": "row",
-            }
-          }
-        >
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            • 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            <Text
-              style={
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                }
-              }
-            >
-              <Text
-                style={
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontVariant": [
-                      "tabular-nums",
-                    ],
-                    "fontWeight": "700",
-                    "textAlign": "left",
-                  }
-                }
-              >
-                <Text
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "textDecorationLine": "line-through",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
-                      }
-                    >
-                      <Text
-                        accessibilityLabel="bold strikethrough"
-                        style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontVariant": [
-                                  "tabular-nums",
-                                ],
-                                "fontWeight": "700",
-                                "textAlign": "left",
-                              },
-                              {
-                                "textDecorationLine": "line-through",
-                              },
-                            ],
-                          ]
-                        }
-                      >
-                        bold strikethrough
-                      </Text>
-                    </Text>
-                  </Text>
-                </Text>
-              </Text>
-              <Text
-                accessibilityLabel=" "
-                style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                 
-              </Text>
-            </Text>
-          </Text>
-        </View>
-      </View>
-      <View>
-        <View
-          style={
-            {
-              "flexDirection": "row",
-            }
-          }
-        >
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            • 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            <Text
-              style={
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                }
-              }
-            >
-              <Text
-                style={
-                  {
-                    "fontStyle": "italic",
-                  }
-                }
-              >
-                <Text
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "textDecorationLine": "line-through",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
-                      }
-                    >
-                      <Text
-                        accessibilityLabel="italic strikethrough"
-                        style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                            [
-                              {
-                                "fontStyle": "italic",
-                              },
-                              {
-                                "textDecorationLine": "line-through",
-                              },
-                            ],
-                          ]
-                        }
-                      >
-                        italic strikethrough
-                      </Text>
-                    </Text>
-                  </Text>
-                </Text>
-              </Text>
-              <Text
-                accessibilityLabel=" "
-                style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                 
-              </Text>
-            </Text>
-          </Text>
-        </View>
-      </View>
-      <View>
-        <View
-          style={
-            {
-              "flexDirection": "row",
-            }
-          }
-        >
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            • 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            <Text
-              style={
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                }
-              }
-            >
-              <Text
-                style={
-                  {
-                    "fontStyle": "italic",
-                  }
-                }
-              >
-                <Text
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontVariant": [
-                        "tabular-nums",
-                      ],
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "700",
-                        "textAlign": "left",
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontVariant": [
-                            "tabular-nums",
-                          ],
-                          "fontWeight": "400",
-                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         style={
                           {
-                            "textDecorationLine": "line-through",
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontVariant": [
+                              "tabular-nums",
+                            ],
+                            "fontWeight": "400",
+                            "textAlign": "left",
                           }
                         }
                       >
                         <Text
+                          accessibilityLabel="bold italic strikethrough"
                           style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontVariant": [
-                                "tabular-nums",
-                              ],
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="bold italic strikethrough"
-                            style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
                               [
                                 {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
+                                  "fontStyle": "italic",
                                 },
                                 {
-                                  "color": "#2F343D",
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontVariant": [
+                                    "tabular-nums",
+                                  ],
+                                  "fontWeight": "700",
+                                  "textAlign": "left",
                                 },
-                                [
-                                  {
-                                    "fontStyle": "italic",
-                                  },
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontVariant": [
-                                      "tabular-nums",
-                                    ],
-                                    "fontWeight": "700",
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "textDecorationLine": "line-through",
-                                  },
-                                ],
-                              ]
-                            }
-                          >
-                            bold italic strikethrough
-                          </Text>
+                                {
+                                  "textDecorationLine": "line-through",
+                                },
+                              ],
+                            ]
+                          }
+                        >
+                          bold italic strikethrough
                         </Text>
                       </Text>
                     </Text>
@@ -6389,7 +6367,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               </Text>
             </Text>
           </Text>
-        </View>
+        </Text>
       </View>
     </View>
   </View>
@@ -9255,118 +9233,248 @@ exports[`Story Snapshots: NestedLists should match snapshot 1`] = `
     }
   >
     <View>
-      <View>
-        <View
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
           style={
-            {
-              "flexDirection": "row",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
-            • 
+            <Text
+              accessibilityLabel="item 1"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              item 1
+            </Text>
           </Text>
-          <Text
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "paddingStart": 16,
+          }
+        }
+      >
+        <View>
+          <View
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "flexDirection": "row",
+              }
             }
           >
             <Text
               style={
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                }
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              • 
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
               }
             >
               <Text
-                accessibilityLabel="item 1"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
                 }
               >
-                item 1
+                <Text
+                  accessibilityLabel="subitem A"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
+                  }
+                >
+                  subitem A
+                </Text>
               </Text>
             </Text>
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "paddingStart": 16,
+          </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
             }
-          }
-        >
-          <View>
-            <View>
-              <View
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              • 
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
                 style={
                   {
-                    "flexDirection": "row",
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   }
                 }
               >
                 <Text
+                  accessibilityLabel="subitem B"
                   style={
                     [
                       {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
+                        "flexShrink": 1,
                         "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
                         "lineHeight": 22,
-                        "textAlign": "left",
                       },
                       {
                         "color": "#2F343D",
@@ -9374,343 +9482,427 @@ exports[`Story Snapshots: NestedLists should match snapshot 1`] = `
                     ]
                   }
                 >
-                  • 
+                  subitem B
                 </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                      },
-                    ]
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      }
-                    }
-                  >
-                    <Text
-                      accessibilityLabel="subitem A"
-                      style={
-                        [
-                          {
-                            "flexShrink": 1,
-                            "fontSize": 16,
-                            "lineHeight": 22,
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      subitem A
-                    </Text>
-                  </Text>
-                </Text>
-              </View>
-            </View>
-            <View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                      },
-                    ]
-                  }
-                >
-                  • 
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                      },
-                    ]
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      }
-                    }
-                  >
-                    <Text
-                      accessibilityLabel="subitem B"
-                      style={
-                        [
-                          {
-                            "flexShrink": 1,
-                            "fontSize": 16,
-                            "lineHeight": 22,
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      subitem B
-                    </Text>
-                  </Text>
-                </Text>
-              </View>
-            </View>
+              </Text>
+            </Text>
           </View>
         </View>
       </View>
-      <View>
-        <View
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
           style={
-            {
-              "flexDirection": "row",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            • 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             <Text
+              accessibilityLabel="item 2"
               style={
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                }
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
               }
             >
-              <Text
-                accessibilityLabel="item 2"
-                style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                item 2
-              </Text>
+              item 2
             </Text>
           </Text>
-        </View>
+        </Text>
       </View>
     </View>
     <View>
-      <View>
-        <View
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
           style={
-            {
-              "flexDirection": "row",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          1
+          . 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
-            1
-            . 
+            <Text
+              accessibilityLabel="first"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              first
+            </Text>
           </Text>
-          <Text
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "paddingStart": 16,
+          }
+        }
+      >
+        <View>
+          <View
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "flexDirection": "row",
+              }
             }
           >
             <Text
               style={
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                }
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
               }
             >
               <Text
-                accessibilityLabel="first"
+                allowFontScaling={false}
+                selectable={false}
                 style={
                   [
                     {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
                       "color": "#2F343D",
+                      "fontSize": 24,
                     },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
                   ]
                 }
+                testID="task-list-checked"
               >
-                first
+                
               </Text>
             </Text>
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "paddingStart": 16,
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="done"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
+                  }
+                >
+                  done
+                </Text>
+              </Text>
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
             }
-          }
-        >
-          <View>
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+                testID="task-list-unchecked"
+              >
+                
+              </Text>
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="todo"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
+                  }
+                >
+                  todo
+                </Text>
+              </Text>
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "paddingStart": 16,
+              }
+            }
+          >
             <View>
               <View
                 style={
@@ -9734,42 +9926,33 @@ exports[`Story Snapshots: NestedLists should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                      },
+                      {
                         "color": "#2F343D",
                       },
                     ]
                   }
                 >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                    testID="task-list-checked"
-                  >
-                    
-                  </Text>
+                  1
+                  . 
                 </Text>
                 <Text
                   style={
                     [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
                       {
                         "backgroundColor": "transparent",
                         "flexShrink": 1,
@@ -9801,7 +9984,7 @@ exports[`Story Snapshots: NestedLists should match snapshot 1`] = `
                     }
                   >
                     <Text
-                      accessibilityLabel="done"
+                      accessibilityLabel="deep"
                       style={
                         [
                           {
@@ -9815,336 +9998,113 @@ exports[`Story Snapshots: NestedLists should match snapshot 1`] = `
                         ]
                       }
                     >
-                      done
+                      deep
                     </Text>
                   </Text>
                 </Text>
-              </View>
-            </View>
-            <View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                      },
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                    testID="task-list-unchecked"
-                  >
-                    
-                  </Text>
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#2F343D",
-                      },
-                    ]
-                  }
-                >
-                  <Text
-                    style={
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontVariant": [
-                          "tabular-nums",
-                        ],
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      }
-                    }
-                  >
-                    <Text
-                      accessibilityLabel="todo"
-                      style={
-                        [
-                          {
-                            "flexShrink": 1,
-                            "fontSize": 16,
-                            "lineHeight": 22,
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      todo
-                    </Text>
-                  </Text>
-                </Text>
-              </View>
-              <View
-                style={
-                  {
-                    "paddingStart": 16,
-                  }
-                }
-              >
-                <View>
-                  <View>
-                    <View
-                      style={
-                        {
-                          "flexDirection": "row",
-                        }
-                      }
-                    >
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontVariant": [
-                                "tabular-nums",
-                              ],
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "fontVariant": [
-                                "tabular-nums",
-                              ],
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
-                        }
-                      >
-                        1
-                        . 
-                      </Text>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontVariant": [
-                                "tabular-nums",
-                              ],
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontVariant": [
-                                "tabular-nums",
-                              ],
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontVariant": [
-                                "tabular-nums",
-                              ],
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="deep"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#2F343D",
-                                },
-                              ]
-                            }
-                          >
-                            deep
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
               </View>
             </View>
           </View>
         </View>
       </View>
-      <View>
-        <View
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
           style={
-            {
-              "flexDirection": "row",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          2
+          . 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            2
-            . 
-          </Text>
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
             <Text
+              accessibilityLabel="second"
               style={
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontVariant": [
-                    "tabular-nums",
-                  ],
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                }
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
               }
             >
-              <Text
-                accessibilityLabel="second"
-                style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                second
-              </Text>
+              second
             </Text>
           </Text>
-        </View>
+        </Text>
       </View>
     </View>
   </View>

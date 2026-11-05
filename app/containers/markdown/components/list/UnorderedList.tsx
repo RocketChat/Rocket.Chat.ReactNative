@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { type UnorderedList as UnorderedListProps } from '@rocket.chat/message-parser';
 import { View, Text } from 'react-native';
 
@@ -17,7 +18,7 @@ const UnorderedList = ({ value, renderList }: IUnorderedListProps) => {
 	return (
 		<View>
 			{value.map((item, index) => (
-				<View key={index}>
+				<Fragment key={index}>
 					<View style={styles.row}>
 						<Text style={[styles.text, { color: themes[theme].fontDefault }]}>{'\u2022 '}</Text>
 						<Text style={[styles.inline, { color: themes[theme].fontDefault }]}>
@@ -25,7 +26,7 @@ const UnorderedList = ({ value, renderList }: IUnorderedListProps) => {
 						</Text>
 					</View>
 					<NestedLists lists={item.nested} renderList={renderList} />
-				</View>
+				</Fragment>
 			))}
 		</View>
 	);

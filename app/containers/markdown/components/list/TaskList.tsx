@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Text, View } from 'react-native';
 import { type Tasks as TasksProps } from '@rocket.chat/message-parser';
 
@@ -17,7 +18,7 @@ const TaskList = ({ value = [], renderList }: ITasksProps) => {
 	return (
 		<View>
 			{value.map((item, index) => (
-				<View key={index}>
+				<Fragment key={index}>
 					<View style={styles.row}>
 						<Text style={[styles.text, { color: colors.fontDefault }]}>
 							<CustomIcon
@@ -31,7 +32,7 @@ const TaskList = ({ value = [], renderList }: ITasksProps) => {
 						</Text>
 					</View>
 					<NestedLists lists={item.nested} renderList={renderList} />
-				</View>
+				</Fragment>
 			))}
 		</View>
 	);
