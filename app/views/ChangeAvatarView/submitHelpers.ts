@@ -1,18 +1,20 @@
 import I18n from '~/i18n';
+import { getServerError } from '~/lib/methods/helpers/getServerError';
 import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
 
 export const handleError = (e: any, action: string) => {
 	if (isTwoFactorCancelled(e)) {
 		throw e;
 	}
-	if (e.data && e.data.error.includes('[error-too-many-requests]')) {
+	if (e.data?.error?.includes('[error-too-many-requests]')) {
 		throw new Error(e.data.error);
 	}
-	if (e.error && e.error === 'error-avatar-invalid-url') {
-		throw new Error(I18n.t(e.error, { url: e.details.url }));
+	const { code } = getServerError(e);
+	if (code === 'error-avatar-invalid-url') {
+		throw new Error(I18n.t(code, { url: (e.data?.details ?? e.details)?.url }));
 	}
-	if (I18n.isTranslated(e.error)) {
-		throw new Error(I18n.t(e.error));
+	if (code && I18n.isTranslated(code)) {
+		throw new Error(I18n.t(code, { action: I18n.t(action) }));
 	}
 	throw new Error(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
 };
