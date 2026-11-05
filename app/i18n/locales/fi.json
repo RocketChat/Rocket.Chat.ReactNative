@@ -793,6 +793,8 @@
   "Settings": "Asetukset",
   "Settings_succesfully_changed": "Asetukset on muutettu!",
   "Share": "Jaa",
+  "Share_encrypted_room_key_missing": "Odotetaan salausavaimia",
+  "Share_encrypted_room_password_required": "Anna E2EE-salasanasi jakaaksesi tähän",
   "Share_Link": "Jaa linkki",
   "Share_no_valid_attachments": "Jaettua tiedostoa ei löytynyt",
   "Share_this_app": "Jaa tämä sovellus",

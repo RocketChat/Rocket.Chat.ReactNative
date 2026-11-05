@@ -832,6 +832,8 @@
   "Settings": "அமைப்புகள்",
   "Settings_succesfully_changed": "அமைப்புகள் வெற்றிகரமாக மாற்றப்பட்டன!",
   "Share": "பகிரு",
+  "Share_encrypted_room_key_missing": "குறியாக்க விசைகளுக்காகக் காத்திருக்கிறது",
+  "Share_encrypted_room_password_required": "இங்கே பகிர உங்கள் E2EE கடவுச்சொல்லை உள்ளிடவும்",
   "Share_Link": "இணைப்பு பகிரு",
   "Share_no_valid_attachments": "பகிரப்பட்ட கோப்பு கிடைக்கவில்லை",
   "Share_this_app": "இந்த ஆப்பை பகிரு",

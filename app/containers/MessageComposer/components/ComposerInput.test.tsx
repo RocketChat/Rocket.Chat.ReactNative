@@ -86,6 +86,7 @@ const renderInput = ({
 		</MessageActionProvider>
 	);
 	const rendered = render(tree);
+	inputRef.current?.setNativeProps.mockClear();
 	return { ...rendered, composerRef, inputRef, messageActionStore };
 };
 
@@ -131,14 +132,34 @@ describe('ComposerInput', () => {
 		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  programmatic text  ' });
 	});
 
-	it('resets the native text prop when clearing so the same text can be set again', () => {
+	it('clears the native input after sending through a blank text, never the sent one, so a multi-line input shrinks back', () => {
 		const { composerRef, inputRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+		const message = 'line 1\nline 2\nline 3\nline 4';
 
-		act(() => composerRef.current?.setInput('edit'));
-		act(() => composerRef.current?.setInput(''));
+		fireEvent.changeText(input, message);
+		let sent: string | undefined;
+		act(() => {
+			sent = composerRef.current?.getTextAndClear();
+		});
 
-		expect(inputRef.current?.setNativeProps).toHaveBeenLastCalledWith({ text: '' });
-		expect(inputRef.current?.clear).toHaveBeenCalledTimes(1);
+		expect(sent).toBe(message);
+		expect(composerRef.current?.getText()).toBe('');
+		const nativeTexts: string[] = inputRef.current?.setNativeProps.mock.calls.map(([props]: [{ text: string }]) => props.text);
+		expect(inputRef.current?.clear).toHaveBeenCalled();
+		expect(nativeTexts.at(-1)).toBe('');
+		expect(nativeTexts.slice(0, -1).some(text => text && text !== message)).toBe(true);
+		expect(nativeTexts).not.toContain(message);
+	});
+
+	it('resets the native text prop when the user erases everything, so the same text can be set again', () => {
+		const { inputRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+
+		fireEvent.changeText(input, '@');
+		fireEvent.changeText(input, '');
+
+		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: '' }]]);
 	});
 
 	it('passes the typed raw value to debounced autocomplete before the input text is trimmed', () => {

@@ -831,6 +831,8 @@
   "Settings": "సెట్టింగులు",
   "Settings_succesfully_changed": "సెట్టింగులను విజయవంతంగా మార్చారు!",
   "Share": "భాగస్వామ్యం",
+  "Share_encrypted_room_key_missing": "ఎన్‌క్రిప్షన్ కీల కోసం వేచి ఉంది",
+  "Share_encrypted_room_password_required": "ఇక్కడ భాగస్వామ్యం చేయడానికి మీ E2EE పాస్‌వర్డ్‌ను నమోదు చేయండి",
   "Share_Link": "లింక్‌ను భాగస్వామ్యం చేయండి",
   "Share_no_valid_attachments": "భాగస్వామ్యం చేసిన ఫైలు దొరకలేదు",
   "Share_this_app": "ఈ యాప్‌ను భాగస్వామ్యం చేయండి",
