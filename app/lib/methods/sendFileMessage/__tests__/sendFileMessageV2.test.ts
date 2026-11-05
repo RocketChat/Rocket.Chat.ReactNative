@@ -11,6 +11,13 @@ jest.mock('~/lib/encryption', () => ({ Encryption: { encryptFile: jest.fn() } })
 
 const RESPONSE = { file: { _id: 'file1', url: '/file/1' } } as any;
 
+const confirmResponse = (status: number, body: string, retryAfter: string | null = null) => ({
+	ok: status >= 200 && status < 300,
+	status,
+	headers: { get: (name: string) => (name === 'Retry-After' ? retryAfter : null) },
+	text: () => Promise.resolve(body)
+});
+
 const prepare = async ({
 	file = {},
 	encryption = {},
@@ -30,7 +37,7 @@ const prepare = async ({
 beforeEach(() => {
 	jest.clearAllMocks();
 	(copyFileToCacheDirectoryIfNeeded as jest.Mock).mockResolvedValue('file:///cache/pic.jpg');
-	(fetch as jest.Mock).mockResolvedValue({ ok: true });
+	(fetch as jest.Mock).mockResolvedValue(confirmResponse(200, '{"success":true}'));
 });
 
 describe('sendFileMessageV2', () => {
@@ -72,12 +79,9 @@ describe('sendFileMessageV2', () => {
 	});
 
 	it('rejects a confirmation the server refused, carrying its status and message', async () => {
-		(fetch as jest.Mock).mockResolvedValue({
-			ok: false,
-			status: 429,
-			text: () =>
-				Promise.resolve('{"error":"You must wait 12 seconds before trying this endpoint again. [error-too-many-requests]"}')
-		});
+		(fetch as jest.Mock).mockResolvedValue(
+			confirmResponse(429, '{"error":"You must wait 12 seconds before trying this endpoint again. [error-too-many-requests]"}')
+		);
 		const { afterUpload } = await prepare();
 
 		await expect(afterUpload(RESPONSE)).rejects.toMatchObject({
@@ -85,5 +89,12 @@ describe('sendFileMessageV2', () => {
 			status: 429,
 			serverMessage: expect.stringContaining('wait 12 seconds')
 		});
+	});
+
+	it('rejects a confirmation a proxy rate limited, carrying the wait its Retry-After header asked for', async () => {
+		(fetch as jest.Mock).mockResolvedValue(confirmResponse(429, 'Too Many Requests', '30'));
+		const { afterUpload } = await prepare();
+
+		await expect(afterUpload(RESPONSE)).rejects.toMatchObject({ status: 429, retryAfterSeconds: 30 });
 	});
 });
