@@ -232,8 +232,8 @@ describe('loadMessagesForRoom', () => {
 		);
 	});
 
-	it('falls back to settings.Hide_System_Messages when sub.sysMes is a boolean (not an array)', async () => {
-		mockedGetSubscriptionByRoomId.mockResolvedValue({ sysMes: true } as any);
+	it.each([[true], [['ul']]])('applies settings.Hide_System_Messages when sub.sysMes is %j', async sysMes => {
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ sysMes } as any);
 
 		const firstBatch = buildHiddenBatch('first', 50);
 		const secondBatch = Array.from({ length: 50 }, (_, index) =>
@@ -250,26 +250,6 @@ describe('loadMessagesForRoom', () => {
 		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
 
 		// settings.Hide_System_Messages = ['uj'] (from top-level mock) → first batch hidden → must recurse
-		expect(mockedSdkGet).toHaveBeenCalledTimes(2);
-	});
-
-	it('applies settings.Hide_System_Messages even when sub.sysMes is a list without that type', async () => {
-		mockedGetSubscriptionByRoomId.mockResolvedValue({ sysMes: ['ul'] } as any);
-
-		const firstBatch = buildHiddenBatch('first', 50);
-		const secondBatch = Array.from({ length: 50 }, (_, index) =>
-			buildMessage({
-				id: `second-${index + 1}`,
-				ts: new Date(Date.UTC(2023, 11, 31, 23, 59, 50 - index)).toISOString()
-			})
-		);
-
-		mockedSdkGet
-			.mockResolvedValueOnce({ success: true, messages: firstBatch } as any)
-			.mockResolvedValueOnce({ success: true, messages: secondBatch } as any);
-
-		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
-
 		expect(mockedSdkGet).toHaveBeenCalledTimes(2);
 	});
 
