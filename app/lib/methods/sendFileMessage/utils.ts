@@ -17,7 +17,7 @@ export interface IUploadSlot {
 	upload?: IFileUpload;
 }
 
-export const uploadQueue: { [index: string]: IUploadSlot } = {};
+const uploadQueue: { [index: string]: IUploadSlot } = {};
 
 export const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 

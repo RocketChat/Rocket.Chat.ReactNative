@@ -10,8 +10,7 @@ import {
 	isUploadActive,
 	recordUploadFailure,
 	showUploadFailureToast,
-	releaseUploadSlot,
-	uploadQueue
+	releaseUploadSlot
 } from '../utils';
 import { UploadHttpError } from '~/lib/methods/helpers/fileUpload/UploadHttpError';
 import { getUploadByPath } from '~/lib/database/services/Upload';
@@ -39,13 +38,13 @@ jest.mock('~/lib/database', () => ({
 const fileInfo = { rid: 'GENERAL', path: '/tmp/pic.jpg', name: 'pic.jpg' } as any;
 const uploadPath = getUploadPath(fileInfo.path, fileInfo.rid);
 
-beforeEach(() => {
+beforeEach(async () => {
+	await cancelUpload({ path: fileInfo.path } as any, fileInfo.rid);
 	(getUploadByPath as jest.Mock).mockReset();
 	mockCreate.mockReset();
 	(Alert.alert as jest.Mock).mockReset();
 	(require('expo-file-system/legacy').copyAsync as jest.Mock).mockClear();
 	(require('~/lib/methods/helpers/showToast').showToast as jest.Mock).mockClear();
-	Object.keys(uploadQueue).forEach(k => delete uploadQueue[k]);
 });
 
 describe('cancelUpload', () => {
@@ -80,7 +79,7 @@ describe('getUploadPath / isUploadActive', () => {
 		expect(getUploadPath('pic.jpg', 'GENERAL')).toBe('pic.jpg-GENERAL');
 	});
 
-	it('isUploadActive true when path present in uploadQueue, false otherwise', () => {
+	it('isUploadActive true while the file holds an upload slot in the room, false otherwise', () => {
 		expect(isUploadActive('/tmp/pic.jpg', 'GENERAL')).toBe(false);
 		claimUploadSlot(getUploadPath('/tmp/pic.jpg', 'GENERAL'));
 		expect(isUploadActive('/tmp/pic.jpg', 'GENERAL')).toBe(true);
@@ -167,19 +166,23 @@ describe('claimUploadSlot', () => {
 
 		expect(() => claimUploadSlot(uploadPath)).toThrow('Upload in progress');
 		expect(Alert.alert).toHaveBeenCalledWith('FileUpload_Error', 'Upload_in_progress');
-		expect(uploadQueue[uploadPath]).toBe(running);
+		expect(isUploadActive(fileInfo.path, fileInfo.rid)).toBe(true);
+		releaseUploadSlot(uploadPath, running);
+		expect(isUploadActive(fileInfo.path, fileInfo.rid)).toBe(false);
 	});
 });
 
 describe('releaseUploadSlot', () => {
-	it('leaves the slot of a newer send alone', () => {
+	it('leaves the slot of a newer send alone', async () => {
 		const cancelled = claimUploadSlot(uploadPath);
-		delete uploadQueue[uploadPath];
+		await cancelUpload({ path: fileInfo.path } as any, fileInfo.rid);
 		const newer = claimUploadSlot(uploadPath);
 
 		releaseUploadSlot(uploadPath, cancelled);
 
-		expect(uploadQueue[uploadPath]).toBe(newer);
+		expect(isUploadActive(fileInfo.path, fileInfo.rid)).toBe(true);
+		releaseUploadSlot(uploadPath, newer);
+		expect(isUploadActive(fileInfo.path, fileInfo.rid)).toBe(false);
 	});
 });
 

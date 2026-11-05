@@ -6,8 +6,8 @@ import {
 	createUploadRecord,
 	isUploadActive,
 	recordUploadFailure,
-	showUploadFailureToast,
-	uploadQueue
+	releaseUploadSlot,
+	showUploadFailureToast
 } from '../utils';
 import FileUpload from '../../helpers/fileUpload';
 import { UploadHttpError } from '../../helpers/fileUpload/UploadHttpError';
@@ -50,10 +50,10 @@ const run = (prepared: { afterUpload?: (response: unknown) => Promise<void> } = 
 
 const isActive = () => isUploadActive('/tmp/pic.jpg', 'GENERAL');
 
-beforeEach(() => {
+beforeEach(async () => {
+	await cancelUpload({ path: '/tmp/pic.jpg' } as any, 'GENERAL');
 	jest.clearAllMocks();
 	jest.spyOn(Math, 'random').mockReturnValue(0.5);
-	Object.keys(uploadQueue).forEach(key => delete uploadQueue[key]);
 	(createUploadProgressCallback as jest.Mock).mockReturnValue(jest.fn());
 	uploadSending(jest.fn().mockResolvedValue(RESPONSE));
 });
@@ -67,7 +67,9 @@ describe('uploadFileMessage', () => {
 
 		expect(createUploadRecord).not.toHaveBeenCalled();
 		expect(prepare).not.toHaveBeenCalled();
-		expect(uploadQueue[UPLOAD_PATH]).toBe(running);
+		expect(isActive()).toBe(true);
+		releaseUploadSlot(UPLOAD_PATH, running);
+		expect(isActive()).toBe(false);
 	});
 
 	it('holds the slot while the sender is still preparing the upload', async () => {
