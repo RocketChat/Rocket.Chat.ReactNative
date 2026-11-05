@@ -1,5 +1,5 @@
 import { UploadHttpError } from '../fileUpload/UploadHttpError';
-import { parseUploadResponse, throwIfUploadFailed } from '../parseUploadResponse';
+import { parseUploadResponse, throwIfHttpError } from '../parseUploadResponse';
 
 const getError = (status: number, body: string, retryAfterSeconds?: number) => {
 	try {
@@ -38,7 +38,7 @@ describe('parseUploadResponse', () => {
 describe('server message of a failed response', () => {
 	const parseServerMessage = (body: string) => {
 		try {
-			throwIfUploadFailed(500, body);
+			throwIfHttpError(500, body);
 		} catch (error) {
 			return (error as UploadHttpError).serverMessage;
 		}

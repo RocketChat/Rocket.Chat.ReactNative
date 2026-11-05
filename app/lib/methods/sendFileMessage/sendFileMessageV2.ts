@@ -4,7 +4,7 @@ import { copyFileToCacheDirectoryIfNeeded } from './utils';
 import { uploadFileMessage } from './uploadFileMessage';
 import { type IFormData } from '../helpers/fileUpload/definitions';
 import { getUploadHeaders } from '../helpers/getUploadHeaders';
-import { throwIfUploadFailed } from '../helpers/parseUploadResponse';
+import { throwIfHttpError } from '../helpers/parseUploadResponse';
 import { parseRetryAfter } from '../helpers/retryAfter';
 import fetch from '../helpers/fetch';
 
@@ -62,7 +62,7 @@ export async function sendFileMessageV2(
 							content
 						})
 					});
-					throwIfUploadFailed(
+					throwIfHttpError(
 						confirmResponse.status,
 						await confirmResponse.text(),
 						parseRetryAfter(confirmResponse.headers.get('Retry-After'))
