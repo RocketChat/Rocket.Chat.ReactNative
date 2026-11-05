@@ -49,6 +49,17 @@ describe('sendFileMessageV2', () => {
 		expect(formData).toEqual([{ name: 'file', type: 'image/jpeg', filename: 'pic.jpg', uri: 'file:///cache/pic.jpg' }]);
 	});
 
+	it('fails the upload when encryption throws before the upload starts', async () => {
+		const encryptionError = new Error('Room encryption key is not available');
+		(Encryption.encryptFile as jest.Mock).mockRejectedValue(encryptionError);
+		await sendFileMessageV2('GENERAL', { path: '/tmp/pic.jpg', name: 'pic.jpg' } as any, undefined, 'https://open.rocket.chat', {
+			id: 'u1',
+			token: 't1'
+		});
+
+		await expect((uploadFileMessage as jest.Mock).mock.calls[0][0].prepare()).rejects.toBe(encryptionError);
+	});
+
 	it('sends the encrypted content next to the file', async () => {
 		const { formData } = await prepare({ encryption: { fileContent: { key: 'k' } } });
 
