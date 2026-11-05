@@ -1,4 +1,9 @@
 export type AutoTranslateEndpoints = {
+	'autotranslate.getSupportedLanguages': {
+		GET: (params: { targetLanguage: string }) => {
+			languages: { language: string; name: string }[];
+		};
+	};
 	'autotranslate.translateMessage': {
 		POST: (params: { messageId: string; targetLanguage: string }) => void;
 	};
