@@ -1,10 +1,18 @@
-import { type TSendFileMessageFileInfo } from '~/definitions';
+import { type TSendFileMessageFileInfo, type TUploadModel } from '~/definitions';
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
 import database from '~/lib/database';
 import FileUpload from '../helpers/fileUpload';
-import { type IFileUpload, type IFormData, type TUploadHeaders } from '../helpers/fileUpload/definitions';
-import { createUploadProgressCallback, createUploadRecord, finalizeFailedUpload, releaseUploadSlot } from './utils';
-import { retryWhileRateLimited, uploadWithRetry } from './uploadWithRetry';
+import { type IFormData, type TUploadHeaders } from '../helpers/fileUpload/definitions';
+import {
+	claimUploadSlot,
+	createUploadProgressCallback,
+	createUploadRecord,
+	getUploadPath,
+	type IUploadSlot,
+	recordUploadFailure,
+	releaseUploadSlot
+} from './utils';
+import { retryWhileRateLimited } from './retryWhileRateLimited';
 
 interface IPreparedUpload {
 	url: string;
@@ -12,6 +20,33 @@ interface IPreparedUpload {
 	formData: IFormData[];
 	afterUpload?: (response: TRoomsMediaResponse) => Promise<void>;
 }
+
+const sendPreparedUpload = async (
+	uploadRecord: TUploadModel,
+	slot: IUploadSlot,
+	prepare: () => Promise<IPreparedUpload>
+): Promise<void> => {
+	const db = database.active;
+	const { signal } = slot.controller;
+	const { url, headers, formData, afterUpload } = await prepare();
+
+	const updateProgress = createUploadProgressCallback(db, uploadRecord);
+	const resetProgress = () => updateProgress(0, 1);
+	const response = await retryWhileRateLimited(
+		signal,
+		() => {
+			slot.upload = new FileUpload(url, headers, formData, updateProgress);
+			return slot.upload.send();
+		},
+		resetProgress
+	);
+	if (afterUpload) {
+		await retryWhileRateLimited(signal, () => afterUpload(response), resetProgress);
+	}
+	await db.write(async () => {
+		await uploadRecord.destroyPermanently();
+	});
+};
 
 export async function uploadFileMessage({
 	rid,
@@ -24,35 +59,21 @@ export async function uploadFileMessage({
 	tmid: string | undefined;
 	prepare: () => Promise<IPreparedUpload>;
 }): Promise<void> {
-	const uploadRecord = await createUploadRecord({ rid, fileInfo, tmid });
-	const uploadPath = uploadRecord.id;
-
-	let upload: IFileUpload | null = null;
+	const uploadPath = getUploadPath(fileInfo.path, rid);
+	const slot = claimUploadSlot(uploadPath);
+	let uploadRecord: TUploadModel | undefined;
 	try {
-		const db = database.active;
-		const { url, headers, formData, afterUpload } = await prepare();
-
-		const updateProgress = createUploadProgressCallback(db, uploadRecord);
-		const response = await uploadWithRetry(
-			uploadPath,
-			() => {
-				upload = new FileUpload(url, headers, formData, updateProgress);
-				return upload;
-			},
-			() => updateProgress(0, 1)
-		);
-		if (afterUpload) {
-			await retryWhileRateLimited(
-				uploadPath,
-				() => ({ slot: upload, result: afterUpload(response) }),
-				async () => {}
-			);
-		}
-		await db.write(async () => {
-			await uploadRecord.destroyPermanently();
-		});
-		releaseUploadSlot(uploadPath, upload);
+		uploadRecord = await createUploadRecord({ rid, fileInfo, tmid });
+		await sendPreparedUpload(uploadRecord, slot, prepare);
 	} catch (e) {
-		await finalizeFailedUpload({ uploadPath, error: e, upload });
+		if (slot.controller.signal.aborted) {
+			return;
+		}
+		if (uploadRecord) {
+			await recordUploadFailure(uploadRecord, e);
+		}
+		throw e;
+	} finally {
+		releaseUploadSlot(uploadPath, slot);
 	}
 }

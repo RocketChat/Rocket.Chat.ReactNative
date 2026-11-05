@@ -1,18 +1,29 @@
 import { uploadFileMessage } from '../uploadFileMessage';
-import { createUploadProgressCallback, createUploadRecord, finalizeFailedUpload, releaseUploadSlot } from '../utils';
-import { uploadWithRetry } from '../uploadWithRetry';
+import {
+	cancelUpload,
+	claimUploadSlot,
+	createUploadProgressCallback,
+	createUploadRecord,
+	isUploadActive,
+	recordUploadFailure,
+	uploadQueue
+} from '../utils';
 import FileUpload from '../../helpers/fileUpload';
 import { UploadHttpError } from '../../helpers/fileUpload/UploadHttpError';
 
 jest.mock('../utils', () => ({
+	...jest.requireActual('../utils'),
 	createUploadProgressCallback: jest.fn(),
 	createUploadRecord: jest.fn(),
-	finalizeFailedUpload: jest.fn(),
-	releaseUploadSlot: jest.fn(),
-	ownsUploadSlot: jest.fn(() => true),
-	uploadRetryWaits: {}
+	recordUploadFailure: jest.fn()
 }));
-jest.mock('../uploadWithRetry', () => ({ ...jest.requireActual('../uploadWithRetry'), uploadWithRetry: jest.fn() }));
+jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
+jest.mock('~/i18n', () => ({ t: (k: string) => k }));
+jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
+jest.mock('~/lib/database/services/Upload', () => ({ getUploadByPath: jest.fn() }));
+jest.mock('expo-file-system/legacy', () => ({}));
+jest.mock('@nozbe/watermelondb/RawRecord', () => ({ sanitizedRaw: jest.fn() }));
 jest.mock('../../helpers/fileUpload', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/database', () => ({
 	__esModule: true,
@@ -23,15 +34,7 @@ const UPLOAD_PATH = '/tmp/pic.jpg-GENERAL';
 const RESPONSE = { file: { _id: 'file1', url: '/file/1' } };
 const PREPARED = { url: 'https://open.rocket.chat/api/v1/rooms.media/GENERAL', headers: { 'X-Auth-Token': 't1' }, formData: [] };
 
-const firstAttempt = () => (FileUpload as jest.Mock).mock.instances[0];
-
-beforeEach(() => {
-	jest.clearAllMocks();
-	(uploadWithRetry as jest.Mock).mockImplementation(async (_path: string, createUpload: () => unknown) => {
-		createUpload();
-		return RESPONSE;
-	});
-});
+const uploadSending = (send: jest.Mock) => (FileUpload as jest.Mock).mockImplementation(() => ({ send, cancel: jest.fn() }));
 
 const arrange = () => {
 	const record = { id: UPLOAD_PATH, destroyPermanently: jest.fn() };
@@ -39,27 +42,46 @@ const arrange = () => {
 	return record;
 };
 
-const run = (prepared: { afterUpload?: (response: unknown) => Promise<void> } = {}) => {
-	const prepare = jest.fn(async () => ({ ...PREPARED, ...prepared }));
-	const result = uploadFileMessage({
+const run = (prepared: { afterUpload?: (response: unknown) => Promise<void> } = {}, prepare?: () => Promise<unknown>) =>
+	uploadFileMessage({
 		rid: 'GENERAL',
 		fileInfo: { path: '/tmp/pic.jpg' } as any,
 		tmid: undefined,
-		prepare: prepare as any
+		prepare: (prepare ?? (async () => ({ ...PREPARED, ...prepared }))) as any
 	});
-	return { result, prepare };
-};
+
+const isActive = () => isUploadActive('/tmp/pic.jpg', 'GENERAL');
+
+beforeEach(() => {
+	jest.clearAllMocks();
+	jest.spyOn(Math, 'random').mockReturnValue(0.5);
+	Object.keys(uploadQueue).forEach(key => delete uploadQueue[key]);
+	(createUploadProgressCallback as jest.Mock).mockReturnValue(jest.fn());
+	uploadSending(jest.fn().mockResolvedValue(RESPONSE));
+});
 
 describe('uploadFileMessage', () => {
-	it('rejects a send skipped because the upload is already in progress without touching the running upload', async () => {
-		(createUploadRecord as jest.Mock).mockRejectedValue(new Error("Couldn't create upload record"));
+	it('rejects a send skipped because the same file is already uploading, without touching the running upload', async () => {
+		const running = claimUploadSlot(UPLOAD_PATH);
+		const prepare = jest.fn();
 
-		const { result, prepare } = run();
+		await expect(run({}, prepare)).rejects.toThrow("Couldn't create upload record");
 
-		await expect(result).rejects.toThrow("Couldn't create upload record");
-		expect(finalizeFailedUpload).not.toHaveBeenCalled();
+		expect(createUploadRecord).not.toHaveBeenCalled();
 		expect(prepare).not.toHaveBeenCalled();
-		expect(uploadWithRetry).not.toHaveBeenCalled();
+		expect(uploadQueue[UPLOAD_PATH]).toBe(running);
+	});
+
+	it('holds the slot while the sender is still preparing the upload', async () => {
+		arrange();
+		let activeWhilePreparing: boolean | undefined;
+
+		await run({}, async () => {
+			activeWhilePreparing = isActive();
+			return PREPARED;
+		});
+
+		expect(activeWhilePreparing).toBe(true);
 	});
 
 	it('uploads what the sender prepared, reporting progress on the upload record', async () => {
@@ -67,7 +89,7 @@ describe('uploadFileMessage', () => {
 		const updateProgress = jest.fn();
 		(createUploadProgressCallback as jest.Mock).mockReturnValueOnce(updateProgress);
 
-		await run().result;
+		await run();
 
 		expect(FileUpload).toHaveBeenCalledWith(PREPARED.url, PREPARED.headers, PREPARED.formData, updateProgress);
 	});
@@ -75,111 +97,166 @@ describe('uploadFileMessage', () => {
 	it('destroys the record and frees the slot once the upload finished', async () => {
 		const record = arrange();
 
-		await run().result;
+		await run();
 
 		expect(record.destroyPermanently).toHaveBeenCalledTimes(1);
-		expect(releaseUploadSlot).toHaveBeenCalledWith(UPLOAD_PATH, firstAttempt());
-		expect(finalizeFailedUpload).not.toHaveBeenCalled();
+		expect(isActive()).toBe(false);
+		expect(recordUploadFailure).not.toHaveBeenCalled();
 	});
 
 	it('hands the upload response to the step that runs after the upload', async () => {
 		arrange();
 		const afterUpload = jest.fn();
 
-		await run({ afterUpload }).result;
+		await run({ afterUpload });
 
 		expect(afterUpload).toHaveBeenCalledWith(RESPONSE);
 	});
 
 	it('keeps the slot and the record while the step after the upload is still running', async () => {
 		const record = arrange();
-		let released = -1;
-		let destroyed = -1;
+		let activeDuringStep: boolean | undefined;
+		let destroyedDuringStep = -1;
 		const afterUpload = jest.fn(async () => {
-			released = (releaseUploadSlot as jest.Mock).mock.calls.length;
-			destroyed = record.destroyPermanently.mock.calls.length;
+			activeDuringStep = isActive();
+			destroyedDuringStep = record.destroyPermanently.mock.calls.length;
 		});
 
-		await run({ afterUpload }).result;
+		await run({ afterUpload });
 
-		expect(released).toBe(0);
-		expect(destroyed).toBe(0);
-		expect(releaseUploadSlot).toHaveBeenCalledTimes(1);
+		expect(activeDuringStep).toBe(true);
+		expect(destroyedDuringStep).toBe(0);
 		expect(record.destroyPermanently).toHaveBeenCalledTimes(1);
 	});
 
-	it('reports a failure under the upload key and for the attempt that failed', async () => {
-		arrange();
-		const error = new Error('boom');
-		(uploadWithRetry as jest.Mock).mockImplementation(async (_path: string, createUpload: () => unknown) => {
-			createUpload();
-			throw error;
-		});
+	it('records and rethrows a failed upload, then frees the slot', async () => {
+		const record = arrange();
+		const error = new UploadHttpError(413);
+		uploadSending(jest.fn().mockRejectedValue(error));
 
-		await run().result;
+		await expect(run()).rejects.toBe(error);
 
-		expect(finalizeFailedUpload).toHaveBeenCalledWith({ uploadPath: UPLOAD_PATH, error, upload: firstAttempt() });
-		expect(releaseUploadSlot).not.toHaveBeenCalled();
+		expect(recordUploadFailure).toHaveBeenCalledWith(record, error);
+		expect(record.destroyPermanently).not.toHaveBeenCalled();
+		expect(isActive()).toBe(false);
 	});
 
-	it('reports a failure of the step after the upload instead of dropping the record', async () => {
+	it('records a failure of the step after the upload instead of dropping the record', async () => {
 		const record = arrange();
 		const error = new Error('confirm failed');
 
-		await run({ afterUpload: jest.fn().mockRejectedValue(error) }).result;
+		await expect(run({ afterUpload: jest.fn().mockRejectedValue(error) })).rejects.toBe(error);
 
-		expect(finalizeFailedUpload).toHaveBeenCalledWith({ uploadPath: UPLOAD_PATH, error, upload: firstAttempt() });
+		expect(recordUploadFailure).toHaveBeenCalledWith(record, error);
 		expect(record.destroyPermanently).not.toHaveBeenCalled();
-		expect(releaseUploadSlot).not.toHaveBeenCalled();
 	});
 
-	it('reports a failure before any attempt started without an attempt to blame', async () => {
-		arrange();
+	it('records a failure before the upload started', async () => {
+		const record = arrange();
 		const error = new Error('copy failed');
 
-		await uploadFileMessage({
-			rid: 'GENERAL',
-			fileInfo: { path: '/tmp/pic.jpg' } as any,
-			tmid: undefined,
-			prepare: () => Promise.reject(error)
-		});
+		await expect(run({}, () => Promise.reject(error))).rejects.toBe(error);
 
-		expect(finalizeFailedUpload).toHaveBeenCalledWith({ uploadPath: UPLOAD_PATH, error, upload: null });
-		expect(uploadWithRetry).not.toHaveBeenCalled();
+		expect(recordUploadFailure).toHaveBeenCalledWith(record, error);
+		expect(FileUpload).not.toHaveBeenCalled();
 	});
 
-	it('lets the retry loop reset the progress its attempts reported', async () => {
+	it('frees the slot when the upload record cannot be created', async () => {
+		const error = new Error('db write failed');
+		(createUploadRecord as jest.Mock).mockRejectedValue(error);
+
+		await expect(run()).rejects.toBe(error);
+
+		expect(isActive()).toBe(false);
+	});
+
+	it('settles quietly when the upload is cancelled while its record is being reset', async () => {
+		let failReset!: (error: Error) => void;
+		(createUploadRecord as jest.Mock).mockImplementation(() => new Promise((_, reject) => (failReset = reject)));
+		const pending = run();
+
+		await cancelUpload({ path: '/tmp/pic.jpg' } as any, 'GENERAL');
+		failReset(new Error('record destroyed'));
+
+		await expect(pending).resolves.toBeUndefined();
+		expect(isActive()).toBe(false);
+	});
+
+	it('never uploads a file cancelled while it was being prepared', async () => {
 		arrange();
-		const updateProgress = jest.fn();
-		(createUploadProgressCallback as jest.Mock).mockReturnValueOnce(updateProgress);
-		(uploadWithRetry as jest.Mock).mockImplementation(
-			async (_path: string, _createUpload: () => unknown, onRetryWait: () => Promise<void>) => {
-				await onRetryWait();
-				return RESPONSE;
-			}
-		);
+		let finishPreparing!: () => void;
+		const pending = run({}, () => new Promise(resolve => (finishPreparing = () => resolve(PREPARED))));
+		await Promise.resolve();
 
-		await run().result;
+		await cancelUpload({ path: '/tmp/pic.jpg' } as any, 'GENERAL');
+		finishPreparing();
 
-		expect(updateProgress).toHaveBeenCalledWith(0, 1);
+		await expect(pending).resolves.toBeUndefined();
+		expect(FileUpload).not.toHaveBeenCalled();
+		expect(recordUploadFailure).not.toHaveBeenCalled();
 	});
 
-	describe('when the server rate limits the step after the upload', () => {
+	it('settles quietly when the upload is cancelled while it runs', async () => {
+		arrange();
+		let rejectSend!: (error: Error) => void;
+		const send = jest.fn(() => new Promise((_, reject) => (rejectSend = reject)));
+		(FileUpload as jest.Mock).mockImplementation(() => ({
+			send,
+			cancel: () => rejectSend(new Error('Upload Cancelled'))
+		}));
+		const pending = run();
+		await Promise.resolve();
+		await Promise.resolve();
+
+		await cancelUpload({ path: '/tmp/pic.jpg' } as any, 'GENERAL');
+
+		await expect(pending).resolves.toBeUndefined();
+		expect(recordUploadFailure).not.toHaveBeenCalled();
+	});
+
+	describe('when the server rate limits', () => {
 		beforeEach(() => jest.useFakeTimers());
 		afterEach(() => jest.useRealTimers());
 
-		it('retries that step without uploading the file again', async () => {
+		it('resets the progress while it waits to upload again', async () => {
+			arrange();
+			const updateProgress = jest.fn();
+			(createUploadProgressCallback as jest.Mock).mockReturnValueOnce(updateProgress);
+			uploadSending(jest.fn().mockRejectedValueOnce(new UploadHttpError(429)).mockResolvedValueOnce(RESPONSE));
+
+			const pending = run();
+			await jest.advanceTimersByTimeAsync(2000);
+			await pending;
+
+			expect(updateProgress).toHaveBeenCalledWith(0, 1);
+			expect(FileUpload).toHaveBeenCalledTimes(2);
+		});
+
+		it('retries the step after the upload without uploading the file again', async () => {
 			const record = arrange();
 			const afterUpload = jest.fn().mockRejectedValueOnce(new UploadHttpError(429)).mockResolvedValueOnce(undefined);
 
-			const { result } = run({ afterUpload });
+			const pending = run({ afterUpload });
 			await jest.advanceTimersByTimeAsync(2000);
-			await result;
+			await pending;
 
 			expect(afterUpload).toHaveBeenCalledTimes(2);
-			expect(uploadWithRetry).toHaveBeenCalledTimes(1);
-			expect(finalizeFailedUpload).not.toHaveBeenCalled();
+			expect(FileUpload).toHaveBeenCalledTimes(1);
+			expect(recordUploadFailure).not.toHaveBeenCalled();
 			expect(record.destroyPermanently).toHaveBeenCalledTimes(1);
+		});
+
+		it('resets the progress while it waits to retry the step after the upload', async () => {
+			arrange();
+			const updateProgress = jest.fn();
+			(createUploadProgressCallback as jest.Mock).mockReturnValueOnce(updateProgress);
+			const afterUpload = jest.fn().mockRejectedValueOnce(new UploadHttpError(429)).mockResolvedValueOnce(undefined);
+
+			const pending = run({ afterUpload });
+			await jest.advanceTimersByTimeAsync(2000);
+			await pending;
+
+			expect(updateProgress).toHaveBeenCalledWith(0, 1);
 		});
 	});
 });

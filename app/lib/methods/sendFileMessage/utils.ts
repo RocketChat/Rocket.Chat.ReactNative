@@ -1,6 +1,5 @@
 import { type Database } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import isEmpty from 'lodash/isEmpty';
 import { Alert } from 'react-native';
 import * as FileSystem from 'expo-file-system/legacy';
 
@@ -14,9 +13,12 @@ import { getUploadErrorMessage, isRetryableUploadError } from '../helpers/upload
 import { type IFileUpload } from '../helpers/fileUpload/definitions';
 import { UploadHttpError } from '../helpers/fileUpload/UploadHttpError';
 
-export const uploadQueue: { [index: string]: IFileUpload } = {};
+export interface IUploadSlot {
+	controller: AbortController;
+	upload?: IFileUpload;
+}
 
-export const uploadRetryWaits: { [index: string]: () => void } = {};
+export const uploadQueue: { [index: string]: IUploadSlot } = {};
 
 export const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 
@@ -24,25 +26,34 @@ export function isUploadActive(path: string, rid: string): boolean {
 	return !!uploadQueue[getUploadPath(path, rid)];
 }
 
-export const ownsUploadSlot = (uploadPath: string, upload: IFileUpload | null) => uploadQueue[uploadPath] === upload;
+export const claimUploadSlot = (uploadPath: string): IUploadSlot => {
+	if (uploadQueue[uploadPath]) {
+		Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
+		throw new Error("Couldn't create upload record");
+	}
+	const slot = { controller: new AbortController() };
+	uploadQueue[uploadPath] = slot;
+	return slot;
+};
 
-export const releaseUploadSlot = (uploadPath: string, upload: IFileUpload | null) => {
-	if (ownsUploadSlot(uploadPath, upload)) {
+export const releaseUploadSlot = (uploadPath: string, slot: IUploadSlot) => {
+	if (uploadQueue[uploadPath] === slot) {
 		delete uploadQueue[uploadPath];
 	}
 };
 
 export async function cancelUpload(item: TUploadModel, rid: string): Promise<void> {
 	const uploadPath = getUploadPath(item.path, rid);
-	if (!isEmpty(uploadQueue[uploadPath])) {
+	const slot = uploadQueue[uploadPath];
+	if (slot) {
+		delete uploadQueue[uploadPath];
+		slot.controller.abort();
 		try {
-			await uploadQueue[uploadPath].cancel();
+			await slot.upload?.cancel();
 		} catch {
 			// Do nothing
 		}
-		delete uploadQueue[uploadPath];
 	}
-	uploadRetryWaits[uploadPath]?.();
 	if (item.id) {
 		try {
 			const db = database.active;
@@ -55,47 +66,25 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
-export const persistUploadError = async (uploadPath: string, errorStatus?: number, errorMessage?: string) => {
+export const recordUploadFailure = async (uploadRecord: TUploadModel, error: unknown): Promise<void> => {
+	const httpError = error instanceof UploadHttpError ? error : undefined;
+	const errorStatus = httpError?.status;
+	const errorMessage = httpError?.serverMessage;
 	try {
-		const db = database.active;
-		const uploadRecord = await getUploadByPath(uploadPath);
-		if (!uploadRecord) {
-			return;
-		}
-		await db.write(async () => {
+		await database.active.write(async () => {
 			await uploadRecord.update(u => {
 				u.error = true;
 				u.errorStatus = errorStatus;
 				u.errorMessage = errorMessage;
 			});
 		});
-	} catch {
-		// Do nothing
+	} catch (e) {
+		log(e);
 	}
-};
-
-export const finalizeFailedUpload = async ({
-	uploadPath,
-	error,
-	upload
-}: {
-	uploadPath: string;
-	error: unknown;
-	upload: IFileUpload | null;
-}): Promise<void> => {
-	if (upload && !ownsUploadSlot(uploadPath, upload)) {
-		return;
-	}
-	releaseUploadSlot(uploadPath, upload);
-	const httpError = error instanceof UploadHttpError ? error : undefined;
-	const errorStatus = httpError?.status;
-	const errorMessage = httpError?.serverMessage;
-	await persistUploadError(uploadPath, errorStatus, errorMessage);
 	const reason = getUploadErrorMessage({ errorStatus, errorMessage });
 	if (reason && !isRetryableUploadError(errorStatus)) {
 		showToast(reason);
 	}
-	throw error;
 };
 
 export const createUploadProgressCallback =
@@ -126,10 +115,6 @@ export const createUploadRecord = async ({
 	const uploadPath = getUploadPath(fileInfo.path, rid);
 	const existing = await getUploadByPath(uploadPath);
 	if (existing) {
-		if (isUploadActive(fileInfo.path, rid)) {
-			Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
-			throw new Error("Couldn't create upload record");
-		}
 		// Record left behind by a crashed or failed upload: reset and reuse it.
 		await db.write(async () => {
 			await existing.update(u => {

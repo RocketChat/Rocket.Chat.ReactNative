@@ -2,16 +2,15 @@ import { Alert } from 'react-native';
 
 import {
 	cancelUpload,
+	claimUploadSlot,
 	createUploadProgressCallback,
 	createUploadRecord,
 	copyFileToCacheDirectoryIfNeeded,
-	finalizeFailedUpload,
 	getUploadPath,
 	isUploadActive,
-	persistUploadError,
+	recordUploadFailure,
 	releaseUploadSlot,
-	uploadQueue,
-	uploadRetryWaits
+	uploadQueue
 } from '../utils';
 import { UploadHttpError } from '~/lib/methods/helpers/fileUpload/UploadHttpError';
 import { getUploadByPath } from '~/lib/database/services/Upload';
@@ -46,32 +45,32 @@ beforeEach(() => {
 	(require('expo-file-system/legacy').copyAsync as jest.Mock).mockClear();
 	(require('~/lib/methods/helpers/showToast').showToast as jest.Mock).mockClear();
 	Object.keys(uploadQueue).forEach(k => delete uploadQueue[k]);
-	Object.keys(uploadRetryWaits).forEach(k => delete uploadRetryWaits[k]);
 });
 
 describe('cancelUpload', () => {
-	it('ends a pending rate limit wait only after it released the upload slot', async () => {
-		uploadQueue[uploadPath] = { send: jest.fn(), cancel: jest.fn() };
-		let slotWhenWaitEnded: unknown = 'wait not ended';
-		const endWait = jest.fn(() => {
-			slotWhenWaitEnded = uploadQueue[uploadPath];
-		});
-		uploadRetryWaits[uploadPath] = endWait;
+	it('aborts the send and frees its slot before cancelling the running upload', async () => {
+		let abortedWhenCancelled: boolean | undefined;
+		const slot = claimUploadSlot(uploadPath);
+		slot.upload = {
+			send: jest.fn(),
+			cancel: jest.fn(() => {
+				abortedWhenCancelled = slot.controller.signal.aborted;
+			})
+		};
 
 		await cancelUpload({ path: '/tmp/pic.jpg' } as any, 'GENERAL');
 
-		expect(endWait).toHaveBeenCalledTimes(1);
-		expect(slotWhenWaitEnded).toBeUndefined();
+		expect(abortedWhenCancelled).toBe(true);
+		expect(isUploadActive('/tmp/pic.jpg', 'GENERAL')).toBe(false);
 	});
 
-	it('cancels the upload that is running when no rate limit wait is pending', async () => {
-		const running = { send: jest.fn(), cancel: jest.fn() };
-		uploadQueue[uploadPath] = running;
+	it('aborts a send that is still preparing its upload', async () => {
+		const slot = claimUploadSlot(uploadPath);
 
 		await cancelUpload({ path: '/tmp/pic.jpg' } as any, 'GENERAL');
 
-		expect(running.cancel).toHaveBeenCalledTimes(1);
-		expect(uploadQueue[uploadPath]).toBeUndefined();
+		expect(slot.controller.signal.aborted).toBe(true);
+		expect(isUploadActive('/tmp/pic.jpg', 'GENERAL')).toBe(false);
 	});
 });
 
@@ -82,7 +81,7 @@ describe('getUploadPath / isUploadActive', () => {
 
 	it('isUploadActive true when path present in uploadQueue, false otherwise', () => {
 		expect(isUploadActive('/tmp/pic.jpg', 'GENERAL')).toBe(false);
-		uploadQueue[getUploadPath('/tmp/pic.jpg', 'GENERAL')] = {} as any;
+		claimUploadSlot(getUploadPath('/tmp/pic.jpg', 'GENERAL'));
 		expect(isUploadActive('/tmp/pic.jpg', 'GENERAL')).toBe(true);
 	});
 });
@@ -111,17 +110,6 @@ describe('copyFileToCacheDirectoryIfNeeded', () => {
 });
 
 describe('createUploadRecord', () => {
-	it('blocks with alert when the upload is actively in progress', async () => {
-		(getUploadByPath as jest.Mock).mockResolvedValue({ id: uploadPath });
-		uploadQueue[uploadPath] = {} as any;
-
-		await expect(createUploadRecord({ rid: 'GENERAL', fileInfo, tmid: undefined })).rejects.toThrow(
-			"Couldn't create upload record"
-		);
-
-		expect(Alert.alert).toHaveBeenCalled();
-	});
-
 	it('reuses a stale record left by a crashed/failed upload instead of blocking', async () => {
 		const stale: any = {
 			id: uploadPath,
@@ -164,146 +152,72 @@ describe('createUploadRecord', () => {
 	});
 });
 
-describe('persistUploadError', () => {
-	const persist = async (errorStatus?: number, errorMessage?: string) => {
-		const updated: any = { errorStatus: 500, errorMessage: 'stale' };
-		(getUploadByPath as jest.Mock).mockResolvedValue({
-			update: jest.fn((cb: (u: any) => void) => {
-				cb(updated);
-			})
-		});
-		await persistUploadError(uploadPath, errorStatus, errorMessage);
-		return updated;
-	};
+describe('claimUploadSlot', () => {
+	it('marks the upload active until its slot is released', () => {
+		const slot = claimUploadSlot(uploadPath);
 
-	beforeEach(() => {
-		(getUploadByPath as jest.Mock).mockReset();
+		expect(isUploadActive(fileInfo.path, 'GENERAL')).toBe(true);
+		releaseUploadSlot(uploadPath, slot);
+		expect(isUploadActive(fileInfo.path, 'GENERAL')).toBe(false);
 	});
 
-	it('stores the HTTP status and server message', async () => {
-		const updated = await persist(413, 'File is too large');
+	it('blocks with an alert while the same file is already uploading to the room', () => {
+		const running = claimUploadSlot(uploadPath);
 
-		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
-		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: 'File is too large' });
-	});
-
-	it('stores only the error flag when there is no status or message', async () => {
-		const updated = await persist();
-
-		expect(updated).toMatchObject({ error: true, errorStatus: undefined, errorMessage: undefined });
-	});
-
-	it('does nothing when the record is gone', async () => {
-		(getUploadByPath as jest.Mock).mockResolvedValue(null);
-
-		await expect(persistUploadError(uploadPath, 500)).resolves.toBeUndefined();
+		expect(() => claimUploadSlot(uploadPath)).toThrow("Couldn't create upload record");
+		expect(Alert.alert).toHaveBeenCalledWith('FileUpload_Error', 'Upload_in_progress');
+		expect(uploadQueue[uploadPath]).toBe(running);
 	});
 });
 
-describe('finalizeFailedUpload', () => {
-	const { getUploadByPath } = require('~/lib/database/services/Upload');
+describe('releaseUploadSlot', () => {
+	it('leaves the slot of a newer send alone', () => {
+		const cancelled = claimUploadSlot(uploadPath);
+		delete uploadQueue[uploadPath];
+		const newer = claimUploadSlot(uploadPath);
+
+		releaseUploadSlot(uploadPath, cancelled);
+
+		expect(uploadQueue[uploadPath]).toBe(newer);
+	});
+});
+
+describe('recordUploadFailure', () => {
 	const { showToast } = require('~/lib/methods/helpers/showToast');
 
-	const finalize = async (error: unknown) => {
+	const record = async (error: unknown) => {
 		const updated: any = { errorStatus: 500, errorMessage: 'stale' };
-		const attempt = {} as any;
-		uploadQueue[uploadPath] = attempt;
-		(getUploadByPath as jest.Mock).mockResolvedValue({
+		const uploadRecord = {
 			update: jest.fn((cb: (u: any) => void) => {
 				cb(updated);
 			})
-		});
-		await expect(finalizeFailedUpload({ uploadPath, error, upload: attempt })).rejects.toBe(error);
+		} as any;
+		await recordUploadFailure(uploadRecord, error);
 		return updated;
 	};
 
-	beforeEach(() => {
-		(getUploadByPath as jest.Mock).mockReset();
-	});
-
-	it('does nothing when the upload was cancelled (its queue entry is already gone)', async () => {
-		const attempt = {} as any;
-
-		await expect(
-			finalizeFailedUpload({
-				uploadPath,
-				error: new Error('boom'),
-				upload: attempt
-			})
-		).resolves.toBeUndefined();
-
-		expect(getUploadByPath).not.toHaveBeenCalled();
-	});
-
-	it('persists and rethrows a failure that happened before the upload was ever queued, instead of mistaking it for a cancellation', async () => {
-		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
-		const error = new Error('encryption failed');
-
-		await expect(finalizeFailedUpload({ uploadPath, error, upload: null })).rejects.toBe(error);
-
-		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
-	});
-
-	it('persists and rethrows a failure before the upload was queued, even when an earlier upload left its queue entry behind', async () => {
-		uploadQueue[uploadPath] = {} as any;
-		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
-		const error = new Error('encryption failed');
-
-		await expect(finalizeFailedUpload({ uploadPath, error, upload: null })).rejects.toBe(error);
-
-		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
-	});
-
-	it('leaves a newer attempt alone instead of clobbering its queue entry', async () => {
-		const newerAttempt = {} as any;
-		uploadQueue[uploadPath] = newerAttempt;
-
-		await expect(
-			finalizeFailedUpload({
-				uploadPath,
-				error: new Error('boom'),
-				upload: {} as any
-			})
-		).resolves.toBeUndefined();
-
-		expect(uploadQueue[uploadPath]).toBe(newerAttempt);
-		expect(getUploadByPath).not.toHaveBeenCalled();
-	});
-
-	it('persists the error, clears the queue entry, and rethrows for a genuine terminal failure', async () => {
-		const attempt = {} as any;
-		uploadQueue[uploadPath] = attempt;
-		(getUploadByPath as jest.Mock).mockResolvedValue({ update: jest.fn((cb: (u: any) => void) => cb({})) });
-		const error = new UploadHttpError(413);
-
-		await expect(finalizeFailedUpload({ uploadPath, error, upload: attempt })).rejects.toBe(error);
-
-		expect(getUploadByPath).toHaveBeenCalledWith(uploadPath);
-		expect(uploadQueue[uploadPath]).toBeUndefined();
-	});
-
 	it('saves the HTTP status and server message of the failure and announces a file that is too large', async () => {
-		const updated = await finalize(new UploadHttpError(413, { serverMessage: 'File is too large' }));
+		const updated = await record(new UploadHttpError(413, { serverMessage: 'File is too large' }));
 
 		expect(updated).toMatchObject({ error: true, errorStatus: 413, errorMessage: 'File is too large' });
 		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
 	});
 
 	it('announces a failure the user cannot retry away', async () => {
-		await finalize(new UploadHttpError(415, { serverMessage: 'Not allowed' }));
+		await record(new UploadHttpError(415, { serverMessage: 'Not allowed' }));
 
 		expect(showToast).toHaveBeenCalledWith('Not allowed');
 	});
 
 	it('announces a permanent failure even when the server sent no usable message', async () => {
-		const updated = await finalize(new UploadHttpError(405));
+		const updated = await record(new UploadHttpError(405));
 
 		expect(updated).toMatchObject({ errorStatus: 405 });
 		expect(showToast).toHaveBeenCalledWith('FileUpload_Error');
 	});
 
 	it('stays quiet about a failure that may still resolve itself', async () => {
-		const updated = await finalize(
+		const updated = await record(
 			new UploadHttpError(429, {
 				serverMessage: 'You must wait 37 seconds before trying this endpoint again. [error-too-many-requests]'
 			})
@@ -314,39 +228,17 @@ describe('finalizeFailedUpload', () => {
 	});
 
 	it('saves only the error flag and stays quiet for a failure that is not an http error', async () => {
-		const updated = await finalize(new Error('boom'));
+		const updated = await record(new Error('boom'));
 
 		expect(updated).toMatchObject({ error: true, errorStatus: undefined, errorMessage: undefined });
 		expect(showToast).not.toHaveBeenCalled();
 	});
-});
 
-describe('releaseUploadSlot', () => {
-	it('frees the slot of the attempt that finished', () => {
-		const attempt = {} as any;
-		uploadQueue[uploadPath] = attempt;
+	it('still announces the failure when the record can no longer be written', async () => {
+		const uploadRecord = { update: jest.fn().mockRejectedValue(new Error('record gone')) } as any;
 
-		releaseUploadSlot(uploadPath, attempt);
-
-		expect(isUploadActive(fileInfo.path, 'GENERAL')).toBe(false);
-	});
-
-	it('leaves a newer attempt alone', () => {
-		const newerAttempt = {} as any;
-		uploadQueue[uploadPath] = newerAttempt;
-
-		releaseUploadSlot(uploadPath, {} as any);
-
-		expect(uploadQueue[uploadPath]).toBe(newerAttempt);
-	});
-
-	it('leaves the slot alone when no attempt was ever started', () => {
-		const other = {} as any;
-		uploadQueue[uploadPath] = other;
-
-		releaseUploadSlot(uploadPath, null);
-
-		expect(uploadQueue[uploadPath]).toBe(other);
+		await expect(recordUploadFailure(uploadRecord, new UploadHttpError(413))).resolves.toBeUndefined();
+		expect(showToast).toHaveBeenCalledWith('error-file-too-large');
 	});
 });
 
