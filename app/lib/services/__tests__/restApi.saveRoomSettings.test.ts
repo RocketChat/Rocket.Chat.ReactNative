@@ -37,7 +37,7 @@ describe('saveRoomSettings', () => {
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
 
-	it('resolves with result true when the REST call succeeds, as toggleRoomE2EE reads it', async () => {
+	it('resolves with result true and the rid on 3.3.0+', async () => {
 		const response = await saveRoomSettings('rid1', { encrypted: true });
 		expect(response).toEqual({ result: true, rid: 'rid1' });
 	});
