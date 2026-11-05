@@ -18,7 +18,7 @@ import {
 } from './context';
 import { type IComposerInput, type IMessageComposerRef } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
-import { type IEmoji, type IShareAttachment } from '~/definitions';
+import { type IEmoji } from '~/definitions';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
 import { withTriggerId } from '~/lib/apps/actions';
@@ -98,8 +98,7 @@ export const MessageComposer = ({
 		contentHeight.set(height);
 	};
 
-	const restoreCaptionAfterFailure = (unsent: IShareAttachment[], textFromInput: string, quotedMessageIds: string[]) => {
-		const captionSent = !unsent.includes(attachments[0]);
+	const restoreCaptionAfterFailure = (captionSent: boolean, textFromInput: string, quotedMessageIds: string[]) => {
 		const { action, actions } = messageActionStore.getState();
 		const composerIdle = !composerInputComponentRef.current?.getText() && (!action || action.kind === 'react');
 		if (captionSent || !composerIdle) return;
@@ -141,6 +140,7 @@ export const MessageComposer = ({
 		}
 
 		if (attachments.length) {
+			const [captionAttachment] = attachments;
 			clearAttachments();
 			messageActionStore.getState().actions.setQuoteMessageIds([]);
 			let quotedMessage: string | undefined;
@@ -156,11 +156,12 @@ export const MessageComposer = ({
 				server,
 				user: { id: user.id, token: user.token },
 				altTextSupported,
-				getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
+				getMsg: attachment =>
+					attachment === captionAttachment ? attachment.description || quotedMessage || textFromInput : attachment.description
 			});
 			if (unsent.length) {
 				addAttachments(unsent);
-				restoreCaptionAfterFailure(unsent, textFromInput, quotedMessageIds);
+				restoreCaptionAfterFailure(!unsent.includes(captionAttachment), textFromInput, quotedMessageIds);
 			}
 			return;
 		}
