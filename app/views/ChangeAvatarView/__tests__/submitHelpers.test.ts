@@ -2,13 +2,15 @@ import { handleError } from '../submitHelpers';
 
 describe('handleError', () => {
 	it('throws the translated message of a DDP error', () => {
-		expect(() => handleError({ error: 'error-not-allowed', reason: 'Not allowed' }, 'changing_avatar')).toThrow('Not allowed');
+		expect(() => handleError({ error: 'error-not-allowed', reason: 'Permission denied' }, 'changing_avatar')).toThrow(
+			new Error('Not allowed')
+		);
 	});
 
 	it('throws the translated message of a REST error', () => {
 		expect(() =>
 			handleError(
-				{ status: 400, data: { success: false, errorType: 'error-not-allowed', error: 'Not allowed [error-not-allowed]' } },
+				{ status: 400, data: { success: false, errorType: 'error-not-allowed', error: 'Permission denied [error-not-allowed]' } },
 				'changing_avatar'
 			)
 		).toThrow(new Error('Not allowed'));
@@ -29,6 +31,23 @@ describe('handleError', () => {
 				'changing_avatar'
 			)
 		).toThrow(new Error('changing avatar is not allowed'));
+	});
+
+	it('fills the url of an invalid avatar URL error', () => {
+		expect(() =>
+			handleError(
+				{
+					status: 400,
+					data: {
+						success: false,
+						errorType: 'error-avatar-invalid-url',
+						error: 'Invalid avatar URL [error-avatar-invalid-url]',
+						details: { url: 'https://example.com/a.png' }
+					}
+				},
+				'changing_avatar'
+			)
+		).toThrow(new Error('Invalid avatar URL: https://example.com/a.png'));
 	});
 
 	it('throws the generic message when a REST error body has no error text', () => {

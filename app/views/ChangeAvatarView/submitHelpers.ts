@@ -9,9 +9,9 @@ export const handleError = (e: any, action: string) => {
 	if (e.data?.error?.includes('[error-too-many-requests]')) {
 		throw new Error(e.data.error);
 	}
-	const { code } = getServerError(e);
+	const { code, details } = getServerError(e);
 	if (code === 'error-avatar-invalid-url') {
-		throw new Error(I18n.t(code, { url: (e.data?.details ?? e.details)?.url }));
+		throw new Error(I18n.t(code, { url: details?.url }));
 	}
 	if (code && I18n.isTranslated(code)) {
 		throw new Error(I18n.t(code, { action: I18n.t(action) }));
