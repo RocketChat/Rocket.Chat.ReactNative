@@ -31,7 +31,14 @@ const AvatarImage = ({ uri, style }: IAvatarImage) => {
 				onLoad={onFinish}
 				onError={onFinish}
 			/>
-			{showSkeleton ? <AvatarSkeleton size={style.width} borderRadius={style.borderRadius} /> : null}
+			{showSkeleton ? (
+				<AvatarSkeleton
+					size={style.width}
+					borderRadius={style.borderRadius}
+					backgroundColor={colors.surfaceNeutral}
+					highlightColor={colors.surfaceSelected}
+				/>
+			) : null}
 		</>
 	);
 };

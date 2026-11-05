@@ -1,5 +1,6 @@
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Image } from 'expo-image';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 import AvatarImage from '../AvatarImage';
 import { SKELETON_DELAY } from '../constants';
@@ -12,52 +13,52 @@ afterEach(() => jest.useRealTimers());
 
 describe('AvatarImage', () => {
 	it('shows the skeleton until the image loads', () => {
-		const { getByTestId, queryByTestId, UNSAFE_getByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
-		expect(queryByTestId('avatar-skeleton')).toBeNull();
+		const { UNSAFE_getByType, UNSAFE_queryByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
+		expect(UNSAFE_queryByType(SkeletonPlaceholder)).toBeNull();
 		showDelay();
-		expect(getByTestId('avatar-skeleton')).toBeTruthy();
+		expect(UNSAFE_getByType(SkeletonPlaceholder)).toBeTruthy();
 		fireEvent(UNSAFE_getByType(Image), 'load');
-		expect(queryByTestId('avatar-skeleton')).toBeNull();
+		expect(UNSAFE_queryByType(SkeletonPlaceholder)).toBeNull();
 	});
 
 	it('hides the skeleton when the image fails to load', () => {
-		const { queryByTestId, UNSAFE_getByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
+		const { UNSAFE_getByType, UNSAFE_queryByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
 		showDelay();
 		fireEvent(UNSAFE_getByType(Image), 'error');
-		expect(queryByTestId('avatar-skeleton')).toBeNull();
+		expect(UNSAFE_queryByType(SkeletonPlaceholder)).toBeNull();
 	});
 
 	it('restarts the delay when the uri changes after a load', () => {
-		const { queryByTestId, rerender, UNSAFE_getByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
+		const { rerender, UNSAFE_getByType, UNSAFE_queryByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
 		showDelay();
 		fireEvent(UNSAFE_getByType(Image), 'load');
 		rerender(<AvatarImage uri='https://a/2.png' style={style} />);
-		expect(queryByTestId('avatar-skeleton')).toBeNull();
+		expect(UNSAFE_queryByType(SkeletonPlaceholder)).toBeNull();
 		showDelay();
-		expect(queryByTestId('avatar-skeleton')).toBeTruthy();
+		expect(UNSAFE_queryByType(SkeletonPlaceholder)).toBeTruthy();
 	});
 
 	it('keeps the skeleton when the uri changes before the image loads', () => {
-		const { getByTestId, rerender } = render(<AvatarImage uri='https://a/1.png' style={style} />);
+		const { rerender, UNSAFE_getByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
 		showDelay();
 		rerender(<AvatarImage uri='https://a/2.png' style={style} />);
-		expect(getByTestId('avatar-skeleton')).toBeTruthy();
+		expect(UNSAFE_getByType(SkeletonPlaceholder)).toBeTruthy();
 	});
 
 	it('hides the skeleton when the uri is removed after a load', () => {
-		const { queryByTestId, rerender, UNSAFE_getByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
+		const { rerender, UNSAFE_getByType, UNSAFE_queryByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
 		fireEvent(UNSAFE_getByType(Image), 'load');
 		rerender(<AvatarImage uri={undefined} style={style} />);
 		showDelay();
-		expect(queryByTestId('avatar-skeleton')).toBeNull();
+		expect(UNSAFE_queryByType(SkeletonPlaceholder)).toBeNull();
 	});
 
 	it('never shows the skeleton when the image loads before the delay', () => {
-		const { queryByTestId, UNSAFE_getByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
+		const { UNSAFE_getByType, UNSAFE_queryByType } = render(<AvatarImage uri='https://a/1.png' style={style} />);
 		act(() => jest.advanceTimersByTime(SKELETON_DELAY - 1));
-		expect(queryByTestId('avatar-skeleton')).toBeNull();
+		expect(UNSAFE_queryByType(SkeletonPlaceholder)).toBeNull();
 		fireEvent(UNSAFE_getByType(Image), 'load');
 		showDelay();
-		expect(queryByTestId('avatar-skeleton')).toBeNull();
+		expect(UNSAFE_queryByType(SkeletonPlaceholder)).toBeNull();
 	});
 });
