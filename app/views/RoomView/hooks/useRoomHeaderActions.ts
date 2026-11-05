@@ -8,6 +8,7 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
 import { useSetting } from '~/lib/hooks/useSetting';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { type IHeaderAction, type IHeaderMenuItem } from '~/lib/methods/helpers/navigation/headerActions';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
@@ -129,7 +130,9 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 		threadsAccessibilityLabel
 	} = useRoomActionsState(rid, roomStore);
 	const { callPresent, isCallDisabled, onPressCall } = useHeaderCallPress(rid);
-	const canTakeOverCall = useCanTakeOverCall();
+	const userId = useAppSelector(state => getUserSelector(state).id);
+	const dmPeerUserId = useStore(roomStore, s => (s.room.t === 'd' ? getUidDirectMessage(s.room, userId) : null));
+	const canTakeOverCall = useCanTakeOverCall(dmPeerUserId);
 
 	const takeOverCallAction: IHeaderAction = {
 		label: i18n.t('Continue_call_here'),

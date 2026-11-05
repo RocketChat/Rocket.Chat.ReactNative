@@ -5,13 +5,14 @@ import { useCanTakeOverCall } from './useCanTakeOverCall';
 type Listener = () => void;
 
 const mockStoreListeners = new Set<Listener>();
-let mockInstance: { canTakeOverCall: jest.Mock; on: jest.Mock; listeners: Set<Listener> } | null = null;
+let mockInstance: { canTakeOverCall: jest.Mock; getState: jest.Mock; on: jest.Mock; listeners: Set<Listener> } | null = null;
 
-const createInstance = (canTakeOver: boolean) => {
+const createInstance = (canTakeOver: boolean, contact: Record<string, string> = { type: 'user', id: 'peer' }) => {
 	const listeners = new Set<Listener>();
 	return {
 		listeners,
 		canTakeOverCall: jest.fn(() => canTakeOver),
+		getState: jest.fn(() => ({ call: { remoteParticipants: [{ contact }] } })),
 		on: jest.fn((_event: string, listener: Listener) => {
 			listeners.add(listener);
 			return () => listeners.delete(listener);
@@ -36,7 +37,7 @@ describe('useCanTakeOverCall', () => {
 	});
 
 	it('is false without a media session', () => {
-		const { result } = renderHook(() => useCanTakeOverCall());
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
 
 		expect(result.current).toBe(false);
 	});
@@ -44,7 +45,7 @@ describe('useCanTakeOverCall', () => {
 	it('follows the session state', () => {
 		const instance = createInstance(false);
 		mockInstance = instance;
-		const { result } = renderHook(() => useCanTakeOverCall());
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
 		expect(result.current).toBe(false);
 
 		instance.canTakeOverCall.mockReturnValue(true);
@@ -55,7 +56,7 @@ describe('useCanTakeOverCall', () => {
 	});
 
 	it('follows a session created after mount', () => {
-		const { result } = renderHook(() => useCanTakeOverCall());
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
 
 		act(() => {
 			mockInstance = createInstance(true);
@@ -65,10 +66,31 @@ describe('useCanTakeOverCall', () => {
 		expect(result.current).toBe(true);
 	});
 
+	it('is false for a call with someone else', () => {
+		mockInstance = createInstance(true, { type: 'user', id: 'someone-else' });
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
+
+		expect(result.current).toBe(false);
+	});
+
+	it('is false for a SIP call', () => {
+		mockInstance = createInstance(true, { type: 'sip', id: 'peer' });
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
+
+		expect(result.current).toBe(false);
+	});
+
+	it('is false outside a direct message', () => {
+		mockInstance = createInstance(true);
+		const { result } = renderHook(() => useCanTakeOverCall(null));
+
+		expect(result.current).toBe(false);
+	});
+
 	it('stops listening on unmount', () => {
 		const instance = createInstance(false);
 		mockInstance = instance;
-		const { unmount } = renderHook(() => useCanTakeOverCall());
+		const { unmount } = renderHook(() => useCanTakeOverCall('peer'));
 
 		unmount();
 

@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
 
 import { mediaSessionStore } from './MediaSessionStore';
 
@@ -17,7 +17,15 @@ const subscribe = (onChange: () => void) => {
 	};
 };
 
-const getSnapshot = () => mediaSessionStore.getCurrentInstance()?.canTakeOverCall() ?? false;
-
-/** True while another session of this user carries a call that this device can take over. */
-export const useCanTakeOverCall = (): boolean => useSyncExternalStore(subscribe, getSnapshot);
+/** True while another session of this user carries a call with `peerUserId` that this device can take over. */
+export const useCanTakeOverCall = (peerUserId: string | null | undefined): boolean => {
+	const getSnapshot = useCallback(() => {
+		const instance = mediaSessionStore.getCurrentInstance();
+		if (!peerUserId || !instance?.canTakeOverCall()) {
+			return false;
+		}
+		const contact = instance.getState()?.call.remoteParticipants[0]?.contact;
+		return contact?.type === 'user' && contact.id === peerUserId;
+	}, [peerUserId]);
+	return useSyncExternalStore(subscribe, getSnapshot);
+};
