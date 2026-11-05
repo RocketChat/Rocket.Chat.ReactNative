@@ -1,3 +1,4 @@
+import type { CallContact } from '@rocket.chat/media-signaling';
 import { useCallback, useSyncExternalStore } from 'react';
 
 import { mediaSessionStore } from './MediaSessionStore';
@@ -24,8 +25,15 @@ export const useCanTakeOverCall = (peerUserId: string | null | undefined): boole
 		if (!peerUserId || !instance?.canTakeOverCall()) {
 			return false;
 		}
-		const contact = instance.getState()?.call.remoteParticipants[0]?.contact;
-		return contact?.type === 'user' && contact.id === peerUserId;
+		// A user dialed by SIP extension arrives as a `sip` contact; the server still sends their user id as `uid`.
+		const contact: (CallContact & { uid?: string }) | undefined = instance.getState()?.call.remoteParticipants[0]?.contact;
+		const contactUserId = contact?.type === 'user' ? contact.id : contact?.uid;
+		return contactUserId === peerUserId;
 	}, [peerUserId]);
 	return useSyncExternalStore(subscribe, getSnapshot);
 };
+
+const getCanTakeOverAnyCall = () => Boolean(mediaSessionStore.getCurrentInstance()?.canTakeOverCall());
+
+/** True while another session of this user carries a call, with anyone, that this device can take over. */
+export const useCanTakeOverAnyCall = (): boolean => useSyncExternalStore(subscribe, getCanTakeOverAnyCall);

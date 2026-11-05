@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react-native';
 
-import { useCanTakeOverCall } from './useCanTakeOverCall';
+import { useCanTakeOverAnyCall, useCanTakeOverCall } from './useCanTakeOverCall';
 
 type Listener = () => void;
 
@@ -73,8 +73,22 @@ describe('useCanTakeOverCall', () => {
 		expect(result.current).toBe(false);
 	});
 
-	it('is false for a SIP call', () => {
+	it('is false for a SIP call to an external number', () => {
 		mockInstance = createInstance(true, { type: 'sip', id: 'peer' });
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
+
+		expect(result.current).toBe(false);
+	});
+
+	it('is true for the peer reached by SIP extension', () => {
+		mockInstance = createInstance(true, { type: 'sip', id: '1005', uid: 'peer' });
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
+
+		expect(result.current).toBe(true);
+	});
+
+	it('is false for another user reached by SIP extension', () => {
+		mockInstance = createInstance(true, { type: 'sip', id: '1005', uid: 'someone-else' });
 		const { result } = renderHook(() => useCanTakeOverCall('peer'));
 
 		expect(result.current).toBe(false);
@@ -96,5 +110,37 @@ describe('useCanTakeOverCall', () => {
 
 		expect(instance.listeners.size).toBe(0);
 		expect(mockStoreListeners.size).toBe(0);
+	});
+});
+
+describe('useCanTakeOverAnyCall', () => {
+	beforeEach(() => {
+		mockStoreListeners.clear();
+		mockInstance = null;
+	});
+
+	it('is false without a media session', () => {
+		const { result } = renderHook(() => useCanTakeOverAnyCall());
+
+		expect(result.current).toBe(false);
+	});
+
+	it('is true for a call with anyone, including a SIP number', () => {
+		mockInstance = createInstance(true, { type: 'sip', id: '+5511999999999' });
+		const { result } = renderHook(() => useCanTakeOverAnyCall());
+
+		expect(result.current).toBe(true);
+	});
+
+	it('follows the session state', () => {
+		const instance = createInstance(false);
+		mockInstance = instance;
+		const { result } = renderHook(() => useCanTakeOverAnyCall());
+		expect(result.current).toBe(false);
+
+		instance.canTakeOverCall.mockReturnValue(true);
+		act(() => instance.listeners.forEach(listener => listener()));
+
+		expect(result.current).toBe(true);
 	});
 });
