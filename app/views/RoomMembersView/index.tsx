@@ -69,8 +69,7 @@ interface IRoomMembersViewState {
 	end: boolean;
 	roomRoles?: IGetRoomRoles[];
 	filter: string;
-	page: number;
-	shiftedRows: number;
+	offset: number;
 	loadFailed: boolean;
 	reloadCount: number;
 }
@@ -79,7 +78,7 @@ type TStateUpdate = Partial<IRoomMembersViewState> | ((state: IRoomMembersViewSt
 
 type TMembersSection = { key?: TMemberRoleGroup; data: TUserModel[] };
 
-const firstPageState = { members: [], end: false, page: 0, shiftedRows: 0, loadFailed: false };
+const firstPageState = { members: [], end: false, offset: 0, loadFailed: false };
 
 const reloadFromFirstPage = ({ members, reloadCount }: IRoomMembersViewState) => ({
 	...firstPageState,
@@ -88,8 +87,8 @@ const reloadFromFirstPage = ({ members, reloadCount }: IRoomMembersViewState) =>
 	reloadCount: reloadCount + 1
 });
 
-const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], page: number) => {
-	const loadedMembers = page === 0 ? [] : members;
+const mergeMembersPage = (members: TUserModel[], membersResult: TUserModel[], offset: number) => {
+	const loadedMembers = offset === 0 ? [] : members;
 	const loadedIds = new Set(loadedMembers.map(member => member._id));
 
 	return {
@@ -198,7 +197,7 @@ const RoomMembersView = (): ReactElement => {
 	};
 
 	const fetchMembers = useCallback(async () => {
-		const { members, isLoading, end, room, filter, page, allUsers, shiftedRows, loadFailed } = state;
+		const { members, isLoading, end, room, filter, offset, allUsers, loadFailed } = state;
 		const { t } = room;
 
 		if (isLoading || end || loadFailed) {
@@ -215,7 +214,7 @@ const RoomMembersView = (): ReactElement => {
 				roomType: t,
 				type,
 				filter,
-				skip: Math.max(PAGE_SIZE * page - shiftedRows, 0),
+				skip: offset,
 				limit: PAGE_SIZE,
 				allUsers
 			});
@@ -231,18 +230,17 @@ const RoomMembersView = (): ReactElement => {
 
 			updateState(current => {
 				const membersChangedDuringRequest = current.members !== members;
-				if (page === 0 && membersChangedDuringRequest) {
+				if (offset === 0 && membersChangedDuringRequest) {
 					return { isLoading: false, reloadCount: current.reloadCount + 1 };
 				}
-				const merged = mergeMembersPage(current.members, membersResult, page);
-				const rowsShiftedDuringRequest = current.shiftedRows !== shiftedRows;
+				const merged = mergeMembersPage(current.members, membersResult, offset);
+				const rowsShiftedDuringRequest = current.offset !== offset;
 				return {
 					...merged,
 					end: merged.end && !rowsShiftedDuringRequest,
 					isLoading: false,
 					loadFailed: false,
-					page: rowsShiftedDuringRequest ? page : page + 1,
-					shiftedRows: page === 0 ? 0 : current.shiftedRows
+					offset: rowsShiftedDuringRequest ? current.offset : offset + membersResult.length
 				};
 			});
 		} catch (e) {
@@ -251,21 +249,11 @@ const RoomMembersView = (): ReactElement => {
 				updateState({ isLoading: false, loadFailed: true });
 			}
 		}
-	}, [
-		state.members,
-		state.isLoading,
-		state.end,
-		state.room.t,
-		state.filter,
-		state.page,
-		state.allUsers,
-		state.shiftedRows,
-		state.loadFailed
-	]);
+	}, [state.members, state.isLoading, state.end, state.room.t, state.filter, state.offset, state.allUsers, state.loadFailed]);
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			updateState(current => (current.page || current.loadFailed ? reloadFromFirstPage(current) : {}));
+			updateState(current => (current.offset || current.end || current.loadFailed ? reloadFromFirstPage(current) : {}));
 		});
 
 		return unsubscribe;
@@ -300,9 +288,9 @@ const RoomMembersView = (): ReactElement => {
 			updateState(reloadFromFirstPage);
 			return;
 		}
-		updateState(({ members, shiftedRows }) => ({
+		updateState(({ members, offset }) => ({
 			members: setMemberRole(members, userId, role, isAdded),
-			shiftedRows: isAdded ? shiftedRows : shiftedRows + 1
+			offset: isAdded ? offset : Math.max(offset - 1, 0)
 		}));
 	};
 

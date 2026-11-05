@@ -336,6 +336,20 @@ describe('RoomMembersView roles', () => {
 			expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 0, type: 'online' }));
 		});
 
+		it('reloads the first page on focus after it loaded no members', async () => {
+			jest
+				.mocked(getRoomMembers)
+				.mockResolvedValueOnce([] as any)
+				.mockResolvedValueOnce([member] as any);
+			const { findByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(1));
+
+			await focusScreen();
+
+			expect(await findByTestId('room-members-view-item-member.user')).toBeTruthy();
+			expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 0 }));
+		});
+
 		it('requests the first page again when a role changes while the focus reload loads', async () => {
 			const { findByTestId, getByTestId, queryByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
 			await findByTestId('room-members-view-item-member.user');
