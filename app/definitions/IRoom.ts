@@ -75,7 +75,7 @@ export interface IRoom {
 
 export interface IRoomSettings {
 	roomName?: string;
-	roomAvatar?: string;
+	roomAvatar?: string | null;
 	roomDescription?: string;
 	roomTopic?: string;
 	roomAnnouncement?: string;
