@@ -16,7 +16,7 @@ describe('handleError', () => {
 		).toThrow(new Error('Not allowed'));
 	});
 
-	it('fills the action of a translated error with the action being done', () => {
+	it('fills the action of a translated error and starts the message with a capital letter', () => {
 		expect(() =>
 			handleError(
 				{
@@ -30,7 +30,7 @@ describe('handleError', () => {
 				},
 				'changing_avatar'
 			)
-		).toThrow(new Error('changing avatar is not allowed'));
+		).toThrow(new Error('Changing avatar is not allowed'));
 	});
 
 	it('fills the url of an invalid avatar URL error', () => {

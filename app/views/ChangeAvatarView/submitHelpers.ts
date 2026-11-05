@@ -14,7 +14,8 @@ export const handleError = (e: any, action: string) => {
 		throw new Error(I18n.t(code, { url: details?.url }));
 	}
 	if (code && I18n.isTranslated(code)) {
-		throw new Error(I18n.t(code, { action: I18n.t(action) }));
+		const message = I18n.t(code, { action: I18n.t(action) });
+		throw new Error(message.charAt(0).toUpperCase() + message.slice(1));
 	}
 	throw new Error(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
 };
