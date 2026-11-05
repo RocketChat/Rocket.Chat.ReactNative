@@ -560,3 +560,35 @@ describe('useCallStore endCall — pendingHangups recording', () => {
 		expect(pendingHangups.drainAll()).toEqual(['end-record']);
 	});
 });
+
+describe('useCallStore call taken over by another session', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('lets go of the call without hanging it up when it becomes hidden', () => {
+		const { call, emit } = createMockCall('moved');
+		useCallStore.getState().setCall(call);
+
+		emit('hidden');
+
+		expect(call.hangup).not.toHaveBeenCalled();
+		expect(mockPlayCallEndedSound).not.toHaveBeenCalled();
+		expect(RNCallKeep.endCall).toHaveBeenCalledWith('moved');
+		expect(useCallStore.getState().call).toBeNull();
+		expect(useCallStore.getState().callId).toBeNull();
+		expect(jest.requireMock('~/lib/navigation/appNavigation').default.back).toHaveBeenCalledTimes(1);
+	});
+
+	it('keeps the original start time of a call that was already active', () => {
+		const { call } = createMockCall('taken', { initialState: 'active' });
+		const activeTimestamp = new Date(Date.now() - 60_000);
+		Object.assign(call, { activeTimestamp });
+
+		useCallStore.getState().setCall(call);
+
+		expect(useCallStore.getState().callStartTime).toBe(activeTimestamp.getTime());
+	});
+});
