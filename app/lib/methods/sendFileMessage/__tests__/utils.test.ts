@@ -271,7 +271,7 @@ describe('createUploadProgressCallback', () => {
 		const update = jest.fn((cb: (u: any) => void) => cb(record));
 		const db = { write: jest.fn((cb: () => Promise<void>) => cb()) } as any;
 
-		await createUploadProgressCallback(db, { update } as any)(1, 3);
+		await createUploadProgressCallback({ db, update } as any)(1, 3);
 
 		expect(record.progress).toBe(33);
 	});
@@ -280,7 +280,7 @@ describe('createUploadProgressCallback', () => {
 		const db = { write: jest.fn(() => Promise.reject(new Error('db down'))) } as any;
 		const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-		await expect(createUploadProgressCallback(db, {} as any)(50, 200)).resolves.toBeUndefined();
+		await expect(createUploadProgressCallback({ db } as any)(50, 200)).resolves.toBeUndefined();
 
 		expect(consoleErrorSpy).toHaveBeenCalled();
 		consoleErrorSpy.mockRestore();

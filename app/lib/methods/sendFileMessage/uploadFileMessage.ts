@@ -30,7 +30,7 @@ const sendPreparedUpload = async (
 	const { signal } = slot.controller;
 	const { url, headers, formData, afterUpload } = await prepare();
 
-	const updateProgress = createUploadProgressCallback(db, uploadRecord);
+	const updateProgress = createUploadProgressCallback(uploadRecord);
 	const resetProgress = () => updateProgress(0, 1);
 	const response = await retryWhileRateLimited(
 		signal,

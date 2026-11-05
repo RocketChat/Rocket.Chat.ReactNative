@@ -1,4 +1,3 @@
-import { type Database } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Alert } from 'react-native';
 import * as FileSystem from 'expo-file-system/legacy';
@@ -93,10 +92,10 @@ export const showUploadFailureToast = (error: unknown): void => {
 };
 
 export const createUploadProgressCallback =
-	(db: Database, uploadRecord: TUploadModel) =>
+	(uploadRecord: TUploadModel) =>
 	async (loaded: number, total: number): Promise<void> => {
 		try {
-			await db.write(async () => {
+			await uploadRecord.db.write(async () => {
 				await uploadRecord.update(u => {
 					u.progress = Math.floor((loaded / total) * 100);
 				});
