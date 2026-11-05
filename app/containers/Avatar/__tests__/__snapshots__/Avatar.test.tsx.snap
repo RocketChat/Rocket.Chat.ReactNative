@@ -802,6 +802,69 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
 </View>
 `;
 
+exports[`Story Snapshots: Loading should match snapshot 1`] = `
+<View
+  accessibilityLabel="[missing {{username}} value]'s avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 8,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    backgroundColor={4293191658}
+    borderRadius={8}
+    containerViewRef={{"current":"Object"}}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={{"current":"NativeComponent"}}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    recyclingKey="https://10.255.255.1/avatar.png"
+    sfEffect={null}
+    source={
+      [
+        {
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
+          "uri": "https://10.255.255.1/avatar.png",
+        },
+      ]
+    }
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "borderRadius": 8,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    symbolSize={null}
+    symbolWeight={null}
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
 exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`] = `
 <View
   accessibilityLabel="[missing {{username}} value]'s avatar"

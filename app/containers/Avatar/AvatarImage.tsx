@@ -8,11 +8,10 @@ import AvatarSkeleton from './AvatarSkeleton';
 
 interface IAvatarImage {
 	uri?: string;
-	size: number;
-	borderRadius: number;
+	style: { width: number; height: number; borderRadius: number };
 }
 
-const AvatarImage = ({ uri, size, borderRadius }: IAvatarImage) => {
+const AvatarImage = ({ uri, style }: IAvatarImage) => {
 	const { colors } = useTheme();
 	const [finishedUri, setFinishedUri] = useState<string | undefined>();
 	const showSkeleton = !!uri && finishedUri !== uri;
@@ -22,7 +21,7 @@ const AvatarImage = ({ uri, size, borderRadius }: IAvatarImage) => {
 	return (
 		<>
 			<Image
-				style={{ width: size, height: size, borderRadius, backgroundColor: colors.surfaceNeutral }}
+				style={{ ...style, backgroundColor: colors.surfaceNeutral }}
 				source={{
 					uri,
 					headers: RocketChatSettings.customHeaders ?? headers
@@ -32,7 +31,7 @@ const AvatarImage = ({ uri, size, borderRadius }: IAvatarImage) => {
 				onLoad={onFinish}
 				onError={onFinish}
 			/>
-			{showSkeleton ? <AvatarSkeleton size={size} borderRadius={borderRadius} /> : null}
+			{showSkeleton ? <AvatarSkeleton size={style.width} borderRadius={style.borderRadius} /> : null}
 		</>
 	);
 };
