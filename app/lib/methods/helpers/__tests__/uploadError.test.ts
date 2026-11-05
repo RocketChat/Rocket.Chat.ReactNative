@@ -106,11 +106,11 @@ describe('getUploadErrorMessage', () => {
 });
 
 describe('isRetryableUploadError', () => {
-	it.each([[undefined], [null], [0], [200], [401], [403], [408], [429], [500], [502], [503]])('allows a retry for %p', status => {
+	it.each([[undefined], [null], [0], [200], [401], [408], [429], [500], [502], [503]])('allows a retry for %p', status => {
 		expect(isRetryableUploadError(status)).toBe(true);
 	});
 
-	it.each([[300], [304], [400], [404], [405], [410], [413], [415], [422]])('refuses a retry for %p', status => {
+	it.each([[300], [304], [400], [403], [404], [405], [410], [413], [415], [422]])('refuses a retry for %p', status => {
 		expect(isRetryableUploadError(status)).toBe(false);
 	});
 });
