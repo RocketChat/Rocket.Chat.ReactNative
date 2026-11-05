@@ -199,11 +199,11 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 			await saveRoomSettings(room.rid, params);
 		} catch (e: any) {
 			const { code, reason } = getServerError(e);
-			const nameErrors: Record<string, string> = {
+			const nameErrors: Partial<Record<string, string>> = {
 				'error-invalid-room-name': I18n.t('error-invalid-room-name', { room_name: name }),
 				'error-duplicate-channel-name': I18n.t('Channel_name_already_taken')
 			};
-			const nameError = code ? nameErrors[code] : undefined;
+			const nameError = nameErrors[code];
 
 			if (nameError) {
 				setError('name', { message: nameError, type: 'validate' });

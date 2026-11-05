@@ -7,12 +7,12 @@ interface IServerError {
 	details?: TErrorDetails;
 }
 
-const withoutCodeSuffix = (message: string, code?: string) => {
+const withoutCodeSuffix = (message: string, code: string) => {
 	const suffix = ` [${code}]`;
-	return code && message.endsWith(suffix) ? message.slice(0, -suffix.length) : message;
+	return message.endsWith(suffix) ? message.slice(0, -suffix.length) : message;
 };
 
 export const getServerError = (e: IServerError) => {
-	const code = e.data?.errorType ?? e.error;
+	const code = e.data?.errorType ?? e.error ?? '';
 	return { code, reason: withoutCodeSuffix(e.data?.error ?? e.reason ?? '', code), details: e.data?.details ?? e.details };
 };
