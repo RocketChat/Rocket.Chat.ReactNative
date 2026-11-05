@@ -209,7 +209,9 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 				setFocus('name');
 			}
 
-			AccessibilityInfo.announceForAccessibility(nameError ?? reason);
+			AccessibilityInfo.announceForAccessibility(
+				nameError || reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') })
+			);
 
 			error = true;
 			log(e);
