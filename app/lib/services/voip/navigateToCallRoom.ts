@@ -1,4 +1,4 @@
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import Navigation from '~/lib/navigation/appNavigation';
 import { useCallStore } from './useCallStore';
@@ -34,7 +34,7 @@ export async function navigateToCallRoom({ isMasterDetail }: { isMasterDetail: b
 		item: {
 			rid: roomId,
 			name: username,
-			t: SubscriptionType.DIRECT
+			t: RoomType.DIRECT
 		},
 		isMasterDetail
 	});

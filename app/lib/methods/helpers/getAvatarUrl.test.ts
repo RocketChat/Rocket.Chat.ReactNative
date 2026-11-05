@@ -1,5 +1,5 @@
 import { formatUrl, getAvatarURL } from './getAvatarUrl';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 
 jest.mock('react-native', () => ({ PixelRatio: { get: () => 1 } }));
 
@@ -61,7 +61,7 @@ describe('getAvatarURL function', () => {
 	});
 
 	test('uses the external provider URL for direct messages when the server is older than 6.12.0', () => {
-		const type = SubscriptionType.DIRECT;
+		const type = RoomType.DIRECT;
 		const text = 'username123';
 		const avatarExternalProviderUrl = 'https://external.provider.com/avatar/{username}';
 		const serverVersion = '6.11.0';
@@ -73,7 +73,7 @@ describe('getAvatarURL function', () => {
 	});
 
 	test('routes direct messages through the server when it is 6.12.0 or newer, ignoring the external provider URL', () => {
-		const type = SubscriptionType.DIRECT;
+		const type = RoomType.DIRECT;
 		const text = 'username123';
 		const avatarExternalProviderUrl = 'https://external.provider.com/avatar/{username}';
 		const server = 'https://mobile.qa.rocket.chat';
@@ -86,7 +86,7 @@ describe('getAvatarURL function', () => {
 	});
 
 	test('routes direct messages through the server when the server version is unknown', () => {
-		const type = SubscriptionType.DIRECT;
+		const type = RoomType.DIRECT;
 		const text = 'username123';
 		const avatarExternalProviderUrl = 'https://external.provider.com/avatar/{username}';
 		const server = 'https://mobile.qa.rocket.chat';
@@ -204,7 +204,7 @@ describe('getAvatarURL function', () => {
 	});
 
 	test('trims trailing slashes from external provider URLs on servers older than 6.12.0', () => {
-		const type = SubscriptionType.DIRECT;
+		const type = RoomType.DIRECT;
 		const text = 'username123';
 		const avatarExternalProviderUrl = 'https://external.provider.com/avatar/{username}//';
 		const serverVersion = '6.11.0';

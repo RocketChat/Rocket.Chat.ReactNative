@@ -6,7 +6,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import Emoji from '../markdown/components/emoji/Emoji';
 import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
 import { headers } from '~/lib/methods/helpers/fetch';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import { type IAvatar } from './interfaces';
 import I18n from '~/i18n';
 import Touch from '../Touch';
@@ -30,7 +30,7 @@ const Avatar = memo(
 		text,
 		size = 25,
 		borderRadius = AVATAR_BORDER_RADIUS,
-		type = SubscriptionType.DIRECT,
+		type = RoomType.DIRECT,
 		avatarExternalProviderUrl,
 		roomAvatarExternalProviderUrl,
 		cdnPrefix,

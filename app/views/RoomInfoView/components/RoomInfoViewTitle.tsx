@@ -2,7 +2,7 @@ import { Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { type ReactElement } from 'react';
 
-import { type ISubscription, type TUserStatus, SubscriptionType } from '~/definitions';
+import { type ISubscription, type TUserStatus, RoomType } from '~/definitions';
 import styles from '../styles';
 import { useTheme } from '~/theme';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
@@ -21,7 +21,7 @@ interface IRoomInfoViewTitle {
 	status?: TUserStatus;
 	statusText?: string;
 	statusExpiresAt?: string;
-	type: SubscriptionType;
+	type: RoomType;
 }
 
 const RoomInfoViewTitle = ({
@@ -41,7 +41,7 @@ const RoomInfoViewTitle = ({
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
 
-	if (type === SubscriptionType.DIRECT) {
+	if (type === RoomType.DIRECT) {
 		return (
 			<View style={styles.roomInfoViewTitleContainer}>
 				<Text

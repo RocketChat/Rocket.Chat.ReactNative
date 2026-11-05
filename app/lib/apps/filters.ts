@@ -5,19 +5,17 @@ import {
 	type TRoomTypeFilter,
 	RoomTypeFilter
 } from './definitions';
-
-const isTeamRoom = ({ teamMain }: IAppActionButtonRoom): boolean => !!teamMain;
-const isDiscussion = ({ prid }: IAppActionButtonRoom): boolean => !!prid;
+import { isDiscussion, isGroupChat, isTeamMain } from '~/lib/methods/helpers/roomKind';
 
 const roomTypeMatchers: { [K in TRoomTypeFilter]: (room: IAppActionButtonRoom) => boolean } = {
 	[RoomTypeFilter.PUBLIC_CHANNEL]: room => room.t === 'c',
 	[RoomTypeFilter.PRIVATE_CHANNEL]: room => room.t === 'p',
-	[RoomTypeFilter.PUBLIC_TEAM]: room => isTeamRoom(room) && room.t === 'c',
-	[RoomTypeFilter.PRIVATE_TEAM]: room => isTeamRoom(room) && room.t === 'p',
+	[RoomTypeFilter.PUBLIC_TEAM]: room => isTeamMain(room) && room.t === 'c',
+	[RoomTypeFilter.PRIVATE_TEAM]: room => isTeamMain(room) && room.t === 'p',
 	[RoomTypeFilter.PUBLIC_DISCUSSION]: room => isDiscussion(room) && room.t === 'c',
 	[RoomTypeFilter.PRIVATE_DISCUSSION]: room => isDiscussion(room) && room.t === 'p',
 	[RoomTypeFilter.DIRECT]: room => room.t === 'd',
-	[RoomTypeFilter.DIRECT_MULTIPLE]: room => room.t === 'd' && (room.uids?.length ?? 0) > 2,
+	[RoomTypeFilter.DIRECT_MULTIPLE]: room => room.t === 'd' && isGroupChat(room),
 	[RoomTypeFilter.LIVE_CHAT]: room => room.t === 'l'
 };
 

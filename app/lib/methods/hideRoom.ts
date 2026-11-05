@@ -1,14 +1,13 @@
-import { type SubscriptionType } from '~/definitions';
+import { type RoomType } from '~/definitions';
 import database from '../database';
 import log, { events, logEvent } from './helpers/log';
 import { hideRoom as hideRoomService } from '../services/restApi';
-import { type RoomTypes } from './roomTypeToApiType';
 
-export const hideRoom = async (rid: string, type: SubscriptionType) => {
+export const hideRoom = async (rid: string, type: RoomType) => {
 	logEvent(events.RL_HIDE_CHANNEL);
 	try {
 		const db = database.active;
-		const result = await hideRoomService(rid, type as RoomTypes);
+		const result = await hideRoomService(rid, type);
 		if (result.success) {
 			const subCollection = db.get('subscriptions');
 			await db.write(async () => {

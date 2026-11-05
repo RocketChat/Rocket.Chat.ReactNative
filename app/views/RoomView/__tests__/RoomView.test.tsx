@@ -30,6 +30,7 @@ jest.mock('../components/EncryptedRoom', () => {
 	return { EncryptedRoom: () => createElement(RNView, { testID: 'encrypted-screen' }) };
 });
 jest.mock('../components/RoomViewHeader/RoomViewHeader', () => ({ RoomViewHeader: () => null }));
+jest.mock('../hooks/useEmptyRoomHeader', () => ({ useEmptyRoomHeader: jest.fn() }));
 jest.mock('../hooks/useE2EEStatus', () => ({
 	useE2EEStatus: jest.fn(() => ({ showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false }))
 }));
@@ -82,13 +83,6 @@ describe('RoomView', () => {
 
 	it('renders the empty-room background instead of a room when the route has no identity', () => {
 		renderRoomView(null);
-
-		expect(screen.getByTestId('room-view-empty')).toBeOnTheScreen();
-		expect(screen.queryByTestId('room-screen')).toBeNull();
-	});
-
-	it('renders the empty-room background when the route has a rid but no type', () => {
-		renderRoomView({ rid: 'rid-1' });
 
 		expect(screen.getByTestId('room-view-empty')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();

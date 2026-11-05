@@ -90,12 +90,6 @@ describe('on the JS header', () => {
 		expect(optionsWith('unstable_headerLeftItems')).toHaveLength(0);
 	});
 
-	it('sets no right actions without a rid', () => {
-		render(<RoomViewHeader roomStore={makeRoomStore()} />);
-
-		expect(optionsWith('headerRight')).toHaveLength(0);
-	});
-
 	it('renders only the active mode actions in the JS header buttons', () => {
 		render(<RoomViewHeader rid='rid-1' tmid='tmid-1' roomStore={makeRoomStore()} />);
 
@@ -121,12 +115,6 @@ describe('on the native header bar', () => {
 		expect(optionsWith('headerTitle')).toHaveLength(0);
 	});
 
-	it('leaves the header untouched without a rid', () => {
-		render(<RoomViewHeader roomStore={makeRoomStore()} />);
-
-		expect(mockSetOptions).not.toHaveBeenCalled();
-	});
-
 	it('shows the room actions on the right and an unread back button on the left', () => {
 		render(<RoomViewHeader rid='rid-1' roomStore={makeRoomStore()} />);
 
@@ -142,7 +130,7 @@ describe('on the native header bar', () => {
 	it.each([
 		['room', undefined, {}, useRoomActions],
 		['thread', 'tmid-1', {}, useThreadActions],
-		['omnichannel', undefined, { t: 'l' }, useOmnichannelActions]
+		['omnichannel', undefined, { t: 'l' as const }, useOmnichannelActions]
 	])('mounts only the %s action hook', (_mode, tmid, room, activeHook) => {
 		render(<RoomViewHeader rid='rid-1' tmid={tmid} roomStore={makeRoomStore(room)} />);
 

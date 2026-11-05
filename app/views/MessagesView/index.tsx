@@ -25,7 +25,7 @@ import {
 	type IApplicationState,
 	type IRoomInfoParam,
 	type TMessageModel,
-	SubscriptionType,
+	type RoomType,
 	type IAttachment,
 	type IMessage,
 	type TAnyMessageModel,
@@ -65,7 +65,7 @@ interface IMessagesViewState {
 
 interface IParams {
 	rid: string;
-	t: SubscriptionType;
+	t: RoomType;
 	tmid?: string;
 	message?: TMessageModel;
 	name?: string;
@@ -78,7 +78,7 @@ interface IParams {
 
 class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 	private rid: string;
-	private t: SubscriptionType;
+	private t: RoomType;
 	private content: any;
 
 	constructor(props: IMessagesViewProps) {
@@ -145,8 +145,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 			params = {
 				...params,
 				tmid: item.tmid,
-				name: await getThreadName(this.rid, item.tmid, item._id),
-				t: SubscriptionType.THREAD
+				name: await getThreadName(this.rid, item.tmid, item._id)
 			};
 			Navigation.push('RoomView', params);
 		} else {

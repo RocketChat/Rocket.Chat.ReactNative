@@ -4,7 +4,8 @@ import { type IAttachment } from '~/definitions/IAttachment';
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
 import { type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
-import { type ISubscription, type SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type RoomType } from '~/definitions/IRoom';
+import { type ISubscription, type TSubscriptionModel } from '~/definitions/ISubscription';
 import { type TChangeAvatarViewContext } from '~/definitions/TChangeAvatarViewContext';
 import { type CategoryViewParams } from '~/views/CategoryView';
 import { type CategorySettingsViewParams } from '~/views/CategorySettingsView';
@@ -19,7 +20,7 @@ import { type ConfirmCategoryViewParams } from '~/views/CreateCategoryView/Confi
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		tmid?: string;
 		message?: string;
 		name?: string;
@@ -42,7 +43,7 @@ export type ModalStackParamList = {
 		room: ISubscription;
 		member?: any;
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		joined: boolean;
 		omnichannelPermissions?: {
 			canForwardGuest: boolean;
@@ -55,7 +56,7 @@ export type ModalStackParamList = {
 		room?: ISubscription;
 		member?: any;
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		showCloseModal?: boolean;
 		fromRid?: string;
 		itsMe?: boolean;
@@ -74,7 +75,7 @@ export type ModalStackParamList = {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
 		room?: ISubscription;
-		t?: SubscriptionType;
+		t?: RoomType;
 	};
 	RoomInfoEditView: {
 		rid: string;
@@ -86,11 +87,11 @@ export type ModalStackParamList = {
 	};
 	DiscussionsView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 	};
 	SearchMessagesView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		encrypted?: boolean;
 		showCloseModal?: boolean;
 	};
@@ -117,7 +118,7 @@ export type ModalStackParamList = {
 	};
 	MessagesView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		name: string;
 	};
 	AutoTranslateView: {
@@ -163,7 +164,7 @@ export type ModalStackParamList = {
 	};
 	ThreadMessagesView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 	};
 	TeamChannelsView: {
 		teamId: string;

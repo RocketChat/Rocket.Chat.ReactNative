@@ -16,7 +16,7 @@ import SafeAreaView from '~/containers/SafeAreaView';
 import { ControlledFormTextInput } from '~/containers/TextInput';
 import { LISTENER } from '~/containers/Toast';
 import { MultiSelect } from '~/containers/UIKit/MultiSelect';
-import { type IBaseScreen, type IRoomSettings, type ISubscription, SubscriptionType } from '~/definitions';
+import { type IBaseScreen, type IRoomSettings, type ISubscription, RoomType } from '~/definitions';
 import I18n from '~/i18n';
 import KeyboardView from '~/containers/KeyboardView';
 import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
@@ -167,8 +167,8 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 			params.roomAnnouncement = announcement;
 		}
 		// Room Type
-		if ((room.t === SubscriptionType.CHANNEL) !== t) {
-			params.roomType = t ? ('c' as SubscriptionType) : ('p' as SubscriptionType);
+		if ((room.t === RoomType.CHANNEL) !== t) {
+			params.roomType = t ? 'c' : 'p';
 		}
 		// Read Only
 		if (room.ro !== readOnly) {
@@ -242,7 +242,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 					onPress: async () => {
 						try {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE);
-							await toggleArchiveRoom(rid, t as SubscriptionType, !archived);
+							await toggleArchiveRoom(rid, t, !archived);
 						} catch (e) {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE_F);
 							log(e);

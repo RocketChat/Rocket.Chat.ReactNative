@@ -1,8 +1,9 @@
-import { ERoomTypes } from '~/definitions';
+import { RoomType } from '~/definitions';
 import database from '../database';
 import sdk from '../services/sdk';
 import { createDirectMessage } from './createDirectMessage';
 import { getRoomByTypeAndName } from '../services/restApi';
+import { pathSegmentToRoomType } from './roomTypePath';
 
 async function openGroup(roomId: string) {
 	try {
@@ -14,11 +15,11 @@ async function openGroup(roomId: string) {
 	}
 }
 
-async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: string }) {
+async function open({ type, rid, name }: { type?: RoomType; rid: string; name: string }) {
 	try {
 		// if it's a direct link without rid we'll create a new dm
 		// if the dm already exists it'll return the existent
-		if (type === ERoomTypes.DIRECT && !rid) {
+		if (type === RoomType.DIRECT && !rid) {
 			const result = await createDirectMessage(name);
 			if (result.success) {
 				const { room } = result;
@@ -29,7 +30,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 			}
 		}
 
-		if (type === ERoomTypes.CHANNEL || type === ERoomTypes.GROUP) {
+		if (type === RoomType.CHANNEL || type === RoomType.GROUP) {
 			let roomId = rid;
 			let room = null;
 
@@ -37,8 +38,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 			// getRoomByTypeAndName resolves both, unlike the REST endpoints, which match
 			// roomName exactly and return "not found" when handed an id.
 			if (!roomId) {
-				const roomType = type === ERoomTypes.GROUP ? 'p' : 'c';
-				room = await getRoomByTypeAndName(roomType, name);
+				room = await getRoomByTypeAndName(type, name);
 				roomId = room?._id;
 			}
 
@@ -47,7 +47,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 			}
 
 			// a group has to be open before it can be read
-			if (type === ERoomTypes.GROUP) {
+			if (type === RoomType.GROUP) {
 				const didOpenGroup = await openGroup(roomId);
 				if (!didOpenGroup) {
 					return false;
@@ -94,10 +94,9 @@ export async function canOpenRoom({ rid, path }: { rid: string; path: string }):
 			}
 		}
 
-		const [type, name] = path.split('/');
-		const t = type as ERoomTypes;
+		const [pathSegment, name] = path.split('/');
 		try {
-			const result = await open({ type: t, rid, name });
+			const result = await open({ type: pathSegmentToRoomType(pathSegment), rid, name });
 			return result;
 		} catch (e) {
 			return false;

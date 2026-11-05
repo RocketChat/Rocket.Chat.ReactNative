@@ -5,7 +5,6 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type TNavigation } from '../stacks/stackType';
 import { type TColors, type TSupportedThemes } from '../theme';
 
-export * from './ERoomType';
 export * from './IAttachment';
 export * from './IBiometricTrustStore';
 export * from './ICannedResponse';

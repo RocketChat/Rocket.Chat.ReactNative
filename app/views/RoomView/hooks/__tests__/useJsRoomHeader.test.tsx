@@ -47,16 +47,6 @@ describe('useJsRoomHeader', () => {
 		mockTestStore = makeRoomStore();
 	});
 
-	it('sets only the headerLeft spacer and returns when rid is missing', () => {
-		renderHook(() => useJsRoomHeader({ rid: undefined, tmid: undefined, name: 'general', roomStore: mockTestStore }));
-
-		expect(mockSetOptions).toHaveBeenCalledTimes(1);
-		const options = mockSetOptions.mock.calls[0][0];
-		expect(typeof options.headerLeft).toBe('function');
-		expect(options).not.toHaveProperty('headerTitle');
-		expect(options).not.toHaveProperty('headerRight');
-	});
-
 	it('re-fires the title effect when a selected field changes on a re-emitted room', () => {
 		mockTestStore = makeRoomStore({
 			room: { id: 'sub-1', rid: 'rid-1', t: 'c', name: 'general', topic: 'old' } as RoomState['room']

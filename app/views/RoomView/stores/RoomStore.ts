@@ -10,7 +10,7 @@ import { getUserInfo } from '~/lib/services/restApi';
 import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateMethod } from '~/lib/methods/helpers';
 import log from '~/lib/methods/helpers/log';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
-import { type RoomType, type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions';
 import { type TRoomOrPreview, isSubscriptionModel } from '~/definitions/TRoom';
 import {
 	type IRoomStoreInitParams,
@@ -22,7 +22,6 @@ import {
 import getMessages from '../services/getMessages';
 import { joinRoom, resumeRoom } from '../services/joinRoom';
 
-const EMPTY_ROOM: TRoomOrPreview = { rid: '', t: '' };
 const EMPTY_MEMBER: RoomState['member'] = {};
 
 const INIT_MAX_ATTEMPTS = 3;
@@ -85,7 +84,7 @@ const loadRoom = async (
 		} else {
 			await getMessages({
 				rid: room.rid,
-				...(isSubscriptionModel(room) && room.lastOpen ? {} : { t: room.t as RoomType })
+				...(isSubscriptionModel(room) && room.lastOpen ? {} : { t: room.t })
 			});
 			if (isAborted()) {
 				return { status: 'skipped' };
@@ -195,7 +194,7 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 
 export const createRoomStore = ({
 	rid,
-	initialRoom = EMPTY_ROOM,
+	initialRoom,
 	roomUserId = null
 }: {
 	rid?: string;

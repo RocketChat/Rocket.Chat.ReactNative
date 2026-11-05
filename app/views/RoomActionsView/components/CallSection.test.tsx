@@ -7,7 +7,7 @@ import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './CallSection.stories';
 import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 import type { ISubscription, TSubscriptionModel } from '~/definitions';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import i18n from '~/i18n';
 import * as restApi from '~/lib/services/restApi';
 
@@ -57,7 +57,7 @@ const createMockRoom = (overrides: Partial<ISubscription> = {}): TSubscriptionMo
 		_id: 'room1',
 		rid: 'room1',
 		id: 'room1',
-		t: SubscriptionType.DIRECT,
+		t: RoomType.DIRECT,
 		name: 'john.doe',
 		fname: 'John Doe',
 		uids: ['abc', 'user123'],

@@ -10,7 +10,6 @@ import {
 	subscribeRoom,
 	unsubscribeRoom
 } from '../actions/room';
-import { ERoomType } from '../definitions/ERoomType';
 import { mockedStore } from './mockedStore';
 import { initialState } from './room';
 
@@ -33,16 +32,16 @@ describe('test room reducer', () => {
 	});
 
 	it('should return initial state after leaveRoom', () => {
-		mockedStore.dispatch(leaveRoom(ERoomType.c, { rid: ERoomType.c }));
+		mockedStore.dispatch(leaveRoom('room', { rid: 'GENERAL' }));
 		const { rid, isDeleting } = mockedStore.getState().room;
-		expect(rid).toEqual(ERoomType.c);
+		expect(rid).toEqual('GENERAL');
 		expect(isDeleting).toEqual(true);
 	});
 
 	it('should return initial state after deleteRoom', () => {
-		mockedStore.dispatch(deleteRoom(ERoomType.l, { rid: ERoomType.l }));
+		mockedStore.dispatch(deleteRoom('room', { rid: 'GENERAL' }));
 		const { rid, isDeleting } = mockedStore.getState().room;
-		expect(rid).toEqual(ERoomType.l);
+		expect(rid).toEqual('GENERAL');
 		expect(isDeleting).toEqual(true);
 	});
 

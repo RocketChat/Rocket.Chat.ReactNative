@@ -3,7 +3,7 @@ import { type ReactNode } from 'react';
 import { ThemeContext, type TSupportedThemes } from '~/theme';
 import { themes } from '~/lib/constants/colors';
 import NotifierComponent from './NotifierComponent';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
@@ -27,7 +27,7 @@ const baseNotification = {
 		rid: 'rid-1',
 		name: 'general',
 		sender: { username: 'rocket.cat' },
-		type: SubscriptionType.CHANNEL
+		type: RoomType.CHANNEL
 	},
 	title: 'general',
 	avatar: 'rocket.cat'
@@ -50,7 +50,7 @@ export const DirectMessage = () => (
 				...baseNotification,
 				payload: {
 					...baseNotification.payload,
-					type: SubscriptionType.DIRECT,
+					type: RoomType.DIRECT,
 					sender: { username: 'diego.mello' }
 				},
 				title: 'diego.mello',

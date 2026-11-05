@@ -11,7 +11,6 @@ import I18n from '~/i18n';
 import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import log from '~/lib/methods/helpers/log';
 import { deleteRoom as actionDeleteRoom } from '~/actions/room';
-import { ERoomType } from '~/definitions/ERoomType';
 import { type ISubscription, type TSubscriptionModel } from '~/definitions';
 
 interface IUseRoomDeletionActions {
@@ -56,7 +55,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 						showConfirmationAlert({
 							message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
 							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-							onPress: () => actionDeleteRoom(ERoomType.t, room, selected)
+							onPress: () => actionDeleteRoom('team', room, selected)
 						});
 					}
 				});
@@ -64,7 +63,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 				showConfirmationAlert({
 					message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-					onPress: () => dispatch(actionDeleteRoom(ERoomType.t, room))
+					onPress: () => dispatch(actionDeleteRoom('team', room))
 				});
 			}
 		} catch (e: any) {
@@ -88,7 +87,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => dispatch(actionDeleteRoom(ERoomType.c, room))
+					onPress: () => dispatch(actionDeleteRoom('room', room))
 				}
 			],
 			{ cancelable: false }

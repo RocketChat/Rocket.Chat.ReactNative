@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import RoomInfoViewTitle from './RoomInfoViewTitle';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -24,16 +24,16 @@ export default {
 export const DM_Status = () => (
 	<>
 		<Wrapper>
-			<RoomInfoViewTitle name='John Doe' username='john.doe' userId='user1' status='online' type={SubscriptionType.DIRECT} />
+			<RoomInfoViewTitle name='John Doe' username='john.doe' userId='user1' status='online' type={RoomType.DIRECT} />
 		</Wrapper>
 		<Wrapper>
-			<RoomInfoViewTitle name='John Doe' username='john.doe' userId='user2' status='away' type={SubscriptionType.DIRECT} />
+			<RoomInfoViewTitle name='John Doe' username='john.doe' userId='user2' status='away' type={RoomType.DIRECT} />
 		</Wrapper>
 		<Wrapper>
-			<RoomInfoViewTitle name='John Doe' username='john.doe' userId='user3' status='busy' type={SubscriptionType.DIRECT} />
+			<RoomInfoViewTitle name='John Doe' username='john.doe' userId='user3' status='busy' type={RoomType.DIRECT} />
 		</Wrapper>
 		<Wrapper>
-			<RoomInfoViewTitle name='John Doe' username='john.doe' userId='user4' status='offline' type={SubscriptionType.DIRECT} />
+			<RoomInfoViewTitle name='John Doe' username='john.doe' userId='user4' status='offline' type={RoomType.DIRECT} />
 		</Wrapper>
 		<Wrapper>
 			<RoomInfoViewTitle
@@ -42,7 +42,7 @@ export const DM_Status = () => (
 				userId='user5'
 				status='online'
 				statusText='In a meeting'
-				type={SubscriptionType.DIRECT}
+				type={RoomType.DIRECT}
 			/>
 		</Wrapper>
 		<Wrapper>
@@ -53,7 +53,7 @@ export const DM_Status = () => (
 				status='online'
 				statusText='In a meeting'
 				statusExpiresAt={futureExpiry}
-				type={SubscriptionType.DIRECT}
+				type={RoomType.DIRECT}
 			/>
 		</Wrapper>
 		<Wrapper>
@@ -63,7 +63,7 @@ export const DM_Status = () => (
 				userId='user7'
 				status='busy'
 				statusText='On call'
-				type={SubscriptionType.DIRECT}
+				type={RoomType.DIRECT}
 			/>
 		</Wrapper>
 	</>

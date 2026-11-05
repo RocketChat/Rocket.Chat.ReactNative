@@ -1,22 +1,15 @@
 import log from './helpers/log';
-import { type TAnyMessageModel, type TSubscriptionModel, type SubscriptionType } from '~/definitions';
+import { type RoomType, type TAnyMessageModel, type TSubscriptionModel } from '~/definitions';
 import { store } from '../store/auxStore';
 import { isGroupChat } from './helpers';
 import { getRoom } from './getRoom';
-
-type TRoomType = 'p' | 'c' | 'd';
+import { roomTypeToPathSegment } from './roomTypePath';
 
 interface ISubscription {
-	t: SubscriptionType;
+	t: RoomType;
 	name: string;
 	rid: string;
 }
-
-const roomTypes = {
-	p: 'group',
-	c: 'channel',
-	d: 'direct'
-};
 
 export async function getPermalinkMessage(message: TAnyMessageModel): Promise<string | null> {
 	if (!message.subscription) return null;
@@ -37,11 +30,11 @@ export function getPermalinkChannel(channel: TSubscriptionModel): string {
 }
 
 export function buildPermalinkMessage(server: string, isGoupChat: boolean, room: ISubscription, messageId: string) {
-	const roomType = roomTypes[room.t as TRoomType];
+	const roomType = roomTypeToPathSegment(room.t);
 	return `${server}/${roomType}/${isGoupChat ? room.rid : encodeURIComponent(room.name)}?msg=${messageId}`;
 }
 
 export function buildPermalinkChannel(server: string, channel: ISubscription) {
-	const roomType = roomTypes[channel.t as TRoomType];
+	const roomType = roomTypeToPathSegment(channel.t);
 	return `${server}/${roomType}/${encodeURIComponent(channel.name)}`;
 }

@@ -7,7 +7,6 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import log from './helpers/log';
 import { snapshotServerTimestamps, type TServerTimestamps, updateLastOpen } from './updateLastOpen';
 import { loadMessagesForRoom } from './loadMessagesForRoom';
-import { isRoomType } from './roomTypeToApiType';
 
 const count = 50;
 
@@ -84,7 +83,7 @@ export async function loadMissedMessages(args: {
 		// A room whose history load fetched no messages has no cursor to sync from, and syncing is what
 		// would write one. Load its history instead: it fetches the same gap and seeds the cursor.
 		const sub = await getSubscriptionByRoomId(args.rid);
-		if (sub && !sub.lastOpen && isRoomType(sub.t)) {
+		if (sub && !sub.lastOpen) {
 			return loadMessagesForRoom({ rid: args.rid, t: sub.t });
 		}
 	}

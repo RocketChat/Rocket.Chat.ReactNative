@@ -7,7 +7,7 @@ import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './RoomInfoButtons.stories';
 import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 import type { ISubscription } from '~/definitions';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 
 const mockShowInitCallActionSheet = jest.fn();
 const mockShowActionSheet = jest.fn();
@@ -41,7 +41,7 @@ const createMockRoom = (overrides: Partial<ISubscription> = {}): ISubscription =
 		_id: 'room1',
 		rid: 'room1',
 		id: 'room1',
-		t: SubscriptionType.DIRECT,
+		t: RoomType.DIRECT,
 		name: 'john.doe',
 		fname: 'John Doe',
 		uids: ['abc', 'user123'],

@@ -47,8 +47,8 @@ const mockIsGroupChat = isGroupChat as jest.Mock;
 const mockIsInviteSubscription = isInviteSubscription as unknown as jest.Mock;
 const mockLog = log as jest.Mock;
 
-const stubRoom = { rid: 'rid-1', t: 'c' };
-const subRoom = { id: 'rid-1', rid: 'rid-1', t: 'c', name: 'general' };
+const stubRoom = { rid: 'rid-1', t: 'c' as const };
+const subRoom = { id: 'rid-1', rid: 'rid-1', t: 'c' as const, name: 'general' };
 
 const flush = () => Promise.resolve().then(() => Promise.resolve());
 
@@ -117,7 +117,7 @@ describe('RoomStore', () => {
 	});
 
 	it('leaves a DM room untouched when its record is destroyed', async () => {
-		const dmRow = { ...subRoom, t: 'd' };
+		const dmRow = { ...subRoom, t: 'd' as const };
 		const { record, emit, destroy } = setupPresentRow(dmRow);
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: { ...stubRoom, t: 'd' } });
 		observeRoom('rid-1', store);
@@ -211,7 +211,7 @@ describe('RoomStore', () => {
 		expect(store.getState().membership).toBe('subscribed');
 	});
 
-	it.each(['c', 'd'])('preserves record completion after query handoff for room type %s', async t => {
+	it.each(['c', 'd'] as const)('preserves record completion after query handoff for room type %s', async t => {
 		const { emitRows } = setupAbsentThenPresentRow();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: { ...stubRoom, t } });
 		observeRoom('rid-1', store);
@@ -301,7 +301,7 @@ describe('RoomStore', () => {
 	it('fetches the DM member and sets roomUserId on success', async () => {
 		setupPresentRow();
 		mockGetUserInfo.mockResolvedValue({ success: true, user: { _id: 'uid-1', username: 'alice' } });
-		const dmRoom = { ...subRoom, t: 'd' };
+		const dmRoom = { ...subRoom, t: 'd' as const };
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: dmRoom });
 
 		await store.getState().init();
@@ -319,7 +319,7 @@ describe('RoomStore', () => {
 				resolveUserInfo = resolve;
 			})
 		);
-		const dmRoom = { ...subRoom, t: 'd' };
+		const dmRoom = { ...subRoom, t: 'd' as const };
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: dmRoom });
 
 		const initPromise = store.getState().init();
@@ -410,10 +410,10 @@ describe('RoomStore', () => {
 			expect(mockGetMessages).toHaveBeenCalledTimes(3);
 		});
 
-		it('retries against the room the observer delivered after the first attempt failed on an empty store', async () => {
+		it('retries against the room the observer delivered after the first attempt failed on a preview room', async () => {
 			const { emit } = setupPresentRow();
 			mockGetMessages.mockRejectedValueOnce(new Error('boom'));
-			const store = createRoomStore({ rid: 'rid-1', initialRoom: { rid: '', t: '' } });
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: { ...stubRoom, t: 'p' } });
 			observeRoom('rid-1', store);
 			await flush();
 
@@ -424,7 +424,6 @@ describe('RoomStore', () => {
 
 			await expect(initPromise).resolves.toEqual({ status: 'loaded', lastSeen: null });
 			expect(mockGetMessages).toHaveBeenCalledTimes(2);
-			// The retry used the room the observer delivered, not the empty snapshot init started with.
 			expect(mockGetMessages).toHaveBeenLastCalledWith({ rid: 'rid-1', t: 'c' });
 		});
 

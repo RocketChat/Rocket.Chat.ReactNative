@@ -82,7 +82,7 @@ describe('useJumpToMessage', () => {
 			rid: 'rid-1',
 			tmid: 'thread-1',
 			name: 'Thread Title',
-			t: 'thread',
+			t: 'c',
 			roomUserId: null,
 			jumpToMessageId: 'msg-1'
 		});
@@ -101,7 +101,7 @@ describe('useJumpToMessage', () => {
 			rid: 'rid-1',
 			tmid: 'msg-1',
 			name: 'Thread Name',
-			t: 'thread',
+			t: 'c',
 			roomUserId: null
 		});
 	});
@@ -170,7 +170,7 @@ describe('useJumpToMessage', () => {
 			const list = { isMessageInWindow: jest.fn(() => isMessageInWindow), jumpToMessage: jest.fn(() => Promise.resolve()) };
 			const { result, unmount } = renderRoomNavigation({
 				tmid,
-				t: tmid ? 'thread' : 'c',
+				t: 'c',
 				listContainerRef: { current: list as any }
 			});
 			const jump = (url = MESSAGE_URL) =>
@@ -261,7 +261,7 @@ describe('useJumpToMessage', () => {
 			};
 			const { result, unmount } = renderRoomNavigation({
 				tmid: 'thread-1',
-				t: 'thread',
+				t: 'c',
 				listContainerRef: { current: list as any }
 			});
 			const jumping = result.current.jumpToMessageByUrl(MESSAGE_URL);

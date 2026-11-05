@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import { getUserSelector } from '~/selectors/login';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { isRoomFederated } from '~/lib/methods/isRoomFederated';
@@ -10,12 +10,10 @@ import { isReadOnly } from '~/lib/methods/helpers/isReadOnly';
 import { useAppSelector } from '../useAppSelector';
 import { usePermissions } from '../usePermissions';
 
-export const useVideoConfCall = (
-	rid: string
-): { callEnabled: boolean; disabledTooltip?: boolean; roomType?: SubscriptionType } => {
+export const useVideoConfCall = (rid: string): { callEnabled: boolean; disabledTooltip?: boolean; roomType?: RoomType } => {
 	const [callEnabled, setCallEnabled] = useState(false);
 	const [disabledTooltip, setDisabledTooltip] = useState(false);
-	const [roomType, setRoomType] = useState<SubscriptionType>();
+	const [roomType, setRoomType] = useState<RoomType>();
 
 	// Read all call-related settings in a single subscription instead of one useSetting per key.
 	const settings = useAppSelector(
@@ -71,9 +69,9 @@ export const useVideoConfCall = (
 			const isJitsiDisabledForTeams = room.teamMain && !jitsiEnableTeams;
 			const isJitsiDisabledForChannels = !room.teamMain && (room.t === 'p' || room.t === 'c') && !jitsiEnableChannels;
 
-			if (room.t === SubscriptionType.DIRECT) return setCallEnabled(!!jitsiEnabled);
-			if (room.t === SubscriptionType.CHANNEL) return setCallEnabled(!isJitsiDisabledForChannels);
-			if (room.t === SubscriptionType.GROUP) return setCallEnabled(!isJitsiDisabledForTeams);
+			if (room.t === RoomType.DIRECT) return setCallEnabled(!!jitsiEnabled);
+			if (room.t === RoomType.CHANNEL) return setCallEnabled(!isJitsiDisabledForChannels);
+			if (room.t === RoomType.GROUP) return setCallEnabled(!isJitsiDisabledForTeams);
 		}
 		return setCallEnabled(false);
 	};

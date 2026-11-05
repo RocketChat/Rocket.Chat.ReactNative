@@ -1,10 +1,10 @@
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import { navigateToScreen, type TRoomStackNavigation, type TRoomStackParamList } from '../navigateToScreen';
 
 describe('navigateToScreen', () => {
 	const navigate = jest.fn();
 	const navigation = { navigate } as unknown as TRoomStackNavigation;
-	const threadMessagesParams: TRoomStackParamList['ThreadMessagesView'] = { rid: 'rid-1', t: SubscriptionType.CHANNEL };
+	const threadMessagesParams: TRoomStackParamList['ThreadMessagesView'] = { rid: 'rid-1', t: RoomType.CHANNEL };
 
 	beforeEach(() => jest.clearAllMocks());
 

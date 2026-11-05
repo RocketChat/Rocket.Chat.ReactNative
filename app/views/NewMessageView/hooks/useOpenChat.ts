@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback } from 'react';
 
-import { type ISearch, SubscriptionType, type TSubscriptionModel } from '~/definitions';
+import { type ISearch, RoomType, type TSubscriptionModel } from '~/definitions';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { assignRoomToCategory } from '~/lib/methods/assignRoomToCategory';
 import { createDirectMessage } from '~/lib/methods/createDirectMessage';
@@ -34,7 +34,7 @@ const openChatInCategory = async (chat: TNewMessageChat, categoryId: string, isM
 			return;
 		}
 		assignRoomToCategory(rid, categoryId);
-		await goRoom({ item: { rid, name: chat.name, t: SubscriptionType.DIRECT }, isMasterDetail });
+		await goRoom({ item: { rid, name: chat.name, t: RoomType.DIRECT }, isMasterDetail });
 	} catch (error: any) {
 		emitErrorCreateDirectMessage(error?.data);
 	}

@@ -2,13 +2,7 @@ import { CommonActions } from '@react-navigation/native';
 
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import Navigation from '~/lib/navigation/appNavigation';
-import {
-	type IOmnichannelRoom,
-	SubscriptionType,
-	type IVisitor,
-	type TSubscriptionModel,
-	type ISubscription
-} from '~/definitions';
+import { type IOmnichannelRoom, RoomType, type IVisitor, type TSubscriptionModel, type ISubscription } from '~/definitions';
 import { getRoomTitle, getUidDirectMessage } from './helpers';
 import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
@@ -16,7 +10,7 @@ import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
 	username?: string;
-	t?: SubscriptionType;
+	t?: RoomType;
 	rid?: string;
 	name?: string;
 	prid?: string;
@@ -29,7 +23,7 @@ export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOm
 interface RoomRouteParams {
 	rid?: string;
 	name: string;
-	t?: SubscriptionType;
+	t?: RoomType;
 	prid?: string;
 	visitor?: IVisitor;
 	joinCodeRequired?: boolean;
@@ -105,7 +99,7 @@ export const goRoom = async ({
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
 }): Promise<void> => {
-	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {
+	if (!('id' in item) && item.t === RoomType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;
@@ -115,7 +109,7 @@ export const goRoom = async ({
 					item: {
 						rid: result.room._id,
 						name: username || '',
-						t: SubscriptionType.DIRECT
+						t: RoomType.DIRECT
 					},
 					isMasterDetail,
 					...props

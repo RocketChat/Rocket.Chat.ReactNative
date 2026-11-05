@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { type ReactElement } from 'react';
 
 import { type TIconsName } from '~/containers/CustomIcon';
-import { type ISubscription, SubscriptionType } from '~/definitions';
+import { type ISubscription, RoomType } from '~/definitions';
 import i18n from '~/i18n';
 import { useVideoConf } from '~/lib/hooks/useVideoConf';
 import styles from '../styles';
@@ -60,7 +60,7 @@ export const RoomInfoButtons = ({
 
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
 	const isDmWithMyself = room?.uids?.filter((uid: string) => uid !== roomUserId).length === 0;
-	const isFromDm = room?.t === SubscriptionType.DIRECT;
+	const isFromDm = room?.t === RoomType.DIRECT;
 	const isDirectFromSaved = isDirect && fromRid && room;
 	const isIgnored = room?.ignored?.includes?.(roomUserId || '');
 	const isBlocked = room?.blocker;

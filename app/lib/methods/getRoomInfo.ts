@@ -1,4 +1,4 @@
-import { type IServerSubscription, type RoomType } from '~/definitions';
+import { type IServerSubscription } from '~/definitions';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { getRoomInfo as getRoomInfoService } from '../services/restApi';
 
@@ -17,7 +17,7 @@ const getRoomInfo = async (rid: string): Promise<IRoomInfoResult | null> => {
 			rid,
 			name: result.name,
 			fname: result.fname,
-			t: result.t as RoomType
+			t: result.t
 		};
 	}
 

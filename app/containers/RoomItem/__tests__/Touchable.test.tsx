@@ -6,7 +6,7 @@ import { makeMutable } from 'react-native-reanimated';
 
 import Touchable from '../Touchable';
 import { settleSwipeRow, unregisterOpenSwipeItem } from '../utils/openSwipeItem';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 
 jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: () => '7.0.0' }));
 jest.mock('react-native-gesture-handler', () => {
@@ -18,7 +18,7 @@ const setup = ({ swipeEnabled = true } = {}) => {
 	const onPress = jest.fn();
 	const { getByText } = render(
 		<Touchable
-			type={SubscriptionType.CHANNEL}
+			type={RoomType.CHANNEL}
 			onPress={onPress}
 			width={300}
 			favorite={false}

@@ -1,6 +1,6 @@
 import { PixelRatio } from 'react-native';
 
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import { type IAvatar } from '~/containers/Avatar/interfaces';
 import { compareServerVersion } from './compareServerVersion';
 
@@ -32,7 +32,7 @@ export const getAvatarURL = ({
 	// so we only build the external URL client-side for older servers that lack that proxy.
 	const serverLacksExternalAvatarProxy = compareServerVersion(serverVersion, 'lowerThan', '6.12.0');
 	let room;
-	if (type === SubscriptionType.DIRECT) {
+	if (type === RoomType.DIRECT) {
 		room = text;
 		if (avatarExternalProviderUrl && serverLacksExternalAvatarProxy) {
 			const externalUri = avatarExternalProviderUrl.trim().replace(/\/+$/, '').replace('{username}', room);

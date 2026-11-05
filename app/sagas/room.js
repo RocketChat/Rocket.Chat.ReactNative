@@ -69,18 +69,18 @@ const watchUserTyping = function* watchUserTyping({ rid, status, args }) {
 	}
 };
 
-const handleRemovedRoom = function* handleRemovedRoom(roomType, actionType) {
+const handleRemovedRoom = function* handleRemovedRoom(scope, actionType) {
 	const isMasterDetail = getIsMasterDetail();
 	Navigation.popToTop(isMasterDetail);
 
 	if (actionType === 'leave') {
 		EventEmitter.emit(LISTENER, {
-			message: roomType === 'team' ? I18n.t('Left_The_Team_Successfully') : I18n.t('Left_The_Room_Successfully')
+			message: scope === 'team' ? I18n.t('Left_The_Team_Successfully') : I18n.t('Left_The_Room_Successfully')
 		});
 	}
 	if (actionType === 'delete') {
 		EventEmitter.emit(LISTENER, {
-			message: roomType === 'team' ? I18n.t('Deleted_The_Team_Successfully') : I18n.t('Deleted_The_Room_Successfully')
+			message: scope === 'team' ? I18n.t('Deleted_The_Team_Successfully') : I18n.t('Deleted_The_Room_Successfully')
 		});
 	}
 
@@ -94,19 +94,19 @@ const handleRemovedRoom = function* handleRemovedRoom(roomType, actionType) {
 	}
 };
 
-const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) {
+const handleLeaveRoom = function* handleLeaveRoom({ room, scope, selected }) {
 	logEvent(events.RA_LEAVE);
 	try {
 		let result = {};
 
-		if (roomType === 'channel') {
+		if (scope === 'room') {
 			result = yield leaveRoom(room.rid, room.t);
-		} else if (roomType === 'team') {
+		} else if (scope === 'team') {
 			result = yield leaveTeam({ teamId: room.teamId, ...(selected && { rooms: selected }) });
 		}
 
 		if (result?.success) {
-			yield handleRemovedRoom(roomType, 'leave');
+			yield handleRemovedRoom(scope, 'leave');
 		}
 	} catch (e) {
 		logEvent(events.RA_LEAVE_F);
@@ -120,26 +120,26 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 	}
 };
 
-const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }) {
+const handleDeleteRoom = function* handleDeleteRoom({ room, scope, selected }) {
 	logEvent(events.RI_EDIT_DELETE);
 	try {
 		let result = {};
 
-		if (roomType === 'channel') {
+		if (scope === 'room') {
 			result = yield deleteRoom(room.rid || room._id, room.t);
-		} else if (roomType === 'team') {
+		} else if (scope === 'team') {
 			result = yield deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
 		}
 
 		if (result?.success) {
-			yield handleRemovedRoom(roomType, 'delete');
+			yield handleRemovedRoom(scope, 'delete');
 		}
 	} catch (e) {
 		logEvent(events.RI_EDIT_DELETE_F);
 		Alert.alert(
 			I18n.t('Oops'),
 			I18n.t('There_was_an_error_while_action', {
-				action: roomType === 'team' ? I18n.t('deleting_team') : I18n.t('deleting_room')
+				action: scope === 'team' ? I18n.t('deleting_team') : I18n.t('deleting_room')
 			})
 		);
 	}

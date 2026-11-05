@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import ActionsSection from '../ActionsSection';
-import { SubscriptionType } from '~/definitions';
+import { RoomType } from '~/definitions';
 import { mockedStore } from '~/reducers/mockedStore';
 import { addUsersToRoom } from '~/lib/services/restApi';
 import { showErrorAlertWithEMessage } from '~/lib/methods/helpers';
@@ -46,7 +46,7 @@ describe('ActionsSection add users', () => {
 	it('shows the error and stays on the screen when adding users fails', async () => {
 		const error = new Error('error-user-is-banned');
 		jest.mocked(addUsersToRoom).mockRejectedValue(error);
-		const { getByTestId } = render(<ActionsSection rid='rid1' t={SubscriptionType.CHANNEL} joined abacAttributes={undefined} />, {
+		const { getByTestId } = render(<ActionsSection rid='rid1' t={RoomType.CHANNEL} joined abacAttributes={undefined} />, {
 			wrapper: Wrapper
 		});
 

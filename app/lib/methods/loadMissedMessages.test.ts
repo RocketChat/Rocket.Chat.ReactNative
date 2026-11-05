@@ -81,16 +81,6 @@ describe('loadMissedMessages', () => {
 		expect(mockedUpdateMessages).not.toHaveBeenCalled();
 	});
 
-	it('falls through to the sync path when the subscription type is not a room type', async () => {
-		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'not-a-room-type' } as never);
-		mockedSdkGet.mockResolvedValue({ result: { updated: [], deleted: [], cursor: { next: null } } } as never);
-
-		await loadMissedMessages({ rid: RID });
-
-		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
-		expect(mockedUpdateMessages).toHaveBeenCalledWith(expect.objectContaining({ rid: RID, update: [], remove: [] }));
-	});
-
 	it('does nothing when there is no subscription', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue(null as never);
 

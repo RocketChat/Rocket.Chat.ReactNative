@@ -8,7 +8,7 @@ import {
 	type IMessage,
 	type IServer,
 	type ISubscription,
-	type SubscriptionType,
+	type RoomType,
 	type TAnyMessageModel,
 	type TChangeAvatarViewContext,
 	type TDataSelect,
@@ -47,7 +47,7 @@ export type ChatsStackParamList = {
 	RoomView:
 		| {
 				rid: string;
-				t: SubscriptionType;
+				t: RoomType;
 				tmid?: string;
 				messageId?: string;
 				name?: string;
@@ -66,7 +66,7 @@ export type ChatsStackParamList = {
 		room: TSubscriptionModel;
 		member?: any;
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		joined: boolean;
 		omnichannelPermissions?: {
 			canForwardGuest: boolean;
@@ -90,7 +90,7 @@ export type ChatsStackParamList = {
 		room?: ISubscription;
 		member?: any;
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		showCloseModal?: boolean;
 		fromRid?: string;
 		itsMe?: boolean;
@@ -105,11 +105,11 @@ export type ChatsStackParamList = {
 	};
 	DiscussionsView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 	};
 	SearchMessagesView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		encrypted?: boolean;
 		showCloseModal?: boolean;
 	};
@@ -129,7 +129,7 @@ export type ChatsStackParamList = {
 	};
 	MessagesView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		name: string;
 	};
 	AutoTranslateView: {
@@ -159,7 +159,7 @@ export type ChatsStackParamList = {
 	};
 	ThreadMessagesView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 	};
 	TeamChannelsView: {
 		teamId: string;
@@ -199,7 +199,7 @@ export type ChatsStackParamList = {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
 		room?: ISubscription;
-		t?: SubscriptionType;
+		t?: RoomType;
 	};
 	ReportUserView: {
 		username: string;
@@ -217,7 +217,7 @@ export type ProfileStackParamList = {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
 		room?: ISubscription;
-		t?: SubscriptionType;
+		t?: RoomType;
 	};
 	ChangePasswordView: undefined;
 };

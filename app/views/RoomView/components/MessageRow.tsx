@@ -6,7 +6,6 @@ import Message from '~/containers/message';
 import { getMessageSeparators } from '~/containers/message/utils';
 import LoadMore from '../LoadMore';
 import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
-import { type RoomType } from '~/definitions';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
 import { type TMessageRowProps } from '../definitions';
 
@@ -15,7 +14,7 @@ const useIsIgnored = (authorId?: string): boolean =>
 
 export const MessageRow = memo(function MessageRow({ item, previousItem, highlightedMessage, onLongPress }: TMessageRowProps) {
 	const rid = useRoomStore(s => s.room.rid);
-	const t = useRoomStore(s => s.room.t) as RoomType;
+	const t = useRoomStore(s => s.room.t);
 	const isIgnored = useIsIgnored(item?.u?._id);
 	const threadBadgeColor = useThreadBadgeColor(item.id);
 	const { lastSeen } = useRoomScreen();

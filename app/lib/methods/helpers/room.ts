@@ -1,13 +1,13 @@
 import dayjs from '~/lib/dayjs';
 import { themes } from '~/lib/constants/colors';
 import I18n from '~/i18n';
-import { type IAttachment, SubscriptionType } from '~/definitions';
+import { type IAttachment, RoomType } from '~/definitions';
 import { type TSupportedThemes } from '~/theme';
 
 export const isBlocked = (room: { t?: string; blocked?: boolean; blocker?: boolean }): boolean => {
 	if (room) {
 		const { t, blocked, blocker } = room;
-		if (t === SubscriptionType.DIRECT && (blocked || blocker)) {
+		if (t === RoomType.DIRECT && (blocked || blocker)) {
 			return true;
 		}
 	}
@@ -68,5 +68,3 @@ export const getBadgeColor = ({
 
 export const makeThreadName = (messageRecord: { id?: string; msg?: string; attachments?: IAttachment[] }): string | undefined =>
 	messageRecord.msg || messageRecord?.attachments?.[0]?.title;
-
-export const isTeamRoom = ({ teamId, joined }: { teamId?: string; joined?: boolean }): boolean => (!!teamId && joined) ?? false;

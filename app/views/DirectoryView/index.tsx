@@ -21,7 +21,7 @@ import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerAct
 import { useTheme } from '~/theme';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { goRoom as goRoomMethod, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
-import { type IServerRoom, SubscriptionType } from '~/definitions';
+import { type IServerRoom, RoomType } from '~/definitions';
 import styles from './styles';
 import Options from './Options';
 import DirectoryRow from './DirectoryRow';
@@ -169,7 +169,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 				if (type === 'users') {
 					const result = await createDirectMessage(item.username as string);
 					if (result.success) {
-						goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
+						goRoom({ rid: result.room._id, name: item.username, t: RoomType.DIRECT });
 					}
 					return;
 				}
@@ -185,7 +185,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 							rid: item._id,
 							name: item.name,
 							joinCodeRequired: result.joinCodeRequired,
-							t: item.t as SubscriptionType,
+							t: item.t,
 							search: true
 						});
 					}
@@ -193,7 +193,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 					goRoom({
 						rid: item._id,
 						name: item.name,
-						t: item.t as SubscriptionType,
+						t: item.t,
 						search: true,
 						teamMain: item.teamMain,
 						teamId: item.teamId
