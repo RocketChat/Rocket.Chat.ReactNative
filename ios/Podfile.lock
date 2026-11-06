@@ -2619,7 +2619,7 @@ PODS:
     - ReactNativeDependencies
     - RNWorklets (>= 0.8.0)
     - Yoga
-  - RNImageCropPicker (0.51.1):
+  - RNImageCropPicker (0.52.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2641,10 +2641,10 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
-    - RNImageCropPicker/QBImagePickerController (= 0.51.1)
+    - RNImageCropPicker/QBImagePickerController (= 0.52.0)
     - TOCropViewController (~> 2.8.0)
     - Yoga
-  - RNImageCropPicker/QBImagePickerController (0.51.1):
+  - RNImageCropPicker/QBImagePickerController (0.52.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -3640,7 +3640,7 @@ SPEC CHECKSUMS:
   RNFBApp: a448037d2df74af9d374a0b765be12ff1e844dc0
   RNFBCrashlytics: c3bb5533f9957eddc88f3ea383583309a4ce9f89
   RNGestureHandler: 85e32defcf23dd3b023356355c5c1dd1d9d51bde
-  RNImageCropPicker: 5c9c8bef4c72d3f451b499aa0ecd90a644ea1bbd
+  RNImageCropPicker: f529b8bfbaf102b34db23817590465d91f37e659
   RNKeychain: d57edf101a72acf3ae85fe4d796eed1d951d2a90
   RNLocalize: 17bce0556e2d33fe1201c8cef53b3b7786e07612
   RNReanimated: c57ef141c7843c2849531e7556236d7223b7db1a
