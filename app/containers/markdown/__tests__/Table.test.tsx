@@ -1,6 +1,5 @@
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { act, fireEvent, render, within } from '@testing-library/react-native';
-import { transparentize } from 'color2k';
 import { parse } from '@rocket.chat/message-parser';
 import { Image as ExpoImage } from 'expo-image';
 
@@ -85,28 +84,27 @@ describe('Table', () => {
 		expect(widths).toContain(160);
 	});
 
-	it.each(['light', 'dark', 'black'] as const)(
-		'stripes the even rows with a color that differs from the room in the %s theme',
-		async theme => {
-			const msg = ['| Name | Score |', '| - | - |', '| Alice | 9 |', '| Bob | 7 |'].join('\n');
-			const { UNSAFE_getAllByType } = render(
-				<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
-					<Markdown msg={msg} md={parse(msg)} />
-				</ThemeContext.Provider>
-			);
-			await act(async () => {});
+	it.each([
+		['light', 'rgba(47, 52, 61, 0.05)'],
+		['dark', 'rgba(193, 199, 208, 0.05)'],
+		['black', 'rgba(228, 228, 228, 0.05)']
+	] as const)('stripes the even rows with a visible tint in the %s theme', async (theme, stripeColor) => {
+		const msg = ['| Name | Score |', '| - | - |', '| Alice | 9 |', '| Bob | 7 |'].join('\n');
+		const { UNSAFE_getAllByType } = render(
+			<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+				<Markdown msg={msg} md={parse(msg)} />
+			</ThemeContext.Provider>
+		);
+		await act(async () => {});
 
-			const stripes = UNSAFE_getAllByType(View).filter(view => StyleSheet.flatten(view.props.style)?.backgroundColor);
+		const stripes = UNSAFE_getAllByType(View).filter(view => StyleSheet.flatten(view.props.style)?.backgroundColor);
 
-			expect(stripes).toHaveLength(1);
-			const stripeColor = StyleSheet.flatten(stripes[0].props.style).backgroundColor;
-			expect(stripeColor).not.toBe(colors[theme].surfaceRoom);
-			expect(stripeColor).toBe(transparentize(colors[theme].fontDefault, 0.95));
-			expect(within(stripes[0]).getByText('Bob')).toBeTruthy();
-			expect(within(stripes[0]).getByText('7')).toBeTruthy();
-			expect(within(stripes[0]).queryByText('Alice')).toBeNull();
-		}
-	);
+		expect(stripes).toHaveLength(1);
+		expect(StyleSheet.flatten(stripes[0].props.style).backgroundColor).toBe(stripeColor);
+		expect(within(stripes[0]).getByText('Bob')).toBeTruthy();
+		expect(within(stripes[0]).getByText('7')).toBeTruthy();
+		expect(within(stripes[0]).queryByText('Alice')).toBeNull();
+	});
 
 	it('keeps links inside cells pressable', async () => {
 		const onLinkPress = jest.fn();
