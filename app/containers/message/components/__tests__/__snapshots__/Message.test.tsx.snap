@@ -553,7 +553,7 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-2"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -1022,7 +1022,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                 "width": "100%",
               }
             }
-            testID="message-story-message-3"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -1831,7 +1831,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                 "width": "100%",
               }
             }
-            testID="message-story-message-4"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -2640,7 +2640,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-5"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -3096,7 +3096,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-6"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -3552,7 +3552,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-7"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -4000,7 +4000,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-8"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -4464,7 +4464,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-9"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -4941,7 +4941,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-10"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -5397,7 +5397,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-11"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -5866,7 +5866,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-12"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -6322,7 +6322,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-13"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -6791,7 +6791,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-14"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -7279,7 +7279,7 @@ Testing block quote."
                 "width": "100%",
               }
             }
-            testID="message-story-message-15"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -7833,7 +7833,7 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-16"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -8321,7 +8321,7 @@ Testing block quote."
                 "width": "100%",
               }
             }
-            testID="message-story-message-17"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -8875,7 +8875,7 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-18"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -9467,7 +9467,7 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-19"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -10059,7 +10059,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-20"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -10670,7 +10670,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-21"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -11520,7 +11520,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                 "width": "100%",
               }
             }
-            testID="message-story-message-22"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -12131,7 +12131,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                 "width": "100%",
               }
             }
-            testID="message-story-message-23"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -12981,7 +12981,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                 "width": "100%",
               }
             }
-            testID="message-story-message-24"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -13594,7 +13594,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                 "width": "100%",
               }
             }
-            testID="message-story-message-25"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -14600,7 +14600,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                 "width": "100%",
               }
             }
-            testID="message-story-message-26"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -15213,7 +15213,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                 "width": "100%",
               }
             }
-            testID="message-story-message-27"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -16219,7 +16219,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-28"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -17497,7 +17497,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                 "width": "100%",
               }
             }
-            testID="message-story-message-29"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -18775,7 +18775,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-30"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -19613,7 +19613,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-31"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -20749,7 +20749,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-32"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -21587,7 +21587,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-33"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -22723,7 +22723,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-34"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -23247,7 +23247,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-35"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -23750,7 +23750,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-36"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -23962,7 +23962,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-38"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -24495,7 +24495,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-39"
+            testID="message-story-message-6"
           >
             <View
               style={
@@ -24964,7 +24964,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-40"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -25488,7 +25488,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-41"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -25991,7 +25991,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-42"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -26203,7 +26203,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-44"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -26736,7 +26736,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-45"
+            testID="message-story-message-6"
           >
             <View
               style={
@@ -27205,7 +27205,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-46"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -27787,7 +27787,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-47"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -28371,7 +28371,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-48"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -28955,7 +28955,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-49"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -29552,7 +29552,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-50"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -30134,7 +30134,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-51"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -30718,7 +30718,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-52"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -31302,7 +31302,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-53"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -31899,7 +31899,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-54"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -32391,7 +32391,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-55"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -32652,7 +32652,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-57"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -33144,7 +33144,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-58"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -34345,7 +34345,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-62"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -34800,7 +34800,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-63"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -35233,7 +35233,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-64"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -35785,7 +35785,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-65"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -36243,7 +36243,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-66"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -36723,7 +36723,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-67"
+            testID="message-story-message-6"
           >
             <View
               style={
@@ -37258,7 +37258,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-68"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -37713,7 +37713,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-69"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -38146,7 +38146,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-70"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -38698,7 +38698,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-71"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -39156,7 +39156,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-72"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -39636,7 +39636,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-73"
+            testID="message-story-message-6"
           >
             <View
               style={
@@ -40171,7 +40171,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-74"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -40661,7 +40661,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-75"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -40907,7 +40907,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-77"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -42274,7 +42274,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-80"
+            testID="message-story-message-7"
           >
             <View
               style={
@@ -42768,7 +42768,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-81"
+            testID="message-story-message-8"
           >
             <View
               style={
@@ -43177,7 +43177,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-82"
+      testID="message-story-message-9"
     >
       <View
         style={
@@ -43740,7 +43740,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-83"
+            testID="message-story-message-10"
           >
             <View
               style={
@@ -44260,7 +44260,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-84"
+            testID="message-story-message-11"
           >
             <View
               style={
@@ -44549,7 +44549,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-86"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -45039,7 +45039,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-87"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -45285,7 +45285,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-89"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -46652,7 +46652,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-92"
+            testID="message-story-message-7"
           >
             <View
               style={
@@ -47146,7 +47146,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-93"
+            testID="message-story-message-8"
           >
             <View
               style={
@@ -47555,7 +47555,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-94"
+      testID="message-story-message-9"
     >
       <View
         style={
@@ -48118,7 +48118,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-95"
+            testID="message-story-message-10"
           >
             <View
               style={
@@ -48638,7 +48638,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-96"
+            testID="message-story-message-11"
           >
             <View
               style={
@@ -48846,7 +48846,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-98"
+      testID="message-story-message-1"
     >
       <View
         style={
@@ -49295,7 +49295,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-99"
+      testID="message-story-message-2"
     >
       <View
         style={
@@ -49757,7 +49757,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-101"
+      testID="message-story-message-1"
     >
       <View
         style={
@@ -50206,7 +50206,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-102"
+      testID="message-story-message-2"
     >
       <View
         style={
@@ -50749,7 +50749,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                 "width": "100%",
               }
             }
-            testID="message-story-message-104"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -51350,7 +51350,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                 "width": "100%",
               }
             }
-            testID="message-story-message-105"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -51951,7 +51951,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                 "width": "100%",
               }
             }
-            testID="message-story-message-106"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -52552,7 +52552,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                 "width": "100%",
               }
             }
-            testID="message-story-message-107"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -53260,7 +53260,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                 "width": "100%",
               }
             }
-            testID="message-story-message-108"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -53701,7 +53701,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                 "width": "100%",
               }
             }
-            testID="message-story-message-110"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -54302,7 +54302,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                 "width": "100%",
               }
             }
-            testID="message-story-message-111"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -54903,7 +54903,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                 "width": "100%",
               }
             }
-            testID="message-story-message-112"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -55504,7 +55504,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                 "width": "100%",
               }
             }
-            testID="message-story-message-113"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -56212,7 +56212,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                 "width": "100%",
               }
             }
-            testID="message-story-message-114"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -56640,7 +56640,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                 "width": "100%",
               }
             }
-            testID="message-story-message-116"
+            testID="message-story-message-7"
           >
             <View
               style={
@@ -57415,7 +57415,7 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-117"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -57884,7 +57884,7 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-118"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -58353,7 +58353,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-119"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -58809,7 +58809,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-120"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -59265,7 +59265,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-121"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -59477,7 +59477,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-123"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -59689,7 +59689,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-125"
+            testID="message-story-message-7"
           >
             <View
               style={
@@ -60158,7 +60158,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-126"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -60614,7 +60614,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-127"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -61070,7 +61070,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-128"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -61282,7 +61282,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-130"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -61494,7 +61494,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-132"
+            testID="message-story-message-7"
           >
             <View
               style={
@@ -62605,7 +62605,7 @@ exports[`Story Snapshots: InlineKatex should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-135"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -63060,7 +63060,7 @@ exports[`Story Snapshots: InlineKatexLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-136"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -63507,7 +63507,7 @@ exports[`Story Snapshots: JitsiCall should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-137"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -64038,7 +64038,7 @@ exports[`Story Snapshots: JitsiCallLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-138"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -64577,7 +64577,7 @@ exports[`Story Snapshots: Katex should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-139"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -64994,7 +64994,7 @@ exports[`Story Snapshots: KatexArray should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-140"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -65411,7 +65411,7 @@ exports[`Story Snapshots: KatexArrayLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-141"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -65828,7 +65828,7 @@ exports[`Story Snapshots: KatexLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-142"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -66247,7 +66247,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-143"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -66903,7 +66903,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-144"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -67507,7 +67507,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-145"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -68011,7 +68011,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-146"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -68286,7 +68286,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-148"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -68942,7 +68942,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-149"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -69546,7 +69546,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-150"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -70050,7 +70050,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-151"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -70323,7 +70323,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-153"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -70779,7 +70779,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-154"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -71271,7 +71271,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-155"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -71762,7 +71762,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-156"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -72171,7 +72171,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-157"
+      testID="message-story-message-5"
     >
       <View
         style={
@@ -72701,7 +72701,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-158"
+            testID="message-story-message-6"
           >
             <View
               style={
@@ -73188,7 +73188,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-159"
+            testID="message-story-message-7"
           >
             <View
               style={
@@ -73627,7 +73627,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-160"
+      testID="message-story-message-8"
     >
       <View
         style={
@@ -74208,7 +74208,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-161"
+      testID="message-story-message-9"
     >
       <View
         style={
@@ -74789,7 +74789,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-163"
+      testID="message-story-message-11"
     >
       <View
         style={
@@ -75464,7 +75464,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-165"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -75920,7 +75920,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-166"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -76412,7 +76412,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-167"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -76903,7 +76903,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-168"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -77312,7 +77312,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-169"
+      testID="message-story-message-5"
     >
       <View
         style={
@@ -77842,7 +77842,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-170"
+            testID="message-story-message-6"
           >
             <View
               style={
@@ -78329,7 +78329,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-171"
+            testID="message-story-message-7"
           >
             <View
               style={
@@ -78768,7 +78768,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-172"
+      testID="message-story-message-8"
     >
       <View
         style={
@@ -79349,7 +79349,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-173"
+      testID="message-story-message-9"
     >
       <View
         style={
@@ -79930,7 +79930,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-175"
+      testID="message-story-message-11"
     >
       <View
         style={
@@ -80605,7 +80605,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-177"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -81258,7 +81258,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-178"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -81903,7 +81903,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-179"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -82556,7 +82556,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-180"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -83201,7 +83201,7 @@ exports[`Story Snapshots: Message should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-181"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -83603,7 +83603,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                 "width": "100%",
               }
             }
-            testID="message-story-message-182"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -84369,7 +84369,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                 "width": "100%",
               }
             }
-            testID="message-story-message-183"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -85183,7 +85183,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                 "width": "100%",
               }
             }
-            testID="message-story-message-184"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -86020,7 +86020,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                 "width": "100%",
               }
             }
-            testID="message-story-message-185"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -86731,7 +86731,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                 "width": "100%",
               }
             }
-            testID="message-story-message-186"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -87652,7 +87652,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-187"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -88139,7 +88139,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-188"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -88382,7 +88382,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-190"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -88869,7 +88869,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-191"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -89125,7 +89125,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                 "width": "100%",
               }
             }
-            testID="message-story-message-193"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -89612,7 +89612,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                 "width": "100%",
               }
             }
-            testID="message-story-message-194"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -89855,7 +89855,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                 "width": "100%",
               }
             }
-            testID="message-story-message-196"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -90342,7 +90342,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                 "width": "100%",
               }
             }
-            testID="message-story-message-197"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -90598,7 +90598,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-199"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -91235,7 +91235,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-200"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -92200,7 +92200,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-201"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -93014,7 +93014,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-202"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -93905,7 +93905,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-203"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -94529,7 +94529,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-204"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -95260,7 +95260,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-205"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -96057,7 +96057,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-206"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -96681,7 +96681,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-207"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -97412,7 +97412,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-208"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -98196,7 +98196,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-209"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -99033,7 +99033,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-210"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -99744,7 +99744,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-211"
+            testID="message-story-message-6"
           >
             <View
               style={
@@ -100665,7 +100665,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                 "width": "100%",
               }
             }
-            testID="message-story-message-212"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -101302,7 +101302,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                 "width": "100%",
               }
             }
-            testID="message-story-message-213"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -101986,7 +101986,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                 "width": "100%",
               }
             }
-            testID="message-story-message-214"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -102800,7 +102800,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                 "width": "100%",
               }
             }
-            testID="message-story-message-215"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -103692,7 +103692,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-216"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -108438,7 +108438,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                 "width": "100%",
               }
             }
-            testID="message-story-message-235"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -113183,7 +113183,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-254"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -113558,7 +113558,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-255"
+      testID="message-story-message-2"
     >
       <View
         style={
@@ -114249,7 +114249,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-256"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -114624,7 +114624,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-257"
+      testID="message-story-message-4"
     >
       <View
         style={
@@ -115315,7 +115315,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-258"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -115690,7 +115690,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-259"
+      testID="message-story-message-6"
     >
       <View
         style={
@@ -116394,7 +116394,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-260"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -116880,7 +116880,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-261"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -117135,7 +117135,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-263"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -117621,7 +117621,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-264"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -117876,7 +117876,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-266"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -118891,7 +118891,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-267"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -120393,7 +120393,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-268"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -121408,7 +121408,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-269"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -122911,7 +122911,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 "width": "100%",
               }
             }
-            testID="message-story-message-270"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -124678,7 +124678,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 "width": "100%",
               }
             }
-            testID="message-story-message-274"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -129212,7 +129212,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-288"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -129748,7 +129748,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-289"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -130522,7 +130522,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                 "width": "100%",
               }
             }
-            testID="message-story-message-290"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -131058,7 +131058,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                 "width": "100%",
               }
             }
-            testID="message-story-message-291"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -131832,7 +131832,7 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-292"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -132301,7 +132301,7 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-293"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -145536,7 +145536,7 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-346"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -146001,7 +146001,7 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-347"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -146474,7 +146474,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-348"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -147166,7 +147166,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                 "width": "100%",
               }
             }
-            testID="message-story-message-349"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -147858,7 +147858,7 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-350"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -148327,7 +148327,7 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-351"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -148796,7 +148796,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-352"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -149300,7 +149300,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-353"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -149804,7 +149804,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-354"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -151107,7 +151107,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                 "width": "100%",
               }
             }
-            testID="message-story-message-355"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -152410,7 +152410,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-356"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -153050,7 +153050,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-357"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -153657,7 +153657,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-358"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -153920,7 +153920,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-360"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -154414,7 +154414,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-361"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -154858,7 +154858,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-362"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -155352,7 +155352,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-363"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -155796,7 +155796,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-364"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -156436,7 +156436,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-365"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -157043,7 +157043,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-366"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -157306,7 +157306,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-368"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -157681,7 +157681,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-369"
+      testID="message-story-message-2"
     >
       <View
         style={
@@ -158372,7 +158372,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-370"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -158747,7 +158747,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-371"
+      testID="message-story-message-4"
     >
       <View
         style={
@@ -159438,7 +159438,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-372"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -159813,7 +159813,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-373"
+      testID="message-story-message-6"
     >
       <View
         style={
@@ -160517,7 +160517,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-374"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -160995,7 +160995,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-375"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -161486,7 +161486,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-376"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -161964,7 +161964,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-377"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -162455,7 +162455,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-378"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -163214,7 +163214,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-379"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -163682,7 +163682,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-381"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -164408,7 +164408,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-383"
+            testID="message-story-message-6"
           >
             <View
               style={
@@ -165442,7 +165442,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-385"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -166201,7 +166201,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-386"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -166413,7 +166413,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-388"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -166881,7 +166881,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-390"
+            testID="message-story-message-6"
           >
             <View
               style={
@@ -167288,7 +167288,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-392"
+            testID="message-story-message-8"
           >
             <View
               style={
@@ -168388,7 +168388,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-394"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -169043,7 +169043,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-395"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -169724,7 +169724,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-397"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -170379,7 +170379,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-398"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -170803,7 +170803,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-400"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -171478,7 +171478,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-401"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -172657,7 +172657,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-402"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -173443,7 +173443,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-403"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -174118,7 +174118,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-404"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -174746,7 +174746,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-405"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -175130,7 +175130,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-407"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -175916,7 +175916,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-408"
+            testID="message-story-message-5"
           >
             <View
               style={
@@ -176591,7 +176591,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-409"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -177224,7 +177224,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-410"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -177566,7 +177566,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-412"
+            testID="message-story-message-4"
           >
             <View
               style={
@@ -178297,7 +178297,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-413"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -178930,7 +178930,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-414"
+            testID="message-story-message-2"
           >
             <View
               style={
@@ -179455,7 +179455,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-415"
+            testID="message-story-message-3"
           >
             <View
               style={
@@ -180186,7 +180186,7 @@ exports[`Story Snapshots: WithoutHeader should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-416"
+            testID="message-story-message-1"
           >
             <View
               style={
@@ -180411,7 +180411,7 @@ exports[`Story Snapshots: WithoutHeaderLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-418"
+            testID="message-story-message-1"
           >
             <View
               style={
