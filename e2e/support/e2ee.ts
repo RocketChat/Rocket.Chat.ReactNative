@@ -1,5 +1,6 @@
 import { expect } from 'e2e';
 
+import { openRoom } from './appduct';
 import { type Credentials, get } from './api';
 import { data } from './data';
 import {
@@ -10,7 +11,6 @@ import {
 	launchApp,
 	loginWithForm,
 	navigateToLogin,
-	navigateToRoom,
 	LONG_TIMEOUT,
 	openMessageActions,
 	succeeds,
@@ -133,7 +133,7 @@ export const openRoomFromList = async (fixtures: Fixtures, room: string) => {
 	if ((await firstVisible([savePasswordBanner, roomRow])) === savePasswordBanner) {
 		await savePasswordBanner.tap();
 	}
-	await navigateToRoom(fixtures, room);
+	await openRoom(fixtures, room);
 };
 
 export const openEncryptedRoom = async (fixtures: Fixtures, room: string) => {

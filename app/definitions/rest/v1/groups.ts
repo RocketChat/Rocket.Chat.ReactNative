@@ -52,7 +52,7 @@ export type GroupsEndpoints = {
 		};
 	};
 	'groups.convertToTeam': {
-		POST: (params: { roomId: string }) => { team: ITeam };
+		POST: (params: { roomId: string; roomName?: string }) => { team: ITeam };
 	};
 	'groups.counters': {
 		GET: (params: { roomId: string }) => {

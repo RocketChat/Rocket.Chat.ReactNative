@@ -1,4 +1,4 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 
 import { createRandomRoom, createUser, deleteCreatedUsers, getDeepLink } from '~e2e/support/api';
 import { data } from '~e2e/support/data';

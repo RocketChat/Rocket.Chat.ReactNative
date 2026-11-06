@@ -1,10 +1,9 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect, type Locator } from 'e2e';
 
 import { createDM, createRandomRoom, createUser, deleteCreatedUsers, sendMessage as sendMessageAsUser } from '~e2e/support/api';
 import {
 	loginWithDeepLink,
-	navigateToRoomActions,
 	sendMessage,
 	type Fixtures,
 	LONG_TIMEOUT,
@@ -23,7 +22,7 @@ import {
 	headerSearchInput
 } from '~e2e/support/flows';
 import { expectRoomTitle, selectHeaderMenuOption, submitSelectedUsers } from '~e2e/support/header';
-import { expandActionSheet, selectUser } from '~e2e/support/room';
+import { expandActionSheet, selectUser, navigateToRoomActions } from '~e2e/support/room';
 
 afterEach(deleteCreatedUsers);
 

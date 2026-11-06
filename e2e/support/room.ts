@@ -19,6 +19,7 @@ import {
 	typeUntilListed,
 	headerItem
 } from './flows';
+import { openRoom } from './appduct';
 import { expectRoomTitle } from './header';
 
 export const openNewMessage = async (fixtures: Fixtures) => {
@@ -49,10 +50,18 @@ export const selectUser = async (fixtures: Fixtures, username: string) => {
 	}
 };
 
-export const navigateToInfoView = async (fixtures: Fixtures) => {
+const navigateToInfoView = async (fixtures: Fixtures) => {
 	await openRoomActions(fixtures);
 	await tapWhenVisible(fixtures, 'room-actions-info');
 	await expectVisible(fixtures, 'room-info-view');
+};
+
+export const navigateToRoomActions = async (fixtures: Fixtures, room: string) => {
+	if (!(await isVisibleNow(fixtures.screen.getByTestId('room-view')))) {
+		await openRoom(fixtures, room);
+	}
+	await expectVisible(fixtures, 'room-view');
+	await openRoomActions(fixtures);
 };
 
 export const navigateToRoomInfo = async (fixtures: Fixtures, room: string) => {

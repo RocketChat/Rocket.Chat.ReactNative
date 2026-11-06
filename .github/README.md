@@ -29,6 +29,10 @@ The shard jobs in [e2e-android.yml](workflows/e2e-android.yml) and [e2e-ios.yml]
 | `E2E_ACCOUNT` | Base64 of the e2e account definition; [e2e-account](actions/e2e-account/action.yml) turns it into masked `E2E_*` credential env vars |
 | `CLAUDE_CODE_OAUTH_TOKEN` | Claude subscription token for the agent steps; exposed only to the run step |
 
+## Appduct in E2E builds
+
+The E2E build workflows set `APPDUCT_ENABLED=1`, which links Appduct into their Release builds, and `RUNNING_E2E_TESTS=true`, which loads the app's Appduct tools, so e2e tests can do setup, such as opening rooms, through those tools instead of the UI. Never set either in a workflow whose build can ship. The E2E APK is signed with a keystore generated for the run, so it can't install over a store build, and its artifact is kept for one day.
+
 ## E2E native build cache
 
 The E2E build workflows hash each platform's native inputs with `@expo/fingerprint` (configured in `fingerprint.config.js`). When a native build is cached under that fingerprint, the job rebuilds only the JS bundle and swaps it into the cached APK or simulator app. Otherwise it does a full native build and caches it. Patches count for both platforms unless every file they touch belongs to the other one. Android's fingerprint also hashes the images and sounds under `app/`, because they are compiled into the APK's resources; if a dependency's images differ from the cached build's, Android falls back to a full build.

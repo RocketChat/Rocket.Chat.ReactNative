@@ -1,6 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createUser, deleteCreatedUsers, sendMessage as sendApiMessage } from '~e2e/support/api';
 import { loginWithDeepLink, navigateToRoom, sendMessage, LONG_TIMEOUT } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
@@ -22,7 +23,7 @@ test(
 
 		await sendApiMessage(sender, `@${user.username}`, `${tag}-stored`);
 		await loginWithDeepLink(fixtures, user);
-		await navigateToRoom(fixtures, sender.username);
+		await openRoom(fixtures, sender.username);
 		await expect(storedMessage).toBeVisible({ timeout: LONG_TIMEOUT });
 
 		await device.setAirplaneMode(true);

@@ -209,6 +209,25 @@ export const createRandomRoom = async (credentials: Credentials, type: 'c' | 'p'
 	return { _id: room._id as string, name: room.name as string };
 };
 
+export interface SidebarCategory {
+	_id: string;
+	name: string;
+}
+
+export const randomCategoryName = () => `Category${random(8)}`;
+
+export const createCategory = async (credentials: Credentials) => {
+	const category: SidebarCategory = { _id: `category${random()}`, name: randomCategoryName() };
+	await post('users.setPreferences', credentials, { data: { sidebarCategories: [category] } });
+	return category;
+};
+
+export const getSidebarCategories = async (credentials: Credentials): Promise<SidebarCategory[]> =>
+	(await get('me', credentials)).settings?.preferences?.sidebarCategories ?? [];
+
+export const getRoomCategory = async (credentials: Credentials, roomId: string): Promise<string | undefined> =>
+	(await get(`subscriptions.getOne?roomId=${roomId}`, credentials)).subscription?.category ?? undefined;
+
 export const sendMessage = (credentials: Credentials, channel: string, text: string, tmid?: string) =>
 	post('chat.postMessage', credentials, { ...(tmid ? { roomId: channel } : { channel }), text, tmid });
 

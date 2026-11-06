@@ -1,5 +1,5 @@
 PODS:
-  - Appduct (0.13.0):
+  - Appduct (0.16.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -3487,7 +3487,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Appduct: 9c3971867c5ae6f9f7937ff73cfb3de38219365a
+  Appduct: d6799b5bfa7172b89737c9c40ca7adc33b257a1a
   BugsnagReactNative: 33c924422b4d4fac76459ac818500586dd53debf
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   EXApplication: a727f05eb8592f0bc764f6ab8d51eacc158652ec

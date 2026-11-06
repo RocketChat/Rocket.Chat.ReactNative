@@ -2,6 +2,7 @@ import type { Locator } from 'e2e';
 
 import {
 	firstVisible,
+	goBack,
 	isVisibleNow,
 	launchApp,
 	openDeepLink,
@@ -179,5 +180,28 @@ describe('deep-link completion', () => {
 		await launchApp(fixtures);
 		expect(device.installApp).toHaveBeenCalledWith(undefined, { reinstall: true });
 		expect(app.open).toHaveBeenCalled();
+	});
+});
+
+describe('going back', () => {
+	const setupBack = () => {
+		const backButton = locator();
+		backButton.isVisible.mockResolvedValue(true);
+		const screen = { getByTestId: () => asLocator(backButton), getByRole: () => ({ first: () => asLocator(backButton) }) };
+		return { fixtures: { platform: 'ios', screen } as unknown as Fixtures, backButton };
+	};
+
+	it('picks the back button again when it re-renders before the tap', async () => {
+		const { fixtures, backButton } = setupBack();
+		backButton.tap.mockRejectedValueOnce(failure('LOCATOR_NOT_FOUND'));
+		await goBack(fixtures);
+		expect(backButton.tap).toHaveBeenCalledTimes(2);
+	});
+
+	it('propagates other tap failures', async () => {
+		const { fixtures, backButton } = setupBack();
+		const error = failure('ENGINE_FAILURE');
+		backButton.tap.mockRejectedValueOnce(error);
+		await expect(goBack(fixtures)).rejects.toBe(error);
 	});
 });

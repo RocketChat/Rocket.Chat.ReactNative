@@ -1,4 +1,4 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { loginWithDeepLink, tapUntilVisible, tapWhenVisible, expectVisible } from '~e2e/support/flows';
