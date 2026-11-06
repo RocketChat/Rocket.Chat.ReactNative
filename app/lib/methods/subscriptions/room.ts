@@ -14,6 +14,7 @@ import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
 import { store as reduxStore } from '~/lib/store/auxStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '~/actions/usersTyping';
 import { debounce } from '../helpers';
+import { emitter } from '../helpers/emitter';
 import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
 import { Encryption } from '~/lib/encryption';
 import {
@@ -28,6 +29,16 @@ import sdk from '~/lib/services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import markMessagesRead from '../helpers/markMessagesRead';
+
+const updateUserTyping = (rid: string, name: string, isTyping: boolean) => {
+	const {
+		login: { user },
+		settings: { UI_Use_Real_Name },
+		room: { subscribedRoom }
+	} = reduxStore.getState();
+	if (subscribedRoom !== rid || name === user[UI_Use_Real_Name ? 'name' : 'username']) return;
+	reduxStore.dispatch(isTyping ? addUserTyping(name) : removeUserTyping(name));
+};
 
 export default class RoomSubscription {
 	private rid: string;
@@ -107,38 +118,17 @@ export default class RoomSubscription {
 			return;
 		}
 		if (ev === 'typing') {
-			const { user } = reduxStore.getState().login;
-			const { UI_Use_Real_Name } = reduxStore.getState().settings;
-			const { subscribedRoom } = reduxStore.getState().room;
-			if (subscribedRoom !== _rid) {
-				return;
-			}
 			const [name, typing] = ddpMessage.fields.args;
-			const key = UI_Use_Real_Name ? 'name' : 'username';
-			if (name !== user[key]) {
-				if (typing) {
-					reduxStore.dispatch(addUserTyping(name));
-				} else {
-					reduxStore.dispatch(removeUserTyping(name));
-				}
-			}
+			updateUserTyping(_rid, name, !!typing);
 		} else if (ev === 'user-activity') {
-			const { user } = reduxStore.getState().login;
-			const { UI_Use_Real_Name } = reduxStore.getState().settings;
-			const { subscribedRoom } = reduxStore.getState().room;
-			if (subscribedRoom !== _rid) {
-				return;
-			}
 			const [name, activities] = ddpMessage.fields.args;
-			const key = UI_Use_Real_Name ? 'name' : 'username';
-			if (name !== user[key]) {
-				if (!!activities && activities.includes('user-typing')) {
-					reduxStore.dispatch(addUserTyping(name));
-				}
-				if (!activities?.length) {
-					reduxStore.dispatch(removeUserTyping(name));
-				}
+			if (activities?.includes('user-typing')) {
+				updateUserTyping(_rid, name, true);
+			} else if (!activities?.length) {
+				updateUserTyping(_rid, name, false);
 			}
+		} else if (ev === 'videoconf') {
+			emitter.emit('videoConfUpdated', ddpMessage.fields.args[0]);
 		} else if (ev === 'deleteMessage') {
 			InteractionManager.runAfterInteractions(async () => {
 				if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {

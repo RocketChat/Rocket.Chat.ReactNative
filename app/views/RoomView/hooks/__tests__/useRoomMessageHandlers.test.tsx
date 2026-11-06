@@ -1,6 +1,9 @@
-import { act, renderHook } from '@testing-library/react-native';
+import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
+import getRoomInfo from '~/lib/methods/getRoomInfo';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
+import { showToast } from '~/lib/methods/helpers/showToast';
 import { toggleFollowMessage } from '~/lib/services/restApi';
 import { replyBroadcast as replyBroadcastAction } from '~/actions/messages';
 import { getUserSelector } from '~/selectors/login';
@@ -35,6 +38,9 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 	default: jest.fn(),
 	logEvent: jest.fn()
 }));
+jest.mock('~/lib/methods/getRoomInfo', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
+jest.mock('~/lib/methods/helpers/showToast', () => ({ showToast: jest.fn() }));
 jest.mock('~/lib/methods/helpers/review', () => ({
 	Review: { pushPositiveEvent: jest.fn() }
 }));
@@ -123,6 +129,69 @@ describe('useRoomMessageHandlers', () => {
 
 			expect(mockReplyBroadcastAction).toHaveBeenCalledWith(message);
 			expect(mockDispatch).toHaveBeenCalledWith({ type: 'REPLY_BROADCAST', payload: message });
+		});
+	});
+
+	describe('onDiscussionPress', () => {
+		const mockGetRoomInfo = getRoomInfo as jest.Mock;
+
+		it('opens the discussion room', async () => {
+			const discussion = { rid: 'disc1', name: 'disc', t: 'p' };
+			mockGetRoomInfo.mockResolvedValue(discussion);
+			const { result } = renderRoomMessageHandlers();
+
+			await act(async () => {
+				await result.current.onDiscussionPress('disc1');
+			});
+
+			expect(mockGetRoomInfo).toHaveBeenCalledWith('disc1');
+			expect(goRoom).toHaveBeenCalledWith({ item: discussion, isMasterDetail: false });
+		});
+
+		it('opens the discussion only once on a double tap', async () => {
+			mockGetRoomInfo.mockResolvedValue({ rid: 'disc1', name: 'disc', t: 'p' });
+			let finishNavigation!: () => void;
+			(goRoom as jest.Mock).mockReturnValueOnce(
+				new Promise<void>(resolve => {
+					finishNavigation = resolve;
+				})
+			);
+			const { result } = renderRoomMessageHandlers();
+
+			const firstTap = result.current.onDiscussionPress('disc1');
+			await waitFor(() => expect(goRoom).toHaveBeenCalled());
+			await act(async () => {
+				await result.current.onDiscussionPress('disc1');
+				finishNavigation();
+				await firstTap;
+			});
+
+			expect(mockGetRoomInfo).toHaveBeenCalledTimes(1);
+			expect(goRoom).toHaveBeenCalledTimes(1);
+		});
+
+		it('shows a toast when the discussion cannot be resolved', async () => {
+			mockGetRoomInfo.mockResolvedValue(null);
+			const { result } = renderRoomMessageHandlers();
+
+			await act(async () => {
+				await result.current.onDiscussionPress('disc1');
+			});
+
+			expect(showToast).toHaveBeenCalledWith('Room not found');
+			expect(goRoom).not.toHaveBeenCalled();
+		});
+
+		it('shows a toast when the room info request fails', async () => {
+			mockGetRoomInfo.mockRejectedValue({ status: 404 });
+			const { result } = renderRoomMessageHandlers();
+
+			await act(async () => {
+				await result.current.onDiscussionPress('disc1');
+			});
+
+			expect(showToast).toHaveBeenCalledWith('Room not found');
+			expect(goRoom).not.toHaveBeenCalled();
 		});
 	});
 
