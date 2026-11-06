@@ -226,7 +226,7 @@ export default async function updateMessages({
 			...threadsToUpdate,
 			...threadMessagesToCreate,
 			...threadMessagesToUpdate
-		] as Model[];
+		].filter(Boolean) as Model[];
 
 		await db.batch(allRecords);
 		return allRecords.length;
