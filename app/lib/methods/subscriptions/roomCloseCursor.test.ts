@@ -1,3 +1,4 @@
+
 import RoomSubscription from './room';
 import sdk from '~/lib/services/sdk';
 import updateMessages from '../updateMessages';
@@ -72,17 +73,25 @@ const makeSubscription = (lastOpen: Date | null) => {
 
 /** Server behaviour of chat.syncMessages: only returns messages at or after the requested cursor. */
 const respondFromServer = () =>
-	mockedSdkGet.mockImplementation(((_endpoint: string, params: { next?: number; type?: string }) =>
-		Promise.resolve({
+	mockedSdkGet.mockImplementation(((_endpoint: string, params: { next?: number | string; type?: string }) => {
+		const nextTimestamp =
+			typeof params.next === 'string'
+				? Number(params.next.split('_')[0])
+				: params.next;
+
+		return Promise.resolve({
 			result: {
 				updated:
-					params.type === 'UPDATED' && typeof params.next === 'number' && MISSED_SERVER_UPDATED_AT.getTime() >= params.next
+					params.type === 'UPDATED' &&
+					typeof nextTimestamp === 'number' &&
+					MISSED_SERVER_UPDATED_AT.getTime() >= nextTimestamp
 						? [missedMessage]
 						: [],
 				deleted: [],
 				cursor: { next: null }
 			}
-		})) as never);
+		});
+	}) as never);
 
 describe('closing a room while offline must not advance the sync cursor', () => {
 	beforeEach(() => {
