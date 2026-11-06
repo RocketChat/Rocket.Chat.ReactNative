@@ -3,6 +3,7 @@ export type LicensesEndpoints = {
 		GET: () => {
 			license: {
 				activeModules: string[];
+				hasValidLicense?: boolean;
 			};
 		};
 	};

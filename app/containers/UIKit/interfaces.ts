@@ -99,7 +99,7 @@ export interface IContainer {
 	id: string;
 }
 
-type TModalServerInteraction = Extract<ServerInteraction, { type: 'modal.open' | 'modal.update' | 'errors' }>;
+type TModalServerInteraction = Extract<ServerInteraction, { type: 'modal.open' | 'modal.update' | 'modal.close' | 'errors' }>;
 export type IUserInteraction = Omit<TModalServerInteraction, 'type'>;
 export type IEmitUserInteraction = TModalServerInteraction | ({ type: 'modal' } & IUserInteraction);
 

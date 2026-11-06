@@ -68,6 +68,7 @@ export interface IListProps extends Omit<
 > {
 	flatListRef: TListRef;
 	jumpToBottom: () => void;
+	onDragStart: () => void;
 	isAnchored?: boolean;
 }
 

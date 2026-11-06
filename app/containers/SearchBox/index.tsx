@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) => {
+const SearchBox = ({ onChangeText, onSubmitEditing, testID, placeholder = I18n.t('Search') }: TextInputProps) => {
 	const [text, setText] = useState('');
 
 	const { colors } = useTheme();
@@ -30,7 +30,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) =>
 				autoCapitalize='none'
 				autoCorrect={false}
 				blurOnSubmit
-				placeholder={I18n.t('Search')}
+				placeholder={placeholder}
 				returnKeyType='search'
 				underlineColorAndroid='transparent'
 				containerStyle={styles.inputContainer}

@@ -1,13 +1,13 @@
 // Proves invariant (1) "no under-selection" against the REAL .sniffler/test-map.json
 // and .sniffler/config.json: for each map-assertable diff in scenario-catalog.json
 // (rows C1..C8), replicates sniffler's documented selection semantics in JS —
-// root/ignore filtering, dependsOn glob matching, then flow -> test-N extraction
-// the same way select-impacted-shards.sh does — and asserts the exact shard set.
-// sniffler's own recommendation algorithm is trusted/out-of-scope; this only
-// tests OUR map's globs and OUR config against real flow files on disk.
+// root/ignore filtering, dependsOn glob matching, then test -> test-N tags read
+// from `e2e list` the same way select-impacted-shards.sh does — and asserts the
+// exact shard set. sniffler's own recommendation algorithm is trusted/out-of-scope;
+// this only tests OUR map's globs and OUR config against the real test tree.
 'use strict';
 
-const fs = require('fs');
+const { execSync } = require('child_process');
 const path = require('path');
 const micromatch = require('micromatch');
 
@@ -17,17 +17,20 @@ const config = require('../../../.sniffler/config.json');
 const testMap = require('../../../.sniffler/test-map.json');
 const catalog = require('./fixtures/scenario-catalog.json');
 
-// Mirrors the grep pattern in select-impacted-shards.sh: `^\s*-\s*['"]?test-N`.
-const TEST_N_PATTERN = /^[ \t]*-[ \t]*['"]?test-(\d+)/gm;
+const shardTagsByTest = new Map();
+for (const { file, tags } of JSON.parse(
+	execSync('pnpm exec e2e list --reporter json', { cwd: REPO_ROOT, encoding: 'utf8' })
+).pairs) {
+	const shards = tags.map(tag => tag.match(/^test-(\d+)$/)).filter(Boolean).map(match => Number(match[1]));
+	shardTagsByTest.set(file, [...(shardTagsByTest.get(file) || []), shards]);
+}
 
-function extractShardsFromFlow(flowPath) {
-	const contents = fs.readFileSync(path.join(REPO_ROOT, flowPath), 'utf8');
-	const shards = new Set();
-	let match;
-	while ((match = TEST_N_PATTERN.exec(contents)) !== null) {
-		shards.add(Number(match[1]));
+function shardsOfTest(testPath) {
+	const pairShards = shardTagsByTest.get(testPath);
+	if (!pairShards || pairShards.some(shards => shards.length === 0)) {
+		return null;
 	}
-	return shards;
+	return pairShards.flat();
 }
 
 function isUnderSourceRoots(diffPath) {
@@ -44,7 +47,7 @@ function matchedFlowsFor(diffPath) {
 
 // Replicates select-impacted-shards.sh's documented happy path against the real
 // map: runAllWhenChanged -> full; else filter by source roots/ignore, match
-// dependsOn globs, then union the matched flows' `- test-N` tags.
+// dependsOn globs, then union the matched tests' test-N tags; any untagged or unlisted test -> full.
 function computeSelection(diffPaths) {
 	const fullShards = [...catalog.fullShards].sort((a, b) => a - b);
 
@@ -64,13 +67,11 @@ function computeSelection(diffPaths) {
 
 	const shardSet = new Set();
 	for (const flow of matchedFlows) {
-		for (const shard of extractShardsFromFlow(flow)) shardSet.add(shard);
-	}
-
-	// Defensive: an impacted flow with no derivable tag must fall to full rather
-	// than under-select (mirrors select-impacted-shards.sh's own fallback).
-	if (shardSet.size === 0) {
-		return { shards: fullShards, shouldRun: true };
+		const shards = shardsOfTest(flow);
+		if (shards === null) {
+			return { shards: fullShards, shouldRun: true };
+		}
+		for (const shard of shards) shardSet.add(shard);
 	}
 
 	const shards = [...shardSet].sort((a, b) => a - b);

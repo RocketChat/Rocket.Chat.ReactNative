@@ -82,7 +82,8 @@ export const nativeHeaderItems = (actions: IHeaderAction[], headerTintColor?: st
 		}
 	);
 
-const showMenu = (menu: IHeaderMenuItem[]) =>
+const showMenu = (menu: IHeaderMenuItem[]) => {
+	let pickedOnPress: (() => void) | undefined;
 	showActionSheetRef({
 		options: menu.map(({ label, icon, checked, destructive, disabled, testID, onPress }) => ({
 			title: label,
@@ -90,10 +91,14 @@ const showMenu = (menu: IHeaderMenuItem[]) =>
 			danger: destructive,
 			enabled: !disabled,
 			testID,
-			onPress,
+			onPress: () => {
+				pickedOnPress = onPress;
+			},
 			right: checked === undefined ? undefined : () => <Radio check={checked} />
-		}))
+		})),
+		onClose: () => pickedOnPress?.()
 	});
+};
 
 const renderBadge = ({ value, color }: IHeaderActionBadge) =>
 	value === undefined ? <HeaderButton.BadgeWarn color={color} /> : <HeaderButton.BadgeCount value={value} color={color} />;

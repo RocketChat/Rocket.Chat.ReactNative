@@ -1,6 +1,7 @@
 import { type ReactElement, type Ref, useRef, useImperativeHandle } from 'react';
 import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
+import { useIsFocused } from '@react-navigation/native';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
@@ -20,7 +21,7 @@ import { EventTypes } from '../EmojiPicker/interfaces';
 import { type IEmoji } from '~/definitions';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
-import { generateTriggerId } from '~/lib/methods/actions';
+import { withTriggerId } from '~/lib/apps/actions';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength } from './helpers';
@@ -70,8 +71,10 @@ export const MessageComposer = ({
 	const altTextSupported = useAltTextSupported();
 	const attachments = useComposerAttachments();
 
+	const isFocused = useIsFocused();
+
 	useBackHandler(() => {
-		if (showEmojiSearchbar) {
+		if (isFocused && (showEmojiSearchbar || showEmojiKeyboard)) {
 			resetKeyboard();
 			return true;
 		}
@@ -173,8 +176,7 @@ export const MessageComposer = ({
 				try {
 					const messageWithoutCommand = textFromInput.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
-					const triggerId = generateTriggerId(appId);
-					await runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid);
+					await withTriggerId(appId, triggerId => runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid));
 				} catch (e) {
 					log(e);
 				}
@@ -224,7 +226,7 @@ export const MessageComposer = ({
 		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
-	const focusComposerInput = () => composerInputComponentRef.current?.focus();
+	const focusComposerInput = (delay?: number) => composerInputComponentRef.current?.focus(delay);
 
 	const accessibilityFocusOnInput = () => {
 		const node = findNodeHandle(composerInputRef.current);

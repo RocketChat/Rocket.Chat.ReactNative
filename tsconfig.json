@@ -19,7 +19,8 @@
 		"paths": {
 			"~/*": ["./app/*"],
 			"~/scripts/*": ["./scripts/*"],
-			"~/.rnstorybook/*": ["./.rnstorybook/*"]
+			"~/.rnstorybook/*": ["./.rnstorybook/*"],
+			"~e2e/*": ["./e2e/*"]
 		}
 	},
 	"exclude": ["node_modules", "__mocks__", "**/.worktrees/**"]

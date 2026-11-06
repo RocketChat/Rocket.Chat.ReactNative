@@ -182,18 +182,19 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const applySaveSuccess = (params: IProfileParams) => {
 		logEvent(events.PROFILE_SAVE_CHANGES);
 
-		const updatedUser = { ...user, ...params };
+		const emails = params.email ? [{ address: params.email, verified: false }] : user.emails;
+		const updatedUser = { ...user, ...params, emails };
 
 		reset({
 			name: updatedUser.name || '',
 			username: updatedUser.username || '',
-			email: updatedUser.emails?.[0]?.address || updatedUser.email || '',
+			email: updatedUser.emails?.[0]?.address || '',
 			currentPassword: null,
 			bio: updatedUser.bio || '',
 			nickname: updatedUser.nickname || '',
 			saving: false
 		});
-		dispatch(setUser({ ...user, ...params, customFields }));
+		dispatch(setUser({ ...updatedUser, customFields }));
 		EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 	};
 

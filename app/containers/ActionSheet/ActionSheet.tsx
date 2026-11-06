@@ -1,6 +1,6 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
-import { forwardRef, isValidElement, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
+import { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
 import {
 	AccessibilityInfo,
 	findNodeHandle,
@@ -37,23 +37,66 @@ const ActionSheet = memo(
 		const [sheetTop, setSheetTop] = useState<number>();
 		const { bottom } = useSafeAreaInsets();
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
+		const dismissedOnCloseRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
 		const itemHeight = useActionSheetItemHeight();
 
+		const phaseRef = useRef<'idle' | 'presenting' | 'presented' | 'dismissing'>('idle');
+		const desiredOptionsRef = useRef<TActionSheetOptions | null>(null);
+		const pendingPresentTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+		useEffect(() => () => clearTimeout(pendingPresentTimeoutRef.current), []);
+
 		const hide = () => {
-			if (!isVisible) return;
-			sheetRef.current?.dismiss();
+			desiredOptionsRef.current = null;
+			clearTimeout(pendingPresentTimeoutRef.current);
+			const phase = phaseRef.current;
+			if (phase === 'idle' || phase === 'dismissing') return;
+			phaseRef.current = 'dismissing';
+			if (phase === 'presented') {
+				sheetRef.current?.dismiss();
+			}
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		};
 
-		const show = (options: TActionSheetOptions) => {
+		useEffect(() => {
+			if (isVisible) return;
+			const dismissedOnClose = dismissedOnCloseRef.current;
+			dismissedOnCloseRef.current = undefined;
+			dismissedOnClose?.();
+		}, [isVisible]);
+
+		// Keep contentHeight to avoid flickering on next show
+		const onDidDismiss = () => {
+			phaseRef.current = 'idle';
+			dismissedOnCloseRef.current = onCloseSnapshotRef.current;
+			onCloseSnapshotRef.current = undefined;
+			setIsVisible(false);
+			setSheetTop(undefined);
+			if (desiredOptionsRef.current && phaseRef.current === 'idle') {
+				pendingPresentTimeoutRef.current = setTimeout(presentDesiredSheet);
+			}
+		};
+
+		const presentDesiredSheet = () => {
+			const options = desiredOptionsRef.current;
+			if (!options || phaseRef.current === 'dismissing') return;
+			desiredOptionsRef.current = null;
 			setData(options);
+			onCloseSnapshotRef.current = options.onClose;
+			if (phaseRef.current !== 'idle') return;
+			phaseRef.current = 'presenting';
 			setIsVisible(true);
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-			onCloseSnapshotRef.current = options.onClose;
-			sheetRef.current?.present();
+			sheetRef.current?.present().catch(onDidDismiss);
+		};
+
+		const show = (options: TActionSheetOptions) => {
+			clearTimeout(pendingPresentTimeoutRef.current);
+			desiredOptionsRef.current = options;
+			presentDesiredSheet();
 		};
 
 		useBackHandler(() => {
@@ -74,6 +117,11 @@ const ActionSheet = memo(
 		};
 
 		const onDidPresent = () => {
+			if (phaseRef.current === 'dismissing') {
+				sheetRef.current?.dismiss();
+				return;
+			}
+			phaseRef.current = 'presented';
 			// On Android the bottom sheet is hosted in a separate window; TalkBack
 			// needs a moment after the present animation before it can target nodes
 			// inside it, so defer the focus call slightly.
@@ -95,15 +143,6 @@ const ActionSheet = memo(
 			if (Number.isInteger(index)) {
 				setSheetTop(position);
 			}
-		};
-
-		const onDidDismiss = () => {
-			setIsVisible(false);
-			setSheetTop(undefined);
-			// Keep contentHeight to avoid flickering on next show
-			const snapshotOnClose = onCloseSnapshotRef.current;
-			onCloseSnapshotRef.current = undefined;
-			snapshotOnClose?.();
 		};
 
 		const isPortrait = windowHeight > windowWidth;

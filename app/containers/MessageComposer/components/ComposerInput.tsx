@@ -27,7 +27,7 @@ import { emitter } from '~/lib/methods/helpers/emitter';
 import { useComposerRid, useComposerRoomTitle, useComposerSharing, useComposerTmid, useComposerType } from '../ComposerStore';
 import { useMessageAction, useMessageActionStoreApi } from '~/containers/message/stores/MessageActionStore';
 import { getMessageById } from '~/lib/database/services/Message';
-import { generateTriggerId } from '~/lib/methods/actions';
+import { withTriggerId } from '~/lib/apps/actions';
 import { executeCommandPreview } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -38,6 +38,11 @@ import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
 import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
+
+const allowGrowingFromEmptyText = (input: TextInput | null) => {
+	input?.setNativeProps?.({ text: ' ' });
+	input?.setNativeProps?.({ text: '' });
+};
 
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
@@ -71,18 +76,27 @@ export const ComposerInput = memo(
 		// workaround to handle issues with iOS back swipe navigation
 		const { iOSBackSwipe } = useIOSBackSwipeHandler();
 
-		const setInput: TSetInput = useCallback(
-			(text, selection, forceUpdateDraftMessage) => {
+		const syncTextState = useCallback(
+			(text: string) => {
 				const message = text.trim();
 				textRef.current = message;
+				setMicOrSend(message.length === 0 ? 'mic' : 'send');
+				setIsEmpty(text.length === 0);
+			},
+			[setMicOrSend]
+		);
 
+		const setInput: TSetInput = useCallback(
+			(text, selection, forceUpdateDraftMessage) => {
 				if (forceUpdateDraftMessage) {
 					saveDraft();
 				}
 
-				inputRef.current?.setNativeProps?.({ text });
-				if (!text) {
+				if (text) {
+					inputRef.current?.setNativeProps?.({ text });
+				} else {
 					inputRef.current?.clear();
+					allowGrowingFromEmptyText(inputRef.current);
 				}
 
 				if (selection) {
@@ -92,18 +106,17 @@ export const ComposerInput = memo(
 						selectionRef.current = selection;
 					}, 50);
 				}
-				setMicOrSend(message.length === 0 ? 'mic' : 'send');
-				setIsEmpty(text.length === 0);
+				syncTextState(text);
 			},
-			[saveDraft, inputRef, setMicOrSend]
+			[saveDraft, inputRef, syncTextState]
 		);
 
-		const focus = () => {
+		const focus = (delay = 300) => {
 			setTimeout(() => {
 				if (inputRef.current) {
 					inputRef.current.focus();
 				}
-			}, 300);
+			}, delay);
 		};
 
 		const stopAutocomplete = () => {
@@ -174,9 +187,11 @@ export const ComposerInput = memo(
 		}, textInputDebounceTime);
 
 		const onChangeText: TextInputProps['onChangeText'] = text => {
-			textRef.current = text;
 			debouncedOnChangeText(text);
-			setInput(text);
+			if (!text) {
+				inputRef.current?.setNativeProps?.({ text: '' });
+			}
+			syncTextState(text);
 		};
 
 		const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
@@ -211,8 +226,9 @@ export const ComposerInput = memo(
 					const commandsCollection = db.get('slash_commands');
 					const commandRecord = await commandsCollection.find(item.text);
 					const { appId } = commandRecord;
-					const triggerId = generateTriggerId(appId);
-					executeCommandPreview(item.text, item.params, rid, item.preview, triggerId, tmid);
+					withTriggerId(appId, triggerId =>
+						executeCommandPreview(item.text, item.params, rid, item.preview, triggerId, tmid)
+					).catch(log);
 				} catch (e) {
 					log(e);
 				}
@@ -274,6 +290,8 @@ export const ComposerInput = memo(
 				stopAutocomplete();
 			});
 		};
+
+		useEffect(() => allowGrowingFromEmptyText(inputRef.current), [inputRef]);
 
 		// Draft/Canned Responses
 		useEffect(() => {

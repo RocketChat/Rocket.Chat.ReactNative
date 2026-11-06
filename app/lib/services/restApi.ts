@@ -1,4 +1,3 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getUniqueId } from 'react-native-device-info';
 import EJSON from 'ejson';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
@@ -13,7 +12,9 @@ import {
 	type IRoleUser,
 	type IRoom,
 	type IRoomNotifications,
+	type IRoomSettings,
 	type IServerRoom,
+	type ISidebarCategory,
 	type RoomType,
 	type SubscriptionType
 } from '~/definitions';
@@ -32,6 +33,7 @@ import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
+import { fetchForWorkspace } from '../methods/serverBasicAuth';
 import log from '../methods/helpers/log';
 
 export const createChannel = ({
@@ -282,10 +284,7 @@ export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: s
 					channelName: name
 				};
 	} else {
-		params = {
-			roomId: rid,
-			roomName: name
-		};
+		params = { roomId: rid };
 	}
 
 	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
@@ -680,24 +679,15 @@ export const hideRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
-export const saveRoomSettings = (
-	rid: string,
-	params: {
-		roomName?: string;
-		roomAvatar?: string | null;
-		roomDescription?: string;
-		roomTopic?: string;
-		roomAnnouncement?: string;
-		roomType?: SubscriptionType;
-		readOnly?: boolean;
-		reactWhenReadOnly?: boolean;
-		systemMessages?: string[];
-		joinCode?: string;
-		encrypted?: boolean;
+export const saveRoomSettings = async (rid: string, params: IRoomSettings) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.3.0')) {
+		await sdk.post('rooms.saveRoomSettings', { rid, ...params });
+		return;
 	}
-): Promise<{ result: boolean; rid: string }> =>
 	// RC 0.55.0
-	sdk.methodCallWrapper('saveRoomSettings', rid, params);
+	await sdk.methodCallWrapper('saveRoomSettings', rid, params);
+};
 
 export const setPassword = (newPassword: string) => {
 	const serverVersion = reduxStore.getState().server.version;
@@ -719,6 +709,31 @@ export const saveUserProfile = (
 export const saveUserPreferences = (data: Partial<INotificationPreferences & IMessagePreferences>) =>
 	// RC 0.62.0
 	sdk.post('users.setPreferences', { data });
+
+export const saveSidebarCategories = (sidebarCategories: ISidebarCategory[]) =>
+	sdk.post('users.setPreferences', { data: { sidebarCategories } });
+
+const postAuthenticated = async (path: string, body: object) => {
+	const { login, server } = reduxStore.getState();
+	const response = await fetchForWorkspace(server.server, `${server.server}/api/${path}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-Auth-Token': login.user.token,
+			'X-User-Id': login.user.id
+		},
+		body: JSON.stringify(body)
+	});
+	if (!response.ok) {
+		const errorBody = await response.json().catch(() => undefined);
+		throw new Error(errorBody?.error || errorBody?.message || `${response.status} ${response.statusText}`);
+	}
+	return response;
+};
+
+export const setRoomsCategory = async (roomIds: string[], category: string | null) => {
+	await postAuthenticated('experimental/rooms.setCategory', { roomIds, category });
+};
 
 export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0
@@ -1062,8 +1077,17 @@ export const saveAutoTranslate = ({
 	return sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, ddpValue, options ?? null);
 };
 
-export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
-	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+export const getSupportedLanguagesAutoTranslate = async (): Promise<{ language: string; name: string }[]> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '2.0.0')) {
+		const result = await sdk.get('autotranslate.getSupportedLanguages', { targetLanguage: 'en' });
+		if (!result.success) {
+			throw new Error('Unable to load supported languages');
+		}
+		return result.languages;
+	}
+	return sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+};
 
 export const translateMessage = (messageId: string, targetLanguage: string) =>
 	sdk.post('autotranslate.translateMessage', { messageId, targetLanguage });
@@ -1106,19 +1130,14 @@ export const createGroupChat = () => {
 	return sdk.post('im.create', { usernames });
 };
 
-export const addUsersToRoom = async (rid: string, t: 'c' | 'p') => {
+export const addUsersToRoom = (rid: string, t: 'c' | 'p') => {
 	const { selectedUsers, server } = reduxStore.getState();
 	const users = selectedUsers.users.map(u => u.name);
-	if (compareServerVersion(server.version, 'greaterThanOrEqualTo', '8.6.0')) {
-		if (t === 'p') {
-			return sdk.post('groups.invite', { roomId: rid, usernames: users });
-		}
-		const results = await Promise.allSettled(users.map(username => sdk.post('channels.invite', { roomId: rid, username })));
-		const failed = results.find((result): result is PromiseRejectedResult => result.status === 'rejected');
-		if (failed) {
-			throw failed.reason;
-		}
-		return results;
+	if (t === 'p' && compareServerVersion(server.version, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('groups.invite', { roomId: rid, usernames: users });
+	}
+	if (compareServerVersion(server.version, 'greaterThanOrEqualTo', '9.0.0')) {
+		return sdk.post('channels.invite', { roomId: rid, usernames: users });
 	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
@@ -1151,36 +1170,17 @@ export const editMediaMessage = async (
 	fileId: string,
 	body: { description?: string; filename: string; msg?: string }
 ) => {
-	const { login, server } = reduxStore.getState();
-	const { user } = login;
 	// RC 8.4.0
-	const response = await fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
-		method: 'POST',
-		headers: {
-			...RocketChatSettings.customHeaders,
-			'Content-Type': 'application/json',
-			'X-Auth-Token': user.token,
-			'X-User-Id': user.id
-		},
-		body: JSON.stringify({
+	try {
+		const response = await postAuthenticated(`v1/rooms.mediaConfirm/${rid}/${fileId}`, {
 			description: body.description,
 			filename: body.filename,
 			msg: body.msg || ''
-		})
-	});
-
-	if (!response.ok) {
-		let errorReason = `${response.status} ${response.statusText}`;
-		try {
-			const errorBody = await response.json();
-			errorReason = errorBody?.error || errorBody?.message || errorReason;
-		} catch {
-			// Best effort only: keep default HTTP reason when body is not JSON.
-		}
-		throw new Error(`Failed to edit media message: ${errorReason}`);
+		});
+		return response.json();
+	} catch (error) {
+		throw new Error(`Failed to edit media message: ${(error as Error).message}`);
 	}
-
-	return response.json();
 };
 
 let lastToken = '';

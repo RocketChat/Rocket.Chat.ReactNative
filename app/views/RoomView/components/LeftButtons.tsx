@@ -19,6 +19,8 @@ const styles = StyleSheet.create({
 	}
 });
 
+const BLANK_UNREADS_LABEL = ' ';
+
 interface ILeftButtonsProps {
 	rid?: string;
 	tmid?: string;
@@ -39,7 +41,7 @@ const LeftButtons = ({ rid, tmid, roomStore }: ILeftButtonsProps): ReactElement 
 	const unreadsCount = useUnreadsCount(rid);
 
 	if (!isMasterDetail || tmid) {
-		let label: string | undefined;
+		let label = BLANK_UNREADS_LABEL;
 		let marginLeft = 0;
 		let fontSize = 0;
 		if (unreadsCount) {

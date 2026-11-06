@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { I18nManager, StyleSheet } from 'react-native';
 
 import sharedStyles from '../Styles';
 
@@ -20,17 +20,38 @@ export default StyleSheet.create({
 	},
 	groupTitleContainer: {
 		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 4,
 		paddingHorizontal: 16,
-		paddingVertical: 12,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
-	groupTitle: {
-		fontSize: 16,
+	groupTitleButton: {
+		flexShrink: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 4,
+		paddingVertical: 12
+	},
+	groupToggle: {
 		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'flex-end',
+		gap: 4,
+		paddingVertical: 12
+	},
+	groupHeaderPressed: {
+		opacity: 0.7
+	},
+	groupTitle: {
+		flexShrink: 1,
+		fontSize: 16,
 		lineHeight: 24,
+		...sharedStyles.textRegular
+	},
+	groupTitleUnread: {
 		...sharedStyles.textBold
+	},
+	groupTitleChevron: {
+		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
 	},
 	serverHeader: {
 		justifyContent: 'space-between'
