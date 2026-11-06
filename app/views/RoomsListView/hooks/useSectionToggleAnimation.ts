@@ -117,18 +117,17 @@ export const useSectionToggleAnimation = (
 		toggleGroup(group);
 	};
 
-	const fadeTo = (toValue: number, spring: WithSpringConfig) => {
-		'worklet';
-		return isAnimatingToggle(isToggling, toggleAnimatedAt)
-			? withDelay(FIRST_DRAWN_FRAME_DELAY_MS, withSpring(toValue, spring))
-			: withTiming(toValue, { duration: 0 });
-	};
-
 	const fade =
 		(fromOpacity: number, toOpacity: number, spring: WithSpringConfig): EntryExitAnimationFunction =>
 		() => {
 			'worklet';
-			return { initialValues: { opacity: fromOpacity }, animations: { opacity: fadeTo(toOpacity, spring) } };
+			if (!isAnimatingToggle(isToggling, toggleAnimatedAt)) {
+				return { initialValues: {}, animations: {} };
+			}
+			return {
+				initialValues: { opacity: fromOpacity },
+				animations: { opacity: withDelay(FIRST_DRAWN_FRAME_DELAY_MS, withSpring(toOpacity, spring)) }
+			};
 		};
 
 	const rowEntering = fade(0, 1, SECTION_SPRING);
