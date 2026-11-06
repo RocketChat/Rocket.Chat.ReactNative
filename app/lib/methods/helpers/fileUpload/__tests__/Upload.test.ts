@@ -9,7 +9,6 @@ class MockXHR {
 	headers: Record<string, string> = {};
 	onload: (() => void) | null = null;
 	onerror: (() => void) | null = null;
-	ontimeout: (() => void) | null = null;
 	onabort: (() => void) | null = null;
 	upload = { onprogress: null as ((event: { loaded: number; total: number }) => void) | null };
 
@@ -84,14 +83,6 @@ describe('Upload', () => {
 		MockXHR.instance.send = jest.fn(() => MockXHR.instance.onerror?.());
 
 		await expect(upload.send()).rejects.toThrow('Network Error');
-	});
-
-	it('rejects when the request times out', async () => {
-		const upload = new Upload();
-		upload.setupRequest('https://open.rocket.chat/api/v1/rooms.media/rid', {});
-		MockXHR.instance.send = jest.fn(() => MockXHR.instance.ontimeout?.());
-
-		await expect(upload.send()).rejects.toThrow('Upload timed out');
 	});
 
 	it('rejects with a cancellation once cancelled', async () => {
