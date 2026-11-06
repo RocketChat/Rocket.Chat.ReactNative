@@ -286,9 +286,11 @@ const RoomMembersView = (): ReactElement => {
 			updateState(reloadFromFirstPage);
 			return;
 		}
-		updateState(({ members, offset }) => ({
+		const offsetWhenSheetOpened = state.offset;
+		updateState(({ members, offset, end }) => ({
 			members: setMemberRole(members, userId, role, isAdded),
-			offset: isAdded ? offset : Math.max(offset - 1, 0)
+			offset: isAdded ? offset : Math.max(Math.min(offset, offsetWhenSheetOpened) - 1, 0),
+			end: isAdded ? end : false
 		}));
 	};
 
@@ -305,10 +307,7 @@ const RoomMembersView = (): ReactElement => {
 			return;
 		}
 
-		if (!trimmedFilter) {
-			latestSearchRequest.current += 1;
-		}
-
+		latestSearchRequest.current += 1;
 		updateState({
 			...firstPageState,
 			filter: trimmedFilter
@@ -325,6 +324,7 @@ const RoomMembersView = (): ReactElement => {
 			if (status === state.allUsers) {
 				return;
 			}
+			latestSearchRequest.current += 1;
 			// We only update 'allUsers'. 'filter' remains in state, so the next fetch uses both.
 			updateState({ ...firstPageState, allUsers: status });
 		};

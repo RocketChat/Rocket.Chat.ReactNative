@@ -424,6 +424,42 @@ describe('RoomMembersView roles', () => {
 			expect(queryByTestId('room-members-view-item-owner.user')).toBeNull();
 		});
 
+		it.each([
+			[
+				'status',
+				async () => {
+					const [{ headerRight }] = mockSetOptions.mock.lastCall;
+					headerRight().props.actions[0].menu[0].onPress();
+				},
+				{ type: 'online' }
+			],
+			[
+				'search',
+				async (getByTestId: (id: string) => any) => {
+					fireEvent.changeText(getByTestId('room-members-view-search'), 'member');
+					await new Promise(resolve => setTimeout(resolve, 600));
+				},
+				{ filter: 'member' }
+			]
+		])('ignores the previous page when it arrives before the new %s is requested', async (_, changeList, expectedParams) => {
+			let resolveStalePage: (members: unknown[]) => void = () => {};
+			jest
+				.mocked(getRoomMembers)
+				.mockReturnValueOnce(new Promise(resolve => (resolveStalePage = resolve)) as any)
+				.mockResolvedValueOnce([member] as any);
+			const { findByTestId, getByTestId, queryByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(1));
+
+			await act(async () => {
+				await changeList(getByTestId);
+				resolveStalePage([owner]);
+			});
+
+			expect(await findByTestId('room-members-view-item-member.user')).toBeTruthy();
+			expect(queryByTestId('room-members-view-item-owner.user')).toBeNull();
+			expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ ...expectedParams, skip: 0 }));
+		});
+
 		it('does not fetch room roles separately', async () => {
 			const { getByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
 			await waitFor(() => getByTestId('room-members-view-item-owner.user'));
@@ -570,6 +606,34 @@ describe('RoomMembersView roles', () => {
 					await act(async () => UNSAFE_getByType(SectionList).props.onEndReached());
 
 					expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 49 }));
+				});
+
+				it.each([
+					['a full page', fullNextPage],
+					['the last page', fullNextPage.slice(0, 24)]
+				])('requests from the row before the toggle when %s loads while the demotion is pending', async (_, loadedPage) => {
+					let resolveToggle!: (value: unknown) => void;
+					jest.mocked(toggleRoomOwner).mockReturnValueOnce(new Promise(resolve => (resolveToggle = resolve)) as any);
+					jest
+						.mocked(getRoomMembers)
+						.mockResolvedValueOnce(ownerFirstPage as any)
+						.mockResolvedValueOnce(loadedPage as any)
+						.mockResolvedValue([] as any);
+					const { getByTestId, queryByTestId, UNSAFE_getByType } = render(<RoomMembersView />, { wrapper: Wrapper });
+					const options = await openActionSheetFor(getByTestId, 'user3');
+					await act(async () => {
+						ownerOption(options)?.onPress?.();
+					});
+					await act(async () => UNSAFE_getByType(SectionList).props.onEndReached());
+					await waitFor(() =>
+						expect(memberIds(UNSAFE_getByType(SectionList).props.sections)).toContain(loadedPage[loadedPage.length - 1]._id)
+					);
+
+					await act(async () => resolveToggle({ success: true }));
+					await waitFor(() => expect(queryByTestId('room-members-view-header-owner')).toBeNull());
+					await act(async () => UNSAFE_getByType(SectionList).props.onEndReached());
+
+					expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ skip: 24 }));
 				});
 
 				it('requests the next page from the full offset after an owner is demoted while the focus reload loads', async () => {
