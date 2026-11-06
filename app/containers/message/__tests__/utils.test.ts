@@ -1,4 +1,4 @@
-import { getPreviewMessageFromAttachment } from '../utils';
+import { getInfoMessage, getPreviewMessageFromAttachment, messageHaveAuthorName } from '../utils';
 
 describe('getPreviewMessageFromAttachment', () => {
 	test('returns the Attachment title when only title is set', () => {
@@ -30,5 +30,25 @@ describe('getPreviewMessageFromAttachment', () => {
 
 	test('returns the Attachment title when only title is set even if translateLanguage is provided', () => {
 		expect(getPreviewMessageFromAttachment({ title: 'example.png' }, 'pt-BR')).toBe('example.png');
+	});
+});
+
+describe('abac-removed-users-from-room', () => {
+	const author = { _id: 'uid', username: 'rocket.cat' };
+
+	test('renders the singular summary when one member was removed', () => {
+		expect(getInfoMessage({ type: 'abac-removed-users-from-room', msg: '1', author, role: '' })).toBe(
+			'changed the room attributes, and 1 member was removed by ABAC'
+		);
+	});
+
+	test('renders the plural summary with the count from msg', () => {
+		expect(getInfoMessage({ type: 'abac-removed-users-from-room', msg: '50', author, role: '' })).toBe(
+			'changed the room attributes, and 50 members were removed by ABAC'
+		);
+	});
+
+	test('is prefixed by the author name', () => {
+		expect(messageHaveAuthorName('abac-removed-users-from-room')).toBe(true);
 	});
 });

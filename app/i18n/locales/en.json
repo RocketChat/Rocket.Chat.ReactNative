@@ -21,6 +21,8 @@
   "ABAC_disabled_action_reason": "Not available in ABAC-managed rooms",
   "ABAC_managed": "ABAC managed",
   "ABAC_managed_description": "Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access.",
+  "abac_removed__count__member_from_the_room": "changed the room attributes, and {{count}} member was removed by ABAC",
+  "abac_removed__count__members_from_the_room": "changed the room attributes, and {{count}} members were removed by ABAC",
   "abac_removed_user_from_the_room": "was removed by ABAC",
   "ABAC_room_attributes": "Room attributes",
   "accept": "Accept",

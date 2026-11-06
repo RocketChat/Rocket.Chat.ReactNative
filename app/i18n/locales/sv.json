@@ -21,6 +21,8 @@
   "ABAC_disabled_action_reason": "Inte tillgängligt i ABAC-hanterade rum",
   "ABAC_managed": "ABAC-hanterat",
   "ABAC_managed_description": "Endast kompatibla användare har åtkomst till attributbaserat åtkomstskyddade rum. Attributen avgör tillgången till rummet.",
+  "abac_removed__count__member_from_the_room": "ändrade rummets attribut, och {{count}} medlem togs bort av ABAC",
+  "abac_removed__count__members_from_the_room": "ändrade rummets attribut, och {{count}} medlemmar togs bort av ABAC",
   "abac_removed_user_from_the_room": "togs bort av ABAC",
   "ABAC_room_attributes": "Rumsattribut",
   "Accessibility": "Tillgänglighet",

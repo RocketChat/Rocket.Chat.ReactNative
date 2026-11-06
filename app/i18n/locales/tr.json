@@ -17,6 +17,8 @@
   "ABAC_disabled_action_reason": "ABAC tarafından yönetilen odalarda mevcut değil",
   "ABAC_managed": "ABAC tarafından yönetilir",
   "ABAC_managed_description": "Yalnızca uyumlu kullanıcılar, öznitelik tabanlı erişim kontrollü odalara erişebilir. Öznitelikler, oda erişimini belirler.",
+  "abac_removed__count__member_from_the_room": "oda özniteliklerini değiştirdi ve {{count}} üye ABAC tarafından kaldırıldı",
+  "abac_removed__count__members_from_the_room": "oda özniteliklerini değiştirdi ve {{count}} üye ABAC tarafından kaldırıldı",
   "abac_removed_user_from_the_room": "ABAC tarafından kaldırıldı",
   "ABAC_room_attributes": "Oda özellikleri",
   "Accessibility": "Erişilebilirlik",
