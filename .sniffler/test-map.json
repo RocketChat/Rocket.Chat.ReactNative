@@ -441,7 +441,7 @@
 		"test": "e2e/tests/teams/team.e2e.ts",
 		"dependsOn": [
 			"app/views/RoomActionsView/**",
-			"app/views/TeamChannelsView.tsx",
+			"app/views/TeamChannelsView/**",
 			"app/views/AddChannelTeamView.tsx",
 			"app/views/AddExistingChannelView/**",
 			"app/views/RoomMembersView/**",
