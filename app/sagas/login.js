@@ -268,10 +268,9 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
-const seedWatchQuickReplies = function* seedWatchQuickRepliesFork() {
+const seedWatchQuickReplies = function* seedWatchQuickRepliesFork(server) {
 	try {
 		if (!isWatchAppInstalled()) return;
-		const server = yield select(s => s.server.server);
 		const settingsFetchedFor = yield call(getSettingsFetchedFor);
 		let fetchedSettings;
 		if (settingsFetchedFor !== server) {
@@ -365,7 +364,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		// On warm relaunch, redux is already populated by selectServer; on cold login, it re-checks
 		// when PERMISSIONS.SET / ENTERPRISE_MODULES.SET land.
 		yield spawn(startVoipFork);
-		yield spawn(seedWatchQuickReplies);
+		yield spawn(seedWatchQuickReplies, server);
 		yield call(fetchPermissions);
 		yield call(fetchEnterpriseModules, { user });
 		yield fork(fetchCustomEmojisFork);
