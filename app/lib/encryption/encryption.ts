@@ -128,6 +128,10 @@ class Encryption {
 		this.privateKey = null;
 		this.publicKey = null;
 		this.roomInstances = {};
+		if (this.keyDistributionInterval) {
+			clearInterval(this.keyDistributionInterval);
+		}
+		this.keyDistributionInterval = null;
 		// Cancel ongoing encryption/decryption requests
 		this.readyPromise.reject();
 		// Reset Deferred
@@ -530,8 +534,8 @@ class Encryption {
 			}
 		};
 
-		await keyDistribution();
 		this.keyDistributionInterval = setInterval(keyDistribution, 10000);
+		await keyDistribution();
 	};
 
 	// Creating the instance is enough to generate room e2ee key

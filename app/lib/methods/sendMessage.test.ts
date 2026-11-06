@@ -423,6 +423,15 @@ describe('sendMessage', () => {
 			expect(mockDbBatch).not.toHaveBeenCalled();
 			expect(mockPost).not.toHaveBeenCalled();
 		});
+
+		it('stores the message as errored and posts nothing when the encrypted room has no session key', async () => {
+			mockEncryptMessage.mockResolvedValue(undefined);
+
+			await sendMessage(rid, 'hello', undefined, user);
+
+			expect(createdRecord('messages').status).toBe(messagesStatus.ERROR);
+			expect(mockPost).not.toHaveBeenCalled();
+		});
 	});
 
 	describe('sendMessage - draft', () => {
@@ -659,6 +668,18 @@ describe('sendMessage', () => {
 			await expect(resendMessage(makeMessageModel() as any)).resolves.toBeUndefined();
 
 			expect(log).toHaveBeenCalledWith(expect.objectContaining({ message: 'encryption failed' }));
+			expect(mockPost).not.toHaveBeenCalled();
+		});
+
+		it('marks the message as errored again and posts nothing when the encrypted room has no session key', async () => {
+			mockEncryptMessage.mockResolvedValue(undefined);
+			const message = makeRecord('messages#messageId', { id: 'messageId', status: messagesStatus.ERROR });
+			mockGetCollection('messages').records.set('messageId', message);
+			message.update = jest.fn((updater: (m: FakeRecord) => void) => Promise.resolve(updater(message)));
+
+			await resendMessage(message as any);
+
+			expect(message.status).toBe(messagesStatus.ERROR);
 			expect(mockPost).not.toHaveBeenCalled();
 		});
 	});

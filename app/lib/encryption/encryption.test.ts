@@ -2,6 +2,7 @@
 // importing directly from the file. We exercise the real `encryptMessage` here.
 import encryption from './encryption';
 import database from '../database';
+import Deferred from './helpers/deferred';
 
 jest.unmock('./encryption');
 
@@ -232,7 +233,9 @@ describe('Encryption.canSendToRoom', () => {
 		jest.clearAllMocks();
 		mockHandshake.mockResolvedValue(undefined);
 		(encryption as any).roomInstances = {};
-		(encryption as any).readyPromise = Promise.resolve();
+		const readyPromise = new Deferred();
+		readyPromise.resolve();
+		(encryption as any).readyPromise = readyPromise;
 	});
 
 	it('allows rooms that are not encrypted', async () => {
@@ -422,3 +425,59 @@ describe('Encryption.decryptPendingSubscriptions', () => {
 		expect(failing.lastMessage).toEqual({ t: 'e2e', e2e: 'pending', msg: 'cipher' });
 	});
 });
+
+describe('Encryption key distribution', () => {
+	const db = (database as any).active;
+	const KEY_DISTRIBUTION_INTERVAL = 10000;
+	const distributionRuns = () => jest.mocked(db.get).mock.calls.filter(([name]: [string]) => name === 'subscriptions').length;
+
+	beforeEach(() => {
+		jest.useFakeTimers();
+		jest.spyOn(db, 'get').mockImplementation(() => ({ query: () => Promise.resolve([]) }));
+	});
+
+	afterEach(() => {
+		encryption.stop();
+		jest.useRealTimers();
+		jest.restoreAllMocks();
+	});
+
+	it('stops distributing room keys when the client stops', async () => {
+		await encryption.initiateKeyDistribution();
+		encryption.stop();
+
+		await jest.advanceTimersByTimeAsync(KEY_DISTRIBUTION_INTERVAL);
+
+		expect(distributionRuns()).toBe(1);
+	});
+
+	it('stops distributing room keys when the client stops during the first run', async () => {
+		const firstRun = deferredSubscriptions();
+		jest.mocked(db.get).mockImplementationOnce(() => ({ query: () => firstRun.promise }));
+
+		const initiating = encryption.initiateKeyDistribution();
+		encryption.stop();
+		firstRun.resolve([]);
+		await initiating;
+		await jest.advanceTimersByTimeAsync(KEY_DISTRIBUTION_INTERVAL);
+
+		expect(distributionRuns()).toBe(1);
+	});
+
+	it('distributes room keys right away when the client starts again after a stop', async () => {
+		await encryption.initiateKeyDistribution();
+		encryption.stop();
+
+		await encryption.initiateKeyDistribution();
+
+		expect(distributionRuns()).toBe(2);
+	});
+});
+
+const deferredSubscriptions = () => {
+	let resolve: (subscriptions: unknown[]) => void = () => undefined;
+	const promise = new Promise<unknown[]>(r => {
+		resolve = r;
+	});
+	return { promise, resolve };
+};

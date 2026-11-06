@@ -84,6 +84,10 @@ export async function resendMessage(message: TMessageModel, tmid?: string) {
 			msg: message.msg,
 			...(tmid && { tmid })
 		} as IMessage);
+		if (!m) {
+			await changeMessageStatus(message.id, messagesStatus.ERROR, tmid);
+			return;
+		}
 
 		await sendMessageCall(m);
 	} catch (e) {
@@ -116,6 +120,7 @@ export async function sendMessage(
 		} as IMessage);
 
 		const messageDate = new Date();
+		const status = message ? messagesStatus.TEMP : messagesStatus.ERROR;
 
 		try {
 			await db.write(async () => {
@@ -173,7 +178,7 @@ export async function sendMessage(
 								tm.msg = msg;
 								tm.ts = messageDate;
 								tm._updatedAt = messageDate;
-								tm.status = messagesStatus.TEMP;
+								tm.status = status;
 								tm.u = {
 									_id: user.id || '1',
 									username: user.username,
@@ -200,7 +205,7 @@ export async function sendMessage(
 						m.msg = msg;
 						m.ts = messageDate;
 						m._updatedAt = messageDate;
-						m.status = messagesStatus.TEMP;
+						m.status = status;
 						m.u = {
 							_id: user.id || '1',
 							username: user.username,
@@ -239,7 +244,9 @@ export async function sendMessage(
 			return;
 		}
 
-		await sendMessageCall(message);
+		if (message) {
+			await sendMessageCall(message);
+		}
 	} catch (e) {
 		log(e);
 	}
