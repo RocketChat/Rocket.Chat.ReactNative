@@ -78,12 +78,11 @@ type TStateUpdate = Partial<IRoomMembersViewState> | ((state: IRoomMembersViewSt
 
 type TMembersSection = { key?: TMemberRoleGroup; data: TUserModel[] };
 
-const firstPageState = { members: [], end: false, offset: 0, loadFailed: false };
+const firstPageState = { members: [], end: false, offset: 0, loadFailed: false, isLoading: false };
 
 const reloadFromFirstPage = ({ members, reloadCount }: IRoomMembersViewState) => ({
 	...firstPageState,
 	members,
-	isLoading: false,
 	reloadCount: reloadCount + 1
 });
 
@@ -148,7 +147,6 @@ const RoomMembersView = (): ReactElement => {
 			...(typeof newState === 'function' ? newState(state) : newState)
 		}),
 		{
-			isLoading: false,
 			allUsers: true,
 			filtering: '',
 			...firstPageState,
@@ -197,15 +195,15 @@ const RoomMembersView = (): ReactElement => {
 	};
 
 	const fetchMembers = useCallback(async () => {
-		const { members, isLoading, end, room, filter, offset, allUsers, loadFailed } = state;
+		const { members, isLoading, end, room, filter, offset, allUsers } = state;
 		const { t } = room;
 
-		if (isLoading || end || loadFailed) {
+		if (isLoading || end) {
 			return;
 		}
 
 		const requestId = ++latestSearchRequest.current;
-		updateState({ isLoading: true });
+		updateState({ isLoading: true, loadFailed: false });
 
 		const type = allUsers ? 'all' : 'online';
 		try {
@@ -231,7 +229,7 @@ const RoomMembersView = (): ReactElement => {
 			updateState(current => {
 				const membersChangedDuringRequest = current.members !== members;
 				if (offset === 0 && membersChangedDuringRequest) {
-					return { isLoading: false, reloadCount: current.reloadCount + 1 };
+					return reloadFromFirstPage(current);
 				}
 				const merged = mergeMembersPage(current.members, membersResult, offset);
 				const rowsShiftedDuringRequest = current.offset !== offset;
@@ -249,7 +247,7 @@ const RoomMembersView = (): ReactElement => {
 				updateState({ isLoading: false, loadFailed: true });
 			}
 		}
-	}, [state.members, state.isLoading, state.end, state.room.t, state.filter, state.offset, state.allUsers, state.loadFailed]);
+	}, [state.members, state.isLoading, state.end, state.room.t, state.filter, state.offset, state.allUsers]);
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
@@ -277,7 +275,7 @@ const RoomMembersView = (): ReactElement => {
 
 	useEffect(() => {
 		fetchMembers();
-	}, [state.filter, state.allUsers, state.loadFailed, state.reloadCount]);
+	}, [state.filter, state.allUsers, state.reloadCount]);
 
 	const applyRoleChange = async (changed: boolean, userId: string, role: string, isAdded: boolean) => {
 		if (!membersHaveRoles) {
@@ -313,8 +311,7 @@ const RoomMembersView = (): ReactElement => {
 
 		updateState({
 			...firstPageState,
-			filter: trimmedFilter,
-			isLoading: false
+			filter: trimmedFilter
 		});
 	}, 500);
 
@@ -329,7 +326,7 @@ const RoomMembersView = (): ReactElement => {
 				return;
 			}
 			// We only update 'allUsers'. 'filter' remains in state, so the next fetch uses both.
-			updateState({ ...firstPageState, allUsers: status, isLoading: false });
+			updateState({ ...firstPageState, allUsers: status });
 		};
 
 		navigation.setOptions({
@@ -521,7 +518,7 @@ const RoomMembersView = (): ReactElement => {
 				title={I18n.t('Try_again')}
 				type='secondary'
 				small
-				onPress={() => updateState({ loadFailed: false })}
+				onPress={() => fetchMembers()}
 				testID='room-members-view-retry'
 			/>
 		);
@@ -565,7 +562,7 @@ const RoomMembersView = (): ReactElement => {
 				}
 				ListFooterComponent={footer}
 				onEndReachedThreshold={0.1}
-				onEndReached={() => fetchMembers()}
+				onEndReached={() => (state.loadFailed ? undefined : fetchMembers())}
 				ListEmptyComponent={() =>
 					state.end ? (
 						<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_members_found')}</Text>

@@ -297,6 +297,34 @@ describe('RoomMembersView roles', () => {
 			await waitFor(() => expect(getRoomMembers).toHaveBeenCalledTimes(3));
 		});
 
+		it('does not reload on focus while Try again is loading', async () => {
+			jest
+				.mocked(getRoomMembers)
+				.mockResolvedValueOnce(undefined as any)
+				.mockReturnValueOnce(new Promise(() => {}) as any);
+			const { findByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+
+			fireEvent.press(await findByTestId('room-members-view-retry'));
+			await focusScreen();
+
+			expect(getRoomMembers).toHaveBeenCalledTimes(2);
+		});
+
+		it('requests the first page with the new search after the first page fails', async () => {
+			jest
+				.mocked(getRoomMembers)
+				.mockResolvedValueOnce(undefined as any)
+				.mockResolvedValueOnce([member] as any);
+			const { findByTestId, getByTestId, queryByTestId } = render(<RoomMembersView />, { wrapper: Wrapper });
+			await findByTestId('room-members-view-retry');
+
+			fireEvent.changeText(getByTestId('room-members-view-search'), 'member');
+
+			expect(await findByTestId('room-members-view-item-member.user')).toBeTruthy();
+			expect(getRoomMembers).toHaveBeenLastCalledWith(expect.objectContaining({ filter: 'member', skip: 0 }));
+			expect(queryByTestId('room-members-view-retry')).toBeNull();
+		});
+
 		it('shows Try again after a next page fails and requests that page again when pressed', async () => {
 			jest
 				.mocked(getRoomMembers)
