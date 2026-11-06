@@ -1,0 +1,22 @@
+diff --git a/node_modules/react-native-skeleton-placeholder/lib/skeleton-placeholder.js b/node_modules/react-native-skeleton-placeholder/lib/skeleton-placeholder.js
+index 353abb6..208c548 100644
+--- a/node_modules/react-native-skeleton-placeholder/lib/skeleton-placeholder.js
++++ b/node_modules/react-native-skeleton-placeholder/lib/skeleton-placeholder.js
+@@ -57,7 +57,7 @@ const SkeletonPlaceholder = ({ children, enabled = true, backgroundColor = '#E1E
+     }, [isAnimationReady, speed]);
+     const animatedGradientStyle = React.useMemo(() => {
+         const animationWidth = WINDOW_WIDTH + (shimmerWidth !== null && shimmerWidth !== void 0 ? shimmerWidth : 0);
+-        return Object.assign(Object.assign({}, react_native_1.StyleSheet.absoluteFillObject), { flexDirection: 'row', transform: [
++        return Object.assign(Object.assign({}, react_native_1.StyleSheet.absoluteFill), { flexDirection: 'row', transform: [
+                 {
+                     translateX: animatedValueRef.current.interpolate({
+                         inputRange: [0, 1],
+@@ -95,7 +95,7 @@ SkeletonPlaceholder.Item.displayName = 'SkeletonPlaceholderItem';
+ const getGradientProps = (width) => ({
+     start: { x: 0, y: 0 },
+     end: { x: 1, y: 0 },
+-    style: Object.assign(Object.assign({}, react_native_1.StyleSheet.absoluteFillObject), { width }),
++    style: Object.assign(Object.assign({}, react_native_1.StyleSheet.absoluteFill), { width }),
+ });
+ const getItemStyle = (_a) => {
+     var { children: _, style } = _a, styleFromProps = __rest(_a, ["children", "style"]);

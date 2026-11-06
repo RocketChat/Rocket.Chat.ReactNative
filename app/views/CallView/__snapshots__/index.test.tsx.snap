@@ -105,6 +105,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -122,6 +123,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -135,6 +137,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -1003,6 +1006,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -1020,6 +1024,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -1033,6 +1038,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -1907,6 +1913,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -1924,6 +1931,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -1937,6 +1945,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -2805,6 +2814,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -2822,6 +2832,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -2835,6 +2846,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -3703,6 +3715,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -3720,6 +3733,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -3733,6 +3747,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -4601,6 +4616,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -4618,6 +4634,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -4631,6 +4648,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -5482,6 +5500,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -5499,6 +5518,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -5512,6 +5532,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -6352,6 +6373,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -6369,6 +6391,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -6382,6 +6405,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -7228,6 +7252,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -7245,6 +7270,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -7258,6 +7284,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -8098,6 +8125,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -8115,6 +8143,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -8128,6 +8157,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -8968,6 +8998,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -8985,6 +9016,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -8998,6 +9030,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -9838,6 +9871,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -9855,6 +9889,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -9868,6 +9903,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -10708,6 +10744,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -10725,6 +10762,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -10738,6 +10776,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,
@@ -11595,6 +11634,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={2}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -11612,6 +11652,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
             sfEffect={null}
             source={
               [
@@ -11625,6 +11666,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 2,
                 "height": 120,
                 "width": 120,

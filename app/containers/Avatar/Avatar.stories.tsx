@@ -96,4 +96,6 @@ export const RoomAvatarExternalProviderUrl = () => (
 
 export const WrongServer = () => <Avatar text='Avatar' server='https://google.com' size={56} />;
 
+export const Loading = () => <Avatar avatar='https://10.255.255.1/avatar.png' server={server} isStatic size={56} />;
+
 export const CustomStyle = () => <Avatar text='Avatar' server={server} size={56} style={styles.custom} />;

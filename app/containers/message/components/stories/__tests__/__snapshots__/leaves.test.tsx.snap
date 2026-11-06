@@ -1326,6 +1326,7 @@ exports[`Story Snapshots: MessageAvatar should match snapshot 1`] = `
           style={{}}
         >
           <ViewManagerAdapter_ExpoImage
+            backgroundColor={4293191658}
             borderRadius={4}
             containerViewRef={{"current":"Object"}}
             contentFit="cover"
@@ -1343,6 +1344,7 @@ exports[`Story Snapshots: MessageAvatar should match snapshot 1`] = `
             onProgress={[Function]}
             placeholder={[]}
             priority="high"
+            recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
             sfEffect={null}
             source={
               [
@@ -1356,6 +1358,7 @@ exports[`Story Snapshots: MessageAvatar should match snapshot 1`] = `
             }
             style={
               {
+                "backgroundColor": "#E4E7EA",
                 "borderRadius": 4,
                 "height": 36,
                 "width": 36,
