@@ -9,7 +9,7 @@ import {
 	useWindowDimensions,
 	type View
 } from 'react-native';
-import { TrueSheet } from '@lodev09/react-native-true-sheet';
+import { TrueSheet, type DetentInfoEventPayload } from '@lodev09/react-native-true-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -18,7 +18,7 @@ import { isAndroid, isIOS } from '~/lib/methods/helpers';
 import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
-import { HANDLE_HEIGHT, getSheetContentPaddingBottom, useActionSheetDetents } from './useActionSheetDetents';
+import { getFullContainerHeight, getSheetContentPaddingBottom, useActionSheetDetents } from './useActionSheetDetents';
 import { useActionSheetItemHeight } from './useActionSheetItemHeight';
 import { useExpandOnKeyboard } from './useExpandOnKeyboard';
 import styles from './styles';
@@ -34,6 +34,7 @@ const ActionSheet = memo(
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
+		const [sheetTop, setSheetTop] = useState<number>();
 		const { bottom } = useSafeAreaInsets();
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
@@ -90,8 +91,15 @@ const ActionSheet = memo(
 			</GestureHandlerRootView>
 		);
 
+		const onSheetSettled = ({ nativeEvent: { index, position } }: { nativeEvent: DetentInfoEventPayload }) => {
+			if (Number.isInteger(index)) {
+				setSheetTop(position);
+			}
+		};
+
 		const onDidDismiss = () => {
 			setIsVisible(false);
+			setSheetTop(undefined);
 			// Keep contentHeight to avoid flickering on next show
 			const snapshotOnClose = onCloseSnapshotRef.current;
 			onCloseSnapshotRef.current = undefined;
@@ -129,13 +137,9 @@ const ActionSheet = memo(
 			setContentHeight(Math.max(0, layout.height - padding));
 		};
 
-		const contentMinHeight =
+		const fullContainerHeight =
 			data.fullContainer && effectiveSnaps?.length
-				? (() => {
-						const snap = effectiveSnaps[0];
-						const fraction = typeof snap === 'number' ? Math.min(1, Math.max(0.1, snap)) : (parseFloat(String(snap)) || 50) / 100;
-						return Math.max(0, windowHeight * fraction - HANDLE_HEIGHT);
-					})()
+				? getFullContainerHeight({ windowHeight, snap: effectiveSnaps[0], sheetTop })
 				: undefined;
 
 		return (
@@ -153,7 +157,9 @@ const ActionSheet = memo(
 					header={renderHeader()}
 					scrollable={isScrollable}
 					style={styles.container}
+					onWillPresent={onSheetSettled}
 					onDidPresent={onDidPresent}
+					onPositionChange={onSheetSettled}
 					onDidDismiss={onDidDismiss}>
 					<GestureHandlerRootView style={styles.contentContainer}>
 						<BottomSheetContent
@@ -163,7 +169,7 @@ const ActionSheet = memo(
 							onLayout={handleContentLayout}
 							fullContainer={data.fullContainer}
 							hugContent={data.hugContent}
-							contentMinHeight={isIOS ? contentMinHeight : undefined}
+							fullContainerHeight={isIOS ? fullContainerHeight : undefined}
 							scrollEnabled={contentScrollEnabled}>
 							{data?.children}
 						</BottomSheetContent>

@@ -23,6 +23,22 @@ export const getSheetContentPaddingBottom = ({
 	Math.max(SHEET_CONTENT_MIN_BOTTOM_PADDING, bottom) +
 	(isAndroid && fullContainer && !hugContent && !scrollEnabled ? HANDLE_HEIGHT : 0);
 
+export const getFullContainerHeight = ({
+	windowHeight,
+	snap,
+	sheetTop
+}: {
+	windowHeight: number;
+	snap: string | number;
+	sheetTop?: number;
+}): number => {
+	if (sheetTop !== undefined) {
+		return Math.max(0, windowHeight - sheetTop - HANDLE_HEIGHT);
+	}
+	const fraction = typeof snap === 'number' ? Math.min(1, Math.max(0.1, snap)) : (parseFloat(String(snap)) || 50) / 100;
+	return Math.max(0, windowHeight * fraction - HANDLE_HEIGHT);
+};
+
 function normalizeSnapsToDetents(snaps: (string | number)[]): number[] {
 	return snaps
 		.slice(0, 3)

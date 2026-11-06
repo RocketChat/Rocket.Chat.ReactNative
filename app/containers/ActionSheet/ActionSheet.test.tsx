@@ -1,8 +1,9 @@
-import { fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import { type Ref } from 'react';
-import { Keyboard, Pressable, Text } from 'react-native';
+import { Keyboard, Pressable, StyleSheet, Text, useWindowDimensions } from 'react-native';
 
 import { ActionSheetProvider, type TActionSheetOptions, useActionSheet } from '.';
+import { HANDLE_HEIGHT } from './useActionSheetDetents';
 
 const mockResize = jest.fn(() => Promise.resolve());
 
@@ -116,5 +117,54 @@ describe('ActionSheet', () => {
 		open({ children: <Text>content</Text>, snaps: ['90%'], expandOnKeyboard: true });
 
 		expect(Object.keys(handlers)).toEqual([]);
+	});
+
+	describe('a full-container sheet', () => {
+		const options = { children: <Text>content</Text>, snaps: ['90%'], fullContainer: true };
+		const windowHeight = 800;
+		const contentHeight = (utils: ReturnType<typeof open>) =>
+			StyleSheet.flatten(utils.getByTestId('action-sheet').props.style).height;
+
+		beforeEach(() => {
+			jest.mocked(useWindowDimensions).mockReturnValue({ width: 400, height: windowHeight, scale: 1, fontScale: 1 });
+		});
+
+		it('is sized from the window until the sheet reports where it sits', () => {
+			const utils = open(options);
+
+			expect(contentHeight(utils)).toBe(windowHeight * 0.9 - HANDLE_HEIGHT);
+		});
+
+		const report = (utils: ReturnType<typeof open>, handler: string, index: number, position: number) => {
+			act(() => {
+				utils.UNSAFE_getByProps({ cornerRadius: 16 }).props[handler]({ nativeEvent: { index, position, detent: 0.9 } });
+			});
+		};
+
+		it('is sized from the top edge the sheet reports', () => {
+			const utils = open(options);
+
+			report(utils, 'onWillPresent', 0, 200);
+
+			expect(contentHeight(utils)).toBe(windowHeight - 200 - HANDLE_HEIGHT);
+		});
+
+		it('follows the sheet when it settles at another snap', () => {
+			const utils = open(options);
+			report(utils, 'onWillPresent', 0, 200);
+
+			report(utils, 'onPositionChange', 1, 60);
+
+			expect(contentHeight(utils)).toBe(windowHeight - 60 - HANDLE_HEIGHT);
+		});
+
+		it('ignores the positions the sheet passes through while it moves', () => {
+			const utils = open(options);
+			report(utils, 'onWillPresent', 0, 200);
+
+			report(utils, 'onPositionChange', 0.4, 140);
+
+			expect(contentHeight(utils)).toBe(windowHeight - 200 - HANDLE_HEIGHT);
+		});
 	});
 });
