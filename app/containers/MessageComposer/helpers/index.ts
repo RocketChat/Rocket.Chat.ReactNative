@@ -4,3 +4,4 @@ export * from './getMentionRegexp';
 export * from './prepareQuoteMessage';
 export * from './insertEmojiAtCursor';
 export * from './lastGlyphLength';
+export * from './hasOnlySkippedAttachments';

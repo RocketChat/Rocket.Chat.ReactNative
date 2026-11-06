@@ -24,7 +24,7 @@ import { sanitizeLikeString } from '~/lib/database/utils';
 import { withTriggerId } from '~/lib/apps/actions';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
-import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength } from './helpers';
+import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength, hasOnlySkippedAttachments } from './helpers';
 import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
 import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboardWhenOrientationChanges';
 import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
@@ -114,6 +114,8 @@ export const MessageComposer = ({
 		const editingMessageId = action?.kind === 'edit' ? action.messageId : undefined;
 		const quotedMessageIds = action?.kind === 'quote' ? action.messageIds : [];
 
+		if (!editingMessageId && hasOnlySkippedAttachments(attachments)) return;
+
 		if (alsoSendThreadToChannel) {
 			setAlsoSendThreadToChannel(false);
 		}
@@ -159,10 +161,8 @@ export const MessageComposer = ({
 				getMsg: attachment =>
 					attachment === captionAttachment ? attachment.description || quotedMessage || textFromInput : attachment.description
 			});
-			if (unsent.length) {
-				addAttachments(unsent);
-				restoreCaptionAfterFailure(!unsent.includes(captionAttachment), textFromInput, quotedMessageIds);
-			}
+			addAttachments(unsent);
+			restoreCaptionAfterFailure(!unsent.includes(captionAttachment), textFromInput, quotedMessageIds);
 			return;
 		}
 

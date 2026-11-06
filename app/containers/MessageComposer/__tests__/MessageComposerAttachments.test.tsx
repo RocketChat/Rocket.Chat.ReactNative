@@ -1,5 +1,6 @@
 import { useEffect, type ReactElement, type RefObject } from 'react';
 import { act, render, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
+import { Text, TextInput } from 'react-native';
 import { Provider } from 'react-redux';
 
 import { MessageComposerContainer } from '../MessageComposerContainer';
@@ -10,14 +11,14 @@ import { selectServerRequest } from '~/actions/server';
 import { setUser } from '~/actions/login';
 import { mockedStore } from '~/reducers/mockedStore';
 import { type IShareAttachment } from '~/definitions';
-import { ComposerProvider } from '../ComposerStore';
+import { ComposerProvider, type TComposerExternalState } from '../ComposerStore';
 import {
 	createMessageActionStore,
 	MessageActionProvider,
 	type TMessageActionStore
 } from '../../message/stores/MessageActionStore';
 import { initStore } from '~/lib/store/auxStore';
-import { useMessageComposerApi } from '../context';
+import { useAlsoSendThreadToChannel, useMessageComposerApi } from '../context';
 import { type IMessageComposerRef } from '../interfaces';
 import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import log from '~/lib/methods/helpers/log';
@@ -48,7 +49,7 @@ const Render = ({
 	children,
 	forwardedRef
 }: {
-	context?: { onSendMessage?: () => void };
+	context?: Partial<TComposerExternalState>;
 	store?: TMessageActionStore;
 	children?: ReactElement;
 	forwardedRef?: RefObject<IMessageComposerRef | null>;
@@ -75,6 +76,17 @@ const AttachmentSeeder = ({ attachments }: { attachments: IShareAttachment[] }) 
 	}, [addAttachments, attachments]);
 
 	return null;
+};
+
+const AlsoSendToChannelTicked = () => {
+	const { setAlsoSendThreadToChannel } = useMessageComposerApi();
+	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
+
+	useEffect(() => {
+		setAlsoSendThreadToChannel(true);
+	}, [setAlsoSendThreadToChannel]);
+
+	return <Text testID='also-send-to-channel'>{String(alsoSendThreadToChannel)}</Text>;
 };
 
 describe('MessageComposer attachments', () => {
@@ -233,6 +245,46 @@ describe('MessageComposer attachments', () => {
 		expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
 		expect(screen.getByLabelText('IMG_2444.png')).toBeOnTheScreen();
 		expect(screen.queryByLabelText('sent.png')).not.toBeOnTheScreen();
+	});
+
+	test('leaves the caption, the tray and the thread toggle alone when no attachment can be uploaded', async () => {
+		const skipped = { ...attachment, canUpload: false } as IShareAttachment;
+		const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
+		render(
+			<Render forwardedRef={composerRef}>
+				<>
+					<AttachmentSeeder attachments={[skipped]} />
+					<AlsoSendToChannelTicked />
+				</>
+			</Render>
+		);
+		await screen.findByTestId('message-composer-attachment-0');
+		await waitFor(() => expect(screen.getByTestId('also-send-to-channel')).toHaveTextContent('true'));
+		await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
+		jest.mocked(TextInput.prototype.clear).mockClear();
+
+		await user.press(screen.getByTestId('message-composer-send'));
+
+		expect(TextInput.prototype.clear).not.toHaveBeenCalled();
+		expect(composerRef.current?.getText()).toBe('caption');
+		expect(screen.getByTestId('message-composer-attachment-0')).toBeOnTheScreen();
+		expect(sendFileMessage).not.toHaveBeenCalled();
+		expect(screen.getByTestId('also-send-to-channel')).toHaveTextContent('true');
+	});
+
+	test('still sends an edit when the tray holds only attachments that cannot be uploaded', async () => {
+		const editRequest = jest.fn();
+		const skipped = { ...attachment, canUpload: false } as IShareAttachment;
+		render(
+			<Render context={{ editRequest }} store={createMessageActionStore({ kind: 'edit', messageId: 'edited' })}>
+				<AttachmentSeeder attachments={[skipped]} />
+			</Render>
+		);
+		await screen.findByTestId('message-composer-attachment-0');
+
+		await user.press(screen.getByTestId('message-composer-send'));
+
+		expect(editRequest).toHaveBeenCalledWith(expect.objectContaining({ id: 'edited', rid: 'rid' }));
 	});
 
 	test('clears the tray as soon as Send is pressed so an upload in flight cannot be sent again', async () => {
