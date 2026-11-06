@@ -1,4 +1,3 @@
-import { InteractionManager } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import I18n from 'i18n-js';
 import { all, call, delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
@@ -137,13 +136,6 @@ const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 			path: username ? `direct/${username}` : params.path
 		};
 		yield navigate({ params: navigateParams });
-
-		yield call(
-			() =>
-				new Promise(resolve => {
-					InteractionManager.runAfterInteractions(() => resolve());
-				})
-		);
 
 		showToast(I18n.t('VoIP_Call_Issue'));
 	} catch (e) {

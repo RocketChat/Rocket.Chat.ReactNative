@@ -1,5 +1,4 @@
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
-import { InteractionManager } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useNavigation } from '@react-navigation/native';
@@ -39,11 +38,12 @@ jest.mock('~/theme', () => ({
 	useTheme: () => ({ theme: 'light', colors: { surfaceLight: '#ffffff', strokeExtraLight: '#eeeeee' } })
 }));
 
-const mockTaskCancel = jest.fn();
 let capturedFocusCb: (() => void) | undefined;
 let capturedBlurCb: (() => void) | undefined;
 let mockUnsubscribe: jest.Mock;
 let capturedAudioFocusedCb: ((audioFocused: string) => void) | undefined;
+
+const flushDeferredLoad = () => act(() => new Promise(resolve => setImmediate(resolve)));
 
 const defaultProps = {
 	fileUri: 'file:///audio.mp3',
@@ -55,10 +55,6 @@ const defaultProps = {
 describe('AudioPlayer', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((cb: any) => {
-			cb();
-			return { cancel: mockTaskCancel, then: jest.fn(), done: jest.fn() };
-		});
 
 		(AudioManager.loadAudio as jest.Mock).mockResolvedValue('mock-audio-key');
 		(AudioManager.playAudio as jest.Mock).mockResolvedValue(undefined);
@@ -109,18 +105,16 @@ describe('AudioPlayer', () => {
 		it('does not load audio when downloadState is not downloaded', async () => {
 			render(<AudioPlayer {...defaultProps} downloadState='loading' />);
 
-			await act(async () => {});
+			await flushDeferredLoad();
 
-			expect(InteractionManager.runAfterInteractions).not.toHaveBeenCalled();
 			expect(AudioManager.loadAudio).not.toHaveBeenCalled();
 		});
 
 		it('does not load audio when fileUri is empty', async () => {
 			render(<AudioPlayer {...defaultProps} fileUri='' />);
 
-			await act(async () => {});
+			await flushDeferredLoad();
 
-			expect(InteractionManager.runAfterInteractions).not.toHaveBeenCalled();
 			expect(AudioManager.loadAudio).not.toHaveBeenCalled();
 		});
 
@@ -180,36 +174,24 @@ describe('AudioPlayer', () => {
 		});
 	});
 
-	describe('InteractionManager task cleanup', () => {
-		it('cancels the InteractionManager task when the component unmounts', () => {
+	describe('deferred audio load cleanup', () => {
+		it('skips loading the audio when the component unmounts before the load runs', async () => {
 			const { unmount } = render(<AudioPlayer {...defaultProps} />);
 
-			act(() => unmount());
+			unmount();
+			await flushDeferredLoad();
 
-			expect(mockTaskCancel).toHaveBeenCalled();
+			expect(AudioManager.loadAudio).not.toHaveBeenCalled();
 		});
 
-		it('does not create a task (and therefore never cancels) when conditions are not met', () => {
-			const { unmount } = render(<AudioPlayer {...defaultProps} fileUri='' />);
-
-			act(() => unmount());
-
-			expect(InteractionManager.runAfterInteractions).not.toHaveBeenCalled();
-			expect(mockTaskCancel).not.toHaveBeenCalled();
-		});
-
-		it('cancels previous InteractionManager task when effect re-runs due to dependency change', async () => {
-			mockTaskCancel.mockClear();
-
+		it('loads only the latest file when the file changes before the load runs', async () => {
 			const { rerender } = render(<AudioPlayer {...defaultProps} />);
 
-			await waitFor(() => expect(AudioManager.loadAudio).toHaveBeenCalled());
-
 			rerender(<AudioPlayer {...defaultProps} fileUri='file:///audio2.mp3' />);
+			await flushDeferredLoad();
 
-			await waitFor(() => {
-				expect(mockTaskCancel).toHaveBeenCalledTimes(1);
-			});
+			expect(AudioManager.loadAudio).toHaveBeenCalledTimes(1);
+			expect(AudioManager.loadAudio).toHaveBeenCalledWith(expect.objectContaining({ uri: 'file:///audio2.mp3' }));
 		});
 	});
 
