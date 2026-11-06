@@ -115,9 +115,6 @@ const TeamChannelsViewScreen: ComponentType<StaticScreenProps<ModalStackParamLis
 const ReadReceiptsViewScreen: ComponentType<StaticScreenProps<ModalStackParamList['ReadReceiptsView']>> = withNavigation(
 	ReadReceiptsView as any
 ) as any;
-const ScreenLockConfigViewScreen: ComponentType<StaticScreenProps<ModalStackParamList['ScreenLockConfigView']>> = withNavigation(
-	ScreenLockConfigView as any
-) as any;
 
 const RoomInfoEditViewScreen: ComponentType<StaticScreenProps<ModalStackParamList['RoomInfoEditView']>> = withNavigation(
 	RoomInfoEditView as any
@@ -250,10 +247,7 @@ const ModalStack = createNativeStackNavigator({
 		LanguageView,
 		ThemeView,
 		DefaultBrowserView,
-		ScreenLockConfigView: createNativeStackScreen({
-			screen: ScreenLockConfigViewScreen,
-			options: ScreenLockConfigView.navigationOptions
-		}),
+		ScreenLockConfigView,
 		StatusView,
 		ProfileView: ProfileViewScreen,
 		ChangePasswordView: ChangePasswordViewScreen,
