@@ -107,15 +107,11 @@ export interface INativeListRowContent {
 	style?: StyleProp<ViewStyle>;
 }
 
-const Trailing = ({ isRowPressable, children }: { isRowPressable: boolean; children: ReactNode }) => {
+const Trailing = ({ children }: { children: ReactNode }) => {
 	if (!children) {
 		return null;
 	}
-	return (
-		<View pointerEvents={isRowPressable ? 'none' : 'auto'} style={styles.trailing}>
-			{children}
-		</View>
-	);
+	return <View style={styles.trailing}>{children}</View>;
 };
 
 export const NativeListRowContent = ({
@@ -178,7 +174,7 @@ export const NativeListRowContent = ({
 						</Text>
 					) : null}
 				</View>
-				<Trailing isRowPressable={Boolean(onPress)}>{trailing}</Trailing>
+				<Trailing>{trailing}</Trailing>
 			</Pressable>
 			{trailingAction ? (
 				<Pressable

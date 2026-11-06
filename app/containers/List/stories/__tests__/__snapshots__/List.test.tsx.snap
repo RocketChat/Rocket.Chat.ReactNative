@@ -187,7 +187,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -363,7 +362,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -539,7 +537,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -754,7 +751,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -1502,7 +1498,6 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="none"
               style={
                 {
                   "alignItems": "center",
@@ -1654,7 +1649,6 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="none"
               style={
                 {
                   "alignItems": "center",
@@ -1839,7 +1833,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="none"
               style={
                 {
                   "alignItems": "center",
@@ -2016,7 +2009,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="none"
               style={
                 {
                   "alignItems": "center",
@@ -2166,7 +2158,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="none"
               style={
                 {
                   "alignItems": "center",
@@ -2331,7 +2322,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               </Text>
             </View>
             <View
-              pointerEvents="none"
               style={
                 {
                   "alignItems": "center",
@@ -2564,7 +2554,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 </View>
               </View>
               <View
-                pointerEvents="auto"
                 style={
                   {
                     "alignItems": "center",
@@ -2714,7 +2703,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 </View>
               </View>
               <View
-                pointerEvents="auto"
                 style={
                   {
                     "alignItems": "center",
@@ -2878,7 +2866,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 </View>
               </View>
               <View
-                pointerEvents="auto"
                 style={
                   {
                     "alignItems": "center",
@@ -3028,7 +3015,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 </View>
               </View>
               <View
-                pointerEvents="auto"
                 style={
                   {
                     "alignItems": "center",
@@ -3214,7 +3200,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 </View>
               </View>
               <View
-                pointerEvents="auto"
                 style={
                   {
                     "alignItems": "center",
@@ -3364,7 +3349,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 </View>
               </View>
               <View
-                pointerEvents="auto"
                 style={
                   {
                     "alignItems": "center",
@@ -3564,7 +3548,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 </View>
               </View>
               <View
-                pointerEvents="auto"
                 style={
                   {
                     "alignItems": "center",
@@ -3714,7 +3697,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 </View>
               </View>
               <View
-                pointerEvents="auto"
                 style={
                   {
                     "alignItems": "center",
@@ -3934,7 +3916,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -4099,7 +4080,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
               </Text>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -4265,7 +4245,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
               </Text>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -4430,7 +4409,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
               </Text>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -4711,7 +4689,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -4955,7 +4932,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -5247,7 +5223,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -5491,7 +5466,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -5826,7 +5800,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -6070,7 +6043,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -6362,7 +6334,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -6606,7 +6577,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -6845,7 +6815,6 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -6995,7 +6964,6 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="none"
               style={
                 {
                   "alignItems": "center",
@@ -7276,7 +7244,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -7520,7 +7487,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -7812,7 +7778,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -8056,7 +8021,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -9370,7 +9334,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -9520,7 +9483,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -9762,7 +9724,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
               </Text>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -9951,7 +9912,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
               </View>
             </View>
             <View
-              pointerEvents="auto"
               style={
                 {
                   "alignItems": "center",
@@ -10259,7 +10219,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -10503,7 +10462,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -10795,7 +10753,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
@@ -11039,7 +10996,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                 </Text>
               </View>
               <View
-                pointerEvents="none"
                 style={
                   {
                     "alignItems": "center",
