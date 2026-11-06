@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { type ComponentRef, forwardRef } from 'react';
 import { View } from 'react-native';
 
 import { RectButton } from '~/containers/GestureButtons';
@@ -7,7 +7,7 @@ import { themes } from '~/lib/constants/colors';
 import { useTheme } from '~/theme';
 import i18n from '~/i18n';
 
-export const Handle = forwardRef<View, { onPress: () => void }>(({ onPress }, ref) => {
+export const Handle = forwardRef<ComponentRef<typeof View>, { onPress: () => void }>(({ onPress }, ref) => {
 	const { theme } = useTheme();
 
 	// We should use RectButton from gesture-handler to avoid issues with the keyboard

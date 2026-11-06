@@ -16,6 +16,7 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
+		"customConditions": ["react-native-strict-api"],
 		"paths": {
 			"~/*": ["./app/*"],
 			"~/scripts/*": ["./scripts/*"],

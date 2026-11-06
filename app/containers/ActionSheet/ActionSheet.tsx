@@ -1,6 +1,16 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
-import { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
+import {
+	type ComponentRef,
+	forwardRef,
+	isValidElement,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+	memo,
+	type ReactElement
+} from 'react';
 import {
 	AccessibilityInfo,
 	findNodeHandle,
@@ -29,7 +39,7 @@ const ActionSheet = memo(
 		const { colors } = useTheme();
 		const { height: windowHeight, width: windowWidth } = useWindowDimensions();
 		const sheetRef = useRef<TrueSheet>(null);
-		const handleRef = useRef<View>(null);
+		const handleRef = useRef<ComponentRef<typeof View>>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);

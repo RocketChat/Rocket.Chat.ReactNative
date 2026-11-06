@@ -1,6 +1,13 @@
 import { Component, type ComponentType, createRef, type MutableRefObject } from 'react';
-import { Platform, StyleSheet, findNodeHandle, type LayoutChangeEvent, type ScrollViewProps, processColor } from 'react-native';
-import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
+import {
+	codegenNativeCommands,
+	Platform,
+	StyleSheet,
+	findNodeHandle,
+	type LayoutChangeEvent,
+	type ScrollViewProps,
+	processColor
+} from 'react-native';
 
 // NativeComponentRegistry.get() registers components as proper Fabric host components.
 // requireNativeComponent() uses the legacy interop layer, which breaks Fabric's touch

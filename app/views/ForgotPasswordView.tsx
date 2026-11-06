@@ -81,7 +81,7 @@ const ForgotPasswordView = ({ route }: ForgotPasswordViewProps): ReactElement =>
 					autoFocus
 					keyboardType='email-address'
 					returnKeyType='send'
-					onSubmitEditing={handleSubmit(resetPassword)}
+					onSubmitEditing={() => handleSubmit(resetPassword)()}
 					testID='forgot-password-view-email'
 					containerStyle={{ marginBottom: 20 }}
 				/>

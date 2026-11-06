@@ -1,12 +1,12 @@
 import { memo, useImperativeHandle, useRef, useState } from 'react';
-import { StyleSheet, Text, type TextInput, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import I18n from '~/i18n';
 import Button from '~/containers/Button';
 import KeyboardView from '~/containers/KeyboardView';
-import { FormTextInput } from '~/containers/TextInput';
+import { FormTextInput, type TextInputInstance } from '~/containers/TextInput';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
 import { joinRoom } from '~/lib/services/restApi';
@@ -53,7 +53,7 @@ const JoinCode = memo(({ rid, t, onJoin, ref }: IJoinCodeProps) => {
 	const [visible, setVisible] = useState(false);
 	const [error, setError] = useState(false);
 	const [code, setCode] = useState('');
-	const inputRef = useRef<TextInput | null>(null);
+	const inputRef = useRef<TextInputInstance | null>(null);
 
 	const show = () => setVisible(true);
 

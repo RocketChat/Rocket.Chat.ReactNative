@@ -1,3 +1,4 @@
+import { type ComponentRef } from 'react';
 import { type TextInput } from 'react-native';
 
 import { type TSupportedThemes } from '../theme';
@@ -29,10 +30,10 @@ export interface ILivechat extends ISubscription {
 }
 
 export interface IInputsRefs {
-	[index: string]: TextInput | null;
-	name: TextInput | null;
-	phone: TextInput | null;
-	topic: TextInput | null;
+	[index: string]: ComponentRef<typeof TextInput> | null;
+	name: ComponentRef<typeof TextInput> | null;
+	phone: ComponentRef<typeof TextInput> | null;
+	topic: ComponentRef<typeof TextInput> | null;
 }
 
 export interface ICustomFields {

@@ -6,7 +6,7 @@ import {
 	type ViewStyle,
 	type StyleProp,
 	type AccessibilityActionEvent,
-	type AccessibilityActionInfo
+	type AccessibilityProps
 } from 'react-native';
 import { withKeyboardFocus } from 'react-native-external-keyboard';
 
@@ -19,7 +19,7 @@ export interface ITouchProps extends TouchableProps {
 	accessible?: boolean;
 	accessibilityLabel?: string;
 	accessibilityHint?: string;
-	accessibilityActions?: AccessibilityActionInfo[];
+	accessibilityActions?: AccessibilityProps['accessibilityActions'];
 	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
 	testID?: string;
 	rectButtonStyle?: StyleProp<ViewStyle>;

@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
-import { Text, type TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
-import { FormTextInput } from '~/containers/TextInput';
+import { FormTextInput, type TextInputInstance } from '~/containers/TextInput';
 import Button from '~/containers/Button';
 import { Encryption } from '~/lib/encryption';
 import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
@@ -27,7 +27,7 @@ const ChangePassword = () => {
 		encryptionEnabled: state.encryption.enabled,
 		server: state.server.server
 	}));
-	const newPasswordInputRef = useRef<TextInput | null>(null);
+	const newPasswordInputRef = useRef<TextInputInstance | null>(null);
 
 	const onChangePasswordText = (text: string) => setNewPassword(text);
 

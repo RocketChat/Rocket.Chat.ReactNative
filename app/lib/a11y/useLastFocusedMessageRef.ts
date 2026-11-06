@@ -1,18 +1,18 @@
-import { useCallback, useRef, type RefObject } from 'react';
+import { type ComponentRef, useCallback, useRef, type RefObject } from 'react';
 import { type View } from 'react-native';
 
 import { setAccessibilityFocus } from './setAccessibilityFocus';
 
-let lastRef: RefObject<View | null> | null = null;
+let lastRef: RefObject<ComponentRef<typeof View> | null> | null = null;
 
 export const useLastFocusedMessageRef = () => {
-	const ref = useRef<View>(null);
+	const ref = useRef<ComponentRef<typeof View>>(null);
 
 	const markAsLastFocused = useCallback(() => {
 		lastRef = ref;
 	}, []);
 
-	const get = (): RefObject<View | null> | null => lastRef;
+	const get = (): RefObject<ComponentRef<typeof View> | null> | null => lastRef;
 
 	const clear = (): void => {
 		lastRef = null;

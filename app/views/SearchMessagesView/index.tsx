@@ -302,7 +302,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 						contentContainerStyle={{ paddingBottom: insets.bottom }}
 						keyExtractor={item => item._id}
 						onEndReached={this.onEndReached}
-						ListFooterComponent={loading ? <ActivityIndicator /> : null}
+						ListFooterComponent={loading ? <ActivityIndicator /> : undefined}
 						onEndReachedThreshold={0.5}
 						removeClippedSubviews={isIOS}
 						{...scrollPersistTaps}

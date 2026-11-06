@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, memo, type ReactElement } from 'react';
+import { useEffect, useRef, useState, memo, type ComponentRef, type ReactElement } from 'react';
 import { AccessibilityInfo, findNodeHandle, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
@@ -34,7 +34,7 @@ const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
 const IncomingCallHeader = memo(
 	({ uid, callId, avatar, roomName }: { callId: string; avatar: string; uid: string; roomName: string }) => {
-		const componentRef = useRef<View>(null);
+		const componentRef = useRef<ComponentRef<typeof View>>(null);
 		const [mic, setMic] = useState(true);
 		const [cam, setCam] = useState(false);
 		const [audio, setAudio] = useState(true);

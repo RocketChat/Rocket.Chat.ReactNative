@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { type FlatListProps, type ViewToken } from 'react-native';
+import { type FlatListProps } from 'react-native';
 import { type SharedValue, useSharedValue, withTiming } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
@@ -11,6 +11,9 @@ const FADE_IN_DURATION = 150;
 const FADE_OUT_DURATION = 300;
 
 type TViewabilityConfigCallbackPairs = NonNullable<FlatListProps<TAnyMessageModel>['viewabilityConfigCallbackPairs']>;
+type TViewableItems = Parameters<
+	NonNullable<TViewabilityConfigCallbackPairs[number]['onViewableItemsChanged']>
+>[0]['viewableItems'];
 
 interface IFloatingDateScrollEvents {
 	onBeginDrag: () => void;
@@ -26,7 +29,7 @@ interface IUseFloatingDate {
 	viewabilityConfigCallbackPairs: TViewabilityConfigCallbackPairs;
 }
 
-export const getHighestIndexViewableTs = (viewableItems: ViewToken<TAnyMessageModel>[]): Date | string | null =>
+export const getHighestIndexViewableTs = (viewableItems: TViewableItems): Date | string | null =>
 	viewableItems.reduce<{ index: number; ts: Date | string } | null>((top, { isViewable, index, item }) => {
 		if (!isViewable || !item?.ts || index == null) {
 			return top;

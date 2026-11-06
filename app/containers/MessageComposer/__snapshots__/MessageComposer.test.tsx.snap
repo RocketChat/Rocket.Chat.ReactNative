@@ -473,7 +473,6 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -486,6 +485,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -1029,7 +1029,6 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -1042,6 +1041,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -1799,7 +1799,6 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -1812,6 +1811,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -2470,7 +2470,6 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -2483,6 +2482,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -3262,7 +3262,6 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -3275,6 +3274,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -4054,7 +4054,6 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -4067,6 +4066,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -4846,7 +4846,6 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -4859,6 +4858,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -5638,7 +5638,6 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -5651,6 +5650,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -6430,7 +6430,6 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -6443,6 +6442,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -7222,7 +7222,6 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -7235,6 +7234,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -8014,7 +8014,6 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -8027,6 +8026,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -8806,7 +8806,6 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -8819,6 +8818,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -9598,7 +9598,6 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -9611,6 +9610,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -10390,7 +10390,6 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -10403,6 +10402,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -11182,7 +11182,6 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -11195,6 +11194,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -11782,7 +11782,6 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -11795,6 +11794,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",
@@ -13857,7 +13857,6 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           accessibilityElementsHidden={true}
           importantForAccessibility="no-hide-descendants"
           numberOfLines={1}
-          pointerEvents="none"
           style={
             [
               {
@@ -13870,6 +13869,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
                 "fontWeight": "400",
                 "left": 0,
                 "lineHeight": 22,
+                "pointerEvents": "none",
                 "position": "absolute",
                 "right": 0,
                 "textAlign": "left",

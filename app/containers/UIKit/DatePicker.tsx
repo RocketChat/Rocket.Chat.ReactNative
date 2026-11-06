@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, Text, unstable_batchedUpdates, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import DateTimePicker, { type BaseProps } from '@react-native-community/datetimepicker';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
@@ -48,12 +48,10 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 	const onChange: BaseProps['onChange'] = ({ nativeEvent: { timestamp } }, date?) => {
 		if (date || timestamp) {
 			const newDate = date || new Date(timestamp);
-			unstable_batchedUpdates(() => {
-				onChangeDate(newDate);
-				if (isAndroid) {
-					onShow(false);
-				}
-			});
+			onChangeDate(newDate);
+			if (isAndroid) {
+				onShow(false);
+			}
 			action({ value: dayjs(newDate).format('YYYY-MM-DD') });
 		}
 	};
