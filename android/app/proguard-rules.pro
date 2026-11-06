@@ -13,6 +13,7 @@
 -keep class com.nozbe.watermelondb.jsi.** { *; }
 -keep class com.android.installreferrer.api.** { *; }
 -keep class com.google.android.gms.common.GoogleApiAvailability { *; }
+-keep @interface expo.modules.kotlin.records.Field { *; }
 -keepnames class com.google.mlkit.vision.barcode.BarcodeScanning
 -keepclassmembers class com.facebook.react.uimanager.JSPointerDispatcher {
     public void handleMotionEvent(...);
