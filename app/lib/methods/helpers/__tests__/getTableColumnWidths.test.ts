@@ -5,6 +5,7 @@ import { getTableColumnWidths } from '../getTableColumnWidths';
 const MIN_WIDTH = 80;
 const MAX_WIDTH = 240;
 const TEN_CHARACTERS_WIDTH = 106;
+const TEN_CODE_CHARACTERS_WIDTH = 120;
 
 const getWidths = (lines: string[]): number[] => {
 	const [block] = parse(lines.join('\n'), { katex: { parenthesisSyntax: true } });
@@ -42,13 +43,13 @@ describe('getTableColumnWidths', () => {
 	it.each([
 		['italic', '_aaaaaaaaaa_', TEN_CHARACTERS_WIDTH],
 		['strike', '~aaaaaaaaaa~', TEN_CHARACTERS_WIDTH],
-		['inline code', '`aaaaaaaaaa`', TEN_CHARACTERS_WIDTH],
+		['inline code', '`aaaaaaaaaa`', TEN_CODE_CHARACTERS_WIDTH],
 		['user mention', '@aaaaaaaaa', TEN_CHARACTERS_WIDTH],
 		['channel mention', '#aaaaaaaaa', TEN_CHARACTERS_WIDTH],
 		['emoji', ':smile: aaaaaaa', TEN_CHARACTERS_WIDTH],
 		['inline math', '\\(aaaaaaaaaa\\)', TEN_CHARACTERS_WIDTH],
 		['CJK text', '一二三四五', TEN_CHARACTERS_WIDTH],
-		['CJK inline code', '`一二三四五`', TEN_CHARACTERS_WIDTH],
+		['CJK inline code', '`一二三四五`', TEN_CODE_CHARACTERS_WIDTH],
 		['short timestamp', '<t:1735689600:t>', TEN_CHARACTERS_WIDTH],
 		['long timestamp', '<t:1735689600:D>', MAX_WIDTH]
 	])('counts %s content towards the column width', (_name, cell, expected) => {
