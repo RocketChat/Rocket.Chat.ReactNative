@@ -357,6 +357,7 @@
   "error-invalid-password": "చెల్లని పాస్‌వర్డ్",
   "error-invalid-room-name": "{{room_name}} చెల్లని కొరకు పేరు",
   "error-invitation-reply-action": "ఆహ్వాన ప్రతిస్పందనను పంపించడంలో లోపం",
+  "error-message-size-exceeded": "సందేశం చాలా పొడవుగా ఉంది",
   "error-not-allowed": "అనుమతి లేదు",
   "error-not-permission-to-upload-file": "మీకు ఫైలులను అప్‌లోడ్ చేయడానికి అనుమతి లేదు",
   "error-save-image": "చిత్రం సేవ్ చేయడంలో లోపం",

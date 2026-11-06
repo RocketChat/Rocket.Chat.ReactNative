@@ -358,6 +358,7 @@
   "error-invalid-password": "অবৈধ পাসওয়ার্ড",
   "error-invalid-room-name": "{{room_name}} একটি বৈধ রুম নয়",
   "error-invitation-reply-action": "আমন্ত্রণের উত্তর পাঠাতে ত্রুটি",
+  "error-message-size-exceeded": "বার্তাটি খুব দীর্ঘ",
   "error-not-allowed": "অনুমোদিত নয়",
   "error-not-permission-to-upload-file": "আপলোড করতে আপনার অনুমতি নেই",
   "error-save-image": "ছবি সংরক্ষণে সমস্যা হয়েছে",

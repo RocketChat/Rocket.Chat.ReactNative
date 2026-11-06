@@ -358,6 +358,7 @@
   "error-invalid-password": "தவறான கடவுச்சொல்",
   "error-invalid-room-name": "{{room_name}} என்ற அறைபெயர் செல்லுதலின்று அமைந்திருக்கவில்லை",
   "error-invitation-reply-action": "அழைப்பு பதிலை அனுப்பும்போது பிழை",
+  "error-message-size-exceeded": "செய்தி மிக நீளமாக உள்ளது",
   "error-not-allowed": "அனுமதி இல்லை",
   "error-not-permission-to-upload-file": "கோப்புகளை பதிவேற்ற உங்களுக்கு அனுமதி இல்லை",
   "error-save-image": "படம் சேமிக்கும் போது பிழை",

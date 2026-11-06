@@ -1,4 +1,5 @@
 import { type TRoomsMediaResponse } from '~/definitions/rest/v1/rooms';
+import { parseUploadResponse } from '../parseUploadResponse';
 import { type IFormData } from './definitions';
 
 export class Upload {
@@ -60,10 +61,10 @@ export class Upload {
 	public send(): Promise<TRoomsMediaResponse> {
 		return new Promise((resolve, reject) => {
 			this.xhr.onload = () => {
-				if (this.xhr.status >= 200 && this.xhr.status < 400) {
-					resolve(JSON.parse(this.xhr.responseText));
-				} else {
-					reject(new Error(`Error: ${this.xhr.statusText}`));
+				try {
+					resolve(parseUploadResponse(this.xhr.status, this.xhr.responseText, this.xhr.getResponseHeader('Retry-After')));
+				} catch (error) {
+					reject(error);
 				}
 			};
 

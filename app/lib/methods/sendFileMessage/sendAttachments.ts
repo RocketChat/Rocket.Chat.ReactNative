@@ -1,10 +1,11 @@
 import { type IShareAttachment, type IUser } from '~/definitions';
 import { closeUnclosedCodeBlock } from '../helpers/closeUnclosedCodeBlock';
+import log from '../helpers/log';
 import { sendFileMessage } from './index';
 
 const ROTATED_ORIENTATIONS = ['5', '6', '7', '8'];
 
-export const sendAttachments = ({
+export const sendAttachments = async ({
 	attachments,
 	rid,
 	tmid,
@@ -19,24 +20,24 @@ export const sendAttachments = ({
 	server: string;
 	user: Partial<Pick<IUser, 'id' | 'token'>>;
 	altTextSupported: boolean;
-	getMsg: (attachment: IShareAttachment, index: number) => string | undefined;
-}): Promise<void[]> =>
-	Promise.all(
-		attachments.map((attachment, index) => {
+	getMsg: (attachment: IShareAttachment) => string | undefined;
+}): Promise<IShareAttachment[]> => {
+	const results = await Promise.allSettled(
+		attachments.map(async attachment => {
 			const { filename: name, mime: type, description, altText, size, path, canUpload, exif } = attachment;
 			let { height, width } = attachment;
 
 			if (!canUpload) {
-				return Promise.resolve();
+				return;
 			}
 
 			if (exif?.Orientation && ROTATED_ORIENTATIONS.includes(exif.Orientation)) {
 				[width, height] = [height, width];
 			}
 
-			const msg = getMsg(attachment, index);
+			const msg = getMsg(attachment);
 
-			return sendFileMessage(
+			await sendFileMessage(
 				rid,
 				{
 					rid,
@@ -55,3 +56,12 @@ export const sendAttachments = ({
 			);
 		})
 	);
+	return attachments.filter((attachment, index) => {
+		const result = results[index];
+		if (result.status === 'rejected') {
+			log(result.reason);
+			return true;
+		}
+		return !attachment.canUpload;
+	});
+};

@@ -263,6 +263,7 @@
   "error-invalid-password": "无效的密码",
   "error-invalid-room-name": "{{room_name}} 不是合法的聊天室名称",
   "error-invitation-reply-action": "发送邀请回复时出错",
+  "error-message-size-exceeded": "消息过长",
   "error-not-allowed": "不允许",
   "error-save-image": "错误，无法保存图片",
   "error-save-video": "错误，无法保存視頻",

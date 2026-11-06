@@ -337,6 +337,7 @@
   "error-invalid-password": "Ogiltigt lösenord",
   "error-invalid-room-name": "{{room_name}} är inte ett giltigt rumsnamn",
   "error-invitation-reply-action": "Fel vid sändning av inbjudningssvar",
+  "error-message-size-exceeded": "Meddelandet är för långt",
   "error-not-allowed": "Tillåts inte",
   "error-not-permission-to-upload-file": "Du har inte behörighet att ladda upp filer",
   "error-save-image": "Fel när bilden skulle sparas",

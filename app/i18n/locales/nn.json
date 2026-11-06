@@ -216,6 +216,7 @@
   "error-invalid-password": "Ugyldig passord",
   "error-invalid-room-name": "{{room_name}} er ikke et godkjent romnavn",
   "error-invitation-reply-action": "Feil ved sending av invitasjonssvar",
+  "error-message-size-exceeded": "Meldinga er for lang",
   "error-no-tokens-for-this-user": "Det er ingen tokens for denne brukeren",
   "error-not-allowed": "Ikke tillatt",
   "error-too-many-requests": "Feil, for mange forespørsler. Vennligst senke farten. Du må vente {{seconds}} sekunder før du prøver igjen.",

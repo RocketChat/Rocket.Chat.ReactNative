@@ -1,16 +1,19 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import isEmpty from 'lodash/isEmpty';
-import { Alert } from 'react-native';
 import * as FileSystem from 'expo-file-system/legacy';
 
 import { getUploadByPath } from '~/lib/database/services/Upload';
 import { type IUpload, type TUploadModel } from '~/definitions';
-import i18n from '~/i18n';
 import database from '~/lib/database';
 import log from '../helpers/log';
+import { type TUploadFailure } from '../helpers/uploadError';
 import { type IFileUpload } from '../helpers/fileUpload/definitions';
 
-export const uploadQueue: { [index: string]: IFileUpload } = {};
+export interface IUploadSlot {
+	controller: AbortController;
+	upload?: IFileUpload;
+}
+
+const uploadQueue: { [index: string]: IUploadSlot } = {};
 
 export const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 
@@ -18,15 +21,32 @@ export function isUploadActive(path: string, rid: string): boolean {
 	return !!uploadQueue[getUploadPath(path, rid)];
 }
 
+export const claimUploadSlot = (uploadPath: string): IUploadSlot | undefined => {
+	if (uploadQueue[uploadPath]) {
+		return undefined;
+	}
+	const slot = { controller: new AbortController() };
+	uploadQueue[uploadPath] = slot;
+	return slot;
+};
+
+export const releaseUploadSlot = (uploadPath: string, slot: IUploadSlot) => {
+	if (uploadQueue[uploadPath] === slot) {
+		delete uploadQueue[uploadPath];
+	}
+};
+
 export async function cancelUpload(item: TUploadModel, rid: string): Promise<void> {
 	const uploadPath = getUploadPath(item.path, rid);
-	if (!isEmpty(uploadQueue[uploadPath])) {
+	const slot = uploadQueue[uploadPath];
+	if (slot) {
+		delete uploadQueue[uploadPath];
+		slot.controller.abort();
 		try {
-			await uploadQueue[uploadPath].cancel();
+			await slot.upload?.cancel();
 		} catch {
 			// Do nothing
 		}
-		delete uploadQueue[uploadPath];
 	}
 	if (item.id) {
 		try {
@@ -40,72 +60,77 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
-export const persistUploadError = async (path: string, rid: string) => {
+export const recordUploadFailure = async (
+	uploadRecord: TUploadModel,
+	{ errorStatus, errorMessage }: TUploadFailure
+): Promise<void> => {
 	try {
-		const db = database.active;
-		const uploadRecord = await getUploadByPath(getUploadPath(path, rid));
-		if (!uploadRecord) {
-			return;
-		}
-		await db.write(async () => {
+		await uploadRecord.db.write(async () => {
 			await uploadRecord.update(u => {
 				u.error = true;
+				u.errorStatus = errorStatus;
+				u.errorMessage = errorMessage;
 			});
 		});
-	} catch {
-		// Do nothing
+	} catch (e) {
+		log(e);
 	}
 };
+
+export const createUploadProgressCallback =
+	(uploadRecord: TUploadModel) =>
+	async (loaded: number, total: number): Promise<void> => {
+		try {
+			await uploadRecord.db.write(async () => {
+				await uploadRecord.update(u => {
+					u.progress = Math.floor((loaded / total) * 100);
+				});
+			});
+		} catch (e) {
+			console.error(e);
+		}
+	};
 
 export const createUploadRecord = async ({
 	rid,
 	fileInfo,
-	tmid,
-	isForceTryAgain
+	tmid
 }: {
 	rid: string;
 	fileInfo: IUpload;
 	tmid: string | undefined;
-	isForceTryAgain?: boolean;
 }) => {
 	const db = database.active;
 	const uploadsCollection = db.get('uploads');
 	const uploadPath = getUploadPath(fileInfo.path, rid);
-	let uploadRecord: TUploadModel | null = null;
-	try {
-		uploadRecord = await uploadsCollection.find(uploadPath);
-		if (uploadRecord.id) {
-			if (isUploadActive(fileInfo.path, rid) && !isForceTryAgain) {
-				Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
-				return [null, null];
-			}
-			// Record left behind by a crashed or failed upload: reset and reuse it.
-			await db.write(async () => {
-				await uploadRecord?.update(u => {
-					u.error = false;
-					u.progress = 0;
-				});
+	const existing = await getUploadByPath(uploadPath);
+	if (existing) {
+		// Record left behind by a crashed or failed upload: reset and reuse it.
+		await db.write(async () => {
+			await existing.update(u => {
+				u.error = false;
+				u.errorStatus = null;
+				u.errorMessage = null;
+				u.progress = 0;
+				u.tmid = tmid;
+				u.description = fileInfo.description;
 			});
-		}
-	} catch (error) {
-		try {
-			await db.write(async () => {
-				uploadRecord = await uploadsCollection.create(u => {
-					u._raw = sanitizedRaw({ id: uploadPath }, uploadsCollection.schema);
-					Object.assign(u, fileInfo);
-					if (tmid) {
-						u.tmid = tmid;
-					}
-					if (u.subscription) {
-						u.subscription.id = rid;
-					}
-				});
-			});
-		} catch (e) {
-			throw e;
-		}
+		});
+		return existing;
 	}
-	return [uploadPath, uploadRecord] as const;
+	const created: TUploadModel = await db.write(() =>
+		uploadsCollection.create(u => {
+			u._raw = sanitizedRaw({ id: uploadPath }, uploadsCollection.schema);
+			Object.assign(u, fileInfo);
+			if (tmid) {
+				u.tmid = tmid;
+			}
+			if (u.subscription) {
+				u.subscription.id = rid;
+			}
+		})
+	);
+	return created;
 };
 
 export const copyFileToCacheDirectoryIfNeeded = async (path: string, name?: string) => {

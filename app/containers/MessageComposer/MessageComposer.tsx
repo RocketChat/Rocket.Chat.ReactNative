@@ -24,7 +24,7 @@ import { sanitizeLikeString } from '~/lib/database/utils';
 import { withTriggerId } from '~/lib/apps/actions';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
-import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength } from './helpers';
+import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength, hasOnlySkippedAttachments } from './helpers';
 import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
 import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboardWhenOrientationChanges';
 import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
@@ -62,7 +62,7 @@ export const MessageComposer = ({
 	const actionKind = useMessageActionKind();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
-	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
+	const { setAlsoSendThreadToChannel, setAutocompleteParams, addAttachments, clearAttachments } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const { colors } = useTheme();
@@ -98,6 +98,14 @@ export const MessageComposer = ({
 		contentHeight.set(height);
 	};
 
+	const restoreCaptionAfterFailure = (captionSent: boolean, textFromInput: string, quotedMessageIds: string[]) => {
+		const { action, actions } = messageActionStore.getState();
+		const composerIdle = !composerInputComponentRef.current?.getText() && (!action || action.kind === 'react');
+		if (captionSent || !composerIdle) return;
+		composerInputComponentRef.current?.setInput(textFromInput);
+		if (!action) actions.setQuoteMessageIds(quotedMessageIds);
+	};
+
 	const handleSendMessage = async () => {
 		if (!rid) return;
 
@@ -105,6 +113,8 @@ export const MessageComposer = ({
 		const { action } = messageActionStore.getState();
 		const editingMessageId = action?.kind === 'edit' ? action.messageId : undefined;
 		const quotedMessageIds = action?.kind === 'quote' ? action.messageIds : [];
+
+		if (!editingMessageId && hasOnlySkippedAttachments(attachments)) return;
 
 		if (alsoSendThreadToChannel) {
 			setAlsoSendThreadToChannel(false);
@@ -132,30 +142,27 @@ export const MessageComposer = ({
 		}
 
 		if (attachments.length) {
+			const [captionAttachment] = attachments;
+			clearAttachments();
+			messageActionStore.getState().actions.setQuoteMessageIds([]);
 			let quotedMessage: string | undefined;
 
 			if (quotedMessageIds.length) {
 				quotedMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
 			}
 
-			try {
-				await sendAttachments({
-					attachments,
-					rid,
-					tmid,
-					server,
-					user: { id: user.id, token: user.token },
-					altTextSupported,
-					getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
-				});
-			} catch (e) {
-				log(e);
-				composerInputComponentRef.current.setInput(textFromInput);
-				return;
-			}
-			clearAttachments();
-			messageActionStore.getState().actions.setQuoteMessageIds([]);
-			composerInputComponentRef.current?.setInput('');
+			const unsent = await sendAttachments({
+				attachments,
+				rid,
+				tmid,
+				server,
+				user: { id: user.id, token: user.token },
+				altTextSupported,
+				getMsg: attachment =>
+					attachment === captionAttachment ? attachment.description || quotedMessage || textFromInput : attachment.description
+			});
+			addAttachments(unsent);
+			restoreCaptionAfterFailure(!unsent.includes(captionAttachment), textFromInput, quotedMessageIds);
 			return;
 		}
 

@@ -377,6 +377,7 @@
   "error-invalid-password": "Neplatné heslo",
   "error-invalid-room-name": "{{room_name}} není platný název místnosti",
   "error-invitation-reply-action": "Chyba při odesílání odpovědi na pozvánku",
+  "error-message-size-exceeded": "Zpráva je příliš dlouhá",
   "error-no-tokens-for-this-user": "Pro tohoto uživatele neexistují žádné tokeny",
   "error-not-allowed": "Nepovoleno",
   "error-not-permission-to-upload-file": "Nemáte oprávnění nahrávat soubory",

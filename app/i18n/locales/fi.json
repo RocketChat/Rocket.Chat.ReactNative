@@ -337,6 +337,7 @@
   "error-invalid-password": "Virheellinen salasana",
   "error-invalid-room-name": "{{room_name}} ei ole kelvollinen huoneen nimi",
   "error-invitation-reply-action": "Virhe kutsuun vastaamisen lähettämisessä",
+  "error-message-size-exceeded": "Viesti on liian pitkä",
   "error-not-allowed": "Ei sallittu",
   "error-not-permission-to-upload-file": "Sinulla ei ole oikeutta ladata tiedostoja",
   "error-save-image": "Virhe tallennettaessa kuvaa",

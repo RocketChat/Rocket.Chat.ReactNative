@@ -1,28 +1,25 @@
-import { useEffect, type ReactElement, type RefObject } from 'react';
+import { type ReactElement } from 'react';
 import { act, render, renderHook, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { getRecordingPermissionsAsync, requestRecordingPermissionsAsync, useAudioRecorder, PermissionStatus } from 'expo-audio';
 
-import { MessageComposerContainer } from './MessageComposerContainer';
-import { ComposerAttachments } from './components/Attachments/ComposerAttachments';
+import { MessageComposerContainer } from '../MessageComposerContainer';
+import { ComposerAttachments } from '../components/Attachments/ComposerAttachments';
 import { setPermissions } from '~/actions/permissions';
 import { addSettings } from '~/actions/settings';
 import { selectServerRequest } from '~/actions/server';
 import { setUser } from '~/actions/login';
 import { mockedStore } from '~/reducers/mockedStore';
 import { type IPermissionsState } from '~/reducers/permissions';
-import { type IMessage, type IShareAttachment, type TMessageActionState } from '~/definitions';
+import { type IMessage, type TMessageActionState } from '~/definitions';
 import { colors } from '~/lib/constants/colors';
-import { type ComposerState } from './ComposerStore';
-import { ComposerProvider } from './ComposerStore';
-import { MessageActionProvider } from '../message/stores/MessageActionStore';
-import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
+import { type ComposerState } from '../ComposerStore';
+import { ComposerProvider } from '../ComposerStore';
+import { MessageActionProvider } from '../../message/stores/MessageActionStore';
+import * as EmojiKeyboardHook from '../hooks/useEmojiKeyboard';
 import { initStore } from '~/lib/store/auxStore';
 import { searchRemote } from '~/lib/methods/search';
 import database from '~/lib/database';
-import { useMessageComposerApi } from './context';
-import { type IMessageComposerRef } from './interfaces';
-import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { RECORDING_SETTINGS } from '~/lib/constants/audio';
@@ -49,10 +46,6 @@ jest.mock('~/lib/services/restApi', () => ({
 		cannedResponses: [{ _id: '1', shortcut: 'brb', text: 'Be right back' }]
 	})),
 	runSlashCommand: jest.fn(() => Promise.resolve())
-}));
-
-jest.mock('~/lib/methods/sendFileMessage', () => ({
-	sendFileMessage: jest.fn(() => Promise.resolve())
 }));
 
 const user = userEvent.setup();
@@ -122,40 +115,17 @@ const initialContext = {
 	onRemoveQuoteMessage: jest.fn()
 };
 
-const Render = ({
-	context,
-	action,
-	children,
-	forwardedRef
-}: {
-	context?: Partial<ComposerState>;
-	action?: TMessageActionState;
-	children?: ReactElement;
-	forwardedRef?: RefObject<IMessageComposerRef | null>;
-}) => (
+const Render = ({ context, action }: { context?: Partial<ComposerState>; action?: TMessageActionState }) => (
 	<Provider store={mockedStore}>
 		<MessageActionProvider initialAction={action}>
 			<ComposerProvider {...initialContext} {...context}>
-				<MessageComposerContainer ref={forwardedRef}>
-					<>
-						<ComposerAttachments />
-						{children}
-					</>
+				<MessageComposerContainer>
+					<ComposerAttachments />
 				</MessageComposerContainer>
 			</ComposerProvider>
 		</MessageActionProvider>
 	</Provider>
 );
-
-const AttachmentSeeder = ({ attachments }: { attachments: IShareAttachment[] }) => {
-	const { addAttachments } = useMessageComposerApi();
-
-	useEffect(() => {
-		addAttachments(attachments);
-	}, [addAttachments, attachments]);
-
-	return null;
-};
 
 const sharedValue = {
 	value: false,
@@ -760,7 +730,7 @@ describe('MessageComposer', () => {
 	});
 
 	const messageIds = ['abc', 'def'];
-	jest.mock('./hooks/useMessage', () => ({
+	jest.mock('../hooks/useMessage', () => ({
 		useMessage: (messageId: string) => {
 			if (!messageIds.includes(messageId)) {
 				return null;
@@ -842,110 +812,6 @@ describe('MessageComposer', () => {
 			expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
 			await user.press(screen.getByTestId('message-composer-send-audio'));
 			expect(screen.toJSON()).toMatchSnapshot();
-		});
-	});
-
-	describe('Attachments', () => {
-		const attachment = {
-			filename: 'IMG_2444.png',
-			size: 1234,
-			mime: 'image/png',
-			path: 'file:///tmp/IMG_2444.png',
-			canUpload: true
-		} as IShareAttachment;
-
-		beforeEach(() => {
-			(sendFileMessage as jest.Mock).mockClear();
-		});
-
-		test('shows inline attachments and remove button', async () => {
-			render(
-				<Render>
-					<AttachmentSeeder attachments={[attachment]} />
-				</Render>
-			);
-
-			await screen.findByTestId('message-composer-attachments');
-			expect(screen.getByTestId('message-composer-attachment-0')).toBeOnTheScreen();
-			expect(screen.getByTestId('message-composer-send')).toBeOnTheScreen();
-			expect(screen.queryByTestId('message-composer-send-audio')).not.toBeOnTheScreen();
-
-			await user.press(screen.getByTestId('message-composer-remove-attachment-0'));
-
-			await waitFor(() => expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen());
-			expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
-		});
-
-		test('sends composer attachments from the room instead of delegating to onSendMessage', async () => {
-			const onSendMessage = jest.fn();
-			render(
-				<Render context={{ onSendMessage }}>
-					<AttachmentSeeder attachments={[attachment]} />
-				</Render>
-			);
-
-			await screen.findByTestId('message-composer-attachment-0');
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
-			await user.press(screen.getByTestId('message-composer-send'));
-
-			await waitFor(() =>
-				expect(sendFileMessage).toHaveBeenCalledWith(
-					'rid',
-					expect.objectContaining({
-						name: 'IMG_2444.png',
-						path: 'file:///tmp/IMG_2444.png',
-						msg: 'caption',
-						type: 'image/png'
-					}),
-					undefined,
-					'https://open.rocket.chat',
-					expect.objectContaining({ id: 'abc' })
-				)
-			);
-			expect(onSendMessage).not.toHaveBeenCalled();
-			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
-		});
-
-		test('clears input after a delayed successful upload, including text typed while uploading', async () => {
-			let resolveUpload!: () => void;
-			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
-			(sendFileMessage as jest.Mock).mockImplementationOnce(() => new Promise<void>(resolve => (resolveUpload = resolve)));
-			render(
-				<Render forwardedRef={composerRef} action={{ kind: 'quote', messageIds: ['abc'] }}>
-					<AttachmentSeeder attachments={[attachment]} />
-				</Render>
-			);
-			await screen.findByTestId('message-composer-attachment-0');
-			await screen.findByTestId('composer-quote-abc');
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
-			await user.press(screen.getByTestId('message-composer-send'));
-			await waitFor(() => expect(sendFileMessage).toHaveBeenCalled());
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'typed while uploading');
-			await act(() => {
-				resolveUpload();
-				return Promise.resolve();
-			});
-
-			await waitFor(() => expect(composerRef.current?.getText()).toBe(''));
-			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();
-			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
-		});
-
-		test('restores input and keeps attachments after a failed upload', async () => {
-			(sendFileMessage as jest.Mock).mockRejectedValueOnce(new Error('upload failed'));
-			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
-			render(
-				<Render forwardedRef={composerRef} action={{ kind: 'quote', messageIds: ['abc'] }}>
-					<AttachmentSeeder attachments={[attachment]} />
-				</Render>
-			);
-			await screen.findByTestId('message-composer-attachment-0');
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
-			await user.press(screen.getByTestId('message-composer-send'));
-
-			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
-			expect(screen.getByTestId('message-composer-attachments')).toBeOnTheScreen();
-			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
 		});
 	});
 });

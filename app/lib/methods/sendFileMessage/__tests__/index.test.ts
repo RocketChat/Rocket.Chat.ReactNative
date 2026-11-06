@@ -1,19 +1,18 @@
-import { sendFileMessage } from './index';
+import { sendFileMessage } from '../index';
 import { store } from '~/lib/store/auxStore';
-import { sendFileMessage as sendFileMessageV1 } from './sendFileMessage';
-import { sendFileMessageV2 } from './sendFileMessageV2';
+import { sendFileMessage as sendFileMessageV1 } from '../sendFileMessage';
+import { sendFileMessageV2 } from '../sendFileMessageV2';
 
 jest.mock('~/lib/store/auxStore', () => ({ store: { getState: jest.fn() } }));
-jest.mock('./sendFileMessage', () => ({ sendFileMessage: jest.fn() }));
-jest.mock('./sendFileMessageV2', () => ({ sendFileMessageV2: jest.fn() }));
+jest.mock('../sendFileMessage', () => ({ sendFileMessage: jest.fn() }));
+jest.mock('../sendFileMessageV2', () => ({ sendFileMessageV2: jest.fn() }));
 
 const args: Parameters<typeof sendFileMessage> = [
 	'rid1',
 	{ name: 'a.jpg' } as any,
 	undefined,
 	'https://open.rocket.chat',
-	{ id: 'u1', token: 't1' },
-	undefined
+	{ id: 'u1', token: 't1' }
 ];
 
 describe('sendFileMessage selector', () => {
@@ -22,11 +21,9 @@ describe('sendFileMessage selector', () => {
 	it('server < 6.10.0 dispatches sendFileMessageV1, forwarding all args', async () => {
 		(store.getState as jest.Mock).mockReturnValue({ server: { version: '6.9.0' } });
 		(sendFileMessageV1 as jest.Mock).mockResolvedValue(undefined);
-		const fullArgs: Parameters<typeof sendFileMessage> = [...args];
-		fullArgs[5] = true;
 
-		await expect(sendFileMessage(...fullArgs)).resolves.toBeUndefined();
-		expect(sendFileMessageV1).toHaveBeenCalledWith(...fullArgs);
+		await expect(sendFileMessage(...args)).resolves.toBeUndefined();
+		expect(sendFileMessageV1).toHaveBeenCalledWith(...args);
 		expect(sendFileMessageV2).not.toHaveBeenCalled();
 	});
 

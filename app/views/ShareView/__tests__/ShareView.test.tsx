@@ -6,7 +6,7 @@ import { initStore } from '~/lib/store/auxStore';
 import { mockedStore } from '~/reducers/mockedStore';
 import { appStart } from '~/actions/app';
 import { RootEnum } from '~/definitions';
-import { RoomProviders } from '../RoomView/components/RoomProviders';
+import { RoomProviders } from '../../RoomView/components/RoomProviders';
 import { MessageComposerContainer, type IMessageComposerRef } from '~/containers/MessageComposer';
 import { createMessageActionStore, type TMessageActionStore } from '~/containers/message/stores/MessageActionStore';
 import { useChooseMedia } from '~/containers/MessageComposer/hooks/useChooseMedia';
@@ -44,7 +44,7 @@ jest.mock('~/lib/database', () => ({
 	}
 }));
 
-jest.mock('./Preview', () => () => null);
+jest.mock('../Preview', () => () => null);
 jest.mock('~/containers/Thumbs', () => () => null);
 jest.mock('~/containers/ActionSheet', () => ({
 	showActionSheetRef: jest.fn(),
@@ -66,7 +66,7 @@ jest.mock('~/lib/methods/helpers/info', () => ({
 
 const { showActionSheetRef } = require('~/containers/ActionSheet');
 const { AttachmentActionSheet } = require('~/containers/MessageComposer/components/Attachments/AttachmentActionSheet');
-const { ShareView } = require('./index');
+const { ShareView } = require('../index');
 const mockGetSubscriptionByRoomId = require('~/lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;
 
 initStore(mockedStore);
@@ -335,7 +335,7 @@ describe('ShareView', () => {
 		uploadSpy.mockRestore();
 	});
 
-	it('send() attempts to return current text when an upload fails after closing', async () => {
+	it('send() leaves the room composer alone when an upload fails after closing', async () => {
 		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
 		shareView.state.attachments[0].canUpload = true;
 		const finishShareView = jest.fn();
@@ -355,8 +355,8 @@ describe('ShareView', () => {
 		rejectUpload(new Error('upload failed'));
 		await sendPromise;
 
-		expect(finishShareView).toHaveBeenNthCalledWith(1, '', []);
-		expect(finishShareView).toHaveBeenNthCalledWith(2, undefined, ['quote-after-send']);
+		expect(finishShareView).toHaveBeenCalledTimes(1);
+		expect(finishShareView).toHaveBeenCalledWith('', []);
 		uploadSpy.mockRestore();
 	});
 
@@ -622,8 +622,7 @@ describe('ShareView', () => {
 
 		expect(originComposerRef.current?.getText()).toBe('');
 		expect(shareView.getSelectedMessageIds()).toEqual(['share-quote']);
-		const expectedOriginAction = outcome === 'failure' ? { kind: 'quote', messageIds: ['share-quote'] } : null;
-		expect(originStore.getState().action).toEqual(expectedOriginAction);
+		expect(originStore.getState().action).toBeNull();
 		uploadSpy.mockRestore();
 	});
 
