@@ -76,7 +76,9 @@ final class DefaultDatabase: ServersDatabase {
 	}
 	
 	func process(updatedServer: WatchMessage.Server) {
-		if let server = server(url: updatedServer.url) {
+		let server: Server
+		if let existingServer = self.server(url: updatedServer.url) {
+			server = existingServer
 			server.url = updatedServer.url
 			server.name = updatedServer.name
 			server.iconURL = updatedServer.iconURL
@@ -86,7 +88,7 @@ final class DefaultDatabase: ServersDatabase {
 			server.password = updatedServer.clientSSL?.password
 			server.version = updatedServer.version
 		} else {
-			Server(
+			server = Server(
 				context: viewContext,
 				iconURL: updatedServer.iconURL,
 				name: updatedServer.name,
@@ -98,6 +100,7 @@ final class DefaultDatabase: ServersDatabase {
 				version: updatedServer.version
 			)
 		}
+		server.quickReplies = updatedServer.quickReplies ?? []
 		
 		save()
 	}

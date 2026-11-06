@@ -1,10 +1,11 @@
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { addSettings, clearSettings } from '~/actions/settings';
+import { addSettings, clearSettings, fetchSettingsComplete } from '~/actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import { type IPreparedSettings, type ISettingsIcon } from '~/definitions';
+import { type TSettingsState } from '~/reducers/settings';
 import log from './helpers/log';
 import { fetchForWorkspace } from './serverBasicAuth';
 import { store as reduxStore } from '../store/auxStore';
@@ -139,7 +140,7 @@ export async function getLoginSettings({
 	}
 }
 
-export async function setSettings(): Promise<void> {
+export async function setSettings(server: string): Promise<void> {
 	const db = database.active;
 	const settingsCollection = db.get('settings');
 	const settingsRecords = await settingsCollection.query().fetch();
@@ -151,6 +152,9 @@ export async function setSettings(): Promise<void> {
 		valueAsArray: item.valueAsArray,
 		_updatedAt: item._updatedAt
 	}));
+	if (!isActiveWorkspace(server)) {
+		return;
+	}
 	reduxStore.dispatch(addSettings(parseSettings(parsed.slice(0, parsed.length))));
 }
 
@@ -160,19 +164,35 @@ export async function subscribeSettings(): Promise<void> {
 
 type IData = ISettingsIcon | IPreparedSettings;
 
+const isActiveWorkspace = (server: string): boolean => reduxStore.getState().server.server === server;
+
+const workspaceSettingKeys = Object.keys(defaultSettings).filter(key => !loginSettings.includes(key));
+
+export function clearWorkspaceSettings(): void {
+	reduxStore.dispatch(addSettings(Object.fromEntries(workspaceSettingKeys.map(key => [key, undefined]))));
+}
+
+let latestSettingsFetch = 0;
+let settingsFetchedFor: string | null = null;
+
+export const getSettingsFetchedFor = () => settingsFetchedFor;
+
 export async function getSettings(server: string): Promise<void> {
+	latestSettingsFetch += 1;
+	const settingsFetch = latestSettingsFetch;
+	const isLatestFetch = () => settingsFetch === latestSettingsFetch && isActiveWorkspace(server);
+	let fetchedSettings: TSettingsState | undefined;
+	settingsFetchedFor = null;
 	try {
 		const db = database.active;
-		const loginSettingKeys = new Set(loginSettings);
-		const settingsParams = Object.keys(defaultSettings).filter(key => !loginSettingKeys.has(key));
 		// RC 0.60.0
 		let offset = 0;
 		let remaining;
 		let settings: IData[] = [];
 		const serverVersion = reduxStore.getState().server.version;
 		const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
-			? `${server}/api/v1/settings.public?_id=${settingsParams.join(',')}`
-			: `${server}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}`;
+			? `${server}/api/v1/settings.public?_id=${workspaceSettingKeys.join(',')}`
+			: `${server}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(workspaceSettingKeys)}}}`;
 		// Iterate over paginated results to retrieve all settings
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
@@ -190,10 +210,15 @@ export async function getSettings(server: string): Promise<void> {
 			/* eslint-enable no-await-in-loop */
 		} while (remaining > 0);
 
+		if (!isLatestFetch()) {
+			return;
+		}
+
 		const data: IData[] = settings;
 		const filteredSettings: IPreparedSettings[] = _prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 		const parsedSettings = parseSettings(filteredSettings);
+		fetchedSettings = parsedSettings;
 
 		reduxStore.dispatch(addSettings(parsedSettings));
 
@@ -206,6 +231,10 @@ export async function getSettings(server: string): Promise<void> {
 			await serverInfoUpdate(serverInfo, iconSetting as ISettingsIcon);
 		} catch {
 			// Server not found
+		}
+
+		if (!isLatestFetch()) {
+			return;
 		}
 
 		await db.write(async () => {
@@ -246,5 +275,10 @@ export async function getSettings(server: string): Promise<void> {
 		});
 	} catch (e) {
 		log(e);
+	} finally {
+		if (isLatestFetch()) {
+			settingsFetchedFor = server;
+			reduxStore.dispatch(fetchSettingsComplete(fetchedSettings));
+		}
 	}
 }
