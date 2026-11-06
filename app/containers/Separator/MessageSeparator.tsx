@@ -2,52 +2,53 @@ import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '~/i18n';
-import { formatLongDate } from '~/lib/dayjs';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
-import DateSeparator from './DateSeparator';
+import DateSeparator, { DateSeparatorLabel } from './DateSeparator';
 import { separatorStyles } from './styles';
 
 const styles = StyleSheet.create({
 	text: {
-		fontSize: 14,
-		...sharedStyles.textMedium
+		fontSize: 12,
+		lineHeight: 16,
+		marginLeft: 8,
+		...sharedStyles.textBold
 	},
-	marginRight: {
-		marginRight: 14
-	},
-	marginHorizontal: {
-		marginHorizontal: 14
+	dateLabel: {
+		marginHorizontal: 12
 	}
 });
 
-const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: boolean }): ReactElement | null => {
+const UnreadSeparator = ({ ts }: { ts?: Date | string | null }): ReactElement => {
 	const { colors } = useTheme();
+	const lineStyle = { backgroundColor: colors.strokeError };
 
+	return (
+		<View style={separatorStyles.container}>
+			<View style={[separatorStyles.line, lineStyle]} />
+			{ts ? (
+				<>
+					<View style={styles.dateLabel}>
+						<DateSeparatorLabel ts={ts} />
+					</View>
+					<View style={[separatorStyles.line, lineStyle]} />
+				</>
+			) : null}
+			<Text style={[styles.text, { color: colors.fontDanger }]}>{I18n.t('unread_messages')}</Text>
+		</View>
+	);
+};
+
+const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: boolean }): ReactElement | null => {
 	if (!ts && !unread) {
 		return null;
 	}
 
-	const unreadLine = { backgroundColor: colors.buttonBackgroundDangerDefault };
-	const unreadText = { color: colors.fontDanger };
-	if (ts && unread) {
-		return (
-			<View style={separatorStyles.container}>
-				<Text style={[styles.text, unreadText]}>{I18n.t('unread_messages')}</Text>
-				<View style={[separatorStyles.line, unreadLine, styles.marginHorizontal]} />
-				<Text style={[styles.text, unreadText]}>{formatLongDate(ts)}</Text>
-			</View>
-		);
+	if (unread) {
+		return <UnreadSeparator ts={ts} />;
 	}
-	if (ts) {
-		return <DateSeparator ts={ts} />;
-	}
-	return (
-		<View style={separatorStyles.container}>
-			<Text style={[styles.text, unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</Text>
-			<View style={[separatorStyles.line, unreadLine]} />
-		</View>
-	);
+
+	return <DateSeparator ts={ts!} />;
 };
 
 export default MessageSeparator;
