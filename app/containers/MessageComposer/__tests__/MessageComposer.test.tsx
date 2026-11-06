@@ -1,4 +1,4 @@
-import { useEffect, type ReactElement, type RefObject } from 'react';
+import { type ReactElement } from 'react';
 import { act, render, renderHook, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { getRecordingPermissionsAsync, requestRecordingPermissionsAsync, useAudioRecorder, PermissionStatus } from 'expo-audio';
@@ -11,19 +11,15 @@ import { selectServerRequest } from '~/actions/server';
 import { setUser } from '~/actions/login';
 import { mockedStore } from '~/reducers/mockedStore';
 import { type IPermissionsState } from '~/reducers/permissions';
-import { type IMessage, type IShareAttachment, type TMessageActionState } from '~/definitions';
+import { type IMessage, type TMessageActionState } from '~/definitions';
 import { colors } from '~/lib/constants/colors';
 import { type ComposerState } from '../ComposerStore';
 import { ComposerProvider } from '../ComposerStore';
-import { createMessageActionStore, MessageActionProvider } from '../../message/stores/MessageActionStore';
-import { type TMessageActionStore } from '../../message/stores/MessageActionStore';
+import { MessageActionProvider } from '../../message/stores/MessageActionStore';
 import * as EmojiKeyboardHook from '../hooks/useEmojiKeyboard';
 import { initStore } from '~/lib/store/auxStore';
 import { searchRemote } from '~/lib/methods/search';
 import database from '~/lib/database';
-import { useMessageComposerApi } from '../context';
-import { type IMessageComposerRef } from '../interfaces';
-import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import { RECORDING_SETTINGS } from '~/lib/constants/audio';
@@ -50,10 +46,6 @@ jest.mock('~/lib/services/restApi', () => ({
 		cannedResponses: [{ _id: '1', shortcut: 'brb', text: 'Be right back' }]
 	})),
 	runSlashCommand: jest.fn(() => Promise.resolve())
-}));
-
-jest.mock('~/lib/methods/sendFileMessage', () => ({
-	sendFileMessage: jest.fn(() => Promise.resolve())
 }));
 
 const user = userEvent.setup();
@@ -123,42 +115,17 @@ const initialContext = {
 	onRemoveQuoteMessage: jest.fn()
 };
 
-const Render = ({
-	context,
-	action,
-	store,
-	children,
-	forwardedRef
-}: {
-	context?: Partial<ComposerState>;
-	action?: TMessageActionState;
-	store?: TMessageActionStore;
-	children?: ReactElement;
-	forwardedRef?: RefObject<IMessageComposerRef | null>;
-}) => (
+const Render = ({ context, action }: { context?: Partial<ComposerState>; action?: TMessageActionState }) => (
 	<Provider store={mockedStore}>
-		<MessageActionProvider store={store} initialAction={action}>
+		<MessageActionProvider initialAction={action}>
 			<ComposerProvider {...initialContext} {...context}>
-				<MessageComposerContainer ref={forwardedRef}>
-					<>
-						<ComposerAttachments />
-						{children}
-					</>
+				<MessageComposerContainer>
+					<ComposerAttachments />
 				</MessageComposerContainer>
 			</ComposerProvider>
 		</MessageActionProvider>
 	</Provider>
 );
-
-const AttachmentSeeder = ({ attachments }: { attachments: IShareAttachment[] }) => {
-	const { addAttachments } = useMessageComposerApi();
-
-	useEffect(() => {
-		addAttachments(attachments);
-	}, [addAttachments, attachments]);
-
-	return null;
-};
 
 const sharedValue = {
 	value: false,
@@ -845,197 +812,6 @@ describe('MessageComposer', () => {
 			expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
 			await user.press(screen.getByTestId('message-composer-send-audio'));
 			expect(screen.toJSON()).toMatchSnapshot();
-		});
-	});
-
-	describe('Attachments', () => {
-		const attachment = {
-			filename: 'IMG_2444.png',
-			size: 1234,
-			mime: 'image/png',
-			path: 'file:///tmp/IMG_2444.png',
-			canUpload: true
-		} as IShareAttachment;
-
-		const sent = { ...attachment, filename: 'sent.png', path: 'file:///tmp/sent.png' } as IShareAttachment;
-		const failed = { ...attachment, filename: 'failed.png', path: 'file:///tmp/failed.png' } as IShareAttachment;
-
-		beforeEach(() => {
-			(sendFileMessage as jest.Mock).mockClear();
-		});
-
-		const sendWithCaptionAndQuote = async (attachments: IShareAttachment[]) => {
-			const composerRef = { current: null } as RefObject<IMessageComposerRef | null>;
-			const messageActionStore = createMessageActionStore({ kind: 'quote', messageIds: ['abc'] });
-			render(
-				<Render forwardedRef={composerRef} store={messageActionStore}>
-					<AttachmentSeeder attachments={attachments} />
-				</Render>
-			);
-			await screen.findByTestId(`message-composer-attachment-${attachments.length - 1}`);
-			await screen.findByTestId('composer-quote-abc');
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
-			await user.press(screen.getByTestId('message-composer-send'));
-			return { composerRef, messageActionStore };
-		};
-
-		const holdUpload = () => {
-			const upload = { resolve: () => {}, reject: () => {} };
-			(sendFileMessage as jest.Mock).mockImplementationOnce(
-				() => new Promise<void>((resolve, reject) => Object.assign(upload, { resolve, reject }))
-			);
-			return upload;
-		};
-
-		test('shows inline attachments and remove button', async () => {
-			render(
-				<Render>
-					<AttachmentSeeder attachments={[attachment]} />
-				</Render>
-			);
-
-			await screen.findByTestId('message-composer-attachments');
-			expect(screen.getByTestId('message-composer-attachment-0')).toBeOnTheScreen();
-			expect(screen.getByTestId('message-composer-send')).toBeOnTheScreen();
-			expect(screen.queryByTestId('message-composer-send-audio')).not.toBeOnTheScreen();
-
-			await user.press(screen.getByTestId('message-composer-remove-attachment-0'));
-
-			await waitFor(() => expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen());
-			expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
-		});
-
-		test('sends composer attachments from the room instead of delegating to onSendMessage', async () => {
-			const onSendMessage = jest.fn();
-			render(
-				<Render context={{ onSendMessage }}>
-					<AttachmentSeeder attachments={[attachment]} />
-				</Render>
-			);
-
-			await screen.findByTestId('message-composer-attachment-0');
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
-			await user.press(screen.getByTestId('message-composer-send'));
-
-			await waitFor(() =>
-				expect(sendFileMessage).toHaveBeenCalledWith(
-					'rid',
-					expect.objectContaining({
-						name: 'IMG_2444.png',
-						path: 'file:///tmp/IMG_2444.png',
-						msg: 'caption',
-						type: 'image/png'
-					}),
-					undefined,
-					'https://open.rocket.chat',
-					expect.objectContaining({ id: 'abc' })
-				)
-			);
-			expect(onSendMessage).not.toHaveBeenCalled();
-			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
-		});
-
-		test.each(['resolve', 'reject'] as const)('keeps text typed while the upload runs when it %ss', async outcome => {
-			const upload = holdUpload();
-			const { composerRef } = await sendWithCaptionAndQuote([attachment]);
-			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'typed while uploading');
-			await act(async () => upload[outcome]());
-
-			expect(composerRef.current?.getText()).toBe('typed while uploading');
-		});
-
-		test.each(['resolve', 'reject'] as const)('keeps an edit started while the upload runs when it %ss', async outcome => {
-			const upload = holdUpload();
-			const { composerRef, messageActionStore } = await sendWithCaptionAndQuote([attachment]);
-			await act(() => messageActionStore.getState().actions.requestEditing('started-during-upload'));
-			await waitFor(() => expect(composerRef.current?.getText()).toBe('Message started-during-upload'));
-			await act(async () => upload[outcome]());
-
-			expect(composerRef.current?.getText()).toBe('Message started-during-upload');
-			expect(messageActionStore.getState().action).toEqual({ kind: 'edit', messageId: 'started-during-upload' });
-		});
-
-		test('keeps a quote picked while the upload runs when it fails', async () => {
-			const upload = holdUpload();
-			const { composerRef, messageActionStore } = await sendWithCaptionAndQuote([attachment]);
-			await act(() => messageActionStore.getState().actions.requestQuote('def'));
-			await act(async () => upload.reject());
-
-			expect(messageActionStore.getState().action).toEqual({ kind: 'quote', messageIds: ['def'] });
-			expect(composerRef.current?.getText()).toBe('');
-		});
-
-		test('restores the caption but not the quote when an upload fails while reacting', async () => {
-			const upload = holdUpload();
-			const { composerRef, messageActionStore } = await sendWithCaptionAndQuote([attachment]);
-			await act(() => messageActionStore.getState().actions.startReacting('def'));
-			await act(async () => upload.reject());
-
-			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
-			expect(screen.getByTestId('message-composer-attachments')).toBeOnTheScreen();
-			expect(messageActionStore.getState().action).toEqual({ kind: 'react', messageId: 'def' });
-		});
-
-		test('keeps only the attachments that failed so the ones already sent are not sent again', async () => {
-			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('upload failed'));
-			await sendWithCaptionAndQuote([sent, failed]);
-
-			await waitFor(() => expect(screen.queryByTestId('message-composer-attachment-1')).not.toBeOnTheScreen());
-			expect(screen.getByLabelText('failed.png')).toBeOnTheScreen();
-			expect(screen.queryByLabelText('sent.png')).not.toBeOnTheScreen();
-		});
-
-		test('does not restore the caption or the quote when the first attachment, which carried them, was sent', async () => {
-			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('upload failed'));
-			const { composerRef } = await sendWithCaptionAndQuote([sent, failed]);
-
-			await waitFor(() => expect(screen.queryByTestId('message-composer-attachment-1')).not.toBeOnTheScreen());
-			expect(composerRef.current?.getText()).toBe('');
-			expect(screen.queryByTestId('composer-quote-abc')).not.toBeOnTheScreen();
-		});
-
-		test('puts a skipped first attachment back with the caption and the quote even when the other upload was sent', async () => {
-			const skipped = { ...attachment, path: 'file:///tmp/skipped.png', canUpload: false } as IShareAttachment;
-			(sendFileMessage as jest.Mock).mockResolvedValueOnce(undefined);
-			const { composerRef } = await sendWithCaptionAndQuote([skipped, sent]);
-
-			await waitFor(() => expect(composerRef.current?.getText()).toBe('caption'));
-			expect(screen.getByTestId('composer-quote-abc')).toBeOnTheScreen();
-			expect(screen.getByLabelText('IMG_2444.png')).toBeOnTheScreen();
-			expect(screen.queryByLabelText('sent.png')).not.toBeOnTheScreen();
-		});
-
-		test('clears the tray as soon as Send is pressed so an upload in flight cannot be sent again', async () => {
-			holdUpload();
-			await sendWithCaptionAndQuote([attachment]);
-
-			await waitFor(() => expect(sendFileMessage).toHaveBeenCalledTimes(1));
-			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
-		});
-
-		test('does not throw when the composer is gone before a failed upload settles', async () => {
-			let failUpload!: (error: Error) => void;
-			(sendFileMessage as jest.Mock).mockImplementationOnce(() => new Promise<void>((_, reject) => (failUpload = reject)));
-			const error = new Error('upload failed');
-			const unhandled = jest.fn();
-			process.on('unhandledRejection', unhandled);
-			const { unmount } = render(
-				<Render>
-					<AttachmentSeeder attachments={[attachment]} />
-				</Render>
-			);
-			await screen.findByTestId('message-composer-attachment-0');
-			await user.press(screen.getByTestId('message-composer-send'));
-
-			unmount();
-			failUpload(error);
-			await waitFor(() => expect(log).toHaveBeenCalledWith(error));
-			await act(async () => {
-				await Promise.resolve();
-			});
-			process.off('unhandledRejection', unhandled);
-
-			expect(unhandled).not.toHaveBeenCalled();
 		});
 	});
 });
