@@ -554,12 +554,11 @@ class VoipNotification(private val context: Context) {
                             val signedContractId = firstArg.optString("signedContractId")
 
                             if (signalCallId == callId) {
-                                if (signalType == "notification" &&
-                                    (
-                                        // accepted from other device
-                                        (!signedContractId.isNullOrEmpty() && signedContractId != deviceId(context)) ||
-                                        // hung up by other device
-                                        (signalNotification == "hangup")
+                                if (shouldDismissIncomingCallOnSignal(
+                                        signalType = signalType,
+                                        signalNotification = signalNotification,
+                                        signedContractId = signedContractId,
+                                        deviceId = deviceId(context)
                                     )) {
                                     val appContext = context.applicationContext
                                     Handler(Looper.getMainLooper()).post {

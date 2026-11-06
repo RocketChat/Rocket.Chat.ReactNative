@@ -641,6 +641,38 @@ describe('MediaSessionInstance', () => {
 			await Promise.resolve();
 			expect(acceptNativeCallWithReadinessSpy).not.toHaveBeenCalled();
 		});
+
+		it('does not invoke the accept readiness gate when notification is not accepted (SIP negotiation with foreign signedContractId)', async () => {
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: 'from-signal',
+				roomId: null
+			});
+			await mediaSessionInstance.init('user-1');
+			acceptNativeCallWithReadinessSpy.mockClear();
+			const streamHandler = getStreamNotifyHandler();
+			streamHandler({
+				msg: 'changed',
+				fields: {
+					eventName: 'uid/media-signal',
+					args: [
+						{
+							type: 'notification',
+							signedContractId: 'external-sip-trunk',
+							callId: 'from-signal'
+						}
+					]
+				}
+			});
+			await Promise.resolve();
+			expect(acceptNativeCallWithReadinessSpy).not.toHaveBeenCalled();
+		});
 	});
 
 	describe('REST state signals replay (native accept race)', () => {
