@@ -1,0 +1,182 @@
+diff --git a/node_modules/react-native-external-keyboard/ios/Delegates/RNCEKVFocusSequenceDelegate/RNCEKVFocusSequenceDelegate.mm b/node_modules/react-native-external-keyboard/ios/Delegates/RNCEKVFocusSequenceDelegate/RNCEKVFocusSequenceDelegate.mm
+index acc9894..20d104a 100644
+--- a/node_modules/react-native-external-keyboard/ios/Delegates/RNCEKVFocusSequenceDelegate/RNCEKVFocusSequenceDelegate.mm
++++ b/node_modules/react-native-external-keyboard/ios/Delegates/RNCEKVFocusSequenceDelegate/RNCEKVFocusSequenceDelegate.mm
+@@ -9,7 +9,7 @@
+ #import "RNCEKVOrderRelationship.h"
+ #import "RNCEKVKeyboardFocusableProtocol.h"
+ #import "UIViewController+RNCEKVExternalKeyboard.h"
+-#import "UIView+React.h"
++#import <React/UIView+React.h>
+ 
+ static NSNumber *const FOCUS_DEFAULT = nil;
+ static NSNumber *const FOCUS_HANDLED = @0;
+diff --git a/node_modules/react-native-external-keyboard/ios/Extensions/RCTCustomScrollView+RNCEKVExternalKeyboard.mm b/node_modules/react-native-external-keyboard/ios/Extensions/RCTCustomScrollView+RNCEKVExternalKeyboard.mm
+index c6b5d42..bf3d53f 100644
+--- a/node_modules/react-native-external-keyboard/ios/Extensions/RCTCustomScrollView+RNCEKVExternalKeyboard.mm
++++ b/node_modules/react-native-external-keyboard/ios/Extensions/RCTCustomScrollView+RNCEKVExternalKeyboard.mm
+@@ -6,7 +6,7 @@
+ //
+ #ifndef RCT_NEW_ARCH_ENABLED
+ 
+-#import "RCTScrollView.h"
++#import <React/RCTScrollView.h>
+ #import "RNCEKVSwizzleInstanceMethod.h"
+ 
+ @implementation RCTScrollView (RNCEKVExternalKeyboard)
+diff --git a/node_modules/react-native-external-keyboard/ios/Extensions/RCTEnhancedScrollView+RNCEKVExternalKeyboard.mm b/node_modules/react-native-external-keyboard/ios/Extensions/RCTEnhancedScrollView+RNCEKVExternalKeyboard.mm
+index 90b2361..d3ab931 100644
+--- a/node_modules/react-native-external-keyboard/ios/Extensions/RCTEnhancedScrollView+RNCEKVExternalKeyboard.mm
++++ b/node_modules/react-native-external-keyboard/ios/Extensions/RCTEnhancedScrollView+RNCEKVExternalKeyboard.mm
+@@ -8,9 +8,9 @@
+ 
+ #ifdef RCT_NEW_ARCH_ENABLED
+ 
+-#import "RCTEnhancedScrollView.h"
++#import <React/RCTEnhancedScrollView.h>
+ #import "RNCEKVSwizzleInstanceMethod.h"
+-#import "RCTScrollViewComponentView.h"
++#import <React/RCTScrollViewComponentView.h>
+ 
+ @implementation RCTEnhancedScrollView (RNCEKVExternalKeyboard)
+ 
+diff --git a/node_modules/react-native-external-keyboard/ios/Extensions/RCTTextInputComponentView+RNCEKVExternalKeyboard.mm b/node_modules/react-native-external-keyboard/ios/Extensions/RCTTextInputComponentView+RNCEKVExternalKeyboard.mm
+index cfd67c6..0e94ad4 100644
+--- a/node_modules/react-native-external-keyboard/ios/Extensions/RCTTextInputComponentView+RNCEKVExternalKeyboard.mm
++++ b/node_modules/react-native-external-keyboard/ios/Extensions/RCTTextInputComponentView+RNCEKVExternalKeyboard.mm
+@@ -9,8 +9,8 @@
+ #import <React/RCTBackedTextInputViewProtocol.h>
+ #import <objc/runtime.h>
+ #import "RNCEKVCustomFocusEffectProtocol.h"
+-#import "RCTUITextField.h"
+-#import "RCTUITextView.h"
++#import <React/RCTUITextField.h>
++#import <React/RCTUITextView.h>
+ 
+ @implementation RCTTextInputComponentView (RNCEKVExternalKeyboard)
+ 
+diff --git a/node_modules/react-native-external-keyboard/ios/Views/Base/FocusOrderGroup/RNCEKVViewOrderGroupBase.mm b/node_modules/react-native-external-keyboard/ios/Views/Base/FocusOrderGroup/RNCEKVViewOrderGroupBase.mm
+index 64d3be3..9145803 100644
+--- a/node_modules/react-native-external-keyboard/ios/Views/Base/FocusOrderGroup/RNCEKVViewOrderGroupBase.mm
++++ b/node_modules/react-native-external-keyboard/ios/Views/Base/FocusOrderGroup/RNCEKVViewOrderGroupBase.mm
+@@ -9,7 +9,7 @@
+ #import "RNCEKVViewOrderGroupBase.h"
+ #import "RNCEKVOrderLinking.h"
+ #import "UIViewController+RNCEKVExternalKeyboard.h"
+-#import "UIView+React.h"
++#import <React/UIView+React.h>
+ #import "RNCEKVPropHelper.h"
+ 
+ #ifdef RCT_NEW_ARCH_ENABLED
+diff --git a/node_modules/react-native-external-keyboard/ios/Views/Base/FocusRequest/RNCEKVViewFocusRequestBase.mm b/node_modules/react-native-external-keyboard/ios/Views/Base/FocusRequest/RNCEKVViewFocusRequestBase.mm
+index 52eb5ea..3838fae 100644
+--- a/node_modules/react-native-external-keyboard/ios/Views/Base/FocusRequest/RNCEKVViewFocusRequestBase.mm
++++ b/node_modules/react-native-external-keyboard/ios/Views/Base/FocusRequest/RNCEKVViewFocusRequestBase.mm
+@@ -8,7 +8,7 @@
+ #import <Foundation/Foundation.h>
+ #import "UIViewController+RNCEKVExternalKeyboard.h"
+ 
+-#import "UIView+React.h"
++#import <React/UIView+React.h>
+ #import "RNCEKVViewFocusRequestBase.h"
+ 
+ #ifdef RCT_NEW_ARCH_ENABLED
+diff --git a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVExternalKeyboardLockView/RNCEKVExternalKeyboardLockView.mm b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVExternalKeyboardLockView/RNCEKVExternalKeyboardLockView.mm
+index c05268e..907423b 100644
+--- a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVExternalKeyboardLockView/RNCEKVExternalKeyboardLockView.mm
++++ b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVExternalKeyboardLockView/RNCEKVExternalKeyboardLockView.mm
+@@ -19,7 +19,7 @@
+ #import <react/renderer/components/RNExternalKeyboardViewSpec/EventEmitters.h>
+ #import <react/renderer/components/RNExternalKeyboardViewSpec/Props.h>
+ #import <react/renderer/components/RNExternalKeyboardViewSpec/RCTComponentViewHelpers.h>
+-#import "RCTFabricComponentsPlugins.h"
++#import <React/RCTFabricComponentsPlugins.h>
+ 
+ using namespace facebook::react;
+ 
+diff --git a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVExternalKeyboardView/RNCEKVExternalKeyboardView.mm b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVExternalKeyboardView/RNCEKVExternalKeyboardView.mm
+index cbbb2bb..578d5d6 100644
+--- a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVExternalKeyboardView/RNCEKVExternalKeyboardView.mm
++++ b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVExternalKeyboardView/RNCEKVExternalKeyboardView.mm
+@@ -16,7 +16,7 @@
+ #include <string>
+ 
+ #import "RNCEKVPropHelper.h"
+-#import "RCTFabricComponentsPlugins.h"
++#import <React/RCTFabricComponentsPlugins.h>
+ #import "RNCEKVFabricEventHelper.h"
+ #import <React/RCTConversions.h>
+ #import <stdlib.h>
+diff --git a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVExternalKeyboardView/RNCEKVExternalKeyboardViewManager.mm b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVExternalKeyboardView/RNCEKVExternalKeyboardViewManager.mm
+index a0f352f..7cf47b0 100644
+--- a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVExternalKeyboardView/RNCEKVExternalKeyboardViewManager.mm
++++ b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVExternalKeyboardView/RNCEKVExternalKeyboardViewManager.mm
+@@ -2,7 +2,7 @@
+ #import <React/RCTUIManager.h>
+ #import "RNCEKVExternalKeyboardViewManager.h"
+ #import "RNCEKVExternalKeyboardView.h"
+-#import "RCTBridge.h"
++#import <React/RCTBridge.h>
+ 
+ @implementation RNCEKVExternalKeyboardViewManager
+ 
+diff --git a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVKeyboardFocusGroupView/RNCEKVKeyboardFocusGroup.mm b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVKeyboardFocusGroupView/RNCEKVKeyboardFocusGroup.mm
+index c6eba52..cae4e1f 100644
+--- a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVKeyboardFocusGroupView/RNCEKVKeyboardFocusGroup.mm
++++ b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVKeyboardFocusGroupView/RNCEKVKeyboardFocusGroup.mm
+@@ -20,7 +20,7 @@
+ #import <react/renderer/components/RNExternalKeyboardViewSpec/Props.h>
+ #import <react/renderer/components/RNExternalKeyboardViewSpec/RCTComponentViewHelpers.h>
+ 
+-#import "RCTFabricComponentsPlugins.h"
++#import <React/RCTFabricComponentsPlugins.h>
+ #import "RNCEKVFabricEventHelper.h"
+ #import <React/RCTConversions.h>
+ 
+diff --git a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVKeyboardFocusGroupView/RNCEKVKeyboardFocusGroupManager.mm b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVKeyboardFocusGroupView/RNCEKVKeyboardFocusGroupManager.mm
+index bf600cf..9f8edd4 100644
+--- a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVKeyboardFocusGroupView/RNCEKVKeyboardFocusGroupManager.mm
++++ b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVKeyboardFocusGroupView/RNCEKVKeyboardFocusGroupManager.mm
+@@ -9,7 +9,7 @@
+ #import <React/RCTUIManager.h>
+ #import "RNCEKVKeyboardFocusGroupManager.h"
+ #import "RNCEKVKeyboardFocusGroup.h"
+-#import "RCTBridge.h"
++#import <React/RCTBridge.h>
+ 
+ @implementation RNCEKVKeyboardFocusGroupManager
+ 
+diff --git a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVTextInputFocusWrapper/RNCEKVTextInputFocusWrapper.mm b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVTextInputFocusWrapper/RNCEKVTextInputFocusWrapper.mm
+index 8ee88a0..1cd44d6 100644
+--- a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVTextInputFocusWrapper/RNCEKVTextInputFocusWrapper.mm
++++ b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVTextInputFocusWrapper/RNCEKVTextInputFocusWrapper.mm
+@@ -4,7 +4,6 @@
+ #import <React/RCTLog.h>
+ #import <React/RCTUITextView.h>
+ #import "RNCEKVFocusEffectUtility.h"
+-#import "RCTBaseTextInputView.h"
+ #import "RNCEKVOrderLinking.h"
+ #import "UIViewController+RNCEKVExternalKeyboard.h"
+ 
+@@ -28,7 +27,7 @@
+ 
+ #import "RNCEKVPropHelper.h"
+ #import "RCTViewComponentView+RNCEKVExternalKeyboard.h"
+-#import "RCTFabricComponentsPlugins.h"
++#import <React/RCTFabricComponentsPlugins.h>
+ 
+ using namespace facebook::react;
+ 
+diff --git a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVTextInputFocusWrapper/RNCEKVTextInputFocusWrapperManager.mm b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVTextInputFocusWrapper/RNCEKVTextInputFocusWrapperManager.mm
+index e7f0dea..5bfad1f 100644
+--- a/node_modules/react-native-external-keyboard/ios/Views/RNCEKVTextInputFocusWrapper/RNCEKVTextInputFocusWrapperManager.mm
++++ b/node_modules/react-native-external-keyboard/ios/Views/RNCEKVTextInputFocusWrapper/RNCEKVTextInputFocusWrapperManager.mm
+@@ -2,7 +2,7 @@
+ #import <React/RCTUIManager.h>
+ #import "RNCEKVTextInputFocusWrapperManager.h"
+ #import "RNCEKVTextInputFocusWrapper.h"
+-#import "RCTBridge.h"
++#import <React/RCTBridge.h>
+ 
+ @implementation RNCEKVTextInputFocusWrapperManager
+ 
