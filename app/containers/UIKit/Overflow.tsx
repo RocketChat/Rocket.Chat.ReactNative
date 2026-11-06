@@ -6,9 +6,11 @@ import { CustomIcon } from '../CustomIcon';
 import ActivityIndicator from '../ActivityIndicator';
 import { themes } from '~/lib/constants/colors';
 import { useTheme } from '~/theme';
+import openLink from '~/lib/methods/helpers/openLink';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';
-import { type IOption, type IOptions, type IOverflow } from './interfaces';
+import { isSafeUrl } from './isSafeUrl';
+import { type IOption, type IOptions, type IOverflow, type Option } from './interfaces';
 import Touch from '../Touch';
 
 const keyExtractor = (item: any) => item.value;
@@ -26,8 +28,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Option = ({ option: { text, value }, onOptionPress, parser }: IOption) => (
-	<Touch onPress={() => onOptionPress({ value })} style={styles.option}>
+const Option = ({ option: { text, value, url }, onOptionPress, parser }: IOption) => (
+	<Touch onPress={() => onOptionPress({ value, url })} style={styles.option}>
 		<Text>{parser.text(text)}</Text>
 	</Touch>
 );
@@ -48,9 +50,12 @@ export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 
 	const touchableRef = useRef<View>(null) as RefObject<View>;
 
-	const onOptionPress = ({ value }: any) => {
+	const onOptionPress = ({ value, url }: { value: Option['value']; url?: Option['url'] }) => {
 		onShow(false);
 		action({ value });
+		if (url && isSafeUrl(url)) {
+			openLink(url, theme);
+		}
 	};
 
 	return (

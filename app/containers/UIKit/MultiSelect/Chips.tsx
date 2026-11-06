@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import { textParser } from '../utils';
@@ -6,7 +6,6 @@ import { CustomIcon } from '~/containers/CustomIcon';
 import styles from './styles';
 import { type IItemData } from '.';
 import { useTheme } from '~/theme';
-import Touch from '~/containers/Touch';
 
 interface IChip {
 	item: IItemData;
@@ -25,10 +24,11 @@ const keyExtractor = (item: IItemData) => item.value.toString();
 const Chip = ({ item, onSelect, style }: IChip) => {
 	const { colors } = useTheme();
 	return (
-		<Touch
+		<Pressable
 			key={item.value}
 			onPress={() => onSelect(item)}
-			style={[styles.chip, { backgroundColor: colors.surfaceHover }, style]}
+			accessibilityRole='button'
+			style={({ pressed }) => [styles.chip, { backgroundColor: colors.surfaceHover }, style, pressed && styles.pressed]}
 			testID={`multi-select-chip-${item.value}`}>
 			<>
 				{item.imageUrl ? <Image style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
@@ -37,7 +37,7 @@ const Chip = ({ item, onSelect, style }: IChip) => {
 				</Text>
 				<CustomIcon name='close' size={16} color={colors.fontSecondaryInfo} />
 			</>
-		</Touch>
+		</Pressable>
 	);
 };
 Chip.propTypes = {};

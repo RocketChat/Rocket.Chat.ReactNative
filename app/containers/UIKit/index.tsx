@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useContext, type ReactElement } from 'react';
+import { useContext, useMemo, type ReactElement } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import {
 	UiKitParserMessage,
@@ -13,6 +13,8 @@ import {
 
 import Markdown, { MarkdownPreview } from '../markdown';
 import Button from './Button';
+import openLink from '~/lib/methods/helpers/openLink';
+import { isSafeUrl } from './isSafeUrl';
 import { FormTextInput } from '../TextInput';
 import { textParser, useBlockContext } from './utils';
 import { themes } from '~/lib/constants/colors';
@@ -23,17 +25,26 @@ import { Actions } from './Actions';
 import { Image } from './Image';
 import { Select } from './Select';
 import { Context } from './Context';
-import { MultiSelect } from './MultiSelect';
+import { type IItemData, MultiSelect, toItemArray } from './MultiSelect';
 import { Input } from './Input';
 import { DatePicker } from './DatePicker';
+import { TimePicker } from './TimePicker';
 import { Overflow } from './Overflow';
 import { Icon } from './Icon';
 import { IconButton } from './IconButton';
 import { InfoCard } from './InfoCard';
-import { ThemeContext } from '~/theme';
+import { Preview } from './Preview';
+import { Callout } from './Callout';
+import { Checkbox } from './Checkbox';
+import { RadioButton } from './RadioButton';
+import { ToggleSwitch } from './ToggleSwitch';
+import { LinearScale } from './LinearScale';
+import { searchChannels, searchUsers } from './entitySearch';
+import { ThemeContext, type TSupportedThemes } from '~/theme';
 import {
 	type IActions,
 	type IButton,
+	type ICallout,
 	type IContext,
 	type IElement,
 	type IIcon,
@@ -41,7 +52,9 @@ import {
 	type IInfoCard,
 	type IInputIndex,
 	type IParser,
-	type ISection
+	type IPreview,
+	type ISection,
+	type Option
 } from './interfaces';
 import VideoConferenceBlock from './VideoConferenceBlock';
 import I18n from '~/i18n';
@@ -53,9 +66,6 @@ const styles = StyleSheet.create({
 	multiline: {
 		height: 130
 	},
-	button: {
-		marginBottom: 16
-	},
 	text: {
 		fontSize: 16,
 		lineHeight: 22,
@@ -66,12 +76,69 @@ const styles = StyleSheet.create({
 
 const plainText = ({ text } = { text: '' }) => text;
 
+type TButtonStyle = 'primary' | 'secondary' | 'danger' | 'warning' | 'success';
+
+const resolveButtonAppearance = (
+	style: TButtonStyle | undefined,
+	theme: TSupportedThemes
+): { type: 'primary' | 'secondary'; backgroundColor: string | undefined; color: string | undefined } => {
+	switch (style) {
+		case 'danger':
+			return {
+				type: 'secondary',
+				backgroundColor: themes[theme].buttonBackgroundDangerDefault,
+				color: themes[theme].fontWhite
+			};
+		case 'success':
+			return {
+				type: 'secondary',
+				backgroundColor: themes[theme].buttonBackgroundSuccessDefault,
+				color: themes[theme].fontWhite
+			};
+		case 'warning':
+			return {
+				type: 'secondary',
+				backgroundColor: themes[theme].statusBackgroundWarning,
+				color: themes[theme].statusFontWarning
+			};
+		case 'secondary':
+			return { type: 'secondary', backgroundColor: undefined, color: undefined };
+		default:
+			return {
+				type: 'primary',
+				backgroundColor: undefined,
+				color: undefined
+			};
+	}
+};
+
+const entitySelect = (
+	element: IElement,
+	context: BlockContext,
+	onSearch: (keyword: string) => IItemData[] | Promise<IItemData[] | undefined>,
+	multiselect?: boolean
+): ReactElement => {
+	const [{ loading, value }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
+	const items = useMemo(() => toItemArray(value), [value]);
+	return (
+		<MultiSelect
+			options={element.options}
+			placeholder={element.placeholder}
+			value={items}
+			onChange={action}
+			onSearch={onSearch}
+			context={context}
+			loading={loading}
+			multiselect={multiselect}
+		/>
+	);
+};
+
 class MessageParser extends UiKitParserMessage<ReactElement> {
 	constructor() {
 		super();
-		// Compatibility for @rocket.chat/ui-kit@0.39.0 where info_card is exported
-		// but still missing from message allowed layout block types.
 		this.allowedLayoutBlockTypes.add('info_card' as any);
+		this.allowedLayoutBlockTypes.add('input' as any);
 	}
 
 	get current() {
@@ -97,16 +164,25 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 	}
 
 	button(element: IButton, context: BlockContext): ReactElement {
-		const { text, value, actionId, style } = element;
+		const { text, value, actionId, style, secondary, url } = element;
+		const { theme } = useContext(ThemeContext);
 		const [{ loading }, action] = useBlockContext(element, context);
+		const appearance = resolveButtonAppearance(style === 'secondary' || secondary ? 'secondary' : style, theme);
+		const onPress = () => {
+			action({ value });
+			if (url && isSafeUrl(url)) {
+				openLink(url, theme);
+			}
+		};
 		return (
 			<Button
 				key={actionId}
-				type={style}
+				type={appearance.type}
+				backgroundColor={appearance.backgroundColor}
+				color={appearance.color}
 				title={textParser([text])}
 				loading={loading}
-				onPress={() => action({ value })}
-				style={styles.button}
+				onPress={onPress}
 			/>
 		);
 	}
@@ -167,10 +243,102 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 		return <InfoCard {...args} parser={this.current} />;
 	}
 
+	preview(args: IPreview): ReactElement {
+		return (
+			<Preview
+				title={args.title}
+				description={args.description}
+				thumb={args.thumb}
+				preview={args.preview}
+				footer={args.footer}
+				parser={this.current}
+			/>
+		);
+	}
+
+	callout(args: ICallout): ReactElement {
+		return (
+			<Callout
+				title={args.title}
+				text={args.text}
+				variant={args.variant}
+				accessory={args.accessory}
+				appId={args.appId}
+				blockId={args.blockId}
+				parser={this.current}
+			/>
+		);
+	}
+
+	input({ element, blockId, appId, label, description, hint }: IInputIndex, context: number): ReactElement {
+		const [{ error }] = useBlockContext({ ...element, appId, blockId, actionId: element.actionId || '' }, context);
+		const { theme } = useContext(ThemeContext);
+		return (
+			<Input
+				parser={this.current}
+				element={{ ...element, appId, blockId }}
+				label={label ? plainText(label) : undefined}
+				description={description ? plainText(description) : undefined}
+				hint={hint ? plainText(hint) : undefined}
+				error={error}
+				theme={theme}
+			/>
+		);
+	}
+
+	checkbox(element: IElement, context: BlockContext): ReactElement {
+		const { initialOptions } = element as unknown as { initialOptions?: Option[] };
+		const initialValue = useMemo(() => initialOptions?.map(option => option.value), [initialOptions]);
+		const [{ loading, value }, action] = useBlockContext({ ...element, initialValue, actionId: element.actionId || '' }, context);
+		return <Checkbox element={element} value={value} action={action} loading={loading} />;
+	}
+
+	radio_button(element: IElement, context: BlockContext): ReactElement {
+		const { initialOption } = element as unknown as { initialOption?: Option };
+		const [{ loading, value }, action] = useBlockContext(
+			{ ...element, initialValue: initialOption?.value, actionId: element.actionId || '' },
+			context
+		);
+		return <RadioButton element={element} value={value} action={action} loading={loading} />;
+	}
+
+	toggle_switch(element: IElement, context: BlockContext): ReactElement {
+		const { initialOptions } = element as unknown as { initialOptions?: Option[] };
+		const initialValue = useMemo(() => initialOptions?.map(option => option.value), [initialOptions]);
+		const [{ loading, value }, action] = useBlockContext({ ...element, initialValue, actionId: element.actionId || '' }, context);
+		return <ToggleSwitch element={element} value={value} action={action} loading={loading} />;
+	}
+
+	linear_scale(element: IElement, context: BlockContext): ReactElement {
+		const { initialValue } = element as unknown as { initialValue?: number };
+		const [{ loading, value }, action] = useBlockContext({ ...element, initialValue, actionId: element.actionId || '' }, context);
+		return <LinearScale element={element} value={value} action={action} loading={loading} />;
+	}
+
+	time_picker(element: IElement, context: BlockContext): ReactElement {
+		const [{ loading, value, error, language }, action] = useBlockContext(
+			{ ...element, actionId: element.actionId || '' },
+			context
+		);
+		return (
+			<TimePicker
+				element={element}
+				language={language}
+				value={value}
+				action={action}
+				context={context}
+				loading={loading}
+				error={error}
+			/>
+		);
+	}
+
 	multiStaticSelect(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading, value }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
-		const selectedValues = new Set(value);
-		const valueFiltered = element?.options?.filter(option => selectedValues.has(option.value));
+		const valueFiltered = useMemo(() => {
+			const selectedValues = new Set(value);
+			return element?.options?.filter(option => selectedValues.has(option.value));
+		}, [element?.options, value]);
 		return <MultiSelect {...element} value={valueFiltered} onChange={action} context={context} loading={loading} multiselect />;
 	}
 
@@ -179,9 +347,20 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 		return <Select {...element} value={value} onChange={action} loading={loading} />;
 	}
 
-	selectInput(element: IElement, context: BlockContext): ReactElement {
-		const [{ loading, value }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
-		return <MultiSelect {...element} value={value} onChange={action} context={context} loading={loading} />;
+	users_select(element: IElement, context: BlockContext): ReactElement {
+		return entitySelect(element, context, searchUsers);
+	}
+
+	channels_select(element: IElement, context: BlockContext): ReactElement {
+		return entitySelect(element, context, searchChannels);
+	}
+
+	multi_users_select(element: IElement, context: BlockContext): ReactElement {
+		return entitySelect(element, context, searchUsers, true);
+	}
+
+	multi_channels_select(element: IElement, context: BlockContext): ReactElement {
+		return entitySelect(element, context, searchChannels, true);
 	}
 
 	video_conf(element: IElement & { callId: string }): ReactElement {
@@ -189,12 +368,14 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 	}
 }
 
-// plain_text and mrkdwn functions are created in MessageParser and the ModalParser's constructor use the same functions
 // @ts-ignore
 class ModalParser extends UiKitParserModal<ReactElement> {
 	constructor() {
 		super();
 		Object.getOwnPropertyNames(MessageParser.prototype).forEach(method => {
+			if (method === 'constructor' || method === 'current') {
+				return;
+			}
 			// @ts-ignore
 			ModalParser.prototype[method] = ModalParser.prototype[method] || MessageParser.prototype[method];
 		});
@@ -211,9 +392,9 @@ class ModalParser extends UiKitParserModal<ReactElement> {
 			<Input
 				parser={this.current}
 				element={{ ...element, appId, blockId }}
-				{...(label && { label: plainText(label) })}
-				{...(description && { description: plainText(description) })}
-				{...(hint && { hint: plainText(hint) })}
+				label={label ? plainText(label) : undefined}
+				description={description ? plainText(description) : undefined}
+				hint={hint ? plainText(hint) : undefined}
 				error={error}
 				theme={theme}
 			/>

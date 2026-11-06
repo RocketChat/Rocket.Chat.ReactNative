@@ -1,7 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
-[
+<View
+  style={
+    {
+      "gap": 16,
+    }
+  }
+>
   <View>
     <View
       accessibilityLabel="Approve"
@@ -46,9 +52,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
           {
             "backgroundColor": "#156FF5",
           },
-          {
-            "marginBottom": 16,
-          },
+          undefined,
           false,
         ]
       }
@@ -74,7 +78,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
         Approve
       </Text>
     </View>
-  </View>,
+  </View>
   <View>
     <View
       accessibilityLabel="Deny"
@@ -117,11 +121,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             "paddingVertical": 14,
           },
           {
-            "backgroundColor": "#E4E7EA",
+            "backgroundColor": "#EC0D2A",
           },
-          {
-            "marginBottom": 16,
-          },
+          undefined,
           false,
         ]
       }
@@ -139,7 +141,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
               "textAlign": "center",
             },
             {
-              "color": "#2F343D",
+              "color": "#FFFFFF",
             },
           ]
         }
@@ -147,7 +149,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
         Deny
       </Text>
     </View>
-  </View>,
+  </View>
   <View>
     <View
       accessibilityLabel="Deny"
@@ -190,11 +192,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             "paddingVertical": 14,
           },
           {
-            "backgroundColor": "#E4E7EA",
+            "backgroundColor": "#EC0D2A",
           },
-          {
-            "marginBottom": 16,
-          },
+          undefined,
           false,
         ]
       }
@@ -212,7 +212,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
               "textAlign": "center",
             },
             {
-              "color": "#2F343D",
+              "color": "#FFFFFF",
             },
           ]
         }
@@ -220,7 +220,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
         Deny
       </Text>
     </View>
-  </View>,
+  </View>
   <View>
     <View
       accessibilityLabel="Deny"
@@ -263,11 +263,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             "paddingVertical": 14,
           },
           {
-            "backgroundColor": "#E4E7EA",
+            "backgroundColor": "#EC0D2A",
           },
-          {
-            "marginBottom": 16,
-          },
+          undefined,
           false,
         ]
       }
@@ -285,7 +283,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
               "textAlign": "center",
             },
             {
-              "color": "#2F343D",
+              "color": "#FFFFFF",
             },
           ]
         }
@@ -293,7 +291,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
         Deny
       </Text>
     </View>
-  </View>,
+  </View>
   <View>
     <View
       accessibilityLabel="Deny"
@@ -336,11 +334,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             "paddingVertical": 14,
           },
           {
-            "backgroundColor": "#E4E7EA",
+            "backgroundColor": "#EC0D2A",
           },
-          {
-            "marginBottom": 16,
-          },
+          undefined,
           false,
         ]
       }
@@ -358,7 +354,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
               "textAlign": "center",
             },
             {
-              "color": "#2F343D",
+              "color": "#FFFFFF",
             },
           ]
         }
@@ -366,12 +362,11 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
         Deny
       </Text>
     </View>
-  </View>,
+  </View>
   <View
     style={
       {
-        "height": 0,
-        "overflow": "hidden",
+        "display": "none",
       }
     }
   >
@@ -416,11 +411,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             "paddingVertical": 14,
           },
           {
-            "backgroundColor": "#E4E7EA",
+            "backgroundColor": "#EC0D2A",
           },
-          {
-            "marginBottom": 16,
-          },
+          undefined,
           false,
         ]
       }
@@ -438,7 +431,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
               "textAlign": "center",
             },
             {
-              "color": "#2F343D",
+              "color": "#FFFFFF",
             },
           ]
         }
@@ -446,12 +439,11 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
         Deny
       </Text>
     </View>
-  </View>,
+  </View>
   <View
     style={
       {
-        "height": 0,
-        "overflow": "hidden",
+        "display": "none",
       }
     }
   >
@@ -496,11 +488,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
             "paddingVertical": 14,
           },
           {
-            "backgroundColor": "#E4E7EA",
+            "backgroundColor": "#EC0D2A",
           },
-          {
-            "marginBottom": 16,
-          },
+          undefined,
           false,
         ]
       }
@@ -518,7 +508,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
               "textAlign": "center",
             },
             {
-              "color": "#2F343D",
+              "color": "#FFFFFF",
             },
           ]
         }
@@ -526,7 +516,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
         Deny
       </Text>
     </View>
-  </View>,
+  </View>
   <View
     accessibilityLabel="Show more"
     accessibilityRole="button"
@@ -603,15 +593,625 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
     >
       Show more
     </Text>
-  </View>,
-]
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ActionButtonStyles should match snapshot 1`] = `
+<View
+  style={
+    {
+      "gap": 16,
+    }
+  }
+>
+  <View>
+    <View
+      accessibilityLabel="primary"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "backgroundColor": "#156FF5",
+          },
+          undefined,
+          false,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        primary
+      </Text>
+    </View>
+  </View>
+  <View>
+    <View
+      accessibilityLabel="secondary"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "backgroundColor": "#E4E7EA",
+          },
+          undefined,
+          false,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        secondary
+      </Text>
+    </View>
+  </View>
+  <View>
+    <View
+      accessibilityLabel="danger"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "backgroundColor": "#EC0D2A",
+          },
+          undefined,
+          false,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        danger
+      </Text>
+    </View>
+  </View>
+  <View>
+    <View
+      accessibilityLabel="warning"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "backgroundColor": "#FFECAD",
+          },
+          undefined,
+          false,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            {
+              "color": "#8E6300",
+            },
+          ]
+        }
+      >
+        warning
+      </Text>
+    </View>
+  </View>
+  <View>
+    <View
+      accessibilityLabel="success"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "backgroundColor": "#158D65",
+          },
+          undefined,
+          false,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        success
+      </Text>
+    </View>
+  </View>
+</View>
 `;
 
 exports[`Story Snapshots: ActionSelect should match snapshot 1`] = `
-[
-  <View />,
-  <View />,
-  <View />,
+<View
+  style={
+    {
+      "gap": 16,
+    }
+  }
+>
+  <View />
+  <View>
+    <View
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          {
+            "borderRadius": 4,
+          },
+          undefined,
+          false,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "minHeight": 48,
+              "paddingBottom": 0,
+              "paddingHorizontal": 8,
+            },
+            {
+              "borderRadius": 4,
+            },
+            {
+              "borderColor": "#9EA2A8",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "paddingLeft": 6,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Select a channel
+        </Text>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                {
+                  "position": "absolute",
+                  "right": 16,
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View>
+    <View
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          {
+            "borderRadius": 4,
+          },
+          undefined,
+          false,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "minHeight": 48,
+              "paddingBottom": 0,
+              "paddingHorizontal": 8,
+            },
+            {
+              "borderRadius": 4,
+            },
+            {
+              "borderColor": "#9EA2A8",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "paddingLeft": 6,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Select a user
+        </Text>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                {
+                  "position": "absolute",
+                  "right": 16,
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
   <View>
     <View
       style={
@@ -626,7 +1226,6 @@ exports[`Story Snapshots: ActionSelect should match snapshot 1`] = `
             "borderWidth": 1,
             "height": 48,
             "justifyContent": "center",
-            "marginBottom": 16,
             "paddingHorizontal": 16,
           },
         ]
@@ -730,21 +1329,1820 @@ exports[`Story Snapshots: ActionSelect should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </View>,
-]
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ChoiceElements should match snapshot 1`] = `
+<View
+  style={
+    {
+      "gap": 16,
+    }
+  }
+>
+  <View>
+    <View>
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          accessibilityRole="checkbox"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          activeUnderlayOpacity={1}
+          animationDuration={0}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              [
+                undefined,
+                {
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                },
+              ],
+              undefined,
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            accessibilityLabel="Check me. unchecked"
+            accessibilityRole="checkbox"
+            accessible={true}
+            style={{}}
+            testID="checkbox-check-1"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingVertical": 8,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#9EA2A8",
+                      "fontSize": 22,
+                    },
+                    [
+                      {
+                        "lineHeight": 22,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "marginLeft": 8,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Check me
+                </Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "marginTop": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  With an option description
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ExternalKeyboardView>
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          accessibilityRole="checkbox"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          activeUnderlayOpacity={1}
+          animationDuration={0}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              [
+                undefined,
+                {
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                },
+              ],
+              undefined,
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            accessibilityLabel="Me too. unchecked"
+            accessibilityRole="checkbox"
+            accessible={true}
+            style={{}}
+            testID="checkbox-check-2"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingVertical": 8,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#9EA2A8",
+                      "fontSize": 22,
+                    },
+                    [
+                      {
+                        "lineHeight": 22,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "marginLeft": 8,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Me too
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ExternalKeyboardView>
+    </View>
+  </View>
+  <View>
+    <View>
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          activeUnderlayOpacity={1}
+          animationDuration={0}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              [
+                undefined,
+                {
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                },
+              ],
+              undefined,
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            accessibilityLabel="Pick me. unchecked"
+            accessibilityRole="radio"
+            accessible={true}
+            style={{}}
+            testID="radio-radio-1"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingVertical": 8,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#9EA2A8",
+                      "fontSize": 22,
+                    },
+                    [
+                      {
+                        "lineHeight": 22,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "marginLeft": 8,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Pick me
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ExternalKeyboardView>
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          activeUnderlayOpacity={1}
+          animationDuration={0}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              [
+                undefined,
+                {
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                },
+              ],
+              undefined,
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            accessibilityLabel="No, me. unchecked"
+            accessibilityRole="radio"
+            accessible={true}
+            style={{}}
+            testID="radio-radio-2"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingVertical": 8,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#9EA2A8",
+                      "fontSize": 22,
+                    },
+                    [
+                      {
+                        "lineHeight": 22,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "marginLeft": 8,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontVariant": [
+                          "tabular-nums",
+                        ],
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  No, me
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ExternalKeyboardView>
+    </View>
+  </View>
+  <View>
+    <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "paddingVertical": 8,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            Toggle me
+          </Text>
+        </View>
+        <RCTSwitch
+          accessibilityLabel="Toggle me"
+          accessibilityRole="switch"
+          disabled={false}
+          onChange={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          onTintColor="#156FF5"
+          style={
+            {
+              "alignSelf": "flex-start",
+            }
+          }
+          testID="toggle-toggle-1"
+          thumbTintColor="#FFFFFF"
+          tintColor="#9EA2A8"
+          value={false}
+        />
+      </View>
+    </View>
+  </View>
+  <View>
+    <View
+      style={
+        {
+          "gap": 8,
+          "paddingVertical": 8,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 8,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Bad
+        </Text>
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        />
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Good
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 8,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="0"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "flex": 1,
+              },
+              false,
+            ]
+          }
+          testID="linear-scale-0"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "flex": 1,
+                  "height": 44,
+                  "justifyContent": "center",
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              0
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="1"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "flex": 1,
+              },
+              false,
+            ]
+          }
+          testID="linear-scale-1"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "flex": 1,
+                  "height": 44,
+                  "justifyContent": "center",
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              1
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="2"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "flex": 1,
+              },
+              false,
+            ]
+          }
+          testID="linear-scale-2"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "flex": 1,
+                  "height": 44,
+                  "justifyContent": "center",
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              2
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="3"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "flex": 1,
+              },
+              false,
+            ]
+          }
+          testID="linear-scale-3"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "flex": 1,
+                  "height": 44,
+                  "justifyContent": "center",
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              3
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="4"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "flex": 1,
+              },
+              false,
+            ]
+          }
+          testID="linear-scale-4"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "flex": 1,
+                  "height": 44,
+                  "justifyContent": "center",
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              4
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 8,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="5"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "flex": 1,
+              },
+              false,
+            ]
+          }
+          testID="linear-scale-5"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "borderWidth": 1,
+                  "flex": 1,
+                  "height": 44,
+                  "justifyContent": "center",
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              5
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View>
+    <View
+      accessibilityLabel="Pick a time"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "backgroundColor": "#156FF5",
+          },
+          undefined,
+          false,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        Pick a time
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: EntitySelects should match snapshot 1`] = `
+<View
+  style={
+    {
+      "gap": 16,
+    }
+  }
+>
+  <View>
+    <View
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          {
+            "borderRadius": 4,
+          },
+          undefined,
+          false,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "minHeight": 48,
+              "paddingBottom": 0,
+              "paddingHorizontal": 8,
+            },
+            {
+              "borderRadius": 4,
+            },
+            {
+              "borderColor": "#9EA2A8",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "paddingLeft": 6,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Select a user
+        </Text>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                {
+                  "position": "absolute",
+                  "right": 16,
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View>
+    <View
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          {
+            "borderRadius": 4,
+          },
+          undefined,
+          false,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "minHeight": 48,
+              "paddingBottom": 0,
+              "paddingHorizontal": 8,
+            },
+            {
+              "borderRadius": 4,
+            },
+            {
+              "borderColor": "#9EA2A8",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "paddingLeft": 6,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Select a channel
+        </Text>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                {
+                  "position": "absolute",
+                  "right": 16,
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View>
+    <View
+      accessibilityLabel="0 selecteds"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "backgroundColor": "#156FF5",
+          },
+          undefined,
+          false,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        0 selecteds
+      </Text>
+    </View>
+  </View>
+  <View>
+    <View
+      accessibilityLabel="0 selecteds"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "backgroundColor": "#156FF5",
+          },
+          undefined,
+          false,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        0 selecteds
+      </Text>
+    </View>
+  </View>
+</View>
 `;
 
 exports[`Story Snapshots: Fields should match snapshot 1`] = `
 <View
   style={
-    [
-      {
-        "marginBottom": 8,
-      },
-      {
-        "justifyContent": "center",
-      },
-    ]
+    {
+      "justifyContent": "center",
+    }
   }
 >
   <Text
@@ -1159,6 +3557,91 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+          </View>
+          <View
+            accessibilityLabel="Call history"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            hitSlop={
+              {
+                "bottom": 4,
+                "left": 4,
+                "right": 4,
+                "top": 4,
+              }
+            }
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "height": 32,
+                  "justifyContent": "center",
+                  "width": 32,
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
           </View>
         </View>
         <View
@@ -1826,6 +4309,91 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
               </View>
             </View>
           </View>
+          <View
+            accessibilityLabel="Call history"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            hitSlop={
+              {
+                "bottom": 4,
+                "left": 4,
+                "right": 4,
+                "top": 4,
+              }
+            }
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "height": 32,
+                  "justifyContent": "center",
+                  "width": 32,
+                },
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#CBCED1",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
       <View
@@ -2235,6 +4803,91 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+          </View>
+          <View
+            accessibilityLabel="Call history"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            hitSlop={
+              {
+                "bottom": 4,
+                "left": 4,
+                "right": 4,
+                "top": 4,
+              }
+            }
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "height": 32,
+                  "justifyContent": "center",
+                  "width": 32,
+                },
+                {
+                  "backgroundColor": "#262931",
+                  "borderColor": "#333842",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#C1C7D0",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
           </View>
         </View>
         <View
@@ -2901,6 +5554,91 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+          </View>
+          <View
+            accessibilityLabel="Call history"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            hitSlop={
+              {
+                "bottom": 4,
+                "left": 4,
+                "right": 4,
+                "top": 4,
+              }
+            }
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "height": 32,
+                  "justifyContent": "center",
+                  "width": 32,
+                },
+                {
+                  "backgroundColor": "#262931",
+                  "borderColor": "#333842",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#C1C7D0",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
           </View>
         </View>
       </View>
@@ -3312,6 +6050,91 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
               </View>
             </View>
           </View>
+          <View
+            accessibilityLabel="Call history"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            hitSlop={
+              {
+                "bottom": 4,
+                "left": 4,
+                "right": 4,
+                "top": 4,
+              }
+            }
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "height": 32,
+                  "justifyContent": "center",
+                  "width": 32,
+                },
+                {
+                  "backgroundColor": "#0d0d0d",
+                  "borderColor": "#1f2329",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#E4E7EA",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
         <View
           style={
@@ -3977,6 +6800,91 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 </Text>
               </View>
             </View>
+          </View>
+          <View
+            accessibilityLabel="Call history"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            hitSlop={
+              {
+                "bottom": 4,
+                "left": 4,
+                "right": 4,
+                "top": 4,
+              }
+            }
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "height": 32,
+                  "justifyContent": "center",
+                  "width": 32,
+                },
+                {
+                  "backgroundColor": "#0d0d0d",
+                  "borderColor": "#1f2329",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#E4E7EA",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
           </View>
         </View>
       </View>
@@ -5349,6 +8257,91 @@ exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
         </Text>
       </View>
     </View>
+    <View
+      accessibilityLabel="Details"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      hitSlop={
+        {
+          "bottom": 4,
+          "left": 4,
+          "right": 4,
+          "top": 4,
+        }
+      }
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 8,
+            "borderWidth": 1,
+            "height": 32,
+            "justifyContent": "center",
+            "width": 32,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderColor": "#CBCED1",
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 20,
+            },
+            [
+              {
+                "lineHeight": 20,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
   </View>
   <View
     style={
@@ -5410,17 +8403,463 @@ exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
 </View>
 `;
 
+exports[`Story Snapshots: PreviewAndCallout should match snapshot 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "borderRadius": 4,
+          "borderWidth": 0.5,
+          "overflow": "hidden",
+        },
+        {
+          "backgroundColor": "#F7F8FA",
+          "borderColor": "#EBECEF",
+        },
+      ]
+    }
+  >
+    <ViewManagerAdapter_ExpoImage
+      containerViewRef={{"current":"Object"}}
+      contentFit="cover"
+      contentPosition={
+        {
+          "left": "50%",
+          "top": "50%",
+        }
+      }
+      height={160}
+      nativeViewRef={{"current":"NativeComponent"}}
+      onError={[Function]}
+      onLoad={[Function]}
+      onLoadStart={[Function]}
+      onProgress={[Function]}
+      placeholder={[]}
+      sfEffect={null}
+      source={
+        [
+          {
+            "uri": "https://picsum.photos/seed/uikit-preview/200/200",
+          },
+        ]
+      }
+      style={
+        {
+          "height": 160,
+          "width": "100%",
+        }
+      }
+      symbolSize={null}
+      symbolWeight={null}
+      transition={null}
+      width="100%"
+    />
+    <View
+      style={
+        {
+          "gap": 8,
+          "padding": 12,
+        }
+      }
+    >
+      <View>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Preview block
+        </Text>
+      </View>
+      <View>
+        <View
+          style={
+            {
+              "gap": 2,
+            }
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontVariant": [
+                    "tabular-nums",
+                  ],
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="Title, description, thumb and a context footer."
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Title, description, thumb and a context footer.
+              </Text>
+            </Text>
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "minHeight": 36,
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Preview footer"
+          numberOfLines={0}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+                "lineHeight": undefined,
+              },
+            ]
+          }
+          testID="markdown-preview-Preview footer"
+        >
+          Preview footer
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "borderLeftWidth": 4,
+          "borderRadius": 4,
+          "gap": 8,
+          "padding": 12,
+        },
+        {
+          "backgroundColor": "#D1EBFE",
+          "borderLeftColor": "#095AD2",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "marginBottom": 4,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontVariant": [
+                "tabular-nums",
+              ],
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+              "textAlignVertical": "center",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        Callout block
+      </Text>
+    </View>
+    <View>
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Info variant with a button accessory."
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Info variant with a button accessory.
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+    <View>
+      <View
+        accessibilityLabel="Got it"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            undefined,
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+            ]
+          }
+        >
+          Got it
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "borderLeftWidth": 4,
+          "borderRadius": 4,
+          "gap": 8,
+          "padding": 12,
+        },
+        {
+          "backgroundColor": "#FFC1C9",
+          "borderLeftColor": "#9B1325",
+        },
+      ]
+    }
+  >
+    <View>
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Danger variant without accessory."
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Danger variant without accessory.
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
 exports[`Story Snapshots: Section should match snapshot 1`] = `
 <View
   style={
-    [
-      {
-        "marginBottom": 8,
-      },
-      {
-        "justifyContent": "center",
-      },
-    ]
+    {
+      "justifyContent": "center",
+    }
   }
 >
   <View
@@ -5499,14 +8938,9 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
 exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
 <View
   style={
-    [
-      {
-        "marginBottom": 8,
-      },
-      {
-        "justifyContent": "center",
-      },
-    ]
+    {
+      "flexDirection": "row",
+    }
   }
 >
   <View
@@ -5622,9 +9056,7 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
         {
           "backgroundColor": "#156FF5",
         },
-        {
-          "marginBottom": 16,
-        },
+        undefined,
         false,
       ]
     }
@@ -5656,14 +9088,9 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
 exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
 <View
   style={
-    [
-      {
-        "marginBottom": 8,
-      },
-      {
-        "justifyContent": "center",
-      },
-    ]
+    {
+      "flexDirection": "row",
+    }
   }
 >
   <View
@@ -5757,8 +9184,6 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
       }
     }
     accessible={true}
-    activeUnderlayOpacity={0.105}
-    animationDuration={0}
     collapsable={false}
     focusable={true}
     onBlur={[Function]}
@@ -5773,30 +9198,22 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
     style={
       [
         {
+          "borderRadius": 4,
           "justifyContent": "center",
           "paddingHorizontal": 16,
           "paddingVertical": 14,
         },
         {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
           "backgroundColor": "#156FF5",
         },
-        {},
         undefined,
+        false,
       ]
     }
-    underlayColor="black"
   >
     <Text
       style={
         [
-          {
-            "color": "#FFFFFF",
-            "fontSize": 16,
-          },
           {
             "backgroundColor": "transparent",
             "fontFamily": "Inter",
@@ -5806,7 +9223,9 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
             "fontWeight": "500",
             "textAlign": "center",
           },
-          undefined,
+          {
+            "color": "#FFFFFF",
+          },
         ]
       }
     >
@@ -5881,14 +9300,9 @@ exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
   </View>
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <View
@@ -6188,14 +9602,9 @@ exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
   </View>
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "justifyContent": "center",
+      }
     }
   >
     <View
@@ -6438,14 +9847,9 @@ exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
 exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
 <View
   style={
-    [
-      {
-        "marginBottom": 8,
-      },
-      {
-        "justifyContent": "center",
-      },
-    ]
+    {
+      "justifyContent": "center",
+    }
   }
 >
   <View
@@ -6681,14 +10085,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
 [
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "flexDirection": "row",
+      }
     }
   >
     <View
@@ -6782,8 +10181,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
         }
       }
       accessible={true}
-      activeUnderlayOpacity={0.105}
-      animationDuration={0}
       collapsable={false}
       focusable={true}
       onBlur={[Function]}
@@ -6798,30 +10195,22 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
       style={
         [
           {
+            "borderRadius": 4,
             "justifyContent": "center",
             "paddingHorizontal": 16,
             "paddingVertical": 14,
           },
           {
-            "borderRadius": 4,
-            "marginBottom": 12,
-          },
-          {
             "backgroundColor": "#156FF5",
           },
-          {},
           undefined,
+          false,
         ]
       }
-      underlayColor="black"
     >
       <Text
         style={
           [
-            {
-              "color": "#FFFFFF",
-              "fontSize": 16,
-            },
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
@@ -6831,7 +10220,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
               "fontWeight": "500",
               "textAlign": "center",
             },
-            undefined,
+            {
+              "color": "#FFFFFF",
+            },
           ]
         }
       >
@@ -6841,14 +10232,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
   </View>,
   <View
     style={
-      [
-        {
-          "marginBottom": 8,
-        },
-        {
-          "justifyContent": "center",
-        },
-      ]
+      {
+        "flexDirection": "row",
+      }
     }
   >
     <View
@@ -6942,8 +10328,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
         }
       }
       accessible={true}
-      activeUnderlayOpacity={0.105}
-      animationDuration={0}
       collapsable={false}
       focusable={true}
       onBlur={[Function]}
@@ -6958,30 +10342,22 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
       style={
         [
           {
+            "borderRadius": 4,
             "justifyContent": "center",
             "paddingHorizontal": 16,
             "paddingVertical": 14,
           },
           {
-            "borderRadius": 4,
-            "marginBottom": 12,
-          },
-          {
             "backgroundColor": "#156FF5",
           },
-          {},
           undefined,
+          false,
         ]
       }
-      underlayColor="black"
     >
       <Text
         style={
           [
-            {
-              "color": "#FFFFFF",
-              "fontSize": 16,
-            },
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
@@ -6991,7 +10367,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
               "fontWeight": "500",
               "textAlign": "center",
             },
-            undefined,
+            {
+              "color": "#FFFFFF",
+            },
           ]
         }
       >
@@ -7005,14 +10383,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
 exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
 <View
   style={
-    [
-      {
-        "marginBottom": 8,
-      },
-      {
-        "flexDirection": "row",
-      },
-    ]
+    {
+      "flexDirection": "row",
+    }
   }
 >
   <View
@@ -7214,14 +10587,9 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
 exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
 <View
   style={
-    [
-      {
-        "marginBottom": 8,
-      },
-      {
-        "justifyContent": "center",
-      },
-    ]
+    {
+      "flexDirection": "row",
+    }
   }
 >
   <View
@@ -7307,7 +10675,6 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
           "borderWidth": 1,
           "height": 48,
           "justifyContent": "center",
-          "marginBottom": 16,
           "paddingHorizontal": 16,
         },
       ]

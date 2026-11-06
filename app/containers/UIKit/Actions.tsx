@@ -8,8 +8,10 @@ import { type IActions } from './interfaces';
 
 const styles = StyleSheet.create({
 	hidden: {
-		overflow: 'hidden',
-		height: 0
+		display: 'none'
+	},
+	elements: {
+		gap: 16
 	}
 });
 
@@ -29,7 +31,7 @@ export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
 	// This ensures hooks are always called in the same order
 	// Use View wrapper to conditionally hide elements instead of conditionally rendering
 	return (
-		<>
+		<View style={styles.elements}>
 			{elements.map((element, index) => {
 				const isVisible = !showMoreVisible || index < maxVisible;
 				const component = parser?.renderActions({ blockId, appId, ...element }, BlockContext.ACTION);
@@ -41,6 +43,6 @@ export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
 				);
 			})}
 			{shouldShowMore && showMoreVisible && <Button title={I18n.t('Show_more')} onPress={() => setShowMoreVisible(false)} />}
-		</>
+		</View>
 	);
 };

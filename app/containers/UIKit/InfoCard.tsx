@@ -54,22 +54,19 @@ const renderRowElement = (parser: IInfoCard['parser'], element: IInfoCardRow['el
 	return null;
 };
 
-const renderRowAction = (parser: IInfoCard['parser'], action: IIconButton | undefined, _appId?: string, _blockId?: string) => {
+const renderRowAction = (parser: IInfoCard['parser'], action: IIconButton | undefined, appId?: string, blockId?: string) => {
 	if (!action || !parser.icon_button) {
 		return null;
 	}
 
-	// TODO: Temporarily removed until we have call history implemented
-	return null;
-
-	// return parser.icon_button(
-	// 	{
-	// 		...action,
-	// 		appId: action.appId || appId || '',
-	// 		blockId: action.blockId || blockId || ''
-	// 	},
-	// 	BlockContext.ACTION
-	// );
+	return parser.icon_button(
+		{
+			...action,
+			appId: action.appId || appId || '',
+			blockId: action.blockId || blockId || ''
+		},
+		BlockContext.ACTION
+	);
 };
 
 export const InfoCard = ({ rows, parser, appId, blockId }: IInfoCard) => {
