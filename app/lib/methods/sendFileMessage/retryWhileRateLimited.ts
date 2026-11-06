@@ -1,4 +1,5 @@
 import { HttpError } from '../helpers/HttpError';
+import { onAbort } from '../helpers/onAbort';
 
 const MAX_UPLOAD_ATTEMPTS = 4;
 
@@ -24,7 +25,7 @@ const throwIfCancelled = (signal: AbortSignal) => {
 const waitForRetry = (signal: AbortSignal, delay: number) =>
 	new Promise<void>(resolve => {
 		const timer = setTimeout(resolve, delay);
-		signal.addEventListener('abort', () => {
+		onAbort(signal, () => {
 			clearTimeout(timer);
 			resolve();
 		});
