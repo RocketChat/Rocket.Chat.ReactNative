@@ -26,6 +26,7 @@ import { type CreateCategoryViewParams } from '../views/CreateCategoryView';
 import { type NewMessageViewParams } from '../views/NewMessageView';
 import { type CategoryRoomsViewParams } from '../views/CreateCategoryView/CategoryRoomsView';
 import { type ConfirmCategoryViewParams } from '../views/CreateCategoryView/ConfirmCategoryView';
+import { type TMessagesViewScreen } from '../views/MessagesView/messagesViewContent';
 import { type ModalStackParamList } from './MasterDetailStack/types';
 import { type TNavigation } from './stackType';
 
@@ -130,7 +131,7 @@ export type ChatsStackParamList = {
 	MessagesView: {
 		rid: string;
 		t: SubscriptionType;
-		name: string;
+		name: TMessagesViewScreen;
 	};
 	AutoTranslateView: {
 		rid: string;
