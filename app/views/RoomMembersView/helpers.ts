@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 import { LISTENER } from '~/containers/Toast';
 import { type IGetRoomRoles, type IUser, SubscriptionType, type TSubscriptionModel, type TUserModel } from '~/definitions';
 import I18n from '~/i18n';
-import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { getRoomTitle, showConfirmationAlert, showErrorAlert, showErrorAlertWithEMessage } from '~/lib/methods/helpers';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
 import log from '~/lib/methods/helpers/log';
@@ -25,6 +25,32 @@ import { type RoomTypes } from '~/lib/methods/roomTypeToApiType';
 import { emitErrorCreateDirectMessage } from '~/lib/methods/helpers/emitErrorCreateDirectMessage';
 
 export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
+
+const ELEVATED_ROLES = ['owner', 'leader', 'moderator'] as const;
+
+export type TMemberRoleGroup = (typeof ELEVATED_ROLES)[number] | 'member';
+
+const ROLE_GROUPS: TMemberRoleGroup[] = [...ELEVATED_ROLES, 'member'];
+
+const getMemberRoleGroup = (roles: string[] = []): TMemberRoleGroup =>
+	ELEVATED_ROLES.find(role => roles.includes(role)) ?? 'member';
+
+export const groupMembersByRole = <T extends { roles?: string[] }>(members: T[]): { key: TMemberRoleGroup; data: T[] }[] =>
+	ROLE_GROUPS.map(key => ({ key, data: members.filter(member => getMemberRoleGroup(member.roles) === key) })).filter(
+		group => group.data.length
+	);
+
+export const setMemberRole = <T extends { _id: string; roles?: string[] }>(
+	members: T[],
+	userId: string,
+	role: string,
+	isAdded: boolean
+): T[] =>
+	members.map(member =>
+		member._id === userId
+			? { ...member, roles: [...(member.roles ?? []).filter(memberRole => memberRole !== role), ...(isAdded ? [role] : [])] }
+			: member
+	);
 
 const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
 	goRoom({ item, isMasterDetail });
@@ -62,9 +88,8 @@ export const handleModerator = async (
 	selectedUser: TUserModel,
 	isModerator: boolean,
 	room: TSubscriptionModel,
-	username: string,
-	callback: () => Promise<void>
-): Promise<void> => {
+	username: string
+): Promise<boolean> => {
 	try {
 		await toggleRoomModerator({
 			roomId: room.rid,
@@ -81,9 +106,11 @@ export const handleModerator = async (
 				room_name: getRoomTitle(room)
 			})
 		});
-		callback();
+		return true;
 	} catch (e) {
 		log(e);
+		showErrorAlertWithEMessage(e);
+		return false;
 	}
 };
 
@@ -109,13 +136,7 @@ export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): 
 	}
 };
 
-const removeFromTeam = async (
-	selectedUser: IUser,
-	updateState: Function,
-	room: TSubscriptionModel,
-	members: TUserModel[],
-	selected?: any
-) => {
+const removeFromTeam = async (selectedUser: IUser, onRemoved: () => void, room: TSubscriptionModel, selected?: any) => {
 	try {
 		const userId = selectedUser._id;
 		const result = await removeTeamMember({
@@ -126,10 +147,7 @@ const removeFromTeam = async (
 		if (result.success) {
 			const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 			EventEmitter.emit(LISTENER, { message });
-			const newMembers = members.filter(member => member._id !== userId);
-			updateState({
-				members: newMembers
-			});
+			onRemoved();
 			Navigation.resetTo('RoomMembersView');
 		}
 	} catch (e: any) {
@@ -143,9 +161,8 @@ const removeFromTeam = async (
 
 export const handleRemoveFromTeam = async (
 	selectedUser: TUserModel,
-	updateState: Function,
-	room: TSubscriptionModel,
-	members: TUserModel[]
+	onRemoved: () => void,
+	room: TSubscriptionModel
 ): Promise<void> => {
 	try {
 		const result = await teamListRoomsOfUser({ teamId: room.teamId as string, userId: selectedUser._id });
@@ -162,14 +179,14 @@ export const handleRemoveFromTeam = async (
 					title: 'Remove_Member',
 					infoText: 'Remove_User_Team_Channels',
 					data: teamChannels,
-					nextAction: (selected: any) => removeFromTeam(selectedUser, updateState, room, members, selected),
+					nextAction: (selected: any) => removeFromTeam(selectedUser, onRemoved, room, selected),
 					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_remove'))
 				});
 			} else {
 				showConfirmationAlert({
 					message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-					onPress: () => removeFromTeam(selectedUser, updateState, room, members)
+					onPress: () => removeFromTeam(selectedUser, onRemoved, room)
 				});
 			}
 		}
@@ -177,7 +194,7 @@ export const handleRemoveFromTeam = async (
 		showConfirmationAlert({
 			message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
 			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-			onPress: () => removeFromTeam(selectedUser, updateState, room, members)
+			onPress: () => removeFromTeam(selectedUser, onRemoved, room)
 		});
 	}
 };
@@ -186,9 +203,8 @@ export const handleLeader = async (
 	selectedUser: TUserModel,
 	isLeader: boolean,
 	room: TSubscriptionModel,
-	username: string,
-	callback: () => Promise<void>
-): Promise<void> => {
+	username: string
+): Promise<boolean> => {
 	try {
 		await toggleRoomLeader({
 			roomId: room.rid,
@@ -205,9 +221,11 @@ export const handleLeader = async (
 				room_name: getRoomTitle(room)
 			})
 		});
-		callback();
+		return true;
 	} catch (e) {
 		log(e);
+		showErrorAlertWithEMessage(e);
+		return false;
 	}
 };
 
@@ -238,9 +256,8 @@ export const handleOwner = async (
 	selectedUser: TUserModel,
 	isOwner: boolean,
 	username: string,
-	room: TSubscriptionModel,
-	callback: Function
-): Promise<void> => {
+	room: TSubscriptionModel
+): Promise<boolean> => {
 	try {
 		await toggleRoomOwner({
 			roomId: room.rid,
@@ -255,8 +272,10 @@ export const handleOwner = async (
 				room_name: getRoomTitle(room)
 			})
 		});
+		return true;
 	} catch (e) {
 		log(e);
+		showErrorAlertWithEMessage(e);
+		return false;
 	}
-	callback();
 };
