@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.gson.GsonBuilder
+import chat.rocket.reactnative.conference.ConferenceCallOpenRequest
 import chat.rocket.reactnative.voip.VoipNotification
 
 /**
@@ -22,6 +23,10 @@ class NotificationIntentHandler {
          */
         @JvmStatic
         fun handleIntent(context: Context, intent: Intent) {
+            if (ConferenceCallOpenRequest.handleIntent(context, intent)) {
+                return
+            }
+
             if (VoipNotification.handleMainActivityVoipIntent(context, intent)) {
                 return
             }

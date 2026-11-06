@@ -5,6 +5,7 @@ import {
 	useContext,
 	createContext,
 	memo,
+	useState,
 	type ForwardedRef,
 	type ReactElement,
 	type ComponentType,
@@ -46,6 +47,7 @@ export type TActionSheetOptions = {
 	enableContentPanningGesture?: boolean;
 	fullContainer?: boolean;
 	hugContent?: boolean;
+	expandOnKeyboard?: boolean;
 };
 export interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;
@@ -72,24 +74,29 @@ export const withActionSheet = (Component: ComponentType<any>): typeof Component
 
 const actionSheetRef: Ref<IActionSheetProvider> = createRef();
 
-export const ActionSheetProvider = memo(({ children }: { children: ReactElement | ReactElement[] }) => {
-	const getContext = (): IActionSheetProvider => ({
-		showActionSheet: options => {
-			actionSheetRef.current?.showActionSheet(options);
-		},
-		hideActionSheet: () => {
-			actionSheetRef.current?.hideActionSheet();
-		}
-	});
+export const ActionSheetProvider = memo(
+	({ children, nested = false }: { children: ReactElement | ReactElement[]; nested?: boolean }) => {
+		const [nestedRef] = useState(() => createRef<IActionSheetProvider>());
+		const sheetRef = nested ? nestedRef : actionSheetRef;
 
-	return (
-		<Provider value={getContext()}>
-			<ActionSheet ref={actionSheetRef}>
-				<>{children}</>
-			</ActionSheet>
-		</Provider>
-	);
-});
+		const getContext = (): IActionSheetProvider => ({
+			showActionSheet: options => {
+				sheetRef.current?.showActionSheet(options);
+			},
+			hideActionSheet: () => {
+				sheetRef.current?.hideActionSheet();
+			}
+		});
+
+		return (
+			<Provider value={getContext()}>
+				<ActionSheet ref={sheetRef}>
+					<>{children}</>
+				</ActionSheet>
+			</Provider>
+		);
+	}
+);
 
 export const showActionSheetRef: IActionSheetProvider['showActionSheet'] = options => {
 	actionSheetRef?.current?.showActionSheet(options);

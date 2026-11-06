@@ -10,7 +10,7 @@ import {
 } from '@rocket.chat/media-signaling';
 import { Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
-import { registerGlobals } from 'react-native-webrtc';
+import { registerGlobals } from '@livekit/react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
 import { dequal } from 'dequal';
 
@@ -32,10 +32,12 @@ import type { ISubscription, TSubscriptionModel } from '~/definitions';
 import { getDMSubscriptionByUsername } from '~/lib/database/services/Subscription';
 import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
 import log from '~/lib/methods/helpers/log';
+import { isInConferenceCall } from '../conference/useConferenceCallStore';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
 import { requestVoipCallPermissions } from '~/lib/methods/voipCallPermissions';
 import I18n from '~/i18n';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { showAlreadyInCallAlert } from '~/lib/methods/helpers/showAlreadyInCallAlert';
 import { acceptNativeCallWithReadiness as runAcceptNativeCallGate } from './acceptNativeCall';
 
 const mediaCallLogger = new MediaCallLogger();
@@ -198,6 +200,11 @@ class MediaSessionInstance {
 		if (existingCall != null && existingCall.callId === callId) {
 			return;
 		}
+		if (isInConferenceCall()) {
+			showAlreadyInCallAlert();
+			this.endCall(callId);
+			return;
+		}
 
 		const mainCall = this.instance?.getCallData(callId);
 
@@ -234,6 +241,10 @@ class MediaSessionInstance {
 
 	public startCallByRoom = (room: TSubscriptionModel | ISubscription) => {
 		if (isInActiveVoipCall()) return;
+		if (isInConferenceCall()) {
+			showAlreadyInCallAlert();
+			return;
+		}
 		useCallStore.getState().setRoomId(room.rid ?? null);
 		const otherUserId = getUidDirectMessage(room);
 		if (otherUserId) {
@@ -248,6 +259,10 @@ class MediaSessionInstance {
 	public startCall = async (userId: string, actor: CallActorType): Promise<void> => {
 		if (isInActiveVoipCall()) {
 			throw new Error(I18n.t('VoIP_Already_In_Call'));
+		}
+		if (isInConferenceCall()) {
+			showAlreadyInCallAlert();
+			return;
 		}
 		if (isSelfUserId(userId)) {
 			mediaCallLogger.debug('[VoIP] startCall blocked: target userId matches logged-in user');

@@ -29,12 +29,23 @@ export declare type VideoConferenceType =
 	| DirectCallInstructions['type']
 	| ConferenceInstructions['type']
 	| LivechatInstructions['type'];
+export type VideoConferenceLeaveReason = 'reported' | 'timeout';
+
 export interface IVideoConferenceUser extends Pick<Required<IUser>, '_id' | 'username' | 'name' | 'avatarETag'> {
 	ts: Date;
+	joined?: boolean;
+	joinedAt?: Date;
+	declined?: boolean;
+	declinedAt?: Date;
+	leftAt?: Date;
+	leftReason?: VideoConferenceLeaveReason;
+	lastSeenAt?: Date;
+	ringingAt?: Date;
 }
 export interface IVideoConference extends IRocketChatRecord {
 	type: VideoConferenceType;
 	rid: string;
+	discussionRid?: IRoom['_id'];
 	users: IVideoConferenceUser[];
 	status: VideoConferenceStatus;
 	messages: {
@@ -84,7 +95,26 @@ export type VideoConferenceCapabilities = {
 	mic?: boolean;
 	cam?: boolean;
 	title?: boolean;
+	embedded?: boolean;
+	persistentChat?: boolean;
 };
+
+export type VideoConferenceChatAccess = {
+	rid: IRoom['_id'];
+	name: string;
+	type: IRoom['t'];
+	membersWithoutAccess: IUser['_id'][];
+	canInvite: boolean;
+};
+
+export type VideoConferenceChatAccessMode = 'invite' | 'discussion';
+
+export type VideoConferenceCallConfig = {
+	providerName: string;
+	livekit?: { serverUrl: string; token: string; roomName: string };
+};
+
+export type VideoConfCallIdProps = { callId: string };
 
 export type VideoConfStartProps = { roomId: string; title?: string; allowRinging?: boolean };
 
@@ -108,4 +138,13 @@ export type VideoConfListProps = {
 
 export type VideoConfInfoProps = { callId: string };
 
-export type VideoConfCall = VideoConference & { capabilities: VideoConferenceCapabilities };
+export type VideoConfAddParticipantsProps = { callId: string; users: string[]; ring?: boolean };
+
+export type VideoConfRingProps = { callId: string; userId: string };
+
+export type VideoConfShareChatProps = { callId: string; mode: VideoConferenceChatAccessMode };
+
+export type VideoConfCall = VideoConference & {
+	capabilities: VideoConferenceCapabilities;
+	chatAccess: VideoConferenceChatAccess;
+};

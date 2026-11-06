@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="conference_call_service_channel_name">Video conference</string>
+    <string name="conference_call_service_channel_description">Video conference in progress</string>
+    <string name="conference_call_service_title">Video conference</string>
+    <string name="conference_call_service_text">Tap to return to the call</string>
+</resources>

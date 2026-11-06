@@ -5,6 +5,7 @@ import Firebase
 import Bugsnag
 import WatchConnectivity
 import PushKit
+import livekit_react_native
 
 @UIApplicationMain
 public class AppDelegate: ExpoAppDelegate {
@@ -23,6 +24,8 @@ public class AppDelegate: ExpoAppDelegate {
     // Must run before Firebase, Bugsnag, and React Native start
     MMKVKeyManager.initialize()
     
+    LivekitReactNative.setup()
+
     FirebaseApp.configure()
     Bugsnag.start()
     ReplyNotification.configure()

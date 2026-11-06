@@ -1,7 +1,16 @@
 import { VIDEO_CONF } from '../actions/actionsTypes';
 import { type TActionVideoConf } from '../actions/videoConf';
 
-export type TSupportedCallStatus = 'call' | 'canceled' | 'accepted' | 'rejected' | 'confirmed' | 'join' | 'end' | 'calling';
+export type TSupportedCallStatus =
+	| 'call'
+	| 'ring'
+	| 'canceled'
+	| 'accepted'
+	| 'rejected'
+	| 'confirmed'
+	| 'join'
+	| 'end'
+	| 'calling';
 
 export interface ICallInfo {
 	callId: string;

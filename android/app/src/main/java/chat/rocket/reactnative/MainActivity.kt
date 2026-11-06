@@ -9,6 +9,7 @@ import android.os.Bundle
 import com.zoontek.rnbootsplash.RNBootSplash
 import android.content.Intent
 import android.content.res.Configuration
+import chat.rocket.reactnative.conference.ConferencePictureInPicture
 import chat.rocket.reactnative.notification.NotificationIntentHandler
 
 class MainActivity : ReactActivity() {
@@ -40,6 +41,16 @@ class MainActivity : ReactActivity() {
 
     // Handle notification intents when activity is already running
     NotificationIntentHandler.handleIntent(this, intent)
+  }
+
+  override fun onUserLeaveHint() {
+    super.onUserLeaveHint()
+    ConferencePictureInPicture.enterOnUserLeaveHintBeforeAndroid12(this)
+  }
+
+  override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+    super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+    ConferencePictureInPicture.notifyModeChanged(this, isInPictureInPictureMode)
   }
 
   override fun invokeDefaultOnBackPressed() {

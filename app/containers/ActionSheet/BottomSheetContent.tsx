@@ -21,7 +21,7 @@ interface IBottomSheetContentProps {
 	onLayout: ViewProps['onLayout'];
 	fullContainer?: boolean;
 	hugContent?: boolean;
-	contentMinHeight?: number;
+	fullContainerHeight?: number;
 	scrollEnabled?: boolean;
 }
 
@@ -34,13 +34,13 @@ const BottomSheetContent = memo(
 		onLayout,
 		fullContainer,
 		hugContent,
-		contentMinHeight,
+		fullContainerHeight,
 		scrollEnabled
 	}: IBottomSheetContentProps) => {
 		const { colors } = useTheme();
 		const { bottom } = useSafeAreaInsets();
 		const height = useActionSheetItemHeight();
-		const minHeightStyle = isAndroid || !contentMinHeight ? undefined : { minHeight: contentMinHeight };
+		const fullContainerHeightStyle = isAndroid || !fullContainerHeight ? undefined : { height: fullContainerHeight };
 		const paddingBottom = getSheetContentPaddingBottom({ bottom, fullContainer, hugContent, scrollEnabled });
 
 		const renderFooter = () =>
@@ -80,7 +80,7 @@ const BottomSheetContent = memo(
 		return (
 			<View
 				testID='action-sheet'
-				style={[fullContainer && !hugContent ? styles.fullContainer : undefined, minHeightStyle, { paddingBottom }]}
+				style={[fullContainer && !hugContent ? styles.fullContainer : undefined, fullContainerHeightStyle, { paddingBottom }]}
 				onLayout={onLayout}>
 				{children}
 			</View>

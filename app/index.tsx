@@ -11,7 +11,7 @@ import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
 import { ActionSheetProvider } from './containers/ActionSheet';
-import ConferenceCall from './containers/ConferenceCall';
+import ConferenceCallGuard from './containers/ConferenceCall/ConferenceCallGuard';
 import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
 import StatusBar from './containers/StatusBar';
@@ -186,7 +186,7 @@ export default class Root extends Component<{}, IState> {
 										<ScreenLockedView />
 										<ChangePasscodeView />
 										<InAppNotification />
-										<ConferenceCall />
+										<ConferenceCallGuard />
 										<Toast />
 										<Loading />
 									</ActionSheetProvider>

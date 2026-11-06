@@ -146,6 +146,8 @@ Reactions and the frequently used table store emoji by name, never glyph. An unr
 ## Video & Voice
 
 - **Video Conference**: call with status calling/started/expired/ended/declined; **Direct Video Conference** (1-on-1) or **Group Video Conference** (title, anonymous users). _Avoid:_ Video call, meeting
+- **Call Participant**: a **User** connected to a Video Conference's media session, identified by the User's `_id`; distinct from a **Room Member**. _Avoid:_ Attendee, guest
+- **Embedded Video Conference**: Video Conference whose provider reports `capabilities.embedded`; joined natively through `video-conference.callConfig` instead of a provider URL. _Avoid:_ Native call, in-app call
 - **VOIP**: phone-style call, separate from Video Conference (ICE servers, media streams). _Avoid:_ Phone call, voice call
 - **Native Accept**: incoming VOIP answered by CallKit (iOS) / Telecom (Android) before JS; native sends the REST accept, JS reconciles on launch via initial events. _Avoid:_ JS accept, app accept
 - **Per-call DDP**: short-lived native DDP client per incoming VOIP call, separate from the app DDP session. _Avoid:_ Native socket, side socket

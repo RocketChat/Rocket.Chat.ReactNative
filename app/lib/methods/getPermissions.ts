@@ -70,7 +70,8 @@ export const SUPPORTED_PERMISSIONS = [
 	'mention-all',
 	'mention-here',
 	'allow-internal-voice-calls',
-	'allow-external-voice-calls'
+	'allow-external-voice-calls',
+	'videoconf-ring-users'
 ] as const;
 
 export async function setPermissions(): Promise<void> {

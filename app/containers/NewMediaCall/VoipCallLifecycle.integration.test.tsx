@@ -83,7 +83,7 @@ jest.mock('~/lib/store/auxStore', () => ({
 		subscribe: jest.fn(() => jest.fn())
 	}
 }));
-jest.mock('react-native-webrtc', () => ({
+jest.mock('@livekit/react-native-webrtc', () => ({
 	registerGlobals: jest.fn(),
 	mediaDevices: { getUserMedia: jest.fn() }
 }));
