@@ -72,6 +72,10 @@ export class Upload {
 				reject(new Error('Network Error'));
 			};
 
+			this.xhr.ontimeout = () => {
+				reject(new Error('Upload timed out'));
+			};
+
 			this.xhr.onabort = () => {
 				if (this.isCancelled) {
 					reject(new Error('Upload Cancelled'));
