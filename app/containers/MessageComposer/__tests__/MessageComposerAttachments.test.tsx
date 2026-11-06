@@ -44,19 +44,28 @@ mockedStore.dispatch(addSettings({ Message_AudioRecorderEnabled: true }));
 initStore(mockedStore);
 
 const Render = ({
-	context,
+	onSendMessage,
+	editRequest,
 	store,
 	children,
 	forwardedRef
 }: {
-	context?: Partial<TComposerExternalState>;
+	onSendMessage?: TComposerExternalState['onSendMessage'];
+	editRequest?: TComposerExternalState['editRequest'];
 	store?: TMessageActionStore;
 	children?: ReactElement;
 	forwardedRef?: RefObject<IMessageComposerRef | null>;
 }) => (
 	<Provider store={mockedStore}>
 		<MessageActionProvider store={store}>
-			<ComposerProvider rid='rid' t='d' tmid={undefined} roomTitle='Rocket Chat' sharing={false} {...context}>
+			<ComposerProvider
+				rid='rid'
+				t='d'
+				tmid={undefined}
+				roomTitle='Rocket Chat'
+				sharing={false}
+				onSendMessage={onSendMessage}
+				editRequest={editRequest}>
 				<MessageComposerContainer ref={forwardedRef}>
 					<>
 						<ComposerAttachments />
@@ -150,7 +159,7 @@ describe('MessageComposer attachments', () => {
 	test('sends composer attachments from the room instead of delegating to onSendMessage', async () => {
 		const onSendMessage = jest.fn();
 		render(
-			<Render context={{ onSendMessage }}>
+			<Render onSendMessage={onSendMessage}>
 				<AttachmentSeeder attachments={[attachment]} />
 			</Render>
 		);
@@ -276,7 +285,7 @@ describe('MessageComposer attachments', () => {
 		const editRequest = jest.fn();
 		const skipped = { ...attachment, canUpload: false } as IShareAttachment;
 		render(
-			<Render context={{ editRequest }} store={createMessageActionStore({ kind: 'edit', messageId: 'edited' })}>
+			<Render editRequest={editRequest} store={createMessageActionStore({ kind: 'edit', messageId: 'edited' })}>
 				<AttachmentSeeder attachments={[skipped]} />
 			</Render>
 		);
