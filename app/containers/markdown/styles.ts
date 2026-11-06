@@ -123,21 +123,6 @@ export default StyleSheet.create({
 		width: 2,
 		marginRight: 5
 	},
-	touchableTable: {
-		justifyContent: 'center'
-	},
-	containerTable: {
-		borderBottomWidth: 1,
-		borderRightWidth: 1
-	},
-	table: {
-		borderLeftWidth: 1,
-		borderTopWidth: 1
-	},
-	tableExtraBorders: {
-		borderBottomWidth: 1,
-		borderRightWidth: 1
-	},
 	tableContent: {
 		minWidth: '100%'
 	},
@@ -160,9 +145,6 @@ export default StyleSheet.create({
 		flexShrink: 0,
 		justifyContent: 'center',
 		padding: 8
-	},
-	cellRightBorder: {
-		borderRightWidth: 1
 	},
 	cellAlignCenter: {
 		alignItems: 'center'
