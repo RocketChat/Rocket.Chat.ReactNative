@@ -84,6 +84,8 @@ class DB {
 		}) as TServerDatabase
 	};
 
+	private activeDBListeners = new Set<() => void>();
+
 	get active(): TAppDatabase {
 		return this.databases.activeDB!;
 	}
@@ -94,7 +96,15 @@ class DB {
 
 	setActiveDB(database: string) {
 		this.databases.activeDB = getDatabase(database) as TAppDatabase;
+		this.activeDBListeners.forEach(listener => listener());
 	}
+
+	subscribeToActiveDB = (listener: () => void) => {
+		this.activeDBListeners.add(listener);
+		return () => {
+			this.activeDBListeners.delete(listener);
+		};
+	};
 }
 
 const db = new DB();
