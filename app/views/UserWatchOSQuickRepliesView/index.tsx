@@ -1,6 +1,7 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { shallowEqual } from 'react-redux';
 
 import I18n from '~/i18n';
 import SafeAreaView from '~/containers/SafeAreaView';
@@ -12,7 +13,7 @@ import { useUserPreferences } from '~/lib/methods/userPreferences';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { getQuickRepliesKey } from '~/lib/methods/watchOSQuickReplies/getQuickRepliesKey';
 import { getQuickRepliesLimits } from '~/lib/methods/watchOSQuickReplies/getQuickRepliesLimits';
-import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncWatchOSQuickReplies';
+import { saveWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/saveWatchOSQuickReplies';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
@@ -23,9 +24,8 @@ interface IUserWatchOSQuickRepliesViewProps {
 
 const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesViewProps): JSX.Element => {
 	const server = useAppSelector(state => state.server.server);
-	const settings = useAppSelector(state => state.settings);
-	const { max, maxLength } = getQuickRepliesLimits(settings);
-	const [quickReplies = [], setQuickReplies] = useUserPreferences<string[]>(getQuickRepliesKey(server), []);
+	const { max, maxLength } = useAppSelector(state => getQuickRepliesLimits(state.settings), shallowEqual);
+	const [quickReplies = []] = useUserPreferences<string[]>(getQuickRepliesKey(server), []);
 	const [input, setInput] = useState<string>('');
 	const { colors } = useTheme();
 
@@ -36,9 +36,10 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 	}, [navigation]);
 
 	const removeQuickReply = (reply: string) => {
-		const newReplies = quickReplies.filter(quickreply => quickreply !== reply);
-		setQuickReplies(newReplies);
-		syncWatchOSQuickReplies(server);
+		saveWatchOSQuickReplies(
+			server,
+			quickReplies.filter(quickreply => quickreply !== reply)
+		);
 	};
 
 	const addQuickReply = () => {
@@ -49,8 +50,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 				showToast(I18n.t('Quick_replies_limit_reached', { max }));
 				return;
 			}
-			setQuickReplies([...quickReplies, value]);
-			syncWatchOSQuickReplies(server);
+			saveWatchOSQuickReplies(server, [...quickReplies, value]);
 		}
 		setInput('');
 	};
@@ -94,7 +94,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 							icon: 'delete',
 							onPress: () => removeQuickReply(item),
 							testID: `watchos-quick-reply-${item}-delete`,
-							accessibilityLabel: I18n.t('Delete')
+							accessibilityLabel: `${I18n.t('Delete')} ${item}`
 						}}
 					/>
 				)}

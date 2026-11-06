@@ -125,14 +125,15 @@ describe('removeServerData', () => {
 		serverKeys(SERVER).forEach(key => expect(UserPreferences.getString(key)).toBeNull());
 	});
 
-	it('clears the per-server keys and the watch replies even when the server record lookup fails', async () => {
+	it('keeps the credentials but clears the watch replies when the server record lookup fails', async () => {
 		seedServer(SERVER, USER_ID);
 		jest.mocked(database.servers.get).mockReturnValue({ find: jest.fn(() => Promise.reject(new Error('not found'))) } as any);
 
 		await removeServerData({ server: SERVER });
 
-		serverKeys(SERVER).forEach(key => expect(UserPreferences.getString(key)).toBeNull());
-		expect(UserPreferences.getString(tokenKey(USER_ID))).toBeNull();
+		expect(UserPreferences.getString(tokenKey(USER_ID))).toBe(`token-${USER_ID}`);
+		expect(UserPreferences.getString(getBasicAuthKey(SERVER))).toBe(`value-for-${getBasicAuthKey(SERVER)}`);
+		expect(UserPreferences.getString(NativeWatchModule!.getQuickRepliesKey(SERVER))).toBeNull();
 		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith(SERVER);
 	});
 

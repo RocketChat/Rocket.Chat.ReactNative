@@ -1,6 +1,7 @@
 import type { TSettingsState } from '~/reducers/settings';
 import UserPreferences from '../userPreferences';
 import { syncWatchOSQuickReplies } from './syncWatchOSQuickReplies';
+import { saveWatchOSQuickReplies } from './saveWatchOSQuickReplies';
 import { getQuickRepliesKey } from './getQuickRepliesKey';
 import { getQuickRepliesLimits } from './getQuickRepliesLimits';
 
@@ -18,7 +19,10 @@ export const syncWatchOSQuickRepliesWithServer = (server: string, settings: TSet
 					.filter(Boolean)
 			)
 		].slice(0, max);
-		if (replies.length) UserPreferences.setMap(quickRepliesMMKVKey, replies);
+		if (replies.length) {
+			saveWatchOSQuickReplies(server, replies);
+			return;
+		}
 	}
 	syncWatchOSQuickReplies(server);
 };

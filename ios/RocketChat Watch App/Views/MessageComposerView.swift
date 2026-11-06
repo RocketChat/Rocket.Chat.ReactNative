@@ -20,9 +20,7 @@ struct MessageComposerView: View {
 					Spacer()
 				}
 				
-				Color.clear
-					.frame(height: 1)
-					.id(anchorID)
+				anchor
 			}
 		} else {
 			VStack(alignment: .leading, spacing: 4) {
@@ -30,9 +28,7 @@ struct MessageComposerView: View {
 					.submitLabel(.send)
 					.onSubmit(send)
 				
-				Color.clear
-					.frame(height: 1)
-					.id(anchorID)
+				anchor
 				
 				if !server.quickReplies.isEmpty {
 					VStack(spacing: 6) {
@@ -60,6 +56,13 @@ struct MessageComposerView: View {
 		}
 	}
 	
+	private var anchor: some View {
+		Color.clear
+			.frame(height: 1)
+			.id(anchorID)
+			.anchorPreference(key: BottomAnchorBoundsKey.self, value: .bounds) { $0 }
+	}
+	
 	func send() {
 		guard !message.isEmpty else {
 			return
@@ -67,5 +70,13 @@ struct MessageComposerView: View {
 		
 		onSend(message)
 		message = ""
+	}
+}
+
+struct BottomAnchorBoundsKey: PreferenceKey {
+	static let defaultValue: Anchor<CGRect>? = nil
+	
+	static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
+		value = value ?? nextValue()
 	}
 }

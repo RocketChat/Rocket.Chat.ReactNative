@@ -75,6 +75,13 @@ describe('UserWatchOSQuickRepliesView', () => {
 		expect(syncWatchOSQuickReplies).toHaveBeenCalledWith(server);
 	});
 
+	it('names the reply in the label of its delete action', () => {
+		UserPreferences.setString(key, JSON.stringify(['Yes', 'No']));
+		const { getByTestId } = renderView();
+
+		expect(getByTestId('watchos-quick-reply-No-delete').props.accessibilityLabel).toBe(`${I18n.t('Delete')} No`);
+	});
+
 	it('keeps a reply when its row is tapped', () => {
 		const { getByTestId } = renderView();
 

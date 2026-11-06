@@ -16,7 +16,7 @@ struct MessageListView: View {
 	@State private var lastOpen: Date?
 	@State private var info: Room?
 	@State private var followsLiveTail = true
-	@State private var positionedCount = 0
+	@State private var isPositioned = false
 	
 	@Environment(\.scenePhase) private var scenePhase
 	
@@ -51,7 +51,6 @@ struct MessageListView: View {
 							Button("Load more...") {
 								guard let oldestMessage = room.firstMessage?.ts else { return }
 								
-								followsLiveTail = false
 								messagesLoader.loadMore(from: oldestMessage)
 							}
 							.padding(.bottom, 8)
@@ -89,16 +88,22 @@ struct MessageListView: View {
 						.id(messageComposer)
 						.padding(.top, 8)
 					}
-					.opacity(positionedCount == 0 && messages.count > 0 ? 0 : 1)
+					.opacity(!isPositioned && messages.count > 0 ? 0 : 1)
 					.onAppear {
-						positionedCount = messages.count
+						isPositioned = messages.count > 0
 						scrollToBottom(proxy: proxy)
 					}
 					.onChange(of: messages.count) { count in
-						positionedCount = count
+						isPositioned = count > 0
 						if followsLiveTail {
 							scrollToBottom(proxy: proxy)
 						}
+					}
+				}
+				.backgroundPreferenceValue(BottomAnchorBoundsKey.self) { anchorBounds in
+					GeometryReader { viewport in
+						let isAnchorOnScreen = anchorBounds.map { isOnScreen(viewport[$0], in: viewport.size) } ?? false
+						Color.clear.onChange(of: isAnchorOnScreen) { followsLiveTail = $0 }
 					}
 				}
 			}
@@ -139,6 +144,10 @@ struct MessageListView: View {
 				break
 			}
 		}
+	}
+	
+	private func isOnScreen(_ frame: CGRect, in viewport: CGSize) -> Bool {
+		frame.minY < viewport.height && frame.maxY > 0
 	}
 	
 	private func scrollToBottom(proxy: ScrollViewProxy) {
