@@ -63,10 +63,6 @@ export default StyleSheet.create({
 		alignItems: 'flex-start',
 		justifyContent: 'flex-start'
 	},
-	inlineImage: {
-		width: 300,
-		height: 300
-	},
 	codeInline: {
 		fontSize: 16,
 		lineHeight: 22,
@@ -127,20 +123,19 @@ export default StyleSheet.create({
 		width: 2,
 		marginRight: 5
 	},
-	touchableTable: {
-		justifyContent: 'center'
+	tableContent: {
+		minWidth: '100%'
 	},
-	containerTable: {
-		borderBottomWidth: 1,
-		borderRightWidth: 1
+	tableContainer: {
+		flexGrow: 1,
+		marginVertical: 4,
+		borderWidth: 1,
+		borderRadius: 4,
+		overflow: 'hidden'
 	},
-	table: {
-		borderLeftWidth: 1,
-		borderTopWidth: 1
-	},
-	tableExtraBorders: {
-		borderBottomWidth: 1,
-		borderRightWidth: 1
+	tableText: {
+		fontSize: 14,
+		lineHeight: 20
 	},
 	row: {
 		flexDirection: 'row'
@@ -149,12 +144,16 @@ export default StyleSheet.create({
 		borderBottomWidth: 1
 	},
 	cell: {
-		justifyContent: 'flex-start',
-		paddingHorizontal: 13,
-		paddingVertical: 6
+		flexGrow: 1,
+		flexShrink: 0,
+		justifyContent: 'center',
+		padding: 8
 	},
-	cellRightBorder: {
-		borderRightWidth: 1
+	cellAlignCenter: {
+		alignItems: 'center'
+	},
+	cellAlignRight: {
+		alignItems: 'flex-end'
 	},
 	alignCenter: {
 		textAlign: 'center'
