@@ -169,7 +169,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 				username: remoteContact?.username,
 				sipExtension: remoteContact?.sipExtension
 			},
-			callStartTime: call.state === 'active' ? Date.now() : null,
+			callStartTime: call.state === 'active' ? (call.activeTimestamp?.getTime() ?? Date.now()) : null,
 			escalated: call.escalated
 		});
 
@@ -241,16 +241,29 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			Navigation.back();
 		};
 
+		// Another session of this user took the call over; it goes on there.
+		const handleHidden = () => {
+			const { callId } = get();
+			get().resetNativeCallId();
+			get().reset();
+			if (callId) {
+				terminateNativeCall(callId);
+			}
+			Navigation.back();
+		};
+
 		call.emitter.on('stateChange', handleStateChange);
 		call.emitter.on('trackStateChange', handleTrackStateChange);
 		call.emitter.on('ended', handleEnded);
 		call.emitter.on('escalated', handleEscalated);
+		call.emitter.on('hidden', handleHidden);
 
 		callListenersCleanup = () => {
 			call.emitter.off('stateChange', handleStateChange);
 			call.emitter.off('trackStateChange', handleTrackStateChange);
 			call.emitter.off('ended', handleEnded);
 			call.emitter.off('escalated', handleEscalated);
+			call.emitter.off('hidden', handleHidden);
 		};
 	},
 

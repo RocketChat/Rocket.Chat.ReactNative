@@ -37,6 +37,8 @@ jest.mock('~/containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHe
 
 jest.mock('~/views/RoomView/hooks/useRoomActionsState', () => ({ useRoomActionsState: jest.fn() }));
 jest.mock('~/views/RoomView/hooks/useHeaderCallPress', () => ({ useHeaderCallPress: jest.fn() }));
+jest.mock('~/lib/services/voip/MediaSessionInstance', () => ({ mediaSessionInstance: { takeOverCall: jest.fn() } }));
+jest.mock('~/lib/services/voip/useCanTakeOverCall', () => ({ useCanTakeOverCall: () => false }));
 
 const mockActionsStore = createStore<{ roomActions: IHeaderAction[] }>(() => ({
 	roomActions: [{ label: 'Threads', icon: 'threads', onPress: jest.fn() }]

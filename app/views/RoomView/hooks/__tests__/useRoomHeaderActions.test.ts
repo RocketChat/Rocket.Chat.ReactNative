@@ -69,6 +69,8 @@ const mockMediaCall = {
 	isInActiveCall: false
 };
 jest.mock('~/lib/hooks/useNewMediaCall', () => ({ useNewMediaCall: () => mockMediaCall }));
+jest.mock('~/lib/services/voip/MediaSessionInstance', () => ({ mediaSessionInstance: { takeOverCall: jest.fn() } }));
+jest.mock('~/lib/services/voip/useCanTakeOverCall', () => ({ useCanTakeOverCall: () => false }));
 
 const roomStore = {} as RoomStore;
 
