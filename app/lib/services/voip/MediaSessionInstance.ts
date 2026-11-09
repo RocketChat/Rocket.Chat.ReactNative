@@ -156,34 +156,15 @@ class MediaSessionInstance {
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
-			if (call && !call.hidden) {
+			if (!call) {
+				return;
+			}
+			call.emitter.on('takenOver', () => this.bindTakenOverCall(call));
+			if (!call.hidden) {
 				if (call.localParticipant.role === 'caller') {
 					useCallStore.getState().setCall(call);
 					useCallStore.getState().setDirection('outgoing');
-					// Outgoing calls don't go through VoipNotification, so the FGS that the incoming
-					// path starts after Telecom-accept doesn't exist here. Start it now (we're on the
-					// JS thread that ran startCall, the initiating activity is still visible) so the
-					// while-in-use microphone permission survives the user backgrounding the app
-					// while the call is in progress.
-					// Navigation is gated on the FGS resolving so a rejection doesn't strand the user
-					// on a `CallView` whose `'ended'` listener has already been detached by `endCall` →
-					// `useCallStore.reset()` before the async `hangup()` could fire `Navigation.back()`.
-					if (Platform.OS === 'android') {
-						NativeVoipModule.startVoipCallService(call.callId)
-							.then(() => Navigation.navigate('CallView'))
-							.catch(error => {
-								log(error);
-								showErrorAlert(I18n.t('VoIP_Call_Issue'), I18n.t('Oops'));
-								this.endCall(call.callId);
-							});
-					} else {
-						Navigation.navigate('CallView');
-					}
-					if (useCallStore.getState().roomId == null) {
-						this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
-							log(error);
-						});
-					}
+					this.presentBoundCall(call);
 				}
 
 				call.emitter.on('ended', () => {
@@ -192,6 +173,66 @@ class MediaSessionInstance {
 			}
 		});
 	}
+
+	/** Shows a call that started on this device, or that this device took over, without going through VoipNotification. */
+	private presentBoundCall(call: IClientMediaCall): void {
+		// Outgoing calls don't go through VoipNotification, so the FGS that the incoming
+		// path starts after Telecom-accept doesn't exist here. Start it now (we're on the
+		// JS thread that ran startCall, the initiating activity is still visible) so the
+		// while-in-use microphone permission survives the user backgrounding the app
+		// while the call is in progress.
+		// Navigation is gated on the FGS resolving so a rejection doesn't strand the user
+		// on a `CallView` whose `'ended'` listener has already been detached by `endCall` →
+		// `useCallStore.reset()` before the async `hangup()` could fire `Navigation.back()`.
+		if (Platform.OS === 'android') {
+			NativeVoipModule.startVoipCallService(call.callId)
+				.then(() => Navigation.navigate('CallView'))
+				.catch(error => {
+					log(error);
+					showErrorAlert(I18n.t('VoIP_Call_Issue'), I18n.t('Oops'));
+					this.endCall(call.callId);
+				});
+		} else {
+			Navigation.navigate('CallView');
+		}
+		if (useCallStore.getState().roomId == null) {
+			this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
+				log(error);
+			});
+		}
+	}
+
+	private bindTakenOverCall(call: IClientMediaCall): void {
+		useCallStore.getState().setCall(call);
+		useCallStore.getState().setDirection(call.localParticipant.role === 'caller' ? 'outgoing' : 'incoming');
+		this.presentBoundCall(call);
+		call.emitter.on('ended', () => {
+			terminateNativeCall(call.callId);
+		});
+	}
+
+	/** Moves the call that another session of this user is carrying to this device. */
+	public takeOverCall = async (): Promise<void> => {
+		if (isInActiveVoipCall()) {
+			return;
+		}
+		if (!this.instance) {
+			showErrorAlert(I18n.t('VoIP_Still_Connecting'), I18n.t('Oops'));
+			return;
+		}
+		const granted = await requestVoipCallPermissions();
+		if (!granted) {
+			showErrorAlert(
+				I18n.t('Go_to_your_device_settings_and_allow_microphone'),
+				I18n.t('Microphone_access_needed_to_record_audio')
+			);
+			return;
+		}
+		if (isInActiveVoipCall() || !this.instance?.canTakeOverCall()) {
+			return;
+		}
+		this.instance.takeOverCall();
+	};
 
 	public answerCall = async (callId: string) => {
 		const { call: existingCall } = useCallStore.getState();
@@ -276,7 +317,8 @@ class MediaSessionInstance {
 	public endCall = (callId: string) => {
 		const mainCall = this.instance?.getCallData(callId);
 
-		if (mainCall && mainCall.callId === callId) {
+		// A hidden call is carried by another session (e.g. one that just took it over); ending the native call must not hang it up.
+		if (mainCall && mainCall.callId === callId && !mainCall.hidden) {
 			// Record before dispatching so a hangup written into a dead socket is replayed on reconnect.
 			pendingHangups.record(callId);
 

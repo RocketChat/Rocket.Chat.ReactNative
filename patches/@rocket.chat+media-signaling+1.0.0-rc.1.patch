@@ -1,0 +1,216 @@
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/call/CallEvents.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/call/CallEvents.d.ts
+index 92933c8..311b1d1 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/call/CallEvents.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/call/CallEvents.d.ts
+@@ -11,6 +11,7 @@ export type CallEvents = {
+     accepted: void;
+     active: void;
+     hidden: void;
++    takenOver: void;
+     ended: void;
+     screenShareRequestChange: boolean;
+     streamChange: void;
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.d.ts
+index 8965e17..f030918 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.d.ts
+@@ -9,7 +9,7 @@ export type CallState = 'none' | 'ringing' | 'accepted' | 'active' | 'renegotiat
+ export type CallHangupReason = 'normal' | 'remote' | 'rejected' | 'unavailable' | 'transfer' | 'not-answered' | 'timeout-remote-sdp' | 'timeout-local-sdp' | 'timeout-activation' | 'timeout' | 'signaling-error' | 'service-error' | 'media-error' | 'input-error' | 'error' | 'unknown' | 'another-client';
+ export declare const callAnswerList: readonly ["accept", "reject", "ack", "unavailable"];
+ export type CallAnswer = (typeof callAnswerList)[number];
+-export type CallNotification = 'accepted' | 'active' | 'hangup' | 'trying';
++export type CallNotification = 'accepted' | 'active' | 'hangup' | 'trying' | 'session-changed';
+ export type CallRejectedReason = 'invalid-call-id' | 'invalid-contract-id' | 'existing-call-id' | 'already-requested' | 'unsupported' | 'unavailable' | 'busy' | 'invalid-call-params' | 'forbidden';
+ export type CallFlag = 'internal' | 'create-data-channel';
+ export interface IClientMediaCall {
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/Call.d.ts b/node_modules/@rocket.chat/media-signaling/dist/lib/Call.d.ts
+index fd161f8..f032dfb 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/Call.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/Call.d.ts
+@@ -115,6 +115,10 @@ export declare class ClientMediaCall implements IClientMediaCall {
+         type: CallActorType;
+         id: string;
+     }): void;
++    /** Whether this call is happening on another session of the same user and may be moved to this one */
++    canBeTakenOver(): boolean;
++    /** Asks the server to move this call from the session that carries it to this session */
++    takeOver(): void;
+     hangup(reason?: CallHangupReason): void;
+     isPendingAcceptance(): boolean;
+     isPendingOurAcceptance(): boolean;
+@@ -149,6 +153,10 @@ export declare class ClientMediaCall implements IClientMediaCall {
+     protected processEarlySignals(): Promise<void>;
+     protected acknowledge(): void;
+     private processNotification;
++    private processSessionChange;
++    private acquireContract;
++    private releaseContract;
++    private resetWebRTC;
+     private flagAsAccepted;
+     private flagAsEnded;
+     private addStateTimeout;
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/Call.js b/node_modules/@rocket.chat/media-signaling/dist/lib/Call.js
+index fe272b5..7bfdfd4 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/Call.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/Call.js
+@@ -500,6 +500,24 @@ export class ClientMediaCall {
+             to: callee,
+         });
+     }
++    /** Whether this call is happening on another session of the same user and may be moved to this one */
++    canBeTakenOver() {
++        return (this.contractState === 'ignored' &&
++            !this._ignored &&
++            this.hasRemoteData &&
++            this._service === 'webrtc' &&
++            this._state === 'active' &&
++            !this.isOver());
++    }
++    /** Asks the server to move this call from the session that carries it to this session */
++    takeOver() {
++        var _a;
++        if (!this.canBeTakenOver()) {
++            return;
++        }
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.takeOver');
++        this.config.transporter.sendToServer(this.callId, 'take-over', { supportedFeatures: this.config.supportedFeatures });
++    }
+     hangup(reason = 'normal') {
+         var _a;
+         (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.hangup', reason);
+@@ -894,9 +912,64 @@ export class ClientMediaCall {
+                     break;
+                 case 'hangup':
+                     return this.flagAsEnded('remote');
++                case 'session-changed':
++                    return this.processSessionChange(signal);
+             }
+         });
+     }
++    processSessionChange({ signedContractId, features }) {
++        var _a;
++        if (!signedContractId || this.isOver()) {
++            return;
++        }
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.processSessionChange', signedContractId);
++        if (features) {
++            this.enabledFeatures = features;
++        }
++        if (signedContractId === this.config.sessionId) {
++            this.acquireContract();
++            return;
++        }
++        this.releaseContract();
++    }
++    /** This session now carries the call: the media is renegotiated from scratch on a connection of its own */
++    acquireContract() {
++        var _a;
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.acquireContract');
++        this.resetWebRTC();
++        this.acceptedLocally = true;
++        try {
++            this.requireWebRTC();
++        }
++        catch (_b) {
++            this.hangup('error');
++            return;
++        }
++        this.updateClientState();
++        this.emitter.emit('takenOver');
++        this.reportStates();
++    }
++    /** Another session now carries the call: stop the media here without ending the call */
++    releaseContract() {
++        var _a;
++        if (!this.signed) {
++            return;
++        }
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.releaseContract');
++        this.contractState = 'ignored';
++        this.clearStateTimeouts();
++        this.resetWebRTC();
++        this.emitter.emit('hidden');
++        this.updateClientState();
++    }
++    resetWebRTC() {
++        var _a;
++        (_a = this.webrtcProcessor) === null || _a === void 0 ? void 0 : _a.stop();
++        this.webrtcProcessor = null;
++        this.sentLocalSdp = false;
++        this.receivedRemoteSdp = false;
++        this.negotiationManager = new NegotiationManager(this, { logger: this.config.logger });
++    }
+     flagAsAccepted(enabledFeatures) {
+         return __awaiter(this, void 0, void 0, function* () {
+             var _a, _b;
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/Session.d.ts b/node_modules/@rocket.chat/media-signaling/dist/lib/Session.d.ts
+index d18661c..4e12b0f 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/Session.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/Session.d.ts
+@@ -63,6 +63,10 @@ export declare class MediaSignalingSession extends Emitter<MediaSignalingEvents>
+     getState(skipLocal?: boolean): (AnyMediaCallData & {
+         call: IClientMediaCall;
+     }) | null;
++    /** Whether the main call is happening on another session of this user and may be moved to this one */
++    canTakeOverCall(): boolean;
++    /** Moves the main call from the session that carries it to this session */
++    takeOverCall(): void;
+     private getMainCall;
+     processSignal(signal: ServerMediaSignal): Promise<void>;
+     private processSessionSignal;
+@@ -106,6 +110,7 @@ export declare class MediaSignalingSession extends Emitter<MediaSignalingEvents>
+     private onAcceptingCall;
+     private onTrackStateChange;
+     private onEndedCall;
++    private onCallTakenOver;
+     private onHiddenCall;
+     private onActiveCall;
+     private onScreenShareRequestChange;
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/Session.js b/node_modules/@rocket.chat/media-signaling/dist/lib/Session.js
+index 676d423..4be54af 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/Session.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/Session.js
+@@ -87,6 +87,19 @@ export class MediaSignalingSession extends Emitter {
+         const state = call.callStateData;
+         return Object.assign(Object.assign({}, state), { call });
+     }
++    /** Whether the main call is happening on another session of this user and may be moved to this one */
++    canTakeOverCall() {
++        var _a;
++        return Boolean((_a = this.getMainCall(false)) === null || _a === void 0 ? void 0 : _a.canBeTakenOver());
++    }
++    /** Moves the main call from the session that carries it to this session */
++    takeOverCall() {
++        const call = this.getMainCall(false);
++        if (!(call === null || call === void 0 ? void 0 : call.canBeTakenOver())) {
++            throw new Error('No call to take over.');
++        }
++        call.takeOver();
++    }
+     getMainCall(skipLocal = false) {
+         let ringingCall = null;
+         let pendingCall = null;
+@@ -499,6 +512,7 @@ export class MediaSignalingSession extends Emitter {
+         call.emitter.on('accepted', () => this.onAcceptedCall(call));
+         call.emitter.on('accepting', () => this.onAcceptingCall(call));
+         call.emitter.on('hidden', () => this.onHiddenCall(call));
++        call.emitter.on('takenOver', () => this.onCallTakenOver(call));
+         call.emitter.on('active', () => this.onActiveCall(call));
+         call.emitter.on('ended', () => this.onEndedCall(call));
+         call.emitter.on('screenShareRequestChange', (requested) => this.onScreenShareRequestChange(call, requested));
+@@ -551,6 +565,15 @@ export class MediaSignalingSession extends Emitter {
+         this.ignoreCall(call.callId);
+         this.onSessionStateChange();
+     }
++    onCallTakenOver(call) {
++        var _a;
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('MediaSignalingSession.onCallTakenOver');
++        // A call that was hidden never received the input track, even if the session already has one
++        if (this.inputTrack) {
++            void call.setInputTrack(this.inputTrack).catch(() => null);
++        }
++        this.onSessionStateChange();
++    }
+     onHiddenCall(_call) {
+         var _a;
+         (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('MediaSignalingSession.onHiddenCall');

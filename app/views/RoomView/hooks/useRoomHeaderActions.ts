@@ -8,10 +8,13 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useCanReturnQueue } from '~/ee/omnichannel/hooks/useCanReturnQueue';
 import { useSetting } from '~/lib/hooks/useSetting';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
-import { events, logEvent } from '~/lib/methods/helpers/log';
+import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { type IHeaderAction, type IHeaderMenuItem } from '~/lib/methods/helpers/navigation/headerActions';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
 import { returnLivechat } from '~/lib/services/restApi';
+import { mediaSessionInstance } from '~/lib/services/voip/MediaSessionInstance';
+import { useCanTakeOverCall } from '~/lib/services/voip/useCanTakeOverCall';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import { getUnreadStyle } from '~/containers/UnreadBadge/getUnreadStyle';
@@ -127,6 +130,18 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 		threadsAccessibilityLabel
 	} = useRoomActionsState(rid, roomStore);
 	const { callPresent, isCallDisabled, onPressCall } = useHeaderCallPress(rid);
+	const userId = useAppSelector(state => getUserSelector(state).id);
+	const dmPeerUserId = useStore(roomStore, s => (s.room.t === 'd' ? getUidDirectMessage(s.room, userId) : null));
+	const canTakeOverCall = useCanTakeOverCall(dmPeerUserId);
+
+	const takeOverCallAction: IHeaderAction = {
+		label: i18n.t('Continue_call_here'),
+		icon: 'phone-in',
+		testID: 'room-view-header-take-over-call',
+		onPress: () => {
+			mediaSessionInstance.takeOverCall().catch(log);
+		}
+	};
 
 	const threadsAction: IHeaderAction = {
 		label: threadsAccessibilityLabel,
@@ -197,7 +212,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 		menu
 	};
 
-	return threadsEnabled ? [threadsAction, moreAction] : [moreAction];
+	return [...(canTakeOverCall ? [takeOverCallAction] : []), ...(threadsEnabled ? [threadsAction] : []), moreAction];
 };
 
 export const useRoomHeaderMode = (tmid: string | undefined, roomStore: RoomStore): TRoomHeaderMode => {
