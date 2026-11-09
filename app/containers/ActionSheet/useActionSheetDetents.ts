@@ -23,6 +23,29 @@ export const getSheetContentPaddingBottom = ({
 	Math.max(SHEET_CONTENT_MIN_BOTTOM_PADDING, bottom) +
 	(isAndroid && fullContainer && !hugContent && !scrollEnabled ? HANDLE_HEIGHT : 0);
 
+// Android grows the sheet by the keyboard height but clamps it at maxHeight, so the keyboard would eat the content area
+export const getKeyboardAwareHeights = ({
+	maxHeight,
+	windowHeight,
+	topInset,
+	keyboardHeight,
+	keyboardShown,
+	hugContent
+}: {
+	maxHeight: number;
+	windowHeight: number;
+	topInset: number;
+	keyboardHeight: number;
+	keyboardShown: boolean;
+	hugContent?: boolean;
+}): { sheetMaxHeight: number; contentMaxHeight?: number } => {
+	const keyboardInset = isAndroid && keyboardShown ? keyboardHeight : 0;
+	return {
+		sheetMaxHeight: maxHeight + keyboardInset,
+		contentMaxHeight: hugContent ? Math.min(maxHeight, windowHeight - topInset - keyboardInset) - HANDLE_HEIGHT : undefined
+	};
+};
+
 function normalizeSnapsToDetents(snaps: (string | number)[]): number[] {
 	return snaps
 		.slice(0, 3)

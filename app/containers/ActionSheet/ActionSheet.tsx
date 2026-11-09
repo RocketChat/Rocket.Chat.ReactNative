@@ -1,4 +1,4 @@
-import { useBackHandler } from '@react-native-community/hooks';
+import { useBackHandler, useKeyboard } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
 import { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
 import {
@@ -18,7 +18,12 @@ import { isAndroid, isIOS } from '~/lib/methods/helpers';
 import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
-import { HANDLE_HEIGHT, getSheetContentPaddingBottom, useActionSheetDetents } from './useActionSheetDetents';
+import {
+	HANDLE_HEIGHT,
+	getKeyboardAwareHeights,
+	getSheetContentPaddingBottom,
+	useActionSheetDetents
+} from './useActionSheetDetents';
 import { useActionSheetItemHeight } from './useActionSheetItemHeight';
 import styles from './styles';
 
@@ -33,7 +38,8 @@ const ActionSheet = memo(
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
-		const { bottom } = useSafeAreaInsets();
+		const { bottom, top } = useSafeAreaInsets();
+		const { keyboardShown, keyboardHeight } = useKeyboard();
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
 		const dismissedOnCloseRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
@@ -149,6 +155,15 @@ const ActionSheet = memo(
 			contentHeight
 		});
 
+		const { sheetMaxHeight, contentMaxHeight } = getKeyboardAwareHeights({
+			maxHeight,
+			windowHeight,
+			topInset: top,
+			keyboardHeight,
+			keyboardShown,
+			hugContent: data.hugContent
+		});
+
 		const hasOptions = !!data?.options?.length;
 		const hasSnaps = !!effectiveSnaps?.length;
 		const disableContentPanning = data?.enableContentPanningGesture === false;
@@ -180,7 +195,7 @@ const ActionSheet = memo(
 				<TrueSheet
 					ref={sheetRef}
 					detents={detents}
-					maxHeight={maxHeight}
+					maxHeight={sheetMaxHeight}
 					backgroundColor={colors.surfaceLight}
 					cornerRadius={16}
 					dimmed
@@ -199,6 +214,7 @@ const ActionSheet = memo(
 							onLayout={handleContentLayout}
 							fullContainer={data.fullContainer}
 							hugContent={data.hugContent}
+							contentMaxHeight={contentMaxHeight}
 							contentMinHeight={isIOS ? contentMinHeight : undefined}
 							scrollEnabled={contentScrollEnabled}>
 							{data?.children}
