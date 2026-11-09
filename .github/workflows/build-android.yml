@@ -22,7 +22,8 @@ jobs:
 
   build-android:
     name: Build
-    runs-on: ubuntu-latest
+    # Ruby 2.7.7 has no prebuilt binary for ubuntu-26.04, which ubuntu-latest is moving to
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     needs: build-hold
@@ -96,7 +97,7 @@ jobs:
 
   upload-android:
     name: Upload
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       pull-requests: write
@@ -116,7 +117,7 @@ jobs:
 
   upload-internal:
     name: Internal Sharing
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       pull-requests: write
