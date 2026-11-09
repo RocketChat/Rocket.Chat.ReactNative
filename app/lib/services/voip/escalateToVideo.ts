@@ -7,7 +7,7 @@ import { videoConfJoin } from '~/lib/methods/videoConf';
 import { mediaCallsEscalate, notifyUser, videoConferenceStart } from '~/lib/services/restApi';
 import { store } from '~/lib/store/auxStore';
 import { usePexipCallStore } from '~/lib/services/videoConf/usePexipCallStore';
-import { supportsServerEscalation, useCallStore } from './useCallStore';
+import { hasConferenceEscalation, isSipCall, useCallStore } from './useCallStore';
 
 let inFlight = false;
 
@@ -124,14 +124,14 @@ export const joinConferenceFromPeer = async ({
  */
 export function escalateToVideo(): void {
 	const { call, callId, escalated, roomId } = useCallStore.getState();
-	if (!callId) {
+	if (!callId || !hasConferenceEscalation(call)) {
 		return;
 	}
-	const serverEscalation = supportsServerEscalation(call);
-	if (!serverEscalation && !roomId) {
+	const sipCall = isSipCall(call);
+	if (!sipCall && !roomId) {
 		return;
 	}
-	if (escalated && serverEscalation) {
+	if (escalated && sipCall) {
 		executeEscalation(callId);
 		return;
 	}
@@ -139,6 +139,6 @@ export function escalateToVideo(): void {
 		title: I18n.t('Video_escalation_modal_title'),
 		message: I18n.t('Video_escalation_modal_description'),
 		confirmationText: I18n.t('Start_video_call'),
-		onPress: () => (serverEscalation ? executeEscalation(callId) : switchToConference(roomId!))
+		onPress: () => (sipCall ? executeEscalation(callId) : switchToConference(roomId!))
 	});
 }

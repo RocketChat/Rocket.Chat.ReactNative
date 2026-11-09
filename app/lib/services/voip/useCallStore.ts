@@ -364,16 +364,19 @@ export const useCallStore = create<CallStore>((set, get) => ({
 }));
 
 export const useCallContact = () => useCallStore(state => state.contact);
-/** True when the server can escalate this call into a conference (SIP calls only). */
-export const supportsServerEscalation = (call: IClientMediaCall | null): boolean =>
+/** True when the server enabled conference escalation for this call, like web does. */
+export const hasConferenceEscalation = (call: IClientMediaCall | null): boolean =>
 	!!call?.features?.includes('conference-escalation');
-/**
- * True when the current call can switch to video: through the server for SIP calls, or by starting a direct video call
- * in the DM for calls between two users (re-evaluated on call state changes).
- */
+/** SIP calls are escalated by the server; calls between two users switch to a conference in their DM. */
+export const isSipCall = (call: IClientMediaCall | null): boolean => call?.remoteParticipants[0]?.contact?.type === 'sip';
+/** True when the active call can switch to video (re-evaluated on call state changes). */
 export const useCanEscalateToVideo = () =>
 	useCallStore(
-		state => state.callState === 'active' && !state.escalated && (supportsServerEscalation(state.call) || state.roomId != null)
+		state =>
+			state.callState === 'active' &&
+			!state.escalated &&
+			hasConferenceEscalation(state.call) &&
+			(isSipCall(state.call) || state.roomId != null)
 	);
 export const useIsCallEscalated = () => useCallStore(state => state.escalated);
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);

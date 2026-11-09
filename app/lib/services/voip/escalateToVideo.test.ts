@@ -24,7 +24,14 @@ jest.mock('~/lib/navigation/appNavigation', () => ({
 
 const mockEscalate = jest.mocked(mediaCallsEscalate);
 const mockStart = jest.mocked(videoConferenceStart);
-const sipCall = { features: ['audio', 'conference-escalation'] } as any;
+const sipCall = {
+	features: ['audio', 'conference-escalation'],
+	remoteParticipants: [{ contact: { type: 'sip' } }]
+} as any;
+const userCall = {
+	features: ['audio', 'conference-escalation'],
+	remoteParticipants: [{ contact: { type: 'user', id: 'peer-1' } }]
+} as any;
 const mockOpenLink = jest.mocked(openLink);
 const mockEndCall = jest.fn();
 const mockToggleFocus = jest.fn();
@@ -48,6 +55,12 @@ describe('escalateToVideo', () => {
 			toggleFocus: mockToggleFocus
 		});
 		usePexipCallStore.getState().leave();
+	});
+
+	it('does nothing when the server did not enable escalation for the call', () => {
+		useCallStore.setState({ call: { ...sipCall, features: ['audio'] } });
+		escalateToVideo();
+		expect(Alert.alert).not.toHaveBeenCalled();
 	});
 
 	it('does nothing without an active call', () => {
@@ -162,7 +175,7 @@ describe('escalateToVideo between two users', () => {
 		jest.clearAllMocks();
 		jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
 		useCallStore.setState({
-			call: { features: ['audio'] } as any,
+			call: userCall,
 			callId: 'call-1',
 			contact: { id: 'peer-1', username: 'peer' },
 			roomId: 'dm-1',
@@ -171,6 +184,12 @@ describe('escalateToVideo between two users', () => {
 			endCall: mockEndCall,
 			toggleFocus: mockToggleFocus
 		});
+	});
+
+	it('does nothing when the server did not enable escalation for the call', () => {
+		useCallStore.setState({ call: { ...userCall, features: ['audio'] } });
+		escalateToVideo();
+		expect(Alert.alert).not.toHaveBeenCalled();
 	});
 
 	it('does nothing when the DM is unknown', () => {
