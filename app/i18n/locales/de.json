@@ -117,7 +117,6 @@
   "Call_not_answered_bold": "*Sprachanruf nicht beantwortet*",
   "Call_rejected": "Anruf abgelehnt",
   "Call_room_name": "{{roomName}} anrufen",
-  "Call_started": "Anruf gestartet",
   "Call_transferred_bold": "*Sprachanruf übertragen*",
   "Call_was_canceled_before_being_answered": "Anruf wurde vor der Annahme abgebrochen.",
   "Call_was_not_answered": "Anruf wurde nicht beantwortet",
