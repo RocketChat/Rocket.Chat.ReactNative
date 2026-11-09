@@ -315,11 +315,7 @@ describe('useRoomHeaderActions', () => {
 			mockVideoConf.callEnabled = true;
 			mockMediaCall.hasMediaCallPermission = true;
 
-			expect(menuItemTestIDs()).toEqual([
-				'room-view-header-call',
-				'room-view-header-video-call',
-				'room-view-search'
-			]);
+			expect(menuItemTestIDs()).toEqual(['room-view-header-call', 'room-view-header-video-call', 'room-view-search']);
 		});
 
 		it('is disabled when the video conference tooltip is disabled', () => {

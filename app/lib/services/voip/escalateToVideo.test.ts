@@ -14,7 +14,9 @@ jest.mock('~/lib/services/restApi', () => ({
 	videoConferenceStart: jest.fn()
 }));
 jest.mock('~/lib/methods/videoConf', () => ({ videoConfJoin: jest.fn() }));
-jest.mock('~/lib/store/auxStore', () => ({ store: { getState: () => ({ login: { user: { id: 'me' } }, server: { server: 'https://open.rocket.chat' } }) } }));
+jest.mock('~/lib/store/auxStore', () => ({
+	store: { getState: () => ({ login: { user: { id: 'me' } }, server: { server: 'https://open.rocket.chat' } }) }
+}));
 jest.mock('~/lib/methods/helpers/openLink', () => jest.fn());
 jest.mock('~/lib/methods/helpers/log', () => jest.fn());
 jest.mock('~/lib/navigation/appNavigation', () => ({
