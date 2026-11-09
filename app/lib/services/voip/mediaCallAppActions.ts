@@ -1,6 +1,6 @@
 import I18n from '~/i18n';
 import fetch from '~/lib/methods/helpers/fetch';
-import { generateTriggerId } from '~/lib/methods/actions';
+import { withTriggerId } from '~/lib/apps/actions';
 import sdk from '~/lib/services/sdk';
 
 export type MediaCallWidgetState = 'calling' | 'ringing' | 'ongoing';
@@ -98,18 +98,19 @@ export const triggerMediaCallAppAction = async ({
 	rid?: string;
 }): Promise<MediaCallAppActionUpdate | undefined> => {
 	const { host, headers } = getAuth();
-	const triggerId = generateTriggerId(appId);
-	const res = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
-		method: 'POST',
-		headers: { ...headers, 'Content-Type': 'application/json' },
-		body: JSON.stringify({
-			type: 'actionButton',
-			actionId,
-			triggerId,
-			...(rid ? { rid } : {}),
-			payload: { context: 'mediaCallWidgetAction', callId }
+	const res = await withTriggerId(appId, triggerId =>
+		fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
+			method: 'POST',
+			headers: { ...headers, 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				type: 'actionButton',
+				actionId,
+				triggerId,
+				...(rid ? { rid } : {}),
+				payload: { context: 'mediaCallWidgetAction', callId }
+			})
 		})
-	});
+	);
 	if (!res.ok) {
 		throw new Error(`Failed to trigger media call app action: ${res.status}`);
 	}
