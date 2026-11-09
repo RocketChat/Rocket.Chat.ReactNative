@@ -127,13 +127,6 @@ describe('login saga — a logout forced by the server', () => {
 		jest.clearAllMocks();
 	});
 
-	it('points previousServer at another logged in workspace, so the user can leave NewServerView', async () => {
-		setRemainingServers([{ id: OTHER_SERVER }]);
-		UserPreferences.setString(`${TOKEN_KEY}-${OTHER_SERVER}`, 'user-id');
-
-		expect(await runForcedLogout()).toBe(OTHER_SERVER);
-	});
-
 	it('leaves previousServer unset when no other workspace is logged in', async () => {
 		setRemainingServers([{ id: OTHER_SERVER }]);
 

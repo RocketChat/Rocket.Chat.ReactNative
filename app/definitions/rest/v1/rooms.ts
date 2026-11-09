@@ -1,5 +1,5 @@
 import type { IMessage, IMessageFromServer } from '~/definitions/IMessage';
-import type { IRoomNotifications, IServerRoom } from '~/definitions/IRoom';
+import type { IRoomNotifications, IRoomSettings, IServerRoom } from '~/definitions/IRoom';
 import type { IUser } from '~/definitions/IUser';
 
 export type RoomsEndpoints = {
@@ -72,6 +72,11 @@ export type RoomsEndpoints = {
 	'rooms.join': {
 		POST: (params: { roomId: string; joinCode: string | null }) => {
 			room: IServerRoom;
+		};
+	};
+	'rooms.saveRoomSettings': {
+		POST: (params: IRoomSettings & { rid: string }) => {
+			rid: string;
 		};
 	};
 };
