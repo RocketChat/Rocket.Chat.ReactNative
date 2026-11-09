@@ -1,6 +1,11 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { HANDLE_HEIGHT, getSheetContentPaddingBottom, useActionSheetDetents } from './useActionSheetDetents';
+import {
+	HANDLE_HEIGHT,
+	getKeyboardAwareHeights,
+	getSheetContentPaddingBottom,
+	useActionSheetDetents
+} from './useActionSheetDetents';
 
 let mockIsAndroid = false;
 
@@ -136,5 +141,35 @@ describe('getSheetContentPaddingBottom', () => {
 		mockIsAndroid = true;
 
 		expect(getSheetContentPaddingBottom({ bottom })).toBe(bottom);
+	});
+});
+
+describe('getKeyboardAwareHeights', () => {
+	const base = { maxHeight: 750, windowHeight: 1000, topInset: 40, keyboardHeight: 300, keyboardShown: true, hugContent: true };
+
+	afterEach(() => {
+		mockIsAndroid = false;
+	});
+
+	it('extends the sheet by the keyboard and bounds the content above it on Android', () => {
+		mockIsAndroid = true;
+		expect(getKeyboardAwareHeights(base)).toEqual({ sheetMaxHeight: 1050, contentMaxHeight: 660 - HANDLE_HEIGHT });
+	});
+
+	it('keeps the regular bounds when the keyboard is hidden', () => {
+		mockIsAndroid = true;
+		expect(getKeyboardAwareHeights({ ...base, keyboardShown: false })).toEqual({
+			sheetMaxHeight: 750,
+			contentMaxHeight: 750 - HANDLE_HEIGHT
+		});
+	});
+
+	it('ignores the keyboard on iOS', () => {
+		expect(getKeyboardAwareHeights(base).sheetMaxHeight).toBe(750);
+	});
+
+	it('does not bound content that does not hug', () => {
+		mockIsAndroid = true;
+		expect(getKeyboardAwareHeights({ ...base, hugContent: false }).contentMaxHeight).toBeUndefined();
 	});
 });

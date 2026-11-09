@@ -178,6 +178,32 @@ describe('MediaCallHeader', () => {
 		expect(getByTestId('call-view-header-subtitle')).toBeTruthy();
 	});
 
+	it.each([
+		['local', { isOnHold: true }],
+		['remote', { remoteHeld: true }]
+	])('should show on hold next to the extension on %s hold', (_, holdState) => {
+		setStoreState({ ...holdState, contact: { id: 'user-1', displayName: 'Bob Burnquist', sipExtension: '2001' } });
+		const { getByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(getByTestId('call-view-header-subtitle')).toHaveTextContent('2001 - On hold');
+	});
+
+	it('should not show on hold when no side is holding', () => {
+		setStoreState({ contact: { id: 'user-1', displayName: 'Bob Burnquist', sipExtension: '2001' } });
+		const { getByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(getByTestId('call-view-header-subtitle')).toHaveTextContent('2001');
+		expect(getByTestId('call-view-header-subtitle')).not.toHaveTextContent('On hold');
+	});
+
 	it('should call toggleFocus when collapse button is pressed', () => {
 		setStoreState();
 		const toggleFocus = jest.fn();

@@ -130,7 +130,6 @@
   "Call_ongoing": "Call ongoing",
   "Call_rejected": "Call rejected",
   "Call_room_name": "Call {{roomName}}",
-  "Call_started": "Call started",
   "Call_transferred_bold": "*Voice call transferred*",
   "Call_was_canceled_before_being_answered": "Call was canceled before being answered",
   "Call_was_not_answered": "Call was not answered",

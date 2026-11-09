@@ -13,6 +13,9 @@ export const formatLastMessage = ({ lastMessage, type, showLastMessage, username
 		const { u } = lastMessage;
 		return I18n.t('Started_call', { userBy: u.username });
 	}
+	if (lastMessage.t === 'videoconf') {
+		return I18n.t('Video_call');
+	}
 
 	let prefix = '';
 	const isLastMessageSentByMe = lastMessage.u.username === username;
@@ -42,11 +45,6 @@ export const formatLastMessage = ({ lastMessage, type, showLastMessage, username
 			u: { name }
 		} = lastMessage;
 		prefix = `${useRealName ? name : lastMessage.u.username}: `;
-	}
-
-	if (lastMessage.t === 'videoconf') {
-		prefix = '';
-		lastMessage.msg = I18n.t('Call_started');
 	}
 
 	return `${prefix}${lastMessage.msg}`;

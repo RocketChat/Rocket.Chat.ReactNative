@@ -17,11 +17,6 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         "type": [Function],
       }
     }
-    contentContainerStyle={
-      {
-        "flexShrink": 1,
-      }
-    }
     data={
       [
         {
@@ -64,6 +59,11 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     renderItem={[Function]}
     scrollEventThrottle={0.0001}
     stickyHeaderIndices={[]}
+    style={
+      {
+        "flexShrink": 1,
+      }
+    }
     viewabilityConfigCallbackPairs={[]}
   >
     <View>
