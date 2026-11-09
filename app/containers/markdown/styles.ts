@@ -128,7 +128,10 @@ export default StyleSheet.create({
 	},
 	tableContainer: {
 		flexGrow: 1,
-		marginVertical: 4
+		marginVertical: 4,
+		borderWidth: 1,
+		borderRadius: 4,
+		overflow: 'hidden'
 	},
 	tableText: {
 		fontSize: 14,

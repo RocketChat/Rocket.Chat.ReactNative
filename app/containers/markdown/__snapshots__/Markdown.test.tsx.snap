@@ -9435,15 +9435,22 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
               }
             }
             horizontal={true}
-            showsHorizontalScrollIndicator={false}
           >
             <View>
               <View
                 style={
-                  {
-                    "flexGrow": 1,
-                    "marginVertical": 4,
-                  }
+                  [
+                    {
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "flexGrow": 1,
+                      "marginVertical": 4,
+                      "overflow": "hidden",
+                    },
+                    {
+                      "borderColor": "#CBCED1",
+                    },
+                  ]
                 }
               >
                 <View
@@ -10914,15 +10921,22 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
               }
             }
             horizontal={true}
-            showsHorizontalScrollIndicator={false}
           >
             <View>
               <View
                 style={
-                  {
-                    "flexGrow": 1,
-                    "marginVertical": 4,
-                  }
+                  [
+                    {
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "flexGrow": 1,
+                      "marginVertical": 4,
+                      "overflow": "hidden",
+                    },
+                    {
+                      "borderColor": "#CBCED1",
+                    },
+                  ]
                 }
               >
                 <View

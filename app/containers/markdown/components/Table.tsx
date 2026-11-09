@@ -70,8 +70,8 @@ const Table = ({ value }: ITableProps): ReactElement => {
 	];
 
 	return (
-		<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tableContent}>
-			<View style={styles.tableContainer}>
+		<ScrollView horizontal contentContainerStyle={styles.tableContent}>
+			<View style={[styles.tableContainer, { borderColor: colors.strokeLight }]}>
 				{tableRows.map((cells, rowIndex) => (
 					<View key={`table-row-${rowIndex}`} style={getRowStyle(rowIndex)}>
 						{cells.map((cell, cellIndex) => (

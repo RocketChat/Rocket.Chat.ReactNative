@@ -106,6 +106,22 @@ describe('Table', () => {
 		expect(within(stripes[0]).queryByText('Alice')).toBeNull();
 	});
 
+	it.each(['light', 'dark', 'black'] as const)('outlines the table with the stroke color in the %s theme', async theme => {
+		const msg = ['| Name | Score |', '| - | - |', '| Alice | 9 |'].join('\n');
+		const { UNSAFE_getAllByType } = render(
+			<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+				<Markdown msg={msg} md={parse(msg)} />
+			</ThemeContext.Provider>
+		);
+		await act(async () => {});
+
+		const outlines = UNSAFE_getAllByType(View).filter(view => StyleSheet.flatten(view.props.style)?.borderWidth === 1);
+
+		expect(outlines).toHaveLength(1);
+		expect(StyleSheet.flatten(outlines[0].props.style).borderColor).toBe(colors[theme].strokeLight);
+		expect(within(outlines[0]).getByText('Alice')).toBeTruthy();
+	});
+
 	it('keeps links inside cells pressable', async () => {
 		const onLinkPress = jest.fn();
 		const { getByText } = await renderMarkdown(
