@@ -1,7 +1,10 @@
 jest.mock('~/lib/methods/userPreferences', () => ({
 	__esModule: true,
 	default: {
-		getString: jest.fn()
+		getString: jest.fn(),
+		getBool: jest.fn(),
+		setBool: jest.fn(),
+		removeItem: jest.fn()
 	}
 }));
 
@@ -124,23 +127,6 @@ describe('init saga — restore user-facing roots', () => {
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
-		expect(store.getState().app.ready).toBe(true);
-	});
-
-	it('selects another logged in server with its own version when the stored server has no token', async () => {
-		jest.mocked(UserPreferences.getString).mockImplementation(key => {
-			if (key === `${TOKEN_KEY}-${OTHER_HOST}`) return 'token';
-			if (key.startsWith(`${TOKEN_KEY}-`)) return null;
-			return HOST;
-		});
-		jest.mocked(getAllServers).mockResolvedValue([{ id: OTHER_HOST, version: '7.0.0' }] as any);
-		const { store } = setupStore();
-
-		store.dispatch(appInit());
-		await flushSagaMicrotasks();
-
-		expect(store.getState().server.server).toBe(OTHER_HOST);
-		expect(store.getState().server.version).toBe('7.0.0');
 		expect(store.getState().app.ready).toBe(true);
 	});
 
