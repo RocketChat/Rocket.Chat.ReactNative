@@ -11266,31 +11266,6 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
             </View>
           </View>
         </View>
-        <Text
-          style={
-            [
-              {
-                "fontSize": 12,
-                "lineHeight": 16,
-                "marginBottom": 4,
-              },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "textAlign": "left",
-              },
-              {
-                "color": "#6C727A",
-              },
-            ]
-          }
-        >
-          Tap to view full table
-        </Text>
       </View>
     </View>
     <View
@@ -12453,31 +12428,6 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
             </View>
           </View>
         </View>
-        <Text
-          style={
-            [
-              {
-                "fontSize": 12,
-                "lineHeight": 16,
-                "marginBottom": 4,
-              },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontVariant": [
-                  "tabular-nums",
-                ],
-                "fontWeight": "400",
-                "textAlign": "left",
-              },
-              {
-                "color": "#6C727A",
-              },
-            ]
-          }
-        >
-          Tap to view full table
-        </Text>
       </View>
     </View>
   </View>

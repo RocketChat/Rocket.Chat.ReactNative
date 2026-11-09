@@ -129,11 +129,6 @@ export default StyleSheet.create({
 	tablePreview: {
 		overflow: 'hidden'
 	},
-	tableHint: {
-		fontSize: 12,
-		lineHeight: 16,
-		marginBottom: 4
-	},
 	tableContainer: {
 		flexGrow: 1,
 		marginVertical: 4

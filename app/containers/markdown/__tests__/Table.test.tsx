@@ -125,10 +125,10 @@ describe('Table', () => {
 	it('opens the table view with the whole table when the preview is pressed', async () => {
 		const msg = ['| N |', '| - |', '| r1 |', '| r2 |', '| r3 |', '| r4 |'].join('\n');
 		const md = parse(msg);
-		const { getByText } = render(<Markdown msg={msg} md={md} username='rocket.cat' />);
+		const { getByRole } = render(<Markdown msg={msg} md={md} username='rocket.cat' />);
 		await act(async () => {});
 
-		fireEvent.press(getByText('Tap to view full table'));
+		fireEvent.press(getByRole('button'));
 
 		expect(Navigation.navigate).toHaveBeenCalledWith(
 			'TableView',
@@ -140,13 +140,13 @@ describe('Table', () => {
 		const onLongPress = jest.fn();
 		const [table] = parse(['| N |', '| - |', '| r1 |'].join('\n'));
 		if (table.type !== 'TABLE') throw new Error('expected a table');
-		const { getByText } = render(
+		const { getByRole } = render(
 			<MarkdownContext.Provider value={{ onLongPress }}>
 				<TablePreview value={table.value} />
 			</MarkdownContext.Provider>
 		);
 
-		fireEvent(getByText('Tap to view full table'), 'longPress');
+		fireEvent(getByRole('button'), 'longPress');
 
 		expect(onLongPress).toHaveBeenCalledTimes(1);
 	});
