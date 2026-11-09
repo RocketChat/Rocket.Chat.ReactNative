@@ -33,6 +33,8 @@ export interface IVideoConferenceUser extends Pick<Required<IUser>, '_id' | 'use
 	ts: Date;
 	joined?: boolean;
 }
+
+export const hasJoinedVideoConference = (user: Pick<IVideoConferenceUser, 'joined'>): boolean => user.joined !== false;
 export interface IVideoConference extends IRocketChatRecord {
 	type: VideoConferenceType;
 	rid: string;

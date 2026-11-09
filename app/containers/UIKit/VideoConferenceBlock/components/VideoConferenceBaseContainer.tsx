@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import { type ReactElement, type ReactNode } from 'react';
 import { View, Text } from 'react-native';
 
 import i18n from '~/i18n';
@@ -10,7 +10,7 @@ import useStyle from './styles';
 
 type VideoConfMessageIconProps = {
 	variant: 'ended' | 'incoming' | 'outgoing' | 'issue';
-	children: ReactElement | ReactElement[];
+	children: ReactNode;
 	discussionRid?: string;
 };
 

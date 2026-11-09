@@ -32,7 +32,7 @@ afterEach(deleteCreatedUsers);
 
 const expectRoomHeaderButtons = async (fixtures: Fixtures) => {
 	await expect(threadsButton(fixtures)).toBeVisible({ timeout: LONG_TIMEOUT });
-	await expectRoomMenuOptions(fixtures, [{ testId: 'room-view-header-call', iosLabel: /^Call / }]);
+	await expectRoomMenuOptions(fixtures, [{ testId: 'room-view-header-video-call', iosLabel: 'Video call' }]);
 };
 
 const openTeamChannels = async (fixtures: Fixtures) => {

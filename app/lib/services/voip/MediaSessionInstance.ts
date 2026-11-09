@@ -33,6 +33,7 @@ import { getDMSubscriptionByUsername } from '~/lib/database/services/Subscriptio
 import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
 import log from '~/lib/methods/helpers/log';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
+import { usePexipCallStore } from '../videoConf/usePexipCallStore';
 import { requestVoipCallPermissions } from '~/lib/methods/voipCallPermissions';
 import I18n from '~/i18n';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
@@ -215,6 +216,7 @@ class MediaSessionInstance {
 				return;
 			}
 			RNCallKeep.setCurrentCallActive(callId);
+			usePexipCallStore.getState().leave();
 			useCallStore.getState().setCall(mainCall);
 			useCallStore.getState().setDirection('incoming');
 			await waitForNavigationReady();
