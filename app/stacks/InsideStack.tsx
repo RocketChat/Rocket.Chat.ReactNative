@@ -83,6 +83,7 @@ import E2ESaveYourPasswordView from '../views/E2ESaveYourPasswordView';
 import E2EHowItWorksView from '../views/E2EHowItWorksView';
 import E2EEnterYourPasswordView from '../views/E2EEnterYourPasswordView';
 import AttachmentView from '../views/AttachmentView';
+import TableView from '../views/TableView';
 import ModalBlockView from '../views/ModalBlockView';
 import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
@@ -160,6 +161,7 @@ const PickerViewScreen: ComponentType<StaticScreenProps<TNavigation['PickerView'
 const ForwardLivechatViewScreen: ComponentType<StaticScreenProps<TNavigation['ForwardLivechatView']>> =
 	ForwardLivechatView as any;
 const AttachmentViewScreen: ComponentType<StaticScreenProps<TNavigation['AttachmentView']>> = AttachmentView as any;
+const TableViewScreen: ComponentType<StaticScreenProps<TNavigation['TableView']>> = TableView as any;
 
 const ChatsStack = createNativeStackNavigator({
 	screenOptions: defaultHeader,
@@ -388,6 +390,7 @@ const InsideStack = createNativeStackNavigator({
 			options: { headerShown: false }
 		}),
 		AttachmentView: AttachmentViewScreen,
+		TableView: TableViewScreen,
 		StatusView: StatusViewScreen,
 		ShareView: ShareViewScreen,
 		ModalBlockView: createNativeStackScreen({

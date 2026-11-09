@@ -1,4 +1,7 @@
+import { type Table } from '@rocket.chat/message-parser';
+
 import { type IAttachment } from '../definitions';
+import { type IMarkdownContext } from '../containers/markdown/contexts/MarkdownContext';
 import { type IOptionsField } from '../views/NotificationPreferencesView/options';
 
 export type TNavigation = {
@@ -17,4 +20,7 @@ export type TNavigation = {
 	AttachmentView: {
 		attachment: IAttachment;
 	};
+	TableView: {
+		value: Table['value'];
+	} & Pick<IMarkdownContext, 'mentions' | 'channels' | 'username' | 'useRealName'>;
 };

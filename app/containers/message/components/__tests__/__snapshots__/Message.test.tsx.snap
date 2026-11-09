@@ -34696,7 +34696,29 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                               ]
                             }
                           >
-                            🤙👏
+                            🤙
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "color": "#2F343D",
+                                },
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 30,
+                                  "fontVariant": [
+                                    "tabular-nums",
+                                  ],
+                                  "fontWeight": "400",
+                                  "lineHeight": 43,
+                                  "textAlign": "left",
+                                },
+                              ]
+                            }
+                          >
+                            👏
                           </Text>
                         </View>
                       </View>
@@ -37609,7 +37631,29 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                               ]
                             }
                           >
-                            🤙👏
+                            🤙
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "color": "#2F343D",
+                                },
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 30,
+                                  "fontVariant": [
+                                    "tabular-nums",
+                                  ],
+                                  "fontWeight": "400",
+                                  "lineHeight": 43,
+                                  "textAlign": "left",
+                                },
+                              ]
+                            }
+                          >
+                            👏
                           </Text>
                         </View>
                       </View>

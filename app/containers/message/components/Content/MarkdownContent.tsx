@@ -1,6 +1,6 @@
 import Markdown from '~/containers/markdown';
 import { useSetting } from '~/lib/hooks/useSetting';
-import { useMarkdownData, useMessageText, useOnLinkPress } from '~/containers/message/stores/MessageStore';
+import { useMarkdownData, useMessageLongPress, useMessageText, useOnLinkPress } from '~/containers/message/stores/MessageStore';
 import { useMessageUser, useNavToRoomInfo } from '~/containers/message/stores/MessageRoomStore';
 import ContentWrapper from './ContentWrapper';
 
@@ -8,6 +8,7 @@ const MarkdownContent = () => {
 	const useRealName = useSetting('UI_Use_Real_Name') as boolean;
 	const user = useMessageUser();
 	const onLinkPress = useOnLinkPress();
+	const onLongPress = useMessageLongPress();
 	const navToRoomInfo = useNavToRoomInfo();
 	const { md, mentions, channels, t: type } = useMarkdownData();
 	const { messageText, isTranslated } = useMessageText();
@@ -23,6 +24,7 @@ const MarkdownContent = () => {
 				navToRoomInfo={navToRoomInfo}
 				useRealName={useRealName}
 				onLinkPress={onLinkPress}
+				onLongPress={onLongPress}
 				isTranslated={isTranslated}
 			/>
 		</ContentWrapper>

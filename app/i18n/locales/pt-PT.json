@@ -583,6 +583,7 @@
   "Status_text_limit_exceeded": "limite de caracteres {{limit}} ultrapassado",
   "Symbols": "Símbolos",
   "Take_a_photo": "Tirar uma foto",
+  "Tap_to_view_full_table": "Toque para ver a tabela completa",
   "Terms_of_Service": " Termos do Serviço ",
   "The_autocomplete_options_are_available_above_the_input_composer": "As opções de preenchimento automático estão disponíveis acima do compositor de entrada.",
   "There_was_an_error_while_action": "Houve um erro enquanto {{action}}!",

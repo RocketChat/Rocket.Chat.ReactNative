@@ -81,6 +81,7 @@ import DiscussionsView from '~/views/DiscussionsView';
 import AccessibilityAndAppearanceView from '~/views/AccessibilityAndAppearanceView';
 import { SupportedVersionsWarning } from '~/containers/SupportedVersions';
 import AttachmentView from '~/views/AttachmentView';
+import TableView from '~/views/TableView';
 import ModalBlockView from '~/views/ModalBlockView';
 import ConferenceView from '~/views/ConferenceView';
 import JitsiMeetView from '~/views/JitsiMeetView';
@@ -308,6 +309,7 @@ const InsideStack = createNativeStackNavigator({
 			options: { headerShown: false }
 		}),
 		AttachmentView,
+		TableView,
 		ModalBlockView: createNativeStackScreen({
 			screen: ModalBlockViewScreen,
 			options: ModalBlockView.navigationOptions as any

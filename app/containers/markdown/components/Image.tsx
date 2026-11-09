@@ -2,7 +2,9 @@ import { type Image as ImageProps } from '@rocket.chat/message-parser';
 import { Image as ExpoImage } from 'expo-image';
 
 import { useTheme } from '~/theme';
-import styles from '../styles';
+import { useMarkdownContext } from '../contexts/MarkdownContext';
+
+const INLINE_IMAGE_SIZE = 300;
 
 interface IImageProps {
 	value: ImageProps['value'];
@@ -10,11 +12,12 @@ interface IImageProps {
 
 const Image = ({ value }: IImageProps) => {
 	const { colors } = useTheme();
+	const { imageSize = INLINE_IMAGE_SIZE } = useMarkdownContext();
 	const { src } = value;
 
 	return (
 		<ExpoImage
-			style={[styles.inlineImage, { borderColor: colors.strokeLight }]}
+			style={{ width: imageSize, height: imageSize, borderColor: colors.strokeLight }}
 			source={{ uri: encodeURI(src.value) }}
 			contentFit='contain'
 		/>
