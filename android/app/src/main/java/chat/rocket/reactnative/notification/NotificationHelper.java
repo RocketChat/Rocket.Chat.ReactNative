@@ -2,6 +2,7 @@ package chat.rocket.reactnative.notification;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -53,9 +54,8 @@ public class NotificationHelper {
     }
     
     /**
-     * Build a Glide load model for an avatar URL, sending rc_token/rc_uid as HTTP request
-     * headers via GlideUrl + LazyHeaders. The JS codebase appends these as query params
-     * (getAvatarUrl.ts) for convenience; native uses headers because Glide supports it cleanly.
+     * Build a Glide load model for an avatar URL, sending rc_token/rc_uid as query params,
+     * because the server's avatar route reads them only from the query string or cookies.
      * Always includes the app User-Agent so server logs / WAF rules see "RC Mobile" instead
      * of Glide's default Dalvik UA.
      */
@@ -63,15 +63,24 @@ public class NotificationHelper {
         if (uri == null || uri.isEmpty()) {
             return uri;
         }
-        LazyHeaders.Builder builder = new LazyHeaders.Builder()
-                .addHeader("User-Agent", getUserAgent());
+        LazyHeaders headers = new LazyHeaders.Builder()
+                .addHeader("User-Agent", getUserAgent())
+                .build();
         String rcToken = ejson != null ? ejson.token() : "";
         String rcUid = ejson != null ? ejson.userId() : "";
-        if (!rcToken.isEmpty() && !rcUid.isEmpty()) {
-            builder.addHeader("rc_token", rcToken)
-                    .addHeader("rc_uid", rcUid);
+        if (rcToken.isEmpty() || rcUid.isEmpty()) {
+            return new GlideUrl(uri, headers);
         }
-        return new GlideUrl(uri, builder.build());
+        Uri.Builder urlBuilder = Uri.parse(uri).buildUpon().appendQueryParameter("rc_uid", rcUid);
+        String cacheKey = urlBuilder.build().toString();
+        String url = urlBuilder.appendQueryParameter("rc_token", rcToken).build().toString();
+        return new GlideUrl(url, headers) {
+            // Glide logs and caches by this key, so it must not carry rc_token
+            @Override
+            public String getCacheKey() {
+                return cacheKey;
+            }
+        };
     }
 
     /**
