@@ -4,7 +4,8 @@ import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
 import I18n from '~/i18n';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
-import { useCallStore, useControlsVisible } from '~/lib/services/voip/useCallStore';
+import { escalateToVideo } from '~/lib/services/voip/escalateToVideo';
+import { useCallStore, useCanEscalateToVideo, useControlsVisible, useIsCallEscalated } from '~/lib/services/voip/useCallStore';
 import CallActionButton from './CallActionButton';
 import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
 import { useTheme } from '~/theme';
@@ -45,6 +46,8 @@ export const CallButtons = () => {
 
 	const controlsVisible = useControlsVisible();
 	const appActions = useMediaCallAppActions();
+	const canEscalate = useCanEscalateToVideo();
+	const escalated = useIsCallEscalated();
 
 	const containerStyle = useAnimatedStyle(() => ({
 		opacity: withTiming(controlsVisible ? 1 : 0, { duration: CONTROLS_ANIMATION_DURATION }),
@@ -58,6 +61,16 @@ export const CallButtons = () => {
 	const handleMore = () => {
 		showActionSheetRef({
 			options: [
+				...(canEscalate
+					? [
+							{
+								title: I18n.t('Start_video_call'),
+								icon: 'video' as const,
+								onPress: escalateToVideo,
+								testID: 'call-view-more-video'
+							}
+						]
+					: []),
 				{
 					title: I18n.t('Direct_message'),
 					icon: 'message',
@@ -103,7 +116,8 @@ export const CallButtons = () => {
 			label: isOnHold ? I18n.t('Unhold') : I18n.t('Hold'),
 			onPress: toggleHold,
 			variant: isOnHold ? 'active' : 'default',
-			disabled: isConnecting
+			// An escalated call only keeps audio; hold is no longer offered by the server
+			disabled: isConnecting || escalated
 		},
 		{
 			testID: 'call-view-mute',
@@ -118,7 +132,7 @@ export const CallButtons = () => {
 			icon: 'kebab',
 			label: I18n.t('More'),
 			onPress: handleMore,
-			disabled: messageDisabled && appActions.length === 0
+			disabled: messageDisabled && !canEscalate && appActions.length === 0
 		},
 		{
 			testID: 'call-view-end',
