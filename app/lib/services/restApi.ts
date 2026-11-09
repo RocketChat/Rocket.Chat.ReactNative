@@ -12,6 +12,7 @@ import {
 	type IRoleUser,
 	type IRoom,
 	type IRoomNotifications,
+	type IRoomSettings,
 	type IServerRoom,
 	type ISidebarCategory,
 	type RoomType,
@@ -677,24 +678,15 @@ export const hideRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
-export const saveRoomSettings = (
-	rid: string,
-	params: {
-		roomName?: string;
-		roomAvatar?: string | null;
-		roomDescription?: string;
-		roomTopic?: string;
-		roomAnnouncement?: string;
-		roomType?: SubscriptionType;
-		readOnly?: boolean;
-		reactWhenReadOnly?: boolean;
-		systemMessages?: string[];
-		joinCode?: string;
-		encrypted?: boolean;
+export const saveRoomSettings = async (rid: string, params: IRoomSettings) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.3.0')) {
+		await sdk.post('rooms.saveRoomSettings', { rid, ...params });
+		return;
 	}
-): Promise<{ result: boolean; rid: string }> =>
 	// RC 0.55.0
-	sdk.methodCallWrapper('saveRoomSettings', rid, params);
+	await sdk.methodCallWrapper('saveRoomSettings', rid, params);
+};
 
 export const setPassword = (newPassword: string) => {
 	const serverVersion = reduxStore.getState().server.version;
@@ -1084,8 +1076,17 @@ export const saveAutoTranslate = ({
 	return sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, ddpValue, options ?? null);
 };
 
-export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
-	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+export const getSupportedLanguagesAutoTranslate = async (): Promise<{ language: string; name: string }[]> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '2.0.0')) {
+		const result = await sdk.get('autotranslate.getSupportedLanguages', { targetLanguage: 'en' });
+		if (!result.success) {
+			throw new Error('Unable to load supported languages');
+		}
+		return result.languages;
+	}
+	return sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+};
 
 export const translateMessage = (messageId: string, targetLanguage: string) =>
 	sdk.post('autotranslate.translateMessage', { messageId, targetLanguage });

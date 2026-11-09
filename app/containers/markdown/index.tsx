@@ -12,6 +12,7 @@ import { BigEmoji } from './components/emoji';
 import UnorderedList from './components/list/UnorderedList';
 import OrderedList from './components/list/OrderedList';
 import TaskList from './components/list/TaskList';
+import { type TRenderList } from './components/list/NestedLists';
 import Quote from './components/Quote';
 import Paragraph from './components/Paragraph';
 import { Code } from './components/code';
@@ -66,16 +67,25 @@ const resolveTokens = (msg: string, md: Root | undefined, isTranslated?: boolean
 	return parseMessage(typeof msg === 'string' ? msg : String(msg || ''));
 };
 
+const renderList: TRenderList = list => {
+	switch (list.type) {
+		case 'UNORDERED_LIST':
+			return <UnorderedList value={list.value} renderList={renderList} />;
+		case 'ORDERED_LIST':
+			return <OrderedList value={list.value} renderList={renderList} />;
+		case 'TASKS':
+			return <TaskList value={list.value} renderList={renderList} />;
+	}
+};
+
 const MarkdownBlockView = ({ block }: { block: MarkdownBlock }) => {
 	switch (block.type) {
 		case 'BIG_EMOJI':
 			return <BigEmoji value={block.value} />;
 		case 'UNORDERED_LIST':
-			return <UnorderedList value={block.value} />;
 		case 'ORDERED_LIST':
-			return <OrderedList value={block.value} />;
 		case 'TASKS':
-			return <TaskList value={block.value} />;
+			return renderList(block);
 		case 'QUOTE':
 			return <Quote value={block.value} />;
 		case 'PARAGRAPH':
