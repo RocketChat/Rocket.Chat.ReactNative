@@ -10333,16 +10333,23 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
         <View
           pointerEvents="none"
           style={
-            {
-              "overflow": "hidden",
-            }
+            [
+              {
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "marginVertical": 4,
+                "overflow": "hidden",
+              },
+              {
+                "borderColor": "#CBCED1",
+              },
+            ]
           }
         >
           <View
             style={
               {
                 "flexGrow": 1,
-                "marginVertical": 4,
               }
             }
           >
@@ -11310,16 +11317,23 @@ exports[`Story Snapshots: Table should match snapshot 1`] = `
         <View
           pointerEvents="none"
           style={
-            {
-              "overflow": "hidden",
-            }
+            [
+              {
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "marginVertical": 4,
+                "overflow": "hidden",
+              },
+              {
+                "borderColor": "#CBCED1",
+              },
+            ]
           }
         >
           <View
             style={
               {
                 "flexGrow": 1,
-                "marginVertical": 4,
               }
             }
           >

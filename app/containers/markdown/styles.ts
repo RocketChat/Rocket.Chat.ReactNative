@@ -124,14 +124,17 @@ export default StyleSheet.create({
 		marginRight: 5
 	},
 	tableContent: {
-		minWidth: '100%'
+		minWidth: '100%',
+		paddingVertical: 4
 	},
 	tablePreview: {
-		overflow: 'hidden'
+		overflow: 'hidden',
+		marginVertical: 4,
+		borderWidth: 1,
+		borderRadius: 4
 	},
 	tableContainer: {
-		flexGrow: 1,
-		marginVertical: 4
+		flexGrow: 1
 	},
 	tableText: {
 		fontSize: 14,

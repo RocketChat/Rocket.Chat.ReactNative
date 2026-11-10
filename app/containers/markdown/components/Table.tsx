@@ -3,6 +3,7 @@ import { Pressable, View } from 'react-native';
 import { type Table as TableProps } from '@rocket.chat/message-parser';
 
 import Navigation from '~/lib/navigation/appNavigation';
+import { useTheme } from '~/theme';
 import { useMarkdownContext } from '../contexts/MarkdownContext';
 import styles from '../styles';
 import TableGrid from './TableGrid';
@@ -14,6 +15,7 @@ interface ITableProps {
 }
 
 const Table = ({ value }: ITableProps): ReactElement => {
+	const { colors } = useTheme();
 	const { mentions, channels, username, useRealName, onLongPress } = useMarkdownContext();
 	const preview = { header: value.header, rows: value.rows.slice(0, PREVIEW_ROWS) };
 
@@ -21,7 +23,7 @@ const Table = ({ value }: ITableProps): ReactElement => {
 
 	return (
 		<Pressable accessibilityRole='button' onPress={onPress} onLongPress={onLongPress}>
-			<View pointerEvents='none' style={styles.tablePreview}>
+			<View pointerEvents='none' style={[styles.tablePreview, { borderColor: colors.strokeLight }]}>
 				<TableGrid value={preview} />
 			</View>
 		</Pressable>
