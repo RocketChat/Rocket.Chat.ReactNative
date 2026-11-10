@@ -115,11 +115,10 @@ describe('Table', () => {
 		expect(within(stripes[0]).queryByText('Alice')).toBeNull();
 	});
 
-	it('previews only the first three body rows', async () => {
+	it('shows every body row in the message', async () => {
 		const { queryByText } = await renderMarkdown(['| N |', '| - |', '| r1 |', '| r2 |', '| r3 |', '| r4 |']);
 
-		['N', 'r1', 'r2', 'r3'].forEach(text => expect(queryByText(text)).toBeTruthy());
-		expect(queryByText('r4')).toBeNull();
+		['N', 'r1', 'r2', 'r3', 'r4'].forEach(text => expect(queryByText(text)).toBeTruthy());
 	});
 
 	it('opens the table view with the whole table when the preview is pressed', async () => {
