@@ -160,7 +160,7 @@ describe('login saga — watch quick replies', () => {
 		resolveFetch(SETTINGS);
 		await flushSagaMicrotasks();
 
-		expect(getQuickRepliesSettings).toHaveBeenCalledWith(SERVER);
+		expect(getQuickRepliesSettings).toHaveBeenCalledWith(SERVER, '7.0.0');
 		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, SETTINGS);
 	});
 

@@ -278,8 +278,9 @@ const seedWatchQuickReplies = function* seedWatchQuickRepliesFork(server) {
 			syncWatchOSQuickReplies();
 			return;
 		}
+		const serverVersion = yield select(state => state.server.version);
 		const { settings } = yield race({
-			settings: call(getQuickRepliesSettings, server),
+			settings: call(getQuickRepliesSettings, server, serverVersion),
 			stop: take([
 				types.LOGOUT,
 				types.DELETE_ACCOUNT,
