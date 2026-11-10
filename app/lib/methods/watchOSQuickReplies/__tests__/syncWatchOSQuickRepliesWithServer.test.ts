@@ -29,7 +29,7 @@ describe('syncWatchOSQuickRepliesWithServer', () => {
 		});
 
 		syncWatchOSQuickRepliesWithServer(server, withReplies('Yes, No ,,On my way'));
-		expect(syncQuickReplies).toHaveBeenCalledWith(server);
+		expect(syncQuickReplies).toHaveBeenCalledWith();
 		expect(storedAtSync).toBe(JSON.stringify(['Yes', 'No', 'On my way']));
 	});
 
@@ -41,7 +41,7 @@ describe('syncWatchOSQuickRepliesWithServer', () => {
 	it('leaves the list unset but still syncs the watch when the server has no setting', () => {
 		syncWatchOSQuickRepliesWithServer(server, {});
 		expect(UserPreferences.contains(key)).toBe(false);
-		expect(syncQuickReplies).toHaveBeenCalledWith(server);
+		expect(syncQuickReplies).toHaveBeenCalledWith();
 	});
 
 	it('caps seeded replies at the default max count after deduping when the server sends no limit', () => {

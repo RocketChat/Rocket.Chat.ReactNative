@@ -24,5 +24,5 @@ export const syncWatchOSQuickRepliesWithServer = (server: string, settings: TSet
 			return;
 		}
 	}
-	syncWatchOSQuickReplies(server);
+	syncWatchOSQuickReplies();
 };

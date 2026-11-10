@@ -134,7 +134,7 @@ describe('removeServerData', () => {
 		expect(UserPreferences.getString(tokenKey(USER_ID))).toBe(`token-${USER_ID}`);
 		expect(UserPreferences.getString(getBasicAuthKey(SERVER))).toBe(`value-for-${getBasicAuthKey(SERVER)}`);
 		expect(UserPreferences.getString(NativeWatchModule!.getQuickRepliesKey(SERVER))).toBeNull();
-		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith(SERVER);
+		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith();
 	});
 
 	it('clears the watch quick replies on the watch too, after removing them from storage', async () => {
@@ -147,7 +147,7 @@ describe('removeServerData', () => {
 
 		await removeServerData({ server: SERVER });
 
-		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith(SERVER);
+		expect(NativeWatchModule!.syncQuickReplies).toHaveBeenCalledWith();
 		expect(repliesStoredAtSync).toBe(false);
 	});
 

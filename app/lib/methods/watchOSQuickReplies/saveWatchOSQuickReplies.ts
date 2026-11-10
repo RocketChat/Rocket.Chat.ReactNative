@@ -11,5 +11,5 @@ export const saveWatchOSQuickReplies = (server: string, replies?: string[]): voi
 	} else {
 		UserPreferences.removeItem(key);
 	}
-	syncWatchOSQuickReplies(server);
+	syncWatchOSQuickReplies();
 };

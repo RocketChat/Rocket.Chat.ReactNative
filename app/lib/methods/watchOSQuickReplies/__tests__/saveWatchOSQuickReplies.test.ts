@@ -36,7 +36,7 @@ describe('saveWatchOSQuickReplies', () => {
 	it('removes the stored replies before syncing the watch when no list is given', () => {
 		saveWatchOSQuickReplies(server);
 
-		expect(syncQuickReplies).toHaveBeenCalledWith(server);
+		expect(syncQuickReplies).toHaveBeenCalledWith();
 		expect(storedAtSync).toBeNull();
 	});
 

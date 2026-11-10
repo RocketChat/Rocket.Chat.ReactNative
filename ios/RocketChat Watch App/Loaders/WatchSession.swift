@@ -49,20 +49,16 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
 	}
 	
 	func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
-		guard
-			let serverString = applicationContext["server"] as? String,
-			let serverURL = URL(string: serverString),
-			let replies = applicationContext["quickReplies"] as? [String]
-		else {
+		guard let repliesByServer = applicationContext["quickReplies"] as? [String: [String]] else {
 			return
 		}
 		
 		DispatchQueue.main.async { [weak self] in
 			guard let self else { return }
 			
-			guard let server = self.serversDB.server(url: serverURL) else { return }
-			
-			server.quickReplies = replies
+			for server in self.serversDB.servers() {
+				server.quickReplies = repliesByServer[server.url.absoluteString.removeTrailingSlash()] ?? []
+			}
 			self.serversDB.save()
 		}
 	}

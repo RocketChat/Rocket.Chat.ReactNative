@@ -5,7 +5,7 @@
 @interface MMKVBridge (WatchQuickReplies)
 + (MMKVBridge * _Nonnull)build;
 + (NSString * _Nonnull)watchQuickRepliesKeyFor:(NSString * _Nonnull)server;
-- (NSArray<NSString *> * _Nonnull)watchQuickRepliesFor:(NSString * _Nonnull)server;
+- (NSDictionary<NSString *, NSArray<NSString *> *> * _Nonnull)allWatchQuickReplies;
 @end
 
 @interface RCTWatchModule ()
@@ -32,7 +32,7 @@
     return @"WatchModule";
 }
 
-- (NSString *)syncQuickReplies:(NSString *)server {
+- (NSString *)syncQuickReplies {
     if (![WCSession isSupported] || !_session.isWatchAppInstalled) {
         return @"[ERROR]: WatchApp not supported or not installed";
     }
@@ -41,14 +41,8 @@
         return @"[ERROR]: Watch session not activated";
     }
 
-    NSArray<NSString *> *replies = [_mmkv watchQuickRepliesFor:server];
     NSError *error = nil;
-    BOOL success = [_session updateApplicationContext:@{
-        @"quickReplies" : replies,
-        @"server" : server,
-        @"_t" : [NSUUID UUID].UUIDString
-    }
-                                                error:&error];
+    BOOL success = [_session updateApplicationContext:@{@"quickReplies" : [_mmkv allWatchQuickReplies]} error:&error];
 
     if (!success) {
         return [NSString stringWithFormat:@"[ERROR]: %@", error.localizedDescription ?: @"Unknown Watch error"];

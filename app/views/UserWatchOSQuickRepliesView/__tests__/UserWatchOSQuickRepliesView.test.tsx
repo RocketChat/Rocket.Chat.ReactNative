@@ -72,7 +72,7 @@ describe('UserWatchOSQuickRepliesView', () => {
 
 		expect(UserPreferences.getString(key)).toBe('[]');
 		expect(storedAtSync).toEqual([[]]);
-		expect(syncWatchOSQuickReplies).toHaveBeenCalledWith(server);
+		expect(syncWatchOSQuickReplies).toHaveBeenCalledWith();
 	});
 
 	it('names the reply in the label of its delete action', () => {
