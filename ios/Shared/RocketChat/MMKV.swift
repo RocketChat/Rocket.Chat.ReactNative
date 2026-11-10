@@ -1,7 +1,7 @@
 import Foundation
 
 extension MMKVBridge {
-	static func build() -> MMKVBridge {
+	@objc(build) static func build() -> MMKVBridge {
 		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
 		let groupDir = FileManager.default.groupDir()
 		
@@ -37,6 +37,24 @@ extension MMKVBridge {
 			return nil
 		}
 		return userId
+	}
+	
+	private static let watchQuickRepliesKeySuffix = "-RC_WATCHOS_QUICKREPLIES"
+	
+	@objc(watchQuickRepliesKeyFor:) static func watchQuickRepliesKey(for server: String) -> String {
+		server + watchQuickRepliesKeySuffix
+	}
+	
+	func watchQuickReplies(for server: String) -> [String] {
+		guard let json = string(forKey: MMKVBridge.watchQuickRepliesKey(for: server)), let data = json.data(using: .utf8) else {
+			return []
+		}
+		return (try? JSONDecoder().decode([String].self, from: data)) ?? []
+	}
+	
+	@objc(allWatchQuickReplies) func allWatchQuickReplies() -> [String: [String]] {
+		let servers = allKeys().filter { $0.hasSuffix(MMKVBridge.watchQuickRepliesKeySuffix) }.map { String($0.dropLast(MMKVBridge.watchQuickRepliesKeySuffix.count)) }
+		return Dictionary(uniqueKeysWithValues: servers.map { ($0, watchQuickReplies(for: $0)) })
 	}
 	
 	func privateKey(for server: String) -> String? {
