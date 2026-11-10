@@ -22,7 +22,7 @@ jobs:
 
   build-android:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     needs: build-hold
@@ -96,7 +96,7 @@ jobs:
 
   upload-android:
     name: Upload
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       pull-requests: write
@@ -116,7 +116,7 @@ jobs:
 
   upload-internal:
     name: Internal Sharing
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       pull-requests: write

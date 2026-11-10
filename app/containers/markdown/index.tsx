@@ -17,6 +17,7 @@ import Quote from './components/Quote';
 import Paragraph from './components/Paragraph';
 import { Code } from './components/code';
 import Heading from './components/Heading';
+import Table from './components/Table';
 import log from '~/lib/methods/helpers/log';
 import styles from './styles';
 
@@ -31,6 +32,7 @@ interface IMarkdownProps {
 	channels?: IUserChannel[];
 	navToRoomInfo?: Function;
 	onLinkPress?: TOnLinkPress;
+	onLongPress?: () => void;
 	isTranslated?: boolean;
 	textStyle?: StyleProp<TextStyle>;
 }
@@ -94,6 +96,8 @@ const MarkdownBlockView = ({ block }: { block: MarkdownBlock }) => {
 			return <Code value={block.value} />;
 		case 'HEADING':
 			return <Heading value={block.value} level={block.level} />;
+		case 'TABLE':
+			return <Table value={block.value} />;
 		case 'LINE_BREAK':
 			return <LineBreak />;
 		// This prop exists, but not even on the web it is treated, so...
@@ -116,6 +120,7 @@ const Markdown: FC<IMarkdownProps> = ({
 	useRealName,
 	username = '',
 	onLinkPress,
+	onLongPress,
 	isTranslated,
 	textStyle
 }: IMarkdownProps) => {
@@ -138,9 +143,10 @@ const Markdown: FC<IMarkdownProps> = ({
 			username,
 			navToRoomInfo,
 			onLinkPress,
+			onLongPress,
 			textStyle
 		}),
-		[mentions, channels, useRealName, username, navToRoomInfo, onLinkPress, textStyle]
+		[mentions, channels, useRealName, username, navToRoomInfo, onLinkPress, onLongPress, textStyle]
 	);
 
 	if (!tokens) {
