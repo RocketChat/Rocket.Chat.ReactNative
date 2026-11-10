@@ -1275,6 +1275,48 @@ describe('handshake', () => {
 		(room.requestRoomKey as unknown as { stop: () => void }).stop();
 	});
 
+	it('rejects a concurrent handshake when the running one ends without a room key', async () => {
+		const room = createRoom({ privateKey: 'priv' });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2EKey: 'broken-key', e2eKeyId: 'pending-kid' });
+		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
+		let failImport = (_error: Error) => {};
+		let markImportStarted = () => {};
+		const importStarted = new Promise<void>(resolve => {
+			markImportStarted = resolve;
+		});
+		jest.spyOn(room, 'importRoomKey').mockImplementation(() => {
+			markImportStarted();
+			return new Promise((_resolve, reject) => {
+				failImport = reject;
+			});
+		});
+
+		const running = room.handshake();
+		await importStarted;
+		const waiting = room.handshake();
+		failImport(new Error('cannot decrypt'));
+
+		await expect(waiting).rejects.toBeUndefined();
+		await running;
+		expect(room.ready).toBe(false);
+		expect(room.establishing).toBe(false);
+		(room.requestRoomKey as unknown as { stop: () => void }).stop();
+	});
+
+	it('lets a later handshake retry after a suggested key fails and the key must be requested', async () => {
+		const room = createRoom({ privateKey: 'priv' });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2ESuggestedKey: 'suggested-key', e2eKeyId: 'pending-kid' });
+		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
+		const importSpy = jest.spyOn(room, 'importRoomKey').mockRejectedValue(new Error('cannot decrypt suggestion'));
+
+		await room.handshake();
+		await room.handshake();
+
+		expect(room.establishing).toBe(false);
+		expect(importSpy).toHaveBeenCalledTimes(2);
+		(room.requestRoomKey as unknown as { stop: () => void }).stop();
+	});
+
 	it('logs and still requests the room key when creating a brand new key fails', async () => {
 		const room = createRoom({ privateKey: 'priv' });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
