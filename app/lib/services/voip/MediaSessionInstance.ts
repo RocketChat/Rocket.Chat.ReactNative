@@ -38,6 +38,9 @@ import { requestVoipCallPermissions } from '~/lib/methods/voipCallPermissions';
 import I18n from '~/i18n';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { acceptNativeCallWithReadiness as runAcceptNativeCallGate } from './acceptNativeCall';
+import { voipDebugLog } from './voipDebugLog';
+
+const TAG = 'MediaSession';
 
 const mediaCallLogger = new MediaCallLogger();
 
@@ -52,6 +55,16 @@ class MediaSessionInstance {
 
 	private tryAnswerIfNativeAcceptedNotification(signal: ServerMediaSignal, useGate = false): void {
 		const { call, nativeAcceptedCallId } = useCallStore.getState();
+		if (signal.type === 'notification') {
+			voipDebugLog(TAG, 'tryAnswerIfNativeAcceptedNotification', {
+				signalCallId: signal.callId,
+				notification: signal.notification,
+				signedContractMatches: signal.signedContractId === getUniqueIdSync(),
+				nativeAcceptedCallId,
+				boundCallId: call?.callId ?? null,
+				useGate
+			});
+		}
 		if (
 			signal.type === 'notification' &&
 			signal.notification === 'accepted' &&
@@ -78,6 +91,10 @@ class MediaSessionInstance {
 		}
 		try {
 			const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
+			voipDebugLog(TAG, 'applyRestStateSignals fetched', {
+				count: signals.length,
+				signals: signals.map((signal: any) => ({ type: signal.type, callId: signal.callId, notification: signal.notification }))
+			});
 			for (const signal of signals) {
 				// Sequential replay: signals depend on prior state mutations.
 				// eslint-disable-next-line no-await-in-loop
@@ -85,8 +102,23 @@ class MediaSessionInstance {
 				this.tryAnswerIfNativeAcceptedNotification(signal);
 			}
 		} catch (error) {
+			voipDebugLog(TAG, 'applyRestStateSignals failed', { error }, 'error');
 			log(error);
 		}
+	}
+
+	public getCallDebugInfo(callId: string): unknown {
+		const call = this.instance?.getCallData(callId);
+		if (!call) {
+			return { found: false };
+		}
+		return {
+			found: true,
+			callId: call.callId,
+			state: call.state,
+			hidden: call.hidden,
+			role: call.localParticipant?.role
+		};
 	}
 
 	public isInitialized(): boolean {
@@ -98,6 +130,7 @@ class MediaSessionInstance {
 	};
 
 	public async init(userId: string): Promise<void> {
+		voipDebugLog(TAG, 'init', { userId, nativeAcceptedCallId: useCallStore.getState().nativeAcceptedCallId });
 		this.reset();
 
 		registerGlobals();
@@ -147,6 +180,11 @@ class MediaSessionInstance {
 				return;
 			}
 			const signal = ddpMessage.fields.args[0];
+			voipDebugLog(TAG, 'media-signal received', {
+				type: signal?.type,
+				callId: signal?.callId,
+				notification: signal?.notification
+			});
 			try {
 				// `tryAnswerIfNativeAcceptedNotification` reads the state this signal mutates.
 				await this.instance.processSignal(signal);
@@ -160,6 +198,12 @@ class MediaSessionInstance {
 			if (!call) {
 				return;
 			}
+			voipDebugLog(TAG, 'newCall', {
+				callId: call.callId,
+				state: call.state,
+				hidden: call.hidden,
+				role: call.localParticipant.role
+			});
 			call.emitter.on('takenOver', () => this.bindTakenOverCall(call));
 			if (!call.hidden) {
 				if (call.localParticipant.role === 'caller') {
@@ -169,6 +213,7 @@ class MediaSessionInstance {
 				}
 
 				call.emitter.on('ended', () => {
+					voipDebugLog(TAG, 'call ended event', { callId: call.callId });
 					terminateNativeCall(call.callId);
 				});
 			}
@@ -208,6 +253,7 @@ class MediaSessionInstance {
 		useCallStore.getState().setDirection(call.localParticipant.role === 'caller' ? 'outgoing' : 'incoming');
 		this.presentBoundCall(call);
 		call.emitter.on('ended', () => {
+			voipDebugLog(TAG, 'taken-over call ended event', { callId: call.callId });
 			terminateNativeCall(call.callId);
 		});
 	}
@@ -238,15 +284,19 @@ class MediaSessionInstance {
 	public answerCall = async (callId: string) => {
 		const { call: existingCall } = useCallStore.getState();
 		if (existingCall != null && existingCall.callId === callId) {
+			voipDebugLog(TAG, 'answerCall: already bound', { callId });
 			return;
 		}
 
 		const mainCall = this.instance?.getCallData(callId);
+		voipDebugLog(TAG, 'answerCall', { callId, libCall: this.getCallDebugInfo(callId) });
 
 		if (mainCall && mainCall.callId === callId) {
 			try {
 				await mainCall.accept();
+				voipDebugLog(TAG, 'answerCall: accept() resolved', { callId, state: mainCall.state });
 			} catch (error) {
+				voipDebugLog(TAG, 'answerCall: accept() threw', { callId, error, state: mainCall.state }, 'error');
 				log(error);
 				terminateNativeCall(callId);
 				const st = useCallStore.getState();
@@ -266,6 +316,7 @@ class MediaSessionInstance {
 				log(error);
 			});
 		} else {
+			voipDebugLog(TAG, 'answerCall: call not found after accept', { callId, instance: this.instance != null }, 'error');
 			terminateNativeCall(callId);
 			const st = useCallStore.getState();
 			if (st.nativeAcceptedCallId === callId) {
@@ -318,6 +369,11 @@ class MediaSessionInstance {
 
 	public endCall = (callId: string) => {
 		const mainCall = this.instance?.getCallData(callId);
+		voipDebugLog(TAG, 'endCall', {
+			callId,
+			libCall: this.getCallDebugInfo(callId),
+			stack: new Error().stack
+		});
 
 		// A hidden call is carried by another session (e.g. one that just took it over); ending the native call must not hang it up.
 		if (mainCall && mainCall.callId === callId && !mainCall.hidden) {

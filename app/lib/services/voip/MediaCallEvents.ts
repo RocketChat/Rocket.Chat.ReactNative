@@ -8,6 +8,7 @@ import type { VoipPayload } from '~/definitions/Voip';
 import NativeVoipModule from '~/lib/native/NativeVoip';
 import { registerPushToken } from '../restApi';
 import { MediaCallLogger } from './MediaCallLogger';
+import { voipDebugLog } from './voipDebugLog';
 
 const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
 const platform = isIOS ? 'iOS' : 'Android';
@@ -62,6 +63,7 @@ function dispatchVoipAcceptFailureFromNative(
 	raw: VoipPayload & { voipAcceptFailed?: boolean },
 	onOpenDeepLink: MediaCallEventsAdapters['onOpenDeepLink']
 ) {
+	voipDebugLog('MediaCallEvents', 'VoipAcceptFailed received', raw, 'warn');
 	if (!raw.voipAcceptFailed) {
 		return;
 	}
@@ -80,6 +82,11 @@ function dispatchVoipAcceptFailureFromNative(
 
 function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaCallEventsAdapters) {
 	const { callId } = data;
+	voipDebugLog('MediaCallEvents', 'VoipAcceptSucceeded received', {
+		...data,
+		activeServer: adapters.getActiveServerUrl(),
+		duplicate: !!callId && lastHandledVoipAcceptSucceededCallId === callId
+	});
 	if (callId && lastHandledVoipAcceptSucceededCallId === callId) {
 		return;
 	}
@@ -99,6 +106,7 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 		});
 		return;
 	}
+	voipDebugLog('MediaCallEvents', 'VoipAcceptSucceeded for another workspace, opening deep link', { callId, host: data.host });
 	adapters.onOpenDeepLink({
 		callId: data.callId,
 		host: data.host
