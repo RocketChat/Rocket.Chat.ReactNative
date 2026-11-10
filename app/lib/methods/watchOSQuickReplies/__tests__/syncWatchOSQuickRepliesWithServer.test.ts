@@ -17,7 +17,7 @@ const withReplies = (replies: string, limits: TSettingsState = {}): TSettingsSta
 
 describe('syncWatchOSQuickRepliesWithServer', () => {
 	beforeEach(() => {
-		syncQuickReplies.mockReset().mockReturnValue('SUCCESS');
+		syncQuickReplies.mockReset().mockReturnValue(null);
 		UserPreferences.removeItem(key);
 	});
 
@@ -25,7 +25,7 @@ describe('syncWatchOSQuickRepliesWithServer', () => {
 		let storedAtSync: string | null | undefined;
 		syncQuickReplies.mockImplementationOnce(() => {
 			storedAtSync = UserPreferences.getString(key);
-			return 'SUCCESS';
+			return null;
 		});
 
 		syncWatchOSQuickRepliesWithServer(server, withReplies('Yes, No ,,On my way'));

@@ -16,7 +16,7 @@ describe('saveWatchOSQuickReplies', () => {
 		storedAtSync = undefined;
 		syncQuickReplies.mockReset().mockImplementation(() => {
 			storedAtSync = UserPreferences.getString(key);
-			return 'SUCCESS';
+			return null;
 		});
 		UserPreferences.setString(key, JSON.stringify(['Old']));
 	});

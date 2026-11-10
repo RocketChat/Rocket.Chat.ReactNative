@@ -142,7 +142,7 @@ describe('removeServerData', () => {
 		let repliesStoredAtSync: boolean | undefined;
 		jest.mocked(NativeWatchModule!.syncQuickReplies).mockImplementationOnce(() => {
 			repliesStoredAtSync = UserPreferences.contains(NativeWatchModule!.getQuickRepliesKey(SERVER));
-			return 'SUCCESS';
+			return null;
 		});
 
 		await removeServerData({ server: SERVER });

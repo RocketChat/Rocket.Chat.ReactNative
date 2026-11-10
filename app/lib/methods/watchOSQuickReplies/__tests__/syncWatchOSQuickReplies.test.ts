@@ -11,7 +11,7 @@ const syncQuickReplies = NativeWatchModule!.syncQuickReplies as jest.Mock;
 describe('syncWatchOSQuickReplies', () => {
 	beforeEach(() => {
 		(isWatchAppInstalled as jest.Mock).mockReturnValue(true);
-		syncQuickReplies.mockReset().mockReturnValue('SUCCESS');
+		syncQuickReplies.mockReset().mockReturnValue(null);
 		jest.mocked(log).mockClear();
 	});
 
@@ -27,9 +27,9 @@ describe('syncWatchOSQuickReplies', () => {
 		expect(syncQuickReplies).not.toHaveBeenCalled();
 	});
 
-	it('reports native errors as failures', () => {
-		syncQuickReplies.mockReturnValue('[ERROR]: Watch session not activated');
+	it('logs the error the watch module returns', () => {
+		syncQuickReplies.mockReturnValue('Watch session not activated');
 		syncWatchOSQuickReplies();
-		expect(log).toHaveBeenCalledWith(new Error('[ERROR]: Watch session not activated'));
+		expect(log).toHaveBeenCalledWith(new Error('Watch session not activated'));
 	});
 });

@@ -32,23 +32,19 @@
     return @"WatchModule";
 }
 
-- (NSString *)syncQuickReplies {
-    if (![WCSession isSupported] || !_session.isWatchAppInstalled) {
-        return @"[ERROR]: WatchApp not supported or not installed";
-    }
-
+- (NSString * _Nullable)syncQuickReplies {
     if (_session.activationState != WCSessionActivationStateActivated) {
-        return @"[ERROR]: Watch session not activated";
+        return @"Watch session not activated";
     }
 
     NSError *error = nil;
     BOOL success = [_session updateApplicationContext:@{@"quickReplies" : [_mmkv allWatchQuickReplies]} error:&error];
 
     if (!success) {
-        return [NSString stringWithFormat:@"[ERROR]: %@", error.localizedDescription ?: @"Unknown Watch error"];
+        return error.localizedDescription ?: @"Unknown Watch error";
     }
 
-    return @"SUCCESS";
+    return nil;
 }
 
 - (NSString *)getQuickRepliesKey:(NSString *)server {

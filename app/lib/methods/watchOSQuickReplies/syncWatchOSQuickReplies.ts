@@ -5,9 +5,9 @@ import { isWatchAppInstalled } from './isWatchAppInstalled';
 export function syncWatchOSQuickReplies(): void {
 	if (!isWatchAppInstalled()) return;
 	try {
-		const result = NativeWatchModule?.syncQuickReplies();
-		if (result?.startsWith('[ERROR]')) {
-			log(new Error(result));
+		const error = NativeWatchModule?.syncQuickReplies();
+		if (error) {
+			log(new Error(error));
 		}
 	} catch (e) {
 		log(e);
