@@ -27,11 +27,9 @@ jest.mock('~/lib/navigation/appNavigation', () => ({
 const mockEscalate = jest.mocked(mediaCallsEscalate);
 const mockStart = jest.mocked(videoConferenceStart);
 const sipCall = {
-	features: ['audio', 'conference-escalation'],
 	remoteParticipants: [{ contact: { type: 'sip' } }]
 } as any;
 const userCall = {
-	features: ['audio', 'conference-escalation'],
 	remoteParticipants: [{ contact: { type: 'user', id: 'peer-1' } }]
 } as any;
 const mockOpenLink = jest.mocked(openLink);
@@ -50,6 +48,7 @@ describe('escalateToVideo', () => {
 		useCallStore.setState({
 			call: sipCall,
 			callId: 'call-1',
+			features: ['audio', 'conference-escalation'],
 			roomId: 'room-1',
 			focused: true,
 			escalated: false,
@@ -60,7 +59,7 @@ describe('escalateToVideo', () => {
 	});
 
 	it('does nothing when the server did not enable escalation for the call', () => {
-		useCallStore.setState({ call: { ...sipCall, features: ['audio'] } });
+		useCallStore.setState({ features: ['audio'] });
 		escalateToVideo();
 		expect(Alert.alert).not.toHaveBeenCalled();
 	});
@@ -179,7 +178,8 @@ describe('escalateToVideo between two users', () => {
 		useCallStore.setState({
 			call: userCall,
 			callId: 'call-1',
-			contact: { id: 'peer-1', username: 'peer' },
+			features: ['audio', 'conference-escalation'],
+			contact: { type: 'user', id: 'peer-1', username: 'peer' },
 			roomId: 'dm-1',
 			focused: true,
 			escalated: false,
@@ -189,7 +189,7 @@ describe('escalateToVideo between two users', () => {
 	});
 
 	it('does nothing when the server did not enable escalation for the call', () => {
-		useCallStore.setState({ call: { ...userCall, features: ['audio'] } });
+		useCallStore.setState({ features: ['audio'] });
 		escalateToVideo();
 		expect(Alert.alert).not.toHaveBeenCalled();
 	});
@@ -238,7 +238,7 @@ describe('joinConferenceFromPeer', () => {
 		useCallStore.setState({
 			call: { features: ['audio'] } as any,
 			callId: 'call-1',
-			contact: { id: 'peer-1', username: 'peer' },
+			contact: { type: 'user', id: 'peer-1', username: 'peer' },
 			focused: true,
 			endCall: mockEndCall
 		});
@@ -248,6 +248,12 @@ describe('joinConferenceFromPeer', () => {
 		await joinConferenceFromPeer({ callId: 'conf-1', rid: 'dm-1', uid: 'peer-1' });
 		expect(mockEndCall).toHaveBeenCalledTimes(1);
 		expect(Navigation.back).toHaveBeenCalledTimes(1);
+		expect(videoConfJoin).toHaveBeenCalledWith('conf-1', false, true, { rid: 'dm-1' });
+	});
+
+	it('matches a user dialed by extension through the uid the server sends', async () => {
+		useCallStore.setState({ contact: { type: 'sip', id: '2244', uid: 'peer-1' } });
+		await joinConferenceFromPeer({ callId: 'conf-1', rid: 'dm-1', uid: 'peer-1' });
 		expect(videoConfJoin).toHaveBeenCalledWith('conf-1', false, true, { rid: 'dm-1' });
 	});
 

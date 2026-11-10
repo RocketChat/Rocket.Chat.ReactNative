@@ -5,7 +5,8 @@ import I18n from '~/i18n';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
 import { escalateToVideo } from '~/lib/services/voip/escalateToVideo';
-import { useCallStore, useCanEscalateToVideo, useControlsVisible, useIsCallEscalated } from '~/lib/services/voip/useCallStore';
+import { useCallStore, useCanEscalateToVideo, useControlsVisible } from '~/lib/services/voip/useCallStore';
+import { useCallControlsAvailability } from './useCallControlsAvailability';
 import CallActionButton from './CallActionButton';
 import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
 import { useTheme } from '~/theme';
@@ -33,11 +34,9 @@ export const CallButtons = () => {
 	const isLandscape = width > height;
 	const singleRow = layoutMode === 'wide' || isLandscape;
 
-	const callState = useCallStore(state => state.callState);
 	const isMuted = useCallStore(state => state.isMuted);
 	const isOnHold = useCallStore(state => state.isOnHold);
 	const isSpeakerOn = useCallStore(state => state.isSpeakerOn);
-	const roomId = useCallStore(state => state.roomId);
 
 	const toggleMute = useCallStore(state => state.toggleMute);
 	const toggleHold = useCallStore(state => state.toggleHold);
@@ -47,16 +46,13 @@ export const CallButtons = () => {
 	const controlsVisible = useControlsVisible();
 	const appActions = useMediaCallAppActions();
 	const canEscalate = useCanEscalateToVideo();
-	const escalated = useIsCallEscalated();
+	const { isConnecting, speakerDisabled, holdDisabled, muteDisabled, dialpadDisabled, messageDisabled } =
+		useCallControlsAvailability();
 
 	const containerStyle = useAnimatedStyle(() => ({
 		opacity: withTiming(controlsVisible ? 1 : 0, { duration: CONTROLS_ANIMATION_DURATION }),
 		transform: [{ translateY: withTiming(controlsVisible ? 0 : 100, { duration: CONTROLS_ANIMATION_DURATION }) }]
 	}));
-
-	const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
-	const speakerDisabled = callState === 'none';
-	const messageDisabled = roomId == null;
 
 	const handleMore = () => {
 		showActionSheetRef({
@@ -116,8 +112,7 @@ export const CallButtons = () => {
 			label: isOnHold ? I18n.t('Unhold') : I18n.t('Hold'),
 			onPress: toggleHold,
 			variant: isOnHold ? 'active' : 'default',
-			// An escalated call only keeps audio; hold is no longer offered by the server
-			disabled: isConnecting || escalated
+			disabled: holdDisabled
 		},
 		{
 			testID: 'call-view-mute',
@@ -125,7 +120,7 @@ export const CallButtons = () => {
 			label: isMuted ? I18n.t('Unmute') : I18n.t('Mute'),
 			onPress: toggleMute,
 			variant: isMuted ? 'active' : 'default',
-			disabled: isConnecting
+			disabled: muteDisabled
 		},
 		{
 			testID: 'call-view-more',
@@ -147,7 +142,7 @@ export const CallButtons = () => {
 			icon: 'dialpad',
 			label: I18n.t('Dialpad'),
 			onPress: handleDialpad,
-			disabled: isConnecting
+			disabled: dialpadDisabled
 		}
 	];
 

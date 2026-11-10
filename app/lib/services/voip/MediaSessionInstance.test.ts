@@ -185,6 +185,7 @@ type MockMediaSignalingSession = {
 const createdSessions: MockMediaSignalingSession[] = [];
 
 jest.mock('@rocket.chat/media-signaling', () => ({
+	...jest.requireActual('@rocket.chat/media-signaling'),
 	MediaCallWebRTCProcessor: jest.fn().mockImplementation(function MediaCallWebRTCProcessor(this: unknown) {
 		return this;
 	}),
@@ -244,6 +245,8 @@ function buildClientMediaCall(options: {
 	return {
 		callId: options.callId,
 		hidden: options.hidden ?? false,
+		service: 'webrtc',
+		features: ['audio', 'hold', 'dialpad'],
 		localParticipant: { local: true, role: options.role, muted: false, held: false, contact: {} },
 		remoteParticipants: [
 			{

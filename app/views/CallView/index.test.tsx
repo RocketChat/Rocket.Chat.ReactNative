@@ -7,6 +7,7 @@ import CallView from '.';
 import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
 import { useCallStore } from '~/lib/services/voip/useCallStore';
 import { mockedStore } from '~/reducers/mockedStore';
+import { deriveSupportedFeatures } from '~/lib/services/voip/deriveSupportedFeatures';
 import * as stories from './CallView.stories';
 import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
@@ -158,6 +159,8 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 			sipExtension: ''
 		},
 		roomId: 'test-room-rid',
+		service: 'webrtc',
+		features: deriveSupportedFeatures('webrtc', ['audio', 'hold', 'dialpad']),
 		...overrides
 	});
 };
@@ -347,9 +350,9 @@ describe('CallView/CallView', () => {
 	it('should offer video in a DM call only when the server enabled escalation', () => {
 		setStoreState({
 			callState: 'active',
+			features: deriveSupportedFeatures('webrtc', ['audio', 'hold', 'dialpad', 'conference-escalation']),
 			call: {
 				...createMockCall(),
-				features: ['audio', 'conference-escalation'],
 				remoteParticipants: [{ contact: { type: 'user' } }]
 			} as any
 		});
@@ -379,9 +382,9 @@ describe('CallView/CallView', () => {
 		setStoreState({
 			callState: 'active',
 			roomId: null,
+			features: deriveSupportedFeatures('webrtc', ['audio', 'hold', 'dialpad', 'conference-escalation']),
 			call: {
 				...createMockCall(),
-				features: ['audio', 'conference-escalation'],
 				remoteParticipants: [{ contact: { type: 'sip' } }]
 			} as any
 		});
@@ -396,14 +399,26 @@ describe('CallView/CallView', () => {
 		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-video', 'call-view-more-message']);
 	});
 
+	it('should only offer the controls a cti call lists', () => {
+		setStoreState({ service: 'cti', features: deriveSupportedFeatures('cti', ['audio', 'mute']) });
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		expect(getByTestId('call-view-mute').props.accessibilityState?.disabled).toBe(false);
+		expect(getByTestId('call-view-hold').props.accessibilityState?.disabled).toBe(true);
+		expect(getByTestId('call-view-dialpad').props.accessibilityState?.disabled).toBe(true);
+		expect(getByTestId('call-view-speaker').props.accessibilityState?.disabled).toBe(true);
+		expect(getByTestId('call-view-more').props.accessibilityState?.disabled).toBe(true);
+	});
+
 	it('should prompt to join the conference once the call was escalated', () => {
 		setStoreState({
 			callState: 'active',
 			escalated: true,
-			call: {
-				...createMockCall(),
-				features: ['audio', 'conference-escalation']
-			} as any
+			features: deriveSupportedFeatures('webrtc', ['audio', 'conference-escalation'])
 		});
 		const { getByTestId } = render(
 			<Wrapper>

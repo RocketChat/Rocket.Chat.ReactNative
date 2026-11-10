@@ -7,7 +7,8 @@ import { videoConfJoin } from '~/lib/methods/videoConf';
 import { mediaCallsEscalate, notifyUser, videoConferenceStart } from '~/lib/services/restApi';
 import { store } from '~/lib/store/auxStore';
 import { usePexipCallStore } from '~/lib/services/videoConf/usePexipCallStore';
-import { hasConferenceEscalation, isSipCall, useCallStore } from './useCallStore';
+import { isSipCall, useCallStore } from './useCallStore';
+import { getContactUserId } from './getContactUserId';
 
 let inFlight = false;
 
@@ -83,11 +84,12 @@ const switchToConference = async (rid: string): Promise<void> => {
 		}
 		const { callId: conferenceId } = result.data;
 		const { callId, contact } = useCallStore.getState();
-		if (!callId || !contact.id) {
+		const peerUserId = getContactUserId(contact);
+		if (!callId || !peerUserId) {
 			return;
 		}
 		const userId = store.getState().login.user.id;
-		await notifyUser(`${contact.id}/video-conference`, {
+		await notifyUser(`${peerUserId}/video-conference`, {
 			action: 'escalate',
 			params: { uid: userId, rid, callId: conferenceId }
 		});
@@ -112,7 +114,7 @@ export const joinConferenceFromPeer = async ({
 	uid: string;
 }): Promise<void> => {
 	const { call, contact } = useCallStore.getState();
-	if (!call || contact.id !== uid) {
+	if (!call || getContactUserId(contact) !== uid) {
 		return;
 	}
 	leaveVoiceCall();
@@ -124,8 +126,8 @@ export const joinConferenceFromPeer = async ({
  * was already escalated (by either side), in which case it just joins the existing conference.
  */
 export function escalateToVideo(): void {
-	const { call, callId, escalated, roomId } = useCallStore.getState();
-	if (!callId || !hasConferenceEscalation(call)) {
+	const { call, callId, escalated, roomId, features } = useCallStore.getState();
+	if (!callId || !features.includes('conference-escalation')) {
 		return;
 	}
 	const sipCall = isSipCall(call);
