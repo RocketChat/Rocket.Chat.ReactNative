@@ -20,10 +20,7 @@ jest.mock('~/lib/methods/getSlashCommands', () => ({
 	getSlashCommands: jest.fn()
 }));
 
-let mockFetchedFor: string | null = null;
-
 jest.mock('~/lib/methods/getSettings', () => ({
-	getSettingsFetchedFor: jest.fn(() => mockFetchedFor),
 	subscribeSettings: jest.fn()
 }));
 
@@ -109,12 +106,22 @@ jest.mock('~/lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer',
 	syncWatchOSQuickRepliesWithServer: jest.fn()
 }));
 
-import type { Store } from 'redux';
+jest.mock('~/lib/methods/watchOSQuickReplies/syncWatchOSQuickReplies', () => ({
+	syncWatchOSQuickReplies: jest.fn()
+}));
+
+jest.mock('~/lib/methods/watchOSQuickReplies/getQuickRepliesSettings', () => ({
+	getQuickRepliesSettings: jest.fn()
+}));
+
 import loginRoot from '../login';
 import { deleteAccount, loginSuccess, logout } from '~/actions/login';
 import { selectServerRequest, selectServerSuccess } from '~/actions/server';
-import { addSettings, clearSettings, fetchSettingsComplete } from '~/actions/settings';
+import UserPreferences from '~/lib/methods/userPreferences';
+import { getQuickRepliesKey } from '~/lib/methods/watchOSQuickReplies/getQuickRepliesKey';
+import { getQuickRepliesSettings } from '~/lib/methods/watchOSQuickReplies/getQuickRepliesSettings';
 import { isWatchAppInstalled } from '~/lib/methods/watchOSQuickReplies/isWatchAppInstalled';
+import { syncWatchOSQuickReplies } from '~/lib/methods/watchOSQuickReplies/syncWatchOSQuickReplies';
 import { syncWatchOSQuickRepliesWithServer } from '~/lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 import type { TSettingsState } from '~/reducers/settings';
@@ -123,168 +130,88 @@ afterEach(cancelSagaTasks);
 
 const SERVER = 'https://watch.rocket.chat';
 const USER = { id: 'user', token: 'user-token', username: 'user', name: 'User' };
+const SETTINGS: TSettingsState = { Apple_Watch_Quick_Actions: 'Yes,No', Apple_Watch_Quick_Actions_Max_Count: 3 };
 
-const setupStore = (settings?: TSettingsState) => {
+let resolveFetch: (settings: TSettingsState) => void;
+
+const setupStore = () => {
 	const recording = createRecordingStore(loginRoot);
 	recording.store.dispatch(selectServerSuccess({ server: SERVER, version: '7.0.0', name: 'Watch' }));
-	if (settings) {
-		recording.store.dispatch(addSettings(settings));
-	}
 	return recording;
-};
-
-const finishFetch = (store: Store, server: string, fetchedSettings?: TSettingsState) => {
-	mockFetchedFor = server;
-	store.dispatch(fetchSettingsComplete(fetchedSettings));
 };
 
 describe('login saga — watch quick replies', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockFetchedFor = null;
+		UserPreferences.removeItem(getQuickRepliesKey(SERVER));
+		jest.mocked(getQuickRepliesSettings).mockImplementation(
+			() =>
+				new Promise(resolve => {
+					resolveFetch = resolve;
+				})
+		);
 	});
 
-	it('seeds with the server setting once it is fetched', async () => {
-		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No', Apple_Watch_Quick_Actions_Max_Count: 3 });
-		finishFetch(store, SERVER);
+	it('seeds with the settings fetched from the workspace', async () => {
+		const { store } = setupStore();
 
 		store.dispatch(loginSuccess(USER));
 		await flushSagaMicrotasks();
+		resolveFetch(SETTINGS);
+		await flushSagaMicrotasks();
 
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, {
-			Apple_Watch_Quick_Actions: 'Yes,No',
-			Apple_Watch_Quick_Actions_Max_Count: 3
-		});
+		expect(getQuickRepliesSettings).toHaveBeenCalledWith(SERVER);
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, SETTINGS);
 	});
 
-	it('does not sync without a watch app', async () => {
+	it('does nothing without a watch app', async () => {
 		jest.mocked(isWatchAppInstalled).mockReturnValueOnce(false);
-		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No' });
-		finishFetch(store, SERVER);
-
-		store.dispatch(loginSuccess(USER));
-		await flushSagaMicrotasks();
-
-		expect(syncWatchOSQuickRepliesWithServer).not.toHaveBeenCalled();
-	});
-
-	it('waits for the current settings fetch instead of seeding a cached value', async () => {
-		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Old' });
-
-		store.dispatch(loginSuccess(USER));
-		await flushSagaMicrotasks();
-		expect(syncWatchOSQuickRepliesWithServer).not.toHaveBeenCalled();
-
-		store.dispatch(addSettings({ Apple_Watch_Quick_Actions: 'OK' }));
-		finishFetch(store, SERVER);
-		await flushSagaMicrotasks();
-
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'OK' });
-	});
-
-	it('seeds with the setting the finished fetch carried when the stored settings were cleared meanwhile', async () => {
-		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Old' });
-
-		store.dispatch(loginSuccess(USER));
-		await flushSagaMicrotasks();
-		store.dispatch(clearSettings());
-		finishFetch(store, SERVER, { Apple_Watch_Quick_Actions: 'Yes,No', Apple_Watch_Quick_Actions_Max_Count: 3 });
-		await flushSagaMicrotasks();
-
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, {
-			Apple_Watch_Quick_Actions: 'Yes,No',
-			Apple_Watch_Quick_Actions_Max_Count: 3
-		});
-	});
-
-	it('syncs without waiting when the settings fetch already finished without the setting', async () => {
-		const { store } = setupStore();
-		finishFetch(store, SERVER);
-
-		store.dispatch(loginSuccess(USER));
-		await flushSagaMicrotasks();
-
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, {});
-	});
-
-	it('stops waiting when the user switches workspace after login finished', async () => {
-		jest.useFakeTimers();
 		const { store } = setupStore();
 
 		store.dispatch(loginSuccess(USER));
 		await flushSagaMicrotasks();
-		jest.advanceTimersByTime(2500);
-		await flushSagaMicrotasks();
-		store.dispatch(selectServerRequest('https://other.rocket.chat', '7.0.0'));
-		finishFetch(store, SERVER);
-		await flushSagaMicrotasks();
-		jest.useRealTimers();
 
-		expect(syncWatchOSQuickRepliesWithServer).not.toHaveBeenCalled();
+		expect(getQuickRepliesSettings).not.toHaveBeenCalled();
+		expect(syncWatchOSQuickReplies).not.toHaveBeenCalled();
 	});
 
-	it('keeps waiting when the same workspace is selected again right after login', async () => {
-		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No' });
+	it('syncs the stored list without fetching the settings', async () => {
+		UserPreferences.setString(getQuickRepliesKey(SERVER), JSON.stringify(['Mine']));
+		const { store } = setupStore();
+
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+
+		expect(syncWatchOSQuickReplies).toHaveBeenCalled();
+		expect(getQuickRepliesSettings).not.toHaveBeenCalled();
+	});
+
+	it('keeps fetching when the same workspace is selected again', async () => {
+		const { store } = setupStore();
 
 		store.dispatch(loginSuccess(USER));
 		await flushSagaMicrotasks();
 		store.dispatch(selectServerRequest(SERVER, '7.0.0'));
-		finishFetch(store, SERVER);
+		resolveFetch(SETTINGS);
 		await flushSagaMicrotasks();
 
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'Yes,No' });
+		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, SETTINGS);
 	});
 
-	it('waits when the fetched settings belong to another workspace', async () => {
-		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No' });
-		finishFetch(store, 'https://other.rocket.chat');
-
-		store.dispatch(loginSuccess(USER));
-		await flushSagaMicrotasks();
-		expect(syncWatchOSQuickRepliesWithServer).not.toHaveBeenCalled();
-
-		finishFetch(store, SERVER);
-		await flushSagaMicrotasks();
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledWith(SERVER, { Apple_Watch_Quick_Actions: 'Yes,No' });
-	});
-
-	it('stops waiting when the user deletes the account', async () => {
-		const { store } = setupStore({ Apple_Watch_Quick_Actions: 'Yes,No' });
-
-		store.dispatch(loginSuccess(USER));
-		await flushSagaMicrotasks();
-		store.dispatch(deleteAccount());
-		await flushSagaMicrotasks();
-		finishFetch(store, SERVER);
-		await flushSagaMicrotasks();
-
-		expect(syncWatchOSQuickRepliesWithServer).not.toHaveBeenCalled();
-	});
-
-	it('stops waiting when the user logs in again', async () => {
-		jest.useFakeTimers();
+	it.each([
+		['the user switches workspace', () => selectServerRequest('https://other.rocket.chat', '7.0.0')],
+		['the user logs out', () => logout()],
+		['the user deletes the account', () => deleteAccount()],
+		['the user logs in again', () => loginSuccess(USER)]
+	])('drops the fetched settings when %s', async (_, stopAction) => {
 		const { store } = setupStore();
 
 		store.dispatch(loginSuccess(USER));
 		await flushSagaMicrotasks();
-		jest.advanceTimersByTime(2500);
+		const resolveFirstFetch = resolveFetch;
+		store.dispatch(stopAction());
 		await flushSagaMicrotasks();
-		store.dispatch(loginSuccess(USER));
-		await flushSagaMicrotasks();
-		finishFetch(store, SERVER);
-		await flushSagaMicrotasks();
-		jest.useRealTimers();
-
-		expect(syncWatchOSQuickRepliesWithServer).toHaveBeenCalledTimes(1);
-	});
-
-	it('stops waiting when the user logs out', async () => {
-		const { store } = setupStore();
-
-		store.dispatch(loginSuccess(USER));
-		await flushSagaMicrotasks();
-		store.dispatch(logout());
-		finishFetch(store, SERVER);
+		resolveFirstFetch(SETTINGS);
 		await flushSagaMicrotasks();
 
 		expect(syncWatchOSQuickRepliesWithServer).not.toHaveBeenCalled();

@@ -33,7 +33,7 @@ import { isTwoFactorCancelled } from '../lib/services/twoFactor/twoFactorCancell
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
-import { getSettingsFetchedFor, subscribeSettings } from '../lib/methods/getSettings';
+import { subscribeSettings } from '../lib/methods/getSettings';
 import { disconnect, loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
@@ -44,6 +44,9 @@ import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { syncWatchOSQuickRepliesWithServer } from '../lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer';
 import { isWatchAppInstalled } from '../lib/methods/watchOSQuickReplies/isWatchAppInstalled';
+import { getQuickRepliesKey } from '../lib/methods/watchOSQuickReplies/getQuickRepliesKey';
+import { getQuickRepliesSettings } from '../lib/methods/watchOSQuickReplies/getQuickRepliesSettings';
+import { syncWatchOSQuickReplies } from '../lib/methods/watchOSQuickReplies/syncWatchOSQuickReplies';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
@@ -271,23 +274,22 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 const seedWatchQuickReplies = function* seedWatchQuickRepliesFork(server) {
 	try {
 		if (!isWatchAppInstalled()) return;
-		const settingsFetchedFor = yield call(getSettingsFetchedFor);
-		let fetchedSettings;
-		if (settingsFetchedFor !== server) {
-			const { loaded, stop } = yield race({
-				loaded: take(types.SETTINGS.FETCH_COMPLETE),
-				stop: take([
-					types.LOGOUT,
-					types.DELETE_ACCOUNT,
-					types.LOGIN.SUCCESS,
-					action => action.type === types.SERVER.SELECT_REQUEST && action.server !== server
-				])
-			});
-			if (stop) return;
-			fetchedSettings = loaded.settings;
+		if (UserPreferences.contains(getQuickRepliesKey(server))) {
+			syncWatchOSQuickReplies();
+			return;
 		}
-		const settings = fetchedSettings ?? (yield select(s => s.settings));
-		syncWatchOSQuickRepliesWithServer(server, settings);
+		const { settings } = yield race({
+			settings: call(getQuickRepliesSettings, server),
+			stop: take([
+				types.LOGOUT,
+				types.DELETE_ACCOUNT,
+				types.LOGIN.SUCCESS,
+				action => action.type === types.SERVER.SELECT_REQUEST && action.server !== server
+			])
+		});
+		if (settings) {
+			syncWatchOSQuickRepliesWithServer(server, settings);
+		}
 	} catch (e) {
 		log(e);
 	}

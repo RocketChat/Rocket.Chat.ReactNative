@@ -11,10 +11,6 @@ interface IUpdateSettings extends Action {
 	payload: { id: TSupportedSettings; value: TSettingsValues };
 }
 
-interface IFetchSettingsComplete extends Action {
-	settings?: TSettingsState;
-}
-
 export type IActionSettings = IAddSettings & IUpdateSettings;
 
 export function addSettings(settings: TSettingsState): IAddSettings {
@@ -34,12 +30,5 @@ export function updateSettings(id: TSupportedSettings, value: TSettingsValues): 
 export function clearSettings(): Action {
 	return {
 		type: SETTINGS.CLEAR
-	};
-}
-
-export function fetchSettingsComplete(settings?: TSettingsState): IFetchSettingsComplete {
-	return {
-		type: SETTINGS.FETCH_COMPLETE,
-		settings
 	};
 }
