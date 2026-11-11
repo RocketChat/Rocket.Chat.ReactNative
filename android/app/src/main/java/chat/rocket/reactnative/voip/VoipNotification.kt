@@ -320,7 +320,7 @@ class VoipNotification(private val context: Context) {
                 callId = payload.callId,
                 contractId = deviceId(context),
                 answer = "accept",
-                supportedFeatures = listOf("audio", "hold")
+                supportedFeatures = listOf("audio", "hold", "conference-escalation", "dialpad")
             ) { success ->
                 // Late-success guard: if the handler deadline already fired (finished == true)
                 // and the server accepted the call, we must send a reject so server state
