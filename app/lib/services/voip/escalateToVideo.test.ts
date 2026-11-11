@@ -4,7 +4,7 @@ import openLink from '~/lib/methods/helpers/openLink';
 import Navigation from '~/lib/navigation/appNavigation';
 import { videoConfJoin } from '~/lib/methods/videoConf';
 import { mediaCallsEscalate, notifyUser, videoConferenceStart } from '~/lib/services/restApi';
-import { escalateToVideo, joinConferenceFromPeer } from './escalateToVideo';
+import { escalateToVideo, joinConferenceFromPeer, joinEscalatedCall } from './escalateToVideo';
 import { usePexipCallStore } from '~/lib/services/videoConf/usePexipCallStore';
 import { useCallStore } from './useCallStore';
 
@@ -168,6 +168,61 @@ describe('escalateToVideo', () => {
 		expect(mockEndCall).not.toHaveBeenCalled();
 		expect(mockOpenLink).not.toHaveBeenCalled();
 		expect(Alert.alert).toHaveBeenLastCalledWith('', 'Unable to start video call', expect.anything(), expect.anything());
+	});
+});
+
+describe('joinEscalatedCall', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+		useCallStore.setState({
+			call: sipCall,
+			callId: 'call-1',
+			features: ['audio', 'conference-escalation'],
+			roomId: null,
+			focused: true,
+			escalated: true,
+			endCall: mockEndCall,
+			toggleFocus: mockToggleFocus
+		});
+		usePexipCallStore.getState().leave();
+		mockEscalate.mockResolvedValue({
+			success: true,
+			url: 'https://pexip.example/conf',
+			providerName: 'core.pexip'
+		} as any);
+	});
+
+	it('leaves CallView and joins the conference the other side escalated to, without asking', async () => {
+		joinEscalatedCall();
+		await new Promise(process.nextTick);
+		expect(Alert.alert).not.toHaveBeenCalled();
+		expect(mockEscalate).toHaveBeenCalledWith('call-1');
+		expect(mockToggleFocus).toHaveBeenCalledTimes(1);
+		expect(usePexipCallStore.getState().call).toMatchObject({
+			callId: 'call-1',
+			url: 'https://pexip.example/conf'
+		});
+	});
+
+	it('does not join again when this user escalated and is already in the conference', () => {
+		usePexipCallStore
+			.getState()
+			.open({ callId: 'call-1', url: 'https://pexip.example/conf', server: 'https://open.rocket.chat' });
+		joinEscalatedCall();
+		expect(mockEscalate).not.toHaveBeenCalled();
+	});
+
+	it('does nothing when the server did not enable escalation for the call', () => {
+		useCallStore.setState({ features: ['audio'] });
+		joinEscalatedCall();
+		expect(mockEscalate).not.toHaveBeenCalled();
+	});
+
+	it('does nothing for calls between two users', () => {
+		useCallStore.setState({ call: userCall });
+		joinEscalatedCall();
+		expect(mockEscalate).not.toHaveBeenCalled();
 	});
 });
 

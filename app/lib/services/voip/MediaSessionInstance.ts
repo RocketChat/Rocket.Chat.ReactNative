@@ -33,6 +33,7 @@ import { getDMSubscriptionByUsername } from '~/lib/database/services/Subscriptio
 import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
 import log from '~/lib/methods/helpers/log';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
+import { joinEscalatedCall } from './escalateToVideo';
 import { usePexipCallStore } from '../videoConf/usePexipCallStore';
 import { requestVoipCallPermissions } from '~/lib/methods/voipCallPermissions';
 import I18n from '~/i18n';
@@ -52,6 +53,7 @@ class MediaSessionInstance {
 	private mediaSessionStoreChangeUnsubscribe: (() => void) | null = null;
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
 	private storeIceServersUnsubscribe: (() => void) | null = null;
+	private escalatedCallUnsubscribe: (() => void) | null = null;
 
 	private tryAnswerIfNativeAcceptedNotification(signal: ServerMediaSignal, useGate = false): void {
 		const { call, nativeAcceptedCallId } = useCallStore.getState();
@@ -169,6 +171,13 @@ class MediaSessionInstance {
 
 		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
 			this.instance = mediaSessionStore.getInstance(userId);
+		});
+
+		// The other side moved the call to a conference: follow it there instead of waiting for the user to tap Join.
+		this.escalatedCallUnsubscribe = useCallStore.subscribe((state, prev) => {
+			if (state.escalated && !prev.escalated) {
+				joinEscalatedCall();
+			}
 		});
 
 		this.mediaSignalListener = await sdk.onStreamData('stream-notify-user', async (ddpMessage: IDDPMessage) => {
@@ -474,6 +483,8 @@ class MediaSessionInstance {
 			this.storeIceServersUnsubscribe();
 			this.storeIceServersUnsubscribe = null;
 		}
+		this.escalatedCallUnsubscribe?.();
+		this.escalatedCallUnsubscribe = null;
 		mediaSessionStore.dispose();
 		this.instance = null;
 		pendingHangups.clear();

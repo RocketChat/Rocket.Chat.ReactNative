@@ -121,6 +121,19 @@ export const joinConferenceFromPeer = async ({
 	await videoConfJoin(callId, false, true, { rid });
 };
 
+/** The other side moved the call to a conference: join it right away instead of waiting for the user to tap Join. */
+export const joinEscalatedCall = (): void => {
+	const { call, callId, escalated, features } = useCallStore.getState();
+	if (!callId || !escalated || !isSipCall(call) || !features.includes('conference-escalation')) {
+		return;
+	}
+	// We escalated it ourselves and are already in (or joining) the conference.
+	if (usePexipCallStore.getState().call) {
+		return;
+	}
+	executeEscalation(callId);
+};
+
 /**
  * Escalates the current VoIP call to a video conference and joins it. Asks for confirmation first, unless the call
  * was already escalated (by either side), in which case it just joins the existing conference.
