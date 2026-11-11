@@ -17,6 +17,7 @@ import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
+import { registerCertificates } from '../lib/methods/helpers/sslPinning';
 
 const PUSH_NOTIFICATION_KEY = 'pushNotification';
 
@@ -72,6 +73,7 @@ const deliverPendingPushNotification = function* deliverPendingPushNotification(
 
 const restore = function* restore() {
 	yield call(runBiometricTrustMigration);
+	yield call(registerCertificates);
 
 	const restoredServer = yield* getServerToRestore();
 

@@ -1,6 +1,7 @@
 import { type DrawerNavigationProp } from '@react-navigation/drawer';
 
 import * as List from '~/containers/List';
+import ListContainer from '~/containers/List/components/ListContainer.ios';
 import { type DrawerParamList } from '~/stacks/types';
 import SupportedVersionsWarnItem, { useIsSupportedVersionsWarnVisible } from './components/SupportedVersionsWarnItem';
 import CustomStatus, { useIsCustomStatusVisible } from './components/CustomStatus';
@@ -21,7 +22,7 @@ const SidebarSections = ({ navigation }: { navigation: DrawerNavigationProp<Draw
 	const appActions = useSidebarAppActions();
 
 	return (
-		<>
+		<ListContainer>
 			<List.Section>
 				<Profile navigation={navigation} />
 			</List.Section>
@@ -71,7 +72,7 @@ const SidebarSections = ({ navigation }: { navigation: DrawerNavigationProp<Draw
 					))}
 				</List.Section>
 			) : null}
-		</>
+		</ListContainer>
 	);
 };
 

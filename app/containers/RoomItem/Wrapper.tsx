@@ -13,10 +13,14 @@ const Wrapper = ({
 	children,
 	displayMode,
 	testID,
-	...props
+	avatar,
+	type,
+	rid,
+	showAvatar,
+	showLastMessage
 }: IWrapperProps): ReactElement => {
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
-	const isExpandedWithLastMessage = displayMode === DisplayMode.Expanded && props.showLastMessage;
+	const isExpandedWithLastMessage = displayMode === DisplayMode.Expanded && showLastMessage;
 	return (
 		<View
 			style={[
@@ -29,7 +33,7 @@ const Wrapper = ({
 			testID={testID}
 			accessible
 			accessibilityRole='button'>
-			<IconOrAvatar displayMode={displayMode} {...props} />
+			<IconOrAvatar avatar={avatar} type={type} rid={rid} showAvatar={showAvatar} />
 			<View style={styles.centerContainer}>{children}</View>
 		</View>
 	);

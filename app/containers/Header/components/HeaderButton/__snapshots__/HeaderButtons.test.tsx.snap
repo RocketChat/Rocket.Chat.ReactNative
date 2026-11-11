@@ -187,7 +187,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                   {
                     "backgroundColor": "#6C727A",
-                    "borderRadius": 10.5,
+                    "borderRadius": 10,
                     "minWidth": 16,
                   },
                   {
@@ -208,15 +208,12 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     {
                       "backgroundColor": "transparent",
                       "fontFamily": "Inter",
-                      "fontSize": 13,
+                      "fontSize": 10,
                       "fontVariant": [
                         "tabular-nums",
                       ],
                       "fontWeight": "600",
                       "textAlign": "left",
-                    },
-                    {
-                      "fontSize": 10,
                     },
                     {
                       "color": "#FFFFFF",
@@ -318,7 +315,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                   {
                     "backgroundColor": "#F5455C",
-                    "borderRadius": 10.5,
+                    "borderRadius": 10,
                     "minWidth": 16,
                   },
                   {
@@ -339,15 +336,12 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     {
                       "backgroundColor": "transparent",
                       "fontFamily": "Inter",
-                      "fontSize": 13,
+                      "fontSize": 10,
                       "fontVariant": [
                         "tabular-nums",
                       ],
                       "fontWeight": "600",
                       "textAlign": "left",
-                    },
-                    {
-                      "fontSize": 10,
                     },
                     {
                       "color": "#FFFFFF",
@@ -449,7 +443,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                   {
                     "backgroundColor": "#F38C39",
-                    "borderRadius": 10.5,
+                    "borderRadius": 10,
                     "minWidth": 16,
                   },
                   {
@@ -470,15 +464,12 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     {
                       "backgroundColor": "transparent",
                       "fontFamily": "Inter",
-                      "fontSize": 13,
+                      "fontSize": 10,
                       "fontVariant": [
                         "tabular-nums",
                       ],
                       "fontWeight": "600",
                       "textAlign": "left",
-                    },
-                    {
-                      "fontSize": 10,
                     },
                     {
                       "color": "#FFFFFF",
@@ -2314,7 +2305,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                       {
                         "backgroundColor": "#6C727A",
-                        "borderRadius": 10.5,
+                        "borderRadius": 10,
                         "minWidth": 16,
                       },
                       {
@@ -2335,15 +2326,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
-                          "fontSize": 13,
+                          "fontSize": 10,
                           "fontVariant": [
                             "tabular-nums",
                           ],
                           "fontWeight": "600",
                           "textAlign": "left",
-                        },
-                        {
-                          "fontSize": 10,
                         },
                         {
                           "color": "#FFFFFF",
@@ -2918,7 +2906,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                       {
                         "backgroundColor": "#9EA2A8",
-                        "borderRadius": 10.5,
+                        "borderRadius": 10,
                         "minWidth": 16,
                       },
                       {
@@ -2939,15 +2927,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
-                          "fontSize": 13,
+                          "fontSize": 10,
                           "fontVariant": [
                             "tabular-nums",
                           ],
                           "fontWeight": "600",
                           "textAlign": "left",
-                        },
-                        {
-                          "fontSize": 10,
                         },
                         {
                           "color": "#FFFFFF",
@@ -3522,7 +3507,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                       {
                         "backgroundColor": "#949393",
-                        "borderRadius": 10.5,
+                        "borderRadius": 10,
                         "minWidth": 16,
                       },
                       {
@@ -3543,15 +3528,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
-                          "fontSize": 13,
+                          "fontSize": 10,
                           "fontVariant": [
                             "tabular-nums",
                           ],
                           "fontWeight": "600",
                           "textAlign": "left",
-                        },
-                        {
-                          "fontSize": 10,
                         },
                         {
                           "color": "#FFFFFF",

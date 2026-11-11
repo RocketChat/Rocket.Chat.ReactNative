@@ -1,7 +1,6 @@
 import { type ReactElement, type ReactNode } from 'react';
 import {
 	type AccessibilityRole,
-	PixelRatio,
 	Pressable,
 	type StyleProp,
 	StyleSheet,
@@ -15,8 +14,8 @@ import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import { LISTENER } from '~/containers/Toast';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { useTheme } from '~/theme';
-import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { CONTENT_SPACING, ROW_HEIGHT, ROW_MARGIN_HORIZONTAL, ROW_PADDING_HORIZONTAL, ROW_RADIUS } from './constants';
+import { CONTENT_SPACING, ROW_MARGIN_HORIZONTAL, ROW_PADDING_HORIZONTAL, ROW_RADIUS } from './constants';
+import { useNativeListRowHeight } from './hooks/useNativeListRowHeight';
 
 const TRAILING_ACTION_HIT_SLOP = 12;
 const SPACER_MIN_LENGTH = 8;
@@ -226,8 +225,7 @@ const NativeListRow = ({
 	disabledReason
 }: INativeListRow) => {
 	const { colors } = useTheme();
-	const { fontScale } = useResponsiveLayout();
-	const height = PixelRatio.roundToNearestPixel(ROW_HEIGHT * fontScale);
+	const height = useNativeListRowHeight();
 
 	return (
 		<NativeListRowContent

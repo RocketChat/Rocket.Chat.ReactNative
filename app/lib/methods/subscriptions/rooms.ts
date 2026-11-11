@@ -11,7 +11,7 @@ import { handlePayloadUserInteraction } from '~/lib/apps/actions';
 import buildMessage from '../helpers/buildMessage';
 import EventEmitter from '../helpers/events';
 import { removedRoom } from '~/actions/room';
-import { setUser } from '~/actions/login';
+import { setPreference, setUser } from '~/actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '~/lib/constants/notifications';
 import { Encryption } from '~/lib/encryption';
 import updateMessages from '../updateMessages';
@@ -307,6 +307,12 @@ const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
 	}
 	if (unset?.['settings.preferences.sidebarCategories']) {
 		setSidebarCategories([]);
+	}
+	if (diff?.['settings.preferences.sidebarSectionsOrder'] !== undefined) {
+		store.dispatch(setPreference({ sidebarSectionsOrder: diff['settings.preferences.sidebarSectionsOrder'] }));
+	}
+	if (unset?.['settings.preferences.sidebarSectionsOrder']) {
+		store.dispatch(setPreference({ sidebarSectionsOrder: undefined }));
 	}
 	if (diff?.avatarETag) {
 		store.dispatch(setUser({ avatarETag: diff.avatarETag }));

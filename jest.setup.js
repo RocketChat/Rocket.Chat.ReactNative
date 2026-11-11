@@ -268,7 +268,7 @@ jest.mock('react-native-math-view', () => {
 	};
 });
 
-jest.mock('react-native-keyboard-controller');
+jest.mock('react-native-keyboard-controller', () => require('react-native-keyboard-controller/jest'));
 
 jest.mock('react-native-keychain', () => ({
 	ACCESS_CONTROL: { BIOMETRY_CURRENT_SET: 'BiometryCurrentSet' },
@@ -284,6 +284,15 @@ jest.mock('react-native-keychain', () => ({
 	getGenericPassword: jest.fn(() => Promise.resolve(false)),
 	resetGenericPassword: jest.fn(() => Promise.resolve(true)),
 	hasGenericPassword: jest.fn(() => Promise.resolve(false))
+}));
+
+jest.mock('./app/lib/native/NativeSSLPinningAndroid', () => ({
+	__esModule: true,
+	default: {
+		setCertificate: jest.fn(() => Promise.resolve(null)),
+		removeCertificate: jest.fn(),
+		pickCertificate: jest.fn()
+	}
 }));
 
 jest.mock('./app/lib/methods/helpers/externalInput', () => ({

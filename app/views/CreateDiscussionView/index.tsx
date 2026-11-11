@@ -112,7 +112,8 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 			pmid,
 			t_name,
 			reply,
-			users: users.map(item => item.name)
+			users: users.map(item => item.name),
+			category: route.params?.categoryId
 		};
 		if (isEncryptionEnabled) {
 			params.encrypted = encrypted ?? false;

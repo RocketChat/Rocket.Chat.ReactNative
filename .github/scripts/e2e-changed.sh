@@ -1,28 +1,22 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
-# Runs only the Maestro flows sniffler flags as impacted by the local change
-# set, against an already-booted device with the app installed. Uses the same
-# sniffler config as CI, but flow-granular (no shard matrix locally) and
-# working-tree-aware, so an in-progress edit selects its flows before commit.
+# Runs only the e2e tests sniffler flags as impacted by the local change set,
+# against an already-booted device. Uses the same sniffler config as CI, but
+# test-granular (no shard matrix locally) and working-tree-aware, so an
+# in-progress edit selects its tests before commit.
 #
 # Usage: pnpm e2e:changed <android|ios>
 #   E2E_BASE   base ref to diff against (default: origin/develop)
 
 PLATFORM="${1:-}"
 case "$PLATFORM" in
-	android) APP_ID="chat.rocket.android" OTHER_ONLY="ios-only" ;;
-	ios) APP_ID="chat.rocket.ios" OTHER_ONLY="android-only" ;;
+	android | ios) ;;
 	*)
 		echo "usage: pnpm e2e:changed <android|ios>" >&2
 		exit 2
 		;;
 esac
-
-command -v maestro >/dev/null 2>&1 || {
-	echo "ERROR: maestro not found in PATH — install it and boot a device with the app." >&2
-	exit 2
-}
 
 BASE="${E2E_BASE:-origin/develop}"
 MERGE_BASE="$(git merge-base "$BASE" HEAD 2>/dev/null)" || {
@@ -47,8 +41,7 @@ if [ "${#CHANGED[@]}" -eq 0 ]; then
 	exit 0
 fi
 
-# sniffler selects impacted flows and appends them to the command; a confident
-# zero (no impacted flow) runs nothing and exits 0. Tag excludes mirror
-# run-maestro.sh so util + wrong-platform flows don't run locally.
+# sniffler selects impacted tests and appends them to the command; a confident
+# zero (no impacted test) runs nothing and exits 0.
 exec pnpm exec sniffler run --changed "${CHANGED[@]}" -- \
-	maestro test -e APP_ID="$APP_ID" --exclude-tags=util --exclude-tags="$OTHER_ONLY"
+	pnpm exec e2e run --target "$PLATFORM"
