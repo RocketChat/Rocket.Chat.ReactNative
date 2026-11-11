@@ -65,7 +65,7 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 			displayMediaFactory: (constraints: any) => mediaDevices.getUserMedia(constraints) as unknown as Promise<MediaStream>,
 			randomStringFactory,
 			logger: new MediaCallLogger(),
-			features: ['audio', 'hold'],
+			features: ['audio', 'hold', 'conference-escalation'],
 			mobileDeviceId
 		});
 
