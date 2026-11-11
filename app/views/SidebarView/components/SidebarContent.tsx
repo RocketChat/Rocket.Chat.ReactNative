@@ -6,6 +6,7 @@ import CustomStatus from './CustomStatus';
 import Stacks from './Stacks';
 import Admin from './Admin';
 import Profile from './Profile';
+import Apps from './Apps';
 import { useCurrentScreen } from '../useCurrentScreen';
 
 const SidebarContent = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
@@ -18,6 +19,7 @@ const SidebarContent = ({ navigation }: { navigation: DrawerNavigationProp<Drawe
 			<CustomStatus />
 			<Stacks currentScreen={currentScreen} />
 			<Admin currentScreen={currentScreen} />
+			<Apps />
 		</>
 	);
 };
