@@ -326,6 +326,12 @@ const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
 	if (diff?.nickname) {
 		store.dispatch(setUser({ nickname: diff.nickname }));
 	}
+	if (diff?.mediaCallDevice) {
+		store.dispatch(setUser({ mediaCallDevice: diff.mediaCallDevice }));
+	}
+	if (unset?.mediaCallDevice) {
+		store.dispatch(setUser({ mediaCallDevice: undefined }));
+	}
 };
 
 export default function subscribeRooms() {

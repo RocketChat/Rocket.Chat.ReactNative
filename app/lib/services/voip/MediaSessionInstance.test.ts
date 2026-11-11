@@ -762,6 +762,27 @@ describe('MediaSessionInstance', () => {
 			expect(session.startCall).not.toHaveBeenCalled();
 		});
 
+		it('alerts and does not place the call when desk phone control is enabled', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			mockRequestVoipCallPermissions.mockClear();
+			mockAuxStoreState.login.user = {
+				id: 'user-1',
+				mediaCallDevice: { id: 'desk-1', appId: 'app-1' }
+			} as typeof mockAuxStoreState.login.user;
+			try {
+				await mediaSessionInstance.startCall('peer-1', 'user');
+			} finally {
+				mockAuxStoreState.login.user = { id: 'user-1' };
+			}
+			expect(mockShowErrorAlert).toHaveBeenCalledWith(
+				'VoIP_Desk_Phone_Control_Enabled_Description',
+				'VoIP_Desk_Phone_Control_Enabled'
+			);
+			expect(mockRequestVoipCallPermissions).not.toHaveBeenCalled();
+			expect(session.startCall).not.toHaveBeenCalled();
+		});
+
 		it('does not place call and shows error when permissions are denied', async () => {
 			await mediaSessionInstance.init('user-1');
 			mockRequestVoipCallPermissions.mockResolvedValueOnce(false);

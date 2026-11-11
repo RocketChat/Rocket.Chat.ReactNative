@@ -352,6 +352,11 @@ class MediaSessionInstance {
 			showErrorAlert(I18n.t('VoIP_Still_Connecting'), I18n.t('Oops'));
 			return;
 		}
+		// The server routes every call of a user on a desk phone to that phone, so this client can't place it.
+		if (store.getState().login.user.mediaCallDevice) {
+			showErrorAlert(I18n.t('VoIP_Desk_Phone_Control_Enabled_Description'), I18n.t('VoIP_Desk_Phone_Control_Enabled'));
+			return;
+		}
 		const granted = await requestVoipCallPermissions();
 		if (!granted) {
 			showErrorAlert(
