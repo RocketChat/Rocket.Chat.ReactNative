@@ -284,6 +284,43 @@ export const ModalFormTextArea = () =>
 	]);
 ModalFormTextArea.storyName = 'Modal - Form TextArea';
 
+export const ModalRadioButton = () =>
+	UiKitModal([
+		{
+			type: 'input',
+			element: {
+				type: 'radio_button',
+				actionId: 'immediate-forwarding',
+				options: [
+					{ text: { type: 'plain_text', text: 'Active' }, value: 'active' },
+					{ text: { type: 'plain_text', text: 'Inactive' }, value: 'inactive' }
+				],
+				initialOption: { text: { type: 'plain_text', text: 'Inactive' }, value: 'inactive' }
+			},
+			label: {
+				type: 'plain_text',
+				text: 'Immediate forwarding'
+			}
+		},
+		{
+			type: 'input',
+			element: {
+				type: 'radio_button',
+				actionId: 'busy-forwarding',
+				options: [
+					{ text: { type: 'plain_text', text: 'Active' }, value: 'active' },
+					{ text: { type: 'plain_text', text: 'Inactive' }, value: 'inactive' }
+				],
+				initialValue: 'active'
+			},
+			label: {
+				type: 'plain_text',
+				text: 'Forward when busy'
+			}
+		}
+	]);
+ModalRadioButton.storyName = 'Modal - Radio Button';
+
 export const ModalImages = () =>
 	UiKitModal([
 		{
