@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 30,
+	version: 31,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -259,7 +259,10 @@ export default appSchema({
 		}),
 		tableSchema({
 			name: 'roles',
-			columns: [{ name: 'description', type: 'string', isOptional: true }]
+			columns: [
+				{ name: 'description', type: 'string', isOptional: true },
+				{ name: 'name', type: 'string', isOptional: true }
+			]
 		}),
 		tableSchema({
 			name: 'permissions',
