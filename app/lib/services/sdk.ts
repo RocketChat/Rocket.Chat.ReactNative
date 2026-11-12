@@ -14,7 +14,6 @@ import {
 	type ResultFor
 } from '~/definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
-import { voipDdpLogger } from './voip/voipDdpLogger';
 
 export interface ISocketDriver {
 	readonly connected: boolean;
@@ -42,13 +41,7 @@ class Sdk {
 
 	private initializeSdk(server: string): Rocketchat {
 		// The app can't reconnect if reopen interval is 5s while in development
-		return new Rocketchat({
-			host: server,
-			protocol: 'ddp',
-			useSsl: isSsl(server),
-			reopen: __DEV__ ? 20000 : 5000,
-			logger: voipDdpLogger
-		});
+		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: isSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 	}
 
 	initialize(server: string): void {

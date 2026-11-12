@@ -17,7 +17,6 @@ import Loading from './containers/Loading';
 import StatusBar from './containers/StatusBar';
 import ThemeContextProvider from './containers/ThemeContextProvider';
 import Toast from './containers/Toast';
-import { VoipLogsButton } from './containers/VoipLogs/VoipLogsButton';
 import TwoFactor from './containers/TwoFactor';
 import { type IThemePreference } from './definitions/ITheme';
 import { themes } from './lib/constants/colors';
@@ -190,7 +189,6 @@ export default class Root extends Component<{}, IState> {
 										<ConferenceCall />
 										<Toast />
 										<Loading />
-										<VoipLogsButton />
 									</ActionSheetProvider>
 								</KeyboardProvider>
 							</GestureHandlerRootView>
