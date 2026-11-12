@@ -114,6 +114,8 @@ const RoomItem = ({
 								teamMain={teamMain}
 								sourceType={sourceType}
 								abacAttributes={abacAttributes}
+								hideUnreadStatus={hideUnreadStatus}
+								alert={alert}
 							/>
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 							{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
@@ -126,6 +128,8 @@ const RoomItem = ({
 								showLastMessage={showLastMessage}
 								username={username || ''}
 								useRealName={useRealName}
+								hideUnreadStatus={hideUnreadStatus}
+								alert={alert}
 							/>
 							<UnreadBadge
 								unread={unread}
@@ -161,6 +165,8 @@ const RoomItem = ({
 								teamMain={teamMain}
 								sourceType={sourceType}
 								abacAttributes={abacAttributes}
+								hideUnreadStatus={hideUnreadStatus}
+								alert={alert}
 							/>
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 							{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}

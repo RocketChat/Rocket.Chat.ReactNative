@@ -11,24 +11,28 @@ import styles from './styles';
 
 const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProps);
 
-const LastMessage = memo(({ lastMessage, type, showLastMessage, username, useRealName }: ILastMessageProps) => {
-	const { colors } = useTheme();
-	// Android has a bug with the text align on the markdown preview
-	const alignSelf: TextStyle = isAndroid ? { alignSelf: 'stretch' } : {};
+const LastMessage = memo(
+	({ lastMessage, type, showLastMessage, username, useRealName, hideUnreadStatus, alert }: ILastMessageProps) => {
+		const { colors } = useTheme();
+		const isUnread = alert && !hideUnreadStatus;
+		// Android has a bug with the text align on the markdown preview
+		const alignSelf: TextStyle = isAndroid ? { alignSelf: 'stretch' } : {};
 
-	return (
-		<MarkdownPreview
-			msg={formatLastMessage({
-				lastMessage,
-				type,
-				showLastMessage,
-				username,
-				useRealName
-			})}
-			style={[styles.markdownText, { color: colors.fontSecondaryInfo }, alignSelf]}
-			numberOfLines={2}
-		/>
-	);
-}, arePropsEqual);
+		return (
+			<MarkdownPreview
+				msg={formatLastMessage({
+					lastMessage,
+					type,
+					showLastMessage,
+					username,
+					useRealName
+				})}
+				style={[styles.markdownText, { color: isUnread ? colors.fontTitlesLabels : colors.fontSecondaryInfo }, alignSelf]}
+				numberOfLines={2}
+			/>
+		);
+	},
+	arePropsEqual
+);
 
 export default LastMessage;

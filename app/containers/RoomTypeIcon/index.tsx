@@ -26,10 +26,11 @@ interface IRoomTypeIcon {
 	style?: ViewStyle;
 	sourceType?: IOmnichannelSource;
 	abacAttributes?: ISubscription['abacAttributes'];
+	color?: string;
 }
 
 const RoomTypeIcon = memo(
-	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType, abacAttributes }: IRoomTypeIcon) => {
+	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType, abacAttributes, color }: IRoomTypeIcon) => {
 		const { theme } = useTheme();
 
 		if (!type) {
@@ -51,7 +52,7 @@ const RoomTypeIcon = memo(
 
 		const icon = getRoomTypeIconName({ type, teamMain, isDiscussion: type === 'discussion', isGroupChat, abacAttributes });
 
-		return <CustomIcon name={icon} size={size} color={themes[theme].fontTitlesLabels} style={iconStyle} />;
+		return <CustomIcon name={icon} size={size} color={color ?? themes[theme].fontTitlesLabels} style={iconStyle} />;
 	}
 );
 

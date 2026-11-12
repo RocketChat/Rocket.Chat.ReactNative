@@ -61,6 +61,8 @@ export interface ITypeIconProps {
 	style?: object;
 	sourceType: IOmnichannelSource;
 	abacAttributes?: ISubscription['abacAttributes'];
+	hideUnreadStatus?: boolean;
+	alert?: boolean;
 }
 
 interface IRoomItemTouchables {
@@ -130,6 +132,8 @@ export interface ILastMessageProps {
 	showLastMessage: boolean;
 	username: string;
 	useRealName: boolean;
+	hideUnreadStatus?: boolean;
+	alert?: boolean;
 }
 
 export interface ITouchableProps extends IRoomItemTouchables {
