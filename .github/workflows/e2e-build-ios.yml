@@ -17,7 +17,7 @@ on:
         required: true
       APP_STORE_CONNECT_API_KEY_ISSUER_ID:
         required: true
-      FASTLANE_REPO_PAT:
+      TEST_FASTLANE_NEW_PAT:
         required: true
     inputs:
       seed-only:
@@ -150,7 +150,7 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
-          FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
+          FASTLANE_REPO_PAT: ${{ secrets.TEST_FASTLANE_NEW_PAT }}
           RUNNING_E2E_TESTS: true
 
       - name: Find latest xcarchive path
