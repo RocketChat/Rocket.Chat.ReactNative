@@ -117,9 +117,9 @@ const RoomItem = ({
 								abacAttributes={abacAttributes}
 								isUnread={isUnread}
 							/>
-							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+							<Title name={name} isUnread={isUnread} />
 							{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
-							{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
+							{isLargeFontScale ? null : <UpdatedAt date={date} isUnread={isUnread} />}
 						</View>
 						<View style={styles.row} testID='room-item-last-message-container'>
 							<LastMessage
@@ -150,7 +150,7 @@ const RoomItem = ({
 								/>
 							) : null}
 						</View>
-						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
+						{isLargeFontScale ? <UpdatedAt date={date} isUnread={isUnread} /> : null}
 					</>
 				) : (
 					<>
@@ -166,7 +166,7 @@ const RoomItem = ({
 								abacAttributes={abacAttributes}
 								isUnread={isUnread}
 							/>
-							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+							<Title name={name} isUnread={isUnread} />
 							{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
 							{isInvited ? (
 								<CustomIcon
@@ -179,7 +179,7 @@ const RoomItem = ({
 							) : null}
 
 							<View style={styles.wrapUpdatedAndBadge}>
-								{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
+								{isLargeFontScale ? null : <UpdatedAt date={date} isUnread={isUnread} />}
 								<UnreadBadge
 									unread={unread}
 									userMentions={userMentions}
@@ -192,7 +192,7 @@ const RoomItem = ({
 								/>
 							</View>
 						</View>
-						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
+						{isLargeFontScale ? <UpdatedAt date={date} isUnread={isUnread} /> : null}
 					</>
 				)}
 			</Wrapper>

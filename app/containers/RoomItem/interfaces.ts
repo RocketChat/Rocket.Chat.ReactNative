@@ -30,14 +30,12 @@ export interface IRightActionsProps {
 
 export interface ITitleProps {
 	name: string;
-	hideUnreadStatus: boolean;
-	alert: boolean;
+	isUnread: boolean;
 }
 
 export interface IUpdatedAtProps {
 	date: string;
-	hideUnreadStatus: boolean;
-	alert: boolean;
+	isUnread: boolean;
 }
 
 export interface IWrapperProps extends IIconOrAvatar {
