@@ -63,6 +63,7 @@ const RoomItem = ({
 }: IRoomItemProps) => {
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
+	const isUnread = alert && !hideUnreadStatus;
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, type }),
 		[lastMessage, username, useRealName, showLastMessage, type]
@@ -114,8 +115,7 @@ const RoomItem = ({
 								teamMain={teamMain}
 								sourceType={sourceType}
 								abacAttributes={abacAttributes}
-								hideUnreadStatus={hideUnreadStatus}
-								alert={alert}
+								isUnread={isUnread}
 							/>
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 							{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
@@ -128,8 +128,7 @@ const RoomItem = ({
 								showLastMessage={showLastMessage}
 								username={username || ''}
 								useRealName={useRealName}
-								hideUnreadStatus={hideUnreadStatus}
-								alert={alert}
+								isUnread={isUnread}
 							/>
 							<UnreadBadge
 								unread={unread}
@@ -165,8 +164,7 @@ const RoomItem = ({
 								teamMain={teamMain}
 								sourceType={sourceType}
 								abacAttributes={abacAttributes}
-								hideUnreadStatus={hideUnreadStatus}
-								alert={alert}
+								isUnread={isUnread}
 							/>
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 							{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}

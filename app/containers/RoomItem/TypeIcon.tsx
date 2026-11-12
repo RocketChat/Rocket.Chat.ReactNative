@@ -5,22 +5,8 @@ import { type ITypeIconProps } from './interfaces';
 import { useTheme } from '~/theme';
 
 const TypeIcon = memo(
-	({
-		userId,
-		type,
-		prid,
-		status,
-		isGroupChat,
-		teamMain,
-		size,
-		style,
-		sourceType,
-		abacAttributes,
-		hideUnreadStatus,
-		alert
-	}: ITypeIconProps) => {
+	({ userId, type, prid, status, isGroupChat, teamMain, size, style, sourceType, abacAttributes, isUnread }: ITypeIconProps) => {
 		const { colors } = useTheme();
-		const isUnread = alert && !hideUnreadStatus;
 		return (
 			<RoomTypeIcon
 				userId={userId}
