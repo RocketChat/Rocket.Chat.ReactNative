@@ -1,6 +1,6 @@
 import { memo, type ReactElement } from 'react';
 import { StyleSheet, type ViewProps } from 'react-native';
-import { SafeAreaView as SafeAreaContext } from 'react-native-safe-area-context';
+import { type Edge, SafeAreaView as SafeAreaContext } from 'react-native-safe-area-context';
 
 import { themes } from '../lib/constants/colors';
 import { useTheme } from '../theme';
@@ -16,15 +16,16 @@ type TSafeAreaViewChildren = SupportedChildren | SupportedChildren[];
 
 interface ISafeAreaView extends ViewProps {
 	vertical?: boolean;
+	edges?: readonly Edge[];
 	children: TSafeAreaViewChildren;
 }
 
-const SafeAreaView = memo(({ style, children, vertical = true, ...props }: ISafeAreaView) => {
+const SafeAreaView = memo(({ style, children, vertical = true, edges, ...props }: ISafeAreaView) => {
 	const { theme } = useTheme();
 	return (
 		<SafeAreaContext
 			style={[styles.view, { backgroundColor: themes[theme].surfaceHover }, style]}
-			edges={vertical ? ['right', 'left'] : undefined}
+			edges={edges ?? (vertical ? ['right', 'left'] : undefined)}
 			{...props}>
 			{children}
 		</SafeAreaContext>

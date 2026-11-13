@@ -1,5 +1,12 @@
 import { type IAppActionButton, RoomTypeFilter, UIActionButtonContext } from '../definitions';
-import { applyAuthFilter, applyCategoryFilter, applyRoomFilter, collectPermissions } from '../filters';
+import {
+	applyAuthFilter,
+	applyCategoryFilter,
+	applyRoomFilter,
+	collectPermissions,
+	collectRoles,
+	indexRoleIdsByName
+} from '../filters';
 
 const button = (overrides: Partial<IAppActionButton> = {}): IAppActionButton => ({
 	appId: 'app-id',
@@ -85,6 +92,47 @@ describe('applyAuthFilter', () => {
 		expect(applyAuthFilter(button({ when: { hasAllRoles: ['user', 'owner'] } }), auth)).toBe(true);
 		expect(applyAuthFilter(button({ when: { hasOneRole: ['leader'] } }), auth)).toBe(true);
 		expect(applyAuthFilter(button({ when: { hasAllRoles: ['user', 'admin'] } }), auth)).toBe(false);
+	});
+
+	test('a custom role referenced by name matches the random id the user holds', () => {
+		const custom = { ...auth, userRoles: ['user', 'custom-id'], roleIdsByName: { ManagerAssistant: 'custom-id' } };
+		expect(applyAuthFilter(button({ when: { hasOneRole: ['ManagerAssistant'] } }), custom)).toBe(true);
+		expect(applyAuthFilter(button({ when: { hasAllRoles: ['user', 'ManagerAssistant'] } }), custom)).toBe(true);
+		expect(applyAuthFilter(button({ when: { hasOneRole: ['custom-id'] } }), custom)).toBe(true);
+		expect(applyAuthFilter(button({ when: { hasOneRole: ['ManagerAssistant'] } }), auth)).toBe(false);
+	});
+});
+
+describe('indexRoleIdsByName', () => {
+	test('maps a custom role name to its id', () => {
+		expect(
+			indexRoleIdsByName([
+				{ id: 'custom-id', name: 'ManagerAssistant' },
+				{ id: 'admin', name: 'admin' }
+			])
+		).toEqual({
+			ManagerAssistant: 'custom-id'
+		});
+	});
+
+	test('a known id wins over another role named the same', () => {
+		expect(
+			indexRoleIdsByName([
+				{ id: 'admin', name: 'admin' },
+				{ id: 'impostor-id', name: 'admin' }
+			])
+		).toEqual({});
+	});
+
+	test('skips roles without a name', () => {
+		expect(indexRoleIdsByName([{ id: 'custom-id' }])).toEqual({});
+	});
+});
+
+describe('collectRoles', () => {
+	test('gathers every referenced role once', () => {
+		const buttons = [button({ when: { hasOneRole: ['a', 'b'] } }), button({ when: { hasAllRoles: ['b', 'c'] } }), button()];
+		expect(collectRoles(buttons).sort()).toEqual(['a', 'b', 'c']);
 	});
 });
 

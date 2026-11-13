@@ -93,6 +93,17 @@ Outbound `ClientMediaSignal`s are sent via `sdk.methodCall('stream-notify-user',
 
 The `notification` signal with `signedContractId === mobileDeviceId && type === 'accepted'` is the JS-side indicator that **this device's** native code has already accepted **this call**. Both the live DDP path and REST replay run the same matcher; mismatched `signedContractId` (a different device on the same account) is ignored.
 
+### Take-over — `take-over` / `session-changed`
+
+> Depends on `patches/@rocket.chat+media-signaling+1.0.0-rc.1.patch` and on a server that implements take-over (RocketChat/Rocket.Chat#42747, not merged). Drop the patch once the package ships the feature.
+
+The session declares the features this client implements (`CLIENT_SUPPORTED_FEATURES`: `audio`, `hold`, `dialpad`). The server drops any other feature from calls this session places, accepts or takes over. The call UI reads `useCallStore.features`, which comes from `deriveSupportedFeatures(call.service, call.features)` as on web: on a `cti` call (media on an external device, the app is only a remote control) only the features the server lists are offered; on any other call the control features (`mute`, `direct-message`, `device-picker`) are always on. The store refreshes them on `stateChange`, `trackStateChange` and `contactUpdate`.
+
+A call carried by another session of the same user is a hidden call here (`busy-elsewhere`). While `MediaSignalingSession.canTakeOverCall()` is true (active `webrtc` call, not ignored), the sidebar shows a "Continue call here" item (`useCanTakeOverAnyCall()`, `useStackItems`), and the header of the direct message with the remote user shows the same button (`useCanTakeOverCall(peerUserId)`, `useRoomActions`). The remote user is matched by `getContactUserId(contact)`: `contact.uid` when the server sends it (e.g. a user dialed by extension), else `contact.id` for `user` contacts; other rooms and calls to external numbers show nothing in the header. `mediaSessionInstance.takeOverCall()` asks for microphone permission and sends `take-over`. The server answers with a `notification/session-changed` naming the new `signedContractId`, then `request-offer`:
+
+- **This device takes over** — the call emits `takenOver`; `bindTakenOverCall` binds it into `useCallStore` and presents it like an outgoing call (Android FGS, `CallView`).
+- **Another session takes over** — the call emits `hidden`; `useCallStore` resets and ends the native call without a hangup. `mediaSessionInstance.endCall` never hangs up a hidden call, since `hangup()` on one sends `another-client` and would end it for everyone.
+
 ### Package boundary
 
 The RN app does not reach into the package's internals. It:

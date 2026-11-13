@@ -17,6 +17,10 @@ jest.mock('~/containers/ActionSheet', () => ({
 	hideActionSheetRef: jest.fn()
 }));
 
+jest.mock('~/lib/hooks/useVideoConf', () => ({
+	useVideoConf: () => ({ startCall: jest.fn(), showInitCallActionSheet: jest.fn(), callEnabled: false })
+}));
+
 jest.mock('react-native-incall-manager', () => ({
 	start: jest.fn(),
 	stop: jest.fn(),
@@ -74,7 +78,7 @@ describe('CallButtons', () => {
 		expect(getByTestId('call-view-speaker')).toBeTruthy();
 		expect(getByTestId('call-view-hold')).toBeTruthy();
 		expect(getByTestId('call-view-mute')).toBeTruthy();
-		expect(getByTestId('call-view-message')).toBeTruthy();
+		expect(getByTestId('call-view-more')).toBeTruthy();
 		expect(getByTestId('call-view-end')).toBeTruthy();
 		expect(getByTestId('call-view-dialpad')).toBeTruthy();
 	});
@@ -126,7 +130,7 @@ describe('CallButtons', () => {
 		expect(getByText('Speaker')).toBeTruthy();
 		expect(getByText('Hold')).toBeTruthy();
 		expect(getByText('Mute')).toBeTruthy();
-		expect(getByText('Message')).toBeTruthy();
+		expect(getByText('More')).toBeTruthy();
 		expect(getByText('End')).toBeTruthy();
 		expect(getByText('Dialpad')).toBeTruthy();
 	});

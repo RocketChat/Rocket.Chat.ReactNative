@@ -13,6 +13,7 @@ jest.mock('../appsStore', () => ({
 
 let mockSubscriptions: BehaviorSubject<Record<string, unknown>[]>;
 let mockPermissionRecords: { id: string; roles: string[] }[] = [];
+let mockRoleRecords: { id: string; name?: string }[] = [];
 jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
@@ -22,7 +23,8 @@ jest.mock('~/lib/database', () => ({
 					query: () => ({
 						observeWithColumns: () => {
 							const { BehaviorSubject: Subject, asapScheduler, observeOn } = jest.requireActual('rxjs');
-							const source = table === 'subscriptions' ? mockSubscriptions : new Subject(mockPermissionRecords);
+							const records = table === 'roles' ? mockRoleRecords : mockPermissionRecords;
+							const source = table === 'subscriptions' ? mockSubscriptions : new Subject(records);
 							return source.pipe(observeOn(asapScheduler));
 						}
 					})
@@ -53,8 +55,21 @@ describe('useAppActionButtons', () => {
 		mockActionButtons = [];
 		mockSubscriptions = new BehaviorSubject<Record<string, unknown>[]>([{ t: 'c', roles: ['owner'] }]);
 		mockPermissionRecords = [];
+		mockRoleRecords = [];
 		mockUserRoles = ['user'];
 		mockLanguage = 'en';
+	});
+
+	it('shows a sidebar button filtered by a custom role name the user holds by id', async () => {
+		mockActionButtons = [
+			button({ context: UIActionButtonContext.USER_DROPDOWN_ACTION, when: { hasOneRole: ['ManagerAssistant'] } })
+		];
+		mockRoleRecords = [{ id: 'custom-role-id', name: 'ManagerAssistant' }];
+		mockUserRoles = ['user', 'custom-role-id'];
+
+		const { result } = renderHook(() => useAppActionButtons());
+
+		await waitFor(() => expect(result.current).toHaveLength(1));
 	});
 
 	it('returns nothing until the room is resolved', async () => {
@@ -110,6 +125,17 @@ describe('useAppActionButtons', () => {
 		await waitFor(() => expect(result.current).toEqual([]));
 		act(() => mockSubscriptions.next([{ t: 'c', roles: [] }]));
 		await waitFor(() => expect(result.current).toHaveLength(1));
+	});
+
+	it('resolves buttons without a room, skipping the room type filter', async () => {
+		mockActionButtons = [
+			button({ context: UIActionButtonContext.USER_DROPDOWN_ACTION }),
+			button({ actionId: 'channel-only', when: { roomTypes: ['public_channel'] } })
+		];
+
+		const { result } = renderHook(() => useAppActionButtons());
+
+		await waitFor(() => expect(result.current).toHaveLength(2));
 	});
 
 	it('drops a button whose room type does not match', async () => {

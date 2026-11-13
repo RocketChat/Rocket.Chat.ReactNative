@@ -68,6 +68,8 @@ function createMockCall(callId: string) {
 		callId,
 		state: 'active',
 		hidden: false,
+		service: 'webrtc',
+		features: ['audio', 'hold', 'dialpad'],
 		localParticipant: {
 			local: true,
 			role: 'callee',

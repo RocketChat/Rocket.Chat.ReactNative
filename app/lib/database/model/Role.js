@@ -7,4 +7,6 @@ export default class Role extends Model {
 	static table = ROLES_TABLE;
 
 	@field('description') description;
+
+	@field('name') name;
 }

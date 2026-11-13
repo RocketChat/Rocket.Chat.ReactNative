@@ -1,0 +1,1368 @@
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/call/CallEvents.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/call/CallEvents.d.ts
+index 30e081d..e5ee125 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/call/CallEvents.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/call/CallEvents.d.ts
+@@ -11,9 +11,11 @@ export type CallEvents = {
+     accepted: void;
+     active: void;
+     hidden: void;
++    takenOver: void;
+     ringing: void;
+     ended: void;
+     screenShareRequestChange: boolean;
+     streamChange: void;
++    escalated: void;
+ };
+ //# sourceMappingURL=CallEvents.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.d.ts
+index d825af6..5255114 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.d.ts
+@@ -2,17 +2,20 @@ import type { Emitter } from '@rocket.chat/emitter';
+ import type { CallEvents } from './CallEvents';
+ import type { AnyClientMediaCallParticipant, IClientMediaCallLocalParticipant, IClientMediaCallRemoteParticipant } from './IClientMediaCallParticipant';
+ import type { CallActorType } from './common';
+-export type CallService = 'webrtc';
+-export declare const callFeatureList: readonly ['audio', 'screen-share', 'transfer', 'hold'];
++export declare const callServiceList: readonly ['webrtc', 'cti'];
++export type CallService = (typeof callServiceList)[number];
++export declare const callControlFeatureList: readonly ['mute', 'direct-message', 'device-picker'];
++export declare const callFeatureList: readonly ["audio", "screen-share", "transfer", "attended-transfer", "hold", "conference-escalation", "dialpad", "mute", "direct-message", "device-picker"];
+ export type CallFeature = (typeof callFeatureList)[number];
++export type CallControlFeature = (typeof callControlFeatureList)[number];
+ export declare const callStateList: readonly ['none', 'ringing', 'accepted', 'active', 'renegotiating', 'hangup'];
+ export type CallState = (typeof callStateList)[number];
+-export declare const callHangupReasonList: readonly ['normal', 'remote', 'rejected', 'unavailable', 'transfer', 'not-answered', 'timeout-local-track', 'timeout-remote-sdp', 'timeout-local-sdp', 'timeout-activation', 'timeout-accepting', 'timeout', 'signaling-error', 'service-error', 'media-error', 'input-error', 'error', 'unknown', 'another-client'];
++export declare const callHangupReasonList: readonly ['normal', 'remote', 'rejected', 'unavailable', 'transfer', 'not-answered', 'timeout-local-track', 'timeout-remote-sdp', 'timeout-local-sdp', 'timeout-activation', 'timeout-accepting', 'timeout', 'signaling-error', 'service-error', 'media-error', 'input-error', 'error', 'unknown', 'another-client', 'conference-escalation'];
+ export type CallHangupReason = (typeof callHangupReasonList)[number];
+ export declare const isCallHangupReason: (reason: string) => reason is CallHangupReason;
+ export declare const callAnswerList: readonly ['accept', 'reject', 'ack', 'unavailable'];
+ export type CallAnswer = (typeof callAnswerList)[number];
+-export declare const callNotificationList: readonly ['accepted', 'active', 'hangup', 'trying'];
++export declare const callNotificationList: readonly ['accepted', 'active', 'hangup', 'trying', 'escalated', 'session-changed'];
+ export type CallNotification = (typeof callNotificationList)[number];
+ export declare const callRejectedReasonList: readonly ['invalid-call-id', 'invalid-contract-id', 'existing-call-id', 'already-requested', 'unsupported', 'unavailable', 'busy', 'invalid-call-params', 'forbidden', 'prevented'];
+ export type CallRejectedReason = (typeof callRejectedReasonList)[number];
+@@ -31,6 +34,14 @@ export interface IClientMediaCall {
+     readonly tempCallId: string;
+     /** confirmed indicates if the call exists on the server */
+     readonly confirmed: boolean;
++    /** true once the call was escalated into a video conference by any participant */
++    readonly escalated: boolean;
++    /** why the call ended, once it is over */
++    readonly hangupReason: CallHangupReason | null;
++    /** features the server enabled for this call */
++    readonly features: readonly CallFeature[];
++    /** how the call media is carried: `webrtc` on this client, `cti` on an external device */
++    readonly service: CallService | null;
+     emitter: Emitter<CallEvents>;
+     accept(): void;
+     reject(): void;
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.js b/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.js
+index 86416fc..8c42724 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/call/IClientMediaCall.js
+@@ -1,4 +1,18 @@
+-export const callFeatureList = ['audio', 'screen-share', 'transfer', 'hold'];
++export const callServiceList = [
++    'webrtc', // media is handled by the client through a WebRTC connection
++    'cti', // the call is fully handled by an external device/gateway through a Rocket.Chat app; the client is only a remote control
++];
++export const callControlFeatureList = ['mute', 'direct-message', 'device-picker'];
++export const callFeatureList = [
++    'audio',
++    'screen-share',
++    'transfer',
++    'attended-transfer',
++    'hold',
++    'conference-escalation',
++    'dialpad',
++    ...callControlFeatureList,
++];
+ export const callStateList = [
+     'none', // trying to call with no idea if it'll reach anyone
+     'ringing', // call has been acknoledged by the callee's agent, but no response about them accepting it or not
+@@ -27,6 +41,7 @@ export const callHangupReasonList = [
+     'error', // Hanging up because of an unidentified error
+     'unknown', // One of the call's signed users reported they don't know this call
+     'another-client', // One of the call's users requested a hangup from a different client session than the one where the call is happening
++    'conference-escalation', // The user has escalated this call into a video conference
+ ];
+ export const isCallHangupReason = (reason) => callHangupReasonList.includes(reason);
+ export const callAnswerList = [
+@@ -40,6 +55,8 @@ export const callNotificationList = [
+     'active', // notify that call activity was confirmed
+     'hangup', // notify that the call is over;
+     'trying', // notify that the other client is connecting but still need more time
++    'escalated', // notify that the call was escalated to a video-conference
++    'session-changed', // notify that the user's side of the call moved to another session, identified by `signedContractId`
+ ];
+ export const callRejectedReasonList = [
+     'invalid-call-id', // the call id can't be used for a new call
+@@ -53,5 +70,5 @@ export const callRejectedReasonList = [
+     'forbidden', // one of the actors on the call doesn't have permission for it
+     'prevented', // an installed app refused the call before it was created
+ ];
+-export const callFlagList = ['internal', 'create-data-channel'];
++export const callFlagList = ['internal', 'create-data-channel', 'replaces-call'];
+ //# sourceMappingURL=IClientMediaCall.js.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/call/callStates/IDirectMediaCallData.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/call/callStates/IDirectMediaCallData.d.ts
+index 5bef1d4..92a3b04 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/call/callStates/IDirectMediaCallData.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/call/callStates/IDirectMediaCallData.d.ts
+@@ -9,6 +9,7 @@ export interface IDirectMediaCallData {
+     readonly features: readonly CallFeature[];
+     readonly state: CallState;
+     readonly hidden: boolean;
++    readonly escalated: boolean;
+     readonly ringing: boolean;
+     readonly transferredBy: CallContact | null;
+     readonly activeTimestamp?: Date;
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/call/common.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/call/common.d.ts
+index c3eef7b..0580dbb 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/call/common.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/call/common.d.ts
+@@ -3,6 +3,7 @@ export type CallContact = {
+     type?: CallActorType;
+     id?: string;
+     contractId?: string;
++    uid?: string;
+     displayName?: string;
+     username?: string;
+     sipExtension?: string;
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/MediaSignal.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/MediaSignal.d.ts
+index 21c2d84..080d440 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/MediaSignal.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/MediaSignal.d.ts
+@@ -1,15 +1,20 @@
+ import { type JSONSchemaType } from 'ajv';
+ import { type ClientMediaSignalAnswer } from './answer';
++import { type ClientMediaSignalAttendedTransfer } from './attended-transfer';
++import { type ClientMediaSignalCompleteAttendedTransfer } from './complete-attended-transfer';
+ import { type ClientMediaSignalDTMF } from './dtmf';
+ import { type ClientMediaSignalError } from './error';
+ import { type ClientMediaSignalHangup } from './hangup';
++import { type ClientMediaSignalHold } from './hold';
+ import { type ClientMediaSignalLocalSDP } from './local-sdp';
+ import { type ClientMediaSignalLocalState } from './local-state';
++import { type ClientMediaSignalMute } from './mute';
+ import { type ClientMediaSignalNegotiationNeeded } from './negotiation-needed';
+ import { type ClientMediaSignalRegister } from './register';
+ import { type ClientMediaSignalRequestCall } from './request-call';
++import { type ClientMediaSignalTakeOver } from './take-over';
+ import { type ClientMediaSignalTransfer } from './transfer';
+-export type ClientMediaSignal = ClientMediaSignalLocalSDP | ClientMediaSignalError | ClientMediaSignalAnswer | ClientMediaSignalHangup | ClientMediaSignalDTMF | ClientMediaSignalRequestCall | ClientMediaSignalLocalState | ClientMediaSignalRegister | ClientMediaSignalNegotiationNeeded | ClientMediaSignalTransfer;
++export type ClientMediaSignal = ClientMediaSignalLocalSDP | ClientMediaSignalError | ClientMediaSignalAnswer | ClientMediaSignalHangup | ClientMediaSignalDTMF | ClientMediaSignalRequestCall | ClientMediaSignalLocalState | ClientMediaSignalRegister | ClientMediaSignalNegotiationNeeded | ClientMediaSignalTransfer | ClientMediaSignalAttendedTransfer | ClientMediaSignalCompleteAttendedTransfer | ClientMediaSignalMute | ClientMediaSignalHold | ClientMediaSignalTakeOver;
+ export declare const clientMediaSignalSchema: JSONSchemaType<ClientMediaSignal>;
+ export declare const isClientMediaSignal: import("ajv").ValidateFunction<ClientMediaSignal>;
+ export type ClientMediaSignalType = ClientMediaSignal['type'];
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/MediaSignal.js b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/MediaSignal.js
+index b2556ab..c4aa370 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/MediaSignal.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/MediaSignal.js
+@@ -1,13 +1,18 @@
+ import { Ajv } from 'ajv';
+ import { clientMediaSignalAnswerSchema } from './answer';
++import { clientMediaSignalAttendedTransferSchema } from './attended-transfer';
++import { clientMediaSignalCompleteAttendedTransferSchema, } from './complete-attended-transfer';
+ import { clientMediaSignalDTMFSchema } from './dtmf';
+ import { clientMediaSignalErrorSchema } from './error';
+ import { clientMediaSignalHangupSchema } from './hangup';
++import { clientMediaSignalHoldSchema } from './hold';
+ import { clientMediaSignalLocalSDPSchema } from './local-sdp';
+ import { clientMediaSignalLocalStateSchema } from './local-state';
++import { clientMediaSignalMuteSchema } from './mute';
+ import { clientMediaSignalNegotiationNeededSchema } from './negotiation-needed';
+ import { clientMediaSignalRegisterSchema } from './register';
+ import { clientMediaSignalRequestCallSchema } from './request-call';
++import { clientMediaSignalTakeOverSchema } from './take-over';
+ import { clientMediaSignalTransferSchema } from './transfer';
+ const ajv = new Ajv({ discriminator: true });
+ export const clientMediaSignalSchema = {
+@@ -26,6 +31,11 @@ export const clientMediaSignalSchema = {
+         clientMediaSignalRegisterSchema,
+         clientMediaSignalNegotiationNeededSchema,
+         clientMediaSignalTransferSchema,
++        clientMediaSignalAttendedTransferSchema,
++        clientMediaSignalCompleteAttendedTransferSchema,
++        clientMediaSignalMuteSchema,
++        clientMediaSignalHoldSchema,
++        clientMediaSignalTakeOverSchema,
+     ],
+ };
+ export const isClientMediaSignal = ajv.compile(clientMediaSignalSchema);
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/attended-transfer.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/attended-transfer.d.ts
+new file mode 100644
+index 0000000..862ad3e
+--- /dev/null
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/attended-transfer.d.ts
+@@ -0,0 +1,18 @@
++import type { JSONSchemaType } from 'ajv';
++/**
++ * Client is putting a call on hold to first talk to a new actor, to whom it may later transfer the call.
++ * The `callId` is the call being held; the call to the new actor is identified by `requestedCallId`,
++ * a temporary id that is never propagated to other agents.
++ */
++export type ClientMediaSignalAttendedTransfer = {
++    callId: string;
++    type: 'attended-transfer';
++    contractId: string;
++    requestedCallId: string;
++    to: {
++        type: 'user' | 'sip';
++        id: string;
++    };
++};
++export declare const clientMediaSignalAttendedTransferSchema: JSONSchemaType<ClientMediaSignalAttendedTransfer>;
++//# sourceMappingURL=attended-transfer.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/attended-transfer.js b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/attended-transfer.js
+new file mode 100644
+index 0000000..27c08e2
+--- /dev/null
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/attended-transfer.js
+@@ -0,0 +1,44 @@
++export const clientMediaSignalAttendedTransferSchema = {
++    type: 'object',
++    properties: {
++        callId: {
++            type: 'string',
++            nullable: false,
++            minLength: 1,
++        },
++        contractId: {
++            type: 'string',
++            nullable: false,
++            minLength: 1,
++        },
++        type: {
++            type: 'string',
++            const: 'attended-transfer',
++        },
++        requestedCallId: {
++            type: 'string',
++            nullable: false,
++            minLength: 1,
++        },
++        to: {
++            type: 'object',
++            properties: {
++                type: {
++                    type: 'string',
++                    enum: ['user', 'sip'],
++                    nullable: false,
++                },
++                id: {
++                    type: 'string',
++                    nullable: false,
++                    minLength: 1,
++                },
++            },
++            required: ['type', 'id'],
++            additionalProperties: false,
++        },
++    },
++    additionalProperties: false,
++    required: ['callId', 'contractId', 'type', 'requestedCallId', 'to'],
++};
++//# sourceMappingURL=attended-transfer.js.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/complete-attended-transfer.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/complete-attended-transfer.d.ts
+new file mode 100644
+index 0000000..cc93b05
+--- /dev/null
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/complete-attended-transfer.d.ts
+@@ -0,0 +1,13 @@
++import type { JSONSchemaType } from 'ajv';
++/**
++ * Client is finishing an attended transfer: it drops out so the actor on the held call and the actor
++ * it was consulting are connected to each other.
++ * The `callId` is the consultation call; the held call is the parent of that call.
++ */
++export type ClientMediaSignalCompleteAttendedTransfer = {
++    callId: string;
++    type: 'complete-attended-transfer';
++    contractId: string;
++};
++export declare const clientMediaSignalCompleteAttendedTransferSchema: JSONSchemaType<ClientMediaSignalCompleteAttendedTransfer>;
++//# sourceMappingURL=complete-attended-transfer.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/complete-attended-transfer.js b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/complete-attended-transfer.js
+new file mode 100644
+index 0000000..694a08d
+--- /dev/null
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/complete-attended-transfer.js
+@@ -0,0 +1,22 @@
++export const clientMediaSignalCompleteAttendedTransferSchema = {
++    type: 'object',
++    properties: {
++        callId: {
++            type: 'string',
++            nullable: false,
++            minLength: 1,
++        },
++        contractId: {
++            type: 'string',
++            nullable: false,
++            minLength: 1,
++        },
++        type: {
++            type: 'string',
++            const: 'complete-attended-transfer',
++        },
++    },
++    additionalProperties: false,
++    required: ['callId', 'contractId', 'type'],
++};
++//# sourceMappingURL=complete-attended-transfer.js.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/hold.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/hold.d.ts
+new file mode 100644
+index 0000000..eded553
+--- /dev/null
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/hold.d.ts
+@@ -0,0 +1,14 @@
++import type { JSONSchemaType } from 'ajv';
++/**
++ * Client is requesting its own leg of the call to be put on hold / resumed.
++ * For webrtc calls hold is handled locally on the client, so this signal is only used by services
++ * where the media lives elsewhere (e.g. `cti`) and the hold must be applied by the call backend.
++ */
++export type ClientMediaSignalHold = {
++    callId: string;
++    type: 'hold';
++    contractId: string;
++    held: boolean;
++};
++export declare const clientMediaSignalHoldSchema: JSONSchemaType<ClientMediaSignalHold>;
++//# sourceMappingURL=hold.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/hold.js b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/hold.js
+new file mode 100644
+index 0000000..8904b35
+--- /dev/null
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/hold.js
+@@ -0,0 +1,26 @@
++export const clientMediaSignalHoldSchema = {
++    type: 'object',
++    properties: {
++        callId: {
++            type: 'string',
++            nullable: false,
++            minLength: 1,
++        },
++        contractId: {
++            type: 'string',
++            nullable: false,
++            minLength: 1,
++        },
++        type: {
++            type: 'string',
++            const: 'hold',
++        },
++        held: {
++            type: 'boolean',
++            nullable: false,
++        },
++    },
++    additionalProperties: false,
++    required: ['callId', 'contractId', 'type', 'held'],
++};
++//# sourceMappingURL=hold.js.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/index.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/index.d.ts
+index 37df364..d29441a 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/index.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/index.d.ts
+@@ -1,12 +1,17 @@
+ export * from './answer';
++export * from './attended-transfer';
++export * from './complete-attended-transfer';
+ export * from './dtmf';
+ export * from './error';
+ export * from './hangup';
++export * from './hold';
+ export * from './local-sdp';
+ export * from './local-state';
++export * from './mute';
+ export * from './negotiation-needed';
+ export * from './register';
+ export * from './request-call';
++export * from './take-over';
+ export * from './transfer';
+ export * from './MediaSignal';
+ //# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/index.js b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/index.js
+index 7e9dc44..8d20804 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/index.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/index.js
+@@ -1,12 +1,17 @@
+ export * from './answer';
++export * from './attended-transfer';
++export * from './complete-attended-transfer';
+ export * from './dtmf';
+ export * from './error';
+ export * from './hangup';
++export * from './hold';
+ export * from './local-sdp';
+ export * from './local-state';
++export * from './mute';
+ export * from './negotiation-needed';
+ export * from './register';
+ export * from './request-call';
++export * from './take-over';
+ export * from './transfer';
+ export * from './MediaSignal';
+ //# sourceMappingURL=index.js.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/mute.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/mute.d.ts
+new file mode 100644
+index 0000000..dc44323
+--- /dev/null
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/mute.d.ts
+@@ -0,0 +1,14 @@
++import type { JSONSchemaType } from 'ajv';
++/**
++ * Client is requesting its own leg of the call to be muted/unmuted.
++ * For webrtc calls muting is handled locally on the client, so this signal is only used by services
++ * where the media lives elsewhere (e.g. `cti`) and the mute must be applied by the call backend.
++ */
++export type ClientMediaSignalMute = {
++    callId: string;
++    type: 'mute';
++    contractId: string;
++    muted: boolean;
++};
++export declare const clientMediaSignalMuteSchema: JSONSchemaType<ClientMediaSignalMute>;
++//# sourceMappingURL=mute.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/mute.js b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/mute.js
+new file mode 100644
+index 0000000..f422bbb
+--- /dev/null
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/mute.js
+@@ -0,0 +1,26 @@
++export const clientMediaSignalMuteSchema = {
++    type: 'object',
++    properties: {
++        callId: {
++            type: 'string',
++            nullable: false,
++            minLength: 1,
++        },
++        contractId: {
++            type: 'string',
++            nullable: false,
++            minLength: 1,
++        },
++        type: {
++            type: 'string',
++            const: 'mute',
++        },
++        muted: {
++            type: 'boolean',
++            nullable: false,
++        },
++    },
++    additionalProperties: false,
++    required: ['callId', 'contractId', 'type', 'muted'],
++};
++//# sourceMappingURL=mute.js.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/request-call.js b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/request-call.js
+index 1e573ed..d3898f6 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/request-call.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/request-call.js
+@@ -1,4 +1,4 @@
+-import { callFeatureList } from '../../call/IClientMediaCall';
++import { callFeatureList, callServiceList } from '../../call/IClientMediaCall';
+ export const clientMediaSignalRequestCallSchema = {
+     type: 'object',
+     properties: {
+@@ -37,7 +37,7 @@ export const clientMediaSignalRequestCallSchema = {
+             type: 'array',
+             items: {
+                 type: 'string',
+-                enum: ['webrtc'],
++                enum: callServiceList,
+                 nullable: false,
+             },
+             nullable: false,
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/take-over.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/take-over.d.ts
+new file mode 100644
+index 0000000..273db50
+--- /dev/null
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/take-over.d.ts
+@@ -0,0 +1,11 @@
++import type { JSONSchemaType } from 'ajv';
++import type { CallFeature } from '../../call';
++/** Client is asking to continue, on this session, a call that is happening on another session of the same user */
++export type ClientMediaSignalTakeOver = {
++    callId: string;
++    type: 'take-over';
++    contractId: string;
++    supportedFeatures?: CallFeature[];
++};
++export declare const clientMediaSignalTakeOverSchema: JSONSchemaType<ClientMediaSignalTakeOver>;
++//# sourceMappingURL=take-over.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/take-over.js b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/take-over.js
+new file mode 100644
+index 0000000..d397cf0
+--- /dev/null
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/client/take-over.js
+@@ -0,0 +1,32 @@
++import { callFeatureList } from '../../call/IClientMediaCall';
++export const clientMediaSignalTakeOverSchema = {
++    type: 'object',
++    properties: {
++        callId: {
++            type: 'string',
++            nullable: false,
++            minLength: 1,
++        },
++        contractId: {
++            type: 'string',
++            nullable: false,
++            minLength: 1,
++        },
++        type: {
++            type: 'string',
++            const: 'take-over',
++        },
++        supportedFeatures: {
++            type: 'array',
++            items: {
++                type: 'string',
++                enum: callFeatureList,
++                nullable: false,
++            },
++            nullable: true,
++        },
++    },
++    additionalProperties: false,
++    required: ['callId', 'contractId', 'type'],
++};
++//# sourceMappingURL=take-over.js.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/MediaSignal.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/MediaSignal.d.ts
+index 21777eb..09a4723 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/MediaSignal.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/MediaSignal.d.ts
+@@ -4,7 +4,8 @@ import type { ServerMediaSignalRegistered } from './registered';
+ import type { ServerMediaSignalRejectedCallRequest } from './rejected-call-request';
+ import type { ServerMediaSignalRemoteSDP } from './remote-sdp';
+ import type { ServerMediaSignalRequestOffer } from './request-offer';
+-export type ServerMediaCallSignal = ServerMediaSignalNewCall | ServerMediaSignalRemoteSDP | ServerMediaSignalRequestOffer | ServerMediaSignalNotification | ServerMediaSignalRejectedCallRequest;
++import type { ServerMediaSignalUpdateCall } from './update';
++export type ServerMediaCallSignal = ServerMediaSignalNewCall | ServerMediaSignalRemoteSDP | ServerMediaSignalRequestOffer | ServerMediaSignalNotification | ServerMediaSignalRejectedCallRequest | ServerMediaSignalUpdateCall;
+ export type ServerMediaSessionSignal = ServerMediaSignalRegistered;
+ export type ServerMediaSignal = ServerMediaCallSignal | ServerMediaSessionSignal;
+ export type ServerMediaSignalType = ServerMediaSignal['type'];
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/index.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/index.d.ts
+index 1610236..e30d039 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/index.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/index.d.ts
+@@ -4,5 +4,6 @@ export type * from './registered';
+ export type * from './rejected-call-request';
+ export type * from './remote-sdp';
+ export type * from './request-offer';
++export type * from './update';
+ export type * from './MediaSignal';
+ //# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/update.d.ts b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/update.d.ts
+new file mode 100644
+index 0000000..840f72d
+--- /dev/null
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/update.d.ts
+@@ -0,0 +1,17 @@
++import type { CallContact, CallFeature } from '../../call';
++/** Control state reported by the call backend (used by services where media/control lives outside the client, e.g. `cti`). */
++export type MediaCallReportedState = {
++    muted?: boolean;
++    held?: boolean;
++    remoteMuted?: boolean;
++    remoteHeld?: boolean;
++};
++/** Sent by the server to notify an agent that something on the call was updated */
++export type ServerMediaSignalUpdateCall = {
++    callId: string;
++    type: 'update';
++    contact?: CallContact;
++    features?: CallFeature[];
++    state?: MediaCallReportedState;
++};
++//# sourceMappingURL=update.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/update.js b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/update.js
+new file mode 100644
+index 0000000..3a81400
+--- /dev/null
++++ b/node_modules/@rocket.chat/media-signaling/dist/definition/signals/server/update.js
+@@ -0,0 +1,2 @@
++export {};
++//# sourceMappingURL=update.js.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/Call.d.ts b/node_modules/@rocket.chat/media-signaling/dist/lib/Call.d.ts
+index 6c54768..2d6fcf1 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/Call.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/Call.d.ts
+@@ -31,9 +31,18 @@ export declare class ClientMediaCall implements IClientMediaCall {
+     private _contact;
+     get contact(): CallContact;
+     private _transferredBy;
++    private _transferringCallId;
++    /** For a call placed to consult someone before an attended transfer: the id of the call that is on hold waiting for it */
++    get transferringCallId(): string | null;
+     get transferredBy(): CallContact | null;
+     private _service;
+     get service(): CallService | null;
++    /**
++     * True when the call's media and control live outside this client (e.g. a `cti` desk phone handled
++     * by a Rocket.Chat app). In that case there is no webrtc processor: the client is a remote control
++     * that issues control signals to the server and reflects the state the backend reports back.
++     */
++    private get controlledRemotely();
+     get signed(): boolean;
+     get hidden(): boolean;
+     get muted(): boolean;
+@@ -41,6 +50,9 @@ export declare class ClientMediaCall implements IClientMediaCall {
+     get held(): boolean;
+     private _remoteHeld;
+     get remoteHeld(): boolean;
++    /** Local mute/hold state for control-only (`cti`) calls, where there is no webrtc processor to hold it. */
++    private _muted;
++    private _held;
+     private _remoteMute;
+     get remoteMute(): boolean;
+     /** indicates the call is past the "dialing" stage and not yet over */
+@@ -77,7 +89,8 @@ export declare class ClientMediaCall implements IClientMediaCall {
+     private sentLocalSdp;
+     private receivedRemoteSdp;
+     private enabledFeatures;
+-    private hangupReason;
++    readonly escalated: boolean;
++    readonly hangupReason: CallHangupReason | null;
+     private _flags;
+     get flags(): CallFlag[];
+     get features(): CallFeature[];
+@@ -100,6 +113,11 @@ export declare class ClientMediaCall implements IClientMediaCall {
+         type: CallActorType;
+         id: string;
+     }, supportedFeatures: CallFeature[], contactInfo?: CallContact): Promise<void>;
++    /** Requests this call as a consultation with `callee` while the call `heldCallId` is on hold, before an attended transfer */
++    requestAttendedTransfer(heldCallId: string, callee: {
++        type: CallActorType;
++        id: string;
++    }, contactInfo?: CallContact): Promise<void>;
+     /** initialize a call with the data received from the server on a 'new' signal; this gets executed once for every call */
+     initializeRemoteCall(signal: ServerMediaSignalNewCall, oldCall?: ClientMediaCall | null): Promise<void>;
+     mayNeedInputTrack(): boolean;
+@@ -120,6 +138,12 @@ export declare class ClientMediaCall implements IClientMediaCall {
+         type: CallActorType;
+         id: string;
+     }): void;
++    /** Finishes the attended transfer this call was placed for, leaving the held call's actor and this call's actor talking to each other */
++    completeAttendedTransfer(): void;
++    /** Whether this call is happening on another session of the same user and may be moved to this one */
++    canBeTakenOver(): boolean;
++    /** Asks the server to move this call from the session that carries it to this session */
++    takeOver(): void;
+     hangup(reason?: CallHangupReason): void;
+     isPendingAcceptance(): boolean;
+     isPendingOurAcceptance(): boolean;
+@@ -155,9 +179,22 @@ export declare class ClientMediaCall implements IClientMediaCall {
+     protected processEarlySignals(): Promise<void>;
+     protected acknowledge(): void;
+     private processNotification;
++    private processSessionChange;
++    /** This session now carries the call: the media is renegotiated from scratch on a connection of its own */
++    private acquireContract;
++    /** Another session now carries the call: stop the media here without ending the call */
++    private releaseContract;
++    private resetWebRTC;
++    private processCallUpdate;
++    /**
++     * Applies control state reported by the call backend. Used by control-only services (e.g. cti) where
++     * the mute/hold state of both legs is owned by the external device/gateway rather than a webrtc peer.
++     */
++    private applyReportedState;
+     private flagAsAccepted;
+     private flagAsEnded;
+     private setHangupState;
++    private flagAsEscalated;
+     private addStateTimeout;
+     private getTimeoutHangupReason;
+     private resetStateTimeouts;
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/Call.js b/node_modules/@rocket.chat/media-signaling/dist/lib/Call.js
+index 7f58abb..a448457 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/Call.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/Call.js
+@@ -35,6 +35,10 @@ export class ClientMediaCall {
+     get contact() {
+         return this._contact || {};
+     }
++    /** For a call placed to consult someone before an attended transfer: the id of the call that is on hold waiting for it */
++    get transferringCallId() {
++        return this._transferringCallId;
++    }
+     get transferredBy() {
+         if (!this._transferredBy) {
+             return null;
+@@ -44,6 +48,14 @@ export class ClientMediaCall {
+     get service() {
+         return this._service;
+     }
++    /**
++     * True when the call's media and control live outside this client (e.g. a `cti` desk phone handled
++     * by a Rocket.Chat app). In that case there is no webrtc processor: the client is a remote control
++     * that issues control signals to the server and reflects the state the backend reports back.
++     */
++    get controlledRemotely() {
++        return this._service === 'cti';
++    }
+     get signed() {
+         return ['signed', 'pre-signed', 'self-signed'].includes(this.contractState);
+     }
+@@ -55,9 +67,12 @@ export class ClientMediaCall {
+          * 3. The call was started in some other session and we have not received its data yet
+          *    Since the Call instance is only created when we receive "something" from the server, this would mean we received signals out of order, or missed one.
+          */
+-        return this.ignored || this.contractState === 'ignored' || !this.initialized;
++        return this.ignored || this.contractState === 'ignored' || !this._initialized;
+     }
+     get muted() {
++        if (this.controlledRemotely) {
++            return this._muted;
++        }
+         if (!this.webrtcProcessor) {
+             return false;
+         }
+@@ -65,6 +80,9 @@ export class ClientMediaCall {
+     }
+     /** indicates if the call is on hold */
+     get held() {
++        if (this.controlledRemotely) {
++            return this._held;
++        }
+         if (!this.webrtcProcessor) {
+             return false;
+         }
+@@ -82,7 +100,8 @@ export class ClientMediaCall {
+     }
+     get ringing() {
+         var _a;
+-        if (this.hidden) {
++        // A call that takes over for one already in progress is accepted without ringing
++        if (this.hidden || this.hasFlag('replaces-call')) {
+             return false;
+         }
+         if (this._state !== 'ringing' || !this.hasRemoteData) {
+@@ -147,6 +166,7 @@ export class ClientMediaCall {
+             activeTimestamp: this.activeTimestamp,
+             tempCallId: this.tempCallId,
+             hidden: this.hidden,
++            escalated: this.escalated,
+             ringing: this.ringing,
+             localParticipant: this.localParticipant,
+             remoteParticipant: this.remoteParticipant,
+@@ -176,6 +196,7 @@ export class ClientMediaCall {
+         this.sentLocalSdp = false;
+         this.receivedRemoteSdp = false;
+         this.enabledFeatures = null;
++        this.escalated = false;
+         this.hangupReason = null;
+         this.earlySignals = new Set();
+         this.stateTimeoutHandlers = new Set();
+@@ -186,9 +207,12 @@ export class ClientMediaCall {
+         this._ignored = false;
+         this._contact = null;
+         this._transferredBy = null;
++        this._transferringCallId = null;
+         this._service = null;
+         this._remoteHeld = false;
+         this._remoteMute = false;
++        this._muted = false;
++        this._held = false;
+         this._flags = [];
+         this.selfContact = null;
+         this.localParticipant = this.createLocalParticipantProxy();
+@@ -226,7 +250,7 @@ export class ClientMediaCall {
+     requestCall(callee, supportedFeatures, contactInfo) {
+         return __awaiter(this, void 0, void 0, function* () {
+             var _a;
+-            if (this.initialized) {
++            if (this._initialized) {
+                 return;
+             }
+             (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.requestCall', callee);
+@@ -238,6 +262,22 @@ export class ClientMediaCall {
+             return this.initializeOutboundCall(Object.assign(Object.assign({}, contactInfo), callee));
+         });
+     }
++    /** Requests this call as a consultation with `callee` while the call `heldCallId` is on hold, before an attended transfer */
++    requestAttendedTransfer(heldCallId, callee, contactInfo) {
++        return __awaiter(this, void 0, void 0, function* () {
++            var _a;
++            if (this._initialized) {
++                return;
++            }
++            (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.requestAttendedTransfer', callee);
++            this._transferringCallId = heldCallId;
++            this.config.transporter.sendToServer(heldCallId, 'attended-transfer', {
++                requestedCallId: this.callId,
++                to: callee,
++            });
++            return this.initializeOutboundCall(Object.assign(Object.assign({}, contactInfo), callee));
++        });
++    }
+     /** initialize a call with the data received from the server on a 'new' signal; this gets executed once for every call */
+     initializeRemoteCall(signal, oldCall) {
+         return __awaiter(this, void 0, void 0, function* () {
+@@ -298,6 +338,9 @@ export class ClientMediaCall {
+                 }
+                 // Send an ACK so the server knows that this session exists and is reachable
+                 this.acknowledge();
++                if (this._role === 'callee' && this.hasFlag('replaces-call') && this.isPendingOurAcceptance()) {
++                    this.accept();
++                }
+                 // Adds a secondary timeout for all sessions of the call; Won't matter if the original caller session is still active, but is needed for transferred calls.
+                 this.addStateTimeout('pending', TIMEOUT_TO_ACCEPT);
+                 // If the call was requested by this specific session, assume we're signed already.
+@@ -323,6 +366,10 @@ export class ClientMediaCall {
+         if (this.isOver() || this._ignored || this.hidden) {
+             return false;
+         }
++        // Control-only calls (cti) never capture local media; the audio lives on the external device.
++        if (this.controlledRemotely) {
++            return false;
++        }
+         return true;
+     }
+     needsInputTrack() {
+@@ -355,6 +402,11 @@ export class ClientMediaCall {
+                 }
+                 return 'pending';
+             case 'accepted':
++                // Control-only calls (cti) have no local webrtc negotiation; once accepted we simply wait for
++                // the backend to report the call as active, so skip all the negotiation sub-states.
++                if (this.controlledRemotely) {
++                    return 'activating';
++                }
+                 if (!this.negotiationManager.isConfigured()) {
+                     return 'waiting-for-track';
+                 }
+@@ -484,6 +536,8 @@ export class ClientMediaCall {
+                     return this.processOfferRequest(signal);
+                 case 'notification':
+                     return this.processNotification(signal);
++                case 'update':
++                    return this.processCallUpdate(signal);
+             }
+         });
+     }
+@@ -531,6 +585,33 @@ export class ClientMediaCall {
+             to: callee,
+         });
+     }
++    /** Finishes the attended transfer this call was placed for, leaving the held call's actor and this call's actor talking to each other */
++    completeAttendedTransfer() {
++        var _a;
++        if (!this.busy || !this._transferringCallId) {
++            return;
++        }
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.completeAttendedTransfer');
++        this.config.transporter.sendToServer(this.callId, 'complete-attended-transfer', {});
++    }
++    /** Whether this call is happening on another session of the same user and may be moved to this one */
++    canBeTakenOver() {
++        return (this.contractState === 'ignored' &&
++            !this._ignored &&
++            this.hasRemoteData &&
++            this._service === 'webrtc' &&
++            this._state === 'active' &&
++            !this.isOver());
++    }
++    /** Asks the server to move this call from the session that carries it to this session */
++    takeOver() {
++        var _a;
++        if (!this.canBeTakenOver()) {
++            return;
++        }
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.takeOver');
++        this.config.transporter.sendToServer(this.callId, 'take-over', { supportedFeatures: this.config.supportedFeatures });
++    }
+     hangup(reason = 'normal') {
+         var _a;
+         (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.hangup', reason);
+@@ -586,6 +667,17 @@ export class ClientMediaCall {
+         if (this.isOver() || this.hidden) {
+             return;
+         }
++        // On control-only calls (e.g. cti), mute is applied by the backend: send the intent to the server
++        // and reflect it optimistically until the backend confirms it back through an 'update' signal.
++        if (this.controlledRemotely) {
++            if (this._muted === muted) {
++                return;
++            }
++            this._muted = muted;
++            this.config.transporter.setMuted(this.callId, muted);
++            this.emitter.emit('trackStateChange');
++            return;
++        }
+         if (!this.webrtcProcessor && !muted) {
+             return;
+         }
+@@ -600,6 +692,15 @@ export class ClientMediaCall {
+         if (this.isOver() || this.hidden) {
+             return;
+         }
++        if (this.controlledRemotely) {
++            if (this._held === held) {
++                return;
++            }
++            this._held = held;
++            this.config.transporter.setHeld(this.callId, held);
++            this.emitter.emit('trackStateChange');
++            return;
++        }
+         if (!this.webrtcProcessor && !held) {
+             return;
+         }
+@@ -757,7 +858,8 @@ export class ClientMediaCall {
+         this.updateStateTimeouts();
+         // Any time the client state changes within the 'accepted' call state, set a new timeout for the new client state
+         // This ensures there will be three separate timeouts for the different negotiation stages: "generating local sdp", "waiting for remote sdp" and "connecting"
+-        if (this._state === 'accepted') {
++        // Control-only calls (cti) have no negotiation stages, so this progress timeout would spuriously hang them up.
++        if (this._state === 'accepted' && !this.controlledRemotely) {
+             this.addStateTimeout(clientState, TIMEOUT_TO_PROGRESS_SIGNALING);
+         }
+         this.requestStateReport();
+@@ -792,7 +894,7 @@ export class ClientMediaCall {
+     }
+     processOfferRequest(signal) {
+         return __awaiter(this, void 0, void 0, function* () {
+-            var _a, _b;
++            var _a, _b, _c;
+             if (this.hidden || this.isOver()) {
+                 return;
+             }
+@@ -802,6 +904,13 @@ export class ClientMediaCall {
+                 return;
+             }
+             const { negotiationId } = signal;
++            // A control-only call has no peer connection to offer from. Being asked for one means the server
++            // tracked the call as something it is not, but the call itself is still perfectly usable, so it is
++            // reported rather than answered with the critical error that would tear it down.
++            if (this.controlledRemotely) {
++                (_c = this.config.logger) === null || _c === void 0 ? void 0 : _c.error('Received a webrtc offer request on a call that carries no media.', this.service);
++                return;
++            }
+             if (this.shouldIgnoreWebRTC()) {
+                 this.sendError({ errorType: 'service', errorCode: 'invalid-service', negotiationId, critical: true });
+                 return;
+@@ -925,9 +1034,106 @@ export class ClientMediaCall {
+                     break;
+                 case 'hangup':
+                     return this.flagAsEnded('remote', signal.hangupReason);
++                case 'escalated':
++                    return this.flagAsEscalated(signal.features);
++                case 'session-changed':
++                    return this.processSessionChange(signal);
+             }
+         });
+     }
++    processSessionChange({ signedContractId, features }) {
++        var _a;
++        if (!signedContractId || this.isOver()) {
++            return;
++        }
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.processSessionChange', signedContractId);
++        if (features) {
++            this.enabledFeatures = features;
++        }
++        if (signedContractId === this.config.sessionId) {
++            this.acquireContract();
++            return;
++        }
++        this.releaseContract();
++    }
++    /** This session now carries the call: the media is renegotiated from scratch on a connection of its own */
++    acquireContract() {
++        var _a;
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.acquireContract');
++        this.resetWebRTC();
++        this.acceptedLocally = true;
++        try {
++            this.requireWebRTC();
++        }
++        catch (_b) {
++            this.hangup('error');
++            return;
++        }
++        this.updateClientState();
++        this.emitter.emit('takenOver');
++        this.reportStates();
++    }
++    /** Another session now carries the call: stop the media here without ending the call */
++    releaseContract() {
++        var _a;
++        if (!this.signed) {
++            return;
++        }
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.releaseContract');
++        this.contractState = 'ignored';
++        this.clearStateTimeouts();
++        this.resetWebRTC();
++        this.emitter.emit('hidden');
++        this.updateClientState();
++    }
++    resetWebRTC() {
++        var _a;
++        (_a = this.webrtcProcessor) === null || _a === void 0 ? void 0 : _a.stop();
++        this.webrtcProcessor = null;
++        this.sentLocalSdp = false;
++        this.receivedRemoteSdp = false;
++        this.negotiationManager = new NegotiationManager(this, { logger: this.config.logger });
++    }
++    processCallUpdate(signal) {
++        return __awaiter(this, void 0, void 0, function* () {
++            var _a;
++            (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.processCallUpdate');
++            if (signal.features) {
++                this.enabledFeatures = signal.features;
++            }
++            if (signal.contact) {
++                this.changeContact(signal.contact);
++            }
++            if (signal.state) {
++                this.applyReportedState(signal.state);
++            }
++        });
++    }
++    /**
++     * Applies control state reported by the call backend. Used by control-only services (e.g. cti) where
++     * the mute/hold state of both legs is owned by the external device/gateway rather than a webrtc peer.
++     */
++    applyReportedState(state) {
++        if (!this.controlledRemotely) {
++            return;
++        }
++        let changed = false;
++        for (const [key, field] of [
++            ['muted', '_muted'],
++            ['held', '_held'],
++            ['remoteMuted', '_remoteMute'],
++            ['remoteHeld', '_remoteHeld'],
++        ]) {
++            const value = state[key];
++            if (typeof value === 'boolean' && this[field] !== value) {
++                this[field] = value;
++                changed = true;
++            }
++        }
++        if (changed) {
++            this.emitter.emit('trackStateChange');
++        }
++    }
+     flagAsAccepted(enabledFeatures) {
+         return __awaiter(this, void 0, void 0, function* () {
+             var _a, _b;
+@@ -974,6 +1180,18 @@ export class ClientMediaCall {
+         }
+         this.changeState('hangup');
+     }
++    flagAsEscalated(overrideFeatures) {
++        var _a;
++        if (this.escalated) {
++            return;
++        }
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.flagAsEscalated', overrideFeatures || '');
++        if (overrideFeatures) {
++            this.enabledFeatures = overrideFeatures;
++        }
++        this.escalated = true;
++        this.emitter.emit('escalated');
++    }
+     addStateTimeout(state, timeout, callback) {
+         var _a;
+         (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('ClientMediaCall.addStateTimeout', state, `${timeout / 1000}s`);
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/Session.d.ts b/node_modules/@rocket.chat/media-signaling/dist/lib/Session.d.ts
+index 1d17234..9223252 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/Session.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/Session.d.ts
+@@ -69,6 +69,20 @@ export declare class MediaSignalingSession extends Emitter<MediaSignalingEvents>
+         call: IClientMediaCall;
+     }) | null;
+     private getMainCall;
++    private getAlternateCall;
++    /** Whether there is another call in progress that could be swapped with the main one */
++    hasAlternateCall(): boolean;
++    /** Puts the main call on hold and takes the other call in progress off hold */
++    swapCalls(): void;
++    /** Whether the main call is happening on another session of this user and may be moved to this one */
++    canTakeOverCall(): boolean;
++    /** Moves the main call from the session that carries it to this session */
++    takeOverCall(): void;
++    private getAttendedTransferCall;
++    /** Whether there is an attended transfer waiting to be completed */
++    canCompleteTransfer(): boolean;
++    /** Drops out of the calls so the actor on the held call and the actor that was consulted talk to each other */
++    completeTransfer(): void;
+     processSignal(signal: ServerMediaSignal): Promise<void>;
+     private processSessionSignal;
+     private processCallSignal;
+@@ -76,6 +90,10 @@ export declare class MediaSignalingSession extends Emitter<MediaSignalingEvents>
+     startCall(calleeType: CallActorType, calleeId: string, params?: {
+         contactInfo?: CallContact;
+     }): Promise<void>;
++    /** Puts the main call on hold and starts a call to `calleeId`, to consult them before transferring the held call to them */
++    startAttendedTransfer(calleeType: CallActorType, calleeId: string, params?: {
++        contactInfo?: CallContact;
++    }): Promise<void>;
+     setIceGatheringTimeout(newTimeout: number): void;
+     setIceServers(iceServers: RTCIceServer[]): void;
+     private createTemporaryCallId;
+@@ -125,6 +143,7 @@ export declare class MediaSignalingSession extends Emitter<MediaSignalingEvents>
+     private onAcceptingCall;
+     private onTrackStateChange;
+     private onEndedCall;
++    private onCallTakenOver;
+     private onHiddenCall;
+     private onActiveCall;
+     private onRingingCall;
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/Session.js b/node_modules/@rocket.chat/media-signaling/dist/lib/Session.js
+index 84eb07f..840afe0 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/Session.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/Session.js
+@@ -107,8 +107,10 @@ export class MediaSignalingSession extends Emitter {
+         return Object.assign(Object.assign({}, state), { call });
+     }
+     getMainCall(skipLocal = false) {
++        var _a;
+         let ringingCall = null;
+         let pendingCall = null;
++        const heldCalls = [];
+         for (const call of this.knownCalls.values()) {
+             if (call.state === 'hangup' || call.ignored || !call.initialized) {
+                 continue;
+@@ -117,7 +119,11 @@ export class MediaSignalingSession extends Emitter {
+                 continue;
+             }
+             if (call.busy) {
+-                return call;
++                if (!call.held) {
++                    return call;
++                }
++                heldCalls.push(call);
++                continue;
+             }
+             if (call.state === 'ringing' && !ringingCall) {
+                 ringingCall = call;
+@@ -128,7 +134,77 @@ export class MediaSignalingSession extends Emitter {
+                 continue;
+             }
+         }
+-        return ringingCall || pendingCall;
++        if (ringingCall || pendingCall) {
++            return ringingCall || pendingCall;
++        }
++        // With nothing but held calls, keep the one that was already the main call
++        const { mainCall: lastMainCall } = this.lastState;
++        return (_a = (lastMainCall && heldCalls.includes(lastMainCall) ? lastMainCall : heldCalls[0])) !== null && _a !== void 0 ? _a : null;
++    }
++    getAlternateCall(mainCall) {
++        if (!mainCall.busy || mainCall.hidden) {
++            return null;
++        }
++        for (const call of this.knownCalls.values()) {
++            if (call !== mainCall && call.busy && !call.hidden && !call.ignored && call.initialized) {
++                return call;
++            }
++        }
++        return null;
++    }
++    /** Whether there is another call in progress that could be swapped with the main one */
++    hasAlternateCall() {
++        const mainCall = this.getMainCall(false);
++        return Boolean(mainCall && this.getAlternateCall(mainCall));
++    }
++    /** Puts the main call on hold and takes the other call in progress off hold */
++    swapCalls() {
++        const mainCall = this.getMainCall(false);
++        const alternateCall = mainCall && this.getAlternateCall(mainCall);
++        if (!mainCall || !alternateCall) {
++            throw new Error('No call to switch to.');
++        }
++        if (!mainCall.held) {
++            mainCall.setHeld(true);
++        }
++        alternateCall.setHeld(false);
++    }
++    /** Whether the main call is happening on another session of this user and may be moved to this one */
++    canTakeOverCall() {
++        var _a;
++        return Boolean((_a = this.getMainCall(false)) === null || _a === void 0 ? void 0 : _a.canBeTakenOver());
++    }
++    /** Moves the main call from the session that carries it to this session */
++    takeOverCall() {
++        const call = this.getMainCall(false);
++        if (!(call === null || call === void 0 ? void 0 : call.canBeTakenOver())) {
++            throw new Error('No call to take over.');
++        }
++        call.takeOver();
++    }
++    getAttendedTransferCall() {
++        var _a;
++        for (const call of this.knownCalls.values()) {
++            if (!call.busy || call.hidden || call.ignored || !call.transferringCallId) {
++                continue;
++            }
++            if ((_a = this.knownCalls.get(call.transferringCallId)) === null || _a === void 0 ? void 0 : _a.busy) {
++                return call;
++            }
++        }
++        return null;
++    }
++    /** Whether there is an attended transfer waiting to be completed */
++    canCompleteTransfer() {
++        return Boolean(this.getAttendedTransferCall());
++    }
++    /** Drops out of the calls so the actor on the held call and the actor that was consulted talk to each other */
++    completeTransfer() {
++        const call = this.getAttendedTransferCall();
++        if (!call) {
++            throw new Error('No transfer to complete.');
++        }
++        call.completeAttendedTransfer();
+     }
+     processSignal(signal) {
+         return __awaiter(this, void 0, void 0, function* () {
+@@ -155,6 +231,9 @@ export class MediaSignalingSession extends Emitter {
+                 return;
+             }
+             const call = this.getOrCreateCallBySignal(signal);
++            if (!call) {
++                return;
++            }
+             if (signal.type === 'notification' && signal.signedContractId) {
+                 if (signal.signedContractId === this._sessionId) {
+                     call.setContractState('signed');
+@@ -206,6 +285,20 @@ export class MediaSignalingSession extends Emitter {
+             yield call.requestCall({ type: calleeType, id: calleeId }, this.config.features, contactInfo);
+         });
+     }
++    /** Puts the main call on hold and starts a call to `calleeId`, to consult them before transferring the held call to them */
++    startAttendedTransfer(calleeType_1, calleeId_1) {
++        return __awaiter(this, arguments, void 0, function* (calleeType, calleeId, params = {}) {
++            var _a;
++            (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('MediaSignalingSession.startAttendedTransfer', calleeId);
++            const heldCall = this.getMainCall(false);
++            if (!(heldCall === null || heldCall === void 0 ? void 0 : heldCall.busy) || heldCall.hidden) {
++                throw new Error('No call to transfer.');
++            }
++            heldCall.setHeld(true);
++            const call = this.createCall(this.createTemporaryCallId());
++            yield call.requestAttendedTransfer(heldCall.callId, { type: calleeType, id: calleeId }, params.contactInfo);
++        });
++    }
+     setIceGatheringTimeout(newTimeout) {
+         this.config.iceGatheringTimeout = newTimeout;
+     }
+@@ -276,6 +369,10 @@ export class MediaSignalingSession extends Emitter {
+         if (existingCall) {
+             return existingCall;
+         }
++        // Notifications that do not cause state change can be ignored if the call is still unknown
++        if (signal.type === 'notification' && ['escalated', 'trying'].includes(signal.notification)) {
++            return null;
++        }
+         return this.createCall(signal.callId);
+     }
+     reportState() {
+@@ -544,11 +641,13 @@ export class MediaSignalingSession extends Emitter {
+         call.emitter.on('accepted', () => this.onAcceptedCall(call));
+         call.emitter.on('accepting', () => this.onAcceptingCall(call));
+         call.emitter.on('hidden', () => this.onHiddenCall(call));
++        call.emitter.on('takenOver', () => this.onCallTakenOver(call));
+         call.emitter.on('active', () => this.onActiveCall(call));
+         call.emitter.on('ringing', () => this.onRingingCall());
+         call.emitter.on('ended', () => this.onEndedCall(call));
+         call.emitter.on('screenShareRequestChange', (requested) => this.onScreenShareRequestChange(call, requested));
+         call.emitter.on('streamChange', () => this.onSessionStateChange());
++        call.emitter.on('escalated', () => this.onSessionStateChange());
+         return call;
+     }
+     onCallContactUpdate(_call) {
+@@ -597,6 +696,15 @@ export class MediaSignalingSession extends Emitter {
+         this.ignoreCall(call.callId);
+         this.onSessionStateChange();
+     }
++    onCallTakenOver(call) {
++        var _a;
++        (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('MediaSignalingSession.onCallTakenOver');
++        // A call that was hidden never received the input track, even if the session already has one
++        if (this.inputTrack) {
++            void call.setInputTrack(this.inputTrack).catch(() => null);
++        }
++        this.onSessionStateChange();
++    }
+     onHiddenCall(_call) {
+         var _a;
+         (_a = this.config.logger) === null || _a === void 0 ? void 0 : _a.debug('MediaSignalingSession.onHiddenCall');
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/TransportWrapper.d.ts b/node_modules/@rocket.chat/media-signaling/dist/lib/TransportWrapper.d.ts
+index 0a99a24..c1b8a26 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/TransportWrapper.d.ts
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/TransportWrapper.d.ts
+@@ -13,6 +13,8 @@ export declare class MediaSignalTransportWrapper {
+     }): void;
+     hangup(callId: string, reason: CallHangupReason): void;
+     requestRenegotiation(callId: string, oldNegotiationId: string): void;
++    setMuted(callId: string, muted: boolean): void;
++    setHeld(callId: string, held: boolean): void;
+     sendSignal(signal: ClientMediaSignal): void;
+ }
+ //# sourceMappingURL=TransportWrapper.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/TransportWrapper.js b/node_modules/@rocket.chat/media-signaling/dist/lib/TransportWrapper.js
+index b168c4b..9132c52 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/TransportWrapper.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/TransportWrapper.js
+@@ -21,6 +21,12 @@ export class MediaSignalTransportWrapper {
+     requestRenegotiation(callId, oldNegotiationId) {
+         return this.sendToServer(callId, 'negotiation-needed', { oldNegotiationId });
+     }
++    setMuted(callId, muted) {
++        return this.sendToServer(callId, 'mute', { muted });
++    }
++    setHeld(callId, held) {
++        return this.sendToServer(callId, 'hold', { held });
++    }
+     sendSignal(signal) {
+         var _a;
+         (_a = this.logger) === null || _a === void 0 ? void 0 : _a.debug('MediaSignalTransportWrapper.sendSignal', signal);
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/services/webrtc/Processor.js b/node_modules/@rocket.chat/media-signaling/dist/lib/services/webrtc/Processor.js
+index a5e3791..db641d0 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/services/webrtc/Processor.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/services/webrtc/Processor.js
+@@ -147,6 +147,7 @@ export class MediaCallWebRTCProcessor {
+                 throw new Error('unsupported-description-type');
+             }
+             yield this.peer.setLocalDescription(sdp);
++            this.changeInternalState('signaling');
+             if (sdp.type === 'answer') {
+                 this.processPostNegotiation();
+             }
+@@ -167,6 +168,7 @@ export class MediaCallWebRTCProcessor {
+                 this.processPreNegotiation();
+             }
+             yield this.peer.setRemoteDescription(sdp);
++            this.changeInternalState('signaling');
+             if (sdp.type === 'answer') {
+                 this.processPostNegotiation();
+             }

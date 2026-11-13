@@ -23,7 +23,7 @@ export const PeerList = () => {
 	return (
 		<FlatList
 			data={options}
-			contentContainerStyle={{ flexShrink: 1 }}
+			style={{ flexShrink: 1 }}
 			keyExtractor={item => `${item.type}:${item.value}`}
 			keyboardShouldPersistTaps='always'
 			renderItem={renderItem}

@@ -56,6 +56,15 @@ jest.mock('~/views/RoomView/hooks/useCanPlaceLivechatOnHold', () => ({ useCanPla
 jest.mock('~/views/RoomView/services/closeLivechat', () => ({ closeLivechat: jest.fn() }));
 jest.mock('~/lib/methods/toggleFollowThread', () => ({ toggleFollowThread: jest.fn() }));
 
+let mockTakeOverPeerUserId: string | null = null;
+jest.mock('~/lib/services/voip/useCanTakeOverCall', () => ({
+	useCanTakeOverCall: (peerUserId: string | null | undefined) => peerUserId != null && peerUserId === mockTakeOverPeerUserId
+}));
+const mockTakeOverCall = jest.fn(() => Promise.resolve());
+jest.mock('~/lib/services/voip/MediaSessionInstance', () => ({
+	mediaSessionInstance: { takeOverCall: () => mockTakeOverCall() }
+}));
+
 let mockE2EEStatus = { showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false };
 jest.mock('~/views/RoomView/hooks/useE2EEStatus', () => ({ useE2EEStatus: () => mockE2EEStatus }));
 
@@ -104,8 +113,10 @@ jest.mock('~/containers/Header/components/HeaderButton', () => {
 
 const allTestIDs = [
 	'room-view-search',
+	'room-view-header-take-over-call',
 	'room-view-header-threads',
 	'room-view-header-call',
+	'room-view-header-video-call',
 	'room-view-header-encryption',
 	'room-view-push-troubleshoot',
 	'room-view-header-kebab',
@@ -163,6 +174,7 @@ describe('RoomHeaderActions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockIsMasterDetail = false;
+		mockTakeOverPeerUserId = null;
 		mockVideoConf.callEnabled = true;
 		mockAppState = {
 			login: { user: { id: 'u1', username: 'user', token: 'tok' } },
@@ -254,10 +266,10 @@ describe('RoomHeaderActions', () => {
 	});
 
 	describe('room', () => {
-		it('lists call and search in the more menu', () => {
+		it('lists video call and search in the more menu of a channel', () => {
 			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
 
-			expect(openMoreMenu().map(option => option.testID)).toEqual(['room-view-header-call', 'room-view-search']);
+			expect(openMoreMenu().map(option => option.testID)).toEqual(['room-view-header-video-call', 'room-view-search']);
 		});
 
 		it('enables encryption while the e2ee warning disables the other actions', () => {
@@ -348,10 +360,10 @@ describe('RoomHeaderActions', () => {
 			expect(openMoreMenu().map(option => option.testID)).toEqual(['room-view-search']);
 		});
 
-		it('starts a video conference from the call option', () => {
+		it('starts a video conference from the video call option', () => {
 			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c' })} />);
 
-			pickOption(moreMenuOption('room-view-header-call'));
+			pickOption(moreMenuOption('room-view-header-video-call'));
 
 			expect(mockVideoConf.showInitCallActionSheet).toHaveBeenCalled();
 		});
@@ -362,6 +374,37 @@ describe('RoomHeaderActions', () => {
 			fireEvent.press(screen.getByTestId('room-view-header-threads'));
 
 			expect(mockNavigation.navigate).toHaveBeenCalledWith('ThreadMessagesView', { rid: 'rid-1', t: 'c' });
+		});
+
+		it('shows continue call here in the DM with the user on the call', () => {
+			mockTakeOverPeerUserId = 'u2';
+			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'd', name: 'other', uids: ['u1', 'u2'] })} />);
+
+			expect(renderedTestIDs()).toEqual(['room-view-header-take-over-call', ...ROOM_BUTTONS]);
+			expect(screen.getByTestId('room-view-header-take-over-call')).toHaveProp('accessibilityLabel', 'Continue call here');
+		});
+
+		it('leaves continue call here out of a DM with someone else', () => {
+			mockTakeOverPeerUserId = 'u3';
+			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'd', name: 'other', uids: ['u1', 'u2'] })} />);
+
+			expect(renderedTestIDs()).not.toContain('room-view-header-take-over-call');
+		});
+
+		it('leaves continue call here out of channels', () => {
+			mockTakeOverPeerUserId = 'u2';
+			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'c', uids: ['u1', 'u2'] })} />);
+
+			expect(renderedTestIDs()).not.toContain('room-view-header-take-over-call');
+		});
+
+		it('takes the call over from the header', () => {
+			mockTakeOverPeerUserId = 'u2';
+			renderActions(<RoomHeaderActions rid='rid-1' roomStore={createRoomStore({ t: 'd', name: 'other', uids: ['u1', 'u2'] })} />);
+
+			fireEvent.press(screen.getByTestId('room-view-header-take-over-call'));
+
+			expect(mockTakeOverCall).toHaveBeenCalledTimes(1);
 		});
 
 		it('badges the threads button with the unread thread count', () => {

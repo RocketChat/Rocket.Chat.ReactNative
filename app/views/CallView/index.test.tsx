@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { fireEvent, render, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
@@ -7,6 +7,7 @@ import CallView from '.';
 import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
 import { useCallStore } from '~/lib/services/voip/useCallStore';
 import { mockedStore } from '~/reducers/mockedStore';
+import { deriveSupportedFeatures } from '~/lib/services/voip/deriveSupportedFeatures';
 import * as stories from './CallView.stories';
 import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 
@@ -68,7 +69,12 @@ let mockWindowWidth = 350;
 let mockWindowHeight = 800;
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 	__esModule: true,
-	default: () => ({ width: mockWindowWidth, height: mockWindowHeight, scale: 1, fontScale: 1 })
+	default: () => ({
+		width: mockWindowWidth,
+		height: mockWindowHeight,
+		scale: 1,
+		fontScale: 1
+	})
 }));
 
 const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
@@ -107,6 +113,9 @@ jest.mock('~/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 		}
 	};
 });
+
+const mockVideoConf = { startCall: jest.fn(), showInitCallActionSheet: jest.fn(), callEnabled: false };
+jest.mock('~/lib/hooks/useVideoConf', () => ({ useVideoConf: () => mockVideoConf }));
 
 const mockShowActionSheetRef = jest.fn();
 jest.mock('~/containers/ActionSheet', () => ({
@@ -153,6 +162,8 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 			sipExtension: ''
 		},
 		roomId: 'test-room-rid',
+		service: 'webrtc',
+		features: deriveSupportedFeatures('webrtc', ['audio', 'hold', 'dialpad']),
 		...overrides
 	});
 };
@@ -163,6 +174,7 @@ describe('CallView/CallView', () => {
 	beforeEach(() => {
 		mockWindowWidth = 350;
 		mockWindowHeight = 800;
+		mockVideoConf.callEnabled = false;
 		useCallStore.getState().reset();
 		jest.clearAllMocks();
 	});
@@ -189,7 +201,7 @@ describe('CallView/CallView', () => {
 		expect(getByTestId('call-view-speaker')).toBeTruthy();
 		expect(getByTestId('call-view-hold')).toBeTruthy();
 		expect(getByTestId('call-view-mute')).toBeTruthy();
-		expect(getByTestId('call-view-message')).toBeTruthy();
+		expect(getByTestId('call-view-more')).toBeTruthy();
 		expect(getByTestId('call-view-end')).toBeTruthy();
 		expect(getByTestId('call-view-dialpad')).toBeTruthy();
 	});
@@ -324,7 +336,7 @@ describe('CallView/CallView', () => {
 		expect(endCall).toHaveBeenCalledTimes(1);
 	});
 
-	it('should call navigateToCallRoom when message button is pressed', () => {
+	it('should open the more action sheet with direct message when more button is pressed', () => {
 		setStoreState({ callState: 'active' });
 		const { getByTestId } = render(
 			<Wrapper>
@@ -332,8 +344,75 @@ describe('CallView/CallView', () => {
 			</Wrapper>
 		);
 
-		fireEvent.press(getByTestId('call-view-message'));
+		fireEvent.press(getByTestId('call-view-more'));
+		const { options } = mockShowActionSheetRef.mock.calls.at(-1)[0];
+		const message = options.find((option: { testID: string }) => option.testID === 'call-view-more-message');
+		message.onPress();
 		expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
+	});
+
+	it('should offer video in a DM call when video conference is enabled for the room', () => {
+		mockVideoConf.callEnabled = true;
+		setStoreState({ callState: 'active' });
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		fireEvent.press(getByTestId('call-view-more'));
+		const { options } = mockShowActionSheetRef.mock.calls[0][0];
+		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-video', 'call-view-more-message']);
+	});
+
+	it('should not offer video on a call without a DM', () => {
+		mockVideoConf.callEnabled = true;
+		setStoreState({ callState: 'active', roomId: null });
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		expect(getByTestId('call-view-more').props.accessibilityState?.disabled).toBe(true);
+	});
+
+	it('should end the voice call and start a video conference once confirmed', () => {
+		mockVideoConf.callEnabled = true;
+		const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+		const endCall = jest.fn();
+		setStoreState({ callState: 'active', endCall });
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		fireEvent.press(getByTestId('call-view-more'));
+		mockShowActionSheetRef.mock.calls[0][0].options[0].onPress();
+		expect(endCall).not.toHaveBeenCalled();
+		expect(mockVideoConf.startCall).not.toHaveBeenCalled();
+
+		const buttons = alert.mock.calls[0][2]!;
+		buttons.find(button => button.style !== 'cancel')!.onPress!();
+		expect(endCall).toHaveBeenCalledTimes(1);
+		expect(mockVideoConf.startCall).toHaveBeenCalledTimes(1);
+		alert.mockRestore();
+	});
+
+	it('should only offer the controls a cti call lists', () => {
+		setStoreState({ service: 'cti', features: deriveSupportedFeatures('cti', ['audio', 'mute']) });
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		expect(getByTestId('call-view-mute').props.accessibilityState?.disabled).toBe(false);
+		expect(getByTestId('call-view-hold').props.accessibilityState?.disabled).toBe(true);
+		expect(getByTestId('call-view-dialpad').props.accessibilityState?.disabled).toBe(true);
+		expect(getByTestId('call-view-speaker').props.accessibilityState?.disabled).toBe(true);
+		expect(getByTestId('call-view-more').props.accessibilityState?.disabled).toBe(true);
 	});
 
 	it('should show action sheet with dialpad when dialpad button is pressed', () => {
@@ -524,7 +603,7 @@ describe('CallView (tablet/wide layout)', () => {
 		expect(getByTestId('call-view-speaker')).toBeTruthy();
 		expect(getByTestId('call-view-hold')).toBeTruthy();
 		expect(getByTestId('call-view-mute')).toBeTruthy();
-		expect(getByTestId('call-view-message')).toBeTruthy();
+		expect(getByTestId('call-view-more')).toBeTruthy();
 		expect(getByTestId('call-view-end')).toBeTruthy();
 		expect(getByTestId('call-view-dialpad')).toBeTruthy();
 	});
@@ -538,14 +617,7 @@ describe('CallView (tablet/wide layout)', () => {
 		);
 
 		const row0 = getByTestId('call-buttons-row-0');
-		const ids = [
-			'call-view-speaker',
-			'call-view-hold',
-			'call-view-mute',
-			'call-view-message',
-			'call-view-end',
-			'call-view-dialpad'
-		];
+		const ids = ['call-view-speaker', 'call-view-hold', 'call-view-mute', 'call-view-more', 'call-view-end', 'call-view-dialpad'];
 		ids.forEach(id => {
 			expect(within(row0).getByTestId(id)).toBeTruthy();
 		});

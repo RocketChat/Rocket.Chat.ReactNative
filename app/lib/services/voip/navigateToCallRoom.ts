@@ -8,9 +8,9 @@ import { useCallStore } from './useCallStore';
  * No-ops when room id or username is missing (e.g. pure SIP-only peers).
  */
 export async function navigateToCallRoom({ isMasterDetail }: { isMasterDetail: boolean }): Promise<void> {
-	const { roomId, contact, focused, toggleFocus } = useCallStore.getState();
+	const { roomId, contact, focused, toggleFocus, features } = useCallStore.getState();
 
-	if (!roomId) {
+	if (!roomId || !features.includes('direct-message')) {
 		return;
 	}
 

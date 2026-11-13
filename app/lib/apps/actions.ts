@@ -139,7 +139,7 @@ export async function triggerBlockAction(options: ITriggerBlockAction): Promise<
 
 interface ITriggerAppActionButton {
 	button: IAppActionButton;
-	rid: string;
+	rid?: string;
 	tmid?: string;
 	message?: string;
 }
@@ -148,6 +148,12 @@ export async function triggerAppActionButton({ button, rid, tmid, message }: ITr
 	try {
 		const { actionId, appId, context } = button;
 		await postUserInteraction(appId, (triggerId): UserInteraction => {
+			if (context === UIActionButtonContext.USER_DROPDOWN_ACTION) {
+				return { type: 'actionButton', actionId, triggerId, payload: { context } };
+			}
+			if (!rid) {
+				throw new Error(`rid is required for ${context} action buttons`);
+			}
 			if (context === UIActionButtonContext.ROOM_ACTION) {
 				return { type: 'actionButton', actionId, rid, triggerId, payload: { context } };
 			}

@@ -21,6 +21,7 @@ import {
 	type ILoginCredentials,
 	type ICredentialsPasswordAPI,
 	type ILoggedUser,
+	type IUserMediaCallDevice,
 	STATUSES,
 	type TUserStatus
 } from '~/definitions';
@@ -346,7 +347,8 @@ async function login(credentials: ILoginCredentials): Promise<ILoggedUser> {
 		nickname: result.me.nickname,
 		requirePasswordChange: result.me.requirePasswordChange,
 		sidebarCategories: result.me.settings?.preferences?.sidebarCategories,
-		settings: { preferences: { ...result.me.settings?.preferences } }
+		settings: { preferences: { ...result.me.settings?.preferences } },
+		mediaCallDevice: (result.me as { mediaCallDevice?: IUserMediaCallDevice }).mediaCallDevice
 	};
 	return user;
 }

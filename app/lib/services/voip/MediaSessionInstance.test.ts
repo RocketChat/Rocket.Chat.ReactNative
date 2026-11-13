@@ -178,11 +178,14 @@ type MockMediaSignalingSession = {
 	setIceGatheringTimeout: jest.Mock;
 	startCall: jest.Mock;
 	getCallData: jest.Mock;
+	canTakeOverCall: jest.Mock;
+	takeOverCall: jest.Mock;
 };
 
 const createdSessions: MockMediaSignalingSession[] = [];
 
 jest.mock('@rocket.chat/media-signaling', () => ({
+	...jest.requireActual('@rocket.chat/media-signaling'),
 	MediaCallWebRTCProcessor: jest.fn().mockImplementation(function MediaCallWebRTCProcessor(this: unknown) {
 		return this;
 	}),
@@ -198,6 +201,8 @@ jest.mock('@rocket.chat/media-signaling', () => ({
 		this.setIceGatheringTimeout = jest.fn();
 		this.startCall = jest.fn().mockResolvedValue(undefined);
 		this.getCallData = jest.fn();
+		this.canTakeOverCall = jest.fn(() => false);
+		this.takeOverCall = jest.fn();
 		Object.defineProperty(this, 'sessionId', { value: `session-${config.userId}`, writable: false });
 		createdSessions.push(this);
 	})
@@ -240,6 +245,8 @@ function buildClientMediaCall(options: {
 	return {
 		callId: options.callId,
 		hidden: options.hidden ?? false,
+		service: 'webrtc',
+		features: ['audio', 'hold', 'dialpad'],
 		localParticipant: { local: true, role: options.role, muted: false, held: false, contact: {} },
 		remoteParticipants: [
 			{
@@ -755,6 +762,27 @@ describe('MediaSessionInstance', () => {
 			expect(session.startCall).not.toHaveBeenCalled();
 		});
 
+		it('alerts and does not place the call when desk phone control is enabled', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			mockRequestVoipCallPermissions.mockClear();
+			mockAuxStoreState.login.user = {
+				id: 'user-1',
+				mediaCallDevice: { id: 'desk-1', appId: 'app-1' }
+			} as typeof mockAuxStoreState.login.user;
+			try {
+				await mediaSessionInstance.startCall('peer-1', 'user');
+			} finally {
+				mockAuxStoreState.login.user = { id: 'user-1' };
+			}
+			expect(mockShowErrorAlert).toHaveBeenCalledWith(
+				'VoIP_Desk_Phone_Control_Enabled_Description',
+				'VoIP_Desk_Phone_Control_Enabled'
+			);
+			expect(mockRequestVoipCallPermissions).not.toHaveBeenCalled();
+			expect(session.startCall).not.toHaveBeenCalled();
+		});
+
 		it('does not place call and shows error when permissions are denied', async () => {
 			await mediaSessionInstance.init('user-1');
 			mockRequestVoipCallPermissions.mockResolvedValueOnce(false);
@@ -1198,6 +1226,99 @@ describe('MediaSessionInstance', () => {
 			expect(pendingHangups.size).toBe(0);
 			expect(reject).not.toHaveBeenCalled();
 			expect(hangup).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('take over', () => {
+		const getEmitterHandler = (call: IClientMediaCall, event: string) =>
+			(call.emitter.on as jest.Mock).mock.calls.find(([name]) => name === event)?.[1] as () => void;
+
+		it('asks the session to take over the call once the microphone is granted', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			session.canTakeOverCall.mockReturnValue(true);
+
+			await mediaSessionInstance.takeOverCall();
+
+			expect(mockRequestVoipCallPermissions).toHaveBeenCalled();
+			expect(session.takeOverCall).toHaveBeenCalledTimes(1);
+		});
+
+		it('does not take over without microphone permission', async () => {
+			mockRequestVoipCallPermissions.mockResolvedValueOnce(false);
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			session.canTakeOverCall.mockReturnValue(true);
+
+			await mediaSessionInstance.takeOverCall();
+
+			expect(mockShowErrorAlert).toHaveBeenCalledWith(
+				'Go_to_your_device_settings_and_allow_microphone',
+				'Microphone_access_needed_to_record_audio'
+			);
+			expect(session.takeOverCall).not.toHaveBeenCalled();
+		});
+
+		it('does not take over while this device is in a call', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			session.canTakeOverCall.mockReturnValue(true);
+			mockIsInActiveVoipCall.mockReturnValue(true);
+
+			await mediaSessionInstance.takeOverCall();
+
+			expect(session.takeOverCall).not.toHaveBeenCalled();
+		});
+
+		it('does not take over when the call can no longer be taken', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+
+			await mediaSessionInstance.takeOverCall();
+
+			expect(session.takeOverCall).not.toHaveBeenCalled();
+		});
+
+		it('binds and shows a hidden call once this device takes it over', async () => {
+			const mockSetCall = jest.fn();
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: mockSetCall,
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: null,
+				roomId: null
+			});
+			await mediaSessionInstance.init('user-1');
+			const hidden = buildClientMediaCall({ callId: 'elsewhere', role: 'callee', hidden: true });
+			getNewCallHandler()({ call: hidden });
+			expect(mockSetCall).not.toHaveBeenCalled();
+
+			getEmitterHandler(hidden, 'takenOver')();
+			await new Promise(resolve => setImmediate(resolve));
+
+			expect(mockSetCall).toHaveBeenCalledWith(hidden);
+			expect(mockSetDirection).toHaveBeenCalledWith('incoming');
+			expect(mockStartVoipCallService).toHaveBeenCalledWith('elsewhere');
+			expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
+
+			getEmitterHandler(hidden, 'ended')();
+			expect(mockTerminateNativeCall).toHaveBeenCalledWith('elsewhere');
+		});
+
+		it('ends the native call without hanging up a call another session took over', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const hangup = jest.fn();
+			session.getCallData.mockReturnValue({ callId: 'moved', state: 'active', hidden: true, hangup, reject: jest.fn() });
+
+			mediaSessionInstance.endCall('moved');
+
+			expect(hangup).not.toHaveBeenCalled();
+			expect(mockTerminateNativeCall).toHaveBeenCalledWith('moved');
 		});
 	});
 });
