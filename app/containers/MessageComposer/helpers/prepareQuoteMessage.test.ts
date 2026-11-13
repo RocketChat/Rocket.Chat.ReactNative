@@ -1,6 +1,6 @@
 import { prepareQuoteMessage } from './prepareQuoteMessage';
 import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
-import { getMessageById } from '~/lib/database/services/Message';
+import { getMessageOrThreadMessageById } from '~/lib/database/services/Message';
 import { store } from '~/lib/store/auxStore';
 import { compareServerVersion } from '~/lib/methods/helpers';
 
@@ -10,7 +10,7 @@ jest.mock('~/lib/methods/getPermalinks', () => ({
 }));
 
 jest.mock('~/lib/database/services/Message', () => ({
-	getMessageById: jest.fn()
+	getMessageOrThreadMessageById: jest.fn()
 }));
 
 jest.mock('~/lib/store/auxStore', () => ({
@@ -24,7 +24,9 @@ jest.mock('~/lib/methods/helpers/compareServerVersion', () => ({
 }));
 
 const mockGetPermalinkMessage = getPermalinkMessage as jest.MockedFunction<typeof getPermalinkMessage>;
-const mockGetMessageById = getMessageById as jest.MockedFunction<typeof getMessageById>;
+const mockGetMessageOrThreadMessageById = getMessageOrThreadMessageById as jest.MockedFunction<
+	typeof getMessageOrThreadMessageById
+>;
 const mockStore = store as jest.Mocked<typeof store>;
 const mockCompareServerVersion = compareServerVersion as jest.MockedFunction<typeof compareServerVersion>;
 
@@ -48,7 +50,7 @@ describe('prepareQuoteMessage', () => {
 			const result = await prepareQuoteMessage(textFromInput, selectedMessages);
 
 			expect(result).toBe('Hello world');
-			expect(mockGetMessageById).not.toHaveBeenCalled();
+			expect(mockGetMessageOrThreadMessageById).not.toHaveBeenCalled();
 			expect(mockGetPermalinkMessage).not.toHaveBeenCalled();
 		});
 
@@ -76,12 +78,12 @@ describe('prepareQuoteMessage', () => {
 			const permalink = 'https://example.com/message/message1';
 
 			mockCompareServerVersion.mockReturnValue(false); // >= 5.0.0
-			mockGetMessageById.mockResolvedValue(mockMessage as any);
+			mockGetMessageOrThreadMessageById.mockResolvedValue(mockMessage as any);
 			mockGetPermalinkMessage.mockResolvedValue(permalink);
 
 			const result = await prepareQuoteMessage(textFromInput, selectedMessages);
 
-			expect(mockGetMessageById).toHaveBeenCalledWith('message1', undefined);
+			expect(mockGetMessageOrThreadMessageById).toHaveBeenCalledWith('message1', undefined);
 			expect(mockGetPermalinkMessage).toHaveBeenCalledWith(mockMessage);
 			expect(result).toBe(`[ ](${permalink}) \nMy reply`);
 		});
@@ -92,7 +94,7 @@ describe('prepareQuoteMessage', () => {
 			const permalink = 'https://example.com/message/message1';
 
 			mockCompareServerVersion.mockReturnValue(true); // < 5.0.0
-			mockGetMessageById.mockResolvedValue(mockMessage as any);
+			mockGetMessageOrThreadMessageById.mockResolvedValue(mockMessage as any);
 			mockGetPermalinkMessage.mockResolvedValue(permalink);
 
 			const result = await prepareQuoteMessage(textFromInput, selectedMessages);
@@ -110,12 +112,12 @@ describe('prepareQuoteMessage', () => {
 			const mockMessage2 = { ...mockMessage, id: 'message2' };
 
 			mockCompareServerVersion.mockReturnValue(false); // >= 5.0.0
-			mockGetMessageById.mockResolvedValueOnce(mockMessage as any).mockResolvedValueOnce(mockMessage2 as any);
+			mockGetMessageOrThreadMessageById.mockResolvedValueOnce(mockMessage as any).mockResolvedValueOnce(mockMessage2 as any);
 			mockGetPermalinkMessage.mockResolvedValueOnce(permalink1).mockResolvedValueOnce(permalink2);
 
 			const result = await prepareQuoteMessage(textFromInput, selectedMessages);
 
-			expect(mockGetMessageById).toHaveBeenCalledTimes(2);
+			expect(mockGetMessageOrThreadMessageById).toHaveBeenCalledTimes(2);
 			expect(mockGetPermalinkMessage).toHaveBeenCalledTimes(2);
 			expect(result).toBe(`[ ](${permalink1}) \n[ ](${permalink2}) \nMy reply`);
 		});
@@ -125,12 +127,12 @@ describe('prepareQuoteMessage', () => {
 			const selectedMessages = ['message1', 'nonexistent'];
 
 			mockCompareServerVersion.mockReturnValue(false);
-			mockGetMessageById.mockResolvedValueOnce(mockMessage as any).mockResolvedValueOnce(null);
+			mockGetMessageOrThreadMessageById.mockResolvedValueOnce(mockMessage as any).mockResolvedValueOnce(null);
 			mockGetPermalinkMessage.mockResolvedValue('https://example.com/message/message1');
 
 			const result = await prepareQuoteMessage(textFromInput, selectedMessages);
 
-			expect(mockGetMessageById).toHaveBeenCalledTimes(2);
+			expect(mockGetMessageOrThreadMessageById).toHaveBeenCalledTimes(2);
 			expect(mockGetPermalinkMessage).toHaveBeenCalledTimes(1);
 			expect(result).toBe('[ ](https://example.com/message/message1) \nMy reply');
 		});
@@ -138,7 +140,7 @@ describe('prepareQuoteMessage', () => {
 		test('should skip messages whose permalink cannot be resolved', async () => {
 			const selectedMessages = ['message1', 'message2'];
 
-			mockGetMessageById.mockResolvedValue(mockMessage as any);
+			mockGetMessageOrThreadMessageById.mockResolvedValue(mockMessage as any);
 			mockGetPermalinkMessage.mockResolvedValueOnce(null).mockResolvedValueOnce('https://example.com/message/message2');
 
 			const result = await prepareQuoteMessage('My reply', selectedMessages);
@@ -152,7 +154,7 @@ describe('prepareQuoteMessage', () => {
 			const permalink = 'https://example.com/message/message1';
 
 			mockCompareServerVersion.mockReturnValue(false);
-			mockGetMessageById.mockResolvedValue(mockMessage as any);
+			mockGetMessageOrThreadMessageById.mockResolvedValue(mockMessage as any);
 			mockGetPermalinkMessage.mockResolvedValue(permalink);
 
 			const result = await prepareQuoteMessage(textFromInput, selectedMessages);
@@ -165,7 +167,7 @@ describe('prepareQuoteMessage', () => {
 			const selectedMessages = ['message1'];
 
 			mockCompareServerVersion.mockReturnValue(false);
-			mockGetMessageById.mockResolvedValue(mockMessage as any);
+			mockGetMessageOrThreadMessageById.mockResolvedValue(mockMessage as any);
 			mockGetPermalinkMessage.mockRejectedValue(new Error('Network error'));
 
 			// Should throw the error
@@ -184,33 +186,33 @@ describe('prepareQuoteMessage', () => {
 		test('should forward tmid so the thread message can be resolved', async () => {
 			const permalink = 'https://example.com/message/message1';
 
-			mockGetMessageById.mockResolvedValue(mockThreadMessage as any);
+			mockGetMessageOrThreadMessageById.mockResolvedValue(mockThreadMessage as any);
 			mockGetPermalinkMessage.mockResolvedValue(permalink);
 
 			const result = await prepareQuoteMessage('My reply', ['message1'], 'thread-id');
 
-			expect(mockGetMessageById).toHaveBeenCalledWith('message1', 'thread-id');
+			expect(mockGetMessageOrThreadMessageById).toHaveBeenCalledWith('message1', 'thread-id');
 			expect(mockGetPermalinkMessage).toHaveBeenCalledWith(mockThreadMessage);
 			expect(result).toBe(`[ ](${permalink}) \nMy reply`);
 		});
 
 		test('should forward tmid for every selected message', async () => {
-			mockGetMessageById.mockResolvedValue(mockThreadMessage as any);
+			mockGetMessageOrThreadMessageById.mockResolvedValue(mockThreadMessage as any);
 			mockGetPermalinkMessage.mockResolvedValue('https://example.com/link');
 
 			await prepareQuoteMessage('My reply', ['message1', 'message2'], 'thread-id');
 
-			expect(mockGetMessageById).toHaveBeenNthCalledWith(1, 'message1', 'thread-id');
-			expect(mockGetMessageById).toHaveBeenNthCalledWith(2, 'message2', 'thread-id');
+			expect(mockGetMessageOrThreadMessageById).toHaveBeenNthCalledWith(1, 'message1', 'thread-id');
+			expect(mockGetMessageOrThreadMessageById).toHaveBeenNthCalledWith(2, 'message2', 'thread-id');
 		});
 
 		test('should pass no tmid when the composer is not in a thread', async () => {
-			mockGetMessageById.mockResolvedValue(mockThreadMessage as any);
+			mockGetMessageOrThreadMessageById.mockResolvedValue(mockThreadMessage as any);
 			mockGetPermalinkMessage.mockResolvedValue('https://example.com/link');
 
 			await prepareQuoteMessage('My reply', ['message1']);
 
-			expect(mockGetMessageById).toHaveBeenCalledWith('message1', undefined);
+			expect(mockGetMessageOrThreadMessageById).toHaveBeenCalledWith('message1', undefined);
 		});
 	});
 
@@ -223,7 +225,7 @@ describe('prepareQuoteMessage', () => {
 				server: { version: '6.0.0' }
 			} as any);
 			mockCompareServerVersion.mockReturnValue(false);
-			mockGetMessageById.mockResolvedValue({
+			mockGetMessageOrThreadMessageById.mockResolvedValue({
 				id: 'message1',
 				msg: 'Test'
 			} as any);
@@ -242,7 +244,7 @@ describe('prepareQuoteMessage', () => {
 				server: { version: '4.0.0' }
 			} as any);
 			mockCompareServerVersion.mockReturnValue(true);
-			mockGetMessageById.mockResolvedValue({
+			mockGetMessageOrThreadMessageById.mockResolvedValue({
 				id: 'message1',
 				msg: 'Test'
 			} as any);

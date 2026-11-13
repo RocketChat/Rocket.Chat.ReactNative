@@ -57,9 +57,10 @@ jest.mock('~/lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: jest.fn()
 }));
 
-jest.mock('~/lib/database/services/Message', () => ({
-	getMessageById: (messageId: string) => ({ id: messageId, rid: 'rid', msg: `Message ${messageId}`, attachments: [] })
-}));
+jest.mock('~/lib/database/services/Message', () => {
+	const getMessage = (messageId: string) => ({ id: messageId, rid: 'rid', msg: `Message ${messageId}`, attachments: [] });
+	return { getMessageById: getMessage, getMessageOrThreadMessageById: getMessage };
+});
 
 jest.mock('../hooks/useMessage', () => ({
 	useMessage: (messageId: string) => ({ id: messageId, msg: 'quote this', u: { username: 'rocket.cat' } })
