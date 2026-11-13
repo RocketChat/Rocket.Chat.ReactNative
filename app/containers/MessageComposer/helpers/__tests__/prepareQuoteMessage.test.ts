@@ -1,4 +1,4 @@
-import { prepareQuoteMessage } from './prepareQuoteMessage';
+import { prepareQuoteMessage } from '../prepareQuoteMessage';
 import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
 import { getMessageOrThreadMessageById } from '~/lib/database/services/Message';
 import { store } from '~/lib/store/auxStore';

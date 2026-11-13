@@ -5,16 +5,9 @@ import { getThreadMessageById } from './ThreadMessage';
 
 const getCollection = (db: TAppDatabase) => db.get(MESSAGES_TABLE);
 
-export const getMessageById = async (messageId: string | null, tmid?: string | null) => {
+export const getMessageById = async (messageId: string | null) => {
 	if (!messageId) {
 		return null;
-	}
-
-	if (tmid) {
-		const threadMessage = await getThreadMessageById(messageId);
-		if (threadMessage) {
-			return threadMessage;
-		}
 	}
 
 	const db = database.active;
@@ -28,9 +21,11 @@ export const getMessageById = async (messageId: string | null, tmid?: string | n
 };
 
 export const getMessageOrThreadMessageById = async (messageId: string | null, tmid?: string | null) => {
-	const message = await getMessageById(messageId, tmid);
-	if (message || !messageId || tmid) {
-		return message;
+	if (!messageId) {
+		return null;
 	}
-	return getThreadMessageById(messageId);
+	if (tmid) {
+		return (await getThreadMessageById(messageId)) ?? getMessageById(messageId);
+	}
+	return (await getMessageById(messageId)) ?? getThreadMessageById(messageId);
 };
