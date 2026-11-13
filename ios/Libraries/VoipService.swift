@@ -521,7 +521,7 @@ public final class VoipService: NSObject {
             callId: payload.callId,
             contractId: DeviceUID.uid(),
             answer: "accept",
-            supportedFeatures: ["audio", "hold", "conference-escalation", "dialpad"]
+            supportedFeatures: ["audio", "hold", "dialpad"]
         )) { result in
             DispatchQueue.main.async {
                 switch result {

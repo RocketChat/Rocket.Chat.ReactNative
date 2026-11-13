@@ -52,21 +52,10 @@ const mockUseCallStoreGetState = jest.fn(() => ({
 	roomId: null as string | null
 }));
 
-type MockCallStoreListener = (state: { escalated: boolean }, prev: { escalated: boolean }) => void;
-const mockCallStoreListeners = new Set<MockCallStoreListener>();
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
-		getState: () => mockUseCallStoreGetState(),
-		subscribe: (listener: MockCallStoreListener) => {
-			mockCallStoreListeners.add(listener);
-			return () => mockCallStoreListeners.delete(listener);
-		}
+		getState: () => mockUseCallStoreGetState()
 	}
-}));
-
-const mockJoinEscalatedCall = jest.fn();
-jest.mock('./escalateToVideo', () => ({
-	joinEscalatedCall: () => mockJoinEscalatedCall()
 }));
 
 const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
@@ -821,31 +810,6 @@ describe('MediaSessionInstance', () => {
 			const session = createdSessions[0];
 			mediaSessionInstance.startCallByRoom({ rid: 'rid-self', t: 'd', uids: ['user-1'], itsMe: true } as any);
 			expect(session.startCall).not.toHaveBeenCalled();
-		});
-	});
-
-	describe('escalated calls', () => {
-		const emitCallStoreChange = (escalated: boolean, prevEscalated: boolean) =>
-			mockCallStoreListeners.forEach(listener => listener({ escalated }, { escalated: prevEscalated }));
-
-		it('joins the conference as soon as the call is escalated', async () => {
-			await mediaSessionInstance.init('user-1');
-			emitCallStoreChange(true, false);
-			expect(mockJoinEscalatedCall).toHaveBeenCalledTimes(1);
-		});
-
-		it('ignores store changes that do not escalate the call', async () => {
-			await mediaSessionInstance.init('user-1');
-			emitCallStoreChange(true, true);
-			emitCallStoreChange(false, false);
-			expect(mockJoinEscalatedCall).not.toHaveBeenCalled();
-		});
-
-		it('stops following escalations after reset', async () => {
-			await mediaSessionInstance.init('user-1');
-			mediaSessionInstance.reset();
-			emitCallStoreChange(true, false);
-			expect(mockJoinEscalatedCall).not.toHaveBeenCalled();
 		});
 	});
 

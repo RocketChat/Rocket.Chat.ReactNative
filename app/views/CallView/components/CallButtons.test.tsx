@@ -17,6 +17,10 @@ jest.mock('~/containers/ActionSheet', () => ({
 	hideActionSheetRef: jest.fn()
 }));
 
+jest.mock('~/lib/hooks/useVideoConf', () => ({
+	useVideoConf: () => ({ startCall: jest.fn(), showInitCallActionSheet: jest.fn(), callEnabled: false })
+}));
+
 jest.mock('react-native-incall-manager', () => ({
 	start: jest.fn(),
 	stop: jest.fn(),

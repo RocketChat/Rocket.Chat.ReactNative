@@ -4,8 +4,9 @@ import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
 import I18n from '~/i18n';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
-import { escalateToVideo } from '~/lib/services/voip/escalateToVideo';
-import { useCallStore, useCanEscalateToVideo, useControlsVisible } from '~/lib/services/voip/useCallStore';
+import { useCallStore, useControlsVisible } from '~/lib/services/voip/useCallStore';
+import { useVideoConf } from '~/lib/hooks/useVideoConf';
+import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import { useCallControlsAvailability } from './useCallControlsAvailability';
 import CallActionButton from './CallActionButton';
 import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
@@ -45,7 +46,9 @@ export const CallButtons = () => {
 
 	const controlsVisible = useControlsVisible();
 	const appActions = useMediaCallAppActions();
-	const canEscalate = useCanEscalateToVideo();
+	const callState = useCallStore(state => state.callState);
+	const roomId = useCallStore(state => state.roomId);
+	const { startCall: startVideoCall, callEnabled: videoCallEnabled } = useVideoConf(roomId ?? '');
 	const { isConnecting, speakerDisabled, holdDisabled, muteDisabled, dialpadDisabled, messageDisabled } =
 		useCallControlsAvailability();
 
@@ -54,15 +57,29 @@ export const CallButtons = () => {
 		transform: [{ translateY: withTiming(controlsVisible ? 0 : 100, { duration: CONTROLS_ANIMATION_DURATION }) }]
 	}));
 
+	const canStartVideoCall = callState === 'active' && roomId != null && videoCallEnabled;
+
+	const handleStartVideoCall = () => {
+		showConfirmationAlert({
+			title: I18n.t('Video_escalation_modal_title'),
+			message: I18n.t('Video_escalation_modal_description'),
+			confirmationText: I18n.t('Start_video_call'),
+			onPress: () => {
+				endCall();
+				startVideoCall();
+			}
+		});
+	};
+
 	const handleMore = () => {
 		showActionSheetRef({
 			options: [
-				...(canEscalate
+				...(canStartVideoCall
 					? [
 							{
 								title: I18n.t('Start_video_call'),
 								icon: 'video' as const,
-								onPress: escalateToVideo,
+								onPress: handleStartVideoCall,
 								testID: 'call-view-more-video'
 							}
 						]
@@ -127,7 +144,7 @@ export const CallButtons = () => {
 			icon: 'kebab',
 			label: I18n.t('More'),
 			onPress: handleMore,
-			disabled: messageDisabled && !canEscalate && appActions.length === 0
+			disabled: messageDisabled && !canStartVideoCall && appActions.length === 0
 		},
 		{
 			testID: 'call-view-end',
