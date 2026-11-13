@@ -75,8 +75,6 @@ interface CallStoreState {
 	isSpeakerOn: boolean;
 	callStartTime: number | null;
 	focused: boolean;
-	/** The call was escalated to a video conference, by either participant. */
-	escalated: boolean;
 	controlsVisible: boolean;
 	dialpadValue: string;
 
@@ -124,7 +122,6 @@ const initialState: CallStoreState = {
 	callStartTime: null,
 	contact: {},
 	focused: true,
-	escalated: false,
 	controlsVisible: true,
 	dialpadValue: '',
 	roomId: null,
@@ -169,8 +166,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 				username: remoteContact?.username,
 				sipExtension: remoteContact?.sipExtension
 			},
-			callStartTime: call.state === 'active' ? Date.now() : null,
-			escalated: call.escalated
+			callStartTime: call.state === 'active' ? Date.now() : null
 		});
 
 		try {
@@ -220,21 +216,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			});
 		};
 
-		const handleEscalated = () => {
-			set({ escalated: true, controlsVisible: true });
-		};
-
 		const handleEnded = () => {
-			// The server drops the voice call once we are in the conference: end it quietly.
-			if (call.hangupReason === 'conference-escalation') {
-				const { focused } = get();
-				get().resetNativeCallId();
-				get().reset();
-				if (focused) {
-					Navigation.back();
-				}
-				return;
-			}
 			playCallEndedSound();
 			get().resetNativeCallId();
 			get().reset();
@@ -244,13 +226,11 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		call.emitter.on('stateChange', handleStateChange);
 		call.emitter.on('trackStateChange', handleTrackStateChange);
 		call.emitter.on('ended', handleEnded);
-		call.emitter.on('escalated', handleEscalated);
 
 		callListenersCleanup = () => {
 			call.emitter.off('stateChange', handleStateChange);
 			call.emitter.off('trackStateChange', handleTrackStateChange);
 			call.emitter.off('ended', handleEnded);
-			call.emitter.off('escalated', handleEscalated);
 		};
 	},
 
@@ -364,21 +344,6 @@ export const useCallStore = create<CallStore>((set, get) => ({
 }));
 
 export const useCallContact = () => useCallStore(state => state.contact);
-/** True when the server enabled conference escalation for this call, like web does. */
-export const hasConferenceEscalation = (call: IClientMediaCall | null): boolean =>
-	!!call?.features?.includes('conference-escalation');
-/** SIP calls are escalated by the server; calls between two users switch to a conference in their DM. */
-export const isSipCall = (call: IClientMediaCall | null): boolean => call?.remoteParticipants[0]?.contact?.type === 'sip';
-/** True when the active call can switch to video (re-evaluated on call state changes). */
-export const useCanEscalateToVideo = () =>
-	useCallStore(
-		state =>
-			state.callState === 'active' &&
-			!state.escalated &&
-			hasConferenceEscalation(state.call) &&
-			(isSipCall(state.call) || state.roomId != null)
-	);
-export const useIsCallEscalated = () => useCallStore(state => state.escalated);
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);
 export const useControlsVisible = () => {
 	const controlsVisible = useCallStore(state => state.controlsVisible);

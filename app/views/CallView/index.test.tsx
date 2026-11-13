@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { fireEvent, render, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
@@ -113,6 +113,9 @@ jest.mock('~/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 	};
 });
 
+const mockVideoConf = { startCall: jest.fn(), showInitCallActionSheet: jest.fn(), callEnabled: false };
+jest.mock('~/lib/hooks/useVideoConf', () => ({ useVideoConf: () => mockVideoConf }));
+
 const mockShowActionSheetRef = jest.fn();
 jest.mock('~/containers/ActionSheet', () => ({
 	showActionSheetRef: (options: any) => mockShowActionSheetRef(options),
@@ -168,6 +171,7 @@ describe('CallView/CallView', () => {
 	beforeEach(() => {
 		mockWindowWidth = 350;
 		mockWindowHeight = 800;
+		mockVideoConf.callEnabled = false;
 		useCallStore.getState().reset();
 		jest.clearAllMocks();
 	});
@@ -344,15 +348,9 @@ describe('CallView/CallView', () => {
 		expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
 	});
 
-	it('should offer video in a DM call only when the server enabled escalation', () => {
-		setStoreState({
-			callState: 'active',
-			call: {
-				...createMockCall(),
-				features: ['audio', 'conference-escalation'],
-				remoteParticipants: [{ contact: { type: 'user' } }]
-			} as any
-		});
+	it('should offer video in a DM call when video conference is enabled for the room', () => {
+		mockVideoConf.callEnabled = true;
+		setStoreState({ callState: 'active' });
 		const { getByTestId } = render(
 			<Wrapper>
 				<CallView />
@@ -364,7 +362,8 @@ describe('CallView/CallView', () => {
 		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-video', 'call-view-more-message']);
 	});
 
-	it('should not offer video when the server did not enable escalation', () => {
+	it('should not offer video on a call without a DM', () => {
+		mockVideoConf.callEnabled = true;
 		setStoreState({ callState: 'active', roomId: null });
 		const { getByTestId } = render(
 			<Wrapper>
@@ -375,16 +374,11 @@ describe('CallView/CallView', () => {
 		expect(getByTestId('call-view-more').props.accessibilityState?.disabled).toBe(true);
 	});
 
-	it('should offer video escalation on a SIP call without a DM', () => {
-		setStoreState({
-			callState: 'active',
-			roomId: null,
-			call: {
-				...createMockCall(),
-				features: ['audio', 'conference-escalation'],
-				remoteParticipants: [{ contact: { type: 'sip' } }]
-			} as any
-		});
+	it('should end the voice call and start a video conference once confirmed', () => {
+		mockVideoConf.callEnabled = true;
+		const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+		const endCall = jest.fn();
+		setStoreState({ callState: 'active', endCall });
 		const { getByTestId } = render(
 			<Wrapper>
 				<CallView />
@@ -392,30 +386,15 @@ describe('CallView/CallView', () => {
 		);
 
 		fireEvent.press(getByTestId('call-view-more'));
-		const { options } = mockShowActionSheetRef.mock.calls[0][0];
-		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-video', 'call-view-more-message']);
-	});
+		mockShowActionSheetRef.mock.calls[0][0].options[0].onPress();
+		expect(endCall).not.toHaveBeenCalled();
+		expect(mockVideoConf.startCall).not.toHaveBeenCalled();
 
-	it('should prompt to join the conference once the call was escalated', () => {
-		setStoreState({
-			callState: 'active',
-			escalated: true,
-			call: {
-				...createMockCall(),
-				features: ['audio', 'conference-escalation']
-			} as any
-		});
-		const { getByTestId } = render(
-			<Wrapper>
-				<CallView />
-			</Wrapper>
-		);
-
-		expect(getByTestId('call-view-join-video')).toBeTruthy();
-		expect(getByTestId('call-view-hold').props.accessibilityState?.disabled).toBe(true);
-		fireEvent.press(getByTestId('call-view-more'));
-		const { options } = mockShowActionSheetRef.mock.calls[0][0];
-		expect(options.map((o: any) => o.testID)).toEqual(['call-view-more-message']);
+		const buttons = alert.mock.calls[0][2]!;
+		buttons.find(button => button.style !== 'cancel')!.onPress!();
+		expect(endCall).toHaveBeenCalledTimes(1);
+		expect(mockVideoConf.startCall).toHaveBeenCalledTimes(1);
+		alert.mockRestore();
 	});
 
 	it('should show action sheet with dialpad when dialpad button is pressed', () => {

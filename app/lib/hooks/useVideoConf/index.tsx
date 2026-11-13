@@ -29,7 +29,12 @@ const handleErrors = (isAdmin: boolean, error: keyof typeof availabilityErrors) 
 
 export const useVideoConf = (
 	rid: string
-): { showInitCallActionSheet: () => Promise<void>; callEnabled: boolean; disabledTooltip?: boolean } => {
+): {
+	showInitCallActionSheet: () => Promise<void>;
+	startCall: () => Promise<void>;
+	callEnabled: boolean;
+	disabledTooltip?: boolean;
+} => {
 	const user = useAppSelector(state => getUserSelector(state));
 	const serverVersion = useAppSelector(state => state.server.version);
 	const { callEnabled, disabledTooltip, roomType } = useVideoConfCall(rid);
@@ -54,7 +59,7 @@ export const useVideoConf = (
 		return { canInit: true };
 	};
 
-	const showInitCallActionSheet = async () => {
+	const openCallActionSheet = async (autoStart: boolean) => {
 		try {
 			const { canInit, providerName } = await checkCallAvailability();
 			if (!canInit) {
@@ -67,7 +72,7 @@ export const useVideoConf = (
 			}
 
 			showActionSheet({
-				children: <StartACallActionSheet rid={rid} roomType={roomType} />,
+				children: <StartACallActionSheet rid={rid} roomType={roomType} autoStart={autoStart} />,
 				portraitSnaps: ['60%'],
 				landscapeSnaps: ['90%'],
 				enableContentPanningGesture: false,
@@ -90,5 +95,9 @@ export const useVideoConf = (
 		}
 	};
 
-	return { showInitCallActionSheet, callEnabled, disabledTooltip };
+	const showInitCallActionSheet = () => openCallActionSheet(false);
+	/** Opens the call sheet already calling, skipping the "Call" tap. */
+	const startCall = () => openCallActionSheet(true);
+
+	return { showInitCallActionSheet, startCall, callEnabled, disabledTooltip };
 };

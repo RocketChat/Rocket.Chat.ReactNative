@@ -1,5 +1,5 @@
 import { CameraView } from 'expo-camera';
-import { useState, useEffect, type ReactElement } from 'react';
+import { useState, useEffect, useRef, type ReactElement } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
@@ -16,7 +16,15 @@ import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';
 import useUserData from '../useUserData';
 
-export default function StartACallActionSheet({ rid, roomType }: { rid: string; roomType?: SubscriptionType }): ReactElement {
+export default function StartACallActionSheet({
+	rid,
+	roomType,
+	autoStart
+}: {
+	rid: string;
+	roomType?: SubscriptionType;
+	autoStart?: boolean;
+}): ReactElement {
 	const { colors } = useTheme();
 	const [mic, setMic] = useState(true);
 	const [cam, setCam] = useState(false);
@@ -29,6 +37,15 @@ export default function StartACallActionSheet({ rid, roomType }: { rid: string; 
 	const dispatch = useDispatch();
 
 	const user = useUserData(rid);
+	const autoStarted = useRef(false);
+	const userLoaded = !!user.type;
+	useEffect(() => {
+		if (autoStart && userLoaded && !autoStarted.current) {
+			autoStarted.current = true;
+			dispatch(initVideoCall({ cam, mic, direct: user.direct, rid, uid: user.uid }));
+		}
+	}, [autoStart, userLoaded, cam, mic, user.direct, user.uid, rid, dispatch]);
+
 	const isPortrait = height > width;
 	const actionSheetContainerHeight = isPortrait ? '90%' : '75%';
 	useEffect(

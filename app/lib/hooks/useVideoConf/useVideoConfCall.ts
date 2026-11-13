@@ -80,7 +80,7 @@ export const useVideoConfCall = (
 
 	useEffect(() => {
 		init();
-	}, []);
+	}, [rid]);
 
 	return { callEnabled, disabledTooltip, roomType };
 };
