@@ -89,6 +89,7 @@ static void hookClientCertificateChallenge(Class cls)
   NSInteger _closeCode;
   NSString *_closeReason;
   BOOL _closeSent;
+  BOOL _sendsUnconfirmed;
 }
 
 // How long a close waits for the server to confirm it has read the messages sent before it
@@ -238,7 +239,7 @@ static const NSTimeInterval kCloseDrainTimeout = 5;
   _closeCode = code;
   _closeReason = reason;
   if (!wasOpen) {
-    [self sendClose];
+    [self sendCloseWithSendsConfirmed:YES];
     return;
   }
   // Cancelling the task can drop messages that are still being written, and a send's completion handler
@@ -247,20 +248,21 @@ static const NSTimeInterval kCloseDrainTimeout = 5;
   dispatch_queue_t queue = _delegateQueue;
   [_task sendPingWithPongReceiveHandler:^(NSError *pingError) {
     dispatch_async(queue, ^{
-      [weakSelf sendClose];
+      [weakSelf sendCloseWithSendsConfirmed:pingError == nil];
     });
   }];
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kCloseDrainTimeout * NSEC_PER_SEC)), queue, ^{
-    [weakSelf sendClose];
+    [weakSelf sendCloseWithSendsConfirmed:NO];
   });
 }
 
-- (void)sendClose
+- (void)sendCloseWithSendsConfirmed:(BOOL)confirmed
 {
   if (_state != SR_CLOSING || _closeSent) {
     return;
   }
   _closeSent = YES;
+  _sendsUnconfirmed = !confirmed;
   [_task cancelWithCloseCode:(NSURLSessionWebSocketCloseCode)_closeCode reason:[_closeReason dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
@@ -296,7 +298,8 @@ static const NSTimeInterval kCloseDrainTimeout = 5;
 - (void)URLSession:(NSURLSession *)session webSocketTask:(NSURLSessionWebSocketTask *)webSocketTask didCloseWithCode:(NSURLSessionWebSocketCloseCode)closeCode reason:(NSData *)reason
 {
   NSString *reasonString = reason ? [[NSString alloc] initWithData:reason encoding:NSUTF8StringEncoding] : nil;
-  [self didCloseWithCode:closeCode reason:reasonString wasClean:YES];
+  // Without a pong, messages sent before the close may not have arrived, so the close is not reported as clean
+  [self didCloseWithCode:closeCode reason:reasonString wasClean:!_sendsUnconfirmed];
 }
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
