@@ -172,7 +172,10 @@ static void hookClientCertificateChallenge(Class cls)
       return;
     }
     id payload = message.type == NSURLSessionWebSocketMessageTypeString ? message.string : message.data;
-    [strongSelf.delegate webSocket:strongSelf didReceiveMessage:payload];
+    id<SRWebSocketDelegate> delegate = strongSelf.delegate;
+    if ([delegate respondsToSelector:@selector(webSocket:didReceiveMessage:)]) {
+      [delegate webSocket:strongSelf didReceiveMessage:payload];
+    }
     [strongSelf receiveNextMessage];
   }];
 }
@@ -269,8 +272,8 @@ static void hookClientCertificateChallenge(Class cls)
     return;
   }
   if (_state == SR_CLOSING) {
-    // We asked for the close, so report it the way it was requested
-    [self didCloseWithCode:_closeCode reason:_closeReason wasClean:YES];
+    // We asked for the close and no close frame came back, so report the code that was requested
+    [self didCloseWithCode:_closeCode reason:_closeReason wasClean:error == nil];
     return;
   }
   if (!error) {
