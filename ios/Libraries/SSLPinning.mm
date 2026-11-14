@@ -88,7 +88,11 @@ static void hookClientCertificateChallenge(Class cls)
   NSString *_negotiatedProtocol;
   NSInteger _closeCode;
   NSString *_closeReason;
+  BOOL _closeSent;
 }
+
+// How long a close waits for the server to confirm it has read the messages sent before it
+static const NSTimeInterval kCloseDrainTimeout = 5;
 
 + (void)load
 {
@@ -229,10 +233,35 @@ static void hookClientCertificateChallenge(Class cls)
   if (_state == SR_CLOSING || _state == SR_CLOSED) {
     return;
   }
+  BOOL wasOpen = _state == SR_OPEN;
   _state = SR_CLOSING;
   _closeCode = code;
   _closeReason = reason;
-  [_task cancelWithCloseCode:(NSURLSessionWebSocketCloseCode)code reason:[reason dataUsingEncoding:NSUTF8StringEncoding]];
+  if (!wasOpen) {
+    [self sendClose];
+    return;
+  }
+  // Cancelling the task can drop messages that are still being written, and a send's completion handler
+  // fires before they are. Frames are read in order, so a pong means the server has everything sent before it.
+  __weak __typeof(self) weakSelf = self;
+  dispatch_queue_t queue = _delegateQueue;
+  [_task sendPingWithPongReceiveHandler:^(NSError *pingError) {
+    dispatch_async(queue, ^{
+      [weakSelf sendClose];
+    });
+  }];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kCloseDrainTimeout * NSEC_PER_SEC)), queue, ^{
+    [weakSelf sendClose];
+  });
+}
+
+- (void)sendClose
+{
+  if (_state != SR_CLOSING || _closeSent) {
+    return;
+  }
+  _closeSent = YES;
+  [_task cancelWithCloseCode:(NSURLSessionWebSocketCloseCode)_closeCode reason:[_closeReason dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 - (void)didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
@@ -252,6 +281,10 @@ static void hookClientCertificateChallenge(Class cls)
 
 - (void)URLSession:(NSURLSession *)session webSocketTask:(NSURLSessionWebSocketTask *)webSocketTask didOpenWithProtocol:(NSString *)protocol
 {
+  // A close requested during the handshake must not be undone by a late open callback
+  if (_state != SR_CONNECTING) {
+    return;
+  }
   _negotiatedProtocol = protocol;
   _state = SR_OPEN;
   id<SRWebSocketDelegate> delegate = self.delegate;
