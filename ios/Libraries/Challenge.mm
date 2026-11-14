@@ -4,7 +4,7 @@
 //
 //  Extracted from SSLPinning.mm so the `Challenge` class can be compiled into the
 //  NotificationService app extension (which must not pull in the
-//  RCTHTTPRequestHandler/EXSessionTaskDispatcher/SRWebSocket categories).
+//  RCTHTTPRequestHandler/EXSessionTaskDispatcher categories and the SRWebSocket subclass).
 //
 
 #import "Challenge.h"
