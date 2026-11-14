@@ -89,7 +89,7 @@ static void hookClientCertificateChallenge(Class cls)
   NSInteger _closeCode;
   NSString *_closeReason;
   BOOL _closeSent;
-  BOOL _sendsUnconfirmed;
+  BOOL _awaitingPong;
 }
 
 // How long a close waits for the server to confirm it has read the messages sent before it
@@ -239,30 +239,39 @@ static const NSTimeInterval kCloseDrainTimeout = 5;
   _closeCode = code;
   _closeReason = reason;
   if (!wasOpen) {
-    [self sendCloseWithSendsConfirmed:YES];
+    [self sendClose];
     return;
   }
   // Cancelling the task can drop messages that are still being written, and a send's completion handler
   // fires before they are. Frames are read in order, so a pong means the server has everything sent before it.
+  // Until the pong arrives, any close is reported as not clean.
+  _awaitingPong = YES;
   __weak __typeof(self) weakSelf = self;
   dispatch_queue_t queue = _delegateQueue;
   [_task sendPingWithPongReceiveHandler:^(NSError *pingError) {
     dispatch_async(queue, ^{
-      [weakSelf sendCloseWithSendsConfirmed:pingError == nil];
+      [weakSelf didReceivePongWithError:pingError];
     });
   }];
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kCloseDrainTimeout * NSEC_PER_SEC)), queue, ^{
-    [weakSelf sendCloseWithSendsConfirmed:NO];
+    [weakSelf sendClose];
   });
 }
 
-- (void)sendCloseWithSendsConfirmed:(BOOL)confirmed
+- (void)didReceivePongWithError:(NSError *)error
+{
+  if (!error && !_closeSent) {
+    _awaitingPong = NO;
+  }
+  [self sendClose];
+}
+
+- (void)sendClose
 {
   if (_state != SR_CLOSING || _closeSent) {
     return;
   }
   _closeSent = YES;
-  _sendsUnconfirmed = !confirmed;
   [_task cancelWithCloseCode:(NSURLSessionWebSocketCloseCode)_closeCode reason:[_closeReason dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
@@ -298,8 +307,7 @@ static const NSTimeInterval kCloseDrainTimeout = 5;
 - (void)URLSession:(NSURLSession *)session webSocketTask:(NSURLSessionWebSocketTask *)webSocketTask didCloseWithCode:(NSURLSessionWebSocketCloseCode)closeCode reason:(NSData *)reason
 {
   NSString *reasonString = reason ? [[NSString alloc] initWithData:reason encoding:NSUTF8StringEncoding] : nil;
-  // Without a pong, messages sent before the close may not have arrived, so the close is not reported as clean
-  [self didCloseWithCode:closeCode reason:reasonString wasClean:!_sendsUnconfirmed];
+  [self didCloseWithCode:closeCode reason:reasonString wasClean:!_awaitingPong];
 }
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
@@ -309,7 +317,7 @@ static const NSTimeInterval kCloseDrainTimeout = 5;
   }
   if (_state == SR_CLOSING) {
     // We asked for the close and no close frame came back, so report the code that was requested
-    [self didCloseWithCode:_closeCode reason:_closeReason wasClean:error == nil];
+    [self didCloseWithCode:_closeCode reason:_closeReason wasClean:error == nil && !_awaitingPong];
     return;
   }
   if (!error) {
