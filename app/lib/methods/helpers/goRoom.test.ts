@@ -1,4 +1,5 @@
 import Navigation from '~/lib/navigation/appNavigation';
+import getRoomInfo from '../getRoomInfo';
 import { goRoom } from './goRoom';
 
 jest.mock('~/lib/navigation/appNavigation', () => ({
@@ -12,6 +13,12 @@ jest.mock('~/lib/navigation/appNavigation', () => ({
 }));
 jest.mock('~/lib/database/services/Subscription', () => ({ getSubscriptionByRoomId: jest.fn(() => Promise.resolve(null)) }));
 jest.mock('./helpers', () => ({ getRoomTitle: jest.fn(() => 'Room'), getUidDirectMessage: jest.fn() }));
+jest.mock('../getRoomInfo', () => ({ __esModule: true, default: jest.fn() }));
+
+const navigatedRoomParams = () => {
+	const buildAction = jest.mocked(Navigation.dispatch).mock.calls.at(-1)?.[0] as unknown as (state: any) => any;
+	return buildAction({ routes: [{ name: 'RoomsListView' }] }).payload.routes.at(-1).params;
+};
 
 describe('goRoom navigation', () => {
 	it('navigates without creating a RoomStore during the transition', async () => {
@@ -30,5 +37,22 @@ describe('goRoom navigation', () => {
 			'CategoryView',
 			'RoomView'
 		]);
+	});
+
+	it('fetches the room type before opening a room known only by its rid', async () => {
+		jest.mocked(getRoomInfo).mockResolvedValue({ rid: 'new-rid', name: 'new-room', fname: 'New room', t: 'p' });
+
+		await goRoom({ item: { rid: 'new-rid' }, isMasterDetail: false });
+
+		expect(navigatedRoomParams()).toEqual(expect.objectContaining({ rid: 'new-rid', t: 'p' }));
+	});
+
+	it('stays on the current screen when the room type cannot be fetched', async () => {
+		jest.mocked(Navigation.dispatch).mockClear();
+		jest.mocked(getRoomInfo).mockRejectedValue(new Error('not-allowed'));
+
+		await goRoom({ item: { rid: 'unknown-rid' }, isMasterDetail: false });
+
+		expect(Navigation.dispatch).not.toHaveBeenCalled();
 	});
 });

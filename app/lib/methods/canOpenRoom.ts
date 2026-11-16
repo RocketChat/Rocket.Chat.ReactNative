@@ -72,7 +72,7 @@ async function open({ type, rid, name }: { type?: RoomType; rid: string; name: s
 	}
 }
 
-export async function canOpenRoom({ rid, path }: { rid: string; path: string }): Promise<any> {
+export async function canOpenRoom({ rid, path = '' }: { rid: string; path?: string }): Promise<any> {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');

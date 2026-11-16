@@ -139,6 +139,12 @@ describe('canOpenRoom — CHANNEL deeplink', () => {
 });
 
 describe('canOpenRoom — other paths', () => {
+	it('returns the rid when a link carries only the rid of a room not on the device', async () => {
+		const result = await canOpenRoom({ rid: 'new-rid' });
+
+		expect(result).toEqual({ rid: 'new-rid' });
+	});
+
 	it('returns false when no path and no rid', async () => {
 		const result = await canOpenRoom({ rid: '', path: '' });
 		expect(result).toBe(false);

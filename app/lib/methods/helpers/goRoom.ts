@@ -6,6 +6,7 @@ import { type IOmnichannelRoom, RoomType, type IVisitor, type TSubscriptionModel
 import { getRoomTitle, getUidDirectMessage } from './helpers';
 import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
+import getRoomInfo from '../getRoomInfo';
 
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
@@ -21,9 +22,9 @@ interface IGoRoomItem {
 export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
 interface RoomRouteParams {
-	rid?: string;
+	rid: string;
 	name: string;
-	t?: RoomType;
+	t: RoomType;
 	prid?: string;
 	visitor?: IVisitor;
 	joinCodeRequired?: boolean;
@@ -33,6 +34,9 @@ interface RoomRouteParams {
 const ROOMS_LIST_ROUTES = ['RoomsListView', 'CategoryView'];
 
 const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
+	if (!item.rid || !item.t) {
+		return;
+	}
 	const routeParams: RoomRouteParams = {
 		rid: item.rid,
 		name: getRoomTitle(item),
@@ -89,6 +93,21 @@ interface IOmnichannelRoomVisitor extends IOmnichannelRoom {
 	visitor: IVisitor;
 }
 
+const completeRoomItem = async (item: TGoRoomItem): Promise<TGoRoomItem> => {
+	if (!item.rid) {
+		return item;
+	}
+	const subscription = await getSubscriptionByRoomId(item.rid);
+	if (subscription) {
+		return subscription;
+	}
+	if (item.t) {
+		return item;
+	}
+	const roomInfo = await getRoomInfo(item.rid).catch(() => null);
+	return roomInfo ? { ...item, ...roomInfo } : item;
+};
+
 export const goRoom = async ({
 	item,
 	isMasterDetail = false,
@@ -120,16 +139,7 @@ export const goRoom = async ({
 		}
 	}
 
-	// Re-fetch the subscription so scalar route params (name, prid, visitor, roomUserId) are as complete as possible.
-	let _item = item;
-	if (item.rid) {
-		const sub = await getSubscriptionByRoomId(item.rid);
-		if (sub) {
-			_item = sub;
-		}
-	}
-
-	return navigate({ item: _item, isMasterDetail, ...props });
+	return navigate({ item: await completeRoomItem(item), isMasterDetail, ...props });
 };
 
 export const navigateToRoom = navigate;
