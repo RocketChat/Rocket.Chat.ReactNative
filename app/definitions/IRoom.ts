@@ -160,6 +160,7 @@ export const RoomType = {
 	OMNICHANNEL: 'l'
 } as const;
 export type RoomType = (typeof RoomType)[keyof typeof RoomType];
+export type NonDirectRoomType = Exclude<RoomType, typeof RoomType.DIRECT>;
 export type RoomID = string;
 export type ChannelName = string;
 

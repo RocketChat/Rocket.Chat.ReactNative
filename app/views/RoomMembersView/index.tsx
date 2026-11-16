@@ -13,7 +13,7 @@ import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import SearchBox from '~/containers/SearchBox';
 import UserItem from '~/containers/UserItem';
-import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '~/definitions';
+import { type IGetRoomRoles, RoomType, type TSubscriptionModel, type TUserModel } from '~/definitions';
 import I18n from '~/i18n';
 import { stackedSearchBarOptions, nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
 import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
@@ -40,6 +40,7 @@ import {
 	handleOwner,
 	handleRemoveFromTeam,
 	handleRemoveUserFromRoom,
+	type IRoleTargetRoom,
 	navToDirectMessage
 } from './helpers';
 import styles from './styles';
@@ -289,8 +290,50 @@ const RoomMembersView = (): ReactElement => {
 		return preferred || fallback || user._id;
 	};
 
+	const getRoleOptions = (selectedUser: TUserModel, roleTargetRoom: IRoleTargetRoom): TActionSheetOptionsItem[] => {
+		const { roomRoles } = state;
+		const username = getUserDisplayName(selectedUser);
+		const refreshRoles = () => fetchRoomMembersRoles(roleTargetRoom, updateState);
+		const options: TActionSheetOptionsItem[] = [];
+
+		if (setOwnerPermission) {
+			const isOwner = fetchRole('owner', selectedUser, roomRoles);
+			options.push({
+				icon: 'shield-check',
+				title: I18n.t('Owner'),
+				onPress: () => handleOwner(selectedUser, !isOwner, username, roleTargetRoom, refreshRoles),
+				right: () => <RightIcon check={isOwner} label='owner' />,
+				testID: 'action-sheet-set-owner'
+			});
+		}
+
+		if (setLeaderPermission) {
+			const isLeader = fetchRole('leader', selectedUser, roomRoles);
+			options.push({
+				icon: 'shield-alt',
+				title: I18n.t('Leader'),
+				onPress: () => handleLeader(selectedUser, !isLeader, roleTargetRoom, username, refreshRoles),
+				right: () => <RightIcon check={isLeader} label='leader' />,
+				testID: 'action-sheet-set-leader'
+			});
+		}
+
+		if (setModeratorPermission) {
+			const isModerator = fetchRole('moderator', selectedUser, roomRoles);
+			options.push({
+				icon: 'shield',
+				title: I18n.t('Moderator'),
+				onPress: () => handleModerator(selectedUser, !isModerator, roleTargetRoom, username, refreshRoles),
+				right: () => <RightIcon check={isModerator} label='moderator' />,
+				testID: 'action-sheet-set-moderator'
+			});
+		}
+
+		return options;
+	};
+
 	const onPressUser = (selectedUser: TUserModel) => {
-		const { room, roomRoles, members } = state;
+		const { room, members } = state;
 
 		const options: TActionSheetOptionsItem[] = [
 			{
@@ -300,49 +343,9 @@ const RoomMembersView = (): ReactElement => {
 			}
 		];
 
-		// Owner
-		if (setOwnerPermission) {
-			const isOwner = fetchRole('owner', selectedUser, roomRoles);
-			options.push({
-				icon: 'shield-check',
-				title: I18n.t('Owner'),
-				onPress: () =>
-					handleOwner(selectedUser, !isOwner, getUserDisplayName(selectedUser), room, () =>
-						fetchRoomMembersRoles(room, updateState)
-					),
-				right: () => <RightIcon check={isOwner} label='owner' />,
-				testID: 'action-sheet-set-owner'
-			});
-		}
-
-		// Leader
-		if (setLeaderPermission) {
-			const isLeader = fetchRole('leader', selectedUser, roomRoles);
-			options.push({
-				icon: 'shield-alt',
-				title: I18n.t('Leader'),
-				onPress: () =>
-					handleLeader(selectedUser, !isLeader, room, getUserDisplayName(selectedUser), () =>
-						fetchRoomMembersRoles(room, updateState)
-					),
-				right: () => <RightIcon check={isLeader} label='leader' />,
-				testID: 'action-sheet-set-leader'
-			});
-		}
-
-		// Moderator
-		if (setModeratorPermission) {
-			const isModerator = fetchRole('moderator', selectedUser, roomRoles);
-			options.push({
-				icon: 'shield',
-				title: I18n.t('Moderator'),
-				onPress: () =>
-					handleModerator(selectedUser, !isModerator, room, getUserDisplayName(selectedUser), () =>
-						fetchRoomMembersRoles(room, updateState)
-					),
-				right: () => <RightIcon check={isModerator} label='moderator' />,
-				testID: 'action-sheet-set-moderator'
-			});
+		const { t } = room;
+		if (t !== RoomType.DIRECT) {
+			options.push(...getRoleOptions(selectedUser, { rid: room.rid, t, title: getRoomTitle(room) }));
 		}
 
 		if (muteUserPermission) {

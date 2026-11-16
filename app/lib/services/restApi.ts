@@ -15,6 +15,7 @@ import {
 	type IRoomSettings,
 	type IServerRoom,
 	type ISidebarCategory,
+	type NonDirectRoomType,
 	type RoomType
 } from '~/definitions';
 import { type TParams } from '~/definitions/ILivechatEditView';
@@ -599,7 +600,7 @@ export const toggleRoomOwner = ({
 	isOwner
 }: {
 	roomId: string;
-	t: Exclude<RoomType, 'd'>;
+	t: NonDirectRoomType;
 	userId: string;
 	isOwner: boolean;
 }) => {
@@ -618,7 +619,7 @@ export const toggleRoomLeader = ({
 	isLeader
 }: {
 	roomId: string;
-	t: Exclude<RoomType, 'd'>;
+	t: NonDirectRoomType;
 	userId: string;
 	isLeader: boolean;
 }) => {
@@ -637,7 +638,7 @@ export const toggleRoomModerator = ({
 	isModerator
 }: {
 	roomId: string;
-	t: Exclude<RoomType, 'd'>;
+	t: NonDirectRoomType;
 	userId: string;
 	isModerator: boolean;
 }) => {
@@ -657,7 +658,7 @@ export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: strin
 	// RC 0.64.0
 	sdk.get('chat.ignoreUser', { rid, userId, ignore });
 
-export const toggleArchiveRoom = (roomId: string, t: Exclude<RoomType, 'd'>, archive: boolean) => {
+export const toggleArchiveRoom = (roomId: string, t: NonDirectRoomType, archive: boolean) => {
 	if (archive) {
 		// RC 0.48.0
 		return sdk.post(`${roomTypeToApiType(t)}.archive`, { roomId });
@@ -734,7 +735,7 @@ export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
 	sdk.get('chat.getMessage', { msgId });
 
-export const getRoomRoles = (roomId: string, type: Exclude<RoomType, 'd'>) =>
+export const getRoomRoles = (roomId: string, type: NonDirectRoomType) =>
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 

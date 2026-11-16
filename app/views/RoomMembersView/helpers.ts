@@ -2,7 +2,14 @@ import { Q } from '@nozbe/watermelondb';
 import { Alert } from 'react-native';
 
 import { LISTENER } from '~/containers/Toast';
-import { type IGetRoomRoles, type IUser, RoomType, type TSubscriptionModel, type TUserModel } from '~/definitions';
+import {
+	type IGetRoomRoles,
+	type IUser,
+	type NonDirectRoomType,
+	RoomType,
+	type TSubscriptionModel,
+	type TUserModel
+} from '~/definitions';
 import I18n from '~/i18n';
 import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import EventEmitter from '~/lib/methods/helpers/events';
@@ -22,6 +29,12 @@ import {
 import { createDirectMessage } from '~/lib/methods/createDirectMessage';
 import database from '~/lib/database';
 import { emitErrorCreateDirectMessage } from '~/lib/methods/helpers/emitErrorCreateDirectMessage';
+
+export interface IRoleTargetRoom {
+	rid: string;
+	t: NonDirectRoomType;
+	title: string;
+}
 
 const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
 	goRoom({ item, isMasterDetail });
@@ -63,13 +76,10 @@ export const handleMute = async (user: TUserModel, rid: string) => {
 export const handleModerator = async (
 	selectedUser: TUserModel,
 	isModerator: boolean,
-	room: TSubscriptionModel,
+	room: IRoleTargetRoom,
 	username: string,
 	callback: () => Promise<void>
 ): Promise<void> => {
-	if (room.t === RoomType.DIRECT) {
-		return;
-	}
 	try {
 		await toggleRoomModerator({
 			roomId: room.rid,
@@ -83,7 +93,7 @@ export const handleModerator = async (
 		EventEmitter.emit(LISTENER, {
 			message: I18n.t(message, {
 				username,
-				room_name: getRoomTitle(room)
+				room_name: room.title
 			})
 		});
 		callback();
@@ -190,13 +200,10 @@ export const handleRemoveFromTeam = async (
 export const handleLeader = async (
 	selectedUser: TUserModel,
 	isLeader: boolean,
-	room: TSubscriptionModel,
+	room: IRoleTargetRoom,
 	username: string,
 	callback: () => Promise<void>
 ): Promise<void> => {
-	if (room.t === RoomType.DIRECT) {
-		return;
-	}
 	try {
 		await toggleRoomLeader({
 			roomId: room.rid,
@@ -210,7 +217,7 @@ export const handleLeader = async (
 		EventEmitter.emit(LISTENER, {
 			message: I18n.t(message, {
 				username,
-				room_name: getRoomTitle(room)
+				room_name: room.title
 			})
 		});
 		callback();
@@ -246,12 +253,9 @@ export const handleOwner = async (
 	selectedUser: TUserModel,
 	isOwner: boolean,
 	username: string,
-	room: TSubscriptionModel,
+	room: IRoleTargetRoom,
 	callback: Function
 ): Promise<void> => {
-	if (room.t === RoomType.DIRECT) {
-		return;
-	}
 	try {
 		await toggleRoomOwner({
 			roomId: room.rid,
@@ -263,7 +267,7 @@ export const handleOwner = async (
 		EventEmitter.emit(LISTENER, {
 			message: I18n.t(message, {
 				username,
-				room_name: getRoomTitle(room)
+				room_name: room.title
 			})
 		});
 	} catch (e) {
