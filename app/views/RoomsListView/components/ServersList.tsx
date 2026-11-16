@@ -17,11 +17,11 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { removeServer } from '~/lib/methods/logout';
 import EventEmitter from '~/lib/methods/helpers/events';
-import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import { localAuthenticate, logUnlessUserCanceled } from '~/lib/methods/helpers/localAuthentication';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import UserPreferences from '~/lib/methods/userPreferences';
+import Navigation from '~/lib/navigation/appNavigation';
 import { useTheme } from '~/theme';
 import styles from '../styles';
 
@@ -79,7 +79,7 @@ const ServersList = () => {
 			logEvent(events.RL_CHANGE_SERVER);
 			const userId = UserPreferences.getString(getServerUserIdKey(serverParam));
 			if (isMasterDetail) {
-				goRoom({ item: {}, isMasterDetail });
+				Navigation.popToTop(isMasterDetail);
 			}
 			if (!userId) {
 				navToNewServer(server);
