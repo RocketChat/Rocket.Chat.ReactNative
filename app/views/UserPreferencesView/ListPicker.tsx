@@ -26,6 +26,11 @@ const OPTIONS = {
 			label: 'Never',
 			value: 'never'
 		}
+	],
+	clockMode: [
+		{ label: 'Default', value: '0' },
+		{ label: '12_Hour', value: '1' },
+		{ label: '24_Hour', value: '2' }
 	]
 };
 

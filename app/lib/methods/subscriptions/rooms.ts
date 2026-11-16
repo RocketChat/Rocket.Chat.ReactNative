@@ -302,6 +302,9 @@ const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
 	if (diff?.['settings.preferences.alsoSendThreadToChannel'] !== undefined) {
 		store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
 	}
+	if (diff?.['settings.preferences.clockMode'] !== undefined) {
+		store.dispatch(setPreference({ clockMode: diff['settings.preferences.clockMode'] }));
+	}
 	if (diff?.['settings.preferences.sidebarCategories'] !== undefined) {
 		setSidebarCategories(diff['settings.preferences.sidebarCategories']);
 	}

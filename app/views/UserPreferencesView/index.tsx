@@ -28,6 +28,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 	const dispatch = useDispatch();
 	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
 	const enableMobileRinging = settings?.preferences?.enableMobileRinging;
+	const clockMode = settings?.preferences?.clockMode;
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -73,6 +74,25 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 			await saveUserPreferences({ enableMobileRinging: value });
 		} catch (e) {
 			log(e);
+		}
+	};
+
+	const setClockMode = async (param: { [key: string]: string }, onError: () => void) => {
+		const clockMode = Number(param.clockMode);
+
+		try {
+			await saveUserPreferences({ clockMode });
+			dispatch(
+				setUser({
+					settings: {
+						...settings,
+						preferences: { ...settings?.preferences, clockMode }
+					}
+				} as Partial<IUser>)
+			);
+		} catch (e) {
+			log(e);
+			onError();
 		}
 	};
 
@@ -129,6 +149,16 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 						<List.Info info='Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description' />
 					</List.Section>
 				) : null}
+				<List.Section title='Message_TimeFormat'>
+					<List.Separator />
+					<ListPicker
+						onChangeValue={setClockMode}
+						preference='clockMode'
+						value={String(clockMode ?? 0)}
+						title='Message_TimeFormat'
+						testID='preferences-view-time-format'
+					/>
+				</List.Section>
 				<List.Section>
 					<List.Separator />
 					<List.Item

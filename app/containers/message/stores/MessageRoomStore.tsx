@@ -8,6 +8,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useLiveRef } from '~/lib/hooks/useLiveRef';
 import { useSetting } from '~/lib/hooks/useSetting';
 import { getUserSelector } from '~/selectors/login';
+import { getTimeFormat } from '~/lib/methods/helpers/getTimeFormat';
 
 type LiveCallbacks = {
 	jumpToMessage?: (link: string) => void;
@@ -74,8 +75,9 @@ const useLiveCallbacks = (callbacks: LiveCallbacks): LiveCallbacksSnapshot => {
 };
 
 export const MessageRoomProvider = ({ children, ...state }: { children: ReactNode } & MessageRoomState): ReactElement => {
+	const clockMode = useAppSelector(s => getUserSelector(s)?.settings?.preferences?.clockMode);
 	const timeFormatSetting = useSetting('Message_TimeFormat') as string;
-	const timeFormat = state.timeFormat ?? timeFormatSetting;
+	const timeFormat = state.timeFormat ?? getTimeFormat(clockMode, timeFormatSetting);
 	const callbacks = useLiveCallbacks(state);
 	const [store] = useState(() => createMessageRoomStore({ ...state, ...callbacks, timeFormat }));
 
