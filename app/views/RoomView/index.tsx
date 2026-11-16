@@ -23,7 +23,7 @@ const OpenRoomView = ({ route, navigation, mountedRoute }: IRoomViewProps & { mo
 };
 
 const RoomView = ({ route, navigation }: IRoomViewProps) => {
-	const [mountedRoute] = useState(() => (route.params ? parseRoomRoute(route.params) : null));
+	const [mountedRoute] = useState(() => (route.params?.rid ? parseRoomRoute(route.params) : null));
 
 	if (!mountedRoute) {
 		return <EmptyRoomView />;

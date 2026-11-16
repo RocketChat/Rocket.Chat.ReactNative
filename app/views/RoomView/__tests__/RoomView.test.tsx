@@ -81,8 +81,11 @@ describe('RoomView', () => {
 		expect(screen.getByTestId('room-screen')).toBeOnTheScreen();
 	});
 
-	it('renders the empty-room background instead of a room when the route has no identity', () => {
-		renderRoomView(null);
+	it.each([
+		['has no params', null],
+		['has params without a rid', { rid: undefined, t: undefined }]
+	])('renders the empty-room background instead of a room when the route %s', (_case, params) => {
+		renderRoomView(params);
 
 		expect(screen.getByTestId('room-view-empty')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
