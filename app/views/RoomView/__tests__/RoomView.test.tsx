@@ -8,6 +8,7 @@ import { type IRoomViewProps } from '../definitions';
 import { type TRoomOrPreview } from '~/definitions/TRoom';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { useE2EEStatus } from '../hooks/useE2EEStatus';
+import { createRoomStore, observeRoom } from '../stores/RoomStore';
 
 jest.mock('../RoomScreen', () => {
 	const { createElement } = require('react');
@@ -43,14 +44,14 @@ jest.mock('../stores/RoomStore', () => {
 	const { createStore } = require('zustand');
 	const store = createStore(() => ({ room: {} }));
 	return {
-		createRoomStore: () => {
+		createRoomStore: jest.fn(() => {
 			store.setState({ room: room.current }, true);
 			return store;
-		},
-		observeRoom: (_rid: string, _store: unknown, onReady: () => void) => {
+		}),
+		observeRoom: jest.fn((_rid: string, _store: unknown, onReady: () => void) => {
 			onReady();
 			return jest.fn();
-		}
+		})
 	};
 });
 
@@ -90,6 +91,8 @@ describe('RoomView', () => {
 
 		expect(screen.getByTestId('room-view-empty')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
+		expect(createRoomStore).not.toHaveBeenCalled();
+		expect(observeRoom).not.toHaveBeenCalled();
 	});
 
 	it('keeps the room screen unmounted while the room is an invite', () => {
