@@ -15,7 +15,7 @@ import {
 	type IRoomSettings,
 	type IServerRoom,
 	type ISidebarCategory,
-	type RoomType
+	RoomType
 } from '~/definitions';
 import { type TParams } from '~/definitions/ILivechatEditView';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
@@ -592,6 +592,8 @@ export const toggleMuteUserInRoom = (rid: string, username: string | undefined, 
 	return sdk.methodCallWrapper(mute ? 'muteUserInRoom' : 'unmuteUserInRoom', { rid, username });
 };
 
+const channelOrGroupApiType = (t: RoomType) => (t === RoomType.GROUP ? 'groups' : 'channels');
+
 export const toggleRoomOwner = ({
 	roomId,
 	t,
@@ -603,13 +605,12 @@ export const toggleRoomOwner = ({
 	userId: string;
 	isOwner: boolean;
 }) => {
-	const type = t as 'c';
 	if (isOwner) {
 		// RC 0.49.4
-		return sdk.post(`${roomTypeToApiType(type)}.addOwner`, { roomId, userId });
+		return sdk.post(`${channelOrGroupApiType(t)}.addOwner`, { roomId, userId });
 	}
 	// RC 0.49.4
-	return sdk.post(`${roomTypeToApiType(type)}.removeOwner`, { roomId, userId });
+	return sdk.post(`${channelOrGroupApiType(t)}.removeOwner`, { roomId, userId });
 };
 
 export const toggleRoomLeader = ({
@@ -623,13 +624,12 @@ export const toggleRoomLeader = ({
 	userId: string;
 	isLeader: boolean;
 }) => {
-	const type = t as 'c';
 	if (isLeader) {
 		// RC 0.58.0
-		return sdk.post(`${roomTypeToApiType(type)}.addLeader`, { roomId, userId });
+		return sdk.post(`${channelOrGroupApiType(t)}.addLeader`, { roomId, userId });
 	}
 	// RC 0.58.0
-	return sdk.post(`${roomTypeToApiType(type)}.removeLeader`, { roomId, userId });
+	return sdk.post(`${channelOrGroupApiType(t)}.removeLeader`, { roomId, userId });
 };
 
 export const toggleRoomModerator = ({
@@ -643,13 +643,12 @@ export const toggleRoomModerator = ({
 	userId: string;
 	isModerator: boolean;
 }) => {
-	const type = t as 'c';
 	if (isModerator) {
 		// RC 0.49.4
-		return sdk.post(`${roomTypeToApiType(type)}.addModerator`, { roomId, userId });
+		return sdk.post(`${channelOrGroupApiType(t)}.addModerator`, { roomId, userId });
 	}
 	// RC 0.49.4
-	return sdk.post(`${roomTypeToApiType(type)}.removeModerator`, { roomId, userId });
+	return sdk.post(`${channelOrGroupApiType(t)}.removeModerator`, { roomId, userId });
 };
 
 export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomType; userId: string }) =>
@@ -661,13 +660,12 @@ export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: strin
 	sdk.get('chat.ignoreUser', { rid, userId, ignore });
 
 export const toggleArchiveRoom = (roomId: string, t: RoomType, archive: boolean) => {
-	const type = t as 'c' | 'p';
 	if (archive) {
 		// RC 0.48.0
-		return sdk.post(`${roomTypeToApiType(type)}.archive`, { roomId });
+		return sdk.post(`${channelOrGroupApiType(t)}.archive`, { roomId });
 	}
 	// RC 0.48.0
-	return sdk.post(`${roomTypeToApiType(type)}.unarchive`, { roomId });
+	return sdk.post(`${channelOrGroupApiType(t)}.unarchive`, { roomId });
 };
 
 export const hideRoom = (roomId: string, t: RoomType) =>
@@ -810,8 +808,7 @@ export const getUsernameSuggestion = () =>
 	// RC 0.65.0
 	sdk.get('users.getUsernameSuggestion');
 
-export const getFiles = (roomId: string, type: RoomType, offset: number) => {
-	const t = type as Exclude<RoomType, 'l'>;
+export const getFiles = (roomId: string, t: RoomType, offset: number) => {
 	// RC 0.59.0
 	return sdk.get(`${roomTypeToApiType(t)}.files`, {
 		roomId,
@@ -822,7 +819,7 @@ export const getFiles = (roomId: string, type: RoomType, offset: number) => {
 
 export const getMessages = ({
 	roomId,
-	type,
+	type: t,
 	offset,
 	starredIds,
 	mentionIds,
@@ -835,7 +832,6 @@ export const getMessages = ({
 	starredIds?: string[];
 	pinned?: boolean;
 }) => {
-	const t = type as Exclude<RoomType, 'l'>;
 	const serverVersion = reduxStore.getState().server.version;
 
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
@@ -1278,7 +1274,6 @@ export const getRoomMembers = async ({
 	skip: number;
 	limit: number;
 }) => {
-	const t = roomType as Exclude<RoomType, 'l'>;
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
 		const params = {
@@ -1289,7 +1284,7 @@ export const getRoomMembers = async ({
 			...(filter && { filter })
 		};
 		// RC 3.16.0
-		const result = await sdk.get(`${roomTypeToApiType(t)}.members`, params);
+		const result = await sdk.get(`${roomTypeToApiType(roomType)}.members`, params);
 		if (result.success) {
 			return result?.members;
 		}

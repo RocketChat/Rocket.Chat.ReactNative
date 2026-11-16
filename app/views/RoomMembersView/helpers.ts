@@ -32,10 +32,15 @@ export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles?: IG
 	return !!userRoleResult?.roles.includes(role);
 };
 
-export const fetchRoomMembersRoles = async (roomType: Exclude<RoomType, 'd'>, rid: string, updateState: any): Promise<void> => {
+export const fetchRoomMembersRoles = async (
+	{ rid, t }: Pick<TSubscriptionModel, 'rid' | 't'>,
+	updateState: any
+): Promise<void> => {
+	if (t === RoomType.DIRECT) {
+		return;
+	}
 	try {
-		const type = roomType;
-		const result = await getRoomRoles(rid, type);
+		const result = await getRoomRoles(rid, t);
 		if (result?.success) {
 			updateState({ roomRoles: result.roles });
 		}
