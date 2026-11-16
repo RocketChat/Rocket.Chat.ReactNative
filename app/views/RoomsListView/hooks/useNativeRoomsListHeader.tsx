@@ -1,6 +1,6 @@
 import { useContext, useLayoutEffect } from 'react';
 
-import { showActionSheetRef } from '~/containers/ActionSheet';
+import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isTablet } from '~/lib/methods/helpers/deviceInfo';

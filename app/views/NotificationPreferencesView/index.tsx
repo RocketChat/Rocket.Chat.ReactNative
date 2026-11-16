@@ -3,11 +3,11 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { Text } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
+import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet/Provider';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
-import { type IRoomNotifications, type TRoomNotificationsModel } from '~/definitions';
+import { type IRoomNotifications, type TRoomNotificationsModel } from '~/definitions/IRoom';
 import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';

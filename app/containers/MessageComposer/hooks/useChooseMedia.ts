@@ -2,7 +2,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { useContext } from 'react';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
-import { forceJpgExtension } from '../helpers';
+import { forceJpgExtension } from '../helpers/forceJpgExtension';
 import I18n from '~/i18n';
 import { canUploadFile } from '~/lib/methods/helpers/media';
 import log from '~/lib/methods/helpers/log';
@@ -15,7 +15,7 @@ import {
 	useMessageActionStoreApi,
 	useQuotedMessageIds
 } from '~/containers/message/stores/MessageActionStore';
-import { type IShareAttachment } from '~/definitions';
+import { type IShareAttachment } from '~/definitions/IAttachment';
 import ImagePicker, { type ImageOrVideo } from '~/lib/methods/helpers/ImagePicker/ImagePicker';
 import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
 import { MessageInnerContext, useMessageComposerApi } from '../context';

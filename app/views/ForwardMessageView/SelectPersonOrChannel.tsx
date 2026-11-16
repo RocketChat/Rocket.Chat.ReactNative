@@ -7,7 +7,7 @@ import I18n from '~/i18n';
 import { MultiSelect } from '~/containers/UIKit/MultiSelect';
 import styles from './styles';
 import { type IForwardMessageViewSelectRoom } from './interfaces';
-import { type ISearchLocal } from '~/definitions';
+import { type ISearchLocal } from '~/definitions/ISearch';
 import { localSearchSubscription } from '~/lib/methods/search';
 import { getRoomAvatar } from '~/lib/methods/helpers/getRoomAvatar';
 import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';

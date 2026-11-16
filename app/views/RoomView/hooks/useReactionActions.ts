@@ -2,7 +2,7 @@ import log from '~/lib/methods/helpers/log';
 import { Review } from '~/lib/methods/helpers/review';
 import { getEmojiContent } from '~/lib/methods/emojis';
 import { setReaction } from '~/lib/services/restApi';
-import { type IEmoji } from '~/definitions';
+import { type IEmoji } from '~/definitions/IEmoji';
 import { type TMessageActionStore } from '~/containers/message/stores/MessageActionStore';
 
 interface IUseReactionActionsParams {

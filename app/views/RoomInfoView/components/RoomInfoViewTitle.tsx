@@ -2,7 +2,8 @@ import { Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { type ReactElement } from 'react';
 
-import { type ISubscription, type TUserStatus, SubscriptionType } from '~/definitions';
+import { type ISubscription, SubscriptionType } from '~/definitions/ISubscription';
+import { type TUserStatus } from '~/definitions/TUserStatus';
 import styles from '../styles';
 import { useTheme } from '~/theme';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';

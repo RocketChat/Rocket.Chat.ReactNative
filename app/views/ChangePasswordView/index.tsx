@@ -10,7 +10,7 @@ import { sha256 } from 'js-sha256';
 import { twoFactor } from '~/lib/services/twoFactor/twoFactor';
 import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
 import { type ProfileStackParamList } from '~/stacks/types';
-import { ControlledFormTextInput } from '~/containers/TextInput';
+import { ControlledFormTextInput } from '~/containers/TextInput/ControlledFormTextInput';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import { showErrorAlert } from '~/lib/methods/helpers/info';

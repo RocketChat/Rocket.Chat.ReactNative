@@ -2,7 +2,7 @@ import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { useState, Fragment, type ReactElement } from 'react';
 import { View } from 'react-native';
 
-import { useActionSheet } from '~/containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 import * as List from '~/containers/List';
 import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import { useTheme } from '~/theme';

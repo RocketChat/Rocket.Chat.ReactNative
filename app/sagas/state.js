@@ -3,7 +3,7 @@ import { select, takeLatest } from 'redux-saga/effects';
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
-import { RootEnum } from '../definitions';
+import { RootEnum } from '../definitions/redux/TRootEnum';
 import { recoverSocket } from '../lib/services/socketHealth';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';

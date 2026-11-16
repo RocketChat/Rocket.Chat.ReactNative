@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-native';
 import { Subject as MockSubject } from 'rxjs';
 
-import { type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { useSubscriptions } from '../useSubscriptions';
 
 const mockState = {

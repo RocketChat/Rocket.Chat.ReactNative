@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { getRoomAvatar } from '../methods/helpers/getRoomAvatar';
 import { getUidDirectMessage } from '../methods/helpers/getUidDirectMessage';
-import { SubscriptionType } from '~/definitions';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import { getUserInfo } from '../services/restApi';
 import { useAppSelector } from './useAppSelector';
 

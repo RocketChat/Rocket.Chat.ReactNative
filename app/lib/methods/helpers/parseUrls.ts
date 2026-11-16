@@ -1,4 +1,4 @@
-import { type IUrl, type IUrlFromServer } from '~/definitions';
+import { type IUrl, type IUrlFromServer } from '~/definitions/IUrl';
 import { buildImageURL } from './buildImageURL';
 
 const toPositiveNumber = (value?: string): number | undefined => {

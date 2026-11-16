@@ -68,7 +68,9 @@ const mockMediaCall = {
 	hasMediaCallPermission: false,
 	isInActiveCall: false
 };
-jest.mock('~/lib/hooks/useNewMediaCall', () => ({ useNewMediaCall: () => mockMediaCall }));
+jest.mock('~/lib/hooks/useNewMediaCall/useNewMediaCall', () => ({
+	useNewMediaCall: () => mockMediaCall
+}));
 
 const roomStore = {} as RoomStore;
 

@@ -4,7 +4,8 @@ import { useStore } from 'zustand';
 import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { isGroupChat } from '~/lib/methods/helpers/isGroupChat';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
-import { type IOmnichannelSource, type ISubscription, type IVisitor } from '~/definitions';
+import { type IOmnichannelSource } from '~/definitions/IRoom';
+import { type ISubscription, type IVisitor } from '~/definitions/ISubscription';
 import { type RoomStore } from '../definitions';
 import { fromSubscription } from '../stores/RoomStoreContext';
 

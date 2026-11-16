@@ -17,14 +17,10 @@ import { MarkdownPreview } from '~/containers/markdown';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
 import SafeAreaView from '~/containers/SafeAreaView';
 import StatusRows from '~/containers/Status/StatusRows';
-import {
-	type IApplicationState,
-	type IBaseScreen,
-	type ISubscription,
-	type IUser,
-	SubscriptionType,
-	type TSubscriptionModel
-} from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type IBaseScreen } from '~/definitions';
+import { type ISubscription, SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type IUser } from '~/definitions/IUser';
 import { type IActiveUser } from '~/reducers/activeUsers';
 import { withDimensions } from '~/lib/hooks/withDimensions';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -66,7 +62,7 @@ import {
 	returnLivechat
 } from '~/lib/services/restApi';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
-import { type IActionSheetProvider, withActionSheet } from '~/containers/ActionSheet';
+import { type IActionSheetProvider, withActionSheet } from '~/containers/ActionSheet/Provider';
 import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
 import { closeLivechat } from '~/lib/methods/helpers/closeLivechat';
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';

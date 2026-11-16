@@ -10,7 +10,9 @@ jest.mock('../RoomItem', () => {
 		<MockText>{`${name}:${read ? 'read' : 'unread'}:${unread}`}</MockText>
 	);
 });
-jest.mock('../../ActionSheet', () => ({ useActionSheet: () => ({ showActionSheet: jest.fn() }) }));
+jest.mock('../../ActionSheet/Provider', () => ({
+	useActionSheet: () => ({ showActionSheet: jest.fn() })
+}));
 jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: () => '7.0.0' }));
 
 const createRecord = () => {

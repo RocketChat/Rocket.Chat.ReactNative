@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loginRequest } from '../actions/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
-import { ControlledFormTextInput } from '../containers/TextInput';
+import { ControlledFormTextInput } from '../containers/TextInput/ControlledFormTextInput';
 import { type SetUsernameStackParamList } from '../definitions/navigationTypes';
 import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';

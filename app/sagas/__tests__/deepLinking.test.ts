@@ -112,7 +112,7 @@ import { selectServerFailure, selectServerSuccess } from '~/actions/server';
 import { appStart } from '~/actions/app';
 import { connectSuccess } from '~/actions/connect';
 import { APP, LOGIN, LOGOUT, SERVER } from '~/actions/actionsTypes';
-import { RootEnum } from '~/definitions';
+import { RootEnum } from '~/definitions/redux/TRootEnum';
 import deepLinkingRoot, { shouldAutoConfirmDeepLinkLogin } from '../deepLinking';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getServerUserIdKey } from '~/lib/constants/keys';

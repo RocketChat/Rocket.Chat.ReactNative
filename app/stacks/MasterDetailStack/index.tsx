@@ -79,7 +79,7 @@ import AddChannelTeamView from '~/views/AddChannelTeamView';
 import AddExistingChannelView from '~/views/AddExistingChannelView';
 import DiscussionsView from '~/views/DiscussionsView';
 import AccessibilityAndAppearanceView from '~/views/AccessibilityAndAppearanceView';
-import { SupportedVersionsWarning } from '~/containers/SupportedVersions';
+import { SupportedVersionsWarning } from '~/containers/SupportedVersions/SupportedVersionsWarning';
 import AttachmentView from '~/views/AttachmentView';
 import ModalBlockView from '~/views/ModalBlockView';
 import ConferenceView from '~/views/ConferenceView';

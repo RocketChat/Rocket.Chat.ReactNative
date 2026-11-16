@@ -1,4 +1,4 @@
-import { type IInviteSubscription } from '~/definitions';
+import { type IInviteSubscription } from '~/definitions/ISubscription';
 import I18n from '~/i18n';
 import { getRoomTitle } from './helpers/getRoomTitle';
 import { replyRoomInvite } from './replyRoomInvite';

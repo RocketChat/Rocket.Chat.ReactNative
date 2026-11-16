@@ -10,7 +10,7 @@ import { inviteLinksClear } from '~/actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '~/actions/server';
 import Button from '~/containers/Button';
 import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
-import { type TServerHistoryModel } from '~/definitions';
+import { type TServerHistoryModel } from '~/definitions/IServerHistory';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import { isAndroid, isTablet } from '~/lib/methods/helpers/deviceInfo';

@@ -16,16 +16,12 @@ import {
 } from '@rocket.chat/mobile-crypto';
 import sampleSize from 'lodash/sampleSize';
 
-import {
-	type IMessage,
-	type IServerAttachment,
-	type ISubscription,
-	type TMessageModel,
-	type TSendFileMessageFileInfo,
-	type TSubscriptionModel,
-	type TThreadMessageModel,
-	type TThreadModel
-} from '~/definitions';
+import { type IMessage, type TMessageModel } from '~/definitions/IMessage';
+import { type IServerAttachment } from '~/definitions/IAttachment';
+import { type ISubscription, type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type TSendFileMessageFileInfo } from '~/definitions/IUpload';
+import { type TThreadMessageModel } from '~/definitions/IThreadMessage';
+import { type TThreadModel } from '~/definitions/IThread';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,

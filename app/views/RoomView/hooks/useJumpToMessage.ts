@@ -8,7 +8,7 @@ import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { useDebounce } from '~/lib/methods/helpers/debounce';
 import { useLiveRef } from '~/lib/hooks/useLiveRef';
 import log from '~/lib/methods/helpers/log';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { loadSurroundingMessages } from '~/lib/methods/loadSurroundingMessages';
 import { loadThreadMessagesUntil } from '~/lib/methods/loadThreadMessages';
 import {

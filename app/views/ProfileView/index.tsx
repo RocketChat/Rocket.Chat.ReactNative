@@ -10,14 +10,14 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '~/actions/login';
-import { useActionSheet } from '~/containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 import { AvatarWithEdit } from '~/containers/Avatar';
 import Button from '~/containers/Button';
 import KeyboardView from '~/containers/KeyboardView';
 import SafeAreaView from '~/containers/SafeAreaView';
-import { ControlledFormTextInput } from '~/containers/TextInput';
+import { ControlledFormTextInput } from '~/containers/TextInput/ControlledFormTextInput';
 import { LISTENER } from '~/containers/Toast';
-import { type IProfileParams } from '~/definitions';
+import { type IProfileParams } from '~/definitions/IProfile';
 import { TwoFactorMethods } from '~/definitions/ITotp';
 import I18n from '~/i18n';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';

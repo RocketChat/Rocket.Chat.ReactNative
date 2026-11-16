@@ -5,7 +5,7 @@ import { AccessibilityInfo } from 'react-native';
 
 import { VIDEO_CONF } from '../actions/actionsTypes';
 import { removeVideoConfCall, setCalling, setVideoConfCall, type TCallProps } from '../actions/videoConf';
-import { hideActionSheetRef } from '../containers/ActionSheet';
+import { hideActionSheetRef } from '../containers/ActionSheet/Provider';
 import { INAPP_NOTIFICATION_EMITTER } from '../lib/constants/notifications';
 import IncomingCallNotification from '../containers/InAppNotification/IncomingCallNotification';
 import i18n from '../i18n';

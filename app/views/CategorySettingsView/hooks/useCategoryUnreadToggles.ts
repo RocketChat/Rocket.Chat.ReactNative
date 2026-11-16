@@ -1,4 +1,4 @@
-import { type ISidebarCategory } from '~/definitions';
+import { type ISidebarCategory } from '~/definitions/IUser';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { UNREAD_GROUP } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 import { alertCategoryError } from '../utils/alertCategoryError';

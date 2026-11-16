@@ -6,7 +6,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type SearchBarCommands } from 'react-native-screens';
 
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
-import { type IMessageFromServer, type TThreadModel } from '~/definitions';
+import { type IMessageFromServer } from '~/definitions/IMessage';
+import { type TThreadModel } from '~/definitions/IThread';
 import { type ChatsStackParamList } from '~/stacks/types';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';

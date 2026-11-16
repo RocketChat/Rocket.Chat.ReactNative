@@ -28,7 +28,7 @@ import Navigation, { waitForNavigationReady } from '~/lib/navigation/appNavigati
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '~/definitions/Voip';
 import type { IDDPMessage } from '~/definitions/IDDPMessage';
-import type { ISubscription, TSubscriptionModel } from '~/definitions';
+import type { ISubscription, TSubscriptionModel } from '~/definitions/ISubscription';
 import { getDMSubscriptionByUsername } from '~/lib/database/services/Subscription';
 import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import log from '~/lib/methods/helpers/log';

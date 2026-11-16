@@ -3,7 +3,9 @@ import { Q } from '@nozbe/watermelondb';
 import { type Subscription } from 'rxjs';
 import { useDispatch, useStore } from 'react-redux';
 
-import { type IApplicationState, type RoomType, type TAnyMessageModel } from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type RoomType } from '~/definitions/IRoom';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import database from '~/lib/database';
 import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadById } from '~/lib/database/services/Thread';

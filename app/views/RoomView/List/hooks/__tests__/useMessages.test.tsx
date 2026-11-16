@@ -4,7 +4,8 @@ import { type ReactNode } from 'react';
 
 import { ROOM } from '~/actions/actionsTypes';
 import { type IRoomHistoryRequest } from '~/actions/room';
-import { type RoomType, type TAnyMessageModel } from '~/definitions';
+import { type RoomType } from '~/definitions/IRoom';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import database from '~/lib/database';
 import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadById } from '~/lib/database/services/Thread';

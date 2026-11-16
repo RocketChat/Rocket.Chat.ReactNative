@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
-import { useActionSheet } from '../ActionSheet';
+import { useActionSheet } from '../ActionSheet/Provider';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isGroupChat } from '~/lib/methods/helpers/isGroupChat';
 import { formatDate, formatDateAccessibility } from '~/lib/methods/helpers/room';

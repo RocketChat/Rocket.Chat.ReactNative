@@ -9,7 +9,7 @@ import {
 } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp } from '@react-navigation/native';
 
-import { useActionSheet } from '~/containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
 import I18n from '~/i18n';
@@ -21,7 +21,8 @@ import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerAct
 import { useTheme } from '~/theme';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { goRoom as goRoomMethod, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
-import { type IServerRoom, SubscriptionType } from '~/definitions';
+import { type IServerRoom } from '~/definitions/IRoom';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import styles from './styles';
 import Options from './Options';
 import DirectoryRow from './DirectoryRow';

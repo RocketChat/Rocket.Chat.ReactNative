@@ -9,7 +9,7 @@ import { appInit, appStart, appReady } from '../actions/app';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import { loginRequest } from '../actions/login';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
-import { RootEnum } from '../definitions';
+import { RootEnum } from '../definitions/redux/TRootEnum';
 import { CURRENT_SERVER, getServerUserIdKey } from '../lib/constants/keys';
 import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';

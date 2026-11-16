@@ -1,4 +1,4 @@
-import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
+import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall/useNewMediaCall';
 import { useVideoConf } from '~/lib/hooks/useVideoConf';
 
 export const useHeaderCallPress = (rid: string) => {

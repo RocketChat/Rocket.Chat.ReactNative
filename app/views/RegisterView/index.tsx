@@ -12,7 +12,7 @@ import { loginRequest } from '~/actions/login';
 import Button from '~/containers/Button';
 import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
 import LoginServices from '~/containers/LoginServices';
-import { ControlledFormTextInput } from '~/containers/TextInput';
+import { ControlledFormTextInput } from '~/containers/TextInput/ControlledFormTextInput';
 import I18n from '~/i18n';
 import { outsideHeaderRightLegal } from '~/lib/methods/helpers/navigation';
 import { getShowLoginButton } from '~/selectors/login';

@@ -4,7 +4,7 @@ import { Q } from '@nozbe/watermelondb';
 import database from '~/lib/database';
 import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { useObservable } from '~/lib/hooks/useObservable';
-import { type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 
 export function useUnreadsCount(rid?: string): number | null {
 	const observable = useMemo(

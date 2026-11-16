@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { A11y } from 'react-native-a11y-order';
 
 import { acceptCall, cancelCall } from '~/actions/videoConf';
-import { type ISubscription, type SubscriptionType } from '~/definitions';
+import { type ISubscription, type SubscriptionType } from '~/definitions/ISubscription';
 import i18n from '~/i18n';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useEndpointData } from '~/lib/hooks/useEndpointData';

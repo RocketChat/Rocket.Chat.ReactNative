@@ -10,7 +10,8 @@ import { shallowEqual } from 'react-redux';
 
 import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import SafeAreaView from '~/containers/SafeAreaView';
-import { type ISubscription, type IUser, SubscriptionType } from '~/definitions';
+import { type ISubscription, SubscriptionType } from '~/definitions/ISubscription';
+import { type IUser } from '~/definitions/IUser';
 import I18n from '~/i18n';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';

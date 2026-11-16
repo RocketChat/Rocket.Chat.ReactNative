@@ -2,7 +2,7 @@ import { type ReactElement, type ReactNode, useState } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { showActionSheetRef, type TActionSheetOptions, type TActionSheetOptionsItem } from '~/containers/ActionSheet';
+import { showActionSheetRef, type TActionSheetOptions, type TActionSheetOptionsItem } from '~/containers/ActionSheet/Provider';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
 import { type RoomMembership, type RoomStore } from '~/views/RoomView/definitions';
@@ -16,7 +16,9 @@ const mockNavigation = {
 	setOptions: ({ headerRight }: { headerRight: () => ReactNode }) => mockShowHeaderRight(headerRight)
 };
 jest.mock('@react-navigation/native', () => ({ useNavigation: () => mockNavigation }));
-jest.mock('~/containers/ActionSheet', () => ({ showActionSheetRef: jest.fn() }));
+jest.mock('~/containers/ActionSheet/Provider', () => ({
+	showActionSheetRef: jest.fn()
+}));
 
 let mockIsMasterDetail = false;
 jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => mockIsMasterDetail }));
@@ -39,7 +41,7 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 
 const mockVideoConf = { showInitCallActionSheet: jest.fn(), callEnabled: true, disabledTooltip: false };
 jest.mock('~/lib/hooks/useVideoConf', () => ({ useVideoConf: () => mockVideoConf }));
-jest.mock('~/lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall/useNewMediaCall', () => ({
 	useNewMediaCall: () => ({
 		openNewMediaCall: jest.fn(),
 		hasMediaCallPermission: false,

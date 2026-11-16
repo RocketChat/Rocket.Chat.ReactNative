@@ -10,7 +10,7 @@ import { pendingHangups } from './pendingHangups';
 import { terminateNativeCall } from './terminateNativeCall';
 import { playCallEndedSound } from './playCallEndedSound';
 import Navigation from '~/lib/navigation/appNavigation';
-import { hideActionSheetRef } from '~/containers/ActionSheet';
+import { hideActionSheetRef } from '~/containers/ActionSheet/Provider';
 import { useIsScreenReaderEnabled } from '~/lib/hooks/useIsScreenReaderEnabled';
 
 const STALE_NATIVE_MS = 60_000;

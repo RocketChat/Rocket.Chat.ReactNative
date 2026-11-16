@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import MessageContainer from '~/containers/message/index';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
 import { messagesStatus } from '~/lib/constants/messagesStatus';
 import { themes } from '~/lib/constants/colors';

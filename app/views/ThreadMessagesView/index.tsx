@@ -30,14 +30,11 @@ import { type ChatsStackParamList } from '~/stacks/types';
 import { Filter } from './filters';
 import Item from './Item';
 import styles from './styles';
-import {
-	type IApplicationState,
-	type IBaseScreen,
-	type IMessage,
-	SubscriptionType,
-	type TSubscriptionModel,
-	type TThreadModel
-} from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type IBaseScreen } from '~/definitions';
+import { type IMessage } from '~/definitions/IMessage';
+import { SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type TThreadModel } from '~/definitions/IThread';
 import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import { debounce } from '~/lib/methods/helpers/debounce';
 import { hasNativeHeaderBar, isIOS } from '~/lib/methods/helpers/deviceInfo';

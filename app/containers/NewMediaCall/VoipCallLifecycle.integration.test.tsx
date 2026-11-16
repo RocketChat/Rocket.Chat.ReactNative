@@ -173,7 +173,7 @@ jest.mock('~/lib/services/voip/playCallEndedSound', () => ({
 }));
 
 const mockHideActionSheet = jest.fn();
-jest.mock('../ActionSheet', () => ({
+jest.mock('../ActionSheet/Provider', () => ({
 	hideActionSheetRef: () => mockHideActionSheet(),
 	showActionSheetRef: jest.fn()
 }));

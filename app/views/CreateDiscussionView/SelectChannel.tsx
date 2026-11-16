@@ -2,7 +2,7 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 
 import { MultiSelect } from '~/containers/UIKit/MultiSelect';
-import { type ISearchLocal } from '~/definitions';
+import { type ISearchLocal } from '~/definitions/ISearch';
 import I18n from '~/i18n';
 import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
 import { type ICreateDiscussionViewSelectChannel } from './interfaces';

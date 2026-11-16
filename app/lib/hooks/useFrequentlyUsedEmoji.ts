@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { type IEmoji } from '~/definitions';
+import { type IEmoji } from '~/definitions/IEmoji';
 import { getFrequentlyUsedEmojis } from '../methods/emojis';
 
 export const useFrequentlyUsedEmoji = (

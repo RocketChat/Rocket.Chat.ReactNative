@@ -11,7 +11,7 @@ import Button from '../containers/Button';
 import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import KeyboardView from '../containers/KeyboardView';
 import SafeAreaView from '../containers/SafeAreaView';
-import { ControlledFormTextInput } from '../containers/TextInput';
+import { ControlledFormTextInput } from '../containers/TextInput/ControlledFormTextInput';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { events, logEvent } from '../lib/methods/helpers/log';

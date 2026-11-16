@@ -45,7 +45,7 @@ jest.mock('~/lib/hooks/useVideoConf', () => ({
 	useVideoConf: () => ({ callEnabled: false, disabledTooltip: false, showInitCallActionSheet: jest.fn() })
 }));
 
-jest.mock('~/lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall/useNewMediaCall', () => ({
 	useNewMediaCall: () => ({ openNewMediaCall: jest.fn(), hasMediaCallPermission: false, isInActiveCall: false })
 }));
 
@@ -57,7 +57,7 @@ jest.mock('./hooks', () => ({
 	useE2EEWarning: () => false
 }));
 
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	useActionSheet: () => ({ showActionSheet: jest.fn() })
 }));
 

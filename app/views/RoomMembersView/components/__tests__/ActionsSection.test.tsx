@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
 import ActionsSection from '../ActionsSection';
-import { SubscriptionType } from '~/definitions';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import { mockedStore } from '~/reducers/mockedStore';
 import { addUsersToRoom } from '~/lib/services/restApi';
 import { showErrorAlertWithEMessage } from '~/lib/methods/helpers/info';

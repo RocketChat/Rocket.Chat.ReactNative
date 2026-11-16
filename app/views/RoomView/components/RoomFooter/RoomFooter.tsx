@@ -1,4 +1,4 @@
-import { MessageComposerContainer } from '~/containers/MessageComposer';
+import { MessageComposerContainer } from '~/containers/MessageComposer/MessageComposerContainer';
 import { type IRoomFooterProps } from '~/views/RoomView/definitions';
 import { AirgappedWs } from './AirgappedWs';
 import { OnHold } from './OnHold';

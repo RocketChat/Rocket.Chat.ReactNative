@@ -7,7 +7,7 @@ import parse from 'url-parse';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
-import { type ILoginCredentials } from '../definitions';
+import { type ILoginCredentials } from '../definitions/ILoginCredentials';
 import { userAgent } from '../lib/constants/userAgent';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useDebounce } from '../lib/methods/helpers/debounce';

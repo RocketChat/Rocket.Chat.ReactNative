@@ -8,7 +8,7 @@ import {
 	type ISupportedVersions,
 	type ISupportedVersionsData,
 	type IApiServerInfo
-} from '~/definitions';
+} from '~/definitions/IServer';
 import { selectServerFailure } from '~/actions/server';
 import { store } from '../store/auxStore';
 import I18n from '~/i18n';

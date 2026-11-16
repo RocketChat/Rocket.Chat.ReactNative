@@ -23,7 +23,7 @@ jest.mock('~/lib/navigation/appNavigation', () => ({
 	default: { navigate: jest.fn(), back: jest.fn() }
 }));
 
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	hideActionSheetRef: jest.fn()
 }));
 

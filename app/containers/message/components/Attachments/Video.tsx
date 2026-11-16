@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { type IUserMessage } from '~/definitions';
+import { type IUserMessage } from '~/definitions/IMessage';
 import { type IAttachment } from '~/definitions/IAttachment';
 import I18n from '~/i18n';
 import { isIOS } from '~/lib/methods/helpers/deviceInfo';

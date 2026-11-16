@@ -2,7 +2,9 @@ import { InteractionManager } from 'react-native';
 
 import { setActiveUsers } from '~/actions/activeUsers';
 import { setUser } from '~/actions/login';
-import { type IUser, type TStatusSource, type TUserStatus } from '~/definitions';
+import { type IUser } from '~/definitions/IUser';
+import { type TStatusSource } from '~/definitions/TStatusSource';
+import { type TUserStatus } from '~/definitions/TUserStatus';
 import { store as reduxStore } from '../store/auxStore';
 import { compareServerVersion } from './helpers/compareServerVersion';
 import { normalizeStatusExpiresAt } from './helpers/normalizeStatusExpiresAt';

@@ -1,6 +1,6 @@
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 
 const isMissingRoomE2EEKey = ({
 	encryptionEnabled,

@@ -2,7 +2,8 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { useNavigation } from '@react-navigation/native';
 
-import { type SubscriptionType, type TUserStatus } from '~/definitions';
+import { type SubscriptionType } from '~/definitions/ISubscription';
+import { type TUserStatus } from '~/definitions/TUserStatus';
 import { isSubscriptionModel } from '~/definitions/TRoom';
 import i18n from '~/i18n';
 import getRoomAccessibilityLabel from '~/lib/helpers/getRoomAccessibilityLabel';

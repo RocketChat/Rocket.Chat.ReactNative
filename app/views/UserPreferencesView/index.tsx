@@ -14,7 +14,7 @@ import { saveUserPreferences } from '~/lib/services/restApi';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import Switch from '~/containers/Switch';
-import { type IUser } from '~/definitions';
+import { type IUser } from '~/definitions/IUser';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;

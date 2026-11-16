@@ -13,7 +13,7 @@ import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/inf
 import log from '~/lib/methods/helpers/log';
 import { deleteRoom as actionDeleteRoom } from '~/actions/room';
 import { ERoomType } from '~/definitions/ERoomType';
-import { type ISubscription, type TSubscriptionModel } from '~/definitions';
+import { type ISubscription, type TSubscriptionModel } from '~/definitions/ISubscription';
 
 interface IUseRoomDeletionActions {
 	navigation: NativeStackNavigationProp<(ChatsStackParamList | ModalStackParamList) & TNavigation, 'RoomInfoEditView'>;

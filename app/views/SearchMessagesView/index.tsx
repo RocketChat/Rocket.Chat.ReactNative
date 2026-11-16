@@ -9,7 +9,7 @@ import { Component } from 'react';
 import parse from 'url-parse';
 
 import { withSafeAreaInsets } from '~/lib/hooks/withSafeAreaInsets';
-import { FormTextInput } from '~/containers/TextInput';
+import { FormTextInput } from '~/containers/TextInput/FormTextInput';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import Markdown from '~/containers/markdown';
 import Message from '~/containers/message';
@@ -32,15 +32,12 @@ import { type InsideStackParamList, type ChatsStackParamList } from '~/stacks/ty
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { debounce } from '~/lib/methods/helpers/debounce';
 import { isIOS } from '~/lib/methods/helpers/deviceInfo';
-import {
-	type IMessageFromServer,
-	type IUser,
-	type TMessageModel,
-	type IUrl,
-	type IAttachment,
-	type IRoomInfoParam,
-	SubscriptionType
-} from '~/definitions';
+import { type IMessageFromServer, type TMessageModel } from '~/definitions/IMessage';
+import { type IUser } from '~/definitions/IUser';
+import { type IUrl } from '~/definitions/IUrl';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type IRoomInfoParam } from '~/definitions/IRoom';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import { searchMessages } from '~/lib/services/restApi';
 import { type TNavigation } from '~/stacks/stackType';
 import Navigation from '~/lib/navigation/appNavigation';

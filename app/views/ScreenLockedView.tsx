@@ -11,7 +11,7 @@ import { CustomIcon } from '../containers/CustomIcon';
 import { hasNotch } from '../lib/methods/helpers/deviceInfo';
 import EventEmitter from '../lib/methods/helpers/events';
 import { useDeferredModalSettle } from '../lib/hooks/useDeferredModalSettle';
-import { type BiometricInvalidationReason } from '../definitions';
+import { type BiometricInvalidationReason } from '../definitions/IBiometricTrustStore';
 import Touch from '../containers/Touch';
 
 interface IData {
