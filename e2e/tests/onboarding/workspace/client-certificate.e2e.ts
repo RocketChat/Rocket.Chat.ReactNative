@@ -33,7 +33,11 @@ afterAll(async () => {
 
 afterEach(deleteCreatedUsers);
 
-afterEach(fixtures => removeClientCertificateFiles(fixtures, certificate));
+afterEach(async fixtures => {
+	if (certificate) {
+		await removeClientCertificateFiles(fixtures, certificate);
+	}
+});
 
 test('connects to a workspace that requires a client certificate', { tags: ['test-1'] }, async fixtures => {
 	const { screen } = fixtures;

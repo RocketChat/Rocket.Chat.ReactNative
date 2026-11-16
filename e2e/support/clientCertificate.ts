@@ -17,15 +17,17 @@ const runCommand = promisify(execFile);
 const PROXY_HOST = '127.0.0.1';
 const ANDROID_EMULATOR_HOST_LOOPBACK = '10.0.2.2';
 const VALIDITY_DAYS = '2';
+const CERTIFICATE_AUTHORITY_FILE = 'ca.pem';
+const P12_FILE = 'rocketchat-e2e-client.p12';
+const P12_PASSWORD = 'e2e-certificate-password';
 
 export interface ClientCertificate {
 	directory: string;
 	alias: string;
-	password: string;
-	certificateAuthorityPath: string;
-	p12Path: string;
-	fileName: string;
 }
+
+const certificateAuthorityPath = ({ directory }: ClientCertificate) => join(directory, CERTIFICATE_AUTHORITY_FILE);
+const p12Path = ({ directory }: ClientCertificate) => join(directory, P12_FILE);
 
 const openssl = (...args: string[]) => runCommand('openssl', args);
 
@@ -41,7 +43,7 @@ const signCertificate = async (directory: string, name: string, subject: string,
 		'-in',
 		request,
 		'-CA',
-		join(directory, 'ca.pem'),
+		join(directory, CERTIFICATE_AUTHORITY_FILE),
 		'-CAkey',
 		join(directory, 'ca.key'),
 		'-CAcreateserial',
@@ -56,11 +58,7 @@ const signCertificate = async (directory: string, name: string, subject: string,
 
 export const createClientCertificate = async (): Promise<ClientCertificate> => {
 	const directory = await mkdtemp(join(tmpdir(), 'rocketchat-e2e-mtls-'));
-	const alias = `rocketchat-e2e-${Date.now()}`;
-	const password = 'e2e-certificate-password';
-	const fileName = 'rocketchat-e2e-client.p12';
-	const p12Path = join(directory, fileName);
-	const certificateAuthorityPath = join(directory, 'ca.pem');
+	const certificate = { directory, alias: `rocketchat-e2e-${Date.now()}` };
 
 	await openssl(
 		'req',
@@ -71,11 +69,13 @@ export const createClientCertificate = async (): Promise<ClientCertificate> => {
 		'-keyout',
 		join(directory, 'ca.key'),
 		'-out',
-		certificateAuthorityPath,
+		certificateAuthorityPath(certificate),
 		'-days',
 		VALIDITY_DAYS,
 		'-subj',
-		`/CN=${alias} CA`
+		`/CN=${certificate.alias} CA`,
+		'-addext',
+		'basicConstraints=critical,CA:TRUE'
 	);
 	await signCertificate(
 		directory,
@@ -83,7 +83,7 @@ export const createClientCertificate = async (): Promise<ClientCertificate> => {
 		'/CN=localhost',
 		`subjectAltName=DNS:localhost,IP:${PROXY_HOST},IP:${ANDROID_EMULATOR_HOST_LOOPBACK}\nextendedKeyUsage=serverAuth\n`
 	);
-	await signCertificate(directory, 'client', `/CN=${alias}`, 'extendedKeyUsage=clientAuth\n');
+	await signCertificate(directory, 'client', `/CN=${certificate.alias}`, 'extendedKeyUsage=clientAuth\n');
 	await openssl(
 		'pkcs12',
 		'-export',
@@ -98,14 +98,14 @@ export const createClientCertificate = async (): Promise<ClientCertificate> => {
 		'-in',
 		join(directory, 'client.pem'),
 		'-name',
-		alias,
+		certificate.alias,
 		'-passout',
-		`pass:${password}`,
+		`pass:${P12_PASSWORD}`,
 		'-out',
-		p12Path
+		p12Path(certificate)
 	);
 
-	return { directory, alias, password, certificateAuthorityPath, p12Path, fileName };
+	return certificate;
 };
 
 export const deleteClientCertificate = ({ directory }: ClientCertificate) => rm(directory, { recursive: true, force: true });
@@ -172,14 +172,11 @@ const proxyRequests = (server: Server) => {
 	});
 };
 
-export const startClientCertificateProxy = async ({
-	directory,
-	certificateAuthorityPath
-}: ClientCertificate): Promise<ClientCertificateProxy> => {
+export const startClientCertificateProxy = async (certificate: ClientCertificate): Promise<ClientCertificateProxy> => {
 	const server = createServer({
-		key: await readFile(join(directory, 'server.key')),
-		cert: await readFile(join(directory, 'server.pem')),
-		ca: await readFile(certificateAuthorityPath),
+		key: await readFile(join(certificate.directory, 'server.key')),
+		cert: await readFile(join(certificate.directory, 'server.pem')),
+		ca: await readFile(certificateAuthorityPath(certificate)),
 		requestCert: true,
 		rejectUnauthorized: true
 	});
@@ -215,8 +212,8 @@ const simctl = (...args: string[]) => runCommand('xcrun', ['simctl', ...args]);
 const androidUserCertificateAuthorities = '/data/misc/user/0/cacerts-added';
 const androidDownloads = '/sdcard/Download';
 
-const androidCertificateAuthorityPath = async ({ certificateAuthorityPath }: ClientCertificate) => {
-	const { stdout } = await openssl('x509', '-subject_hash_old', '-noout', '-in', certificateAuthorityPath);
+const androidCertificateAuthorityPath = async (certificate: ClientCertificate) => {
+	const { stdout } = await openssl('x509', '-subject_hash_old', '-noout', '-in', certificateAuthorityPath(certificate));
 	return `${androidUserCertificateAuthorities}/${stdout.trim()}.0`;
 };
 
@@ -259,21 +256,21 @@ export const trustCertificateAuthority = async ({ platform }: Fixtures, certific
 	if (platform === 'android') {
 		const installedPath = await androidCertificateAuthorityPath(certificate);
 		await rootAdb();
-		await adb('push', certificate.certificateAuthorityPath, installedPath);
+		await adb('push', certificateAuthorityPath(certificate), installedPath);
 		await adb('shell', `chown system:system ${installedPath} && chmod 644 ${installedPath}`);
 		return;
 	}
-	await simctl('keychain', (await iosSimulator()).udid, 'add-root-cert', certificate.certificateAuthorityPath);
+	await simctl('keychain', (await iosSimulator()).udid, 'add-root-cert', certificateAuthorityPath(certificate));
 };
 
 const installAndroidClientCertificate = async ({ app, screen }: Fixtures, certificate: ClientCertificate) => {
-	await adb('push', certificate.p12Path, `${androidDownloads}/${certificate.fileName}`);
+	await adb('push', p12Path(certificate), `${androidDownloads}/${P12_FILE}`);
 	await adb('shell', 'am', 'start', '-a', 'android.credentials.INSTALL');
 	await tapWhenUncovered(screen.getByLabel('Show roots'));
 	await tapWhenUncovered(screen.getByText('Downloads'));
-	await tapWhenUncovered(screen.getByText(certificate.fileName));
+	await tapWhenUncovered(screen.getByText(P12_FILE));
 	const okButton = screen.getByRole('button', { name: /^OK$/i });
-	await fillWhenUncovered(screen.getByTestId('com.android.certinstaller:id/credential_password'), certificate.password);
+	await fillWhenUncovered(screen.getByTestId('com.android.certinstaller:id/credential_password'), P12_PASSWORD);
 	await okButton.tap();
 	await expect(screen.getByText('VPN & app user certificate')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await okButton.tap();
@@ -291,22 +288,16 @@ export const installClientCertificate = async (fixtures: Fixtures, certificate: 
 	}
 	const storage = await filesAppStorage();
 	await mkdir(storage, { recursive: true });
-	await copyFile(certificate.p12Path, join(storage, certificate.fileName));
+	await copyFile(p12Path(certificate), join(storage, P12_FILE));
 };
 
 export const removeClientCertificateFiles = async ({ platform }: Fixtures, certificate: ClientCertificate) => {
 	if (platform === 'android') {
 		await rootAdb();
-		await adb(
-			'shell',
-			'rm',
-			'-f',
-			await androidCertificateAuthorityPath(certificate),
-			`${androidDownloads}/${certificate.fileName}`
-		);
+		await adb('shell', 'rm', '-f', await androidCertificateAuthorityPath(certificate), `${androidDownloads}/${P12_FILE}`);
 		return;
 	}
-	await rm(join(await filesAppStorage(), certificate.fileName), { force: true });
+	await rm(join(await filesAppStorage(), P12_FILE), { force: true });
 };
 
 const IOS_DOCUMENT_PICKER_BROWSE_TAB = { x: 0.714, y: 0.938 };
@@ -353,7 +344,7 @@ export const chooseClientCertificate = async (fixtures: Fixtures, certificate: C
 		return;
 	}
 	await pickFromIosDocumentPicker(fixtures);
-	await fillWhenUncovered(screen.getByPlaceholder('Password'), certificate.password);
+	await fillWhenUncovered(screen.getByPlaceholder('Password'), P12_PASSWORD);
 	await submitPasswordPrompt(fixtures);
 	await expect(screen.getByText('Your certificate')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
