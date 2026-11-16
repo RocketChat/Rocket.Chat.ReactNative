@@ -139027,6 +139027,498 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
               }
             }
           >
+            <Text>
+              <Text
+                onPress={[Function]}
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#1F2329",
+                    },
+                  ]
+                }
+              >
+                diego.mello
+              </Text>
+               
+              <Text
+                accessibilityLabel="changed the room attributes, and 1 member was removed by ABAC"
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                changed the room attributes, and 1 member was removed by ABAC
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          },
+          {
+            "marginTop": 4,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "flexDirection": "row",
+            },
+            {
+              "alignItems": "center",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "flex-end",
+              "width": 36,
+            }
+          }
+        >
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "height": 20,
+                  "width": 20,
+                },
+                undefined,
+              ]
+            }
+            testID="avatar"
+          >
+            <ExternalKeyboardView
+              canBeFocused={true}
+              enableA11yFocus={false}
+              enableContextMenu={false}
+              group={false}
+              haloEffect={true}
+              hasKeyDownPress={false}
+              hasKeyUpPress={true}
+              hasOnFocusChanged={true}
+              lockFocus={0}
+              onContextMenuPress={[Function]}
+              onFocusChange={[Function]}
+              onKeyUpPress={[Function]}
+              orderIndex={-1}
+              screenAutoA11yFocusDelay={300}
+              style={
+                [
+                  undefined,
+                  undefined,
+                ]
+              }
+            >
+              <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                activeUnderlayOpacity={1}
+                animationDuration={0}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  [
+                    [
+                      undefined,
+                      {
+                        "margin": undefined,
+                        "marginBottom": undefined,
+                        "marginEnd": undefined,
+                        "marginHorizontal": undefined,
+                        "marginLeft": undefined,
+                        "marginRight": undefined,
+                        "marginStart": undefined,
+                        "marginTop": undefined,
+                        "marginVertical": undefined,
+                      },
+                      {
+                        "backgroundColor": undefined,
+                        "borderRadius": undefined,
+                      },
+                    ],
+                    undefined,
+                  ]
+                }
+                underlayColor="#E4E7EA"
+              >
+                <View
+                  accessibilityLabel="diego.mello's avatar"
+                  accessible={true}
+                  style={{}}
+                >
+                  <ViewManagerAdapter_ExpoImage
+                    borderRadius={4}
+                    containerViewRef={{"current":"Object"}}
+                    contentFit="cover"
+                    contentPosition={
+                      {
+                        "left": "50%",
+                        "top": "50%",
+                      }
+                    }
+                    height={20}
+                    nativeViewRef={{"current":"NativeComponent"}}
+                    onError={[Function]}
+                    onLoad={[Function]}
+                    onLoadStart={[Function]}
+                    onProgress={[Function]}
+                    placeholder={[]}
+                    priority="high"
+                    sfEffect={null}
+                    source={
+                      [
+                        {
+                          "headers": {
+                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                          },
+                          "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8",
+                        },
+                      ]
+                    }
+                    style={
+                      {
+                        "borderRadius": 4,
+                        "height": 20,
+                        "width": 20,
+                      }
+                    }
+                    symbolSize={null}
+                    symbolWeight={null}
+                    transition={null}
+                    width={20}
+                  />
+                </View>
+              </View>
+            </ExternalKeyboardView>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <Text>
+              <Text
+                onPress={[Function]}
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#1F2329",
+                    },
+                  ]
+                }
+              >
+                diego.mello
+              </Text>
+               
+              <Text
+                accessibilityLabel="changed the room attributes, and 50 members were removed by ABAC"
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                changed the room attributes, and 50 members were removed by ABAC
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          },
+          {
+            "marginTop": 4,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "flexDirection": "row",
+            },
+            {
+              "alignItems": "center",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "flex-end",
+              "width": 36,
+            }
+          }
+        >
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "height": 20,
+                  "width": 20,
+                },
+                undefined,
+              ]
+            }
+            testID="avatar"
+          >
+            <ExternalKeyboardView
+              canBeFocused={true}
+              enableA11yFocus={false}
+              enableContextMenu={false}
+              group={false}
+              haloEffect={true}
+              hasKeyDownPress={false}
+              hasKeyUpPress={true}
+              hasOnFocusChanged={true}
+              lockFocus={0}
+              onContextMenuPress={[Function]}
+              onFocusChange={[Function]}
+              onKeyUpPress={[Function]}
+              orderIndex={-1}
+              screenAutoA11yFocusDelay={300}
+              style={
+                [
+                  undefined,
+                  undefined,
+                ]
+              }
+            >
+              <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                activeUnderlayOpacity={1}
+                animationDuration={0}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  [
+                    [
+                      undefined,
+                      {
+                        "margin": undefined,
+                        "marginBottom": undefined,
+                        "marginEnd": undefined,
+                        "marginHorizontal": undefined,
+                        "marginLeft": undefined,
+                        "marginRight": undefined,
+                        "marginStart": undefined,
+                        "marginTop": undefined,
+                        "marginVertical": undefined,
+                      },
+                      {
+                        "backgroundColor": undefined,
+                        "borderRadius": undefined,
+                      },
+                    ],
+                    undefined,
+                  ]
+                }
+                underlayColor="#E4E7EA"
+              >
+                <View
+                  accessibilityLabel="diego.mello's avatar"
+                  accessible={true}
+                  style={{}}
+                >
+                  <ViewManagerAdapter_ExpoImage
+                    borderRadius={4}
+                    containerViewRef={{"current":"Object"}}
+                    contentFit="cover"
+                    contentPosition={
+                      {
+                        "left": "50%",
+                        "top": "50%",
+                      }
+                    }
+                    height={20}
+                    nativeViewRef={{"current":"NativeComponent"}}
+                    onError={[Function]}
+                    onLoad={[Function]}
+                    onLoadStart={[Function]}
+                    onProgress={[Function]}
+                    placeholder={[]}
+                    priority="high"
+                    sfEffect={null}
+                    source={
+                      [
+                        {
+                          "headers": {
+                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                          },
+                          "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=40&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8",
+                        },
+                      ]
+                    }
+                    style={
+                      {
+                        "borderRadius": 4,
+                        "height": 20,
+                        "width": 20,
+                      }
+                    }
+                    symbolSize={null}
+                    symbolWeight={null}
+                    transition={null}
+                    width={20}
+                  />
+                </View>
+              </View>
+            </ExternalKeyboardView>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
             <Text
               accessibilityLabel="Unsupported system message"
               style={
@@ -145414,6 +145906,252 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
               }
             }
           >
+            <Text>
+              <Text
+                onPress={[Function]}
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#1F2329",
+                    },
+                  ]
+                }
+              >
+                diego.mello
+              </Text>
+               
+              <Text
+                accessibilityLabel="changed the room attributes, and 50 members were removed by ABAC"
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                changed the room attributes, and 50 members were removed by ABAC
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          },
+          {
+            "marginTop": 4,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "flexDirection": "row",
+            },
+            {
+              "alignItems": "center",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "flex-end",
+              "width": 46.800000000000004,
+            }
+          }
+        >
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "height": 26,
+                  "width": 26,
+                },
+                undefined,
+              ]
+            }
+            testID="avatar"
+          >
+            <ExternalKeyboardView
+              canBeFocused={true}
+              enableA11yFocus={false}
+              enableContextMenu={false}
+              group={false}
+              haloEffect={true}
+              hasKeyDownPress={false}
+              hasKeyUpPress={true}
+              hasOnFocusChanged={true}
+              lockFocus={0}
+              onContextMenuPress={[Function]}
+              onFocusChange={[Function]}
+              onKeyUpPress={[Function]}
+              orderIndex={-1}
+              screenAutoA11yFocusDelay={300}
+              style={
+                [
+                  undefined,
+                  undefined,
+                ]
+              }
+            >
+              <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                activeUnderlayOpacity={1}
+                animationDuration={0}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  [
+                    [
+                      undefined,
+                      {
+                        "margin": undefined,
+                        "marginBottom": undefined,
+                        "marginEnd": undefined,
+                        "marginHorizontal": undefined,
+                        "marginLeft": undefined,
+                        "marginRight": undefined,
+                        "marginStart": undefined,
+                        "marginTop": undefined,
+                        "marginVertical": undefined,
+                      },
+                      {
+                        "backgroundColor": undefined,
+                        "borderRadius": undefined,
+                      },
+                    ],
+                    undefined,
+                  ]
+                }
+                underlayColor="#E4E7EA"
+              >
+                <View
+                  accessibilityLabel="diego.mello's avatar"
+                  accessible={true}
+                  style={{}}
+                >
+                  <ViewManagerAdapter_ExpoImage
+                    borderRadius={4}
+                    containerViewRef={{"current":"Object"}}
+                    contentFit="cover"
+                    contentPosition={
+                      {
+                        "left": "50%",
+                        "top": "50%",
+                      }
+                    }
+                    height={26}
+                    nativeViewRef={{"current":"NativeComponent"}}
+                    onError={[Function]}
+                    onLoad={[Function]}
+                    onLoadStart={[Function]}
+                    onProgress={[Function]}
+                    placeholder={[]}
+                    priority="high"
+                    sfEffect={null}
+                    source={
+                      [
+                        {
+                          "headers": {
+                            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                          },
+                          "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=52&rc_token=abc&rc_uid=y8bd77ptZswPj3EW8",
+                        },
+                      ]
+                    }
+                    style={
+                      {
+                        "borderRadius": 4,
+                        "height": 26,
+                        "width": 26,
+                      }
+                    }
+                    symbolSize={null}
+                    symbolWeight={null}
+                    transition={null}
+                    width={26}
+                  />
+                </View>
+              </View>
+            </ExternalKeyboardView>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
             <Text
               accessibilityLabel="Unsupported system message"
               style={
@@ -145536,7 +146274,7 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-346"
+            testID="message-story-message-349"
           >
             <View
               style={
@@ -146001,7 +146739,7 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-347"
+            testID="message-story-message-350"
           >
             <View
               style={
@@ -146474,7 +147212,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-348"
+            testID="message-story-message-351"
           >
             <View
               style={
@@ -147166,7 +147904,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                 "width": "100%",
               }
             }
-            testID="message-story-message-349"
+            testID="message-story-message-352"
           >
             <View
               style={
@@ -147858,7 +148596,7 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-350"
+            testID="message-story-message-353"
           >
             <View
               style={
@@ -148327,7 +149065,7 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-351"
+            testID="message-story-message-354"
           >
             <View
               style={
@@ -148796,7 +149534,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-352"
+            testID="message-story-message-355"
           >
             <View
               style={
@@ -149300,7 +150038,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-353"
+            testID="message-story-message-356"
           >
             <View
               style={
@@ -149804,7 +150542,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                 "width": "100%",
               }
             }
-            testID="message-story-message-354"
+            testID="message-story-message-357"
           >
             <View
               style={
@@ -151107,7 +151845,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                 "width": "100%",
               }
             }
-            testID="message-story-message-355"
+            testID="message-story-message-358"
           >
             <View
               style={
@@ -152410,7 +153148,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-356"
+            testID="message-story-message-359"
           >
             <View
               style={
@@ -153050,7 +153788,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-357"
+            testID="message-story-message-360"
           >
             <View
               style={
@@ -153657,7 +154395,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-358"
+            testID="message-story-message-361"
           >
             <View
               style={
@@ -153920,7 +154658,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-360"
+            testID="message-story-message-363"
           >
             <View
               style={
@@ -154414,7 +155152,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-361"
+            testID="message-story-message-364"
           >
             <View
               style={
@@ -154858,7 +155596,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-362"
+            testID="message-story-message-365"
           >
             <View
               style={
@@ -155352,7 +156090,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-363"
+            testID="message-story-message-366"
           >
             <View
               style={
@@ -155796,7 +156534,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-364"
+            testID="message-story-message-367"
           >
             <View
               style={
@@ -156436,7 +157174,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-365"
+            testID="message-story-message-368"
           >
             <View
               style={
@@ -157043,7 +157781,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-366"
+            testID="message-story-message-369"
           >
             <View
               style={
@@ -157306,7 +158044,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-368"
+            testID="message-story-message-371"
           >
             <View
               style={
@@ -157681,7 +158419,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-369"
+      testID="message-story-message-372"
     >
       <View
         style={
@@ -158372,7 +159110,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-370"
+            testID="message-story-message-373"
           >
             <View
               style={
@@ -158747,7 +159485,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-371"
+      testID="message-story-message-374"
     >
       <View
         style={
@@ -159438,7 +160176,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-372"
+            testID="message-story-message-375"
           >
             <View
               style={
@@ -159813,7 +160551,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
           "width": "100%",
         }
       }
-      testID="message-story-message-373"
+      testID="message-story-message-376"
     >
       <View
         style={
@@ -160517,7 +161255,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-374"
+            testID="message-story-message-377"
           >
             <View
               style={
@@ -160995,7 +161733,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-375"
+            testID="message-story-message-378"
           >
             <View
               style={
@@ -161486,7 +162224,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-376"
+            testID="message-story-message-379"
           >
             <View
               style={
@@ -161964,7 +162702,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-377"
+            testID="message-story-message-380"
           >
             <View
               style={
@@ -162455,7 +163193,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-378"
+            testID="message-story-message-381"
           >
             <View
               style={
@@ -163214,7 +163952,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-379"
+            testID="message-story-message-382"
           >
             <View
               style={
@@ -163682,7 +164420,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-381"
+            testID="message-story-message-384"
           >
             <View
               style={
@@ -164408,7 +165146,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-383"
+            testID="message-story-message-386"
           >
             <View
               style={
@@ -165442,7 +166180,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-385"
+            testID="message-story-message-388"
           >
             <View
               style={
@@ -166201,7 +166939,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-386"
+            testID="message-story-message-389"
           >
             <View
               style={
@@ -166413,7 +167151,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-388"
+            testID="message-story-message-391"
           >
             <View
               style={
@@ -166881,7 +167619,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-390"
+            testID="message-story-message-393"
           >
             <View
               style={
@@ -167288,7 +168026,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-392"
+            testID="message-story-message-395"
           >
             <View
               style={
@@ -168388,7 +169126,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-394"
+            testID="message-story-message-397"
           >
             <View
               style={
@@ -169043,7 +169781,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-395"
+            testID="message-story-message-398"
           >
             <View
               style={
@@ -169724,7 +170462,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-397"
+            testID="message-story-message-400"
           >
             <View
               style={
@@ -170379,7 +171117,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-398"
+            testID="message-story-message-401"
           >
             <View
               style={
@@ -170803,7 +171541,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-400"
+            testID="message-story-message-403"
           >
             <View
               style={
@@ -171478,7 +172216,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-401"
+            testID="message-story-message-404"
           >
             <View
               style={
@@ -172657,7 +173395,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-402"
+            testID="message-story-message-405"
           >
             <View
               style={
@@ -173443,7 +174181,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-403"
+            testID="message-story-message-406"
           >
             <View
               style={
@@ -174118,7 +174856,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-404"
+            testID="message-story-message-407"
           >
             <View
               style={
@@ -174746,7 +175484,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-405"
+            testID="message-story-message-408"
           >
             <View
               style={
@@ -175130,7 +175868,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-407"
+            testID="message-story-message-410"
           >
             <View
               style={
@@ -175916,7 +176654,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-408"
+            testID="message-story-message-411"
           >
             <View
               style={
@@ -176591,7 +177329,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-409"
+            testID="message-story-message-412"
           >
             <View
               style={
@@ -177224,7 +177962,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-410"
+            testID="message-story-message-413"
           >
             <View
               style={
@@ -177566,7 +178304,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-412"
+            testID="message-story-message-415"
           >
             <View
               style={
@@ -178297,7 +179035,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-413"
+            testID="message-story-message-416"
           >
             <View
               style={
@@ -178930,7 +179668,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-414"
+            testID="message-story-message-417"
           >
             <View
               style={
@@ -179455,7 +180193,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-415"
+            testID="message-story-message-418"
           >
             <View
               style={
@@ -180186,7 +180924,7 @@ exports[`Story Snapshots: WithoutHeader should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-416"
+            testID="message-story-message-419"
           >
             <View
               style={
@@ -180411,7 +181149,7 @@ exports[`Story Snapshots: WithoutHeaderLargeFont should match snapshot 1`] = `
                 "width": "100%",
               }
             }
-            testID="message-story-message-418"
+            testID="message-story-message-421"
           >
             <View
               style={

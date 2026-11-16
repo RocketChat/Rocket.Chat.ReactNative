@@ -104,7 +104,8 @@ const messagesWithAuthorName: MessageTypesValues[] = [
 	'room-unarchived',
 	'subscription-role-added',
 	'subscription-role-removed',
-	'abac-removed-user-from-room'
+	'abac-removed-user-from-room',
+	'abac-removed-users-from-room'
 ];
 
 export const messageHaveAuthorName = (type: MessageTypesValues): boolean => messagesWithAuthorName.includes(type);
@@ -190,6 +191,12 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 			return I18n.t('Pinned_a_message');
 		case 'abac-removed-user-from-room':
 			return I18n.t('abac_removed_user_from_the_room');
+		case 'abac-removed-users-from-room': {
+			const count = Number(msg);
+			return count === 1
+				? I18n.t('abac_removed__count__member_from_the_room', { count })
+				: I18n.t('abac_removed__count__members_from_the_room', { count });
+		}
 
 		// without author name
 		case 'ul':
