@@ -170,7 +170,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		}
 		// Room Type
 		if ((room.t === RoomType.CHANNEL) !== t) {
-			params.roomType = t ? 'c' : 'p';
+			params.roomType = t ? RoomType.CHANNEL : RoomType.GROUP;
 		}
 		// Read Only
 		if (room.ro !== readOnly) {

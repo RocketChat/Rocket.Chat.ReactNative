@@ -1,26 +1,10 @@
 import { type RoomType } from '~/definitions/IRoom';
 
-enum ETypes {
-	Channels = 'channels',
-	Im = 'im',
-	Groups = 'groups'
-}
+const apiTypeByRoomType = {
+	c: 'channels',
+	d: 'im',
+	p: 'groups',
+	l: 'channels'
+} as const satisfies Record<RoomType, string>;
 
-type ApiTypes<T> = T extends 'c'
-	? ETypes.Channels
-	: T extends 'd'
-		? ETypes.Im
-		: T extends 'p'
-			? ETypes.Groups
-			: T extends 'l'
-				? ETypes.Channels
-				: never;
-
-const types: { [K in RoomType]: ApiTypes<K> } = {
-	c: ETypes.Channels,
-	d: ETypes.Im,
-	p: ETypes.Groups,
-	l: ETypes.Channels
-};
-
-export const roomTypeToApiType = <T extends RoomType>(t: T) => types[t];
+export const roomTypeToApiType = <T extends RoomType>(t: T) => apiTypeByRoomType[t];

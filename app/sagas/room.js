@@ -97,13 +97,10 @@ const handleRemovedRoom = function* handleRemovedRoom(scope, actionType) {
 const handleLeaveRoom = function* handleLeaveRoom({ room, scope, selected }) {
 	logEvent(events.RA_LEAVE);
 	try {
-		let result = {};
-
-		if (scope === 'room') {
-			result = yield leaveRoom(room.rid, room.t);
-		} else if (scope === 'team') {
-			result = yield leaveTeam({ teamId: room.teamId, ...(selected && { rooms: selected }) });
-		}
+		const result =
+			scope === 'team'
+				? yield leaveTeam({ teamId: room.teamId, ...(selected && { rooms: selected }) })
+				: yield leaveRoom(room.rid, room.t);
 
 		if (result?.success) {
 			yield handleRemovedRoom(scope, 'leave');
@@ -123,13 +120,10 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, scope, selected }) {
 const handleDeleteRoom = function* handleDeleteRoom({ room, scope, selected }) {
 	logEvent(events.RI_EDIT_DELETE);
 	try {
-		let result = {};
-
-		if (scope === 'room') {
-			result = yield deleteRoom(room.rid || room._id, room.t);
-		} else if (scope === 'team') {
-			result = yield deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
-		}
+		const result =
+			scope === 'team'
+				? yield deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) })
+				: yield deleteRoom(room.rid || room._id, room.t);
 
 		if (result?.success) {
 			yield handleRemovedRoom(scope, 'delete');

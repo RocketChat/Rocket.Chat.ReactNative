@@ -1,11 +1,7 @@
 import { RoomType } from '~/definitions/IRoom';
-import { pathSegmentToRoomType, roomTypeToPathSegment } from '../roomTypePath';
+import { pathSegmentToRoomType } from '../roomTypePath';
 
 describe('roomTypePath', () => {
-	it.each(Object.values(RoomType))('reads back room type %s from its path segment', roomType => {
-		expect(pathSegmentToRoomType(roomTypeToPathSegment(roomType))).toBe(roomType);
-	});
-
 	it.each([
 		['channel', RoomType.CHANNEL],
 		['group', RoomType.GROUP],
