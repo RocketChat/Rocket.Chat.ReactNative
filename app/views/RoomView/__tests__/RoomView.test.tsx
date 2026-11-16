@@ -83,7 +83,8 @@ describe('RoomView', () => {
 
 	it.each([
 		['has no params', null],
-		['has params without a rid', { rid: undefined, t: undefined }]
+		['has params without a rid', { rid: undefined, t: undefined }],
+		['has a rid but no type', { rid: 'rid-1' }]
 	])('renders the empty-room background instead of a room when the route %s', (_case, params) => {
 		renderRoomView(params);
 
