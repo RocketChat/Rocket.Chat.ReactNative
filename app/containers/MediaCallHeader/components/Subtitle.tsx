@@ -17,7 +17,7 @@ const Subtitle = () => {
 	const { colors } = useTheme();
 	const contact = useCallStore(state => state.contact);
 	const extension = contact.sipExtension;
-	const remoteHeld = useCallStore(state => state.remoteHeld);
+	const isOnHold = useCallStore(state => state.isOnHold || state.remoteHeld);
 	const remoteMute = useCallStore(state => state.remoteMute);
 	const callState = useCallStore(state => state.callState);
 
@@ -28,11 +28,11 @@ const Subtitle = () => {
 		subtitle = I18n.t('Connecting');
 	} else {
 		subtitle = extension ? `${extension}` : '';
-		const remoteState = [];
-		remoteState.push(remoteHeld ? I18n.t('On_hold') : null);
-		remoteState.push(remoteMute ? I18n.t('Muted') : null);
-		subtitle += remoteState.filter(Boolean).length > 0 && extension ? ' - ' : '';
-		subtitle += remoteState.filter(Boolean).join(', ');
+		const callStatus = [];
+		callStatus.push(isOnHold ? I18n.t('On_hold') : null);
+		callStatus.push(remoteMute ? I18n.t('Muted') : null);
+		subtitle += callStatus.filter(Boolean).length > 0 && extension ? ' - ' : '';
+		subtitle += callStatus.filter(Boolean).join(', ');
 	}
 
 	if (!subtitle) {

@@ -21,6 +21,7 @@ interface IBottomSheetContentProps {
 	onLayout: ViewProps['onLayout'];
 	fullContainer?: boolean;
 	hugContent?: boolean;
+	contentMaxHeight?: number;
 	contentMinHeight?: number;
 	scrollEnabled?: boolean;
 }
@@ -34,6 +35,7 @@ const BottomSheetContent = memo(
 		onLayout,
 		fullContainer,
 		hugContent,
+		contentMaxHeight,
 		contentMinHeight,
 		scrollEnabled
 	}: IBottomSheetContentProps) => {
@@ -80,7 +82,11 @@ const BottomSheetContent = memo(
 		return (
 			<View
 				testID='action-sheet'
-				style={[fullContainer && !hugContent ? styles.fullContainer : undefined, minHeightStyle, { paddingBottom }]}
+				style={[
+					fullContainer && !hugContent ? styles.fullContainer : undefined,
+					minHeightStyle,
+					{ paddingBottom, maxHeight: contentMaxHeight }
+				]}
 				onLayout={onLayout}>
 				{children}
 			</View>

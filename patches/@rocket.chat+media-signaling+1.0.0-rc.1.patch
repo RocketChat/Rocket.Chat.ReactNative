@@ -1,0 +1,20 @@
+diff --git a/node_modules/@rocket.chat/media-signaling/dist/lib/services/webrtc/Processor.js b/node_modules/@rocket.chat/media-signaling/dist/lib/services/webrtc/Processor.js
+index 4cc25f8..beb0226 100644
+--- a/node_modules/@rocket.chat/media-signaling/dist/lib/services/webrtc/Processor.js
++++ b/node_modules/@rocket.chat/media-signaling/dist/lib/services/webrtc/Processor.js
+@@ -147,6 +147,7 @@ export class MediaCallWebRTCProcessor {
+                 throw new Error('unsupported-description-type');
+             }
+             yield this.peer.setLocalDescription(sdp);
++            this.changeInternalState('signaling');
+             if (sdp.type === 'answer') {
+                 this.updateAudioDirectionAfterNegotiation();
+                 this.updateVideoDirectionAfterNegotiation();
+@@ -169,6 +170,7 @@ export class MediaCallWebRTCProcessor {
+                 this.updateVideoDirectionBeforeNegotiation();
+             }
+             yield this.peer.setRemoteDescription(sdp);
++            this.changeInternalState('signaling');
+             if (sdp.type === 'answer') {
+                 this.updateAudioDirectionAfterNegotiation();
+                 this.updateVideoDirectionAfterNegotiation();
