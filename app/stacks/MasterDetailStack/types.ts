@@ -18,19 +18,21 @@ import { type CategoryRoomsViewParams } from '~/views/CreateCategoryView/Categor
 import { type ConfirmCategoryViewParams } from '~/views/CreateCategoryView/ConfirmCategoryView';
 
 export type MasterDetailChatsStackParamList = {
-	RoomView: {
-		rid: string;
-		t: RoomType;
-		tmid?: string;
-		message?: string;
-		name?: string;
-		fname?: string;
-		prid?: string;
-		room: ISubscription;
-		jumpToMessageId?: string;
-		jumpToThreadId?: string;
-		roomUserId?: string;
-	};
+	RoomView:
+		| {
+				rid: string;
+				t: RoomType;
+				tmid?: string;
+				message?: string;
+				name?: string;
+				fname?: string;
+				prid?: string;
+				room: ISubscription;
+				jumpToMessageId?: string;
+				jumpToThreadId?: string;
+				roomUserId?: string;
+		  }
+		| undefined;
 };
 
 export type MasterDetailSplitParamList = {

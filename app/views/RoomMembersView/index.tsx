@@ -20,7 +20,7 @@ import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActio
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { compareServerVersion, getRoomTitle, hasNativeHeaderBar, isGroupChat, useDebounce } from '~/lib/methods/helpers';
+import { compareServerVersion, getRoomTitle, hasNativeHeaderBar, useDebounce } from '~/lib/methods/helpers';
 import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import log from '~/lib/methods/helpers/log';
@@ -138,9 +138,6 @@ const RoomMembersView = (): ReactElement => {
 	] = usePermissions(['mute-user', 'set-leader', 'set-owner', 'set-moderator', 'remove-user', ...teamPermissions], params.rid);
 
 	const fetchRoles = () => {
-		if (isGroupChat(state.room)) {
-			return;
-		}
 		if (
 			muteUserPermission ||
 			setLeaderPermission ||
