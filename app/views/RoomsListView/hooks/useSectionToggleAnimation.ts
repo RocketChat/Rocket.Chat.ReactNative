@@ -5,6 +5,7 @@ import {
 	type LayoutAnimationsValues,
 	ReduceMotion,
 	type SharedValue,
+	useReducedMotion,
 	useSharedValue,
 	withDelay,
 	withSpring,
@@ -96,6 +97,7 @@ export const useSectionToggleAnimation = (
 	toggleGroup: (group: string) => void,
 	rowCount: number
 ) => {
+	const isReducedMotion = useReducedMotion();
 	const isToggling = useSharedValue(false);
 	const toggleAnimatedAt = useSharedValue(0);
 	const coverOffset = useSharedValue(0);
@@ -121,7 +123,7 @@ export const useSectionToggleAnimation = (
 		(fromOpacity: number, toOpacity: number, spring: WithSpringConfig): EntryExitAnimationFunction =>
 		() => {
 			'worklet';
-			if (!isAnimatingToggle(isToggling, toggleAnimatedAt)) {
+			if (isReducedMotion || !isAnimatingToggle(isToggling, toggleAnimatedAt)) {
 				return { initialValues: {}, animations: {} };
 			}
 			return {
@@ -165,7 +167,7 @@ export const useSectionToggleAnimation = (
 		badgeEntering,
 		badgeExiting,
 		revealKey: cover.revealKey,
-		coverEntering: cover.revealKey ? coverEntering : undefined,
+		coverEntering: cover.revealKey && !isReducedMotion ? coverEntering : undefined,
 		coverExiting
 	};
 };
