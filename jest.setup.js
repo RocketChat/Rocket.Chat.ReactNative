@@ -268,7 +268,7 @@ jest.mock('react-native-math-view', () => {
 	};
 });
 
-jest.mock('react-native-keyboard-controller');
+jest.mock('react-native-keyboard-controller', () => require('react-native-keyboard-controller/jest'));
 
 jest.mock('react-native-keychain', () => ({
 	ACCESS_CONTROL: { BIOMETRY_CURRENT_SET: 'BiometryCurrentSet' },

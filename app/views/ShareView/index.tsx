@@ -42,6 +42,8 @@ import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import { canUploadFile } from '~/lib/methods/helpers/media';
 import { isReadOnly } from '~/lib/methods/helpers/isReadOnly';
 import { isBlocked } from '~/lib/methods/helpers/room';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { Encryption } from '~/lib/encryption';
 import {
 	createMessageActionStore,
 	MessageActionProvider,
@@ -252,8 +254,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		if (this.isShareExtension) {
 			this.setState({ loading: true });
 			sendLoadingEvent({ visible: true });
-
-			// if it's not share extension this can close
+			if (!(await Encryption.canSendToRoom(room.rid))) {
+				sendLoadingEvent({ visible: false });
+				this.setState({ loading: false });
+				showErrorAlert(I18n.t('missing_room_e2ee_description'), I18n.t('missing_room_e2ee_title'));
+				return;
+			}
 		} else {
 			this.sentMessage = true;
 			this.finishShareView('', []);

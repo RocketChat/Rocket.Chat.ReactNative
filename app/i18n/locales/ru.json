@@ -770,6 +770,8 @@
   "Settings": "Настройки",
   "Settings_succesfully_changed": "Настройки успешно изменены!",
   "Share": "Поделиться",
+  "Share_encrypted_room_key_missing": "Ожидание ключей шифрования",
+  "Share_encrypted_room_password_required": "Введите пароль E2EE, чтобы поделиться здесь",
   "Share_Link": "Ссылка, чтобы Поделиться",
   "Share_no_valid_attachments": "Отправленный файл не найден",
   "Share_this_app": "Рассказать о приложении",
