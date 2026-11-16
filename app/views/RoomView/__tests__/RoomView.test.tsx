@@ -34,8 +34,10 @@ jest.mock('../hooks/useE2EEStatus', () => ({
 	useE2EEStatus: jest.fn(() => ({ showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false }))
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
-jest.mock('~/lib/methods/helpers/helpers', () => ({
-	getUidDirectMessage: jest.fn(),
+jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
+	getUidDirectMessage: jest.fn()
+}));
+jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
 	getRoomTitle: jest.fn(() => 'Room Title')
 }));
 

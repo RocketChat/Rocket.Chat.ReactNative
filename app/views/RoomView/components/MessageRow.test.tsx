@@ -24,9 +24,13 @@ jest.mock('~/lib/methods/readMessages', () => ({
 jest.mock('~/lib/services/restApi', () => ({
 	getUserInfo: jest.fn()
 }));
-jest.mock('~/lib/methods/helpers/helpers', () => ({
-	getUidDirectMessage: jest.fn(() => 'uid-1'),
-	isGroupChat: jest.fn(() => false),
+jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
+	getUidDirectMessage: jest.fn(() => 'uid-1')
+}));
+jest.mock('~/lib/methods/helpers/isGroupChat', () => ({
+	isGroupChat: jest.fn(() => false)
+}));
+jest.mock('~/lib/methods/helpers/canAutoTranslate', () => ({
 	canAutoTranslate: jest.fn(() => true)
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({

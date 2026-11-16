@@ -8,7 +8,8 @@ import { type Dispatch } from 'redux';
 
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
-import { getRoomTitle, hasPermission } from '~/lib/methods/helpers/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { hasPermission } from '~/lib/methods/helpers/hasPermission';
 import { type IMessageComposerRef, ComposerProvider, MessageComposerContainer } from '~/containers/MessageComposer';
 import { type InsideStackParamList } from '~/stacks/types';
 import { themes } from '~/lib/constants/colors';

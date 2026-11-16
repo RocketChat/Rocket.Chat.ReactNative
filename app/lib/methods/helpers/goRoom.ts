@@ -9,7 +9,8 @@ import {
 	type TSubscriptionModel,
 	type ISubscription
 } from '~/definitions';
-import { getRoomTitle, getUidDirectMessage } from './helpers';
+import { getRoomTitle } from './getRoomTitle';
+import { getUidDirectMessage } from './getUidDirectMessage';
 import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
 

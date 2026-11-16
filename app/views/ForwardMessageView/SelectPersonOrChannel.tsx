@@ -9,7 +9,8 @@ import styles from './styles';
 import { type IForwardMessageViewSelectRoom } from './interfaces';
 import { type ISearchLocal } from '~/definitions';
 import { localSearchSubscription } from '~/lib/methods/search';
-import { getRoomAvatar, getRoomTitle } from '~/lib/methods/helpers/helpers';
+import { getRoomAvatar } from '~/lib/methods/helpers/getRoomAvatar';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { useTheme } from '~/theme';
 
 const SelectPersonOrChannel = ({

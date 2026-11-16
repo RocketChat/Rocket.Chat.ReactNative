@@ -6,7 +6,7 @@ import { type ISubscription, type TUserStatus, SubscriptionType } from '~/defini
 import styles from '../styles';
 import { useTheme } from '~/theme';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
-import { getRoomTitle } from '~/lib/methods/helpers/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import CollapsibleText from '~/containers/CollapsibleText';
 import StatusRows from '~/containers/Status/StatusRows';
 import EventEmitter from '~/lib/methods/helpers/events';

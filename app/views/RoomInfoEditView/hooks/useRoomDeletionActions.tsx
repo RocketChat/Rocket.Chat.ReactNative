@@ -8,7 +8,7 @@ import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
 import { type TNavigation } from '~/stacks/stackType';
 import database from '~/lib/database';
 import I18n from '~/i18n';
-import { getRoomTitle } from '~/lib/methods/helpers/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
 import log from '~/lib/methods/helpers/log';
 import { deleteRoom as actionDeleteRoom } from '~/actions/room';

@@ -10,8 +10,10 @@ let mockTestStore: RoomStore;
 jest.mock('../useGoRoomActionsView', () => ({ useGoRoomActionsView: jest.fn(() => jest.fn()) }));
 jest.mock('~/views/RoomView/components/LeftButtons', () => ({ __esModule: true, default: 'LeftButtons' }));
 jest.mock('~/containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHeader' }));
-jest.mock('~/lib/methods/helpers/helpers', () => ({
-	getRoomTitle: jest.fn(() => 'Room Title'),
+jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
+	getRoomTitle: jest.fn(() => 'Room Title')
+}));
+jest.mock('~/lib/methods/helpers/isGroupChat', () => ({
 	isGroupChat: jest.fn(() => false)
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({

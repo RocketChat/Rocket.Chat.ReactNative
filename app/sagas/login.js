@@ -43,7 +43,7 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
-import { hasPermission } from '../lib/methods/helpers/helpers';
+import { hasPermission } from '../lib/methods/helpers/hasPermission';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
 import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
 import { store as reduxStore } from '../lib/store/auxStore';

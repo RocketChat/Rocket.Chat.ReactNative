@@ -93,7 +93,7 @@ jest.mock('~/lib/methods/helpers/info', () => ({
 }));
 
 // Mock helpers to avoid auxStore (getUidDirectMessage / getRoomTitle call reduxStore.getState())
-jest.mock('~/lib/methods/helpers/helpers', () => ({
+jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
 	getUidDirectMessage: jest.fn(() => null)
 }));
 jest.mock('~/lib/methods/helpers/normalizeDeepLinkingServerHost', () => ({

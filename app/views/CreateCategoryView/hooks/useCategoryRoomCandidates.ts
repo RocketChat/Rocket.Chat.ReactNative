@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 
 import { type TSubscriptionModel } from '~/definitions';
 import database from '~/lib/database';
-import { getRoomAvatar, getRoomTitle } from '~/lib/methods/helpers/helpers';
+import { getRoomAvatar } from '~/lib/methods/helpers/getRoomAvatar';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import log from '~/lib/methods/helpers/log';
 import { type ICategoryRoom } from '../types';
 

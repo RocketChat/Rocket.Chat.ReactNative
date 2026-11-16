@@ -27,7 +27,7 @@ import styles from './styles';
 import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '~/definitions';
 import { type ShareInsideStackParamList } from '~/definitions/navigationTypes';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
-import { getRoomAvatar } from '~/lib/methods/helpers/helpers';
+import { getRoomAvatar } from '~/lib/methods/helpers/getRoomAvatar';
 import { hasNativeHeaderBar, isAndroid, isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
 import { nativeHeaderContentInset } from '~/lib/methods/helpers/navigation';

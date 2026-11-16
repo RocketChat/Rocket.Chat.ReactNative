@@ -42,14 +42,12 @@ import { ERoomType } from '~/definitions/ERoomType';
 import { E2E_ROOM_TYPES } from '~/lib/constants/keys';
 import { themes } from '~/lib/constants/colors';
 import { getPermalinkChannel } from '~/lib/methods/getPermalinks';
-import {
-	canAutoTranslate as canAutoTranslateMethod,
-	getRoomAvatar,
-	getRoomTitle,
-	getUidDirectMessage,
-	hasPermission,
-	isGroupChat
-} from '~/lib/methods/helpers/helpers';
+import { canAutoTranslate as canAutoTranslateMethod } from '~/lib/methods/helpers/canAutoTranslate';
+import { getRoomAvatar } from '~/lib/methods/helpers/getRoomAvatar';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
+import { hasPermission } from '~/lib/methods/helpers/hasPermission';
+import { isGroupChat } from '~/lib/methods/helpers/isGroupChat';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { isTeamRoom } from '~/lib/methods/helpers/room';

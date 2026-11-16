@@ -1,6 +1,6 @@
 import I18n from '~/i18n';
 import { sendLoadingEvent } from '~/containers/Loading';
-import { getRoomTitle } from '~/lib/methods/helpers/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { type IError, type IResult } from '../interfaces';

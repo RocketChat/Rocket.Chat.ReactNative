@@ -1,7 +1,8 @@
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from 'zustand';
 
-import { getRoomTitle, isGroupChat } from '~/lib/methods/helpers/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { isGroupChat } from '~/lib/methods/helpers/isGroupChat';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { type IOmnichannelSource, type ISubscription, type IVisitor } from '~/definitions';
 import { type RoomStore } from '../definitions';

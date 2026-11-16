@@ -87,10 +87,16 @@ jest.mock('~/containers/ActionSheet', () => ({
 	useActionSheet: () => ({ showActionSheet: jest.fn(), hideActionSheet: jest.fn() })
 }));
 jest.mock('~/lib/methods/subscriptions/room', () => ({ __esModule: true, default: class RoomClass {} }));
-jest.mock('~/lib/methods/helpers/helpers', () => ({
-	getUidDirectMessage: jest.fn(),
-	getRoomTitle: jest.fn(() => 'Room Title'),
-	isGroupChat: jest.fn(() => false),
+jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
+	getUidDirectMessage: jest.fn()
+}));
+jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
+	getRoomTitle: jest.fn(() => 'Room Title')
+}));
+jest.mock('~/lib/methods/helpers/isGroupChat', () => ({
+	isGroupChat: jest.fn(() => false)
+}));
+jest.mock('~/lib/methods/helpers/canAutoTranslate', () => ({
 	canAutoTranslate: jest.fn(() => false)
 }));
 jest.mock('~/lib/methods/helpers/log', () => ({

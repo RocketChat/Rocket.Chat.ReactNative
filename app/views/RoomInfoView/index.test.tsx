@@ -21,8 +21,7 @@ jest.mock('~/lib/database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn().mockResolvedValue(null)
 }));
 
-jest.mock('~/lib/methods/helpers/helpers', () => ({
-	...jest.requireActual('~/lib/methods/helpers/helpers'),
+jest.mock('~/lib/methods/helpers/hasPermission', () => ({
 	hasPermission: jest.fn().mockResolvedValue([false])
 }));
 

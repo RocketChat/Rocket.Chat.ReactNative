@@ -30,7 +30,7 @@ import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
-import { getRoomTitle } from '~/lib/methods/helpers/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { isAndroid } from '~/lib/methods/helpers/deviceInfo';

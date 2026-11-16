@@ -13,8 +13,7 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 let mockHasNativeHeaderBar = true;
-jest.mock('~/lib/methods/helpers/helpers', () => ({
-	...jest.requireActual('~/lib/methods/helpers/helpers'),
+jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
 	getRoomTitle: () => 'general'
 }));
 jest.mock('~/lib/methods/helpers/deviceInfo', () =>

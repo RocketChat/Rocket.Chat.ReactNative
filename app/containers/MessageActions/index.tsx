@@ -27,7 +27,9 @@ import {
 import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
 import { getQuoteMessageLink } from '~/lib/methods/getQuoteMessageLink';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
-import { getRoomTitle, getUidDirectMessage, hasPermission } from '~/lib/methods/helpers/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
+import { hasPermission } from '~/lib/methods/helpers/hasPermission';
 import {
 	deleteMessage,
 	markAsUnread,

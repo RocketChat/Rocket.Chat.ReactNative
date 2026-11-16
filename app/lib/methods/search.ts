@@ -5,7 +5,7 @@ import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
 import { type ISearch, type ISearchLocal, type IUserMessage, SubscriptionType, type TSubscriptionModel } from '~/definitions';
-import { isGroupChat } from './helpers/helpers';
+import { isGroupChat } from './helpers/isGroupChat';
 import { isReadOnly } from './helpers/isReadOnly';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../encryption/utils';
 

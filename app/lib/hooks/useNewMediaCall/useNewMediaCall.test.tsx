@@ -26,7 +26,7 @@ jest.mock('~/containers/ActionSheet', () => ({
 	showActionSheetRef: (params: unknown) => mockShowActionSheetRef(params)
 }));
 
-jest.mock('~/lib/methods/helpers/helpers', () => ({
+jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
 	getUidDirectMessage: (room: unknown) => mockGetUidDirectMessage(room)
 }));
 

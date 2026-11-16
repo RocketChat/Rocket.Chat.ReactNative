@@ -1,6 +1,6 @@
 import { NewMediaCall } from '~/containers/NewMediaCall';
 import { showActionSheetRef } from '~/containers/ActionSheet';
-import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { useSubscription } from '../useSubscription';

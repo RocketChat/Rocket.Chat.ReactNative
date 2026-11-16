@@ -21,7 +21,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import Item from './Item';
 import HeaderNewMessage from './HeaderNewMessage';
-import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import { type TNewMessageChat, useOpenChat } from './hooks/useOpenChat';
 

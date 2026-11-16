@@ -9,7 +9,8 @@ import sharedStyles from '../Styles';
 import { makeThreadName } from '~/lib/methods/helpers/room';
 import { type TThreadModel } from '~/definitions';
 import { type TRoomOrPreview } from '~/definitions/TRoom';
-import { getRoomTitle, isGroupChat } from '~/lib/methods/helpers/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { isGroupChat } from '~/lib/methods/helpers/isGroupChat';
 import { isAndroid, isTablet } from '~/lib/methods/helpers/deviceInfo';
 import { getMessageById } from '~/lib/database/services/Message';
 

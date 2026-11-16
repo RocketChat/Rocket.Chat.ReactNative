@@ -21,9 +21,13 @@ jest.mock('../../helpers/log', () => ({
 	default: jest.fn()
 }));
 
-jest.mock('../../helpers/helpers', () => ({
-	getRoomAvatar: jest.fn(),
-	getRoomTitle: jest.fn(),
+jest.mock('../../helpers/getRoomAvatar', () => ({
+	getRoomAvatar: jest.fn()
+}));
+jest.mock('../../helpers/getRoomTitle', () => ({
+	getRoomTitle: jest.fn()
+}));
+jest.mock('../../helpers/getSenderName', () => ({
 	getSenderName: jest.fn()
 }));
 jest.mock('../../helpers/random', () => ({
