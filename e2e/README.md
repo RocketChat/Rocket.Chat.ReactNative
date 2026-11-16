@@ -36,7 +36,7 @@ A passing `agent.act` step is recorded in `.e2e/cache` and replays without a mod
 
 ## Running tests
 
-1. Build a release app: an iOS simulator `.app` or an Android `.apk`. Debug builds load JS from Metro. Build with `RUNNING_E2E_TESTS=true` (set it for `pod install` too), so the release app carries the Appduct tools the tests use for setup.
+1. Build a release app: an iOS simulator `.app` or an Android `.apk`. Debug builds load JS from Metro. Build with `APPDUCT_ENABLED=1` and `RUNNING_E2E_TESTS=true` (set both for `pod install` too): the first links Appduct into the release app, and the second loads the Appduct tools the tests use for setup.
 2. Boot a simulator or emulator.
 3. Run:
 
@@ -59,7 +59,7 @@ On Android emulators with Google Play services, disable autofill first, or the p
 - Import `test` and `afterEach` from `~e2e/support/fixtures`, not `@e2e-dev/mobile`. Its `test` adds the `appduct` fixture from `@appduct/e2e`, which calls the app's Appduct tools.
 - Tag each test with its CI shard: `test('...', { tags: ['test-5'] }, ...)`. Platform-only tests add `platforms: ['ios']` or `platforms: ['android']`.
 - Open a room the user is subscribed to with `openRoom` (`e2e/support/appduct.ts`), which opens it through the app's `open_room` Appduct tool. Use `searchAndNavigateRoom` when the test covers the rooms list search, or when the user still has to join or preview the room.
-- Start every test from `launchApp` or `loginWithDeepLink`. On iOS they reinstall the app, since clearing app state keeps the app group container.
+- Start every test from `launchApp` or `loginWithDeepLink`. `launchApp` reinstalls the app on iOS, since clearing app state keeps the app group container, and clears its data on Android. `loginWithDeepLink` resets the running app through Appduct and logs in with a token; it falls back to the `launchApp` reset when the app isn't installed yet or the Appduct login fails.
 - Prefer `getByTestId` and exact `getByText`. A locator that matches more than one node fails; narrow it, or use `.first()` / `.last()`.
 - `swipe({ direction })` uses scroll semantics: the finger moves opposite to `direction`.
 - Android alert buttons are uppercase; match their names with a case-insensitive regex.

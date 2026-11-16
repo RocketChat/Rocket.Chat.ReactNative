@@ -4,7 +4,7 @@ import type { Appduct } from '@appduct/e2e';
 import { expect } from 'e2e';
 import { TestError } from 'e2e/engine';
 
-import { getDeepLink, login, serverHost, type Credentials } from './api';
+import { getDeepLink, login, serverHost, type Credentials, type Session } from './api';
 import { data } from './data';
 import { delay } from './timing';
 
@@ -526,27 +526,27 @@ const IN_APP_LOGIN_TIMEOUT = 10_000;
 
 const dismissLeftoverAlert = ({ screen }: Fixtures) => tapIfVisible(screen.getByRole('button', /^OK$/i));
 
-const loginInApp = async (fixtures: Fixtures, credentials: Credentials, server: string) => {
-	const session = await login(credentials);
+const loginInApp = async (fixtures: Fixtures, session: Session, server: string) => {
 	await fixtures.appduct.call('reset_app');
 	await dismissLeftoverAlert(fixtures);
 	await fixtures.appduct.call('login_with_token', { host: serverHost(server), token: session.authToken });
 	await expect(fixtures.screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: IN_APP_LOGIN_TIMEOUT });
 };
 
-const loggedInApp = async (fixtures: Fixtures, credentials: Credentials, server: string) => {
+const loggedInApp = async (fixtures: Fixtures, session: Session, server: string) => {
 	if (!appInstalled) {
 		return false;
 	}
 	try {
-		await loginInApp(fixtures, credentials, server);
+		await loginInApp(fixtures, session, server);
 		return true;
-	} catch {
+	} catch (error) {
+		console.log(`Appduct login failed, falling back to a full reset: ${error}`);
 		return false;
 	}
 };
 
-const loginAfterReset = async (fixtures: Fixtures, credentials: Credentials, server: string) => {
+const loginAfterReset = async (fixtures: Fixtures, session: Session, server: string) => {
 	await resetApp(fixtures);
 	if (fixtures.platform === 'android') {
 		await fixtures.device.closeApp();
@@ -554,7 +554,6 @@ const loginAfterReset = async (fixtures: Fixtures, credentials: Credentials, ser
 		await fixtures.app.open();
 		await expectAddWorkspaceOverPhotosPrompt(fixtures);
 	}
-	const session = await login(credentials);
 	await openDeepLink(
 		fixtures,
 		getDeepLink('auth', server, { userId: session.userId, token: session.authToken }),
@@ -563,8 +562,9 @@ const loginAfterReset = async (fixtures: Fixtures, credentials: Credentials, ser
 };
 
 export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credentials, server = data.server) => {
-	if (!(await loggedInApp(fixtures, credentials, server))) {
-		await loginAfterReset(fixtures, credentials, server);
+	const session = await login(credentials);
+	if (!(await loggedInApp(fixtures, session, server))) {
+		await loginAfterReset(fixtures, session, server);
 	}
 	await dismissAndroidSystemDialogs(fixtures);
 	await expect(fixtures.screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });

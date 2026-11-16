@@ -15,7 +15,7 @@ importers:
   .:
     dependencies:
       '@appduct/react-native':
-        specifier: ^0.16.0
+        specifier: 0.16.0
         version: 0.16.0(expo@57.0.23)(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       '@bugsnag/react-native':
         specifier: 8.4.0

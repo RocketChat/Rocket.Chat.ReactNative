@@ -45,13 +45,15 @@ const ActionSheet = memo(
 
 		useEffect(() => () => clearTimeout(pendingPresentTimeoutRef.current), []);
 
+		const dismissSheet = () => sheetRef.current?.dismiss().catch(() => {});
+
 		const hide = () => {
 			desiredOptionsRef.current = null;
 			clearTimeout(pendingPresentTimeoutRef.current);
 			const phase = phaseRef.current;
 			if (phase === 'idle' || phase === 'dismissing') return;
 			phaseRef.current = 'dismissing';
-			sheetRef.current?.dismiss().catch(() => {});
+			dismissSheet();
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		};
@@ -112,11 +114,10 @@ const ActionSheet = memo(
 		};
 
 		const onDidPresent = () => {
-			if (phaseRef.current === 'dismissing') {
-				sheetRef.current?.dismiss();
+			if (phaseRef.current !== 'presenting') {
+				dismissSheet();
 				return;
 			}
-			if (phaseRef.current !== 'presenting') return;
 			phaseRef.current = 'presented';
 			// On Android the bottom sheet is hosted in a separate window; TalkBack
 			// needs a moment after the present animation before it can target nodes

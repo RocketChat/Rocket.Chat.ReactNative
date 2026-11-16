@@ -7,6 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { appStart } from '~/actions/app';
 import { deepLinkingOpen } from '~/actions/deepLinking';
 import { logout } from '~/actions/login';
+import { selectServerClear } from '~/actions/server';
+import { disconnect } from '~/lib/services/connect';
 import database from '~/lib/database';
 import { setDeviceLanguage } from '~/i18n';
 import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
@@ -82,9 +84,10 @@ const waitForNavigatorReady = (signal: AbortSignal) =>
 		});
 	});
 
-const waitForNavigationState = <T>(find: () => T | null, signal: AbortSignal) =>
-	new Promise<T>((resolve, reject) => {
-		const navigation = Navigation.navigationRef.current!;
+const waitForNavigationState = async <T>(find: () => T | null, signal: AbortSignal) => {
+	await waitForNavigatorReady(signal);
+	const navigation = Navigation.navigationRef.current!;
+	return new Promise<T>((resolve, reject) => {
 		const resolveIfFound = () => {
 			const found = find();
 			if (found) {
@@ -99,6 +102,7 @@ const waitForNavigationState = <T>(find: () => T | null, signal: AbortSignal) =>
 		});
 		resolveIfFound();
 	});
+};
 
 const isRootRouteMounted =
 	(...names: string[]) =>
@@ -115,7 +119,6 @@ const waitForInside = async (signal: AbortSignal) => {
 	if (store.getState().app.root !== RootEnum.ROOT_INSIDE) {
 		throw new Error('Not logged in to a workspace');
 	}
-	await waitForNavigatorReady(signal);
 	await waitForNavigationState(isRootRouteMounted('InsideStack', 'MasterDetailStack'), signal);
 };
 
@@ -618,6 +621,11 @@ const remountOutside = async (signal: AbortSignal) => {
 	await waitForNavigationState(isRootRouteMounted('OutsideStack'), signal);
 };
 
+const disconnectFromWorkspace = () => {
+	disconnect();
+	store.dispatch(selectServerClear());
+};
+
 const clearLocalStorage = async () => {
 	UserPreferences.getAllKeys().forEach(key => UserPreferences.removeItem(key));
 	setDeviceLanguage();
@@ -645,9 +653,9 @@ registerTool({
 			store.dispatch(logout());
 			await loggedOut;
 		}
+		disconnectFromWorkspace();
 		await clearServersHistory();
 		await clearLocalStorage();
-		await waitForNavigatorReady(signal);
 		await remountOutside(signal);
 		return { root: RootEnum.ROOT_OUTSIDE };
 	}

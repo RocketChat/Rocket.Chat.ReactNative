@@ -141,14 +141,13 @@ describe('ActionSheet', () => {
 		expect(mockPresent).toHaveBeenCalledTimes(2);
 	});
 
-	it('ignores a presentation that finishes after the sheet was dismissed', () => {
+	it('dismisses a sheet whose presentation finishes after it was dismissed', () => {
 		act(() => showActionSheetRef({ children: <Text>first sheet</Text> }));
 		act(() => hideActionSheetRef());
 		finishDismiss();
 		finishPresent();
-		act(() => hideActionSheetRef());
 
-		expect(mockDismiss).toHaveBeenCalledTimes(1);
+		expect(mockDismiss).toHaveBeenCalledTimes(2);
 	});
 
 	it('drops a queued sheet when hide is called again during the dismissal', () => {

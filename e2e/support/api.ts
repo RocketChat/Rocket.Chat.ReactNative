@@ -7,7 +7,7 @@ export interface Credentials {
 	password: string;
 }
 
-interface Session {
+export interface Session {
 	userId: string;
 	authToken: string;
 }
