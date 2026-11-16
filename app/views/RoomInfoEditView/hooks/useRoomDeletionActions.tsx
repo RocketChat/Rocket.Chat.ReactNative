@@ -33,7 +33,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 			return false;
 		});
 
-		return permissionChecks.filter(Boolean)?.[0];
+		return permissionChecks.filter(Boolean);
 	};
 
 	const deleteTeam = async () => {
@@ -44,12 +44,12 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 				.query(Q.where('team_id', room.teamId as string), Q.where('team_main', Q.notEq(true)))
 				.fetch();
 
-			const teamChannelOwner = handleVerifyTeamChannelOwner(teamChannels);
+			const deletableChannels = handleVerifyTeamChannelOwner(teamChannels);
 
-			if (teamChannelOwner) {
+			if (deletableChannels.length) {
 				navigation.navigate('SelectListView', {
 					title: 'Delete_Team',
-					data: teamChannelOwner,
+					data: deletableChannels,
 					infoText: 'Select_channels_to_delete',
 					nextAction: (selected: string[]) => {
 						showConfirmationAlert({
