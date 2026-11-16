@@ -72,7 +72,9 @@ describe('useSubscriptionUnreads', () => {
 	});
 
 	it('falls back to empty unreads for a preview room', () => {
-		const { result } = renderHook(() => useSubscriptionUnreads(createRoomStore({ initialRoom: stubRoom }), 'user-1'));
+		const { result } = renderHook(() =>
+			useSubscriptionUnreads(createRoomStore({ rid: stubRoom.rid, initialRoom: stubRoom }), 'user-1')
+		);
 
 		expect(result.current.tunread).toEqual([]);
 	});

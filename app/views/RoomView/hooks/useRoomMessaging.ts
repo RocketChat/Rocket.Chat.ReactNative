@@ -77,7 +77,7 @@ export function useRoomMessaging({ rid, t, tmid, roomStore, ready, roomUserId, q
 			return;
 		}
 		logEvent(events.ROOM_SEND_MESSAGE);
-		sendMessageRequest(rid as string, message, tmid, userRef.current, tshow)
+		sendMessageRequest(rid, message, tmid, userRef.current, tshow)
 			.then(() => {
 				roomScreen.clearLastSeen();
 				Review.pushPositiveEvent();

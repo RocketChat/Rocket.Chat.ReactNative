@@ -131,7 +131,7 @@ export function useJumpToMessage({
 		inWindow: boolean,
 		generation: number
 	): Promise<boolean> => {
-		if (!tmid || !rid || inWindow) {
+		if (!tmid || inWindow) {
 			return true;
 		}
 		const reachable = await loadThreadMessagesUntil(

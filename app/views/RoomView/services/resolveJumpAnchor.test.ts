@@ -27,14 +27,6 @@ describe('resolveJumpAnchor', () => {
 		expect(deps.getLocalAnchorTs).not.toHaveBeenCalled();
 	});
 
-	it('returns null when rid is undefined — neither dep called', async () => {
-		const deps = makeDeps();
-		const result = await resolveJumpAnchor(undefined, makeTarget(), false, deps);
-		expect(result).toBeNull();
-		expect(deps.loadSurroundingMessages).not.toHaveBeenCalled();
-		expect(deps.getLocalAnchorTs).not.toHaveBeenCalled();
-	});
-
 	it('returns null when the target is already in window — neither dep called', async () => {
 		const deps = makeDeps();
 		const result = await resolveJumpAnchor('ROOM', makeTarget(), true, deps);

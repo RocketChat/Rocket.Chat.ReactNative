@@ -154,11 +154,7 @@ const observeQueryUntilPresent = (rid: string, store: RoomStore): (() => void) =
 	return () => subscription.unsubscribe();
 };
 
-export function observeRoom(rid: string | undefined, store: RoomStore, onReady?: () => void): () => void {
-	if (!rid) {
-		return () => {};
-	}
-
+export function observeRoom(rid: string, store: RoomStore, onReady?: () => void): () => void {
 	let cancelled = false;
 	let cleanup: () => void = () => {};
 
@@ -197,7 +193,7 @@ export const createRoomStore = ({
 	initialRoom,
 	roomUserId = null
 }: {
-	rid?: string;
+	rid: string;
 	initialRoom: TRoomOrPreview;
 	roomUserId?: string | null;
 }): RoomStore =>
@@ -211,9 +207,6 @@ export const createRoomStore = ({
 		canViewCannedResponse: false,
 
 		init: async ({ tmid, onThreadMessagesLoaded, signal }: IRoomStoreInitParams = {}): Promise<TRoomInitResult> => {
-			if (!rid) {
-				return { status: 'skipped' };
-			}
 			for (let attempt = 1; attempt <= INIT_MAX_ATTEMPTS; attempt += 1) {
 				const { room, membership } = get();
 				const result = await loadRoom(rid, room, membership, { tmid, onThreadMessagesLoaded, signal });

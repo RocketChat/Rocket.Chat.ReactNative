@@ -471,14 +471,6 @@ describe('RoomStore', () => {
 		});
 	});
 
-	it('resolves without throwing or fetching messages when init runs on a rid-less store', async () => {
-		const store = createRoomStore({ initialRoom: stubRoom });
-
-		await expect(store.getState().init()).resolves.toEqual({ status: 'skipped' });
-
-		expect(mockGetMessages).not.toHaveBeenCalled();
-	});
-
 	it('join() sets membership to subscribed', async () => {
 		setupAbsentThenPresentRow();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });

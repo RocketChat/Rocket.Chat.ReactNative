@@ -183,7 +183,7 @@ export interface IUseMessageActionsParams {
 	messageActionStore: TMessageActionStore;
 	showActionSheet: (options: TActionSheetOptions) => void;
 	hideActionSheet: () => void;
-	rid?: string;
+	rid: string;
 	tmid?: string;
 	onThreadPress: (item: TAnyMessageModel) => void;
 	messageComposerRef: RefObject<IMessageComposerRef | null>;
@@ -262,7 +262,7 @@ export interface IUseJumpToMessageResult {
 }
 
 export interface IUseOmnichannelPermissionsParams {
-	rid?: string;
-	t?: RoomType;
+	rid: string;
+	t: RoomType;
 	roomStore: RoomStore;
 }

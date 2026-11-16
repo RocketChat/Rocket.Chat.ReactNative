@@ -3,12 +3,12 @@ import { anchorForServerChunk } from './anchorResolver';
 import { type AnchorMessage, type IJumpAnchorDeps, type IJumpTarget } from '../definitions';
 
 export const resolveJumpAnchor = async (
-	rid: string | undefined,
+	rid: string,
 	target: IJumpTarget,
 	inWindow: boolean,
 	deps: IJumpAnchorDeps
 ): Promise<number | null> => {
-	if (target.tmid || !rid || inWindow) {
+	if (target.tmid || inWindow) {
 		return null;
 	}
 

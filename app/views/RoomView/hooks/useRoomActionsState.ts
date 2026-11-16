@@ -48,7 +48,7 @@ export const useRoomActionsState = (rid: string, roomStore: RoomStore) => {
 				t: room.t,
 				status: fromSubscription(r => r.status, undefined)(s),
 				roomName: getRoomTitle(room),
-				roomIsGroupChat: fromSubscription(isGroupChat, false)(s),
+				roomIsGroupChat: isGroupChat(room),
 				teamMain: fromSubscription(r => !!r.teamMain, false)(s),
 				encrypted: fromSubscription(r => r.encrypted, undefined)(s),
 				disableNotifications: fromSubscription(r => r.disableNotifications, undefined)(s)

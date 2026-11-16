@@ -46,7 +46,7 @@ const mockTakeInquiry = takeInquiry as jest.Mock;
 const mockTakeResume = takeResume as jest.Mock;
 
 const makeStore = (room: TRoomOrPreview) => {
-	const store = createRoomStore({ initialRoom: room });
+	const store = createRoomStore({ rid: room.rid, initialRoom: room });
 	store.setState({ join: jest.fn() });
 	return store;
 };
