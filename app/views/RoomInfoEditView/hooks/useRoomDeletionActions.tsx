@@ -55,7 +55,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 						showConfirmationAlert({
 							message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
 							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-							onPress: () => actionDeleteRoom('team', room, selected)
+							onPress: () => dispatch(actionDeleteRoom('team', room, selected))
 						});
 					}
 				});
