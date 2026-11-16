@@ -622,6 +622,8 @@
   "Settings": "الإعدادات",
   "Settings_succesfully_changed": "تم تعديل الإعدادات بنجاح!",
   "Share": "مشاركة",
+  "Share_encrypted_room_key_missing": "في انتظار مفاتيح التشفير",
+  "Share_encrypted_room_password_required": "أدخل كلمة مرور E2EE للمشاركة هنا",
   "Share_Link": "مشاركة رابط",
   "Share_no_valid_attachments": "تعذر العثور على الملف الذي تمت مشاركته",
   "Share_this_app": "مشاركة هذا البرنامج",
