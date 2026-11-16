@@ -23,7 +23,7 @@ import { parseJson } from '~/lib/methods/helpers/parseJson';
 import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, MARKDOWN_STYLES } from '../constants';
 import database from '~/lib/database';
 import Navigation from '~/lib/navigation/appNavigation';
-import { emitter } from '~/lib/methods/helpers/emitter';
+import { emitter, type TEmitterEvents } from '~/lib/methods/helpers/emitter';
 import { useComposerRid, useComposerRoomTitle, useComposerSharing, useComposerTmid, useComposerType } from '../ComposerStore';
 import { useMessageAction, useMessageActionStoreApi } from '~/containers/message/stores/MessageActionStore';
 import { getMessageById } from '~/lib/database/services/Message';
@@ -347,7 +347,7 @@ export const ComposerInput = memo(
 
 		useFocusEffect(
 			useCallback(() => {
-				emitter.on('addMarkdown', ({ style }) => {
+				const addMarkdown = ({ style }: TEmitterEvents['addMarkdown']) => {
 					const { start, end } = selectionRef.current;
 					const text = textRef.current;
 					const markdown = MARKDOWN_STYLES[style];
@@ -356,8 +356,8 @@ export const ComposerInput = memo(
 						start: start + markdown.length,
 						end: start === end ? start + markdown.length : end + markdown.length
 					});
-				});
-				emitter.on('toolbarMention', () => {
+				};
+				const toolbarMention = () => {
 					if (autocompleteType) {
 						return;
 					}
@@ -366,10 +366,12 @@ export const ComposerInput = memo(
 					const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
 					setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
 					setAutocompleteParams({ text: '', type: '@' });
-				});
+				};
+				emitter.on('addMarkdown', addMarkdown);
+				emitter.on('toolbarMention', toolbarMention);
 				return () => {
-					emitter.off('addMarkdown');
-					emitter.off('toolbarMention');
+					emitter.off('addMarkdown', addMarkdown);
+					emitter.off('toolbarMention', toolbarMention);
 				};
 			}, [autocompleteType, setInput, setAutocompleteParams])
 		);
