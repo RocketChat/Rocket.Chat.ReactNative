@@ -6,27 +6,28 @@ import { type ISubscription } from '~/definitions';
 
 const mockDispatch = jest.fn();
 const mockFetch = jest.fn();
+let mockDeletableRids: string[] = [];
 
 jest.mock('react-redux', () => ({ useDispatch: () => mockDispatch }));
+jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }));
 jest.mock('~/lib/database', () => ({
 	active: { get: () => ({ query: () => ({ fetch: mockFetch }) }) }
 }));
 jest.mock('~/lib/methods/helpers', () => ({
 	getRoomTitle: jest.fn(() => 'Team'),
 	showConfirmationAlert: jest.fn(),
-	showErrorAlert: jest.fn()
+	showErrorAlert: jest.fn(),
+	hasPermission: jest.fn((_permissions: unknown[], rid: string) => Promise.resolve([mockDeletableRids.includes(rid)]))
 }));
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 const team = { rid: 'team-rid', t: 'c', teamId: 'team-id', teamMain: true } as ISubscription;
-const publicChannel = { rid: 'channel-rid', t: 'c' };
-const privateGroup = { rid: 'group-rid', t: 'p' };
+const publicChannel = { rid: 'channel-rid', name: 'channel', t: 'c', alert: true };
+const privateGroup = { rid: 'group-rid', name: 'group', t: 'p', alert: false };
 
-const renderDeletionActions = ({ deleteCPermission = true, deletePPermission = true } = {}) => {
+const renderDeletionActions = () => {
 	const navigation = { navigate: jest.fn() };
-	const { result } = renderHook(() =>
-		useRoomDeletionActions({ navigation: navigation as any, room: team, deleteCPermission, deletePPermission })
-	);
+	const { result } = renderHook(() => useRoomDeletionActions({ navigation: navigation as any, room: team }));
 	return { navigation, deleteTeam: result.current.deleteTeam };
 };
 
@@ -35,14 +36,15 @@ const confirm = () => (showConfirmationAlert as jest.Mock).mock.calls[0][0].onPr
 describe('useRoomDeletionActions', () => {
 	beforeEach(() => jest.clearAllMocks());
 
-	it('offers every team channel the user can delete, then deletes the team with the picked ones', async () => {
+	it('offers the team channels the user can delete in each channel, then deletes the team with the picked ones', async () => {
 		mockFetch.mockResolvedValue([publicChannel, privateGroup]);
-		const { navigation, deleteTeam } = renderDeletionActions({ deletePPermission: false });
+		mockDeletableRids = ['channel-rid'];
+		const { navigation, deleteTeam } = renderDeletionActions();
 
 		await deleteTeam();
 
 		const { data, nextAction } = navigation.navigate.mock.calls[0][1];
-		expect(data).toEqual([publicChannel]);
+		expect(data).toEqual([{ rid: 'channel-rid', name: 'channel', t: 'c' }]);
 
 		nextAction(['channel-rid']);
 		confirm();
@@ -52,7 +54,8 @@ describe('useRoomDeletionActions', () => {
 
 	it('deletes the team directly when the user can delete none of its channels', async () => {
 		mockFetch.mockResolvedValue([publicChannel, privateGroup]);
-		const { navigation, deleteTeam } = renderDeletionActions({ deleteCPermission: false, deletePPermission: false });
+		mockDeletableRids = [];
+		const { navigation, deleteTeam } = renderDeletionActions();
 
 		await deleteTeam();
 		confirm();

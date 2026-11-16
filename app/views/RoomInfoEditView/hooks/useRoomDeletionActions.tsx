@@ -8,32 +8,33 @@ import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
 import { type TNavigation } from '~/stacks/stackType';
 import database from '~/lib/database';
 import I18n from '~/i18n';
-import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { getRoomTitle, hasPermission, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import log from '~/lib/methods/helpers/log';
 import { deleteRoom as actionDeleteRoom } from '~/actions/room';
-import { type ISubscription, type TSubscriptionModel } from '~/definitions';
+import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { RoomType, type ISubscription, type TSubscriptionModel } from '~/definitions';
 
 interface IUseRoomDeletionActions {
 	navigation: NativeStackNavigationProp<(ChatsStackParamList | ModalStackParamList) & TNavigation, 'RoomInfoEditView'>;
 	room: ISubscription;
-	deleteCPermission: boolean;
-	deletePPermission: boolean;
 }
 
-const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPermission }: IUseRoomDeletionActions) => {
+const useRoomDeletionActions = ({ navigation, room }: IUseRoomDeletionActions) => {
 	const dispatch = useDispatch();
+	const deleteChannelRoles = useAppSelector(state => state.permissions['delete-c']);
+	const deleteGroupRoles = useAppSelector(state => state.permissions['delete-p']);
 
-	const handleVerifyTeamChannelOwner = (teamChannels: TSubscriptionModel[]) => {
-		const permissionChecks = teamChannels.map(channel => {
-			const hasDeletePermission = channel.t === 'c' ? deleteCPermission : deletePPermission;
-			if (hasDeletePermission) {
-				return channel;
-			}
+	const canDeleteChannel = async (channel: TSubscriptionModel) => {
+		const [canDelete] = await hasPermission(
+			[channel.t === RoomType.CHANNEL ? deleteChannelRoles : deleteGroupRoles],
+			channel.rid
+		);
+		return canDelete;
+	};
 
-			return false;
-		});
-
-		return permissionChecks.filter(Boolean);
+	const getDeletableChannels = async (teamChannels: TSubscriptionModel[]) => {
+		const canDelete = await Promise.all(teamChannels.map(canDeleteChannel));
+		return teamChannels.filter((_, index) => canDelete[index]).map(({ rid, name, t }) => ({ rid, name, t }));
 	};
 
 	const deleteTeam = async () => {
@@ -44,7 +45,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 				.query(Q.where('team_id', room.teamId as string), Q.where('team_main', Q.notEq(true)))
 				.fetch();
 
-			const deletableChannels = handleVerifyTeamChannelOwner(teamChannels);
+			const deletableChannels = await getDeletableChannels(teamChannels);
 
 			if (deletableChannels.length) {
 				navigation.navigate('SelectListView', {

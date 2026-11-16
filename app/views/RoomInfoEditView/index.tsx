@@ -127,12 +127,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		route.params?.rid
 	);
 
-	const { deleteTeam, deleteRoom } = useRoomDeletionActions({
-		navigation,
-		room,
-		deleteCPermission,
-		deletePPermission
-	});
+	const { deleteTeam, deleteRoom } = useRoomDeletionActions({ navigation, room });
 
 	const submit = async () => {
 		const { name, description, topic, announcement, joinCode } = getValues();
