@@ -1,6 +1,7 @@
 import { type ReactElement, type Ref, useRef, useImperativeHandle } from 'react';
 import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
+import { useIsFocused } from '@react-navigation/native';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
@@ -70,8 +71,10 @@ export const MessageComposer = ({
 	const altTextSupported = useAltTextSupported();
 	const attachments = useComposerAttachments();
 
+	const isFocused = useIsFocused();
+
 	useBackHandler(() => {
-		if (showEmojiSearchbar) {
+		if (isFocused && (showEmojiSearchbar || showEmojiKeyboard)) {
 			resetKeyboard();
 			return true;
 		}
@@ -223,7 +226,7 @@ export const MessageComposer = ({
 		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
-	const focusComposerInput = () => composerInputComponentRef.current?.focus();
+	const focusComposerInput = (delay?: number) => composerInputComponentRef.current?.focus(delay);
 
 	const accessibilityFocusOnInput = () => {
 		const node = findNodeHandle(composerInputRef.current);
