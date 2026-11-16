@@ -26,6 +26,17 @@ export type ImEndpoints = {
 			};
 		};
 	};
+	'im.counters': {
+		GET: (params: { roomId: string }) => {
+			joined: boolean;
+			members: number;
+			unreads: number;
+			unreadsFrom: Date;
+			msgs: number;
+			latest: Date;
+			userMentions: number;
+		};
+	};
 	'im.files': {
 		GET: (params: { roomId: IServerRoom['_id']; offset: number; sort: string | { uploadedAt: number } }) => {
 			files: IServerAttachment[];

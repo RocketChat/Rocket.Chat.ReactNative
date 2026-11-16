@@ -383,7 +383,7 @@ export const toggleReadStatus = (
 	return sdk.post(endpoint, payload);
 };
 
-export const getRoomCounters = (roomId: string, t: Exclude<RoomType, 'd'>) =>
+export const getRoomCounters = (roomId: string, t: RoomType) =>
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(t)}.counters`, { roomId });
 
