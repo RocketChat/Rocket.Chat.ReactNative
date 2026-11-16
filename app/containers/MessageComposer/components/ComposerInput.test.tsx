@@ -8,6 +8,7 @@ import { ComposerProvider } from '../ComposerStore';
 import { createMessageActionStore, MessageActionProvider } from '~/containers/message/stores/MessageActionStore';
 import { type IComposerInput } from '../interfaces';
 import { loadDraftMessage } from '~/lib/methods/draftMessage';
+import { getMessageById } from '~/lib/database/services/Message';
 
 jest.mock('react-native', () => {
 	const actual = jest.requireActual('react-native');
@@ -46,8 +47,10 @@ jest.mock('../hooks/useIOSBackSwipeHandler', () => ({
 }));
 jest.mock('../hooks/useAutoSaveDraft', () => ({ useAutoSaveDraft: jest.fn(() => ({ saveDraft: jest.fn() })) }));
 jest.mock('~/lib/methods/draftMessage', () => ({ loadDraftMessage: jest.fn(() => Promise.resolve(undefined)) }));
+jest.mock('~/lib/database/services/Message', () => ({ getMessageById: jest.fn(() => Promise.resolve(null)) }));
 
 const mockLoadDraftMessage = loadDraftMessage as jest.Mock;
+const mockGetMessageById = getMessageById as jest.Mock;
 
 const AutocompleteProbe = () => {
 	const params = useAutocompleteParams();
@@ -65,17 +68,19 @@ const composerState = {
 
 const renderInput = ({
 	action,
-	sharing = false
+	sharing = false,
+	tmid = undefined
 }: {
 	action?: Parameters<typeof MessageActionProvider>[0]['initialAction'];
 	sharing?: boolean;
+	tmid?: string;
 } = {}) => {
 	const composerRef = createRef<IComposerInput>();
 	const inputRef = createRef<any>();
 	const messageActionStore = createMessageActionStore(action);
 	const tree = (
 		<MessageActionProvider store={messageActionStore}>
-			<ComposerProvider {...(composerState as any)} sharing={sharing}>
+			<ComposerProvider {...(composerState as any)} sharing={sharing} tmid={tmid}>
 				<MessageComposerProvider>
 					<>
 						<ComposerInput ref={composerRef} inputRef={inputRef} />
@@ -234,5 +239,18 @@ describe('ComposerInput', () => {
 
 		act(() => composerRef.current?.setInput(''));
 		expect(screen.getByText('Message #Room', { includeHiddenElements: true })).toBeOnTheScreen();
+	});
+
+	it('loads thread reply text when editing with tmid', async () => {
+		mockGetMessageById.mockResolvedValue({ id: 'reply-1', msg: 'thread reply text', attachments: [] });
+		const { composerRef } = renderInput({ action: { kind: 'edit', messageId: 'reply-1' }, tmid: 'thread-1' });
+
+		await act(async () => {
+			await Promise.resolve();
+			await Promise.resolve();
+		});
+
+		expect(mockGetMessageById).toHaveBeenCalledWith('reply-1', 'thread-1');
+		expect(composerRef.current?.getText()).toBe('thread reply text');
 	});
 });
