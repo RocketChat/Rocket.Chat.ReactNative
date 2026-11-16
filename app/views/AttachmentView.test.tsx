@@ -96,9 +96,6 @@ jest.mock('../lib/methods/helpers/formatAttachmentUrl', () => ({
 jest.mock('../lib/methods/helpers/deviceInfo', () => ({
 	isAndroid: false
 }));
-jest.mock('../lib/methods/helpers/info', () => ({
-	showErrorAlert: jest.fn()
-}));
 
 jest.mock('../lib/methods/helpers/fileDownload', () => ({
 	fileDownload: jest.fn()

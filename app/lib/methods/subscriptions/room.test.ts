@@ -49,9 +49,6 @@ jest.mock('../helpers/log', () => ({
 jest.mock('../helpers/debounce', () => ({
 	debounce: (fn: (...args: unknown[]) => unknown) => fn
 }));
-jest.mock('../helpers/compareServerVersion', () => ({
-	compareServerVersion: jest.fn()
-}));
 
 jest.mock('../helpers/protectedFunction', () => ({
 	__esModule: true,
