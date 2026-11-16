@@ -127,8 +127,8 @@ wait_for_gms_module_update() {
 }
 
 if [ "$PLATFORM" = "android" ]; then
-  root_android_adbd
   ensure_android_window_focus
+  root_android_adbd
   wait_for_gms_module_update
   android_shell settings put system show_touches 1 || true
   android_shell settings put secure autofill_service null || true
