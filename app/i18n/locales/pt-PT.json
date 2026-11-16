@@ -555,6 +555,8 @@
   "Settings": "Definições",
   "Settings_succesfully_changed": "Definições guardadas com sucesso!",
   "Share": "Partilhar",
+  "Share_encrypted_room_key_missing": "A aguardar as chaves de encriptação",
+  "Share_encrypted_room_password_required": "Introduza a sua senha E2EE para partilhar aqui",
   "Share_no_valid_attachments": "Não foi possível encontrar o ficheiro partilhado",
   "Show_message_actions": "Mostrar ações da mensagem",
   "Show_Password": "Mostrar palavra-passe",
