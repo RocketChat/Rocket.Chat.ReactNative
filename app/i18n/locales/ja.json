@@ -561,6 +561,8 @@
   "Settings": "設定",
   "Settings_succesfully_changed": "設定が更新されました！",
   "Share": "シェア",
+  "Share_encrypted_room_key_missing": "暗号化キーを待機中",
+  "Share_encrypted_room_password_required": "ここで共有するにはE2EEパスワードを入力してください",
   "Share_Link": "リンクをシェアする",
   "Share_no_valid_attachments": "共有されたファイルが見つかりませんでした",
   "Share_this_app": "このアプリをシェアする",

@@ -24,6 +24,7 @@ import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
 import EventEmitter from '~/lib/methods/helpers/events';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { getServerError } from '~/lib/methods/helpers/getServerError';
 import { MessageTypeValues } from './messageTypes';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '../Styles';
@@ -135,6 +136,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 
 	const submit = async () => {
 		const { name, description, topic, announcement, joinCode } = getValues();
+		const saveFailedMessage = I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') });
 		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
 
@@ -196,18 +198,19 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		try {
 			await saveRoomSettings(room.rid, params);
 		} catch (e: any) {
-			if (e.error === 'error-invalid-room-name') {
-				setError('name', { message: e, type: 'validate' });
+			const { code, reason } = getServerError(e);
+			const nameErrors: Partial<Record<string, string>> = {
+				'error-invalid-room-name': I18n.t('error-invalid-room-name', { room_name: name }),
+				'error-duplicate-channel-name': I18n.t('Channel_name_already_taken')
+			};
+			const nameError = nameErrors[code];
+
+			if (nameError) {
+				setError('name', { message: nameError, type: 'validate' });
 				setFocus('name');
 			}
 
-			if (e.error === 'error-duplicate-channel-name') {
-				setError('name', { message: I18n.t('Channel_name_already_taken'), type: 'validate' });
-				setFocus('name');
-			}
-
-			const a11yAnnouncement = e.error === 'error-duplicate-channel-name' ? I18n.t('Channel_name_already_taken') : e.reason;
-			AccessibilityInfo.announceForAccessibility(a11yAnnouncement);
+			AccessibilityInfo.announceForAccessibility(nameError || reason || saveFailedMessage);
 
 			error = true;
 			log(e);
@@ -217,7 +220,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setTimeout(() => {
 			if (error) {
 				logEvent(events.RI_EDIT_SAVE_F);
-				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') }));
+				showErrorAlert(saveFailedMessage);
 			} else {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Settings_succesfully_changed') });
 			}

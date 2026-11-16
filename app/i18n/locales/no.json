@@ -867,6 +867,8 @@
   "Settings": "Innstillinger",
   "Settings_succesfully_changed": "Innstillinger ble endret!",
   "Share": "Dele",
+  "Share_encrypted_room_key_missing": "Venter på krypteringsnøkler",
+  "Share_encrypted_room_password_required": "Skriv inn E2EE-passordet ditt for å dele her",
   "Share_Link": "Dele lenke",
   "Share_no_valid_attachments": "Fant ikke den delte filen",
   "Share_this_app": "Del denne appen",
