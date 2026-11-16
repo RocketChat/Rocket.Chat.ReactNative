@@ -310,8 +310,7 @@ export const ModalRadioButton = () =>
 				options: [
 					{ text: { type: 'plain_text', text: 'Active' }, value: 'active' },
 					{ text: { type: 'plain_text', text: 'Inactive' }, value: 'inactive' }
-				],
-				initialValue: 'active'
+				]
 			},
 			label: {
 				type: 'plain_text',

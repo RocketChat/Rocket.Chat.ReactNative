@@ -3,9 +3,11 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import { useContext, useState, createContext, type Dispatch, type SetStateAction } from 'react';
 
 import { videoConfJoin } from '~/lib/methods/videoConf';
-import { type IText } from './interfaces';
+import { type IElement, type IText } from './interfaces';
 
 export const textParser = ([{ text }]: IText[]) => text;
+
+export const getInitialValue = (element: IElement) => element.initialValue || element.initialOption?.value;
 
 export const defaultContext: any = {
 	action: (...args: any) => console.log(args),

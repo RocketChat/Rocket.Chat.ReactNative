@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '~/i18n';
@@ -6,7 +7,7 @@ import Touch from '../Touch';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
 import { textParser } from './utils';
-import { type IRadioButton } from './interfaces';
+import { type IRadioButton, type Option } from './interfaces';
 
 const styles = StyleSheet.create({
 	option: {
@@ -25,18 +26,24 @@ const styles = StyleSheet.create({
 
 export const RadioButton = ({ element, value, loading, onChange }: IRadioButton) => {
 	const { colors } = useTheme();
+	const [selected, setSelected] = useState(value);
 	const options = element.options || [];
+
+	const onPress = (optionValue: Option['value']) => {
+		setSelected(optionValue);
+		onChange({ value: optionValue });
+	};
 
 	return (
 		<View accessibilityRole='radiogroup'>
 			{options.map(option => {
-				const checked = value === option.value;
+				const checked = selected === option.value;
 				const label = textParser([option.text]);
 				return (
 					<Touch
 						key={option.value}
 						testID={`uikit-radio-${element.actionId}-${option.value}`}
-						onPress={() => onChange({ value: option.value })}
+						onPress={() => onPress(option.value)}
 						disabled={loading}
 						style={styles.option}
 						accessible

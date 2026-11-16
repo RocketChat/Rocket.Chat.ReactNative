@@ -9,7 +9,7 @@ import EventEmitter from '../lib/methods/helpers/events';
 import { headerLeftActions, headerRightActions } from '../lib/methods/helpers/navigation/headerActions';
 import { ModalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
-import { textParser } from '../containers/UIKit/utils';
+import { getInitialValue, textParser } from '../containers/UIKit/utils';
 import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions, type TModalAction } from '../containers/UIKit/interfaces';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '~/lib/apps/actions';
@@ -63,8 +63,6 @@ const groupStateByBlockIdMap = (obj: any, [key, { blockId, value }]: TElementToS
 	return obj;
 };
 const groupStateByBlockId = (obj: { [key: string]: any }) => Object.entries(obj).reduce(groupStateByBlockIdMap, {});
-const getInitialValue = (element: any) => element.initialValue || element.initialOption?.value;
-
 const filterInputFields = ({ element, elements = [] }: { element: any; elements?: any[] }) => {
 	if (element && getInitialValue(element)) {
 		return true;

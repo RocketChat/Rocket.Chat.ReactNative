@@ -5701,7 +5701,7 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Active, Selected"
+            accessibilityLabel="Active, Unselected"
             accessibilityRole="radio"
             accessible={true}
             style={
@@ -5720,7 +5720,7 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
               style={
                 [
                   {
-                    "color": "#156FF5",
+                    "color": "#9EA2A8",
                     "fontSize": 20,
                   },
                   [
@@ -5738,7 +5738,7 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
             <Text
               style={
