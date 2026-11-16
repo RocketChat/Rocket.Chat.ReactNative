@@ -6,21 +6,6 @@ import Deferred from './helpers/deferred';
 
 jest.unmock('./encryption');
 
-// Heavy native deps and helpers are not relevant to encryptMessage's branching;
-// stub them so the module can be loaded in jsdom/node without a native runtime.
-jest.mock('@rocket.chat/mobile-crypto', () => ({
-	pbkdf2Hash: jest.fn(),
-	aesEncrypt: jest.fn(),
-	aesDecrypt: jest.fn(),
-	randomBytes: jest.fn(),
-	rsaGenerateKeys: jest.fn(),
-	rsaImportKey: jest.fn(),
-	rsaExportKey: jest.fn(),
-	calculateFileChecksum: jest.fn(),
-	aesGcmDecrypt: jest.fn(),
-	aesGcmEncrypt: jest.fn()
-}));
-
 jest.mock('expo-file-system/legacy', () => ({
 	deleteAsync: jest.fn()
 }));

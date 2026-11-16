@@ -1,33 +1,38 @@
 import { encryptionSet, encryptionSetBanner, encryptionDecodeKey, encryptionDecodeKeyFailure } from '../actions/encryption';
-import { mockedStore } from './mockedStore';
-import { initialState } from './encryption';
+import { createMockedStore } from './mockedStore';
 
 describe('test encryption reducer', () => {
 	it('should return initial state', () => {
-		const state = mockedStore.getState().encryption;
-		expect(state).toEqual(initialState);
+		const store = createMockedStore();
+		expect(store.getState().encryption).toEqual({ banner: '', enabled: false, failure: false });
 	});
 
 	it('should return modified store after encryptionSet', () => {
-		mockedStore.dispatch(encryptionSet(true, 'BANNER'));
-		const state = mockedStore.getState().encryption;
-		expect(state).toEqual({ banner: 'BANNER', enabled: true, failure: false });
+		const store = createMockedStore();
+		store.dispatch(encryptionSet(true, 'BANNER'));
+		expect(store.getState().encryption).toEqual({ banner: 'BANNER', enabled: true, failure: false });
 	});
 
-	it('should return initial state after encryptionSetBanner', () => {
-		mockedStore.dispatch(encryptionSetBanner('BANNER_NEW'));
-		const state = mockedStore.getState().encryption;
-		expect(state).toEqual({ banner: 'BANNER_NEW', enabled: true, failure: false });
+	it('should keep enabled and failure after encryptionSetBanner', () => {
+		const store = createMockedStore();
+		store.dispatch(encryptionDecodeKeyFailure());
+		store.dispatch(encryptionSet(true, 'BANNER'));
+		store.dispatch(encryptionSetBanner('BANNER_NEW'));
+		expect(store.getState().encryption).toEqual({ banner: 'BANNER_NEW', enabled: true, failure: true });
 	});
 
-	it('should return decode key state changes', () => {
-		mockedStore.dispatch(encryptionSet(false, ''));
-		mockedStore.dispatch(encryptionDecodeKey('asd'));
-		const state = mockedStore.getState().encryption;
-		expect(state).toEqual({ ...initialState, failure: false });
+	it('should clear only failure after encryptionDecodeKey', () => {
+		const store = createMockedStore();
+		store.dispatch(encryptionDecodeKeyFailure());
+		store.dispatch(encryptionSet(true, 'BANNER'));
+		store.dispatch(encryptionDecodeKey('asd'));
+		expect(store.getState().encryption).toEqual({ banner: 'BANNER', enabled: true, failure: false });
+	});
 
-		mockedStore.dispatch(encryptionDecodeKeyFailure());
-		const stateF = mockedStore.getState().encryption;
-		expect(stateF).toEqual({ ...initialState, failure: true });
+	it('should disable encryption and set failure after encryptionDecodeKeyFailure', () => {
+		const store = createMockedStore();
+		store.dispatch(encryptionSet(true, 'BANNER'));
+		store.dispatch(encryptionDecodeKeyFailure());
+		expect(store.getState().encryption).toEqual({ banner: 'BANNER', enabled: false, failure: true });
 	});
 });

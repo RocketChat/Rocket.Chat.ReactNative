@@ -1,0 +1,15 @@
+{
+	"plaintext": {
+		"msg": "Olá from the web client 🔐"
+	},
+	"v1": {
+		"algorithm": "rc.v1.aes-sha2",
+		"ciphertext": "0785902a6c22TB8IHvDsdZSRl6LBf2mFGTROy/wjpbgq7BcnJgr/rCF/ma0Virez+14s6R8liNn2Fxe6htiERaThq12LuQiXlA=="
+	},
+	"v2": {
+		"algorithm": "rc.v2.aes-sha2",
+		"kid": "38eda34e-82f1-42dc-9430-53cb350b1b8c",
+		"iv": "4lea21KW+M/qHM89",
+		"ciphertext": "k6cBfX2uDcx+ByHIB/FTEYM99x2bFrQkJRREJLy4JMztqSqBlEjQJGo21RSGpMe6e4zaHdh06Q=="
+	}
+}

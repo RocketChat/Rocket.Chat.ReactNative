@@ -150,7 +150,6 @@ jest.mock('~/lib/hooks/useIsScreenReaderEnabled', () => ({
 jest.mock('./PeerList', () => ({ PeerList: () => null }));
 jest.mock('./FilterHeader', () => ({ FilterHeader: () => null }));
 jest.mock('./SelectedPeer', () => ({ SelectedPeer: () => null }));
-// getPeerAutocompleteOptions → restApi → @rocket.chat/mobile-crypto (ESM, not transformable).
 jest.mock('~/lib/services/voip/getPeerAutocompleteOptions', () => ({
 	getPeerAutocompleteOptions: jest.fn().mockResolvedValue([])
 }));

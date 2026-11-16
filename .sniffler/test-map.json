@@ -160,7 +160,13 @@
 			"app/views/E2EEToggleRoomView/**",
 			"app/sagas/room.js",
 			"app/sagas/encryption.js",
-			"app/sagas/createChannel.js"
+			"app/sagas/createChannel.js",
+			"app/lib/encryption/**",
+			"app/lib/methods/sendMessage.ts",
+			"app/lib/methods/sendFileMessage/**",
+			"app/lib/methods/helpers/mergeSubscriptionsRooms.ts",
+			"app/lib/methods/subscriptions/rooms.ts",
+			"app/lib/services/restApi.ts"
 		]
 	},
 	{
