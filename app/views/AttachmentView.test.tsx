@@ -94,6 +94,7 @@ jest.mock('../lib/methods/helpers/formatAttachmentUrl', () => ({
 	encodeAttachmentUrl: (url: string) => url
 }));
 jest.mock('../lib/methods/helpers/deviceInfo', () => ({
+	...jest.requireActual('../lib/methods/helpers/deviceInfo'),
 	isAndroid: false
 }));
 

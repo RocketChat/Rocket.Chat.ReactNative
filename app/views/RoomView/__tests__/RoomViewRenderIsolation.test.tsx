@@ -12,6 +12,7 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => ({ setOptions: mockSetOptions })
 }));
 jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
+	...jest.requireActual('~/lib/methods/helpers/deviceInfo'),
 	hasNativeHeaderBar: false
 }));
 jest.mock('~/lib/methods/helpers/helpers', () => ({
