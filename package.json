@@ -242,10 +242,7 @@
 		"install": {
 			"exclude": [
 				"typescript",
-				"react-native-keyboard-controller",
-				"jest",
-				"jest-cli",
-				"@types/jest"
+				"react-native-keyboard-controller"
 			]
 		}
 	},
