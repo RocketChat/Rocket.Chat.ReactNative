@@ -67,6 +67,9 @@ export const handleModerator = async (
 	username: string,
 	callback: () => Promise<void>
 ): Promise<void> => {
+	if (room.t === RoomType.DIRECT) {
+		return;
+	}
 	try {
 		await toggleRoomModerator({
 			roomId: room.rid,
@@ -191,6 +194,9 @@ export const handleLeader = async (
 	username: string,
 	callback: () => Promise<void>
 ): Promise<void> => {
+	if (room.t === RoomType.DIRECT) {
+		return;
+	}
 	try {
 		await toggleRoomLeader({
 			roomId: room.rid,
@@ -243,6 +249,9 @@ export const handleOwner = async (
 	room: TSubscriptionModel,
 	callback: Function
 ): Promise<void> => {
+	if (room.t === RoomType.DIRECT) {
+		return;
+	}
 	try {
 		await toggleRoomOwner({
 			roomId: room.rid,

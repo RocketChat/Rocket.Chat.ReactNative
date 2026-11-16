@@ -192,7 +192,7 @@ const RoomInfoView = (): ReactElement => {
 			const sub = subRoom.observe();
 			subscription.current = sub.subscribe(changes => {
 				setRoom(changes.asPlain());
-				setHeader(roomType === RoomType.DIRECT ? false : canEdit);
+				setHeader(!isDirect && canEdit);
 			});
 		} else {
 			try {
@@ -205,7 +205,7 @@ const RoomInfoView = (): ReactElement => {
 			}
 		}
 		setShowEdit(canEdit);
-		setHeader(roomType === RoomType.DIRECT ? false : canEdit);
+		setHeader(!isDirect && canEdit);
 	};
 
 	// Prevents from flashing RoomInfoView on the header title before fetching actual room data

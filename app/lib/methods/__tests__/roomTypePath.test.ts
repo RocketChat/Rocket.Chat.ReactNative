@@ -1,5 +1,5 @@
 import { RoomType } from '~/definitions/IRoom';
-import { pathSegmentToRoomType } from '../roomTypePath';
+import { pathSegmentToRoomType, roomTypeToPathSegment } from '../roomTypePath';
 
 describe('roomTypePath', () => {
 	it.each([
@@ -7,8 +7,9 @@ describe('roomTypePath', () => {
 		['group', RoomType.GROUP],
 		['direct', RoomType.DIRECT],
 		['channels', RoomType.OMNICHANNEL]
-	])('reads the permalink segment %s as room type %s', (segment, roomType) => {
+	])('maps the permalink segment %s to room type %s and back', (segment, roomType) => {
 		expect(pathSegmentToRoomType(segment)).toBe(roomType);
+		expect(roomTypeToPathSegment(roomType)).toBe(segment);
 	});
 
 	it.each([undefined, '', 'invite', 'c'])('reads %p as no room type', segment => {

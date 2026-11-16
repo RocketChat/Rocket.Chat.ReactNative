@@ -30,11 +30,11 @@ export function getPermalinkChannel(channel: TSubscriptionModel): string {
 }
 
 export function buildPermalinkMessage(server: string, isGoupChat: boolean, room: ISubscription, messageId: string) {
-	const roomType = roomTypeToPathSegment(room.t);
-	return `${server}/${roomType}/${isGoupChat ? room.rid : encodeURIComponent(room.name)}?msg=${messageId}`;
+	const pathSegment = roomTypeToPathSegment(room.t);
+	return `${server}/${pathSegment}/${isGoupChat ? room.rid : encodeURIComponent(room.name)}?msg=${messageId}`;
 }
 
 export function buildPermalinkChannel(server: string, channel: ISubscription) {
-	const roomType = roomTypeToPathSegment(channel.t);
-	return `${server}/${roomType}/${encodeURIComponent(channel.name)}`;
+	const pathSegment = roomTypeToPathSegment(channel.t);
+	return `${server}/${pathSegment}/${encodeURIComponent(channel.name)}`;
 }

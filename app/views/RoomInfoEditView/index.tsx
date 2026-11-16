@@ -229,6 +229,9 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 
 	const toggleArchive = () => {
 		const { rid, archived, t } = room;
+		if (t === RoomType.DIRECT) {
+			return;
+		}
 
 		const action = I18n.t(`${archived ? 'un' : ''}archive`);
 		Alert.alert(

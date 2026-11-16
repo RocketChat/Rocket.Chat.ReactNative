@@ -15,7 +15,7 @@ import {
 	type IRoomSettings,
 	type IServerRoom,
 	type ISidebarCategory,
-	RoomType
+	type RoomType
 } from '~/definitions';
 import { type TParams } from '~/definitions/ILivechatEditView';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
@@ -592,8 +592,6 @@ export const toggleMuteUserInRoom = (rid: string, username: string | undefined, 
 	return sdk.methodCallWrapper(mute ? 'muteUserInRoom' : 'unmuteUserInRoom', { rid, username });
 };
 
-const channelOrGroupApiType = (t: RoomType) => (t === RoomType.GROUP ? 'groups' : 'channels');
-
 export const toggleRoomOwner = ({
 	roomId,
 	t,
@@ -601,16 +599,16 @@ export const toggleRoomOwner = ({
 	isOwner
 }: {
 	roomId: string;
-	t: RoomType;
+	t: Exclude<RoomType, 'd'>;
 	userId: string;
 	isOwner: boolean;
 }) => {
 	if (isOwner) {
 		// RC 0.49.4
-		return sdk.post(`${channelOrGroupApiType(t)}.addOwner`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(t)}.addOwner`, { roomId, userId });
 	}
 	// RC 0.49.4
-	return sdk.post(`${channelOrGroupApiType(t)}.removeOwner`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(t)}.removeOwner`, { roomId, userId });
 };
 
 export const toggleRoomLeader = ({
@@ -620,16 +618,16 @@ export const toggleRoomLeader = ({
 	isLeader
 }: {
 	roomId: string;
-	t: RoomType;
+	t: Exclude<RoomType, 'd'>;
 	userId: string;
 	isLeader: boolean;
 }) => {
 	if (isLeader) {
 		// RC 0.58.0
-		return sdk.post(`${channelOrGroupApiType(t)}.addLeader`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(t)}.addLeader`, { roomId, userId });
 	}
 	// RC 0.58.0
-	return sdk.post(`${channelOrGroupApiType(t)}.removeLeader`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(t)}.removeLeader`, { roomId, userId });
 };
 
 export const toggleRoomModerator = ({
@@ -639,16 +637,16 @@ export const toggleRoomModerator = ({
 	isModerator
 }: {
 	roomId: string;
-	t: RoomType;
+	t: Exclude<RoomType, 'd'>;
 	userId: string;
 	isModerator: boolean;
 }) => {
 	if (isModerator) {
 		// RC 0.49.4
-		return sdk.post(`${channelOrGroupApiType(t)}.addModerator`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(t)}.addModerator`, { roomId, userId });
 	}
 	// RC 0.49.4
-	return sdk.post(`${channelOrGroupApiType(t)}.removeModerator`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(t)}.removeModerator`, { roomId, userId });
 };
 
 export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomType; userId: string }) =>
@@ -659,13 +657,13 @@ export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: strin
 	// RC 0.64.0
 	sdk.get('chat.ignoreUser', { rid, userId, ignore });
 
-export const toggleArchiveRoom = (roomId: string, t: RoomType, archive: boolean) => {
+export const toggleArchiveRoom = (roomId: string, t: Exclude<RoomType, 'd'>, archive: boolean) => {
 	if (archive) {
 		// RC 0.48.0
-		return sdk.post(`${channelOrGroupApiType(t)}.archive`, { roomId });
+		return sdk.post(`${roomTypeToApiType(t)}.archive`, { roomId });
 	}
 	// RC 0.48.0
-	return sdk.post(`${channelOrGroupApiType(t)}.unarchive`, { roomId });
+	return sdk.post(`${roomTypeToApiType(t)}.unarchive`, { roomId });
 };
 
 export const hideRoom = (roomId: string, t: RoomType) =>
