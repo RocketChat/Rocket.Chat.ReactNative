@@ -5,8 +5,6 @@ import dayjs from '../dayjs';
 import { getMessageById } from '../database/services/Message';
 import { getThreadMessageById } from '../database/services/ThreadMessage';
 import database from '../database';
-import { getFilePathAudio } from './getFilePathAudio';
-import { type TAnyMessageModel } from '~/definitions';
 import { emitter } from './helpers';
 import log from './helpers/log';
 import { AUDIO_MODE } from '../constants/audio';
@@ -164,22 +162,11 @@ class AudioManagerClass {
 		}
 	}
 
-	getNextAudioKey = ({ message, rid, tmid }: { message: TAnyMessageModel; rid: string; tmid?: string }) => {
-		if (!message.attachments) {
-			return;
-		}
-		const { audio_url: audioUrl, audio_type: audioType } = message.attachments[0];
-		const uri = getFilePathAudio({ audioUrl, audioType });
-		if (!uri) {
-			return;
-		}
-		return getAudioKey({
-			msgId: message.id,
-			rid,
-			tmid,
-			uri
+	findRenderedAudioKey = ({ msgId, rid, tmid }: { msgId: string; rid: string; tmid?: string }) =>
+		Object.keys(this.audioMeta).find(audioKey => {
+			const meta = this.audioMeta[audioKey];
+			return meta.msgId === msgId && meta.rid === rid && meta.tmid === tmid && this.audiosRendered.has(audioKey);
 		});
-	};
 
 	async getNextThreadAudioMessage(msgId: string, tmid: string) {
 		const finishedTs = msgId === tmid ? 0 : (await getThreadMessageById(msgId))?.ts;
@@ -216,11 +203,12 @@ class AudioManagerClass {
 		}
 		const { msgId, rid, tmid } = meta;
 		const nextMessage = await this.getNextAudioMessage(msgId, rid, tmid);
-		if (nextMessage && nextMessage.attachments) {
-			const nextAudioInSeqKey = this.getNextAudioKey({ message: nextMessage, rid, tmid });
-			if (nextAudioInSeqKey && this.audioUris[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
-				await this.playAudio(nextAudioInSeqKey);
-			}
+		if (!nextMessage) {
+			return;
+		}
+		const nextAudioKey = this.findRenderedAudioKey({ msgId: nextMessage.id, rid, tmid });
+		if (nextAudioKey) {
+			await this.playAudio(nextAudioKey);
 		}
 	}
 

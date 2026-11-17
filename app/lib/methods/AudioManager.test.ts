@@ -42,10 +42,6 @@ jest.mock('../database', () => {
 	};
 });
 
-jest.mock('./getFilePathAudio', () => ({
-	getFilePathAudio: jest.fn(() => 'file://x')
-}));
-
 import type AudioManagerInstance from './AudioManager';
 import type { AudioStatus } from 'expo-audio';
 import type { TMessageModel } from '~/definitions';
@@ -298,20 +294,6 @@ describe('AudioManager', () => {
 			const { AudioManager } = setup();
 			expect(AudioManager.loadAudio({ msgId: 'm1', rid: 'r1', uri: 'file://a.mp3' })).toBe('m1-r1-undefined-file://a.mp3');
 		});
-
-		it('getNextAudioKey: returns the next key from the rendered-set ordering', () => {
-			const { AudioManager } = setup();
-			const message = { id: 'b', attachments: [{ audio_url: '/x', audio_type: 'audio/mp3' }] } as TMessageModel;
-			expect(AudioManager.getNextAudioKey({ message, rid: 'room' })).toBe('b-room-undefined-file://x');
-		});
-
-		it('getNextAudioKey: returns undefined when there is no next audio', () => {
-			const { AudioManager } = setup();
-			expect(AudioManager.getNextAudioKey({ message: { id: 'b' } as TMessageModel, rid: 'room' })).toBeUndefined();
-			(require('./getFilePathAudio').getFilePathAudio as jest.Mock).mockReturnValueOnce(null);
-			const message = { id: 'b', attachments: [{ audio_url: '/x' }] } as TMessageModel;
-			expect(AudioManager.getNextAudioKey({ message, rid: 'room' })).toBeUndefined();
-		});
 	});
 
 	describe('next audio in sequence', () => {
@@ -352,7 +334,12 @@ describe('AudioManager', () => {
 			const { AudioManager } = setup();
 			mockTables.messages = mockTables.messages.filter(message => message.id !== 'parent');
 			const parent = AudioManager.loadAudio({ msgId: 'parent', rid: 'room', tmid: 'parent', uri: 'file://x' });
-			const firstReply = AudioManager.loadAudio({ msgId: 'reply-1', rid: 'room', tmid: 'parent', uri: 'file://x' });
+			const firstReply = AudioManager.loadAudio({
+				msgId: 'reply-1',
+				rid: 'room',
+				tmid: 'parent',
+				uri: 'https://server/reply-1.m4a'
+			});
 
 			const playAudio = await playToEnd(AudioManager, parent);
 
