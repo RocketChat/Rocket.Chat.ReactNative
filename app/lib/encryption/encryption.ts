@@ -43,7 +43,7 @@ import {
 	provideUsersSuggestedGroupKeys
 } from '../services/restApi';
 import { store } from '../store/auxStore';
-import { MAX_CONCURRENT_QUEUE } from './constants';
+import { KEY_DISTRIBUTION_INTERVAL, MAX_CONCURRENT_QUEUE } from './constants';
 import type { IDecryptionFileQueue, TDecryptFile } from './definitions';
 import Deferred from './helpers/deferred';
 import EncryptionRoom from './room';
@@ -496,7 +496,12 @@ class Encryption {
 			return;
 		}
 
+		let distributing = false;
 		const keyDistribution = async () => {
+			if (distributing) {
+				return;
+			}
+			distributing = true;
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			try {
@@ -527,10 +532,12 @@ class Encryption {
 				}
 			} catch (e) {
 				log(e);
+			} finally {
+				distributing = false;
 			}
 		};
 
-		this.keyDistributionInterval = setInterval(keyDistribution, 10000);
+		this.keyDistributionInterval = setInterval(keyDistribution, KEY_DISTRIBUTION_INTERVAL);
 		await keyDistribution();
 	};
 

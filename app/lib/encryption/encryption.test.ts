@@ -3,6 +3,7 @@
 import encryption from './encryption';
 import database from '../database';
 import Deferred from './helpers/deferred';
+import { KEY_DISTRIBUTION_INTERVAL } from './constants';
 
 jest.unmock('./encryption');
 
@@ -428,7 +429,6 @@ describe('Encryption.decryptPendingSubscriptions', () => {
 
 describe('Encryption key distribution', () => {
 	const db = (database as any).active;
-	const KEY_DISTRIBUTION_INTERVAL = 10000;
 	const distributionRuns = () => jest.mocked(db.get).mock.calls.filter(([name]: [string]) => name === 'subscriptions').length;
 
 	beforeEach(() => {
@@ -452,8 +452,8 @@ describe('Encryption key distribution', () => {
 	});
 
 	it('stops distributing room keys when the client stops during the first run', async () => {
-		const firstRun = deferredSubscriptions();
-		jest.mocked(db.get).mockImplementationOnce(() => ({ query: () => firstRun.promise }));
+		const firstRun = new Deferred();
+		jest.mocked(db.get).mockImplementationOnce(() => ({ query: () => firstRun }));
 
 		const initiating = encryption.initiateKeyDistribution();
 		encryption.stop();
@@ -472,12 +472,17 @@ describe('Encryption key distribution', () => {
 
 		expect(distributionRuns()).toBe(2);
 	});
-});
 
-const deferredSubscriptions = () => {
-	let resolve: (subscriptions: unknown[]) => void = () => undefined;
-	const promise = new Promise<unknown[]>(r => {
-		resolve = r;
+	it('skips a tick while the previous distribution is still running', async () => {
+		const firstRun = new Deferred();
+		jest.mocked(db.get).mockImplementationOnce(() => ({ query: () => firstRun }));
+
+		const initiating = encryption.initiateKeyDistribution();
+		await jest.advanceTimersByTimeAsync(KEY_DISTRIBUTION_INTERVAL);
+		const runsWhileFirstIsRunning = distributionRuns();
+		firstRun.resolve([]);
+		await initiating;
+
+		expect(runsWhileFirstIsRunning).toBe(1);
 	});
-	return { promise, resolve };
-};
+});
