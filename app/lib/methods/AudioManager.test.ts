@@ -1,21 +1,46 @@
-jest.mock('../database/services/Message', () => ({
-	getMessageById: jest.fn(() => Promise.resolve(null))
-}));
+type TMockRow = { id: string; [column: string]: unknown };
+type TMockClause = {
+	type: string;
+	left?: string;
+	comparison?: { operator: string; right: { value: unknown } };
+	sortColumn?: string;
+	count?: number;
+};
 
-const mockTables: Record<string, { clauses: unknown[]; rows: unknown[] }> = {};
-jest.mock('../database', () => ({
-	__esModule: true,
-	default: {
-		active: {
-			get: (table: string) => ({
-				query: (...clauses: unknown[]) => {
-					mockTables[table] = { ...mockTables[table], clauses };
-					return { fetch: () => Promise.resolve(mockTables[table].rows) };
-				}
-			})
+const mockTables: Record<string, TMockRow[]> = {};
+jest.mock('../database', () => {
+	const matchesClause = (row: TMockRow, clause: TMockClause) => {
+		if (clause.type !== 'where' || !clause.left || !clause.comparison) {
+			return true;
 		}
-	}
-}));
+		const cell = row[clause.left] ?? null;
+		const { operator, right } = clause.comparison;
+		return operator === 'gt' ? (cell as number) > (right.value as number) : cell === right.value;
+	};
+	const runQuery = (rows: TMockRow[], clauses: TMockClause[]) => {
+		const sortColumn = clauses.find(clause => clause.type === 'sortBy')?.sortColumn;
+		const limit = clauses.find(clause => clause.type === 'take')?.count;
+		const matching = rows.filter(row => clauses.every(clause => matchesClause(row, clause)));
+		const sorted = sortColumn ? matching.sort((a, b) => (a[sortColumn] as number) - (b[sortColumn] as number)) : matching;
+		return limit === undefined ? sorted : sorted.slice(0, limit);
+	};
+	return {
+		__esModule: true,
+		default: {
+			active: {
+				get: (table: string) => ({
+					find: (id: string) => {
+						const row = (mockTables[table] ?? []).find(candidate => candidate.id === id);
+						return row ? Promise.resolve(row) : Promise.reject(new Error('Record not found'));
+					},
+					query: (...clauses: TMockClause[]) => ({
+						fetch: () => Promise.resolve(runQuery(mockTables[table] ?? [], clauses))
+					})
+				})
+			}
+		}
+	};
+});
 
 jest.mock('./getFilePathAudio', () => ({
 	getFilePathAudio: jest.fn(() => 'file://x')
@@ -24,7 +49,6 @@ jest.mock('./getFilePathAudio', () => ({
 import type AudioManagerInstance from './AudioManager';
 import type { AudioStatus } from 'expo-audio';
 import type { TMessageModel } from '~/definitions';
-import { Q } from '@nozbe/watermelondb';
 
 interface IAudioManagerSetup {
 	AudioManager: typeof AudioManagerInstance;
@@ -272,13 +296,13 @@ describe('AudioManager', () => {
 	describe('key helpers', () => {
 		it('getAudioKey: builds the composite key from its inputs (rid/mid/uri parts)', () => {
 			const { AudioManager } = setup();
-			expect(AudioManager.loadAudio({ msgId: 'm1', rid: 'r1', uri: 'file://a.mp3' })).toBe('m1-r1-file://a.mp3');
+			expect(AudioManager.loadAudio({ msgId: 'm1', rid: 'r1', uri: 'file://a.mp3' })).toBe('m1-r1-undefined-file://a.mp3');
 		});
 
 		it('getNextAudioKey: returns the next key from the rendered-set ordering', () => {
 			const { AudioManager } = setup();
 			const message = { id: 'b', attachments: [{ audio_url: '/x', audio_type: 'audio/mp3' }] } as TMessageModel;
-			expect(AudioManager.getNextAudioKey({ message, rid: 'room' })).toBe('b-room-file://x');
+			expect(AudioManager.getNextAudioKey({ message, rid: 'room' })).toBe('b-room-undefined-file://x');
 		});
 
 		it('getNextAudioKey: returns undefined when there is no next audio', () => {
@@ -291,51 +315,86 @@ describe('AudioManager', () => {
 	});
 
 	describe('next audio in sequence', () => {
-		const getMessageById = () => require('../database/services/Message').getMessageById as jest.Mock;
+		const audio = [{ audio_url: '/x', audio_type: 'audio/mp3' }];
+		const finished = { isLoaded: true, didJustFinish: true } as AudioStatus;
 
 		beforeEach(() => {
-			mockTables.messages = { clauses: [], rows: [{ id: 'room-next' }] };
-			mockTables.thread_messages = { clauses: [], rows: [{ id: 'thread-next' }] };
+			mockTables.messages = [
+				{ id: 'parent', rid: 'room', ts: 1000, attachments: audio },
+				{ id: 'reply-1', rid: 'room', tmid: 'parent', ts: 2000, attachments: audio },
+				{ id: 'reply-2', rid: 'room', tmid: 'parent', ts: 2500, attachments: audio },
+				{ id: 'room-next', rid: 'room', ts: 3000, attachments: audio }
+			];
+			mockTables.thread_messages = [
+				{ id: 'reply-1', rid: 'parent', ts: 2000, attachments: audio },
+				{ id: 'reply-2', rid: 'parent', ts: 2500, attachments: audio }
+			];
 		});
 
-		it('in a thread, finds the finished reply by tmid and picks the next reply from thread_messages', async () => {
+		const playToEnd = async (AudioManager: typeof AudioManagerInstance, audioKey: string) => {
+			await AudioManager.playAudio(audioKey);
+			const playAudio = jest.spyOn(AudioManager, 'playAudio');
+			await AudioManager.onEnd(audioKey, finished);
+			return playAudio;
+		};
+
+		it('in a thread, a finished reply plays the next reply', async () => {
 			const { AudioManager } = setup();
-			getMessageById().mockResolvedValue({ id: 'a', ts: 1000 });
+			const firstReply = AudioManager.loadAudio({ msgId: 'reply-1', rid: 'room', tmid: 'parent', uri: 'file://x' });
+			const secondReply = AudioManager.loadAudio({ msgId: 'reply-2', rid: 'room', tmid: 'parent', uri: 'file://x' });
 
-			const next = await AudioManager.getNextAudioMessage('a', 'room', 'thread-1');
+			const playAudio = await playToEnd(AudioManager, firstReply);
 
-			expect(getMessageById()).toHaveBeenCalledWith('a', 'thread-1');
-			expect(next).toEqual({ id: 'thread-next' });
-			expect(mockTables.thread_messages.clauses).toContainEqual(Q.where('rid', 'thread-1'));
-			expect(mockTables.thread_messages.clauses).toContainEqual(Q.where('ts', Q.gt(1000)));
+			expect(playAudio).toHaveBeenCalledWith(secondReply);
 		});
 
-		it('in the room, picks the next main-room message from messages', async () => {
+		it('in a thread, the finished thread parent plays the first reply even when only the threads table has it', async () => {
 			const { AudioManager } = setup();
-			getMessageById().mockResolvedValue({ id: 'a', ts: 1000 });
+			mockTables.messages = mockTables.messages.filter(message => message.id !== 'parent');
+			const parent = AudioManager.loadAudio({ msgId: 'parent', rid: 'room', tmid: 'parent', uri: 'file://x' });
+			const firstReply = AudioManager.loadAudio({ msgId: 'reply-1', rid: 'room', tmid: 'parent', uri: 'file://x' });
 
-			const next = await AudioManager.getNextAudioMessage('a', 'room');
+			const playAudio = await playToEnd(AudioManager, parent);
 
-			expect(next).toEqual({ id: 'room-next' });
-			expect(mockTables.messages.clauses).toContainEqual(Q.where('rid', 'room'));
-			expect(mockTables.messages.clauses).toContainEqual(Q.where('tmid', null));
+			expect(playAudio).toHaveBeenCalledWith(firstReply);
 		});
 
-		it('returns null when the finished message is not stored locally', async () => {
+		it('in the room, a finished message plays the next room message, skipping thread replies', async () => {
 			const { AudioManager } = setup();
-			getMessageById().mockResolvedValue(null);
+			const parent = AudioManager.loadAudio({ msgId: 'parent', rid: 'room', uri: 'file://x' });
+			AudioManager.loadAudio({ msgId: 'reply-1', rid: 'room', uri: 'file://x' });
+			const roomNext = AudioManager.loadAudio({ msgId: 'room-next', rid: 'room', uri: 'file://x' });
 
-			expect(await AudioManager.getNextAudioMessage('a', 'room', 'thread-1')).toBeNull();
+			const playAudio = await playToEnd(AudioManager, parent);
+
+			expect(playAudio).toHaveBeenCalledWith(roomNext);
 		});
 
-		it('passes the thread the audio was loaded in to the next-audio lookup', async () => {
+		it('in the room, a finished thread reply plays nothing', async () => {
 			const { AudioManager } = setup();
-			const key = AudioManager.loadAudio({ msgId: 'a', rid: 'room', tmid: 'thread-1', uri: 'file://x' });
-			const getNextAudioMessage = jest.spyOn(AudioManager, 'getNextAudioMessage').mockResolvedValue(null);
+			const reply = AudioManager.loadAudio({ msgId: 'reply-1', rid: 'room', uri: 'file://x' });
+			AudioManager.loadAudio({ msgId: 'reply-2', rid: 'room', uri: 'file://x' });
+			AudioManager.loadAudio({ msgId: 'room-next', rid: 'room', uri: 'file://x' });
 
-			await AudioManager.onEnd(key, { isLoaded: true, didJustFinish: true } as AudioStatus);
+			const playAudio = await playToEnd(AudioManager, reply);
 
-			expect(getNextAudioMessage).toHaveBeenCalledWith('a', 'room', 'thread-1');
+			expect(playAudio).not.toHaveBeenCalled();
+		});
+
+		it('in the room, the thread parent still plays the next room message after its thread was opened and closed', async () => {
+			const { AudioManager } = setup();
+			const roomParent = AudioManager.loadAudio({ msgId: 'parent', rid: 'room', uri: 'file://x' });
+			const roomNext = AudioManager.loadAudio({ msgId: 'room-next', rid: 'room', uri: 'file://x' });
+			const threadAudios = [
+				AudioManager.loadAudio({ msgId: 'parent', rid: 'room', tmid: 'parent', uri: 'file://x' }),
+				AudioManager.loadAudio({ msgId: 'reply-1', rid: 'room', tmid: 'parent', uri: 'file://x' })
+			];
+			threadAudios.forEach(AudioManager.removeAudioRendered);
+			[roomParent, roomNext].forEach(AudioManager.addAudioRendered);
+
+			const playAudio = await playToEnd(AudioManager, roomParent);
+
+			expect(playAudio).toHaveBeenCalledWith(roomNext);
 		});
 	});
 });
