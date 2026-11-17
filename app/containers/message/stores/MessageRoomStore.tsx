@@ -150,6 +150,7 @@ export const useIsArchived = (): boolean | undefined => useMessageRoomStore(s =>
 export const useIsReadReceiptEnabled = (): boolean | undefined => useMessageRoomStore(s => s.isReadReceiptEnabled);
 
 export const useRid = (): string | undefined => useMessageRoomStore(s => s.rid);
+export const useTmid = (): string | undefined => useMessageRoomStore(s => s.tmid);
 export const useMessageUser = (): Pick<IUser, 'id' | 'username' | 'token'> =>
 	useAppSelector(state => {
 		const { id, username, token } = getUserSelector(state);

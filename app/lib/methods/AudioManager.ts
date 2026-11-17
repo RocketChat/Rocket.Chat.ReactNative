@@ -5,7 +5,7 @@ import dayjs from '../dayjs';
 import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';
-import { type TMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions';
 import { emitter } from './helpers';
 import log from './helpers/log';
 import { AUDIO_MODE } from '../constants/audio';
@@ -19,7 +19,7 @@ class AudioManagerClass {
 	private audioRates: { [audioKey: string]: number };
 	private audioSubscriptions: { [audioKey: string]: () => void };
 	private audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void };
-	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string } };
+	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string; tmid?: string } };
 	private audioPlaying: string;
 	private audiosRendered: Set<string>;
 
@@ -43,11 +43,11 @@ class AudioManagerClass {
 		this.audiosRendered.delete(audioKey);
 	};
 
-	loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string {
+	loadAudio({ msgId, rid, tmid, uri }: { rid: string; msgId?: string; tmid?: string; uri: string }): string {
 		const audioKey = getAudioKey({ msgId, rid, uri });
 		this.addAudioRendered(audioKey);
 		this.audioUris[audioKey] = uri;
-		this.audioMeta[audioKey] = { msgId, rid };
+		this.audioMeta[audioKey] = { msgId, rid, tmid };
 		if (this.audioQueue[audioKey]) {
 			return audioKey;
 		}
@@ -160,7 +160,7 @@ class AudioManagerClass {
 		}
 	}
 
-	getNextAudioKey = ({ message, rid }: { message: TMessageModel; rid: string }) => {
+	getNextAudioKey = ({ message, rid }: { message: TAnyMessageModel; rid: string }) => {
 		if (!message.attachments) {
 			return;
 		}
@@ -176,30 +176,32 @@ class AudioManagerClass {
 		});
 	};
 
-	async getNextAudioMessage(msgId: string, rid: string) {
-		const msg = await getMessageById(msgId);
-		if (msg) {
-			const db = database.active;
-			const whereClause: Q.Clause[] = [Q.sortBy('ts', Q.asc), Q.where('ts', Q.gt(dayjs(msg.ts).valueOf())), Q.take(1)];
-
-			if (msg.tmid) {
-				whereClause.push(Q.where('tmid', msg.tmid || msg.id));
-			} else {
-				whereClause.push(Q.where('rid', rid), Q.where('tmid', null));
-			}
-			const [message] = await db
-				.get('messages')
-				.query(...whereClause)
-				.fetch();
-			return message;
+	async getNextAudioMessage(msgId: string, rid: string, tmid?: string) {
+		const msg = await getMessageById(msgId, tmid);
+		if (!msg) {
+			return null;
 		}
-
-		return null;
+		const db = database.active;
+		const nextByTs = [Q.where('ts', Q.gt(dayjs(msg.ts).valueOf())), Q.sortBy('ts', Q.asc), Q.take(1)];
+		const [message] = tmid
+			? await db
+					.get('thread_messages')
+					.query(Q.where('rid', tmid), ...nextByTs)
+					.fetch()
+			: await db
+					.get('messages')
+					.query(Q.where('rid', rid), Q.where('tmid', null), ...nextByTs)
+					.fetch();
+		return message ?? null;
 	}
 
 	async playNextAudioInSequence(previousAudioKey: string) {
-		const [msgId, rid] = previousAudioKey.split('-');
-		const nextMessage = await this.getNextAudioMessage(msgId, rid);
+		const meta = this.audioMeta[previousAudioKey];
+		if (!meta?.msgId) {
+			return;
+		}
+		const { msgId, rid, tmid } = meta;
+		const nextMessage = await this.getNextAudioMessage(msgId, rid, tmid);
 		if (nextMessage && nextMessage.attachments) {
 			const nextAudioInSeqKey = this.getNextAudioKey({ message: nextMessage, rid });
 			if (nextAudioInSeqKey && this.audioUris[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {

@@ -24,6 +24,7 @@ interface IAudioPlayerProps {
 	onPlayButtonPress?: Function;
 	downloadState: TDownloadState;
 	rid: string;
+	tmid?: string;
 	// It's optional when comes from MessagesView
 	msgId?: string;
 }
@@ -34,7 +35,8 @@ const AudioPlayer = ({
 	onPlayButtonPress = () => {},
 	downloadState,
 	msgId,
-	rid
+	rid,
+	tmid
 }: IAudioPlayerProps) => {
 	const isLoading = downloadState === 'loading';
 	const isDownloaded = downloadState === 'downloaded';
@@ -120,7 +122,7 @@ const AudioPlayer = ({
 		if (fileUri && isDownloaded) {
 			const immediate = setImmediate(async () => {
 				try {
-					audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
+					audioUri.current = await AudioManager.loadAudio({ msgId, rid, tmid, uri: fileUri });
 					AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
 					AudioManager.setRate(audioUri.current, playbackSpeed);
 				} catch {
