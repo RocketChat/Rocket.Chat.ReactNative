@@ -7,7 +7,7 @@ const getMoreMessages = ({ rid, t, loaderItem }: { rid: string; t: RoomType; loa
 	if ([MessageTypeLoad.MORE, MessageTypeLoad.PREVIOUS_CHUNK].includes(loaderItem.t as MessageTypeLoad)) {
 		return loadMessagesForRoom({
 			rid,
-			t: t as any,
+			t,
 			latest: loaderItem.ts as Date,
 			loaderItem
 		});

@@ -47,7 +47,7 @@ export const useGoRoomActionsView = (roomStore: RoomStore): ((screen?: keyof Mod
 				screen: screen ?? 'RoomActionsView',
 				params: { ...params, room: room as ISubscription, showCloseModal: !!screen }
 			} as NavigatorScreenParams<ModalStackParamList & TNavigation>);
-		} else if (rid && t) {
+		} else {
 			navigation.push('RoomActionsView', { ...params, room: room as TSubscriptionModel });
 		}
 	};

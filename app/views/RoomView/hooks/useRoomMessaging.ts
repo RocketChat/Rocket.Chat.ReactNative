@@ -62,7 +62,6 @@ export function useRoomMessaging({ rid, t, tmid, roomStore, ready, roomUserId, q
 		messageActionStore,
 		showActionSheet,
 		hideActionSheet,
-		rid,
 		tmid,
 		onThreadPress,
 		messageComposerRef,

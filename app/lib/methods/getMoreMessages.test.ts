@@ -2,6 +2,7 @@ import getMoreMessages from './getMoreMessages';
 import { loadMessagesForRoom } from './loadMessagesForRoom';
 import { loadNextMessages } from './loadNextMessages';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
+import { RoomType } from '~/definitions';
 
 jest.mock('./loadMessagesForRoom', () => ({
 	loadMessagesForRoom: jest.fn()
@@ -29,7 +30,7 @@ describe('getMoreMessages', () => {
 	it('delegates to loadMessagesForRoom when loaderItem.t is load_more', async () => {
 		const loaderItem = buildLoaderItem(MessageTypeLoad.MORE);
 
-		await getMoreMessages({ rid: RID, t: 'c' as any, loaderItem });
+		await getMoreMessages({ rid: RID, t: RoomType.CHANNEL, loaderItem });
 
 		expect(mockedLoadMessagesForRoom).toHaveBeenCalledTimes(1);
 		expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'c', latest: TS, loaderItem });
@@ -39,7 +40,7 @@ describe('getMoreMessages', () => {
 	it('delegates to loadMessagesForRoom when loaderItem.t is load_previous_chunk', async () => {
 		const loaderItem = buildLoaderItem(MessageTypeLoad.PREVIOUS_CHUNK);
 
-		await getMoreMessages({ rid: RID, t: 'c' as any, loaderItem });
+		await getMoreMessages({ rid: RID, t: RoomType.CHANNEL, loaderItem });
 
 		expect(mockedLoadMessagesForRoom).toHaveBeenCalledTimes(1);
 		expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'c', latest: TS, loaderItem });
@@ -49,7 +50,7 @@ describe('getMoreMessages', () => {
 	it('delegates to loadNextMessages when loaderItem.t is load_next_chunk', async () => {
 		const loaderItem = buildLoaderItem(MessageTypeLoad.NEXT_CHUNK);
 
-		await getMoreMessages({ rid: RID, t: 'c' as any, loaderItem });
+		await getMoreMessages({ rid: RID, t: RoomType.CHANNEL, loaderItem });
 
 		expect(mockedLoadNextMessages).toHaveBeenCalledTimes(1);
 		expect(mockedLoadNextMessages).toHaveBeenCalledWith({ rid: RID, ts: TS, loaderItem });
@@ -59,7 +60,7 @@ describe('getMoreMessages', () => {
 	it('resolves without delegating for an unrecognized loaderItem.t', async () => {
 		const loaderItem = buildLoaderItem('unknown-loader');
 
-		await expect(getMoreMessages({ rid: RID, t: 'c' as any, loaderItem })).resolves.toBeUndefined();
+		await expect(getMoreMessages({ rid: RID, t: RoomType.CHANNEL, loaderItem })).resolves.toBeUndefined();
 
 		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
 		expect(mockedLoadNextMessages).not.toHaveBeenCalled();
