@@ -1,5 +1,6 @@
-import { Component, Fragment } from 'react';
+import { Component, Fragment, type ReactElement } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
@@ -83,6 +84,15 @@ const mapElementToState = ({ element, blockId, elements = [] }: { element: any; 
 };
 const reduceState = (obj: any, el: any) =>
 	Array.isArray(el[0]) ? { ...obj, ...Object.fromEntries(el) } : { ...obj, [el[0]]: el[1] };
+
+const InsetScrollView = ({ children }: { children: ReactElement }) => {
+	const { bottom } = useSafeAreaInsets();
+	return (
+		<ScrollView contentContainerStyle={[styles.content, { paddingBottom: styles.content.padding + bottom }]}>
+			{children}
+		</ScrollView>
+	);
+};
 
 const LoadingIndicator = ({ loading }: { loading: boolean }) => {
 	if (loading) {
@@ -279,7 +289,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 			.join('-')}`;
 		return (
 			<KeyboardView>
-				<ScrollView style={styles.content}>
+				<InsetScrollView>
 					<Fragment key={modalKey}>
 						<A11yGateProvider>
 							<MessageRoomProvider>
@@ -297,7 +307,7 @@ class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewStat
 							</MessageRoomProvider>
 						</A11yGateProvider>
 					</Fragment>
-				</ScrollView>
+				</InsetScrollView>
 				<LoadingIndicator loading={loading} />
 			</KeyboardView>
 		);

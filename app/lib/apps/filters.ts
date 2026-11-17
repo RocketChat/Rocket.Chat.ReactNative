@@ -33,16 +33,20 @@ export interface IAppActionButtonAuth {
 	userRoles: string[];
 	roomRoles: string[];
 	permissions: { [permission: string]: string[] };
+	roleIdsByName?: { [name: string]: string };
 }
 
 export const applyAuthFilter = (
 	button: IAppActionButton,
-	{ userRoles, roomRoles, permissions }: IAppActionButtonAuth
+	{ userRoles, roomRoles, permissions, roleIdsByName = {} }: IAppActionButtonAuth
 ): boolean => {
 	const { hasAllPermissions, hasOnePermission, hasAllRoles, hasOneRole } = button.when || {};
 
 	const grants = (permission: string): boolean => (permissions[permission] ?? []).some(role => userRoles.includes(role));
-	const holds = (role: string): boolean => userRoles.includes(role) || roomRoles.includes(role);
+	const holds = (role: string): boolean => {
+		const roleId = roleIdsByName[role] ?? role;
+		return userRoles.includes(roleId) || roomRoles.includes(roleId);
+	};
 
 	return (
 		(!hasAllPermissions || hasAllPermissions.every(grants)) &&
@@ -50,6 +54,21 @@ export const applyAuthFilter = (
 		(!hasAllRoles || hasAllRoles.every(holds)) &&
 		(!hasOneRole || hasOneRole.some(holds))
 	);
+};
+
+export const collectRoles = (buttons: IAppActionButton[]): string[] => [
+	...new Set(buttons.flatMap(({ when }) => [...(when?.hasAllRoles ?? []), ...(when?.hasOneRole ?? [])]))
+];
+
+// Custom roles get a random _id, but apps reference them by name. A known id wins over a name, as on web.
+export const indexRoleIdsByName = (roles: { id: string; name?: string }[]): { [name: string]: string } => {
+	const ids = new Set(roles.map(({ id }) => id));
+	return roles.reduce<{ [name: string]: string }>((acc, { id, name }) => {
+		if (name && !ids.has(name) && !(name in acc)) {
+			acc[name] = id;
+		}
+		return acc;
+	}, {});
 };
 
 export const collectPermissions = (buttons: IAppActionButton[]): string[] => [
