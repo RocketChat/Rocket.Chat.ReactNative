@@ -26,3 +26,11 @@ export const getMessageById = async (messageId: string | null, tmid?: string | n
 		return null;
 	}
 };
+
+export const getMessageOrThreadMessageById = async (messageId: string | null, tmid?: string | null) => {
+	const message = await getMessageById(messageId, tmid);
+	if (message || !messageId || tmid) {
+		return message;
+	}
+	return getThreadMessageById(messageId);
+};

@@ -1,5 +1,5 @@
 import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
-import { getMessageById } from '~/lib/database/services/Message';
+import { getMessageOrThreadMessageById } from '~/lib/database/services/Message';
 import { store } from '~/lib/store/auxStore';
 import { compareServerVersion } from '~/lib/methods/helpers';
 
@@ -9,7 +9,7 @@ export const prepareQuoteMessage = async (textFromInput: string, selectedMessage
 
 	const permalinks = await Promise.all(
 		selectedMessages.map(async messageId => {
-			const message = await getMessageById(messageId, tmid);
+			const message = await getMessageOrThreadMessageById(messageId, tmid);
 			return message ? getPermalinkMessage(message) : undefined;
 		})
 	);

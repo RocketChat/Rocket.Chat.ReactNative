@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { type IMessage } from '~/definitions';
-import { getMessageById } from '~/lib/database/services/Message';
+import { getMessageOrThreadMessageById } from '~/lib/database/services/Message';
 
 // TODO: Not reactive. Should we work on an official version?
 export const useMessage = (messageId: string, tmid?: string): IMessage | undefined => {
@@ -10,7 +10,7 @@ export const useMessage = (messageId: string, tmid?: string): IMessage | undefin
 		let cancelled = false;
 		const load = async () => {
 			try {
-				const result = await getMessageById(messageId, tmid);
+				const result = await getMessageOrThreadMessageById(messageId, tmid);
 				if (!cancelled) {
 					setMessage(result || undefined);
 				}

@@ -1,7 +1,7 @@
 import database from '../index';
 import { MESSAGES_TABLE } from '../model/Message';
 import { type TMessageModel, type TThreadMessageModel } from '~/definitions';
-import { getMessageById } from './Message';
+import { getMessageById, getMessageOrThreadMessageById } from './Message';
 import { getThreadMessageById } from './ThreadMessage';
 
 jest.mock('../index', () => ({
@@ -98,5 +98,55 @@ describe('getMessageById', () => {
 
 			expect(result).toBeNull();
 		});
+	});
+});
+
+describe('getMessageOrThreadMessageById', () => {
+	let mockFind: jest.Mock;
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockFind = jest.fn();
+		mockGet.mockReturnValue({ find: mockFind });
+	});
+
+	it('returns the message from the messages table', async () => {
+		const message = { id: 'message1' } as unknown as TMessageModel;
+		mockFind.mockResolvedValue(message);
+
+		const result = await getMessageOrThreadMessageById('message1');
+
+		expect(result).toBe(message);
+		expect(mockGetThreadMessageById).not.toHaveBeenCalled();
+	});
+
+	it('falls back to the thread messages table without tmid', async () => {
+		const threadMessage = { id: 'reply1', msg: 'Thread reply' } as unknown as TThreadMessageModel;
+		mockFind.mockRejectedValue(new Error('not found'));
+		mockGetThreadMessageById.mockResolvedValue(threadMessage as any);
+
+		const result = await getMessageOrThreadMessageById('reply1');
+
+		expect(result).toBe(threadMessage);
+		expect(mockGetThreadMessageById).toHaveBeenCalledWith('reply1');
+	});
+
+	it('does not query the thread messages table twice with tmid', async () => {
+		mockGetThreadMessageById.mockResolvedValue(null);
+		mockFind.mockRejectedValue(new Error('not found'));
+
+		const result = await getMessageOrThreadMessageById('reply1', 'thread-id');
+
+		expect(result).toBeNull();
+		expect(mockGetThreadMessageById).toHaveBeenCalledTimes(1);
+	});
+
+	it('returns null when the message is in neither table', async () => {
+		mockFind.mockRejectedValue(new Error('not found'));
+		mockGetThreadMessageById.mockResolvedValue(null);
+
+		const result = await getMessageOrThreadMessageById('nonexistent');
+
+		expect(result).toBeNull();
 	});
 });
