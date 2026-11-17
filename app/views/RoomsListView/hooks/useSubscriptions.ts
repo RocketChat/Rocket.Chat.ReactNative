@@ -1,5 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { shallowEqual } from 'react-redux';
 import type { Subscription } from 'rxjs';
 
@@ -27,12 +27,19 @@ const SECTION_BADGE_COLUMNS = [
 
 export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
-	const server = useAppSelector(state => state.server);
-	const [loaded, setLoaded] = useState<{ server: typeof server; rows: TSubscriptionModel[] }>();
+	const activeDatabase = useSyncExternalStore(database.subscribeToActiveDB, () => database.active);
+	const [loaded, setLoaded] = useState<{ database: typeof activeDatabase; rows: TSubscriptionModel[] }>();
 	const roles = useAppSelector(state => getUserSelector(state).roles, shallowEqual);
 	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
-	const { customCategoryNames, categoryUnreadOptions, sectionsOrder, groupOrder } = useSidebarCategories();
-	const isGrouping = showUnread || showFavorites || groupByType;
+	const {
+		customCategoryNames,
+		categoryUnreadOptions,
+		sectionsOrder,
+		groupOrder,
+		mergeTeamsAndChannels,
+		groupUnlistedInConversations
+	} = useSidebarCategories();
+	const isGrouping = showUnread || showFavorites || groupByType || customCategoryNames.size > 0;
 	const isOmnichannelAgent = roles?.includes('livechat-agent') ?? false;
 	const hasCollapsedGroup = collapsedGroups.size > 0;
 
@@ -41,7 +48,6 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 		let subscription: Subscription | undefined;
 
 		const getSubscriptions = async () => {
-			const db = database.active;
 			const whereClause = [Q.where('archived', false), Q.where('open', true)] as (Q.WhereDescription | Q.SortBy)[];
 
 			if (sortBy === SortBy.Alphabetical) {
@@ -59,7 +65,7 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 				])
 			];
 
-			const observable = await db
+			const observable = await activeDatabase
 				.get('subscriptions')
 				.query(...whereClause)
 				.observeWithColumns(observeWithColumns);
@@ -69,7 +75,7 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 			}
 
 			subscription = observable.subscribe(data => {
-				setLoaded({ server, rows: data });
+				setLoaded({ database: activeDatabase, rows: data });
 			});
 		};
 
@@ -79,10 +85,10 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 			cancelled = true;
 			subscription?.unsubscribe();
 		};
-	}, [isGrouping, isOmnichannelAgent, hasCollapsedGroup, sortBy, useRealName, server]);
+	}, [isGrouping, isOmnichannelAgent, hasCollapsedGroup, sortBy, useRealName, activeDatabase]);
 
 	const rows = loaded?.rows ?? NO_ROWS;
-	const loading = loaded?.server !== server;
+	const loading = loaded?.database !== activeDatabase;
 
 	const subscriptions = useMemo(
 		() =>
@@ -94,6 +100,8 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 				showUnread,
 				showFavorites,
 				groupByType,
+				mergeTeamsAndChannels,
+				groupUnlistedInConversations,
 				isOmnichannelAgent,
 				collapsedGroups
 			}),
@@ -106,6 +114,8 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 			showUnread,
 			showFavorites,
 			groupByType,
+			mergeTeamsAndChannels,
+			groupUnlistedInConversations,
 			isOmnichannelAgent,
 			collapsedGroups
 		]

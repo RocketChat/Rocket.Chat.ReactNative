@@ -12,6 +12,8 @@ const options = {
 	showUnread: false,
 	showFavorites: true,
 	groupByType: true,
+	mergeTeamsAndChannels: false,
+	groupUnlistedInConversations: false,
 	isOmnichannelAgent: false,
 	collapsedGroups: new Set<string>()
 };
@@ -51,26 +53,34 @@ describe('groupRooms', () => {
 		expect(roomList.filter(chat => chat.separator).map(header => header.empty)).toEqual([false, true]);
 	});
 
-	it('hides custom categories and type groups when categories are off', () => {
+	it('keeps custom categories above Chats and hides type groups when types are off', () => {
 		const chats = [
 			room({ rid: 'general', category: 'work' }),
 			room({ rid: 'random', f: true, category: 'work' }),
+			room({ rid: 'starred', f: true }),
 			room({ rid: 'dm', t: SubscriptionType.DIRECT })
 		];
 
 		expect(layout(buildRoomList(chats, { ...options, groupByType: false }))).toEqual([
-			'# Favorites',
-			'random',
-			'# Chats',
+			'# Work',
 			'general',
+			'random',
+			'# Favorites',
+			'starred',
+			'# Chats',
 			'dm'
 		]);
 	});
 
-	it('lists rooms in a flat list when categories, favorites and unread are off', () => {
+	it('keeps custom categories when types, favorites and unread are off', () => {
 		const chats = [room({ rid: 'general', category: 'work' }), room({ rid: 'dm', t: SubscriptionType.DIRECT })];
 
-		expect(layout(buildRoomList(chats, { ...options, groupByType: false, showFavorites: false }))).toEqual(['general', 'dm']);
+		expect(layout(buildRoomList(chats, { ...options, groupByType: false, showFavorites: false }))).toEqual([
+			'# Work',
+			'general',
+			'# Chats',
+			'dm'
+		]);
 	});
 
 	it('falls back to the default groups when the room category no longer exists', () => {
@@ -99,6 +109,7 @@ describe('groupRooms', () => {
 			layout(
 				buildRoomList(chats, {
 					...options,
+					customCategoryNames: new Map(),
 					showUnread: true,
 					showFavorites: false,
 					groupByType: false,
@@ -238,8 +249,83 @@ describe('groupRooms', () => {
 		const sectionsOrder = SYSTEM_GROUPS.filter(key => key !== 'Unread' && key !== 'Open_Livechats');
 
 		expect(
-			layout(buildRoomList(chats, { ...options, sectionsOrder, showUnread: true, groupByType: false, isOmnichannelAgent: true }))
+			layout(
+				buildRoomList(chats, {
+					...options,
+					customCategoryNames: new Map(),
+					sectionsOrder,
+					showUnread: true,
+					groupByType: false,
+					isOmnichannelAgent: true
+				})
+			)
 		).toEqual(['# Chats', 'unread']);
+	});
+});
+
+describe('groupRooms with the web grouping preferences', () => {
+	const team = room({ rid: 'team', teamMain: true });
+	const channel = room({ rid: 'channel' });
+	const discussion = room({ rid: 'discussion', prid: 'channel' });
+	const dm = room({ rid: 'dm', t: SubscriptionType.DIRECT });
+	const groupOrder = ['Favorites', 'Teams', 'Channels', 'Teams_and_channels', 'Direct_Messages', 'Conversations'];
+	const typeOptions = { ...options, customCategoryNames: new Map(), showFavorites: false, groupOrder };
+
+	it('merges teams and channels into one section when grouping by type', () => {
+		expect(layout(buildRoomList([team, channel, dm], { ...typeOptions, mergeTeamsAndChannels: true }))).toEqual([
+			'# Teams_and_channels',
+			'team',
+			'channel',
+			'# Direct_Messages',
+			'dm'
+		]);
+	});
+
+	it('keeps teams and channels apart when not merging', () => {
+		expect(layout(buildRoomList([team, channel], typeOptions))).toEqual(['# Teams', 'team', '# Channels', 'channel']);
+	});
+
+	const orderWithoutDirectMessages = groupOrder.filter(key => key !== 'Direct_Messages');
+
+	it('leaves out rooms whose section is not in the order', () => {
+		expect(layout(buildRoomList([channel, dm], { ...typeOptions, groupOrder: orderWithoutDirectMessages }))).toEqual([
+			'# Channels',
+			'channel'
+		]);
+	});
+
+	it('collects rooms whose section is not in the order in Chats when grouping by type', () => {
+		expect(
+			layout(
+				buildRoomList([channel, dm], {
+					...typeOptions,
+					groupOrder: orderWithoutDirectMessages,
+					groupUnlistedInConversations: true
+				})
+			)
+		).toEqual(['# Channels', 'channel', '# Chats', 'dm']);
+	});
+
+	it('files a discussion under Channels when Discussions is not in the order', () => {
+		expect(layout(buildRoomList([channel, discussion], { ...typeOptions, groupUnlistedInConversations: true }))).toEqual([
+			'# Channels',
+			'channel',
+			'discussion'
+		]);
+	});
+
+	it('keeps rooms in their custom category ahead of the Chats catch-all', () => {
+		const filed = room({ rid: 'filed', t: SubscriptionType.DIRECT, category: 'work' });
+		expect(
+			layout(
+				buildRoomList([filed, dm], {
+					...typeOptions,
+					groupOrder: ['work', ...orderWithoutDirectMessages],
+					customCategoryNames: new Map([['work', 'Work']]),
+					groupUnlistedInConversations: true
+				})
+			)
+		).toEqual(['# Work', 'filed', '# Chats', 'dm']);
 	});
 });
 
