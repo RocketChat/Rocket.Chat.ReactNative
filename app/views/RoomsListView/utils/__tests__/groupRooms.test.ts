@@ -51,26 +51,34 @@ describe('groupRooms', () => {
 		expect(roomList.filter(chat => chat.separator).map(header => header.empty)).toEqual([false, true]);
 	});
 
-	it('hides custom categories and type groups when categories are off', () => {
+	it('keeps custom categories above Chats and hides type groups when types are off', () => {
 		const chats = [
 			room({ rid: 'general', category: 'work' }),
 			room({ rid: 'random', f: true, category: 'work' }),
+			room({ rid: 'starred', f: true }),
 			room({ rid: 'dm', t: SubscriptionType.DIRECT })
 		];
 
 		expect(layout(buildRoomList(chats, { ...options, groupByType: false }))).toEqual([
-			'# Favorites',
-			'random',
-			'# Chats',
+			'# Work',
 			'general',
+			'random',
+			'# Favorites',
+			'starred',
+			'# Chats',
 			'dm'
 		]);
 	});
 
-	it('lists rooms in a flat list when categories, favorites and unread are off', () => {
+	it('keeps custom categories when types, favorites and unread are off', () => {
 		const chats = [room({ rid: 'general', category: 'work' }), room({ rid: 'dm', t: SubscriptionType.DIRECT })];
 
-		expect(layout(buildRoomList(chats, { ...options, groupByType: false, showFavorites: false }))).toEqual(['general', 'dm']);
+		expect(layout(buildRoomList(chats, { ...options, groupByType: false, showFavorites: false }))).toEqual([
+			'# Work',
+			'general',
+			'# Chats',
+			'dm'
+		]);
 	});
 
 	it('falls back to the default groups when the room category no longer exists', () => {
@@ -99,6 +107,7 @@ describe('groupRooms', () => {
 			layout(
 				buildRoomList(chats, {
 					...options,
+					customCategoryNames: new Map(),
 					showUnread: true,
 					showFavorites: false,
 					groupByType: false,
@@ -238,7 +247,16 @@ describe('groupRooms', () => {
 		const sectionsOrder = SYSTEM_GROUPS.filter(key => key !== 'Unread' && key !== 'Open_Livechats');
 
 		expect(
-			layout(buildRoomList(chats, { ...options, sectionsOrder, showUnread: true, groupByType: false, isOmnichannelAgent: true }))
+			layout(
+				buildRoomList(chats, {
+					...options,
+					customCategoryNames: new Map(),
+					sectionsOrder,
+					showUnread: true,
+					groupByType: false,
+					isOmnichannelAgent: true
+				})
+			)
 		).toEqual(['# Chats', 'unread']);
 	});
 });

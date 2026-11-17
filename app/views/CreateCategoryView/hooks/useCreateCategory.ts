@@ -14,7 +14,6 @@ import Navigation from '~/lib/navigation/appNavigation';
 import { saveSidebarCategories, setRoomsCategory } from '~/lib/services/restApi';
 import { alertCategoryError } from '~/views/CategorySettingsView/utils/alertCategoryError';
 import { toSidebarCategories } from '~/views/RoomsListView/utils/sidebarGroupOrder';
-import { useShowCustomCategories } from '~/views/RoomsListView/hooks/useShowCustomCategories';
 import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
 
 export const prependCategory = (
@@ -38,7 +37,6 @@ export const useCreateCategory = () => {
 	const dispatch = useDispatch();
 	const captureSession = useCaptureSession();
 	const { storedCategories, sectionsOrder, groupOrder } = useSidebarCategories();
-	const showCustomCategories = useShowCustomCategories();
 	const [creating, setCreating] = useState(false);
 	const [categoryId] = useState(() => random(17));
 
@@ -56,7 +54,6 @@ export const useCreateCategory = () => {
 		}
 		if (isSameSession()) {
 			dispatch(setUser({ sidebarCategories }));
-			showCustomCategories();
 			if (roomIds.length > 0) {
 				await setRoomsCategory(roomIds, category._id).catch(alertRoomsNotAdded);
 			}
