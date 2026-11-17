@@ -14,7 +14,7 @@ import {
 	tapSend
 } from '~e2e/support/flows';
 import { openThreadFromButton, replyInThread, sendThreadReply, THREAD_INPUT } from '~e2e/support/threads';
-import { openSettings } from '~e2e/support/settings';
+import { clearLocalCache, openSettings } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
 
@@ -31,11 +31,7 @@ test('edits a thread reply after app data is cleared', { tags: ['test-4'], timeo
 
 	await backToRoomsList(fixtures);
 	await openSettings(fixtures);
-	await screen.scrollUntilVisible(screen.getByTestId('settings-view-clear-cache'));
-	await tapWhenVisible(fixtures, 'settings-view-clear-cache');
-	await expect(screen.getByText(/This will clear all your offline data/)).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByRole('button', { name: /^Clear$/i }).tap();
-	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await clearLocalCache(fixtures);
 
 	await navigateToRoom(fixtures, room.name);
 	await openThreadFromButton(fixtures, 'thread');
