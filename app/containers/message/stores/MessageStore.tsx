@@ -3,7 +3,8 @@ import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { Keyboard } from 'react-native';
 
-import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { getMessageSeparators, getMessageTranslation, type TMessageSeparators } from '../utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
 import { messagesStatus } from '~/lib/constants/messagesStatus';

@@ -2,7 +2,7 @@ import { type ReactNode, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import { type IAttachment } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
 import { fileDownloadAndPreview } from '~/lib/methods/helpers/fileDownload';
 import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import openLink from '~/lib/methods/helpers/openLink';

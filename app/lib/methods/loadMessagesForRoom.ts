@@ -1,7 +1,7 @@
 import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import { roomHistoryUiLoaderPop, roomHistoryUiLoaderPush } from '~/actions/room';
-import { type IMessage, type TMessageModel } from '~/definitions';
+import { type IMessage, type TMessageModel } from '~/definitions/IMessage';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';

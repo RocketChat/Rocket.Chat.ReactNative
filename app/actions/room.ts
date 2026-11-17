@@ -1,6 +1,7 @@
 import { type Action } from 'redux';
 
-import { type ERoomType, type RoomType } from '../definitions';
+import { type ERoomType } from '../definitions/ERoomType';
+import { type RoomType } from '../definitions/IRoom';
 import { ROOM } from './actionsTypes';
 
 // TYPE RETURN RELATED

@@ -28,7 +28,7 @@ jest.mock('~/containers/Touch', () => {
 });
 
 // The composer subtree is heavy and out of scope; a sentinel proves the composer branch.
-jest.mock('~/containers/MessageComposer', () => {
+jest.mock('~/containers/MessageComposer/MessageComposerContainer', () => {
 	const { createElement } = require('react');
 	const { View } = require('react-native');
 	return {

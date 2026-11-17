@@ -16,16 +16,13 @@ import {
 } from '@rocket.chat/mobile-crypto';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import type {
-	IAttachment,
-	IMessage,
-	TSendFileMessageFileInfo,
-	IServerAttachment,
-	TSubscriptionModel,
-	ISubscription
-} from '~/definitions';
+import type { IAttachment, IServerAttachment } from '~/definitions/IAttachment';
+import type { IMessage } from '~/definitions/IMessage';
+import type { TSendFileMessageFileInfo } from '~/definitions/IUpload';
+import type { TSubscriptionModel, ISubscription } from '~/definitions/ISubscription';
 import Deferred from './helpers/deferred';
-import { compareServerVersion, debounce } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { debounce } from '../methods/helpers/debounce';
 import log from '../methods/helpers/log';
 import {
 	b64ToBuffer,

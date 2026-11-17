@@ -16,21 +16,17 @@ import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
 import { themes } from '~/lib/constants/colors';
 import { type TSupportedThemes, withTheme } from '~/theme';
 import { getUserSelector } from '~/selectors/login';
-import { withActionSheet } from '~/containers/ActionSheet';
+import { withActionSheet } from '~/containers/ActionSheet/Provider';
 import SafeAreaView from '~/containers/SafeAreaView';
 import getThreadName from '~/lib/methods/getThreadName';
 import styles from './styles';
 import { type ChatsStackParamList } from '~/stacks/types';
-import {
-	type IApplicationState,
-	type IRoomInfoParam,
-	type TMessageModel,
-	SubscriptionType,
-	type IAttachment,
-	type IMessage,
-	type TAnyMessageModel,
-	type IUrl
-} from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type IRoomInfoParam } from '~/definitions/IRoom';
+import { type TMessageModel, type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
+import { SubscriptionType } from '~/definitions/ISubscription';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type IUrl } from '~/definitions/IUrl';
 import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '~/lib/services/restApi';
 import { type TNavigation } from '~/stacks/stackType';
 import AudioManager from '~/lib/methods/AudioManager';

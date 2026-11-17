@@ -1,7 +1,7 @@
 import { type ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { type ISubscription } from '~/definitions';
+import { type ISubscription } from '~/definitions/ISubscription';
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
 import { type ILivechatVisitorModified } from '~/definitions/ILivechatVisitor';
 import I18n from '~/i18n';

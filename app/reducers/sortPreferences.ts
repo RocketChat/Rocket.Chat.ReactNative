@@ -1,6 +1,7 @@
 import { SORT_PREFERENCES } from '../actions/actionsTypes';
 import { DisplayMode, SortBy } from '../lib/constants/constantDisplayMode';
-import { type IPreferences, type TApplicationActions } from '../definitions';
+import { type IPreferences } from '../definitions/IPreferences';
+import { type TApplicationActions } from '../definitions/redux';
 
 export const initialState: IPreferences = {
 	sortBy: SortBy.Activity,

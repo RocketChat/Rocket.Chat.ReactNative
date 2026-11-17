@@ -8,7 +8,7 @@ import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import Chip from '~/containers/Chip';
-import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 
 const styles = StyleSheet.create({

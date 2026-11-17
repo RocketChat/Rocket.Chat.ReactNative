@@ -5,7 +5,7 @@ import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import updateMessages from './updateMessages';
-import { type IMessage, type TMessageModel } from '~/definitions';
+import { type IMessage, type TMessageModel } from '~/definitions/IMessage';
 import { getNextMessages } from '../services/restApi';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 

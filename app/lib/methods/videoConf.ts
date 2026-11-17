@@ -1,7 +1,7 @@
 import i18n from '~/i18n';
 import navigation from '../navigation/appNavigation';
 import { videoConferenceGetCapabilities, videoConferenceJoin } from '../services/restApi';
-import { showErrorAlert } from './helpers';
+import { showErrorAlert } from './helpers/info';
 import log from './helpers/log';
 import openLink from './helpers/openLink';
 import { openConferenceCall } from './openConferenceCall';

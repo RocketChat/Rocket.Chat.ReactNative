@@ -4,7 +4,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { addSettings, clearSettings } from '~/actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
-import { type IPreparedSettings, type ISettingsIcon } from '~/definitions';
+import { type IPreparedSettings, type ISettingsIcon } from '~/definitions/ISettings';
 import log from './helpers/log';
 import { fetchForWorkspace } from './serverBasicAuth';
 import { store as reduxStore } from '../store/auxStore';
@@ -13,7 +13,7 @@ import sdk from '../services/sdk';
 import protectedFunction from './helpers/protectedFunction';
 import { parseSettings, _prepareSettings } from './parseSettings';
 import { setPresenceCap } from './getUsersPresence';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion } from './helpers/compareServerVersion';
 
 const serverInfoKeys = new Set([
 	'Site_Name',
