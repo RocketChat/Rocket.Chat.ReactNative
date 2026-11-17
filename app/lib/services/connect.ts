@@ -1,6 +1,5 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
 import log from '../methods/helpers/log';
@@ -217,10 +216,8 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 					if (!_setUserTimer.setUserTimer) {
 						_setUserTimer.setUserTimer = setTimeout(() => {
 							const activeUsersBatch = _activeUsers.activeUsers;
-							InteractionManager.runAfterInteractions(() => {
-								// @ts-ignore
-								store.dispatch(setActiveUsers(activeUsersBatch));
-							});
+							// @ts-ignore
+							store.dispatch(setActiveUsers(activeUsersBatch));
 							_setUserTimer.setUserTimer = null;
 							_activeUsers.activeUsers = {} as IActiveUsers;
 							return null;

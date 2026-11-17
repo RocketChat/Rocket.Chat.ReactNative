@@ -1,6 +1,5 @@
 jest.mock('~/lib/methods/helpers/sslPinning', () => ({
-	__esModule: true,
-	default: undefined
+	applyServerCertificate: jest.fn(() => Promise.resolve())
 }));
 
 jest.mock('~/lib/database', () => ({
@@ -85,6 +84,7 @@ import { getLoginSettings } from '~/lib/methods/getSettings';
 import { connect, getLoginServices } from '~/lib/services/connect';
 import sdk from '~/lib/services/sdk';
 import { getServerById } from '~/lib/database/services/Server';
+import { applyServerCertificate } from '~/lib/methods/helpers/sslPinning';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 import type { RecordingStore } from '~/lib/testUtils/sagaStore';
 
@@ -221,6 +221,16 @@ describe('selectServer saga — version and name fallback', () => {
 		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
 		UserPreferences.setString(getUserTokenKey(SERVER_URL, USER_ID), TOKEN);
 		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: TOKEN } as any);
+	});
+
+	it('waits for the workspace certificate before connecting', async () => {
+		jest.mocked(applyServerCertificate).mockImplementationOnce(() => new Promise(() => {}));
+		const { store } = setupStore();
+		store.dispatch(selectServerRequest(SERVER_URL, '7.4.0', false));
+		await flushSagaMicrotasks();
+
+		expect(applyServerCertificate).toHaveBeenCalledWith(SERVER_URL);
+		expect(connect).not.toHaveBeenCalled();
 	});
 
 	it('reports the caller-supplied version and the default name', async () => {
@@ -437,6 +447,16 @@ describe('selectServer saga — requesting a new workspace', () => {
 		expect(activeAuthorization()).toBe('Basic old-workspace-credentials');
 	});
 
+	it('waits for the requested host certificate before probing it', async () => {
+		jest.mocked(applyServerCertificate).mockImplementationOnce(() => new Promise(() => {}));
+		const { store } = setupStore();
+		store.dispatch(serverRequest(REQUESTED_HOST));
+		await flushSagaMicrotasks();
+
+		expect(applyServerCertificate).toHaveBeenCalledWith(REQUESTED_HOST);
+		expect(getServerInfo).not.toHaveBeenCalled();
+	});
+
 	it('connects to the requested host with its own basic auth after a successful probe', async () => {
 		UserPreferences.setString(getBasicAuthKey(OLD_SERVER), 'old-workspace-credentials');
 		UserPreferences.setString(getBasicAuthKey(REQUESTED_HOST), 'requested-host-credentials');
@@ -466,5 +486,15 @@ describe('selectServer saga — selecting the connected workspace', () => {
 		await flushSagaMicrotasks();
 
 		expect(activeAuthorization()).toBe('Basic new-workspace-credentials');
+	});
+
+	it('applies the connected workspace certificate when it is selected again', async () => {
+		setActiveHost(OLD_SERVER);
+
+		const { store } = setupStore();
+		store.dispatch(selectServerRequest(OLD_SERVER, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(applyServerCertificate).toHaveBeenCalledWith(OLD_SERVER);
 	});
 });

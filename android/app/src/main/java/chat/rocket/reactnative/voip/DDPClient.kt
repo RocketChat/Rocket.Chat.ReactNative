@@ -11,7 +11,7 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import org.json.JSONArray
 import org.json.JSONObject
-import chat.rocket.reactnative.networking.SSLPinningTurboModule
+import com.facebook.react.modules.network.OkHttpClientProvider
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
@@ -20,8 +20,11 @@ class DDPClient {
     companion object {
         private const val TAG = "RocketChat.DDPClient"
         private val sharedClient: OkHttpClient by lazy {
-            SSLPinningTurboModule.getSharedOkHttpClient() ?: OkHttpClient.Builder()
+            OkHttpClientProvider.createClient().newBuilder()
                 .pingInterval(30, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
                 .build()
         }
     }
