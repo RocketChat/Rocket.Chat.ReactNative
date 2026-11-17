@@ -6,6 +6,8 @@ import UserPreferences from '~/lib/methods/userPreferences';
 import { getBasicAuthKey } from '~/lib/constants/keys';
 import log from '~/lib/methods/helpers/log';
 import { mockGlobalFetch } from '~/lib/testUtils/mockGlobalFetch';
+import database from '~/lib/database';
+import { DEFAULT_AUTO_LOCK } from '~/lib/constants/localAuthentication';
 
 jest.mock('~/lib/database', () => ({
 	__esModule: true,
@@ -124,5 +126,86 @@ describe('getSettings — per-page basic auth', () => {
 		sentToNetwork.mock.calls.forEach(([, options]) => {
 			expect(options.headers).not.toHaveProperty('Authorization');
 		});
+	});
+});
+
+describe('getSettings — admin force screen lock', () => {
+	interface IFakeServerRecord {
+		autoLock: boolean;
+		autoLockTime?: number | null;
+		update: jest.Mock;
+	}
+
+	let serverRecord: IFakeServerRecord;
+	let publicSettings: { _id: string; value: unknown }[];
+
+	mockGlobalFetch(() =>
+		Promise.resolve({
+			json: () => Promise.resolve({ success: true, settings: publicSettings, total: publicSettings.length })
+		} as Response)
+	);
+
+	const givenServerRecord = (fields: Partial<Omit<IFakeServerRecord, 'update'>>) => {
+		serverRecord = {
+			autoLock: false,
+			autoLockTime: null,
+			update: jest.fn((applyChanges: (record: IFakeServerRecord) => void) => applyChanges(serverRecord)),
+			...fields
+		};
+	};
+
+	beforeEach(() => {
+		jest.mocked(database.servers.get).mockReturnValue({ find: jest.fn(() => Promise.resolve(serverRecord)) } as any);
+		jest.mocked(database.servers.write).mockImplementation(work => work({} as never));
+	});
+
+	afterEach(() => {
+		jest.mocked(database.servers.get).mockReset();
+		jest.mocked(database.servers.write).mockReset();
+	});
+
+	it('turns auto lock on and adopts the admin lock time when the admin forces screen lock', async () => {
+		givenServerRecord({ autoLock: false });
+		publicSettings = [
+			{ _id: 'Force_Screen_Lock', value: true },
+			{ _id: 'Force_Screen_Lock_After', value: 120 }
+		];
+
+		await getSettings(SERVER);
+
+		expect(serverRecord.autoLock).toBe(true);
+		expect(serverRecord.autoLockTime).toBe(120);
+	});
+
+	it('keeps auto lock on after the admin stops forcing screen lock', async () => {
+		givenServerRecord({ autoLock: true });
+		publicSettings = [{ _id: 'Force_Screen_Lock', value: false }];
+
+		await getSettings(SERVER);
+
+		expect(serverRecord.update).toHaveBeenCalledTimes(1);
+		expect(serverRecord.autoLock).toBe(true);
+	});
+
+	it('falls back to the default lock time when the admin lock time is zero and none is stored', async () => {
+		givenServerRecord({ autoLockTime: null });
+		publicSettings = [{ _id: 'Force_Screen_Lock_After', value: 0 }];
+
+		await getSettings(SERVER);
+
+		expect(serverRecord.autoLockTime).toBe(DEFAULT_AUTO_LOCK);
+	});
+
+	it('keeps the stored lock time when the admin sets a lock time without forcing screen lock', async () => {
+		givenServerRecord({ autoLockTime: 300 });
+		publicSettings = [
+			{ _id: 'Force_Screen_Lock', value: false },
+			{ _id: 'Force_Screen_Lock_After', value: 120 }
+		];
+
+		await getSettings(SERVER);
+
+		expect(serverRecord.update).toHaveBeenCalledTimes(1);
+		expect(serverRecord.autoLockTime).toBe(300);
 	});
 });

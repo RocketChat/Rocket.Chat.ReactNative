@@ -108,7 +108,7 @@
 	{
 		"test": "e2e/tests/assorted/screen-lock.e2e.ts",
 		"dependsOn": [
-			"app/views/ScreenLockConfigView.tsx",
+			"app/views/ScreenLockConfigView/**",
 			"app/views/ScreenLockedView.tsx",
 			"app/views/ChangePasscodeView.tsx",
 			"app/views/SecurityPrivacyView.tsx",
