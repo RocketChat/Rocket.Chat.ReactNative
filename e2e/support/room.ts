@@ -57,10 +57,7 @@ const navigateToInfoView = async (fixtures: Fixtures) => {
 };
 
 export const navigateToRoomActions = async (fixtures: Fixtures, room: string) => {
-	if (!(await isVisibleNow(fixtures.screen.getByTestId('room-view')))) {
-		await openRoom(fixtures, room);
-	}
-	await expectVisible(fixtures, 'room-view');
+	await openRoom(fixtures, room);
 	await openRoomActions(fixtures);
 };
 

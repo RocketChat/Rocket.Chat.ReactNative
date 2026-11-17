@@ -7,22 +7,16 @@ const SCREEN_TEST_IDS = {
 	SettingsView: 'settings-view',
 	LanguageView: 'language-view',
 	SecurityPrivacyView: 'security-privacy-view',
-	MediaAutoDownloadView: 'media-auto-download-image',
 	AccessibilityAndAppearanceView: 'accessibility-view-list',
 	DisplayPrefsView: 'display-view-list',
-	ThemeView: 'theme-view',
 	ProfileView: 'profile-view',
-	UserPreferencesView: 'preferences-view',
-	UserNotificationPrefView: 'user-notification-preference-view',
-	DirectoryView: 'directory-view'
+	UserPreferencesView: 'preferences-view'
 } as const;
 
 const ROOM_SCREEN_TEST_IDS = {
 	RoomActionsView: 'room-actions-view',
 	RoomInfoView: 'room-info-view',
-	RoomMembersView: 'room-members-view',
-	NotificationPrefView: 'notification-preference-view',
-	ThreadMessagesView: 'thread-messages-view'
+	RoomMembersView: 'room-members-view'
 } as const;
 
 type OpenedRoom = { rid: string };

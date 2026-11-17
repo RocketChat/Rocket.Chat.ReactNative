@@ -591,13 +591,7 @@ registerTool({
 	}
 });
 
-const waitForLogout = (signal: AbortSignal) => {
-	let loggingOut = false;
-	return waitForState(state => {
-		loggingOut ||= state.app.root === RootEnum.ROOT_LOADING;
-		return loggingOut && state.app.root === RootEnum.ROOT_OUTSIDE;
-	}, signal);
-};
+const waitForLogout = (signal: AbortSignal) => waitForState(state => state.app.root === RootEnum.ROOT_OUTSIDE, signal);
 
 const removeServersExcept = async (keptServer: string | null) => {
 	const servers = await database.servers.get(SERVERS_TABLE).query().fetch();
@@ -626,8 +620,8 @@ const disconnectFromWorkspace = () => {
 	store.dispatch(selectServerClear());
 };
 
-const clearLocalStorage = async () => {
-	UserPreferences.getAllKeys().forEach(key => UserPreferences.removeItem(key));
+const resetPreferences = async () => {
+	UserPreferences.clearAll();
 	setDeviceLanguage();
 	store.dispatch(setAllPreferences(defaultSortPreferences));
 	await AsyncStorage.clear();
@@ -646,16 +640,16 @@ registerTool({
 	}),
 	handler: async (_input, { signal }) => {
 		await waitUntil(hasLeftShareExtension, signal);
-		const isInside = store.getState().app.root === RootEnum.ROOT_INSIDE;
-		await removeServersExcept(isInside ? store.getState().server.server : null);
-		if (isInside) {
+		if (store.getState().app.root === RootEnum.ROOT_INSIDE) {
+			await removeServersExcept(store.getState().server.server);
 			const loggedOut = waitForLogout(signal);
 			store.dispatch(logout());
 			await loggedOut;
 		}
 		disconnectFromWorkspace();
+		await removeServersExcept(null);
 		await clearServersHistory();
-		await clearLocalStorage();
+		await resetPreferences();
 		await remountOutside(signal);
 		return { root: RootEnum.ROOT_OUTSIDE };
 	}

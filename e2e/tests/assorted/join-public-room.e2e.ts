@@ -8,12 +8,13 @@ import {
 	backToRoomsList,
 	expectAllHidden,
 	expectAllVisible,
+	expectVisible,
 	loginWithDeepLink,
+	openRoomActions,
 	searchAndNavigateRoom,
 	sendMessage,
 	LONG_TIMEOUT
 } from '~e2e/support/flows';
-import { navigateToRoomActions } from '~e2e/support/room';
 import { random } from '~e2e/support/random';
 
 afterEach(deleteCreatedUsers);
@@ -41,7 +42,7 @@ test('previews, joins and leaves a public room', { tags: ['test-3'] }, async fix
 	await expect(screen.getByText('You are in preview mode')).toBeVisible();
 	await expect(screen.getByTestId('message-composer')).toBeHidden();
 
-	await navigateToRoomActions(fixtures, room);
+	await openRoomActions(fixtures);
 	await expectAllVisible(fixtures, COMMON_ROOM_ACTIONS);
 	await expectAllHidden(fixtures, ['room-actions-notifications', 'room-actions-leave-channel']);
 
@@ -50,13 +51,14 @@ test('previews, joins and leaves a public room', { tags: ['test-3'] }, async fix
 	await screen.getByTestId('room-view-join-button').tap();
 	await expect(screen.getByTestId('room-view-join-button')).toBeHidden({ timeout: LONG_TIMEOUT });
 	await backToRoomsList(fixtures);
+	await expectVisible(fixtures, `rooms-list-view-item-${room}`);
 	await openRoom(fixtures, room);
 	await expectAllVisible(fixtures, ['room-view', 'message-composer']);
 	await expect(screen.getByTestId('room-view-join')).toBeHidden();
 
 	await sendMessage(fixtures, random(5));
 
-	await navigateToRoomActions(fixtures, room);
+	await openRoomActions(fixtures);
 	await expectAllVisible(fixtures, COMMON_ROOM_ACTIONS);
 	await screen.scrollUntilVisible(screen.getByTestId('room-actions-notifications'));
 	await screen.scrollUntilVisible(screen.getByTestId('room-actions-leave-channel'));

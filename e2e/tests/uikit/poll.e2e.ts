@@ -2,15 +2,8 @@ import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers, findAppActionButton, getServerAppTranslation } from '~e2e/support/api';
-import {
-	escapeRegExp,
-	fillSettled,
-	headerItem,
-	LONG_TIMEOUT,
-	loginWithDeepLink,
-	navigateToRoom,
-	roomTitle
-} from '~e2e/support/flows';
+import { escapeRegExp, fillSettled, headerItem, LONG_TIMEOUT, loginWithDeepLink, roomTitle } from '~e2e/support/flows';
+import { openRoom } from '~e2e/support/appduct';
 import { random } from '~e2e/support/random';
 
 afterEach(deleteCreatedUsers);
@@ -42,7 +35,7 @@ test('creates and votes on a poll from the composer app action', { tags: ['test-
 	};
 
 	await loginWithDeepLink(fixtures, user);
-	await navigateToRoom(fixtures, room.name);
+	await openRoom(fixtures, room.name);
 	await expect(screen.getByTestId('message-composer-actions')).toBeVisible({ timeout: LONG_TIMEOUT });
 
 	await openPollModal();
