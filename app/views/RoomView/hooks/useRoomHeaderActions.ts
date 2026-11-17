@@ -13,6 +13,7 @@ import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { type IHeaderAction, type IHeaderMenuItem } from '~/lib/methods/helpers/navigation/headerActions';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
+import { videoConfJoin } from '~/lib/methods/videoConf';
 import { returnLivechat } from '~/lib/services/restApi';
 import { mediaSessionInstance } from '~/lib/services/voip/MediaSessionInstance';
 import { useCanTakeOverCall } from '~/lib/services/voip/useCanTakeOverCall';
@@ -29,6 +30,7 @@ import { useCanPlaceLivechatOnHold } from './useCanPlaceLivechatOnHold';
 import { useThreadFollowing } from './useThreadFollowing';
 import { useRoomActionsState } from './useRoomActionsState';
 import { useHeaderCallPress } from './useHeaderCallPress';
+import { useOngoingConference } from './useOngoingConference';
 
 export const EMPTY_ACTIONS: IHeaderAction[] = [];
 
@@ -111,6 +113,44 @@ export const useThreadActions = (tmid: string): IHeaderAction[] => {
 	];
 };
 
+const getVideoCallMenuItem = ({
+	rid,
+	ongoingCallId,
+	isSelfDm,
+	showVideoCall,
+	hasE2EEWarning,
+	startDisabled,
+	onStart
+}: {
+	rid: string;
+	ongoingCallId?: string;
+	isSelfDm: boolean;
+	showVideoCall: boolean;
+	hasE2EEWarning: boolean;
+	startDisabled: boolean;
+	onStart: () => void;
+}): IHeaderMenuItem | undefined => {
+	if (ongoingCallId && !isSelfDm) {
+		return {
+			label: i18n.t('Join_ongoing_call'),
+			icon: 'video',
+			testID: 'room-view-header-join-ongoing-call',
+			disabled: hasE2EEWarning,
+			onPress: () => videoConfJoin(ongoingCallId, undefined, undefined, { rid })
+		};
+	}
+	if (showVideoCall) {
+		return {
+			label: i18n.t('Video_call'),
+			icon: 'video',
+			testID: 'room-view-header-video-call',
+			disabled: hasE2EEWarning || startDisabled,
+			onPress: onStart
+		};
+	}
+	return undefined;
+};
+
 export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction[] => {
 	const { theme, colors } = useTheme();
 	const {
@@ -136,6 +176,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 	const userId = useAppSelector(state => getUserSelector(state).id);
 	const dmPeerUserId = useStore(roomStore, s => (s.room.t === 'd' ? getUidDirectMessage(s.room, userId) : null));
 	const canTakeOverCall = useCanTakeOverCall(dmPeerUserId);
+	const ongoingCallId = useOngoingConference(rid);
 
 	const takeOverCallAction: IHeaderAction = {
 		label: i18n.t('Continue_call_here'),
@@ -164,6 +205,16 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 	const showVideoCall = !isSelfDm && callEnabled;
 	const showNotifications = issuesWithNotifications || disableNotifications;
 
+	const videoCallItem = getVideoCallMenuItem({
+		rid,
+		ongoingCallId,
+		isSelfDm,
+		showVideoCall,
+		hasE2EEWarning,
+		startDisabled: disabledTooltip || isCallDisabled,
+		onStart: showInitCallActionSheet
+	});
+
 	const menu: IHeaderMenuItem[] = [
 		...(showCall
 			? [
@@ -176,17 +227,7 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 					}
 				]
 			: []),
-		...(showVideoCall
-			? [
-					{
-						label: i18n.t('Video_call'),
-						icon: 'video' as const,
-						testID: 'room-view-header-video-call',
-						disabled: hasE2EEWarning || disabledTooltip || isCallDisabled,
-						onPress: showInitCallActionSheet
-					}
-				]
-			: []),
+		...(videoCallItem ? [videoCallItem] : []),
 		...(hasE2EEWarning
 			? [
 					{

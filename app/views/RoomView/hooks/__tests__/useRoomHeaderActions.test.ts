@@ -5,6 +5,7 @@ import { events, logEvent } from '~/lib/methods/helpers/log';
 import { showConfirmationAlert } from '~/lib/methods/helpers';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
 import { returnLivechat } from '~/lib/services/restApi';
+import { videoConfJoin } from '~/lib/methods/videoConf';
 import { type RoomStore } from '~/views/RoomView/definitions';
 import { closeLivechat } from '~/views/RoomView/services/closeLivechat';
 import { placeLivechatOnHold } from '~/views/RoomView/services/placeLivechatOnHold';
@@ -72,6 +73,10 @@ jest.mock('~/lib/hooks/useNewMediaCall', () => ({ useNewMediaCall: () => mockMed
 jest.mock('~/lib/services/voip/MediaSessionInstance', () => ({ mediaSessionInstance: { takeOverCall: jest.fn() } }));
 jest.mock('~/lib/services/voip/useCanTakeOverCall', () => ({ useCanTakeOverCall: () => false }));
 
+let mockOngoingCallId: string | undefined;
+jest.mock('../useOngoingConference', () => ({ useOngoingConference: () => mockOngoingCallId }));
+jest.mock('~/lib/methods/videoConf', () => ({ videoConfJoin: jest.fn() }));
+
 const roomStore = {} as RoomStore;
 
 const renderRoomActions = () => renderHook(() => useRoomActions('rid-1', roomStore)).result.current;
@@ -127,6 +132,7 @@ describe('useRoomHeaderActions', () => {
 		mockVideoConf.disabledTooltip = false;
 		mockMediaCall.hasMediaCallPermission = false;
 		mockMediaCall.isInActiveCall = false;
+		mockOngoingCallId = undefined;
 	});
 
 	it.each([
@@ -337,6 +343,51 @@ describe('useRoomHeaderActions', () => {
 			mockButtonsData = { ...mockButtonsData, hasE2EEWarning: true };
 
 			expect(videoCallAction()?.disabled).toBe(true);
+		});
+	});
+
+	describe('join ongoing call action', () => {
+		const joinAction = () => menuItemByTestID('room-view-header-join-ongoing-call');
+
+		it('is absent when no conference is running', () => {
+			expect(joinAction()).toBeUndefined();
+		});
+
+		it('joins the running conference', () => {
+			mockOngoingCallId = 'call-1';
+
+			expect(joinAction()).toMatchObject({ icon: 'video', label: 'Join ongoing call', disabled: false });
+			joinAction()?.onPress();
+
+			expect(videoConfJoin).toHaveBeenCalledWith('call-1', undefined, undefined, { rid: 'rid-1' });
+		});
+
+		it('replaces the video call action', () => {
+			mockOngoingCallId = 'call-1';
+			mockVideoConf.callEnabled = true;
+			mockMediaCall.hasMediaCallPermission = true;
+
+			expect(menuItemTestIDs()).toEqual(['room-view-header-call', 'room-view-header-join-ongoing-call', 'room-view-search']);
+		});
+
+		it('shows even when starting a video call is not allowed', () => {
+			mockOngoingCallId = 'call-1';
+
+			expect(joinAction()).toBeDefined();
+		});
+
+		it('is absent on a self DM', () => {
+			mockOngoingCallId = 'call-1';
+			mockButtonsData = { ...mockButtonsData, isSelfDm: true };
+
+			expect(joinAction()).toBeUndefined();
+		});
+
+		it('is disabled by the e2ee warning', () => {
+			mockOngoingCallId = 'call-1';
+			mockButtonsData = { ...mockButtonsData, hasE2EEWarning: true };
+
+			expect(joinAction()?.disabled).toBe(true);
 		});
 	});
 

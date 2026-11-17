@@ -35,6 +35,7 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 
 const mockVideoConf = { showInitCallActionSheet: jest.fn(), callEnabled: true, disabledTooltip: false };
 jest.mock('~/lib/hooks/useVideoConf', () => ({ useVideoConf: () => mockVideoConf }));
+jest.mock('~/views/RoomView/hooks/useOngoingConference', () => ({ useOngoingConference: () => undefined }));
 jest.mock('~/lib/hooks/useNewMediaCall', () => ({
 	useNewMediaCall: () => ({
 		openNewMediaCall: jest.fn(),
