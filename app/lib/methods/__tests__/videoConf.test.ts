@@ -2,24 +2,24 @@ import { selectServerRequest } from '~/actions/server';
 import { clearSettings } from '~/actions/settings';
 import i18n from '~/i18n';
 import { mockedStore } from '~/reducers/mockedStore';
-import navigation from '../navigation/appNavigation';
-import { videoConferenceGetCapabilities, videoConferenceJoin } from '../services/restApi';
-import { initStore } from '../store/auxStore';
-import { showErrorAlert } from './helpers/info';
-import openLink from './helpers/openLink';
-import { openConferenceCall } from './openConferenceCall';
-import { videoConfJoin } from './videoConf';
-import { requestVoipCallPermissions } from './voipCallPermissions';
+import navigation from '../../navigation/appNavigation';
+import { videoConferenceGetCapabilities, videoConferenceJoin } from '../../services/restApi';
+import { initStore } from '../../store/auxStore';
+import { showErrorAlert } from '../helpers/info';
+import openLink from '../helpers/openLink';
+import { openConferenceCall } from '../openConferenceCall';
+import { videoConfJoin } from '../videoConf';
+import { requestVoipCallPermissions } from '../voipCallPermissions';
 
-jest.mock('../navigation/appNavigation', () => ({ navigate: jest.fn() }));
-jest.mock('./helpers/openLink', () => jest.fn());
-jest.mock('./openConferenceCall', () => ({ openConferenceCall: jest.fn(() => Promise.resolve()) }));
-jest.mock('./voipCallPermissions', () => ({ requestVoipCallPermissions: jest.fn(() => Promise.resolve(true)) }));
-jest.mock('../services/restApi', () => ({
+jest.mock('../../navigation/appNavigation', () => ({ navigate: jest.fn() }));
+jest.mock('../helpers/openLink', () => jest.fn());
+jest.mock('../openConferenceCall', () => ({ openConferenceCall: jest.fn(() => Promise.resolve()) }));
+jest.mock('../voipCallPermissions', () => ({ requestVoipCallPermissions: jest.fn(() => Promise.resolve(true)) }));
+jest.mock('../../services/restApi', () => ({
 	videoConferenceJoin: jest.fn(),
 	videoConferenceGetCapabilities: jest.fn()
 }));
-jest.mock('./helpers/info', () => ({ showErrorAlert: jest.fn() }));
+jest.mock('../helpers/info', () => ({ showErrorAlert: jest.fn() }));
 
 const mockedJoin = videoConferenceJoin as jest.Mock;
 const mockedCapabilities = videoConferenceGetCapabilities as jest.Mock;
@@ -55,6 +55,17 @@ describe('videoConfJoin', () => {
 			await videoConfJoin('call1', true, true);
 
 			expect(openLink).toHaveBeenCalledWith('https://bbb.example.com/x');
+		});
+
+		test('opens a pexip call in the video conference webview', async () => {
+			mockedCapabilities.mockResolvedValue({ success: true, providerName: 'core.pexip' });
+			mockedJoin.mockResolvedValue({ success: true, url: 'https://pexip.example/call', providerName: 'core.pexip' });
+
+			await videoConfJoin('call1', true, true);
+
+			expect(requestVoipCallPermissions).toHaveBeenCalled();
+			expect(navigation.navigate).toHaveBeenCalledWith('VideoConfWebView', { url: 'https://pexip.example/call' });
+			expect(openLink).not.toHaveBeenCalled();
 		});
 
 		test('joins through the regular endpoint', async () => {

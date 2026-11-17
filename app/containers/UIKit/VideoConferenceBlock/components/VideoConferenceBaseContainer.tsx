@@ -4,14 +4,34 @@ import { View, Text } from 'react-native';
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
+import Touch from '~/containers/Touch';
+import { useOnDiscussionPress } from '~/containers/message/stores/MessageRoomStore';
 import useStyle from './styles';
 
 type VideoConfMessageIconProps = {
 	variant: 'ended' | 'incoming' | 'outgoing' | 'issue';
 	children: ReactElement | ReactElement[];
+	discussionRid?: string;
 };
 
-export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMessageIconProps): ReactElement => {
+const JoinDiscussionButton = ({ discussionRid }: { discussionRid?: string }): ReactElement | null => {
+	const { colors } = useTheme();
+	const style = useStyle();
+	const onDiscussionPress = useOnDiscussionPress();
+	if (!discussionRid || !onDiscussionPress) return null;
+	return (
+		<Touch
+			style={style.actionButton}
+			onPress={() => onDiscussionPress(discussionRid)}
+			accessibilityLabel={i18n.t('Join_discussion')}
+			accessibilityRole='button'
+			testID='video-conf-join-discussion'>
+			<CustomIcon name='discussions' size={20} color={colors.fontDefault} />
+		</Touch>
+	);
+};
+
+export const VideoConferenceBaseContainer = ({ variant, children, discussionRid }: VideoConfMessageIconProps): ReactElement => {
 	const { colors } = useTheme();
 	const style = useStyle();
 
@@ -44,15 +64,18 @@ export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMes
 
 	return (
 		<View style={style.container}>
-			<View style={style.callInfoContainer}>
-				<View
-					style={{
-						...style.iconContainer,
-						backgroundColor: iconStyle[variant].backgroundColor
-					}}>
-					<CustomIcon name={iconStyle[variant].icon} size={24} color={iconStyle[variant].color} />
+			<View style={style.headerRow}>
+				<View style={style.callInfoContainer}>
+					<View
+						style={{
+							...style.iconContainer,
+							backgroundColor: iconStyle[variant].backgroundColor
+						}}>
+						<CustomIcon name={iconStyle[variant].icon} size={24} color={iconStyle[variant].color} />
+					</View>
+					<Text style={style.infoContainerText}>{iconStyle[variant].label}</Text>
 				</View>
-				<Text style={style.infoContainerText}>{iconStyle[variant].label}</Text>
+				<JoinDiscussionButton discussionRid={discussionRid} />
 			</View>
 			<View style={style.callToActionContainer}>{children}</View>
 		</View>

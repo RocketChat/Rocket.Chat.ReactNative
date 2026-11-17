@@ -1,23 +1,36 @@
 import { type ReactElement } from 'react';
 
-import { useEndpointData } from '~/lib/hooks/useEndpointData';
+import { VideoConferenceStatus } from '~/definitions/IVideoConference';
 import VideoConferenceDirect from './components/VideoConferenceDirect';
 import VideoConferenceEnded from './components/VideoConferenceEnded';
 import VideoConferenceOutgoing from './components/VideoConferenceOutgoing';
 import VideoConferenceSkeletonLoading from './components/VideoConferenceSkeletonLoading';
 import VideoConferenceIssue from './components/VideoConferenceIssue';
+import { useVideoConferenceInfo } from './useVideoConferenceInfo';
 
 export default function VideoConferenceBlock({ callId, blockId }: { callId: string; blockId: string }): ReactElement {
-	const { result, error } = useEndpointData('video-conference.info', { callId });
+	const { result, error, participants } = useVideoConferenceInfo(callId);
 
 	if (result?.success) {
-		const { users, type, status, createdBy, rid } = result;
+		const { type, status, createdBy, rid, discussionRid } = result;
 
-		if ('endedAt' in result) return <VideoConferenceEnded createdBy={createdBy} rid={rid} type={type} users={users} />;
+		if ('endedAt' in result) {
+			return (
+				<VideoConferenceEnded
+					createdBy={createdBy}
+					rid={rid}
+					type={type}
+					status={status}
+					users={participants}
+					discussionRid={discussionRid}
+				/>
+			);
+		}
 
-		if (type === 'direct' && status === 0) return <VideoConferenceDirect />;
+		if (type === 'direct' && status === VideoConferenceStatus.CALLING)
+			return <VideoConferenceDirect discussionRid={discussionRid} />;
 
-		return <VideoConferenceOutgoing blockId={blockId} users={users} />;
+		return <VideoConferenceOutgoing blockId={blockId} users={participants} discussionRid={discussionRid} />;
 	}
 
 	if (result?.error || error) return <VideoConferenceIssue />;
