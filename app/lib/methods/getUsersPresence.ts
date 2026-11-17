@@ -1,4 +1,3 @@
-import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
@@ -90,9 +89,7 @@ export async function getUsersPresence(usersParams: string[]) {
 					ret[_id] = { status, statusText, statusExpiresAt: normalizedStatusExpiresAt, statusSource };
 					return ret;
 				}, {});
-				InteractionManager.runAfterInteractions(() => {
-					reduxStore.dispatch(setActiveUsers(activeUsers));
-				});
+				reduxStore.dispatch(setActiveUsers(activeUsers));
 
 				const db = database.active;
 				const userCollection = db.get('users');
