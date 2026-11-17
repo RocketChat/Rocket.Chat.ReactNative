@@ -117,7 +117,7 @@ const getVideoCallMenuItem = ({
 	rid,
 	ongoingCallId,
 	isSelfDm,
-	showVideoCall,
+	callEnabled,
 	hasE2EEWarning,
 	startDisabled,
 	onStart
@@ -125,12 +125,15 @@ const getVideoCallMenuItem = ({
 	rid: string;
 	ongoingCallId?: string;
 	isSelfDm: boolean;
-	showVideoCall: boolean;
+	callEnabled: boolean;
 	hasE2EEWarning: boolean;
 	startDisabled: boolean;
 	onStart: () => void;
 }): IHeaderMenuItem | undefined => {
-	if (ongoingCallId && !isSelfDm) {
+	if (isSelfDm) {
+		return undefined;
+	}
+	if (ongoingCallId) {
 		return {
 			label: i18n.t('Join_ongoing_call'),
 			icon: 'video',
@@ -139,7 +142,7 @@ const getVideoCallMenuItem = ({
 			onPress: () => videoConfJoin(ongoingCallId, undefined, undefined, { rid })
 		};
 	}
-	if (showVideoCall) {
+	if (callEnabled) {
 		return {
 			label: i18n.t('Video_call'),
 			icon: 'video',
@@ -202,14 +205,13 @@ export const useRoomActions = (rid: string, roomStore: RoomStore): IHeaderAction
 	};
 
 	const showCall = !isSelfDm && isDirect && callPresent;
-	const showVideoCall = !isSelfDm && callEnabled;
 	const showNotifications = issuesWithNotifications || disableNotifications;
 
 	const videoCallItem = getVideoCallMenuItem({
 		rid,
 		ongoingCallId,
 		isSelfDm,
-		showVideoCall,
+		callEnabled,
 		hasE2EEWarning,
 		startDisabled: disabledTooltip || isCallDisabled,
 		onStart: showInitCallActionSheet
