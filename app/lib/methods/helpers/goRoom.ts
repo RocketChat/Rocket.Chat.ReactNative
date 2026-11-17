@@ -123,6 +123,7 @@ export const goRoom = async ({
 			}
 		} catch (e: any) {
 			emitErrorCreateDirectMessage(e?.data);
+			return;
 		}
 	}
 
