@@ -1,18 +1,14 @@
 import { useLayoutEffect } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
 import { type CompositeNavigationProp } from '@react-navigation/core';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
 import { type ChatsStackParamList, type DrawerParamList, type NewMessageStackParamList } from '../stacks/types';
-import { type IApplicationState } from '../definitions';
-import { usePermissions } from '../lib/hooks/usePermissions';
+import { useTeamChannelPermissions } from '../lib/hooks/useTeamChannelPermissions';
 import { useMasterDetail } from '../lib/hooks/useMasterDetail';
-import { compareServerVersion } from '../lib/methods/helpers';
-import { type TSupportedPermissions } from '../reducers/permissions';
 
 type TRoute = RouteProp<ChatsStackParamList, 'AddChannelTeamView'>;
 
@@ -21,30 +17,6 @@ type TNavigation = CompositeNavigationProp<
 	CompositeNavigationProp<NativeStackNavigationProp<NewMessageStackParamList>, NativeStackNavigationProp<DrawerParamList>>
 >;
 
-const useCreateNewPermission = (rid: string, t: 'c' | 'p') => {
-	const permissions: TSupportedPermissions[] = t === 'c' ? ['create-c'] : ['create-p'];
-
-	const serverVersion = useSelector((state: IApplicationState) => state.server.version);
-	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
-		permissions.push(t === 'c' ? 'create-team-channel' : 'create-team-group');
-	}
-
-	const result = usePermissions(permissions, rid);
-	return result.some(Boolean);
-};
-
-const useAddExistingPermission = (rid: string) => {
-	let permissions: TSupportedPermissions[] = ['add-team-channel'];
-
-	const serverVersion = useSelector((state: IApplicationState) => state.server.version);
-	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
-		permissions = ['move-room-to-team'];
-	}
-
-	const result = usePermissions(permissions, rid);
-	return result[0];
-};
-
 const AddChannelTeamView = () => {
 	const navigation = useNavigation<TNavigation>();
 	const isMasterDetail = useMasterDetail();
@@ -52,8 +24,7 @@ const AddChannelTeamView = () => {
 		params: { teamId, rid, t }
 	} = useRoute<TRoute>();
 
-	const canCreateNew = useCreateNewPermission(rid, t);
-	const canAddExisting = useAddExistingPermission(rid);
+	const { canCreateNew, canAddExisting } = useTeamChannelPermissions(rid, t);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({ title: I18n.t('Add_Channel_to_Team') });

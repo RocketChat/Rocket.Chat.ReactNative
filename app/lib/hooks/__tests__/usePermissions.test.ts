@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-native';
+import { act, renderHook, waitFor } from '@testing-library/react-native';
 
 import database from '~/lib/database';
 import { store as reduxStore } from '~/lib/store/auxStore';
@@ -80,5 +80,48 @@ describe('usePermissions', () => {
 
 			expect(result.current[0]).toBe(scenario.expected);
 		});
+	});
+});
+
+describe('usePermissions when the room changes', () => {
+	beforeEach(() => jest.clearAllMocks());
+
+	const renderWithRid = (rid?: string) =>
+		renderHook(({ rid: currentRid }: { rid?: string }) => usePermissions([PERMISSION], currentRid), {
+			initialProps: { rid }
+		});
+
+	it('does not look up a subscription without a room', () => {
+		configureRoles({ userRoles: [], subRoles: ['owner'], permissionRoles: ['owner'] });
+
+		renderWithRid(undefined);
+
+		expect(mockGetSubscriptionByRoomId).not.toHaveBeenCalled();
+	});
+
+	it("grants from the subscription's roles once the room is known", async () => {
+		configureRoles({ userRoles: [], subRoles: ['owner'], permissionRoles: ['owner'] });
+
+		const { result, rerender } = renderWithRid(undefined);
+		expect(result.current[0]).toBe(false);
+
+		rerender({ rid: 'rid-1' });
+
+		await waitFor(() => expect(result.current[0]).toBe(true));
+		expect(mockGetSubscriptionByRoomId).toHaveBeenCalledWith('rid-1');
+	});
+
+	it('drops cached roles when the subscription is gone on a later lookup', async () => {
+		configureRoles({ userRoles: [], subRoles: ['owner'], permissionRoles: ['owner'] });
+		const { result, rerender } = renderWithRid('rid-1');
+		await waitFor(() => expect(result.current[0]).toBe(true));
+
+		mockGetSubscriptionByRoomId.mockReturnValue(new Promise(() => {}));
+		rerender({ rid: 'rid-2' });
+		mockGetSubscriptionByRoomId.mockResolvedValue(null);
+		rerender({ rid: 'rid-1' });
+		await flush();
+
+		expect(result.current[0]).toBe(false);
 	});
 });
