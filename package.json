@@ -238,6 +238,12 @@
 					"expo-font"
 				]
 			}
+		},
+		"install": {
+			"exclude": [
+				"typescript",
+				"react-native-keyboard-controller"
+			]
 		}
 	},
 	"engines": {
