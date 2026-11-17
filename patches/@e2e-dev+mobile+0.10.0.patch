@@ -1,0 +1,156 @@
+diff --git a/node_modules/@e2e-dev/mobile/dist/errors.js b/node_modules/@e2e-dev/mobile/dist/errors.js
+index 60781e8..0aa3261 100644
+--- a/node_modules/@e2e-dev/mobile/dist/errors.js
++++ b/node_modules/@e2e-dev/mobile/dist/errors.js
+@@ -207,6 +207,22 @@ export function isNoSessionApp(error) {
+ export function isSnapshotPresentationFailure(error) {
+     return error instanceof Error && isPresentationFailure(error.cause);
+ }
++/**
++ * True when the Android snapshot helper found too little of the foreground
++ * app to trust the capture: a splash or a screen still mounting. A capture is
++ * a read, so taking it again once the screen fills in is safe.
++ */
++export function isContentPoorCapture(error) {
++    return error instanceof Error && details(error.cause).androidSnapshotHelperFailureReason === 'content-poor-app-window';
++}
++/**
++ * True when the iOS runner refused a command because abandoned work still
++ * holds its main thread. The runner refuses before dispatching, so resending
++ * the same command once it drains is safe.
++ */
++export function isRunnerBusy(cause) {
++    return details(cause).runnerErrorCode === 'RUNNER_BUSY';
++}
+ /**
+  * Runs one agent-device command under an abort signal and translates its
+  * failure onto the engine taxonomy: the one boundary every command crosses.
+diff --git a/node_modules/@e2e-dev/mobile/dist/surface.js b/node_modules/@e2e-dev/mobile/dist/surface.js
+index 4c260ed..635099b 100644
+--- a/node_modules/@e2e-dev/mobile/dist/surface.js
++++ b/node_modules/@e2e-dev/mobile/dist/surface.js
+@@ -15,7 +15,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, w
+ import { tmpdir } from 'node:os';
+ import path from 'node:path';
+ import { EngineError, KEY_NAMES, parseKey, raceAbort, rejectUnknownKeys, stopProviderRecording, withinCleanupBudget, ConfigurationError, TestError, } from 'e2e/engine';
+-import { isNoSessionApp, isSnapshotPresentationFailure, runCommand, staleOr } from './errors.js';
++import { isContentPoorCapture, isNoSessionApp, isRunnerBusy, isSnapshotPresentationFailure, runCommand, staleOr } from './errors.js';
+ import { pointerInteraction, DEFAULT_LONG_PRESS_MS } from './actions.js';
+ import { resolveExpression } from './locate.js';
+ import { isWithin, projectSnapshot, ROOT_ID, screenRoot, screenTitle, } from './nodes.js';
+@@ -25,6 +25,10 @@ import { deviceLabel, pinnedApp } from './bindings.js';
+ import { assertAppId } from './links.js';
+ import { DevicePool, deviceSelection } from './pool.js';
+ import { recordLease, travelledLease } from './provider.js';
++const RUNNER_BUSY_BUDGET_MS = 60_000;
++const RUNNER_BUSY_RETRY_MS = 1_000;
++const CONTENT_POOR_BUDGET_MS = 60_000;
++const CONTENT_POOR_RETRY_MS = 500;
+ import { invalidState, notActionable, logicalScreenSize, readPngSize, sanitizeFilename, screenLocation, swipeWithin, unsupported, } from './support.js';
+ /** Why nothing is pinned with `appPath` alone: the install is the suite's. */
+ const UNINSTALLED_BUILD = "the build the target's `app.appPath` names installed first with `device.installApp()`";
+@@ -257,7 +261,23 @@ export class AgentDeviceSurface {
+      */
+     async command(label, run, signal) {
+         const client = this.requireClient();
+-        return runCommand(label, () => this.track(run(client)), signal ?? new AbortController().signal, this.where);
++        const operationSignal = signal ?? new AbortController().signal;
++        return runCommand(label, () => this.untilRunnerIdle(() => run(client), operationSignal), operationSignal, this.where);
++    }
++    async untilRunnerIdle(run, signal) {
++        const deadline = Date.now() + RUNNER_BUSY_BUDGET_MS;
++        for (;;) {
++            try {
++                return await this.track(run());
++            }
++            catch (cause) {
++                if (!isRunnerBusy(cause) || Date.now() >= deadline)
++                    throw cause;
++                await sleep(RUNNER_BUSY_RETRY_MS, signal);
++                if (signal.aborted)
++                    throw cause;
++            }
++        }
+     }
+     /**
+      * Runs a fixture command that changes the screen (a back, the home screen,
+@@ -556,7 +576,7 @@ export class AgentDeviceSurface {
+         }
+     }
+     async permission(permission, state, signal) {
+-        await this.command(`permission ${permission} ${state}`, (client) => client.settings.update({ setting: 'permission', permission, state }), signal);
++        await this.command(`permission ${permission} ${state}`, (client) => client.settings.update({ ...this.selection(), setting: 'permission', permission, state }), signal);
+     }
+     /**
+      * Opens a link on the device, into `app` (the pinned app when none is
+@@ -614,7 +634,7 @@ export class AgentDeviceSurface {
+      */
+     async closeApp(signal) {
+         const app = this.appIdentity ?? this.pinnedApp;
+-        await this.command('device.closeApp', (client) => client.apps.close(app === undefined ? {} : { app }), signal);
++        await this.command('device.closeApp', (client) => client.apps.close({ ...this.selection(), ...(app === undefined ? {} : { app }) }), signal);
+         this.sessionApp = undefined;
+         this.screenReplaced();
+     }
+@@ -668,17 +688,26 @@ export class AgentDeviceSurface {
+      * One capture, taken again once when the iOS runner acquired the tree but
+      * failed its own presentation check on it (a viewport it could not read, a
+      * malformed graph). The check is per capture and a capture is a read, so
+-     * the retry is safe; a second failure is the runner's and propagates.
++     * the retry is safe; a second failure is the runner's and propagates. An
++     * Android capture of a foreground app too empty to trust is taken again
++     * until the screen fills in, within the caller's signal.
+      */
+     async capture(signal, interactiveOnly) {
+         const take = () => this.command('snapshot', (client) => client.capture.snapshot({ interactiveOnly }), signal);
+-        try {
+-            return await take();
+-        }
+-        catch (cause) {
+-            if (signal.aborted || !isSnapshotPresentationFailure(cause))
+-                throw cause;
+-            return take();
++        const deadline = Date.now() + CONTENT_POOR_BUDGET_MS;
++        for (;;) {
++            try {
++                return await take();
++            }
++            catch (cause) {
++                if (signal.aborted)
++                    throw cause;
++                if (isSnapshotPresentationFailure(cause))
++                    return take();
++                if (!isContentPoorCapture(cause) || Date.now() >= deadline)
++                    throw cause;
++                await new Promise((resolve) => setTimeout(resolve, CONTENT_POOR_RETRY_MS));
++            }
+         }
+     }
+     /**
+@@ -968,7 +997,7 @@ export class AgentDeviceSurface {
+             }
+         };
+         try {
+-            await raceAbort(() => this.track(run()), operation.signal, label);
++            await raceAbort(() => this.untilRunnerIdle(run, operation.signal), operation.signal, label);
+         }
+         catch (cause) {
+             throw staleOr(cause, label, this.where);
+@@ -1145,7 +1174,7 @@ export class AgentDeviceSurface {
+         const app = this.pinnedApp;
+         if (app === undefined)
+             throw unsupported(`app.clearState needs the target's \`app.bundleId\`, or ${UNINSTALLED_BUILD}`);
+-        await this.command('clear app state', (client) => client.settings.update({ setting: 'clear-app-state', state: 'clear', app }), operation.signal);
++        await this.command('clear app state', (client) => client.settings.update({ ...this.selection(), setting: 'clear-app-state', state: 'clear', app }), operation.signal);
+         await this.openApp(app, { relaunch: true }, operation.signal);
+     }
+     /**
+@@ -1168,7 +1197,7 @@ export class AgentDeviceSurface {
+         if (this.options.platform !== 'ios') {
+             throw unsupported('device.clearKeychain resets an iOS simulator keychain; Android has none to reset');
+         }
+-        await this.command('device.clearKeychain', (client) => client.settings.update({ setting: 'reset-keychain', state: 'clear' }), signal);
++        await this.command('device.clearKeychain', (client) => client.settings.update({ ...this.selection(), setting: 'reset-keychain', state: 'clear' }), signal);
+     }
+     /**
+      * A redacted screenshot artifact. The device paints secure fields as dots,

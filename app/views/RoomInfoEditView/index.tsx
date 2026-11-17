@@ -1,9 +1,9 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import { AccessibilityInfo, Alert, Keyboard, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { type SetValueConfig } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,10 +13,12 @@ import { usePermissions } from '~/lib/hooks/usePermissions';
 import { AvatarWithEdit } from '~/containers/Avatar';
 import { sendLoadingEvent } from '~/containers/Loading';
 import SafeAreaView from '~/containers/SafeAreaView';
-import { ControlledFormTextInput } from '~/containers/TextInput';
+import { ControlledFormTextInput } from '~/containers/TextInput/ControlledFormTextInput';
 import { LISTENER } from '~/containers/Toast';
 import { MultiSelect } from '~/containers/UIKit/MultiSelect';
-import { type IBaseScreen, type IRoomSettings, type ISubscription, SubscriptionType } from '~/definitions';
+import { type IBaseScreen } from '~/definitions';
+import { type IRoomSettings } from '~/definitions/IRoom';
+import { type ISubscription, SubscriptionType } from '~/definitions/ISubscription';
 import I18n from '~/i18n';
 import KeyboardView from '~/containers/KeyboardView';
 import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
@@ -24,12 +26,17 @@ import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
 import EventEmitter from '~/lib/methods/helpers/events';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
+import { getServerError } from '~/lib/methods/helpers/getServerError';
 import { MessageTypeValues } from './messageTypes';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
-import { getRoomTitle, compareServerVersion, showErrorAlert, isAndroid, random } from '~/lib/methods/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
+import { random } from '~/lib/methods/helpers/random';
 import { saveRoomSettings, toggleArchiveRoom } from '~/lib/services/restApi';
 import Button from '~/containers/Button';
 import useRoomSubscription from './hooks/useRoomSubscription';
@@ -57,10 +64,9 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		serverVersion: state.server.version as string,
 		encryptionEnabled: state.encryption.enabled
 	}));
-	const [randomValue, setRandomValue] = useState<string>('');
+	const randomValueRef = useRef('');
 	const {
 		control,
-		watch,
 		clearErrors,
 		setFocus,
 		setError,
@@ -92,7 +98,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		const sysMes = room.sysMes as string[];
 		const newRandomValue = random(15);
 
-		setRandomValue(newRandomValue);
+		randomValueRef.current = newRandomValue;
 		setValue('archived', room.archived);
 		setValue('name', getRoomTitle(room));
 		setValue('description', description || '');
@@ -105,7 +111,10 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setValue('reactWhenReadOnly', !!reactWhenReadOnly);
 		setValue('encrypted', !!encrypted);
 	};
-	const { archived, enableSysMes, encrypted, reactWhenReadOnly, readOnly, systemMessages, t } = watch();
+	const [archived, enableSysMes, encrypted, reactWhenReadOnly, readOnly, systemMessages, t] = useWatch({
+		control,
+		name: ['archived', 'enableSysMes', 'encrypted', 'reactWhenReadOnly', 'readOnly', 'systemMessages', 't']
+	});
 	const { room } = useRoomSubscription({
 		rid: route.params?.rid,
 		initializeRoomState
@@ -133,6 +142,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 
 	const submit = async () => {
 		const { name, description, topic, announcement, joinCode } = getValues();
+		const saveFailedMessage = I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') });
 		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
 
@@ -182,7 +192,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		}
 
 		// Join Code
-		if (room.joinCodeRequired && randomValue !== joinCode) {
+		if (room.joinCodeRequired && randomValueRef.current !== joinCode) {
 			params.joinCode = joinCode;
 		}
 
@@ -194,18 +204,19 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		try {
 			await saveRoomSettings(room.rid, params);
 		} catch (e: any) {
-			if (e.error === 'error-invalid-room-name') {
-				setError('name', { message: e, type: 'validate' });
+			const { code, reason } = getServerError(e);
+			const nameErrors: Partial<Record<string, string>> = {
+				'error-invalid-room-name': I18n.t('error-invalid-room-name', { room_name: name }),
+				'error-duplicate-channel-name': I18n.t('Channel_name_already_taken')
+			};
+			const nameError = nameErrors[code];
+
+			if (nameError) {
+				setError('name', { message: nameError, type: 'validate' });
 				setFocus('name');
 			}
 
-			if (e.error === 'error-duplicate-channel-name') {
-				setError('name', { message: I18n.t('Channel_name_already_taken'), type: 'validate' });
-				setFocus('name');
-			}
-
-			const a11yAnnouncement = e.error === 'error-duplicate-channel-name' ? I18n.t('Channel_name_already_taken') : e.reason;
-			AccessibilityInfo.announceForAccessibility(a11yAnnouncement);
+			AccessibilityInfo.announceForAccessibility(nameError || reason || saveFailedMessage);
 
 			error = true;
 			log(e);
@@ -215,7 +226,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setTimeout(() => {
 			if (error) {
 				logEvent(events.RI_EDIT_SAVE_F);
-				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') }));
+				showErrorAlert(saveFailedMessage);
 			} else {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Settings_succesfully_changed') });
 			}

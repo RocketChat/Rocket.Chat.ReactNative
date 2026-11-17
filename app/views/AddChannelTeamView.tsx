@@ -8,10 +8,10 @@ import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
 import { type ChatsStackParamList, type DrawerParamList, type NewMessageStackParamList } from '../stacks/types';
-import { type IApplicationState } from '../definitions';
+import { type IApplicationState } from '../definitions/redux';
 import { usePermissions } from '../lib/hooks/usePermissions';
 import { useMasterDetail } from '../lib/hooks/useMasterDetail';
-import { compareServerVersion } from '../lib/methods/helpers';
+import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 import { type TSupportedPermissions } from '../reducers/permissions';
 
 type TRoute = RouteProp<ChatsStackParamList, 'AddChannelTeamView'>;
@@ -62,40 +62,42 @@ const AddChannelTeamView = () => {
 	return (
 		<SafeAreaView testID='add-channel-team-view'>
 			<List.Container>
-				<List.Separator />
-				{canCreateNew ? (
-					<>
-						<List.Item
-							title='Create_New'
-							onPress={() =>
-								isMasterDetail
-									? navigation.navigate('SelectedUsersView', {
-											nextAction: () => navigation.navigate('CreateChannelView', { teamId })
-										})
-									: navigation.navigate('SelectedUsersView', {
-											nextAction: () =>
-												navigation.navigate('ChatsStackNavigator', { screen: 'CreateChannelView', params: { teamId } })
-										})
-							}
-							testID='add-channel-team-view-create-channel'
-							left={() => <List.Icon name='team' />}
-							right={() => <List.Icon name='chevron-right' />}
-						/>
-						<List.Separator />
-					</>
-				) : null}
-				{canAddExisting ? (
-					<>
-						<List.Item
-							title='Add_Existing'
-							onPress={() => navigation.navigate('AddExistingChannelView', { teamId })}
-							testID='add-channel-team-view-add-existing'
-							left={() => <List.Icon name='channel-public' />}
-							right={() => <List.Icon name='chevron-right' />}
-						/>
-						<List.Separator />
-					</>
-				) : null}
+				<List.Section>
+					<List.Separator />
+					{canCreateNew ? (
+						<>
+							<List.Item
+								title='Create_New'
+								onPress={() =>
+									isMasterDetail
+										? navigation.navigate('SelectedUsersView', {
+												nextAction: () => navigation.navigate('CreateChannelView', { teamId })
+											})
+										: navigation.navigate('SelectedUsersView', {
+												nextAction: () =>
+													navigation.navigate('ChatsStackNavigator', { screen: 'CreateChannelView', params: { teamId } })
+											})
+								}
+								testID='add-channel-team-view-create-channel'
+								left={() => <List.Icon name='team' />}
+								showActionIndicator
+							/>
+							<List.Separator />
+						</>
+					) : null}
+					{canAddExisting ? (
+						<>
+							<List.Item
+								title='Add_Existing'
+								onPress={() => navigation.navigate('AddExistingChannelView', { teamId })}
+								testID='add-channel-team-view-add-existing'
+								left={() => <List.Icon name='channel-public' />}
+								showActionIndicator
+							/>
+							<List.Separator />
+						</>
+					) : null}
+				</List.Section>
 			</List.Container>
 		</SafeAreaView>
 	);

@@ -16,16 +16,13 @@ import {
 } from '@rocket.chat/mobile-crypto';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import type {
-	IAttachment,
-	IMessage,
-	TSendFileMessageFileInfo,
-	IServerAttachment,
-	TSubscriptionModel,
-	ISubscription
-} from '~/definitions';
+import type { IAttachment, IServerAttachment } from '~/definitions/IAttachment';
+import type { IMessage } from '~/definitions/IMessage';
+import type { TSendFileMessageFileInfo } from '~/definitions/IUpload';
+import type { TSubscriptionModel, ISubscription } from '~/definitions/ISubscription';
 import Deferred from './helpers/deferred';
-import { compareServerVersion, debounce } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { debounce } from '../methods/helpers/debounce';
 import log from '../methods/helpers/log';
 import {
 	b64ToBuffer,
@@ -89,15 +86,27 @@ export default class EncryptionRoom {
 		this.algorithm = '';
 		this.sessionKeyExportedString = '';
 		this.roomKey = new ArrayBuffer(0);
-		this.readyPromise = new Deferred();
-		this.readyPromise.then(() => {
-			// Mark as ready
-			this.ready = true;
-			// Mark as established
-			this.establishing = false;
-		});
+		this.readyPromise = this.createReadyPromise();
 		this.subscription = null;
 	}
+
+	createReadyPromise = () => {
+		const readyPromise = new Deferred();
+		readyPromise.then(
+			() => {
+				this.ready = true;
+				this.establishing = false;
+			},
+			() => {}
+		);
+		return readyPromise;
+	};
+
+	failHandshake = () => {
+		this.establishing = false;
+		this.readyPromise.reject();
+		this.readyPromise = this.createReadyPromise();
+	};
 
 	// Initialize the E2E room
 	handshake = async () => {
@@ -132,9 +141,9 @@ export default class EncryptionRoom {
 		}
 
 		const { E2EKey, e2eKeyId, E2ESuggestedKey } = this.subscription;
+		this.establishing = true;
 		if (E2ESuggestedKey) {
 			try {
-				this.establishing = true;
 				const { keyID, roomKey, sessionKeyExportedString, algorithm } = await this.importRoomKey(
 					E2ESuggestedKey,
 					this.encryption.privateKey
@@ -145,6 +154,7 @@ export default class EncryptionRoom {
 				this.algorithm = algorithm;
 				try {
 					await e2eAcceptSuggestedGroupKey(this.roomId);
+					this.readyPromise.resolve();
 					this.encryption.deleteRoomInstance(this.roomId);
 					return;
 				} catch (error) {
@@ -158,7 +168,6 @@ export default class EncryptionRoom {
 		// If this room has a E2EKey, we import it
 		if (E2EKey) {
 			try {
-				this.establishing = true;
 				const { keyID, roomKey, sessionKeyExportedString, algorithm } = await this.importRoomKey(
 					E2EKey,
 					this.encryption.privateKey
@@ -170,7 +179,6 @@ export default class EncryptionRoom {
 				this.readyPromise.resolve();
 				return;
 			} catch (error) {
-				this.establishing = false;
 				log(error);
 				// Fall through to try other options
 			}
@@ -179,12 +187,11 @@ export default class EncryptionRoom {
 		// If it doesn't have a e2eKeyId, we need to create keys to the room
 		if (!e2eKeyId) {
 			try {
-				this.establishing = true;
 				await this.createRoomKey();
+				this.readyPromise.resolve();
 				this.encryption.deleteRoomInstance(this.roomId);
 				return;
 			} catch (error) {
-				this.establishing = false;
 				log(error);
 				// Cannot create room key, room will remain not ready
 			}
@@ -194,6 +201,7 @@ export default class EncryptionRoom {
 		// Room will remain not ready until the key is received via subscription update
 		// When E2EKey arrives, next handshake() call will succeed
 		this.requestRoomKey(e2eKeyId);
+		this.failHandshake();
 	};
 
 	// Import roomKey as an AES Decrypt key
@@ -477,9 +485,9 @@ export default class EncryptionRoom {
 	};
 
 	// Encrypt messages
-	encrypt = async (message: IMessage): Promise<IMessage> => {
+	encrypt = async (message: IMessage): Promise<IMessage | undefined> => {
 		if (!this.ready) {
-			return message;
+			return;
 		}
 
 		try {
@@ -500,8 +508,6 @@ export default class EncryptionRoom {
 			// Do nothing
 			console.error(e);
 		}
-
-		return message;
 	};
 
 	encryptFile = async (_rid: string, file: TSendFileMessageFileInfo): TEncryptFileResult => {

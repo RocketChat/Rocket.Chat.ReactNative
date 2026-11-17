@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { encryptionSetBanner } from '../actions/encryption';
 import Button from '../containers/Button';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import SafeAreaView from '../containers/SafeAreaView';
 import { LISTENER } from '../containers/Toast';
 import I18n from '../i18n';
@@ -70,7 +70,7 @@ const E2ESaveYourPasswordView = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Save_Your_E2E_Password'),
-			headerLeft: () => <HeaderButton.CloseModal testID='e2e-save-your-password-view-close' />
+			...headerLeftCloseModal(navigation, 'e2e-save-your-password-view-close')
 		});
 	}, [navigation]);
 

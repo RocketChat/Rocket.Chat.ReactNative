@@ -71,6 +71,7 @@ export interface IApplicationState {
 	inquiry: IInquiry;
 	routingConfig: IRoutingConfig;
 	enterpriseModules: IEnterpriseModules;
+	hasValidLicense: boolean;
 	encryption: IEncryption;
 	permissions: IPermissionsState;
 	roles: IRoles;

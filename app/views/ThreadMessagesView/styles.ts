@@ -16,6 +16,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	contentContainer: {
+		flexGrow: 1,
 		paddingBottom: 30
 	}
 });

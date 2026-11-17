@@ -9,6 +9,7 @@ export interface ICreateDiscussionRequestData {
 	reply?: string;
 	users: string[];
 	encrypted?: boolean;
+	category?: string;
 }
 interface ICreateDiscussionRequest extends Action {
 	data: ICreateDiscussionRequestData;

@@ -4250,6 +4250,7 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
                   },
                 ]
               }
+              testID="uikit-input-input-1"
               underlineColorAndroid="transparent"
             />
           </View>
@@ -4360,6 +4361,7 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
                   },
                 ]
               }
+              testID="uikit-input-input-2"
               underlineColorAndroid="transparent"
             />
           </View>
@@ -4532,6 +4534,7 @@ exports[`Story Snapshots: ModalInputWithError should match snapshot 1`] = `
                 },
               ]
             }
+            testID="uikit-input-input-test"
             underlineColorAndroid="transparent"
           />
         </View>
@@ -5225,6 +5228,7 @@ exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
                 },
               ]
             }
+            testID="uikit-input-input-test"
             underlineColorAndroid="transparent"
           />
         </View>

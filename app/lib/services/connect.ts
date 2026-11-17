@@ -1,6 +1,5 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
 import log from '../methods/helpers/log';
@@ -13,15 +12,13 @@ import { loginRequest, logout, setLoginServices, setUser } from '~/actions/login
 import { waitForLoginReady } from './waitForLoginReady';
 import sdk, { type IStreamDataListener } from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
+import { onAppsStreamData, useAppsStore } from '../apps/appsStore';
+import { clearTriggers } from '../apps/actions';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '~/i18n';
-import {
-	type ILoginCredentials,
-	type ICredentialsPasswordAPI,
-	type ILoggedUser,
-	STATUSES,
-	type TUserStatus
-} from '~/definitions';
+import { type ILoginCredentials, type ICredentialsPasswordAPI } from '~/definitions/ILoginCredentials';
+import { type ILoggedUser } from '~/definitions/ILoggedUser';
+import { STATUSES, type TUserStatus } from '~/definitions/TUserStatus';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '~/actions/connect';
 import { updatePermission } from '~/actions/permissions';
 import EventEmitter from '../methods/helpers/events';
@@ -35,8 +32,9 @@ import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../met
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { isIOS } from '../methods/helpers/deviceInfo';
 import { isSsl } from '../methods/helpers/isSsl';
+import { onAbort } from '../methods/helpers/onAbort';
 import { normalizeStatusExpiresAt } from '../methods/helpers/normalizeStatusExpiresAt';
-import fetch from '../methods/helpers/fetch';
+import { fetchForWorkspace, withBasicAuth } from '../methods/serverBasicAuth';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -56,6 +54,7 @@ let notifyAllListener: any;
 let rolesListener: any;
 let userPresenceListener: Promise<IStreamDataListener> | undefined;
 let notifyLoggedListener: any;
+let appsListener: Promise<IStreamDataListener> | undefined;
 let logoutListener: any;
 
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
@@ -78,6 +77,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			rolesListener,
 			userPresenceListener,
 			notifyLoggedListener,
+			appsListener,
 			logoutListener
 		].forEach(listener => listener?.then(stopListener));
 
@@ -182,6 +182,8 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
 		);
 
+		appsListener = sdk.onStreamData('stream-apps', protectedFunction(onAppsStreamData));
+
 		// RC 4.1
 		userPresenceListener = sdk.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
 			const userStatus = ddpMessage.fields.args[0];
@@ -210,10 +212,8 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 					if (!_setUserTimer.setUserTimer) {
 						_setUserTimer.setUserTimer = setTimeout(() => {
 							const activeUsersBatch = _activeUsers.activeUsers;
-							InteractionManager.runAfterInteractions(() => {
-								// @ts-ignore
-								store.dispatch(setActiveUsers(activeUsersBatch));
-							});
+							// @ts-ignore
+							store.dispatch(setActiveUsers(activeUsersBatch));
 							_setUserTimer.setUserTimer = null;
 							_activeUsers.activeUsers = {} as IActiveUsers;
 							return null;
@@ -338,7 +338,8 @@ async function login(credentials: ILoginCredentials): Promise<ILoggedUser> {
 		bio: result.me.bio,
 		nickname: result.me.nickname,
 		requirePasswordChange: result.me.requirePasswordChange,
-		sidebarCategories: result.me.settings?.preferences?.sidebarCategories
+		sidebarCategories: result.me.settings?.preferences?.sidebarCategories,
+		settings: { preferences: { ...result.me.settings?.preferences } }
 	};
 	return user;
 }
@@ -421,17 +422,22 @@ function abort(): void {
 function disconnect(): void {
 	sdk.disconnect();
 	mediaSessionInstance.reset();
+	useAppsStore.getState().reset();
+	clearTriggers();
 }
 
 async function getWebsocketInfo({
-	server
+	server,
+	signal
 }: {
 	server: string;
+	signal?: AbortSignal;
 }): Promise<{ success: true } | { success: false; message: string }> {
 	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
+	onAbort(signal, () => websocketSdk.disconnect());
 
 	try {
-		await websocketSdk.connect();
+		await withBasicAuth(server, () => websocketSdk.connect());
 	} catch (err: any) {
 		if (err.message && err.message.includes('400')) {
 			return {
@@ -448,10 +454,12 @@ async function getWebsocketInfo({
 	};
 }
 
-async function getLoginServices(server: string) {
+async function getLoginServices(server: string, signal?: AbortSignal) {
 	try {
 		let loginServices = [];
-		const loginServicesResult = await fetch(`${server}/api/v1/settings.oauth`).then(response => response.json());
+		const loginServicesResult = await fetchForWorkspace(server, `${server}/api/v1/settings.oauth`, { signal }).then(response =>
+			response.json()
+		);
 
 		if (loginServicesResult.success && loginServicesResult.services) {
 			const { services } = loginServicesResult;
@@ -472,6 +480,9 @@ async function getLoginServices(server: string) {
 			store.dispatch(setLoginServices({}));
 		}
 	} catch (error) {
+		if (signal?.aborted) {
+			return;
+		}
 		console.log(error);
 		store.dispatch(setLoginServices({}));
 	}

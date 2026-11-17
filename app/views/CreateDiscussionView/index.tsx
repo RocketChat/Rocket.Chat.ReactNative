@@ -1,25 +1,26 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import KeyboardView from '~/containers/KeyboardView';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import I18n from '~/i18n';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { getUserSelector } from '~/selectors/login';
-import { ControlledFormTextInput } from '~/containers/TextInput';
+import { ControlledFormTextInput } from '~/containers/TextInput/ControlledFormTextInput';
 import { createDiscussionRequest, type ICreateDiscussionRequestData } from '~/actions/createDiscussion';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import styles from './styles';
 import SelectChannel from './SelectChannel';
 import { type ICreateChannelViewProps, type IResult, type IError } from './interfaces';
-import { type ISearchLocal, type ISubscription } from '~/definitions';
+import { type ISearchLocal } from '~/definitions/ISearch';
+import { type ISubscription } from '~/definitions/ISubscription';
 import { E2E_ROOM_TYPES } from '~/lib/constants/keys';
-import { getRoomTitle } from '~/lib/methods/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import * as List from '~/containers/List';
 import Switch from '~/containers/Switch';
 import Button from '~/containers/Button';
@@ -71,7 +72,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	const {
 		control,
 		handleSubmit,
-		watch,
 		formState: { errors }
 	} = useForm({
 		defaultValues: {
@@ -80,7 +80,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		resolver: yupResolver(schema)
 	});
 
-	const inputValues = watch();
+	const inputValues = useWatch({ control });
 	const prevLoading = useRef<boolean>(loading);
 	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 
@@ -113,7 +113,8 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 			pmid,
 			t_name,
 			reply,
-			users: users.map(item => item.name)
+			users: users.map(item => item.name),
+			category: route.params?.categoryId
 		};
 		if (isEncryptionEnabled) {
 			params.encrypted = encrypted ?? false;
@@ -137,7 +138,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
 			title: I18n.t('Create_Discussion'),
-			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
+			...(showCloseModal ? headerLeftCloseModal(navigation) : { headerLeft: undefined })
 		});
 	}, [navigation, route]);
 

@@ -4,17 +4,14 @@ import { type FlatList } from 'react-native-gesture-handler';
 import { type StoreApi } from 'zustand';
 
 import { type ChatsStackParamList } from '~/stacks/types';
-import {
-	type IBaseScreen,
-	type IEmoji,
-	type IMessage,
-	type IMessageEditAttachment,
-	type RoomType,
-	type TAnyMessageModel,
-	type IUseRoomMessageHandlersResult
-} from '~/definitions';
+import { type IBaseScreen } from '~/definitions';
+import { type IEmoji } from '~/definitions/IEmoji';
+import { type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
+import { type IMessageEditAttachment } from '~/definitions/IAttachment';
+import { type RoomType } from '~/definitions/IRoom';
+import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
 import { type TRoomOrPreview } from '~/definitions/TRoom';
-import { type TActionSheetOptions } from '~/containers/ActionSheet';
+import { type TActionSheetOptions } from '~/containers/ActionSheet/Provider';
 import { type IMessageComposerRef } from '~/containers/MessageComposer/interfaces';
 import { type IMessageActions, type IMessageActionsProps } from '~/containers/MessageActions';
 import { type IMessageErrorActions } from '~/containers/MessageErrorActions';
@@ -68,6 +65,7 @@ export interface IListProps extends Omit<
 > {
 	flatListRef: TListRef;
 	jumpToBottom: () => void;
+	onDragStart: () => void;
 	isAnchored?: boolean;
 }
 
@@ -156,7 +154,7 @@ export interface IJumpTarget {
 }
 
 export interface IJumpAnchorDeps {
-	loadSurroundingMessages: (params: { messageId: string; rid: string }) => Promise<unknown>;
+	loadSurroundingMessages: (params: { messageId: string; rid: string }) => Promise<IMessage[]>;
 	getLocalAnchorTs: (rid: string, ts: Date | number | string) => Promise<number | null>;
 }
 

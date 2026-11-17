@@ -10,7 +10,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 import NewWindowIcon from '../containers/NewWindowIcon';
 import { type OutsideParamList } from '../stacks/types';
-import { type IApplicationState } from '../definitions';
+import { type IApplicationState } from '../definitions/redux';
 
 const LegalView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LegalView'>>();

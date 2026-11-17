@@ -19,15 +19,11 @@ const REMOTE = [
 	['jJNm36QhGhh4eJ9QS/test.m4a', 'test.m4a']
 ];
 
-function readMaestroConfig() {
-	const dir = path.join(__dirname, '..', '.maestro', 'scripts');
-	const server = fs
-		.readFileSync(path.join(dir, 'data.js'), 'utf8')
-		.match(/^[ \t]*server:\s*['"]([^'"]+)['"]/m)?.[1];
-	const accountSrc = fs.readFileSync(path.join(dir, 'e2e_account.js'), 'utf8');
-	const adminUser = accountSrc.match(/adminUser:\s*['"]([^'"]+)['"]/)?.[1];
-	const adminPass = accountSrc.match(/adminPassword:\s*['"]([^'"]+)['"]/)?.[1];
-	if (!server || !adminUser || !adminPass) throw new Error('could not parse server/admin from data.js/e2e_account.js');
+function readConfig() {
+	const { server } = require('../e2e/support/data.ts').data;
+	const adminUser = process.env.E2E_ADMIN_USER;
+	const adminPass = process.env.E2E_ADMIN_PASSWORD;
+	if (!adminUser || !adminPass) throw new Error('E2E_ADMIN_USER and E2E_ADMIN_PASSWORD must be set');
 	return { server, adminUser, adminPass };
 }
 
@@ -99,7 +95,7 @@ async function downloadFixtures(server, test) {
 }
 
 async function fetchRealFixtures() {
-	const { server, adminUser, adminPass } = readMaestroConfig();
+	const { server, adminUser, adminPass } = readConfig();
 	const admin = await login(server, adminUser, adminPass);
 	const testUser = newTestUser();
 	let test = null;
@@ -147,7 +143,7 @@ function adb(serial, ...args) {
 }
 
 function pushAndroid(fixtures) {
-	const serial = androidSerial();
+	const serial = process.env.E2E_ANDROID_DEVICE || androidSerial();
 	console.log(`Downloads: adb://${serial}/sdcard/Download/`);
 	const results = [];
 	for (const [name, content] of fixtures) {

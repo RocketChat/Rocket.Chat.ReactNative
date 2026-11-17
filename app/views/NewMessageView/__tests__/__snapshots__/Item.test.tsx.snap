@@ -1,0 +1,917 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewMessageView Item should match snapshot when hasMediaCallPermission is false 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "gap": 12,
+      },
+      [
+        {
+          "marginHorizontal": 16,
+          "overflow": "hidden",
+          "paddingHorizontal": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+          "height": 54,
+        },
+        undefined,
+        undefined,
+      ],
+    ]
+  }
+>
+  <View
+    accessibilityLabel="John Doe"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "alignSelf": "stretch",
+          "flex": 1,
+          "flexDirection": "row",
+          "gap": 12,
+        },
+        false,
+        undefined,
+      ]
+    }
+    testID="new-message-view-item-john.doe"
+  >
+    <View
+      accessibilityLabel="john.doe's avatar"
+      accessible={true}
+      style={
+        [
+          {
+            "borderRadius": 8,
+            "height": 30,
+            "width": 30,
+          },
+          undefined,
+        ]
+      }
+      testID="avatar"
+    >
+      <ViewManagerAdapter_ExpoImage
+        borderRadius={8}
+        containerViewRef={{"current":"Object"}}
+        contentFit="cover"
+        contentPosition={
+          {
+            "left": "50%",
+            "top": "50%",
+          }
+        }
+        height={30}
+        nativeViewRef={{"current":"NativeComponent"}}
+        onError={[Function]}
+        onLoad={[Function]}
+        onLoadStart={[Function]}
+        onProgress={[Function]}
+        placeholder={[]}
+        priority="high"
+        sfEffect={null}
+        source={
+          [
+            {
+              "headers": {
+                "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+              },
+              "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
+            },
+          ]
+        }
+        style={
+          {
+            "borderRadius": 8,
+            "height": 30,
+            "width": 30,
+          }
+        }
+        symbolSize={null}
+        symbolWeight={null}
+        transition={null}
+        width={30}
+      />
+    </View>
+    <View
+      style={
+        [
+          {
+            "flex": 1,
+            "marginRight": 20,
+          },
+          {
+            "gap": undefined,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "gap": 4,
+          }
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 17,
+                "fontWeight": "500",
+              },
+              {
+                "color": "#2F343D",
+              },
+              undefined,
+            ]
+          }
+        >
+          John Doe
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Default should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+      "minHeight": 100,
+      "padding": 24,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 12,
+        },
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ],
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="John Doe"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "alignSelf": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+            "gap": 12,
+          },
+          false,
+          undefined,
+        ]
+      }
+      testID="new-message-view-item-john.doe"
+    >
+      <View
+        accessibilityLabel="john.doe's avatar"
+        accessible={true}
+        style={
+          [
+            {
+              "borderRadius": 8,
+              "height": 30,
+              "width": 30,
+            },
+            undefined,
+          ]
+        }
+        testID="avatar"
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={8}
+          containerViewRef={{"current":"Object"}}
+          contentFit="cover"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={30}
+          nativeViewRef={{"current":"NativeComponent"}}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          priority="high"
+          sfEffect={null}
+          source={
+            [
+              {
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
+                "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 8,
+              "height": 30,
+              "width": 30,
+            }
+          }
+          symbolSize={null}
+          symbolWeight={null}
+          transition={null}
+          width={30}
+        />
+      </View>
+      <View
+        style={
+          [
+            {
+              "flex": 1,
+              "marginRight": 20,
+            },
+            {
+              "gap": undefined,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 4,
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 17,
+                  "fontWeight": "500",
+                },
+                {
+                  "color": "#2F343D",
+                },
+                undefined,
+              ]
+            }
+          >
+            John Doe
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="Voice call"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      hitSlop={12}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      testID="new-message-view-item-john.doe-call"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 20,
+            },
+            [
+              {
+                "lineHeight": 20,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: LongName should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+      "minHeight": 100,
+      "padding": 24,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 12,
+        },
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ],
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Very Long Display Name That Might Get Truncated"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "alignSelf": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+            "gap": 12,
+          },
+          false,
+          undefined,
+        ]
+      }
+      testID="new-message-view-item-long.name"
+    >
+      <View
+        accessibilityLabel="long.name's avatar"
+        accessible={true}
+        style={
+          [
+            {
+              "borderRadius": 8,
+              "height": 30,
+              "width": 30,
+            },
+            undefined,
+          ]
+        }
+        testID="avatar"
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={8}
+          containerViewRef={{"current":"Object"}}
+          contentFit="cover"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={30}
+          nativeViewRef={{"current":"NativeComponent"}}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          priority="high"
+          sfEffect={null}
+          source={
+            [
+              {
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
+                "uri": "https://open.rocket.chat/avatar/long.name?format=png&size=60",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 8,
+              "height": 30,
+              "width": 30,
+            }
+          }
+          symbolSize={null}
+          symbolWeight={null}
+          transition={null}
+          width={30}
+        />
+      </View>
+      <View
+        style={
+          [
+            {
+              "flex": 1,
+              "marginRight": 20,
+            },
+            {
+              "gap": undefined,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 4,
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 17,
+                  "fontWeight": "500",
+                },
+                {
+                  "color": "#2F343D",
+                },
+                undefined,
+              ]
+            }
+          >
+            Very Long Display Name That Might Get Truncated
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="Voice call"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      hitSlop={12}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      testID="new-message-view-item-long.name-call"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 20,
+            },
+            [
+              {
+                "lineHeight": 20,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+      "minHeight": 100,
+      "padding": 24,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 12,
+        },
+        [
+          {
+            "marginHorizontal": 16,
+            "overflow": "hidden",
+            "paddingHorizontal": 16,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "height": 54,
+          },
+          undefined,
+          undefined,
+        ],
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="John Doe"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "alignSelf": "stretch",
+            "flex": 1,
+            "flexDirection": "row",
+            "gap": 12,
+          },
+          false,
+          undefined,
+        ]
+      }
+      testID="new-message-view-item-john.doe"
+    >
+      <View
+        accessibilityLabel="john.doe's avatar"
+        accessible={true}
+        style={
+          [
+            {
+              "borderRadius": 8,
+              "height": 30,
+              "width": 30,
+            },
+            undefined,
+          ]
+        }
+        testID="avatar"
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={8}
+          containerViewRef={{"current":"Object"}}
+          contentFit="cover"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={30}
+          nativeViewRef={{"current":"NativeComponent"}}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          priority="high"
+          sfEffect={null}
+          source={
+            [
+              {
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
+                "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 8,
+              "height": 30,
+              "width": 30,
+            }
+          }
+          symbolSize={null}
+          symbolWeight={null}
+          transition={null}
+          width={30}
+        />
+      </View>
+      <View
+        style={
+          [
+            {
+              "flex": 1,
+              "marginRight": 20,
+            },
+            {
+              "gap": undefined,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 4,
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 17,
+                  "fontWeight": "500",
+                },
+                {
+                  "color": "#2F343D",
+                },
+                undefined,
+              ]
+            }
+          >
+            John Doe
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="Voice call"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      hitSlop={12}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      testID="new-message-view-item-john.doe-call"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 20,
+            },
+            [
+              {
+                "lineHeight": 20,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+  </View>
+</View>
+`;

@@ -10,8 +10,7 @@ jest.mock('universal-websocket-client', () =>
 );
 
 jest.mock('~/lib/methods/helpers/sslPinning', () => ({
-	__esModule: true,
-	default: undefined
+	applyServerCertificate: jest.fn(() => Promise.resolve())
 }));
 
 jest.mock('~/lib/services/connect', () => ({
@@ -35,7 +34,7 @@ jest.mock('~/lib/services/twoFactor/twoFactor', () => ({
 import selectServerRoot from '../selectServer';
 import { selectServerRequest } from '~/actions/server';
 import { APP, SERVER } from '~/actions/actionsTypes';
-import { RootEnum } from '~/definitions';
+import { RootEnum } from '~/definitions/redux/TRootEnum';
 import sdk from '~/lib/services/sdk';
 import { connect } from '~/lib/services/connect';
 import type { MockConnection } from '~/lib/testUtils/sdkIntegration';

@@ -1,0 +1,12 @@
+appId: ${APP_ID}
+name: Dismiss menu
+tags:
+  - 'util'
+
+---
+- tapOn:
+    point: 50%,80%
+- extendedWaitUntil:
+    notVisible:
+      text: ${MENU_ITEM}
+    timeout: 60000

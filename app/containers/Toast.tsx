@@ -30,13 +30,6 @@ const Toast = (): ReactElement => {
 	const { colors, theme } = useTheme();
 	const [alertDisplayType] = useUserPreferences<TAlertDisplayType>(ALERT_DISPLAY_TYPE_PREFERENCES_KEY, 'TOAST');
 
-	useEffect(() => {
-		listener = EventEmitter.addEventListener(LISTENER, showToast);
-		return () => {
-			EventEmitter.removeListener(LISTENER, listener);
-		};
-	}, [alertDisplayType]);
-
 	const getToastRef = (newToast: EasyToast | null) => {
 		toast = newToast;
 	};
@@ -50,6 +43,13 @@ const Toast = (): ReactElement => {
 			toast.show(message, process.env.RUNNING_E2E_TESTS === 'true' ? 5000 : 1000);
 		}
 	};
+
+	useEffect(() => {
+		listener = EventEmitter.addEventListener(LISTENER, showToast);
+		return () => {
+			EventEmitter.removeListener(LISTENER, listener);
+		};
+	}, [alertDisplayType]);
 
 	return (
 		<EasyToast

@@ -1,4 +1,4 @@
-import { type TApplicationActions } from '../definitions';
+import { type TApplicationActions } from '../definitions/redux';
 import { CREATE_CHANNEL } from '../actions/actionsTypes';
 
 interface ICreateChannelResult {
@@ -10,10 +10,12 @@ interface ICreateChannelResult {
 	encrypted: boolean;
 	broadcast: boolean;
 	isTeam: boolean;
+	category?: string;
 }
 
 interface ICreateChannelResultOnlyGroup {
 	group: boolean;
+	category?: string;
 }
 
 export type TCreateChannelResult = ICreateChannelResult | ICreateChannelResultOnlyGroup;

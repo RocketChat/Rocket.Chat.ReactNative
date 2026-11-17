@@ -1,6 +1,6 @@
 import { store as reduxStore } from '~/lib/store/auxStore';
-import { type ISubscription } from '~/definitions';
-import { hasPermission } from './helpers';
+import { type ISubscription } from '~/definitions/ISubscription';
+import { hasPermission } from './hasPermission';
 
 type ReadOnlyRoom = Pick<Partial<ISubscription>, 'rid' | 'archived' | 'muted' | 'ro' | 'unmuted'>;
 
@@ -46,8 +46,8 @@ export const isReadOnlySync = (
 	let allowPost = false;
 	if (room?.ro) {
 		const isUnmuted = !!room?.unmuted?.find(m => m === username);
-		const mergedRoles = [...new Set([...(room.roles || []), ...userRoles])];
-		allowPost = !!postReadOnlyPermission?.some(r => mergedRoles.includes(r)) || isUnmuted;
+		const mergedRoles = new Set([...(room.roles || []), ...userRoles]);
+		allowPost = !!postReadOnlyPermission?.some(r => mergedRoles.has(r)) || isUnmuted;
 	}
 	return evaluateReadOnly(room, username, allowPost);
 };

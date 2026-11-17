@@ -1,6 +1,6 @@
 import { sendAttachments } from './sendAttachments';
 import { sendFileMessage } from './index';
-import { type IShareAttachment } from '~/definitions';
+import { type IShareAttachment } from '~/definitions/IAttachment';
 
 jest.mock('./index', () => ({ sendFileMessage: jest.fn(() => Promise.resolve()) }));
 
@@ -91,6 +91,18 @@ describe('sendAttachments', () => {
 		expect(sendFileMessage).toHaveBeenCalledWith(
 			'rid1',
 			expect.objectContaining({ msg: 'hello' }),
+			undefined,
+			base.server,
+			base.user
+		);
+	});
+
+	it('closes an unclosed code block in the msg before sending', async () => {
+		base.getMsg.mockReturnValueOnce('```js\nconst a = 1;');
+		await sendAttachments({ ...base, altTextSupported: false, attachments: [attachment()] });
+		expect(sendFileMessage).toHaveBeenCalledWith(
+			'rid1',
+			expect.objectContaining({ msg: '```js\nconst a = 1;\n```' }),
 			undefined,
 			base.server,
 			base.user

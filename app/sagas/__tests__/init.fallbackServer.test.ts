@@ -7,6 +7,10 @@ jest.mock('~/lib/database/services/Server', () => ({
 	getAllServers: jest.fn(() => Promise.resolve([{ id: FALLBACK_SERVER, version: FALLBACK_VERSION }]))
 }));
 
+jest.mock('~/lib/methods/helpers/sslPinning', () => ({
+	registerCertificates: jest.fn(() => Promise.resolve())
+}));
+
 jest.mock('~/lib/methods/helpers/localAuthentication', () => ({
 	localAuthenticate: jest.fn()
 }));

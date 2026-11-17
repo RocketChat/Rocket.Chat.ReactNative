@@ -1,4 +1,3 @@
-import { InteractionManager } from 'react-native';
 import { createStore } from 'zustand';
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
@@ -64,44 +63,47 @@ const renderRoomInit = (overrides: Partial<IRenderRoomInitParams> = {}, roomStor
 		ready: true,
 		...overrides
 	};
-	const { rerender, result, unmount } = renderHook((props: IRenderRoomInitParams) => useRoomInit(props), {
-		initialProps: defaultProps
-	});
+	const renders: { rid?: string; loading: boolean }[] = [];
+	const { rerender, result, unmount } = renderHook(
+		(props: IRenderRoomInitParams) => {
+			const roomScreen = useRoomInit(props);
+			renders.push({ rid: props.rid, loading: roomScreen.loading });
+			return roomScreen;
+		},
+		{ initialProps: defaultProps }
+	);
 
 	return {
 		roomStore,
+		renders,
 		result,
 		unmount,
 		rerender: (next: Partial<IRenderRoomInitParams> = {}) => rerender({ ...defaultProps, ...next })
 	};
 };
 
-describe('useRoomInit', () => {
-	let runAfterInteractionsSpy: jest.SpyInstance;
+const runDeferredInit = () => act(() => new Promise(resolve => setImmediate(resolve)));
 
+describe('useRoomInit', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		runAfterInteractionsSpy = jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((task: any) => {
-			task();
-			return { then: jest.fn(), done: jest.fn(), cancel: jest.fn() } as any;
-		});
 	});
 
-	afterEach(() => {
-		runAfterInteractionsSpy.mockRestore();
-	});
-
-	it('initializes the room store on mount when rid and isAuthenticated are set', () => {
+	it('initializes the room store on mount when rid and isAuthenticated are set', async () => {
 		const roomStore = makeRoomStore();
 		renderRoomInit({}, roomStore);
+
+		expect(roomStore.getState().init).not.toHaveBeenCalled();
+		await runDeferredInit();
 
 		expect(roomStore.getState().init).toHaveBeenCalledTimes(1);
 		expect(roomStore.getState().init).toHaveBeenCalledWith(expect.objectContaining({ tmid: undefined }));
 	});
 
-	it('does not initialize the room store when not authenticated', () => {
+	it('does not initialize the room store when not authenticated', async () => {
 		const roomStore = makeRoomStore();
 		renderRoomInit({ isAuthenticated: false }, roomStore);
+		await runDeferredInit();
 
 		expect(roomStore.getState().init).not.toHaveBeenCalled();
 	});
@@ -119,9 +121,10 @@ describe('useRoomInit', () => {
 	it.each([
 		['there is no rid', { rid: undefined }],
 		['the user is not authenticated', { isAuthenticated: false }]
-	])('does not report loading when %s', (_case, overrides) => {
+	])('does not report loading when %s', async (_case, overrides) => {
 		const roomStore = makeRoomStore();
 		const { result } = renderRoomInit(overrides, roomStore);
+		await runDeferredInit();
 
 		expect(roomStore.getState().init).not.toHaveBeenCalled();
 		expect(result.current.loading).toBe(false);
@@ -130,6 +133,7 @@ describe('useRoomInit', () => {
 	it('keeps loading true while init is in flight', async () => {
 		const { roomStore, resolveInit } = makeDeferredRoomStore();
 		const { result } = renderRoomInit({}, roomStore);
+		await runDeferredInit();
 
 		expect(result.current.loading).toBe(true);
 
@@ -138,10 +142,27 @@ describe('useRoomInit', () => {
 		expect(result.current.loading).toBe(false);
 	});
 
+	it('never renders the new rid as loaded before its init run settles', async () => {
+		const { roomStore, resolveInit } = makeDeferredRoomStore();
+		const { renders, rerender } = renderRoomInit({}, roomStore);
+		await runDeferredInit();
+		await resolveInit();
+
+		rerender({ rid: 'rid-2' });
+
+		const newRidRenders = renders.filter(render => render.rid === 'rid-2');
+		expect(newRidRenders.length).toBeGreaterThan(0);
+		expect(newRidRenders.every(render => render.loading)).toBe(true);
+
+		await runDeferredInit();
+		expect(roomStore.getState().init).toHaveBeenCalledTimes(2);
+	});
+
 	it('keeps the lastSeen returned by init and clears it on demand', async () => {
 		const lastSeen = new Date('2026-01-01T00:00:00.000Z');
 		const { roomStore, resolveInit } = makeDeferredRoomStore();
 		const { result } = renderRoomInit({}, roomStore);
+		await runDeferredInit();
 
 		await resolveInit(0, lastSeen);
 
@@ -159,9 +180,11 @@ describe('useRoomInit', () => {
 		const fresh = new Date('2026-02-02T00:00:00.000Z');
 		const { roomStore, resolveInit } = makeDeferredRoomStore();
 		const { result, rerender } = renderRoomInit({}, roomStore);
+		await runDeferredInit();
 
 		rerender({ isAuthenticated: false });
 		rerender({ isAuthenticated: true });
+		await runDeferredInit();
 		expect(roomStore.getState().init).toHaveBeenCalledTimes(2);
 
 		await resolveInit(0, stale);
@@ -178,6 +201,7 @@ describe('useRoomInit', () => {
 	it('stops loading when the first init run does not load the room', async () => {
 		const { roomStore, resolveInitWith } = makeDeferredRoomStore();
 		const { result } = renderRoomInit({}, roomStore);
+		await runDeferredInit();
 
 		await resolveInitWith(0, { status: 'skipped' });
 
@@ -198,12 +222,14 @@ describe('useRoomInit', () => {
 		const loaded = new Date('2026-01-01T00:00:00.000Z');
 		const { roomStore, resolveInit, resolveInitWith } = makeDeferredRoomStore();
 		const { result, rerender } = renderRoomInit({}, roomStore);
+		await runDeferredInit();
 
 		await resolveInit(0, loaded);
 		expect(result.current.lastSeen).toBe(loaded);
 
 		rerender({ isAuthenticated: false });
 		rerender({ isAuthenticated: true });
+		await runDeferredInit();
 		await resolveInitWith(1, { status: 'skipped' });
 
 		expect(result.current.lastSeen).toBe(loaded);
@@ -213,6 +239,7 @@ describe('useRoomInit', () => {
 	it('does not clear loading after unmount', async () => {
 		const { roomStore, resolveInit } = makeDeferredRoomStore();
 		const { result, unmount } = renderRoomInit({}, roomStore);
+		await runDeferredInit();
 
 		unmount();
 		await resolveInit();

@@ -56,20 +56,22 @@ const E2EEncryptionSecurityView = () => {
 	return (
 		<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: colors.surfaceRoom }}>
 			<List.Container>
-				<View style={styles.container}>
-					<ChangePassword />
+				<List.Section>
+					<View style={styles.container}>
+						<ChangePassword />
 
-					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
-					<View style={styles.content}>
-						<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Reset_E2EE_Password_Description')}</Text>
-						<Button
-							onPress={resetOwnKey}
-							title={I18n.t('E2E_encryption_reset_button')}
-							type='primary'
-							testID='e2e-encryption-security-view-reset-key'
-						/>
+						<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
+						<View style={styles.content}>
+							<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Reset_E2EE_Password_Description')}</Text>
+							<Button
+								onPress={resetOwnKey}
+								title={I18n.t('E2E_encryption_reset_button')}
+								type='primary'
+								testID='e2e-encryption-security-view-reset-key'
+							/>
+						</View>
 					</View>
-				</View>
+				</List.Section>
 			</List.Container>
 		</SafeAreaView>
 	);

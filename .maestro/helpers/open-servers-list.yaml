@@ -1,0 +1,12 @@
+appId: ${APP_ID}
+name: Open servers list
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'

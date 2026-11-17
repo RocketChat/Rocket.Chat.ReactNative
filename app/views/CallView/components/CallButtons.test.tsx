@@ -12,7 +12,7 @@ jest.mock('../useCallLayoutMode', () => ({
 	useCallLayoutMode: jest.fn(() => ({ layoutMode: 'narrow' }))
 }));
 
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	showActionSheetRef: jest.fn(),
 	hideActionSheetRef: jest.fn()
 }));

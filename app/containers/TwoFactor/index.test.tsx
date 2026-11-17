@@ -4,6 +4,11 @@ import TwoFactor from '.';
 import { twoFactor } from '~/lib/services/twoFactor/twoFactor';
 import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
 
+jest.mock('react-native-keyboard-controller', () => {
+	const { View } = require('react-native');
+	return { KeyboardAvoidingView: View };
+});
+
 jest.mock('~/lib/services/restApi', () => ({
 	sendEmailCode: jest.fn()
 }));

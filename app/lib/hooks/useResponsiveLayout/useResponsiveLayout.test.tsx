@@ -44,8 +44,8 @@ describe('ResponsiveLayoutProvider', () => {
 		expect(result.contextFontScale).toBe(1.0);
 		expect(result.isLargeFontScale).toBe(false);
 		expect(result.fontScaleLimited).toBe(1.0);
-		expect(result.rowHeight).toBeCloseTo(75);
-		expect(result.rowHeightCondensed).toBeCloseTo(60);
+		expect(result.rowHeight).toBeCloseTo(76);
+		expect(result.rowHeightCondensed).toBeCloseTo(52);
 	});
 
 	it('should limit fontScale above threshold', () => {
@@ -55,7 +55,7 @@ describe('ResponsiveLayoutProvider', () => {
 		expect(result.contextFontScale).toBe(1.5);
 		expect(result.isLargeFontScale).toBe(true);
 		expect(result.fontScaleLimited).toBe(FONT_SCALE_LIMIT);
-		expect(result.rowHeight).toBeCloseTo(112.5); // 75 * 1.5
-		expect(result.rowHeightCondensed).toBeCloseTo(90); // 60 * 1.5
+		expect(result.rowHeight).toBeCloseTo(114); // 76 * 1.5
+		expect(result.rowHeightCondensed).toBeCloseTo(78); // 52 * 1.5
 	});
 });

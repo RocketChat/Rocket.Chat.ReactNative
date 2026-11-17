@@ -2,7 +2,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 import ExpoQuickLook from '@magrinj/expo-quick-look';
 
 import { LISTENER } from '~/containers/Toast';
-import { type IAttachment } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
 import i18n from '~/i18n';
 import EventEmitter from './events';
 import { Encryption } from '~/lib/encryption';
@@ -38,7 +38,7 @@ export const fileDownloadAndPreview = async (url: string, attachment: IAttachmen
 			}
 		}
 
-		await ExpoQuickLook.previewFile({ uri: file });
+		await ExpoQuickLook.previewFile({ uri: file, editingMode: 'createCopy' });
 	} catch (e) {
 		EventEmitter.emit(LISTENER, { message: i18n.t('Error_Download_file') });
 	}

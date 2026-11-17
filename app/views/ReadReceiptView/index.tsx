@@ -10,14 +10,15 @@ import { withSafeAreaInsets } from '~/lib/hooks/withSafeAreaInsets';
 import dayjs from '~/lib/dayjs';
 import * as List from '~/containers/List';
 import Avatar from '~/containers/Avatar';
-import * as HeaderButton from '~/containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import I18n from '~/i18n';
 import { type TSupportedThemes, withTheme } from '~/theme';
 import { themes } from '~/lib/constants/colors';
 import SafeAreaView from '~/containers/SafeAreaView';
 import styles from './styles';
 import { type ChatsStackParamList } from '~/stacks/types';
-import { type IApplicationState, type IReadReceipts } from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type IReadReceipts } from '~/definitions/IMessage';
 import { getReadReceipts } from '~/lib/services/restApi';
 
 interface IReadReceiptViewState {
@@ -45,7 +46,7 @@ class ReadReceiptView extends Component<IReadReceiptViewProps, IReadReceiptViewS
 			title: I18n.t('Read_Receipt')
 		};
 		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='read-receipt-view-close' />;
+			Object.assign(options, headerLeftCloseModal(navigation, 'read-receipt-view-close'));
 		}
 		return options;
 	};

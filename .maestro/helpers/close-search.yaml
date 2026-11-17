@@ -1,0 +1,13 @@
+appId: ${APP_ID}
+name: Close search
+tags:
+  - 'util'
+---
+- runFlow:
+    when:
+      platform: iOS
+      visible:
+        text: 'Close'
+    commands:
+      - tapOn:
+          text: 'Close'

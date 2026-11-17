@@ -1,10 +1,9 @@
-import { createContext, useContext, useState, type ReactElement } from 'react';
-import { useKeyboardHandler } from 'react-native-keyboard-controller';
+import { createContext, useContext, useEffect, useState, type ReactElement } from 'react';
+import { Keyboard } from 'react-native';
+import { KeyboardController, KeyboardEvents, useKeyboardHandler } from 'react-native-keyboard-controller';
 import { type SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scheduleOnRN } from 'react-native-worklets';
-
-import { MessageInnerContext } from '../context';
 
 interface IEmojiKeyboardProvider {
 	children: ReactElement | null;
@@ -20,9 +19,34 @@ const EmojiKeyboardContext = createContext<IEmojiKeyboardContextProps>({
 	showEmojiSearchbarSharedValue: { value: false } as SharedValue<boolean>
 });
 
+const MAX_ACCESSORY_BAR_HEIGHT = 120;
+const EMOJI_KEYBOARD_FIXED_HEIGHT = 250;
+
 export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 	const showEmojiPickerSharedValue = useSharedValue(false);
 	const showEmojiSearchbarSharedValue = useSharedValue(false);
+
+	useKeyboardHandler(
+		{
+			onStart: e => {
+				'worklet';
+
+				if (e.height > MAX_ACCESSORY_BAR_HEIGHT && !showEmojiSearchbarSharedValue.get()) {
+					showEmojiPickerSharedValue.set(false);
+				}
+			}
+		},
+		[]
+	);
+
+	useEffect(() => {
+		const subscription = KeyboardEvents.addListener('keyboardDidShow', function dismissKeyboardThatOutranPicker(e) {
+			if (e.height > MAX_ACCESSORY_BAR_HEIGHT && showEmojiPickerSharedValue.get() && !showEmojiSearchbarSharedValue.get()) {
+				KeyboardController.dismiss({ keepFocus: true });
+			}
+		});
+		return () => subscription.remove();
+	}, [showEmojiPickerSharedValue, showEmojiSearchbarSharedValue]);
 
 	return (
 		<EmojiKeyboardContext.Provider value={{ showEmojiPickerSharedValue, showEmojiSearchbarSharedValue }}>
@@ -30,9 +54,6 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 		</EmojiKeyboardContext.Provider>
 	);
 };
-
-const IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD = 70;
-const EMOJI_KEYBOARD_FIXED_HEIGHT = 250;
 
 const useKeyboardAnimation = () => {
 	const height = useSharedValue(0);
@@ -45,17 +66,17 @@ const useKeyboardAnimation = () => {
 				if (e.duration === 0) {
 					return;
 				}
-				height.value = e.height;
+				height.set(e.height);
 			},
 			onInteractive: e => {
 				'worklet';
 
-				height.value = e.height;
+				height.set(e.height);
 			},
 			onEnd: e => {
 				'worklet';
 
-				height.value = Math.max(e.height, 0);
+				height.set(Math.max(e.height, 0));
 			}
 		},
 		[]
@@ -66,7 +87,6 @@ const useKeyboardAnimation = () => {
 
 export const useEmojiKeyboard = () => {
 	const { showEmojiPickerSharedValue, showEmojiSearchbarSharedValue } = useContext(EmojiKeyboardContext);
-	const { focus } = useContext(MessageInnerContext);
 	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
 	const [showEmojiSearchbar, setShowEmojiSearchbar] = useState(false);
 
@@ -80,39 +100,50 @@ export const useEmojiKeyboard = () => {
 
 		if (
 			!force &&
-			(showEmojiPickerSharedValue.value === true || showEmojiSearchbarSharedValue.value === true) &&
-			previousHeight.value !== EMOJI_KEYBOARD_FIXED_HEIGHT
+			(showEmojiPickerSharedValue.get() === true || showEmojiSearchbarSharedValue.get() === true) &&
+			previousHeight.get() !== EMOJI_KEYBOARD_FIXED_HEIGHT
 		) {
 			return;
 		}
 		// When keyboard is closed, add bottom safe area inset to ensure content is visible above
 		// navigation bars/home indicator. When keyboard is open, keyboard height already covers it.
-		const notch = height.value === 0 ? bottom : 0;
-		keyboardHeight.value = height.value + notch;
-		previousHeight.value = keyboardHeight.value;
+		const notch = height.get() === 0 ? bottom : 0;
+		keyboardHeight.set(height.get() + notch);
+		if (!showEmojiSearchbarSharedValue.get()) {
+			previousHeight.set(keyboardHeight.get());
+		}
 	};
 
 	const openEmojiKeyboard = () => {
-		showEmojiPickerSharedValue.value = true;
+		showEmojiPickerSharedValue.set(true);
 	};
 
 	const closeEmojiKeyboard = () => {
-		showEmojiPickerSharedValue.value = false;
+		showEmojiPickerSharedValue.set(false);
 	};
 
 	const openEmojiSearchbar = () => {
-		showEmojiSearchbarSharedValue.value = true;
+		showEmojiSearchbarSharedValue.set(true);
 	};
 
-	const closeEmojiSearchbar = () => {
-		showEmojiSearchbarSharedValue.value = false;
-		focus && focus();
+	const backToEmojiPicker = () => {
+		showEmojiSearchbarSharedValue.set(false);
+		Keyboard.dismiss();
 	};
 
 	const resetKeyboard = () => {
+		showEmojiSearchbarSharedValue.set(false);
 		updateHeight(true);
 		closeEmojiKeyboard();
-		closeEmojiSearchbar();
+	};
+
+	const applyFixedPickerHeight = () => {
+		'worklet';
+
+		if (keyboardHeight.get() < MAX_ACCESSORY_BAR_HEIGHT) {
+			keyboardHeight.set(EMOJI_KEYBOARD_FIXED_HEIGHT);
+			previousHeight.set(keyboardHeight.get());
+		}
 	};
 
 	useAnimatedReaction(
@@ -124,18 +155,12 @@ export const useEmojiKeyboard = () => {
 			if (currentValue !== previousValue) {
 				updateHeight();
 			}
+			if (currentValue < MAX_ACCESSORY_BAR_HEIGHT && showEmojiPickerSharedValue.value && !showEmojiSearchbarSharedValue.value) {
+				applyFixedPickerHeight();
+			}
 		},
 		[height]
 	);
-
-	const openEmojiPicker = () => {
-		'worklet';
-
-		if (height.value < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
-			keyboardHeight.value = EMOJI_KEYBOARD_FIXED_HEIGHT;
-			previousHeight.value = keyboardHeight.value;
-		}
-	};
 
 	useAnimatedReaction(
 		() => showEmojiPickerSharedValue.value,
@@ -144,7 +169,7 @@ export const useEmojiKeyboard = () => {
 				return;
 			}
 			if (currentValue === true) {
-				openEmojiPicker();
+				applyFixedPickerHeight();
 			} else if (previousHeight.value === EMOJI_KEYBOARD_FIXED_HEIGHT) {
 				updateHeight();
 			}
@@ -162,7 +187,7 @@ export const useEmojiKeyboard = () => {
 			if (currentValue === true && previousHeight.value === EMOJI_KEYBOARD_FIXED_HEIGHT) {
 				updateHeight();
 			} else if (currentValue === false && showEmojiPickerSharedValue.value === true) {
-				openEmojiPicker();
+				applyFixedPickerHeight();
 			}
 			scheduleOnRN(setShowEmojiSearchbar, currentValue);
 		},
@@ -180,7 +205,7 @@ export const useEmojiKeyboard = () => {
 		openEmojiKeyboard,
 		closeEmojiKeyboard,
 		openEmojiSearchbar,
-		closeEmojiSearchbar,
+		backToEmojiPicker,
 		resetKeyboard
 	};
 };

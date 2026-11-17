@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { InteractionManager, View } from 'react-native';
+import { View } from 'react-native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
@@ -67,10 +67,10 @@ const AudioPlayer = ({
 	const handlePlaybackStatusUpdate = (data: AudioStatus): void => {
 		if (!data.isLoaded) return;
 		const durationSeconds = data.duration || 0;
-		duration.value = durationSeconds > 0 ? durationSeconds : 0;
+		duration.set(durationSeconds > 0 ? durationSeconds : 0);
 		const currentSecond = data.currentTime || 0;
 		if (currentSecond <= durationSeconds) {
-			currentTime.value = currentSecond;
+			currentTime.set(currentSecond);
 		}
 	};
 
@@ -78,7 +78,7 @@ const AudioPlayer = ({
 		if (data.isLoaded && data.didJustFinish) {
 			try {
 				setPaused(true);
-				currentTime.value = 0;
+				currentTime.set(0);
 				AudioManager.setPositionAsync(audioUri.current, 0).catch(log);
 			} catch (error) {
 				log(error);
@@ -118,7 +118,7 @@ const AudioPlayer = ({
 
 	useEffect(() => {
 		if (fileUri && isDownloaded) {
-			const task = InteractionManager.runAfterInteractions(async () => {
+			const immediate = setImmediate(async () => {
 				try {
 					audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
 					AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
@@ -127,7 +127,7 @@ const AudioPlayer = ({
 					// do nothing
 				}
 			});
-			return () => task.cancel();
+			return () => clearImmediate(immediate);
 		}
 	}, [fileUri, isDownloaded]);
 

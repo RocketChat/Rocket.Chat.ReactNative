@@ -1,4 +1,4 @@
-import { type ReactElement, useLayoutEffect } from 'react';
+import { Fragment, type ReactElement, useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import * as List from '../containers/List';
@@ -6,7 +6,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { type IThemePreference, type TDarkLevel, type TThemeMode } from '../definitions/ITheme';
 import I18n from '../i18n';
 import { THEME_PREFERENCES_KEY } from '../lib/constants/keys';
-import { supportSystemTheme } from '../lib/methods/helpers';
+import { supportSystemTheme } from '../lib/methods/helpers/deviceInfo';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import UserPreferences from '../lib/methods/userPreferences';
 import { useTheme } from '../theme';
@@ -56,21 +56,8 @@ interface ITheme {
 	group: string;
 }
 
-const Item = ({ onPress, item, isSelected }: { onPress: () => void; item: ITheme; isSelected: boolean }) => (
-	<>
-		<List.Radio
-			isSelected={isSelected}
-			title={item.label}
-			value={item.value}
-			onPress={onPress}
-			testID={`theme-view-${item.value}`}
-		/>
-		<List.Separator />
-	</>
-);
-
 const ThemeView = (): ReactElement => {
-	const { themePreferences, setTheme } = useTheme();
+	const { themePreferences } = useTheme();
 	const { setOptions } = useNavigation();
 
 	useLayoutEffect(() => {
@@ -106,31 +93,36 @@ const ThemeView = (): ReactElement => {
 	};
 
 	const handleTheme = (theme: Partial<IThemePreference>) => {
-		const newTheme: IThemePreference = { ...(themePreferences as IThemePreference), ...theme };
-		if (setTheme) {
-			setTheme(newTheme);
-			UserPreferences.setMap(THEME_PREFERENCES_KEY, newTheme);
-		}
+		UserPreferences.setMap(THEME_PREFERENCES_KEY, { ...(themePreferences as IThemePreference), ...theme });
 	};
+
+	const renderThemeItems = (themes: ITheme[]) => (
+		<>
+			{themes.map(theme => (
+				<Fragment key={theme.label}>
+					<List.Radio
+						isSelected={!!isSelected(theme)}
+						title={theme.label}
+						value={theme.value}
+						onPress={() => onClick(theme)}
+						testID={`theme-view-${theme.value}`}
+					/>
+					<List.Separator />
+				</Fragment>
+			))}
+		</>
+	);
 
 	return (
 		<SafeAreaView testID='theme-view'>
 			<List.Container>
 				<List.Section title='Theme'>
 					<List.Separator />
-					<>
-						{themeGroup.map(theme => (
-							<Item onPress={() => onClick(theme)} item={theme} isSelected={!!isSelected(theme)} key={theme.label} />
-						))}
-					</>
+					{renderThemeItems(themeGroup)}
 				</List.Section>
 				<List.Section title='Dark_level'>
 					<List.Separator />
-					<>
-						{darkGroup.map(theme => (
-							<Item onPress={() => onClick(theme)} item={theme} isSelected={!!isSelected(theme)} key={theme.label} />
-						))}
-					</>
+					{renderThemeItems(darkGroup)}
 				</List.Section>
 			</List.Container>
 		</SafeAreaView>

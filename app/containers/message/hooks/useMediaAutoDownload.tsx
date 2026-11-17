@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 
-import { type IAttachment, type IUserMessage } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type IUserMessage } from '~/definitions/IMessage';
 import { isImageBase64 } from '~/lib/methods/isImageBase64';
 import { fetchAutoDownloadEnabled } from '~/lib/methods/autoDownloadPreference';
 import {
@@ -91,35 +92,6 @@ export const useMediaAutoDownload = ({
 	);
 	const isEncrypted = currentFile.e2e === 'pending';
 
-	useEffect(() => {
-		const handleCache = async () => {
-			if (url) {
-				const isCached = await checkCache();
-				if (isCached) {
-					return;
-				}
-				if (isDownloadActive(url)) {
-					resumeDownload();
-					return;
-				}
-				await tryAutoDownload();
-			}
-		};
-		if (fileType === 'image' && isImageBase64(url)) {
-			dispatchDownloadEvent('cache_hit');
-		} else {
-			handleCache();
-		}
-
-		return () => {
-			emitter.off(`downloadMedia${url}`, downloadMediaListener);
-		};
-	}, []);
-
-	const downloadMediaListener = useCallback((uri: string) => {
-		updateCurrentFile(uri);
-	}, []);
-
 	const resumeDownload = () => {
 		dispatchDownloadEvent('download_started');
 		emitter.on(`downloadMedia${url}`, downloadMediaListener);
@@ -134,15 +106,17 @@ export const useMediaAutoDownload = ({
 	};
 
 	const download = async () => {
+		const mimeType = getFileProperty(currentFile, fileType, 'type');
+		const originalChecksum = file.hashes?.sha256;
 		try {
 			dispatchDownloadEvent('download_started');
 			const uri = await downloadMediaFile({
 				messageId: id,
 				downloadUrl: url,
 				type: fileType,
-				mimeType: getFileProperty(currentFile, fileType, 'type'),
+				mimeType,
 				encryption: file.encryption,
-				originalChecksum: file.hashes?.sha256
+				originalChecksum
 			});
 			setDecrypted();
 			updateCurrentFile(uri);
@@ -173,6 +147,35 @@ export const useMediaAutoDownload = ({
 		}
 		return result?.exists;
 	};
+
+	const downloadMediaListener = (uri: string) => {
+		updateCurrentFile(uri);
+	};
+
+	useEffect(() => {
+		const handleCache = async () => {
+			if (url) {
+				const isCached = await checkCache();
+				if (isCached) {
+					return;
+				}
+				if (isDownloadActive(url)) {
+					resumeDownload();
+					return;
+				}
+				await tryAutoDownload();
+			}
+		};
+		if (fileType === 'image' && isImageBase64(url)) {
+			dispatchDownloadEvent('cache_hit');
+		} else {
+			handleCache();
+		}
+
+		return () => {
+			emitter.off(`downloadMedia${url}`, downloadMediaListener);
+		};
+	}, []);
 
 	const onPress = () => {
 		if (status === 'loading') {

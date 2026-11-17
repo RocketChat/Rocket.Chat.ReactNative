@@ -4,13 +4,16 @@ import { createStore } from 'zustand';
 
 import database from '~/lib/database';
 import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
-import { loadThreadMessages } from '~/lib/methods/loadThreadMessages';
+import { loadThreadMessages, releaseUnretainedThreadPagination } from '~/lib/methods/loadThreadMessages';
 import { readMessages } from '~/lib/methods/readMessages';
 import { getUserInfo } from '~/lib/services/restApi';
-import { isGroupChat, getUidDirectMessage, canAutoTranslate as canAutoTranslateMethod } from '~/lib/methods/helpers';
+import { isGroupChat } from '~/lib/methods/helpers/isGroupChat';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
+import { canAutoTranslate as canAutoTranslateMethod } from '~/lib/methods/helpers/canAutoTranslate';
 import log from '~/lib/methods/helpers/log';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
-import { type RoomType, type TSubscriptionModel } from '~/definitions';
+import { type RoomType } from '~/definitions/IRoom';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { type TRoomOrPreview, isSubscriptionModel } from '~/definitions/TRoom';
 import {
 	type IRoomStoreInitParams,
@@ -78,6 +81,7 @@ const loadRoom = async (
 		if (tmid) {
 			await loadThreadMessages({ tmid, rid });
 			if (isAborted()) {
+				releaseUnretainedThreadPagination(tmid);
 				return { status: 'skipped' };
 			}
 			onThreadMessagesLoaded?.();

@@ -10,7 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { RectButton } from '~/containers/GestureButtons';
-import { CustomIcon } from '../CustomIcon';
+import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { DisplayMode } from '~/lib/constants/constantDisplayMode';
 import styles from './styles';
 import { getActionWidth, getFullSwipeThreshold } from './utils/swipeRelease';
@@ -84,71 +84,84 @@ export const LeftActions = memo(({ transX, isRead, width, onToggleReadPress, dis
 	);
 });
 
-export const RightActions = memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
-	const { colors } = useTheme();
+export const RightActions = memo(
+	({ transX, favorite, width, toggleFav, onMoveToCategoryPress, onHidePress, displayMode }: IRightActionsProps) => {
+		const { colors } = useTheme();
 
-	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
+		const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 
-	const actionWidth = getActionWidth(width);
-	const expandProgress = useHideExpandProgress(transX, width);
+		const actionWidth = getActionWidth(width);
+		const expandProgress = useHideExpandProgress(transX, width);
 
-	const buttonWidths = useDerivedValue(() => {
-		const reveal = Math.max(-transX.value, 0);
-		const favorite = (reveal / 2) * (1 - expandProgress.value);
-		return { favorite, hide: reveal - favorite };
-	});
+		const buttonWidths = useDerivedValue(() => {
+			const reveal = Math.max(-transX.value, 0);
+			const leading = (reveal / 2) * (1 - expandProgress.value);
+			return { leading, hide: reveal - leading };
+		});
 
-	const animatedFavStyles = useAnimatedStyle(() => ({
-		width: buttonWidths.value.favorite,
-		right: buttonWidths.value.hide
-	}));
+		const animatedLeadingStyles = useAnimatedStyle(() => ({
+			width: buttonWidths.value.leading,
+			right: buttonWidths.value.hide
+		}));
 
-	const animatedHideStyles = useAnimatedStyle(() => ({
-		width: buttonWidths.value.hide
-	}));
+		const animatedHideStyles = useAnimatedStyle(() => ({
+			width: buttonWidths.value.hide
+		}));
 
-	const isCondensed = displayMode === DisplayMode.Condensed;
-	const viewHeight = { height: isCondensed ? rowHeightCondensed : rowHeight };
+		const isCondensed = displayMode === DisplayMode.Condensed;
+		const viewHeight = { height: isCondensed ? rowHeightCondensed : rowHeight };
+		const iconSize = isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE;
+		const leadingAction: { backgroundColor: string; label: string; icon: TIconsName; onPress: () => void } = onMoveToCategoryPress
+			? {
+					backgroundColor: colors.fontPureBlack,
+					label: 'Move_to_category',
+					icon: 'folder-star',
+					onPress: onMoveToCategoryPress
+				}
+			: {
+					backgroundColor: colors.statusFontWarning,
+					label: favorite ? 'Unfavorite' : 'Favorite',
+					icon: favorite ? 'star-filled' : 'star',
+					onPress: toggleFav
+				};
 
-	return (
-		<View
-			style={[styles.actionsLeftContainer, viewHeight]}
-			pointerEvents='box-none'
-			accessibilityElementsHidden
-			importantForAccessibility='no'>
-			<Animated.View
-				style={[styles.actionRightButtonContainer, { backgroundColor: colors.statusFontWarning }, viewHeight, animatedFavStyles]}>
-				<RectButton
-					accessible={false}
-					accessibilityLabel={I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
-					style={styles.actionButton}
-					onPress={toggleFav}>
-					<View style={[styles.actionIconSlot, { width: actionWidth }]}>
-						<CustomIcon
-							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
-							name={favorite ? 'star-filled' : 'star'}
-							color={colors.fontWhite}
-						/>
-					</View>
-				</RectButton>
-			</Animated.View>
-			<Animated.View
-				style={[
-					styles.actionRightButtonContainer,
-					{ right: 0, backgroundColor: colors.buttonBackgroundSecondaryPress },
-					viewHeight,
-					animatedHideStyles
-				]}>
-				<RectButton accessible={false} accessibilityLabel={I18n.t('Hide')} style={styles.actionButton} onPress={onHidePress}>
-					<View style={[styles.actionIconSlot, { width: actionWidth }]}>
-						<CustomIcon
-							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
-							name='unread-on-top-disabled'
-							color={colors.fontWhite}
-						/>
-					</View>
-				</RectButton>
-			</Animated.View>
-		</View>
-	);
-});
+		return (
+			<View
+				style={[styles.actionsLeftContainer, viewHeight]}
+				pointerEvents='box-none'
+				accessibilityElementsHidden
+				importantForAccessibility='no'>
+				<Animated.View
+					style={[
+						styles.actionRightButtonContainer,
+						{ backgroundColor: leadingAction.backgroundColor },
+						viewHeight,
+						animatedLeadingStyles
+					]}>
+					<RectButton
+						accessible={false}
+						accessibilityLabel={I18n.t(leadingAction.label)}
+						style={styles.actionButton}
+						onPress={leadingAction.onPress}>
+						<View style={[styles.actionIconSlot, { width: actionWidth }]}>
+							<CustomIcon size={iconSize} name={leadingAction.icon} color={colors.fontWhite} />
+						</View>
+					</RectButton>
+				</Animated.View>
+				<Animated.View
+					style={[
+						styles.actionRightButtonContainer,
+						{ right: 0, backgroundColor: colors.buttonBackgroundSecondaryPress },
+						viewHeight,
+						animatedHideStyles
+					]}>
+					<RectButton accessible={false} accessibilityLabel={I18n.t('Hide')} style={styles.actionButton} onPress={onHidePress}>
+						<View style={[styles.actionIconSlot, { width: actionWidth }]}>
+							<CustomIcon size={iconSize} name='unread-on-top-disabled' color={colors.fontWhite} />
+						</View>
+					</RectButton>
+				</Animated.View>
+			</View>
+		);
+	}
+);

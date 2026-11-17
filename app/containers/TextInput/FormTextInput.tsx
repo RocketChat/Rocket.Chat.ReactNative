@@ -17,7 +17,7 @@ import sharedStyles from '~/views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import Touch from '../Touch';
 
 const styles = StyleSheet.create({
@@ -128,7 +128,7 @@ export const FormTextInput = ({
 	const inputError = getInputError(error);
 	// iOS 26 surfaces a system "Save Password?" sheet asynchronously after any
 	// credential-classified field submit. It overlays the app and blocks
-	// XCUITest hit-testing, breaking Maestro flows that interact with the
+	// XCUITest hit-testing, breaking e2e tests that interact with the
 	// screen underneath. iOS classifies a field as a credential via any of
 	// `secureTextEntry`, `textContentType` in {password, newPassword, ...},
 	// or `autoComplete` in {password, password-new, ...} — so we must suppress

@@ -6,7 +6,7 @@ import { getRoleById } from '../database/services/Role';
 import log from './helpers/log';
 import { store as reduxStore } from '../store/auxStore';
 import { removeRoles, setRoles as setRolesAction, updateRoles } from '~/actions/roles';
-import { type TRoleModel } from '~/definitions';
+import { type TRoleModel } from '~/definitions/IRole';
 import sdk from '../services/sdk';
 import protectedFunction from './helpers/protectedFunction';
 
@@ -14,7 +14,7 @@ export async function setRoles(): Promise<void> {
 	const db = database.active;
 	const rolesCollection = db.get('roles');
 	const allRoles = await rolesCollection.query().fetch();
-	const parsed = allRoles.reduce((acc, item) => ({ ...acc, [item.id]: item.description || item.name || item.id }), {});
+	const parsed = Object.fromEntries(allRoles.map(item => [item.id, item.description || item.name || item.id]));
 	reduxStore.dispatch(setRolesAction(parsed));
 }
 

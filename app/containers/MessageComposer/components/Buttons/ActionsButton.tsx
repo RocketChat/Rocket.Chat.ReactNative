@@ -2,14 +2,16 @@ import { useContext } from 'react';
 
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { BaseButton } from './BaseButton';
-import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
+import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet/Provider';
 import { MessageInnerContext } from '~/containers/MessageComposer/context';
 import I18n from '~/i18n';
 import Navigation from '~/lib/navigation/appNavigation';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { useCanUploadFile, useChooseMedia } from '~/containers/MessageComposer/hooks';
+import { useCanUploadFile } from '~/containers/MessageComposer/hooks/useCanUploadFile';
+import { useChooseMedia } from '~/containers/MessageComposer/hooks/useChooseMedia';
 import { useComposerRid, useComposerTmid, useComposerType } from '~/containers/MessageComposer/ComposerStore';
+import { useComposerAppActionOptions } from '~/containers/MessageComposer/hooks/useComposerAppActionOptions';
 
 export const ActionsButton = () => {
 	const rid = useComposerRid();
@@ -25,6 +27,7 @@ export const ActionsButton = () => {
 	});
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useMasterDetail();
+	const appOptions = useComposerAppActionOptions();
 
 	const createDiscussion = async () => {
 		if (!rid) return;
@@ -94,6 +97,8 @@ export const ActionsButton = () => {
 			icon: 'discussions',
 			onPress: () => createDiscussion()
 		});
+
+		options.push(...appOptions);
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
 	};

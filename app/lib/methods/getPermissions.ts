@@ -3,13 +3,13 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import orderBy from 'lodash/orderBy';
 
 import { setPermissions as setPermissionsAction } from '~/actions/permissions';
-import { type IPermission, type TPermissionModel } from '~/definitions';
+import { type IPermission, type TPermissionModel } from '~/definitions/IPermission';
 import log from './helpers/log';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import sdk from '../services/sdk';
 import protectedFunction from './helpers/protectedFunction';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion } from './helpers/compareServerVersion';
 
 export const SUPPORTED_PERMISSIONS = [
 	'add-user-to-any-c-room',
@@ -79,7 +79,7 @@ export async function setPermissions(): Promise<void> {
 	const allPermissions = await permissionsCollection
 		.query(Q.where('id', Q.oneOf(SUPPORTED_PERMISSIONS as unknown as string[])))
 		.fetch();
-	const parsed = allPermissions.reduce((acc, item) => ({ ...acc, [item.id]: item.roles }), {});
+	const parsed = Object.fromEntries(allPermissions.map(item => [item.id, item.roles]));
 
 	reduxStore.dispatch(setPermissionsAction(parsed));
 }

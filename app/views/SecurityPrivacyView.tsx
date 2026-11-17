@@ -25,8 +25,8 @@ interface ISecurityPrivacyViewProps {
 }
 
 const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps) => {
-	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
-	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
+	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue);
+	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue);
 	const [server] = useServer();
 
 	const e2eEnabled = useAppSelector(state => state.settings.E2E_Enable);

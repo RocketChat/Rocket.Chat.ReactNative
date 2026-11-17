@@ -29,12 +29,17 @@ jest.mock('../components/EncryptedRoom', () => {
 	const { View: RNView } = require('react-native');
 	return { EncryptedRoom: () => createElement(RNView, { testID: 'encrypted-screen' }) };
 });
-jest.mock('../hooks/useHeader', () => ({ useHeader: jest.fn() }));
+jest.mock('../components/RoomViewHeader/RoomViewHeader', () => ({ RoomViewHeader: () => null }));
 jest.mock('../hooks/useE2EEStatus', () => ({
 	useE2EEStatus: jest.fn(() => ({ showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false }))
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
-jest.mock('~/lib/methods/helpers', () => ({ getUidDirectMessage: jest.fn(), getRoomTitle: jest.fn(() => 'Room Title') }));
+jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
+	getUidDirectMessage: jest.fn()
+}));
+jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
+	getRoomTitle: jest.fn(() => 'Room Title')
+}));
 
 const room: { current: TRoomOrPreview } = { current: { rid: 'rid-1', t: 'c' } };
 

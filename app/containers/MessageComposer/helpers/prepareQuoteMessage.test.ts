@@ -2,7 +2,7 @@ import { prepareQuoteMessage } from './prepareQuoteMessage';
 import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
 import { getMessageById } from '~/lib/database/services/Message';
 import { store } from '~/lib/store/auxStore';
-import { compareServerVersion } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 
 // Mock dependencies
 jest.mock('~/lib/methods/getPermalinks', () => ({
@@ -133,6 +133,17 @@ describe('prepareQuoteMessage', () => {
 			expect(mockGetMessageById).toHaveBeenCalledTimes(2);
 			expect(mockGetPermalinkMessage).toHaveBeenCalledTimes(1);
 			expect(result).toBe('[ ](https://example.com/message/message1) \nMy reply');
+		});
+
+		test('should skip messages whose permalink cannot be resolved', async () => {
+			const selectedMessages = ['message1', 'message2'];
+
+			mockGetMessageById.mockResolvedValue(mockMessage as any);
+			mockGetPermalinkMessage.mockResolvedValueOnce(null).mockResolvedValueOnce('https://example.com/message/message2');
+
+			const result = await prepareQuoteMessage('My reply', selectedMessages);
+
+			expect(result).toBe('[ ](https://example.com/message/message2) \nMy reply');
 		});
 
 		test('should handle empty text input with quotes', async () => {

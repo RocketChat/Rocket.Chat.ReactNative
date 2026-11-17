@@ -5,10 +5,14 @@ import { DisplayMode } from '~/lib/constants/constantDisplayMode';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
-export const useGetItemLayout = () => {
+export const useRowHeight = () => {
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 	const { displayMode } = useAppSelector(state => state.sortPreferences, shallowEqual);
-	const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
+	return displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
+};
+
+export const useGetItemLayout = () => {
+	const height = useRowHeight();
 
 	const getItemLayout = useCallback(
 		(_: any, index: number) => ({

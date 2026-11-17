@@ -6,11 +6,14 @@ import { KeyboardFocusView } from 'react-native-external-keyboard';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useIsAccessibilityNavigationEnabled } from '~/lib/hooks/useIsAccessibilityNavigationEnabled';
 import I18n from '~/i18n';
+import { joinTypingUsers } from './subtitle';
 import sharedStyles from '~/views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
 import { CustomIcon } from '../CustomIcon';
-import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '~/definitions';
+import { type TUserStatus } from '~/definitions/TUserStatus';
+import { type IOmnichannelSource } from '~/definitions/IRoom';
+import { type ISubscription } from '~/definitions/ISubscription';
 import { formatStatusExpiry } from '~/lib/methods/helpers/formatStatusExpiry';
 import { useTheme } from '~/theme';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -88,7 +91,6 @@ interface IRoomHeader {
 	testID?: string;
 	sourceType?: IOmnichannelSource;
 	disabled?: boolean;
-	rightButtonsWidth?: number;
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
@@ -99,15 +101,9 @@ const SubTitle = memo(({ usersTyping, subtitle, formattedStatusExpiry, renderFun
 	const fontSize = getSubTitleSize(scale);
 	// typing
 	if (usersTyping.length) {
-		let usersText;
-		if (usersTyping.length === 2) {
-			usersText = usersTyping.join(` ${I18n.t('and')} `);
-		} else {
-			usersText = usersTyping.join(', ');
-		}
 		return (
 			<Text style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} numberOfLines={1}>
-				<Text style={styles.typingUsers}>{usersText} </Text>
+				<Text style={styles.typingUsers}>{joinTypingUsers(usersTyping)} </Text>
 				{usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing')}...
 			</Text>
 		);

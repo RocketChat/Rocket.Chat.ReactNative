@@ -52,7 +52,7 @@ export type GroupsEndpoints = {
 		};
 	};
 	'groups.convertToTeam': {
-		POST: (params: { roomId: string; roomName: string }) => { team: ITeam };
+		POST: (params: { roomId: string }) => { team: ITeam };
 	};
 	'groups.counters': {
 		GET: (params: { roomId: string }) => {
@@ -64,6 +64,9 @@ export type GroupsEndpoints = {
 			latest: Date;
 			userMentions: number;
 		};
+	};
+	'groups.invite': {
+		POST: (params: { roomId: string; usernames: string[] }) => { group: IServerRoom };
 	};
 	'groups.close': {
 		POST: (params: { roomId: string }) => {};

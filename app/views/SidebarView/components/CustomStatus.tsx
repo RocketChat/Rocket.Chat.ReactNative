@@ -15,12 +15,15 @@ import I18n from '~/i18n';
 import { NOTIFICATION_PRESENCE_CAP } from '~/lib/constants/notifications';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
+export const useIsCustomStatusVisible = () =>
+	Boolean(useAppSelector(state => state.settings.Accounts_AllowUserStatusMessageChange));
+
 const CustomStatus = () => {
 	const { colors } = useTheme();
 	const { status: userStatus, statusText } = useAppSelector(getUserSelector, shallowEqual);
 	const presenceBroadcastDisabled = useAppSelector(state => state.settings.Presence_broadcast_disabled) as boolean;
 	const notificationPresenceCap = useAppSelector(state => state.app.notificationPresenceCap);
-	const allowStatusMessage = useAppSelector(state => state.settings.Accounts_AllowUserStatusMessageChange);
+	const allowStatusMessage = useIsCustomStatusVisible();
 	const dispatch = useDispatch();
 
 	const onPressPresenceLearnMore = () => {

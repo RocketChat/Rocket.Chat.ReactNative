@@ -6,7 +6,7 @@ import { CustomIcon } from '../CustomIcon';
 import Button from '../Button';
 import { styles } from './styles';
 import { useSupportedVersionMessage } from './useSupportedVersionMessage';
-import * as HeaderButton from '../Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import I18n from '~/i18n';
 import { LEARN_MORE_URL } from './constants';
 
@@ -20,9 +20,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 		});
 
 		if (route?.params?.showCloseButton) {
-			navigation?.setOptions({
-				headerLeft: () => <HeaderButton.CloseModal />
-			});
+			navigation?.setOptions(headerLeftCloseModal(navigation));
 		}
 	}, [navigation, route]);
 

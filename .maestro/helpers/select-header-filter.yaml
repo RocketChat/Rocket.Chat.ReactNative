@@ -1,0 +1,37 @@
+appId: ${APP_ID}
+name: Select header filter
+tags:
+  - 'util'
+---
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'Filter'
+          timeout: 60000
+      - tapOn:
+          text: 'Filter'
+      - extendedWaitUntil:
+          visible:
+            text: ${IOS_OPTION}
+          timeout: 60000
+      - tapOn:
+          text: ${IOS_OPTION}
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: ${ANDROID_FILTER_ID}
+          timeout: 60000
+      - tapOn:
+          id: ${ANDROID_FILTER_ID}
+      - extendedWaitUntil:
+          visible:
+            id: ${ANDROID_OPTION_ID}
+          timeout: 60000
+      - tapOn:
+          id: ${ANDROID_OPTION_ID}

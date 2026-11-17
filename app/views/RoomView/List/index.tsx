@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle } from 'react';
 
-import { useDebounce } from '~/lib/methods/helpers';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
 import EmptyRoom from './components/EmptyRoom';
 import List from './components/List';
 import { MessageRow } from '../components/MessageRow';
@@ -10,7 +10,7 @@ import { useScroll } from './hooks/useScroll';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, t, onLongPress, showMessageInMainThread, hideSystemMessages, flatListRef, serverVersion }, ref) => {
-		const [messages, messagesIds, fetchMessages, { highTs, setHighTs }] = useMessages({
+		const [messages, messagesIds, fetchMessages, { highTs, setHighTs, loadOlderMessages }] = useMessages({
 			rid,
 			tmid,
 			showMessageInMainThread,
@@ -18,19 +18,25 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			t,
 			serverVersion
 		});
-		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, handleScrollToIndexFailed, highlightedMessageId, isReleasing } =
-			useScroll({
-				flatListRef,
-				messages,
-				messagesIds,
-				highTs,
-				setHighTs,
-				fetchMessages
-			});
+		const {
+			jumpToBottom,
+			jumpToMessage,
+			cancelJumpToMessage,
+			handleScrollToIndexFailed,
+			handleDragStart,
+			highlightedMessageId,
+			isReleasing
+		} = useScroll({
+			flatListRef,
+			messages,
+			messagesIds,
+			highTs,
+			setHighTs,
+			fetchMessages,
+			tmid
+		});
 
-		const onEndReached = useDebounce(() => {
-			fetchMessages();
-		}, 300);
+		const onEndReached = useDebounce(loadOlderMessages, 300);
 
 		useEffect(() => onEndReached.cancel, [onEndReached]);
 
@@ -58,6 +64,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 					renderItem={renderItem}
 					onEndReached={onEndReached}
 					onScrollToIndexFailed={handleScrollToIndexFailed}
+					onDragStart={handleDragStart}
 					jumpToBottom={jumpToBottom}
 					isAnchored={highTs != null}
 					maintainVisibleContentPosition={

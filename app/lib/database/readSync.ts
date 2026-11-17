@@ -1,8 +1,5 @@
 import { type Collection, type Model, type Query } from '@nozbe/watermelondb';
 
-// WatermelonDB has no public synchronous read. With the JSI SQLite adapter these private
-// methods invoke the callback before returning; any other adapter leaves the result empty.
-
 export const findRecordSync = <T extends Model>(collection: Collection<T>, id: string): T | undefined => {
 	const cachedRecord = collection._cache.get(id);
 	if (cachedRecord) {

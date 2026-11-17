@@ -1,5 +1,3 @@
-import { InteractionManager } from 'react-native';
-
 import RoomSubscription from './room';
 import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadById } from '~/lib/database/services/Thread';
@@ -46,9 +44,8 @@ jest.mock('../helpers/log', () => ({
 	default: jest.fn()
 }));
 
-jest.mock('../helpers', () => ({
-	debounce: (fn: (...args: unknown[]) => unknown) => fn,
-	compareServerVersion: jest.fn()
+jest.mock('../helpers/debounce', () => ({
+	debounce: (fn: (...args: unknown[]) => unknown) => fn
 }));
 
 jest.mock('../helpers/protectedFunction', () => ({
@@ -209,15 +206,7 @@ describe('RoomSubscription', () => {
 	});
 
 	describe('deleteMessage concurrency', () => {
-		let interactionTask: Promise<unknown> | null = null;
-
 		beforeEach(() => {
-			interactionTask = null;
-			// Run the deferred work inline so the test can await it.
-			jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((task: any) => {
-				interactionTask = task();
-				return { then: () => undefined, done: () => undefined, cancel: () => undefined } as any;
-			});
 			mockDbBatch.mockImplementation(commitPreparedRecords);
 		});
 
@@ -251,7 +240,7 @@ describe('RoomSubscription', () => {
 				]);
 			});
 
-			await sub.handleNotifyRoomReceived({
+			const deleteHandled = sub.handleNotifyRoomReceived({
 				fields: { eventName: `${rid}/deleteMessage`, args: [{ _id }] }
 			} as any);
 
@@ -260,7 +249,8 @@ describe('RoomSubscription', () => {
 			await flush();
 			concurrentGate.resolve();
 
-			await expect(Promise.all([concurrentWrite, interactionTask])).resolves.toBeDefined();
+			const writeQueuedAfterDelete = db.write(() => Promise.resolve(true));
+			await expect(Promise.all([concurrentWrite, deleteHandled, writeQueuedAfterDelete])).resolves.toBeDefined();
 
 			expect(loggedPendingChanges(log)).toBe(false);
 

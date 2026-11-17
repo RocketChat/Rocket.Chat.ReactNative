@@ -1,4 +1,3 @@
-import { type IMessage } from '~/definitions';
 import { tsToMs } from '~/lib/dayjs';
 import { anchorForServerChunk } from './anchorResolver';
 import { type AnchorMessage, type IJumpAnchorDeps, type IJumpTarget } from '../definitions';
@@ -14,8 +13,8 @@ export const resolveJumpAnchor = async (
 	}
 
 	if (target.fromServer) {
-		const chunk = (await deps.loadSurroundingMessages({ messageId: target.id, rid })) as IMessage[];
-		const anchorMessages: AnchorMessage[] = (Array.isArray(chunk) ? chunk : []).map(m => ({
+		const chunk = await deps.loadSurroundingMessages({ messageId: target.id, rid });
+		const anchorMessages: AnchorMessage[] = chunk.map(m => ({
 			id: m._id,
 			t: m.t,
 			ts: tsToMs(m.ts)

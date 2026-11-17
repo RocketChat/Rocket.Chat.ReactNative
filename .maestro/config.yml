@@ -1,5 +1,0 @@
-appId: ${APP_ID}
-flows:
-  - tests/**
-excludeTags:
-  - 'util'

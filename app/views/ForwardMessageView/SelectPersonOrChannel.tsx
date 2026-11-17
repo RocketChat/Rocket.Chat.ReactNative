@@ -7,9 +7,10 @@ import I18n from '~/i18n';
 import { MultiSelect } from '~/containers/UIKit/MultiSelect';
 import styles from './styles';
 import { type IForwardMessageViewSelectRoom } from './interfaces';
-import { type ISearchLocal } from '~/definitions';
+import { type ISearchLocal } from '~/definitions/ISearch';
 import { localSearchSubscription } from '~/lib/methods/search';
-import { getRoomAvatar, getRoomTitle } from '~/lib/methods/helpers';
+import { getRoomAvatar } from '~/lib/methods/helpers/getRoomAvatar';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { useTheme } from '~/theme';
 
 const SelectPersonOrChannel = ({
@@ -22,6 +23,19 @@ const SelectPersonOrChannel = ({
 }: IForwardMessageViewSelectRoom): ReactElement => {
 	const [rooms, setRooms] = useState<ISearchLocal[]>([]);
 	const { colors } = useTheme();
+
+	const getAvatar = (item: ISearchLocal) =>
+		getAvatarURL({
+			text: getRoomAvatar(item),
+			type: item.t,
+			userId,
+			token,
+			server,
+			avatarETag: item.avatarETag,
+			rid: item.rid,
+			blockUnauthenticatedAccess,
+			serverVersion
+		});
 
 	const getRooms = async (keyword = '') => {
 		try {
@@ -40,19 +54,6 @@ const SelectPersonOrChannel = ({
 	useEffect(() => {
 		getRooms('');
 	}, []);
-
-	const getAvatar = (item: ISearchLocal) =>
-		getAvatarURL({
-			text: getRoomAvatar(item),
-			type: item.t,
-			userId,
-			token,
-			server,
-			avatarETag: item.avatarETag,
-			rid: item.rid,
-			blockUnauthenticatedAccess,
-			serverVersion
-		});
 
 	return (
 		<View style={styles.inputContainer}>

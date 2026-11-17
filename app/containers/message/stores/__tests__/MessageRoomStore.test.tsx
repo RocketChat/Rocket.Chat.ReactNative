@@ -11,6 +11,7 @@ import {
 	useIsArchived,
 	useNavToRoomInfo,
 	useReactionInit,
+	useRoomTranslateLanguage,
 	useShowAttachment,
 	useTimeFormat
 } from '../MessageRoomStore';
@@ -140,6 +141,44 @@ describe('MessageRoomStore', () => {
 
 		expect(autoTranslateSpy).toHaveBeenLastCalledWith({ autoTranslateRoom: true, autoTranslateLanguage: undefined });
 		expect(timeFormatSpy.mock.calls.length).toBe(timeFormatCallsBefore);
+	});
+
+	describe('room translate language', () => {
+		const languageSpy = jest.fn();
+		const LanguageConsumer = memo(() => {
+			languageSpy(useRoomTranslateLanguage());
+			return null;
+		});
+		const wrap = (autoTranslateRoom: boolean, autoTranslateLanguage?: string) => (
+			<Provider store={mockedStore}>
+				<MessageRoomProvider
+					timeFormat='fixed-format'
+					autoTranslateRoom={autoTranslateRoom}
+					autoTranslateLanguage={autoTranslateLanguage}>
+					<LanguageConsumer />
+				</MessageRoomProvider>
+			</Provider>
+		);
+
+		beforeEach(() => languageSpy.mockClear());
+
+		it('does not re-render consumers when the language arrives for a room without auto-translate', () => {
+			const { rerender } = render(wrap(false));
+			const callsBefore = languageSpy.mock.calls.length;
+
+			act(() => rerender(wrap(false, 'en')));
+
+			expect(languageSpy.mock.calls.length).toBe(callsBefore);
+			expect(languageSpy).toHaveBeenLastCalledWith(undefined);
+		});
+
+		it('exposes the language once the room auto-translates', () => {
+			const { rerender } = render(wrap(false, 'en'));
+
+			act(() => rerender(wrap(true, 'en')));
+
+			expect(languageSpy).toHaveBeenLastCalledWith('en');
+		});
 	});
 
 	it('resyncs archived when a room gets archived mid-session', () => {

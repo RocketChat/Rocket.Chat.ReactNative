@@ -1,7 +1,7 @@
 import { appStart, appInit, setNotificationPresenceCap, appReady } from '../actions/app';
 import { initialState } from './app';
 import { mockedStore } from './mockedStore';
-import { RootEnum } from '../definitions';
+import { RootEnum } from '../definitions/redux/TRootEnum';
 import { APP_STATE } from '../actions/actionsTypes';
 
 describe('test reducer', () => {

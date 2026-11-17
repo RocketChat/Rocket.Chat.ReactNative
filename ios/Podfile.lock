@@ -1,4 +1,26 @@
 PODS:
+  - Appduct (0.13.0):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - BugsnagReactNative (8.4.0):
     - hermes-engine
     - RCTRequired
@@ -131,6 +153,10 @@ PODS:
     - ExpoModulesCore
   - ExpoSystemUI (57.0.4):
     - ExpoModulesCore
+  - ExpoUI (57.0.19):
+    - ExpoModulesCore
+    - ExpoModulesWorklets
+    - React-RCTFabric
   - ExpoVideo (57.0.4):
     - ExpoModulesCore
   - ExpoVideoThumbnails (57.0.2):
@@ -2000,7 +2026,7 @@ PODS:
   - react-native-webrtc (124.0.7):
     - JitsiWebRTC (~> 124.0.0)
     - React-Core
-  - react-native-webview (13.16.1):
+  - react-native-webview (14.0.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2785,7 +2811,7 @@ PODS:
     - ReactNativeDependencies
     - RNWorklets
     - Yoga
-  - RNScreens (4.28.0):
+  - RNScreens (4.30.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2807,9 +2833,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
-    - RNScreens/common (= 4.28.0)
+    - RNScreens/common (= 4.30.0)
     - Yoga
-  - RNScreens/common (4.28.0):
+  - RNScreens/common (4.30.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2994,6 +3020,7 @@ PODS:
     - ZXingObjC/Core
 
 DEPENDENCIES:
+  - "Appduct (from `../node_modules/@appduct/react-native`)"
   - "BugsnagReactNative (from `../node_modules/@bugsnag/react-native`)"
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - EXApplication (from `../node_modules/expo-application/ios`)
@@ -3021,6 +3048,7 @@ DEPENDENCIES:
   - ExpoNotifications (from `../node_modules/expo-notifications/ios`)
   - "ExpoQuickLook (from `../node_modules/@magrinj/expo-quick-look/ios`)"
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
+  - "ExpoUI (from `../node_modules/@expo/ui/ios`)"
   - ExpoVideo (from `../node_modules/expo-video/ios`)
   - ExpoVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
@@ -3170,6 +3198,8 @@ SPEC REPOS:
     - ZXingObjC
 
 EXTERNAL SOURCES:
+  Appduct:
+    :path: "../node_modules/@appduct/react-native"
   BugsnagReactNative:
     :path: "../node_modules/@bugsnag/react-native"
   BVLinearGradient:
@@ -3224,6 +3254,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@magrinj/expo-quick-look/ios"
   ExpoSystemUI:
     :path: "../node_modules/expo-system-ui/ios"
+  ExpoUI:
+    :path: "../node_modules/@expo/ui/ios"
   ExpoVideo:
     :path: "../node_modules/expo-video/ios"
   ExpoVideoThumbnails:
@@ -3455,6 +3487,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  Appduct: 9c3971867c5ae6f9f7937ff73cfb3de38219365a
   BugsnagReactNative: 33c924422b4d4fac76459ac818500586dd53debf
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   EXApplication: a727f05eb8592f0bc764f6ab8d51eacc158652ec
@@ -3482,6 +3515,7 @@ SPEC CHECKSUMS:
   ExpoNotifications: 098f80e610228da37ee98c0828931337cf5b1106
   ExpoQuickLook: 7ac65cd559a74619ea41e13df20e9d7a61e79ea6
   ExpoSystemUI: 05ee8d4aaba1b6af330f3621e19b39ff9f21e718
+  ExpoUI: 98d4650d9d32daaf772597adc76525c645b1ff76
   ExpoVideo: 56ed2863b981dd5ae946d8ef23ecfcae855863a0
   ExpoVideoThumbnails: da5d471c170bf4110f681b6649524eace9c95b5b
   ExpoWebBrowser: a4d7c382116fbe33c1ec7f60293f02b7e97042e4
@@ -3557,7 +3591,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 678f254e77e69986ae9d9e62721f152e73dbc76b
   react-native-slider: b15258ac3d287a5951f76b11497d659ed20c0def
   react-native-webrtc: e8f0ce746353adc2744a2b933645e1aeb41eaa74
-  react-native-webview: 2a4da2e03d3ec2c731c4d1a389cb86aaa4902167
+  react-native-webview: 8ea93f5c9c986e9ce9888953759aa3db77eaa379
   React-NativeModulesApple: 2b658272ca69df0694cf5d54f9510aa7c33977bc
   React-networking: 8ff98fbf96752706ec66ccc1d0089c1005a5be11
   React-oscompat: cea7c66df8076bd97e95885d7f584b86afffde41
@@ -3610,7 +3644,7 @@ SPEC CHECKSUMS:
   RNKeychain: d57edf101a72acf3ae85fe4d796eed1d951d2a90
   RNLocalize: 17bce0556e2d33fe1201c8cef53b3b7786e07612
   RNReanimated: c57ef141c7843c2849531e7556236d7223b7db1a
-  RNScreens: 8708989f700bdc3dc5abc3c77aa3b5f3e73ce2b2
+  RNScreens: 182e1c9faefc9f3c59caf1925bd8da0480e79463
   RNSVG: 68c366b996064ea99cee1e55da62b8feafb33a78
   RNTrueSheet: 93f1765e65782ef6de12fd9338061a51399bb337
   RNWorklets: 453d16f4cb680d5a4262b314519711e7765a80a1

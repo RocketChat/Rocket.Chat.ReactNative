@@ -33,6 +33,8 @@ export default class Server extends Model {
 
 	@field('enterprise_modules') enterpriseModules;
 
+	@field('has_valid_license') hasValidLicense;
+
 	@field('e2e_enable') E2E_Enable;
 
 	@json('supported_versions', sanitizer, { memo: true }) supportedVersions;

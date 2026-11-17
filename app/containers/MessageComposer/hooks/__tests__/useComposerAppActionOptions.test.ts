@@ -1,0 +1,88 @@
+import { renderHook } from '@testing-library/react-native';
+
+import { type IAppActionButton } from '~/lib/apps/definitions';
+import { type IAppActionButtonItem } from '~/lib/apps/useAppActionButtons';
+import { useComposerAppActionOptions } from '../useComposerAppActionOptions';
+
+let mockItems: IAppActionButtonItem[] = [];
+jest.mock('~/lib/apps/useAppActionButtons', () => ({
+	useAppActionButtons: () => mockItems
+}));
+
+let mockRid: string | undefined;
+jest.mock('../../ComposerStore', () => ({
+	useComposerRid: () => mockRid,
+	useComposerTmid: () => 'tmid-1'
+}));
+
+jest.mock('../../context', () => ({
+	MessageInnerContext: require('react').createContext({ getText: () => 'draft text' })
+}));
+
+const mockTriggerAppActionButton = jest.fn();
+jest.mock('~/lib/apps/actions', () => ({
+	triggerAppActionButton: (params: unknown) => mockTriggerAppActionButton(params)
+}));
+
+const item = (id: string, overrides: Partial<IAppActionButton> = {}): IAppActionButtonItem => ({
+	id,
+	label: `Label ${id}`,
+	button: { appId: 'app-id', actionId: id, context: 'messageBoxAction', labelI18n: 'label', ...overrides }
+});
+
+const renderOptions = () => renderHook(() => useComposerAppActionOptions()).result.current;
+
+describe('useComposerAppActionOptions', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockItems = [];
+		mockRid = 'rid-1';
+	});
+
+	it('returns nothing when no app registered any action', () => {
+		expect(renderOptions()).toEqual([]);
+	});
+
+	it('returns nothing outside a room', () => {
+		mockItems = [item('translate')];
+		mockRid = undefined;
+
+		expect(renderOptions()).toEqual([]);
+	});
+
+	it('lists ai room actions then default message box actions', () => {
+		mockItems = [
+			item('translate'),
+			item('composer-ai', { category: 'ai' }),
+			item('summarize', { context: 'roomAction', category: 'ai' }),
+			item('room-default', { context: 'roomAction' })
+		];
+
+		const options = renderOptions();
+
+		expect(options.map(option => [option.title, option.icon, option.testID])).toEqual([
+			['Label summarize', 'stars', 'message-composer-ai-action-summarize'],
+			['Label translate', 'apps', 'message-composer-app-action-translate']
+		]);
+	});
+
+	it('marks danger buttons', () => {
+		mockItems = [item('delete', { variant: 'danger' }), item('translate')];
+
+		expect(renderOptions().map(option => option.danger)).toEqual([true, false]);
+	});
+
+	it('sends the thread and the composer draft when pressed', () => {
+		const messageBoxItem = item('translate');
+		mockItems = [messageBoxItem];
+
+		renderOptions()[0].onPress();
+
+		expect(mockTriggerAppActionButton).toHaveBeenCalledWith({
+			button: messageBoxItem.button,
+			rid: 'rid-1',
+			tmid: 'tmid-1',
+			message: 'draft text'
+		});
+	});
+});

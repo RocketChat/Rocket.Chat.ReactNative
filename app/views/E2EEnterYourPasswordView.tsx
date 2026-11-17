@@ -2,16 +2,16 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, useEffect, useLayoutEffect, useRef, type ReactElement } from 'react';
 import { ScrollView, StyleSheet, Text, AccessibilityInfo, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { type E2EEnterYourPasswordStackParamList, type InsideStackParamList } from '../stacks/types';
 import { encryptionDecodeKey } from '../actions/encryption';
 import Button from '../containers/Button';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import KeyboardView from '../containers/KeyboardView';
 import SafeAreaView from '../containers/SafeAreaView';
-import { ControlledFormTextInput } from '../containers/TextInput';
+import { ControlledFormTextInput } from '../containers/TextInput/ControlledFormTextInput';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { events, logEvent } from '../lib/methods/helpers/log';
@@ -19,7 +19,8 @@ import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { useTheme } from '../theme';
 import sharedStyles from './Styles';
 import { showToast } from '../lib/methods/helpers/showToast';
-import { showErrorAlert, useDebounce } from '../lib/methods/helpers';
+import { showErrorAlert } from '../lib/methods/helpers/info';
+import { useDebounce } from '../lib/methods/helpers/debounce';
 import { Separator } from '../containers/List';
 
 const styles = StyleSheet.create({
@@ -52,7 +53,6 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 	const {
 		control,
 		setError,
-		watch,
 		handleSubmit,
 		formState: { errors }
 	} = useForm({
@@ -61,7 +61,7 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 	});
 	const shouldDisplayToast = useRef<boolean>(false);
 
-	const password = watch('password');
+	const password = useWatch({ control, name: 'password' });
 
 	/**
 	 * If e2ee is enabled, close screen and display success toast.
@@ -94,7 +94,7 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () => <HeaderButton.CloseModal testID='e2e-enter-your-password-view-close' />,
+			...headerLeftCloseModal(navigation, 'e2e-enter-your-password-view-close'),
 			title: I18n.t('Enter_E2EE_Password')
 		});
 	}, [navigation]);
@@ -146,7 +146,7 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 					/>
 					<View>
 						<Button
-							onPress={handleSubmit(submit)}
+							onPress={() => handleSubmit(submit)()}
 							title={I18n.t('Enable_encryption_button_label')}
 							testID='e2e-enter-your-password-view-confirm'
 						/>

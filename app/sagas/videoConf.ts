@@ -5,14 +5,15 @@ import { AccessibilityInfo } from 'react-native';
 
 import { VIDEO_CONF } from '../actions/actionsTypes';
 import { removeVideoConfCall, setCalling, setVideoConfCall, type TCallProps } from '../actions/videoConf';
-import { hideActionSheetRef } from '../containers/ActionSheet';
+import { hideActionSheetRef } from '../containers/ActionSheet/Provider';
 import { INAPP_NOTIFICATION_EMITTER } from '../lib/constants/notifications';
 import IncomingCallNotification from '../containers/InAppNotification/IncomingCallNotification';
 import i18n from '../i18n';
 import { getSubscriptionByRoomId } from '../lib/database/services/Subscription';
 import { appSelector } from '../lib/hooks/useAppSelector';
 import { callJitsi } from '../lib/methods/callJitsi';
-import { compareServerVersion, showErrorAlert } from '../lib/methods/helpers';
+import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
+import { showErrorAlert } from '../lib/methods/helpers/info';
 import EventEmitter from '../lib/methods/helpers/events';
 import log from '../lib/methods/helpers/log';
 import { hideNotification } from '../lib/methods/helpers/notifications';
@@ -109,7 +110,7 @@ function* onDirectCallConfirmed(payload: ICallInfo) {
 		yield put(removeVideoConfCall(currentCall));
 		yield call(hideActionSheetRef);
 		if (currentCall.action === 'accepted') {
-			videoConfJoin(payload.callId, false, true);
+			videoConfJoin(payload.callId, false, true, { rid: payload.rid });
 		} else {
 			hideNotification();
 		}
@@ -123,7 +124,7 @@ function* onDirectCallJoined(payload: ICallInfo) {
 		yield put(setCalling(false));
 		yield put(removeVideoConfCall(currentCall));
 		yield call(hideActionSheetRef);
-		videoConfJoin(payload.callId, false, true);
+		videoConfJoin(payload.callId, false, true, { rid: payload.rid });
 	}
 }
 
@@ -183,7 +184,7 @@ function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps
 				if (direct && videoConfResponse.data.type === 'direct') {
 					yield call(callUser, { rid, uid: videoConfResponse.data.calleeId, callId: videoConfResponse.data.callId });
 				} else {
-					videoConfJoin(videoConfResponse.data.callId, cam, mic);
+					videoConfJoin(videoConfResponse.data.callId, cam, mic, { rid });
 					yield call(hideActionSheetRef);
 					yield put(setCalling(false));
 				}

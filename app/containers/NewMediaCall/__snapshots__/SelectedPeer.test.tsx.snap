@@ -70,7 +70,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             style={
               [
                 {
-                  "borderRadius": 4,
+                  "borderRadius": 8,
                   "height": 28,
                   "width": 28,
                 },
@@ -80,7 +80,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             testID="avatar"
           >
             <ViewManagerAdapter_ExpoImage
-              borderRadius={4}
+              borderRadius={8}
               containerViewRef={{"current":"Object"}}
               contentFit="cover"
               contentPosition={
@@ -110,7 +110,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
               }
               style={
                 {
-                  "borderRadius": 4,
+                  "borderRadius": 8,
                   "height": 28,
                   "width": 28,
                 }
@@ -511,7 +511,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             style={
               [
                 {
-                  "borderRadius": 4,
+                  "borderRadius": 8,
                   "height": 28,
                   "width": 28,
                 },
@@ -521,7 +521,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
             testID="avatar"
           >
             <ViewManagerAdapter_ExpoImage
-              borderRadius={4}
+              borderRadius={8}
               containerViewRef={{"current":"Object"}}
               contentFit="cover"
               contentPosition={
@@ -551,7 +551,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
               }
               style={
                 {
-                  "borderRadius": 4,
+                  "borderRadius": 8,
                   "height": 28,
                   "width": 28,
                 }
@@ -777,7 +777,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
             style={
               [
                 {
-                  "borderRadius": 4,
+                  "borderRadius": 8,
                   "height": 28,
                   "width": 28,
                 },
@@ -787,7 +787,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
             testID="avatar"
           >
             <ViewManagerAdapter_ExpoImage
-              borderRadius={4}
+              borderRadius={8}
               containerViewRef={{"current":"Object"}}
               contentFit="cover"
               contentPosition={
@@ -817,7 +817,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
               }
               style={
                 {
-                  "borderRadius": 4,
+                  "borderRadius": 8,
                   "height": 28,
                   "width": 28,
                 }
@@ -1244,7 +1244,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             style={
               [
                 {
-                  "borderRadius": 4,
+                  "borderRadius": 8,
                   "height": 28,
                   "width": 28,
                 },
@@ -1254,7 +1254,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             testID="avatar"
           >
             <ViewManagerAdapter_ExpoImage
-              borderRadius={4}
+              borderRadius={8}
               containerViewRef={{"current":"Object"}}
               contentFit="cover"
               contentPosition={
@@ -1284,7 +1284,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
               }
               style={
                 {
-                  "borderRadius": 4,
+                  "borderRadius": 8,
                   "height": 28,
                   "width": 28,
                 }

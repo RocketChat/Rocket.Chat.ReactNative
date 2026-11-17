@@ -9,16 +9,17 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import AltTextLabel from '../containers/AltTextLabel';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import { ImageViewer } from '../containers/ImageViewer';
+import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
+import { ImageViewer } from '../containers/ImageViewer/ImageViewer';
 import VideoPlayer from '../containers/VideoPlayer';
 import { LISTENER } from '../containers/Toast';
-import { type IAttachment } from '../definitions';
+import { type IAttachment } from '../definitions/IAttachment';
 import I18n from '../i18n';
 import { useAltTextSupported } from '../lib/hooks/useAltTextSupported';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { encodeAttachmentUrl, formatAttachmentUrl, isAndroid } from '../lib/methods/helpers';
+import { encodeAttachmentUrl, formatAttachmentUrl } from '../lib/methods/helpers/formatAttachmentUrl';
+import { isAndroid } from '../lib/methods/helpers/deviceInfo';
 import { fileDownload } from '../lib/methods/helpers/fileDownload';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
@@ -152,20 +153,14 @@ const AttachmentView = (): ReactElement => {
 		const title = getTitle();
 		navigation.setOptions({
 			title: title || '',
-			headerLeft: () => (
-				<HeaderButton.CloseModal
-					testID='close-attachment-view'
-					navigation={navigation}
-					color={colors.fontDefault}
-					style={{ marginRight: -12 }}
-				/>
-			),
-			headerRight:
+			...headerLeftCloseModal(navigation, 'close-attachment-view'),
+			...headerRightActions(
 				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url)
-					? () => <HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.fontDefault} />
-					: undefined
+					? [{ label: I18n.t('Save'), icon: 'download', testID: 'save-image', onPress: handleSave }]
+					: []
+			)
 		});
-	}, [Allow_Save_Media_to_Gallery, attachment.image_url, colors.fontDefault, getTitle, handleSave, navigation]);
+	}, [Allow_Save_Media_to_Gallery, attachment.image_url, getTitle, handleSave, navigation]);
 
 	return (
 		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>

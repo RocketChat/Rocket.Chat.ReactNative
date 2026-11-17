@@ -60,7 +60,30 @@ describe('getEnterpriseModules', () => {
 		expect(mockGet).toHaveBeenCalledWith('licenses.info');
 		expect(mockMethodCallWrapper).not.toHaveBeenCalled();
 		expect(mockedStore.getState().enterpriseModules).toEqual(['teams-voip', 'livechat-enterprise']);
-		expect(mockServerUpdate).toHaveBeenCalledWith({ enterpriseModules: 'teams-voip,livechat-enterprise' });
+		expect(mockServerUpdate).toHaveBeenCalledWith({
+			enterpriseModules: 'teams-voip,livechat-enterprise',
+			hasValidLicense: false
+		});
+	});
+
+	it('stores whether licenses.info reports a valid license', async () => {
+		connectToServerVersion('8.9.0');
+		mockGet.mockResolvedValue({ success: true, license: { activeModules: ['teams-voip'], hasValidLicense: true } });
+
+		await getEnterpriseModules();
+
+		expect(mockedStore.getState().hasValidLicense).toBe(true);
+		expect(mockServerUpdate).toHaveBeenCalledWith({ enterpriseModules: 'teams-voip', hasValidLicense: true });
+	});
+
+	it('clears the valid license when licenses.info is unsuccessful', async () => {
+		connectToServerVersion('8.9.0');
+		mockedStore.dispatch(setEnterpriseModules(['teams-voip'], true));
+		mockGet.mockResolvedValue({ success: false, error: 'unauthorized' });
+
+		await getEnterpriseModules();
+
+		expect(mockedStore.getState().hasValidLicense).toBe(false);
 	});
 
 	it('clears modules when licenses.info is unsuccessful', async () => {

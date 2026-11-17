@@ -2,7 +2,7 @@ import { type ReactNode, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import { type IAttachment } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
 import { fileDownloadAndPreview } from '~/lib/methods/helpers/fileDownload';
 import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import openLink from '~/lib/methods/helpers/openLink';
@@ -134,8 +134,8 @@ const UrlImage = ({ image }: { image?: string }) => {
 		return null;
 	}
 
-	image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user?.id ?? ''}&rc_token=${user?.token ?? ''}`;
-	return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
+	const uri = formatAttachmentUrl(image, user?.id ?? '', user?.token ?? '', baseUrl ?? '');
+	return <Image source={{ uri }} style={styles.image} contentFit='cover' />;
 };
 
 const Fields = ({ attachment }: { attachment: IAttachment }) => {

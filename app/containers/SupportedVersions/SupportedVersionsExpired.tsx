@@ -23,8 +23,8 @@ export const SupportedVersionsExpired = () => {
 	const dispatch = useDispatch();
 
 	const checkAgain = async () => {
+		setChecking(true);
 		try {
-			setChecking(true);
 			const serversDB = database.servers;
 			const serverRecord = await getServerById(server);
 			if (serverRecord) {
@@ -40,13 +40,12 @@ export const SupportedVersionsExpired = () => {
 			}
 		} catch (e) {
 			log(e);
-		} finally {
-			setChecking(false);
 		}
+		setChecking(false);
 	};
 
 	return (
-		<View style={[styles.container, { paddingTop: 120, backgroundColor: colors.surfaceLight }]}>
+		<View style={[styles.container, { flex: 1, paddingTop: 120, backgroundColor: colors.surfaceLight }]}>
 			<View accessible accessibilityLabel={I18n.t('Attention')} style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.buttonBackgroundDangerDefault} />
 			</View>

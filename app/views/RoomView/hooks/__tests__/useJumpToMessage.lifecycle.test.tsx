@@ -19,9 +19,6 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => mockCurrentNavigation,
 	useRoute: () => ({ params: mockCurrentParams })
 }));
-jest.mock('~/lib/methods/helpers', () => ({
-	useDebounce: jest.requireActual('~/lib/methods/helpers/debounce').useDebounce
-}));
 jest.mock('~/containers/Loading', () => ({ sendLoadingEvent: jest.fn() }));
 jest.mock('~/lib/methods/getRoomInfo', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
@@ -163,6 +160,21 @@ it('resolves the server Chunk anchor through the real resolver before requesting
 	await jump;
 	expect(view.list.jumpToMessage.mock.calls).toEqual([['target', 4000]]);
 	expect(getLocalAnchorTs).not.toHaveBeenCalled();
+});
+
+it('cancels the jump and logs when the server Chunk fails to load', async () => {
+	const failure = new Error('Unable to load room history');
+	lookup.mockResolvedValue(message('target', { fromServer: true }) as any);
+	jest.mocked(loadSurroundingMessages).mockRejectedValue(failure);
+	const view = screen();
+	view.list.isMessageInWindow.mockReturnValue(false);
+	const jump = view.jump('target');
+	await advance(100);
+	await jump;
+	expect(log).toHaveBeenCalledWith(failure);
+	expect(view.list.cancelJumpToMessage).toHaveBeenCalledTimes(1);
+	expect(view.list.jumpToMessage).not.toHaveBeenCalled();
+	expect(visibility()).toEqual([true, false]);
 });
 
 it('lets an older successful List completion dismiss loading while a newer lookup remains pending', async () => {

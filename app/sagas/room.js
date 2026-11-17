@@ -20,10 +20,13 @@ function* watchHistoryRequests() {
 		const { rid, t, tmid, loaderId } = yield take(requestChan);
 
 		const loaderItem = yield getMessageById(loaderId);
+		console.log(`[history] request ${loaderId} loaderFound=${!!loaderItem}`);
 		if (loaderItem) {
 			try {
 				yield getMoreMessages({ rid, t, tmid, loaderItem });
+				console.log(`[history] finished ${loaderId}`);
 			} catch (e) {
+				console.log(`[history] failed ${loaderId}: ${e?.message ?? JSON.stringify(e)}`);
 				log(e);
 			} finally {
 				yield put({ type: types.ROOM.HISTORY_FINISHED, loaderId });
