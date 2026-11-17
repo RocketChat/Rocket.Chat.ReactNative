@@ -36,7 +36,7 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 	const { id: userId, token } = useAppSelector(state => getUserSelector(state));
 	const server = useAppSelector(state => state.server.server);
 	const { theme, colors } = useTheme();
-	const webviewRef = useRef<WebView>(null);
+	const webviewRef = useRef<WebView<object>>(null);
 	const loaded = useRef(false);
 	const [failed, setFailed] = useState(false);
 

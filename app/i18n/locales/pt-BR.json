@@ -889,6 +889,8 @@
   "Settings": "Configurações",
   "Settings_succesfully_changed": "Configurações salvas com sucesso!",
   "Share": "Compartilhar",
+  "Share_encrypted_room_key_missing": "Aguardando as chaves de criptografia",
+  "Share_encrypted_room_password_required": "Digite sua senha E2EE para compartilhar aqui",
   "Share_Link": "Compartilhar convite",
   "Share_no_valid_attachments": "Não foi possível encontrar o arquivo compartilhado",
   "Share_this_app": "Compartilhar esse app",
