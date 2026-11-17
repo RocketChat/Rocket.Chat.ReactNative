@@ -13,14 +13,14 @@ import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import SearchBox from '~/containers/SearchBox';
 import UserItem from '~/containers/UserItem';
-import { type IGetRoomRoles, RoomType, type TSubscriptionModel, type TUserModel } from '~/definitions';
+import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '~/definitions';
 import I18n from '~/i18n';
 import { stackedSearchBarOptions, nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpers/navigation';
 import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { compareServerVersion, getRoomTitle, hasNativeHeaderBar, useDebounce } from '~/lib/methods/helpers';
+import { compareServerVersion, getRoomTitle, hasNativeHeaderBar, isNonDirectRoom, useDebounce } from '~/lib/methods/helpers';
 import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import log from '~/lib/methods/helpers/log';
@@ -40,7 +40,7 @@ import {
 	handleOwner,
 	handleRemoveFromTeam,
 	handleRemoveUserFromRoom,
-	type IRoleTargetRoom,
+	type TNonDirectSubscription,
 	navToDirectMessage
 } from './helpers';
 import styles from './styles';
@@ -290,7 +290,7 @@ const RoomMembersView = (): ReactElement => {
 		return preferred || fallback || user._id;
 	};
 
-	const getRoleOptions = (selectedUser: TUserModel, roleTargetRoom: IRoleTargetRoom): TActionSheetOptionsItem[] => {
+	const getRoleOptions = (selectedUser: TUserModel, roleTargetRoom: TNonDirectSubscription): TActionSheetOptionsItem[] => {
 		const { roomRoles } = state;
 		const username = getUserDisplayName(selectedUser);
 		const refreshRoles = () => fetchRoomMembersRoles(roleTargetRoom, updateState);
@@ -343,9 +343,8 @@ const RoomMembersView = (): ReactElement => {
 			}
 		];
 
-		const { t } = room;
-		if (t !== RoomType.DIRECT) {
-			options.push(...getRoleOptions(selectedUser, { rid: room.rid, t, title: getRoomTitle(room) }));
+		if (isNonDirectRoom(room)) {
+			options.push(...getRoleOptions(selectedUser, room));
 		}
 
 		if (muteUserPermission) {

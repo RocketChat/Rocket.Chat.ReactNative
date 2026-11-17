@@ -30,11 +30,7 @@ import { createDirectMessage } from '~/lib/methods/createDirectMessage';
 import database from '~/lib/database';
 import { emitErrorCreateDirectMessage } from '~/lib/methods/helpers/emitErrorCreateDirectMessage';
 
-export interface IRoleTargetRoom {
-	rid: string;
-	t: NonDirectRoomType;
-	title: string;
-}
+export type TNonDirectSubscription = TSubscriptionModel & { t: NonDirectRoomType };
 
 const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
 	goRoom({ item, isMasterDetail });
@@ -76,7 +72,7 @@ export const handleMute = async (user: TUserModel, rid: string) => {
 export const handleModerator = async (
 	selectedUser: TUserModel,
 	isModerator: boolean,
-	room: IRoleTargetRoom,
+	room: TNonDirectSubscription,
 	username: string,
 	callback: () => Promise<void>
 ): Promise<void> => {
@@ -93,7 +89,7 @@ export const handleModerator = async (
 		EventEmitter.emit(LISTENER, {
 			message: I18n.t(message, {
 				username,
-				room_name: room.title
+				room_name: getRoomTitle(room)
 			})
 		});
 		callback();
@@ -200,7 +196,7 @@ export const handleRemoveFromTeam = async (
 export const handleLeader = async (
 	selectedUser: TUserModel,
 	isLeader: boolean,
-	room: IRoleTargetRoom,
+	room: TNonDirectSubscription,
 	username: string,
 	callback: () => Promise<void>
 ): Promise<void> => {
@@ -217,7 +213,7 @@ export const handleLeader = async (
 		EventEmitter.emit(LISTENER, {
 			message: I18n.t(message, {
 				username,
-				room_name: room.title
+				room_name: getRoomTitle(room)
 			})
 		});
 		callback();
@@ -253,7 +249,7 @@ export const handleOwner = async (
 	selectedUser: TUserModel,
 	isOwner: boolean,
 	username: string,
-	room: IRoleTargetRoom,
+	room: TNonDirectSubscription,
 	callback: Function
 ): Promise<void> => {
 	try {
@@ -267,7 +263,7 @@ export const handleOwner = async (
 		EventEmitter.emit(LISTENER, {
 			message: I18n.t(message, {
 				username,
-				room_name: room.title
+				room_name: getRoomTitle(room)
 			})
 		});
 	} catch (e) {
