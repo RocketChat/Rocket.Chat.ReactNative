@@ -105,7 +105,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             style={
               [
                 {
-                  "color": "#158D65",
+                  "color": "#148660",
                   "fontSize": 16,
                 },
                 [
@@ -921,7 +921,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             style={
               [
                 {
-                  "color": "#158D65",
+                  "color": "#148660",
                   "fontSize": 16,
                 },
                 [
@@ -1125,7 +1125,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             style={
               [
                 {
-                  "color": "#158D65",
+                  "color": "#148660",
                   "fontSize": 16,
                 },
                 [
@@ -1607,7 +1607,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             style={
               [
                 {
-                  "color": "#158D65",
+                  "color": "#148660",
                   "fontSize": 16,
                 },
                 [

@@ -314,7 +314,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     "justifyContent": "center",
                   },
                   {
-                    "backgroundColor": "#F5455C",
+                    "backgroundColor": "#EC0D2A",
                     "borderRadius": 10,
                     "minWidth": 16,
                   },

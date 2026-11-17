@@ -184,7 +184,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F5455C",
+          "backgroundColor": "#EC0D2A",
           "borderRadius": 10,
           "minWidth": 18,
         },
@@ -366,7 +366,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
           "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F5455C",
+          "backgroundColor": "#EC0D2A",
           "borderRadius": 10,
           "minWidth": 18,
         },
@@ -450,7 +450,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
           "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F5455C",
+          "backgroundColor": "#EC0D2A",
           "borderRadius": 10,
           "minWidth": 18,
         },
@@ -534,7 +534,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
           "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F5455C",
+          "backgroundColor": "#EC0D2A",
           "borderRadius": 10,
           "minWidth": 18,
         },
@@ -867,7 +867,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "paddingHorizontal": 4,
           },
           {
-            "backgroundColor": "#F5455C",
+            "backgroundColor": "#EC0D2A",
             "borderRadius": 10,
             "minWidth": 18,
           },
@@ -1004,7 +1004,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "paddingHorizontal": 4,
           },
           {
-            "backgroundColor": "#484C51",
+            "backgroundColor": "#6C727A",
             "borderRadius": 10,
             "minWidth": 18,
           },
@@ -1130,7 +1130,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "paddingHorizontal": 4,
           },
           {
-            "backgroundColor": "#245399",
+            "backgroundColor": "#01336B",
             "borderRadius": 10,
             "minWidth": 18,
           },

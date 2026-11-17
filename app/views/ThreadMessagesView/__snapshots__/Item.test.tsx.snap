@@ -276,7 +276,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                         "width": 8,
                       },
                       {
-                        "backgroundColor": "#F5455C",
+                        "backgroundColor": "#EC0D2A",
                       },
                     ]
                   }
@@ -5155,7 +5155,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "width": 8,
                       },
                       {
-                        "backgroundColor": "#F5455C",
+                        "backgroundColor": "#EC0D2A",
                       },
                     ]
                   }

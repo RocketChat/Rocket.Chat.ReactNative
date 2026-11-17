@@ -1102,7 +1102,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
       false,
       {
         "backgroundColor": "#262931",
-        "borderColor": "#333842",
+        "borderColor": "#404754",
         "height": 76,
         "marginTop": 0,
       },

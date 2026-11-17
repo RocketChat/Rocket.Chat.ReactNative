@@ -220,7 +220,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               style={
                 [
                   {
-                    "color": "#1D74F5",
+                    "color": "#156FF5",
                     "fontSize": 24,
                   },
                   [
@@ -1976,7 +1976,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               style={
                 [
                   {
-                    "color": "#404754",
+                    "color": "#4B5362",
                     "fontSize": 24,
                   },
                   [

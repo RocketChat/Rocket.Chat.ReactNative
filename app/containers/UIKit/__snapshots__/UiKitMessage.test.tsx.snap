@@ -1696,7 +1696,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "color": "#8E6300",
+                        "color": "#895F00",
                         "fontSize": 20,
                       },
                       [
@@ -2048,7 +2048,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
             },
             {
               "backgroundColor": "#1F2329",
-              "borderColor": "#2F343D",
+              "borderColor": "#333842",
             },
           ]
         }
@@ -2381,7 +2381,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
             },
             {
               "backgroundColor": "#1F2329",
-              "borderColor": "#2F343D",
+              "borderColor": "#333842",
             },
           ]
         }
@@ -2714,7 +2714,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
             },
             {
               "backgroundColor": "#1F2329",
-              "borderColor": "#2F343D",
+              "borderColor": "#333842",
             },
           ]
         }
@@ -2772,7 +2772,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "color": "#C7AA66",
+                        "color": "#CFB26C",
                         "fontSize": 20,
                       },
                       [
@@ -2914,7 +2914,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
             },
             {
               "backgroundColor": "#1F2329",
-              "borderColor": "#2F343D",
+              "borderColor": "#333842",
             },
           ]
         }
@@ -3848,7 +3848,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "color": "#C7AA66",
+                        "color": "#CFB26C",
                         "fontSize": 20,
                       },
                       [
@@ -4887,7 +4887,7 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
             style={
               [
                 {
-                  "color": "#8E6300",
+                  "color": "#895F00",
                   "fontSize": 20,
                 },
                 [
@@ -4938,7 +4938,7 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
             style={
               [
                 {
-                  "color": "#8E6300",
+                  "color": "#895F00",
                   "fontSize": 20,
                 },
                 [
@@ -5115,7 +5115,7 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
           style={
             [
               {
-                "color": "#8E6300",
+                "color": "#895F00",
                 "fontSize": 20,
               },
               [
@@ -5149,7 +5149,7 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
           style={
             [
               {
-                "color": "#8E6300",
+                "color": "#895F00",
                 "fontSize": 20,
               },
               [
@@ -5296,7 +5296,7 @@ exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
           style={
             [
               {
-                "color": "#8E6300",
+                "color": "#895F00",
                 "fontSize": 20,
               },
               [

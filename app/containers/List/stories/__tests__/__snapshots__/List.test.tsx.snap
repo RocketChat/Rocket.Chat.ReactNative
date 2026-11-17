@@ -1864,7 +1864,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                       {
                         "$type": "foregroundStyle",
                         "style": {
-                          "color": "#1D74F5",
+                          "color": "#156FF5",
                           "type": "color",
                         },
                       },
@@ -2356,7 +2356,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                       {
                         "$type": "foregroundStyle",
                         "style": {
-                          "color": "#1D74F5",
+                          "color": "#156FF5",
                           "type": "color",
                         },
                       },
@@ -7337,7 +7337,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   "right": 16,
                 },
                 {
-                  "backgroundColor": "#2F343D",
+                  "backgroundColor": "#333842",
                 },
               ]
             }
@@ -7873,7 +7873,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   "right": 16,
                 },
                 {
-                  "backgroundColor": "#2F343D",
+                  "backgroundColor": "#333842",
                 },
               ]
             }
