@@ -1,7 +1,7 @@
 import { type NetInfoStateType } from '@react-native-community/netinfo';
 
 import { type TActionApp } from '../actions/app';
-import { type RootEnum } from '../definitions';
+import { type RootEnum } from '../definitions/redux/TRootEnum';
 import { APP, APP_STATE } from '../actions/actionsTypes';
 
 export interface IApp {

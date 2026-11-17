@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 import DirectoryItem from '~/containers/DirectoryItem';
 import I18n from '~/i18n';
-import { type IServerRoom } from '~/definitions';
+import { type IServerRoom } from '~/definitions/IRoom';
 import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
 

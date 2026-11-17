@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import Modal from 'react-native-modal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { hasNotch } from '../lib/methods/helpers';
+import { hasNotch } from '../lib/methods/helpers/deviceInfo';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../lib/methods/helpers/events';
 import { CustomIcon } from '../containers/CustomIcon';

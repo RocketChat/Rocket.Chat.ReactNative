@@ -7,7 +7,8 @@ import { MessageRoomProvider, type MessageRoomState } from '~/containers/message
 import { mockedStore } from '~/reducers/mockedStore';
 import { setUser } from '~/actions/login';
 import { selectServerSuccess } from '~/actions/server';
-import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
 import { fileDownloadAndPreview } from '~/lib/methods/helpers/fileDownload';
 import openLink from '~/lib/methods/helpers/openLink';

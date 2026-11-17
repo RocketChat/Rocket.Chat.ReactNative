@@ -3,14 +3,14 @@ import type { CallState, CallContact, IClientMediaCall } from '@rocket.chat/medi
 import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import log from '~/lib/methods/helpers/log';
 import NativeVoipModule from '~/lib/native/NativeVoip';
 import { pendingHangups } from './pendingHangups';
 import { terminateNativeCall } from './terminateNativeCall';
 import { playCallEndedSound } from './playCallEndedSound';
 import Navigation from '~/lib/navigation/appNavigation';
-import { hideActionSheetRef } from '~/containers/ActionSheet';
+import { hideActionSheetRef } from '~/containers/ActionSheet/Provider';
 import { useIsScreenReaderEnabled } from '~/lib/hooks/useIsScreenReaderEnabled';
 
 const STALE_NATIVE_MS = 60_000;

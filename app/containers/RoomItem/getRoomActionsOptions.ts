@@ -2,8 +2,8 @@ import I18n from '~/i18n';
 import { toggleFav } from '~/lib/methods/toggleFav';
 import { toggleRead } from '~/lib/methods/toggleRead';
 import { hideRoom } from '~/lib/methods/hideRoom';
-import { type TActionSheetOptionsItem } from '../ActionSheet';
-import { type SubscriptionType } from '~/definitions';
+import { type TActionSheetOptionsItem } from '../ActionSheet/Provider';
+import { type SubscriptionType } from '~/definitions/ISubscription';
 
 export interface IRoomActionsParams {
 	rid: string;

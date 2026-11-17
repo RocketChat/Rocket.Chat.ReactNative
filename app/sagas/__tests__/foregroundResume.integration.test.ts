@@ -104,7 +104,7 @@ import { appStart } from '~/actions/app';
 import { loginRequest, loginSuccess } from '~/actions/login';
 import { connectSuccess, disconnect } from '~/actions/connect';
 import { selectServerSuccess } from '~/actions/server';
-import { RootEnum } from '~/definitions';
+import { RootEnum } from '~/definitions/redux/TRootEnum';
 import reducers from '~/reducers';
 import loginRoot from '../login';
 import stateRoot from '../state';

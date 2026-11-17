@@ -1,7 +1,8 @@
 import { useDispatch, useStore } from 'react-redux';
 
 import { setUser } from '~/actions/login';
-import { type IApplicationState, type ISidebarCategory } from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type ISidebarCategory } from '~/definitions/IUser';
 import { useCaptureSession } from '~/lib/hooks/useCaptureSession';
 import { saveSidebarCategories } from '~/lib/services/restApi';
 import { getUserSelector } from '~/selectors/login';

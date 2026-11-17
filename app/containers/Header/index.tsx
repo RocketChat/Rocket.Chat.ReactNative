@@ -4,7 +4,7 @@ import { type NativeStackHeaderProps } from '@react-navigation/native-stack';
 
 import HeaderTitle from './components/HeaderTitle';
 import HeaderContainer from './components/HeaderContainer';
-import { isAndroid } from '~/lib/methods/helpers';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { styles } from './styles';
 import { HeaderBackButton } from './components/HeaderBackButton';

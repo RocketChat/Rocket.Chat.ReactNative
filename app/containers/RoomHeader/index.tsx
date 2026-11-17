@@ -1,7 +1,10 @@
 import { memo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
-import type { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor, ISubscription } from '~/definitions';
+import type { IApplicationState } from '~/definitions/redux';
+import type { TUserStatus } from '~/definitions/TUserStatus';
+import type { IOmnichannelSource } from '~/definitions/IRoom';
+import type { IVisitor, ISubscription } from '~/definitions/ISubscription';
 import RoomHeader from './RoomHeader';
 import { getConnectionSubtitle, getPresenceLabel } from './subtitle';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';

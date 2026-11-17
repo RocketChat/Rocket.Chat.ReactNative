@@ -28,7 +28,7 @@ jest.mock('@react-native-camera-roll/camera-roll', () => ({
 	}
 }));
 
-jest.mock('../containers/ActionSheet', () => ({
+jest.mock('../containers/ActionSheet/Provider', () => ({
 	useActionSheet: () => ({
 		showActionSheet: mockShowActionSheet
 	})
@@ -36,7 +36,7 @@ jest.mock('../containers/ActionSheet', () => ({
 
 jest.mock('../containers/ActivityIndicator', () => () => null);
 
-jest.mock('../containers/ImageViewer', () => ({
+jest.mock('../containers/ImageViewer/ImageViewer', () => ({
 	ImageViewer: () => {
 		const { Text } = require('react-native');
 		return <Text>Image Viewer</Text>;
@@ -89,11 +89,13 @@ jest.mock('../lib/hooks/useAppSelector', () => ({
 		})
 }));
 
-jest.mock('../lib/methods/helpers', () => ({
+jest.mock('../lib/methods/helpers/formatAttachmentUrl', () => ({
 	formatAttachmentUrl: (url: string) => url,
-	encodeAttachmentUrl: (url: string) => url,
-	isAndroid: false,
-	showErrorAlert: jest.fn()
+	encodeAttachmentUrl: (url: string) => url
+}));
+jest.mock('../lib/methods/helpers/deviceInfo', () => ({
+	...jest.requireActual('../lib/methods/helpers/deviceInfo'),
+	isAndroid: false
 }));
 
 jest.mock('../lib/methods/helpers/fileDownload', () => ({

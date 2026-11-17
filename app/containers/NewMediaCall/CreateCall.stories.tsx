@@ -1,4 +1,4 @@
-import * as ActionSheetModule from '../ActionSheet';
+import * as ActionSheetModule from '../ActionSheet/Provider';
 import { mediaSessionInstance } from '~/lib/services/voip/MediaSessionInstance';
 import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 import { CreateCall } from './CreateCall';

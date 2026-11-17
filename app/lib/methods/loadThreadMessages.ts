@@ -6,13 +6,15 @@ import log from './helpers/log';
 import { Encryption } from '../encryption';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
-import { type IMessage, type TThreadMessageModel, type TThreadModel } from '~/definitions';
+import { type IMessage } from '~/definitions/IMessage';
+import { type TThreadMessageModel } from '~/definitions/IThreadMessage';
+import { type TThreadModel } from '~/definitions/IThread';
 import { getThreadById } from '../database/services/Thread';
 import { getThreadMessageById } from '../database/services/ThreadMessage';
 import { tsToMs } from '../dayjs';
 import { getSingleMessage, getThreadMessages } from '../services/restApi';
 import { store as reduxStore } from '../store/auxStore';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion } from './helpers/compareServerVersion';
 
 interface IThreadLocation {
 	tmid: string;
