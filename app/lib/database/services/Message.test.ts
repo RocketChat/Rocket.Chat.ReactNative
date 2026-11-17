@@ -1,7 +1,8 @@
 import database from '../index';
 import { MESSAGES_TABLE } from '../model/Message';
-import { type TMessageModel, type TThreadMessageModel } from '~/definitions';
+import { type TMessageModel, type TThreadMessageModel, type TThreadModel } from '~/definitions';
 import { getMessageById } from './Message';
+import { getThreadById } from './Thread';
 import { getThreadMessageById } from './ThreadMessage';
 
 jest.mock('../index', () => ({
@@ -17,8 +18,13 @@ jest.mock('./ThreadMessage', () => ({
 	getThreadMessageById: jest.fn()
 }));
 
+jest.mock('./Thread', () => ({
+	getThreadById: jest.fn()
+}));
+
 const mockGet = database.active.get as jest.Mock;
 const mockGetThreadMessageById = getThreadMessageById as jest.MockedFunction<typeof getThreadMessageById>;
+const mockGetThreadById = getThreadById as jest.MockedFunction<typeof getThreadById>;
 
 describe('getMessageById', () => {
 	let mockFind: jest.Mock;
@@ -49,12 +55,13 @@ describe('getMessageById', () => {
 			expect(mockFind).toHaveBeenCalledWith('message1');
 		});
 
-		it('does not look in the thread messages table', async () => {
-			mockFind.mockResolvedValue({ id: 'message1' });
+		it('does not look in the thread tables', async () => {
+			mockFind.mockRejectedValue(new Error('not found'));
 
 			await getMessageById('message1');
 
 			expect(mockGetThreadMessageById).not.toHaveBeenCalled();
+			expect(mockGetThreadById).not.toHaveBeenCalled();
 		});
 
 		it('returns null when the message does not exist', async () => {
@@ -90,9 +97,22 @@ describe('getMessageById', () => {
 			expect(mockFind).toHaveBeenCalledWith('parent');
 		});
 
-		it('returns null when the message is in neither table', async () => {
+		it('resolves a thread parent stored only in the threads table', async () => {
+			const parent = { id: 'parent', msg: 'Thread parent' } as unknown as TThreadModel;
 			mockGetThreadMessageById.mockResolvedValue(null);
 			mockFind.mockRejectedValue(new Error('not found'));
+			mockGetThreadById.mockResolvedValue(parent as any);
+
+			const result = await getMessageById('parent', 'parent');
+
+			expect(result).toBe(parent);
+			expect(mockGetThreadById).toHaveBeenCalledWith('parent');
+		});
+
+		it('returns null when the message is in no table', async () => {
+			mockGetThreadMessageById.mockResolvedValue(null);
+			mockFind.mockRejectedValue(new Error('not found'));
+			mockGetThreadById.mockResolvedValue(null);
 
 			const result = await getMessageById('nonexistent', 'thread-id');
 
