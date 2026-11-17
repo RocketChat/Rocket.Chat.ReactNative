@@ -43,10 +43,7 @@ class NotificationHelperTest {
             override fun userId() = "uid1"
         }
 
-        val loadModel = NotificationHelper.avatarLoadModel("https://example.com/avatar/foo?format=png&size=100", ejson)
-
-        assertTrue("Expected GlideUrl, got ${loadModel?.javaClass}", loadModel is GlideUrl)
-        val glideUrl = loadModel as GlideUrl
+        val glideUrl = NotificationHelper.avatarLoadModel("https://example.com/avatar/foo?format=png&size=100", ejson) as GlideUrl
         assertEquals(
             "https://example.com/avatar/foo?format=png&size=100&rc_uid=uid1&rc_token=a%2Bb%2Fc",
             glideUrl.toStringUrl()

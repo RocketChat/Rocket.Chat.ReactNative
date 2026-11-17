@@ -72,13 +72,12 @@ public class NotificationHelper {
             return new GlideUrl(uri, headers);
         }
         Uri.Builder urlBuilder = Uri.parse(uri).buildUpon().appendQueryParameter("rc_uid", rcUid);
-        String cacheKey = urlBuilder.build().toString();
+        String cacheKeyWithoutToken = urlBuilder.build().toString();
         String url = urlBuilder.appendQueryParameter("rc_token", rcToken).build().toString();
         return new GlideUrl(url, headers) {
-            // Glide logs and caches by this key, so it must not carry rc_token
             @Override
             public String getCacheKey() {
-                return cacheKey;
+                return cacheKeyWithoutToken;
             }
         };
     }
