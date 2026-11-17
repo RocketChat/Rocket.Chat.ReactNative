@@ -1,5 +1,5 @@
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { TextInput, StyleSheet, type TextInputProps, InteractionManager, Text, View } from 'react-native';
+import { TextInput, StyleSheet, type TextInputProps, Text, View } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
@@ -24,7 +24,7 @@ import { parseJson } from '~/lib/methods/helpers/parseJson';
 import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, MARKDOWN_STYLES } from '../constants';
 import database from '~/lib/database';
 import Navigation from '~/lib/navigation/appNavigation';
-import { emitter } from '~/lib/methods/helpers/emitter';
+import { emitter, type TEmitterEvents } from '~/lib/methods/helpers/emitter';
 import { useComposerRid, useComposerRoomTitle, useComposerSharing, useComposerTmid, useComposerType } from '../ComposerStore';
 import { useMessageAction, useMessageActionStoreApi } from '~/containers/message/stores/MessageActionStore';
 import { getMessageById } from '~/lib/database/services/Message';
@@ -348,32 +348,31 @@ export const ComposerInput = memo(
 
 		useFocusEffect(
 			useCallback(() => {
-				const task = InteractionManager.runAfterInteractions(() => {
-					emitter.on('addMarkdown', ({ style }) => {
-						const { start, end } = selectionRef.current;
-						const text = textRef.current;
-						const markdown = MARKDOWN_STYLES[style];
-						const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
-						setInput(newText, {
-							start: start + markdown.length,
-							end: start === end ? start + markdown.length : end + markdown.length
-						});
+				const addMarkdown = ({ style }: TEmitterEvents['addMarkdown']) => {
+					const { start, end } = selectionRef.current;
+					const text = textRef.current;
+					const markdown = MARKDOWN_STYLES[style];
+					const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
+					setInput(newText, {
+						start: start + markdown.length,
+						end: start === end ? start + markdown.length : end + markdown.length
 					});
-					emitter.on('toolbarMention', () => {
-						if (autocompleteType) {
-							return;
-						}
-						const { start, end } = selectionRef.current;
-						const text = textRef.current;
-						const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
-						setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
-						setAutocompleteParams({ text: '', type: '@' });
-					});
-				});
+				};
+				const toolbarMention = () => {
+					if (autocompleteType) {
+						return;
+					}
+					const { start, end } = selectionRef.current;
+					const text = textRef.current;
+					const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
+					setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
+					setAutocompleteParams({ text: '', type: '@' });
+				};
+				emitter.on('addMarkdown', addMarkdown);
+				emitter.on('toolbarMention', toolbarMention);
 				return () => {
-					emitter.off('addMarkdown');
-					emitter.off('toolbarMention');
-					task?.cancel();
+					emitter.off('addMarkdown', addMarkdown);
+					emitter.off('toolbarMention', toolbarMention);
 				};
 			}, [autocompleteType, setInput, setAutocompleteParams])
 		);
