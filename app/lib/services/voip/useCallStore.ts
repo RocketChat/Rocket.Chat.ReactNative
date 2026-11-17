@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { CallState, CallContact, IClientMediaCall } from '@rocket.chat/media-signaling';
+import type { CallState, CallContact, CallFeature, CallService, IClientMediaCall } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
@@ -9,6 +9,7 @@ import NativeVoipModule from '~/lib/native/NativeVoip';
 import { pendingHangups } from './pendingHangups';
 import { terminateNativeCall } from './terminateNativeCall';
 import { playCallEndedSound } from './playCallEndedSound';
+import { deriveSupportedFeatures } from './deriveSupportedFeatures';
 import Navigation from '~/lib/navigation/appNavigation';
 import { hideActionSheetRef } from '~/containers/ActionSheet';
 import { useIsScreenReaderEnabled } from '~/lib/hooks/useIsScreenReaderEnabled';
@@ -58,6 +59,22 @@ function createStaleNativeTimer(get: () => CallStore): void {
 	}, STALE_NATIVE_MS);
 }
 
+function getRemoteContact(call: IClientMediaCall): CallContact {
+	const remoteContact = call.remoteParticipants[0]?.contact;
+	return {
+		type: remoteContact?.type,
+		id: remoteContact?.id,
+		uid: remoteContact?.uid,
+		displayName: remoteContact?.displayName,
+		username: remoteContact?.username,
+		sipExtension: remoteContact?.sipExtension
+	};
+}
+
+function getCallFeatures(call: IClientMediaCall): Pick<CallStoreState, 'service' | 'features'> {
+	return { service: call.service, features: deriveSupportedFeatures(call.service, call.features) };
+}
+
 interface CallStoreState {
 	// Call reference
 	call: IClientMediaCall | null;
@@ -75,6 +92,10 @@ interface CallStoreState {
 	isSpeakerOn: boolean;
 	callStartTime: number | null;
 	focused: boolean;
+	/** `cti` calls are carried by an external device; this client only controls them. */
+	service: CallService | null;
+	/** What the call UI may offer, from the features the server enabled for the call. */
+	features: CallFeature[];
 	controlsVisible: boolean;
 	dialpadValue: string;
 
@@ -122,6 +143,8 @@ const initialState: CallStoreState = {
 	callStartTime: null,
 	contact: {},
 	focused: true,
+	service: null,
+	features: [],
 	controlsVisible: true,
 	dialpadValue: '',
 	roomId: null,
@@ -151,7 +174,6 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		get().resetNativeCallId();
 		// Update state with call info
 		const remote = call.remoteParticipants[0];
-		const remoteContact = remote?.contact;
 		set({
 			call,
 			callId: call.callId,
@@ -160,13 +182,9 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			isOnHold: call.localParticipant.held,
 			remoteMute: remote?.muted ?? false,
 			remoteHeld: remote?.held ?? false,
-			contact: {
-				id: remoteContact?.id,
-				displayName: remoteContact?.displayName,
-				username: remoteContact?.username,
-				sipExtension: remoteContact?.sipExtension
-			},
-			callStartTime: call.state === 'active' ? Date.now() : null
+			contact: getRemoteContact(call),
+			callStartTime: call.state === 'active' ? (call.activeTimestamp?.getTime() ?? Date.now()) : null,
+			...getCallFeatures(call)
 		});
 
 		try {
@@ -188,7 +206,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			if (!currentCall) return;
 
 			const newState = currentCall.state;
-			set({ callState: newState, controlsVisible: true });
+			set({ callState: newState, controlsVisible: true, ...getCallFeatures(currentCall) });
 
 			// Set start time when call becomes active
 			if (newState === 'active' && !get().callStartTime) {
@@ -212,8 +230,17 @@ export const useCallStore = create<CallStore>((set, get) => ({
 				isOnHold: currentCall.localParticipant.held,
 				remoteMute: currentRemote?.muted ?? false,
 				remoteHeld: currentRemote?.held ?? false,
-				controlsVisible: true
+				controlsVisible: true,
+				...getCallFeatures(currentCall)
 			});
+		};
+
+		// The server updated the call (e.g. a `cti` call's contact or features)
+		const handleContactUpdate = () => {
+			const currentCall = get().call;
+			if (!currentCall) return;
+
+			set({ contact: getRemoteContact(currentCall), ...getCallFeatures(currentCall) });
 		};
 
 		const handleEnded = () => {
@@ -223,14 +250,29 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			Navigation.back();
 		};
 
+		// Another session of this user took the call over; it goes on there.
+		const handleHidden = () => {
+			const { callId } = get();
+			get().resetNativeCallId();
+			get().reset();
+			if (callId) {
+				terminateNativeCall(callId);
+			}
+			Navigation.back();
+		};
+
 		call.emitter.on('stateChange', handleStateChange);
 		call.emitter.on('trackStateChange', handleTrackStateChange);
+		call.emitter.on('contactUpdate', handleContactUpdate);
 		call.emitter.on('ended', handleEnded);
+		call.emitter.on('hidden', handleHidden);
 
 		callListenersCleanup = () => {
 			call.emitter.off('stateChange', handleStateChange);
 			call.emitter.off('trackStateChange', handleTrackStateChange);
+			call.emitter.off('contactUpdate', handleContactUpdate);
 			call.emitter.off('ended', handleEnded);
+			call.emitter.off('hidden', handleHidden);
 		};
 	},
 
@@ -239,16 +281,16 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	},
 
 	toggleMute: () => {
-		const { call, isMuted } = get();
-		if (!call) return;
+		const { call, isMuted, features } = get();
+		if (!call || !features.includes('mute')) return;
 
 		call.localParticipant.setMuted(!isMuted);
 		set({ isMuted: !isMuted });
 	},
 
 	toggleHold: () => {
-		const { call, isOnHold } = get();
-		if (!call) return;
+		const { call, isOnHold, features } = get();
+		if (!call || !features.includes('hold')) return;
 
 		call.localParticipant.setHeld(!isOnHold);
 		set({ isOnHold: !isOnHold });
@@ -283,8 +325,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	},
 
 	setDialpadValue: (value: string) => {
-		const { call } = get();
-		if (!call) return;
+		const { call, features } = get();
+		if (!call || !features.includes('dialpad')) return;
 
 		call.sendDTMF(value);
 		const newValue = get().dialpadValue + value;
@@ -344,6 +386,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 }));
 
 export const useCallContact = () => useCallStore(state => state.contact);
+export const useCallFeature = (feature: CallFeature) => useCallStore(state => state.features.includes(feature));
+export const useIsControlOnlyCall = () => useCallStore(state => state.service === 'cti');
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);
 export const useControlsVisible = () => {
 	const controlsVisible = useCallStore(state => state.controlsVisible);

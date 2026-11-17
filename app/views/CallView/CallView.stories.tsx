@@ -8,6 +8,7 @@ import { CallButtons } from './components/CallButtons';
 import { styles as callViewStyles } from './styles';
 import { useTheme } from '~/theme';
 import { useCallStore } from '~/lib/services/voip/useCallStore';
+import { deriveSupportedFeatures } from '~/lib/services/voip/deriveSupportedFeatures';
 import { ActionSheetProvider } from '~/containers/ActionSheet';
 import {
 	BASE_ROW_HEIGHT,
@@ -58,6 +59,8 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 			username: 'bob.burnquist',
 			sipExtension: '2244'
 		},
+		service: 'webrtc',
+		features: deriveSupportedFeatures('webrtc', ['audio', 'hold', 'dialpad']),
 		...overrides
 	});
 };

@@ -5,7 +5,7 @@ import { useTheme } from '~/theme';
 import { CustomIcon } from '../CustomIcon';
 import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 import { mediaSessionInstance } from '~/lib/services/voip/MediaSessionInstance';
-import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
+import { useIsInAnyCall } from '~/lib/services/isInAnyCall';
 import { isSelfUserId } from '~/lib/services/voip/isSelfUserId';
 import { hideActionSheetRef } from '../ActionSheet';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
@@ -15,7 +15,7 @@ export const CreateCall = () => {
 	const { colors } = useTheme();
 
 	const selectedPeer = usePeerAutocompleteStore(state => state.selectedPeer);
-	const isInActiveCall = useIsInActiveVoipCall();
+	const isInActiveCall = useIsInAnyCall();
 
 	const handleCall = async () => {
 		if (!selectedPeer) {

@@ -4,6 +4,13 @@ import { type ISidebarCategory, type IUserEmail, type IUserSettings } from './IU
 import { type TStatusSource } from './TStatusSource';
 import { type TUserStatus } from './TUserStatus';
 
+/** The external device (e.g. a desk phone) the user takes calls on; absent when they take them in Rocket.Chat. */
+export interface IUserMediaCallDevice {
+	id: string;
+	appId: string;
+	name?: string;
+}
+
 export interface ILoggedUser {
 	id: string;
 	token: string;
@@ -30,6 +37,7 @@ export interface ILoggedUser {
 	requirePasswordChange?: boolean;
 	sidebarCategories?: ISidebarCategory[];
 	settings?: IUserSettings;
+	mediaCallDevice?: IUserMediaCallDevice;
 }
 
 export type TLoggedUserModel = ILoggedUser & Model;

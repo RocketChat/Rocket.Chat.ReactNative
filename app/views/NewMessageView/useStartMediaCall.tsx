@@ -2,7 +2,7 @@ import { showActionSheetRef } from '~/containers/ActionSheet';
 import { useMediaCallPermission } from '~/lib/hooks/useMediaCallPermission';
 import { NewMediaCall } from '~/containers/NewMediaCall';
 import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
-import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
+import { useIsInAnyCall } from '~/lib/services/isInAnyCall';
 import { isSelfUserId } from '~/lib/services/voip/isSelfUserId';
 
 interface IMediaCallPeer {
@@ -13,7 +13,7 @@ interface IMediaCallPeer {
 
 export const useStartMediaCall = ({ userId, name, username }: IMediaCallPeer) => {
 	const hasMediaCallPermission = useMediaCallPermission();
-	const isInActiveCall = useIsInActiveVoipCall();
+	const isInActiveCall = useIsInAnyCall();
 
 	const startMediaCall = () => {
 		if (!userId || isInActiveCall) return;

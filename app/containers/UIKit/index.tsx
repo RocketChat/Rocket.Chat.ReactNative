@@ -22,6 +22,7 @@ import { Section } from './Section';
 import { Actions } from './Actions';
 import { Image } from './Image';
 import { Select } from './Select';
+import { RadioButton } from './RadioButton';
 import { Context } from './Context';
 import { MultiSelect } from './MultiSelect';
 import { Input } from './Input';
@@ -177,6 +178,14 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 	staticSelect(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading, value }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
 		return <Select {...element} value={value} onChange={action} loading={loading} />;
+	}
+
+	radio_button(element: IElement, context: BlockContext): ReactElement {
+		const [{ loading, value }, action] = useBlockContext(
+			{ ...element, actionId: element.actionId || '', initialValue: element.initialValue || element.initialOption?.value },
+			context
+		);
+		return <RadioButton element={element} value={value} loading={loading} onChange={action} />;
 	}
 
 	selectInput(element: IElement, context: BlockContext): ReactElement {

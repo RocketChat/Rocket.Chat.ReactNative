@@ -23,13 +23,14 @@ interface IRolesChanged {
 		args: {
 			type: string;
 			_id: string;
+			name?: string;
 			description: string;
 		}[];
 	};
 }
 
 export async function onRolesChanged(ddpMessage: IRolesChanged): Promise<void> {
-	const { type, _id, description } = ddpMessage.fields.args[0];
+	const { type, _id, name, description } = ddpMessage.fields.args[0];
 	if (/changed/.test(type)) {
 		const db = database.active;
 		const rolesCollection = db.get('roles');
@@ -39,12 +40,15 @@ export async function onRolesChanged(ddpMessage: IRolesChanged): Promise<void> {
 				await db.write(async () => {
 					await roleRecord.update(u => {
 						u.description = description;
+						if (name) {
+							u.name = name;
+						}
 					});
 				});
 			} else {
 				await db.write(async () => {
 					await rolesCollection.create(post => {
-						post._raw = sanitizedRaw({ id: _id, description }, rolesCollection.schema);
+						post._raw = sanitizedRaw({ id: _id, name, description }, rolesCollection.schema);
 					});
 				});
 			}

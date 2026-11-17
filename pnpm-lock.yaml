@@ -93,8 +93,8 @@ importers:
         specifier: ^7.19.1
         version: 7.19.2(9f93b74e18ae1df429c2a9dc7118e4c2)
       '@rocket.chat/media-signaling':
-        specifier: 1.0.0-rc.1
-        version: 1.0.0-rc.1
+        specifier: 1.4.0-rc.0
+        version: 1.4.0-rc.0
       '@rocket.chat/message-parser':
         specifier: 0.31.36
         version: 0.31.36
@@ -3340,14 +3340,14 @@ packages:
   '@redux-saga/types@1.3.1':
     resolution: {integrity: sha512-YRCrJdhQLobGIQ8Cj1sta3nn6DrZDTSUnrIYhS2e5V590BmfVDleKoAquclAiKSBKWJwmuXTb+b4BL6rSHnahw==}
 
-  '@rocket.chat/emitter@0.32.0':
-    resolution: {integrity: sha512-QCXNGDm5xjJPePMeP9GknMAZne5xhNmLLD/ZVVqNgOyeWdfQKddwBUqtMiWDaFCRq1bC22kNf3WQLqt89CO6fg==}
+  '@rocket.chat/emitter@0.33.1-rc.0':
+    resolution: {integrity: sha512-JQ1d1mVISV3wV7asAMAkf3AVFUA/vEl2YZAssbT8Bmvl3SBq2HDSMiMRuDbUJaHiYcNp+xBN3iYUvYGLyJSwiA==}
 
   '@rocket.chat/icons@0.47.0':
     resolution: {integrity: sha512-s0ePkY17dGAa8R+xrk1wWfHqaOh0AQvHvdSB8Qteq4TfFrTmzzl6KcV4eulcZPWi+udRI1it8Q+yfr05s6k2ow==}
 
-  '@rocket.chat/media-signaling@1.0.0-rc.1':
-    resolution: {integrity: sha512-yUMFOyhJfN1XH4IssQF17zAeaamNiSw3riaeuc+pby4XYDd405aN8jh//Lz2nn9c8DeGCCzUbRStlMlmPsbr6g==}
+  '@rocket.chat/media-signaling@1.4.0-rc.0':
+    resolution: {integrity: sha512-f4yCLVIFTuEoqtnMvvO7Fhbq8txJTavfSTkHwS8g94IR/mfcuQZ/uGRyHjw0TlIWhyDAfocI7KQJEpZI3baRzQ==}
 
   '@rocket.chat/message-parser@0.31.36':
     resolution: {integrity: sha512-Z8kmWHKswEYH9dnr6iU61DJG2BAmCTkvhXhZ4dtFHe8/UThgr8cJcFSpSJi/y8Fh7LakzQIsgq+xMZ1OcwZU+g==}
@@ -4093,6 +4093,9 @@ packages:
 
   ajv@8.18.0:
     resolution: {integrity: sha512-PlXPeEWMXMZ7sPYOHqmDyCJzcfNrUr3fGNKtezX14ykXOEIvyK81d+qydx89KY5O71FKMPaQ2vBfBFI5NHR63A==}
+
+  ajv@8.20.0:
+    resolution: {integrity: sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA==}
 
   anser@1.4.10:
     resolution: {integrity: sha512-hCv9AqTQ8ycjpSd3upOJd7vFwW1JaoYQ7tpham03GJ1ca8/65rqn0RpaWpItOAd6ylW9wAw6luXYPJIyPFVOww==}
@@ -12299,14 +12302,14 @@ snapshots:
 
   '@redux-saga/types@1.3.1': {}
 
-  '@rocket.chat/emitter@0.32.0': {}
+  '@rocket.chat/emitter@0.33.1-rc.0': {}
 
   '@rocket.chat/icons@0.47.0': {}
 
-  '@rocket.chat/media-signaling@1.0.0-rc.1':
+  '@rocket.chat/media-signaling@1.4.0-rc.0':
     dependencies:
-      '@rocket.chat/emitter': 0.32.0
-      ajv: 8.18.0
+      '@rocket.chat/emitter': 0.33.1-rc.0
+      ajv: 8.20.0
 
   '@rocket.chat/message-parser@0.31.36':
     dependencies:
@@ -13011,6 +13014,13 @@ snapshots:
       uri-js: 4.4.1
 
   ajv@8.18.0:
+    dependencies:
+      fast-deep-equal: 3.1.3
+      fast-uri: 3.1.0
+      json-schema-traverse: 1.0.0
+      require-from-string: 2.0.2
+
+  ajv@8.20.0:
     dependencies:
       fast-deep-equal: 3.1.3
       fast-uri: 3.1.0
@@ -15211,7 +15221,7 @@ snapshots:
     dependencies:
       es-errors: 1.3.0
       hasown: 2.0.2
-      side-channel: 1.1.0
+      side-channel: 1.1.1
     optional: true
 
   invariant@2.2.4:

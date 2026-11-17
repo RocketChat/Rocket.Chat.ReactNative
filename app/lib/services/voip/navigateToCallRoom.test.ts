@@ -30,9 +30,10 @@ type CallStoreSnapshot = ReturnType<typeof useCallStore.getState>;
 
 /** Partial mock: tests only need fields read by `navigateToCallRoom`. */
 function mockCallStoreState(
-	snapshot: Pick<CallStoreSnapshot, 'roomId' | 'contact' | 'focused' | 'toggleFocus'>
+	snapshot: Pick<CallStoreSnapshot, 'roomId' | 'contact' | 'focused' | 'toggleFocus'> &
+		Partial<Pick<CallStoreSnapshot, 'features'>>
 ): CallStoreSnapshot {
-	return snapshot as unknown as CallStoreSnapshot;
+	return { features: ['direct-message'], ...snapshot } as unknown as CallStoreSnapshot;
 }
 
 describe('navigateToCallRoom', () => {
@@ -41,6 +42,22 @@ describe('navigateToCallRoom', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockNavigation.getCurrentRoute.mockReturnValue({ name: 'RoomsListView' } as any);
+	});
+
+	it('does not navigate when the call does not offer a direct message', async () => {
+		mockGetState.mockReturnValue(
+			mockCallStoreState({
+				roomId: 'rid-1',
+				contact: { username: 'u', sipExtension: '' },
+				focused: false,
+				toggleFocus,
+				features: []
+			})
+		);
+
+		await navigateToCallRoom({ isMasterDetail: false });
+
+		expect(mockGoRoom).not.toHaveBeenCalled();
 	});
 
 	it('does not navigate when roomId is null', async () => {
