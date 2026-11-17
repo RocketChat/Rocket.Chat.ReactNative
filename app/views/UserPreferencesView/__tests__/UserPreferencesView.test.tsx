@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import UserPreferencesView from '..';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { saveUserPreferences } from '~/lib/services/restApi';
+import NativeWatchModule from '~/lib/native/NativeWatchModule';
 
 jest.mock('react-redux', () => ({
 	useDispatch: jest.fn()
@@ -60,6 +61,7 @@ describe('UserPreferencesView', () => {
 		jest.clearAllMocks();
 		(useDispatch as jest.Mock).mockReturnValue(dispatch);
 		(saveUserPreferences as jest.Mock).mockResolvedValue(undefined);
+		jest.mocked(NativeWatchModule!.isWatchAppInstalled).mockReturnValue(false);
 	});
 
 	it('keeps enableMobileRinging enabled while enabling convertAsciiEmoji', async () => {
@@ -112,5 +114,20 @@ describe('UserPreferencesView', () => {
 			enableMobileRinging: false
 		});
 		await waitFor(() => expect(saveUserPreferences).toHaveBeenCalledWith({ enableMobileRinging: false }));
+	});
+
+	it('shows the Apple Watch quick replies row when the watch app is installed', () => {
+		jest.mocked(NativeWatchModule!.isWatchAppInstalled).mockReturnValue(true);
+		const { getByTestId } = renderWithPreferences({ convertAsciiEmoji: false, enableMobileRinging: false });
+
+		fireEvent.press(getByTestId('preferences-view-watchos-quickreplies'));
+
+		expect(navigation.navigate).toHaveBeenCalledWith('UserWatchOSQuickRepliesView');
+	});
+
+	it('hides the Apple Watch quick replies row without the watch app', () => {
+		const { queryByTestId } = renderWithPreferences({ convertAsciiEmoji: false, enableMobileRinging: false });
+
+		expect(queryByTestId('preferences-view-watchos-quickreplies')).toBeNull();
 	});
 });

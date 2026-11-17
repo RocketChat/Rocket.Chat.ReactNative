@@ -42,6 +42,11 @@ import { useAppsStore } from '../lib/apps/appsStore';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
+import { syncWatchOSQuickRepliesWithServer } from '../lib/methods/watchOSQuickReplies/syncWatchOSQuickRepliesWithServer';
+import { isWatchAppInstalled } from '../lib/methods/watchOSQuickReplies/isWatchAppInstalled';
+import { getQuickRepliesKey } from '../lib/methods/watchOSQuickReplies/getQuickRepliesKey';
+import { getQuickRepliesSettings } from '../lib/methods/watchOSQuickReplies/getQuickRepliesSettings';
+import { syncWatchOSQuickReplies } from '../lib/methods/watchOSQuickReplies/syncWatchOSQuickReplies';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
@@ -266,6 +271,31 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const seedWatchQuickReplies = function* seedWatchQuickRepliesFork(server) {
+	try {
+		if (!isWatchAppInstalled()) return;
+		if (UserPreferences.contains(getQuickRepliesKey(server))) {
+			syncWatchOSQuickReplies();
+			return;
+		}
+		const serverVersion = yield select(state => state.server.version);
+		const { settings } = yield race({
+			settings: call(getQuickRepliesSettings, server, serverVersion),
+			stop: take([
+				types.LOGOUT,
+				types.DELETE_ACCOUNT,
+				types.LOGIN.SUCCESS,
+				action => action.type === types.SERVER.SELECT_REQUEST && action.server !== server
+			])
+		});
+		if (settings) {
+			syncWatchOSQuickRepliesWithServer(server, settings);
+		}
+	} catch (e) {
+		log(e);
+	}
+};
+
 const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
 	try {
 		const { background, root } = yield select(state => state.app);
@@ -337,6 +367,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		// On warm relaunch, redux is already populated by selectServer; on cold login, it re-checks
 		// when PERMISSIONS.SET / ENTERPRISE_MODULES.SET land.
 		yield spawn(startVoipFork);
+		yield spawn(seedWatchQuickReplies, server);
 		yield call(fetchPermissions);
 		yield call(fetchEnterpriseModules, { user });
 		yield fork(fetchCustomEmojisFork);

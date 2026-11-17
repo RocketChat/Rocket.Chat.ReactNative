@@ -7,6 +7,7 @@ protocol WatchSessionProtocol {
 /// Default WatchSession protocol implementation.
 final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
 	private let session: WCSession
+	@Dependency private var serversDB: ServersDatabase
 	
 	init(session: WCSession) {
 		self.session = session
@@ -45,6 +46,21 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
 	
 	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
 		
+	}
+	
+	func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
+		guard let repliesByServer = applicationContext["quickReplies"] as? [String: [String]] else {
+			return
+		}
+		
+		DispatchQueue.main.async { [weak self] in
+			guard let self else { return }
+			
+			for server in self.serversDB.servers() {
+				server.quickReplies = repliesByServer[server.url.absoluteString.removeTrailingSlash()] ?? []
+			}
+			self.serversDB.save()
+		}
 	}
 }
 

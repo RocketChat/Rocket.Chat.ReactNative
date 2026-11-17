@@ -299,6 +299,15 @@ jest.mock('./app/lib/methods/helpers/externalInput', () => ({
 	isExternalKeyboardConnected: jest.fn(() => false)
 }));
 
+jest.mock('./app/lib/native/NativeWatchModule', () => ({
+	__esModule: true,
+	default: {
+		syncQuickReplies: jest.fn(),
+		getQuickRepliesKey: jest.fn(server => `${server}-mock-watch-quick-replies`),
+		isWatchAppInstalled: jest.fn(() => false)
+	}
+}));
+
 jest.mock('react-native-webview', () => {
 	const { forwardRef } = require('react');
 	const { View } = require('react-native');

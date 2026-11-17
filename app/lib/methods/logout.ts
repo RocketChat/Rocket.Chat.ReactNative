@@ -18,6 +18,7 @@ import {
 	getUserTokenKey
 } from '../constants/keys';
 import UserPreferences from './userPreferences';
+import { saveWatchOSQuickReplies } from './watchOSQuickReplies/saveWatchOSQuickReplies';
 import { removePushToken } from '../services/restApi';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
 import { clearServerCookies } from './helpers/setServerCookies';
@@ -57,6 +58,8 @@ export async function removeServerData({ server }: { server: string }): Promise<
 		removeServerKeys({ server, userId });
 	} catch (e) {
 		log(e);
+	} finally {
+		saveWatchOSQuickReplies(server);
 	}
 }
 

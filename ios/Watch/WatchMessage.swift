@@ -11,6 +11,7 @@ struct WatchMessage: Codable {
 		let loggedUser: LoggedUser
 		let clientSSL: ClientSSL?
 		let version: String
+		let quickReplies: [String]?
 		
 		struct LoggedUser: Codable {
 			let id: String

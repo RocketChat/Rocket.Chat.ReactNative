@@ -1,5 +1,5 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setUser } from '~/actions/login';
@@ -15,6 +15,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import Switch from '~/containers/Switch';
 import { type IUser } from '~/definitions';
+import { isWatchAppInstalled } from '~/lib/methods/watchOSQuickReplies/isWatchAppInstalled';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
@@ -26,6 +27,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 	);
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
+	const [showWatchAppOptions] = useState(isWatchAppInstalled);
 	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
 	const enableMobileRinging = settings?.preferences?.enableMobileRinging;
 
@@ -35,8 +37,8 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 		});
 	}, [navigation]);
 
-	const navigateToScreen = (screen: keyof ProfileStackParamList) => {
-		logEvent(events.UP_GO_USER_NOTIFICATION_PREF);
+	const navigateToScreen = (screen: keyof ProfileStackParamList, event: string) => {
+		logEvent(event);
 		// @ts-ignore
 		navigation.navigate(screen);
 	};
@@ -93,7 +95,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 					<List.Separator />
 					<List.Item
 						title='Notifications'
-						onPress={() => navigateToScreen('UserNotificationPrefView')}
+						onPress={() => navigateToScreen('UserNotificationPrefView', events.UP_GO_USER_NOTIFICATION_PREF)}
 						showActionIndicator
 						testID='preferences-view-notifications'
 					/>
@@ -160,6 +162,18 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 						</>
 					) : null}
 				</List.Section>
+				{showWatchAppOptions ? (
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							title='Apple_Watch_Quick_Replies'
+							onPress={() => navigateToScreen('UserWatchOSQuickRepliesView', events.UP_GO_WATCHOS_QUICK_REPLIES)}
+							showActionIndicator
+							testID='preferences-view-watchos-quickreplies'
+						/>
+						<List.Separator />
+					</List.Section>
+				) : null}
 			</List.Container>
 		</SafeAreaView>
 	);

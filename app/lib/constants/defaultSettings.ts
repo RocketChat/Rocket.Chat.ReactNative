@@ -249,6 +249,15 @@ export const defaultSettings = {
 	Allow_Save_Media_to_Gallery: {
 		type: 'valueAsBoolean'
 	},
+	Apple_Watch_Quick_Actions: {
+		type: 'valueAsString'
+	},
+	Apple_Watch_Quick_Actions_Max_Count: {
+		type: 'valueAsNumber'
+	},
+	Apple_Watch_Quick_Actions_Max_Length: {
+		type: 'valueAsNumber'
+	},
 	Accounts_AllowInvisibleStatusOption: {
 		type: 'valueAsString'
 	},
