@@ -4,18 +4,28 @@ type TMockClause = {
 	left?: string;
 	comparison?: { operator: string; right: { value: unknown } };
 	sortColumn?: string;
+	sortOrder?: string;
 	count?: number;
 };
 
 const mockTables: Record<string, TMockRow[]> = {};
 jest.mock('../database', () => {
 	const matchesClause = (row: TMockRow, clause: TMockClause) => {
-		if (clause.type !== 'where' || !clause.left || !clause.comparison) {
+		if (clause.type === 'take' || (clause.type === 'sortBy' && clause.sortOrder === 'asc')) {
 			return true;
+		}
+		if (clause.type !== 'where' || !clause.left || !clause.comparison) {
+			throw new Error(`unsupported clause ${clause.type}`);
 		}
 		const cell = row[clause.left] ?? null;
 		const { operator, right } = clause.comparison;
-		return operator === 'gt' ? (cell as number) > (right.value as number) : cell === right.value;
+		if (operator === 'eq') {
+			return cell === right.value;
+		}
+		if (operator === 'gt') {
+			return (cell as number) > (right.value as number);
+		}
+		throw new Error(`unsupported operator ${operator}`);
 	};
 	const runQuery = (rows: TMockRow[], clauses: TMockClause[]) => {
 		const sortColumn = clauses.find(clause => clause.type === 'sortBy')?.sortColumn;
@@ -289,11 +299,13 @@ describe('AudioManager', () => {
 		expect(playAudio).not.toHaveBeenCalled();
 	});
 
-	describe('key helpers', () => {
-		it('getAudioKey: builds the composite key from its inputs (rid/mid/uri parts)', () => {
-			const { AudioManager } = setup();
-			expect(AudioManager.loadAudio({ msgId: 'm1', rid: 'r1', uri: 'file://a.mp3' })).toBe('m1-r1-undefined-file://a.mp3');
-		});
+	it('keeps separate players for a message loaded in the room and in its thread', () => {
+		const { AudioManager } = setup();
+		const roomKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'r1', uri: 'file://a.mp3' });
+		const threadKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'r1', tmid: 't1', uri: 'file://a.mp3' });
+
+		expect(threadKey).not.toBe(roomKey);
+		expect(AudioManager['audioQueue'][threadKey]).not.toBe(AudioManager['audioQueue'][roomKey]);
 	});
 
 	describe('next audio in sequence', () => {
