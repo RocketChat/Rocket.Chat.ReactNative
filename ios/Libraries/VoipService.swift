@@ -356,7 +356,7 @@ public final class VoipService: NSObject {
             let signedContractId = firstArg["signedContractId"] as? String
 
             let isHangup = signalNotification == "hangup"
-            let isAcceptedOnAnotherDevice = signedContractId != nil && signedContractId != deviceId
+            let isAcceptedOnAnotherDevice = signalNotification == "accepted" && signedContractId != nil && signedContractId != deviceId
 
             guard isHangup || isAcceptedOnAnotherDevice else {
                 return
