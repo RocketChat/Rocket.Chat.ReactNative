@@ -1,4 +1,3 @@
-import { InteractionManager } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import I18n from 'i18n-js';
 import { all, call, delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
@@ -138,13 +137,6 @@ const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 		};
 		yield navigate({ params: navigateParams });
 
-		yield call(
-			() =>
-				new Promise(resolve => {
-					InteractionManager.runAfterInteractions(() => resolve());
-				})
-		);
-
 		showToast(I18n.t('VoIP_Call_Issue'));
 	} catch (e) {
 		log(e);
@@ -236,6 +228,7 @@ const handleShareExtension = function* handleOpen({ params }) {
 			}
 			// Unlock canceled or superseded by another lock request — restart the normal flow instead
 			// of leaving the share extension stuck on the loading root.
+			yield put(appStart({ root: RootEnum.ROOT_LOADING }));
 			yield put(appInit());
 			return;
 		}
