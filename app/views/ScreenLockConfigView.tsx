@@ -144,6 +144,9 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 				return;
 			}
 		}
+		console.log('IOS workaround - waiting 1 sec...');
+		await new Promise(resolve => setTimeout(resolve, 1000));
+		console.log('IOS workaround - waiting 1 sec...done');
 		logEvent(events.SLC_CHANGE_PASSCODE);
 		try {
 			await changePasscode({ force });

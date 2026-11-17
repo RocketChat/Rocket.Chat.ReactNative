@@ -12,7 +12,6 @@ interface IPasscodeChoose {
 
 const PasscodeChoose = ({ finishProcess, force = false }: IPasscodeChoose) => {
 	const chooseRef = useRef<IBase>(null);
-	const confirmRef = useRef<IBase>(null);
 	const [subtitle, setSubtitle] = useState<string | null>(null);
 	const [status, setStatus] = useState(TYPE.CHOOSE);
 	const [previousPasscode, setPreviousPasscode] = useState('');
@@ -40,7 +39,8 @@ const PasscodeChoose = ({ finishProcess, force = false }: IPasscodeChoose) => {
 	if (status === TYPE.CONFIRM) {
 		return (
 			<Base
-				ref={confirmRef}
+				key={"passcode-choose"}
+				ref={chooseRef}
 				type={TYPE.CONFIRM}
 				onEndProcess={changePasscode}
 				previousPasscode={previousPasscode}
@@ -52,6 +52,7 @@ const PasscodeChoose = ({ finishProcess, force = false }: IPasscodeChoose) => {
 
 	return (
 		<Base
+			key={"passcode-choose"}
 			ref={chooseRef}
 			type={TYPE.CHOOSE}
 			onEndProcess={firstStep}
