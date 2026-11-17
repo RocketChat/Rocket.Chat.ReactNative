@@ -90,16 +90,21 @@ const roomHandlers: Partial<MessageRoomState> = {
 	handlers: { navToRoomInfo: () => {}, showAttachment: undefined }
 };
 
+let storyMessageIdCounter = 0;
+
 export default {
 	title: 'Message',
 	decorators: [
-		(Story: ComponentType) => (
-			<NavigationContainer>
-				<ScrollView style={{ backgroundColor: themes[_theme].surfaceRoom }}>
-					<Story />
-				</ScrollView>
-			</NavigationContainer>
-		)
+		(Story: ComponentType) => {
+			storyMessageIdCounter = 0;
+			return (
+				<NavigationContainer>
+					<ScrollView style={{ backgroundColor: themes[_theme].surfaceRoom }}>
+						<Story />
+					</ScrollView>
+				</NavigationContainer>
+			);
+		}
 	]
 };
 
@@ -108,8 +113,6 @@ const rid = 'GENERAL';
 const otherUser = { _id: 'other-user', username: 'other.user', name: 'Other User' };
 
 const editedByFixture = { _id: 'edited-by', username: 'diego.mello' };
-
-let storyMessageIdCounter = 0;
 
 const buildMessage = (overrides: Record<string, unknown> = {}): TAnyMessageModel => {
 	const definedOverrides = Object.fromEntries(Object.entries(overrides).filter(([, value]) => value !== undefined));
