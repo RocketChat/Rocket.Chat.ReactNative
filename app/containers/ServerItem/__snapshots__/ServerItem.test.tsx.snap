@@ -2072,14 +2072,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "marginVertical": undefined,
             },
             {
-              "backgroundColor": "#161717",
+              "backgroundColor": "#0A0A0A",
               "borderRadius": undefined,
             },
           ],
           undefined,
         ]
       }
-      underlayColor="#161717"
+      underlayColor="#1A1A1A"
     >
       <View
         accessibilityHint="Activate to select server"

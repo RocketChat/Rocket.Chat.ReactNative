@@ -1,5 +1,3 @@
-import { Platform } from 'react-native';
-
 const backdropColor = '#000000';
 const overlayBackground = 'rgba(31, 35, 41, 0.65)';
 
@@ -14,6 +12,7 @@ const light = {
 	surfaceDark: '#1F2329',
 	surfaceFeatured: '#5F1477',
 	surfaceFeaturedHover: '#4A105D',
+	surfaceHeader: '#E4E7EA',
 
 	strokeExtraLight: '#EBECEF',
 	strokeLight: '#CBCED1',
@@ -106,6 +105,7 @@ const dark = {
 	surfaceDark: '#E4E7EA',
 	surfaceFeatured: '#5F1477',
 	surfaceFeaturedHover: '#4A105D',
+	surfaceHeader: '#2D3039',
 
 	strokeExtraLight: '#333842',
 	strokeLight: '#404754',
@@ -187,28 +187,17 @@ const dark = {
 	buttonSuccessDisabled: '#757575'
 };
 
-const blackAndroid = {
+const black = {
 	...dark,
-	surfaceLight: '#0d0d0d',
-	surfaceTint: '#16181a',
+	surfaceLight: '#0A0A0A',
+	surfaceTint: '#000000',
 	surfaceRoom: '#000000',
-	surfaceNeutral: '#16181a',
-	surfaceHover: '#080808'
+	surfaceNeutral: '#1A1A1A',
+	surfaceDisabled: '#0A0A0A',
+	surfaceHover: '#000000',
+	surfaceSelected: '#262626',
+	surfaceHeader: '#000000'
 };
-
-const blackIOS = {
-	...dark,
-	surfaceLight: '#161717',
-	surfaceTint: '#0A0A0A',
-	surfaceRoom: '#0A0A0A',
-	surfaceNeutral: '#161717',
-	surfaceDisabled: '#121313',
-	surfaceHover: '#0A0A0A',
-	surfaceSelected: '#2A2B2B',
-	surfaceDark: '#E4E4E4'
-};
-
-const black = Platform.OS === 'ios' ? blackIOS : blackAndroid;
 
 export const colors = {
 	light: {

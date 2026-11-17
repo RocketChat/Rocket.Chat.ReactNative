@@ -739,7 +739,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
       },
       false,
       {
-        "backgroundColor": "#161717",
+        "backgroundColor": "#0A0A0A",
         "borderColor": "#404754",
         "height": 76,
         "marginTop": 0,
@@ -836,7 +836,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           undefined,
         ]
       }
-      underlayColor="#161717"
+      underlayColor="#1A1A1A"
     >
       <View
         style={
@@ -1049,7 +1049,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           undefined,
         ]
       }
-      underlayColor="#161717"
+      underlayColor="#1A1A1A"
     >
       <View
         style={{}}

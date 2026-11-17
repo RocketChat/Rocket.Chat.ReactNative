@@ -4311,7 +4311,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
   <View
     style={
       {
-        "backgroundColor": "#161717",
+        "backgroundColor": "#000000",
         "flex": 1,
         "maxHeight": 48,
       }

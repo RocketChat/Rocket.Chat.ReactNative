@@ -69,7 +69,7 @@ const MediaCallHeader = () => {
 			return null;
 		}
 
-		return <View style={defaultHeaderStyle} testID='media-call-header-empty' />;
+		return <View style={{ backgroundColor: colors.surfaceHeader, paddingTop: insets.top }} testID='media-call-header-empty' />;
 	}
 
 	return (

@@ -5585,7 +5585,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
         "flex": 1,
       },
       {
-        "backgroundColor": "#0A0A0A",
+        "backgroundColor": "#000000",
       },
       undefined,
     ]
@@ -5602,7 +5602,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
     keyboardShouldPersistTaps="handled"
     style={
       {
-        "backgroundColor": "#0A0A0A",
+        "backgroundColor": "#000000",
       }
     }
   >
@@ -5646,7 +5646,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               "overflow": "hidden",
             },
             {
-              "backgroundColor": "#161717",
+              "backgroundColor": "#0A0A0A",
             },
           ]
         }
@@ -6182,7 +6182,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               "overflow": "hidden",
             },
             {
-              "backgroundColor": "#161717",
+              "backgroundColor": "#0A0A0A",
             },
           ]
         }

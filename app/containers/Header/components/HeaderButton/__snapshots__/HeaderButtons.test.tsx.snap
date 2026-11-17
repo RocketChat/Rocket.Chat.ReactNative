@@ -2987,7 +2987,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           collapsable={false}
           style={
             {
-              "backgroundColor": "#161717",
+              "backgroundColor": "#000000",
               "borderBottomColor": "rgb(216, 216, 216)",
               "flex": 1,
               "shadowColor": "rgba(0, 0, 0, 1)",

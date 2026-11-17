@@ -54,7 +54,7 @@ export const stackedSearchBarOptions = ({
 
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
 	headerStyle: {
-		backgroundColor: themes[theme].surfaceNeutral
+		backgroundColor: themes[theme].surfaceHeader
 	},
 	headerTintColor: themes[theme].fontDefault,
 	...(hasNativeHeaderBar
