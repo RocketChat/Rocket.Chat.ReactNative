@@ -1,22 +1,15 @@
 import { type NavigatorScreenParams } from '@react-navigation/core';
 
-import {
-	type IAttachment,
-	type ICannedResponse,
-	type ILivechatDepartment,
-	type ILivechatTag,
-	type IMessage,
-	type IServer,
-	type ISubscription,
-	type SubscriptionType,
-	type TAnyMessageModel,
-	type TChangeAvatarViewContext,
-	type TDataSelect,
-	type TMessageAction,
-	type TSubscriptionModel,
-	type TThreadModel,
-	type IVisitor
-} from '../definitions';
+import { type IAttachment } from '../definitions/IAttachment';
+import { type ICannedResponse } from '../definitions/ICannedResponse';
+import { type ILivechatDepartment } from '../definitions/ILivechatDepartment';
+import { type ILivechatTag } from '../definitions/ILivechatTag';
+import { type IMessage, type TAnyMessageModel, type TMessageAction } from '../definitions/IMessage';
+import { type IServer } from '../definitions/IServer';
+import { type ISubscription, type SubscriptionType, type TSubscriptionModel, type IVisitor } from '../definitions/ISubscription';
+import { type TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
+import { type TDataSelect } from '../definitions/IDataSelect';
+import { type TThreadModel } from '../definitions/IThread';
 import { type CategoryViewParams } from '../views/CategoryView';
 import { type CategorySettingsViewParams } from '../views/CategorySettingsView';
 import { type ConfirmCategoryRoomsViewParams } from '../views/CategorySettingsView/ConfirmCategoryRoomsView';

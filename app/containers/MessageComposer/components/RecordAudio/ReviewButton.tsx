@@ -5,7 +5,7 @@ import { BorderlessButton } from '~/containers/GestureButtons';
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';
 import { CustomIcon } from '~/containers/CustomIcon';
-import { hitSlop } from '../Buttons';
+import { hitSlop } from '../Buttons/BaseButton';
 
 export const ReviewButton = ({ onPress }: { onPress: Function }): ReactElement => {
 	const { colors } = useTheme();

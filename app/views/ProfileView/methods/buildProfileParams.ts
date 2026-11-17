@@ -1,6 +1,7 @@
 import { sha256 } from 'js-sha256';
 
-import { type IProfileParams, type IUser } from '~/definitions';
+import { type IProfileParams } from '~/definitions/IProfile';
+import { type IUser } from '~/definitions/IUser';
 
 interface IProfileFormValues {
 	name: string;

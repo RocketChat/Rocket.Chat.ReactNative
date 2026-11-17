@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Touchable } from 'react-native-gesture-handler';
 
-import { showActionSheetRef } from '~/containers/ActionSheet';
+import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
 import SearchHeader from '~/containers/SearchHeader';
 import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';

@@ -4,10 +4,10 @@ import { useDispatch } from 'react-redux';
 
 import { setLoading } from '~/actions/selectedUsers';
 import { type TIconsName } from '~/containers/CustomIcon';
-import { type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import i18n from '~/i18n';
 import { usePermissions } from '~/lib/hooks/usePermissions';
-import { showErrorAlertWithEMessage } from '~/lib/methods/helpers';
+import { showErrorAlertWithEMessage } from '~/lib/methods/helpers/info';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { addUsersToRoom } from '~/lib/services/restApi';
 import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';

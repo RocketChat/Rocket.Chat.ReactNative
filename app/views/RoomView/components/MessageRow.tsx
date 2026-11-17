@@ -6,7 +6,7 @@ import Message from '~/containers/message';
 import { getMessageSeparators } from '~/containers/message/utils';
 import LoadMore from '../LoadMore';
 import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
-import { type RoomType } from '~/definitions';
+import { type RoomType } from '~/definitions/IRoom';
 import { useThreadBadgeColor } from '../hooks/useThreadBadgeColor';
 import { type TMessageRowProps } from '../definitions';
 

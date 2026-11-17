@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import RepliedThread from '../RepliedThread';
 import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import { MessageRoomProvider } from '~/containers/message/stores/MessageRoomStore';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { mockedStore } from '~/reducers/mockedStore';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
 

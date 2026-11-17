@@ -7,7 +7,7 @@ import { ICON_SIZE } from '~/containers/List/constants';
 import Radio from '~/containers/Radio';
 import SafeAreaView from '~/containers/SafeAreaView';
 import Switch from '~/containers/Switch';
-import { type ISidebarCategory } from '~/definitions';
+import { type ISidebarCategory } from '~/definitions/IUser';
 import { DisplayMode, SortBy } from '~/lib/constants/constantDisplayMode';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';

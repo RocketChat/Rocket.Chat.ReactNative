@@ -1,5 +1,5 @@
 import { store } from '~/lib/store/auxStore';
-import { canAutoTranslate } from '../helpers';
+import { canAutoTranslate } from '../canAutoTranslate';
 
 jest.mock('~/lib/store/auxStore', () => ({
 	store: { getState: jest.fn() }

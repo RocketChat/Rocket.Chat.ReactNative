@@ -1,7 +1,7 @@
 import { Text } from 'react-native';
 import { act, render, screen } from '@testing-library/react-native';
 
-import { ActionSheetProvider, useActionSheet, type IActionSheetProvider } from '..';
+import { ActionSheetProvider, useActionSheet, type IActionSheetProvider } from '../Provider';
 
 let mockDismissSheet: () => void;
 

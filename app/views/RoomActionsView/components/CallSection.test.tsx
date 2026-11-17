@@ -6,8 +6,8 @@ import CallSection from './CallSection';
 import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './CallSection.stories';
 import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
-import type { ISubscription, TSubscriptionModel } from '~/definitions';
-import { SubscriptionType } from '~/definitions';
+import type { ISubscription, TSubscriptionModel } from '~/definitions/ISubscription';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import i18n from '~/i18n';
 import * as restApi from '~/lib/services/restApi';
 
@@ -35,7 +35,7 @@ jest.mock('~/lib/hooks/useVideoConf', () => ({
 	useVideoConf: (...args: unknown[]) => mockUseVideoConf(...args)
 }));
 
-jest.mock('~/lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall/useNewMediaCall', () => ({
 	useNewMediaCall: (...args: unknown[]) => mockUseNewMediaCall(...args)
 }));
 

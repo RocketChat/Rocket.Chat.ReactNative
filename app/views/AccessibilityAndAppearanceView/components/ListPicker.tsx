@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet';
+import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet/Provider';
 import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
 import { checkedStateLabel } from '~/containers/List/native/utils/itemProps';

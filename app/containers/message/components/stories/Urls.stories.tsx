@@ -5,7 +5,7 @@ import { createMockedStore } from '~/reducers/mockedStore';
 import { updateSettings } from '~/actions/settings';
 import { setUser } from '~/actions/login';
 import { selectServerSuccess } from '~/actions/server';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import UrlsLeaf from '../Urls';

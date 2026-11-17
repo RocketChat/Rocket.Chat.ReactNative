@@ -1,4 +1,5 @@
-import { type IServerSubscription, type RoomType } from '~/definitions';
+import { type IServerSubscription } from '~/definitions/ISubscription';
+import { type RoomType } from '~/definitions/IRoom';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { getRoomInfo as getRoomInfoService } from '../services/restApi';
 
