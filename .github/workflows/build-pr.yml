@@ -45,6 +45,44 @@ jobs:
           path: changelog.txt
           retention-days: 15
 
+  release-lane:
+    name: Release Lane
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    permissions:
+      pull-requests: read
+    runs-on: ubuntu-latest
+    outputs:
+      release: ${{ steps.lane.outputs.release }}
+    steps:
+      # Read labels live rather than from the event payload: the payload is frozen
+      # at push time (a label added afterwards, or a re-run, would never see it),
+      # and `contains()` over an array is an exact element match — it would miss
+      # the decorated label name ("💎 release").
+      - name: Detect release label
+        id: label
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if gh pr view "$PR_NUMBER" --json labels --jq '.labels[].name' | grep -qi 'release'; then
+            echo "release=true" >>"$GITHUB_OUTPUT"
+          else
+            echo "release=false" >>"$GITHUB_OUTPUT"
+          fi
+
+      - name: Resolve release lane
+        id: lane
+        env:
+          RELEASE: ${{ github.event.pull_request.base.ref == 'master' || steps.label.outputs.release == 'true' }}
+        run: |
+          echo "release=$RELEASE" >>"$GITHUB_OUTPUT"
+          if [[ "$RELEASE" == "true" ]]; then
+            echo "Production approval: on" >>"$GITHUB_STEP_SUMMARY"
+          else
+            echo "Production approval: off" >>"$GITHUB_STEP_SUMMARY"
+          fi
+
   android-build-store:
     name: Build Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
@@ -52,10 +90,11 @@ jobs:
       contents: read
       pull-requests: write
     uses: ./.github/workflows/build-android.yml
-    needs: [run-eslint-and-test, generate-pr-changelog]
+    needs: [run-eslint-and-test, generate-pr-changelog, release-lane]
     secrets: inherit
     with:
       trigger: "pr"
+      release: ${{ needs.release-lane.outputs.release == 'true' }}
 
   ios-build-store:
     name: Build iOS
@@ -64,10 +103,11 @@ jobs:
       contents: read
       pull-requests: write
     uses: ./.github/workflows/build-ios.yml
-    needs: [run-eslint-and-test, generate-pr-changelog]
+    needs: [run-eslint-and-test, generate-pr-changelog, release-lane]
     secrets: inherit
     with:
       trigger: "pr"
+      release: ${{ needs.release-lane.outputs.release == 'true' }}
 
   # Runs first (cheap, secret-free): validates test tags, then narrows the shard
   # list to the shards sniffler flags as impacted. `should_run=false` is a
@@ -75,9 +115,9 @@ jobs:
   e2e-shards:
     name: E2E Shard Preflight
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    needs: [release-lane]
     permissions:
       contents: read
-      pull-requests: read
     runs-on: ubuntu-latest
     outputs:
       shards: ${{ steps.select.outputs.shards }}
@@ -96,26 +136,10 @@ jobs:
         id: full
         run: bash .github/scripts/assert-e2e-shards.sh
 
-      # Read labels live rather than from the event payload: the payload is frozen
-      # at push time (a label added afterwards, or a re-run, would never see it),
-      # and `contains()` over an array is an exact element match — it would miss
-      # the decorated label name ("💎 release").
-      - name: Detect release label
-        id: label
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          if gh pr view "$PR_NUMBER" --json labels --jq '.labels[].name' | grep -qi 'release'; then
-            echo "release=true" >>"$GITHUB_OUTPUT"
-          else
-            echo "release=false" >>"$GITHUB_OUTPUT"
-          fi
-
       - name: Select impacted shards
         id: select
         env:
-          IS_RELEASE_LANE: ${{ github.event.pull_request.base.ref == 'master' || steps.label.outputs.release == 'true' }}
+          IS_RELEASE_LANE: ${{ needs.release-lane.outputs.release }}
           BASE_REF: ${{ github.event.pull_request.base.ref }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           FULL_SHARDS: ${{ steps.full.outputs.shards }}

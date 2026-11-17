@@ -7,6 +7,10 @@ on:
         type: string
         required: false
         default: pr
+      release:
+        type: boolean
+        required: false
+        default: false
 
 permissions: {}
 
@@ -180,3 +184,47 @@ jobs:
           FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
           APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  external-users:
+    name: External Users
+    runs-on: macos-26
+    permissions:
+      contents: read
+    environment: external_users_ios
+    needs: [upload-ios]
+    if: ${{ always() && inputs.trigger == 'pr' && needs.upload-ios.result == 'success' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Distribute to External Testers
+        uses: ./.github/actions/release-ios
+        with:
+          lane: external_users
+          MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+
+  production:
+    name: Production
+    runs-on: macos-26
+    permissions:
+      contents: read
+    environment: production_ios
+    needs: [upload-ios]
+    if: ${{ always() && needs.upload-ios.result == 'success' && (inputs.trigger == 'develop' || inputs.release) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Submit for Review
+        uses: ./.github/actions/release-ios
+        with:
+          lane: production
+          MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}

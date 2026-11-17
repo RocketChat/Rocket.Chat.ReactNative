@@ -7,6 +7,10 @@ on:
         type: string
         required: false
         default: pr
+      release:
+        type: boolean
+        required: false
+        default: false
 
 permissions: {}
 
@@ -82,37 +86,62 @@ jobs:
               name: android-aab
               path: android/app/build/outputs/bundle/release/app-release.aab
 
-  upload-hold:
-    name: Upload Hold
-    runs-on: ubuntu-latest
-    permissions: {}
-    if: ${{ inputs.trigger == 'pr' }}
-    environment: upload_android
-    needs: [build-android]
-    outputs:
-      BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
-    steps:
-      - run: echo "Waiting for manual approval..."
-
-  upload-android:
-    name: Upload
+  open-testing:
+    name: Open Testing
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write
-    needs: [build-android, upload-hold]
-    if: ${{ always() && needs.build-android.result == 'success' && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped') }}
+    environment: ${{ inputs.trigger == 'pr' && 'open_testing_android' || '' }}
+    needs: [build-android]
+    if: ${{ always() && needs.build-android.result == 'success' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-      - name: Upload Android
+      - name: Upload to Open Testing
         uses: ./.github/actions/upload-android
         with:
           trigger: ${{ inputs.trigger }}
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
+
+  production:
+    name: Production
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: production_android
+    needs: [build-android, open-testing]
+    if: ${{ always() && needs.open-testing.result == 'success' && inputs.trigger == 'develop' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Release to Production
+        uses: ./.github/actions/production-android
+        with:
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
+          upload: false
+
+  production-pr:
+    name: Production
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: production_android
+    needs: [build-android]
+    if: ${{ inputs.trigger == 'pr' && inputs.release }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Release to Production
+        uses: ./.github/actions/production-android
+        with:
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
+          upload: true
 
   upload-internal:
     name: Internal Sharing
