@@ -1,5 +1,5 @@
 import { execFile } from 'node:child_process';
-import { copyFile, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { request as httpsRequest, createServer, type Server } from 'node:https';
 import type { AddressInfo, Socket } from 'node:net';
 import { tmpdir } from 'node:os';
@@ -18,12 +18,13 @@ const PROXY_HOST = '127.0.0.1';
 const ANDROID_EMULATOR_HOST_LOOPBACK = '10.0.2.2';
 const VALIDITY_DAYS = '2';
 const CERTIFICATE_AUTHORITY_FILE = 'ca.pem';
+const CERTIFICATE_AUTHORITY_KEY_FILE = 'ca.key';
+const CERTIFICATE_ALIAS = 'rocketchat-e2e';
 const P12_FILE = 'rocketchat-e2e-client.p12';
 const P12_PASSWORD = 'e2e-certificate-password';
 
 export interface ClientCertificate {
 	directory: string;
-	alias: string;
 }
 
 const certificateAuthorityPath = ({ directory }: ClientCertificate) => join(directory, CERTIFICATE_AUTHORITY_FILE);
@@ -43,9 +44,9 @@ const signCertificate = async (directory: string, name: string, subject: string,
 		'-in',
 		request,
 		'-CA',
-		join(directory, CERTIFICATE_AUTHORITY_FILE),
+		certificateAuthorityPath({ directory }),
 		'-CAkey',
-		join(directory, 'ca.key'),
+		join(directory, CERTIFICATE_AUTHORITY_KEY_FILE),
 		'-CAcreateserial',
 		'-days',
 		VALIDITY_DAYS,
@@ -58,7 +59,7 @@ const signCertificate = async (directory: string, name: string, subject: string,
 
 export const createClientCertificate = async (): Promise<ClientCertificate> => {
 	const directory = await mkdtemp(join(tmpdir(), 'rocketchat-e2e-mtls-'));
-	const certificate = { directory, alias: `rocketchat-e2e-${Date.now()}` };
+	const certificate = { directory };
 
 	await openssl(
 		'req',
@@ -67,13 +68,13 @@ export const createClientCertificate = async (): Promise<ClientCertificate> => {
 		'rsa:2048',
 		'-nodes',
 		'-keyout',
-		join(directory, 'ca.key'),
+		join(directory, CERTIFICATE_AUTHORITY_KEY_FILE),
 		'-out',
 		certificateAuthorityPath(certificate),
 		'-days',
 		VALIDITY_DAYS,
 		'-subj',
-		`/CN=${certificate.alias} CA`,
+		`/CN=${CERTIFICATE_ALIAS} CA`,
 		'-addext',
 		'basicConstraints=critical,CA:TRUE'
 	);
@@ -83,7 +84,7 @@ export const createClientCertificate = async (): Promise<ClientCertificate> => {
 		'/CN=localhost',
 		`subjectAltName=DNS:localhost,IP:${PROXY_HOST},IP:${ANDROID_EMULATOR_HOST_LOOPBACK}\nextendedKeyUsage=serverAuth\n`
 	);
-	await signCertificate(directory, 'client', `/CN=${certificate.alias}`, 'extendedKeyUsage=clientAuth\n');
+	await signCertificate(directory, 'client', `/CN=${CERTIFICATE_ALIAS}`, 'extendedKeyUsage=clientAuth\n');
 	await openssl(
 		'pkcs12',
 		'-export',
@@ -98,7 +99,7 @@ export const createClientCertificate = async (): Promise<ClientCertificate> => {
 		'-in',
 		join(directory, 'client.pem'),
 		'-name',
-		certificate.alias,
+		CERTIFICATE_ALIAS,
 		'-passout',
 		`pass:${P12_PASSWORD}`,
 		'-out',
@@ -201,12 +202,6 @@ export const startClientCertificateProxy = async (certificate: ClientCertificate
 
 const iosDevice = () => process.env.E2E_IOS_DEVICE ?? 'iPhone 17 Pro';
 
-interface SimulatorDevice {
-	udid: string;
-	name: string;
-	state: string;
-	dataPath: string;
-}
 const simctl = (...args: string[]) => runCommand('xcrun', ['simctl', ...args]);
 
 const androidUserCertificateAuthorities = '/data/misc/user/0/cacerts-added';
@@ -219,32 +214,16 @@ const androidCertificateAuthorityPath = async (certificate: ClientCertificate) =
 
 const FILES_LOCAL_STORAGE_GROUP = 'group.com.apple.FileProvider.LocalStorage';
 
-const iosSimulator = async () => {
-	const { stdout } = await simctl('list', 'devices', '--json');
-	const devices = Object.values(JSON.parse(stdout).devices as Record<string, SimulatorDevice[]>).flat();
-	const device = devices.find(({ udid, name, state }) => udid === iosDevice() || (name === iosDevice() && state === 'Booted'));
-	if (!device) {
-		throw new Error(`No simulator matches ${iosDevice()}`);
-	}
-	return device;
-};
-
-const containerIdentifier = async (container: string) => {
-	const metadata = join(container, '.com.apple.mobile_container_manager.metadata.plist');
-	const { stdout } = await runCommand('plutil', ['-extract', 'MCMMetadataIdentifier', 'raw', metadata]).catch(() => ({
-		stdout: ''
-	}));
-	return stdout.trim();
-};
-
 const filesAppStorage = async () => {
-	const appGroups = join((await iosSimulator()).dataPath, 'Containers', 'Shared', 'AppGroup');
-	for (const container of await readdir(appGroups)) {
-		if ((await containerIdentifier(join(appGroups, container))) === FILES_LOCAL_STORAGE_GROUP) {
-			return join(appGroups, container, 'File Provider Storage');
-		}
+	const { stdout } = await simctl('get_app_container', iosDevice(), 'com.apple.DocumentsApp', 'groups');
+	const localStorage = stdout
+		.split('\n')
+		.map(line => line.split('\t'))
+		.find(([group]) => group === FILES_LOCAL_STORAGE_GROUP);
+	if (!localStorage) {
+		throw new Error('The simulator has no Files app local storage');
 	}
-	throw new Error('The simulator has no Files app local storage');
+	return join(localStorage[1], 'File Provider Storage');
 };
 
 const rootAdb = async () => {
@@ -260,14 +239,16 @@ export const trustCertificateAuthority = async ({ platform }: Fixtures, certific
 		await adb('shell', `chown system:system ${installedPath} && chmod 644 ${installedPath}`);
 		return;
 	}
-	await simctl('keychain', (await iosSimulator()).udid, 'add-root-cert', certificateAuthorityPath(certificate));
+	await simctl('keychain', iosDevice(), 'add-root-cert', certificateAuthorityPath(certificate));
 };
 
 const installAndroidClientCertificate = async ({ app, screen }: Fixtures, certificate: ClientCertificate) => {
 	await adb('push', p12Path(certificate), `${androidDownloads}/${P12_FILE}`);
 	await adb('shell', 'am', 'start', '-a', 'android.credentials.INSTALL');
 	await tapWhenUncovered(screen.getByLabel('Show roots'));
-	await tapWhenUncovered(screen.getByText('Downloads'));
+	const roots = screen.getByTestId('com.google.android.documentsui:id/roots_list');
+	await tapWhenUncovered(roots.getByText('Downloads'));
+	await expect(roots).toBeHidden({ timeout: LONG_TIMEOUT });
 	await tapWhenUncovered(screen.getByText(P12_FILE));
 	const okButton = screen.getByRole('button', { name: /^OK$/i });
 	await fillWhenUncovered(screen.getByTestId('com.android.certinstaller:id/credential_password'), P12_PASSWORD);
@@ -334,13 +315,13 @@ const submitPasswordPrompt = async ({ screen }: Fixtures) => {
 	await expect(passwordPrompt).toBeHidden();
 };
 
-export const chooseClientCertificate = async (fixtures: Fixtures, certificate: ClientCertificate) => {
+export const chooseClientCertificate = async (fixtures: Fixtures) => {
 	const { screen } = fixtures;
 	if (fixtures.platform === 'android') {
 		await screen.getByTestId('new-server-choose-certificate').tap();
-		await tapWhenUncovered(screen.getByText(certificate.alias));
+		await tapWhenUncovered(screen.getByText(CERTIFICATE_ALIAS));
 		await screen.getByRole('button', { name: /^Select$/i }).tap();
-		await expect(screen.getByText(certificate.alias)).toBeVisible({ timeout: LONG_TIMEOUT });
+		await expect(screen.getByText(CERTIFICATE_ALIAS)).toBeVisible({ timeout: LONG_TIMEOUT });
 		return;
 	}
 	await pickFromIosDocumentPicker(fixtures);

@@ -51,7 +51,7 @@ test('connects to a workspace that requires a client certificate', { tags: ['tes
 	await screen.getByText('Connect').tap();
 	await expect(screen.getByText('Invalid URL')).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await chooseClientCertificate(fixtures, certificate);
+	await chooseClientCertificate(fixtures);
 	await screen.getByText('Connect').tap();
 	await expect(screen.getByTestId('workspace-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByText('Login').tap();
