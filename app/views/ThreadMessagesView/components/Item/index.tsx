@@ -1,67 +1,22 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { type ReactElement } from 'react';
 
 import { useTheme } from '~/theme';
 import Avatar from '~/containers/Avatar';
-import sharedStyles from '../Styles';
 import { themes } from '~/lib/constants/colors';
 import { MarkdownPreview } from '~/containers/markdown';
 import { formatDateThreads, makeThreadName } from '~/lib/methods/helpers/room';
 import ThreadDetails from '~/containers/ThreadDetails';
-import { type TThreadModel } from '~/definitions';
 import Touch from '~/containers/Touch';
-
-const styles = StyleSheet.create({
-	container: {
-		flexDirection: 'row',
-		padding: 16
-	},
-	contentContainer: {
-		flexDirection: 'column',
-		flex: 1
-	},
-	titleContainer: {
-		flexDirection: 'row',
-		marginBottom: 2,
-		alignItems: 'center'
-	},
-	title: {
-		flexShrink: 1,
-		fontSize: 18,
-		...sharedStyles.textMedium
-	},
-	time: {
-		fontSize: 14,
-		marginLeft: 4,
-		...sharedStyles.textRegular
-	},
-	avatar: {
-		marginRight: 8
-	},
-	threadDetails: {
-		marginTop: 8
-	},
-	badge: {
-		width: 8,
-		height: 8,
-		borderRadius: 4,
-		marginHorizontal: 8,
-		alignSelf: 'center'
-	},
-	messageContainer: {
-		flexDirection: 'row'
-	},
-	markdown: {
-		flex: 1
-	}
-});
+import styles from './styles';
+import { type TThreadRow } from '~/views/ThreadMessagesView/types';
 
 export interface IItem {
-	item: TThreadModel;
+	item: TThreadRow;
 	useRealName: boolean;
 	user: { id: string };
 	badgeColor?: string;
-	onPress: (item: TThreadModel) => void;
+	onPress: (item: TThreadRow) => void;
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
 
