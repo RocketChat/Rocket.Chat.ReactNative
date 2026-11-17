@@ -22,16 +22,12 @@ type TUnsubscribeRoom = IBaseReturn;
 
 type TRoom = Record<string, any>;
 
-export type TRoomRemovalScope = 'room' | 'team';
-
 interface ILeaveRoom extends Action {
-	scope: TRoomRemovalScope;
 	room: TRoom;
 	selected?: ISelected;
 }
 
 interface IDeleteRoom extends Action {
-	scope: TRoomRemovalScope;
 	room: TRoom;
 	selected?: ISelected;
 }
@@ -94,20 +90,18 @@ export function unsubscribeRoom(rid: string): TUnsubscribeRoom {
 	};
 }
 
-export function leaveRoom(scope: TRoomRemovalScope, room: TRoom, selected?: ISelected): ILeaveRoom {
+export function leaveRoom(room: TRoom, selected?: ISelected): ILeaveRoom {
 	return {
 		type: ROOM.LEAVE,
 		room,
-		scope,
 		selected
 	};
 }
 
-export function deleteRoom(scope: TRoomRemovalScope, room: TRoom, selected?: ISelected): IDeleteRoom {
+export function deleteRoom(room: TRoom, selected?: ISelected): IDeleteRoom {
 	return {
 		type: ROOM.DELETE,
 		room,
-		scope,
 		selected
 	};
 }

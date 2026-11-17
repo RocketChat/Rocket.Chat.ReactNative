@@ -8,11 +8,11 @@ import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
 import { type TNavigation } from '~/stacks/stackType';
 import database from '~/lib/database';
 import I18n from '~/i18n';
-import { getRoomTitle, hasPermission, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
 import log from '~/lib/methods/helpers/log';
 import { deleteRoom as actionDeleteRoom } from '~/actions/room';
-import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { RoomType, type ISubscription, type TSubscriptionModel } from '~/definitions';
+import { canDeleteTeamChannel } from '~/lib/methods/canDeleteTeamChannel';
+import { type ISubscription, type TSubscriptionModel } from '~/definitions';
 
 interface IUseRoomDeletionActions {
 	navigation: NativeStackNavigationProp<(ChatsStackParamList | ModalStackParamList) & TNavigation, 'RoomInfoEditView'>;
@@ -21,19 +21,9 @@ interface IUseRoomDeletionActions {
 
 const useRoomDeletionActions = ({ navigation, room }: IUseRoomDeletionActions) => {
 	const dispatch = useDispatch();
-	const deleteChannelRoles = useAppSelector(state => state.permissions['delete-c']);
-	const deleteGroupRoles = useAppSelector(state => state.permissions['delete-p']);
-
-	const canDeleteChannel = async (channel: TSubscriptionModel) => {
-		const [canDelete] = await hasPermission(
-			[channel.t === RoomType.CHANNEL ? deleteChannelRoles : deleteGroupRoles],
-			channel.rid
-		);
-		return canDelete;
-	};
 
 	const getDeletableChannels = async (teamChannels: TSubscriptionModel[]) => {
-		const canDelete = await Promise.all(teamChannels.map(canDeleteChannel));
+		const canDelete = await Promise.all(teamChannels.map(channel => canDeleteTeamChannel(channel, room.rid)));
 		return teamChannels.filter((_, index) => canDelete[index]).map(({ rid, name, t }) => ({ rid, name, t }));
 	};
 
@@ -56,7 +46,7 @@ const useRoomDeletionActions = ({ navigation, room }: IUseRoomDeletionActions) =
 						showConfirmationAlert({
 							message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
 							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-							onPress: () => dispatch(actionDeleteRoom('team', room, selected))
+							onPress: () => dispatch(actionDeleteRoom(room, selected))
 						});
 					}
 				});
@@ -64,7 +54,7 @@ const useRoomDeletionActions = ({ navigation, room }: IUseRoomDeletionActions) =
 				showConfirmationAlert({
 					message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-					onPress: () => dispatch(actionDeleteRoom('team', room))
+					onPress: () => dispatch(actionDeleteRoom(room))
 				});
 			}
 		} catch (e: any) {
@@ -88,7 +78,7 @@ const useRoomDeletionActions = ({ navigation, room }: IUseRoomDeletionActions) =
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => dispatch(actionDeleteRoom('room', room))
+					onPress: () => dispatch(actionDeleteRoom(room))
 				}
 			],
 			{ cancelable: false }

@@ -69,18 +69,18 @@ const watchUserTyping = function* watchUserTyping({ rid, status, args }) {
 	}
 };
 
-const handleRemovedRoom = function* handleRemovedRoom(scope, actionType) {
+const handleRemovedRoom = function* handleRemovedRoom(isTeam, actionType) {
 	const isMasterDetail = getIsMasterDetail();
 	Navigation.popToTop(isMasterDetail);
 
 	if (actionType === 'leave') {
 		EventEmitter.emit(LISTENER, {
-			message: scope === 'team' ? I18n.t('Left_The_Team_Successfully') : I18n.t('Left_The_Room_Successfully')
+			message: isTeam ? I18n.t('Left_The_Team_Successfully') : I18n.t('Left_The_Room_Successfully')
 		});
 	}
 	if (actionType === 'delete') {
 		EventEmitter.emit(LISTENER, {
-			message: scope === 'team' ? I18n.t('Deleted_The_Team_Successfully') : I18n.t('Deleted_The_Room_Successfully')
+			message: isTeam ? I18n.t('Deleted_The_Team_Successfully') : I18n.t('Deleted_The_Room_Successfully')
 		});
 	}
 
@@ -94,16 +94,16 @@ const handleRemovedRoom = function* handleRemovedRoom(scope, actionType) {
 	}
 };
 
-const handleLeaveRoom = function* handleLeaveRoom({ room, scope, selected }) {
+const handleLeaveRoom = function* handleLeaveRoom({ room, selected }) {
 	logEvent(events.RA_LEAVE);
+	const isTeam = !!room.teamMain;
 	try {
-		const result =
-			scope === 'team'
-				? yield leaveTeam({ teamId: room.teamId, ...(selected && { rooms: selected }) })
-				: yield leaveRoom(room.rid, room.t);
+		const result = isTeam
+			? yield leaveTeam({ teamId: room.teamId, ...(selected && { rooms: selected }) })
+			: yield leaveRoom(room.rid, room.t);
 
 		if (result?.success) {
-			yield handleRemovedRoom(scope, 'leave');
+			yield handleRemovedRoom(isTeam, 'leave');
 		}
 	} catch (e) {
 		logEvent(events.RA_LEAVE_F);
@@ -117,23 +117,23 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, scope, selected }) {
 	}
 };
 
-const handleDeleteRoom = function* handleDeleteRoom({ room, scope, selected }) {
+const handleDeleteRoom = function* handleDeleteRoom({ room, selected }) {
 	logEvent(events.RI_EDIT_DELETE);
+	const isTeam = !!room.teamMain;
 	try {
-		const result =
-			scope === 'team'
-				? yield deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) })
-				: yield deleteRoom(room.rid || room._id, room.t);
+		const result = isTeam
+			? yield deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) })
+			: yield deleteRoom(room.rid || room._id, room.t);
 
 		if (result?.success) {
-			yield handleRemovedRoom(scope, 'delete');
+			yield handleRemovedRoom(isTeam, 'delete');
 		}
 	} catch (e) {
 		logEvent(events.RI_EDIT_DELETE_F);
 		Alert.alert(
 			I18n.t('Oops'),
 			I18n.t('There_was_an_error_while_action', {
-				action: scope === 'team' ? I18n.t('deleting_team') : I18n.t('deleting_room')
+				action: isTeam ? I18n.t('deleting_team') : I18n.t('deleting_room')
 			})
 		);
 	}

@@ -511,7 +511,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		showConfirmationAlert({
 			message: I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: getRoomTitle(room) }),
 			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-			onPress: () => dispatch(leaveRoom('room', room))
+			onPress: () => dispatch(leaveRoom(room))
 		});
 	};
 
@@ -600,14 +600,14 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 						title: 'Leave_Team',
 						data: teamChannels as any,
 						infoText: 'Select_Team_Channels',
-						nextAction: data => dispatch(leaveRoom('team', room, data)),
+						nextAction: data => dispatch(leaveRoom(room, data)),
 						showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 					});
 				} else {
 					showConfirmationAlert({
 						message: I18n.t('You_are_leaving_the_team', { team: getRoomTitle(room) }),
 						confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-						onPress: () => dispatch(leaveRoom('team', room))
+						onPress: () => dispatch(leaveRoom(room))
 					});
 				}
 			}
@@ -616,7 +616,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 			showConfirmationAlert({
 				message: I18n.t('You_are_leaving_the_team', { team: getRoomTitle(room) }),
 				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-				onPress: () => dispatch(leaveRoom('team', room))
+				onPress: () => dispatch(leaveRoom(room))
 			});
 		}
 	};

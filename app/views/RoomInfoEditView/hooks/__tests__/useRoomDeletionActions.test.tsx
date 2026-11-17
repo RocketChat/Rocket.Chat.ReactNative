@@ -9,15 +9,18 @@ const mockFetch = jest.fn();
 let mockDeletableRids: string[] = [];
 
 jest.mock('react-redux', () => ({ useDispatch: () => mockDispatch }));
-jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }));
 jest.mock('~/lib/database', () => ({
 	active: { get: () => ({ query: () => ({ fetch: mockFetch }) }) }
 }));
 jest.mock('~/lib/methods/helpers', () => ({
 	getRoomTitle: jest.fn(() => 'Team'),
 	showConfirmationAlert: jest.fn(),
-	showErrorAlert: jest.fn(),
-	hasPermission: jest.fn((_permissions: unknown[], rid: string) => Promise.resolve([mockDeletableRids.includes(rid)]))
+	showErrorAlert: jest.fn()
+}));
+jest.mock('~/lib/methods/canDeleteTeamChannel', () => ({
+	canDeleteTeamChannel: jest.fn(({ rid }: { rid: string }, teamRoomId: string) =>
+		Promise.resolve(teamRoomId === 'team-rid' && mockDeletableRids.includes(rid))
+	)
 }));
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
@@ -36,7 +39,7 @@ const confirm = () => (showConfirmationAlert as jest.Mock).mock.calls[0][0].onPr
 describe('useRoomDeletionActions', () => {
 	beforeEach(() => jest.clearAllMocks());
 
-	it('offers the team channels the user can delete in each channel, then deletes the team with the picked ones', async () => {
+	it('offers the team channels the user can delete, then deletes the team with the picked ones', async () => {
 		mockFetch.mockResolvedValue([publicChannel, privateGroup]);
 		mockDeletableRids = ['channel-rid'];
 		const { navigation, deleteTeam } = renderDeletionActions();
@@ -49,7 +52,7 @@ describe('useRoomDeletionActions', () => {
 		nextAction(['channel-rid']);
 		confirm();
 
-		expect(mockDispatch).toHaveBeenCalledWith(expect.objectContaining({ scope: 'team', room: team, selected: ['channel-rid'] }));
+		expect(mockDispatch).toHaveBeenCalledWith(expect.objectContaining({ room: team, selected: ['channel-rid'] }));
 	});
 
 	it('deletes the team directly when the user can delete none of its channels', async () => {
@@ -61,6 +64,6 @@ describe('useRoomDeletionActions', () => {
 		confirm();
 
 		expect(navigation.navigate).not.toHaveBeenCalled();
-		expect(mockDispatch).toHaveBeenCalledWith(expect.objectContaining({ scope: 'team', room: team }));
+		expect(mockDispatch).toHaveBeenCalledWith(expect.objectContaining({ room: team }));
 	});
 });
