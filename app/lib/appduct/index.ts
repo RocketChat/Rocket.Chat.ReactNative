@@ -65,7 +65,12 @@ const hasRoot = (state: IApplicationState) => !!state.app.root;
 
 const hasStarted = (state: IApplicationState) => hasRoot(state) && state.app.root !== RootEnum.ROOT_LOADING;
 
-const waitForAppStart = (signal: AbortSignal) => waitUntil(hasStarted, signal);
+const isInShareExtension = (state: IApplicationState) =>
+	state.app.root === RootEnum.ROOT_SHARE_EXTENSION || state.app.root === RootEnum.ROOT_LOADING_SHARE_EXTENSION;
+
+const hasLeftShareExtension = (state: IApplicationState) => hasStarted(state) && !isInShareExtension(state);
+
+const waitForAppStart = (signal: AbortSignal) => waitUntil(hasLeftShareExtension, signal);
 
 const waitForNavigatorReady = (signal: AbortSignal) =>
 	new Promise<void>((resolve, reject) => {
@@ -109,13 +114,8 @@ const isRootRouteMounted =
 	() =>
 		!!Navigation.navigationRef.current?.getRootState()?.routes.some(route => names.includes(route.name));
 
-const isInShareExtension = (state: IApplicationState) =>
-	state.app.root === RootEnum.ROOT_SHARE_EXTENSION || state.app.root === RootEnum.ROOT_LOADING_SHARE_EXTENSION;
-
-const hasLeftShareExtension = (state: IApplicationState) => hasStarted(state) && !isInShareExtension(state);
-
 const waitForInside = async (signal: AbortSignal) => {
-	await waitUntil(hasLeftShareExtension, signal);
+	await waitForAppStart(signal);
 	if (store.getState().app.root !== RootEnum.ROOT_INSIDE) {
 		throw new Error('Not logged in to a workspace');
 	}
@@ -374,12 +374,8 @@ const waitForSubscription = async (name: string, signal: AbortSignal) => {
 			.pipe(
 				first(subscriptions => subscriptions.length > 0),
 				takeUntil(fromEvent(signal, 'abort'))
-			),
-		{ defaultValue: [] }
+			)
 	);
-	if (!subscription) {
-		throw new Error(`No subscribed room named ${name}`);
-	}
 	return subscription;
 };
 
@@ -639,7 +635,7 @@ registerTool({
 		required: ['root']
 	}),
 	handler: async (_input, { signal }) => {
-		await waitUntil(hasLeftShareExtension, signal);
+		await waitForAppStart(signal);
 		if (store.getState().app.root === RootEnum.ROOT_INSIDE) {
 			await removeServersExcept(store.getState().server.server);
 			const loggedOut = waitForLogout(signal);

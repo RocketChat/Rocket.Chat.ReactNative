@@ -167,4 +167,4 @@ jobs:
         with:
           name: Android APK
           path: ${{ env.APK_PATH }}
-          retention-days: 1
+          retention-days: 2

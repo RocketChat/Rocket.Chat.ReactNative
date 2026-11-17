@@ -5,7 +5,7 @@ import { openRoom } from '~e2e/support/appduct';
 import { createRandomRoom, createUser, deleteCreatedUsers, sendMessage as sendMessageAsUser } from '~e2e/support/api';
 import {
 	hideKeyboard,
-	loginWithDeepLink,
+	loginToApp,
 	searchAndNavigateRoom,
 	sendMessage,
 	type Fixtures,
@@ -200,7 +200,7 @@ const saveQuoteDraft = async (fixtures: Fixtures) => {
 const openRoomWithOwnMessage = async (fixtures: Fixtures) => {
 	const user = await createUser();
 	const room = await createRandomRoom(user);
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await openRoom(fixtures, room.name);
 	await sendMessage(fixtures, MESSAGE);
 	return { user, room };
@@ -251,14 +251,14 @@ test('opens profiles and edits, quotes and deletes messages in a room', { tags: 
 });
 
 test('replies to a room message in a direct message', { tags: ['test-2'] }, async fixtures => {
-	await loginWithDeepLink(fixtures, await createUser());
+	await loginToApp(fixtures, await createUser());
 	await replyInDirectMessage(fixtures);
 });
 
 test('keeps composer drafts, with and without a quote', { tags: ['test-2'] }, async fixtures => {
 	const user = await createUser();
 	const room = await createRandomRoom(user);
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await sendSavedDraft(fixtures, room.name);
 	await saveQuoteDraft(fixtures);
 });

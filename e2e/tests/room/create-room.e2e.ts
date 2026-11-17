@@ -4,7 +4,7 @@ import { expect } from 'e2e';
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
 	goBack,
-	loginWithDeepLink,
+	loginToApp,
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenVisible,
@@ -49,7 +49,7 @@ const expectRoomCreated = async (fixtures: Fixtures, name: string) => {
 test('creates rooms', { tags: ['test-4'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await openNewMessage(fixtures);
 	await expectVisible(fixtures, 'new-message-view-search');

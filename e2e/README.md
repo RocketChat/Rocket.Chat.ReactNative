@@ -58,8 +58,9 @@ On Android emulators with Google Play services, disable autofill first, or the p
 
 - Import `test` and `afterEach` from `~e2e/support/fixtures`, not `@e2e-dev/mobile`. Its `test` adds the `appduct` fixture from `@appduct/e2e`, which calls the app's Appduct tools.
 - Tag each test with its CI shard: `test('...', { tags: ['test-5'] }, ...)`. Platform-only tests add `platforms: ['ios']` or `platforms: ['android']`.
+- Open a screen with `openScreen` (`e2e/support/appduct.ts`). Keep the UI path when no other test taps that screen's entry point: `goToDisplayPreferences`, `goToUserPreferences` and `navigateToLanguage` are the only coverage of theirs.
 - Open a room the user is subscribed to with `openRoom` (`e2e/support/appduct.ts`), which opens it through the app's `open_room` Appduct tool. Use `searchAndNavigateRoom` when the test covers the rooms list search, or when the user still has to join or preview the room.
-- Start every test from `launchApp` or `loginWithDeepLink`. `launchApp` reinstalls the app on iOS, since clearing app state keeps the app group container, and clears its data on Android. `loginWithDeepLink` resets the running app through Appduct and logs in with a token; it falls back to the `launchApp` reset when the app isn't installed yet or the Appduct login fails.
+- Start every test from `launchApp` or `loginToApp`. `launchApp` reinstalls the app on iOS, since clearing app state keeps the app group container, and clears its data on Android. `loginToApp` resets the running app through Appduct and logs in with a token; it falls back to the `launchApp` reset when the app isn't installed yet, sits behind its screen lock, or the Appduct login doesn't finish in time. An error thrown by a broken Appduct tool fails the test instead.
 - Prefer `getByTestId` and exact `getByText`. A locator that matches more than one node fails; narrow it, or use `.first()` / `.last()`.
 - `swipe({ direction })` uses scroll semantics: the finger moves opposite to `direction`.
 - Android alert buttons are uppercase; match their names with a case-insensitive regex.

@@ -3,7 +3,7 @@ import { afterEach, test } from '~e2e/support/fixtures';
 import { openRoom } from '~e2e/support/appduct';
 import { createDM, createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
-	loginWithDeepLink,
+	loginToApp,
 	sendMessage,
 	type Fixtures,
 	tapWhenVisible,
@@ -35,7 +35,7 @@ test('forwards a message to a direct message', { tags: ['test-3'], timeout: 300_
 	const room = await createRandomRoom(user);
 	await createDM(user, otherUser.username);
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await openRoom(fixtures, otherUser.username);
 	await sendMessage(fixtures, 'Hello user');
 	await backToRoomsList(fixtures);

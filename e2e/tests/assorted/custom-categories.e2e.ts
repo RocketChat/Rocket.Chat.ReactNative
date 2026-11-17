@@ -4,17 +4,15 @@ import { expect } from 'e2e';
 import { createCategory, createRandomRoom, createUser, deleteCreatedUsers, randomCategoryName } from '~e2e/support/api';
 import { openRoomScreen } from '~e2e/support/appduct';
 import {
-	expectCategoryDeleted,
-	expectCategoryNamed,
-	expectCategoryRenamed,
+	expectCategoryName,
 	expectListedInCategoryView,
 	expectRoomInCategory,
 	fillCategoryName,
-	findCategoryByName,
 	groupRoomsByCategory,
 	moveOpenRoomToCategory,
 	openCategory,
-	openCategorySettings
+	openCategorySettings,
+	waitForCategoryNamed
 } from '~e2e/support/categories';
 import {
 	backToRoomsList,
@@ -22,7 +20,7 @@ import {
 	expectHidden,
 	expectVisible,
 	LONG_TIMEOUT,
-	loginWithDeepLink,
+	loginToApp,
 	scrollAndTap,
 	tapWhenVisible
 } from '~e2e/support/flows';
@@ -36,7 +34,7 @@ test('creates a category with a room from Create new', { tags: ['test-1'] }, asy
 	const room = await createRandomRoom(user);
 	const categoryName = randomCategoryName();
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await openNewMessage(fixtures);
 	await tapWhenVisible(fixtures, 'new-message-view-create-category');
 	await expectVisible(fixtures, 'create-category-view');
@@ -52,8 +50,7 @@ test('creates a category with a room from Create new', { tags: ['test-1'] }, asy
 	await tapWhenVisible(fixtures, 'confirm-category-view-create');
 	await expectVisible(fixtures, 'rooms-list-view');
 
-	await expectCategoryNamed(user, categoryName);
-	const category = (await findCategoryByName(user, categoryName))!;
+	const category = await waitForCategoryNamed(user, categoryName);
 	await expectRoomInCategory(user, room._id, category._id);
 
 	await openCategory(fixtures, category._id);
@@ -68,7 +65,7 @@ test('moves a room to a category, collapses, renames and deletes it', { tags: ['
 	const newName = randomCategoryName();
 	const roomRow = `rooms-list-view-item-${room.name}`;
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await groupRoomsByCategory(fixtures);
 	await openRoomScreen(fixtures, 'RoomActionsView', room.name);
 	await moveOpenRoomToCategory(fixtures, category);
@@ -90,12 +87,12 @@ test('moves a room to a category, collapses, renames and deletes it', { tags: ['
 	await fillCategoryName(fixtures, newName);
 	await tapWhenVisible(fixtures, 'rename-category-view-save');
 	await expectVisible(fixtures, 'category-settings-view');
-	await expectCategoryRenamed(user, category._id, newName);
+	await expectCategoryName(user, category._id, newName);
 
 	await scrollAndTap(screen.getByTestId('category-settings-view-list'), screen.getByTestId('category-settings-view-delete'));
 	await confirmAlert(fixtures, /will move back to default groups/, /^Delete$/i);
 	await expectVisible(fixtures, 'rooms-list-view');
-	await expectCategoryDeleted(user, category._id);
+	await expectCategoryName(user, category._id, undefined);
 	await expectRoomInCategory(user, room._id, undefined);
 	await expectHidden(fixtures, `rooms-list-section-${category._id}`);
 	await expectVisible(fixtures, roomRow);

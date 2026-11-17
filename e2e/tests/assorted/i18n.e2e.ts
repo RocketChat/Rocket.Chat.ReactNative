@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { openScreen } from '~e2e/support/appduct';
-import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
+import { loginToApp, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
 import { navigateToLanguage, openSidebar } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
@@ -26,7 +26,7 @@ test('translates the app and falls back to English', { tags: ['test-5'] }, async
 	const user = await createUser();
 	await createRandomRoom(user);
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await openScreen(fixtures, 'LanguageView');
 	await selectLanguage(fixtures, 'en');

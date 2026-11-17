@@ -126,7 +126,7 @@ export const createE2EERoom = async (fixtures: Fixtures, room: string, creator: 
 	}
 };
 
-export const openRoomFromList = async (fixtures: Fixtures, room: string) => {
+export const openRoomPastPasswordBanner = async (fixtures: Fixtures, room: string) => {
 	const { screen } = fixtures;
 	const savePasswordBanner = screen.getByTestId('e2e-save-your-password-view-close');
 	const roomRow = screen.getByTestId(`rooms-list-view-item-${room}`);
@@ -137,7 +137,7 @@ export const openRoomFromList = async (fixtures: Fixtures, room: string) => {
 };
 
 export const openEncryptedRoom = async (fixtures: Fixtures, room: string) => {
-	await openRoomFromList(fixtures, room);
+	await openRoomPastPasswordBanner(fixtures, room);
 	await enterE2EEPassword(fixtures);
 };
 

@@ -8,7 +8,7 @@ import {
 	firstVisible,
 	replaceText,
 	hideKeyboard,
-	loginWithDeepLink,
+	loginToApp,
 	type Fixtures,
 	LONG_TIMEOUT,
 	fillWhenUncovered,
@@ -90,7 +90,7 @@ test('edits profile info and changes password', { tags: ['test-2'] }, async fixt
 	const { screen } = fixtures;
 	const user = await createUser();
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await openScreen(fixtures, 'ProfileView');
 	await expectAllVisible(fixtures, [
 		'profile-view-avatar',

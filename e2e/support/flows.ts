@@ -526,21 +526,30 @@ const IN_APP_LOGIN_TIMEOUT = 10_000;
 
 const dismissLeftoverAlert = ({ screen }: Fixtures) => tapIfVisible(screen.getByRole('button', /^OK$/i));
 
-const loginInApp = async (fixtures: Fixtures, session: Session, server: string) => {
+const appductErrorType = (error: unknown) => (error as { type?: string } | null)?.type;
+
+const APP_DEFECT_ERRORS = ['tool_not_found', 'tool_execution_error', 'tool_serialization_error', 'invalid_request'];
+
+const loginThroughAppduct = async (fixtures: Fixtures, session: Session, server: string) => {
 	await fixtures.appduct.call('reset_app');
 	await dismissLeftoverAlert(fixtures);
 	await fixtures.appduct.call('login_with_token', { host: serverHost(server), token: session.authToken });
 	await expect(fixtures.screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: IN_APP_LOGIN_TIMEOUT });
 };
 
-const loggedInApp = async (fixtures: Fixtures, session: Session, server: string) => {
+const tryLoginThroughAppduct = async (fixtures: Fixtures, session: Session, server: string) => {
 	if (!appInstalled) {
 		return false;
 	}
 	try {
-		await loginInApp(fixtures, session, server);
+		if (await isVisibleNow(fixtures.screen.getByTestId('passcode-button-0'))) {
+			console.log('The app is behind its screen lock, falling back to a full reset');
+			return false;
+		}
+		await loginThroughAppduct(fixtures, session, server);
 		return true;
 	} catch (error) {
+		if (APP_DEFECT_ERRORS.includes(appductErrorType(error) ?? '')) throw error;
 		console.log(`Appduct login failed, falling back to a full reset: ${error}`);
 		return false;
 	}
@@ -561,9 +570,9 @@ const loginAfterReset = async (fixtures: Fixtures, session: Session, server: str
 	);
 };
 
-export const loginWithDeepLink = async (fixtures: Fixtures, credentials: Credentials, server = data.server) => {
+export const loginToApp = async (fixtures: Fixtures, credentials: Credentials, server = data.server) => {
 	const session = await login(credentials);
-	if (!(await loggedInApp(fixtures, session, server))) {
+	if (!(await tryLoginThroughAppduct(fixtures, session, server))) {
 		await loginAfterReset(fixtures, session, server);
 	}
 	await dismissAndroidSystemDialogs(fixtures);

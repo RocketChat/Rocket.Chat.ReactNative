@@ -2,8 +2,8 @@ import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { goBack, goBackUntil, loginWithDeepLink, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
-import { navigateToRoomActions } from '~e2e/support/room';
+import { goBack, goBackUntil, loginToApp, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
+import { openRoomScreen } from '~e2e/support/appduct';
 import { expectRoomTitle, tapHeaderItem } from '~e2e/support/header';
 import { random } from '~e2e/support/random';
 import { createChannel } from '~e2e/support/teams';
@@ -15,7 +15,7 @@ const expectRoomsList = ({ screen }: Fixtures) =>
 
 const convertChannelToTeam = async (fixtures: Fixtures, channel: string) => {
 	const { screen } = fixtures;
-	await navigateToRoomActions(fixtures, channel);
+	await openRoomScreen(fixtures, 'RoomActionsView', channel);
 	await screen.scrollUntilVisible(screen.getByTestId('room-actions-convert-to-team'));
 	await screen.getByTestId('room-actions-convert-to-team').tap();
 	await expect(screen.getByText(/You are converting this channel to a team. All members will be kept./)).toBeVisible({
@@ -29,7 +29,7 @@ const convertChannelToTeam = async (fixtures: Fixtures, channel: string) => {
 
 const moveChannelToTeam = async (fixtures: Fixtures, channel: string, team: string) => {
 	const { screen } = fixtures;
-	await navigateToRoomActions(fixtures, channel);
+	await openRoomScreen(fixtures, 'RoomActionsView', channel);
 	await screen.scrollUntilVisible(screen.getByTestId('room-actions-move-to-team'));
 	await screen.getByTestId('room-actions-move-to-team').tap();
 	await tapHeaderItem(fixtures, 'select-list-view-submit', 'Next');
@@ -50,7 +50,7 @@ const moveChannelToTeam = async (fixtures: Fixtures, channel: string, team: stri
 
 const convertTeamToChannel = async (fixtures: Fixtures, team: string, channelToDelete: string) => {
 	const { screen } = fixtures;
-	await navigateToRoomActions(fixtures, team);
+	await openRoomScreen(fixtures, 'RoomActionsView', team);
 	await screen.scrollUntilVisible(screen.getByText('Convert to channel'));
 	await screen.getByText('Convert to channel').tap();
 	await expect(screen.getByText(/Converting team to channel/)).toBeVisible({ timeout: LONG_TIMEOUT });
@@ -70,7 +70,7 @@ test('converts channels and teams', { tags: ['test-6'] }, async fixtures => {
 	const toBeMoved = `to-be-moved-${random()}`;
 	const publicChannelToBeConverted = `channel-public-to-be-converted-${random()}`;
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await createChannel(fixtures, publicChannelToBeConverted, { publicChannel: true });
 	await convertChannelToTeam(fixtures, publicChannelToBeConverted);

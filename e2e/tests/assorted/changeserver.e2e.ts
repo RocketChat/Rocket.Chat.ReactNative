@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
-import { loginWithDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
+import { loginToApp, LONG_TIMEOUT } from '~e2e/support/flows';
 import { registerOnWorkspace } from '~e2e/support/onboarding';
 import {
 	addServerFromServersList,
@@ -22,7 +22,7 @@ test('switches between servers and keeps the last one on relaunch', { tags: ['te
 	const room = await createRandomRoom(user);
 	const roomItem = screen.getByTestId(`rooms-list-view-item-${room.name}`);
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await openServersList(fixtures);
 	await addServerFromServersList(fixtures, data.alternateServer);

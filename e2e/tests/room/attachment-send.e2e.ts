@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { openRoom } from '~e2e/support/appduct';
 import { type Credentials, createRandomRoom, createUser, deleteCreatedUsers, get } from '~e2e/support/api';
-import { expectVisible, loginWithDeepLink, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
+import { expectVisible, loginToApp, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
@@ -28,7 +28,7 @@ test('sends an image picked from the library', { tags: ['test-8'] }, async fixtu
 	const user = await createUser();
 	const room = await createRandomRoom(user);
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await openRoom(fixtures, room.name);
 
 	await tapWhenVisible(fixtures, 'message-composer-actions');

@@ -6,7 +6,7 @@ import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/a
 import {
 	goBack,
 	hideKeyboard,
-	loginWithDeepLink,
+	loginToApp,
 	sendMessage,
 	type Fixtures,
 	LONG_TIMEOUT,
@@ -99,7 +99,7 @@ test('creates and navigates discussions', { tags: ['test-5'] }, async fixtures =
 	const room = await createRandomRoom(user);
 	const discussionFromNewMessage = `${random()} Discussion NewMessageView`;
 	const discussionFromComposer = `${random()} Discussion MessageComposer actions`;
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await createDiscussionFromNewMessage(fixtures, room.name, discussionFromNewMessage);
 	await hideKeyboard(fixtures);

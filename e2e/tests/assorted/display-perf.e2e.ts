@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { openScreen } from '~e2e/support/appduct';
-import { isVisibleNow, loginWithDeepLink, LONG_TIMEOUT, succeeds, type Fixtures, headerItem } from '~e2e/support/flows';
+import { isVisibleNow, loginToApp, LONG_TIMEOUT, succeeds, type Fixtures, headerItem } from '~e2e/support/flows';
 import { goToDisplayPreferences, goToRoomListFromDisplayPreferences } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
@@ -44,7 +44,7 @@ test('changes the rooms list display preferences', { tags: ['test-5'] }, async f
 	const avatars = screen.getByTestId('avatar', { visible: true });
 	const generalRow = screen.getByTestId('rooms-list-view-item-general');
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	for (const target of [
 		generalRow,
 		headerItem(fixtures, 'rooms-list-view-create-channel', 'Create new channel, team, direct message or discussion'),

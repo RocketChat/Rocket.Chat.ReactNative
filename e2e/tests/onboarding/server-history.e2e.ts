@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
-import { goBackUntil, loginWithDeepLink, logout, LONG_TIMEOUT } from '~e2e/support/flows';
+import { goBackUntil, loginToApp, logout, LONG_TIMEOUT } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
@@ -12,7 +12,7 @@ test('remembers and deletes a server from history', { tags: ['test-4'] }, async 
 	const user = await createUser();
 	const historyItem = screen.getByTestId(`servers-history-${data.server}`);
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await logout(fixtures);
 
 	await screen.getByTestId('servers-history-button').tap();

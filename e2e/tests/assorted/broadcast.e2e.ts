@@ -6,7 +6,7 @@ import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
 	goBackUntil,
 	hideKeyboard,
-	loginWithDeepLink,
+	loginToApp,
 	sendMessage,
 	type Fixtures,
 	LONG_TIMEOUT,
@@ -58,13 +58,13 @@ test('creates a broadcast room and replies to its message', { tags: ['test-7'] }
 	const owner = await createUser();
 	const member = await createUser();
 
-	await loginWithDeepLink(fixtures, owner);
+	await loginToApp(fixtures, owner);
 	await createBroadcastChannel(fixtures, room, member.username);
 	await expectBroadcastInRoomInfo(fixtures, room);
 	await returnToRoom(fixtures, room);
 	await sendMessage(fixtures, 'message');
 
-	await loginWithDeepLink(fixtures, member);
+	await loginToApp(fixtures, member);
 	await openRoom(fixtures, room);
 	await expect(screen.getByTestId('message-composer')).toBeHidden();
 	await expect(screen.getByLabel('This room is read only')).toBeVisible();

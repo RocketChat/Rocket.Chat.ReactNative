@@ -3,14 +3,7 @@ import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { openScreen } from '~e2e/support/appduct';
-import {
-	expectVisible,
-	type Fixtures,
-	loginWithDeepLink,
-	LONG_TIMEOUT,
-	tapUntilHidden,
-	tapWhenVisible
-} from '~e2e/support/flows';
+import { expectVisible, type Fixtures, loginToApp, LONG_TIMEOUT, tapUntilHidden, tapWhenVisible } from '~e2e/support/flows';
 import { tapHeaderItem } from '~e2e/support/header';
 import { expectLabel } from '~e2e/support/keyboard';
 
@@ -75,7 +68,7 @@ afterEach(deleteCreatedUsers);
 test('shows alerts as toasts or dialogs', { tags: ['test-3'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await openScreen(fixtures, 'AccessibilityAndAppearanceView');
 	await expectToastsSelected(fixtures);

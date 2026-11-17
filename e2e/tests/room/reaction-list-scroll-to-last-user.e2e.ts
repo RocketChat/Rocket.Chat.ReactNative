@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { openRoom } from '~e2e/support/appduct';
 import { createRandomRoom, createUser, deleteCreatedUsers, reactAsNewUsers, sendMessage } from '~e2e/support/api';
-import { loginWithDeepLink, LONG_TIMEOUT, tapWhenVisible, expectVisible } from '~e2e/support/flows';
+import { loginToApp, LONG_TIMEOUT, tapWhenVisible, expectVisible } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 
 afterEach(deleteCreatedUsers);
@@ -16,7 +16,7 @@ test('scrolls the reaction list to the last user', { tags: ['test-5'], timeout: 
 	const room = await createRandomRoom(user);
 	const messageText = `reaction-list-message-${random()}`;
 	const { message } = await sendMessage(user, room.name, messageText);
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await openRoom(fixtures, room.name);
 	await expect(screen.getByText(messageText, { exact: false }).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 

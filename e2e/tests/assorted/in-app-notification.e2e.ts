@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { openRoom } from '~e2e/support/appduct';
 import { createDM, createRandomRoom, createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
-import { goBackUntil, loginWithDeepLink, type Fixtures, LONG_TIMEOUT, roomTitle } from '~e2e/support/flows';
+import { goBackUntil, loginToApp, type Fixtures, LONG_TIMEOUT, roomTitle } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
@@ -24,7 +24,7 @@ test('opens the DM from an in-app notification', { tags: ['test-6'] }, async fix
 	const directMessage = await createDM(receiver, sender.username);
 	const senderRoomTitle = roomTitle(fixtures, sender.username);
 
-	await loginWithDeepLink(fixtures, receiver);
+	await loginToApp(fixtures, receiver);
 
 	await sendMessage(sender, directMessage.room.rid, 'Message in DM');
 	await tapNotification(fixtures, 'Message in DM');

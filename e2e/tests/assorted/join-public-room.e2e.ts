@@ -9,7 +9,7 @@ import {
 	expectAllHidden,
 	expectAllVisible,
 	expectVisible,
-	loginWithDeepLink,
+	loginToApp,
 	openRoomActions,
 	searchAndNavigateRoom,
 	sendMessage,
@@ -35,7 +35,7 @@ test('previews, joins and leaves a public room', { tags: ['test-3'] }, async fix
 	const room = data.channels.detoxpublic.name;
 	const user = await createUser();
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await searchAndNavigateRoom(fixtures, room);
 
 	await expectAllVisible(fixtures, ['room-view', 'room-header', 'room-view-join', 'room-view-join-button']);

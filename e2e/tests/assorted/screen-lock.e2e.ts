@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { openScreen } from '~e2e/support/appduct';
-import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
+import { loginToApp, type Fixtures, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
 import { enterPasscode, openSettings } from '~e2e/support/settings';
 import { delay } from '~e2e/support/timing';
 
@@ -40,7 +40,7 @@ test('locks the app with a passcode and changes it', { tags: ['test-8'], timeout
 	const screenLockConfig = screen.getByTestId('screen-lock-config-view');
 	const user = await createUser();
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await openScreen(fixtures, 'SecurityPrivacyView');
 	await openScreenLock(fixtures);
 	await expect(screenLockConfig).toBeVisible({ timeout: LONG_TIMEOUT });

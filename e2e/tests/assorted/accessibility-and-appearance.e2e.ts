@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { openScreen } from '~e2e/support/appduct';
-import { expectTexts, goBackUntil, loginWithDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
+import { expectTexts, goBackUntil, loginToApp, LONG_TIMEOUT } from '~e2e/support/flows';
 import { toggleAccessibilitySwitchAndOpenRoom } from '~e2e/support/settings';
 
 const MENTIONS_SWITCH = 'accessibility-mentions-with-at-symbol-switch';
@@ -24,7 +24,7 @@ test(
 	async fixtures => {
 		const { screen } = fixtures;
 		const user = await createUser();
-		await loginWithDeepLink(fixtures, user);
+		await loginToApp(fixtures, user);
 		await openScreen(fixtures, 'AccessibilityAndAppearanceView');
 
 		for (const testId of [

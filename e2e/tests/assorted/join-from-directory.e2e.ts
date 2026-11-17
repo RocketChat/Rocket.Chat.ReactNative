@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { createRandomTeam, createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
 import {
-	loginWithDeepLink,
+	loginToApp,
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenVisible,
@@ -52,7 +52,7 @@ test('joins a channel, user and team from the directory', { tags: ['test-7'] }, 
 	const threadStart = await sendMessage(user, CHANNEL, thread);
 	await sendMessage(user, threadStart.message.rid, 'insidethread', threadStart.message._id);
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await openDirectory(fixtures);
 	await searchAndOpen(fixtures, CHANNEL);

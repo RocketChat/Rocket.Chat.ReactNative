@@ -9,7 +9,7 @@ import {
 	expectVisible,
 	goBackUntil,
 	hideKeyboard,
-	loginWithDeepLink,
+	loginToApp,
 	type Fixtures,
 	LONG_TIMEOUT,
 	fillWhenUncovered,
@@ -153,7 +153,7 @@ test('manages a team', { tags: ['test-3'] }, async fixtures => {
 	const room = await createRandomRoom(owner);
 	const privateChannel = `private${random()}-channel-team`;
 
-	await loginWithDeepLink(fixtures, owner);
+	await loginToApp(fixtures, owner);
 	await openRoom(fixtures, team);
 	await expectRoomHeaderButtons(fixtures);
 

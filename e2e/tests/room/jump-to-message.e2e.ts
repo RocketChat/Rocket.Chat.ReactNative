@@ -5,7 +5,7 @@ import { openRoom } from '~e2e/support/appduct';
 import { adminCredentials } from '~e2e/support/api';
 import { delay } from '~e2e/support/timing';
 import {
-	loginWithDeepLink,
+	loginToApp,
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenVisible,
@@ -102,7 +102,7 @@ const scrollUntilLoaded = ({ screen }: Fixtures, target: Locator, direction: 'up
 
 test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, async fixtures => {
 	const { screen } = fixtures;
-	await loginWithDeepLink(fixtures, adminCredentials());
+	await loginToApp(fixtures, adminCredentials());
 
 	await openRoom(fixtures, ROOM);
 	await expect(testIdContaining(fixtures, 'Quote first message')).toBeVisible({ timeout: LONG_TIMEOUT });

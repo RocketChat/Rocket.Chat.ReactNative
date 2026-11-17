@@ -5,7 +5,7 @@ import { openRoom, openRoomScreen } from '~e2e/support/appduct';
 import { createDM, createRandomRoom, createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
 import {
 	hideKeyboard,
-	loginWithDeepLink,
+	loginToApp,
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenVisible,
@@ -51,7 +51,7 @@ test('blocks, ignores and reports a user', { tags: ['test-4'] }, async fixtures 
 	const otherUser = await createUser();
 	const room = await createRandomRoom(user);
 	await createDM(user, otherUser.username);
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await openRoomScreen(fixtures, 'RoomInfoView', otherUser.username);
 	await toggleUserAction(fixtures, 'Block', 'Unblock');

@@ -6,7 +6,7 @@ import { openScreen } from '~e2e/support/appduct';
 import {
 	expectAllVisible,
 	goBack,
-	loginWithDeepLink,
+	loginToApp,
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenUncovered,
@@ -38,7 +38,7 @@ test('shows settings, clears cache and opens legal', { tags: ['test-2'] }, async
 	const room = await createRandomRoom(user);
 	const settingsView = screen.getByTestId('settings-view');
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await openSettings(fixtures);
 	await expectAllVisible(fixtures, [
 		'settings-view-language',

@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { openRoom } from '~e2e/support/appduct';
 import { createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
-import { loginWithDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
+import { loginToApp, LONG_TIMEOUT } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 import { delay } from '~e2e/support/timing';
 
@@ -27,7 +27,7 @@ test(
 		const messageContent = (suffix: string) => screen.getByTestId(`message-content-${tag}-${suffix}`);
 
 		await sendFromSender('baseline');
-		await loginWithDeepLink(fixtures, user);
+		await loginToApp(fixtures, user);
 		await openRoom(fixtures, sender.username);
 		await expect(messageContent('baseline')).toBeVisible({ timeout: LONG_TIMEOUT });
 

@@ -58,25 +58,26 @@ export const moveOpenRoomToCategory = async (fixtures: Fixtures, category: Sideb
 	}
 };
 
-export const findCategoryByName = async (credentials: Credentials, name: string) =>
-	(await getSidebarCategories(credentials)).find(category => category.name === name);
+export const waitForCategoryNamed = async (credentials: Credentials, name: string) => {
+	let category: SidebarCategory | undefined;
+	await expect
+		.poll(
+			async () => {
+				category = (await getSidebarCategories(credentials)).find(candidate => candidate.name === name);
+				return category?.name;
+			},
+			{ timeout: LONG_TIMEOUT }
+		)
+		.toBe(name);
+	return category!;
+};
 
-export const expectCategoryNamed = (credentials: Credentials, name: string) =>
-	expect.poll(async () => (await findCategoryByName(credentials, name)) !== undefined, { timeout: LONG_TIMEOUT }).toBe(true);
-
-export const expectCategoryRenamed = (credentials: Credentials, categoryId: string, name: string) =>
+export const expectCategoryName = (credentials: Credentials, categoryId: string, name: string | undefined) =>
 	expect
 		.poll(async () => (await getSidebarCategories(credentials)).find(category => category._id === categoryId)?.name, {
 			timeout: LONG_TIMEOUT
 		})
 		.toBe(name);
-
-export const expectCategoryDeleted = (credentials: Credentials, categoryId: string) =>
-	expect
-		.poll(async () => (await getSidebarCategories(credentials)).some(category => category._id === categoryId), {
-			timeout: LONG_TIMEOUT
-		})
-		.toBe(false);
 
 export const expectRoomInCategory = (credentials: Credentials, roomId: string, categoryId: string | undefined) =>
 	expect.poll(() => getRoomCategory(credentials, roomId), { timeout: LONG_TIMEOUT }).toBe(categoryId);

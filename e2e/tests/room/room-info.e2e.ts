@@ -7,7 +7,7 @@ import {
 	fillSettled,
 	fillWhenUncovered,
 	hideKeyboard,
-	loginWithDeepLink,
+	loginToApp,
 	type Fixtures,
 	LONG_TIMEOUT,
 	confirmAlert,
@@ -156,7 +156,7 @@ test('shows and edits room info', { tags: ['test-8'], timeout: 600_000 }, async 
 	const room = await createRandomRoom(user, 'p');
 	const newRoomName = `${room.name}new`;
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await openRoomScreen(fixtures, 'RoomInfoView', room.name);
 	await expectInfoView(fixtures);
 

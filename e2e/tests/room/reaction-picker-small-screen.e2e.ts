@@ -2,14 +2,7 @@ import { afterEach, test } from '~e2e/support/fixtures';
 
 import { openRoom } from '~e2e/support/appduct';
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
-import {
-	loginWithDeepLink,
-	sendMessage,
-	type Fixtures,
-	tapWhenVisible,
-	expectVisible,
-	openMessageActions
-} from '~e2e/support/flows';
+import { loginToApp, sendMessage, type Fixtures, tapWhenVisible, expectVisible, openMessageActions } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
@@ -30,7 +23,7 @@ test(
 		const user = await createUser();
 		const room = await createRandomRoom(user);
 
-		await loginWithDeepLink(fixtures, user);
+		await loginToApp(fixtures, user);
 		await openRoom(fixtures, room.name);
 		await sendMessage(fixtures, message);
 

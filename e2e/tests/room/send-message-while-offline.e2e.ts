@@ -3,7 +3,7 @@ import { expect } from 'e2e';
 
 import { openRoom } from '~e2e/support/appduct';
 import { createUser, deleteCreatedUsers, sendMessage as sendApiMessage } from '~e2e/support/api';
-import { loginWithDeepLink, navigateToRoom, sendMessage, LONG_TIMEOUT } from '~e2e/support/flows';
+import { loginToApp, navigateToRoom, sendMessage, LONG_TIMEOUT } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 
 afterEach(async ({ device }) => {
@@ -22,7 +22,7 @@ test(
 		const storedMessage = screen.getByTestId(`message-content-${tag}-stored`);
 
 		await sendApiMessage(sender, `@${user.username}`, `${tag}-stored`);
-		await loginWithDeepLink(fixtures, user);
+		await loginToApp(fixtures, user);
 		await openRoom(fixtures, sender.username);
 		await expect(storedMessage).toBeVisible({ timeout: LONG_TIMEOUT });
 
