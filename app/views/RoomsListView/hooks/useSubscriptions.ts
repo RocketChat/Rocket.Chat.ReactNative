@@ -31,7 +31,14 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 	const [loaded, setLoaded] = useState<{ database: typeof activeDatabase; rows: TSubscriptionModel[] }>();
 	const roles = useAppSelector(state => getUserSelector(state).roles, shallowEqual);
 	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
-	const { customCategoryNames, categoryUnreadOptions, sectionsOrder, groupOrder } = useSidebarCategories();
+	const {
+		customCategoryNames,
+		categoryUnreadOptions,
+		sectionsOrder,
+		groupOrder,
+		mergeTeamsAndChannels,
+		groupUnlistedInConversations
+	} = useSidebarCategories();
 	const isGrouping = showUnread || showFavorites || groupByType || customCategoryNames.size > 0;
 	const isOmnichannelAgent = roles?.includes('livechat-agent') ?? false;
 	const hasCollapsedGroup = collapsedGroups.size > 0;
@@ -93,6 +100,8 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 				showUnread,
 				showFavorites,
 				groupByType,
+				mergeTeamsAndChannels,
+				groupUnlistedInConversations,
 				isOmnichannelAgent,
 				collapsedGroups
 			}),
@@ -105,6 +114,8 @@ export const useSubscriptions = (collapsedGroups: ReadonlySet<string>) => {
 			showUnread,
 			showFavorites,
 			groupByType,
+			mergeTeamsAndChannels,
+			groupUnlistedInConversations,
 			isOmnichannelAgent,
 			collapsedGroups
 		]

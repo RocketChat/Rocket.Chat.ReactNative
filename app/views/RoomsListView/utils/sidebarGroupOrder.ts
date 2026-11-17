@@ -4,6 +4,7 @@ export const FAVORITES_GROUP = 'Favorites';
 export const TEAMS_GROUP = 'Teams';
 export const DISCUSSIONS_GROUP = 'Discussions';
 export const CHANNELS_GROUP = 'Channels';
+export const TEAMS_AND_CHANNELS_GROUP = 'Teams_and_channels';
 export const DIRECT_MESSAGES_GROUP = 'Direct_Messages';
 export const CONVERSATIONS_GROUP = 'Conversations';
 export const UNREAD_GROUP = 'Unread';
@@ -29,8 +30,29 @@ const DYNAMIC_GROUPS: readonly string[] = [
 
 export const SYSTEM_GROUPS: readonly string[] = [...DYNAMIC_GROUPS, ...DEFAULT_GROUP_ORDER];
 
-export const getSectionsOrder = (adminSectionsOrder: string[] | undefined): readonly string[] =>
-	adminSectionsOrder ? adminSectionsOrder.filter(key => SYSTEM_GROUPS.includes(key)) : SYSTEM_GROUPS;
+const STATIC_GROUPS: readonly string[] = [...DEFAULT_GROUP_ORDER, TEAMS_AND_CHANNELS_GROUP];
+
+const KNOWN_GROUPS: readonly string[] = [...DYNAMIC_GROUPS, ...STATIC_GROUPS];
+
+type SectionsOrderOptions = {
+	mergeTeamsAndChannels?: boolean;
+	keepConversations?: boolean;
+};
+
+export const getSectionsOrder = (
+	adminSectionsOrder: string[] | undefined,
+	{ mergeTeamsAndChannels = false, keepConversations = false }: SectionsOrderOptions = {}
+): readonly string[] => {
+	const sectionsOrder = adminSectionsOrder ? adminSectionsOrder.filter(key => KNOWN_GROUPS.includes(key)) : [...SYSTEM_GROUPS];
+	if (mergeTeamsAndChannels && !sectionsOrder.includes(TEAMS_AND_CHANNELS_GROUP)) {
+		const channelsIndex = sectionsOrder.indexOf(CHANNELS_GROUP);
+		sectionsOrder.splice(channelsIndex === -1 ? sectionsOrder.length : channelsIndex + 1, 0, TEAMS_AND_CHANNELS_GROUP);
+	}
+	if (keepConversations && !sectionsOrder.includes(CONVERSATIONS_GROUP)) {
+		sectionsOrder.push(CONVERSATIONS_GROUP);
+	}
+	return sectionsOrder;
+};
 
 const mergeWithSectionsOrder = (storedIds: string[], staticSectionsOrder: readonly string[]): string[] => {
 	const merged = [...storedIds];
@@ -49,27 +71,35 @@ const mergeWithSectionsOrder = (storedIds: string[], staticSectionsOrder: readon
 
 export const getGroupOrder = (sidebarCategories: ISidebarCategory[], sectionsOrder: readonly string[]): string[] => {
 	const storedIds = sidebarCategories.filter(category => !DYNAMIC_GROUPS.includes(category._id)).map(category => category._id);
-	const staticSectionsOrder = sectionsOrder.filter(key => DEFAULT_GROUP_ORDER.includes(key));
+	const staticSectionsOrder = sectionsOrder.filter(key => STATIC_GROUPS.includes(key));
 	return mergeWithSectionsOrder([...new Set(storedIds)], staticSectionsOrder);
 };
 
-type GroupVisibility = {
+export type GroupVisibility = {
 	customCategoryNames: Map<string, string>;
 	showFavorites: boolean;
 	groupByType: boolean;
+	mergeTeamsAndChannels: boolean;
+	groupUnlistedInConversations: boolean;
 };
 
-export const isVisibleGroup = (key: string, { customCategoryNames, showFavorites, groupByType }: GroupVisibility) => {
+export const isVisibleGroup = (
+	key: string,
+	{ customCategoryNames, showFavorites, groupByType, mergeTeamsAndChannels, groupUnlistedInConversations }: GroupVisibility
+) => {
 	switch (key) {
 		case FAVORITES_GROUP:
 			return showFavorites;
 		case TEAMS_GROUP:
-		case DISCUSSIONS_GROUP:
 		case CHANNELS_GROUP:
+			return groupByType && !mergeTeamsAndChannels;
+		case TEAMS_AND_CHANNELS_GROUP:
+			return groupByType && mergeTeamsAndChannels;
+		case DISCUSSIONS_GROUP:
 		case DIRECT_MESSAGES_GROUP:
 			return groupByType;
 		case CONVERSATIONS_GROUP:
-			return !groupByType;
+			return !groupByType || groupUnlistedInConversations;
 		default:
 			return customCategoryNames.has(key);
 	}
