@@ -69,7 +69,7 @@ const composerState = {
 const renderInput = ({
 	action,
 	sharing = false,
-	tmid = undefined
+	tmid
 }: {
 	action?: Parameters<typeof MessageActionProvider>[0]['initialAction'];
 	sharing?: boolean;
