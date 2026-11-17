@@ -125,6 +125,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               testID="avatar"
             >
               <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
                 borderRadius={4}
                 containerViewRef={{"current":"Object"}}
                 contentFit="cover"
@@ -142,6 +143,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                 sfEffect={null}
                 source={
                   [
@@ -155,6 +157,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 }
                 style={
                   {
+                    "backgroundColor": "#E4E7EA",
                     "borderRadius": 4,
                     "height": 36,
                     "width": 36,
@@ -673,6 +676,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               testID="avatar"
             >
               <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
                 borderRadius={4}
                 containerViewRef={{"current":"Object"}}
                 contentFit="cover"
@@ -690,6 +694,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                 sfEffect={null}
                 source={
                   [
@@ -703,6 +708,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 }
                 style={
                   {
+                    "backgroundColor": "#E4E7EA",
                     "borderRadius": 4,
                     "height": 36,
                     "width": 36,
@@ -1221,6 +1227,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               testID="avatar"
             >
               <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
                 borderRadius={4}
                 containerViewRef={{"current":"Object"}}
                 contentFit="cover"
@@ -1238,6 +1245,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                 sfEffect={null}
                 source={
                   [
@@ -1251,6 +1259,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 }
                 style={
                   {
+                    "backgroundColor": "#E4E7EA",
                     "borderRadius": 4,
                     "height": 36,
                     "width": 36,
@@ -1756,6 +1765,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
               testID="avatar"
             >
               <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
                 borderRadius={4}
                 containerViewRef={{"current":"Object"}}
                 contentFit="cover"
@@ -1773,6 +1783,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                 sfEffect={null}
                 source={
                   [
@@ -1786,6 +1797,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 }
                 style={
                   {
+                    "backgroundColor": "#E4E7EA",
                     "borderRadius": 4,
                     "height": 36,
                     "width": 36,
@@ -2324,6 +2336,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               testID="avatar"
             >
               <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
                 borderRadius={4}
                 containerViewRef={{"current":"Object"}}
                 contentFit="cover"
@@ -2341,6 +2354,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                 sfEffect={null}
                 source={
                   [
@@ -2354,6 +2368,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
                 style={
                   {
+                    "backgroundColor": "#E4E7EA",
                     "borderRadius": 4,
                     "height": 36,
                     "width": 36,
@@ -2856,6 +2871,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               testID="avatar"
             >
               <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
                 borderRadius={4}
                 containerViewRef={{"current":"Object"}}
                 contentFit="cover"
@@ -2873,6 +2889,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                 sfEffect={null}
                 source={
                   [
@@ -2886,6 +2903,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
                 style={
                   {
+                    "backgroundColor": "#E4E7EA",
                     "borderRadius": 4,
                     "height": 36,
                     "width": 36,
@@ -3388,6 +3406,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               testID="avatar"
             >
               <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
                 borderRadius={4}
                 containerViewRef={{"current":"Object"}}
                 contentFit="cover"
@@ -3405,6 +3424,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                 sfEffect={null}
                 source={
                   [
@@ -3418,6 +3438,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
                 style={
                   {
+                    "backgroundColor": "#E4E7EA",
                     "borderRadius": 4,
                     "height": 36,
                     "width": 36,
@@ -3920,6 +3941,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               testID="avatar"
             >
               <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
                 borderRadius={4}
                 containerViewRef={{"current":"Object"}}
                 contentFit="cover"
@@ -3937,6 +3959,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                 sfEffect={null}
                 source={
                   [
@@ -3950,6 +3973,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
                 style={
                   {
+                    "backgroundColor": "#E4E7EA",
                     "borderRadius": 4,
                     "height": 36,
                     "width": 36,
@@ -4452,6 +4476,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               testID="avatar"
             >
               <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
                 borderRadius={4}
                 containerViewRef={{"current":"Object"}}
                 contentFit="cover"
@@ -4469,6 +4494,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                 sfEffect={null}
                 source={
                   [
@@ -4482,6 +4508,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
                 style={
                   {
+                    "backgroundColor": "#E4E7EA",
                     "borderRadius": 4,
                     "height": 36,
                     "width": 36,
@@ -5004,6 +5031,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               testID="avatar"
             >
               <ViewManagerAdapter_ExpoImage
+                backgroundColor={4293191658}
                 borderRadius={4}
                 containerViewRef={{"current":"Object"}}
                 contentFit="cover"
@@ -5021,6 +5049,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                 sfEffect={null}
                 source={
                   [
@@ -5034,6 +5063,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 }
                 style={
                   {
+                    "backgroundColor": "#E4E7EA",
                     "borderRadius": 4,
                     "height": 36,
                     "width": 36,
@@ -5539,6 +5569,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               testID="avatar"
             >
               <ViewManagerAdapter_ExpoImage
+                backgroundColor={4281151545}
                 borderRadius={4}
                 containerViewRef={{"current":"Object"}}
                 contentFit="cover"
@@ -5556,6 +5587,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                 sfEffect={null}
                 source={
                   [
@@ -5569,6 +5601,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 }
                 style={
                   {
+                    "backgroundColor": "#2D3039",
                     "borderRadius": 4,
                     "height": 36,
                     "width": 36,
@@ -6074,6 +6107,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               testID="avatar"
             >
               <ViewManagerAdapter_ExpoImage
+                backgroundColor={4279637783}
                 borderRadius={4}
                 containerViewRef={{"current":"Object"}}
                 contentFit="cover"
@@ -6091,6 +6125,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 onProgress={[Function]}
                 placeholder={[]}
                 priority="high"
+                recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                 sfEffect={null}
                 source={
                   [
@@ -6104,6 +6139,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 }
                 style={
                   {
+                    "backgroundColor": "#161717",
                     "borderRadius": 4,
                     "height": 36,
                     "width": 36,

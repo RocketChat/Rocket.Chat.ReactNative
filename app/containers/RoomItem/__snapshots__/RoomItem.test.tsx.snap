@@ -141,6 +141,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -158,6 +159,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -171,6 +173,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -468,6 +471,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -485,6 +489,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -498,6 +503,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -837,6 +843,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -854,6 +861,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -867,6 +875,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -1206,6 +1215,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -1223,6 +1233,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -1236,6 +1247,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -1575,6 +1587,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -1592,6 +1605,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -1605,6 +1619,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -1944,6 +1959,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -1961,6 +1977,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -1974,6 +1991,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -2313,6 +2331,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -2330,6 +2349,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -2343,6 +2363,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -2682,6 +2703,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -2699,6 +2721,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -2712,6 +2735,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -3051,6 +3075,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -3068,6 +3093,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -3081,6 +3107,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -3420,6 +3447,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -3437,6 +3465,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -3450,6 +3479,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -3789,6 +3819,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -3806,6 +3837,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -3819,6 +3851,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -4162,6 +4195,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                 testID="avatar"
               >
                 <ViewManagerAdapter_ExpoImage
+                  backgroundColor={4293191658}
                   borderRadius={8}
                   containerViewRef={{"current":"Object"}}
                   contentFit="cover"
@@ -4179,6 +4213,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                   sfEffect={null}
                   source={
                     [
@@ -4192,6 +4227,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                   }
                   style={
                     {
+                      "backgroundColor": "#E4E7EA",
                       "borderRadius": 8,
                       "height": 36,
                       "width": 36,
@@ -4469,6 +4505,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -4486,6 +4523,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -4499,6 +4537,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -4838,6 +4877,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -4855,6 +4895,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -4868,6 +4909,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -5207,6 +5249,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -5224,6 +5267,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -5237,6 +5281,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -7427,6 +7472,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -7444,6 +7490,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -7457,6 +7504,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -7758,6 +7806,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -7775,6 +7824,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -7788,6 +7838,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -8097,6 +8148,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -8114,6 +8166,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -8127,6 +8180,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -8442,6 +8496,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -8459,6 +8514,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -8472,6 +8528,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -8787,6 +8844,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -8804,6 +8862,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -8817,6 +8876,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -9132,6 +9192,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -9149,6 +9210,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -9162,6 +9224,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -9477,6 +9540,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -9494,6 +9558,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -9507,6 +9572,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -9888,6 +9954,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -9905,6 +9972,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -9918,6 +9986,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -10299,6 +10368,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -10316,6 +10386,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -10329,6 +10400,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -10712,6 +10784,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -10729,6 +10802,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -10742,6 +10816,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -11015,6 +11090,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -11032,6 +11108,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -11045,6 +11122,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -11318,6 +11396,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -11335,6 +11414,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -11348,6 +11428,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -11621,6 +11702,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -11638,6 +11720,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -11651,6 +11734,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -11924,6 +12008,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -11941,6 +12026,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -11954,6 +12040,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -12227,6 +12314,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -12244,6 +12332,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -12257,6 +12346,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -12530,6 +12620,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -12547,6 +12638,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -12560,6 +12652,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -12833,6 +12926,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -12850,6 +12944,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -12863,6 +12958,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -13136,6 +13232,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -13153,6 +13250,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -13166,6 +13264,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -13439,6 +13538,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -13456,6 +13556,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -13469,6 +13570,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -13747,6 +13849,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -13764,6 +13867,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -13777,6 +13881,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -14092,6 +14197,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -14109,6 +14215,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -14122,6 +14229,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -14474,6 +14582,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -14491,6 +14600,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -14504,6 +14614,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -14819,6 +14930,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -14836,6 +14948,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -14849,6 +14962,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -15205,6 +15319,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                 testID="avatar"
               >
                 <ViewManagerAdapter_ExpoImage
+                  backgroundColor={4293191658}
                   borderRadius={8}
                   containerViewRef={{"current":"Object"}}
                   contentFit="cover"
@@ -15222,6 +15337,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                   onProgress={[Function]}
                   placeholder={[]}
                   priority="high"
+                  recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                   sfEffect={null}
                   source={
                     [
@@ -15235,6 +15351,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                   }
                   style={
                     {
+                      "backgroundColor": "#E4E7EA",
                       "borderRadius": 8,
                       "height": 36,
                       "width": 36,
@@ -15512,6 +15629,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -15529,6 +15647,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -15542,6 +15661,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -15823,6 +15943,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -15840,6 +15961,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -15853,6 +15975,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -16126,6 +16249,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -16143,6 +16267,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -16156,6 +16281,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -16429,6 +16555,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -16446,6 +16573,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -16459,6 +16587,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -16732,6 +16861,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -16749,6 +16879,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -16762,6 +16893,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -17035,6 +17167,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -17052,6 +17185,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -17065,6 +17199,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -17338,6 +17473,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -17355,6 +17491,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -17368,6 +17505,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -17641,6 +17779,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -17658,6 +17797,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -17671,6 +17811,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -17944,6 +18085,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -17961,6 +18103,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/@rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -17974,6 +18117,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -18252,6 +18396,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -18269,6 +18414,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/diego.mello?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -18282,6 +18428,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,
@@ -18563,6 +18710,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   testID="avatar"
                 >
                   <ViewManagerAdapter_ExpoImage
+                    backgroundColor={4293191658}
                     borderRadius={8}
                     containerViewRef={{"current":"Object"}}
                     contentFit="cover"
@@ -18580,6 +18728,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                     onProgress={[Function]}
                     placeholder={[]}
                     priority="high"
+                    recyclingKey="https://open.rocket.chat/avatar/rocket.cat?format=png&size=72"
                     sfEffect={null}
                     source={
                       [
@@ -18593,6 +18742,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                     }
                     style={
                       {
+                        "backgroundColor": "#E4E7EA",
                         "borderRadius": 8,
                         "height": 36,
                         "width": 36,

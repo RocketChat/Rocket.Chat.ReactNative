@@ -77,6 +77,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         testID="avatar"
       >
         <ViewManagerAdapter_ExpoImage
+          backgroundColor={4293191658}
           borderRadius={2}
           containerViewRef={{"current":"Object"}}
           contentFit="cover"
@@ -94,6 +95,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          recyclingKey="https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240"
           sfEffect={null}
           source={
             [
@@ -107,6 +109,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           }
           style={
             {
+              "backgroundColor": "#E4E7EA",
               "borderRadius": 2,
               "height": 120,
               "width": 120,
@@ -238,6 +241,7 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
         testID="avatar"
       >
         <ViewManagerAdapter_ExpoImage
+          backgroundColor={4293191658}
           borderRadius={2}
           containerViewRef={{"current":"Object"}}
           contentFit="cover"
@@ -255,6 +259,7 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
           onProgress={[Function]}
           placeholder={[]}
           priority="high"
+          recyclingKey="https://open.rocket.chat/avatar/john.doe?format=png&size=240"
           sfEffect={null}
           source={
             [
@@ -268,6 +273,7 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
           }
           style={
             {
+              "backgroundColor": "#E4E7EA",
               "borderRadius": 2,
               "height": 120,
               "width": 120,
