@@ -1,5 +1,4 @@
 import { type RefObject, useCallback, useEffect, useRef, useState } from 'react';
-import { InteractionManager } from 'react-native';
 
 import { useLiveRef } from '~/lib/hooks/useLiveRef';
 import log from '~/lib/methods/helpers/log';
@@ -76,7 +75,7 @@ export function useRoomInit({
 		if (!hasInitWork) {
 			return;
 		}
-		const task = InteractionManager.runAfterInteractions(() => {
+		const immediate = setImmediate(() => {
 			initControllerRef.current?.abort();
 			const controller = new AbortController();
 			initControllerRef.current = controller;
@@ -88,7 +87,7 @@ export function useRoomInit({
 		return () => {
 			initControllerRef.current?.abort();
 			setSettledTarget(null);
-			task.cancel();
+			clearImmediate(immediate);
 		};
 	}, [hasInitWork, rid, tmid, roomStore, onLoadedRef]);
 
