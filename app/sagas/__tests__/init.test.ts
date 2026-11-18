@@ -42,7 +42,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 import RNBootSplash from 'react-native-bootsplash';
 
 import { appInit, appStart } from '~/actions/app';
-import { RootEnum } from '~/definitions';
+import { RootEnum } from '~/definitions/redux/TRootEnum';
 import initRoot from '../init';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getAllServers, getServerById } from '~/lib/database/services/Server';

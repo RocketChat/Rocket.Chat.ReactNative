@@ -13,20 +13,22 @@ import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
-import { type TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
+import { type TActionSheetOptionsItem, useActionSheet } from '../ActionSheet/Provider';
+import { ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet/ActionSheet';
 import { useLastFocusedMessageRef } from '~/lib/a11y/useLastFocusedMessageRef';
 import Header, { HEADER_HEIGHT, type IHeader } from './Header';
 import events from '~/lib/methods/helpers/log/events';
-import {
-	type IApplicationState,
-	type IEmoji,
-	type ILoggedUser,
-	type TAnyMessageModel,
-	type TSubscriptionModel
-} from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type IEmoji } from '~/definitions/IEmoji';
+import { type ILoggedUser } from '~/definitions/ILoggedUser';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
 import { getQuoteMessageLink } from '~/lib/methods/getQuoteMessageLink';
-import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
+import { hasPermission } from '~/lib/methods/helpers/hasPermission';
 import {
 	deleteMessage,
 	markAsUnread,

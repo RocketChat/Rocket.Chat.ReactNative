@@ -2,22 +2,17 @@ import { getUniqueId } from 'react-native-device-info';
 import EJSON from 'ejson';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 
+import { type IAvatarSuggestion, type IProfileParams } from '~/definitions/IProfile';
+import { type IMessage } from '~/definitions/IMessage';
 import {
-	type IAvatarSuggestion,
-	type IMessage,
 	type IMessagePreferences,
 	type INotificationPreferences,
-	type IPreviewItem,
-	type IProfileParams,
 	type IRoleUser,
-	type IRoom,
-	type IRoomNotifications,
-	type IRoomSettings,
-	type IServerRoom,
-	type ISidebarCategory,
-	type RoomType,
-	type SubscriptionType
-} from '~/definitions';
+	type ISidebarCategory
+} from '~/definitions/IUser';
+import { type IPreviewItem } from '~/definitions/ISlashCommand';
+import { type IRoom, type IRoomNotifications, type IRoomSettings, type IServerRoom, type RoomType } from '~/definitions/IRoom';
+import { type SubscriptionType } from '~/definitions/ISubscription';
 import { type TParams } from '~/definitions/ILivechatEditView';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
 import { type ISpotlight } from '~/definitions/ISpotlight';
@@ -26,7 +21,8 @@ import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers
 import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
-import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { getBundleId, isIOS } from '../methods/helpers/deviceInfo';
 import { getDeviceToken } from '../notifications/deviceToken';
 import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';

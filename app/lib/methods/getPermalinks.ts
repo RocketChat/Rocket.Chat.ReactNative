@@ -1,7 +1,8 @@
 import log from './helpers/log';
-import { type TAnyMessageModel, type TSubscriptionModel, type SubscriptionType } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
+import { type TSubscriptionModel, type SubscriptionType } from '~/definitions/ISubscription';
 import { store } from '../store/auxStore';
-import { isGroupChat } from './helpers';
+import { isGroupChat } from './helpers/isGroupChat';
 import { getRoom } from './getRoom';
 
 type TRoomType = 'p' | 'c' | 'd';

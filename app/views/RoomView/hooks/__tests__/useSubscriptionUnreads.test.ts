@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react-native';
 import { of, Subject } from 'rxjs';
 
 import database from '~/lib/database';
-import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import { createRoomStore, observeRoom } from '~/views/RoomView/stores/RoomStore';
 import { useSubscriptionUnreads } from '../useSubscriptionUnreads';
 
@@ -12,9 +12,13 @@ jest.mock('~/lib/database', () => ({
 }));
 jest.mock('~/lib/methods/readMessages', () => ({ readMessages: jest.fn() }));
 jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn() }));
-jest.mock('~/lib/methods/helpers/helpers', () => ({
-	getUidDirectMessage: jest.fn(),
-	isGroupChat: jest.fn(() => false),
+jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
+	getUidDirectMessage: jest.fn()
+}));
+jest.mock('~/lib/methods/helpers/isGroupChat', () => ({
+	isGroupChat: jest.fn(() => false)
+}));
+jest.mock('~/lib/methods/helpers/canAutoTranslate', () => ({
 	canAutoTranslate: jest.fn(() => false)
 }));
 

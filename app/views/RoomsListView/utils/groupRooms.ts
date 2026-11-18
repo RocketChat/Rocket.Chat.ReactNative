@@ -1,6 +1,6 @@
 import partition from 'lodash/partition';
 
-import { type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import {
 	CHANNELS_GROUP,
 	CONVERSATIONS_GROUP,

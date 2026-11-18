@@ -6,7 +6,7 @@ import {
 	type NativeStackNavigationOptions
 } from '@react-navigation/native-stack';
 
-import { showActionSheetRef } from '~/containers/ActionSheet';
+import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
 import { type TIconsName } from '~/containers/CustomIcon';
 import * as HeaderButton from '~/containers/Header/components/HeaderButton';
 import Radio from '~/containers/Radio';

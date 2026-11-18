@@ -2026,7 +2026,7 @@ PODS:
   - react-native-webrtc (124.0.7):
     - JitsiWebRTC (~> 124.0.0)
     - React-Core
-  - react-native-webview (13.16.1):
+  - react-native-webview (14.0.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -3591,7 +3591,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 678f254e77e69986ae9d9e62721f152e73dbc76b
   react-native-slider: b15258ac3d287a5951f76b11497d659ed20c0def
   react-native-webrtc: e8f0ce746353adc2744a2b933645e1aeb41eaa74
-  react-native-webview: 2a4da2e03d3ec2c731c4d1a389cb86aaa4902167
+  react-native-webview: 8ea93f5c9c986e9ce9888953759aa3db77eaa379
   React-NativeModulesApple: 2b658272ca69df0694cf5d54f9510aa7c33977bc
   React-networking: 8ff98fbf96752706ec66ccc1d0089c1005a5be11
   React-oscompat: cea7c66df8076bd97e95885d7f584b86afffde41

@@ -6,7 +6,7 @@ import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 import { updateSettings } from '~/actions/settings';
 import { mockedStore } from '~/reducers/mockedStore';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
 
 jest.mock('~/lib/hooks/useAltTextSupported', () => ({

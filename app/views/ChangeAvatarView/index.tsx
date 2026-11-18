@@ -21,13 +21,15 @@ import AvatarPresentational from '~/containers/Avatar/Avatar';
 import Button from '~/containers/Button';
 import I18n from '~/i18n';
 import { type ChatsStackParamList } from '~/stacks/types';
-import { type IAvatar } from '~/definitions';
+import { type IAvatar } from '~/definitions/IProfile';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '~/lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
 import ImagePicker, { type Image } from '~/lib/methods/helpers/ImagePicker/ImagePicker';
-import { compareServerVersion, isImageURL, useDebounce } from '~/lib/methods/helpers';
-import { ControlledFormTextInput } from '~/containers/TextInput';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { isImageURL } from '~/lib/methods/helpers/image';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
+import { ControlledFormTextInput } from '~/containers/TextInput/ControlledFormTextInput';
 import { HeaderBackButton } from '~/containers/Header/components/HeaderBackButton';
 import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
 

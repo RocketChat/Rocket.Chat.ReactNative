@@ -1,4 +1,4 @@
-import { isRead } from '../helpers';
+import { isRead } from '../isRead';
 
 const openRoom = { open: true, archived: false, unread: 0, alert: false, tunread: [] as string[] };
 

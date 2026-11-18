@@ -9,7 +9,7 @@ import sdk from '../sdk';
 import { addMediaSubs, buildConnectedDriver } from '~/lib/testUtils/sdkIntegration';
 import type { IMockSdk, IMockSdkDriver, MockConnection } from '~/lib/testUtils/sdkIntegration';
 import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
-import type { IApplicationState } from '~/definitions';
+import type { IApplicationState } from '~/definitions/redux';
 
 jest.mock('./terminateNativeCall', () => ({
 	terminateNativeCall: jest.fn()

@@ -1,4 +1,4 @@
-import { BaseButton } from './Buttons';
+import { BaseButton } from './Buttons/BaseButton';
 import { useEditCancel } from '../ComposerStore';
 import { useMessageActionKind } from '~/containers/message/stores/MessageActionStore';
 import { Gap } from './Gap';

@@ -15,16 +15,6 @@ jest.mock('@react-navigation/native', () => ({
 
 let mockIsIOS = true;
 let mockIsTablet = false;
-jest.mock('~/lib/methods/helpers', () =>
-	Object.defineProperties(
-		{ ...jest.requireActual('~/lib/methods/helpers') },
-		{
-			hasNativeHeaderBar: { get: () => mockIsIOS, configurable: true },
-			isTablet: { get: () => mockIsTablet, configurable: true }
-		}
-	)
-);
-
 jest.mock('~/lib/methods/helpers/deviceInfo', () =>
 	Object.defineProperties(
 		{ ...jest.requireActual('~/lib/methods/helpers/deviceInfo') },
@@ -47,7 +37,9 @@ jest.mock('~/selectors/login', () => ({ getUserSelector: () => ({ requirePasswor
 const mockColors = { fontDanger: '#f00', buttonBackgroundDangerDefault: '#f00', userPresenceDisabled: '#f00' };
 jest.mock('~/theme', () => ({ useTheme: () => ({ colors: mockColors }) }));
 const mockShowActionSheetRef = jest.fn();
-jest.mock('~/containers/ActionSheet', () => ({ showActionSheetRef: (...args: unknown[]) => mockShowActionSheetRef(...args) }));
+jest.mock('~/containers/ActionSheet/Provider', () => ({
+	showActionSheetRef: (...args: unknown[]) => mockShowActionSheetRef(...args)
+}));
 jest.mock('../../components/Header', () => ({ __esModule: true, default: 'RoomsListHeaderView' }));
 jest.mock('../../components/ServersList', () => ({ __esModule: true, default: 'ServersList' }));
 

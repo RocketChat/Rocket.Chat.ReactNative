@@ -13,16 +13,13 @@ import { getThreadById } from '~/lib/database/services/Thread';
 import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
 import { store as reduxStore } from '~/lib/store/auxStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '~/actions/usersTyping';
-import { debounce } from '../helpers';
+import { debounce } from '../helpers/debounce';
 import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
 import { Encryption } from '~/lib/encryption';
-import {
-	type IMessage,
-	type TMessageModel,
-	type TThreadMessageModel,
-	type TThreadModel,
-	type IDeleteMessageBulkParams
-} from '~/definitions';
+import { type IMessage, type TMessageModel } from '~/definitions/IMessage';
+import { type TThreadMessageModel } from '~/definitions/IThreadMessage';
+import { type TThreadModel } from '~/definitions/IThread';
+import { type IDeleteMessageBulkParams } from '~/definitions/IDeleteMessageBulkParams';
 import { type IDDPMessage } from '~/definitions/IDDPMessage';
 import sdk from '~/lib/services/sdk';
 import { readMessages } from '../readMessages';

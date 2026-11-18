@@ -8,7 +8,8 @@ import { MessageRoomProvider, type MessageRoomState } from '~/containers/message
 import { mockedStore } from '~/reducers/mockedStore';
 import { setUser } from '~/actions/login';
 import { selectServerSuccess } from '~/actions/server';
-import { type IAttachment, type IUserMessage, type TAnyMessageModel } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type IUserMessage, type TAnyMessageModel } from '~/definitions/IMessage';
 import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '~/lib/methods/handleMediaDownload';
 import { fetchAutoDownloadEnabled } from '~/lib/methods/autoDownloadPreference';
 import { isImageBase64 } from '~/lib/methods/isImageBase64';

@@ -5,7 +5,7 @@ import dayjs from '../dayjs';
 import { getMessageById } from '../database/services/Message';
 import { getThreadMessageById } from '../database/services/ThreadMessage';
 import database from '../database';
-import { emitter } from './helpers';
+import { emitter } from './helpers/emitter';
 import log from './helpers/log';
 import { AUDIO_MODE } from '../constants/audio';
 

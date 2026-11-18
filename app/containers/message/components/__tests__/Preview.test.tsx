@@ -3,7 +3,7 @@ import { render } from '@testing-library/react-native';
 
 import MessagePreview from '../Preview';
 import { mockedStore } from '~/reducers/mockedStore';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 
 jest.mock('../Touchable/Touch', () => {
 	const { forwardRef } = require('react');

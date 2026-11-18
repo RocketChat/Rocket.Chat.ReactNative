@@ -53,7 +53,7 @@ import { all, fork } from 'redux-saga/effects';
 
 import { deepLinkingOpen } from '~/actions/deepLinking';
 import { SERVER } from '~/actions/actionsTypes';
-import { RootEnum } from '~/definitions';
+import { RootEnum } from '~/definitions/redux/TRootEnum';
 import deepLinkingRoot from '../deepLinking';
 import initRoot from '../init';
 import selectServerRoot from '../selectServer';
