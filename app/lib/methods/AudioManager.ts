@@ -163,13 +163,14 @@ class AudioManagerClass {
 	}
 
 	findRenderedAudioKey = ({ msgId, rid, tmid }: { msgId: string; rid: string; tmid?: string }) =>
-		Object.keys(this.audioMeta).find(audioKey => {
+		[...this.audiosRendered].find(audioKey => {
 			const meta = this.audioMeta[audioKey];
-			return meta.msgId === msgId && meta.rid === rid && meta.tmid === tmid && this.audiosRendered.has(audioKey);
+			return meta?.msgId === msgId && meta.rid === rid && meta.tmid === tmid;
 		});
 
 	async getNextThreadAudioMessage(msgId: string, tmid: string) {
-		const finishedTs = msgId === tmid ? 0 : (await getThreadMessageById(msgId))?.ts;
+		const isThreadParent = msgId === tmid;
+		const finishedTs = isThreadParent ? 0 : (await getThreadMessageById(msgId))?.ts;
 		if (finishedTs === undefined) {
 			return null;
 		}

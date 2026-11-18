@@ -131,7 +131,7 @@ const AudioPlayer = ({
 			});
 			return () => clearImmediate(immediate);
 		}
-	}, [fileUri, isDownloaded]);
+	}, [fileUri, isDownloaded, tmid]);
 
 	useEffect(() => {
 		if (paused) {
