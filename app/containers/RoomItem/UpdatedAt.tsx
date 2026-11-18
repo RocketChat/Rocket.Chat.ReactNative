@@ -14,18 +14,7 @@ const UpdatedAt = memo(({ date, isUnread }: IUpdatedAtProps) => {
 	}
 	return (
 		<Text
-			style={[
-				styles.date,
-				{
-					color: colors.fontDefault
-				},
-				isUnread && [
-					styles.updateAlert,
-					{
-						color: colors.fontInfo
-					}
-				]
-			]}
+			style={[styles.date, isUnread ? [styles.updateAlert, { color: colors.fontInfo }] : { color: colors.fontDefault }]}
 			ellipsizeMode='tail'
 			numberOfLines={1}>
 			{capitalize(date)}
