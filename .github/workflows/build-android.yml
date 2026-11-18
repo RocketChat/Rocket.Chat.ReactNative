@@ -22,7 +22,8 @@ jobs:
 
   build-android:
     name: Build
-    runs-on: ubuntu-latest
+    # No Ruby 2.7.7 build for ubuntu-26.04: https://github.com/ruby/ruby-builder/releases/tag/toolcache
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     needs: build-hold
@@ -96,7 +97,7 @@ jobs:
 
   upload-android:
     name: Upload
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       pull-requests: write
@@ -116,7 +117,7 @@ jobs:
 
   upload-internal:
     name: Internal Sharing
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       pull-requests: write

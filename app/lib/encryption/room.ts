@@ -485,9 +485,9 @@ export default class EncryptionRoom {
 	};
 
 	// Encrypt messages
-	encrypt = async (message: IMessage): Promise<IMessage> => {
+	encrypt = async (message: IMessage): Promise<IMessage | undefined> => {
 		if (!this.ready) {
-			return message;
+			return;
 		}
 
 		try {
@@ -508,8 +508,6 @@ export default class EncryptionRoom {
 			// Do nothing
 			console.error(e);
 		}
-
-		return message;
 	};
 
 	encryptFile = async (_rid: string, file: TSendFileMessageFileInfo): TEncryptFileResult => {
