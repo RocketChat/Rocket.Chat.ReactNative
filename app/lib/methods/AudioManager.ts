@@ -203,7 +203,7 @@ class AudioManagerClass {
 		}
 		const { msgId, rid, tmid } = meta;
 		const nextMessage = await this.getNextAudioMessage(msgId, rid, tmid);
-		if (!nextMessage) {
+		if (!nextMessage?.attachments?.some(attachment => attachment.audio_url)) {
 			return;
 		}
 		const nextAudioKey = this.findRenderedAudioKey({ msgId: nextMessage.id, rid, tmid });

@@ -369,6 +369,19 @@ describe('AudioManager', () => {
 			expect(playAudio).toHaveBeenCalledWith(roomNext);
 		});
 
+		it('in the room, a finished message does not play a voice message quoted by the next message', async () => {
+			const { AudioManager } = setup();
+			mockTables.messages = mockTables.messages.map(message =>
+				message.id === 'room-next' ? { ...message, attachments: [{ message_link: '/quoted', attachments: audio }] } : message
+			);
+			const parent = AudioManager.loadAudio({ msgId: 'parent', rid: 'room', uri: 'file://x' });
+			AudioManager.loadAudio({ msgId: 'room-next', rid: 'room', uri: 'file://quoted' });
+
+			const playAudio = await playToEnd(AudioManager, parent);
+
+			expect(playAudio).not.toHaveBeenCalled();
+		});
+
 		it('in the room, a finished thread reply plays nothing', async () => {
 			const { AudioManager } = setup();
 			const reply = AudioManager.loadAudio({ msgId: 'reply-1', rid: 'room', uri: 'file://x' });
