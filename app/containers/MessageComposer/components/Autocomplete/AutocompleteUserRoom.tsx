@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { type IAutocompleteUserRoom } from '~/containers/MessageComposer/interfaces';
 import Avatar from '~/containers/Avatar';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
-import { fetchIsAllOrHere } from '~/containers/MessageComposer/helpers';
+import { fetchIsAllOrHere } from '~/containers/MessageComposer/helpers/fetchIsAllOrHere';
 import I18n from '~/i18n';
 import { useStyle } from './styles';
 

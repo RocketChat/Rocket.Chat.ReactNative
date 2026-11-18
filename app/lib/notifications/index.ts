@@ -3,7 +3,8 @@ import { Platform } from 'react-native';
 
 import { appInit } from '~/actions/app';
 import { deepLinkingClickCallPush, deepLinkingOpen } from '~/actions/deepLinking';
-import { type INotification, SubscriptionType } from '~/definitions';
+import { type INotification } from '~/definitions/INotification';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import { store } from '../store/auxStore';
 import { pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
 

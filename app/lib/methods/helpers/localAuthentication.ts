@@ -19,7 +19,8 @@ import {
 } from '~/lib/constants/localAuthentication';
 import I18n from '~/i18n';
 import { setLocalAuthenticated } from '~/actions/login';
-import { type BiometricInvalidationReason, type BiometricPromptCopy, type TServerModel, type TrustResult } from '~/definitions';
+import { type BiometricInvalidationReason, type BiometricPromptCopy, type TrustResult } from '~/definitions/IBiometricTrustStore';
+import { type TServerModel } from '~/definitions/IServer';
 import log from './log';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';

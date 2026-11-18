@@ -2,8 +2,8 @@ import { View, StyleSheet } from 'react-native';
 import { type ComponentType, type ReactNode } from 'react';
 
 import CallSection from './CallSection';
-import type { ISubscription, TSubscriptionModel } from '~/definitions';
-import { SubscriptionType } from '~/definitions';
+import type { ISubscription, TSubscriptionModel } from '~/definitions/ISubscription';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import { clearEnterpriseModules, setEnterpriseModules } from '~/actions/enterpriseModules';
 import { setPermissions } from '~/actions/permissions';
 import { setUser } from '~/actions/login';

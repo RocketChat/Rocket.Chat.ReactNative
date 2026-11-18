@@ -7,7 +7,7 @@ import {
 	releaseUnretainedThreadPagination,
 	retainThreadPagination
 } from '../loadThreadMessages';
-import { type IReaction } from '~/definitions';
+import { type IReaction } from '~/definitions/IReaction';
 import database from '../../database';
 import { getThreadById } from '../../database/services/Thread';
 import { getThreadMessageById } from '../../database/services/ThreadMessage';

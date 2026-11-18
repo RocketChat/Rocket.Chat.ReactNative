@@ -1,11 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { type NativeStackHeaderItemButton, type NativeStackHeaderItemMenu } from '@react-navigation/native-stack';
 
-import { showActionSheetRef, type TActionSheetOptionsItem } from '~/containers/ActionSheet';
+import { showActionSheetRef, type TActionSheetOptionsItem } from '~/containers/ActionSheet/Provider';
 import { HeaderActions, headerLeftActions, headerRightActions, type IHeaderAction, nativeHeaderItems } from '../headerActions';
 
 jest.mock('../headerIcon', () => ({ headerIcon: (name: string) => ({ type: 'image', source: name }) }));
-jest.mock('~/containers/ActionSheet', () => ({ showActionSheetRef: jest.fn() }));
+jest.mock('~/containers/ActionSheet/Provider', () => ({
+	showActionSheetRef: jest.fn()
+}));
 
 const filterAction: IHeaderAction = {
 	label: 'Filter',

@@ -28,7 +28,7 @@ jest.mock('~/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 	};
 });
 
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	hideActionSheetRef: jest.fn()
 }));
 

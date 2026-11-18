@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { useMemo } from 'react';
 import { map } from 'rxjs';
 
-import { type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import database from '~/lib/database';
 import { useObservable } from '~/lib/hooks/useObservable';
 import { type TRoomPlacement } from '../utils/roomCategory';

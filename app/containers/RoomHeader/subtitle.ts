@@ -1,4 +1,4 @@
-import { STATUS_I18N_KEYS } from '~/definitions';
+import { STATUS_I18N_KEYS } from '~/definitions/TUserStatus';
 import I18n from '~/i18n';
 import { type IActiveUser } from '~/reducers/activeUsers';
 

@@ -36,7 +36,7 @@ jest.mock('~/lib/methods/helpers/handleSaveUserProfileError', () => jest.fn());
 
 const mockShowActionSheet = jest.fn();
 const mockHideActionSheet = jest.fn();
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
 }));
 

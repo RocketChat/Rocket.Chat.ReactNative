@@ -1,6 +1,6 @@
 import { useStore } from 'react-redux';
 
-import { type IApplicationState } from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
 import { getUserSelector } from '~/selectors/login';
 
 const sessionOf = (state: IApplicationState) => ({ server: state.server.server, userId: getUserSelector(state).id });

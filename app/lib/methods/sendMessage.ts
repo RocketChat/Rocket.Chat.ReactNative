@@ -3,11 +3,13 @@ import { type Model } from '@nozbe/watermelondb';
 
 import database from '../database';
 import log from './helpers/log';
-import { random } from './helpers';
+import { random } from './helpers/random';
 import normalizeMessage from './helpers/normalizeMessage';
 import { closeUnclosedCodeBlock } from './helpers/closeUnclosedCodeBlock';
 import { Encryption } from '../encryption';
-import type { E2EType, IMessage, IUser, MessageType, TMessageModel, TThreadMessageModel } from '~/definitions';
+import type { E2EType, IMessage, MessageType, TMessageModel } from '~/definitions/IMessage';
+import type { IUser } from '~/definitions/IUser';
+import type { TThreadMessageModel } from '~/definitions/IThreadMessage';
 import sdk from '../services/sdk';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import { messagesStatus } from '../constants/messagesStatus';
@@ -84,6 +86,10 @@ export async function resendMessage(message: TMessageModel, tmid?: string) {
 			msg: message.msg,
 			...(tmid && { tmid })
 		} as IMessage);
+		if (!m) {
+			await changeMessageStatus(message.id, messagesStatus.ERROR, tmid);
+			return;
+		}
 
 		await sendMessageCall(m);
 	} catch (e) {
@@ -116,6 +122,7 @@ export async function sendMessage(
 		} as IMessage);
 
 		const messageDate = new Date();
+		const status = message ? messagesStatus.TEMP : messagesStatus.ERROR;
 
 		try {
 			await db.write(async () => {
@@ -173,7 +180,7 @@ export async function sendMessage(
 								tm.msg = msg;
 								tm.ts = messageDate;
 								tm._updatedAt = messageDate;
-								tm.status = messagesStatus.TEMP;
+								tm.status = status;
 								tm.u = {
 									_id: user.id || '1',
 									username: user.username,
@@ -200,7 +207,7 @@ export async function sendMessage(
 						m.msg = msg;
 						m.ts = messageDate;
 						m._updatedAt = messageDate;
-						m.status = messagesStatus.TEMP;
+						m.status = status;
 						m.u = {
 							_id: user.id || '1',
 							username: user.username,
@@ -239,7 +246,9 @@ export async function sendMessage(
 			return;
 		}
 
-		await sendMessageCall(message);
+		if (message) {
+			await sendMessageCall(message);
+		}
 	} catch (e) {
 		log(e);
 	}

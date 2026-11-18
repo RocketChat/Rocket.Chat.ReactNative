@@ -2,7 +2,8 @@ import { dequal } from 'dequal';
 
 import * as types from '../actions/actionsTypes';
 import { type TActionsLogin } from '../actions/login';
-import { type IUser, type TUserStatus } from '../definitions';
+import { type IUser } from '../definitions/IUser';
+import { type TUserStatus } from '../definitions/TUserStatus';
 
 export interface IUserLogin {
 	id: string;

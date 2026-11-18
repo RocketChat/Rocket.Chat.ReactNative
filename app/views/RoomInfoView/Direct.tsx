@@ -6,7 +6,7 @@ import { useTheme } from '~/theme';
 import CustomFields from './CustomFields';
 import Timezone from './Timezone';
 import styles from './styles';
-import { type IUser } from '~/definitions';
+import { type IUser } from '~/definitions/IUser';
 import { RoomInfoTag, RoomInfoTagContainer } from './components/RoomInfoTag';
 
 const Roles = ({ roles }: { roles?: string[] }) => {

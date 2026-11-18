@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 
-import { type IUser } from '~/definitions';
+import { type IUser } from '~/definitions/IUser';
 import { type VideoConferenceType } from '~/definitions/IVideoConference';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';

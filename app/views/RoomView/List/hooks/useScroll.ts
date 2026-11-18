@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '~/views/RoomView/definitions';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { MAX_SCROLL_TO_INDEX_RETRIES, MAX_THREAD_SCROLL_TO_INDEX_RETRIES } from '../constants';
 
 // Abort a jump whose target never re-observes within this window: release the anchor, drop to the Live
