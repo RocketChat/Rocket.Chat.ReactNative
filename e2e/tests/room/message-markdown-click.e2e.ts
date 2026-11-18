@@ -1,9 +1,9 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
-	loginWithDeepLink,
+	loginToApp,
 	searchAndNavigateRoom,
 	type Fixtures,
 	LONG_TIMEOUT,
@@ -51,7 +51,7 @@ const inlineTarget = ({ screen, platform }: Fixtures, messageTestId: string, nam
 test('opens markdown mentions, links and threads', { tags: ['test-2'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await searchAndNavigateRoom(fixtures, ROOM);
 	for (const testId of [linkMessage, channelMentionMessage, userMentionMessage, threadMessage]) {
 		await expectVisible(fixtures, testId);

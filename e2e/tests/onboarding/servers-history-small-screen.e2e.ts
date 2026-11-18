@@ -1,10 +1,10 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
 import { logout, LONG_TIMEOUT } from '~e2e/support/flows';
-import { loginWithDeepLinkIntoRunningApp } from '~e2e/support/onboarding';
+import { loginToAppIntoRunningApp } from '~e2e/support/onboarding';
 
 afterEach(deleteCreatedUsers);
 
@@ -16,7 +16,7 @@ test(
 		const user = await createUser();
 		const historyItem = screen.getByTestId(`servers-history-${data.server}`);
 
-		await loginWithDeepLinkIntoRunningApp(fixtures, user);
+		await loginToAppIntoRunningApp(fixtures, user);
 		await logout(fixtures);
 
 		await expect(screen.getByTestId('servers-history-button')).toBeVisible({ timeout: LONG_TIMEOUT });

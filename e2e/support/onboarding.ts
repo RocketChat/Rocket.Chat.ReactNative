@@ -101,7 +101,7 @@ export const casField = ({ screen, platform }: Fixtures, field: 'username' | 'pa
 		? screen.getByTestId(field)
 		: screen.getByRole('textbox', field === 'username' ? 'Username' : 'Password');
 
-export const loginWithDeepLinkIntoRunningApp = async (fixtures: Fixtures, credentials: Credentials) => {
+export const loginToAppIntoRunningApp = async (fixtures: Fixtures, credentials: Credentials) => {
 	const roomsList = fixtures.screen.getByTestId('rooms-list-view');
 	await fixtures.device.installApp(undefined, { reinstall: true });
 	await fixtures.app.open();

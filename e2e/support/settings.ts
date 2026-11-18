@@ -17,7 +17,7 @@ export const openSettings = async (fixtures: Fixtures) => {
 	await expect(fixtures.screen.getByTestId('settings-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-export const openProfile = async (fixtures: Fixtures) => {
+const openProfile = async (fixtures: Fixtures) => {
 	await openSidebar(fixtures);
 	await tapWhenVisible(fixtures, 'sidebar-profile');
 	await expect(fixtures.screen.getByTestId('profile-view')).toBeVisible({ timeout: LONG_TIMEOUT });
@@ -42,12 +42,6 @@ export const enterPasscode = async ({ screen }: Fixtures, passcode: string) => {
 	for (const digit of passcode) {
 		await screen.getByTestId(`passcode-button-${digit}`).tap();
 	}
-};
-
-export const goToAccessibilityAndAppearance = async (fixtures: Fixtures) => {
-	await openSidebar(fixtures);
-	await tapWhenVisible(fixtures, 'sidebar-accessibility');
-	await expect(fixtures.screen.getByTestId('accessibility-view-list')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
 export const toggleAccessibilitySwitchAndOpenRoom = async (fixtures: Fixtures, switchTestId: string) => {

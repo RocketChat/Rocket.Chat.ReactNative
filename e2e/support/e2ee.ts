@@ -1,5 +1,6 @@
 import { expect } from 'e2e';
 
+import { openRoom } from './appduct';
 import { type Credentials, get } from './api';
 import { data } from './data';
 import {
@@ -10,7 +11,6 @@ import {
 	launchApp,
 	loginWithForm,
 	navigateToLogin,
-	navigateToRoom,
 	LONG_TIMEOUT,
 	openMessageActions,
 	succeeds,
@@ -126,18 +126,18 @@ export const createE2EERoom = async (fixtures: Fixtures, room: string, creator: 
 	}
 };
 
-export const openRoomFromList = async (fixtures: Fixtures, room: string) => {
+export const openRoomPastPasswordBanner = async (fixtures: Fixtures, room: string) => {
 	const { screen } = fixtures;
 	const savePasswordBanner = screen.getByTestId('e2e-save-your-password-view-close');
 	const roomRow = screen.getByTestId(`rooms-list-view-item-${room}`);
 	if ((await firstVisible([savePasswordBanner, roomRow])) === savePasswordBanner) {
 		await savePasswordBanner.tap();
 	}
-	await navigateToRoom(fixtures, room);
+	await openRoom(fixtures, room);
 };
 
 export const openEncryptedRoom = async (fixtures: Fixtures, room: string) => {
-	await openRoomFromList(fixtures, room);
+	await openRoomPastPasswordBanner(fixtures, room);
 	await enterE2EEPassword(fixtures);
 };
 
