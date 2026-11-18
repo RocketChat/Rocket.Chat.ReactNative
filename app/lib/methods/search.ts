@@ -6,8 +6,9 @@ import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
 import { type ISearch, type ISearchLocal } from '~/definitions/ISearch';
 import { type IUserMessage } from '~/definitions/IMessage';
-import { SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
-import { isGroupChat } from './helpers/isGroupChat';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
+import { RoomType } from '~/definitions/IRoom';
+import { isGroupChat } from './helpers/roomType';
 import { isReadOnly } from './helpers/isReadOnly';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../encryption/utils';
 
@@ -167,7 +168,7 @@ export const searchRemote = async ({
 							rid: user.username,
 							name: user.username,
 							fname: user.name,
-							t: SubscriptionType.DIRECT,
+							t: RoomType.DIRECT,
 							search: true
 						});
 					});

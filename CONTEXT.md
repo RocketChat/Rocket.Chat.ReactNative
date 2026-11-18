@@ -166,6 +166,7 @@ Reactions and the frequently used table store emoji by name, never glyph. An unr
 - **Inside Stack**: authenticated screens. _Avoid:_ Main stack, app stack
 - **Chats Stack**: room list, room view, room actions within Inside Stack
 - **Master-Detail**: tablet two-pane layout. _Avoid:_ Split view, two-pane
+- **No Room Selected**: the Master-Detail detail pane when no room is open; RoomView renders only the background and header. _Avoid:_ Empty room
 - **Drawer Navigator**: tabs Chats, Profile, Settings, Admin, Accessibility. _Avoid:_ Sidebar, menu
 
 ## Unread & Notification Indicators
@@ -175,7 +176,7 @@ Subscription fields: **Unread** (count; _avoid_ Badge count), **User Mentions** 
 ## Flagged ambiguities
 
 - **Server**: legacy name for Workspace, still in code (`server`, `serversHistory`, `selectServer`). Use Workspace in prose, new names, and copy; renaming is a migration. "Server" as the remote side (_server response_, _server clock_) stays valid.
-- **Room types `'e2e'` and `'thread'`** in the `SubscriptionType` enum are FIXME-marked flags, not room types.
+- **Room type** (`RoomType`) is only `'c'`, `'p'`, `'d'` or `'l'`. A Thread is not a room type: a RoomView with `tmid` is a Thread and carries its parent Room's type.
 - **Account**: means a User, which authenticates on a Workspace.
 - **Channel** strictly means type `'c'`.
 - **History**: Workspace History vs Room History.

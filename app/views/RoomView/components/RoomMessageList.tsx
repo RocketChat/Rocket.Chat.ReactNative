@@ -3,7 +3,6 @@ import { useSetting } from '~/lib/hooks/useSetting';
 import { isRoomFederated } from '~/lib/methods/isRoomFederated';
 import { getHiddenSystemMessages } from '~/lib/methods/helpers/getHiddenSystemMessages';
 import { getUserSelector } from '~/selectors/login';
-import { type RoomType } from '~/definitions/IRoom';
 import { A11yGateProvider } from '~/containers/message/stores/A11yGate';
 import { type IRoomMessageListProps } from '../definitions';
 import { fromSubscription, useRoomStore } from '../stores/RoomStoreContext';
@@ -24,7 +23,7 @@ export const RoomMessageList = ({
 	errorActionsShow
 }: IRoomMessageListProps) => {
 	const rid = useRoomStore(s => s.room.rid);
-	const t = useRoomStore(s => s.room.t) as RoomType;
+	const t = useRoomStore(s => s.room.t);
 	const federated = useRoomStore(fromSubscription(room => isRoomFederated(room), false));
 	const archived = useRoomStore(fromSubscription(room => !!room.archived, false));
 	const broadcast = useRoomStore(fromSubscription(room => !!room.broadcast, false));

@@ -3,12 +3,13 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback } from 'react';
 
 import { type ISearch } from '~/definitions/ISearch';
-import { SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
+import { RoomType } from '~/definitions/IRoom';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { assignRoomToCategory } from '~/lib/methods/assignRoomToCategory';
 import { createDirectMessage } from '~/lib/methods/createDirectMessage';
 import { emitErrorCreateDirectMessage } from '~/lib/methods/helpers/emitErrorCreateDirectMessage';
-import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { type NewMessageStackParamList } from '~/stacks/types';
 
@@ -35,7 +36,7 @@ const openChatInCategory = async (chat: TNewMessageChat, categoryId: string, isM
 			return;
 		}
 		assignRoomToCategory(rid, categoryId);
-		await goRoom({ item: { rid, name: chat.name, t: SubscriptionType.DIRECT }, isMasterDetail });
+		await goRoom({ item: { rid, name: chat.name, t: RoomType.DIRECT }, isMasterDetail });
 	} catch (error: any) {
 		emitErrorCreateDirectMessage(error?.data);
 	}
@@ -52,7 +53,7 @@ export const useOpenChat = (categoryId?: string) => {
 			if (categoryId) {
 				return openChatInCategory(chat, categoryId, isMasterDetail);
 			}
-			return goRoom({ item: chat as TGoRoomItem, isMasterDetail });
+			return goRoom({ item: chat, isMasterDetail });
 		},
 		[categoryId, isMasterDetail, navigation]
 	);

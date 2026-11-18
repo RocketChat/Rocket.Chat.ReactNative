@@ -6,13 +6,14 @@ import database from '~/lib/database';
 import { SUBSCRIPTIONS_TABLE } from '~/lib/database/model/Subscription';
 import { loadThreadMessages, releaseUnretainedThreadPagination } from '~/lib/methods/loadThreadMessages';
 import { readMessages } from '~/lib/methods/readMessages';
+import { loadMessagesForRoom } from '~/lib/methods/loadMessagesForRoom';
+import { loadMissedMessages } from '~/lib/methods/loadMissedMessages';
 import { getUserInfo } from '~/lib/services/restApi';
-import { isGroupChat } from '~/lib/methods/helpers/isGroupChat';
+import { isGroupChat } from '~/lib/methods/helpers/roomType';
 import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import { canAutoTranslate as canAutoTranslateMethod } from '~/lib/methods/helpers/canAutoTranslate';
 import log from '~/lib/methods/helpers/log';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
-import { type RoomType } from '~/definitions/IRoom';
 import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { type TRoomOrPreview, isSubscriptionModel } from '~/definitions/TRoom';
 import {
@@ -22,10 +23,8 @@ import {
 	type RoomStore,
 	type TRoomInitResult
 } from '../definitions';
-import getMessages from '../services/getMessages';
 import { joinRoom, resumeRoom } from '../services/joinRoom';
 
-const EMPTY_ROOM: TRoomOrPreview = { rid: '', t: '' };
 const EMPTY_MEMBER: RoomState['member'] = {};
 
 const INIT_MAX_ATTEMPTS = 3;
@@ -63,7 +62,6 @@ type TLoadRoomResult =
 	| { status: 'failed' };
 
 const loadRoom = async (
-	rid: string,
 	room: TRoomOrPreview,
 	membership: RoomMembership,
 	{ tmid, onThreadMessagesLoaded, signal }: IRoomStoreInitParams
@@ -74,6 +72,7 @@ const loadRoom = async (
 			return { status: 'skipped' };
 		}
 
+		const { rid } = room;
 		const pendingRoomMember = getRoomMember(room);
 
 		let lastSeen: Date | null = null;
@@ -86,10 +85,7 @@ const loadRoom = async (
 			}
 			onThreadMessagesLoaded?.();
 		} else {
-			await getMessages({
-				rid: room.rid,
-				...(isSubscriptionModel(room) && room.lastOpen ? {} : { t: room.t as RoomType })
-			});
+			await (isSubscriptionModel(room) && room.lastOpen ? loadMissedMessages({ rid }) : loadMessagesForRoom({ rid, t: room.t }));
 			if (isAborted()) {
 				return { status: 'skipped' };
 			}
@@ -158,11 +154,7 @@ const observeQueryUntilPresent = (rid: string, store: RoomStore): (() => void) =
 	return () => subscription.unsubscribe();
 };
 
-export function observeRoom(rid: string | undefined, store: RoomStore, onReady?: () => void): () => void {
-	if (!rid) {
-		return () => {};
-	}
-
+export function observeRoom(rid: string, store: RoomStore, onReady?: () => void): () => void {
 	let cancelled = false;
 	let cleanup: () => void = () => {};
 
@@ -197,11 +189,9 @@ export function observeRoom(rid: string | undefined, store: RoomStore, onReady?:
 }
 
 export const createRoomStore = ({
-	rid,
-	initialRoom = EMPTY_ROOM,
+	initialRoom,
 	roomUserId = null
 }: {
-	rid?: string;
 	initialRoom: TRoomOrPreview;
 	roomUserId?: string | null;
 }): RoomStore =>
@@ -215,12 +205,9 @@ export const createRoomStore = ({
 		canViewCannedResponse: false,
 
 		init: async ({ tmid, onThreadMessagesLoaded, signal }: IRoomStoreInitParams = {}): Promise<TRoomInitResult> => {
-			if (!rid) {
-				return { status: 'skipped' };
-			}
 			for (let attempt = 1; attempt <= INIT_MAX_ATTEMPTS; attempt += 1) {
 				const { room, membership } = get();
-				const result = await loadRoom(rid, room, membership, { tmid, onThreadMessagesLoaded, signal });
+				const result = await loadRoom(room, membership, { tmid, onThreadMessagesLoaded, signal });
 				if (signal?.aborted || result.status === 'skipped') {
 					return { status: 'skipped' };
 				}

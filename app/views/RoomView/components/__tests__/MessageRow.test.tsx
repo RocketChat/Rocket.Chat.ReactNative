@@ -1,20 +1,18 @@
 import { act, render } from '@testing-library/react-native';
 
 import database from '~/lib/database';
-import { createObservableRecord } from '../testUtils/observableDatabase';
-import { createRoomStore, observeRoom } from '../stores/RoomStore';
-import { RoomScreenContext } from '../stores/RoomScreenContext';
-import { RoomStoreContext } from '../stores/RoomStoreContext';
-import { MessageRow } from './MessageRow';
+import { createObservableRecord } from '../../testUtils/observableDatabase';
+import { createRoomStore, observeRoom } from '../../stores/RoomStore';
+import { RoomScreenContext } from '../../stores/RoomScreenContext';
+import { RoomStoreContext } from '../../stores/RoomStoreContext';
+import { MessageRow } from '../MessageRow';
 
 jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: { active: { get: jest.fn() } }
 }));
-jest.mock('../services/getMessages', () => ({
-	__esModule: true,
-	default: jest.fn(() => Promise.resolve())
-}));
+jest.mock('~/lib/methods/loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/loadMissedMessages', () => ({ loadMissedMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/loadThreadMessages', () => ({
 	loadThreadMessages: jest.fn(() => Promise.resolve())
 }));
@@ -27,7 +25,8 @@ jest.mock('~/lib/services/restApi', () => ({
 jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
 	getUidDirectMessage: jest.fn(() => 'uid-1')
 }));
-jest.mock('~/lib/methods/helpers/isGroupChat', () => ({
+jest.mock('~/lib/methods/helpers/roomType', () => ({
+	...jest.requireActual('~/lib/methods/helpers/roomType'),
 	isGroupChat: jest.fn(() => false)
 }));
 jest.mock('~/lib/methods/helpers/canAutoTranslate', () => ({
@@ -50,7 +49,7 @@ jest.mock('~/containers/message', () => ({
 		return null;
 	}
 }));
-jest.mock('../LoadMore', () => ({ __esModule: true, default: () => null }));
+jest.mock('../../LoadMore', () => ({ __esModule: true, default: () => null }));
 
 const mockGet = database.active.get as jest.Mock;
 
@@ -70,7 +69,7 @@ describe('MessageRow', () => {
 		const { emit } = setupObserve();
 		const sub: any = { id: 'sub-1', rid: 'rid-1', t: 'c', ignored: [] };
 		const item: any = { id: 'msg-1', ts: new Date('2024-01-01T10:00:00Z'), u: { _id: 'author-1' } };
-		const store = createRoomStore({ rid: 'rid-1', initialRoom: sub });
+		const store = createRoomStore({ initialRoom: sub });
 		observeRoom('rid-1', store);
 		await act(async () => {});
 
@@ -95,7 +94,7 @@ describe('MessageRow', () => {
 		const { emit } = setupObserve();
 		const sub: any = { id: 'sub-1', rid: 'rid-1', t: 'c', tunread: [], tunreadUser: [], tunreadGroup: [] };
 		const item: any = { id: 'msg-1', ts: new Date('2024-01-01T10:00:00Z'), u: { _id: 'author-1' } };
-		const store = createRoomStore({ rid: 'rid-1', initialRoom: sub });
+		const store = createRoomStore({ initialRoom: sub });
 		const cleanup = observeRoom('rid-1', store);
 		await act(async () => {});
 

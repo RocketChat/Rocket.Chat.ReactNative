@@ -20,6 +20,7 @@ import { stackedSearchBarOptions, nativeHeaderContentInset, translucentHeader } 
 import { headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import database from '~/lib/database';
 import UserItem from '~/containers/UserItem';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { type ISelectedUser } from '~/reducers/selectedUsers';
 import { getUserSelector } from '~/selectors/login';
 import { type ChatsStackParamList, type NewMessageStackParamList } from '~/stacks/types';
@@ -29,7 +30,7 @@ import { showErrorAlert } from '~/lib/methods/helpers/info';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { search as runSearch, type TSearch } from '~/lib/methods/search';
 import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
-import { isGroupChat as isGroupChatMethod } from '~/lib/methods/helpers/isGroupChat';
+import { isGroupChat as isGroupChatMethod } from '~/lib/methods/helpers/roomType';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import Header from './Header';
 
@@ -40,7 +41,7 @@ type TNavigation = NativeStackNavigationProp<
 >;
 
 const SelectedUsersView = () => {
-	const [chats, setChats] = useState<ISelectedUser[]>([]);
+	const [chats, setChats] = useState<TSubscriptionModel[]>([]);
 	const [search, setSearch] = useState<TSearch[]>([]);
 	// True while the remote (spotlight) request is in flight, after local results are already painted
 	const [searching, setSearching] = useState(false);
@@ -137,7 +138,7 @@ const SelectedUsersView = () => {
 				const observable = await db.get('subscriptions').query(Q.where('t', 'd')).observeWithColumns(['room_updated_at']);
 
 				querySubscription = observable.subscribe(data => {
-					const chats = orderBy(data, ['roomUpdatedAt'], ['desc']) as ISelectedUser[];
+					const chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
 					setChats(chats);
 				});
 			} catch (e) {
@@ -180,9 +181,8 @@ const SelectedUsersView = () => {
 		}
 	};
 
-	const searchOrChats = (search.length > 0 ? search : chats) as ISelectedUser[];
-	// filter DM between multiple users
-	const data = searchOrChats.filter(sub => !isGroupChatMethod(sub));
+	const directChats = chats.filter(chat => !isGroupChatMethod(chat));
+	const data = (search.length > 0 ? search : directChats) as ISelectedUser[];
 
 	return (
 		<SafeAreaView testID='select-users-view'>

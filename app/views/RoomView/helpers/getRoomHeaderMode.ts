@@ -1,3 +1,4 @@
+import { type RoomType } from '~/definitions/IRoom';
 import { type RoomMembership } from '../definitions';
 
 export type TRoomHeaderMode = 'none' | 'omnichannel' | 'thread' | 'room';
@@ -9,7 +10,7 @@ export const getRoomHeaderMode = ({
 	membership
 }: {
 	tmid?: string;
-	t?: string;
+	t: RoomType;
 	status?: string;
 	membership: RoomMembership;
 }): TRoomHeaderMode => {

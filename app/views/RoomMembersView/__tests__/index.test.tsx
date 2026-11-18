@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react-native';
+import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
@@ -9,9 +9,13 @@ import { setUser } from '~/actions/login';
 import { addSettings, clearSettings } from '~/actions/settings';
 import { getRoomMembers } from '~/lib/services/restApi';
 
+const mockRoom = { current: { rid: 'room-id', t: 'c', name: 'general' } };
+const mockShowActionSheet = jest.fn();
+const mockGrantedPermissions = { current: new Set<string>() };
+
 jest.mock('@react-navigation/native', () => ({
 	...jest.requireActual('@react-navigation/native'),
-	useRoute: () => ({ params: { rid: 'room-id', room: { rid: 'room-id', t: 'c', name: 'general' }, joined: true } }),
+	useRoute: () => ({ params: { rid: 'room-id', room: mockRoom.current, joined: true } }),
 	useNavigation: () => ({ addListener: jest.fn(() => jest.fn()), setOptions: jest.fn(), navigate: jest.fn() })
 }));
 
@@ -21,7 +25,7 @@ jest.mock('~/lib/services/restApi', () => ({
 }));
 
 jest.mock('~/lib/hooks/usePermissions', () => ({
-	usePermissions: () => [false, false, false, false, false]
+	usePermissions: (permissions: string[]) => permissions.map(permission => mockGrantedPermissions.current.has(permission))
 }));
 
 jest.mock('~/lib/hooks/useMasterDetail', () => ({
@@ -29,7 +33,7 @@ jest.mock('~/lib/hooks/useMasterDetail', () => ({
 }));
 
 jest.mock('~/containers/ActionSheet/Provider', () => ({
-	useActionSheet: () => ({ showActionSheet: jest.fn() })
+	useActionSheet: () => ({ showActionSheet: mockShowActionSheet })
 }));
 
 jest.mock('~/containers/Header/components/HeaderButton', () => ({
@@ -105,5 +109,46 @@ describe('RoomMembersView member names', () => {
 
 		expect(await findByText('rt.owner')).toBeTruthy();
 		expect(queryByText('RT Owner')).toBeNull();
+	});
+});
+
+describe('RoomMembersView role options', () => {
+	const roleOptionTestIDs = ['action-sheet-set-owner', 'action-sheet-set-leader', 'action-sheet-set-moderator'];
+
+	const getActionSheetTestIDs = async (room: { rid: string; t: string; name: string }) => {
+		mockRoom.current = room;
+		const { findByText } = render(<RoomMembersView />, { wrapper: Wrapper });
+		fireEvent.press(await findByText('rt.owner'));
+		const [{ options }] = mockShowActionSheet.mock.calls.at(-1);
+		return options.map(({ testID }: { testID?: string }) => testID);
+	};
+
+	beforeAll(() => {
+		initStore(mockedStore);
+		mockedStore.dispatch(setUser({ id: 'logged-user-id' }));
+		setUseRealName(false);
+	});
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockGrantedPermissions.current = new Set(['set-leader', 'set-owner', 'set-moderator']);
+		jest.mocked(getRoomMembers).mockResolvedValue([{ _id: 'owner-id', username: 'rt.owner', name: 'RT Owner' }] as any);
+	});
+
+	afterAll(() => {
+		mockRoom.current = { rid: 'room-id', t: 'c', name: 'general' };
+		mockGrantedPermissions.current = new Set();
+	});
+
+	it('offers owner, leader and moderator in a channel', async () => {
+		const testIDs = await getActionSheetTestIDs({ rid: 'room-id', t: 'c', name: 'general' });
+
+		expect(testIDs).toEqual(expect.arrayContaining(roleOptionTestIDs));
+	});
+
+	it('leaves out owner, leader and moderator in a direct message', async () => {
+		const testIDs = await getActionSheetTestIDs({ rid: 'room-id', t: 'd', name: 'rt.owner' });
+
+		roleOptionTestIDs.forEach(testID => expect(testIDs).not.toContain(testID));
 	});
 });

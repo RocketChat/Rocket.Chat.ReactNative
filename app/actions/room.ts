@@ -1,7 +1,7 @@
 import { type Action } from 'redux';
 
-import { type ERoomType } from '../definitions/ERoomType';
 import { type RoomType } from '../definitions/IRoom';
+import { type ISubscription } from '../definitions/ISubscription';
 import { ROOM } from './actionsTypes';
 
 // TYPE RETURN RELATED
@@ -21,16 +21,14 @@ interface IBaseReturn extends Action {
 type TSubscribeRoom = IBaseReturn;
 type TUnsubscribeRoom = IBaseReturn;
 
-type TRoom = Record<string, any>;
+type TRoom = Pick<ISubscription, 'rid' | 't' | 'teamMain' | 'teamId'>;
 
 interface ILeaveRoom extends Action {
-	roomType: ERoomType;
 	room: TRoom;
 	selected?: ISelected;
 }
 
 interface IDeleteRoom extends Action {
-	roomType: ERoomType;
 	room: TRoom;
 	selected?: ISelected;
 }
@@ -93,20 +91,18 @@ export function unsubscribeRoom(rid: string): TUnsubscribeRoom {
 	};
 }
 
-export function leaveRoom(roomType: ERoomType, room: TRoom, selected?: ISelected): ILeaveRoom {
+export function leaveRoom(room: TRoom, selected?: ISelected): ILeaveRoom {
 	return {
 		type: ROOM.LEAVE,
 		room,
-		roomType,
 		selected
 	};
 }
 
-export function deleteRoom(roomType: ERoomType, room: TRoom, selected?: ISelected): IDeleteRoom {
+export function deleteRoom(room: TRoom, selected?: ISelected): IDeleteRoom {
 	return {
 		type: ROOM.DELETE,
 		room,
-		roomType,
 		selected
 	};
 }

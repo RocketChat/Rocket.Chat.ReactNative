@@ -11,7 +11,6 @@ export function useMessageActions({
 	messageActionStore,
 	showActionSheet,
 	hideActionSheet,
-	rid,
 	tmid,
 	onThreadPress,
 	messageComposerRef,
@@ -97,7 +96,7 @@ export function useMessageActions({
 
 	const onReplyInit = async (messageId: string) => {
 		const message = await getMessageById(messageId);
-		if (!message || !rid) {
+		if (!message) {
 			return;
 		}
 		onThreadPress(message);

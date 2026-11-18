@@ -9,8 +9,7 @@ import {
 } from '../actions/inquiry';
 import { mockedStore } from '~/reducers/mockedStore';
 import { initialState } from './inquiry';
-import { type IOmnichannelRoom, OmnichannelSourceType } from '~/definitions/IRoom';
-import { SubscriptionType } from '~/definitions/ISubscription';
+import { type IOmnichannelRoom, OmnichannelSourceType, RoomType } from '~/definitions/IRoom';
 
 describe('test inquiry reduce', () => {
 	const enabledObj = {
@@ -30,7 +29,7 @@ describe('test inquiry reduce', () => {
 			token: '123456789',
 			status: 'online'
 		},
-		t: SubscriptionType.OMNICHANNEL,
+		t: RoomType.OMNICHANNEL,
 		queueOrder: '1',
 		estimatedWaitingTimeQueue: '0',
 		estimatedServiceTimeAt: new Date(),

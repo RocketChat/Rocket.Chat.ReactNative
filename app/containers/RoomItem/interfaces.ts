@@ -4,8 +4,8 @@ import { type ReactElement } from 'react';
 import { type TSupportedThemes } from '~/theme';
 import { type TUserStatus } from '~/definitions/TUserStatus';
 import { type ILastMessage } from '~/definitions/IMessage';
-import { type SubscriptionType, type ISubscription } from '~/definitions/ISubscription';
-import { type IOmnichannelSource } from '~/definitions/IRoom';
+import { type ISubscription } from '~/definitions/ISubscription';
+import { type RoomType, type IOmnichannelSource } from '~/definitions/IRoom';
 
 export interface ILeftActionsProps {
 	transX: SharedValue<number>;
@@ -63,7 +63,7 @@ export interface ITypeIconProps {
 interface IRoomItemTouchables {
 	toggleFav?: (rid: string, favorite: boolean) => Promise<void>;
 	toggleRead?: (rid: string, tIsRead: boolean) => Promise<void>;
-	hideChannel?: (rid: string, type: SubscriptionType) => Promise<void>;
+	hideChannel?: (rid: string, type: RoomType) => Promise<void>;
 	onPress: (item?: any) => void;
 	onLongPress?: (item?: any) => void;
 	onMoveToCategoryPress?: () => void;
@@ -93,7 +93,7 @@ export interface IRoomItemContainerProps extends IBaseRoomItem {
 
 export interface IRoomItemProps extends IBaseRoomItem {
 	rid: string;
-	type: SubscriptionType;
+	type: RoomType;
 	prid: string;
 	name: string;
 	avatar: string;
@@ -123,7 +123,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 
 export interface ILastMessageProps {
 	lastMessage: ILastMessage;
-	type: SubscriptionType;
+	type: RoomType;
 	showLastMessage: boolean;
 	username: string;
 	useRealName: boolean;
@@ -131,7 +131,7 @@ export interface ILastMessageProps {
 
 export interface ITouchableProps extends IRoomItemTouchables {
 	children: ReactElement;
-	type: SubscriptionType;
+	type: RoomType;
 	width: number;
 	favorite: boolean;
 	isRead: boolean;

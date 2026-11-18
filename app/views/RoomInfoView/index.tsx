@@ -10,7 +10,8 @@ import { shallowEqual } from 'react-redux';
 
 import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import SafeAreaView from '~/containers/SafeAreaView';
-import { type ISubscription, SubscriptionType } from '~/definitions/ISubscription';
+import { type ISubscription } from '~/definitions/ISubscription';
+import { RoomType } from '~/definitions/IRoom';
 import { type IUser } from '~/definitions/IUser';
 import I18n from '~/i18n';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
@@ -68,8 +69,8 @@ const RoomInfoView = (): ReactElement => {
 	const [showEdit, setShowEdit] = useState(false);
 
 	const roomType = room?.t || t;
-	const isDirect = roomType === SubscriptionType.DIRECT;
-	const isLivechat = roomType === SubscriptionType.OMNICHANNEL;
+	const isDirect = roomType === RoomType.DIRECT;
+	const isLivechat = roomType === RoomType.OMNICHANNEL;
 
 	const subscription = useRef<Subscription | undefined>(undefined);
 
@@ -195,7 +196,7 @@ const RoomInfoView = (): ReactElement => {
 			const sub = subRoom.observe();
 			subscription.current = sub.subscribe(changes => {
 				setRoom(changes.asPlain());
-				setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
+				setHeader(!isDirect && canEdit);
 			});
 		} else {
 			try {
@@ -208,7 +209,7 @@ const RoomInfoView = (): ReactElement => {
 			}
 		}
 		setShowEdit(canEdit);
-		setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
+		setHeader(!isDirect && canEdit);
 	};
 
 	// Prevents from flashing RoomInfoView on the header title before fetching actual room data

@@ -4,7 +4,8 @@ import { Alert } from 'react-native';
 import { LISTENER } from '~/containers/Toast';
 import { type IGetRoomRoles } from '~/definitions/IRole';
 import { type IUser, type TUserModel } from '~/definitions/IUser';
-import { SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type NonDirectRoomType, RoomType } from '~/definitions/IRoom';
 import I18n from '~/i18n';
 import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
@@ -24,10 +25,9 @@ import {
 } from '~/lib/services/restApi';
 import { createDirectMessage } from '~/lib/methods/createDirectMessage';
 import database from '~/lib/database';
-import { type RoomTypes } from '~/lib/methods/roomTypeToApiType';
 import { emitErrorCreateDirectMessage } from '~/lib/methods/helpers/emitErrorCreateDirectMessage';
 
-export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
+export type TNonDirectSubscription = TSubscriptionModel & { t: NonDirectRoomType };
 
 const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
 	goRoom({ item, isMasterDetail });
@@ -38,10 +38,12 @@ export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles?: IG
 	return !!userRoleResult?.roles.includes(role);
 };
 
-export const fetchRoomMembersRoles = async (roomType: TRoomType, rid: string, updateState: any): Promise<void> => {
+export const fetchRoomMembersRoles = async (
+	{ rid, t }: Pick<TNonDirectSubscription, 'rid' | 't'>,
+	updateState: (state: { roomRoles: IGetRoomRoles[] }) => void
+): Promise<void> => {
 	try {
-		const type = roomType;
-		const result = await getRoomRoles(rid, type);
+		const result = await getRoomRoles(rid, t);
 		if (result?.success) {
 			updateState({ roomRoles: result.roles });
 		}
@@ -64,7 +66,7 @@ export const handleMute = async (user: TUserModel, rid: string) => {
 export const handleModerator = async (
 	selectedUser: TUserModel,
 	isModerator: boolean,
-	room: TSubscriptionModel,
+	room: TNonDirectSubscription,
 	username: string,
 	callback: () => Promise<void>
 ): Promise<void> => {
@@ -104,7 +106,7 @@ export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): 
 		} else {
 			const result = await createDirectMessage(item.username);
 			if (result.success) {
-				handleGoRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT }, isMasterDetail);
+				handleGoRoom({ rid: result.room?._id as string, name: item.username, t: RoomType.DIRECT }, isMasterDetail);
 			}
 		}
 	} catch (e: any) {
@@ -188,7 +190,7 @@ export const handleRemoveFromTeam = async (
 export const handleLeader = async (
 	selectedUser: TUserModel,
 	isLeader: boolean,
-	room: TSubscriptionModel,
+	room: TNonDirectSubscription,
 	username: string,
 	callback: () => Promise<void>
 ): Promise<void> => {
@@ -221,7 +223,7 @@ export const handleRemoveUserFromRoom = async (
 ): Promise<void> => {
 	try {
 		const userId = selectedUser._id;
-		await removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
+		await removeUserFromRoom({ roomId: room.rid, t: room.t, userId });
 		const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 		EventEmitter.emit(LISTENER, { message });
 		callback();
@@ -241,7 +243,7 @@ export const handleOwner = async (
 	selectedUser: TUserModel,
 	isOwner: boolean,
 	username: string,
-	room: TSubscriptionModel,
+	room: TNonDirectSubscription,
 	callback: Function
 ): Promise<void> => {
 	try {

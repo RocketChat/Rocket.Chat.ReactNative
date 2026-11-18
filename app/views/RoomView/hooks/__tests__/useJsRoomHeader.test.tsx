@@ -13,7 +13,8 @@ jest.mock('~/containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHe
 jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
 	getRoomTitle: jest.fn(() => 'Room Title')
 }));
-jest.mock('~/lib/methods/helpers/isGroupChat', () => ({
+jest.mock('~/lib/methods/helpers/roomType', () => ({
+	...jest.requireActual('~/lib/methods/helpers/roomType'),
 	isGroupChat: jest.fn(() => false)
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({
@@ -47,16 +48,6 @@ describe('useJsRoomHeader', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockTestStore = makeRoomStore();
-	});
-
-	it('sets only the headerLeft spacer and returns when rid is missing', () => {
-		renderHook(() => useJsRoomHeader({ rid: undefined, tmid: undefined, name: 'general', roomStore: mockTestStore }));
-
-		expect(mockSetOptions).toHaveBeenCalledTimes(1);
-		const options = mockSetOptions.mock.calls[0][0];
-		expect(typeof options.headerLeft).toBe('function');
-		expect(options).not.toHaveProperty('headerTitle');
-		expect(options).not.toHaveProperty('headerRight');
 	});
 
 	it('re-fires the title effect when a selected field changes on a re-emitted room', () => {

@@ -1,5 +1,5 @@
 import { store as reduxStore } from '~/lib/store/auxStore';
-import { isGroupChat } from './isGroupChat';
+import { isGroupChat } from './roomType';
 
 export function getRoomTitle(room: any) {
 	const { UI_Use_Real_Name: useRealName, UI_Allow_room_names_with_special_chars: allowSpecialChars } =

@@ -12,30 +12,20 @@ import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
 import log from '~/lib/methods/helpers/log';
 import { deleteRoom as actionDeleteRoom } from '~/actions/room';
-import { ERoomType } from '~/definitions/ERoomType';
+import { canDeleteTeamChannel } from '~/lib/methods/canDeleteTeamChannel';
 import { type ISubscription, type TSubscriptionModel } from '~/definitions/ISubscription';
 
 interface IUseRoomDeletionActions {
 	navigation: NativeStackNavigationProp<(ChatsStackParamList | ModalStackParamList) & TNavigation, 'RoomInfoEditView'>;
 	room: ISubscription;
-	deleteCPermission: boolean;
-	deletePPermission: boolean;
 }
 
-const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPermission }: IUseRoomDeletionActions) => {
+const useRoomDeletionActions = ({ navigation, room }: IUseRoomDeletionActions) => {
 	const dispatch = useDispatch();
 
-	const handleVerifyTeamChannelOwner = (teamChannels: TSubscriptionModel[]) => {
-		const permissionChecks = teamChannels.map(channel => {
-			const hasDeletePermission = channel.t === 'c' ? deleteCPermission : deletePPermission;
-			if (hasDeletePermission) {
-				return channel;
-			}
-
-			return false;
-		});
-
-		return permissionChecks.filter(Boolean)?.[0];
+	const getDeletableChannels = async (teamChannels: TSubscriptionModel[]) => {
+		const canDelete = await Promise.all(teamChannels.map(channel => canDeleteTeamChannel(channel, room.rid)));
+		return teamChannels.filter((_, index) => canDelete[index]).map(({ rid, name, t }) => ({ rid, name, t }));
 	};
 
 	const deleteTeam = async () => {
@@ -46,18 +36,18 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 				.query(Q.where('team_id', room.teamId as string), Q.where('team_main', Q.notEq(true)))
 				.fetch();
 
-			const teamChannelOwner = handleVerifyTeamChannelOwner(teamChannels);
+			const deletableChannels = await getDeletableChannels(teamChannels);
 
-			if (teamChannelOwner) {
+			if (deletableChannels.length) {
 				navigation.navigate('SelectListView', {
 					title: 'Delete_Team',
-					data: teamChannelOwner,
+					data: deletableChannels,
 					infoText: 'Select_channels_to_delete',
 					nextAction: (selected: string[]) => {
 						showConfirmationAlert({
 							message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
 							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-							onPress: () => actionDeleteRoom(ERoomType.t, room, selected)
+							onPress: () => dispatch(actionDeleteRoom(room, selected))
 						});
 					}
 				});
@@ -65,7 +55,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 				showConfirmationAlert({
 					message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-					onPress: () => dispatch(actionDeleteRoom(ERoomType.t, room))
+					onPress: () => dispatch(actionDeleteRoom(room))
 				});
 			}
 		} catch (e: any) {
@@ -89,7 +79,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => dispatch(actionDeleteRoom(ERoomType.c, room))
+					onPress: () => dispatch(actionDeleteRoom(room))
 				}
 			],
 			{ cancelable: false }

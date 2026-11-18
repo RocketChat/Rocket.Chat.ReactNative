@@ -15,9 +15,9 @@ import { INAPP_NOTIFICATION_EMITTER } from '~/lib/constants/notifications';
 import { Encryption } from '~/lib/encryption';
 import updateMessages from '../updateMessages';
 import { type IMessage, type TMessageModel } from '~/definitions/IMessage';
-import { type IServerRoom, type IRoom, type TRoomModel } from '~/definitions/IRoom';
+import { type IServerRoom, type IRoom, type TRoomModel, RoomType } from '~/definitions/IRoom';
 import { type ISidebarCategory } from '~/definitions/IUser';
-import { type ISubscription, SubscriptionType } from '~/definitions/ISubscription';
+import { type ISubscription } from '~/definitions/ISubscription';
 import { type TLoggedUserModel } from '~/definitions/ILoggedUser';
 import { type TThreadMessageModel } from '~/definitions/IThreadMessage';
 import { type TThreadModel } from '~/definitions/IThread';
@@ -246,7 +246,7 @@ const debouncedUpdate = (subscription: ISubscription) => {
 						createOrUpdateSubscription(sub, room);
 					} else {
 						const room = batch[key] as IRoom;
-						const isQueuedOmnichannel = room.t === SubscriptionType.OMNICHANNEL && room.onHold && room.waitingResponse;
+						const isQueuedOmnichannel = room.t === RoomType.OMNICHANNEL && room.onHold && room.waitingResponse;
 						if (isQueuedOmnichannel) {
 							return;
 						}

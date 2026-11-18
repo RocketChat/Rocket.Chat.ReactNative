@@ -5,6 +5,7 @@ import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { getInvitationActions, getInvitationText } from '~/lib/methods/getInvitationData';
 import { type IInviteSubscription } from '~/definitions/ISubscription';
+import { type RoomType } from '~/definitions/IRoom';
 import { isSubscriptionModel } from '~/definitions/TRoom';
 import { type IRoomViewProps, type RoomStore } from '~/views/RoomView/definitions';
 import RoomScreen from '~/views/RoomView/RoomScreen';
@@ -12,11 +13,10 @@ import { useE2EEStatus } from '~/views/RoomView/hooks/useE2EEStatus';
 import { EncryptedRoom } from '../EncryptedRoom';
 import { InvitedRoomScreen } from '../InvitedRoomScreen';
 import { MissingRoomE2EEKey } from '../MissingRoomE2EEKey';
-import { RoomBackground } from '../RoomBackground';
 
 interface IRoomViewContentProps extends IRoomViewProps {
-	rid?: string;
-	t?: string;
+	rid: string;
+	t: RoomType;
 	tmid?: string;
 	roomStore: RoomStore;
 	ready: boolean;
@@ -31,10 +31,6 @@ export const RoomViewContent = ({ route, navigation, rid, t, tmid, roomStore, re
 	const roomTitle = useStore(roomStore, s => getRoomTitle(s.room));
 
 	const { showMissingE2EEKey, showE2EEDisabledRoom } = useE2EEStatus(roomStore);
-
-	if (!rid || !t) {
-		return <RoomBackground />;
-	}
 
 	if (invitation) {
 		return (

@@ -124,14 +124,14 @@ export function useJumpToMessage({
 	};
 
 	const openThreadFromHere = (message: TOpenThreadTarget) =>
-		openThread(message, { navigation, rid, roomUserId: roomUserIdRef.current, cancelJumpToMessage });
+		openThread(message, { navigation, rid, t, roomUserId: roomUserIdRef.current, cancelJumpToMessage });
 
 	const ensureThreadTargetLoaded = async (
 		message: TGetMessageInfoResult,
 		inWindow: boolean,
 		generation: number
 	): Promise<boolean> => {
-		if (!tmid || !rid || inWindow) {
+		if (!tmid || inWindow) {
 			return true;
 		}
 		const reachable = await loadThreadMessagesUntil(
@@ -156,7 +156,7 @@ export function useJumpToMessage({
 			}
 			return false;
 		}
-		if (inThisRoom && t === 'thread' && message.id !== tmid) {
+		if (inThisRoom && tmid && message.id !== tmid) {
 			await openRoom(message, { isMasterDetail });
 			return false;
 		}

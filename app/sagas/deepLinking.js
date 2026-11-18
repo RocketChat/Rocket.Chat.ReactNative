@@ -14,7 +14,7 @@ import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom } from '../lib/methods/canOpenRoom';
 import { getServerInfo } from '../lib/methods/getServerInfo';
-import { getUidDirectMessage } from '../lib/methods/helpers/getUidDirectMessage';
+import { pathSegmentToRoomType } from '../lib/methods/helpers/roomType';
 import { normalizeDeepLinkingServerHost } from '../lib/methods/helpers/normalizeDeepLinkingServerHost';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
@@ -30,13 +30,6 @@ import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
 import Navigation, { waitForNavigationReady } from '../lib/navigation/appNavigation';
 import { resetVoipState } from '../lib/services/voip/resetVoipState';
-
-const roomTypes = {
-	channel: 'c',
-	direct: 'd',
-	group: 'p',
-	channels: 'l'
-};
 
 const DEEP_LINK_SIGN_IN_TIMEOUT = 60_000;
 
@@ -97,8 +90,7 @@ const navigate = function* navigate({ params }) {
 			if (room) {
 				const item = {
 					name,
-					t: roomTypes[type],
-					roomUserId: getUidDirectMessage(room),
+					t: pathSegmentToRoomType(type),
 					...room
 				};
 

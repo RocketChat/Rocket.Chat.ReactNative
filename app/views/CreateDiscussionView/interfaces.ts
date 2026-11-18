@@ -1,5 +1,6 @@
 import { type NewMessageStackParamList } from '~/stacks/types';
-import { type ISubscription, type SubscriptionType } from '~/definitions/ISubscription';
+import { type RoomType } from '~/definitions/IRoom';
+import { type ISubscription } from '~/definitions/ISubscription';
 import { type IBaseScreen } from '~/definitions';
 import { type IMessage } from '~/definitions/IMessage';
 import { type ISearchLocal } from '~/definitions/ISearch';
@@ -7,7 +8,7 @@ import { type IUser } from '~/definitions/IUser';
 
 export interface IResult {
 	rid: string;
-	t: SubscriptionType;
+	t: RoomType;
 	prid: string;
 }
 

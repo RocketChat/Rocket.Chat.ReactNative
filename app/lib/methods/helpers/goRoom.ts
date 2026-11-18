@@ -2,40 +2,46 @@ import { CommonActions } from '@react-navigation/native';
 
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import Navigation from '~/lib/navigation/appNavigation';
-import { type IOmnichannelRoom } from '~/definitions/IRoom';
-import { SubscriptionType, type IVisitor, type TSubscriptionModel, type ISubscription } from '~/definitions/ISubscription';
+import { type IOmnichannelRoom, RoomType } from '~/definitions/IRoom';
+import { type IVisitor, type TSubscriptionModel, type ISubscription } from '~/definitions/ISubscription';
 import { getRoomTitle } from './getRoomTitle';
 import { getUidDirectMessage } from './getUidDirectMessage';
 import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
+import { getRoomInfo } from '~/lib/services/restApi';
+import { type ChatsStackParamList } from '~/stacks/types';
+import log from './log';
 
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
 	username?: string;
-	t?: SubscriptionType;
+	t?: RoomType;
 	rid?: string;
 	name?: string;
+	fname?: string;
 	prid?: string;
+	uids?: string[];
+	usernames?: string[];
 	visitor?: IVisitor;
 	joinCodeRequired?: boolean;
 }
 
 export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
-interface RoomRouteParams {
-	rid?: string;
-	name: string;
-	t?: SubscriptionType;
-	prid?: string;
-	visitor?: IVisitor;
-	joinCodeRequired?: boolean;
-	roomUserId?: string;
-}
+type TRoutableRoomItem = TGoRoomItem & { rid: string; t: RoomType };
 
 const ROOMS_LIST_ROUTES = ['RoomsListView', 'CategoryView'];
 
-const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
-	const routeParams: RoomRouteParams = {
+let latestRoomRequest = 0;
+
+const requestRoom = () => {
+	latestRoomRequest += 1;
+	const request = latestRoomRequest;
+	return { isLatest: () => request === latestRoomRequest };
+};
+
+const navigate = ({ item, isMasterDetail, ...props }: { item: TRoutableRoomItem; isMasterDetail: boolean }) => {
+	const routeParams: NonNullable<ChatsStackParamList['RoomView']> = {
 		rid: item.rid,
 		name: getRoomTitle(item),
 		t: item.t,
@@ -47,7 +53,7 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 	};
 
 	const currentRoute = Navigation.getCurrentRoute() as any;
-	if (currentRoute?.name === 'RoomView' && currentRoute?.params?.rid === item.rid) {
+	if (currentRoute?.name === 'RoomView' && currentRoute?.params?.rid === item.rid && !currentRoute?.params?.tmid) {
 		Navigation.setParams(routeParams);
 		return;
 	}
@@ -91,6 +97,29 @@ interface IOmnichannelRoomVisitor extends IOmnichannelRoom {
 	visitor: IVisitor;
 }
 
+const completeRoomItem = async (item: TGoRoomItem): Promise<TRoutableRoomItem | null> => {
+	const { rid, t } = item;
+	if (!rid) {
+		return null;
+	}
+	const subscription = await getSubscriptionByRoomId(rid);
+	if (subscription) {
+		return subscription;
+	}
+	if (t) {
+		return { ...item, rid, t };
+	}
+	const roomInfo = await getRoomInfo(rid).catch(error => {
+		log(error);
+		return null;
+	});
+	if (!roomInfo?.success) {
+		return null;
+	}
+	const { name, fname, prid, uids, usernames } = roomInfo.room;
+	return { ...item, rid, t: roomInfo.room.t, name, fname, prid, uids, usernames };
+};
+
 export const goRoom = async ({
 	item,
 	isMasterDetail = false,
@@ -101,17 +130,21 @@ export const goRoom = async ({
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
 }): Promise<void> => {
-	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {
+	const request = requestRoom();
+	if (!('id' in item) && item.t === RoomType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;
 			const result = await createDirectMessage(username as string);
+			if (!request.isLatest()) {
+				return;
+			}
 			if (result.success && result?.room?._id) {
 				return navigate({
 					item: {
 						rid: result.room._id,
 						name: username || '',
-						t: SubscriptionType.DIRECT
+						t: RoomType.DIRECT
 					},
 					isMasterDetail,
 					...props
@@ -122,16 +155,14 @@ export const goRoom = async ({
 		}
 	}
 
-	// Re-fetch the subscription so scalar route params (name, prid, visitor, roomUserId) are as complete as possible.
-	let _item = item;
-	if (item.rid) {
-		const sub = await getSubscriptionByRoomId(item.rid);
-		if (sub) {
-			_item = sub;
-		}
+	const room = await completeRoomItem(item);
+	if (!room || !request.isLatest()) {
+		return;
 	}
-
-	return navigate({ item: _item, isMasterDetail, ...props });
+	return navigate({ item: room, isMasterDetail, ...props });
 };
 
-export const navigateToRoom = navigate;
+export const navigateToRoom: typeof navigate = params => {
+	requestRoom();
+	return navigate(params);
+};

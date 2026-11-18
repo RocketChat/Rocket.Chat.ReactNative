@@ -95,7 +95,8 @@ jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
 jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
 	getRoomTitle: jest.fn(() => 'Room Title')
 }));
-jest.mock('~/lib/methods/helpers/isGroupChat', () => ({
+jest.mock('~/lib/methods/helpers/roomType', () => ({
+	...jest.requireActual('~/lib/methods/helpers/roomType'),
 	isGroupChat: jest.fn(() => false)
 }));
 jest.mock('~/lib/methods/helpers/canAutoTranslate', () => ({
@@ -108,7 +109,8 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 	events: {}
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
-jest.mock('../services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/loadMissedMessages', () => ({ loadMissedMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/readMessages', () => ({ readMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/sendMessage', () => ({ sendMessage: jest.fn(() => Promise.resolve()) }));

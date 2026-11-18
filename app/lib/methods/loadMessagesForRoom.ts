@@ -2,10 +2,11 @@ import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import { roomHistoryUiLoaderPop, roomHistoryUiLoaderPush } from '~/actions/room';
 import { type IMessage, type TMessageModel } from '~/definitions/IMessage';
+import { type RoomType } from '~/definitions/IRoom';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { type RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
+import { roomTypeToApiType } from './helpers/roomType';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import updateMessages from './updateMessages';
@@ -27,7 +28,7 @@ async function resolveHideSystemMessages(rid: string): Promise<string[]> {
 async function load(args: {
 	rid: string;
 	latest?: Date;
-	t: RoomTypes;
+	t: RoomType;
 	loaderItem?: TMessageModel;
 	onUiLoaderPushed?: (loaderId: string) => void;
 }): Promise<{ messages: IMessage[]; serverTimestamps: TServerTimestamps; lastBatchWasFull: boolean }> {
@@ -113,7 +114,7 @@ async function load(args: {
 
 export async function loadMessagesForRoom(args: {
 	rid: string;
-	t: RoomTypes;
+	t: RoomType;
 	latest?: Date;
 	loaderItem?: TMessageModel;
 }): Promise<void> {

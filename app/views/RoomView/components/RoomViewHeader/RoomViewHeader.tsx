@@ -6,13 +6,13 @@ import { NativeAvatarItem, NativeBackButton, NativeRoomTitle } from './NativeHea
 import { RoomHeaderActions } from './RoomHeaderActions';
 
 interface IRoomViewHeaderProps {
-	rid?: string;
+	rid: string;
 	tmid?: string;
 	name?: string;
 	roomStore: RoomStore;
 }
 
-const NativeRoomHeader = ({ rid, tmid, name, roomStore }: IRoomViewHeaderProps & { rid: string }) => {
+const NativeRoomHeader = ({ rid, tmid, name, roomStore }: IRoomViewHeaderProps) => {
 	const showsAvatar = useMasterDetail() && !tmid;
 
 	return (
@@ -26,15 +26,12 @@ const NativeRoomHeader = ({ rid, tmid, name, roomStore }: IRoomViewHeaderProps &
 
 const JsRoomHeader = ({ rid, tmid, name, roomStore }: IRoomViewHeaderProps) => {
 	useJsRoomHeader({ rid, tmid, name, roomStore });
-	return rid ? <RoomHeaderActions rid={rid} tmid={tmid} roomStore={roomStore} /> : null;
+	return <RoomHeaderActions rid={rid} tmid={tmid} roomStore={roomStore} />;
 };
 
 export const RoomViewHeader = ({ rid, tmid, name, roomStore }: IRoomViewHeaderProps) => {
 	if (!hasNativeHeaderBar) {
 		return <JsRoomHeader rid={rid} tmid={tmid} name={name} roomStore={roomStore} />;
-	}
-	if (!rid) {
-		return null;
 	}
 	return <NativeRoomHeader rid={rid} tmid={tmid} name={name} roomStore={roomStore} />;
 };

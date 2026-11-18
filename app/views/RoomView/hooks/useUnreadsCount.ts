@@ -6,10 +6,10 @@ import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { useObservable } from '~/lib/hooks/useObservable';
 import { type TSubscriptionModel } from '~/definitions/ISubscription';
 
-export function useUnreadsCount(rid?: string): number | null {
+export function useUnreadsCount(rid: string): number | null {
 	const observable = useMemo(
 		() =>
-			isIOS && rid
+			isIOS
 				? database.active
 						.get<TSubscriptionModel>('subscriptions')
 						.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(rid)))

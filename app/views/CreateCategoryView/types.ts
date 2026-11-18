@@ -1,8 +1,8 @@
-import { type SubscriptionType } from '~/definitions/ISubscription';
+import { type RoomType } from '~/definitions/IRoom';
 
 export interface ICategoryRoom {
 	rid: string;
 	title: string;
 	avatar: string;
-	t: SubscriptionType;
+	t: RoomType;
 }

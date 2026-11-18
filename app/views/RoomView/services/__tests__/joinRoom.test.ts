@@ -20,13 +20,15 @@ jest.mock('~/lib/database', () => ({
 		}
 	}
 }));
-jest.mock('~/views/RoomView/services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/loadMissedMessages', () => ({ loadMissedMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/readMessages', () => ({ readMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
 	getUidDirectMessage: jest.fn()
 }));
-jest.mock('~/lib/methods/helpers/isGroupChat', () => ({
+jest.mock('~/lib/methods/helpers/roomType', () => ({
+	...jest.requireActual('~/lib/methods/helpers/roomType'),
 	isGroupChat: jest.fn(() => false)
 }));
 jest.mock('~/lib/methods/helpers/canAutoTranslate', () => ({

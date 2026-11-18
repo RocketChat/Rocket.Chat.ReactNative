@@ -7,7 +7,7 @@ import { useRoomInit } from '../useRoomInit';
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 interface IRenderRoomInitParams {
-	rid?: string;
+	rid: string;
 	tmid?: string;
 	isAuthenticated: boolean;
 	ready: boolean;
@@ -118,12 +118,9 @@ describe('useRoomInit', () => {
 
 	// A screen with no init run to wait on is idle, not loading: `loading` is derived from having work
 	// AND that work being unsettled, so the Join/Resume button can never be stuck disabled.
-	it.each([
-		['there is no rid', { rid: undefined }],
-		['the user is not authenticated', { isAuthenticated: false }]
-	])('does not report loading when %s', async (_case, overrides) => {
+	it('does not report loading when the user is not authenticated', async () => {
 		const roomStore = makeRoomStore();
-		const { result } = renderRoomInit(overrides, roomStore);
+		const { result } = renderRoomInit({ isAuthenticated: false }, roomStore);
 		await runDeferredInit();
 
 		expect(roomStore.getState().init).not.toHaveBeenCalled();

@@ -1,22 +1,14 @@
-import { type SubscriptionType } from '~/definitions/ISubscription';
+import { type RoomType } from '~/definitions/IRoom';
 import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { loadNextMessages } from './loadNextMessages';
 import { loadMessagesForRoom } from './loadMessagesForRoom';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
 
-const getMoreMessages = ({
-	rid,
-	t,
-	loaderItem
-}: {
-	rid: string;
-	t: SubscriptionType;
-	loaderItem: TAnyMessageModel;
-}): Promise<void> => {
+const getMoreMessages = ({ rid, t, loaderItem }: { rid: string; t: RoomType; loaderItem: TAnyMessageModel }): Promise<void> => {
 	if ([MessageTypeLoad.MORE, MessageTypeLoad.PREVIOUS_CHUNK].includes(loaderItem.t as MessageTypeLoad)) {
 		return loadMessagesForRoom({
 			rid,
-			t: t as any,
+			t,
 			latest: loaderItem.ts as Date,
 			loaderItem
 		});

@@ -4,7 +4,6 @@ import { type ReactNode } from 'react';
 
 import { ROOM } from '~/actions/actionsTypes';
 import { type IRoomHistoryRequest } from '~/actions/room';
-import { type RoomType } from '~/definitions/IRoom';
 import { type TAnyMessageModel } from '~/definitions/IMessage';
 import database from '~/lib/database';
 import { getMessageById } from '~/lib/database/services/Message';
@@ -73,7 +72,7 @@ const baseArgs = {
 	showMessageInMainThread: true,
 	hideSystemMessages: [] as string[],
 	serverVersion: '3.0.0' as string | null,
-	t: 'c' as RoomType
+	t: 'c' as const
 };
 
 const msg = (overrides: Partial<TAnyMessageModel> & { id: string }): TAnyMessageModel =>
@@ -202,15 +201,6 @@ describe('useMessages', () => {
 			expect(result.current[0].map(m => m.id)).toEqual(['a', 'b']);
 		});
 		expect(mockDbGet).toHaveBeenCalledWith('messages');
-	});
-
-	it('does not query the database when rid is empty', async () => {
-		emittedRows = [msg({ id: 'x' })];
-		const { result } = renderUseMessages({ rid: '' });
-		await act(async () => {
-			await result.current[2]();
-		});
-		expect(mockDbGet).not.toHaveBeenCalled();
 	});
 
 	it('asks the database to exclude system message types listed in hideSystemMessages', async () => {

@@ -8,6 +8,7 @@ import { type IRoomViewProps } from '../definitions';
 import { type TRoomOrPreview } from '~/definitions/TRoom';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { useE2EEStatus } from '../hooks/useE2EEStatus';
+import { createRoomStore, observeRoom } from '../stores/RoomStore';
 
 jest.mock('../RoomScreen', () => {
 	const { createElement } = require('react');
@@ -30,6 +31,7 @@ jest.mock('../components/EncryptedRoom', () => {
 	return { EncryptedRoom: () => createElement(RNView, { testID: 'encrypted-screen' }) };
 });
 jest.mock('../components/RoomViewHeader/RoomViewHeader', () => ({ RoomViewHeader: () => null }));
+jest.mock('../hooks/useNoRoomSelectedHeader', () => ({ useNoRoomSelectedHeader: jest.fn() }));
 jest.mock('../hooks/useE2EEStatus', () => ({
 	useE2EEStatus: jest.fn(() => ({ showMissingE2EEKey: false, showE2EEDisabledRoom: false, hasE2EEWarning: false }))
 }));
@@ -47,14 +49,14 @@ jest.mock('../stores/RoomStore', () => {
 	const { createStore } = require('zustand');
 	const store = createStore(() => ({ room: {} }));
 	return {
-		createRoomStore: () => {
+		createRoomStore: jest.fn(() => {
 			store.setState({ room: room.current }, true);
 			return store;
-		},
-		observeRoom: (_rid: string, _store: unknown, onReady: () => void) => {
+		}),
+		observeRoom: jest.fn((_rid: string, _store: unknown, onReady: () => void) => {
 			onReady();
 			return jest.fn();
-		}
+		})
 	};
 });
 
@@ -85,18 +87,17 @@ describe('RoomView', () => {
 		expect(screen.getByTestId('room-screen')).toBeOnTheScreen();
 	});
 
-	it('renders the empty-room background instead of a room when the route has no identity', () => {
-		renderRoomView(null);
+	it.each([
+		['has no params', null],
+		['has params without a rid', { rid: undefined, t: undefined }],
+		['has a rid but no type', { rid: 'rid-1' }]
+	])('renders the no-room-selected background instead of a room when the route %s', (_case, params) => {
+		renderRoomView(params);
 
 		expect(screen.getByTestId('room-view-empty')).toBeOnTheScreen();
 		expect(screen.queryByTestId('room-screen')).toBeNull();
-	});
-
-	it('renders the empty-room background when the route has a rid but no type', () => {
-		renderRoomView({ rid: 'rid-1' });
-
-		expect(screen.getByTestId('room-view-empty')).toBeOnTheScreen();
-		expect(screen.queryByTestId('room-screen')).toBeNull();
+		expect(createRoomStore).not.toHaveBeenCalled();
+		expect(observeRoom).not.toHaveBeenCalled();
 	});
 
 	it('keeps the room screen unmounted while the room is an invite', () => {

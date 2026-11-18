@@ -33,7 +33,7 @@ import styles from './styles';
 import { type IApplicationState } from '~/definitions/redux';
 import { type IBaseScreen } from '~/definitions';
 import { type IMessage } from '~/definitions/IMessage';
-import { SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { type TThreadModel } from '~/definitions/IThread';
 import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import { debounce } from '~/lib/methods/helpers/debounce';
@@ -391,13 +391,13 @@ class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMess
 	onThreadPress = debounce(
 		(item: any) => {
 			const { subscription } = this.state;
-			const { isMasterDetail } = this.props;
+			const { isMasterDetail, route } = this.props;
 			Navigation.popToRoom(isMasterDetail);
 			Navigation.push('RoomView', {
 				rid: item.subscription.id,
 				tmid: item.id,
 				name: makeThreadName(item),
-				t: SubscriptionType.THREAD,
+				t: route.params.t,
 				roomUserId: getUidDirectMessage(subscription)
 			});
 		},

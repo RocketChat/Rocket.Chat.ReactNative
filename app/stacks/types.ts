@@ -6,7 +6,8 @@ import { type ILivechatDepartment } from '../definitions/ILivechatDepartment';
 import { type ILivechatTag } from '../definitions/ILivechatTag';
 import { type IMessage, type TAnyMessageModel, type TMessageAction } from '../definitions/IMessage';
 import { type IServer } from '../definitions/IServer';
-import { type ISubscription, type SubscriptionType, type TSubscriptionModel, type IVisitor } from '../definitions/ISubscription';
+import { type ISubscription, type TSubscriptionModel, type IVisitor } from '../definitions/ISubscription';
+import { type RoomType } from '../definitions/IRoom';
 import { type TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
 import { type TDataSelect } from '../definitions/IDataSelect';
 import { type TThreadModel } from '../definitions/IThread';
@@ -40,11 +41,10 @@ export type ChatsStackParamList = {
 	RoomView:
 		| {
 				rid: string;
-				t: SubscriptionType;
+				t: RoomType;
 				tmid?: string;
 				messageId?: string;
 				name?: string;
-				fname?: string;
 				prid?: string;
 				visitor?: IVisitor;
 				joinCodeRequired?: boolean;
@@ -52,14 +52,13 @@ export type ChatsStackParamList = {
 				jumpToThreadId?: string;
 				roomUserId?: string | null;
 				usedCannedResponse?: string;
-				status?: string;
 		  }
 		| undefined;
 	RoomActionsView: {
 		room: TSubscriptionModel;
 		member?: any;
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		joined: boolean;
 		omnichannelPermissions?: {
 			canForwardGuest: boolean;
@@ -83,7 +82,7 @@ export type ChatsStackParamList = {
 		room?: ISubscription;
 		member?: any;
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		showCloseModal?: boolean;
 		fromRid?: string;
 		itsMe?: boolean;
@@ -98,11 +97,11 @@ export type ChatsStackParamList = {
 	};
 	DiscussionsView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 	};
 	SearchMessagesView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		encrypted?: boolean;
 		showCloseModal?: boolean;
 	};
@@ -122,7 +121,7 @@ export type ChatsStackParamList = {
 	};
 	MessagesView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 		name: string;
 	};
 	AutoTranslateView: {
@@ -152,7 +151,7 @@ export type ChatsStackParamList = {
 	};
 	ThreadMessagesView: {
 		rid: string;
-		t: SubscriptionType;
+		t: RoomType;
 	};
 	TeamChannelsView: {
 		teamId: string;
@@ -192,7 +191,7 @@ export type ChatsStackParamList = {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
 		room?: ISubscription;
-		t?: SubscriptionType;
+		t?: RoomType;
 	};
 	ReportUserView: {
 		username: string;
@@ -210,7 +209,7 @@ export type ProfileStackParamList = {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
 		room?: ISubscription;
-		t?: SubscriptionType;
+		t?: RoomType;
 	};
 	ChangePasswordView: undefined;
 };

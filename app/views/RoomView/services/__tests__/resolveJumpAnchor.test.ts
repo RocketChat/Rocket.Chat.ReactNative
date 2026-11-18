@@ -1,6 +1,6 @@
 import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
-import { resolveJumpAnchor } from './resolveJumpAnchor';
-import { type IJumpAnchorDeps, type IJumpTarget } from '../definitions';
+import { resolveJumpAnchor } from '../resolveJumpAnchor';
+import { type IJumpAnchorDeps, type IJumpTarget } from '../../definitions';
 
 const makeTarget = (overrides: Partial<IJumpTarget> = {}): IJumpTarget => ({
 	id: 'msg-1',
@@ -22,14 +22,6 @@ describe('resolveJumpAnchor', () => {
 	it('returns null for a thread message — neither dep called', async () => {
 		const deps = makeDeps();
 		const result = await resolveJumpAnchor('ROOM', makeTarget({ tmid: 'thread-parent' }), false, deps);
-		expect(result).toBeNull();
-		expect(deps.loadSurroundingMessages).not.toHaveBeenCalled();
-		expect(deps.getLocalAnchorTs).not.toHaveBeenCalled();
-	});
-
-	it('returns null when rid is undefined — neither dep called', async () => {
-		const deps = makeDeps();
-		const result = await resolveJumpAnchor(undefined, makeTarget(), false, deps);
 		expect(result).toBeNull();
 		expect(deps.loadSurroundingMessages).not.toHaveBeenCalled();
 		expect(deps.getLocalAnchorTs).not.toHaveBeenCalled();

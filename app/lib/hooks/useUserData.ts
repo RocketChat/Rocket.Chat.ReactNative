@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { getRoomAvatar } from '../methods/helpers/getRoomAvatar';
 import { getUidDirectMessage } from '../methods/helpers/getUidDirectMessage';
-import { SubscriptionType } from '~/definitions/ISubscription';
+import { RoomType } from '~/definitions/IRoom';
 import { getUserInfo } from '../services/restApi';
 import { useAppSelector } from './useAppSelector';
 
@@ -24,7 +24,7 @@ const useUserData = (rid: string) => {
 					username,
 					avatar: avt,
 					type: room?.t || '',
-					direct: room?.t === SubscriptionType.DIRECT
+					direct: room?.t === RoomType.DIRECT
 				});
 			} else {
 				try {
@@ -39,7 +39,7 @@ const useUserData = (rid: string) => {
 							username,
 							avatar: user.username,
 							uid: user._id,
-							type: SubscriptionType.DIRECT,
+							type: RoomType.DIRECT,
 							direct: true
 						});
 					}

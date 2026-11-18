@@ -3,11 +3,11 @@ import { toggleFav } from '~/lib/methods/toggleFav';
 import { toggleRead } from '~/lib/methods/toggleRead';
 import { hideRoom } from '~/lib/methods/hideRoom';
 import { type TActionSheetOptionsItem } from '../ActionSheet/Provider';
-import { type SubscriptionType } from '~/definitions/ISubscription';
+import { type RoomType } from '~/definitions/IRoom';
 
 export interface IRoomActionsParams {
 	rid: string;
-	type: SubscriptionType;
+	type: RoomType;
 	isRead: boolean;
 	favorite: boolean;
 	serverVersion: string;

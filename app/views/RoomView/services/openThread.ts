@@ -2,7 +2,7 @@ import { sendLoadingEvent } from '~/containers/Loading';
 import I18n from '~/i18n';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
 import { makeThreadName } from '~/lib/methods/helpers/room';
-import { SubscriptionType } from '~/definitions/ISubscription';
+import { type RoomType } from '~/definitions/IRoom';
 import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { type IRoomViewProps, type TGetMessageInfoResult } from '../definitions';
 import { fetchThreadName } from './fetchThreadName';
@@ -13,7 +13,8 @@ export type TOpenThreadTarget = TAnyMessageModel | { tmid: string } | TGetMessag
 
 interface IOpenThreadDeps {
 	navigation: IRoomViewProps['navigation'];
-	rid?: string;
+	rid: string;
+	t: RoomType;
 	roomUserId?: string | null;
 	cancelJumpToMessage: () => void;
 }
@@ -23,11 +24,8 @@ const isUndecryptable = (message: TOpenThreadTarget): boolean =>
 
 export const openThread = async (
 	message: TOpenThreadTarget,
-	{ navigation, rid, roomUserId, cancelJumpToMessage }: IOpenThreadDeps
+	{ navigation, rid, t, roomUserId, cancelJumpToMessage }: IOpenThreadDeps
 ): Promise<void> => {
-	if (!rid) {
-		return;
-	}
 	const { tmid } = message;
 	if (!tmid) {
 		if ('tlm' in message) {
@@ -35,7 +33,7 @@ export const openThread = async (
 				rid,
 				tmid: message.id,
 				name: makeThreadName(message),
-				t: SubscriptionType.THREAD,
+				t,
 				roomUserId
 			});
 		}
@@ -68,7 +66,7 @@ export const openThread = async (
 		rid,
 		tmid,
 		name: isUndecryptable(message) ? I18n.t('E2E_Key_Error') : threadName,
-		t: SubscriptionType.THREAD,
+		t,
 		roomUserId,
 		jumpToMessageId
 	});

@@ -4,7 +4,7 @@ import { createStore } from 'zustand';
 import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { RoomStoreContext, useRoomStore } from '../RoomStoreContext';
 
-const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c', topic: 'old', name: 'general' };
+const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c' as const, topic: 'old', name: 'general' };
 
 const makeRoomStore = (): RoomStore =>
 	createStore<RoomState>(() => ({

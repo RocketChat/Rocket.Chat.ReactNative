@@ -11,15 +11,21 @@ import {
 	type ISidebarCategory
 } from '~/definitions/IUser';
 import { type IPreviewItem } from '~/definitions/ISlashCommand';
-import { type IRoom, type IRoomNotifications, type IRoomSettings, type IServerRoom, type RoomType } from '~/definitions/IRoom';
-import { type SubscriptionType } from '~/definitions/ISubscription';
+import {
+	type IRoom,
+	type IRoomNotifications,
+	type IRoomSettings,
+	type IServerRoom,
+	type NonDirectRoomType,
+	type RoomType
+} from '~/definitions/IRoom';
 import { type TParams } from '~/definitions/ILivechatEditView';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
 import { type ISpotlight } from '~/definitions/ISpotlight';
 import { TEAM_TYPE } from '~/definitions/ITeam';
 import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers';
 import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';
-import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
+import { roomTypeToApiType } from '../methods/helpers/roomType';
 import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { getBundleId, isIOS } from '../methods/helpers/deviceInfo';
@@ -380,10 +386,7 @@ export const toggleReadStatus = (
 	return sdk.post(endpoint, payload);
 };
 
-export const getRoomCounters = (
-	roomId: string,
-	t: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
-) =>
+export const getRoomCounters = (roomId: string, t: RoomType) =>
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(t)}.counters`, { roomId });
 
@@ -572,11 +575,11 @@ export const toggleBlockUser = (rid: string, blocked: string, block: boolean) =>
 	return sdk.methodCallWrapper('unblockUser', { rid, blocked });
 };
 
-export const leaveRoom = (roomId: string, t: RoomTypes) =>
+export const leaveRoom = (roomId: string, t: RoomType) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.leave`, { roomId });
 
-export const deleteRoom = (roomId: string, t: RoomTypes) =>
+export const deleteRoom = (roomId: string, t: RoomType) =>
 	// RC 0.49.0
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
@@ -599,17 +602,16 @@ export const toggleRoomOwner = ({
 	isOwner
 }: {
 	roomId: string;
-	t: SubscriptionType;
+	t: NonDirectRoomType;
 	userId: string;
 	isOwner: boolean;
 }) => {
-	const type = t as SubscriptionType.CHANNEL;
 	if (isOwner) {
 		// RC 0.49.4
-		return sdk.post(`${roomTypeToApiType(type)}.addOwner`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(t)}.addOwner`, { roomId, userId });
 	}
 	// RC 0.49.4
-	return sdk.post(`${roomTypeToApiType(type)}.removeOwner`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(t)}.removeOwner`, { roomId, userId });
 };
 
 export const toggleRoomLeader = ({
@@ -619,17 +621,16 @@ export const toggleRoomLeader = ({
 	isLeader
 }: {
 	roomId: string;
-	t: SubscriptionType;
+	t: NonDirectRoomType;
 	userId: string;
 	isLeader: boolean;
 }) => {
-	const type = t as SubscriptionType.CHANNEL;
 	if (isLeader) {
 		// RC 0.58.0
-		return sdk.post(`${roomTypeToApiType(type)}.addLeader`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(t)}.addLeader`, { roomId, userId });
 	}
 	// RC 0.58.0
-	return sdk.post(`${roomTypeToApiType(type)}.removeLeader`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(t)}.removeLeader`, { roomId, userId });
 };
 
 export const toggleRoomModerator = ({
@@ -639,20 +640,19 @@ export const toggleRoomModerator = ({
 	isModerator
 }: {
 	roomId: string;
-	t: SubscriptionType;
+	t: NonDirectRoomType;
 	userId: string;
 	isModerator: boolean;
 }) => {
-	const type = t as SubscriptionType.CHANNEL;
 	if (isModerator) {
 		// RC 0.49.4
-		return sdk.post(`${roomTypeToApiType(type)}.addModerator`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(t)}.addModerator`, { roomId, userId });
 	}
 	// RC 0.49.4
-	return sdk.post(`${roomTypeToApiType(type)}.removeModerator`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(t)}.removeModerator`, { roomId, userId });
 };
 
-export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomTypes; userId: string }) =>
+export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomType; userId: string }) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.kick`, { roomId, userId });
 
@@ -660,17 +660,16 @@ export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: strin
 	// RC 0.64.0
 	sdk.get('chat.ignoreUser', { rid, userId, ignore });
 
-export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: boolean) => {
-	const type = t as SubscriptionType.CHANNEL | SubscriptionType.GROUP;
+export const toggleArchiveRoom = (roomId: string, t: NonDirectRoomType, archive: boolean) => {
 	if (archive) {
 		// RC 0.48.0
-		return sdk.post(`${roomTypeToApiType(type)}.archive`, { roomId });
+		return sdk.post(`${roomTypeToApiType(t)}.archive`, { roomId });
 	}
 	// RC 0.48.0
-	return sdk.post(`${roomTypeToApiType(type)}.unarchive`, { roomId });
+	return sdk.post(`${roomTypeToApiType(t)}.unarchive`, { roomId });
 };
 
-export const hideRoom = (roomId: string, t: RoomTypes) =>
+export const hideRoom = (roomId: string, t: RoomType) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
@@ -738,10 +737,7 @@ export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
 	sdk.get('chat.getMessage', { msgId });
 
-export const getRoomRoles = (
-	roomId: string,
-	type: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
-) =>
+export const getRoomRoles = (roomId: string, type: NonDirectRoomType) =>
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
@@ -813,8 +809,7 @@ export const getUsernameSuggestion = () =>
 	// RC 0.65.0
 	sdk.get('users.getUsernameSuggestion');
 
-export const getFiles = (roomId: string, type: SubscriptionType, offset: number) => {
-	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
+export const getFiles = (roomId: string, t: RoomType, offset: number) => {
 	// RC 0.59.0
 	return sdk.get(`${roomTypeToApiType(t)}.files`, {
 		roomId,
@@ -825,20 +820,19 @@ export const getFiles = (roomId: string, type: SubscriptionType, offset: number)
 
 export const getMessages = ({
 	roomId,
-	type,
+	type: t,
 	offset,
 	starredIds,
 	mentionIds,
 	pinned
 }: {
 	roomId: string;
-	type: SubscriptionType;
+	type: RoomType;
 	offset: number;
 	mentionIds?: string[];
 	starredIds?: string[];
 	pinned?: boolean;
 }) => {
-	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	const serverVersion = reduxStore.getState().server.version;
 
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
@@ -1276,12 +1270,11 @@ export const getRoomMembers = async ({
 	rid: string;
 	allUsers: boolean;
 	type: 'all' | 'online';
-	roomType: SubscriptionType;
+	roomType: RoomType;
 	filter: string;
 	skip: number;
 	limit: number;
 }) => {
-	const t = roomType as SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.DIRECT;
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
 		const params = {
@@ -1292,7 +1285,7 @@ export const getRoomMembers = async ({
 			...(filter && { filter })
 		};
 		// RC 3.16.0
-		const result = await sdk.get(`${roomTypeToApiType(t)}.members`, params);
+		const result = await sdk.get(`${roomTypeToApiType(roomType)}.members`, params);
 		if (result.success) {
 			return result?.members;
 		}

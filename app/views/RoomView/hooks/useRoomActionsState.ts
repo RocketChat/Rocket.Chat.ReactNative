@@ -2,7 +2,6 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { useNavigation } from '@react-navigation/native';
 
-import { type SubscriptionType } from '~/definitions/ISubscription';
 import { type TUserStatus } from '~/definitions/TUserStatus';
 import { isSubscriptionModel } from '~/definitions/TRoom';
 import i18n from '~/i18n';
@@ -12,7 +11,7 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useSetting } from '~/lib/hooks/useSetting';
 import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
-import { isGroupChat } from '~/lib/methods/helpers/isGroupChat';
+import { isGroupChat } from '~/lib/methods/helpers/roomType';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { type RoomStore } from '~/views/RoomView/definitions';
@@ -47,7 +46,7 @@ export const useRoomActionsState = (rid: string, roomStore: RoomStore) => {
 		useShallow(s => {
 			const room = s.room;
 			return {
-				t: room.t as SubscriptionType,
+				t: room.t,
 				status: fromSubscription(r => r.status, undefined)(s),
 				roomName: getRoomTitle(room),
 				roomIsGroupChat: isGroupChat(room),

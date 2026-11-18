@@ -11,9 +11,8 @@ import { events, logEvent } from '~/lib/methods/helpers/log';
 import { isInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
-import { type IRoomInfoParam } from '~/definitions/IRoom';
+import { type IRoomInfoParam, RoomType } from '~/definitions/IRoom';
 import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
-import { SubscriptionType } from '~/definitions/ISubscription';
 import { useActionSheet } from '~/containers/ActionSheet/Provider';
 import ReactionsList from '~/containers/ReactionsList';
 import { type IRoomMessageHandlersInput, type IRoomViewProps } from '../definitions';
@@ -49,7 +48,7 @@ export function useRoomMessageHandlers({
 	};
 
 	const navToRoomInfo = (navParam: IRoomInfoParam) => {
-		logEvent(events[`ROOM_GO_${navParam.t === SubscriptionType.DIRECT ? 'USER' : 'ROOM'}_INFO`]);
+		logEvent(events[`ROOM_GO_${navParam.t === RoomType.DIRECT ? 'USER' : 'ROOM'}_INFO`]);
 		const params = { ...navParam, fromRid: rid };
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: { ...params, showCloseModal: true } });

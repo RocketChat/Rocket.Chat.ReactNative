@@ -154,9 +154,6 @@ export const useMessages = ({
 
 	const fetchMessages = useCallback(async () => {
 		unsubscribe();
-		if (!rid) {
-			return;
-		}
 		count.current += QUERY_SIZE;
 
 		const db = database.active;

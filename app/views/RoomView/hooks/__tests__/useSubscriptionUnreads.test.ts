@@ -15,9 +15,6 @@ jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.
 jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
 	getUidDirectMessage: jest.fn()
 }));
-jest.mock('~/lib/methods/helpers/isGroupChat', () => ({
-	isGroupChat: jest.fn(() => false)
-}));
 jest.mock('~/lib/methods/helpers/canAutoTranslate', () => ({
 	canAutoTranslate: jest.fn(() => false)
 }));
@@ -26,7 +23,7 @@ const mockGet = database.active.get as jest.Mock;
 const mockGetUidDirectMessage = getUidDirectMessage as jest.Mock;
 let observedStore: any;
 
-const stubRoom = { rid: 'rid-1', t: 'c' };
+const stubRoom = { rid: 'rid-1', t: 'c' as const };
 
 // Emits subscription rows through the rid-keyed RoomStore's observer, which is the only source
 // the hook reads from.
@@ -34,7 +31,7 @@ const setupObservedRoom = async (rid: string) => {
 	const rows = new Subject<any[]>();
 	const observe = jest.fn(() => rows);
 	mockGet.mockReturnValue({ find: jest.fn(() => Promise.reject(new Error('not found'))), query: jest.fn(() => ({ observe })) });
-	observedStore = createRoomStore({ rid, initialRoom: stubRoom });
+	observedStore = createRoomStore({ initialRoom: stubRoom });
 	observeRoom(rid, observedStore);
 	await act(async () => {});
 	return {
@@ -74,11 +71,5 @@ describe('useSubscriptionUnreads', () => {
 
 		expect(result.current.tunread).toEqual([]);
 		expect(result.current.isSelfDm).toBe(false);
-	});
-
-	it('falls back to empty unreads without a rid', () => {
-		const { result } = renderHook(() => useSubscriptionUnreads(createRoomStore({ initialRoom: { rid: '', t: '' } }), 'user-1'));
-
-		expect(result.current.tunread).toEqual([]);
 	});
 });

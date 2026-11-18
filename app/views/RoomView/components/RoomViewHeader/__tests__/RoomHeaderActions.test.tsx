@@ -27,7 +27,8 @@ jest.mock('~/lib/helpers/getRoomAccessibilityLabel', () => ({ __esModule: true, 
 jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
 	getRoomTitle: () => 'Room Title'
 }));
-jest.mock('~/lib/methods/helpers/isGroupChat', () => ({
+jest.mock('~/lib/methods/helpers/roomType', () => ({
+	...jest.requireActual('~/lib/methods/helpers/roomType'),
 	isGroupChat: () => false
 }));
 jest.mock('~/lib/methods/helpers/deviceInfo', () => ({

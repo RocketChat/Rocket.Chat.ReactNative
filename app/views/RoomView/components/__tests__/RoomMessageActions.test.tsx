@@ -12,7 +12,7 @@ import { type RoomState } from '~/views/RoomView/definitions';
 import { RoomStoreContext } from '~/views/RoomView/stores/RoomStoreContext';
 import { RoomMessageActions } from '../RoomMessageActions';
 
-const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c' };
+const subRoom = { id: 'sub-1', rid: 'rid-1', t: 'c' as const };
 
 const makeRoomStore = () =>
 	createStore<RoomState>(() => ({

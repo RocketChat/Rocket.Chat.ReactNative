@@ -19,12 +19,13 @@ import { getUserSelector } from '~/selectors/login';
 import { withActionSheet } from '~/containers/ActionSheet/Provider';
 import SafeAreaView from '~/containers/SafeAreaView';
 import getThreadName from '~/lib/methods/getThreadName';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import styles from './styles';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { type IApplicationState } from '~/definitions/redux';
-import { type IRoomInfoParam } from '~/definitions/IRoom';
+import { type IRoomInfoParam, type RoomType } from '~/definitions/IRoom';
 import { type TMessageModel, type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
-import { SubscriptionType } from '~/definitions/ISubscription';
 import { type IAttachment } from '~/definitions/IAttachment';
 import { type IUrl } from '~/definitions/IUrl';
 import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '~/lib/services/restApi';
@@ -61,7 +62,7 @@ interface IMessagesViewState {
 
 interface IParams {
 	rid: string;
-	t: SubscriptionType;
+	t: RoomType;
 	tmid?: string;
 	message?: TMessageModel;
 	name?: string;
@@ -69,12 +70,12 @@ interface IParams {
 	prid?: string;
 	jumpToMessageId?: string;
 	jumpToThreadId?: string;
-	roomUserId?: string;
+	roomUserId?: string | null;
 }
 
 class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 	private rid: string;
-	private t: SubscriptionType;
+	private t: RoomType;
 	private content: any;
 
 	constructor(props: IMessagesViewProps) {
@@ -142,7 +143,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 				...params,
 				tmid: item.tmid,
 				name: await getThreadName(this.rid, item.tmid, item._id),
-				t: SubscriptionType.THREAD
+				roomUserId: getUidDirectMessage(await getSubscriptionByRoomId(this.rid))
 			};
 			Navigation.push('RoomView', params);
 		} else {

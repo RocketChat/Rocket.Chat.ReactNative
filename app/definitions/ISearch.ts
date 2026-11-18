@@ -1,10 +1,11 @@
 import { type ILastMessage } from './IMessage';
+import { type RoomType } from './IRoom';
 
 export interface ISearchLocal {
 	avatarETag: string;
 	rid: string;
 	name: string;
-	t: string;
+	t: RoomType;
 	fname: string;
 	encrypted: boolean;
 	lastMessage?: ILastMessage;

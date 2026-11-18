@@ -27,6 +27,8 @@ import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerAct
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
 import getThreadName from '~/lib/methods/getThreadName';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import styles from './styles';
 import { type InsideStackParamList, type ChatsStackParamList } from '~/stacks/types';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
@@ -36,8 +38,7 @@ import { type IMessageFromServer, type TMessageModel } from '~/definitions/IMess
 import { type IUser } from '~/definitions/IUser';
 import { type IUrl } from '~/definitions/IUrl';
 import { type IAttachment } from '~/definitions/IAttachment';
-import { type IRoomInfoParam } from '~/definitions/IRoom';
-import { SubscriptionType } from '~/definitions/ISubscription';
+import { type IRoomInfoParam, type RoomType } from '~/definitions/IRoom';
 import { searchMessages } from '~/lib/services/restApi';
 import { type TNavigation } from '~/stacks/stackType';
 import Navigation from '~/lib/navigation/appNavigation';
@@ -71,7 +72,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 	private rid: string;
 
-	private t: SubscriptionType;
+	private t: RoomType;
 
 	private encrypted: boolean | undefined;
 
@@ -208,9 +209,10 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		let params: {
 			rid: string;
 			jumpToMessageId: string;
-			t: SubscriptionType;
+			t: RoomType;
 			tmid?: string;
 			name?: string;
+			roomUserId?: string | null;
 		} = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
@@ -222,7 +224,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 				...params,
 				tmid: item.tmid,
 				name: await getThreadName(this.rid, item.tmid as string, item._id),
-				t: SubscriptionType.THREAD
+				roomUserId: getUidDirectMessage(await getSubscriptionByRoomId(this.rid))
 			};
 			Navigation.push('RoomView', params);
 		} else {

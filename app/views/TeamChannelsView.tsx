@@ -18,7 +18,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { type IApplicationState } from '../definitions/redux';
 import { type IBaseScreen } from '../definitions';
 import { type TSubscriptionModel } from '../definitions/ISubscription';
-import { ERoomType } from '../definitions/ERoomType';
+import { type RoomType } from '../definitions/IRoom';
 import { withDimensions } from '../lib/hooks/withDimensions';
 import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 import { BASE_ROW_HEIGHT, BASE_ROW_HEIGHT_CONDENSED } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -41,19 +41,20 @@ import { debounce } from '../lib/methods/helpers/debounce';
 import { hasNativeHeaderBar, isIOS } from '../lib/methods/helpers/deviceInfo';
 import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 import { getRoomInfo, getTeamListRoom, updateTeamRoom, removeTeamRoom } from '../lib/services/restApi';
+import { canDeleteTeamChannel } from '../lib/methods/canDeleteTeamChannel';
 
 const API_FETCH_COUNT = 25;
 
 const keyExtractor = (item: IItem) => item._id;
 
 export interface IItem {
-	_id: ERoomType;
+	_id: string;
 	fname: string;
 	customFields: object;
 	broadcast: boolean;
 	encrypted: boolean;
 	name: string;
-	t: string;
+	t: RoomType;
 	msgs: number;
 	usersCount: number;
 	u: { _id: string; name: string };
@@ -90,10 +91,6 @@ interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamC
 	createTeamChannelPermission: string[];
 	createPPermission: string[];
 	createTeamGroupPermission: string[];
-	deleteCPermission: string[];
-	deletePPermission: string[];
-	deleteTeamChannelPermission: string[];
-	deleteTeamGroupPermission: string[];
 	showActionSheet: (options: TActionSheetOptions) => void;
 	showAvatar: boolean;
 	displayMode: DisplayMode;
@@ -364,8 +361,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 						rid: item._id,
 						name: getRoomTitle(result.room),
 						joinCodeRequired: result.room.joinCodeRequired,
-						t: result.room.t,
-						teamId: result.room.teamId
+						t: result.room.t
 					};
 				}
 				goRoom({ item: params, isMasterDetail });
@@ -450,37 +446,16 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => dispatch(deleteRoom(ERoomType.c, item))
+					onPress: () => dispatch(deleteRoom({ rid: item._id, t: item.t }))
 				}
 			],
 			{ cancelable: false }
 		);
 	};
 
-	hasDeletePermission = async (rid: string, t: 'c' | 'p') => {
-		const { serverVersion, deleteCPermission, deletePPermission, deleteTeamChannelPermission, deleteTeamGroupPermission } =
-			this.props;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
-			const permissions =
-				t === 'c' ? [deleteTeamChannelPermission, deleteTeamGroupPermission] : [deletePPermission, deletePPermission];
-			const result = await hasPermission(permissions, rid);
-			return result[0] && result[1];
-		}
-
-		const result = await hasPermission([t === 'c' ? deleteCPermission : deletePPermission], rid);
-		return result[0];
-	};
-
 	showChannelActions = async (item: IItem) => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
-		const {
-			showActionSheet,
-			editTeamChannelPermission,
-			deleteCPermission,
-			deletePPermission,
-			theme,
-			removeTeamChannelPermission
-		} = this.props;
+		const { showActionSheet, editTeamChannelPermission, theme, removeTeamChannelPermission } = this.props;
 		const isAutoJoinChecked = item.teamDefault;
 		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
 		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].fontHint : themes[theme].fontDefault;
@@ -516,8 +491,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 			});
 		}
 
-		const permissionsChannel = await hasPermission([item.t === 'c' ? deleteCPermission : deletePPermission], item._id);
-		if (permissionsChannel[0]) {
+		if (await canDeleteTeamChannel({ rid: item._id, t: item.t }, this.team.rid)) {
 			options.push({
 				title: I18n.t('Delete'),
 				icon: 'delete',
@@ -618,14 +592,10 @@ const mapStateToProps = (state: IApplicationState) => ({
 	moveRoomToTeamPermission: state.permissions['move-room-to-team'],
 	editTeamChannelPermission: state.permissions['edit-team-channel'],
 	removeTeamChannelPermission: state.permissions['remove-team-channel'],
-	deleteCPermission: state.permissions['delete-c'],
 	createCPermission: state.permissions['create-c'],
 	createTeamChannelPermission: state.permissions['create-team-channel'],
 	createPPermission: state.permissions['create-p'],
 	createTeamGroupPermission: state.permissions['create-team-group'],
-	deleteTeamChannelPermission: state.permissions['delete-team-channel'],
-	deletePPermission: state.permissions['delete-p'],
-	deleteTeamGroupPermission: state.permissions['delete-team-group'],
 	showAvatar: state.sortPreferences.showAvatar,
 	displayMode: state.sortPreferences.displayMode
 });

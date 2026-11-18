@@ -21,8 +21,8 @@ import { type MessageRoomState } from '~/containers/message/stores/MessageRoomSt
 export type IRoomViewProps = Pick<IBaseScreen<ChatsStackParamList, 'RoomView'>, 'navigation' | 'route'>;
 
 export interface IRoomScreenInput {
-	rid?: string;
-	t?: string;
+	rid: string;
+	t: RoomType;
 	tmid?: string;
 	name?: string;
 	initialRoom: TRoomOrPreview;
@@ -31,7 +31,7 @@ export interface IRoomScreenInput {
 
 export interface IRoomScreenProps extends Pick<IRoomViewProps, 'route'> {
 	rid: string;
-	t: string;
+	t: RoomType;
 	tmid?: string;
 	roomStore: RoomStore;
 	ready: boolean;
@@ -180,7 +180,6 @@ export interface IUseMessageActionsParams {
 	messageActionStore: TMessageActionStore;
 	showActionSheet: (options: TActionSheetOptions) => void;
 	hideActionSheet: () => void;
-	rid?: string;
 	tmid?: string;
 	onThreadPress: (item: TAnyMessageModel) => void;
 	messageComposerRef: RefObject<IMessageComposerRef | null>;
@@ -227,8 +226,8 @@ export type IRoomMessageActionsProps = Pick<
 };
 
 export interface IUseRoomMessagingParams {
-	rid?: string;
-	t?: string;
+	rid: string;
+	t: RoomType;
 	tmid?: string;
 	ready: boolean;
 	roomStore: RoomStore;
@@ -244,9 +243,9 @@ export interface IUseSubscriptionUnreadsResult {
 }
 
 export interface IUseJumpToMessageParams {
-	rid?: string;
+	rid: string;
 	tmid?: string;
-	t?: string;
+	t: RoomType;
 	isMasterDetail: boolean;
 	listContainerRef: RefObject<IListContainerRef | null>;
 	roomUserIdRef: RefObject<string | null | undefined>;
@@ -259,7 +258,7 @@ export interface IUseJumpToMessageResult {
 }
 
 export interface IUseOmnichannelPermissionsParams {
-	rid?: string;
-	t?: string;
+	rid: string;
+	t: RoomType;
 	roomStore: RoomStore;
 }

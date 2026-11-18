@@ -17,8 +17,8 @@ import { ControlledFormTextInput } from '~/containers/TextInput/ControlledFormTe
 import { LISTENER } from '~/containers/Toast';
 import { MultiSelect } from '~/containers/UIKit/MultiSelect';
 import { type IBaseScreen } from '~/definitions';
-import { type IRoomSettings } from '~/definitions/IRoom';
-import { type ISubscription, SubscriptionType } from '~/definitions/ISubscription';
+import { type IRoomSettings, RoomType } from '~/definitions/IRoom';
+import { type ISubscription } from '~/definitions/ISubscription';
 import I18n from '~/i18n';
 import KeyboardView from '~/containers/KeyboardView';
 import { type ModalStackParamList } from '~/stacks/MasterDetailStack/types';
@@ -37,6 +37,7 @@ import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import { random } from '~/lib/methods/helpers/random';
+import { isNonDirectRoom } from '~/lib/methods/helpers/roomType';
 import { saveRoomSettings, toggleArchiveRoom } from '~/lib/services/restApi';
 import Button from '~/containers/Button';
 import useRoomSubscription from './hooks/useRoomSubscription';
@@ -133,12 +134,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		route.params?.rid
 	);
 
-	const { deleteTeam, deleteRoom } = useRoomDeletionActions({
-		navigation,
-		room,
-		deleteCPermission,
-		deletePPermission
-	});
+	const { deleteTeam, deleteRoom } = useRoomDeletionActions({ navigation, room });
 
 	const submit = async () => {
 		const { name, description, topic, announcement, joinCode } = getValues();
@@ -175,8 +171,8 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 			params.roomAnnouncement = announcement;
 		}
 		// Room Type
-		if ((room.t === SubscriptionType.CHANNEL) !== t) {
-			params.roomType = t ? ('c' as SubscriptionType) : ('p' as SubscriptionType);
+		if ((room.t === RoomType.CHANNEL) !== t) {
+			params.roomType = t ? RoomType.CHANNEL : RoomType.GROUP;
 		}
 		// Read Only
 		if (room.ro !== readOnly) {
@@ -234,6 +230,9 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	};
 
 	const toggleArchive = () => {
+		if (!isNonDirectRoom(room)) {
+			return;
+		}
 		const { rid, archived, t } = room;
 
 		const action = I18n.t(`${archived ? 'un' : ''}archive`);
@@ -251,7 +250,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 					onPress: async () => {
 						try {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE);
-							await toggleArchiveRoom(rid, t as SubscriptionType, !archived);
+							await toggleArchiveRoom(rid, t, !archived);
 						} catch (e) {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE_F);
 							log(e);

@@ -5,7 +5,7 @@ import log from '~/lib/methods/helpers/log';
 import { type IRoomScreenContextValue, type RoomStore } from '../definitions';
 
 interface IUseRoomInitParams {
-	rid?: string;
+	rid: string;
 	tmid?: string;
 	isAuthenticated: boolean;
 	ready: boolean;
@@ -62,7 +62,7 @@ export function useRoomInit({
 
 	// The unread divider anchor belongs to this screen, not to the room — see stores/RoomScreenContext.
 	const [lastSeen, setLastSeen] = useState<Date | null>(null);
-	const hasInitWork = !!rid && isAuthenticated && ready;
+	const hasInitWork = isAuthenticated && ready;
 	const [settledTarget, setSettledTarget] = useState<IInitTarget | null>(null);
 	const loading = hasInitWork && (settledTarget?.rid !== rid || settledTarget?.tmid !== tmid);
 	// One controller per init() run. A new run aborts the one it supersedes and never resets it, so a

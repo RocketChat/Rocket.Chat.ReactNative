@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { type MessageTypesValues } from '~/definitions/IMessage';
-import { SubscriptionType } from '~/definitions/ISubscription';
+import { RoomType } from '~/definitions/IRoom';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import RightIcons from './RightIcons';
@@ -57,7 +57,7 @@ const User = () => {
 
 		const onUserPress = () => {
 			navToRoomInfo?.({
-				t: SubscriptionType.DIRECT,
+				t: RoomType.DIRECT,
 				rid: author?._id || '',
 				itsMe
 			});
