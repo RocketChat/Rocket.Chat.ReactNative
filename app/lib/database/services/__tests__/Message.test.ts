@@ -67,68 +67,33 @@ describe('getMessageOrThreadMessageById', () => {
 		expect(mockGetThreadMessageById).not.toHaveBeenCalled();
 	});
 
-	describe('without tmid', () => {
-		it('returns the message from the messages table', async () => {
-			const message = { id: 'message1' } as unknown as TMessageModel;
-			mockFind.mockResolvedValue(message);
+	it('returns the message from the messages table', async () => {
+		const message = { id: 'message1' } as unknown as TMessageModel;
+		mockFind.mockResolvedValue(message);
 
-			const result = await getMessageOrThreadMessageById('message1');
+		const result = await getMessageOrThreadMessageById('message1');
 
-			expect(result).toBe(message);
-			expect(mockGetThreadMessageById).not.toHaveBeenCalled();
-		});
-
-		it('falls back to the thread messages table', async () => {
-			const threadMessage = { id: 'reply1', msg: 'Thread reply' } as unknown as TThreadMessageModel;
-			mockFind.mockRejectedValue(new Error('not found'));
-			mockGetThreadMessageById.mockResolvedValue(threadMessage);
-
-			const result = await getMessageOrThreadMessageById('reply1');
-
-			expect(result).toBe(threadMessage);
-			expect(mockGetThreadMessageById).toHaveBeenCalledWith('reply1');
-		});
-
-		it('returns null when the message is in neither table', async () => {
-			mockFind.mockRejectedValue(new Error('not found'));
-			mockGetThreadMessageById.mockResolvedValue(null);
-
-			const result = await getMessageOrThreadMessageById('nonexistent');
-
-			expect(result).toBeNull();
-		});
+		expect(result).toBe(message);
+		expect(mockGetThreadMessageById).not.toHaveBeenCalled();
 	});
 
-	describe('with tmid', () => {
-		it('prefers the thread messages table', async () => {
-			const threadMessage = { id: 'message1', msg: 'Thread reply' } as unknown as TThreadMessageModel;
-			mockGetThreadMessageById.mockResolvedValue(threadMessage);
+	it('falls back to the thread messages table', async () => {
+		const threadMessage = { id: 'reply1', msg: 'Thread reply' } as unknown as TThreadMessageModel;
+		mockFind.mockRejectedValue(new Error('not found'));
+		mockGetThreadMessageById.mockResolvedValue(threadMessage);
 
-			const result = await getMessageOrThreadMessageById('message1', 'thread-id');
+		const result = await getMessageOrThreadMessageById('reply1');
 
-			expect(result).toBe(threadMessage);
-			expect(mockGetThreadMessageById).toHaveBeenCalledWith('message1');
-			expect(mockFind).not.toHaveBeenCalled();
-		});
+		expect(result).toBe(threadMessage);
+		expect(mockGetThreadMessageById).toHaveBeenCalledWith('reply1');
+	});
 
-		it('falls back to the messages table when not a thread message', async () => {
-			const parent = { id: 'parent', msg: 'Thread parent' } as unknown as TMessageModel;
-			mockGetThreadMessageById.mockResolvedValue(null);
-			mockFind.mockResolvedValue(parent);
+	it('returns null when the message is in neither table', async () => {
+		mockFind.mockRejectedValue(new Error('not found'));
+		mockGetThreadMessageById.mockResolvedValue(null);
 
-			const result = await getMessageOrThreadMessageById('parent', 'thread-id');
+		const result = await getMessageOrThreadMessageById('nonexistent');
 
-			expect(result).toBe(parent);
-			expect(mockFind).toHaveBeenCalledWith('parent');
-		});
-
-		it('returns null when the message is in neither table', async () => {
-			mockGetThreadMessageById.mockResolvedValue(null);
-			mockFind.mockRejectedValue(new Error('not found'));
-
-			const result = await getMessageOrThreadMessageById('nonexistent', 'thread-id');
-
-			expect(result).toBeNull();
-		});
+		expect(result).toBeNull();
 	});
 });

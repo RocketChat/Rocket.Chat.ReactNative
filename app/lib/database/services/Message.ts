@@ -20,12 +20,9 @@ export const getMessageById = async (messageId: string | null) => {
 	}
 };
 
-export const getMessageOrThreadMessageById = async (messageId: string | null, tmid?: string | null) => {
+export const getMessageOrThreadMessageById = async (messageId: string | null) => {
 	if (!messageId) {
 		return null;
-	}
-	if (tmid) {
-		return (await getThreadMessageById(messageId)) ?? getMessageById(messageId);
 	}
 	return (await getMessageById(messageId)) ?? getThreadMessageById(messageId);
 };

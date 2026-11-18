@@ -135,7 +135,7 @@ export const MessageComposer = ({
 			let quotedMessage: string | undefined;
 
 			if (quotedMessageIds.length) {
-				quotedMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
+				quotedMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds);
 			}
 
 			try {
@@ -160,7 +160,7 @@ export const MessageComposer = ({
 		}
 
 		if (quotedMessageIds.length) {
-			const quoteMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds, tmid);
+			const quoteMessage = await prepareQuoteMessage(textFromInput, quotedMessageIds);
 			onSendMessage?.(quoteMessage);
 			return;
 		}
