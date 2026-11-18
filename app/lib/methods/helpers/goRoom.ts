@@ -32,10 +32,15 @@ type TRoutableRoomItem = TGoRoomItem & { rid: string; t: RoomType };
 
 const ROOMS_LIST_ROUTES = ['RoomsListView', 'CategoryView'];
 
-let roomNavigationCount = 0;
+let latestRoomRequest = 0;
+
+const requestRoom = () => {
+	latestRoomRequest += 1;
+	const request = latestRoomRequest;
+	return { isLatest: () => request === latestRoomRequest };
+};
 
 const navigate = ({ item, isMasterDetail, ...props }: { item: TRoutableRoomItem; isMasterDetail: boolean }) => {
-	roomNavigationCount += 1;
 	const routeParams: NonNullable<ChatsStackParamList['RoomView']> = {
 		rid: item.rid,
 		name: getRoomTitle(item),
@@ -48,7 +53,7 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TRoutableRoomItem;
 	};
 
 	const currentRoute = Navigation.getCurrentRoute() as any;
-	if (currentRoute?.name === 'RoomView' && currentRoute?.params?.rid === item.rid) {
+	if (currentRoute?.name === 'RoomView' && currentRoute?.params?.rid === item.rid && !currentRoute?.params?.tmid) {
 		Navigation.setParams(routeParams);
 		return;
 	}
@@ -125,11 +130,15 @@ export const goRoom = async ({
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
 }): Promise<void> => {
+	const request = requestRoom();
 	if (!('id' in item) && item.t === RoomType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;
 			const result = await createDirectMessage(username as string);
+			if (!request.isLatest()) {
+				return;
+			}
 			if (result.success && result?.room?._id) {
 				return navigate({
 					item: {
@@ -146,12 +155,14 @@ export const goRoom = async ({
 		}
 	}
 
-	const navigationCountBeforeLookup = roomNavigationCount;
 	const room = await completeRoomItem(item);
-	if (!room || roomNavigationCount !== navigationCountBeforeLookup) {
+	if (!room || !request.isLatest()) {
 		return;
 	}
 	return navigate({ item: room, isMasterDetail, ...props });
 };
 
-export const navigateToRoom = navigate;
+export const navigateToRoom: typeof navigate = params => {
+	requestRoom();
+	return navigate(params);
+};

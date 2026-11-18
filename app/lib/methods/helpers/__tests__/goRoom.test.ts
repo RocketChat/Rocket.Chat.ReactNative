@@ -1,7 +1,10 @@
 import Navigation from '~/lib/navigation/appNavigation';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { getRoomInfo } from '~/lib/services/restApi';
-import { getUidDirectMessage } from './getUidDirectMessage';
-import { goRoom } from './goRoom';
+import { createDirectMessage } from '../../createDirectMessage';
+import { RoomType } from '~/definitions/IRoom';
+import { getUidDirectMessage } from '../getUidDirectMessage';
+import { goRoom } from '../goRoom';
 
 jest.mock('~/lib/navigation/appNavigation', () => ({
 	__esModule: true,
@@ -13,13 +16,20 @@ jest.mock('~/lib/navigation/appNavigation', () => ({
 	}
 }));
 jest.mock('~/lib/database/services/Subscription', () => ({ getSubscriptionByRoomId: jest.fn(() => Promise.resolve(null)) }));
-jest.mock('./getRoomTitle', () => ({
+jest.mock('../getRoomTitle', () => ({
 	getRoomTitle: jest.fn(() => 'Room')
 }));
-jest.mock('./getUidDirectMessage', () => ({
+jest.mock('../getUidDirectMessage', () => ({
 	getUidDirectMessage: jest.fn()
 }));
 jest.mock('~/lib/services/restApi', () => ({ getRoomInfo: jest.fn() }));
+jest.mock('../../createDirectMessage', () => ({ createDirectMessage: jest.fn() }));
+
+const deferred = <T>() => {
+	let resolve: (value: T) => void = () => {};
+	const promise = new Promise<T>(done => (resolve = done));
+	return { promise, resolve };
+};
 
 const navigatedRoomParams = () => {
 	const buildAction = jest.mocked(Navigation.dispatch).mock.calls.at(-1)?.[0] as unknown as (state: any) => any;
@@ -87,5 +97,50 @@ describe('goRoom navigation', () => {
 		await goRoom({ item: { rid: 'unknown-rid' }, isMasterDetail: false });
 
 		expect(Navigation.dispatch).not.toHaveBeenCalled();
+	});
+
+	it('opens the room asked for last when an earlier lookup finishes first', async () => {
+		const firstLookup = deferred<any>();
+		const secondLookup = deferred<any>();
+		jest.mocked(getSubscriptionByRoomId).mockReturnValueOnce(firstLookup.promise).mockReturnValueOnce(secondLookup.promise);
+
+		const openFirst = goRoom({ item: { rid: 'first-rid', t: RoomType.CHANNEL }, isMasterDetail: false });
+		const openSecond = goRoom({ item: { rid: 'second-rid', t: RoomType.CHANNEL }, isMasterDetail: false });
+		firstLookup.resolve(null);
+		await openFirst;
+		secondLookup.resolve(null);
+		await openSecond;
+
+		expect(navigatedRoomParams()).toEqual(expect.objectContaining({ rid: 'second-rid' }));
+	});
+
+	it('drops a direct message created from search once another room was opened', async () => {
+		const creation = deferred<any>();
+		jest.mocked(createDirectMessage).mockReturnValueOnce(creation.promise);
+
+		const openFromSearch = goRoom({
+			item: { t: RoomType.DIRECT, search: true, username: 'searched-user' },
+			isMasterDetail: false
+		});
+		await goRoom({ item: { rid: 'chosen-rid', t: RoomType.CHANNEL }, isMasterDetail: false });
+		creation.resolve({ success: true, room: { _id: 'created-dm-rid' } });
+		await openFromSearch;
+
+		expect(navigatedRoomParams()).toEqual(expect.objectContaining({ rid: 'chosen-rid' }));
+	});
+
+	it('leaves a thread when its room is opened', async () => {
+		jest.mocked(Navigation.setParams).mockClear();
+		jest.mocked(Navigation.getCurrentRoute).mockReturnValueOnce({
+			name: 'RoomView',
+			params: { rid: 'thread-room-rid', tmid: 'thread-id' }
+		} as any);
+
+		await goRoom({ item: { rid: 'thread-room-rid', t: RoomType.CHANNEL }, isMasterDetail: false });
+
+		expect(Navigation.setParams).not.toHaveBeenCalled();
+		const params = navigatedRoomParams();
+		expect(params).toEqual(expect.objectContaining({ rid: 'thread-room-rid' }));
+		expect(params).not.toHaveProperty('tmid');
 	});
 });
