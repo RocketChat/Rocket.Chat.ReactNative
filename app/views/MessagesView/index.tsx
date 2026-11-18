@@ -19,6 +19,8 @@ import { getUserSelector } from '~/selectors/login';
 import { withActionSheet } from '~/containers/ActionSheet/Provider';
 import SafeAreaView from '~/containers/SafeAreaView';
 import getThreadName from '~/lib/methods/getThreadName';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import styles from './styles';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { type IApplicationState } from '~/definitions/redux';
@@ -68,7 +70,7 @@ interface IParams {
 	prid?: string;
 	jumpToMessageId?: string;
 	jumpToThreadId?: string;
-	roomUserId?: string;
+	roomUserId?: string | null;
 }
 
 class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
@@ -140,7 +142,8 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 			params = {
 				...params,
 				tmid: item.tmid,
-				name: await getThreadName(this.rid, item.tmid, item._id)
+				name: await getThreadName(this.rid, item.tmid, item._id),
+				roomUserId: getUidDirectMessage(await getSubscriptionByRoomId(this.rid))
 			};
 			Navigation.push('RoomView', params);
 		} else {

@@ -27,6 +27,8 @@ import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerAct
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
 import getThreadName from '~/lib/methods/getThreadName';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import styles from './styles';
 import { type InsideStackParamList, type ChatsStackParamList } from '~/stacks/types';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
@@ -210,6 +212,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 			t: RoomType;
 			tmid?: string;
 			name?: string;
+			roomUserId?: string | null;
 		} = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
@@ -220,7 +223,8 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 			params = {
 				...params,
 				tmid: item.tmid,
-				name: await getThreadName(this.rid, item.tmid as string, item._id)
+				name: await getThreadName(this.rid, item.tmid as string, item._id),
+				roomUserId: getUidDirectMessage(await getSubscriptionByRoomId(this.rid))
 			};
 			Navigation.push('RoomView', params);
 		} else {
