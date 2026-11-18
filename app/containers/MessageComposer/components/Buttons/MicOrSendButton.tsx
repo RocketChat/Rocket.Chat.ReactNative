@@ -14,7 +14,7 @@ import {
 	useMessageComposerApi,
 	useMicOrSend
 } from '~/containers/MessageComposer/context';
-import { useCanUploadFile } from '~/containers/MessageComposer/hooks';
+import { useCanUploadFile } from '~/containers/MessageComposer/hooks/useCanUploadFile';
 import { BaseButton } from './BaseButton';
 
 export const MicOrSendButton = (): ReactElement | null => {

@@ -5,7 +5,7 @@ import { createStore } from 'redux';
 import { Image as ExpoImage } from 'expo-image';
 
 import ReactionsList from './index';
-import { type IReaction } from '~/definitions';
+import { type IReaction } from '~/definitions/IReaction';
 import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
 import * as stories from './ReactionsList.stories';
 

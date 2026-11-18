@@ -1,4 +1,4 @@
-import { type IUrl, type IUrlFromServer } from '~/definitions';
+import { type IUrl, type IUrlFromServer } from '~/definitions/IUrl';
 import parseUrls from './parseUrls';
 
 const tmpImageValidLink = {

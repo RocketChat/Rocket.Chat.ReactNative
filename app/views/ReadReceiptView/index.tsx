@@ -17,7 +17,8 @@ import { themes } from '~/lib/constants/colors';
 import SafeAreaView from '~/containers/SafeAreaView';
 import styles from './styles';
 import { type ChatsStackParamList } from '~/stacks/types';
-import { type IApplicationState, type IReadReceipts } from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type IReadReceipts } from '~/definitions/IMessage';
 import { getReadReceipts } from '~/lib/services/restApi';
 
 interface IReadReceiptViewState {

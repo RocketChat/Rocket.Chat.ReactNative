@@ -3,7 +3,8 @@ import { createStaticNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
 
-import { type IApplicationState, RootEnum } from './definitions';
+import { type IApplicationState } from './definitions/redux';
+import { RootEnum } from './definitions/redux/TRootEnum';
 import Navigation from './lib/navigation/appNavigation';
 import { useMasterDetail } from './lib/hooks/useMasterDetail';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
@@ -16,7 +17,7 @@ import SetUsernameView from './views/SetUsernameView';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
-import { emitter } from './lib/methods/helpers';
+import { emitter } from './lib/methods/helpers/emitter';
 import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
 
 const useIsLoading = () =>

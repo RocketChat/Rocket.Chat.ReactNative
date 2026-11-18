@@ -13,7 +13,7 @@ import { setPermissions } from '~/actions/permissions';
 import { selectServerRequest } from '~/actions/server';
 import { setUser } from '~/actions/login';
 import { mockedStore } from '~/reducers/mockedStore';
-import { type TMessageActionState } from '~/definitions';
+import { type TMessageActionState } from '~/definitions/IMessage';
 import { initStore } from '~/lib/store/auxStore';
 import ImagePicker from '~/lib/methods/helpers/ImagePicker/ImagePicker';
 import Navigation from '~/lib/navigation/appNavigation';

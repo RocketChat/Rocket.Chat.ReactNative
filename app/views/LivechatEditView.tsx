@@ -8,7 +8,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import log from '../lib/methods/helpers/log';
 import { type TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants/colors';
-import { FormTextInput } from '../containers/TextInput';
+import { FormTextInput } from '../containers/TextInput/FormTextInput';
 import KeyboardView from '../containers/KeyboardView';
 import I18n from '../i18n';
 import { LISTENER } from '../containers/Toast';
@@ -25,7 +25,8 @@ import {
 	type ITitle,
 	type ILivechat
 } from '../definitions/ILivechatEditView';
-import { type IApplicationState, type IUser } from '../definitions';
+import { type IApplicationState } from '../definitions/redux';
+import { type IUser } from '../definitions/IUser';
 import { type ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 import { getAgentDepartments, getCustomFields, editLivechat, getTagsList } from '../lib/services/restApi';

@@ -1,7 +1,7 @@
 import type * as RocketChatSdk from '@rocket.chat/sdk';
 import type { Store } from 'redux';
 
-import type { IApplicationState } from '~/definitions';
+import type { IApplicationState } from '~/definitions/redux';
 import type sdk from '../services/sdk';
 import type { ISocketDriver } from '../services/sdk';
 

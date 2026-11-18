@@ -6,7 +6,7 @@ import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
-import { useActionSheet } from '~/containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 
 const styles = StyleSheet.create({
 	pickerText: {

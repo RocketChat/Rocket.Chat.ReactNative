@@ -8,38 +8,43 @@ import { type Dispatch } from 'redux';
 
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { getFilenameFromUri } from '~/lib/methods/helpers/getFilenameFromUri';
-import { getRoomTitle } from '~/lib/methods/helpers/helpers';
-import { type IMessageComposerRef, ComposerProvider, MessageComposerContainer } from '~/containers/MessageComposer';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { hasPermission } from '~/lib/methods/helpers/hasPermission';
+import { type IMessageComposerRef } from '~/containers/MessageComposer/interfaces';
+import { ComposerProvider } from '~/containers/MessageComposer/ComposerStore';
+import { MessageComposerContainer } from '~/containers/MessageComposer/MessageComposerContainer';
 import { type InsideStackParamList } from '~/stacks/types';
 import { themes } from '~/lib/constants/colors';
 import I18n from '~/i18n';
-import { prepareQuoteMessage } from '~/containers/MessageComposer/helpers';
+import { prepareQuoteMessage } from '~/containers/MessageComposer/helpers/prepareQuoteMessage';
 import { sendLoadingEvent } from '~/containers/Loading';
 import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import { type TSupportedThemes, withTheme } from '~/theme';
-import { FormTextInput } from '~/containers/TextInput';
+import { FormTextInput } from '~/containers/TextInput/FormTextInput';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { getUserSelector } from '~/selectors/login';
 import database from '~/lib/database';
 import Thumbs from '~/containers/Thumbs';
-import { showActionSheetRef } from '~/containers/ActionSheet';
+import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
 import { AttachmentActionSheet } from '~/containers/MessageComposer/components/Attachments/AttachmentActionSheet';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
-import {
-	type IApplicationState,
-	type IServer,
-	type IShareAttachment,
-	type IUser,
-	RootEnum,
-	type TThreadModel
-} from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type IServer } from '~/definitions/IServer';
+import { type IShareAttachment } from '~/definitions/IAttachment';
+import { type IUser } from '~/definitions/IUser';
+import { RootEnum } from '~/definitions/redux/TRootEnum';
+import { type TThreadModel } from '~/definitions/IThread';
 import { type TRoomOrPreview } from '~/definitions/TRoom';
 import { sendAttachments } from '~/lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '~/lib/methods/sendMessage';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
+import { canUploadFile } from '~/lib/methods/helpers/media';
+import { isReadOnly } from '~/lib/methods/helpers/isReadOnly';
+import { isBlocked } from '~/lib/methods/helpers/room';
+import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { Encryption } from '~/lib/encryption';
-import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked, showErrorAlert } from '~/lib/methods/helpers';
 import {
 	createMessageActionStore,
 	MessageActionProvider,

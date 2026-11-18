@@ -1,9 +1,9 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { useActionSheet } from '~/containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 import * as List from '~/containers/List';
-import { type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { useTheme } from '~/theme';
 import { useIsCustomCategoriesAvailable } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import sharedStyles from '~/views/Styles';

@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 
 import { AvatarWithEdit } from '~/containers/Avatar';
-import { SubscriptionType } from '~/definitions';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import styles from '../styles';
 import I18n from '~/i18n';
 

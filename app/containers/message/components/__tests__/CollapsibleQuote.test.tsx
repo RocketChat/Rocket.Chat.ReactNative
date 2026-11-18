@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 
 import { setUser } from '~/actions/login';
 import { mockedStore } from '~/reducers/mockedStore';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 import CollapsibleQuote from '../Attachments/CollapsibleQuote';

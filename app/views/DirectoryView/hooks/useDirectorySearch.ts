@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { type IServerRoom } from '~/definitions';
+import { type IServerRoom } from '~/definitions/IRoom';
 import { announceSearchResultsForAccessibility } from '~/lib/methods/helpers/announceSearchResultsForAccessibility';
 import { useDebounce } from '~/lib/methods/helpers/debounce';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';
