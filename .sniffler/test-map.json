@@ -284,6 +284,16 @@
 		]
 	},
 	{
+		"test": "e2e/tests/room/edit-thread-message.e2e.ts",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/containers/MessageComposer/**",
+			"app/containers/MessageActions/**",
+			"app/lib/database/services/Message.ts",
+			"app/sagas/room.js"
+		]
+	},
+	{
 		"test": "e2e/tests/room/ignoreuser.e2e.ts",
 		"dependsOn": ["app/views/RoomInfoView/**", "app/views/ReportUserView/**", "app/views/RoomActionsView/**", "app/sagas/room.js"]
 	},
