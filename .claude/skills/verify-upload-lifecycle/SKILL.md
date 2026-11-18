@@ -5,14 +5,14 @@ description: Model-check the file upload lifecycle (uploadQueue, createUploadRec
 
 # Verify the upload lifecycle
 
-Sending a file in a Room goes through `sendFileMessage` (`app/lib/methods/sendFileMessage/index.ts`), which picks `sendFileMessage.ts` (servers below 6.10.0, here "v1") or `sendFileMessageV2.ts` ("v2"). Both share the in-memory `uploadQueue` and the WatermelonDB `uploads` row in `utils.ts`. A small model of that lifecycle lives in `model/upload-lifecycle.ts`, and TLC checks every order of its events.
+Sending a file in a Room goes through `sendFileMessage` (`app/lib/methods/sendFileMessage/index.ts`), which picks `sendFileMessage.ts` (servers below 6.10.0) or `sendFileMessageV2.ts`. Both share the in-memory `uploadQueue` and the WatermelonDB `uploads` row in `utils.ts`, and both handle the queue the same way, so one model covers them. If the two callers ever diverge, add a variable that picks the caller and branch on it. The model lives in `model/upload-lifecycle.ts`, and TLC checks every order of its events.
 
 ## The rules
 
 - `neverRefusedAfterUploadEnded`: once an upload of a file ends (sent, rejected by the server, cancelled), sending the same file again in the same Room is never refused as "Upload in progress".
   Harm: the user can't send that photo to that Room again until they restart the app.
 - `runningUploadNeverShownFailed`: an upload that is still running never shows as failed in the Room.
-  Harm: the progress row turns into a failed row with a retry button while the file is still uploading, and the refusal behind it is reported to Bugsnag as "Couldn't create upload record".
+  Harm: the progress row turns into a failed row with a retry button while the file is still uploading.
 
 ## Does my change touch this?
 
@@ -37,9 +37,9 @@ Replay the shortest path against the real code before believing either. Each mod
 | `userSendsFile(false)` | `sendAttachments` from `MessageComposer.tsx` or `ShareView`, or `RecordAudio.tsx`, into `createUploadRecord` |
 | `userSendsFile(true)`  | `UploadProgress.tsx` `tryAgain` (only offered on a failed row)                                               |
 | `preparingFails`       | `Encryption.encryptFile` or `copyFileToCacheDirectoryIfNeeded` throws before the `FileUpload` is created     |
-| `uploadStarts`         | `uploadQueue[uploadPath] = new FileUpload(...)` then `send()`                                                |
-| `serverAccepts`        | `send()` (and `rooms.mediaConfirm` on v2) resolve; the row is destroyed                                      |
-| `serverRejects`        | `send()` or `rooms.mediaConfirm` reject; the caller's `catch` runs                                           |
+| `uploadStarts`         | `uploadQueue[uploadPath] = upload` then `upload.send()`                                                      |
+| `serverAccepts`        | `send()` (and `rooms.mediaConfirm` on V2) resolve; the row is destroyed; `finally` runs `endUpload`          |
+| `serverRejects`        | `send()` or `rooms.mediaConfirm` reject; `catch` persists the error; `finally` runs `endUpload`              |
 | `userCancels`          | `UploadProgress.tsx` `handleCancelUpload` → `cancelUpload`                                                   |
 | `appRestarts`          | process restart clears `uploadQueue`; `UploadProgress.uploadCheck` marks rows without a queue entry failed   |
 
@@ -58,13 +58,12 @@ Change the model action that mirrors the changed code, rerun, and replay any new
 
 ## Coverage
 
-| Covered code                                                                                                                            | Model                                                                                       |
-| --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `app/lib/methods/sendFileMessage/utils.ts`: `uploadQueue`, `isUploadActive`, `cancelUpload`, `persistUploadError`, `createUploadRecord` | `queued`, `record`, `isRefused`, `refuse`, `userCancels`, `persistUploadError`              |
-| `app/lib/methods/sendFileMessage/sendFileMessageV2.ts`: `sendFileMessageV2`                                                             | `api === "v2"` branches, `uploadStarts`, `serverAccepts`, `serverRejects`, `preparingFails` |
-| `app/lib/methods/sendFileMessage/sendFileMessage.ts`: `sendFileMessage`                                                                 | `api === "v1"` branches, same actions                                                       |
-| `app/lib/methods/sendFileMessage/index.ts`: v1/v2 switch                                                                                | `api`                                                                                       |
-| `app/views/RoomView/components/UploadProgress.tsx`: `uploadCheck`, `tryAgain`, `handleCancelUpload`                                     | `appRestarts`, `userSendsFile(true)`, `userCancels`                                         |
+| Covered code                                                                                                                                                              | Model                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `app/lib/methods/sendFileMessage/utils.ts`: `uploadQueue`, `isUploadActive`, `isUploadCancelled`, `endUpload`, `cancelUpload`, `persistUploadError`, `createUploadRecord` | `queued`, `record`, `isRefused`, `refuse`, `userCancels`, `persistUploadError`      |
+| `app/lib/methods/sendFileMessage/sendFileMessageV2.ts`: `sendFileMessageV2`                                                                                               | `userSendsFile`, `preparingFails`, `uploadStarts`, `serverAccepts`, `serverRejects` |
+| `app/lib/methods/sendFileMessage/sendFileMessage.ts`: `sendFileMessage`                                                                                                   | same actions                                                                        |
+| `app/views/RoomView/components/UploadProgress.tsx`: `uploadCheck`, `tryAgain`, `handleCancelUpload`                                                                       | `appRestarts`, `userSendsFile(true)`, `userCancels`                                 |
 
 Sync commit: `776c0681c6b76c6ea3059ef6755265f32cada088`. The model describes the covered code as of this commit. Move it forward only after you have compared every covered function with its model action at the new commit. To see what changed since:
 
