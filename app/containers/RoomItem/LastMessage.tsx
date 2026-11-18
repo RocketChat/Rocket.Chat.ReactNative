@@ -3,7 +3,7 @@ import { memo } from 'react';
 import { type TextStyle } from 'react-native';
 
 import { formatLastMessage } from '~/lib/methods/formatLastMessage';
-import { isAndroid } from '~/lib/methods/helpers';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import { useTheme } from '~/theme';
 import { MarkdownPreview } from '../markdown';
 import { type ILastMessageProps } from './interfaces';

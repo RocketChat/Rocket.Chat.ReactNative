@@ -11,7 +11,7 @@ import {
 	tapWhenUncovered,
 	tapWhenVisible
 } from '~e2e/support/flows';
-import { openSettings } from '~e2e/support/settings';
+import { clearLocalCache, openSettings } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
 
@@ -69,11 +69,7 @@ test('shows settings, clears cache and opens legal', { tags: ['test-2'] }, async
 	await goBack(fixtures);
 
 	await expect(settingsView).toBeVisible({ timeout: LONG_TIMEOUT });
-	await fixtures.screen.scrollUntilVisible(fixtures.screen.getByTestId('settings-view-clear-cache'));
-	await tapWhenVisible(fixtures, 'settings-view-clear-cache');
-	await expect(screen.getByText(/This will clear all your offline data/)).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByRole('button', { name: /^Clear$/i }).tap();
-	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await clearLocalCache(fixtures);
 	await expect(screen.getByTestId(`rooms-list-view-item-${room.name}`)).toBeVisible({ timeout: LONG_TIMEOUT });
 
 	await openSettings(fixtures);

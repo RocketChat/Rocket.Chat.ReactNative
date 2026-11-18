@@ -8,7 +8,7 @@ import SafeAreaView from '~/containers/SafeAreaView';
 import SearchBox from '~/containers/SearchBox';
 import I18n from '~/i18n';
 import { useAppNavigation, useAppRoute } from '~/lib/hooks/navigation';
-import { useDebounce } from '~/lib/methods/helpers';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
 import { type TNavigation } from '~/stacks/stackType';
 import { useTheme } from '~/theme';
 import sharedStyles from '../Styles';

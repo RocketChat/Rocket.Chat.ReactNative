@@ -16,7 +16,7 @@ import { addSettings } from '~/actions/settings';
 import { initStore } from '~/lib/store/auxStore';
 import { useCanUploadFile } from '~/containers/MessageComposer/hooks/useCanUploadFile';
 import { openAppSettings } from '~/lib/methods/helpers/openAppSettings';
-import { type IShareAttachment } from '~/definitions';
+import { type IShareAttachment } from '~/definitions/IAttachment';
 import { type TMicOrSend } from '../../../interfaces';
 
 jest.mock('~/theme', () => ({ useTheme: () => ({ theme: 'light', colors: { strokeHighlight: '#054' } }) }));

@@ -10,7 +10,7 @@ import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
 import Radio from '../containers/Radio';
-import { type IPreferences } from '../definitions';
+import { type IPreferences } from '../definitions/IPreferences';
 import I18n from '../i18n';
 import { type DisplayPrefStackParamList } from '../stacks/types';
 import { events, logEvent } from '../lib/methods/helpers/log';

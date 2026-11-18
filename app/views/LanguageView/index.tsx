@@ -10,7 +10,7 @@ import { appStart } from '~/actions/app';
 import { setUser } from '~/actions/login';
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
-import { RootEnum } from '~/definitions';
+import { RootEnum } from '~/definitions/redux/TRootEnum';
 import I18n, { isRTL, LANGUAGES } from '~/i18n';
 import database from '~/lib/database';
 import { getUserSelector } from '~/selectors/login';

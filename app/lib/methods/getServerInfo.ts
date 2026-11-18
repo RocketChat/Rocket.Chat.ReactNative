@@ -8,13 +8,13 @@ import {
 	type ISupportedVersions,
 	type ISupportedVersionsData,
 	type IApiServerInfo
-} from '~/definitions';
+} from '~/definitions/IServer';
 import { selectServerFailure } from '~/actions/server';
 import { store } from '../store/auxStore';
 import I18n from '~/i18n';
 import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants/supportedVersions';
 import { getServerById } from '../database/services/Server';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion } from './helpers/compareServerVersion';
 import log from './helpers/log';
 import { fetchForWorkspace } from './serverBasicAuth';
 import { getStoredSession } from './loggedInServer';

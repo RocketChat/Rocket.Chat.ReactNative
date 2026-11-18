@@ -8,7 +8,9 @@ import { getRoomTypeIconName } from './roomTypeIconName';
 import { themes } from '~/lib/constants/colors';
 import Status from '../Status';
 import { useTheme } from '~/theme';
-import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '~/definitions';
+import { type TUserStatus } from '~/definitions/TUserStatus';
+import { type IOmnichannelSource } from '~/definitions/IRoom';
+import { type ISubscription } from '~/definitions/ISubscription';
 
 const styles = StyleSheet.create({
 	icon: {

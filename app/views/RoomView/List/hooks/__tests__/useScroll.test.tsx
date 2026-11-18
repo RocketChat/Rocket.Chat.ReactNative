@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { type TListRef, type TMessagesIdsRef } from '~/views/RoomView/definitions';
 import { MAX_SCROLL_TO_INDEX_RETRIES } from '~/views/RoomView/List/constants';
 import { useScroll } from '../useScroll';

@@ -4,7 +4,7 @@ import { type ReactElement, useState } from 'react';
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
 import EmojiPicker from '~/containers/EmojiPicker';
 import styles from '../styles';
-import { type IEmoji } from '~/definitions';
+import { type IEmoji } from '~/definitions/IEmoji';
 import { type EventTypes } from '~/containers/EmojiPicker/interfaces';
 import { searchEmojis } from '~/lib/methods/emojis';
 import { useDebounce } from '~/lib/methods/helpers/debounce';

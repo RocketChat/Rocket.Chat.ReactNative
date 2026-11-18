@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 
-import { type ICustomEmojis } from '~/definitions';
+import { type ICustomEmojis } from '~/definitions/IEmoji';
 import ReactionsList from '.';
 import { mockedStore as store } from '~/reducers/mockedStore';
 import { updateSettings } from '~/actions/settings';

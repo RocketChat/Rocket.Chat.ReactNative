@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 
-import { type IAttachment, type IUserMessage } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type IUserMessage } from '~/definitions/IMessage';
 import AudioPlayer from '~/containers/AudioPlayer';
 import Markdown from '~/containers/markdown';
 import { useMediaAutoDownload } from '~/containers/message/hooks/useMediaAutoDownload';
