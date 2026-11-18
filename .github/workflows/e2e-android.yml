@@ -37,16 +37,6 @@ jobs:
               distribution: temurin
               java-version: 17
 
-          - name: Restore Android AVD (seeded on develop; shard 9 builds its own)
-            if: ${{ inputs.shard != '9' }}
-            id: avd-cache
-            uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-            with:
-              path: |
-                ~/.android/avd/*
-                ~/.android/adb*
-              key: avd-${{ runner.os }}-api34
-
           - name: Restore Android SDK packages (emulator + system image, seeded on develop)
             uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
             with:
@@ -65,6 +55,19 @@ jobs:
 
       - name: Pre-install Android SDK packages (updates a stale cache, retried)
         uses: ./.github/actions/preinstall-android-sdk
+
+      - name: Read emulator revision
+        id: emulator
+        run: echo "revision=$(sed -n 's/^Pkg.Revision=//p' "${ANDROID_HOME:-/usr/local/lib/android/sdk}/emulator/source.properties")" >> "$GITHUB_OUTPUT"
+
+      - name: Restore Android AVD (seeded on develop per emulator revision; shard 9 builds its own)
+        if: ${{ inputs.shard != '9' }}
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ runner.os }}-api34-emulator-${{ steps.emulator.outputs.revision }}
 
       - name: Setup E2E Account
         uses: ./.github/actions/e2e-account
@@ -159,6 +162,7 @@ jobs:
           force-avd-creation: false
           disable-animations: true
           emulator-boot-timeout: 900
+          pre-emulator-launch-script: bash .github/scripts/android-boot-watchdog.sh "$PPID" > "/proc/$PPID/fd/1" 2>&1 &
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: bash .github/scripts/run-e2e.sh android "$SHARD"
 
@@ -181,6 +185,7 @@ jobs:
           force-avd-creation: false
           disable-animations: true
           emulator-boot-timeout: 900
+          pre-emulator-launch-script: bash .github/scripts/android-boot-watchdog.sh "$PPID" > "/proc/$PPID/fd/1" 2>&1 &
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: bash .github/scripts/run-e2e.sh android "$SHARD"
 
