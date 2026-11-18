@@ -32,14 +32,14 @@ describe('test room reducer', () => {
 	});
 
 	it('should return initial state after leaveRoom', () => {
-		mockedStore.dispatch(leaveRoom({ rid: 'GENERAL' }));
+		mockedStore.dispatch(leaveRoom({ rid: 'GENERAL', t: 'c' }));
 		const { rid, isDeleting } = mockedStore.getState().room;
 		expect(rid).toEqual('GENERAL');
 		expect(isDeleting).toEqual(true);
 	});
 
 	it('should return initial state after deleteRoom', () => {
-		mockedStore.dispatch(deleteRoom({ rid: 'GENERAL' }));
+		mockedStore.dispatch(deleteRoom({ rid: 'GENERAL', t: 'c' }));
 		const { rid, isDeleting } = mockedStore.getState().room;
 		expect(rid).toEqual('GENERAL');
 		expect(isDeleting).toEqual(true);

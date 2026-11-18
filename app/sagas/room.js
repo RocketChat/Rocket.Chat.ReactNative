@@ -123,7 +123,7 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, selected }) {
 	try {
 		const result = isTeam
 			? yield deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) })
-			: yield deleteRoom(room.rid || room._id, room.t);
+			: yield deleteRoom(room.rid, room.t);
 
 		if (result?.success) {
 			yield handleRemovedRoom(isTeam, 'delete');

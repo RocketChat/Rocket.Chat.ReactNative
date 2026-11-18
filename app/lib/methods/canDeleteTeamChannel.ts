@@ -1,9 +1,10 @@
 import { RoomType } from '~/definitions/IRoom';
+import { type ISubscription } from '~/definitions/ISubscription';
 import { store as reduxStore } from '~/lib/store/auxStore';
 import { compareServerVersion } from './helpers/compareServerVersion';
 import { hasPermission } from './helpers/hasPermission';
 
-export const canDeleteTeamChannel = async (channel: { rid: string; t: string }, teamRoomId: string): Promise<boolean> => {
+export const canDeleteTeamChannel = async (channel: Pick<ISubscription, 'rid' | 't'>, teamRoomId: string): Promise<boolean> => {
 	const { permissions, server } = reduxStore.getState();
 	const isPublic = channel.t === RoomType.CHANNEL;
 

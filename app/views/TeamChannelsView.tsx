@@ -18,6 +18,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { type IApplicationState } from '../definitions/redux';
 import { type IBaseScreen } from '../definitions';
 import { type TSubscriptionModel } from '../definitions/ISubscription';
+import { type RoomType } from '../definitions/IRoom';
 import { withDimensions } from '../lib/hooks/withDimensions';
 import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 import { BASE_ROW_HEIGHT, BASE_ROW_HEIGHT_CONDENSED } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -53,7 +54,7 @@ export interface IItem {
 	broadcast: boolean;
 	encrypted: boolean;
 	name: string;
-	t: string;
+	t: RoomType;
 	msgs: number;
 	usersCount: number;
 	u: { _id: string; name: string };
@@ -446,7 +447,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => dispatch(deleteRoom(item))
+					onPress: () => dispatch(deleteRoom({ rid: item._id, t: item.t }))
 				}
 			],
 			{ cancelable: false }

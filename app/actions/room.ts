@@ -1,6 +1,7 @@
 import { type Action } from 'redux';
 
 import { type RoomType } from '../definitions/IRoom';
+import { type ISubscription } from '../definitions/ISubscription';
 import { ROOM } from './actionsTypes';
 
 // TYPE RETURN RELATED
@@ -20,7 +21,7 @@ interface IBaseReturn extends Action {
 type TSubscribeRoom = IBaseReturn;
 type TUnsubscribeRoom = IBaseReturn;
 
-type TRoom = Record<string, any>;
+type TRoom = Pick<ISubscription, 'rid' | 't' | 'teamMain' | 'teamId'>;
 
 interface ILeaveRoom extends Action {
 	room: TRoom;

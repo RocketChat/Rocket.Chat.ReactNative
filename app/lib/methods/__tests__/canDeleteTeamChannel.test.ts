@@ -22,8 +22,8 @@ jest.mock('../helpers/hasPermission', () => ({
 const grant = (rid: string, permission: string) =>
 	mockGrantedPermissions.set(rid, [...(mockGrantedPermissions.get(rid) ?? []), ...PERMISSION_ROLES[permission]]);
 
-const publicChannel = { rid: 'channel-rid', t: 'c' };
-const privateGroup = { rid: 'group-rid', t: 'p' };
+const publicChannel = { rid: 'channel-rid', t: 'c' } as const;
+const privateGroup = { rid: 'group-rid', t: 'p' } as const;
 const TEAM_RID = 'team-rid';
 
 describe('canDeleteTeamChannel', () => {
