@@ -65,8 +65,8 @@ Change the model action that mirrors the changed code, rerun, and replay any new
 | `app/lib/methods/sendFileMessage/sendFileMessage.ts`: `sendFileMessage`                                                                                                   | same actions                                                                        |
 | `app/views/RoomView/components/UploadProgress.tsx`: `uploadCheck`, `tryAgain`, `handleCancelUpload`                                                                       | `appRestarts`, `userSendsFile(true)`, `userCancels`                                 |
 
-Sync commit: `776c0681c6b76c6ea3059ef6755265f32cada088`. The model describes the covered code as of this commit. Move it forward only after you have compared every covered function with its model action at the new commit. To see what changed since:
+Sync commit: `9f973888ce1418d3063e5c6077dcde6fe7fbada2`. The model describes the covered code as of this commit. Move it forward only after you have compared every covered function with its model action at the new commit. To see what changed since:
 
 ```sh
-git diff 776c0681c6b76c6ea3059ef6755265f32cada088 -- app/lib/methods/sendFileMessage app/views/RoomView/components/UploadProgress.tsx
+git diff 9f973888ce1418d3063e5c6077dcde6fe7fbada2 -- app/lib/methods/sendFileMessage app/views/RoomView/components/UploadProgress.tsx
 ```
