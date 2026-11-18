@@ -54,6 +54,8 @@ export interface IMockSdkDriver extends ISocketDriver {
 		openTimeout?: ReturnType<typeof setTimeout>;
 		open(): Promise<void>;
 		send(message: Record<string, unknown>): Promise<unknown>;
+		subscribe(name: string, params: unknown[]): Promise<unknown>;
+		login(credentials: { resume: string }): Promise<unknown>;
 		subscriptions: Record<string, { id: string; name: string; params: string[]; unsubscribe: jest.Mock }>;
 	};
 }
@@ -116,16 +118,19 @@ export async function buildConnectedDriver(connections: MockConnection[], userId
 	return driver;
 }
 
-export function addMediaSubs(driver: IMockSdkDriver, userId: string): void {
-	['media-signal', 'media-calls'].forEach((name, index) => {
-		const id = `sub-${index}`;
-		driver.socket.subscriptions[id] = {
-			id,
-			name: 'stream-notify-user',
-			params: [`${userId}/${name}`],
-			unsubscribe: jest.fn()
-		};
-	});
+export async function addMediaSubs(driver: IMockSdkDriver, userId: string): Promise<void> {
+	const subscribing = Promise.all(
+		['media-signal', 'media-calls'].map(name => driver.socket.subscribe('stream-notify-user', [`${userId}/${name}`]))
+	);
+	await jest.advanceTimersByTimeAsync(0);
+	await subscribing;
+}
+
+export async function resumeLogin(driver: IMockSdkDriver): Promise<void> {
+	const loggingIn = driver.socket.login({ resume: 'auth-token' });
+	await jest.advanceTimersByTimeAsync(0);
+	await loggingIn;
+	await jest.advanceTimersByTimeAsync(0);
 }
 
 export function backdateLastPing(driver: IMockSdkDriver, ageMs: number): void {
