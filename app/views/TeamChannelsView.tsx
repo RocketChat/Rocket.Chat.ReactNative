@@ -361,8 +361,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 						rid: item._id,
 						name: getRoomTitle(result.room),
 						joinCodeRequired: result.room.joinCodeRequired,
-						t: result.room.t,
-						teamId: result.room.teamId
+						t: result.room.t
 					};
 				}
 				goRoom({ item: params, isMasterDetail });

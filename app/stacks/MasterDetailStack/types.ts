@@ -16,23 +16,10 @@ import { type CreateCategoryViewParams } from '~/views/CreateCategoryView';
 import { type NewMessageViewParams } from '~/views/NewMessageView';
 import { type CategoryRoomsViewParams } from '~/views/CreateCategoryView/CategoryRoomsView';
 import { type ConfirmCategoryViewParams } from '~/views/CreateCategoryView/ConfirmCategoryView';
+import { type ChatsStackParamList } from '../types';
 
 export type MasterDetailChatsStackParamList = {
-	RoomView:
-		| {
-				rid: string;
-				t: RoomType;
-				tmid?: string;
-				message?: string;
-				name?: string;
-				fname?: string;
-				prid?: string;
-				room: ISubscription;
-				jumpToMessageId?: string;
-				jumpToThreadId?: string;
-				roomUserId?: string;
-		  }
-		| undefined;
+	RoomView: ChatsStackParamList['RoomView'];
 };
 
 export type MasterDetailSplitParamList = {

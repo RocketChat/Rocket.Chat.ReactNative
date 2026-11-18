@@ -45,7 +45,6 @@ export type ChatsStackParamList = {
 				tmid?: string;
 				messageId?: string;
 				name?: string;
-				fname?: string;
 				prid?: string;
 				visitor?: IVisitor;
 				joinCodeRequired?: boolean;
@@ -53,7 +52,6 @@ export type ChatsStackParamList = {
 				jumpToThreadId?: string;
 				roomUserId?: string | null;
 				usedCannedResponse?: string;
-				status?: string;
 		  }
 		| undefined;
 	RoomActionsView: {

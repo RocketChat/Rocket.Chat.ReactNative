@@ -6,7 +6,8 @@ import { inviteLinksFailure, inviteLinksSetInvite, inviteLinksSuccess } from '..
 import log from '../lib/methods/helpers/log';
 import Navigation from '../lib/navigation/appNavigation';
 import I18n from '../i18n';
-import { getRoomTitle } from '../lib/methods/helpers/getRoomTitle';
+import { goRoom } from '../lib/methods/helpers/goRoom';
+import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
 import { findOrCreateInvite, validateInviteToken, inviteToken } from '../lib/services/restApi';
 
 const handleRequest = function* handleRequest({ token }) {
@@ -26,12 +27,7 @@ const handleRequest = function* handleRequest({ token }) {
 		if (result.room && result.room.rid) {
 			yield delay(1000);
 			yield Navigation.navigate('RoomsListView');
-			const { room } = result;
-			Navigation.navigate('RoomView', {
-				rid: room.rid,
-				name: getRoomTitle(room),
-				t: room.t
-			});
+			yield goRoom({ item: result.room, isMasterDetail: getIsMasterDetail() });
 		}
 
 		yield put(inviteLinksSuccess());

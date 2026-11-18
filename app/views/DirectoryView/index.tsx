@@ -194,9 +194,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 						rid: item._id,
 						name: item.name,
 						t: item.t,
-						search: true,
-						teamMain: item.teamMain,
-						teamId: item.teamId
+						search: true
 					});
 				}
 			} catch {
