@@ -11,7 +11,7 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 	default: (...args: unknown[]) => mockLog(...args)
 }));
 
-jest.mock('~/lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
 	isIOS: true
 }));
 
@@ -20,7 +20,7 @@ jest.mock('~/lib/navigation/appNavigation', () => ({
 	default: { navigate: jest.fn(), back: jest.fn() }
 }));
 
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	hideActionSheetRef: jest.fn()
 }));
 

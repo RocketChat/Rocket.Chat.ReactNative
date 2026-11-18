@@ -44,8 +44,8 @@ jest.mock('~/lib/native/NativeVoip', () => ({
 }));
 
 // Re-evaluate `isIOS` per-test from Platform.OS (the helper computes it once at import time).
-jest.mock('~/lib/methods/helpers', () => {
-	const actual = jest.requireActual('~/lib/methods/helpers');
+jest.mock('~/lib/methods/helpers/deviceInfo', () => {
+	const actual = jest.requireActual('~/lib/methods/helpers/deviceInfo');
 	const { Platform: RNPlatform } = jest.requireActual('react-native');
 	const proxy: Record<string, unknown> = { ...actual };
 	Object.defineProperty(proxy, 'isIOS', {
@@ -118,7 +118,7 @@ const mockVideoConf = { startCall: jest.fn(), showInitCallActionSheet: jest.fn()
 jest.mock('~/lib/hooks/useVideoConf', () => ({ useVideoConf: () => mockVideoConf }));
 
 const mockShowActionSheetRef = jest.fn();
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	showActionSheetRef: (options: any) => mockShowActionSheetRef(options),
 	hideActionSheetRef: jest.fn(),
 	ActionSheetProvider: ({ children }: { children: ReactNode }) => children

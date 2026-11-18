@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import { useIsPexipCallSplit } from '~/lib/services/videoConf/usePexipCallStore';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { type IRoomViewProps, type RoomStore } from '~/views/RoomView/definitions';

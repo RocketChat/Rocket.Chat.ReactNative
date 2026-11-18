@@ -23,7 +23,7 @@ jest.mock('~/lib/hooks/useMasterDetail', () => ({
 jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn()
 }));
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
 }));
 jest.mock('~/lib/services/restApi', () => ({

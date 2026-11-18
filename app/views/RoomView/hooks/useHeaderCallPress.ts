@@ -1,4 +1,4 @@
-import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
+import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall/useNewMediaCall';
 
 export const useHeaderCallPress = (rid: string) => {
 	const { openNewMediaCall, hasMediaCallPermission, isInActiveCall } = useNewMediaCall(rid);

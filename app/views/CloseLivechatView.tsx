@@ -9,7 +9,7 @@ import { type ChatsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import KeyboardView from '../containers/KeyboardView';
 import SafeAreaView from '../containers/SafeAreaView';
-import { FormTextInput } from '../containers/TextInput';
+import { FormTextInput } from '../containers/TextInput/FormTextInput';
 import Button from '../containers/Button';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../lib/hooks/useMasterDetail';

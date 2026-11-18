@@ -7,7 +7,7 @@ import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
 import sdk from '../sdk';
 import Navigation from '~/lib/navigation/appNavigation';
 import { getDMSubscriptionByUsername } from '~/lib/database/services/Subscription';
-import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import { mediaSessionStore } from './MediaSessionStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 
@@ -30,7 +30,7 @@ jest.mock('~/lib/database/services/Subscription', () => ({
 	getDMSubscriptionByUsername: jest.fn()
 }));
 
-jest.mock('~/lib/methods/helpers/helpers', () => ({
+jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
 	getUidDirectMessage: jest.fn(() => 'other-user-id')
 }));
 

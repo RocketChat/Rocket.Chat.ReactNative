@@ -7,8 +7,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { styles } from './styles';
 import { useAppNavigation } from '~/lib/hooks/navigation';
 import I18n from '~/i18n';
-import { type IAttachment } from '~/definitions';
-import { formatAttachmentUrl, encodeAttachmentUrl } from '~/lib/methods/helpers';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { formatAttachmentUrl, encodeAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 
 interface IVideoPlayerProps {

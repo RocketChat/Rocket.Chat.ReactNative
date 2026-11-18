@@ -57,10 +57,8 @@ jest.mock('react-native', () => ({
 	}
 }));
 
-jest.mock('~/lib/methods/helpers', () => ({
-	isIOS: true,
-	normalizeDeepLinkingServerHost: jest.requireActual('~/lib/methods/helpers/normalizeDeepLinkingServerHost')
-		.normalizeDeepLinkingServerHost
+jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
+	isIOS: true
 }));
 
 jest.mock('./useCallStore', () => ({

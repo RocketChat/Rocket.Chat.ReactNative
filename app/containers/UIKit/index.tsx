@@ -13,7 +13,7 @@ import {
 
 import Markdown, { MarkdownPreview } from '../markdown';
 import Button from './Button';
-import { FormTextInput } from '../TextInput';
+import { FormTextInput } from '../TextInput/FormTextInput';
 import { textParser, useBlockContext } from './utils';
 import { themes } from '~/lib/constants/colors';
 import sharedStyles from '~/views/Styles';

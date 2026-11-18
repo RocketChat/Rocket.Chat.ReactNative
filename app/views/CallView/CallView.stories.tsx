@@ -9,7 +9,7 @@ import { styles as callViewStyles } from './styles';
 import { useTheme } from '~/theme';
 import { useCallStore } from '~/lib/services/voip/useCallStore';
 import { deriveSupportedFeatures } from '~/lib/services/voip/deriveSupportedFeatures';
-import { ActionSheetProvider } from '~/containers/ActionSheet';
+import { ActionSheetProvider } from '~/containers/ActionSheet/Provider';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,

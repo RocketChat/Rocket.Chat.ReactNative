@@ -28,9 +28,9 @@ import Navigation, { waitForNavigationReady } from '~/lib/navigation/appNavigati
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '~/definitions/Voip';
 import type { IDDPMessage } from '~/definitions/IDDPMessage';
-import type { ISubscription, TSubscriptionModel } from '~/definitions';
+import type { ISubscription, TSubscriptionModel } from '~/definitions/ISubscription';
 import { getDMSubscriptionByUsername } from '~/lib/database/services/Subscription';
-import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import log from '~/lib/methods/helpers/log';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
 import { usePexipCallStore } from '../videoConf/usePexipCallStore';

@@ -13,7 +13,7 @@ jest.mock('~/lib/services/voip/useCanTakeOverCall', () => ({
 }));
 
 const mockUseNewMediaCall = jest.fn(() => ({ openNewMediaCall: jest.fn(), hasMediaCallPermission: true, isInActiveCall: false }));
-jest.mock('~/lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall/useNewMediaCall', () => ({
 	useNewMediaCall: () => mockUseNewMediaCall()
 }));
 

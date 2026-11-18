@@ -5,9 +5,10 @@ import { Provider } from 'react-redux';
 import { initStore } from '~/lib/store/auxStore';
 import { mockedStore } from '~/reducers/mockedStore';
 import { appStart } from '~/actions/app';
-import { RootEnum } from '~/definitions';
+import { RootEnum } from '~/definitions/redux/TRootEnum';
 import { RoomProviders } from '../RoomView/components/RoomProviders';
-import { MessageComposerContainer, type IMessageComposerRef } from '~/containers/MessageComposer';
+import { MessageComposerContainer } from '~/containers/MessageComposer/MessageComposerContainer';
+import { type IMessageComposerRef } from '~/containers/MessageComposer/interfaces';
 import { createMessageActionStore, type TMessageActionStore } from '~/containers/message/stores/MessageActionStore';
 import { useChooseMedia } from '~/containers/MessageComposer/hooks/useChooseMedia';
 
@@ -46,7 +47,7 @@ jest.mock('~/lib/database', () => ({
 
 jest.mock('./Preview', () => () => null);
 jest.mock('~/containers/Thumbs', () => () => null);
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	showActionSheetRef: jest.fn(),
 	useActionSheet: () => ({ showActionSheet: jest.fn() })
 }));
@@ -64,7 +65,7 @@ jest.mock('~/lib/methods/helpers/info', () => ({
 	showErrorAlert: jest.fn()
 }));
 
-const { showActionSheetRef } = require('~/containers/ActionSheet');
+const { showActionSheetRef } = require('~/containers/ActionSheet/Provider');
 const { AttachmentActionSheet } = require('~/containers/MessageComposer/components/Attachments/AttachmentActionSheet');
 const { ShareView } = require('./index');
 const mockGetSubscriptionByRoomId = require('~/lib/database/services/Subscription').getSubscriptionByRoomId as jest.Mock;

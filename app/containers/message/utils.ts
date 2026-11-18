@@ -1,5 +1,6 @@
 /* eslint-disable complexity */
-import { type IAttachment, type IMessageTranslations } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type IMessageTranslations } from '~/definitions/IMessage';
 import { type MessageTypesValues, type TAnyMessageModel, type TMessageModel } from '~/definitions/IMessage';
 import I18n from '~/i18n';
 import dayjs from '~/lib/dayjs';

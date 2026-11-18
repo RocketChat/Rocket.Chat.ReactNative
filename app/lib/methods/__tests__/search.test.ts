@@ -2,7 +2,8 @@ import { search, searchLocal, searchRemote, type TSearch } from '../search';
 import { spotlight } from '../../services/restApi';
 import database from '../../database/index';
 import { store as reduxStore } from '../../store/auxStore';
-import { type ISearch, type ISearchLocal, type IUserMessage } from '~/definitions';
+import { type ISearch, type ISearchLocal } from '~/definitions/ISearch';
+import { type IUserMessage } from '~/definitions/IMessage';
 import { type ISpotlightRoom, type TSpotlightUser } from '~/definitions/ISpotlight';
 
 // jest.setup.js globally mocks this module - exercise the real implementation here
@@ -33,8 +34,10 @@ jest.mock('../../database/utils', () => ({
 	sanitizeLikeString: jest.fn((str?: string) => str)
 }));
 
-jest.mock('../helpers', () => ({
-	isGroupChat: jest.fn(() => false),
+jest.mock('../helpers/isGroupChat', () => ({
+	isGroupChat: jest.fn(() => false)
+}));
+jest.mock('../helpers/isReadOnly', () => ({
 	isReadOnly: jest.fn(() => Promise.resolve(false))
 }));
 

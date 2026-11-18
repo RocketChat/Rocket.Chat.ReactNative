@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { type ISidebarCategory } from '~/definitions';
+import { type ISidebarCategory } from '~/definitions/IUser';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { getUserSelector } from '~/selectors/login';

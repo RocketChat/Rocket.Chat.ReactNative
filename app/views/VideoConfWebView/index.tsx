@@ -9,7 +9,7 @@ import SafeAreaView from '~/containers/SafeAreaView';
 import I18n from '~/i18n';
 import { userAgent } from '~/lib/constants/userAgent';
 import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { type InsideStackParamList } from '~/stacks/types';
 
 const VideoConfWebView = (): ReactElement => {

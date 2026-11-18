@@ -2,7 +2,7 @@ import { type ReactElement, type ReactNode, useState } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { showActionSheetRef, type TActionSheetOptions, type TActionSheetOptionsItem } from '~/containers/ActionSheet';
+import { showActionSheetRef, type TActionSheetOptions, type TActionSheetOptionsItem } from '~/containers/ActionSheet/Provider';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { toggleFollowThread } from '~/lib/methods/toggleFollowThread';
 import { type RoomMembership, type RoomStore } from '~/views/RoomView/definitions';
@@ -16,16 +16,22 @@ const mockNavigation = {
 	setOptions: ({ headerRight }: { headerRight: () => ReactNode }) => mockShowHeaderRight(headerRight)
 };
 jest.mock('@react-navigation/native', () => ({ useNavigation: () => mockNavigation }));
-jest.mock('~/containers/ActionSheet', () => ({ showActionSheetRef: jest.fn() }));
+jest.mock('~/containers/ActionSheet/Provider', () => ({
+	showActionSheetRef: jest.fn()
+}));
 
 let mockIsMasterDetail = false;
 jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => mockIsMasterDetail }));
 jest.mock('~/theme', () => ({ useTheme: () => ({ theme: 'light', colors: { buttonBackgroundDangerDefault: '#f00' } }) }));
 jest.mock('~/lib/helpers/getRoomAccessibilityLabel', () => ({ __esModule: true, default: () => 'label' }));
-jest.mock('~/lib/methods/helpers', () => ({
-	...jest.requireActual('~/lib/methods/helpers'),
-	getRoomTitle: () => 'Room Title',
-	isGroupChat: () => false,
+jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
+	getRoomTitle: () => 'Room Title'
+}));
+jest.mock('~/lib/methods/helpers/isGroupChat', () => ({
+	isGroupChat: () => false
+}));
+jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
+	...jest.requireActual('~/lib/methods/helpers/deviceInfo'),
 	hasNativeHeaderBar: false
 }));
 jest.mock('~/lib/methods/helpers/log', () => ({
@@ -36,7 +42,7 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 const mockVideoConf = { showInitCallActionSheet: jest.fn(), callEnabled: true, disabledTooltip: false };
 jest.mock('~/lib/hooks/useVideoConf', () => ({ useVideoConf: () => mockVideoConf }));
 jest.mock('~/views/RoomView/hooks/useOngoingConference', () => ({ useOngoingConference: () => undefined }));
-jest.mock('~/lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall/useNewMediaCall', () => ({
 	useNewMediaCall: () => ({
 		openNewMediaCall: jest.fn(),
 		hasMediaCallPermission: false,

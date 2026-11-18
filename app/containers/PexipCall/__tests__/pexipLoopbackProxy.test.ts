@@ -71,7 +71,7 @@ describe('pexipLoopbackProxy', () => {
 				| { startPexipLoopbackProxy: typeof startPexipLoopbackProxy; stopPexipLoopbackProxy: typeof stopPexipLoopbackProxy }
 				| undefined;
 			jest.isolateModules(() => {
-				jest.doMock('~/lib/methods/helpers', () => ({ isIOS: false }));
+				jest.doMock('~/lib/methods/helpers/deviceInfo', () => ({ isIOS: false }));
 				androidProxy = jest.requireActual('../pexipLoopbackProxy');
 			});
 			await expect(androidProxy!.startPexipLoopbackProxy(callUrl)).resolves.toBeNull();

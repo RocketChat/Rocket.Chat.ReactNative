@@ -1,4 +1,4 @@
-import { type ISidebarCategory } from '~/definitions';
+import { type ISidebarCategory } from '~/definitions/IUser';
 
 export const FAVORITES_GROUP = 'Favorites';
 export const TEAMS_GROUP = 'Teams';

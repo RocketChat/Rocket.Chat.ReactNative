@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native';
 
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import log from '~/lib/methods/helpers/log';
 
 interface IPexipProxyModule {

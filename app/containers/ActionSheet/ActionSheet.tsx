@@ -14,7 +14,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '~/theme';
-import { isAndroid, isIOS } from '~/lib/methods/helpers';
+import { isAndroid, isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';

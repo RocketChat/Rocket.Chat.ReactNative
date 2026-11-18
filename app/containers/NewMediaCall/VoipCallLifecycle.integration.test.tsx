@@ -49,7 +49,7 @@ jest.mock('~/lib/database', () => ({
 jest.mock('~/lib/database/services/Subscription', () => ({
 	getDMSubscriptionByUsername: jest.fn().mockResolvedValue(null)
 }));
-jest.mock('~/lib/methods/helpers/helpers', () => ({
+jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
 	getUidDirectMessage: jest.fn(() => 'other-user-id')
 }));
 jest.mock('~/lib/navigation/appNavigation', () => ({
@@ -179,7 +179,7 @@ jest.mock('~/views/CallView/useMediaCallAppActions', () => ({
 }));
 
 const mockHideActionSheet = jest.fn();
-jest.mock('../ActionSheet', () => ({
+jest.mock('../ActionSheet/Provider', () => ({
 	hideActionSheetRef: () => mockHideActionSheet(),
 	showActionSheetRef: jest.fn()
 }));

@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { type MessageTypesValues, SubscriptionType } from '~/definitions';
+import { type MessageTypesValues } from '~/definitions/IMessage';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import RightIcons from './RightIcons';

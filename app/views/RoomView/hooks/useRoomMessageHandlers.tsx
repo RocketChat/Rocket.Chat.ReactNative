@@ -12,14 +12,11 @@ import log, { events, logEvent } from '~/lib/methods/helpers/log';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { isInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import {
-	type IMessage,
-	type IRoomInfoParam,
-	type IUseRoomMessageHandlersResult,
-	SubscriptionType,
-	type TAnyMessageModel
-} from '~/definitions';
-import { useActionSheet } from '~/containers/ActionSheet';
+import { type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
+import { type IRoomInfoParam } from '~/definitions/IRoom';
+import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
+import { SubscriptionType } from '~/definitions/ISubscription';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 import ReactionsList from '~/containers/ReactionsList';
 import { type IRoomMessageHandlersInput, type IRoomViewProps } from '../definitions';
 import { isSubscriptionModel } from '~/definitions/TRoom';

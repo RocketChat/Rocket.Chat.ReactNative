@@ -1,7 +1,7 @@
 import { Camera } from 'expo-camera';
 import { useMemo } from 'react';
 
-import { useActionSheet } from '~/containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 import i18n from '~/i18n';
 import { getUserSelector } from '~/selectors/login';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';

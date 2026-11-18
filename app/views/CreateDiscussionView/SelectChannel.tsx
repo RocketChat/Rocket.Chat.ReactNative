@@ -2,13 +2,14 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 
 import { MultiSelect } from '~/containers/UIKit/MultiSelect';
-import { type ISearchLocal } from '~/definitions';
+import { type ISearchLocal } from '~/definitions/ISearch';
 import I18n from '~/i18n';
 import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
 import { type ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
 import { localSearchSubscription } from '~/lib/methods/search';
-import { getRoomAvatar, getRoomTitle } from '~/lib/methods/helpers';
+import { getRoomAvatar } from '~/lib/methods/helpers/getRoomAvatar';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { useTheme } from '~/theme';
 
 const SelectChannel = ({

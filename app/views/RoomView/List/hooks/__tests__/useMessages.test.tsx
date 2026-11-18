@@ -4,7 +4,8 @@ import { type ReactNode } from 'react';
 
 import { ROOM } from '~/actions/actionsTypes';
 import { type IRoomHistoryRequest } from '~/actions/room';
-import { type RoomType, type TAnyMessageModel } from '~/definitions';
+import { type RoomType } from '~/definitions/IRoom';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import database from '~/lib/database';
 import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadById } from '~/lib/database/services/Thread';
@@ -52,8 +53,8 @@ jest.mock('~/lib/services/restApi', () => ({
 	readThreads: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('~/lib/methods/helpers', () => {
-	const actual = jest.requireActual('~/lib/methods/helpers');
+jest.mock('~/lib/methods/helpers/debounce', () => {
+	const actual = jest.requireActual('~/lib/methods/helpers/debounce');
 	return {
 		...actual,
 		useDebounce: (fn: (...args: unknown[]) => unknown) => Object.assign(fn, { cancel: jest.fn() })

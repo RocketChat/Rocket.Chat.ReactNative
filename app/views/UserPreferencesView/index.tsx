@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '~/actions/login';
 import I18n from '~/i18n';
 import log, { logEvent, events } from '~/lib/methods/helpers/log';
-import { compareServerVersion } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import SafeAreaView from '~/containers/SafeAreaView';
 import * as List from '~/containers/List';
 import { getUserSelector } from '~/selectors/login';
@@ -14,7 +14,7 @@ import { saveUserPreferences } from '~/lib/services/restApi';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import Switch from '~/containers/Switch';
-import { type IUser } from '~/definitions';
+import { type IUser } from '~/definitions/IUser';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;

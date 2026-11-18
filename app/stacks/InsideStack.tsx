@@ -12,7 +12,7 @@ import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import withNavigation from '../lib/navigation/withNavigation';
 import Sidebar from '../views/SidebarView';
-import { isIOS } from '../lib/methods/helpers';
+import { isIOS } from '../lib/methods/helpers/deviceInfo';
 import { DRAWER_SWIPE_EDGE_WIDTH } from '../lib/constants/gestures';
 import { type TNavigation } from './stackType';
 import RoomView from '../views/RoomView';

@@ -1,4 +1,4 @@
-import { OmnichannelSourceType } from '~/definitions';
+import { OmnichannelSourceType } from '~/definitions/IRoom';
 import RoomTypeIcon from '.';
 
 export default {

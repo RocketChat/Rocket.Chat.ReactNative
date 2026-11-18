@@ -1,6 +1,6 @@
 import { type TIconsName } from '~/containers/CustomIcon';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
+import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall/useNewMediaCall';
 import { mediaSessionInstance } from '~/lib/services/voip/MediaSessionInstance';
 import { useCanTakeOverAnyCall } from '~/lib/services/voip/useCanTakeOverCall';
 import log from '~/lib/methods/helpers/log';

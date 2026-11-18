@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { userAgent } from '~/lib/constants/userAgent';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { getRoomIdFromJitsiCallUrl } from '~/lib/methods/helpers/getRoomIdFromJitsiCall';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '~/lib/methods/videoConfTimer';
