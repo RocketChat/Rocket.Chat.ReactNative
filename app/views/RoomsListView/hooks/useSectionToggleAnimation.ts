@@ -5,6 +5,7 @@ import {
 	type LayoutAnimationsValues,
 	ReduceMotion,
 	type SharedValue,
+	useReducedMotion,
 	useSharedValue,
 	withDelay,
 	withSpring,
@@ -96,6 +97,7 @@ export const useSectionToggleAnimation = (
 	toggleGroup: (group: string) => void,
 	rowCount: number
 ) => {
+	const isReducedMotion = useReducedMotion();
 	const isToggling = useSharedValue(false);
 	const toggleAnimatedAt = useSharedValue(0);
 	const coverOffset = useSharedValue(0);
@@ -117,18 +119,17 @@ export const useSectionToggleAnimation = (
 		toggleGroup(group);
 	};
 
-	const fadeTo = (toValue: number, spring: WithSpringConfig) => {
-		'worklet';
-		return isAnimatingToggle(isToggling, toggleAnimatedAt)
-			? withDelay(FIRST_DRAWN_FRAME_DELAY_MS, withSpring(toValue, spring))
-			: withTiming(toValue, { duration: 0 });
-	};
-
 	const fade =
 		(fromOpacity: number, toOpacity: number, spring: WithSpringConfig): EntryExitAnimationFunction =>
 		() => {
 			'worklet';
-			return { initialValues: { opacity: fromOpacity }, animations: { opacity: fadeTo(toOpacity, spring) } };
+			if (isReducedMotion || !isAnimatingToggle(isToggling, toggleAnimatedAt)) {
+				return { initialValues: {}, animations: {} };
+			}
+			return {
+				initialValues: { opacity: fromOpacity },
+				animations: { opacity: withDelay(FIRST_DRAWN_FRAME_DELAY_MS, withSpring(toOpacity, spring)) }
+			};
 		};
 
 	const rowEntering = fade(0, 1, SECTION_SPRING);
@@ -166,7 +167,7 @@ export const useSectionToggleAnimation = (
 		badgeEntering,
 		badgeExiting,
 		revealKey: cover.revealKey,
-		coverEntering: cover.revealKey ? coverEntering : undefined,
+		coverEntering: cover.revealKey && !isReducedMotion ? coverEntering : undefined,
 		coverExiting
 	};
 };
