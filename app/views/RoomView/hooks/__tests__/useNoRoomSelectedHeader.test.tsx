@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { useEmptyRoomHeader } from '../useEmptyRoomHeader';
+import { useNoRoomSelectedHeader } from '../useNoRoomSelectedHeader';
 
 const mockHelpers = { hasNativeHeaderBar: false };
 jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
@@ -14,14 +14,14 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => ({ setOptions: mockSetOptions })
 }));
 
-describe('useEmptyRoomHeader', () => {
+describe('useNoRoomSelectedHeader', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
 
 	it('sets only the headerLeft spacer on the JS header', () => {
 		mockHelpers.hasNativeHeaderBar = false;
-		renderHook(() => useEmptyRoomHeader());
+		renderHook(() => useNoRoomSelectedHeader());
 
 		expect(mockSetOptions).toHaveBeenCalledTimes(1);
 		const options = mockSetOptions.mock.calls[0][0];
@@ -32,7 +32,7 @@ describe('useEmptyRoomHeader', () => {
 
 	it('leaves the native header bar untouched', () => {
 		mockHelpers.hasNativeHeaderBar = true;
-		renderHook(() => useEmptyRoomHeader());
+		renderHook(() => useNoRoomSelectedHeader());
 
 		expect(mockSetOptions).not.toHaveBeenCalled();
 	});

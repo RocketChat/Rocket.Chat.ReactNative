@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { type IRoomScreenInput, type IRoomViewProps, type RoomStore } from './definitions';
-import { EmptyRoomView } from './components/EmptyRoomView';
+import { NoRoomSelectedView } from './components/NoRoomSelectedView';
 import { RoomViewContent } from './components/RoomViewContent/RoomViewContent';
 import { RoomViewHeader } from './components/RoomViewHeader/RoomViewHeader';
 import { parseRoomRoute } from './services/parseRoomRoute';
@@ -23,10 +23,10 @@ const OpenRoomView = ({ route, navigation, mountedRoute }: IRoomViewProps & { mo
 };
 
 const RoomView = ({ route, navigation }: IRoomViewProps) => {
-	const [mountedRoute] = useState(() => (route.params?.rid && route.params.t ? parseRoomRoute(route.params) : null));
+	const [mountedRoute] = useState(() => parseRoomRoute(route.params));
 
 	if (!mountedRoute) {
-		return <EmptyRoomView />;
+		return <NoRoomSelectedView />;
 	}
 	return <OpenRoomView route={route} navigation={navigation} mountedRoute={mountedRoute} />;
 };

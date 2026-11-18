@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle } from 'react';
 
 import { useDebounce } from '~/lib/methods/helpers/debounce';
-import EmptyRoom from './components/EmptyRoom';
+import { RoomBackground } from '../components/RoomBackground';
 import List from './components/List';
 import { MessageRow } from '../components/MessageRow';
 import { type IListContainerProps, type IListContainerRef, type IListProps } from '../definitions';
@@ -57,7 +57,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 
 		return (
 			<>
-				<EmptyRoom length={messages.length} />
+				{messages.length === 0 ? <RoomBackground /> : null}
 				<List
 					flatListRef={flatListRef}
 					data={messages}

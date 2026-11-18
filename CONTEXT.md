@@ -166,6 +166,7 @@ Reactions and the frequently used table store emoji by name, never glyph. An unr
 - **Inside Stack**: authenticated screens. _Avoid:_ Main stack, app stack
 - **Chats Stack**: room list, room view, room actions within Inside Stack
 - **Master-Detail**: tablet two-pane layout. _Avoid:_ Split view, two-pane
+- **No Room Selected**: the Master-Detail detail pane when no room is open; RoomView renders only the background and header. _Avoid:_ Empty room
 - **Drawer Navigator**: tabs Chats, Profile, Settings, Admin, Accessibility. _Avoid:_ Sidebar, menu
 
 ## Unread & Notification Indicators

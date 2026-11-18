@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import { type IRoomViewProps } from '../definitions';
 
-export const useEmptyRoomHeader = (): void => {
+export const useNoRoomSelectedHeader = (): void => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 
 	useLayoutEffect(() => {
