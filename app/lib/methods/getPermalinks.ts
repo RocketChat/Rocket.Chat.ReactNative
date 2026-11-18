@@ -3,9 +3,8 @@ import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { type RoomType } from '~/definitions/IRoom';
 import { store } from '../store/auxStore';
-import { isGroupChat } from './helpers/roomKind';
+import { isGroupChat, roomTypeToPathSegment } from './helpers/roomType';
 import { getRoom } from './getRoom';
-import { roomTypeToPathSegment } from './roomTypePath';
 
 interface ISubscription {
 	t: RoomType;

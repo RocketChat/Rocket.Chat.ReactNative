@@ -1,7 +1,7 @@
 import { RoomType } from '~/definitions/IRoom';
-import { pathSegmentToRoomType, roomTypeToPathSegment } from '../roomTypePath';
+import { pathSegmentToRoomType, roomTypeToPathSegment } from '../roomType';
 
-describe('roomTypePath', () => {
+describe('roomType', () => {
 	it.each([
 		['channel', RoomType.CHANNEL],
 		['group', RoomType.GROUP],

@@ -43,10 +43,9 @@ import { getRoomAvatar } from '~/lib/methods/helpers/getRoomAvatar';
 import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import { hasPermission } from '~/lib/methods/helpers/hasPermission';
-import { isGroupChat } from '~/lib/methods/helpers/roomKind';
+import { isGroupChat, isTeamRoom } from '~/lib/methods/helpers/roomType';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { isIOS } from '~/lib/methods/helpers/deviceInfo';
-import { isTeamRoom } from '~/lib/methods/helpers/roomKind';
 import {
 	getUserInfo,
 	toggleBlockUser,

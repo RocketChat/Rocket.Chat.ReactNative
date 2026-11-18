@@ -21,8 +21,8 @@ jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
 jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
 	getRoomTitle: () => 'general'
 }));
-jest.mock('~/lib/methods/helpers/roomKind', () => ({
-	...jest.requireActual('~/lib/methods/helpers/roomKind'),
+jest.mock('~/lib/methods/helpers/roomType', () => ({
+	...jest.requireActual('~/lib/methods/helpers/roomType'),
 	isGroupChat: () => false
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({ isInviteSubscription: () => false }));

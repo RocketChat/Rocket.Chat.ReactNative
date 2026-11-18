@@ -5,7 +5,7 @@ import {
 	type TRoomTypeFilter,
 	RoomTypeFilter
 } from './definitions';
-import { isGroupChat } from '~/lib/methods/helpers/roomKind';
+import { isGroupChat } from '~/lib/methods/helpers/roomType';
 
 const roomTypeMatchers: { [K in TRoomTypeFilter]: (room: IAppActionButtonRoom) => boolean } = {
 	[RoomTypeFilter.PUBLIC_CHANNEL]: room => room.t === 'c',

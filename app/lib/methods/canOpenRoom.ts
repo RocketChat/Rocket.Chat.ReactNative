@@ -3,7 +3,7 @@ import database from '../database';
 import sdk from '../services/sdk';
 import { createDirectMessage } from './createDirectMessage';
 import { getRoomByTypeAndName } from '../services/restApi';
-import { pathSegmentToRoomType } from './roomTypePath';
+import { pathSegmentToRoomType } from './helpers/roomType';
 
 async function openGroup(roomId: string) {
 	try {

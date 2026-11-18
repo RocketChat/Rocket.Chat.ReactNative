@@ -25,7 +25,7 @@ import { type ISpotlight } from '~/definitions/ISpotlight';
 import { TEAM_TYPE } from '~/definitions/ITeam';
 import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers';
 import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';
-import { roomTypeToApiType } from '../methods/roomTypeToApiType';
+import { roomTypeToApiType } from '../methods/helpers/roomType';
 import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { getBundleId, isIOS } from '../methods/helpers/deviceInfo';

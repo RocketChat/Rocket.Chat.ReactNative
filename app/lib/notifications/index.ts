@@ -6,7 +6,7 @@ import { deepLinkingClickCallPush, deepLinkingOpen } from '~/actions/deepLinking
 import { type INotification } from '~/definitions/INotification';
 import { RoomType } from '~/definitions/IRoom';
 import { store } from '../store/auxStore';
-import { roomTypeToPathSegment } from '../methods/roomTypePath';
+import { roomTypeToPathSegment } from '../methods/helpers/roomType';
 import { pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
 
 export { getDeviceToken } from './deviceToken';

@@ -11,7 +11,7 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useSetting } from '~/lib/hooks/useSetting';
 import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
-import { isGroupChat } from '~/lib/methods/helpers/roomKind';
+import { isGroupChat } from '~/lib/methods/helpers/roomType';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { type RoomStore } from '~/views/RoomView/definitions';

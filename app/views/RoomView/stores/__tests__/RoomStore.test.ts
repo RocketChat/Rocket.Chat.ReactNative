@@ -2,7 +2,7 @@ import database from '~/lib/database';
 import { loadThreadMessages, releaseUnretainedThreadPagination } from '~/lib/methods/loadThreadMessages';
 import { readMessages } from '~/lib/methods/readMessages';
 import { getUserInfo } from '~/lib/services/restApi';
-import { isGroupChat } from '~/lib/methods/helpers/roomKind';
+import { isGroupChat } from '~/lib/methods/helpers/roomType';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import log from '~/lib/methods/helpers/log';
 import getMessages from '~/views/RoomView/services/getMessages';
@@ -30,8 +30,8 @@ jest.mock('~/lib/services/restApi', () => ({
 jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
 	getUidDirectMessage: jest.fn(() => 'uid-1')
 }));
-jest.mock('~/lib/methods/helpers/roomKind', () => ({
-	...jest.requireActual('~/lib/methods/helpers/roomKind'),
+jest.mock('~/lib/methods/helpers/roomType', () => ({
+	...jest.requireActual('~/lib/methods/helpers/roomType'),
 	isGroupChat: jest.fn(() => false)
 }));
 jest.mock('~/lib/methods/helpers/canAutoTranslate', () => ({

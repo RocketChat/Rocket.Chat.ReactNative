@@ -8,7 +8,7 @@ import { type ISearch, type ISearchLocal } from '~/definitions/ISearch';
 import { type IUserMessage } from '~/definitions/IMessage';
 import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { RoomType } from '~/definitions/IRoom';
-import { isGroupChat } from './helpers/roomKind';
+import { isGroupChat } from './helpers/roomType';
 import { isReadOnly } from './helpers/isReadOnly';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../encryption/utils';
 

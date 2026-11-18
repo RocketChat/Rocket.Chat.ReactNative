@@ -27,8 +27,8 @@ jest.mock('~/lib/services/restApi', () => ({
 jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
 	getUidDirectMessage: jest.fn(() => 'uid-1')
 }));
-jest.mock('~/lib/methods/helpers/roomKind', () => ({
-	...jest.requireActual('~/lib/methods/helpers/roomKind'),
+jest.mock('~/lib/methods/helpers/roomType', () => ({
+	...jest.requireActual('~/lib/methods/helpers/roomType'),
 	isGroupChat: jest.fn(() => false)
 }));
 jest.mock('~/lib/methods/helpers/canAutoTranslate', () => ({

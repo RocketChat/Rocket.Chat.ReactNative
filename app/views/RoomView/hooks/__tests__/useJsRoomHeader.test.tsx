@@ -13,8 +13,8 @@ jest.mock('~/containers/RoomHeader', () => ({ __esModule: true, default: 'RoomHe
 jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
 	getRoomTitle: jest.fn(() => 'Room Title')
 }));
-jest.mock('~/lib/methods/helpers/roomKind', () => ({
-	...jest.requireActual('~/lib/methods/helpers/roomKind'),
+jest.mock('~/lib/methods/helpers/roomType', () => ({
+	...jest.requireActual('~/lib/methods/helpers/roomType'),
 	isGroupChat: jest.fn(() => false)
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({

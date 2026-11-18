@@ -6,7 +6,7 @@ import { type RoomType } from '~/definitions/IRoom';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { roomTypeToApiType } from './roomTypeToApiType';
+import { roomTypeToApiType } from './helpers/roomType';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import updateMessages from './updateMessages';

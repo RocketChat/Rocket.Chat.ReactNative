@@ -34,8 +34,8 @@ jest.mock('../../database/utils', () => ({
 	sanitizeLikeString: jest.fn((str?: string) => str)
 }));
 
-jest.mock('../helpers/roomKind', () => ({
-	...jest.requireActual('../helpers/roomKind'),
+jest.mock('../helpers/roomType', () => ({
+	...jest.requireActual('../helpers/roomType'),
 	isGroupChat: jest.fn(() => false)
 }));
 jest.mock('../helpers/isReadOnly', () => ({

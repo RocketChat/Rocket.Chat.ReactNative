@@ -1,4 +1,4 @@
-import { isGroupChat } from './roomKind';
+import { isGroupChat } from './roomType';
 
 export function getRoomAvatar(room: any) {
 	if (isGroupChat(room) && room.uids && room.usernames) {

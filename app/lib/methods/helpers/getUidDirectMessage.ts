@@ -1,5 +1,5 @@
 import { store as reduxStore } from '~/lib/store/auxStore';
-import { isGroupChat } from './roomKind';
+import { isGroupChat } from './roomType';
 
 export function getUidDirectMessage(room: any, loggedUserId?: string) {
 	const userId = loggedUserId ?? reduxStore.getState().login.user.id;

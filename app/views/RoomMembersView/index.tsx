@@ -24,7 +24,7 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
-import { isNonDirectRoom } from '~/lib/methods/helpers/roomKind';
+import { isNonDirectRoom } from '~/lib/methods/helpers/roomType';
 import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import { useDebounce } from '~/lib/methods/helpers/debounce';
 import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';

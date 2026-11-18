@@ -14,7 +14,7 @@ import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom } from '../lib/methods/canOpenRoom';
 import { getServerInfo } from '../lib/methods/getServerInfo';
-import { pathSegmentToRoomType } from '../lib/methods/roomTypePath';
+import { pathSegmentToRoomType } from '../lib/methods/helpers/roomType';
 import { getUidDirectMessage } from '../lib/methods/helpers/getUidDirectMessage';
 import { normalizeDeepLinkingServerHost } from '../lib/methods/helpers/normalizeDeepLinkingServerHost';
 import EventEmitter from '../lib/methods/helpers/events';
