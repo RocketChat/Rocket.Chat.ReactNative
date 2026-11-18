@@ -6,7 +6,7 @@ import { capitalize } from '~/lib/methods/helpers/room';
 import { type IUpdatedAtProps } from './interfaces';
 import { useTheme } from '~/theme';
 
-const UpdatedAt = memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps) => {
+const UpdatedAt = memo(({ date, isUnread }: IUpdatedAtProps) => {
 	const { colors } = useTheme();
 
 	if (!date) {
@@ -14,19 +14,7 @@ const UpdatedAt = memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps) => {
 	}
 	return (
 		<Text
-			style={[
-				styles.date,
-				{
-					color: colors.fontDefault
-				},
-				alert &&
-					!hideUnreadStatus && [
-						styles.updateAlert,
-						{
-							color: colors.fontTitlesLabels
-						}
-					]
-			]}
+			style={[styles.date, isUnread ? [styles.alert, { color: colors.fontInfo }] : { color: colors.fontDefault }]}
 			ellipsizeMode='tail'
 			numberOfLines={1}>
 			{capitalize(date)}
