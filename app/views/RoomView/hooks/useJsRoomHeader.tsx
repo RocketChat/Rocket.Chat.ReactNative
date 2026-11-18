@@ -47,5 +47,5 @@ export const useJsRoomHeader = ({ rid, tmid, name: threadName, roomStore }: IUse
 				/>
 			)
 		});
-	}, [rid, tmid, headerFields, roomUserId, navigation, goRoomActionsView]);
+	}, [tmid, headerFields, roomUserId, navigation, goRoomActionsView]);
 };

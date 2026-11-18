@@ -39,12 +39,9 @@ export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles?: IG
 };
 
 export const fetchRoomMembersRoles = async (
-	{ rid, t }: Pick<TSubscriptionModel, 'rid' | 't'>,
+	{ rid, t }: Pick<TNonDirectSubscription, 'rid' | 't'>,
 	updateState: (state: { roomRoles: IGetRoomRoles[] }) => void
 ): Promise<void> => {
-	if (t === RoomType.DIRECT) {
-		return;
-	}
 	try {
 		const result = await getRoomRoles(rid, t);
 		if (result?.success) {

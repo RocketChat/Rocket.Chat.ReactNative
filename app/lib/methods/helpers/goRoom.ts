@@ -9,6 +9,7 @@ import { getUidDirectMessage } from './getUidDirectMessage';
 import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
 import getRoomInfo from '../getRoomInfo';
+import log from './log';
 
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
@@ -106,7 +107,10 @@ const completeRoomItem = async (item: TGoRoomItem): Promise<TGoRoomItem> => {
 	if (item.t) {
 		return item;
 	}
-	const roomInfo = await getRoomInfo(item.rid).catch(() => null);
+	const roomInfo = await getRoomInfo(item.rid).catch(error => {
+		log(error);
+		return null;
+	});
 	return roomInfo ? { ...item, ...roomInfo } : item;
 };
 

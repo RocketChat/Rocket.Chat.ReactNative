@@ -145,6 +145,9 @@ const RoomMembersView = (): ReactElement => {
 	] = usePermissions(['mute-user', 'set-leader', 'set-owner', 'set-moderator', 'remove-user', ...teamPermissions], params.rid);
 
 	const fetchRoles = () => {
+		if (!isNonDirectRoom(state.room)) {
+			return;
+		}
 		if (
 			muteUserPermission ||
 			setLeaderPermission ||
