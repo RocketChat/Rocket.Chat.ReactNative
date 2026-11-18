@@ -31,7 +31,7 @@ const setupObservedRoom = async (rid: string) => {
 	const rows = new Subject<any[]>();
 	const observe = jest.fn(() => rows);
 	mockGet.mockReturnValue({ find: jest.fn(() => Promise.reject(new Error('not found'))), query: jest.fn(() => ({ observe })) });
-	observedStore = createRoomStore({ rid, initialRoom: stubRoom });
+	observedStore = createRoomStore({ initialRoom: stubRoom });
 	observeRoom(rid, observedStore);
 	await act(async () => {});
 	return {
@@ -71,13 +71,5 @@ describe('useSubscriptionUnreads', () => {
 
 		expect(result.current.tunread).toEqual([]);
 		expect(result.current.isSelfDm).toBe(false);
-	});
-
-	it('falls back to empty unreads for a preview room', () => {
-		const { result } = renderHook(() =>
-			useSubscriptionUnreads(createRoomStore({ rid: stubRoom.rid, initialRoom: stubRoom }), 'user-1')
-		);
-
-		expect(result.current.tunread).toEqual([]);
 	});
 });

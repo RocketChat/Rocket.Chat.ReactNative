@@ -20,7 +20,8 @@ jest.mock('~/lib/database', () => ({
 		}
 	}
 }));
-jest.mock('~/views/RoomView/services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/loadMissedMessages', () => ({ loadMissedMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/readMessages', () => ({ readMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
@@ -51,7 +52,7 @@ const mockTakeInquiry = takeInquiry as jest.Mock;
 const mockTakeResume = takeResume as jest.Mock;
 
 const makeStore = (room: TRoomOrPreview) => {
-	const store = createRoomStore({ rid: room.rid, initialRoom: room });
+	const store = createRoomStore({ initialRoom: room });
 	store.setState({ join: jest.fn() });
 	return store;
 };

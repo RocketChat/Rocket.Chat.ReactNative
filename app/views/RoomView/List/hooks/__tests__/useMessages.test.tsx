@@ -203,15 +203,6 @@ describe('useMessages', () => {
 		expect(mockDbGet).toHaveBeenCalledWith('messages');
 	});
 
-	it('does not query the database when rid is empty', async () => {
-		emittedRows = [msg({ id: 'x' })];
-		const { result } = renderUseMessages({ rid: '' });
-		await act(async () => {
-			await result.current[2]();
-		});
-		expect(mockDbGet).not.toHaveBeenCalled();
-	});
-
 	it('asks the database to exclude system message types listed in hideSystemMessages', async () => {
 		renderUseMessages({ hideSystemMessages: ['uj'] });
 		await waitFor(() => {

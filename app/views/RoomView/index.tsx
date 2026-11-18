@@ -10,7 +10,7 @@ import { createRoomStore, observeRoom } from './stores/RoomStore';
 const OpenRoomView = ({ route, navigation, mountedRoute }: IRoomViewProps & { mountedRoute: IRoomScreenInput }) => {
 	const { rid, t, tmid, name, initialRoom, roomUserId } = mountedRoute;
 
-	const [roomStore] = useState<RoomStore>(() => createRoomStore({ rid, initialRoom, roomUserId }));
+	const [roomStore] = useState<RoomStore>(() => createRoomStore({ initialRoom, roomUserId }));
 	const [ready, setReady] = useState(false);
 	useEffect(() => observeRoom(rid, roomStore, () => setReady(true)), [rid, roomStore]);
 

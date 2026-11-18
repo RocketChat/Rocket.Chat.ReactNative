@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 const BLANK_UNREADS_LABEL = ' ';
 
 interface ILeftButtonsProps {
-	rid?: string;
+	rid: string;
 	tmid?: string;
 	roomStore: RoomStore;
 }

@@ -11,7 +11,7 @@ import { getRoomMembers } from '~/lib/services/restApi';
 
 const mockRoom = { current: { rid: 'room-id', t: 'c', name: 'general' } };
 const mockShowActionSheet = jest.fn();
-const mockPermissions = { current: [false, false, false, false, false] };
+const mockGrantedPermissions = { current: new Set<string>() };
 
 jest.mock('@react-navigation/native', () => ({
 	...jest.requireActual('@react-navigation/native'),
@@ -25,7 +25,7 @@ jest.mock('~/lib/services/restApi', () => ({
 }));
 
 jest.mock('~/lib/hooks/usePermissions', () => ({
-	usePermissions: () => mockPermissions.current
+	usePermissions: (permissions: string[]) => permissions.map(permission => mockGrantedPermissions.current.has(permission))
 }));
 
 jest.mock('~/lib/hooks/useMasterDetail', () => ({
@@ -131,13 +131,13 @@ describe('RoomMembersView role options', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockPermissions.current = [false, true, true, true, false];
+		mockGrantedPermissions.current = new Set(['set-leader', 'set-owner', 'set-moderator']);
 		jest.mocked(getRoomMembers).mockResolvedValue([{ _id: 'owner-id', username: 'rt.owner', name: 'RT Owner' }] as any);
 	});
 
 	afterAll(() => {
 		mockRoom.current = { rid: 'room-id', t: 'c', name: 'general' };
-		mockPermissions.current = [false, false, false, false, false];
+		mockGrantedPermissions.current = new Set();
 	});
 
 	it('offers owner, leader and moderator in a channel', async () => {

@@ -109,7 +109,8 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 	events: {}
 }));
 jest.mock('~/lib/methods/isInviteSubscription', () => ({ isInviteSubscription: jest.fn(() => false) }));
-jest.mock('../services/getMessages', () => ({ __esModule: true, default: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn(() => Promise.resolve()) }));
+jest.mock('~/lib/methods/loadMissedMessages', () => ({ loadMissedMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/loadThreadMessages', () => ({ loadThreadMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/readMessages', () => ({ readMessages: jest.fn(() => Promise.resolve()) }));
 jest.mock('~/lib/methods/sendMessage', () => ({ sendMessage: jest.fn(() => Promise.resolve()) }));

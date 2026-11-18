@@ -70,14 +70,6 @@ describe('useUnreadsCount', () => {
 		expect(observable.observeWithColumns).toHaveBeenCalledWith(['unread', 'hide_unread_status']);
 	});
 
-	it('does not observe without a rid', () => {
-		setupObservable();
-		const { result } = renderHook(() => useUnreadsCount(undefined));
-
-		expect(result.current).toBeNull();
-		expect(mockGet).not.toHaveBeenCalled();
-	});
-
 	it('unsubscribes on unmount', () => {
 		const observable = setupObservable();
 		const { unmount } = renderHook(() => useUnreadsCount('rid-1'));

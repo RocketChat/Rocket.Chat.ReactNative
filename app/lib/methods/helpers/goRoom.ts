@@ -8,7 +8,7 @@ import { getRoomTitle } from './getRoomTitle';
 import { getUidDirectMessage } from './getUidDirectMessage';
 import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
-import getRoomInfo from '../getRoomInfo';
+import { getRoomInfo } from '~/lib/services/restApi';
 import log from './log';
 
 interface IGoRoomItem {
@@ -111,7 +111,11 @@ const completeRoomItem = async (item: TGoRoomItem): Promise<TGoRoomItem> => {
 		log(error);
 		return null;
 	});
-	return roomInfo ? { ...item, ...roomInfo } : item;
+	if (!roomInfo?.success) {
+		return item;
+	}
+	const { t, name, fname } = roomInfo.room;
+	return { ...item, t, name, fname };
 };
 
 export const goRoom = async ({

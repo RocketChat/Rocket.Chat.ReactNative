@@ -37,6 +37,7 @@ import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import { random } from '~/lib/methods/helpers/random';
+import { isNonDirectRoom } from '~/lib/methods/helpers/roomType';
 import { saveRoomSettings, toggleArchiveRoom } from '~/lib/services/restApi';
 import Button from '~/containers/Button';
 import useRoomSubscription from './hooks/useRoomSubscription';
@@ -229,10 +230,10 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	};
 
 	const toggleArchive = () => {
-		const { rid, archived, t } = room;
-		if (t === RoomType.DIRECT) {
+		if (!isNonDirectRoom(room)) {
 			return;
 		}
+		const { rid, archived, t } = room;
 
 		const action = I18n.t(`${archived ? 'un' : ''}archive`);
 		Alert.alert(

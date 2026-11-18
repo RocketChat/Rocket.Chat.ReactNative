@@ -1,5 +1,5 @@
 import Navigation from '~/lib/navigation/appNavigation';
-import getRoomInfo from '../getRoomInfo';
+import { getRoomInfo } from '~/lib/services/restApi';
 import { goRoom } from './goRoom';
 
 jest.mock('~/lib/navigation/appNavigation', () => ({
@@ -18,7 +18,7 @@ jest.mock('./getRoomTitle', () => ({
 jest.mock('./getUidDirectMessage', () => ({
 	getUidDirectMessage: jest.fn()
 }));
-jest.mock('../getRoomInfo', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('~/lib/services/restApi', () => ({ getRoomInfo: jest.fn() }));
 
 const navigatedRoomParams = () => {
 	const buildAction = jest.mocked(Navigation.dispatch).mock.calls.at(-1)?.[0] as unknown as (state: any) => any;
@@ -45,7 +45,9 @@ describe('goRoom navigation', () => {
 	});
 
 	it('fetches the room type before opening a room known only by its rid', async () => {
-		jest.mocked(getRoomInfo).mockResolvedValue({ rid: 'new-rid', name: 'new-room', fname: 'New room', t: 'p' });
+		jest
+			.mocked(getRoomInfo)
+			.mockResolvedValue({ success: true, room: { _id: 'new-rid', name: 'new-room', fname: 'New room', t: 'p' } } as any);
 
 		await goRoom({ item: { rid: 'new-rid' }, isMasterDetail: false });
 

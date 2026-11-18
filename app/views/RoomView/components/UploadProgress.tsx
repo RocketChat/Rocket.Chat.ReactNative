@@ -93,10 +93,6 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 
 	init = () => {
 		const { rid } = this.props;
-		if (!rid) {
-			return;
-		}
-
 		const db = database.active;
 		this.uploadsObservable = db.get('uploads').query(Q.where('rid', rid)).observeWithColumns(['progress', 'error']);
 
