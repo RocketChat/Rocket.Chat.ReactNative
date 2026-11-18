@@ -3,7 +3,8 @@ import { type ReactNode } from 'react';
 import { Keyboard, Text } from 'react-native';
 import { Provider } from 'react-redux';
 
-import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { mockedStore } from '~/reducers/mockedStore';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
 import { messagesStatus } from '~/lib/constants/messagesStatus';

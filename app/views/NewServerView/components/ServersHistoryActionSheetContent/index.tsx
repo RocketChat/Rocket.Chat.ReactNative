@@ -5,7 +5,7 @@ import { A11y } from 'react-native-a11y-order';
 
 import * as List from '~/containers/List';
 import { useTheme } from '~/theme';
-import { type TServerHistoryModel } from '~/definitions';
+import { type TServerHistoryModel } from '~/definitions/IServerHistory';
 import ServersHistoryItem from '../ServersHistoryItem';
 import I18n from '~/i18n';
 import sharedStyles from '~/views/Styles';

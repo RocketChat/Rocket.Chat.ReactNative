@@ -8,7 +8,7 @@ import { type SearchBarCommands } from 'react-native-screens';
 import database from '~/lib/database';
 import I18n from '~/i18n';
 import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
-import { hideActionSheetRef, showActionSheetRef } from '~/containers/ActionSheet';
+import { hideActionSheetRef, showActionSheetRef } from '~/containers/ActionSheet/Provider';
 import SafeAreaView from '~/containers/SafeAreaView';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import BackgroundContainer from '~/containers/BackgroundContainer';
@@ -22,11 +22,11 @@ import DepartmentFilter from './DepartmentFilter';
 import styles from './styles';
 import { type ICannedResponse } from '~/definitions/ICannedResponse';
 import { type ChatsStackParamList } from '~/stacks/types';
-import { useDebounce } from '~/lib/methods/helpers';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
 import { getListCannedResponse, getDepartments } from '~/lib/services/restApi';
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { type ISubscription } from '~/definitions';
+import { type ISubscription } from '~/definitions/ISubscription';
 
 const COUNT = 25;
 

@@ -1,4 +1,4 @@
-import { type TSVDictionary, type TSVMessage, type TSVStatus } from '../definitions';
+import { type TSVDictionary, type TSVMessage, type TSVStatus } from '../definitions/IServer';
 import { SUPPORTED_VERSIONS } from '../actions/actionsTypes';
 import { type TActionSupportedVersions } from '../actions/supportedVersions';
 

@@ -5,9 +5,9 @@ import { CustomIcon } from '~/containers/CustomIcon';
 import * as List from '~/containers/List';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { showActionSheetRef } from '~/containers/ActionSheet';
+import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
 import Navigation from '~/lib/navigation/appNavigation';
-import { SupportedVersionsWarning } from '~/containers/SupportedVersions';
+import { SupportedVersionsWarning } from '~/containers/SupportedVersions/SupportedVersionsWarning';
 
 export const useIsSupportedVersionsWarnVisible = () => useAppSelector(state => state.supportedVersions.status) === 'warn';
 

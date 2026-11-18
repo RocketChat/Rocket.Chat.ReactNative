@@ -6,7 +6,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import Emoji from '../markdown/components/emoji/Emoji';
 import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
 import { headers } from '~/lib/methods/helpers/fetch';
-import { SubscriptionType } from '~/definitions';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import { type IAvatar } from './interfaces';
 import I18n from '~/i18n';
 import Touch from '../Touch';

@@ -1,4 +1,5 @@
-import { type IShareAttachment, type IUser } from '~/definitions';
+import { type IShareAttachment } from '~/definitions/IAttachment';
+import { type IUser } from '~/definitions/IUser';
 import { closeUnclosedCodeBlock } from '../helpers/closeUnclosedCodeBlock';
 import { sendFileMessage } from './index';
 

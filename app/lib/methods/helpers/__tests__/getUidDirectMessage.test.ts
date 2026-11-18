@@ -1,20 +1,10 @@
-import { getUidDirectMessage } from './helpers';
+import { getUidDirectMessage } from '../getUidDirectMessage';
 import { store as reduxStore } from '~/lib/store/auxStore';
 
 jest.mock('~/lib/store/auxStore', () => ({
 	store: {
 		getState: jest.fn()
 	}
-}));
-
-jest.mock('~/lib/database', () => ({
-	__esModule: true,
-	default: { active: { get: jest.fn() } }
-}));
-
-jest.mock('./log', () => ({
-	__esModule: true,
-	default: jest.fn()
 }));
 
 const REDUX_USER_ID = 'reduxUserId';

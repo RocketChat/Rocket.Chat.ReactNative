@@ -2,7 +2,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import SearchBox from '~/containers/SearchBox';
 import I18n from '~/i18n';
-import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import { type ICategoryRoom } from '../types';

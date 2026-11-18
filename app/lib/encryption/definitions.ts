@@ -1,4 +1,5 @@
-import { type TAttachmentEncryption, type TSendFileMessageFileInfo } from '~/definitions';
+import { type TAttachmentEncryption } from '~/definitions/IAttachment';
+import { type TSendFileMessageFileInfo } from '~/definitions/IUpload';
 
 export type TGetContentResult = {
 	algorithm: 'rc.v1.aes-sha2' | 'rc.v2.aes-sha2';

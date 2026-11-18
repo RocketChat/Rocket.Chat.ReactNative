@@ -13,7 +13,7 @@ import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelle
 import { deleteAccount } from '~/actions/login';
 import { CustomIcon } from '~/containers/CustomIcon';
 import { useTheme } from '~/theme';
-import { ControlledFormTextInput } from '~/containers/TextInput';
+import { ControlledFormTextInput } from '~/containers/TextInput/ControlledFormTextInput';
 import { useActionSheet } from '~/containers/ActionSheet/Provider';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getTranslations } from './getTranslations';

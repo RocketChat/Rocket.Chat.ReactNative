@@ -1,6 +1,6 @@
 import { type Image as ImageInterface } from 'react-native-image-crop-picker';
 
-import { random } from '~/lib/methods/helpers';
+import { random } from '~/lib/methods/helpers/random';
 
 export type Image = ImageInterface;
 

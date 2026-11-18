@@ -14,8 +14,9 @@ import {
 	type TSetInput
 } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi } from '../context';
-import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
-import { useAutoSaveDraft } from '../hooks';
+import { fetchIsAllOrHere } from '../helpers/fetchIsAllOrHere';
+import { getMentionRegexp } from '../helpers/getMentionRegexp';
+import { useAutoSaveDraft } from '../hooks/useAutoSaveDraft';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
 import { userTyping } from '~/actions/room';

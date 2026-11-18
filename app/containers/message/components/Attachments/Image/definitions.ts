@@ -1,4 +1,5 @@
-import { type IAttachment, type IUserMessage } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type IUserMessage } from '~/definitions/IMessage';
 import { type TDownloadState } from '~/lib/methods/handleMediaDownload';
 
 export interface IImageContainer {

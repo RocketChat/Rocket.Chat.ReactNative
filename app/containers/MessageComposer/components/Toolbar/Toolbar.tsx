@@ -5,7 +5,7 @@ import { Markdown } from './Markdown';
 import { Default } from './Default';
 import { EmojiKeyboard } from './EmojiKeyboard';
 import { Container } from './Container';
-import { MicOrSendButton } from '../Buttons';
+import { MicOrSendButton } from '../Buttons/MicOrSendButton';
 import { EmptySpace } from './EmptySpace';
 import { CancelEdit } from '../CancelEdit';
 import { useEmojiKeyboard } from '~/containers/MessageComposer/hooks/useEmojiKeyboard';

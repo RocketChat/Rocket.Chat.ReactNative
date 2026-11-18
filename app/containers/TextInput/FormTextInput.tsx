@@ -8,7 +8,7 @@ import sharedStyles from '~/views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { TextInput, type TextInputInstance } from './TextInput';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import Touch from '../Touch';
 
 const styles = StyleSheet.create({

@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
 import { createMockedStore } from '~/reducers/mockedStore';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import CallButtonLeaf from '../CallButton';

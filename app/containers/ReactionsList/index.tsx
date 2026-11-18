@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-import { type IReaction } from '~/definitions';
+import { type IReaction } from '~/definitions/IReaction';
 import I18n from '~/i18n';
 import styles from './styles';
 import AllTab from './AllTab';

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { setUser } from '~/actions/login';
 import { LISTENER } from '~/containers/Toast';
-import { type ISidebarCategory } from '~/definitions';
+import { type ISidebarCategory } from '~/definitions/IUser';
 import I18n from '~/i18n';
 import { useCaptureSession } from '~/lib/hooks/useCaptureSession';
 import EventEmitter from '~/lib/methods/helpers/events';
