@@ -1,8 +1,6 @@
-type Api = 'v1' | 'v2';
 type UploadRecord = 'none' | 'uploading' | 'failed';
 type Attempt = 'none' | 'preparing' | 'sending';
 
-let api!: Api;
 let queued = false;
 let record: UploadRecord = 'none';
 let attempt: Attempt = 'none';
@@ -20,9 +18,6 @@ const refuse = () => {
 	if (attempt === 'none') {
 		refusedWithNothingInFlight = true;
 	}
-	if (api === 'v2') {
-		persistUploadError();
-	}
 };
 
 export const userSendsFile = (force: boolean) => {
@@ -39,9 +34,6 @@ export const userSendsFile = (force: boolean) => {
 export const preparingFails = () => {
 	if (attempt !== 'preparing') return;
 	attempt = 'none';
-	if (api === 'v1' && !queued) {
-		return;
-	}
 	persistUploadError();
 };
 
@@ -54,12 +46,14 @@ export const uploadStarts = () => {
 export const serverAccepts = () => {
 	if (attempt !== 'sending') return;
 	attempt = 'none';
+	queued = false;
 	record = 'none';
 };
 
 export const serverRejects = () => {
 	if (attempt !== 'sending') return;
 	attempt = 'none';
+	queued = false;
 	persistUploadError();
 };
 

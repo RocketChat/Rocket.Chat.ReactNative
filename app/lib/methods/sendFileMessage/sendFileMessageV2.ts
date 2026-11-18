@@ -4,7 +4,14 @@ import { type TSendFileMessageFileInfo, type TUploadModel } from '~/definitions/
 import { type IUser } from '~/definitions/IUser';
 import database from '~/lib/database';
 import { Encryption } from '~/lib/encryption';
-import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
+import {
+	copyFileToCacheDirectoryIfNeeded,
+	createUploadRecord,
+	endUpload,
+	isUploadCancelled,
+	persistUploadError,
+	uploadQueue
+} from './utils';
 import FileUpload from '../helpers/fileUpload';
 import { type IFormData } from '../helpers/fileUpload/definitions';
 import fetch from '../helpers/fetch';
@@ -19,7 +26,7 @@ export async function sendFileMessageV2(
 ): Promise<void> {
 	let uploadPath: string | null = '';
 	let uploadRecord: TUploadModel | null;
-	let uploadStarted = false;
+	let upload: FileUpload | undefined;
 	try {
 		const { id, token } = user;
 		const headers = {
@@ -32,7 +39,7 @@ export async function sendFileMessageV2(
 
 		[uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
 		if (!uploadPath || !uploadRecord) {
-			throw new Error("Couldn't create upload record");
+			return;
 		}
 		const { file, getContent, fileContent } = await Encryption.encryptFile(rid, fileInfo);
 		file.path = await copyFileToCacheDirectoryIfNeeded(file.path, file.name);
@@ -51,7 +58,7 @@ export async function sendFileMessageV2(
 			});
 		}
 
-		uploadQueue[uploadPath] = new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, async (loaded, total) => {
+		upload = new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, async (loaded, total) => {
 			try {
 				await db.write(async () => {
 					await uploadRecord?.update(u => {
@@ -62,8 +69,8 @@ export async function sendFileMessageV2(
 				console.error(e);
 			}
 		});
-		uploadStarted = true;
-		const response = await uploadQueue[uploadPath].send();
+		uploadQueue[uploadPath] = upload;
+		const response = await upload.send();
 
 		let content;
 		if (getContent) {
@@ -88,11 +95,15 @@ export async function sendFileMessageV2(
 		});
 	} catch (e: any) {
 		console.error(e);
-		if (uploadStarted && uploadPath && !uploadQueue[uploadPath]) {
+		if (upload && isUploadCancelled(uploadPath, upload)) {
 			console.log('Upload cancelled');
 		} else {
 			await persistUploadError(fileInfo.path, rid);
 			throw e;
+		}
+	} finally {
+		if (upload) {
+			endUpload(uploadPath, upload);
 		}
 	}
 }
