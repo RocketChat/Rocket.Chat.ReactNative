@@ -9,7 +9,7 @@ export const canDeleteTeamChannel = async (channel: Pick<ISubscription, 'rid' | 
 	const isPublic = channel.t === RoomType.CHANNEL;
 
 	const [canDeleteRoom] = await hasPermission([permissions[isPublic ? 'delete-c' : 'delete-p']], channel.rid);
-	if (!canDeleteRoom || compareServerVersion(server.version, 'lowerThan', '7.0.0')) {
+	if (!canDeleteRoom || !compareServerVersion(server.version, 'greaterThanOrEqualTo', '7.0.0')) {
 		return canDeleteRoom;
 	}
 

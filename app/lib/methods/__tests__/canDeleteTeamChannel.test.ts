@@ -66,4 +66,10 @@ describe('canDeleteTeamChannel', () => {
 		grant('channel-rid', 'delete-c');
 		expect(await canDeleteTeamChannel(publicChannel, TEAM_RID)).toBe(true);
 	});
+
+	it('checks only the channel permission while the server version is unknown', async () => {
+		mockServerVersion = '';
+		grant('channel-rid', 'delete-c');
+		expect(await canDeleteTeamChannel(publicChannel, TEAM_RID)).toBe(true);
+	});
 });
