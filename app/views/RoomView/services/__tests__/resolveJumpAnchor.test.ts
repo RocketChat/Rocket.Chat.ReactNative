@@ -1,6 +1,6 @@
 import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
-import { resolveJumpAnchor } from './resolveJumpAnchor';
-import { type IJumpAnchorDeps, type IJumpTarget } from '../definitions';
+import { resolveJumpAnchor } from '../resolveJumpAnchor';
+import { type IJumpAnchorDeps, type IJumpTarget } from '../../definitions';
 
 const makeTarget = (overrides: Partial<IJumpTarget> = {}): IJumpTarget => ({
 	id: 'msg-1',

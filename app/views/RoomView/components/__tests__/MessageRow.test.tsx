@@ -1,11 +1,11 @@
 import { act, render } from '@testing-library/react-native';
 
 import database from '~/lib/database';
-import { createObservableRecord } from '../testUtils/observableDatabase';
-import { createRoomStore, observeRoom } from '../stores/RoomStore';
-import { RoomScreenContext } from '../stores/RoomScreenContext';
-import { RoomStoreContext } from '../stores/RoomStoreContext';
-import { MessageRow } from './MessageRow';
+import { createObservableRecord } from '../../testUtils/observableDatabase';
+import { createRoomStore, observeRoom } from '../../stores/RoomStore';
+import { RoomScreenContext } from '../../stores/RoomScreenContext';
+import { RoomStoreContext } from '../../stores/RoomStoreContext';
+import { MessageRow } from '../MessageRow';
 
 jest.mock('~/lib/database', () => ({
 	__esModule: true,
@@ -49,7 +49,7 @@ jest.mock('~/containers/message', () => ({
 		return null;
 	}
 }));
-jest.mock('../LoadMore', () => ({ __esModule: true, default: () => null }));
+jest.mock('../../LoadMore', () => ({ __esModule: true, default: () => null }));
 
 const mockGet = database.active.get as jest.Mock;
 
