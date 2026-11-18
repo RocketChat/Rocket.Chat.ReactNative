@@ -1,4 +1,4 @@
-import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { type ComponentRef, forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { TextInput, StyleSheet, type TextInputProps, Text, View } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
@@ -39,7 +39,7 @@ import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
-const allowGrowingFromEmptyText = (input: TextInput | null) => {
+const allowGrowingFromEmptyText = (input: ComponentRef<typeof TextInput> | null) => {
 	input?.setNativeProps?.({ text: ' ' });
 	input?.setNativeProps?.({ text: '' });
 };
