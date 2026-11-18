@@ -1,4 +1,5 @@
-import { type IServerRoom, type IServerSubscription } from '~/definitions';
+import { type IServerRoom } from '~/definitions/IRoom';
+import { type IServerSubscription } from '~/definitions/ISubscription';
 import findSubscriptionsRooms from '../findSubscriptionsRooms';
 
 const storedSubscription = { _id: 'sub-1', rid: 'room-1', name: 'general', category: 'work' };

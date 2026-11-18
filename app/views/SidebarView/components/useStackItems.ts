@@ -1,6 +1,6 @@
 import { type TIconsName } from '~/containers/CustomIcon';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
+import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall/useNewMediaCall';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
 export interface IStackItem {

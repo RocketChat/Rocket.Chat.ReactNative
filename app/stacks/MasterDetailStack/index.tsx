@@ -9,7 +9,7 @@ import { type StaticScreenProps, useNavigation } from '@react-navigation/native'
 import { ThemeContext } from '~/theme';
 import { defaultHeader, themedHeader } from '~/lib/methods/helpers/navigation';
 import withNavigation from '~/lib/navigation/withNavigation';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { MASTER_DETAIL_INSIDE_STACK_ID } from './constants';
 import { ModalContainer } from './ModalContainer';
 import { createSplitNavigator } from './SplitNavigator';
@@ -79,7 +79,7 @@ import AddChannelTeamView from '~/views/AddChannelTeamView';
 import AddExistingChannelView from '~/views/AddExistingChannelView';
 import DiscussionsView from '~/views/DiscussionsView';
 import AccessibilityAndAppearanceView from '~/views/AccessibilityAndAppearanceView';
-import { SupportedVersionsWarning } from '~/containers/SupportedVersions';
+import { SupportedVersionsWarning } from '~/containers/SupportedVersions/SupportedVersionsWarning';
 import AttachmentView from '~/views/AttachmentView';
 import ModalBlockView from '~/views/ModalBlockView';
 import ConferenceView from '~/views/ConferenceView';

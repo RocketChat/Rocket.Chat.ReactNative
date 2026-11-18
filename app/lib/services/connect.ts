@@ -1,6 +1,5 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
 import log from '../methods/helpers/log';
@@ -17,13 +16,9 @@ import { onAppsStreamData, useAppsStore } from '../apps/appsStore';
 import { clearTriggers } from '../apps/actions';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '~/i18n';
-import {
-	type ILoginCredentials,
-	type ICredentialsPasswordAPI,
-	type ILoggedUser,
-	STATUSES,
-	type TUserStatus
-} from '~/definitions';
+import { type ILoginCredentials, type ICredentialsPasswordAPI } from '~/definitions/ILoginCredentials';
+import { type ILoggedUser } from '~/definitions/ILoggedUser';
+import { STATUSES, type TUserStatus } from '~/definitions/TUserStatus';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '~/actions/connect';
 import { updatePermission } from '~/actions/permissions';
 import EventEmitter from '../methods/helpers/events';
@@ -217,10 +212,8 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 					if (!_setUserTimer.setUserTimer) {
 						_setUserTimer.setUserTimer = setTimeout(() => {
 							const activeUsersBatch = _activeUsers.activeUsers;
-							InteractionManager.runAfterInteractions(() => {
-								// @ts-ignore
-								store.dispatch(setActiveUsers(activeUsersBatch));
-							});
+							// @ts-ignore
+							store.dispatch(setActiveUsers(activeUsersBatch));
 							_setUserTimer.setUserTimer = null;
 							_activeUsers.activeUsers = {} as IActiveUsers;
 							return null;

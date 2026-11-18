@@ -6,8 +6,8 @@ import { RoomInfoButtons } from './RoomInfoButtons';
 import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './RoomInfoButtons.stories';
 import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
-import type { ISubscription } from '~/definitions';
-import { SubscriptionType } from '~/definitions';
+import type { ISubscription } from '~/definitions/ISubscription';
+import { SubscriptionType } from '~/definitions/ISubscription';
 
 const mockShowInitCallActionSheet = jest.fn();
 const mockShowActionSheet = jest.fn();
@@ -21,7 +21,7 @@ jest.mock('~/lib/hooks/useVideoConf', () => ({
 	useVideoConf: (...args: unknown[]) => mockUseVideoConf(...args)
 }));
 
-jest.mock('~/lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall/useNewMediaCall', () => ({
 	useNewMediaCall: (...args: unknown[]) => mockUseNewMediaCall(...args)
 }));
 
@@ -29,8 +29,8 @@ jest.mock('../hooks', () => ({
 	useE2EEWarning: () => false
 }));
 
-jest.mock('~/containers/ActionSheet', () => ({
-	...jest.requireActual('~/containers/ActionSheet'),
+jest.mock('~/containers/ActionSheet/Provider', () => ({
+	...jest.requireActual('~/containers/ActionSheet/Provider'),
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet })
 }));
 

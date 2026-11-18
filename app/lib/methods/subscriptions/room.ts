@@ -1,7 +1,7 @@
 import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
+import type Model from '@nozbe/watermelondb/Model';
 import { type ISubscription } from '@rocket.chat/sdk/interfaces';
 
 import log from '../helpers/log';
@@ -13,16 +13,13 @@ import { getThreadById } from '~/lib/database/services/Thread';
 import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
 import { store as reduxStore } from '~/lib/store/auxStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '~/actions/usersTyping';
-import { debounce } from '../helpers';
+import { debounce } from '../helpers/debounce';
 import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
 import { Encryption } from '~/lib/encryption';
-import {
-	type IMessage,
-	type TMessageModel,
-	type TThreadMessageModel,
-	type TThreadModel,
-	type IDeleteMessageBulkParams
-} from '~/definitions';
+import { type IMessage, type TMessageModel } from '~/definitions/IMessage';
+import { type TThreadMessageModel } from '~/definitions/IThreadMessage';
+import { type TThreadModel } from '~/definitions/IThread';
+import { type IDeleteMessageBulkParams } from '~/definitions/IDeleteMessageBulkParams';
 import { type IDDPMessage } from '~/definitions/IDDPMessage';
 import sdk from '~/lib/services/sdk';
 import { readMessages } from '../readMessages';
@@ -140,101 +137,81 @@ export default class RoomSubscription {
 				}
 			}
 		} else if (ev === 'deleteMessage') {
-			InteractionManager.runAfterInteractions(async () => {
-				if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
-					try {
-						const { _id } = ddpMessage.fields.args[0];
-						const db = database.active;
-						const msgCollection = db.get('messages');
-						const threadsCollection = db.get('threads');
-						const threadMessagesCollection = db.get('thread_messages');
-						await db.write(async () => {
-							let deleteMessage: TMessageModel | undefined;
-							let deleteThread: TThreadModel | undefined;
-							let deleteThreadMessage: TThreadMessageModel | undefined;
-
-							// Delete message
-							try {
-								const m = await msgCollection.find(_id);
-								deleteMessage = m.prepareDestroyPermanently();
-							} catch (e) {
-								// Do nothing
-							}
-
-							// Delete thread
-							try {
-								const m = await threadsCollection.find(_id);
-								deleteThread = m.prepareDestroyPermanently();
-							} catch (e) {
-								// Do nothing
-							}
-
-							// Delete thread message
-							try {
-								const m = await threadMessagesCollection.find(_id);
-								deleteThreadMessage = m.prepareDestroyPermanently();
-							} catch (e) {
-								// Do nothing
-							}
-							await db.batch(deleteMessage, deleteThread, deleteThreadMessage);
-						});
-					} catch (e) {
-						log(e);
-					}
-				}
-			});
+			await this.deleteMessage(ddpMessage);
 		} else if (ev === 'deleteMessageBulk') {
-			InteractionManager.runAfterInteractions(async () => {
-				try {
-					const { rid, excludePinned, ignoreDiscussion, ts, users, ids } = ddpMessage.fields.args[0] as IDeleteMessageBulkParams;
-					const { $gt, $lt, $gte, $lte } = ts || {};
-					const db = database.active;
-
-					const query: Q.Clause[] = [Q.where('rid', rid)];
-
-					if ($gt?.$date && $lt?.$date) {
-						query.push(Q.where('ts', Q.gt($gt.$date)), Q.where('ts', Q.lt($lt.$date)));
-					}
-
-					// only present when inclusive is true in api
-					if ($gte?.$date && $lte?.$date) {
-						query.push(Q.where('ts', Q.gte($gte.$date)), Q.where('ts', Q.lte($lte.$date)));
-					}
-
-					users.forEach((user: string) => {
-						query.push(Q.where('u', Q.like(`%\"username\":\"${user}\",%`)));
-					});
-
-					if (excludePinned) {
-						query.push(Q.or(Q.where('pinned', false), Q.where('pinned', null)));
-					}
-
-					if (ignoreDiscussion) {
-						query.push(Q.where('drid', null));
-					}
-
-					// ids are present when we set limit in api
-					if (ids) {
-						query.push(Q.where('id', Q.oneOf(ids)));
-					}
-
-					const messages = await db
-						.get('messages')
-						.query(...query)
-						.fetch();
-
-					await db.write(async () => {
-						await db.batch(...messages.map(message => message.prepareDestroyPermanently()));
-					});
-				} catch (e) {
-					log(e);
-				}
-			});
+			await this.deleteMessageBulk(ddpMessage);
 		} else if (ev === 'messagesRead') {
 			const lastOpen = ddpMessage.fields.args[0]?.until?.$date;
 			await markMessagesRead({ rid: this.rid, lastOpen });
 		}
 	});
+
+	deleteMessage = async (ddpMessage: IDDPMessage) => {
+		if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
+			try {
+				const { _id } = ddpMessage.fields.args[0];
+				const db = database.active;
+				const prepareDestroyIfFound = (collection: { find: (id: string) => Promise<Model> }) =>
+					collection.find(_id).then(
+						record => record.prepareDestroyPermanently(),
+						() => undefined
+					);
+				await db.write(async () => {
+					const preparedRecords = await Promise.all(
+						[db.get('messages'), db.get('threads'), db.get('thread_messages')].map(prepareDestroyIfFound)
+					);
+					await db.batch(...preparedRecords);
+				});
+			} catch (e) {
+				log(e);
+			}
+		}
+	};
+
+	deleteMessageBulk = async (ddpMessage: IDDPMessage) => {
+		try {
+			const { rid, excludePinned, ignoreDiscussion, ts, users, ids } = ddpMessage.fields.args[0] as IDeleteMessageBulkParams;
+			const { $gt, $lt, $gte, $lte } = ts || {};
+			const db = database.active;
+
+			const query: Q.Clause[] = [Q.where('rid', rid)];
+
+			if ($gt?.$date && $lt?.$date) {
+				query.push(Q.where('ts', Q.gt($gt.$date)), Q.where('ts', Q.lt($lt.$date)));
+			}
+
+			if ($gte?.$date && $lte?.$date) {
+				query.push(Q.where('ts', Q.gte($gte.$date)), Q.where('ts', Q.lte($lte.$date)));
+			}
+
+			users.forEach((user: string) => {
+				query.push(Q.where('u', Q.like(`%\"username\":\"${user}\",%`)));
+			});
+
+			if (excludePinned) {
+				query.push(Q.or(Q.where('pinned', false), Q.where('pinned', null)));
+			}
+
+			if (ignoreDiscussion) {
+				query.push(Q.where('drid', null));
+			}
+
+			if (ids) {
+				query.push(Q.where('id', Q.oneOf(ids)));
+			}
+
+			const messages = await db
+				.get('messages')
+				.query(...query)
+				.fetch();
+
+			await db.write(async () => {
+				await db.batch(...messages.map(message => message.prepareDestroyPermanently()));
+			});
+		} catch (e) {
+			log(e);
+		}
+	};
 
 	read = debounce(() => {
 		readMessages(this.rid);

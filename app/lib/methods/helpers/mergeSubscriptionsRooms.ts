@@ -5,7 +5,8 @@ import { Encryption } from '~/lib/encryption';
 import { store as reduxStore } from '~/lib/store/auxStore';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
-import { type ISubscription, type IServerSubscription, type IServerRoom, type IRoom, type IOmnichannelRoom } from '~/definitions';
+import { type ISubscription, type IServerSubscription } from '~/definitions/ISubscription';
+import { type IServerRoom, type IRoom, type IOmnichannelRoom } from '~/definitions/IRoom';
 import { compareServerVersion } from './compareServerVersion';
 
 // eslint-disable-next-line complexity

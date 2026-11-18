@@ -1,6 +1,6 @@
 import { sendAttachments } from './sendAttachments';
 import { sendFileMessage } from './index';
-import { type IShareAttachment } from '~/definitions';
+import { type IShareAttachment } from '~/definitions/IAttachment';
 
 jest.mock('./index', () => ({ sendFileMessage: jest.fn(() => Promise.resolve()) }));
 

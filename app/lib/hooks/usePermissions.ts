@@ -6,7 +6,8 @@ import { shallowEqual } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 
 import { type TSupportedPermissions } from '~/reducers/permissions';
-import { type IApplicationState, type TSubscriptionModel } from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { getUserSelector } from '~/selectors/login';
 import { useAppSelector } from './useAppSelector';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
