@@ -1,5 +1,5 @@
 import EJSON from 'ejson';
-import { put, race, select, take, takeLatest } from 'redux-saga/effects';
+import { call, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import { ENCRYPTION, LOGOUT, SERVER, SETTINGS } from '../actions/actionsTypes';
 import { encryptionDecodeKeyFailure, encryptionSet } from '../actions/encryption';
@@ -103,6 +103,13 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 	}
 };
 
+const handleEncryptionInitUntilStop = function* handleEncryptionInitUntilStop() {
+	yield race({
+		init: call(handleEncryptionInit),
+		stop: take(ENCRYPTION.STOP)
+	});
+};
+
 const handleEncryptionStop = function* handleEncryptionStop() {
 	// Hide encryption banner
 	yield put(encryptionSet());
@@ -145,7 +152,7 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 };
 
 const root = function* root() {
-	yield takeLatest(ENCRYPTION.INIT, handleEncryptionInit);
+	yield takeLatest(ENCRYPTION.INIT, handleEncryptionInitUntilStop);
 	yield takeLatest(ENCRYPTION.STOP, handleEncryptionStop);
 	yield takeLatest(ENCRYPTION.DECODE_KEY, handleEncryptionDecodeKey);
 };

@@ -1,0 +1,247 @@
+const mockPreferences = new Map<string, string>();
+
+jest.mock('~/lib/methods/userPreferences', () => ({
+	__esModule: true,
+	default: {
+		getString: jest.fn((key: string) => mockPreferences.get(key) ?? null),
+		setString: jest.fn((key: string, value: string) => mockPreferences.set(key, value)),
+		removeItem: jest.fn((key: string) => {
+			mockPreferences.delete(key);
+		})
+	}
+}));
+
+jest.mock('~/lib/services/restApi', () => ({
+	e2eFetchMyKeys: jest.fn(),
+	e2eSetUserPublicAndPrivateKeys: jest.fn(() => Promise.resolve({ success: true })),
+	e2eRequestSubscriptionKeys: jest.fn(() => Promise.resolve({ success: true })),
+	fetchUsersWaitingForGroupKey: jest.fn(),
+	provideUsersSuggestedGroupKeys: jest.fn()
+}));
+
+jest.mock('@rocket.chat/mobile-crypto', () => ({
+	pbkdf2Hash: jest.fn(() => Promise.resolve('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=')),
+	aesEncrypt: jest.fn(() => Promise.resolve('AAAAAAAAAAAAAAAAAAAAAA==')),
+	aesDecrypt: jest.fn(),
+	aesGcmEncrypt: jest.fn(() => Promise.resolve('AAAAAAAAAAAAAAAAAAAAAA==')),
+	aesGcmDecrypt: jest.fn(),
+	randomBytes: jest.fn((size: number) => Promise.resolve(Buffer.alloc(size, 1).toString('base64'))),
+	rsaGenerateKeys: jest.fn(),
+	rsaImportKey: jest.fn(),
+	rsaExportKey: jest.fn(),
+	calculateFileChecksum: jest.fn()
+}));
+
+jest.mock('~/lib/encryption/utils', () => ({
+	...jest.requireActual('~/lib/encryption/utils'),
+	generatePassphrase: jest.fn(() => Promise.resolve('random passphrase'))
+}));
+
+jest.mock('~/lib/store/auxStore', () => ({
+	store: {
+		getState: () => ({ server: { version: '7.0.0' }, encryption: { enabled: false, banner: '' } })
+	}
+}));
+
+jest.mock('~/lib/encryption', () => jest.requireActual('~/lib/encryption'));
+
+jest.mock('~/lib/methods/readMessages', () => ({
+	readMessages: jest.fn()
+}));
+
+jest.mock('~/lib/methods/helpers/log', () => ({
+	__esModule: true,
+	default: jest.fn()
+}));
+
+jest.mock('~/lib/database', () => ({
+	__esModule: true,
+	default: {
+		active: {
+			get: jest.fn(() => ({
+				query: () => Object.assign(Promise.resolve([]), { fetch: () => Promise.resolve([]) })
+			}))
+		},
+		servers: {
+			get: jest.fn(() => ({
+				find: () => Promise.reject(new Error('not found'))
+			}))
+		}
+	}
+}));
+
+import { rsaExportKey, rsaGenerateKeys, rsaImportKey } from '@rocket.chat/mobile-crypto';
+
+import encryptionRoot from '../encryption';
+import { encryptionInit, encryptionStop } from '~/actions/encryption';
+import { addSettings } from '~/actions/settings';
+import { setUser } from '~/actions/login';
+import { selectServerSuccess } from '~/actions/server';
+import { e2eFetchMyKeys, e2eSetUserPublicAndPrivateKeys } from '~/lib/services/restApi';
+import { Encryption } from '~/lib/encryption';
+import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '~/lib/constants/keys';
+import { ENCRYPTION } from '~/actions/actionsTypes';
+import { cancelSagaTasks, createRecordingStore } from '~/lib/testUtils/sagaStore';
+import type { RecordingStore } from '~/lib/testUtils/sagaStore';
+
+const SERVER_URL = 'https://open.rocket.chat';
+const USER_A = { id: 'user-a', token: 'token-a', username: 'alice' };
+const USER_B = { id: 'user-b', token: 'token-b', username: 'bob' };
+const PRIVATE_KEY_STORAGE = `${SERVER_URL}-${E2E_PRIVATE_KEY}`;
+const PUBLIC_KEY_STORAGE = `${SERVER_URL}-${E2E_PUBLIC_KEY}`;
+const RANDOM_PASSWORD_STORAGE = `${SERVER_URL}-${E2E_RANDOM_PASSWORD_KEY}`;
+
+const createDeferred = <T>() => {
+	let resolve!: (value: T) => void;
+	const promise = new Promise<T>(promiseResolve => {
+		resolve = promiseResolve;
+	});
+	return { promise, resolve };
+};
+
+const drainEventLoop = async (passes = 50): Promise<void> => {
+	if (passes === 0) {
+		return;
+	}
+	await new Promise(resolve => setImmediate(resolve));
+	await drainEventLoop(passes - 1);
+};
+
+type TMyKeys = Awaited<ReturnType<typeof e2eFetchMyKeys>>;
+const NO_KEYS: TMyKeys = { success: true, publicKey: '', privateKey: '' };
+const SERVER_KEYS: TMyKeys = { success: true, publicKey: 'server-public', privateKey: 'server-private' };
+
+const signIn = (store: RecordingStore['store'], user: typeof USER_A) => {
+	store.dispatch(selectServerSuccess({ server: SERVER_URL, version: '7.0.0', name: 'Open' }));
+	store.dispatch(setUser(user));
+	store.dispatch(addSettings({ E2E_Enable: true }));
+	store.dispatch(encryptionInit());
+};
+
+const simulateLogoutCleanup = (store: RecordingStore['store']) => {
+	store.dispatch(encryptionStop());
+	mockPreferences.delete(PUBLIC_KEY_STORAGE);
+	mockPreferences.delete(PRIVATE_KEY_STORAGE);
+	mockPreferences.delete(RANDOM_PASSWORD_STORAGE);
+};
+
+const keyPairFor = (label: string) => ({
+	public: `${label}-public-pem`,
+	private: `${label}-private-pem`
+});
+
+const stubKeyCrypto = () => {
+	jest.mocked(rsaExportKey).mockImplementation((pem: string) => Promise.resolve({ kty: 'RSA', n: pem, e: 'AQAB' }));
+	jest.mocked(rsaImportKey).mockImplementation((jwk: { n: string }) => Promise.resolve(`imported:${jwk.n}`));
+};
+
+describe('encryption saga — sign-out while ENCRYPTION.INIT is in flight', () => {
+	beforeEach(() => {
+		mockPreferences.clear();
+		jest.clearAllMocks();
+		Encryption.stop();
+		stubKeyCrypto();
+	});
+
+	afterEach(() => {
+		cancelSagaTasks();
+		Encryption.stop();
+	});
+
+	it('creates, stores and uploads keys when nobody signs out', async () => {
+		const fetchA = createDeferred<TMyKeys>();
+		const generateA = createDeferred<ReturnType<typeof keyPairFor>>();
+		jest.mocked(e2eFetchMyKeys).mockReturnValueOnce(fetchA.promise);
+		jest.mocked(rsaGenerateKeys).mockReturnValueOnce(generateA.promise);
+		const { store } = createRecordingStore(encryptionRoot);
+
+		signIn(store, USER_A);
+		await drainEventLoop();
+		fetchA.resolve(NO_KEYS);
+		await drainEventLoop();
+		generateA.resolve(keyPairFor('A'));
+		await drainEventLoop();
+
+		expect(mockPreferences.get(PRIVATE_KEY_STORAGE)).toContain('A-private-pem');
+		expect(mockPreferences.has(RANDOM_PASSWORD_STORAGE)).toBe(true);
+		expect(Encryption.privateKey).toBe('imported:A-private-pem');
+		expect(e2eSetUserPublicAndPrivateKeys).toHaveBeenCalledTimes(1);
+		expect(store.getState().encryption.enabled).toBe(true);
+		expect(Encryption.userId).toBe(USER_A.id);
+	});
+
+	it('does not show the password banner when the key fetch resolves after sign-out', async () => {
+		const fetchA = createDeferred<TMyKeys>();
+		jest.mocked(e2eFetchMyKeys).mockReturnValueOnce(fetchA.promise);
+		const { store, dispatchedActions } = createRecordingStore(encryptionRoot);
+
+		signIn(store, USER_A);
+		await drainEventLoop();
+		expect(e2eFetchMyKeys).toHaveBeenCalledTimes(1);
+
+		store.dispatch(encryptionStop());
+		await drainEventLoop();
+		fetchA.resolve(SERVER_KEYS);
+		await drainEventLoop();
+
+		const encryptionActions = dispatchedActions
+			.filter(action => action.type.startsWith('ENCRYPTION'))
+			.map(action => `${action.type}:${String(action.banner)}`);
+		expect(encryptionActions).toEqual([`${ENCRYPTION.INIT}:undefined`, `${ENCRYPTION.STOP}:undefined`, `${ENCRYPTION.SET}:`]);
+		expect(store.getState().encryption.banner).toBe('');
+	});
+
+	it('does not store, upload or arm keys created after sign-out removed them', async () => {
+		const fetchA = createDeferred<TMyKeys>();
+		const generateA = createDeferred<ReturnType<typeof keyPairFor>>();
+		jest.mocked(e2eFetchMyKeys).mockReturnValueOnce(fetchA.promise);
+		jest.mocked(rsaGenerateKeys).mockReturnValueOnce(generateA.promise);
+		const { store } = createRecordingStore(encryptionRoot);
+
+		signIn(store, USER_A);
+		await drainEventLoop();
+		fetchA.resolve(NO_KEYS);
+		await drainEventLoop();
+		expect(rsaGenerateKeys).toHaveBeenCalledTimes(1);
+
+		simulateLogoutCleanup(store);
+		await drainEventLoop();
+		generateA.resolve(keyPairFor('A'));
+		await drainEventLoop();
+
+		expect(mockPreferences.has(PRIVATE_KEY_STORAGE)).toBe(false);
+		expect(mockPreferences.has(PUBLIC_KEY_STORAGE)).toBe(false);
+		expect(mockPreferences.has(RANDOM_PASSWORD_STORAGE)).toBe(false);
+		expect(Encryption.privateKey).toBeNull();
+		expect(e2eSetUserPublicAndPrivateKeys).not.toHaveBeenCalled();
+		expect(store.getState().encryption.enabled).toBe(false);
+		expect(Encryption.userId).toBeNull();
+		expect(Encryption.keyDistributionInterval).toBeNull();
+		expect(Encryption.ready).toBe(false);
+	});
+
+	it("does not post the previous user's keys after the next user signs in", async () => {
+		const fetchA = createDeferred<TMyKeys>();
+		const fetchB = createDeferred<TMyKeys>();
+		const generateA = createDeferred<ReturnType<typeof keyPairFor>>();
+		jest.mocked(e2eFetchMyKeys).mockReturnValueOnce(fetchA.promise).mockReturnValueOnce(fetchB.promise);
+		jest.mocked(rsaGenerateKeys).mockReturnValueOnce(generateA.promise);
+		const { store } = createRecordingStore(encryptionRoot);
+
+		signIn(store, USER_A);
+		await drainEventLoop();
+		fetchA.resolve(NO_KEYS);
+		await drainEventLoop();
+		simulateLogoutCleanup(store);
+		await drainEventLoop();
+
+		signIn(store, USER_B);
+		await drainEventLoop();
+		generateA.resolve(keyPairFor('A'));
+		await drainEventLoop();
+
+		expect(e2eSetUserPublicAndPrivateKeys).not.toHaveBeenCalled();
+		expect(mockPreferences.has(PRIVATE_KEY_STORAGE)).toBe(false);
+		expect(Encryption.privateKey).toBeNull();
+	});
+});
