@@ -1,4 +1,4 @@
-import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { type RoomStore } from '~/views/RoomView/definitions';
 import { useJsRoomHeader } from '~/views/RoomView/hooks/useJsRoomHeader';

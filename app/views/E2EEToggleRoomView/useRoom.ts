@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { type Subscription } from 'rxjs';
 
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
-import { type ISubscription } from '~/definitions';
+import { type ISubscription } from '~/definitions/ISubscription';
 
 type TResult = ISubscription | null;
 

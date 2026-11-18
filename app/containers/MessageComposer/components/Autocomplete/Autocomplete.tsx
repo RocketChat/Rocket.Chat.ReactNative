@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAutocompleteParams } from '~/containers/MessageComposer/context';
 import { AutocompleteItem } from './AutocompleteItem';
-import { useAutocomplete } from '~/containers/MessageComposer/hooks';
+import { useAutocomplete } from '~/containers/MessageComposer/hooks/useAutocomplete';
 import { type IAutocompleteItemProps } from '~/containers/MessageComposer/interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
 import { useComposerRid, useUpdateAutocompleteVisible } from '~/containers/MessageComposer/ComposerStore';

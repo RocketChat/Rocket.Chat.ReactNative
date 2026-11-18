@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 
 import { AvatarWithEdit } from '~/containers/Avatar';
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 import styles from '../styles';
 import I18n from '~/i18n';
 

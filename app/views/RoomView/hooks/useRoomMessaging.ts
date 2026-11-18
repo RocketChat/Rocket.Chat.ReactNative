@@ -2,8 +2,8 @@ import { useRef, useState } from 'react';
 
 import { type IMessageActions } from '~/containers/MessageActions';
 import { type IMessageErrorActions } from '~/containers/MessageErrorActions';
-import { type IMessageComposerRef } from '~/containers/MessageComposer';
-import { useActionSheet } from '~/containers/ActionSheet';
+import { type IMessageComposerRef } from '~/containers/MessageComposer/interfaces';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 import { createMessageActionStore } from '~/containers/message/stores/MessageActionStore';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useLiveRef } from '~/lib/hooks/useLiveRef';

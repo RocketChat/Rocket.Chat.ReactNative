@@ -1,4 +1,4 @@
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import Navigation from '~/lib/navigation/appNavigation';
 import { useCallStore } from './useCallStore';

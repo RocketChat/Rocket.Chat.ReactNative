@@ -3,7 +3,8 @@ import { Platform } from 'react-native';
 
 import { appInit } from '~/actions/app';
 import { deepLinkingClickCallPush, deepLinkingOpen } from '~/actions/deepLinking';
-import { type INotification, RoomType } from '~/definitions';
+import { type INotification } from '~/definitions/INotification';
+import { RoomType } from '~/definitions/IRoom';
 import { store } from '../store/auxStore';
 import { roomTypeToPathSegment } from '../methods/roomTypePath';
 import { pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';

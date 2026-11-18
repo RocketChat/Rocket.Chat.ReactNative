@@ -5,7 +5,8 @@ import { useDispatch } from 'react-redux';
 import { A11y } from 'react-native-a11y-order';
 
 import { acceptCall, cancelCall } from '~/actions/videoConf';
-import { type ISubscription, type RoomType } from '~/definitions';
+import { type ISubscription } from '~/definitions/ISubscription';
+import { type RoomType } from '~/definitions/IRoom';
 import i18n from '~/i18n';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useEndpointData } from '~/lib/hooks/useEndpointData';

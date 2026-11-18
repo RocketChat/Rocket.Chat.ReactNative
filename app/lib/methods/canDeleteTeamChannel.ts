@@ -1,6 +1,7 @@
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 import { store as reduxStore } from '~/lib/store/auxStore';
-import { compareServerVersion, hasPermission } from './helpers';
+import { compareServerVersion } from './helpers/compareServerVersion';
+import { hasPermission } from './helpers/hasPermission';
 
 export const canDeleteTeamChannel = async (channel: { rid: string; t: string }, teamRoomId: string): Promise<boolean> => {
 	const { permissions, server } = reduxStore.getState();

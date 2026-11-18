@@ -2,16 +2,13 @@ import { Q } from '@nozbe/watermelondb';
 import { Alert } from 'react-native';
 
 import { LISTENER } from '~/containers/Toast';
-import {
-	type IGetRoomRoles,
-	type IUser,
-	type NonDirectRoomType,
-	RoomType,
-	type TSubscriptionModel,
-	type TUserModel
-} from '~/definitions';
+import { type IGetRoomRoles } from '~/definitions/IRole';
+import { type IUser, type TUserModel } from '~/definitions/IUser';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type NonDirectRoomType, RoomType } from '~/definitions/IRoom';
 import I18n from '~/i18n';
-import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { showConfirmationAlert, showErrorAlert } from '~/lib/methods/helpers/info';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
 import log from '~/lib/methods/helpers/log';

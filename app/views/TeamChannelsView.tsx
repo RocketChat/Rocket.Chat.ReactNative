@@ -10,12 +10,14 @@ import { deleteRoom } from '../actions/room';
 import { DisplayMode } from '../lib/constants/constantDisplayMode';
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';
 import { themes } from '../lib/constants/colors';
-import { type TActionSheetOptions, type TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
+import { type TActionSheetOptions, type TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet/Provider';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
 import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
-import { type IApplicationState, type IBaseScreen, type TSubscriptionModel } from '../definitions';
+import { type IApplicationState } from '../definitions/redux';
+import { type IBaseScreen } from '../definitions';
+import { type TSubscriptionModel } from '../definitions/ISubscription';
 import { withDimensions } from '../lib/hooks/withDimensions';
 import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 import { BASE_ROW_HEIGHT, BASE_ROW_HEIGHT_CONDENSED } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -31,15 +33,12 @@ import { withTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import {
-	getRoomAvatar,
-	getRoomTitle,
-	hasPermission,
-	debounce,
-	hasNativeHeaderBar,
-	isIOS,
-	compareServerVersion
-} from '../lib/methods/helpers';
+import { getRoomAvatar } from '../lib/methods/helpers/getRoomAvatar';
+import { getRoomTitle } from '../lib/methods/helpers/getRoomTitle';
+import { hasPermission } from '../lib/methods/helpers/hasPermission';
+import { debounce } from '../lib/methods/helpers/debounce';
+import { hasNativeHeaderBar, isIOS } from '../lib/methods/helpers/deviceInfo';
+import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 import { getRoomInfo, getTeamListRoom, updateTeamRoom, removeTeamRoom } from '../lib/services/restApi';
 import { canDeleteTeamChannel } from '../lib/methods/canDeleteTeamChannel';
 

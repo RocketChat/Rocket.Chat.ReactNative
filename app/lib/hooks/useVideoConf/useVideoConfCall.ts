@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 import { getUserSelector } from '~/selectors/login';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { isRoomFederated } from '~/lib/methods/isRoomFederated';

@@ -1,7 +1,9 @@
 import log from './helpers/log';
-import { type RoomType, type TAnyMessageModel, type TSubscriptionModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type RoomType } from '~/definitions/IRoom';
 import { store } from '../store/auxStore';
-import { isGroupChat } from './helpers';
+import { isGroupChat } from './helpers/roomKind';
 import { getRoom } from './getRoom';
 import { roomTypeToPathSegment } from './roomTypePath';
 

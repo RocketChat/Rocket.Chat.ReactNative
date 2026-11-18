@@ -1,7 +1,8 @@
 import dayjs from '~/lib/dayjs';
 import { themes } from '~/lib/constants/colors';
 import I18n from '~/i18n';
-import { type IAttachment, RoomType } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { RoomType } from '~/definitions/IRoom';
 import { type TSupportedThemes } from '~/theme';
 
 export const isBlocked = (room: { t?: string; blocked?: boolean; blocker?: boolean }): boolean => {

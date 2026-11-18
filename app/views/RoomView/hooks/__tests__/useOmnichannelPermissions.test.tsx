@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-native';
 import { createStore } from 'zustand';
 
-import { type RoomType } from '~/definitions';
+import { type RoomType } from '~/definitions/IRoom';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { type RoomState, type RoomStore } from '~/views/RoomView/definitions';
 import { useOmnichannelPermissions } from '../useOmnichannelPermissions';

@@ -1,5 +1,5 @@
 import { buildPermalinkChannel, buildPermalinkMessage } from './getPermalinks';
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 
 describe('buildPermalinkChannel', () => {
 	test('normal_name', () => {

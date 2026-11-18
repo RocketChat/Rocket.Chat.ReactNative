@@ -5,11 +5,12 @@ import { type Subscription } from 'rxjs';
 
 import { appStart } from '~/actions/app';
 import { selectServerRequest, serverInitAdd } from '~/actions/server';
-import { hideActionSheetRef } from '~/containers/ActionSheet';
+import { hideActionSheetRef } from '~/containers/ActionSheet/Provider';
 import Button from '~/containers/Button';
 import * as List from '~/containers/List';
 import ServerItem from '~/containers/ServerItem';
-import { RootEnum, type TServerModel } from '~/definitions';
+import { RootEnum } from '~/definitions/redux/TRootEnum';
+import { type TServerModel } from '~/definitions/IServer';
 import I18n from '~/i18n';
 import { getServerUserIdKey } from '~/lib/constants/keys';
 import database from '~/lib/database';

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react-native';
 
 import { initStore } from '~/lib/store/auxStore';
 import { mockedStore } from '~/reducers/mockedStore';
-import { type TThreadModel } from '~/definitions';
+import { type TThreadModel } from '~/definitions/IThread';
 import { type TPreviewRoom } from '~/definitions/TRoom';
 import Header from '../Header';
 

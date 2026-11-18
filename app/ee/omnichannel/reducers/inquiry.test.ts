@@ -9,7 +9,7 @@ import {
 } from '../actions/inquiry';
 import { mockedStore } from '~/reducers/mockedStore';
 import { initialState } from './inquiry';
-import { type IOmnichannelRoom, OmnichannelSourceType, RoomType } from '~/definitions';
+import { type IOmnichannelRoom, OmnichannelSourceType, RoomType } from '~/definitions/IRoom';
 
 describe('test inquiry reduce', () => {
 	const enabledObj = {

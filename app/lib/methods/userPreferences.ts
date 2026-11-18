@@ -2,7 +2,7 @@ import { createMMKV, useMMKVString } from 'react-native-mmkv';
 import type { Configuration, MMKV } from 'react-native-mmkv';
 import { NativeModules } from 'react-native';
 
-import { isAndroid } from './helpers';
+import { isAndroid } from './helpers/deviceInfo';
 
 /**
  * Get the MMKV encryption key from native secure storage.

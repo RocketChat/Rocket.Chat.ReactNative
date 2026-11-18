@@ -1,16 +1,17 @@
 import { memo, type ReactElement, type RefObject } from 'react';
 import { type LayoutChangeEvent, StyleSheet, View } from 'react-native';
 
-import { type TMessageAction } from '~/definitions';
+import { type TMessageAction } from '~/definitions/IMessage';
 import { type IComposerInput } from '../interfaces';
 import { useTheme } from '~/theme';
-import { RecordAudio } from './RecordAudio';
-import { Left, Right } from './Unfocused';
+import { RecordAudio } from './RecordAudio/RecordAudio';
+import { Left } from './Unfocused/Left';
+import { Right } from './Unfocused/Right';
 import { MIN_HEIGHT } from '../constants';
 import { SendThreadToChannel } from './SendThreadToChannel';
 import { EmojiSearchbar } from './EmojiSearchbar';
-import { Toolbar } from './Toolbar';
-import { Quotes } from './Quotes';
+import { Toolbar } from './Toolbar/Toolbar';
+import { Quotes } from './Quotes/Quotes';
 import { ComposerInput } from './ComposerInput';
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '~/lib/constants/accessibility';
 

@@ -1,4 +1,4 @@
-import { type RoomType } from '~/definitions';
+import { type RoomType } from '~/definitions/IRoom';
 import { loadMessagesForRoom } from '~/lib/methods/loadMessagesForRoom';
 import { loadMissedMessages } from '~/lib/methods/loadMissedMessages';
 

@@ -1,7 +1,7 @@
 import database from '../database';
 import { SUBSCRIPTIONS_TABLE } from '../database/model/Subscription';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 import { store as reduxStore } from '../store/auxStore';
 import log from './helpers/log';
 

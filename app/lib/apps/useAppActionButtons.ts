@@ -13,7 +13,8 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useObservable } from '~/lib/hooks/useObservable';
 import log from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
-import { type TPermissionModel, type TSubscriptionModel } from '~/definitions';
+import { type TPermissionModel } from '~/definitions/IPermission';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 
 type TAppActionButtonContext = { room: IAppActionButtonRoom } & Omit<IAppActionButtonAuth, 'userRoles'>;
 

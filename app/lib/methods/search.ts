@@ -4,8 +4,12 @@ import { getSubscriptionSearchClause, sanitizeLikeString } from '../database/uti
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
-import { type ISearch, type ISearchLocal, type IUserMessage, RoomType, type TSubscriptionModel } from '~/definitions';
-import { isGroupChat, isReadOnly } from './helpers';
+import { type ISearch, type ISearchLocal } from '~/definitions/ISearch';
+import { type IUserMessage } from '~/definitions/IMessage';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
+import { RoomType } from '~/definitions/IRoom';
+import { isGroupChat } from './helpers/roomKind';
+import { isReadOnly } from './helpers/isReadOnly';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../encryption/utils';
 
 export type TSearch = ISearchLocal | IUserMessage | ISearch;

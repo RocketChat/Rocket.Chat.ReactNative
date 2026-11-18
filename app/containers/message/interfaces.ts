@@ -1,7 +1,7 @@
 import { type StyleProp } from 'react-native';
 import { type ImageStyle } from 'expo-image';
 
-import { type IAttachment } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
 
 export interface IMessageAttachments {
 	attachments?: IAttachment[];

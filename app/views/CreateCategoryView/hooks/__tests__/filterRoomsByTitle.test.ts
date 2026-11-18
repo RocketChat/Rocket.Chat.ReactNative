@@ -1,4 +1,4 @@
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 import { filterRoomsByTitle } from '../useCategoryRoomCandidates';
 
 const general = { rid: 'general', title: 'general', avatar: 'general', t: RoomType.CHANNEL };

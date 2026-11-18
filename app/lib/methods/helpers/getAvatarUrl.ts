@@ -1,6 +1,6 @@
 import { PixelRatio } from 'react-native';
 
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 import { type IAvatar } from '~/containers/Avatar/interfaces';
 import { compareServerVersion } from './compareServerVersion';
 

@@ -1,4 +1,4 @@
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 import { navigateToScreen, type TRoomStackNavigation, type TRoomStackParamList } from '../navigateToScreen';
 
 describe('navigateToScreen', () => {

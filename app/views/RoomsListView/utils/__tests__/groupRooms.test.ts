@@ -1,4 +1,5 @@
-import { RoomType, type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
+import { RoomType } from '~/definitions/IRoom';
 import { buildRoomList, categoryIdOfHeader, roomsInSection } from '../groupRooms';
 import { DEFAULT_GROUP_ORDER, SYSTEM_GROUPS } from '../sidebarGroupOrder';
 

@@ -2,7 +2,7 @@ import { useLayoutEffect } from 'react';
 import { PixelRatio, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import { type IRoomViewProps } from '../definitions';
 
 export const useEmptyRoomHeader = (): void => {

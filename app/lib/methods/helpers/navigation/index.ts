@@ -8,7 +8,7 @@ import { type TSupportedThemes } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import Header from '~/containers/Header';
 import I18n from '~/i18n';
-import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import { headerRightActions } from './headerActions';
 
 export const defaultHeader: NativeStackNavigationOptions = hasNativeHeaderBar

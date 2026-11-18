@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react-native';
 
 import useRoomDeletionActions from '../useRoomDeletionActions';
-import { showConfirmationAlert } from '~/lib/methods/helpers';
-import { type ISubscription } from '~/definitions';
+import { showConfirmationAlert } from '~/lib/methods/helpers/info';
+import { type ISubscription } from '~/definitions/ISubscription';
 
 const mockDispatch = jest.fn();
 const mockFetch = jest.fn();
@@ -12,8 +12,10 @@ jest.mock('react-redux', () => ({ useDispatch: () => mockDispatch }));
 jest.mock('~/lib/database', () => ({
 	active: { get: () => ({ query: () => ({ fetch: mockFetch }) }) }
 }));
-jest.mock('~/lib/methods/helpers', () => ({
-	getRoomTitle: jest.fn(() => 'Team'),
+jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
+	getRoomTitle: jest.fn(() => 'Team')
+}));
+jest.mock('~/lib/methods/helpers/info', () => ({
 	showConfirmationAlert: jest.fn(),
 	showErrorAlert: jest.fn()
 }));

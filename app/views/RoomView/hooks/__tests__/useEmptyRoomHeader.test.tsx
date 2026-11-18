@@ -3,7 +3,7 @@ import { renderHook } from '@testing-library/react-native';
 import { useEmptyRoomHeader } from '../useEmptyRoomHeader';
 
 const mockHelpers = { hasNativeHeaderBar: false };
-jest.mock('~/lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
 	get hasNativeHeaderBar() {
 		return mockHelpers.hasNativeHeaderBar;
 	}

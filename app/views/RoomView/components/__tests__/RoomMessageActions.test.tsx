@@ -3,7 +3,7 @@ import { render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'zustand';
 
-import { ActionSheetProvider } from '~/containers/ActionSheet';
+import { ActionSheetProvider } from '~/containers/ActionSheet/Provider';
 import { type IMessageActions } from '~/containers/MessageActions';
 import { type IMessageErrorActions } from '~/containers/MessageErrorActions';
 import { setUser } from '~/actions/login';

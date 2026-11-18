@@ -3,7 +3,7 @@ import { type ReactNode } from 'react';
 import { ThemeContext, type TSupportedThemes } from '~/theme';
 import { themes } from '~/lib/constants/colors';
 import NotifierComponent from './NotifierComponent';
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,

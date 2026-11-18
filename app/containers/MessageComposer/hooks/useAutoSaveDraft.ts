@@ -1,7 +1,7 @@
 import { useRoute } from '@react-navigation/native';
 import { type RefObject, useCallback, useEffect } from 'react';
 
-import { type TMessageActionState } from '~/definitions';
+import { type TMessageActionState } from '~/definitions/IMessage';
 import { saveDraftMessage } from '~/lib/methods/draftMessage';
 import { useComposerStoreApi } from '../ComposerStore';
 import { useMessageActionStoreApi } from '~/containers/message/stores/MessageActionStore';

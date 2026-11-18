@@ -17,14 +17,11 @@ import { MarkdownPreview } from '~/containers/markdown';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
 import SafeAreaView from '~/containers/SafeAreaView';
 import StatusRows from '~/containers/Status/StatusRows';
-import {
-	type IApplicationState,
-	type IBaseScreen,
-	type ISubscription,
-	type IUser,
-	RoomType,
-	type TSubscriptionModel
-} from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type IBaseScreen } from '~/definitions';
+import { type ISubscription, type TSubscriptionModel } from '~/definitions/ISubscription';
+import { RoomType } from '~/definitions/IRoom';
+import { type IUser } from '~/definitions/IUser';
 import { type IActiveUser } from '~/reducers/activeUsers';
 import { withDimensions } from '~/lib/hooks/withDimensions';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -41,17 +38,15 @@ import styles from './styles';
 import { E2E_ROOM_TYPES } from '~/lib/constants/keys';
 import { themes } from '~/lib/constants/colors';
 import { getPermalinkChannel } from '~/lib/methods/getPermalinks';
-import {
-	canAutoTranslate as canAutoTranslateMethod,
-	getRoomAvatar,
-	getRoomTitle,
-	getUidDirectMessage,
-	hasPermission,
-	isGroupChat,
-	compareServerVersion,
-	isIOS,
-	isTeamRoom
-} from '~/lib/methods/helpers';
+import { canAutoTranslate as canAutoTranslateMethod } from '~/lib/methods/helpers/canAutoTranslate';
+import { getRoomAvatar } from '~/lib/methods/helpers/getRoomAvatar';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
+import { hasPermission } from '~/lib/methods/helpers/hasPermission';
+import { isGroupChat } from '~/lib/methods/helpers/roomKind';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
+import { isTeamRoom } from '~/lib/methods/helpers/roomKind';
 import {
 	getUserInfo,
 	toggleBlockUser,
@@ -67,7 +62,7 @@ import {
 	returnLivechat
 } from '~/lib/services/restApi';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
-import { type IActionSheetProvider, withActionSheet } from '~/containers/ActionSheet';
+import { type IActionSheetProvider, withActionSheet } from '~/containers/ActionSheet/Provider';
 import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
 import { closeLivechat } from '~/lib/methods/helpers/closeLivechat';
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';

@@ -1,4 +1,4 @@
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 import database from '../database';
 import sdk from '../services/sdk';
 import { createDirectMessage } from './createDirectMessage';

@@ -1,4 +1,5 @@
-import { type RoomType, type TAnyMessageModel } from '~/definitions';
+import { type RoomType } from '~/definitions/IRoom';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { loadNextMessages } from './loadNextMessages';
 import { loadMessagesForRoom } from './loadMessagesForRoom';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';

@@ -13,8 +13,7 @@ const PERMISSION_ROLES: Record<string, string[]> = {
 jest.mock('~/lib/store/auxStore', () => ({
 	store: { getState: () => ({ permissions: PERMISSION_ROLES, server: { version: mockServerVersion } }) }
 }));
-jest.mock('../helpers', () => ({
-	...jest.requireActual('../helpers/compareServerVersion'),
+jest.mock('../helpers/hasPermission', () => ({
 	hasPermission: jest.fn((permissions: string[][], rid: string) =>
 		Promise.resolve(permissions.map(roles => roles.some(role => mockGrantedPermissions.get(rid)?.includes(role))))
 	)

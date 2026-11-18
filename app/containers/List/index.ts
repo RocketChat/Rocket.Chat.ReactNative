@@ -8,4 +8,4 @@ export { default as Separator } from './components/ListSeparator';
 export { default as Header } from './components/ListHeader';
 export { default as Info } from './components/ListInfo';
 export { default as Picker } from './components/ListPicker';
-export * from './styles';
+export { styles } from './styles';

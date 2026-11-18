@@ -6,7 +6,7 @@ import { makeMutable } from 'react-native-reanimated';
 
 import Touchable from '../Touchable';
 import { settleSwipeRow, unregisterOpenSwipeItem } from '../utils/openSwipeItem';
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 
 jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: () => '7.0.0' }));
 jest.mock('react-native-gesture-handler', () => {

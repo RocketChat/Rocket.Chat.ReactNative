@@ -1,10 +1,11 @@
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { getRoomTitle } from '~/lib/methods/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { isInviteSubscription } from '~/lib/methods/isInviteSubscription';
 import { getInvitationActions, getInvitationText } from '~/lib/methods/getInvitationData';
-import { type IInviteSubscription, type RoomType } from '~/definitions';
+import { type IInviteSubscription } from '~/definitions/ISubscription';
+import { type RoomType } from '~/definitions/IRoom';
 import { isSubscriptionModel } from '~/definitions/TRoom';
 import { type IRoomViewProps, type RoomStore } from '~/views/RoomView/definitions';
 import RoomScreen from '~/views/RoomView/RoomScreen';

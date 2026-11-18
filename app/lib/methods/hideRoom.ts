@@ -1,4 +1,4 @@
-import { type RoomType } from '~/definitions';
+import { type RoomType } from '~/definitions/IRoom';
 import database from '../database';
 import log, { events, logEvent } from './helpers/log';
 import { hideRoom as hideRoomService } from '../services/restApi';

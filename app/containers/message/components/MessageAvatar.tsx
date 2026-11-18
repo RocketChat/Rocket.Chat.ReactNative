@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import Avatar from '~/containers/Avatar';
 import styles from '../styles';
 import { type IMessageAvatar } from '../interfaces';
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useAvatar, useMessageField, useMessageGrouping } from '../stores/MessageStore';
 import { useMessageUser, useNavToRoomInfo } from '../stores/MessageRoomStore';

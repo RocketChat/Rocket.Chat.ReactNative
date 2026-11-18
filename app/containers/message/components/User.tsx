@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { type MessageTypesValues, RoomType } from '~/definitions';
+import { type MessageTypesValues } from '~/definitions/IMessage';
+import { RoomType } from '~/definitions/IRoom';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import RightIcons from './RightIcons';

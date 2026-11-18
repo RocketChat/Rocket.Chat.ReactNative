@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-native';
 
 import { useImageDescriptionLabel } from '../useImageDescriptionLabel';
-import { type IAttachment } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
 
 jest.mock('~/lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: () => false

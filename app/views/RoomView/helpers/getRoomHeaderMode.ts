@@ -1,4 +1,4 @@
-import { type RoomType } from '~/definitions';
+import { type RoomType } from '~/definitions/IRoom';
 import { type RoomMembership } from '../definitions';
 
 export type TRoomHeaderMode = 'none' | 'omnichannel' | 'thread' | 'room';

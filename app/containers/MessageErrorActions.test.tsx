@@ -4,7 +4,7 @@ import { act, render } from '@testing-library/react-native';
 import MessageErrorActions, { type IMessageErrorActions } from './MessageErrorActions';
 import database from '../lib/database';
 import log from '../lib/methods/helpers/log';
-import { type TMessageModel } from '../definitions';
+import { type TMessageModel } from '../definitions/IMessage';
 import { FakeDatabase, type FakeModel } from '../lib/database/__tests__/mockedWatermelonDB';
 
 jest.mock('../lib/database', () => ({
@@ -22,7 +22,7 @@ jest.mock('../lib/methods/sendMessage', () => ({
 }));
 
 const mockShowActionSheet = jest.fn();
-jest.mock('./ActionSheet', () => ({
+jest.mock('./ActionSheet/Provider', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet })
 }));
 

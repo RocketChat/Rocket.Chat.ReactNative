@@ -10,7 +10,7 @@ import AvatarContainer from '~/containers/Avatar';
 import Button from '~/containers/Button';
 import { CallHeader } from '~/containers/CallHeader';
 import Ringer, { ERingerSounds } from '~/containers/Ringer';
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 import i18n from '~/i18n';
 import { getUserSelector } from '~/selectors/login';
 import { useTheme } from '~/theme';

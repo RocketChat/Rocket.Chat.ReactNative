@@ -1,5 +1,5 @@
 import { formatUrl, getAvatarURL } from './getAvatarUrl';
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 
 jest.mock('react-native', () => ({ PixelRatio: { get: () => 1 } }));
 

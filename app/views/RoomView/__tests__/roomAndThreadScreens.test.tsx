@@ -70,7 +70,9 @@ jest.mock('../List', () => {
 	};
 });
 // The composer itself is out of scope here; the List probe is what sends through the screen's store.
-jest.mock('~/containers/MessageComposer', () => ({ MessageComposerContainer: 'MessageComposerContainer' }));
+jest.mock('~/containers/MessageComposer/MessageComposerContainer', () => ({
+	MessageComposerContainer: 'MessageComposerContainer'
+}));
 jest.mock('../components/RoomMessageActions', () => ({ RoomMessageActions: 'RoomMessageActions' }));
 jest.mock('../components/UploadProgress', () => ({ __esModule: true, default: 'UploadProgress' }));
 jest.mock('../hooks/useRoomMessageHandlers', () => ({ useRoomMessageHandlers: () => ({}) }));
@@ -83,14 +85,21 @@ jest.mock('../hooks/useOmnichannelPermissions', () => ({ useOmnichannelPermissio
 jest.mock('../hooks/useE2EEStatus', () => ({ useE2EEStatus: jest.fn(() => ({})) }));
 jest.mock('../hooks/useMessageActions', () => ({ useMessageActions: jest.fn(() => ({ resetAction: jest.fn() })) }));
 jest.mock('../hooks/useJumpToMessage', () => ({ useJumpToMessage: jest.fn(() => ({})) }));
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	useActionSheet: () => ({ showActionSheet: jest.fn(), hideActionSheet: jest.fn() })
 }));
 jest.mock('~/lib/methods/subscriptions/room', () => ({ __esModule: true, default: class RoomClass {} }));
-jest.mock('~/lib/methods/helpers', () => ({
-	getUidDirectMessage: jest.fn(),
-	getRoomTitle: jest.fn(() => 'Room Title'),
-	isGroupChat: jest.fn(() => false),
+jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
+	getUidDirectMessage: jest.fn()
+}));
+jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({
+	getRoomTitle: jest.fn(() => 'Room Title')
+}));
+jest.mock('~/lib/methods/helpers/roomKind', () => ({
+	...jest.requireActual('~/lib/methods/helpers/roomKind'),
+	isGroupChat: jest.fn(() => false)
+}));
+jest.mock('~/lib/methods/helpers/canAutoTranslate', () => ({
 	canAutoTranslate: jest.fn(() => false)
 }));
 jest.mock('~/lib/methods/helpers/log', () => ({

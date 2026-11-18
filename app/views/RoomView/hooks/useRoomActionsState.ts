@@ -2,7 +2,7 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { useNavigation } from '@react-navigation/native';
 
-import { type TUserStatus } from '~/definitions';
+import { type TUserStatus } from '~/definitions/TUserStatus';
 import { isSubscriptionModel } from '~/definitions/TRoom';
 import i18n from '~/i18n';
 import getRoomAccessibilityLabel from '~/lib/helpers/getRoomAccessibilityLabel';
@@ -10,7 +10,8 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { useSetting } from '~/lib/hooks/useSetting';
-import { getRoomTitle, isGroupChat } from '~/lib/methods/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { isGroupChat } from '~/lib/methods/helpers/roomKind';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';
 import { type RoomStore } from '~/views/RoomView/definitions';

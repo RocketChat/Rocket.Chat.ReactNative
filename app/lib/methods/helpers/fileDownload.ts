@@ -2,7 +2,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 import ExpoQuickLook from '@magrinj/expo-quick-look';
 
 import { LISTENER } from '~/containers/Toast';
-import { type IAttachment } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
 import i18n from '~/i18n';
 import EventEmitter from './events';
 import { Encryption } from '~/lib/encryption';

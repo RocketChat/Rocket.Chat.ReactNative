@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import RoomInfoViewAvatar from './RoomInfoViewAvatar';
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 
 const styles = StyleSheet.create({
 	container: {

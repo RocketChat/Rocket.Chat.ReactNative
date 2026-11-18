@@ -1,4 +1,4 @@
-import { type RoomType } from '~/definitions';
+import { type RoomType } from '~/definitions/IRoom';
 
 export interface ICategoryRoom {
 	rid: string;

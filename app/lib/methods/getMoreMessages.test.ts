@@ -2,7 +2,7 @@ import getMoreMessages from './getMoreMessages';
 import { loadMessagesForRoom } from './loadMessagesForRoom';
 import { loadNextMessages } from './loadNextMessages';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
-import { RoomType } from '~/definitions';
+import { RoomType } from '~/definitions/IRoom';
 
 jest.mock('./loadMessagesForRoom', () => ({
 	loadMessagesForRoom: jest.fn()
