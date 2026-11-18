@@ -3,7 +3,14 @@ import { acceptNativeCallWithReadiness } from './acceptNativeCall';
 import { useCallStore } from './useCallStore';
 import { terminateNativeCall } from './terminateNativeCall';
 import { waitForLoginReady } from '../waitForLoginReady';
-import { addMediaSubs, backdateLastPing, buildConnectedDriver, stopAnsweringFrames } from '~/lib/testUtils/sdkIntegration';
+import {
+	addMediaSubs,
+	backdateLastPing,
+	buildConnectedDriver,
+	framesOn,
+	resumeLogin,
+	stopAnsweringFrames
+} from '~/lib/testUtils/sdkIntegration';
 import type { IMockSdk, MockConnection, IMockSdkDriver } from '~/lib/testUtils/sdkIntegration';
 import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
 
@@ -82,16 +89,34 @@ afterEach(() => {
 });
 
 describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
-	it('answers the call once media subs re-ack on the reopened socket', async () => {
+	it('answers on a live socket whose media subs were acked, without sending a sub', async () => {
+		const mediaSession = makeMediaSession();
+		await addMediaSubs(driver, USER_ID);
+		const subsBefore = framesOn(mockConnections[0], 'sub').length;
+
+		const accept = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+		await jest.advanceTimersByTimeAsync(0);
+		await accept;
+
+		expect(mockConnections).toHaveLength(1);
+		expect(framesOn(mockConnections[0], 'sub')).toHaveLength(subsBefore);
+		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
+		expect(mockTerminateNativeCall).not.toHaveBeenCalled();
+	});
+
+	it('answers the call once the resume login resubscribes the media subs on the reopened socket', async () => {
 		const mediaSession = makeMediaSession();
 
+		await addMediaSubs(driver, USER_ID);
 		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver, USER_ID);
 
 		const accept = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 		await jest.advanceTimersByTimeAsync(0);
 		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
+		await jest.advanceTimersByTimeAsync(200);
+		expect(mediaSession.answerCall).not.toHaveBeenCalled();
+
+		await resumeLogin(driver);
 		await jest.advanceTimersByTimeAsync(200);
 		await accept;
 
@@ -102,13 +127,13 @@ describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
 		expect(mediaSession.endCall).not.toHaveBeenCalled();
 	});
 
-	it('fails the call without answering when the reopened socket never acks the re-sub', async () => {
+	it('fails the call without answering when the reopened socket never acks the resubscribe', async () => {
 		const mediaSession = makeMediaSession();
 		const resetNativeCallId = jest.fn();
 		mockGetState.mockReturnValue({ call: null, resetNativeCallId });
 
+		await addMediaSubs(driver, USER_ID);
 		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver, USER_ID);
 
 		const accept = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 		await jest.advanceTimersByTimeAsync(0);
@@ -138,7 +163,7 @@ describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
 
 		await jest.advanceTimersByTimeAsync(100);
 
-		addMediaSubs(driver, USER_ID);
+		await addMediaSubs(driver, USER_ID);
 		await jest.advanceTimersByTimeAsync(200);
 		await accept;
 

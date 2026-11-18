@@ -105,7 +105,7 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
 		mockRecoverSocket.mockResolvedValue('reopened');
 		driver = await buildConnectedDriver(mockConnections, USER_ID);
-		addMediaSubs(driver, USER_ID);
+		await addMediaSubs(driver, USER_ID);
 		(sdk as unknown as IMockSdk).setClient({ driver });
 	});
 
