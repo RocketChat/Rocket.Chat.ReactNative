@@ -59,14 +59,6 @@ describe('getMessageById', () => {
 });
 
 describe('getMessageOrThreadMessageById', () => {
-	it('returns null when messageId is empty and does not query the database', async () => {
-		const result = await getMessageOrThreadMessageById('');
-
-		expect(result).toBeNull();
-		expect(mockGet).not.toHaveBeenCalled();
-		expect(mockGetThreadMessageById).not.toHaveBeenCalled();
-	});
-
 	it('returns the message from the messages table', async () => {
 		const message = { id: 'message1' } as unknown as TMessageModel;
 		mockFind.mockResolvedValue(message);
