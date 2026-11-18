@@ -6,7 +6,7 @@ import Blocks from '../Blocks';
 import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 import { mockedStore } from '~/reducers/mockedStore';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 
 jest.mock('~/containers/UIKit/MessageBlock', () => ({
 	MessageBlock: jest.fn(() => null)

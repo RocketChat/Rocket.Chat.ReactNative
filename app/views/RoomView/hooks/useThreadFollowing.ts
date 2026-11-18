@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import { useMemo } from 'react';
 
-import { type TMessageModel } from '~/definitions';
+import { type TMessageModel } from '~/definitions/IMessage';
 import database from '~/lib/database';
 import { useObservable } from '~/lib/hooks/useObservable';
 

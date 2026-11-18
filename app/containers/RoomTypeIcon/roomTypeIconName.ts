@@ -1,4 +1,5 @@
-import { OmnichannelSourceType, type IOmnichannelSource, type ISubscription } from '~/definitions';
+import { OmnichannelSourceType, type IOmnichannelSource } from '~/definitions/IRoom';
+import { type ISubscription } from '~/definitions/ISubscription';
 import { type TIconsName } from '../CustomIcon';
 
 const omnichannelSourceIcons: Record<string, TIconsName> = {

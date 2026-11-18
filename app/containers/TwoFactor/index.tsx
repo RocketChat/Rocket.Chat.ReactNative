@@ -9,14 +9,14 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { ControlledFormTextInput } from '../TextInput';
+import { ControlledFormTextInput } from '../TextInput/ControlledFormTextInput';
 import I18n from '~/i18n';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { useTheme } from '~/theme';
 import Button from '../Button';
 import sharedStyles from '~/views/Styles';
 import styles from './styles';
-import { type ILoginCredentials } from '~/definitions';
+import { type ILoginCredentials } from '~/definitions/ILoginCredentials';
 import { sendEmailCode } from '~/lib/services/restApi';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import Toast from '../Toast';
@@ -77,7 +77,8 @@ const TwoFactor = memo(() => {
 		getValues,
 		clearErrors,
 		formState: { errors },
-		setError
+		setError,
+		setFocus
 	} = useForm({
 		defaultValues: {
 			code: ''
@@ -161,7 +162,8 @@ const TwoFactor = memo(() => {
 			useNativeDriver
 			isVisible={visible}
 			hideModalContentWhileAnimating
-			style={styles.modal}>
+			style={styles.modal}
+			onModalShow={() => setFocus('code')}>
 			<KeyboardView backgroundColor='transparent'>
 				<GestureHandlerRootView style={styles.container} testID='two-factor'>
 					<View
@@ -175,7 +177,6 @@ const TwoFactor = memo(() => {
 						<ControlledFormTextInput
 							name='code'
 							control={control}
-							autoFocus
 							returnKeyType='send'
 							autoCapitalize='none'
 							testID='two-factor-input'

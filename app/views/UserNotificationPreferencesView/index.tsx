@@ -8,7 +8,7 @@ import SafeAreaView from '~/containers/SafeAreaView';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import { getUserSelector } from '~/selectors/login';
 import { type ProfileStackParamList } from '~/stacks/types';
-import { type INotificationPreferences } from '~/definitions';
+import { type INotificationPreferences } from '~/definitions/IUser';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import ListPicker from './ListPicker';

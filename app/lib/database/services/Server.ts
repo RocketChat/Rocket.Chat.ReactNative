@@ -1,7 +1,7 @@
-import { type TServerModel } from '~/definitions';
+import { type TServerModel } from '~/definitions/IServer';
 import database from '..';
 import { type TServerDatabase } from '../interfaces';
-import { SERVERS_TABLE } from '../model';
+import { SERVERS_TABLE } from '../model/servers/Server';
 
 const getCollection = (db: TServerDatabase) => db.get(SERVERS_TABLE);
 

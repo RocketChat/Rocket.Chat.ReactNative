@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { FormTextInput } from '~/containers/TextInput';
+import { FormTextInput } from '~/containers/TextInput/FormTextInput';
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';

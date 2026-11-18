@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { useFocused } from '~/containers/MessageComposer/context';
 import { useEmojiKeyboard } from '~/containers/MessageComposer/hooks/useEmojiKeyboard';
-import { ActionsButton } from '../Buttons';
+import { ActionsButton } from '../Buttons/ActionsButton';
 import { MIN_HEIGHT } from '~/containers/MessageComposer/constants';
 import { useComposerSharing } from '~/containers/MessageComposer/ComposerStore';
 

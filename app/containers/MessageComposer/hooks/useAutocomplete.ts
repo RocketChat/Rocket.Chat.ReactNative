@@ -11,7 +11,7 @@ import { searchLocal, searchRemote, type TSearch } from '~/lib/methods/search';
 import { searchEmojiNames } from '~/lib/methods/emojis';
 import { sanitizeLikeString } from '~/lib/database/utils';
 import database from '~/lib/database';
-import { type ICustomEmoji } from '~/definitions';
+import { type ICustomEmoji } from '~/definitions/IEmoji';
 import { getCommandPreview, getListCannedResponse } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
 import I18n from '~/i18n';

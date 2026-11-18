@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import * as List from '~/containers/List';
 import styles from '../styles';
 import { RoomInfoTag, RoomInfoTagContainer } from './RoomInfoTag';
-import type { ISubscription } from '~/definitions';
+import type { ISubscription } from '~/definitions/ISubscription';
 import { ItemLabel } from './ItemLabel';
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';

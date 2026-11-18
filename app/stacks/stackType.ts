@@ -1,4 +1,4 @@
-import { type IAttachment } from '../definitions';
+import { type IAttachment } from '../definitions/IAttachment';
 import { type IOptionsField } from '../views/NotificationPreferencesView/options';
 
 export type TNavigation = {

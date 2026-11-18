@@ -10,7 +10,7 @@ import { headerLeftDrawer } from '~/lib/methods/helpers/navigation/headerActions
 import { getUserSelector } from '~/selectors/login';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { type AdminPanelStackParamList } from '~/stacks/types';
-import { type IApplicationState } from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { buildLoginScript } from './buildLoginScript';
 

@@ -2,7 +2,7 @@ import capitalize from 'lodash/capitalize';
 
 import { useTheme } from '~/theme';
 import type { TColors } from '~/theme';
-import type { TUserStatus } from '~/definitions';
+import type { TUserStatus } from '~/definitions/TUserStatus';
 
 export const useUserStatusColor = (status: TUserStatus): keyof TColors => {
 	const { colors } = useTheme();

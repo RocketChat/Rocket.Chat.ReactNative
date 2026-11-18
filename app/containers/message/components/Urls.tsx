@@ -12,7 +12,7 @@ import { useTheme } from '~/theme';
 import { LISTENER } from '~/containers/Toast';
 import EventEmitter from '~/lib/methods/helpers/events';
 import I18n from '~/i18n';
-import { type IUrl } from '~/definitions';
+import { type IUrl } from '~/definitions/IUrl';
 import { WidthAwareContext } from './WidthAwareView';
 import { useUrls } from '../stores/MessageStore';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
