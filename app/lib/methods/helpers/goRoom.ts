@@ -9,6 +9,7 @@ import { getUidDirectMessage } from './getUidDirectMessage';
 import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
 import { getRoomInfo } from '~/lib/services/restApi';
+import { type ChatsStackParamList } from '~/stacks/types';
 import log from './log';
 
 interface IGoRoomItem {
@@ -17,30 +18,25 @@ interface IGoRoomItem {
 	t?: RoomType;
 	rid?: string;
 	name?: string;
+	fname?: string;
 	prid?: string;
+	uids?: string[];
+	usernames?: string[];
 	visitor?: IVisitor;
 	joinCodeRequired?: boolean;
 }
 
 export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
-interface RoomRouteParams {
-	rid: string;
-	name: string;
-	t: RoomType;
-	prid?: string;
-	visitor?: IVisitor;
-	joinCodeRequired?: boolean;
-	roomUserId?: string;
-}
+type TRoutableRoomItem = TGoRoomItem & { rid: string; t: RoomType };
 
 const ROOMS_LIST_ROUTES = ['RoomsListView', 'CategoryView'];
 
-const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
-	if (!item.rid || !item.t) {
-		return;
-	}
-	const routeParams: RoomRouteParams = {
+let roomNavigationCount = 0;
+
+const navigate = ({ item, isMasterDetail, ...props }: { item: TRoutableRoomItem; isMasterDetail: boolean }) => {
+	roomNavigationCount += 1;
+	const routeParams: NonNullable<ChatsStackParamList['RoomView']> = {
 		rid: item.rid,
 		name: getRoomTitle(item),
 		t: item.t,
@@ -96,26 +92,27 @@ interface IOmnichannelRoomVisitor extends IOmnichannelRoom {
 	visitor: IVisitor;
 }
 
-const completeRoomItem = async (item: TGoRoomItem): Promise<TGoRoomItem> => {
-	if (!item.rid) {
-		return item;
+const completeRoomItem = async (item: TGoRoomItem): Promise<TRoutableRoomItem | null> => {
+	const { rid, t } = item;
+	if (!rid) {
+		return null;
 	}
-	const subscription = await getSubscriptionByRoomId(item.rid);
+	const subscription = await getSubscriptionByRoomId(rid);
 	if (subscription) {
 		return subscription;
 	}
-	if (item.t) {
-		return item;
+	if (t) {
+		return { ...item, rid, t };
 	}
-	const roomInfo = await getRoomInfo(item.rid).catch(error => {
+	const roomInfo = await getRoomInfo(rid).catch(error => {
 		log(error);
 		return null;
 	});
 	if (!roomInfo?.success) {
-		return item;
+		return null;
 	}
-	const { t, name, fname } = roomInfo.room;
-	return { ...item, t, name, fname };
+	const { name, fname, prid, uids, usernames } = roomInfo.room;
+	return { ...item, rid, t: roomInfo.room.t, name, fname, prid, uids, usernames };
 };
 
 export const goRoom = async ({
@@ -149,7 +146,12 @@ export const goRoom = async ({
 		}
 	}
 
-	return navigate({ item: await completeRoomItem(item), isMasterDetail, ...props });
+	const navigationCountBeforeLookup = roomNavigationCount;
+	const room = await completeRoomItem(item);
+	if (!room || roomNavigationCount !== navigationCountBeforeLookup) {
+		return;
+	}
+	return navigate({ item: room, isMasterDetail, ...props });
 };
 
 export const navigateToRoom = navigate;

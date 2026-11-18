@@ -1,5 +1,6 @@
 import Navigation from '~/lib/navigation/appNavigation';
 import { getRoomInfo } from '~/lib/services/restApi';
+import { getUidDirectMessage } from './getUidDirectMessage';
 import { goRoom } from './goRoom';
 
 jest.mock('~/lib/navigation/appNavigation', () => ({
@@ -52,6 +53,31 @@ describe('goRoom navigation', () => {
 		await goRoom({ item: { rid: 'new-rid' }, isMasterDetail: false });
 
 		expect(navigatedRoomParams()).toEqual(expect.objectContaining({ rid: 'new-rid', t: 'p' }));
+	});
+
+	it('keeps the members of a room known only by its rid', async () => {
+		jest.mocked(getRoomInfo).mockResolvedValue({
+			success: true,
+			room: { _id: 'group-dm', t: 'd', uids: ['u1', 'u2', 'u3'], usernames: ['a', 'b', 'c'] }
+		} as any);
+
+		await goRoom({ item: { rid: 'group-dm' }, isMasterDetail: false });
+
+		expect(getUidDirectMessage).toHaveBeenLastCalledWith(
+			expect.objectContaining({ rid: 'group-dm', uids: ['u1', 'u2', 'u3'], usernames: ['a', 'b', 'c'] })
+		);
+	});
+
+	it('drops a slow room lookup once another room was opened', async () => {
+		let resolveRoomInfo: (value: unknown) => void = () => {};
+		jest.mocked(getRoomInfo).mockReturnValue(new Promise(resolve => (resolveRoomInfo = resolve)) as any);
+		const slowLookup = goRoom({ item: { rid: 'slow-rid' }, isMasterDetail: false });
+
+		await goRoom({ item: { rid: 'chosen-rid', t: 'c' }, isMasterDetail: false });
+		resolveRoomInfo({ success: true, room: { _id: 'slow-rid', t: 'p' } });
+		await slowLookup;
+
+		expect(navigatedRoomParams()).toEqual(expect.objectContaining({ rid: 'chosen-rid' }));
 	});
 
 	it('stays on the current screen when the room type cannot be fetched', async () => {
