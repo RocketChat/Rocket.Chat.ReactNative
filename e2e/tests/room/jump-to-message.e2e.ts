@@ -2,7 +2,7 @@ import { test } from '@e2e-dev/mobile';
 import { expect, type Locator } from 'e2e';
 
 import { adminCredentials } from '~e2e/support/api';
-import { openSidebar } from '~e2e/support/settings';
+import { clearLocalCache, openSettings } from '~e2e/support/settings';
 import { delay } from '~e2e/support/timing';
 import {
 	loginWithDeepLink,
@@ -54,16 +54,10 @@ const leaveThread = async (fixtures: Fixtures) => {
 };
 
 const clearCache = async (fixtures: Fixtures) => {
-	const { screen } = fixtures;
 	await expectVisible(fixtures, 'room-view');
 	await goBack(fixtures);
-	await openSidebar(fixtures);
-	await tapWhenVisible(fixtures, 'sidebar-settings');
-	await fixtures.screen.scrollUntilVisible(fixtures.screen.getByTestId('settings-view-clear-cache'));
-	await tapWhenVisible(fixtures, 'settings-view-clear-cache');
-	await expect(screen.getByText(/This will clear all your offline data/)).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByRole('button', { name: /^Clear$/i }).tap();
-	await expectVisible(fixtures, 'rooms-list-view');
+	await openSettings(fixtures);
+	await clearLocalCache(fixtures);
 };
 
 const searchMessage = async (fixtures: Fixtures, text: string) => {
