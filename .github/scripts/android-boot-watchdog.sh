@@ -3,13 +3,11 @@
 set -uo pipefail
 
 ACTION_PID="${1:?usage: android-boot-watchdog.sh <action-pid>}"
-BOOT_DEADLINE_SECONDS="${BOOT_DEADLINE_SECONDS:-1080}"
-POLL_SECONDS="${POLL_SECONDS:-10}"
-E2E_SCRIPT_PATTERN="${E2E_SCRIPT_PATTERN:-run-e2e.sh android}"
+BOOT_DEADLINE_SECONDS="${BOOT_DEADLINE_SECONDS:?set it above emulator-boot-timeout}"
 
 deadline=$((SECONDS + BOOT_DEADLINE_SECONDS))
 while kill -0 "$ACTION_PID" 2>/dev/null; do
-  if pgrep -f "$E2E_SCRIPT_PATTERN" >/dev/null; then
+  if pgrep -f "run-e2e.sh android" >/dev/null; then
     exit 0
   fi
   if [ "$SECONDS" -ge "$deadline" ]; then
@@ -17,5 +15,5 @@ while kill -0 "$ACTION_PID" 2>/dev/null; do
     kill -TERM "$ACTION_PID"
     exit 1
   fi
-  sleep "$POLL_SECONDS"
+  sleep 10
 done

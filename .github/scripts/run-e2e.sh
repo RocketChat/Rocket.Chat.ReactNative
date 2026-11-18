@@ -47,25 +47,14 @@ fi
 echo "Preflight OK: ${E2E_SERVER}/api/info -> 200"
 
 ANDROID_HEALTH_ATTEMPTS="${ANDROID_HEALTH_ATTEMPTS:-3}"
-ANDROID_ADB_TIMEOUT="${ANDROID_ADB_TIMEOUT:-60}"
-ANDROID_REBOOT_TIMEOUT="${ANDROID_REBOOT_TIMEOUT:-300}"
-
-bounded_adb() {
-  ${TIMEOUT_BIN:+"$TIMEOUT_BIN" -k 5s "${ANDROID_ADB_TIMEOUT}s"} adb -s "$ANDROID_DEVICE" "$@"
-}
 
 android_shell() {
-  bounded_adb shell "$@"
+  adb -s "$ANDROID_DEVICE" shell "$@"
 }
 
 wait_for_android_boot() {
-  local deadline=$((SECONDS + ANDROID_REBOOT_TIMEOUT))
-  bounded_adb wait-for-device || true
+  adb -s "$ANDROID_DEVICE" wait-for-device
   until [ "$(android_shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ]; do
-    if [ "$SECONDS" -ge "$deadline" ]; then
-      echo "::error title=Emulator reboot hung::The emulator did not finish rebooting within ${ANDROID_REBOOT_TIMEOUT}s. This is an environment failure, not an app or test regression."
-      exit 3
-    fi
     sleep 2
   done
 }
@@ -99,7 +88,7 @@ ensure_android_window_focus() {
       return 0
     fi
     echo "::warning title=Emulator unhealthy::Window focus is stuck or an ANR dialog is showing (attempt ${attempt}); rebooting the emulator."
-    bounded_adb reboot || true
+    adb -s "$ANDROID_DEVICE" reboot
     wait_for_android_boot
   done
   echo "::error title=Emulator unhealthy::The emulator never reached a healthy window focus after ${ANDROID_HEALTH_ATTEMPTS} attempts. This is an environment failure, not an app or test regression."

@@ -54,11 +54,8 @@ jobs:
               name: Android APK
 
       - name: Pre-install Android SDK packages (updates a stale cache, retried)
+        id: sdk-install
         uses: ./.github/actions/preinstall-android-sdk
-
-      - name: Read emulator revision
-        id: emulator
-        run: echo "revision=$(sed -n 's/^Pkg.Revision=//p' "${ANDROID_HOME:-/usr/local/lib/android/sdk}/emulator/source.properties")" >> "$GITHUB_OUTPUT"
 
       - name: Restore Android AVD (seeded on develop per emulator revision; shard 9 builds its own)
         if: ${{ inputs.shard != '9' }}
@@ -67,7 +64,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ runner.os }}-api34-emulator-${{ steps.emulator.outputs.revision }}
+          key: avd-${{ runner.os }}-api34-emulator-${{ steps.sdk-install.outputs.emulator-revision }}
 
       - name: Setup E2E Account
         uses: ./.github/actions/e2e-account
@@ -151,6 +148,7 @@ jobs:
           E2E_ANDROID_APP_PATH: ${{ github.workspace }}/app-release.apk
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           SHARD: ${{ inputs.shard }}
+          BOOT_DEADLINE_SECONDS: 180
         with:
           api-level: 34
           disk-size: 4096M
@@ -161,7 +159,7 @@ jobs:
           ram-size: 6144M
           force-avd-creation: false
           disable-animations: true
-          emulator-boot-timeout: 900
+          emulator-boot-timeout: 180
           pre-emulator-launch-script: bash .github/scripts/android-boot-watchdog.sh "$PPID" > "/proc/$PPID/fd/1" 2>&1 &
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: bash .github/scripts/run-e2e.sh android "$SHARD"
@@ -174,6 +172,7 @@ jobs:
           E2E_ANDROID_APP_PATH: ${{ github.workspace }}/app-release.apk
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           SHARD: ${{ inputs.shard }}
+          BOOT_DEADLINE_SECONDS: 180
         with:
           api-level: 34
           disk-size: 4096M
@@ -184,7 +183,7 @@ jobs:
           ram-size: 6144M
           force-avd-creation: false
           disable-animations: true
-          emulator-boot-timeout: 900
+          emulator-boot-timeout: 180
           pre-emulator-launch-script: bash .github/scripts/android-boot-watchdog.sh "$PPID" > "/proc/$PPID/fd/1" 2>&1 &
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: bash .github/scripts/run-e2e.sh android "$SHARD"

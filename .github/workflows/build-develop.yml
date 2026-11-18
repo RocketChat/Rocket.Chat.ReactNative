@@ -103,11 +103,8 @@ jobs:
 
       # Retried install so a corrupt partial download self-heals
       - name: Pre-install Android SDK packages (updates a stale cache, retried)
+        id: sdk-install
         uses: ./.github/actions/preinstall-android-sdk
-
-      - name: Read emulator revision
-        id: emulator
-        run: echo "revision=$(sed -n 's/^Pkg.Revision=//p' "${ANDROID_HOME:-/usr/local/lib/android/sdk}/emulator/source.properties")" >> "$GITHUB_OUTPUT"
 
       - name: Cache Android AVD (per emulator revision, so a snapshot never outlives the emulator that wrote it)
         id: avd-cache
@@ -116,7 +113,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ runner.os }}-api34-emulator-${{ steps.emulator.outputs.revision }}
+          key: avd-${{ runner.os }}-api34-emulator-${{ steps.sdk-install.outputs.emulator-revision }}
 
       - name: Enable KVM group permissions
         if: steps.avd-cache.outputs.cache-hit != 'true'

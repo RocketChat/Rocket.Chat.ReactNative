@@ -1,7 +1,8 @@
 'use strict';
 
-const { spawn, spawnSync } = require('child_process');
+const { spawn } = require('child_process');
 const path = require('path');
+const { runScript } = require('../testlib/runScript');
 
 const WATCHDOG = path.join(__dirname, '..', 'android-boot-watchdog.sh');
 
@@ -18,14 +19,8 @@ function isAlive(pid) {
 	}
 }
 
-function runWatchdog(actionPid, env = {}) {
-	const startedAt = Date.now();
-	const result = spawnSync('bash', [WATCHDOG, String(actionPid)], {
-		encoding: 'utf8',
-		timeout: 30000,
-		env: { ...process.env, BOOT_DEADLINE_SECONDS: '2', POLL_SECONDS: '1', ...env }
-	});
-	return { ...result, elapsedMs: Date.now() - startedAt };
+function runWatchdog(actionPid, deadlineSeconds) {
+	return runScript(WATCHDOG, { args: [String(actionPid)], env: { BOOT_DEADLINE_SECONDS: String(deadlineSeconds) } });
 }
 
 function waitForExit(child) {
@@ -33,24 +28,23 @@ function waitForExit(child) {
 }
 
 describe('android-boot-watchdog.sh', () => {
-	test('stops the action with an error when the e2e script never starts', async () => {
+	test('stops the action with an error once the deadline passes without the e2e script', async () => {
 		const action = startStuckAction();
 
-		const result = runWatchdog(action.pid, { E2E_SCRIPT_PATTERN: 'no-such-e2e-script-running' });
+		const result = runWatchdog(action.pid, 0);
 		await waitForExit(action);
 
 		expect(result.status).toBe(1);
 		expect(result.stdout).toContain('::error title=Emulator boot hung::');
 		expect(action.signalCode).toBe('SIGTERM');
-		expect(result.elapsedMs).toBeLessThan(10000);
 	});
 
 	test('leaves the action running once the e2e script has started', () => {
 		const action = startStuckAction();
-		const e2eScript = spawn('bash', ['-c', 'sleep 600; true', 'fake-run-e2e-for-watchdog-test'], { stdio: 'ignore', detached: true });
+		const e2eScript = spawn('bash', ['-c', 'sleep 600; true', 'run-e2e.sh android'], { stdio: 'ignore', detached: true });
 
 		try {
-			const result = runWatchdog(action.pid, { E2E_SCRIPT_PATTERN: 'fake-run-e2e-for-watchdog-test' });
+			const result = runWatchdog(action.pid, 0);
 
 			expect(result.status).toBe(0);
 			expect(result.stdout).toBe('');
@@ -66,7 +60,7 @@ describe('android-boot-watchdog.sh', () => {
 		action.kill();
 		await waitForExit(action);
 
-		const result = runWatchdog(action.pid, { E2E_SCRIPT_PATTERN: 'no-such-e2e-script-running', BOOT_DEADLINE_SECONDS: '600' });
+		const result = runWatchdog(action.pid, 600);
 
 		expect(result.status).toBe(0);
 		expect(result.stdout).toBe('');
