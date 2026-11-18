@@ -2,7 +2,8 @@
 
 export const UIActionButtonContext = {
 	ROOM_ACTION: 'roomAction',
-	MESSAGE_BOX_ACTION: 'messageBoxAction'
+	MESSAGE_BOX_ACTION: 'messageBoxAction',
+	USER_DROPDOWN_ACTION: 'userDropdownAction'
 } as const;
 
 export type TUIActionButtonContext = (typeof UIActionButtonContext)[keyof typeof UIActionButtonContext];

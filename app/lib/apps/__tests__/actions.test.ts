@@ -296,6 +296,26 @@ describe('actions', () => {
 			});
 		});
 
+		it('posts a user dropdown action button without a room', async () => {
+			mockedFetch.mockResolvedValueOnce(reply());
+
+			await triggerAppActionButton({ button: { ...button, context: 'userDropdownAction' } });
+
+			expect(postedInteraction()).toEqual({
+				type: 'actionButton',
+				actionId: 'action-id',
+				triggerId,
+				payload: { context: 'userDropdownAction' }
+			});
+		});
+
+		it('shows an error toast when a room button has no room', async () => {
+			await triggerAppActionButton({ button: { ...button, context: 'roomAction' } });
+
+			expect(mockedFetch).not.toHaveBeenCalled();
+			expect(showToast).toHaveBeenCalledWith(I18n.t('App_action_error'));
+		});
+
 		it('shows an error toast when the app action fails', async () => {
 			mockedFetch.mockResolvedValueOnce({ ok: false, status: 500 } as Response);
 

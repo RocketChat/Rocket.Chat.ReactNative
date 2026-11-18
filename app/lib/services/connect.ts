@@ -17,7 +17,7 @@ import { clearTriggers } from '../apps/actions';
 import { pendingHangups } from './voip/pendingHangups';
 import I18n from '~/i18n';
 import { type ILoginCredentials, type ICredentialsPasswordAPI } from '~/definitions/ILoginCredentials';
-import { type ILoggedUser } from '~/definitions/ILoggedUser';
+import { type ILoggedUser, type IUserMediaCallDevice } from '~/definitions/ILoggedUser';
 import { STATUSES, type TUserStatus } from '~/definitions/TUserStatus';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '~/actions/connect';
 import { updatePermission } from '~/actions/permissions';
@@ -339,7 +339,8 @@ async function login(credentials: ILoginCredentials): Promise<ILoggedUser> {
 		nickname: result.me.nickname,
 		requirePasswordChange: result.me.requirePasswordChange,
 		sidebarCategories: result.me.settings?.preferences?.sidebarCategories,
-		settings: { preferences: { ...result.me.settings?.preferences } }
+		settings: { preferences: { ...result.me.settings?.preferences } },
+		mediaCallDevice: (result.me as { mediaCallDevice?: IUserMediaCallDevice }).mediaCallDevice
 	};
 	return user;
 }

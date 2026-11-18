@@ -5,6 +5,9 @@ import I18n from '~/i18n';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { navigateToCallRoom } from '~/lib/services/voip/navigateToCallRoom';
 import { useCallStore, useControlsVisible } from '~/lib/services/voip/useCallStore';
+import { useVideoConf } from '~/lib/hooks/useVideoConf';
+import { showConfirmationAlert } from '~/lib/methods/helpers/info';
+import { useCallControlsAvailability } from './useCallControlsAvailability';
 import CallActionButton from './CallActionButton';
 import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
 import { useTheme } from '~/theme';
@@ -13,6 +16,7 @@ import Dialpad from './Dialpad/Dialpad';
 import { useCallLayoutMode } from '../useCallLayoutMode';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { type TIconsName } from '~/containers/CustomIcon';
+import { useMediaCallAppActions } from '../useMediaCallAppActions';
 
 interface ICallButtonConfig {
 	testID: string;
@@ -31,11 +35,9 @@ export const CallButtons = () => {
 	const isLandscape = width > height;
 	const singleRow = layoutMode === 'wide' || isLandscape;
 
-	const callState = useCallStore(state => state.callState);
 	const isMuted = useCallStore(state => state.isMuted);
 	const isOnHold = useCallStore(state => state.isOnHold);
 	const isSpeakerOn = useCallStore(state => state.isSpeakerOn);
-	const roomId = useCallStore(state => state.roomId);
 
 	const toggleMute = useCallStore(state => state.toggleMute);
 	const toggleHold = useCallStore(state => state.toggleHold);
@@ -43,18 +45,65 @@ export const CallButtons = () => {
 	const endCall = useCallStore(state => state.endCall);
 
 	const controlsVisible = useControlsVisible();
+	const appActions = useMediaCallAppActions();
+	const callState = useCallStore(state => state.callState);
+	const roomId = useCallStore(state => state.roomId);
+	const { startCall: startVideoCall, callEnabled: videoCallEnabled } = useVideoConf(roomId ?? '');
+	const { isConnecting, speakerDisabled, holdDisabled, muteDisabled, dialpadDisabled, messageDisabled } =
+		useCallControlsAvailability();
 
 	const containerStyle = useAnimatedStyle(() => ({
 		opacity: withTiming(controlsVisible ? 1 : 0, { duration: CONTROLS_ANIMATION_DURATION }),
 		transform: [{ translateY: withTiming(controlsVisible ? 0 : 100, { duration: CONTROLS_ANIMATION_DURATION }) }]
 	}));
 
-	const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
-	const speakerDisabled = callState === 'none';
-	const messageDisabled = roomId == null;
+	const canStartVideoCall = callState === 'active' && roomId != null && videoCallEnabled;
 
-	const handleMessage = () => {
-		navigateToCallRoom({ isMasterDetail }).catch(() => undefined);
+	const handleStartVideoCall = () => {
+		showConfirmationAlert({
+			title: I18n.t('Video_escalation_modal_title'),
+			message: I18n.t('Video_escalation_modal_description'),
+			confirmationText: I18n.t('Start_video_call'),
+			onPress: () => {
+				endCall();
+				startVideoCall();
+			}
+		});
+	};
+
+	const handleMore = () => {
+		showActionSheetRef({
+			options: [
+				...(canStartVideoCall
+					? [
+							{
+								title: I18n.t('Start_video_call'),
+								icon: 'video' as const,
+								onPress: handleStartVideoCall,
+								testID: 'call-view-more-video'
+							}
+						]
+					: []),
+				{
+					title: I18n.t('Direct_message'),
+					icon: 'message',
+					onPress: () => {
+						navigateToCallRoom({ isMasterDetail }).catch(() => undefined);
+					},
+					enabled: !messageDisabled,
+					testID: 'call-view-more-message'
+				},
+				...appActions.map(action => ({
+					title: action.label,
+					danger: action.variant === 'danger',
+					enabled: !action.disabled,
+					onPress: () => {
+						action.onPress();
+					},
+					testID: `call-view-more-app-${action.key}`
+				}))
+			]
+		});
 	};
 
 	const handleDialpad = () => {
@@ -80,7 +129,7 @@ export const CallButtons = () => {
 			label: isOnHold ? I18n.t('Unhold') : I18n.t('Hold'),
 			onPress: toggleHold,
 			variant: isOnHold ? 'active' : 'default',
-			disabled: isConnecting
+			disabled: holdDisabled
 		},
 		{
 			testID: 'call-view-mute',
@@ -88,14 +137,14 @@ export const CallButtons = () => {
 			label: isMuted ? I18n.t('Unmute') : I18n.t('Mute'),
 			onPress: toggleMute,
 			variant: isMuted ? 'active' : 'default',
-			disabled: isConnecting
+			disabled: muteDisabled
 		},
 		{
-			testID: 'call-view-message',
-			icon: 'message',
-			label: I18n.t('Message'),
-			onPress: handleMessage,
-			disabled: messageDisabled
+			testID: 'call-view-more',
+			icon: 'kebab',
+			label: I18n.t('More'),
+			onPress: handleMore,
+			disabled: messageDisabled && !canStartVideoCall && appActions.length === 0
 		},
 		{
 			testID: 'call-view-end',
@@ -110,7 +159,7 @@ export const CallButtons = () => {
 			icon: 'dialpad',
 			label: I18n.t('Dialpad'),
 			onPress: handleDialpad,
-			disabled: isConnecting
+			disabled: dialpadDisabled
 		}
 	];
 

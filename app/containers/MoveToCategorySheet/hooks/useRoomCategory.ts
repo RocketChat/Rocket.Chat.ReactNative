@@ -3,7 +3,6 @@ import I18n from '~/i18n';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { setRoomsCategory, toggleFavorite } from '~/lib/services/restApi';
 import { alertCategoryError } from '~/views/CategorySettingsView/utils/alertCategoryError';
-import { useShowCustomCategories } from '~/views/RoomsListView/hooks/useShowCustomCategories';
 import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import { FAVORITES_GROUP } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 import { getCategoryOptionIds, getCurrentCategoryId, type TRoomPlacement } from '../utils/roomCategory';
@@ -18,7 +17,6 @@ const moveRoom = async (room: TRoomPlacement, categoryId: string, currentCategor
 
 export const useRoomCategory = (room: TRoomPlacement) => {
 	const { customCategoryNames, groupOrder } = useSidebarCategories();
-	const showCustomCategories = useShowCustomCategories();
 	const categoryName = (categoryId: string) => customCategoryNames.get(categoryId) ?? I18n.t('Favorites');
 	const currentCategoryId = getCurrentCategoryId(room, customCategoryNames);
 	const categoryOptions = getCategoryOptionIds(groupOrder, customCategoryNames).map(categoryId => ({
@@ -30,9 +28,6 @@ export const useRoomCategory = (room: TRoomPlacement) => {
 	const moveToCategory = async (categoryId: string) => {
 		try {
 			await moveRoom(room, categoryId, currentCategoryId);
-			if (customCategoryNames.has(categoryId) && categoryId !== currentCategoryId) {
-				showCustomCategories();
-			}
 			EventEmitter.emit(LISTENER, { message: I18n.t('Category_saved') });
 		} catch (error) {
 			alertCategoryError(error);

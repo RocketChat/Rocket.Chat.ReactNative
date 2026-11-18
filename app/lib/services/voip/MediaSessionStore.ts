@@ -10,6 +10,7 @@ import { mediaDevices } from 'react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
 
 import { MediaCallLogger } from './MediaCallLogger';
+import { CLIENT_SUPPORTED_FEATURES } from './deriveSupportedFeatures';
 
 type SignalTransport = MediaSignalTransport<ClientMediaSignal>;
 
@@ -65,7 +66,7 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 			displayMediaFactory: (constraints: any) => mediaDevices.getUserMedia(constraints) as unknown as Promise<MediaStream>,
 			randomStringFactory,
 			logger: new MediaCallLogger(),
-			features: ['audio', 'hold'],
+			features: CLIENT_SUPPORTED_FEATURES,
 			mobileDeviceId
 		});
 

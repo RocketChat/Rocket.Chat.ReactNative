@@ -320,7 +320,7 @@ class VoipNotification(private val context: Context) {
                 callId = payload.callId,
                 contractId = deviceId(context),
                 answer = "accept",
-                supportedFeatures = listOf("audio", "hold")
+                supportedFeatures = listOf("audio", "hold", "dialpad")
             ) { success ->
                 // Late-success guard: if the handler deadline already fired (finished == true)
                 // and the server accepted the call, we must send a reject so server state
@@ -954,15 +954,12 @@ class VoipNotification(private val context: Context) {
                 setLargeIcon(avatarBitmap)
             }
 
-            // Set full-screen intent only if permission is granted
-            if (canUseFullScreen) {
-                setFullScreenIntent(fullScreenPendingIntent, true)
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "Full-screen intent enabled - locked device will show Activity, unlocked will show HUN")
-                }
-            } else {
-                Log.w(TAG, "Full-screen intent permission not granted - showing HUN only (fallback)")
-                // Still set content intent so tapping notification opens the activity
+            // Always request it: when the permission is denied (Android 14+), the system flags the
+            // notification FSI_REQUESTED_BUT_DENIED and keeps the heads-up on screen instead of
+            // collapsing it after a few seconds.
+            setFullScreenIntent(fullScreenPendingIntent, true)
+            if (!canUseFullScreen) {
+                Log.w(TAG, "Full-screen intent permission not granted - showing sticky HUN only (fallback)")
                 setContentIntent(fullScreenPendingIntent)
             }
         }

@@ -110,6 +110,7 @@ export const useRoomActionsState = (rid: string, roomStore: RoomStore) => {
 		hasE2EEWarning,
 		canToggleEncryption,
 		isSelfDm,
+		isDirect: t === 'd' && !roomIsGroupChat,
 		tunread,
 		tunreadUser,
 		tunreadGroup,

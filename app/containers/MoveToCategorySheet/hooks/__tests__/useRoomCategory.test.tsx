@@ -27,7 +27,7 @@ const renderRoomCategory = (room: { rid: string; category?: string; f?: boolean 
 	store.dispatch(setUser({ sidebarCategories: [{ _id: 'work', name: 'Work' }] }));
 	const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={store}>{children}</Provider>;
 	const { result } = renderHook(() => useRoomCategory(room), { wrapper: Wrapper });
-	return { result, store };
+	return { result };
 };
 
 afterEach(() => {
@@ -60,38 +60,4 @@ it('reports the error and leaves the category alone when favoriting fails', asyn
 
 	expect(alertCategoryError).toHaveBeenCalledWith(expect.objectContaining({ message: 'forbidden' }));
 	expect(mockSetRoomsCategory).not.toHaveBeenCalled();
-});
-
-it('turns on the Categories display option when a room moves into a custom category', async () => {
-	const { result, store } = renderRoomCategory({ rid: 'room1', f: false });
-
-	await act(() => result.current.moveToCategory('work'));
-
-	expect(store.getState().sortPreferences.groupByType).toBe(true);
-});
-
-it('leaves the Categories display option off when a room leaves its custom category', async () => {
-	const { result, store } = renderRoomCategory({ rid: 'room1', category: 'work', f: false });
-
-	await act(() => result.current.moveToCategory('work'));
-
-	expect(mockSetRoomsCategory).toHaveBeenCalledWith(['room1'], null);
-	expect(store.getState().sortPreferences.groupByType).toBe(false);
-});
-
-it('leaves the Categories display option off when a room moves to favorites', async () => {
-	const { result, store } = renderRoomCategory({ rid: 'room1', category: 'work', f: false });
-
-	await act(() => result.current.moveToCategory(FAVORITES_GROUP));
-
-	expect(store.getState().sortPreferences.groupByType).toBe(false);
-});
-
-it('leaves the Categories display option off when moving fails', async () => {
-	mockSetRoomsCategory.mockRejectedValueOnce(new Error('forbidden'));
-	const { result, store } = renderRoomCategory({ rid: 'room1', f: false });
-
-	await act(() => result.current.moveToCategory('work'));
-
-	expect(store.getState().sortPreferences.groupByType).toBe(false);
 });
