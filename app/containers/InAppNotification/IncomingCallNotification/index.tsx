@@ -5,8 +5,6 @@ import { useDispatch } from 'react-redux';
 import { A11y } from 'react-native-a11y-order';
 
 import { acceptCall, cancelCall } from '~/actions/videoConf';
-import { type ISubscription } from '~/definitions/ISubscription';
-import { type RoomType } from '~/definitions/IRoom';
 import i18n from '~/i18n';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useEndpointData } from '~/lib/hooks/useEndpointData';
@@ -17,19 +15,6 @@ import { useStyle } from './style';
 import useUserData from '~/lib/hooks/useUserData';
 import Ringer, { ERingerSounds } from '~/containers/Ringer';
 import Touch from '~/containers/Touch';
-
-export interface INotifierComponent {
-	notification: {
-		text: string;
-		payload: {
-			sender: { username: string };
-			type: RoomType;
-		} & Pick<ISubscription, '_id' | 'name' | 'rid' | 'prid'>;
-		title: string;
-		avatar: string;
-	};
-	isMasterDetail: boolean;
-}
 
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 

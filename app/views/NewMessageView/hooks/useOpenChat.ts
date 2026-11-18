@@ -9,7 +9,7 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { assignRoomToCategory } from '~/lib/methods/assignRoomToCategory';
 import { createDirectMessage } from '~/lib/methods/createDirectMessage';
 import { emitErrorCreateDirectMessage } from '~/lib/methods/helpers/emitErrorCreateDirectMessage';
-import { goRoom, type TGoRoomItem } from '~/lib/methods/helpers/goRoom';
+import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { type NewMessageStackParamList } from '~/stacks/types';
 
@@ -53,7 +53,7 @@ export const useOpenChat = (categoryId?: string) => {
 			if (categoryId) {
 				return openChatInCategory(chat, categoryId, isMasterDetail);
 			}
-			return goRoom({ item: chat as TGoRoomItem, isMasterDetail });
+			return goRoom({ item: chat, isMasterDetail });
 		},
 		[categoryId, isMasterDetail, navigation]
 	);
