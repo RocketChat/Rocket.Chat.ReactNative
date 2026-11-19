@@ -19,9 +19,18 @@ export interface ICategoryOrderGroup {
 
 export const useCategoryOrder = () => {
 	const saveOptimistically = useSaveSidebarCategories();
-	const { storedCategories, customCategoryNames, sectionsOrder, groupOrder } = useSidebarCategories();
+	const {
+		storedCategories,
+		customCategoryNames,
+		sectionsOrder,
+		groupOrder,
+		mergeTeamsAndChannels,
+		groupUnlistedInConversations
+	} = useSidebarCategories();
 	const { showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
-	const visibleGroups = groupOrder.filter(key => isVisibleGroup(key, { customCategoryNames, showFavorites, groupByType }));
+	const visibleGroups = groupOrder.filter(key =>
+		isVisibleGroup(key, { customCategoryNames, showFavorites, groupByType, mergeTeamsAndChannels, groupUnlistedInConversations })
+	);
 	const showsConversations = visibleGroups.includes(CONVERSATIONS_GROUP);
 
 	const movableGroups: ICategoryOrderGroup[] = visibleGroups
