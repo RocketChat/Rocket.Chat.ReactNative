@@ -3,7 +3,7 @@ import { type Dispatch } from 'redux';
 
 import { appStart } from '~/actions/app';
 import { selectServerRequest } from '~/actions/server';
-import { RootEnum } from '~/definitions';
+import { RootEnum } from '~/definitions/redux/TRootEnum';
 import I18n from '~/i18n';
 import database from '../database';
 import { disconnect } from '../services/connect';

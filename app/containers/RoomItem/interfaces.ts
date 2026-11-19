@@ -2,13 +2,10 @@ import { type SharedValue } from 'react-native-reanimated';
 import { type ReactElement } from 'react';
 
 import { type TSupportedThemes } from '~/theme';
-import {
-	type TUserStatus,
-	type ILastMessage,
-	type SubscriptionType,
-	type IOmnichannelSource,
-	type ISubscription
-} from '~/definitions';
+import { type TUserStatus } from '~/definitions/TUserStatus';
+import { type ILastMessage } from '~/definitions/IMessage';
+import { type SubscriptionType, type ISubscription } from '~/definitions/ISubscription';
+import { type IOmnichannelSource } from '~/definitions/IRoom';
 
 export interface ILeftActionsProps {
 	transX: SharedValue<number>;

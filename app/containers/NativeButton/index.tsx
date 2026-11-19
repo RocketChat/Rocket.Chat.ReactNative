@@ -7,7 +7,7 @@ import {
 	type ViewStyle
 } from 'react-native';
 
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 
 interface INativeButtonProps extends Omit<TouchableOpacityProps, 'style'> {
 	style?: StyleProp<ViewStyle>;

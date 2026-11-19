@@ -8,13 +8,14 @@ import { appInit, appStart, appReady } from '../actions/app';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import { loginRequest } from '../actions/login';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
-import { RootEnum } from '../definitions';
+import { RootEnum } from '../definitions/redux/TRootEnum';
 import { CURRENT_SERVER, getServerUserIdKey } from '../lib/constants/keys';
 import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom } from '../lib/methods/canOpenRoom';
 import { getServerInfo } from '../lib/methods/getServerInfo';
-import { getUidDirectMessage, normalizeDeepLinkingServerHost } from '../lib/methods/helpers';
+import { getUidDirectMessage } from '../lib/methods/helpers/getUidDirectMessage';
+import { normalizeDeepLinkingServerHost } from '../lib/methods/helpers/normalizeDeepLinkingServerHost';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { getIsMasterDetail } from '../lib/hooks/useMasterDetail';
@@ -228,6 +229,7 @@ const handleShareExtension = function* handleOpen({ params }) {
 			}
 			// Unlock canceled or superseded by another lock request — restart the normal flow instead
 			// of leaving the share extension stuck on the loading root.
+			yield put(appStart({ root: RootEnum.ROOT_LOADING }));
 			yield put(appInit());
 			return;
 		}

@@ -1,6 +1,7 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '~/definitions';
+import { type TSendFileMessageFileInfo, type TUploadModel } from '~/definitions/IUpload';
+import { type IUser } from '~/definitions/IUser';
 import database from '~/lib/database';
 import { Encryption } from '~/lib/encryption';
 import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
@@ -18,6 +19,7 @@ export async function sendFileMessageV2(
 ): Promise<void> {
 	let uploadPath: string | null = '';
 	let uploadRecord: TUploadModel | null;
+	let uploadStarted = false;
 	try {
 		const { id, token } = user;
 		const headers = {
@@ -60,6 +62,7 @@ export async function sendFileMessageV2(
 				console.error(e);
 			}
 		});
+		uploadStarted = true;
 		const response = await uploadQueue[uploadPath].send();
 
 		let content;
@@ -85,7 +88,7 @@ export async function sendFileMessageV2(
 		});
 	} catch (e: any) {
 		console.error(e);
-		if (uploadPath && !uploadQueue[uploadPath]) {
+		if (uploadStarted && uploadPath && !uploadQueue[uploadPath]) {
 			console.log('Upload cancelled');
 		} else {
 			await persistUploadError(fileInfo.path, rid);

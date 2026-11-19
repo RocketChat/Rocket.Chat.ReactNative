@@ -14,19 +14,13 @@ import { setPreference, setUser } from '~/actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '~/lib/constants/notifications';
 import { Encryption } from '~/lib/encryption';
 import updateMessages from '../updateMessages';
-import {
-	type IMessage,
-	type IServerRoom,
-	type IRoom,
-	type ISidebarCategory,
-	type ISubscription,
-	type TLoggedUserModel,
-	type TMessageModel,
-	type TRoomModel,
-	type TThreadMessageModel,
-	type TThreadModel,
-	SubscriptionType
-} from '~/definitions';
+import { type IMessage, type TMessageModel } from '~/definitions/IMessage';
+import { type IServerRoom, type IRoom, type TRoomModel } from '~/definitions/IRoom';
+import { type ISidebarCategory } from '~/definitions/IUser';
+import { type ISubscription, SubscriptionType } from '~/definitions/ISubscription';
+import { type TLoggedUserModel } from '~/definitions/ILoggedUser';
+import { type TThreadMessageModel } from '~/definitions/IThreadMessage';
+import { type TThreadModel } from '~/definitions/IThread';
 import sdk from '~/lib/services/sdk';
 import { type IDDPMessage } from '~/definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
@@ -34,7 +28,10 @@ import { getMessageById } from '~/lib/database/services/Message';
 import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
 import { getRoom } from '../getRoom';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
-import { getRoomAvatar, getRoomTitle, getSenderName, random } from '../helpers';
+import { getRoomAvatar } from '../helpers/getRoomAvatar';
+import { getRoomTitle } from '../helpers/getRoomTitle';
+import { getSenderName } from '../helpers/getSenderName';
+import { random } from '../helpers/random';
 import { handleVideoConfIncomingWebsocketMessages } from '~/actions/videoConf';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();

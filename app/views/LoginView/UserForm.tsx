@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import { loginRequest } from '~/actions/login';
 import Button from '~/containers/Button';
 import { useWorkspaceDomain } from '~/lib/hooks/useWorkspaceDomain';
-import { ControlledFormTextInput } from '~/containers/TextInput';
+import { ControlledFormTextInput } from '~/containers/TextInput/ControlledFormTextInput';
 import I18n from '~/i18n';
 import { type OutsideParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';

@@ -2,7 +2,7 @@ import { prepareQuoteMessage } from './prepareQuoteMessage';
 import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
 import { getMessageById } from '~/lib/database/services/Message';
 import { store } from '~/lib/store/auxStore';
-import { compareServerVersion } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 
 // Mock dependencies
 jest.mock('~/lib/methods/getPermalinks', () => ({

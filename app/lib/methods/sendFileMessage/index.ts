@@ -1,6 +1,7 @@
-import { type IUpload, type TSendFileMessageFileInfo, type IUser } from '~/definitions';
+import { type IUpload, type TSendFileMessageFileInfo } from '~/definitions/IUpload';
+import { type IUser } from '~/definitions/IUser';
 import { store } from '~/lib/store/auxStore';
-import { compareServerVersion } from '../helpers';
+import { compareServerVersion } from '../helpers/compareServerVersion';
 import { sendFileMessage as sendFileMessageV1 } from './sendFileMessage';
 import { sendFileMessageV2 } from './sendFileMessageV2';
 

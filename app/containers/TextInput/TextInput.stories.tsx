@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native';
 
-import { FormTextInput } from '.';
+import { FormTextInput } from './FormTextInput';
 
 const styles = StyleSheet.create({
 	paddingHorizontal: {

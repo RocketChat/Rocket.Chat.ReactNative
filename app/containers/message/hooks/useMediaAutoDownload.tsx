@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState } from 'react';
 
-import { type IAttachment, type IUserMessage } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type IUserMessage } from '~/definitions/IMessage';
 import { isImageBase64 } from '~/lib/methods/isImageBase64';
 import { fetchAutoDownloadEnabled } from '~/lib/methods/autoDownloadPreference';
 import {

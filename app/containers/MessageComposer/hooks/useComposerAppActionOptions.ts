@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { type TActionSheetOptionsItem } from '~/containers/ActionSheet';
+import { type TActionSheetOptionsItem } from '~/containers/ActionSheet/Provider';
 import { type TIconsName } from '~/containers/CustomIcon';
 import { UIActionButtonContext } from '~/lib/apps/definitions';
 import { applyCategoryFilter } from '~/lib/apps/filters';

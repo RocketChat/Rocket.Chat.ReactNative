@@ -1,10 +1,10 @@
-import { NewMediaCall } from '~/containers/NewMediaCall';
-import { showActionSheetRef } from '~/containers/ActionSheet';
-import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import { NewMediaCall } from '~/containers/NewMediaCall/NewMediaCall';
+import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { useSubscription } from '../useSubscription';
-import { useMediaCallPermission } from '../useMediaCallPermission';
+import { useMediaCallPermission } from '../useMediaCallPermission/useMediaCallPermission';
 import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 
 export const useNewMediaCall = (rid?: string) => {

@@ -2,7 +2,7 @@ import { type ReactElement, type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { render } from '@testing-library/react-native';
 
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { mockedStore } from '~/reducers/mockedStore';
 import { MessageProvider } from '../stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '../stores/MessageRoomStore';

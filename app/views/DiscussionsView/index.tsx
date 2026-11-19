@@ -6,7 +6,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type SearchBarCommands } from 'react-native-screens';
 
 import { textInputDebounceTime } from '~/lib/constants/debounceConfig';
-import { type IMessageFromServer, type TThreadModel } from '~/definitions';
+import { type IMessageFromServer } from '~/definitions/IMessage';
+import { type TThreadModel } from '~/definitions/IThread';
 import { type ChatsStackParamList } from '~/stacks/types';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import I18n from '~/i18n';
@@ -14,7 +15,8 @@ import { nativeHeaderContentInset, translucentHeader } from '~/lib/methods/helpe
 import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import { searchHeaderOptions } from '~/lib/methods/helpers/navigation/searchHeaderOptions';
 import log from '~/lib/methods/helpers/log';
-import { hasNativeHeaderBar, isIOS, useDebounce } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar, isIOS } from '~/lib/methods/helpers/deviceInfo';
+import { useDebounce } from '~/lib/methods/helpers/debounce';
 import SafeAreaView from '~/containers/SafeAreaView';
 import * as List from '~/containers/List';
 import BackgroundContainer from '~/containers/BackgroundContainer';

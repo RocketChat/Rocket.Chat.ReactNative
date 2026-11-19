@@ -4,7 +4,7 @@ import { type SharedValue, useSharedValue, withTiming } from 'react-native-reani
 import { scheduleOnRN } from 'react-native-worklets';
 
 import dayjs from '~/lib/dayjs';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 
 const HIDE_DELAY = 1000;
 const FADE_IN_DURATION = 150;

@@ -6,7 +6,7 @@ import Video from './Video';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import Reply from './Reply';
-import { type IAttachment } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
 import { useShowAttachment } from '~/containers/message/stores/MessageRoomStore';
 import { useMessageField, useTranslateLanguage } from '~/containers/message/stores/MessageStore';
 import { getMessageFromAttachment } from '~/containers/message/utils';

@@ -44,9 +44,8 @@ jest.mock('../helpers/log', () => ({
 	default: jest.fn()
 }));
 
-jest.mock('../helpers', () => ({
-	debounce: (fn: (...args: unknown[]) => unknown) => fn,
-	compareServerVersion: jest.fn()
+jest.mock('../helpers/debounce', () => ({
+	debounce: (fn: (...args: unknown[]) => unknown) => fn
 }));
 
 jest.mock('../helpers/protectedFunction', () => ({
@@ -241,7 +240,7 @@ describe('RoomSubscription', () => {
 				]);
 			});
 
-			await sub.handleNotifyRoomReceived({
+			const deleteHandled = sub.handleNotifyRoomReceived({
 				fields: { eventName: `${rid}/deleteMessage`, args: [{ _id }] }
 			} as any);
 
@@ -251,7 +250,7 @@ describe('RoomSubscription', () => {
 			concurrentGate.resolve();
 
 			const writeQueuedAfterDelete = db.write(() => Promise.resolve(true));
-			await expect(Promise.all([concurrentWrite, writeQueuedAfterDelete])).resolves.toBeDefined();
+			await expect(Promise.all([concurrentWrite, deleteHandled, writeQueuedAfterDelete])).resolves.toBeDefined();
 
 			expect(loggedPendingChanges(log)).toBe(false);
 

@@ -28,7 +28,8 @@ import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
-import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
+import { type IServerInfo, type TServerModel } from '../definitions/IServer';
+import { RootEnum } from '../definitions/redux/TRootEnum';
 import { CURRENT_SERVER } from '../lib/constants/keys';
 import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { getStoredSession } from '../lib/methods/loggedInServer';
@@ -145,12 +146,19 @@ const getServerInfoSaga = function* getServerInfoSaga({
 	}
 };
 
+export const startInsideUnlessSharing = function* startInsideUnlessSharing() {
+	const currentRoot = yield* appSelector(state => state.app.root);
+	if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+	}
+};
+
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
 		yield* call(applyServerCertificate, server);
 		if (sdk.host === server) {
 			applyBasicAuth(server);
-			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			yield* startInsideUnlessSharing();
 			yield put(selectServerCancel());
 			return;
 		}
@@ -188,10 +196,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(clearSettings());
 			yield put(setUser(user));
 			yield connect({ server, logoutOnError: true });
-			const currentRoot = yield* appSelector(state => state.app.root);
-			if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
-				yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
-			}
+			yield* startInsideUnlessSharing();
 			UserPreferences.setString(CURRENT_SERVER, server); // only set server after have a user
 		} else {
 			yield put(clearUser());

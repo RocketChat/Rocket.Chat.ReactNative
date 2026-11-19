@@ -3,7 +3,7 @@ import { act, render } from '@testing-library/react-native';
 import { BehaviorSubject } from 'rxjs';
 
 import RoomItemContainer from '..';
-import { type TActionSheetOptions } from '../../ActionSheet';
+import { type TActionSheetOptions } from '../../ActionSheet/Provider';
 import MoveToCategorySheet from '../../MoveToCategorySheet';
 
 const mockShowActionSheet = jest.fn<void, [TActionSheetOptions]>();
@@ -14,7 +14,9 @@ jest.mock('../RoomItem', () => (props: { onLongPress: () => Promise<void> }) => 
 	mockRoomItemProps = props;
 	return null;
 });
-jest.mock('../../ActionSheet', () => ({ useActionSheet: () => ({ showActionSheet: mockShowActionSheet }) }));
+jest.mock('../../ActionSheet/Provider', () => ({
+	useActionSheet: () => ({ showActionSheet: mockShowActionSheet })
+}));
 jest.mock('../../MoveToCategorySheet', () => {
 	const MockMoveToCategorySheet = () => null;
 	return MockMoveToCategorySheet;

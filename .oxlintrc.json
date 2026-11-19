@@ -1,6 +1,6 @@
 {
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
-	"plugins": ["import", "react", "jest"],
+	"plugins": ["import", "react", "jest", "oxc"],
 	"jsPlugins": ["eslint-plugin-react-native", "oxlint-plugin-complexity"],
 	"categories": {
 		"correctness": "off"
@@ -22,6 +22,7 @@
 	"rules": {
 		"import/extensions": "off",
 		"import/no-cycle": "error",
+		"oxc/no-barrel-file": ["error", { "threshold": 0 }],
 		"react/jsx-fragments": ["error", "syntax"],
 		"react-native/no-single-element-style-arrays": "error",
 		"react-native/no-unused-styles": "error",

@@ -475,6 +475,8 @@
   "Settings": "Configuración",
   "Settings_succesfully_changed": "¡Configuración cambiada correctamente!",
   "Share": "Compartir",
+  "Share_encrypted_room_key_missing": "Esperando las claves de cifrado",
+  "Share_encrypted_room_password_required": "Introduce tu contraseña E2EE para compartir aquí",
   "Share_no_valid_attachments": "No se pudo encontrar el archivo compartido",
   "Share_this_app": "Compartir esta aplicación",
   "Show_message_actions": "Mostrar acciones del mensaje",

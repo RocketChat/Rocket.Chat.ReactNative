@@ -1,7 +1,7 @@
 import { type TypedUseSelectorHook, useSelector } from 'react-redux';
 import { select } from 'redux-saga/effects';
 
-import { type IApplicationState } from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
 
 export const useAppSelector: TypedUseSelectorHook<IApplicationState> = useSelector;
 

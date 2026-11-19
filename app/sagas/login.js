@@ -21,7 +21,7 @@ import { initTroubleshootingNotification } from '../actions/troubleshootingNotif
 import UserPreferences from '../lib/methods/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
-import { RootEnum } from '../definitions';
+import { RootEnum } from '../definitions/redux/TRootEnum';
 import sdk from '../lib/services/sdk';
 import { CURRENT_SERVER, getServerUserIdKey, getUserTokenKey } from '../lib/constants/keys';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
@@ -40,13 +40,14 @@ import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import { useAppsStore } from '../lib/apps/appsStore';
 import appNavigation from '../lib/navigation/appNavigation';
-import { showActionSheetRef } from '../containers/ActionSheet';
-import { SupportedVersionsWarning } from '../containers/SupportedVersions';
+import { showActionSheetRef } from '../containers/ActionSheet/Provider';
+import { SupportedVersionsWarning } from '../containers/SupportedVersions/SupportedVersionsWarning';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
-import { hasPermission } from '../lib/methods/helpers/helpers';
+import { hasPermission } from '../lib/methods/helpers/hasPermission';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
 import { isInActiveVoipCall } from '../lib/services/voip/isInActiveVoipCall';
 import { store as reduxStore } from '../lib/store/auxStore';
+import { startInsideUnlessSharing } from './selectServer';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -385,10 +386,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(getUserTokenKey(server, user.id), user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
 		EventEmitter.emit('connected');
-		const currentRoot = yield select(state => state.app.root);
-		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
-			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
-		}
+		yield* startInsideUnlessSharing();
 		const inviteLinkToken = yield select(state => state.inviteLinks.token);
 		if (inviteLinkToken) {
 			yield put(inviteLinksRequest(inviteLinkToken));

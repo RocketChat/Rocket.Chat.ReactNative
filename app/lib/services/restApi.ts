@@ -2,21 +2,17 @@ import { getUniqueId } from 'react-native-device-info';
 import EJSON from 'ejson';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 
+import { type IAvatarSuggestion, type IProfileParams } from '~/definitions/IProfile';
+import { type IMessage } from '~/definitions/IMessage';
 import {
-	type IAvatarSuggestion,
-	type IMessage,
 	type IMessagePreferences,
 	type INotificationPreferences,
-	type IPreviewItem,
-	type IProfileParams,
 	type IRoleUser,
-	type IRoom,
-	type IRoomNotifications,
-	type IServerRoom,
-	type ISidebarCategory,
-	type RoomType,
-	type SubscriptionType
-} from '~/definitions';
+	type ISidebarCategory
+} from '~/definitions/IUser';
+import { type IPreviewItem } from '~/definitions/ISlashCommand';
+import { type IRoom, type IRoomNotifications, type IRoomSettings, type IServerRoom, type RoomType } from '~/definitions/IRoom';
+import { type SubscriptionType } from '~/definitions/ISubscription';
 import { type TParams } from '~/definitions/ILivechatEditView';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
 import { type ISpotlight } from '~/definitions/ISpotlight';
@@ -25,7 +21,8 @@ import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers
 import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
-import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { getBundleId, isIOS } from '../methods/helpers/deviceInfo';
 import { getDeviceToken } from '../notifications/deviceToken';
 import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
@@ -677,24 +674,15 @@ export const hideRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
-export const saveRoomSettings = (
-	rid: string,
-	params: {
-		roomName?: string;
-		roomAvatar?: string | null;
-		roomDescription?: string;
-		roomTopic?: string;
-		roomAnnouncement?: string;
-		roomType?: SubscriptionType;
-		readOnly?: boolean;
-		reactWhenReadOnly?: boolean;
-		systemMessages?: string[];
-		joinCode?: string;
-		encrypted?: boolean;
+export const saveRoomSettings = async (rid: string, params: IRoomSettings) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.3.0')) {
+		await sdk.post('rooms.saveRoomSettings', { rid, ...params });
+		return;
 	}
-): Promise<{ result: boolean; rid: string }> =>
 	// RC 0.55.0
-	sdk.methodCallWrapper('saveRoomSettings', rid, params);
+	await sdk.methodCallWrapper('saveRoomSettings', rid, params);
+};
 
 export const setPassword = (newPassword: string) => {
 	const serverVersion = reduxStore.getState().server.version;
@@ -1084,8 +1072,17 @@ export const saveAutoTranslate = ({
 	return sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, ddpValue, options ?? null);
 };
 
-export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
-	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+export const getSupportedLanguagesAutoTranslate = async (): Promise<{ language: string; name: string }[]> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '2.0.0')) {
+		const result = await sdk.get('autotranslate.getSupportedLanguages', { targetLanguage: 'en' });
+		if (!result.success) {
+			throw new Error('Unable to load supported languages');
+		}
+		return result.languages;
+	}
+	return sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+};
 
 export const translateMessage = (messageId: string, targetLanguage: string) =>
 	sdk.post('autotranslate.translateMessage', { messageId, targetLanguage });
