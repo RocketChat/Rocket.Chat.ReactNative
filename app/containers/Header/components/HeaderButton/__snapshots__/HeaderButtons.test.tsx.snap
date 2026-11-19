@@ -314,7 +314,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     "justifyContent": "center",
                   },
                   {
-                    "backgroundColor": "#F5455C",
+                    "backgroundColor": "#EC0D2A",
                     "borderRadius": 10,
                     "minWidth": 16,
                   },
@@ -2987,7 +2987,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           collapsable={false}
           style={
             {
-              "backgroundColor": "#161717",
+              "backgroundColor": "#000000",
               "borderBottomColor": "rgb(216, 216, 216)",
               "flex": 1,
               "shadowColor": "rgba(0, 0, 0, 1)",
@@ -3154,7 +3154,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       style={
                         [
                           {
-                            "color": "#E4E4E4",
+                            "color": "#C1C7D0",
                             "fontSize": 24,
                           },
                           [
@@ -3261,7 +3261,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "color": "#E4E4E4",
+                        "color": "#C1C7D0",
                         "fontSize": 24,
                       },
                       [
@@ -3409,7 +3409,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "textAlign": "left",
                       },
                       {
-                        "color": "#E4E4E4",
+                        "color": "#C1C7D0",
                       },
                     ]
                   }
@@ -3478,7 +3478,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "color": "#E4E4E4",
+                        "color": "#C1C7D0",
                         "fontSize": 24,
                       },
                       [
@@ -3506,7 +3506,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                         "justifyContent": "center",
                       },
                       {
-                        "backgroundColor": "#949393",
+                        "backgroundColor": "#9EA2A8",
                         "borderRadius": 10,
                         "minWidth": 16,
                       },

@@ -8,7 +8,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     style={
       [
         {
-          "color": "#158D65",
+          "color": "#148660",
           "fontSize": 32,
         },
         [
@@ -246,7 +246,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     style={
       [
         {
-          "color": "#158D65",
+          "color": "#148660",
           "fontSize": 60,
         },
         [

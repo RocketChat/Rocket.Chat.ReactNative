@@ -62,7 +62,7 @@ export const setNativeTheme = (themePreferences: IThemePreference) => {
 			themePreferences.currentTheme === 'automatic' ? 'unspecified' : theme === 'light' ? 'light' : 'dark'
 		);
 	}
-	SystemUI.setBackgroundColorAsync(themes[theme].surfaceNeutral);
+	SystemUI.setBackgroundColorAsync(themes[theme].surfaceHeader);
 };
 
 export const unsubscribeTheme = () => {

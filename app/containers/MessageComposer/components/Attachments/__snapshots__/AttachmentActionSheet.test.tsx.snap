@@ -88,7 +88,7 @@ exports[`Story Snapshots: File should match snapshot 1`] = `
           style={
             [
               {
-                "color": "#1D74F5",
+                "color": "#156FF5",
                 "fontSize": 40,
               },
               [
@@ -770,7 +770,7 @@ exports[`Story Snapshots: Video should match snapshot 1`] = `
           style={
             [
               {
-                "color": "#1D74F5",
+                "color": "#156FF5",
                 "fontSize": 40,
               },
               [

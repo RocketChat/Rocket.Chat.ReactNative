@@ -213,7 +213,7 @@ const Button = memo(
 		return (
 			<Touch
 				onPress={() => pressNativeListItem({ title, disabled, disabledReason, onPress })}
-				style={[{ backgroundColor: backgroundColor || colors.surfaceRoom }, style]}
+				style={[{ backgroundColor: backgroundColor || colors.surfaceLight }, style]}
 				underlayColor={underlayColor}
 				disabled={disabled && !disabledReason}>
 				{children}
@@ -232,7 +232,7 @@ export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListIt
 const ListItem = memo((props: IListItem) => {
 	const { colors } = useTheme();
 	const isNativeList = useIsNativeList();
-	const backgroundColor = props.backgroundColor || colors.surfaceRoom;
+	const backgroundColor = props.backgroundColor || colors.surfaceLight;
 
 	if (isNativeList) {
 		return <NativeListItem item={props} />;

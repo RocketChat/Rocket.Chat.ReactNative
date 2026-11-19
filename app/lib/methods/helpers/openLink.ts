@@ -54,7 +54,7 @@ const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise
 		const browser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
 		if (browser === 'In_app') {
 			await WebBrowser.openBrowserAsync(url, {
-				toolbarColor: themes[theme].surfaceNeutral,
+				toolbarColor: themes[theme].surfaceHeader,
 				controlsColor: themes[theme].fontSecondaryInfo,
 				// https://github.com/expo/expo/pull/4923
 				enableBarCollapsing: true,
