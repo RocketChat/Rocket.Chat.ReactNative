@@ -50,7 +50,7 @@ describe('markdown katex', () => {
 		expect(segmentsFor('$$\\int_0^1 x\\,dx = \\frac{1}{2}$$', true, true, false)).toEqual([
 			{
 				type: 'markdown',
-				content: '$$\n\\int_0^1 x\\,dx = \\frac{1}{2}\n$$',
+				content: '$$\\int_0^1 x\\,dx = \\frac{1}{2}$$',
 				accessibilityLabel: '\\int_0^1 x\\,dx = \\frac{1}{2}'
 			}
 		]);
@@ -59,7 +59,7 @@ describe('markdown katex', () => {
 	it('serializes bracket matrix math as a native block math segment when parenthesis syntax is enabled', () => {
 		const matrix = '\\frac{a}{b} + \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}';
 		expect(segmentsFor(`\\[${matrix}\\]`, true, false, true)).toEqual([
-			{ type: 'markdown', content: `$$\n${matrix}\n$$`, accessibilityLabel: matrix }
+			{ type: 'markdown', content: `$$${matrix}$$`, accessibilityLabel: matrix }
 		]);
 	});
 

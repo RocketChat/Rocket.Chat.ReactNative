@@ -34,9 +34,11 @@ export type TRenderSegment = { type: 'markdown'; content: string; accessibilityL
 
 const ESCAPE_PATTERN = /[\\`*_{}[\]()#+\-.!|~^$=<>&]/g;
 
-export const escapePlainText = (value: string): string => value.replace(ESCAPE_PATTERN, '\\$&');
+export const escapePlainText = (value: string): string => value.replace(ESCAPE_PATTERN, '\\$&').replace(/\s*\n\s*/g, ' ');
 
-const escapeUrl = (url: string): string => `<${url.replace(/\\/g, '\\\\').replace(/</g, '\\<').replace(/>/g, '\\>')}>`;
+const escapeUrl = (url: string): string => `<${url.replace(/[\\<>&`]/g, '\\$&')}>`;
+
+const withoutLeadingIndent = (line: string): string => line.replace(/^[ \t]+/, '');
 
 const timestampToUnixSeconds = (timestamp: string): number => {
 	if (/^-?\d{10}$/.test(timestamp)) return Number(timestamp);
@@ -158,10 +160,50 @@ const serializeInlineCode = (value: { value: string }): string => {
 	return `${fence}${padded}${fence}`;
 };
 
+const HAIR_SPACE = ' ';
+const LATEX_COMMENT = /(^|[^\\])%.*$/gm;
+const ANGLE_AUTOLINK = /<[A-Za-z][A-Za-z0-9.+-]{1,31}:[^\s<>]*>|<[^\s<>@]+@[^\s<>]+>/;
+
+const flattenLatex = (latex: string): string =>
+	latex
+		.replace(LATEX_COMMENT, '$1')
+		.replace(/\s*\n\s*/g, ' ')
+		.trim();
+
+const isSafeMathSpanContent = (latex: string): boolean =>
+	!/[$`]/.test(latex) && !latex.endsWith('\\') && !ANGLE_AUTOLINK.test(latex);
+
+const serializeMath = (latex: string, delimiter: '$' | '$$'): string => {
+	const flatLatex = flattenLatex(latex);
+	if (!flatLatex) {
+		return '';
+	}
+	return isSafeMathSpanContent(flatLatex) ? `${delimiter}${flatLatex}${delimiter}` : serializeInlineCode({ value: flatLatex });
+};
+
+const isMathDelimiterBoundary = (char: string | undefined): boolean => char === undefined || /[\s!-#%-/:-@[-`{-~]/.test(char);
+
+const padMathSpan = (span: string, before: string, after: string): string => {
+	if (!span.startsWith('$')) {
+		return span;
+	}
+	const leading = isMathDelimiterBoundary(before.at(-1)) ? '' : HAIR_SPACE;
+	const trailing = isMathDelimiterBoundary(after[0]) ? '' : HAIR_SPACE;
+	return `${leading}${span}${trailing}`;
+};
+
 const toLinkLabelValue = (label: LinkBlock['value']['label']): Inlines[] => (Array.isArray(label) ? label : [label]);
 
-const serializeInline = (nodes: Inlines[], context: ISerializeContext): string =>
-	nodes.map(node => serializeInlineNode(node, context)).join('');
+const serializeInline = (nodes: Inlines[], context: ISerializeContext): string => {
+	const parts = nodes.map(node => serializeInlineNode(node, context));
+	return parts
+		.map((part, index) =>
+			nodes[index].type === 'INLINE_KATEX'
+				? padMathSpan(part, parts.slice(0, index).join(''), parts.slice(index + 1).join(''))
+				: part
+		)
+		.join('');
+};
 
 const serializeInlineNode = (node: Inlines, context: ISerializeContext): string => {
 	switch (node.type) {
@@ -191,7 +233,7 @@ const serializeInlineNode = (node: Inlines, context: ISerializeContext): string 
 		case 'INLINE_CODE':
 			return serializeInlineCode(node.value);
 		case 'INLINE_KATEX':
-			return `$${node.value}$`;
+			return serializeMath(node.value, '$');
 		case 'TIMESTAMP': {
 			const label = formatTimestampLabel(node.value);
 			const unixSeconds = timestampToUnixSeconds(node.value.timestamp);
@@ -260,7 +302,7 @@ const resolveParagraphNodes = (value: Paragraph['value']): Paragraph['value'] | 
 
 const serializeParagraphValue = (value: Paragraph['value'], context: ISerializeContext): string | null => {
 	const nodes = resolveParagraphNodes(value);
-	return nodes ? serializeInline(nodes, context) : null;
+	return nodes ? withoutLeadingIndent(serializeInline(nodes, context)) : null;
 };
 
 const plainTextParagraphValue = (value: Paragraph['value'], context: ISerializeContext): string | null => {
@@ -286,7 +328,7 @@ const serializeList = (list: NestedList, context: ISerializeContext): string =>
 	list.value
 		.map((item, index) => {
 			const marker = listItemMarker(list, index);
-			const line = `${marker}${taskCheckbox(list, index)}${serializeInline(item.value, context)}`;
+			const line = `${marker}${taskCheckbox(list, index)}${withoutLeadingIndent(serializeInline(item.value, context))}`;
 			const nested = (item.nested ?? []).map(child => indentLines(serializeList(child, context), marker.length));
 			return [line, ...nested].join('\n');
 		})
@@ -397,7 +439,10 @@ export const buildRenderSegments = (tokens: Root, context: ISerializeContext): T
 
 	for (const block of tokens as Array<Paragraph | Blocks>) {
 		if (block.type === 'KATEX') {
-			segments.push({ type: 'markdown', content: `$$\n${block.value}\n$$`, accessibilityLabel: block.value });
+			const content = serializeMath(block.value, '$$');
+			if (content) {
+				segments.push({ type: 'markdown', content, accessibilityLabel: block.value });
+			}
 			continue;
 		}
 

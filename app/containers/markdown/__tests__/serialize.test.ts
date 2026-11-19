@@ -121,7 +121,7 @@ describe('markdown serialize', () => {
 	it('splits a block-level KATEX AST node (as produced by the server-parsed md prop) into a native block math segment', () => {
 		const tokens: Parameters<typeof buildRenderSegments>[0] = [{ type: 'KATEX', value: 'x^2' }];
 		const segments = buildRenderSegments(tokens, baseContext);
-		expect(segments).toEqual([{ type: 'markdown', content: '$$\nx^2\n$$', accessibilityLabel: 'x^2' }]);
+		expect(segments).toEqual([{ type: 'markdown', content: '$$x^2$$', accessibilityLabel: 'x^2' }]);
 	});
 
 	it('indents nested lists under their parent item by the parent marker width', () => {
@@ -147,5 +147,44 @@ describe('markdown serialize', () => {
 
 	it('serializes a horizontal rule as a thematic break', () => {
 		expect(serialize('---')).toBe('---');
+	});
+
+	it('drops leading indentation so a paragraph never becomes an indented code block', () => {
+		expect(serialize('\t*bold* https://a.co')).toBe('**bold** [https://a\\.co](<https://a.co>)');
+		expect(serialize('    *bold*')).toBe('**bold**');
+	});
+
+	it('collapses newlines inside a link label so the link survives', () => {
+		expect(serialize('[a\n\nb](https://a.co)')).toBe('[a b](<https://a.co>)');
+	});
+
+	it('escapes entities and backticks in link destinations so the opened URL matches the label', () => {
+		expect(serialize('[x](https://a.co/?q=1&amp;b)')).toBe('[x](<https://a.co/?q=1\\&amp;b>)');
+		expect(serialize('[x](https://a.co/`b)')).toBe('[x](<https://a.co/\\`b>)');
+	});
+});
+
+describe('markdown serialize katex', () => {
+	const serializeWithKatex = (msg: string) =>
+		buildRenderSegments(parse(msg, { katex: { dollarSyntax: true, parenthesisSyntax: true } }), baseContext)
+			.map(segment => (segment.type === 'markdown' ? segment.content : ''))
+			.join('\n\n');
+
+	it('pads inline math next to a word so its delimiters still open and close', () => {
+		expect(serializeWithKatex('\\(![](https://img.example/a.png)\\)A')).toBe('$![](https://img.example/a.png)$\u200AA');
+		expect(serializeWithKatex('\\(a\\)\\(b\\)')).toBe('$a$\u200A\u200A$b$');
+	});
+
+	it('keeps block math on one line so its lines are not read as markdown blocks', () => {
+		expect(serializeWithKatex('\\[a\n\n> b % note\nc\\]')).toBe('$$a > b c$$');
+	});
+
+	it('falls back to inline code when the formula cannot be a math span', () => {
+		expect(serializeWithKatex('\\(a`b\\)')).toBe('``a`b``');
+		expect(serializeWithKatex('\\(<https://a.co>\\)')).toBe('`<https://a.co>`');
+	});
+
+	it('drops empty formulas instead of emitting a bare double dollar', () => {
+		expect(serializeWithKatex('a \\(\\) b')).toBe('a  b');
 	});
 });

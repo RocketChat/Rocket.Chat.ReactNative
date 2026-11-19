@@ -3845,7 +3845,7 @@ exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
     <Text
       accessibilityLabel="		changes: https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2"
     >
-      		changes: 
+      changes: 
       <Text
         accessibilityRole="link"
         onLongPress={[Function]}
@@ -3853,11 +3853,6 @@ exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
       >
         https://github\\.com/RocketChat/Rocket\\.Chat/compare/8\\.7\\.0\\-rc\\.1\\.\\.\\.8\\.7\\.0\\-rc\\.2
       </Text>
-    </Text>
-    <Text
-      accessibilityLabel="	"
-    >
-      	
     </Text>
   </View>
   <View
@@ -3895,7 +3890,7 @@ exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
         <Text
           accessibilityLabel="		changes: https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2"
         >
-          		changes: 
+          changes: 
           <Text
             accessibilityRole="link"
             onLongPress={[Function]}
@@ -3903,11 +3898,6 @@ exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
           >
             https://github\\.com/RocketChat/Rocket\\.Chat/compare/8\\.7\\.0\\-rc\\.1\\.\\.\\.8\\.7\\.0\\-rc\\.2
           </Text>
-        </Text>
-        <Text
-          accessibilityLabel="	"
-        >
-          	
         </Text>
       </View>
     </View>
