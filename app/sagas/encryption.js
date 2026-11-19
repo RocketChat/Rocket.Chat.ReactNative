@@ -1,7 +1,7 @@
 import EJSON from 'ejson';
 import { call, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
-import { ENCRYPTION, LOGOUT, SERVER, SETTINGS } from '../actions/actionsTypes';
+import { ENCRYPTION, SERVER, SETTINGS } from '../actions/actionsTypes';
 import { encryptionDecodeKeyFailure, encryptionSet } from '../actions/encryption';
 import { Encryption } from '../lib/encryption';
 import database from '../lib/database';
@@ -18,18 +18,23 @@ const getE2eEnable = state => state.settings.E2E_Enable;
 const waitForE2eEnable = function* waitForE2eEnable() {
 	let e2eEnable;
 	while (e2eEnable === undefined) {
-		const { logout, selectServer } = yield race({
+		const { selectServer } = yield race({
 			settingsAdded: take(SETTINGS.ADD),
-			logout: take(LOGOUT),
 			selectServer: take(SERVER.SELECT_REQUEST)
 		});
-		if (logout || selectServer) {
+		if (selectServer) {
 			return;
 		}
 
 		e2eEnable = yield select(getE2eEnable);
 	}
 	return e2eEnable;
+};
+
+const uploadKeysMissingFromServer = function* uploadKeysMissingFromServer(serverKeys, userId, server, signal) {
+	if (serverKeys?.success && !serverKeys.publicKey) {
+		yield Encryption.uploadKeys(userId, server, signal);
+	}
 };
 
 const handleEncryptionInit = function* handleEncryptionInit() {
@@ -83,6 +88,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		if (storedPublicKey && storedPrivateKey) {
 			// Persist these keys
 			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey, controller.signal);
+			yield* uploadKeysMissingFromServer(keys, user.id, server, controller.signal);
 		} else {
 			// Create new keys since the user doesn't have any
 			yield Encryption.createKeys(user.id, server, controller.signal);

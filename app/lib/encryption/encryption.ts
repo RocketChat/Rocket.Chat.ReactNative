@@ -196,16 +196,25 @@ class Encryption {
 		// Persist these new keys
 		await this.persistKeys(server, publicKey, EJSON.stringify(privateKey), signal);
 
+		await this.uploadKeys(userId, server, signal);
+	};
+
+	uploadKeys = async (userId: string, server: string, signal: AbortSignal) => {
+		const publicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
+		const privateKey = UserPreferences.getString(`${server}-${E2E_PRIVATE_KEY}`);
+		if (!publicKey || !privateKey) {
+			throw new Error('E2E keys not found in local storage, keys not uploaded');
+		}
+
 		// Create a password to encode the private key
 		const password = await this.createRandomPassword(server, signal);
 
 		// Encode the private key
-		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, userId);
+		const encodedPrivateKey = await this.encodePrivateKey(privateKey, password, userId);
 		throwIfStopped(signal);
 
 		// Send the new keys to the server
-		await e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
-		throwIfStopped(signal);
+		await e2eSetUserPublicAndPrivateKeys(publicKey, encodedPrivateKey);
 
 		// Request e2e keys of all encrypted rooms
 		await e2eRequestSubscriptionKeys();

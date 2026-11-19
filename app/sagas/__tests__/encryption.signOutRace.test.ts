@@ -77,8 +77,9 @@ import { encryptionDecodeKey, encryptionInit, encryptionStop } from '~/actions/e
 import { addSettings } from '~/actions/settings';
 import { setUser } from '~/actions/login';
 import { selectServerSuccess } from '~/actions/server';
-import { e2eFetchMyKeys, e2eSetUserPublicAndPrivateKeys } from '~/lib/services/restApi';
+import { e2eFetchMyKeys, e2eRequestSubscriptionKeys, e2eSetUserPublicAndPrivateKeys } from '~/lib/services/restApi';
 import { Encryption } from '~/lib/encryption';
+import { generatePassphrase } from '~/lib/encryption/utils';
 import { E2E_BANNER_TYPE, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '~/lib/constants/keys';
 import { ENCRYPTION } from '~/actions/actionsTypes';
 import { cancelSagaTasks, createRecordingStore } from '~/lib/testUtils/sagaStore';
@@ -145,7 +146,6 @@ describe('encryption saga — sign-out while ENCRYPTION.INIT is in flight', () =
 
 	afterEach(() => {
 		cancelSagaTasks();
-		Encryption.stop();
 	});
 
 	it('creates, stores and uploads keys when nobody signs out', async () => {
@@ -263,6 +263,55 @@ describe('encryption saga — sign-out while ENCRYPTION.INIT is in flight', () =
 		expect(mockPreferences.has(PRIVATE_KEY_STORAGE)).toBe(false);
 		expect(e2eSetUserPublicAndPrivateKeys).not.toHaveBeenCalled();
 	});
+
+	it('uploads the keys a replaced setup stored but never uploaded', async () => {
+		const firstPassphrase = createDeferred<string>();
+		jest.mocked(e2eFetchMyKeys).mockResolvedValueOnce(NO_KEYS).mockResolvedValueOnce(NO_KEYS);
+		jest.mocked(rsaGenerateKeys).mockResolvedValueOnce(keyPairFor('A'));
+		jest.mocked(generatePassphrase).mockReturnValueOnce(firstPassphrase.promise);
+		const { store } = createRecordingStore(encryptionRoot);
+
+		signIn(store, USER_A);
+		await drainEventLoop();
+		expect(mockPreferences.get(PRIVATE_KEY_STORAGE)).toContain('A-private-pem');
+
+		store.dispatch(encryptionInit());
+		await drainEventLoop();
+		firstPassphrase.resolve('first passphrase');
+		await drainEventLoop();
+
+		expect(rsaGenerateKeys).toHaveBeenCalledTimes(1);
+		expect(e2eSetUserPublicAndPrivateKeys).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(e2eSetUserPublicAndPrivateKeys).mock.calls[0][0]).toContain('A-public-pem');
+		expect(e2eRequestSubscriptionKeys).toHaveBeenCalledTimes(1);
+		expect(mockPreferences.get(RANDOM_PASSWORD_STORAGE)).toBe('random passphrase');
+		expect(store.getState().encryption.enabled).toBe(true);
+		expect(store.getState().encryption.banner).toBe(E2E_BANNER_TYPE.SAVE_PASSWORD);
+	});
+
+	it('requests room keys when a newer setup replaces it during the upload', async () => {
+		const upload = createDeferred<void>();
+		jest
+			.mocked(e2eFetchMyKeys)
+			.mockResolvedValueOnce(NO_KEYS)
+			.mockReturnValueOnce(new Promise(() => {}));
+		jest.mocked(rsaGenerateKeys).mockResolvedValueOnce(keyPairFor('A'));
+		jest
+			.mocked(e2eSetUserPublicAndPrivateKeys)
+			.mockReturnValueOnce(upload.promise as ReturnType<typeof e2eSetUserPublicAndPrivateKeys>);
+		const { store } = createRecordingStore(encryptionRoot);
+
+		signIn(store, USER_A);
+		await drainEventLoop();
+		expect(e2eSetUserPublicAndPrivateKeys).toHaveBeenCalledTimes(1);
+
+		store.dispatch(encryptionInit());
+		await drainEventLoop();
+		upload.resolve();
+		await drainEventLoop();
+
+		expect(e2eRequestSubscriptionKeys).toHaveBeenCalledTimes(1);
+	});
 });
 
 describe('encryption saga — sign-out while ENCRYPTION.DECODE_KEY is in flight', () => {
@@ -275,7 +324,6 @@ describe('encryption saga — sign-out while ENCRYPTION.DECODE_KEY is in flight'
 
 	afterEach(() => {
 		cancelSagaTasks();
-		Encryption.stop();
 		jest.restoreAllMocks();
 	});
 
