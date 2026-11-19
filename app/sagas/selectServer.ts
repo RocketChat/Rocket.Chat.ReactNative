@@ -156,7 +156,7 @@ export const startInsideUnlessSharing = function* startInsideUnlessSharing() {
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
 		yield* call(applyServerCertificate, server);
-		if (sdk.host === server) {
+		if (sdk.host === server && getStoredSession(server).token) {
 			applyBasicAuth(server);
 			yield* startInsideUnlessSharing();
 			yield put(selectServerCancel());
