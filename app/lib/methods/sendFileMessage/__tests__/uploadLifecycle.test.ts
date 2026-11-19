@@ -18,7 +18,6 @@ type PendingSend = { resolve: (response: unknown) => void; reject: (error: unkno
 const mockRows = new Map<string, UploadRow>();
 const mockSends: PendingSend[] = [];
 const mockCancelledSends: PendingSend[] = [];
-let mockHoldCancelledSends = false;
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ __esModule: true, default: { t: (key: string) => key } }));
@@ -49,11 +48,9 @@ jest.mock('../../helpers/fileUpload', () => ({
 		}
 
 		cancel() {
-			if (mockHoldCancelledSends && this.pending) {
+			if (this.pending) {
 				mockCancelledSends.push(this.pending);
-				return;
 			}
-			setImmediate(() => this.pending?.reject(new Error('Upload Cancelled')));
 		}
 	}
 }));
@@ -109,7 +106,6 @@ beforeEach(() => {
 	mockRows.clear();
 	mockSends.length = 0;
 	mockCancelledSends.length = 0;
-	mockHoldCancelledSends = false;
 	Object.keys(uploadQueue).forEach(key => delete uploadQueue[key]);
 	(Alert.alert as jest.Mock).mockClear();
 	jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -141,7 +137,7 @@ describe.each([
 		const first = send(rid, file(), undefined, server, user);
 		await flush();
 		latestSend().resolve(acceptedResponse);
-		await first;
+		await expect(first).resolves.toBeUndefined();
 		expect(isUploadActive('file:///tmp/pic.jpg', rid)).toBe(false);
 
 		const second = send(rid, file(), undefined, server, user);
@@ -169,6 +165,7 @@ describe.each([
 		const first = send(rid, file(), undefined, server, user);
 		await flush();
 		await cancelUpload(mockRows.get(uploadPath) as any, rid);
+		mockCancelledSends[0].reject(new Error('Upload Cancelled'));
 		await expect(first).resolves.toBeUndefined();
 		expect(mockRows.has(uploadPath)).toBe(false);
 
@@ -176,11 +173,10 @@ describe.each([
 		await flush();
 		expect(Alert.alert).not.toHaveBeenCalled();
 		latestSend().resolve(acceptedResponse);
-		await second;
+		await expect(second).resolves.toBeUndefined();
 	});
 
 	it('keeps the new upload running when a cancelled upload settles after the file was sent again', async () => {
-		mockHoldCancelledSends = true;
 		const first = send(rid, file(), undefined, server, user);
 		await flush();
 		await cancelUpload(mockRows.get(uploadPath) as any, rid);
@@ -197,5 +193,14 @@ describe.each([
 		latestSend().resolve(acceptedResponse);
 		await expect(second).resolves.toBeUndefined();
 		expect(isUploadActive('file:///tmp/pic.jpg', rid)).toBe(false);
+	});
+
+	it('marks the row failed when the server rejects a file that was copied to the cache first', async () => {
+		const sharedPath = 'content://media/pic.jpg';
+		const sent = send(rid, { ...file(), path: sharedPath }, undefined, server, user);
+		await flush();
+		latestSend().reject({ status: 403 });
+		await expect(sent).rejects.toEqual({ status: 403 });
+		expect(mockRows.get(getUploadPath(sharedPath, rid))?.error).toBe(true);
 	});
 });

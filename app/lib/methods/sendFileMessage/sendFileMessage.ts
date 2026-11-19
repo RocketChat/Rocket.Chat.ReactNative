@@ -37,14 +37,14 @@ export async function sendFileMessage(
 			return;
 		}
 
-		fileInfo.path = await copyFileToCacheDirectoryIfNeeded(fileInfo.path, fileInfo.name);
+		const fileUri = await copyFileToCacheDirectoryIfNeeded(fileInfo.path, fileInfo.name);
 
 		const formData: IFormData[] = [];
 		formData.push({
 			name: 'file',
 			type: fileInfo.type,
 			filename: fileInfo.name || 'fileMessage',
-			uri: fileInfo.path
+			uri: fileUri
 		});
 
 		if (fileInfo.description) {
