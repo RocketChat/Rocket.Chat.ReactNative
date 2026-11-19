@@ -40,7 +40,7 @@ runs:
 
     - name: Pod install
       run: |
-        pnpm pod-install
+        .github/scripts/pod-install.sh
       shell: bash
 
     - name: Fastlane Submit to TestFlight
