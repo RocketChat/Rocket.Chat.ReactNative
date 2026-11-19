@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '~/containers/ActionSheet/Provider';
@@ -26,6 +26,11 @@ const OPTIONS = {
 			label: 'Never',
 			value: 'never'
 		}
+	],
+	clockMode: [
+		{ label: 'Default', value: '0' },
+		{ label: '12_Hour', value: '1' },
+		{ label: '24_Hour', value: '2' }
 	]
 };
 
@@ -52,6 +57,10 @@ const ListPicker = ({
 	const [option, setOption] = useState(
 		value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0]
 	);
+
+	useEffect(() => {
+		setOption(value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0]);
+	}, [preference, value]);
 
 	const selectOption = (selectedValue: string) => {
 		const previous = option;

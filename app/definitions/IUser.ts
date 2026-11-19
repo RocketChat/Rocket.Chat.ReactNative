@@ -125,6 +125,7 @@ export interface INotificationPreferences {
 
 export interface IMessagePreferences {
 	convertAsciiEmoji: boolean;
+	clockMode?: number;
 }
 export interface IUserPreferences {
 	user: Pick<IUser, '_id'>;
