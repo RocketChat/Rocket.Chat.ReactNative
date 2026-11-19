@@ -3,14 +3,16 @@ import { Q } from '@nozbe/watermelondb';
 
 import dayjs from '../dayjs';
 import { getMessageById } from '../database/services/Message';
+import { getThreadMessageById } from '../database/services/ThreadMessage';
 import database from '../database';
-import { getFilePathAudio } from './getFilePathAudio';
-import { type TMessageModel } from '~/definitions/IMessage';
 import { emitter } from './helpers/emitter';
 import log from './helpers/log';
 import { AUDIO_MODE } from '../constants/audio';
 
-const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;
+const getAudioKey = ({ msgId, rid, tmid, uri }: { msgId?: string; rid: string; tmid?: string; uri: string }) =>
+	`${msgId}-${rid}-${tmid}-${uri}`;
+
+const nextByTs = (ts: string | number | Date) => [Q.where('ts', Q.gt(dayjs(ts).valueOf())), Q.sortBy('ts', Q.asc), Q.take(1)];
 
 class AudioManagerClass {
 	private audioQueue: { [audioKey: string]: AudioPlayer };
@@ -19,7 +21,7 @@ class AudioManagerClass {
 	private audioRates: { [audioKey: string]: number };
 	private audioSubscriptions: { [audioKey: string]: () => void };
 	private audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void };
-	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string } };
+	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string; tmid?: string } };
 	private audioPlaying: string;
 	private audiosRendered: Set<string>;
 
@@ -43,11 +45,11 @@ class AudioManagerClass {
 		this.audiosRendered.delete(audioKey);
 	};
 
-	loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string {
-		const audioKey = getAudioKey({ msgId, rid, uri });
+	loadAudio({ msgId, rid, tmid, uri }: { rid: string; msgId?: string; tmid?: string; uri: string }): string {
+		const audioKey = getAudioKey({ msgId, rid, tmid, uri });
 		this.addAudioRendered(audioKey);
 		this.audioUris[audioKey] = uri;
-		this.audioMeta[audioKey] = { msgId, rid };
+		this.audioMeta[audioKey] = { msgId, rid, tmid };
 		if (this.audioQueue[audioKey]) {
 			return audioKey;
 		}
@@ -160,51 +162,54 @@ class AudioManagerClass {
 		}
 	}
 
-	getNextAudioKey = ({ message, rid }: { message: TMessageModel; rid: string }) => {
-		if (!message.attachments) {
-			return;
-		}
-		const { audio_url: audioUrl, audio_type: audioType } = message.attachments[0];
-		const uri = getFilePathAudio({ audioUrl, audioType });
-		if (!uri) {
-			return;
-		}
-		return getAudioKey({
-			msgId: message.id,
-			rid,
-			uri
+	findRenderedAudioKey = ({ msgId, rid, tmid }: { msgId: string; rid: string; tmid?: string }) =>
+		[...this.audiosRendered].find(audioKey => {
+			const meta = this.audioMeta[audioKey];
+			return meta?.msgId === msgId && meta.rid === rid && meta.tmid === tmid;
 		});
-	};
 
-	async getNextAudioMessage(msgId: string, rid: string) {
-		const msg = await getMessageById(msgId);
-		if (msg) {
-			const db = database.active;
-			const whereClause: Q.Clause[] = [Q.sortBy('ts', Q.asc), Q.where('ts', Q.gt(dayjs(msg.ts).valueOf())), Q.take(1)];
-
-			if (msg.tmid) {
-				whereClause.push(Q.where('tmid', msg.tmid || msg.id));
-			} else {
-				whereClause.push(Q.where('rid', rid), Q.where('tmid', null));
-			}
-			const [message] = await db
-				.get('messages')
-				.query(...whereClause)
-				.fetch();
-			return message;
+	async getNextThreadAudioMessage(msgId: string, tmid: string) {
+		const isThreadParent = msgId === tmid;
+		const finishedTs = isThreadParent ? 0 : (await getThreadMessageById(msgId))?.ts;
+		if (finishedTs === undefined) {
+			return null;
 		}
+		const [message] = await database.active
+			.get('thread_messages')
+			.query(Q.where('rid', tmid), ...nextByTs(finishedTs))
+			.fetch();
+		return message ?? null;
+	}
 
-		return null;
+	async getNextRoomAudioMessage(msgId: string, rid: string) {
+		const finished = await getMessageById(msgId);
+		if (!finished || finished.tmid) {
+			return null;
+		}
+		const [message] = await database.active
+			.get('messages')
+			.query(Q.where('rid', rid), Q.where('tmid', null), ...nextByTs(finished.ts))
+			.fetch();
+		return message ?? null;
+	}
+
+	getNextAudioMessage(msgId: string, rid: string, tmid?: string) {
+		return tmid ? this.getNextThreadAudioMessage(msgId, tmid) : this.getNextRoomAudioMessage(msgId, rid);
 	}
 
 	async playNextAudioInSequence(previousAudioKey: string) {
-		const [msgId, rid] = previousAudioKey.split('-');
-		const nextMessage = await this.getNextAudioMessage(msgId, rid);
-		if (nextMessage && nextMessage.attachments) {
-			const nextAudioInSeqKey = this.getNextAudioKey({ message: nextMessage, rid });
-			if (nextAudioInSeqKey && this.audioUris[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
-				await this.playAudio(nextAudioInSeqKey);
-			}
+		const meta = this.audioMeta[previousAudioKey];
+		if (!meta?.msgId) {
+			return;
+		}
+		const { msgId, rid, tmid } = meta;
+		const nextMessage = await this.getNextAudioMessage(msgId, rid, tmid);
+		if (!nextMessage?.attachments?.some(attachment => attachment.audio_url)) {
+			return;
+		}
+		const nextAudioKey = this.findRenderedAudioKey({ msgId: nextMessage.id, rid, tmid });
+		if (nextAudioKey) {
+			await this.playAudio(nextAudioKey);
 		}
 	}
 
