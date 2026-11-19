@@ -21,7 +21,7 @@ const SHOW_ALERTS_AS = /^Show alerts as/;
 
 const alertDisplayRow = ({ screen, platform }: Fixtures) =>
 	platform === 'ios'
-		? screen.getByRole('button', { name: SHOW_ALERTS_AS }).last()
+		? screen.getByText('Show alerts as', { exact: true }).last()
 		: screen.getByRole('button', { name: SHOW_ALERTS_AS });
 
 const alertDisplayValue = ({ screen }: Fixtures, value: string) =>
