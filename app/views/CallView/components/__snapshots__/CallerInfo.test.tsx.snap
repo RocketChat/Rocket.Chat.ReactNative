@@ -112,6 +112,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               "width": 120,
             }
           }
+          svgVariables={null}
           symbolSize={null}
           symbolWeight={null}
           transition={null}
@@ -273,6 +274,7 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
               "width": 120,
             }
           }
+          svgVariables={null}
           symbolSize={null}
           symbolWeight={null}
           transition={null}

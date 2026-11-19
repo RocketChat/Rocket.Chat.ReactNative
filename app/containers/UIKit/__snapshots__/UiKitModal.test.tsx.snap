@@ -3935,6 +3935,7 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
             "width": 20,
           }
         }
+        svgVariables={null}
         symbolSize={null}
         symbolWeight={null}
         transition={null}
@@ -5681,6 +5682,7 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
           "width": 88,
         }
       }
+      svgVariables={null}
       symbolSize={null}
       symbolWeight={null}
       transition={null}

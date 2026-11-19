@@ -245,6 +245,7 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -706,6 +707,7 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -1175,6 +1177,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -1984,6 +1987,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -2793,6 +2797,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -3249,6 +3254,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -4160,6 +4166,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                                 "width": 36,
                               }
                             }
+                            svgVariables={null}
                             symbolSize={null}
                             symbolWeight={null}
                             transition={null}
@@ -4624,6 +4631,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                                 "width": 36,
                               }
                             }
+                            svgVariables={null}
                             symbolSize={null}
                             symbolWeight={null}
                             transition={null}
@@ -5094,6 +5102,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -5550,6 +5559,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -6019,6 +6029,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -6475,6 +6486,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -6944,6 +6956,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -7432,6 +7445,7 @@ Testing block quote."
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -7986,6 +8000,7 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -8474,6 +8489,7 @@ Testing block quote."
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -9028,6 +9044,7 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -9620,6 +9637,7 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -10212,6 +10230,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -10823,6 +10842,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -11673,6 +11693,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -12284,6 +12305,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -13134,6 +13156,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -13747,6 +13770,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -14753,6 +14777,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -15366,6 +15391,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -16372,6 +16398,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -17650,6 +17677,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -18928,6 +18956,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -19766,6 +19795,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -20902,6 +20932,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -21740,6 +21771,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -22876,6 +22908,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -23400,6 +23433,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -24115,6 +24149,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -24648,6 +24683,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -25117,6 +25153,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -25641,6 +25678,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -26356,6 +26394,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -26889,6 +26928,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -27358,6 +27398,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -27940,6 +27981,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -28524,6 +28566,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -29108,6 +29151,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -29705,6 +29749,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -30287,6 +30332,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -30871,6 +30917,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -31455,6 +31502,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -32052,6 +32100,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -32805,6 +32854,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -33559,6 +33609,7 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -34029,6 +34080,7 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -34498,6 +34550,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -34953,6 +35006,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -35386,6 +35440,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -35583,6 +35638,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                                   "width": 30,
                                 }
                               }
+                              svgVariables={null}
                               symbolSize={null}
                               symbolWeight={null}
                               transition={null}
@@ -35630,6 +35686,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                                   "width": 30,
                                 }
                               }
+                              svgVariables={null}
                               symbolSize={null}
                               symbolWeight={null}
                               transition={null}
@@ -35677,6 +35734,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                                   "width": 30,
                                 }
                               }
+                              svgVariables={null}
                               symbolSize={null}
                               symbolWeight={null}
                               transition={null}
@@ -35938,6 +35996,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -36135,6 +36194,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                                   "width": 30,
                                 }
                               }
+                              svgVariables={null}
                               symbolSize={null}
                               symbolWeight={null}
                               transition={null}
@@ -36396,6 +36456,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -36615,6 +36676,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                                   "width": 30,
                                 }
                               }
+                              svgVariables={null}
                               symbolSize={null}
                               symbolWeight={null}
                               transition={null}
@@ -36876,6 +36938,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -37411,6 +37474,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -37866,6 +37930,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -38299,6 +38364,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -38496,6 +38562,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                                   "width": 30,
                                 }
                               }
+                              svgVariables={null}
                               symbolSize={null}
                               symbolWeight={null}
                               transition={null}
@@ -38543,6 +38610,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                                   "width": 30,
                                 }
                               }
+                              svgVariables={null}
                               symbolSize={null}
                               symbolWeight={null}
                               transition={null}
@@ -38590,6 +38658,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                                   "width": 30,
                                 }
                               }
+                              svgVariables={null}
                               symbolSize={null}
                               symbolWeight={null}
                               transition={null}
@@ -38851,6 +38920,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -39048,6 +39118,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                                   "width": 30,
                                 }
                               }
+                              svgVariables={null}
                               symbolSize={null}
                               symbolWeight={null}
                               transition={null}
@@ -39309,6 +39380,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -39528,6 +39600,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                                   "width": 30,
                                 }
                               }
+                              svgVariables={null}
                               symbolSize={null}
                               symbolWeight={null}
                               transition={null}
@@ -39789,6 +39862,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -40324,6 +40398,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -41060,6 +41135,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -41515,6 +41591,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                                 "width": 19,
                               }
                             }
+                            svgVariables={null}
                             symbolSize={null}
                             symbolWeight={null}
                             transition={null}
@@ -42131,6 +42208,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -42427,6 +42505,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -42921,6 +43000,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -43330,6 +43410,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -43893,6 +43974,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -44702,6 +44784,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -45438,6 +45521,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -45893,6 +45977,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                                 "width": 19,
                               }
                             }
+                            svgVariables={null}
                             symbolSize={null}
                             symbolWeight={null}
                             transition={null}
@@ -46509,6 +46594,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -46805,6 +46891,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -47299,6 +47386,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -47708,6 +47796,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                         "width": 46.800000000000004,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -48271,6 +48360,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -48999,6 +49089,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -49448,6 +49539,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -49910,6 +50002,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                         "width": 46.800000000000004,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -50359,6 +50452,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                         "width": 46.800000000000004,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -50902,6 +50996,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -51503,6 +51598,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -52104,6 +52200,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -52705,6 +52802,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -53854,6 +53952,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -54455,6 +54554,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -55056,6 +55156,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -55657,6 +55758,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -56793,6 +56895,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -57568,6 +57671,7 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -58037,6 +58141,7 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -58506,6 +58611,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -58962,6 +59068,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -59842,6 +59949,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -60311,6 +60419,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -60767,6 +60876,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -61647,6 +61757,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -62121,6 +62232,7 @@ exports[`Story Snapshots: Ignored should match snapshot 1`] = `
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -62442,6 +62554,7 @@ exports[`Story Snapshots: IgnoredLargeFont should match snapshot 1`] = `
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -62758,6 +62871,7 @@ exports[`Story Snapshots: InlineKatex should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -63213,6 +63327,7 @@ exports[`Story Snapshots: InlineKatexLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -63660,6 +63775,7 @@ exports[`Story Snapshots: JitsiCall should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -64191,6 +64307,7 @@ exports[`Story Snapshots: JitsiCallLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -64730,6 +64847,7 @@ exports[`Story Snapshots: Katex should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -65147,6 +65265,7 @@ exports[`Story Snapshots: KatexArray should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -65564,6 +65683,7 @@ exports[`Story Snapshots: KatexArrayLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -65981,6 +66101,7 @@ exports[`Story Snapshots: KatexLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -66400,6 +66521,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -67056,6 +67178,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -67660,6 +67783,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -68439,6 +68563,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -69095,6 +69220,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -69699,6 +69825,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -70476,6 +70603,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -70932,6 +71060,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -71424,6 +71553,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -71915,6 +72045,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -72324,6 +72455,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -72854,6 +72986,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -73341,6 +73474,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -73780,6 +73914,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -74361,6 +74496,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -74942,6 +75078,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -75617,6 +75754,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -76073,6 +76211,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -76565,6 +76704,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -77056,6 +77196,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -77465,6 +77606,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         "width": 46.800000000000004,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -77995,6 +78137,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -78482,6 +78625,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -78921,6 +79065,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         "width": 46.800000000000004,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -79502,6 +79647,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         "width": 46.800000000000004,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -80083,6 +80229,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         "width": 46.800000000000004,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -80758,6 +80905,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -81411,6 +81559,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -82056,6 +82205,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -82709,6 +82859,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -83354,6 +83505,7 @@ exports[`Story Snapshots: Message should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -83756,6 +83908,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -84522,6 +84675,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -85336,6 +85490,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -86173,6 +86328,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -86884,6 +87040,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -87805,6 +87962,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -88535,6 +88693,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -89278,6 +89437,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -90008,6 +90168,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -90751,6 +90912,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -91388,6 +91550,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -91740,6 +91903,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                             "width": 15,
                                           }
                                         }
+                                        svgVariables={null}
                                         symbolSize={null}
                                         symbolWeight={null}
                                         transition={null}
@@ -91960,6 +92124,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                             "width": 15,
                                           }
                                         }
+                                        svgVariables={null}
                                         symbolSize={null}
                                         symbolWeight={null}
                                         transition={null}
@@ -92353,6 +92518,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -93167,6 +93333,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -93599,6 +93766,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                                 "width": 15,
                                               }
                                             }
+                                            svgVariables={null}
                                             symbolSize={null}
                                             symbolWeight={null}
                                             transition={null}
@@ -94058,6 +94226,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -94682,6 +94851,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -95413,6 +95583,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -96210,6 +96381,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -96834,6 +97006,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -97565,6 +97738,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -98349,6 +98523,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -99186,6 +99361,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -99897,6 +100073,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -100818,6 +100995,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -101455,6 +101633,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -101807,6 +101986,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                             "width": 15,
                                           }
                                         }
+                                        svgVariables={null}
                                         symbolSize={null}
                                         symbolWeight={null}
                                         transition={null}
@@ -102139,6 +102319,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -102953,6 +103134,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -103385,6 +103567,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                                 "width": 15,
                                               }
                                             }
+                                            svgVariables={null}
                                             symbolSize={null}
                                             symbolWeight={null}
                                             transition={null}
@@ -103845,6 +104028,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -104790,6 +104974,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -105225,6 +105410,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -105660,6 +105846,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -106095,6 +106282,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -106530,6 +106718,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -106965,6 +107154,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -107400,6 +107590,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -107835,6 +108026,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -108270,6 +108462,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -108591,6 +108784,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -109536,6 +109730,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -109971,6 +110166,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -110406,6 +110602,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -110841,6 +111038,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -111276,6 +111474,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -111711,6 +111910,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -112146,6 +112346,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -112581,6 +112782,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -113016,6 +113218,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -113336,6 +113539,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -113711,6 +113915,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -114402,6 +114607,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -114777,6 +114983,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -115468,6 +115675,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -115843,6 +116051,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -116547,6 +116756,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -117288,6 +117498,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -118029,6 +118240,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -118450,6 +118662,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                                 "width": 19,
                               }
                             }
+                            svgVariables={null}
                             symbolSize={null}
                             symbolWeight={null}
                             transition={null}
@@ -119044,6 +119257,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -119359,6 +119573,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                                 "width": 19,
                               }
                             }
+                            svgVariables={null}
                             symbolSize={null}
                             symbolWeight={null}
                             transition={null}
@@ -119490,6 +119705,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                                 "width": 19,
                               }
                             }
+                            svgVariables={null}
                             symbolSize={null}
                             symbolWeight={null}
                             transition={null}
@@ -119621,6 +119837,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                                 "width": 19,
                               }
                             }
+                            svgVariables={null}
                             symbolSize={null}
                             symbolWeight={null}
                             transition={null}
@@ -120546,6 +120763,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -120967,6 +121185,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                                 "width": 19,
                               }
                             }
+                            svgVariables={null}
                             symbolSize={null}
                             symbolWeight={null}
                             transition={null}
@@ -121561,6 +121780,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -121876,6 +122096,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                                 "width": 19,
                               }
                             }
+                            svgVariables={null}
                             symbolSize={null}
                             symbolWeight={null}
                             transition={null}
@@ -122007,6 +122228,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                                 "width": 19,
                               }
                             }
+                            svgVariables={null}
                             symbolSize={null}
                             symbolWeight={null}
                             transition={null}
@@ -122138,6 +122360,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                                 "width": 19,
                               }
                             }
+                            svgVariables={null}
                             symbolSize={null}
                             symbolWeight={null}
                             transition={null}
@@ -123064,6 +123287,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -123886,6 +124110,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -124198,6 +124423,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -124510,6 +124736,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -124831,6 +125058,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -125653,6 +125881,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -125965,6 +126194,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -126277,6 +126507,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -126725,6 +126956,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -127037,6 +127269,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -127349,6 +127582,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -127661,6 +127895,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                               "width": 20,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -128109,6 +128344,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -128421,6 +128657,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -128733,6 +128970,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -129045,6 +129283,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                               "width": 26,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -129365,6 +129604,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -129901,6 +130141,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -130675,6 +130916,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -131211,6 +131453,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -131985,6 +132228,7 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -132454,6 +132698,7 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -132849,6 +133094,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -133095,6 +133341,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -133341,6 +133588,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -133590,6 +133838,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -133836,6 +134085,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -134082,6 +134332,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -134328,6 +134579,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -134574,6 +134826,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -134820,6 +135073,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -135066,6 +135320,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -135312,6 +135567,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -135558,6 +135814,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -135804,6 +136061,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -136050,6 +136308,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -136296,6 +136555,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -136542,6 +136802,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -136788,6 +137049,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -137034,6 +137296,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -137280,6 +137543,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -137526,6 +137790,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -137772,6 +138037,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -138018,6 +138284,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -138264,6 +138531,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -138510,6 +138778,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -138756,6 +139025,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -139002,6 +139272,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                         "width": 20,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -139236,6 +139507,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -139482,6 +139754,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -139728,6 +140001,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -139977,6 +140251,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -140223,6 +140498,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -140469,6 +140745,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -140715,6 +140992,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -140961,6 +141239,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -141207,6 +141486,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -141453,6 +141733,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -141699,6 +141980,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -141945,6 +142227,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -142191,6 +142474,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -142437,6 +142721,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -142683,6 +142968,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -142929,6 +143215,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -143175,6 +143462,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -143421,6 +143709,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -143667,6 +143956,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -143913,6 +144203,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -144159,6 +144450,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -144405,6 +144697,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -144651,6 +144944,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -144897,6 +145191,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -145143,6 +145438,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -145389,6 +145685,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                         "width": 26,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -145689,6 +145986,7 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -146154,6 +146452,7 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -146627,6 +146926,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -146979,6 +147279,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                                   "width": 80,
                                 }
                               }
+                              svgVariables={null}
                               symbolSize={null}
                               symbolWeight={null}
                               transition={null}
@@ -147319,6 +147620,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -147671,6 +147973,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                                   "width": 80,
                                 }
                               }
+                              svgVariables={null}
                               symbolSize={null}
                               symbolWeight={null}
                               transition={null}
@@ -148011,6 +148314,7 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -148480,6 +148784,7 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -148949,6 +149254,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -149453,6 +149759,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -149957,6 +150264,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -151260,6 +151568,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -152563,6 +152872,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -152785,6 +153095,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                               "flex": 1,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -153203,6 +153514,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -153444,6 +153756,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                                     "width": 15,
                                   }
                                 }
+                                svgVariables={null}
                                 symbolSize={null}
                                 symbolWeight={null}
                                 transition={null}
@@ -154073,6 +154386,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -154567,6 +154881,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -155011,6 +155326,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -155505,6 +155821,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -155949,6 +156266,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -156171,6 +156489,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                               "flex": 1,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -156589,6 +156908,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -156830,6 +157150,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                                     "width": 15,
                                   }
                                 }
+                                svgVariables={null}
                                 symbolSize={null}
                                 symbolWeight={null}
                                 transition={null}
@@ -157459,6 +157780,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -157834,6 +158156,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -158525,6 +158848,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -158900,6 +159224,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -159591,6 +159916,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -159966,6 +160292,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         "width": 36,
                       }
                     }
+                    svgVariables={null}
                     symbolSize={null}
                     symbolWeight={null}
                     transition={null}
@@ -160670,6 +160997,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -161148,6 +161476,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -161639,6 +161968,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -162117,6 +162447,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -162608,6 +162939,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -162859,6 +163191,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -164814,6 +165147,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -165595,6 +165929,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -165846,6 +166181,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -167760,6 +168096,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -168541,6 +168878,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -168933,6 +169271,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -169337,6 +169676,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -169594,6 +169934,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -169877,6 +170218,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -170269,6 +170611,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -170673,6 +171016,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -170956,6 +171300,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -171207,6 +171552,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -171631,6 +171977,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -171948,6 +172295,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -172225,6 +172573,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -172810,6 +173159,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -173596,6 +173946,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -173847,6 +174198,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -174271,6 +174623,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -175283,6 +175636,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -176069,6 +176423,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -176320,6 +176675,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -176744,6 +177100,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -176995,6 +177352,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -177719,6 +178077,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                               "width": 36,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -178450,6 +178809,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -178701,6 +179061,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                       "width": 15,
                                     }
                                   }
+                                  svgVariables={null}
                                   symbolSize={null}
                                   symbolWeight={null}
                                   transition={null}
@@ -179083,6 +179444,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}
@@ -179608,6 +179970,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                               "width": 46.800000000000004,
                             }
                           }
+                          svgVariables={null}
                           symbolSize={null}
                           symbolWeight={null}
                           transition={null}

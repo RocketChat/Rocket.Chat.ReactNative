@@ -1,5 +1,5 @@
 diff --git a/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/legacy/FileSystemLegacyModule.kt b/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/legacy/FileSystemLegacyModule.kt
-index 4626dac..a17bc35 100644
+index f6b7d93..880209b 100644
 --- a/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/legacy/FileSystemLegacyModule.kt
 +++ b/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/legacy/FileSystemLegacyModule.kt
 @@ -83,11 +83,20 @@ open class FileSystemLegacyModule : Module() {

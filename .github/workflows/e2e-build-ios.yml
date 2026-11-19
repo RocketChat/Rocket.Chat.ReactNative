@@ -121,7 +121,7 @@ jobs:
       - name: pod install
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         run: |
-          pnpm pod-install
+          .github/scripts/pod-install.sh
 
       - name: Decode p8
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}

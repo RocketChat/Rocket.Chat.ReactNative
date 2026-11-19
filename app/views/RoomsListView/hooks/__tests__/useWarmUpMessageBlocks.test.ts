@@ -15,7 +15,9 @@ describe('useWarmUpMessageBlocks', () => {
 			idleCallbacks.set(nextHandle, callback as () => void);
 			return nextHandle++;
 		});
-		global.cancelIdleCallback = jest.fn(handle => idleCallbacks.delete(handle));
+		global.cancelIdleCallback = jest.fn(handle => {
+			if (handle != null) idleCallbacks.delete(handle);
+		});
 		jest.mocked(warmUpMessageBlocks).mockClear();
 	});
 
