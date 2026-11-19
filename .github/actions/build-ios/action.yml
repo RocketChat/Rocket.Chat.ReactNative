@@ -37,7 +37,7 @@ runs:
   steps:
     - name: pod install
       run: |
-        pnpm pod-install
+        .github/scripts/pod-install.sh
       shell: bash
 
     - name: Decode p8
