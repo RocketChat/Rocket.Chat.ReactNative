@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { forwardRoom, type ITransferData } from '../actions/room';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
-import { type IServerRoom } from '../definitions';
+import { type IServerRoom } from '../definitions/IRoom';
 import I18n from '../i18n';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { usersAutoComplete, getRoomInfo, getDepartments } from '../lib/services/restApi';

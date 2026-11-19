@@ -17,7 +17,7 @@ jest.mock('~/i18n', () => ({
 	}
 }));
 
-jest.mock('~/lib/methods/helpers', () => ({
+jest.mock('~/lib/methods/helpers/formatAttachmentUrl', () => ({
 	formatAttachmentUrl: (url: string) => url,
 	encodeAttachmentUrl: (url: string) => url
 }));

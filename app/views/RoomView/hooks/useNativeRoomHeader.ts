@@ -10,7 +10,7 @@ import {
 	getRoomTypeIconName
 } from '~/containers/RoomTypeIcon/roomTypeIconName';
 import { getConnectionSubtitle, getPresenceLabel, joinTypingUsers } from '~/containers/RoomHeader/subtitle';
-import { type TUserStatus } from '~/definitions';
+import { type TUserStatus } from '~/definitions/TUserStatus';
 import { type IActiveUser } from '~/reducers/activeUsers';
 import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';

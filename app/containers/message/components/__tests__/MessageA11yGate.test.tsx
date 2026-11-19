@@ -1,7 +1,7 @@
 import { Text } from 'react-native';
 import { render } from '@testing-library/react-native';
 
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { A11yGateContext } from '~/containers/message/stores/A11yGate';
 import { type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 import MessageTouchable from '../Touchable/MessageTouchable';

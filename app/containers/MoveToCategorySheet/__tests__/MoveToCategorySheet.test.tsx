@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { setEnterpriseModules } from '~/actions/enterpriseModules';
 import { setUser } from '~/actions/login';
 import { selectServerSuccess } from '~/actions/server';
-import { type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { setRoomsCategory } from '~/lib/services/restApi';
 import { initStore } from '~/lib/store/auxStore';
 import { createMockedStore } from '~/reducers/mockedStore';

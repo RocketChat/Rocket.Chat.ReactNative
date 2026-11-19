@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 
-import { FormTextInput } from '.';
+import { FormTextInput } from './FormTextInput';
 
 const FormTextInputID = 'form-text-input-id';
 

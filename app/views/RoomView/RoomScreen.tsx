@@ -14,7 +14,7 @@ import { RoomMessageActions } from './components/RoomMessageActions';
 import { RoomMessageList } from './components/RoomMessageList';
 import { RoomUploadProgress } from './components/RoomUploadProgress';
 import { RoomStoreContext } from './stores/RoomStoreContext';
-import { getRoomTitle } from '~/lib/methods/helpers/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { RoomScreenContext } from './stores/RoomScreenContext';
 import { useRoomMessaging } from './hooks/useRoomMessaging';
 import { useRoomSubscription } from './hooks/useRoomSubscription';

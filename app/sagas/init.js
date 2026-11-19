@@ -13,7 +13,7 @@ import log from '../lib/methods/helpers/log';
 import { localAuthenticate, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import { runBiometricTrustMigration } from '../lib/biometricTrustStore/migration';
 import { appReady, appStart } from '../actions/app';
-import { RootEnum } from '../definitions';
+import { RootEnum } from '../definitions/redux/TRootEnum';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';

@@ -25,7 +25,7 @@ jest.mock('~/lib/hooks/useAppSelector', () => ({
 	)
 }));
 jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: jest.fn(() => false) }));
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	useActionSheet: jest.fn(() => ({ showActionSheet: jest.fn(), hideActionSheet: jest.fn() }))
 }));
 jest.mock('../useJumpToMessage', () => ({

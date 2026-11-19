@@ -8,6 +8,7 @@ import { ComposerProvider } from '../ComposerStore';
 import { createMessageActionStore, MessageActionProvider } from '~/containers/message/stores/MessageActionStore';
 import { type IComposerInput } from '../interfaces';
 import { loadDraftMessage } from '~/lib/methods/draftMessage';
+import { getMessageById } from '~/lib/database/services/Message';
 
 jest.mock('react-native', () => {
 	const actual = jest.requireActual('react-native');
@@ -46,8 +47,10 @@ jest.mock('../hooks/useIOSBackSwipeHandler', () => ({
 }));
 jest.mock('../hooks/useAutoSaveDraft', () => ({ useAutoSaveDraft: jest.fn(() => ({ saveDraft: jest.fn() })) }));
 jest.mock('~/lib/methods/draftMessage', () => ({ loadDraftMessage: jest.fn(() => Promise.resolve(undefined)) }));
+jest.mock('~/lib/database/services/Message', () => ({ getMessageById: jest.fn(() => Promise.resolve(null)) }));
 
 const mockLoadDraftMessage = loadDraftMessage as jest.Mock;
+const mockGetMessageById = getMessageById as jest.Mock;
 
 const AutocompleteProbe = () => {
 	const params = useAutocompleteParams();
@@ -65,17 +68,19 @@ const composerState = {
 
 const renderInput = ({
 	action,
-	sharing = false
+	sharing = false,
+	tmid
 }: {
 	action?: Parameters<typeof MessageActionProvider>[0]['initialAction'];
 	sharing?: boolean;
+	tmid?: string;
 } = {}) => {
 	const composerRef = createRef<IComposerInput>();
 	const inputRef = createRef<any>();
 	const messageActionStore = createMessageActionStore(action);
 	const tree = (
 		<MessageActionProvider store={messageActionStore}>
-			<ComposerProvider {...(composerState as any)} sharing={sharing}>
+			<ComposerProvider {...(composerState as any)} sharing={sharing} tmid={tmid}>
 				<MessageComposerProvider>
 					<>
 						<ComposerInput ref={composerRef} inputRef={inputRef} />
@@ -86,6 +91,7 @@ const renderInput = ({
 		</MessageActionProvider>
 	);
 	const rendered = render(tree);
+	inputRef.current?.setNativeProps.mockClear();
 	return { ...rendered, composerRef, inputRef, messageActionStore };
 };
 
@@ -131,14 +137,34 @@ describe('ComposerInput', () => {
 		expect(inputRef.current?.setNativeProps).toHaveBeenCalledWith({ text: '  programmatic text  ' });
 	});
 
-	it('resets the native text prop when clearing so the same text can be set again', () => {
+	it('clears the native input after sending through a blank text, never the sent one, so a multi-line input shrinks back', () => {
 		const { composerRef, inputRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+		const message = 'line 1\nline 2\nline 3\nline 4';
 
-		act(() => composerRef.current?.setInput('edit'));
-		act(() => composerRef.current?.setInput(''));
+		fireEvent.changeText(input, message);
+		let sent: string | undefined;
+		act(() => {
+			sent = composerRef.current?.getTextAndClear();
+		});
 
-		expect(inputRef.current?.setNativeProps).toHaveBeenLastCalledWith({ text: '' });
-		expect(inputRef.current?.clear).toHaveBeenCalledTimes(1);
+		expect(sent).toBe(message);
+		expect(composerRef.current?.getText()).toBe('');
+		const nativeTexts: string[] = inputRef.current?.setNativeProps.mock.calls.map(([props]: [{ text: string }]) => props.text);
+		expect(inputRef.current?.clear).toHaveBeenCalled();
+		expect(nativeTexts.at(-1)).toBe('');
+		expect(nativeTexts.slice(0, -1).some(text => text && text !== message)).toBe(true);
+		expect(nativeTexts).not.toContain(message);
+	});
+
+	it('resets the native text prop when the user erases everything, so the same text can be set again', () => {
+		const { inputRef } = renderInput();
+		const input = screen.getByTestId('message-composer-input');
+
+		fireEvent.changeText(input, '@');
+		fireEvent.changeText(input, '');
+
+		expect(inputRef.current?.setNativeProps.mock.calls).toEqual([[{ text: '' }]]);
 	});
 
 	it('passes the typed raw value to debounced autocomplete before the input text is trimmed', () => {
@@ -213,5 +239,18 @@ describe('ComposerInput', () => {
 
 		act(() => composerRef.current?.setInput(''));
 		expect(screen.getByText('Message #Room', { includeHiddenElements: true })).toBeOnTheScreen();
+	});
+
+	it('loads thread reply text when editing with tmid', async () => {
+		mockGetMessageById.mockResolvedValue({ id: 'reply-1', msg: 'thread reply text', attachments: [] });
+		const { composerRef } = renderInput({ action: { kind: 'edit', messageId: 'reply-1' }, tmid: 'thread-1' });
+
+		await act(async () => {
+			await Promise.resolve();
+			await Promise.resolve();
+		});
+
+		expect(mockGetMessageById).toHaveBeenCalledWith('reply-1', 'thread-1');
+		expect(composerRef.current?.getText()).toBe('thread reply text');
 	});
 });

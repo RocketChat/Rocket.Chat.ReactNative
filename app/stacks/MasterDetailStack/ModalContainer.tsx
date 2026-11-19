@@ -7,7 +7,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import sharedStyles from '~/views/Styles';
 import { themes } from '~/lib/constants/colors';
 import { type TSupportedThemes } from '~/theme';
-import { isAndroid } from '~/lib/methods/helpers';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 
 const MODAL_MARGIN = 32;
 

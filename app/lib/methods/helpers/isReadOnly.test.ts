@@ -1,8 +1,8 @@
 import { isReadOnly, isReadOnlySync } from './isReadOnly';
-import { hasPermission } from './helpers';
+import { hasPermission } from './hasPermission';
 import { store as reduxStore } from '~/lib/store/auxStore';
 
-jest.mock('./helpers', () => ({
+jest.mock('./hasPermission', () => ({
 	hasPermission: jest.fn()
 }));
 

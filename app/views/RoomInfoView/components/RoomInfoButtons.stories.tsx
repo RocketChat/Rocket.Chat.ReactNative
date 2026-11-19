@@ -2,8 +2,8 @@ import { View, StyleSheet } from 'react-native';
 import { type ComponentType, type ReactNode } from 'react';
 
 import { RoomInfoButtons } from './RoomInfoButtons';
-import type { ISubscription } from '~/definitions';
-import { SubscriptionType } from '~/definitions';
+import type { ISubscription } from '~/definitions/ISubscription';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import { clearEnterpriseModules, setEnterpriseModules } from '~/actions/enterpriseModules';
 import { setPermissions } from '~/actions/permissions';
 import { setUser } from '~/actions/login';

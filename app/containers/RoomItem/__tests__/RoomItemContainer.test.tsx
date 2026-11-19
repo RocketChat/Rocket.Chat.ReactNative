@@ -2,7 +2,7 @@ import { act, render } from '@testing-library/react-native';
 import { BehaviorSubject } from 'rxjs';
 
 import RoomItemContainer from '..';
-import { isRead } from '~/lib/methods/helpers';
+import { isRead } from '~/lib/methods/helpers/isRead';
 
 jest.mock('../RoomItem', () => {
 	const { Text: MockText } = jest.requireActual('react-native');
@@ -10,7 +10,9 @@ jest.mock('../RoomItem', () => {
 		<MockText>{`${name}:${read ? 'read' : 'unread'}:${unread}`}</MockText>
 	);
 });
-jest.mock('../../ActionSheet', () => ({ useActionSheet: () => ({ showActionSheet: jest.fn() }) }));
+jest.mock('../../ActionSheet/Provider', () => ({
+	useActionSheet: () => ({ showActionSheet: jest.fn() })
+}));
 jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: () => '7.0.0' }));
 
 const createRecord = () => {

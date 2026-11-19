@@ -4,7 +4,7 @@ import I18n from '../i18n';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants/colors';
-import { TextInput } from './TextInput';
+import { TextInput } from './TextInput/TextInput';
 
 const styles = StyleSheet.create({
 	container: {

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { useMessageAccessibilityHint } from '../useMessageAccessibilityHint';
 import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 import { MessageProvider } from '~/containers/message/stores/MessageStore';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { mockedStore } from '~/reducers/mockedStore';
 
 const buildItem = (overrides: Partial<TAnyMessageModel> = {}): TAnyMessageModel =>

@@ -1,6 +1,8 @@
 import { type ReactElement } from 'react';
 
-import { type IEmoji, type IPreviewItem, type TUserStatus } from '~/definitions';
+import { type IEmoji } from '~/definitions/IEmoji';
+import { type IPreviewItem } from '~/definitions/ISlashCommand';
+import { type TUserStatus } from '~/definitions/TUserStatus';
 
 export interface IMessageComposerRef {
 	closeEmojiKeyboardAndAction: (action?: Function, params?: any) => void;
@@ -28,7 +30,7 @@ export interface IComposerInput {
 	getSelection: () => IInputSelection;
 	setInput: TSetInput;
 	onAutocompleteItemSelected: (item: TAutocompleteItem) => void;
-	focus: () => void;
+	focus: (delay?: number) => void;
 }
 
 export interface IComposerInputProps {

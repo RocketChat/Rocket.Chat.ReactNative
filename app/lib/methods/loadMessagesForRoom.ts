@@ -1,7 +1,7 @@
 import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import { roomHistoryUiLoaderPop, roomHistoryUiLoaderPush } from '~/actions/room';
-import { type IMessage, type TMessageModel } from '~/definitions';
+import { type IMessage, type TMessageModel } from '~/definitions/IMessage';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
@@ -10,6 +10,7 @@ import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
+import { getHiddenSystemMessages } from './helpers/getHiddenSystemMessages';
 import { snapshotServerTimestamps, type TServerTimestamps, updateLastOpen } from './updateLastOpen';
 
 const COUNT = 50;
@@ -20,11 +21,7 @@ const isVisibleMainRoomMessage = (message: IMessage, hideSystemMessages: string[
 
 async function resolveHideSystemMessages(rid: string): Promise<string[]> {
 	const sub = await getSubscriptionByRoomId(rid);
-	if (Array.isArray(sub?.sysMes)) {
-		return sub.sysMes;
-	}
-	const fromSettings = store.getState().settings.Hide_System_Messages;
-	return Array.isArray(fromSettings) ? fromSettings : [];
+	return getHiddenSystemMessages(sub?.sysMes, store.getState().settings.Hide_System_Messages);
 }
 
 async function load(args: {

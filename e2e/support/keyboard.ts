@@ -1,13 +1,9 @@
-import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
-
 import { expect, type Locator } from 'e2e';
 
+import { adb } from './adb';
 import type { Fixtures } from './flows';
 import { LONG_TIMEOUT, escapeRegExp, succeeds } from './flows';
 import { delay } from './timing';
-
-const runCommand = promisify(execFile);
 
 const KEY_CODES = {
 	up: 'KEYCODE_DPAD_UP',
@@ -24,9 +20,7 @@ const KEY_PAUSE_MS = 1_000;
 const FOCUS_ATTEMPTS = 10;
 const FOCUS_CHECK_TIMEOUT = 1_000;
 
-const androidSerial = () => process.env.E2E_ANDROID_DEVICE ?? 'emulator-5554';
-
-const adbShell = (...command: string[]) => runCommand('adb', ['-s', androidSerial(), 'shell', ...command]);
+const adbShell = (...command: string[]) => adb('shell', ...command);
 
 export const pressKeys = async (...keys: HardwareKey[]) => {
 	for (const key of keys) {

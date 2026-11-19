@@ -10,12 +10,15 @@ import { shallowEqual } from 'react-redux';
 
 import { headerLeftCloseModal, headerRightActions } from '~/lib/methods/helpers/navigation/headerActions';
 import SafeAreaView from '~/containers/SafeAreaView';
-import { type ISubscription, type IUser, SubscriptionType } from '~/definitions';
+import { type ISubscription, SubscriptionType } from '~/definitions/ISubscription';
+import { type IUser } from '~/definitions/IUser';
 import I18n from '~/i18n';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { getRoomTitle, getUidDirectMessage, hasPermission } from '~/lib/methods/helpers';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
+import { hasPermission } from '~/lib/methods/helpers/hasPermission';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { handleIgnore } from '~/lib/methods/helpers/handleIgnore';
 import log, { events, logEvent } from '~/lib/methods/helpers/log';

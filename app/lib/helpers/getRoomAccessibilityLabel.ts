@@ -1,5 +1,5 @@
 import I18n from '~/i18n';
-import { type TUserStatus } from '~/definitions';
+import { type TUserStatus } from '~/definitions/TUserStatus';
 
 export interface IGetAccessibilityRoomLabel {
 	userId?: string | null;

@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-native';
 import { isValidElement } from 'react';
 
-import { NewMediaCall } from '~/containers/NewMediaCall';
+import { NewMediaCall } from '~/containers/NewMediaCall/NewMediaCall';
 import { useNewMediaCall } from './useNewMediaCall';
 
 const mockUseSubscription = jest.fn();
@@ -18,15 +18,15 @@ jest.mock('../useSubscription', () => ({
 	useSubscription: (rid?: string) => mockUseSubscription(rid)
 }));
 
-jest.mock('../useMediaCallPermission', () => ({
+jest.mock('../useMediaCallPermission/useMediaCallPermission', () => ({
 	useMediaCallPermission: () => mockUseMediaCallPermission()
 }));
 
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	showActionSheetRef: (params: unknown) => mockShowActionSheetRef(params)
 }));
 
-jest.mock('~/lib/methods/helpers/helpers', () => ({
+jest.mock('~/lib/methods/helpers/getUidDirectMessage', () => ({
 	getUidDirectMessage: (room: unknown) => mockGetUidDirectMessage(room)
 }));
 
@@ -40,7 +40,7 @@ jest.mock('~/lib/services/voip/isInActiveVoipCall', () => ({
 	useIsInActiveVoipCall: () => mockUseIsInActiveVoipCall()
 }));
 
-jest.mock('~/containers/NewMediaCall', () => ({
+jest.mock('~/containers/NewMediaCall/NewMediaCall', () => ({
 	NewMediaCall: jest.fn(() => null)
 }));
 

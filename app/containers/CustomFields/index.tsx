@@ -1,7 +1,8 @@
 import { type MutableRefObject } from 'react';
 import RNPickerSelect from 'react-native-picker-select';
 
-import { FormTextInput, type TextInputInstance } from '../TextInput';
+import { FormTextInput } from '../TextInput/FormTextInput';
+import { type TextInputInstance } from '../TextInput/TextInput';
 import useParsedCustomFields from '~/lib/hooks/useParsedCustomFields';
 
 interface ICustomFields {

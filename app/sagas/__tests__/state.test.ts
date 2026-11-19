@@ -30,7 +30,7 @@ import { appStart } from '~/actions/app';
 import { loginSuccess } from '~/actions/login';
 import { connectSuccess } from '~/actions/connect';
 import { selectServerSuccess } from '~/actions/server';
-import { RootEnum } from '~/definitions';
+import { RootEnum } from '~/definitions/redux/TRootEnum';
 import reducers from '~/reducers';
 import stateRoot from '../state';
 import { localAuthenticate } from '~/lib/methods/helpers/localAuthentication';

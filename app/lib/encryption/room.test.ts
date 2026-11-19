@@ -576,13 +576,30 @@ describe('encryptText', () => {
 });
 
 describe('encrypt', () => {
-	it('returns the message unchanged when the room is not ready', async () => {
+	it('returns nothing when the room is not ready', async () => {
 		const room = createRoom();
-		const message = { _id: 'm1', rid: 'r1', msg: 'hi' } as any;
 
-		const result = await room.encrypt(message);
+		const result = await room.encrypt({ _id: 'm1', rid: 'r1', msg: 'hi' } as any);
 
-		expect(result).toBe(message);
+		expect(result).toBeUndefined();
+	});
+
+	it('returns nothing when a suggested key was imported but the room never became ready', async () => {
+		const room = createRoom({ privateKey: 'priv' });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2ESuggestedKey: 'suggested-key', e2eKeyId: 'kid' });
+		jest
+			.spyOn(room, 'importRoomKey')
+			.mockResolvedValue({ keyID: 'sug-kid', roomKey: new ArrayBuffer(0), sessionKeyExportedString: 's', algorithm: 'A256GCM' });
+		mockE2eAcceptSuggestedGroupKey.mockRejectedValue(new Error('accept failed'));
+		mockE2eRejectSuggestedGroupKey.mockResolvedValue({ success: true });
+		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
+		await room.handshake();
+
+		const result = await room.encrypt({ _id: 'm1', rid: 'room1', msg: 'secret' } as any);
+
+		expect(room.hasSessionKey()).toBe(true);
+		expect(result).toBeUndefined();
+		(room.requestRoomKey as unknown as { stop: () => void }).stop();
 	});
 
 	it('encrypts the message text, marks it pending and strips the plaintext msg', async () => {
@@ -596,19 +613,18 @@ describe('encrypt', () => {
 
 		expect(room.encryptText).toHaveBeenCalledWith(EJSON.stringify({ msg: 'hi' }));
 		expect(result).toMatchObject({ _id: 'm1', rid: 'r1', t: E2E_MESSAGE_TYPE, e2e: E2E_STATUS.PENDING, content });
-		expect(result.msg).toBeUndefined();
+		expect(result).not.toHaveProperty('msg');
 	});
 
-	it('returns the original message when encryption throws', async () => {
+	it('returns nothing when encryption throws', async () => {
 		const room = createRoom();
 		(room as any).ready = true;
 		jest.spyOn(room, 'encryptText').mockRejectedValue(new Error('boom'));
 		const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-		const message = { _id: 'm1', rid: 'r1', msg: 'hi' } as any;
 
-		const result = await room.encrypt(message);
+		const result = await room.encrypt({ _id: 'm1', rid: 'r1', msg: 'hi' } as any);
 
-		expect(result).toBe(message);
+		expect(result).toBeUndefined();
 		consoleError.mockRestore();
 	});
 });
@@ -1272,6 +1288,48 @@ describe('handshake', () => {
 
 		expect(mockE2eRequestRoomKey).toHaveBeenCalledWith('room1', 'pending-kid');
 		expect(room.ready).toBe(false);
+		(room.requestRoomKey as unknown as { stop: () => void }).stop();
+	});
+
+	it('rejects a concurrent handshake when the running one ends without a room key', async () => {
+		const room = createRoom({ privateKey: 'priv' });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2EKey: 'broken-key', e2eKeyId: 'pending-kid' });
+		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
+		let failImport = (_error: Error) => {};
+		let markImportStarted = () => {};
+		const importStarted = new Promise<void>(resolve => {
+			markImportStarted = resolve;
+		});
+		jest.spyOn(room, 'importRoomKey').mockImplementation(() => {
+			markImportStarted();
+			return new Promise((_resolve, reject) => {
+				failImport = reject;
+			});
+		});
+
+		const running = room.handshake();
+		await importStarted;
+		const waiting = room.handshake();
+		failImport(new Error('cannot decrypt'));
+
+		await expect(waiting).rejects.toBeUndefined();
+		await running;
+		expect(room.ready).toBe(false);
+		expect(room.establishing).toBe(false);
+		(room.requestRoomKey as unknown as { stop: () => void }).stop();
+	});
+
+	it('lets a later handshake retry after a suggested key fails and the key must be requested', async () => {
+		const room = createRoom({ privateKey: 'priv' });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2ESuggestedKey: 'suggested-key', e2eKeyId: 'pending-kid' });
+		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
+		const importSpy = jest.spyOn(room, 'importRoomKey').mockRejectedValue(new Error('cannot decrypt suggestion'));
+
+		await room.handshake();
+		await room.handshake();
+
+		expect(room.establishing).toBe(false);
+		expect(importSpy).toHaveBeenCalledTimes(2);
 		(room.requestRoomKey as unknown as { stop: () => void }).stop();
 	});
 

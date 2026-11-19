@@ -2,16 +2,16 @@ import { View } from 'react-native';
 import { type ReactElement } from 'react';
 
 import { type TIconsName } from '~/containers/CustomIcon';
-import { type ISubscription, SubscriptionType } from '~/definitions';
+import { type ISubscription, SubscriptionType } from '~/definitions/ISubscription';
 import i18n from '~/i18n';
 import { useVideoConf } from '~/lib/hooks/useVideoConf';
 import styles from '../styles';
-import { compareServerVersion } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { useE2EEWarning } from '../hooks';
-import { useActionSheet } from '~/containers/ActionSheet';
-import type { TActionSheetOptionsItem } from '~/containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
+import type { TActionSheetOptionsItem } from '~/containers/ActionSheet/Provider';
 import { BaseButton } from './BaseButton';
-import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall';
+import { useNewMediaCall } from '~/lib/hooks/useNewMediaCall/useNewMediaCall';
 import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 
 type ButtonConfig = {

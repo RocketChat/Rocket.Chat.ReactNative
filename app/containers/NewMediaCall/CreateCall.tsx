@@ -7,7 +7,7 @@ import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocomplet
 import { mediaSessionInstance } from '~/lib/services/voip/MediaSessionInstance';
 import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { isSelfUserId } from '~/lib/services/voip/isSelfUserId';
-import { hideActionSheetRef } from '../ActionSheet';
+import { hideActionSheetRef } from '../ActionSheet/Provider';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import sharedStyles from '~/views/Styles';
 

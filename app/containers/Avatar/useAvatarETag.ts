@@ -2,7 +2,9 @@ import { Q } from '@nozbe/watermelondb';
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import { type Observable } from 'rxjs';
 
-import { type TLoggedUserModel, type TSubscriptionModel, type TUserModel } from '~/definitions';
+import { type TLoggedUserModel } from '~/definitions/ILoggedUser';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type TUserModel } from '~/definitions/IUser';
 import database from '~/lib/database';
 import { fetchQuerySync, findRecordSync } from '~/lib/database/readSync';
 

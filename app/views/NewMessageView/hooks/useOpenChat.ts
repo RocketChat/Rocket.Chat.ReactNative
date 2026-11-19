@@ -2,7 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback } from 'react';
 
-import { type ISearch, SubscriptionType, type TSubscriptionModel } from '~/definitions';
+import { type ISearch } from '~/definitions/ISearch';
+import { SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { assignRoomToCategory } from '~/lib/methods/assignRoomToCategory';
 import { createDirectMessage } from '~/lib/methods/createDirectMessage';

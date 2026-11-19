@@ -6,7 +6,7 @@ import { ROW_MARGIN_HORIZONTAL, ROW_PADDING_HORIZONTAL, ROW_RADIUS } from '~/con
 import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import SafeAreaView from '~/containers/SafeAreaView';
 import i18n from '~/i18n';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import CategoryOrderRow from './components/CategoryOrderRow';

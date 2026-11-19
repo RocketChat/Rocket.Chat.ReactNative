@@ -1,12 +1,13 @@
 import { type ReactElement, type Ref, useRef, useImperativeHandle } from 'react';
 import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
+import { useIsFocused } from '@react-navigation/native';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { useComposerRid, useComposerSharing, useComposerStoreApi, useComposerTmid } from './ComposerStore';
 import { useMessageActionKind, useMessageActionStoreApi } from '../message/stores/MessageActionStore';
-import { Autocomplete } from './components';
+import { Autocomplete } from './components/Autocomplete/Autocomplete';
 import { MIN_HEIGHT } from './constants';
 import {
 	MessageInnerContext,
@@ -17,13 +18,15 @@ import {
 } from './context';
 import { type IComposerInput, type IMessageComposerRef } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
-import { type IEmoji } from '~/definitions';
+import { type IEmoji } from '~/definitions/IEmoji';
 import database from '~/lib/database';
 import { sanitizeLikeString } from '~/lib/database/utils';
 import { withTriggerId } from '~/lib/apps/actions';
 import { runSlashCommand } from '~/lib/services/restApi';
 import log from '~/lib/methods/helpers/log';
-import { prepareQuoteMessage, insertEmojiAtCursor, lastGlyphLength } from './helpers';
+import { prepareQuoteMessage } from './helpers/prepareQuoteMessage';
+import { insertEmojiAtCursor } from './helpers/insertEmojiAtCursor';
+import { lastGlyphLength } from './helpers/lastGlyphLength';
 import useShortnameToUnicode from '~/lib/hooks/useShortnameToUnicode';
 import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboardWhenOrientationChanges';
 import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
@@ -70,8 +73,10 @@ export const MessageComposer = ({
 	const altTextSupported = useAltTextSupported();
 	const attachments = useComposerAttachments();
 
+	const isFocused = useIsFocused();
+
 	useBackHandler(() => {
-		if (showEmojiSearchbar) {
+		if (isFocused && (showEmojiSearchbar || showEmojiKeyboard)) {
 			resetKeyboard();
 			return true;
 		}
@@ -223,7 +228,7 @@ export const MessageComposer = ({
 		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
-	const focusComposerInput = () => composerInputComponentRef.current?.focus();
+	const focusComposerInput = (delay?: number) => composerInputComponentRef.current?.focus(delay);
 
 	const accessibilityFocusOnInput = () => {
 		const node = findNodeHandle(composerInputRef.current);
