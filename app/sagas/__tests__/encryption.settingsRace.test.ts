@@ -42,9 +42,9 @@ jest.mock('~/lib/database', () => ({
 }));
 
 import encryptionRoot from '../encryption';
-import { encryptionInit } from '~/actions/encryption';
+import { encryptionInit, encryptionStop } from '~/actions/encryption';
 import { addSettings } from '~/actions/settings';
-import { setUser, logout } from '~/actions/login';
+import { setUser } from '~/actions/login';
 import { selectServerSuccess, selectServerRequest } from '~/actions/server';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { e2eFetchMyKeys } from '~/lib/services/restApi';
@@ -132,14 +132,14 @@ describe('encryption saga — settings arriving after ENCRYPTION.INIT', () => {
 		expect(store.getState().encryption.banner).toBe(E2E_BANNER_TYPE.REQUEST_PASSWORD);
 	});
 
-	it('stops waiting for settings once the user logs out', async () => {
+	it('stops waiting for settings once logout stops E2E encryption', async () => {
 		const { store } = setupStore();
 		selectServerAndLogin(store);
 
 		store.dispatch(encryptionInit());
 		await flushSagaMicrotasks();
 
-		store.dispatch(logout(true));
+		store.dispatch(encryptionStop());
 		await flushSagaMicrotasks();
 
 		store.dispatch(addSettings({ E2E_Enable: true }));

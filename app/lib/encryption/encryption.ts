@@ -61,6 +61,12 @@ import {
 
 const ROOM_KEY_EXCHANGE_SIZE = 10;
 
+const throwIfStopped = (signal: AbortSignal) => {
+	if (signal.aborted) {
+		throw new Error('E2E encryption was stopped');
+	}
+};
+
 class Encryption {
 	ready: boolean;
 	privateKey: string | null;
@@ -168,16 +174,18 @@ class Encryption {
 	};
 
 	// Persist keys on UserPreferences
-	persistKeys = async (server: string, publicKey: JWK, privateKey: string) => {
+	persistKeys = async (server: string, publicKey: JWK, privateKey: string, signal: AbortSignal) => {
 		const privateJWK = JSON.parse(privateKey);
-		this.privateKey = await rsaImportKey(privateJWK);
+		const importedPrivateKey = await rsaImportKey(privateJWK);
+		throwIfStopped(signal);
+		this.privateKey = importedPrivateKey;
 		this.publicKey = EJSON.stringify(publicKey);
 		UserPreferences.setString(`${server}-${E2E_PUBLIC_KEY}`, this.publicKey);
 		UserPreferences.setString(`${server}-${E2E_PRIVATE_KEY}`, privateKey);
 	};
 
 	// Could not obtain public-private keypair from server.
-	createKeys = async (userId: string, server: string) => {
+	createKeys = async (userId: string, server: string, signal: AbortSignal) => {
 		// Generate new keys
 		const key = await rsaGenerateKeys(2048);
 
@@ -186,16 +194,27 @@ class Encryption {
 		const privateKey = await rsaExportKey(key.private);
 
 		// Persist these new keys
-		this.persistKeys(server, publicKey, EJSON.stringify(privateKey));
+		await this.persistKeys(server, publicKey, EJSON.stringify(privateKey), signal);
+
+		await this.uploadKeys(userId, server, signal);
+	};
+
+	uploadKeys = async (userId: string, server: string, signal: AbortSignal) => {
+		const publicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
+		const privateKey = UserPreferences.getString(`${server}-${E2E_PRIVATE_KEY}`);
+		if (!publicKey || !privateKey) {
+			throw new Error('E2E keys not found in local storage, keys not uploaded');
+		}
 
 		// Create a password to encode the private key
-		const password = await this.createRandomPassword(server);
+		const password = await this.createRandomPassword(server, signal);
 
 		// Encode the private key
-		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, userId);
+		const encodedPrivateKey = await this.encodePrivateKey(privateKey, password, userId);
+		throwIfStopped(signal);
 
 		// Send the new keys to the server
-		await e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+		await e2eSetUserPublicAndPrivateKeys(publicKey, encodedPrivateKey);
 
 		// Request e2e keys of all encrypted rooms
 		await e2eRequestSubscriptionKeys();
@@ -255,8 +274,9 @@ class Encryption {
 	};
 
 	// Create a random password to local created keys
-	createRandomPassword = async (server: string) => {
+	createRandomPassword = async (server: string, signal: AbortSignal) => {
 		const password = await generatePassphrase();
+		throwIfStopped(signal);
 		UserPreferences.setString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`, password);
 		return password;
 	};
