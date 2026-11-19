@@ -90,15 +90,6 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Cache Android AVD
-        id: avd-cache
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-${{ runner.os }}-api34
-
       # The emulator + system image live outside ~/.android/avd — cache them
       # separately so shards don't each re-download ~1 GB.
       - name: Cache Android SDK packages (emulator + system image)
@@ -111,9 +102,18 @@ jobs:
           key: android-sdk-emu-${{ runner.os }}-api34
 
       # Retried install so a corrupt partial download self-heals
-      - name: Pre-install Android SDK packages (cache miss only)
-        if: steps.sdk-cache.outputs.cache-hit != 'true'
+      - name: Pre-install Android SDK packages (updates a stale cache, retried)
+        id: sdk-install
         uses: ./.github/actions/preinstall-android-sdk
+
+      - name: Cache Android AVD (per emulator revision, so a snapshot never outlives the emulator that wrote it)
+        id: avd-cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ runner.os }}-api34-emulator-${{ steps.sdk-install.outputs.emulator-revision }}
 
       - name: Enable KVM group permissions
         if: steps.avd-cache.outputs.cache-hit != 'true'

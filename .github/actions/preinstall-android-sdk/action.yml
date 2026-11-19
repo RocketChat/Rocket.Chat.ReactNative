@@ -3,6 +3,11 @@ description: >-
   Retried install of the Android emulator + api-34 system image; clears partial
   downloads between attempts so a corrupt archive self-heals.
 
+outputs:
+  emulator-revision:
+    description: Revision of the installed emulator, for cache keys that must change with it
+    value: ${{ steps.emulator.outputs.revision }}
+
 runs:
   using: composite
   steps:
@@ -26,3 +31,12 @@ runs:
         done
         echo "sdkmanager failed to install emulator + system image after 3 attempts"
         exit 1
+
+    - name: Read emulator revision
+      id: emulator
+      shell: bash
+      run: |
+        SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+        revision="$(sed -n 's/^Pkg.Revision=//p' "$SDK/emulator/source.properties")"
+        [ -n "$revision" ] || { echo "::error::No Pkg.Revision in $SDK/emulator/source.properties"; exit 1; }
+        echo "revision=$revision" >> "$GITHUB_OUTPUT"
