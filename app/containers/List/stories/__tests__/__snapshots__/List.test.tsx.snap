@@ -5646,7 +5646,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               "overflow": "hidden",
             },
             {
-              "backgroundColor": "#0A0A0A",
+              "backgroundColor": "#1C1C1C",
             },
           ]
         }
@@ -6182,7 +6182,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               "overflow": "hidden",
             },
             {
-              "backgroundColor": "#0A0A0A",
+              "backgroundColor": "#1C1C1C",
             },
           ]
         }

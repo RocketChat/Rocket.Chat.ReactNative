@@ -6042,7 +6042,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             undefined,
           ]
         }
-        underlayColor="#1A1A1A"
+        underlayColor="#2A2A2A"
       >
         <View
           style={{}}
@@ -6458,7 +6458,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                           undefined,
                         ]
                       }
-                      underlayColor="#1A1A1A"
+                      underlayColor="#2A2A2A"
                     >
                       <View
                         accessibilityLabel="Follow thread"

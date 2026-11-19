@@ -3138,7 +3138,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 "padding": 16,
               },
               {
-                "backgroundColor": "#0A0A0A",
+                "backgroundColor": "#1C1C1C",
               },
             ]
           }
@@ -3471,7 +3471,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 "padding": 16,
               },
               {
-                "backgroundColor": "#0A0A0A",
+                "backgroundColor": "#1C1C1C",
               },
             ]
           }
@@ -3804,7 +3804,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 "padding": 16,
               },
               {
-                "backgroundColor": "#0A0A0A",
+                "backgroundColor": "#1C1C1C",
               },
             ]
           }
@@ -4004,7 +4004,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                 "padding": 16,
               },
               {
-                "backgroundColor": "#0A0A0A",
+                "backgroundColor": "#1C1C1C",
               },
             ]
           }

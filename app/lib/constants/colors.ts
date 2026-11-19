@@ -189,13 +189,13 @@ const dark = {
 
 const black = {
 	...dark,
-	surfaceLight: '#0A0A0A',
+	surfaceLight: '#1C1C1C',
 	surfaceTint: '#000000',
 	surfaceRoom: '#000000',
-	surfaceNeutral: '#1A1A1A',
-	surfaceDisabled: '#0A0A0A',
+	surfaceNeutral: '#2A2A2A',
+	surfaceDisabled: '#121212',
 	surfaceHover: '#000000',
-	surfaceSelected: '#262626',
+	surfaceSelected: '#333333',
 	surfaceHeader: '#000000'
 };
 
