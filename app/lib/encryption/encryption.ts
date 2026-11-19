@@ -77,7 +77,6 @@ class Encryption {
 	decryptionFileQueue: IDecryptionFileQueue[];
 	decryptionFileQueueActiveCount: number;
 	keyDistributionInterval: ReturnType<typeof setInterval> | null;
-	sessionAbort: AbortController;
 
 	constructor() {
 		this.userId = '';
@@ -96,7 +95,6 @@ class Encryption {
 		this.decryptionFileQueue = [];
 		this.decryptionFileQueueActiveCount = 0;
 		this.keyDistributionInterval = null;
-		this.sessionAbort = new AbortController();
 	}
 
 	// Initialize Encryption client
@@ -128,8 +126,6 @@ class Encryption {
 
 	// Stop Encryption client
 	stop = () => {
-		this.sessionAbort.abort();
-		this.sessionAbort = new AbortController();
 		this.userId = null;
 		this.privateKey = null;
 		this.publicKey = null;
@@ -178,7 +174,7 @@ class Encryption {
 	};
 
 	// Persist keys on UserPreferences
-	persistKeys = async (server: string, publicKey: JWK, privateKey: string, signal = this.sessionAbort.signal) => {
+	persistKeys = async (server: string, publicKey: JWK, privateKey: string, signal: AbortSignal) => {
 		const privateJWK = JSON.parse(privateKey);
 		const importedPrivateKey = await rsaImportKey(privateJWK);
 		throwIfStopped(signal);
@@ -189,9 +185,7 @@ class Encryption {
 	};
 
 	// Could not obtain public-private keypair from server.
-	createKeys = async (userId: string, server: string) => {
-		const { signal } = this.sessionAbort;
-
+	createKeys = async (userId: string, server: string, signal: AbortSignal) => {
 		// Generate new keys
 		const key = await rsaGenerateKeys(2048);
 
@@ -271,7 +265,7 @@ class Encryption {
 	};
 
 	// Create a random password to local created keys
-	createRandomPassword = async (server: string, signal = this.sessionAbort.signal) => {
+	createRandomPassword = async (server: string, signal: AbortSignal) => {
 		const password = await generatePassphrase();
 		throwIfStopped(signal);
 		UserPreferences.setString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`, password);

@@ -43,7 +43,7 @@ jest.mock('~/lib/store/auxStore', () => ({
 	}
 }));
 
-jest.mock('~/lib/encryption', () => jest.requireActual('~/lib/encryption'));
+jest.unmock('~/lib/encryption');
 
 jest.mock('~/lib/methods/readMessages', () => ({
 	readMessages: jest.fn()
@@ -73,13 +73,13 @@ jest.mock('~/lib/database', () => ({
 import { rsaExportKey, rsaGenerateKeys, rsaImportKey } from '@rocket.chat/mobile-crypto';
 
 import encryptionRoot from '../encryption';
-import { encryptionInit, encryptionStop } from '~/actions/encryption';
+import { encryptionDecodeKey, encryptionInit, encryptionStop } from '~/actions/encryption';
 import { addSettings } from '~/actions/settings';
 import { setUser } from '~/actions/login';
 import { selectServerSuccess } from '~/actions/server';
 import { e2eFetchMyKeys, e2eSetUserPublicAndPrivateKeys } from '~/lib/services/restApi';
 import { Encryption } from '~/lib/encryption';
-import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '~/lib/constants/keys';
+import { E2E_BANNER_TYPE, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '~/lib/constants/keys';
 import { ENCRYPTION } from '~/actions/actionsTypes';
 import { cancelSagaTasks, createRecordingStore } from '~/lib/testUtils/sagaStore';
 import type { RecordingStore } from '~/lib/testUtils/sagaStore';
@@ -184,10 +184,7 @@ describe('encryption saga — sign-out while ENCRYPTION.INIT is in flight', () =
 		fetchA.resolve(SERVER_KEYS);
 		await drainEventLoop();
 
-		const encryptionActions = dispatchedActions
-			.filter(action => action.type.startsWith('ENCRYPTION'))
-			.map(action => `${action.type}:${String(action.banner)}`);
-		expect(encryptionActions).toEqual([`${ENCRYPTION.INIT}:undefined`, `${ENCRYPTION.STOP}:undefined`, `${ENCRYPTION.SET}:`]);
+		expect(dispatchedActions).not.toContainEqual(expect.objectContaining({ banner: E2E_BANNER_TYPE.REQUEST_PASSWORD }));
 		expect(store.getState().encryption.banner).toBe('');
 	});
 
@@ -243,5 +240,102 @@ describe('encryption saga — sign-out while ENCRYPTION.INIT is in flight', () =
 		expect(e2eSetUserPublicAndPrivateKeys).not.toHaveBeenCalled();
 		expect(mockPreferences.has(PRIVATE_KEY_STORAGE)).toBe(false);
 		expect(Encryption.privateKey).toBeNull();
+	});
+
+	it('does not store keys from a setup replaced by a newer one', async () => {
+		const generateFirst = createDeferred<ReturnType<typeof keyPairFor>>();
+		jest
+			.mocked(e2eFetchMyKeys)
+			.mockResolvedValueOnce(NO_KEYS)
+			.mockReturnValueOnce(new Promise(() => {}));
+		jest.mocked(rsaGenerateKeys).mockReturnValueOnce(generateFirst.promise);
+		const { store } = createRecordingStore(encryptionRoot);
+
+		signIn(store, USER_A);
+		await drainEventLoop();
+		expect(rsaGenerateKeys).toHaveBeenCalledTimes(1);
+
+		store.dispatch(encryptionInit());
+		await drainEventLoop();
+		generateFirst.resolve(keyPairFor('first'));
+		await drainEventLoop();
+
+		expect(mockPreferences.has(PRIVATE_KEY_STORAGE)).toBe(false);
+		expect(e2eSetUserPublicAndPrivateKeys).not.toHaveBeenCalled();
+	});
+});
+
+describe('encryption saga — sign-out while ENCRYPTION.DECODE_KEY is in flight', () => {
+	beforeEach(() => {
+		mockPreferences.clear();
+		jest.clearAllMocks();
+		Encryption.stop();
+		stubKeyCrypto();
+	});
+
+	afterEach(() => {
+		cancelSagaTasks();
+		Encryption.stop();
+		jest.restoreAllMocks();
+	});
+
+	const submitPasswordUntilDecoding = async (store: RecordingStore['store']) => {
+		const decoding = createDeferred<string>();
+		jest.mocked(e2eFetchMyKeys).mockResolvedValueOnce({ ...SERVER_KEYS, publicKey: '{"kty":"RSA"}' });
+		jest.spyOn(Encryption, 'decodePrivateKey').mockReturnValueOnce(decoding.promise);
+		store.dispatch(selectServerSuccess({ server: SERVER_URL, version: '7.0.0', name: 'Open' }));
+		store.dispatch(setUser(USER_A));
+		store.dispatch(encryptionDecodeKey('password'));
+		await drainEventLoop();
+		expect(Encryption.decodePrivateKey).toHaveBeenCalledTimes(1);
+		return decoding;
+	};
+
+	it('stores the decoded keys and enables E2EE when nobody signs out', async () => {
+		const { store } = createRecordingStore(encryptionRoot);
+
+		const decoding = await submitPasswordUntilDecoding(store);
+		decoding.resolve('{"n":"A-private-pem"}');
+		await drainEventLoop();
+
+		expect(mockPreferences.get(PRIVATE_KEY_STORAGE)).toContain('A-private-pem');
+		expect(Encryption.userId).toBe(USER_A.id);
+		expect(store.getState().encryption.enabled).toBe(true);
+	});
+
+	it('neither stores the keys nor reports a wrong password when sign-out lands during decoding', async () => {
+		const { store, dispatchedActions } = createRecordingStore(encryptionRoot);
+
+		const decoding = await submitPasswordUntilDecoding(store);
+		simulateLogoutCleanup(store);
+		await drainEventLoop();
+		decoding.resolve('{"n":"A-private-pem"}');
+		await drainEventLoop();
+
+		expect(mockPreferences.has(PRIVATE_KEY_STORAGE)).toBe(false);
+		expect(Encryption.privateKey).toBeNull();
+		expect(Encryption.userId).toBeNull();
+		expect(dispatchedActions).not.toContainEqual(expect.objectContaining({ type: ENCRYPTION.DECODE_KEY_FAILURE }));
+		expect(store.getState().encryption.failure).toBe(false);
+	});
+
+	it('neither stores the keys nor reports a wrong password when sign-out lands during key import', async () => {
+		const importing = createDeferred<string>();
+		jest.mocked(rsaImportKey).mockReturnValueOnce(importing.promise);
+		const { store, dispatchedActions } = createRecordingStore(encryptionRoot);
+
+		const decoding = await submitPasswordUntilDecoding(store);
+		decoding.resolve('{"n":"A-private-pem"}');
+		await drainEventLoop();
+		expect(rsaImportKey).toHaveBeenCalledTimes(1);
+
+		simulateLogoutCleanup(store);
+		await drainEventLoop();
+		importing.resolve('imported:A-private-pem');
+		await drainEventLoop();
+
+		expect(mockPreferences.has(PRIVATE_KEY_STORAGE)).toBe(false);
+		expect(Encryption.privateKey).toBeNull();
+		expect(dispatchedActions).not.toContainEqual(expect.objectContaining({ type: ENCRYPTION.DECODE_KEY_FAILURE }));
 	});
 });

@@ -33,6 +33,7 @@ const waitForE2eEnable = function* waitForE2eEnable() {
 };
 
 const handleEncryptionInit = function* handleEncryptionInit() {
+	const controller = new AbortController();
 	try {
 		const server = yield select(getServer);
 		const user = yield select(getUserSelector);
@@ -81,10 +82,10 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 
 		if (storedPublicKey && storedPrivateKey) {
 			// Persist these keys
-			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey);
+			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey, controller.signal);
 		} else {
 			// Create new keys since the user doesn't have any
-			yield Encryption.createKeys(user.id, server);
+			yield Encryption.createKeys(user.id, server, controller.signal);
 		}
 
 		// If the user has a private key stored, but never entered the password
@@ -100,14 +101,9 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		Encryption.initialize(user.id);
 	} catch (e) {
 		log(e);
+	} finally {
+		controller.abort();
 	}
-};
-
-const handleEncryptionInitUntilStop = function* handleEncryptionInitUntilStop() {
-	yield race({
-		init: call(handleEncryptionInit),
-		stop: take(ENCRYPTION.STOP)
-	});
 };
 
 const handleEncryptionStop = function* handleEncryptionStop() {
@@ -118,6 +114,7 @@ const handleEncryptionStop = function* handleEncryptionStop() {
 };
 
 const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password }) {
+	const controller = new AbortController();
 	try {
 		const server = yield select(getServer);
 		const user = yield select(getUserSelector);
@@ -131,7 +128,7 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		const privateKey = yield Encryption.decodePrivateKey(keys?.privateKey, password, user.id);
 
 		// Persist these decrypted keys
-		yield Encryption.persistKeys(server, publicKey, privateKey);
+		yield Encryption.persistKeys(server, publicKey, privateKey, controller.signal);
 
 		// Decrypt all pending messages/subscriptions
 		Encryption.initialize(user.id);
@@ -148,12 +145,22 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		log(e);
 		// Can't decrypt user private key
 		yield put(encryptionDecodeKeyFailure());
+	} finally {
+		controller.abort();
 	}
 };
 
+const untilEncryptionStop = saga =>
+	function* runUntilEncryptionStop(action) {
+		yield race({
+			run: call(saga, action),
+			stop: take(ENCRYPTION.STOP)
+		});
+	};
+
 const root = function* root() {
-	yield takeLatest(ENCRYPTION.INIT, handleEncryptionInitUntilStop);
+	yield takeLatest(ENCRYPTION.INIT, untilEncryptionStop(handleEncryptionInit));
 	yield takeLatest(ENCRYPTION.STOP, handleEncryptionStop);
-	yield takeLatest(ENCRYPTION.DECODE_KEY, handleEncryptionDecodeKey);
+	yield takeLatest(ENCRYPTION.DECODE_KEY, untilEncryptionStop(handleEncryptionDecodeKey));
 };
 export default root;
