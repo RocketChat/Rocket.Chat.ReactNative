@@ -1,3 +1,91 @@
+diff --git a/node_modules/@expo/ui/ios/Modifiers/HostViewContentMarginsMitigation.swift b/node_modules/@expo/ui/ios/Modifiers/HostViewContentMarginsMitigation.swift
+index 9ec58aa..0ba43a0 100644
+--- a/node_modules/@expo/ui/ios/Modifiers/HostViewContentMarginsMitigation.swift
++++ b/node_modules/@expo/ui/ios/Modifiers/HostViewContentMarginsMitigation.swift
+@@ -45,12 +45,7 @@ internal struct HostViewContentMarginsMitigation: ViewModifier {
+       content
+         .contentMargins(.leading, margins.leading, for: .scrollContent)
+         .contentMargins(.trailing, margins.trailing, for: .scrollContent)
+-        .onGeometryChange(for: CGRect.self, of: { proxy in proxy.frame(in: .global) }) { _ in
+-          updateMargins()
+-        }
+-        .onGeometryChange(for: EdgeInsets.self, of: { proxy in proxy.safeAreaInsets }) { _ in
+-          updateMargins()
+-        }
++        .background(InsetsChangeObserver(onChange: updateMargins))
+     } else {
+       content
+     }
+@@ -60,12 +55,18 @@ internal struct HostViewContentMarginsMitigation: ViewModifier {
+   }
+ 
+ #if os(iOS)
+-  /// UIKit can update the screen's layout margins after SwiftUI reports the geometry change, as
++  /// UIKit can update the screen's layout margins after the observer reports a change, as
+   /// when the window moves into a split view, so the margins are checked again once that settles.
+   private func updateMargins() {
+-    margins = affectedMargins()
++    applyMargins(affectedMargins())
+     DispatchQueue.main.async {
+-      margins = affectedMargins()
++      applyMargins(affectedMargins())
++    }
++  }
++
++  private func applyMargins(_ newMargins: Margins) {
++    if margins != newMargins {
++      margins = newMargins
+     }
+   }
+ 
+@@ -96,3 +97,47 @@ internal struct HostViewContentMarginsMitigation: ViewModifier {
+   }
+ #endif
+ }
++
++#if os(iOS)
++/// Reports the UIKit changes the margins depend on. Reading the safe area or global frame through
++/// SwiftUI geometry instead freezes the hosted accessibility frames where the `Host` first appeared,
++/// mid-transition for a pushed screen, until the next touch.
++private struct InsetsChangeObserver: UIViewRepresentable {
++  let onChange: () -> Void
++
++  func makeUIView(context: Context) -> InsetsChangeObserverView {
++    let view = InsetsChangeObserverView()
++    view.isUserInteractionEnabled = false
++    view.preservesSuperviewLayoutMargins = true
++    return view
++  }
++
++  func updateUIView(_ uiView: InsetsChangeObserverView, context: Context) {
++    uiView.onChange = onChange
++  }
++}
++
++private final class InsetsChangeObserverView: UIView {
++  var onChange: (() -> Void)?
++
++  override func didMoveToWindow() {
++    super.didMoveToWindow()
++    onChange?()
++  }
++
++  override func layoutSubviews() {
++    super.layoutSubviews()
++    onChange?()
++  }
++
++  override func safeAreaInsetsDidChange() {
++    super.safeAreaInsetsDidChange()
++    onChange?()
++  }
++
++  override func layoutMarginsDidChange() {
++    super.layoutMarginsDidChange()
++    onChange?()
++  }
++}
++#endif
 diff --git a/node_modules/@expo/ui/ios/Picker/PickerView.swift b/node_modules/@expo/ui/ios/Picker/PickerView.swift
 index c78f278..80808ad 100644
 --- a/node_modules/@expo/ui/ios/Picker/PickerView.swift
