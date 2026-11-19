@@ -44,9 +44,7 @@ const expectThreadOpened = async (fixtures: Fixtures) => {
 };
 
 const inlineTarget = ({ screen, platform }: Fixtures, messageTestId: string, name: string) =>
-	platform === 'android'
-		? screen.getByRole('button', { name: new RegExp(`^${escapeRegExp(name)}$`) })
-		: screen.getByTestId(messageTestId);
+	platform === 'android' ? screen.getByLabel(new RegExp(`^${escapeRegExp(name)}$`)) : screen.getByTestId(messageTestId);
 
 test('opens markdown mentions, links and threads', { tags: ['test-2'] }, async fixtures => {
 	const { screen } = fixtures;

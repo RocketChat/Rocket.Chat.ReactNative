@@ -9,21 +9,19 @@ const MarkdownContent = () => {
 	const user = useMessageUser();
 	const onLinkPress = useOnLinkPress();
 	const navToRoomInfo = useNavToRoomInfo();
-	const { md, mentions, channels, t: type } = useMarkdownData();
-	const { messageText, isTranslated } = useMessageText();
+	const { mentions, channels } = useMarkdownData();
+	const { messageText } = useMessageText();
 
 	return (
 		<ContentWrapper>
 			<Markdown
 				msg={messageText}
-				md={type !== 'e2e' ? md : undefined}
 				username={user?.username ?? ''}
 				channels={channels}
 				mentions={mentions}
 				navToRoomInfo={navToRoomInfo}
 				useRealName={useRealName}
 				onLinkPress={onLinkPress}
-				isTranslated={isTranslated}
 			/>
 		</ContentWrapper>
 	);

@@ -75,7 +75,7 @@ jobs:
           - name: Upload sourcemaps/NDK symbols to Bugsnag
             run: |
               pnpm bugsnag:upload-android --variant release --app-manifest android/app/build/intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml
-              pnpm exec bugsnag-cli upload android-aab android/app/build/outputs/bundle/release/app-release.aab
+              pnpm exec bugsnag-cli upload android-aab --exclude "**/libratex_ffi.so*" android/app/build/outputs/bundle/release/app-release.aab
 
           - name: Upload AAB
             uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
