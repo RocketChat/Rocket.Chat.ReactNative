@@ -54,6 +54,7 @@ export interface IElement {
 	placeholder?: IText;
 	actionId?: string;
 	initialValue?: any;
+	initialOption?: Option;
 	options?: Option[];
 	text?: IText;
 	value?: any;
@@ -218,6 +219,13 @@ export interface IInputIndex {
 	label?: IText;
 	description?: IText;
 	hint?: IText;
+}
+
+export interface IRadioButton {
+	element: IElement;
+	value?: Option['value'];
+	loading: boolean;
+	onChange: (params: { value: Option['value'] }) => void;
 }
 
 export interface IThumb {
