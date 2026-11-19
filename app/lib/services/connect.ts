@@ -88,6 +88,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		sdk.initialize(server);
 		getSettings(server);
 
+		const { driver } = sdk;
 		sdk
 			.connect()
 			.then(() => {
@@ -95,6 +96,10 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 			.catch((err: unknown) => {
 				console.log('connect error', err);
+				// A failed plain open schedules no Reopen; a forced attempt enters the SDK's reopen loop.
+				if (driver && sdk.driver === driver) {
+					driver.reopenNow().catch(() => {});
+				}
 			});
 
 		connectingListener = sdk.onStreamData('connecting', () => {
