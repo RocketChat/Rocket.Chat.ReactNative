@@ -57,7 +57,7 @@
 		"@rocket.chat/media-signaling": "1.0.0-rc.1",
 		"@rocket.chat/message-parser": "0.31.36",
 		"@rocket.chat/mobile-crypto": "RocketChat/rocket.chat-mobile-crypto#main",
-		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#08e28b83aeb1ff7d4715b1505e42f2c1e8335f5a",
+		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#1544a6d8f3febeba47caa41ab48e4f540715a193",
 		"@rocket.chat/ui-kit": "^0.39.0",
 		"@zoontek/react-native-navigation-bar": "^1.1.1",
 		"axios": "0.30.3",
