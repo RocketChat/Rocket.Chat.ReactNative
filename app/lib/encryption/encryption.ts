@@ -474,15 +474,8 @@ class Encryption {
 
 		const randomRoomIds = sampleSize(roomIds, ROOM_KEY_EXCHANGE_SIZE);
 
-		const sampleIds: string[] = [];
-		for await (const roomId of randomRoomIds) {
-			const roomE2E = await this.getRoomInstance(roomId);
-			if (!roomE2E || !roomE2E?.hasSessionKey()) {
-				continue;
-			}
-
-			sampleIds.push(roomId);
-		}
+		const roomInstances = await Promise.all(randomRoomIds.map(roomId => this.getRoomInstance(roomId)));
+		const sampleIds = randomRoomIds.filter((_, index) => roomInstances[index]?.hasSessionKey());
 
 		if (!sampleIds.length && roomIds.length > limit) {
 			return this.getSample(roomIds, limit - 1);
