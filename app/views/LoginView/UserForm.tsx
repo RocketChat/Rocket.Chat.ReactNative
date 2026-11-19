@@ -123,7 +123,7 @@ const UserForm = () => {
 					placeholder={Accounts_PasswordPlaceholder}
 					returnKeyType='send'
 					secureTextEntry
-					onSubmitEditing={handleSubmit(submit)}
+					onSubmitEditing={() => handleSubmit(submit)()}
 					testID='login-view-password'
 					textContentType='password'
 					autoComplete='password'

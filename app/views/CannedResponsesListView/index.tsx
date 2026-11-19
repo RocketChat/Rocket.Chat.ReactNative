@@ -272,7 +272,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 				onEndReached={onEndReached}
 				onEndReachedThreshold={0.5}
 				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={loading ? <ActivityIndicator /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator /> : undefined}
 			/>
 		);
 	};

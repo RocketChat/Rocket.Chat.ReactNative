@@ -1,4 +1,4 @@
-import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { type ComponentRef, forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { TextInput, StyleSheet, type TextInputProps, Text, View } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
@@ -40,7 +40,7 @@ import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
-const allowGrowingFromEmptyText = (input: TextInput | null) => {
+const allowGrowingFromEmptyText = (input: ComponentRef<typeof TextInput> | null) => {
 	input?.setNativeProps?.({ text: ' ' });
 	input?.setNativeProps?.({ text: '' });
 };
@@ -416,7 +416,6 @@ export const ComposerInput = memo(
 					<Text
 						style={[styles.placeholder, { color: colors.fontAnnotation }]}
 						numberOfLines={1}
-						pointerEvents='none'
 						accessibilityElementsHidden
 						importantForAccessibility='no-hide-descendants'>
 						{placeholder}
@@ -451,6 +450,7 @@ const styles = StyleSheet.create({
 		top: 12,
 		left: 0,
 		right: 0,
+		pointerEvents: 'none',
 		...composerText
 	}
 });

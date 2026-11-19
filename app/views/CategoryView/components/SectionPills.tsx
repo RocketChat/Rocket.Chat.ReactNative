@@ -1,5 +1,5 @@
 import * as Haptics from 'expo-haptics';
-import { useRef, useState } from 'react';
+import { type ComponentRef, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View, type LayoutChangeEvent } from 'react-native';
 
 import { useTheme } from '~/theme';
@@ -10,7 +10,7 @@ const HORIZONTAL_PADDING = 16;
 
 const SectionPills = ({ sections, selectedHeader, onSelect }: ISectionPills) => {
 	const { colors } = useTheme();
-	const scrollViewRef = useRef<ScrollView>(null);
+	const scrollViewRef = useRef<ComponentRef<typeof ScrollView>>(null);
 	const [initialHeader] = useState(selectedHeader);
 	const hasScrolledToInitialSelection = useRef(false);
 
