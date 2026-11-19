@@ -168,6 +168,8 @@ describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
 
 		await jest.advanceTimersByTimeAsync(100);
 
+		await resumeLogin(driver);
+		expect(framesOn(mockConnections[1], 'sub')).toHaveLength(0);
 		await addMediaSubs(driver, USER_ID);
 		await jest.advanceTimersByTimeAsync(200);
 		await accept;
