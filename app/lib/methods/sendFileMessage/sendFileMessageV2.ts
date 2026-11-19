@@ -42,14 +42,14 @@ export async function sendFileMessageV2(
 			return;
 		}
 		const { file, getContent, fileContent } = await Encryption.encryptFile(rid, fileInfo);
-		file.path = await copyFileToCacheDirectoryIfNeeded(file.path, file.name);
+		const fileUri = await copyFileToCacheDirectoryIfNeeded(file.path, file.name);
 
 		const formData: IFormData[] = [];
 		formData.push({
 			name: 'file',
 			type: file.type,
 			filename: file.name,
-			uri: file.path
+			uri: fileUri
 		});
 		if (fileContent) {
 			formData.push({
