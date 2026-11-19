@@ -56,7 +56,6 @@ export interface IMockSdkDriver extends ISocketDriver {
 		send(message: Record<string, unknown>): Promise<unknown>;
 		subscribe(name: string, params: unknown[]): Promise<unknown>;
 		login(credentials: { resume: string }): Promise<unknown>;
-		subscriptions: Record<string, { id: string; name: string; params: string[]; unsubscribe: jest.Mock }>;
 	};
 }
 
@@ -130,15 +129,19 @@ export async function resumeLogin(driver: IMockSdkDriver): Promise<void> {
 	const loggingIn = driver.socket.login({ resume: 'auth-token' });
 	await jest.advanceTimersByTimeAsync(0);
 	await loggingIn;
-	await jest.advanceTimersByTimeAsync(0);
 }
 
 export function backdateLastPing(driver: IMockSdkDriver, ageMs: number): void {
 	driver.socket.lastPing = Date.now() - ageMs;
 }
 
-export function stopAnsweringFrames(connection: MockConnection): void {
-	connection.send.mockImplementation(() => undefined);
+export function stopAnsweringFrames(connection: MockConnection, msg?: string): void {
+	const answer = connection.send.getMockImplementation();
+	connection.send.mockImplementation((frame: string) => {
+		if (msg && (JSON.parse(frame) as IDdpMessage).msg !== msg) {
+			answer?.(frame);
+		}
+	});
 }
 
 export interface IMockCollection {

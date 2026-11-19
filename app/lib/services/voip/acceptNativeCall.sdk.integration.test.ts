@@ -108,6 +108,7 @@ describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
 		const mediaSession = makeMediaSession();
 
 		await addMediaSubs(driver, USER_ID);
+		const mediaSubIds = framesOn(mockConnections[0], 'sub').map(frame => frame.id);
 		backdateLastPing(driver, PING_INTERVAL * 3);
 
 		const accept = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
@@ -115,11 +116,13 @@ describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
 		mockConnections[1].onopen();
 		await jest.advanceTimersByTimeAsync(200);
 		expect(mediaSession.answerCall).not.toHaveBeenCalled();
+		expect(framesOn(mockConnections[1], 'sub')).toHaveLength(0);
 
 		await resumeLogin(driver);
 		await jest.advanceTimersByTimeAsync(200);
 		await accept;
 
+		expect(framesOn(mockConnections[1], 'sub').map(frame => frame.id)).toEqual(mediaSubIds);
 		expect(mockWaitForLoginReady).toHaveBeenCalledTimes(1);
 		expect(mediaSession.applyRestStateSignals).toHaveBeenCalledTimes(1);
 		expect(mediaSession.answerCall).toHaveBeenCalledWith(CALL_ID);
@@ -138,12 +141,14 @@ describe('acceptNativeCallWithReadiness against the real SDK socket', () => {
 		const accept = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 		await jest.advanceTimersByTimeAsync(0);
 		mockConnections[1].onopen();
-
-		stopAnsweringFrames(mockConnections[1]);
+		stopAnsweringFrames(mockConnections[1], 'sub');
 		await jest.advanceTimersByTimeAsync(0);
+
+		await resumeLogin(driver);
 		await jest.advanceTimersByTimeAsync(8000);
 		await accept;
 
+		expect(framesOn(mockConnections[1], 'sub')).toHaveLength(2);
 		expect(mockTerminateNativeCall).toHaveBeenCalledWith(CALL_ID);
 		expect(resetNativeCallId).toHaveBeenCalled();
 		expect(mediaSession.endCall).toHaveBeenCalledWith(CALL_ID);

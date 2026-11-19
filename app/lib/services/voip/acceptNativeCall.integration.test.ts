@@ -151,14 +151,12 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 	});
 
 	it('runs the failure ladder once and leaves nothing behind when readiness never lands', async () => {
-		driver.socket.subscriptions = {};
 		const resetNativeCallId = jest.fn();
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId });
 		const mediaSession = makeMediaSession();
 
 		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 
-		// Login never authenticates and the media subs never ack.
 		await jest.advanceTimersByTimeAsync(READINESS_TIMEOUT);
 		await gate;
 
