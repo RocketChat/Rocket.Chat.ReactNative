@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, Keyboard, Text, type TextInput, View } from 'react-native';
+import { AccessibilityInfo, Keyboard, Text, View } from 'react-native';
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,6 +13,7 @@ import Button from '~/containers/Button';
 import FormContainer, { FormContainerInner } from '~/containers/FormContainer';
 import LoginServices from '~/containers/LoginServices';
 import { ControlledFormTextInput } from '~/containers/TextInput/ControlledFormTextInput';
+import { type TextInputInstance } from '~/containers/TextInput/TextInput';
 import I18n from '~/i18n';
 import { outsideHeaderRightLegal } from '~/lib/methods/helpers/navigation';
 import { getShowLoginButton } from '~/selectors/login';
@@ -82,7 +83,7 @@ const RegisterView = ({ route }: RegisterViewProps) => {
 	const [customFields, setCustomFields] = useState(() => getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
 	const { passwordPolicies, isPasswordValid } = useVerifyPassword(password, confirmPassword);
-	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
+	const customFieldsRef = useRef<{ [key: string]: TextInputInstance | undefined }>({});
 
 	const focusOnCustomFields = () => {
 		if (!parsedCustomFields) return;

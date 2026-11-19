@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { type StyleProp } from 'react-native';
 import { Image, type ImageStyle } from 'expo-image';
 
 import { type IOmnichannelSource } from '~/definitions/IRoom';
@@ -11,7 +12,7 @@ import { useUserStatusColor } from '~/lib/hooks/useUserStatusColor';
 interface IOmnichannelRoomIconProps {
 	size: number;
 	type: string;
-	style?: ImageStyle;
+	style?: StyleProp<ImageStyle>;
 	status?: TUserStatus;
 	sourceType?: IOmnichannelSource;
 }
