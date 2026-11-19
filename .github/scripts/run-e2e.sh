@@ -62,8 +62,8 @@ ANDROID_ROOT_ATTEMPTS=3
 
 root_android_adbd() {
   for attempt in $(seq 1 "$ANDROID_ROOT_ATTEMPTS"); do
-    adb -s "$ANDROID_DEVICE" root || true
-    adb -s "$ANDROID_DEVICE" wait-for-device
+    bounded_adb root || true
+    bounded_adb wait-for-device || true
     if [ "$(android_shell id -u 2>/dev/null | tr -d '\r')" = "0" ]; then
       return 0
     fi
