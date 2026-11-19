@@ -17,6 +17,8 @@ type PendingSend = { resolve: (response: unknown) => void; reject: (error: unkno
 
 const mockRows = new Map<string, UploadRow>();
 const mockSends: PendingSend[] = [];
+const mockCancelledSends: PendingSend[] = [];
+let mockHoldCancelledSends = false;
 
 jest.mock('react-native', () => ({ Alert: { alert: jest.fn() } }));
 jest.mock('~/i18n', () => ({ __esModule: true, default: { t: (key: string) => key } }));
@@ -47,6 +49,10 @@ jest.mock('../../helpers/fileUpload', () => ({
 		}
 
 		cancel() {
+			if (mockHoldCancelledSends && this.pending) {
+				mockCancelledSends.push(this.pending);
+				return;
+			}
 			setImmediate(() => this.pending?.reject(new Error('Upload Cancelled')));
 		}
 	}
@@ -102,6 +108,8 @@ const latestSend = () => mockSends[mockSends.length - 1];
 beforeEach(() => {
 	mockRows.clear();
 	mockSends.length = 0;
+	mockCancelledSends.length = 0;
+	mockHoldCancelledSends = false;
 	Object.keys(uploadQueue).forEach(key => delete uploadQueue[key]);
 	(Alert.alert as jest.Mock).mockClear();
 	jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -169,5 +177,25 @@ describe.each([
 		expect(Alert.alert).not.toHaveBeenCalled();
 		latestSend().resolve(acceptedResponse);
 		await second;
+	});
+
+	it('keeps the new upload running when a cancelled upload settles after the file was sent again', async () => {
+		mockHoldCancelledSends = true;
+		const first = send(rid, file(), undefined, server, user);
+		await flush();
+		await cancelUpload(mockRows.get(uploadPath) as any, rid);
+
+		const second = send(rid, file(), undefined, server, user);
+		await flush();
+		expect(mockSends).toHaveLength(2);
+
+		mockCancelledSends[0].reject(new Error('Upload Cancelled'));
+		await expect(first).resolves.toBeUndefined();
+		expect(mockRows.get(uploadPath)?.error).toBe(false);
+		expect(isUploadActive('file:///tmp/pic.jpg', rid)).toBe(true);
+
+		latestSend().resolve(acceptedResponse);
+		await expect(second).resolves.toBeUndefined();
+		expect(isUploadActive('file:///tmp/pic.jpg', rid)).toBe(false);
 	});
 });
