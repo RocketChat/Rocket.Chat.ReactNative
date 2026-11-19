@@ -1,6 +1,4 @@
 /**
- * @jest-environment node
- *
  * iOS-only paths: isIOS = true, NativeEventEmitter for VoIP events, CallKit listeners.
  */
 import RNCallKeep from 'react-native-callkeep';
@@ -40,9 +38,6 @@ function mockMakeAddListener(bucket: Record<string, ((payload: unknown) => void)
 	};
 }
 
-/** Minimal RN surface for MediaCallEvents — avoid `requireActual('react-native')` in @jest-environment node.
- * addListener is defined as a method (not a field initializer) so that mockNativeVoipListeners is
- * captured lazily at call time rather than eagerly when the mock factory / class field runs. */
 jest.mock('react-native', () => ({
 	Platform: { OS: 'ios' },
 	DeviceEventEmitter: {
