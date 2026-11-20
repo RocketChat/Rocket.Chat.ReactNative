@@ -145,6 +145,10 @@ describe('markdown serialize', () => {
 		expect(serialize('before ||hidden|| after')).toBe('before ||hidden|| after');
 	});
 
+	it('keeps the lines of a multi-line quote in one paragraph with hard line breaks', () => {
+		expect(serialize('> first\n> second\n> third')).toBe('> first\\\n> second\\\n> third');
+	});
+
 	it('serializes a horizontal rule as a thematic break', () => {
 		expect(serialize('---')).toBe('---');
 	});

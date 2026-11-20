@@ -377,7 +377,7 @@ const serializeBlock = (block: Paragraph | Blocks, context: ISerializeContext): 
 			return block.value
 				.map(item => serializeParagraphValue(item.value, context) ?? '')
 				.map(line => `> ${line}`)
-				.join('\n>\n');
+				.join('\\\n');
 		case 'UNORDERED_LIST':
 		case 'ORDERED_LIST':
 		case 'TASKS':
