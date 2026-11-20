@@ -1,6 +1,6 @@
-import { act, render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import axios from 'axios';
 
@@ -13,7 +13,7 @@ import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { MessageRoomProvider } from '~/containers/message/stores/MessageRoomStore';
 import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import { store as auxStore } from '~/lib/store/auxStore';
-import { WidthAwareContext } from '../WidthAwareView';
+import { WidthAwareView } from '../WidthAwareView';
 import Urls from '../Urls';
 
 jest.mock('axios', () => ({ head: jest.fn() }));
@@ -37,17 +37,20 @@ const renderUrl = (url: Partial<IUrl>, measuredWidth = 300) => {
 		urls: [{ title: 'Pull request', description: 'Description', ...url }]
 	} as unknown as TAnyMessageModel;
 
-	return render(
+	const rendered = render(
 		<Provider store={store}>
 			<MessageRoomProvider>
 				<MessageProvider item={item}>
-					<WidthAwareContext.Provider value={measuredWidth}>
-						<Urls />
-					</WidthAwareContext.Provider>
+					<Urls />
 				</MessageProvider>
 			</MessageRoomProvider>
 		</Provider>
 	);
+	if (measuredWidth) {
+		const measuredView = screen.UNSAFE_getByType(WidthAwareView).findByType(View);
+		fireEvent(measuredView, 'layout', { nativeEvent: { layout: { width: measuredWidth } } });
+	}
+	return rendered;
 };
 
 const getImageStyle = () => StyleSheet.flatten(screen.UNSAFE_getByType(ExpoImage).props.style);

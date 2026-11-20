@@ -304,7 +304,6 @@ describe('MessageStore', () => {
 			const model = buildFakeModel();
 			const { latestValue } = renderMessage(model, { content: useContentData });
 			expect(latestValue('content')).toEqual({
-				md: model.md,
 				mentions: model.mentions,
 				channels: model.channels,
 				comment: model.comment,

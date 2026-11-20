@@ -17,6 +17,7 @@ import android.view.WindowManager
 import android.view.View
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -25,7 +26,6 @@ import android.util.Log
 import android.view.ViewOutlineProvider
 import com.bumptech.glide.Glide
 import chat.rocket.reactnative.R
-import android.graphics.Typeface
 import chat.rocket.reactnative.notification.Ejson
 import chat.rocket.reactnative.notification.NotificationHelper
 
@@ -151,18 +151,8 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun applyInterFont() {
-        val interRegular = try {
-            Typeface.createFromAsset(assets, "fonts/Inter-Regular.otf")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to load Inter-Regular font", e)
-            return
-        }
-        val interBold = try {
-            Typeface.createFromAsset(assets, "fonts/Inter-Bold.otf")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to load Inter-Bold font", e)
-            interRegular
-        }
+        val interRegular = ResourcesCompat.getFont(this, R.font.inter_regular) ?: return
+        val interBold = ResourcesCompat.getFont(this, R.font.inter_bold) ?: interRegular
         listOf(
             R.id.header_text,
             R.id.host_name,

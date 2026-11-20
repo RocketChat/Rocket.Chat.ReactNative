@@ -45,7 +45,7 @@ describe('MessageBlock', () => {
 			</Provider>
 		);
 
-		expect(screen.getAllByText('Voice call not answered')).toHaveLength(2);
+		expect(screen.getAllByLabelText('Voice call not answered')).toHaveLength(2);
 		expectNoKeyWarning(consoleError);
 	});
 

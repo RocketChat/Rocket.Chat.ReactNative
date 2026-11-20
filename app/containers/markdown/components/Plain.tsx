@@ -4,7 +4,6 @@ import { type Plain as PlainProps } from '@rocket.chat/message-parser';
 
 import { useTheme } from '~/theme';
 import styles from '../styles';
-import { useMarkdownContext } from '../contexts/MarkdownContext';
 
 interface IPlainProps {
 	value: PlainProps['value'];
@@ -12,9 +11,8 @@ interface IPlainProps {
 
 const Plain = ({ value }: IPlainProps): ReactElement => {
 	const { colors } = useTheme();
-	const { textStyle } = useMarkdownContext();
 	return (
-		<Text accessibilityLabel={value} style={[styles.plainText, { color: colors.fontDefault }, ...(textStyle ? [textStyle] : [])]}>
+		<Text accessibilityLabel={value} style={[styles.plainText, { color: colors.fontDefault }]}>
 			{value}
 		</Text>
 	);

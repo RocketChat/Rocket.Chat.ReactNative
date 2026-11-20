@@ -13,7 +13,7 @@ import { LISTENER } from '~/containers/Toast';
 import EventEmitter from '~/lib/methods/helpers/events';
 import I18n from '~/i18n';
 import { type IUrl } from '~/definitions/IUrl';
-import { WidthAwareContext } from './WidthAwareView';
+import { WidthAwareContext, WidthAwareView } from './WidthAwareView';
 import { useUrls } from '../stores/MessageStore';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
 import { useSetting } from '~/lib/hooks/useSetting';
@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
 	},
 	loadingImage: {
 		flex: 1
+	},
+	list: {
+		gap: 4
 	}
 });
 
@@ -191,14 +194,22 @@ const Url = ({ url }: { url: IUrl }) => {
 		</MessageActionTouchable>
 	);
 };
-const Urls = (): ReactElement[] | null => {
+const Urls = (): ReactElement | null => {
 	const urls = useUrls();
 
 	if (!urls || urls.length === 0) {
 		return null;
 	}
 
-	return urls.map((url: IUrl) => <Url url={url} key={url.url} />);
+	return (
+		<WidthAwareView>
+			<View style={styles.list}>
+				{urls.map((url: IUrl) => (
+					<Url url={url} key={url.url} />
+				))}
+			</View>
+		</WidthAwareView>
+	);
 };
 
 export default Urls;
