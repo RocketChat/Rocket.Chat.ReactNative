@@ -1,3 +1,27 @@
+diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/EnrichedMarkdown.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/EnrichedMarkdown.kt
+index 6e970c2..9cc855b 100644
+--- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/EnrichedMarkdown.kt
++++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/EnrichedMarkdown.kt
+@@ -695,12 +695,14 @@ class EnrichedMarkdown(
+       val heightAfter = computeSegmentsTotalHeight()
+ 
+       if (forceHeight || topologyChanged || heightBefore != heightAfter) {
+-        MeasurementStore.invalidate(id)
+         requestLayout()
+-        stateWrapper?.let {
+-          val state = Arguments.createMap()
+-          state.putInt("forceHeightRecalculationCounter", ++forceHeightRecalculationCounter)
+-          it.updateState(state)
++        if (kotlin.math.abs(heightAfter - height) > 1) {
++          MeasurementStore.invalidate(id)
++          stateWrapper?.let {
++            val state = Arguments.createMap()
++            state.putInt("forceHeightRecalculationCounter", ++forceHeightRecalculationCounter)
++            it.updateState(state)
++          }
+         }
+       }
+     }
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 index 9aea981..4700833 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt

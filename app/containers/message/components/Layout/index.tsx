@@ -1,4 +1,3 @@
-import { WidthAwareView } from '../WidthAwareView';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import BlocksLayout from './BlocksLayout';
 import JitsiLayout from './JitsiLayout';
@@ -26,5 +25,5 @@ export const Layout = ({ isPreview, isHeader }: { isPreview?: boolean; isHeader:
 		layout = <StandardLayout showTimeLarge={showTimeLarge} />;
 	}
 
-	return <WidthAwareView>{layout}</WidthAwareView>;
+	return layout;
 };
