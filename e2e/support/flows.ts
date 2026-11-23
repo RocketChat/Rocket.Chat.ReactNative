@@ -18,12 +18,15 @@ export const LONG_TIMEOUT = 60_000;
 
 const errorCode = (error: unknown) => (error as { code?: string } | null)?.code;
 
+const isTimedOutRead = (error: unknown) =>
+	errorCode(error) === 'ACTION_FAILED' && errorCode((error as { cause?: unknown } | null)?.cause) === 'OPERATION_TIMEOUT';
+
 export const succeeds = async (assertion: Promise<unknown>) => {
 	try {
 		await assertion;
 		return true;
 	} catch (error) {
-		if (errorCode(error) !== 'ASSERTION_FAILED') throw error;
+		if (errorCode(error) !== 'ASSERTION_FAILED' && !isTimedOutRead(error)) throw error;
 		return false;
 	}
 };

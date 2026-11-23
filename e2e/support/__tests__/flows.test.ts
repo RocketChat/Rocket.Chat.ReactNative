@@ -64,6 +64,16 @@ describe('flow error boundaries', () => {
 		await expect(succeeds(Promise.reject(failure('ASSERTION_FAILED')))).resolves.toBe(false);
 	});
 
+	it('returns false when the assertion read timed out', async () => {
+		const error = Object.assign(failure('ACTION_FAILED'), { cause: failure('OPERATION_TIMEOUT') });
+		await expect(succeeds(Promise.reject(error))).resolves.toBe(false);
+	});
+
+	it('propagates an action failure that is not a timed-out read', async () => {
+		const error = Object.assign(failure('ACTION_FAILED'), { cause: failure('NOT_ACTIONABLE') });
+		await expect(succeeds(Promise.reject(error))).rejects.toBe(error);
+	});
+
 	it.each(['ENGINE_FAILURE', 'INVALID_STATE', 'LOCATOR_AMBIGUOUS', 'ACTION_MAY_HAVE_COMMITTED', 'CANCELLED'])(
 		'propagates %s instead of treating it as an assertion miss',
 		async code => {
