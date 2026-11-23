@@ -1,4 +1,4 @@
-import { all, call, cancel, delay, fork, put, select, take, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
@@ -76,17 +76,17 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 		return;
 	}
 
+	if (isMasterDetail) {
+		appNavigation.navigate('ModalStackNavigator', { screen: 'SupportedVersionsWarning', params: { showCloseButton: true } });
+	} else {
+		showActionSheetRef({ children: <SupportedVersionsWarning /> });
+	}
 	const serversDB = database.servers;
 	yield serversDB.write(async () => {
 		await serverRecord.update(r => {
 			r.supportedVersionsWarningAt = new Date();
 		});
 	});
-	if (isMasterDetail) {
-		appNavigation.navigate('ModalStackNavigator', { screen: 'SupportedVersionsWarning', params: { showCloseButton: true } });
-	} else {
-		showActionSheetRef({ children: <SupportedVersionsWarning /> });
-	}
 };
 
 // Login already succeeded by the time this runs, so a superseded unlock must not fall through to
@@ -316,12 +316,11 @@ const startVoipFork = function* startVoipFork() {
 	yield takeLatest([types.PERMISSIONS.SET, types.PERMISSIONS.UPDATE, types.ENTERPRISE_MODULES.SET], checkVoipPermission);
 };
 
-const handleLoginSuccess = function* handleLoginSuccess({ user }) {
+const handleLoginSuccess = function* handleLoginSuccess(user, server) {
 	try {
 		yield put(setUser(user));
 		setLanguage(user?.language);
 
-		const server = yield select(getServer);
 		yield put(roomsRequest());
 		yield put(encryptionInit());
 		yield fork(startVoipFork);
@@ -478,27 +477,24 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 	}
 };
 
-const endsPostLoginSession = (action, sessionServer) =>
-	action.type !== types.SERVER.SELECT_REQUEST || action.server !== sessionServer;
+const endsPostLoginSession = server => action =>
+	action.type === types.LOGOUT ||
+	action.type === types.DELETE_ACCOUNT ||
+	(action.type === types.SERVER.SELECT_REQUEST && action.server !== server);
+
+const runPostLoginSession = function* runPostLoginSession({ user }) {
+	const server = yield select(getServer);
+	yield race({
+		session: call(handleLoginSuccess, user, server),
+		ended: take(endsPostLoginSession(server))
+	});
+};
 
 const root = function* root() {
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.USER.SET, handleSetUser);
 	yield takeLatest(types.DELETE_ACCOUNT, handleDeleteAccount);
-
-	let postLoginSession = null;
-	while (true) {
-		const action = yield take([types.LOGIN.SUCCESS, types.LOGOUT, types.SERVER.SELECT_REQUEST]);
-		if (postLoginSession && endsPostLoginSession(action, postLoginSession.server)) {
-			yield cancel(postLoginSession.task);
-			postLoginSession = null;
-		}
-		if (action.type === types.LOGIN.SUCCESS) {
-			const server = yield select(getServer);
-			const task = yield fork(handleLoginSuccess, action);
-			postLoginSession = { server, task };
-		}
-	}
+	yield takeLatest(types.LOGIN.SUCCESS, runPostLoginSession);
 };
 export default root;

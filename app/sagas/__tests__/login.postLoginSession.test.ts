@@ -107,11 +107,11 @@ jest.mock('~/lib/store/auxStore', () => ({
 import type { Store } from 'redux';
 
 import loginRoot from '../login';
-import { loginSuccess, logout } from '~/actions/login';
+import { deleteAccount, loginSuccess, logout } from '~/actions/login';
 import { setPermissions } from '~/actions/permissions';
 import { selectServerRequest, selectServerSuccess } from '~/actions/server';
 import UserPreferences from '~/lib/methods/userPreferences';
-import { CURRENT_SERVER, getUserTokenKey } from '~/lib/constants/keys';
+import { CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '~/lib/constants/keys';
 import { getPermissions } from '~/lib/methods/getPermissions';
 import { mediaSessionInstance } from '~/lib/services/voip/MediaSessionInstance';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
@@ -147,6 +147,7 @@ afterEach(() => {
 
 describe('login saga — post-login session', () => {
 	beforeEach(() => {
+		UserPreferences.removeItem(`${TOKEN_KEY}-${SERVER_A}`);
 		UserPreferences.removeItem(getUserTokenKey(SERVER_A, USER.id));
 		UserPreferences.removeItem(CURRENT_SERVER);
 		jest.clearAllMocks();
@@ -165,24 +166,18 @@ describe('login saga — post-login session', () => {
 	});
 
 	it('keeps exactly one VoIP watcher across logins', async () => {
-		jest.useFakeTimers({ doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
-		try {
-			const { store } = startLoggedInStore();
+		const { store } = startLoggedInStore();
 
-			store.dispatch(loginSuccess(USER));
-			await flushSagaMicrotasks();
-			await jest.advanceTimersByTimeAsync(3000);
-			store.dispatch(loginSuccess(USER));
-			await flushSagaMicrotasks();
-			jest.mocked(mediaSessionInstance.init).mockClear();
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+		jest.mocked(mediaSessionInstance.init).mockClear();
 
-			store.dispatch(setPermissions({}));
-			await flushSagaMicrotasks();
+		store.dispatch(setPermissions({}));
+		await flushSagaMicrotasks();
 
-			expect(mediaSessionInstance.init).toHaveBeenCalledTimes(1);
-		} finally {
-			jest.useRealTimers();
-		}
+		expect(mediaSessionInstance.init).toHaveBeenCalledTimes(1);
 	});
 
 	it('finishes the post-login work when the same workspace is selected mid-login', async () => {
@@ -211,16 +206,21 @@ describe('login saga — post-login session', () => {
 		releasePermissions();
 		await flushSagaMicrotasks();
 
+		expect(UserPreferences.getString(`${TOKEN_KEY}-${SERVER_A}`)).toBeNull();
 		expect(persistedToken()).toBeNull();
+		expect(UserPreferences.getString(CURRENT_SERVER)).toBeNull();
 	});
 
-	it('cancels the post-login work and the VoIP watcher on logout', async () => {
+	it.each([
+		['logout', logout],
+		['account deletion', deleteAccount]
+	])('cancels the post-login work and the VoIP watcher on %s', async (_, endSession) => {
 		const releasePermissions = holdPermissionsFetch();
 		const { store } = startLoggedInStore();
 
 		store.dispatch(loginSuccess(USER));
 		await flushSagaMicrotasks();
-		store.dispatch(logout());
+		store.dispatch(endSession());
 		await flushSagaMicrotasks();
 		releasePermissions();
 		jest.mocked(mediaSessionInstance.init).mockClear();
