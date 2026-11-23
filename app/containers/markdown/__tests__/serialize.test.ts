@@ -1,6 +1,13 @@
 import { parse } from '@rocket.chat/message-parser';
+import { renderHook } from '@testing-library/react-native';
 
 import { buildRenderSegments, isBigEmojiOnly, type ISerializeContext } from '../serialize';
+import { useParseOptions } from '../hooks/useParseOptions';
+import { useSetting } from '~/lib/hooks/useSetting';
+
+jest.mock('~/lib/hooks/useSetting', () => ({
+	useSetting: jest.fn()
+}));
 
 const baseContext: ISerializeContext = {
 	mentions: [],
@@ -118,7 +125,7 @@ describe('markdown serialize', () => {
 		expect(serialize('```\nconst a = 1;\n```')).toBe('```\nconst a = 1;\n```');
 	});
 
-	it('splits a block-level KATEX AST node (as produced by the server-parsed md prop) into a native block math segment', () => {
+	it('serializes a block-level KATEX node as a block math segment', () => {
 		const tokens: Parameters<typeof buildRenderSegments>[0] = [{ type: 'KATEX', value: 'x^2' }];
 		const segments = buildRenderSegments(tokens, baseContext);
 		expect(segments).toEqual([{ type: 'markdown', content: '$$x^2$$', accessibilityLabel: 'x^2' }]);
@@ -137,7 +144,7 @@ describe('markdown serialize', () => {
 		);
 	});
 
-	it('escapes pipes inside table cells', () => {
+	it('keeps inline code inside a table cell', () => {
 		expect(serialize('| a |\n| - |\n| `x` |')).toBe('| a |\n| --- |\n| `x` |');
 	});
 
@@ -223,6 +230,22 @@ describe('markdown serialize', () => {
 		});
 	});
 
+	it('keeps mention prefixes when the symbol preferences are enabled', () => {
+		const mentionContext = {
+			...baseContext,
+			channels: [{ _id: 'GENERAL', name: 'general' }],
+			mentionsWithAtSymbol: true,
+			roomsWithHashTagSymbol: true
+		};
+		expect(buildRenderSegments(parse('@all #general'), mentionContext)).toEqual([
+			{
+				type: 'markdown',
+				content: '[**@all**](<user://all>) [**\\#general**](<channel://GENERAL>)',
+				accessibilityLabel: '@all #general'
+			}
+		]);
+	});
+
 	it('escapes entities and backticks in link destinations so the opened URL matches the label', () => {
 		expect(serialize('[x](https://a.co/?q=1&amp;b)')).toBe('[x](<https://a.co/?q=1\\&amp;b>)');
 		expect(serialize('[x](https://a.co/`b)')).toBe('[x](<https://a.co/\\`b>)');
@@ -264,6 +287,60 @@ describe('markdown serialize katex', () => {
 
 	it('drops empty formulas instead of emitting a bare double dollar', () => {
 		expect(serializeWithKatex('a \\(\\) b')).toBe('a  b');
+	});
+});
+
+const segmentsFor = (msg: string, katexEnabled: boolean, dollarSyntax: boolean, parenthesisSyntax: boolean) => {
+	const settings: Record<string, boolean> = {
+		Katex_Enabled: katexEnabled,
+		Katex_Dollar_Syntax: dollarSyntax,
+		Katex_Parenthesis_Syntax: parenthesisSyntax
+	};
+	jest.mocked(useSetting).mockImplementation(key => settings[key]);
+	const { result } = renderHook(() => useParseOptions());
+	return buildRenderSegments(parse(msg, result.current), baseContext);
+};
+
+describe('markdown katex settings', () => {
+	it('serializes inline dollar math as a latex math span when dollar syntax is enabled', () => {
+		expect(segmentsFor('Inline $x^2 + y^2 = z^2$ katex', true, true, false)).toEqual([
+			{ type: 'markdown', content: 'Inline $x^2 + y^2 = z^2$ katex', accessibilityLabel: 'Inline x^2 + y^2 = z^2 katex' }
+		]);
+	});
+
+	it('escapes dollar signs as plain text when dollar syntax is disabled', () => {
+		expect(segmentsFor('Inline $x^2$ katex', true, false, true)).toEqual([
+			{ type: 'markdown', content: 'Inline \\$x\\^2\\$ katex', accessibilityLabel: 'Inline $x^2$ katex' }
+		]);
+	});
+
+	it('splits double dollar math into a native block math segment when dollar syntax is enabled', () => {
+		expect(segmentsFor('$$\\int_0^1 x\\,dx = \\frac{1}{2}$$', true, true, false)).toEqual([
+			{
+				type: 'markdown',
+				content: '$$\\int_0^1 x\\,dx = \\frac{1}{2}$$',
+				accessibilityLabel: '\\int_0^1 x\\,dx = \\frac{1}{2}'
+			}
+		]);
+	});
+
+	it('serializes bracket matrix math as a native block math segment when parenthesis syntax is enabled', () => {
+		const matrix = '\\frac{a}{b} + \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}';
+		expect(segmentsFor(`\\[${matrix}\\]`, true, false, true)).toEqual([
+			{ type: 'markdown', content: `$$${matrix}$$`, accessibilityLabel: matrix }
+		]);
+	});
+
+	it('serializes parenthesis math as a latex math span when parenthesis syntax is enabled', () => {
+		expect(segmentsFor('Paren \\(a+b\\) inline', true, false, true)).toEqual([
+			{ type: 'markdown', content: 'Paren $a+b$ inline', accessibilityLabel: 'Paren a+b inline' }
+		]);
+	});
+
+	it('keeps math delimiters as plain text when katex is disabled', () => {
+		expect(segmentsFor('Paren \\(a+b\\) and $x$', false, true, true)).toEqual([
+			{ type: 'markdown', content: 'Paren \\\\\\(a\\+b\\\\\\) and \\$x\\$', accessibilityLabel: 'Paren \\(a+b\\) and $x$' }
+		]);
 	});
 });
 
