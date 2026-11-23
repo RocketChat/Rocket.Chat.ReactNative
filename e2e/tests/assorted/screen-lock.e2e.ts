@@ -2,7 +2,7 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
+import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT, tapWhenVisible, withFixtures } from '~e2e/support/flows';
 import { enterPasscode, openSettings } from '~e2e/support/settings';
 import { delay } from '~e2e/support/timing';
 
@@ -32,34 +32,38 @@ const relaunchAfterAutoLock = async ({ device, app }: Fixtures) => {
 	await app.open();
 };
 
-test('locks the app with a passcode and changes it', { tags: ['test-8'], timeout: 300_000 }, async fixtures => {
-	const { screen } = fixtures;
-	const screenLockConfig = screen.getByTestId('screen-lock-config-view');
-	const user = await createUser();
+test(
+	'locks the app with a passcode and changes it',
+	{ tags: ['test-8'], timeout: 300_000 },
+	withFixtures(async fixtures => {
+		const { screen } = fixtures;
+		const screenLockConfig = screen.getByTestId('screen-lock-config-view');
+		const user = await createUser();
 
-	await loginWithDeepLink(fixtures, user);
-	await openScreenLockSettings(fixtures);
-	await expect(screenLockConfig).toBeVisible({ timeout: LONG_TIMEOUT });
+		await loginWithDeepLink(fixtures, user);
+		await openScreenLockSettings(fixtures);
+		await expect(screenLockConfig).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await screen.getByTestId('screen-lock-config-view-auto-lock').tap();
-	await chooseNewPasscode(fixtures, FIRST_PASSCODE);
-	await tapWhenVisible(fixtures, 'screen-lock-config-view-auto-lock-time-60');
+		await screen.getByTestId('screen-lock-config-view-auto-lock').tap();
+		await chooseNewPasscode(fixtures, FIRST_PASSCODE);
+		await tapWhenVisible(fixtures, 'screen-lock-config-view-auto-lock-time-60');
 
-	await relaunchAfterAutoLock(fixtures);
-	await enterPasscode(fixtures, FIRST_PASSCODE);
-	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+		await relaunchAfterAutoLock(fixtures);
+		await enterPasscode(fixtures, FIRST_PASSCODE);
+		await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await openScreenLockSettings(fixtures);
-	await enterPasscode(fixtures, FIRST_PASSCODE);
-	await expect(screenLockConfig).toBeVisible({ timeout: LONG_TIMEOUT });
-	await tapWhenVisible(fixtures, 'screen-lock-config-view-change-passcode');
-	await enterPasscode(fixtures, FIRST_PASSCODE);
-	await chooseNewPasscode(fixtures, SECOND_PASSCODE);
-	await expect(screenLockConfig).toBeVisible({ timeout: LONG_TIMEOUT });
-	await expect(screen.getByTestId('screen-lock-config-view-change-passcode')).toBeVisible();
+		await openScreenLockSettings(fixtures);
+		await enterPasscode(fixtures, FIRST_PASSCODE);
+		await expect(screenLockConfig).toBeVisible({ timeout: LONG_TIMEOUT });
+		await tapWhenVisible(fixtures, 'screen-lock-config-view-change-passcode');
+		await enterPasscode(fixtures, FIRST_PASSCODE);
+		await chooseNewPasscode(fixtures, SECOND_PASSCODE);
+		await expect(screenLockConfig).toBeVisible({ timeout: LONG_TIMEOUT });
+		await expect(screen.getByTestId('screen-lock-config-view-change-passcode')).toBeVisible();
 
-	await relaunchAfterAutoLock(fixtures);
-	await enterPasscode(fixtures, SECOND_PASSCODE);
-	await expect(screen.getByTestId('passcode-button-3')).toBeHidden({ timeout: LONG_TIMEOUT });
-	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
-});
+		await relaunchAfterAutoLock(fixtures);
+		await enterPasscode(fixtures, SECOND_PASSCODE);
+		await expect(screen.getByTestId('passcode-button-3')).toBeHidden({ timeout: LONG_TIMEOUT });
+		await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+	})
+);

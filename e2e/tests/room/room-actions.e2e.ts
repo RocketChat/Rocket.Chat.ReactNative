@@ -20,7 +20,8 @@ import {
 	openRoomActions,
 	succeeds,
 	tapUntilVisible,
-	headerSearchInput
+	headerSearchInput,
+	withFixtures
 } from '~e2e/support/flows';
 import { expectRoomTitle, selectHeaderMenuOption, submitSelectedUsers } from '~e2e/support/header';
 import { expandActionSheet, selectUser } from '~e2e/support/room';
@@ -245,37 +246,41 @@ const openDirectMessageWithMember = async (fixtures: Fixtures, username: string)
 	await backToRoomsList(fixtures);
 };
 
-test('manages a room through its actions', { tags: ['test-5'], timeout: 900_000 }, async fixtures => {
-	const user = await createUser();
-	const otherUser = await createUser();
-	const room = await createRandomRoom(user);
+test(
+	'manages a room through its actions',
+	{ tags: ['test-5'], timeout: 900_000 },
+	withFixtures(async fixtures => {
+		const user = await createUser();
+		const otherUser = await createUser();
+		const room = await createRandomRoom(user);
 
-	await loginWithDeepLink(fixtures, user);
-	await navigateToRoomActions(fixtures, room.name);
-	for (const action of ROOM_ACTIONS) {
-		await fixtures.screen.scrollUntilVisible(fixtures.screen.getByTestId(`room-actions-${action}`));
-	}
-	await fixtures.screen.scrollUntilVisible(fixtures.screen.getByTestId('room-actions-info'), { direction: 'up' });
-	await expectText(fixtures, /1 members/);
+		await loginWithDeepLink(fixtures, user);
+		await navigateToRoomActions(fixtures, room.name);
+		for (const action of ROOM_ACTIONS) {
+			await fixtures.screen.scrollUntilVisible(fixtures.screen.getByTestId(`room-actions-${action}`));
+		}
+		await fixtures.screen.scrollUntilVisible(fixtures.screen.getByTestId('room-actions-info'), { direction: 'up' });
+		await expectText(fixtures, /1 members/);
 
-	await openRoomAction(fixtures, 'mentioned', 'mentioned-messages-view');
-	await backToRoomActions(fixtures);
-	await backToRoom(fixtures);
+		await openRoomAction(fixtures, 'mentioned', 'mentioned-messages-view');
+		await backToRoomActions(fixtures);
+		await backToRoom(fixtures);
 
-	await starAndUnstarMessage(fixtures);
-	await pinAndUnpinMessage(fixtures);
-	await expectNotificationPreferences(fixtures);
-	await tryLeavingAsLastOwner(fixtures);
+		await starAndUnstarMessage(fixtures);
+		await pinAndUnpinMessage(fixtures);
+		await expectNotificationPreferences(fixtures);
+		await tryLeavingAsLastOwner(fixtures);
 
-	await addUsersToRoom(fixtures, user, otherUser.username);
-	await showAllMembers(fixtures, otherUser.username);
-	await filterMembers(fixtures, otherUser.username);
-	await removeMember(fixtures, 'rocket.cat');
-	await toggleRole(fixtures, otherUser.username, 'owner');
-	await toggleRole(fixtures, otherUser.username, 'moderator');
-	await toggleMute(fixtures, otherUser.username);
+		await addUsersToRoom(fixtures, user, otherUser.username);
+		await showAllMembers(fixtures, otherUser.username);
+		await filterMembers(fixtures, otherUser.username);
+		await removeMember(fixtures, 'rocket.cat');
+		await toggleRole(fixtures, otherUser.username, 'owner');
+		await toggleRole(fixtures, otherUser.username, 'moderator');
+		await toggleMute(fixtures, otherUser.username);
 
-	await sendMessageAsUser(otherUser, room.name, 'ignoredmessagecontent');
-	await ignoreMember(fixtures, otherUser.username);
-	await openDirectMessageWithMember(fixtures, otherUser.username);
-});
+		await sendMessageAsUser(otherUser, room.name, 'ignoredmessagecontent');
+		await ignoreMember(fixtures, otherUser.username);
+		await openDirectMessageWithMember(fixtures, otherUser.username);
+	})
+);

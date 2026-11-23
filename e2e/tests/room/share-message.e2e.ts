@@ -11,7 +11,8 @@ import {
 	expectHidden,
 	expectVisible,
 	openMessageActions,
-	fillWhenUncovered
+	fillWhenUncovered,
+	withFixtures
 } from '~e2e/support/flows';
 import { expectRoomTitle, tapHeaderItem } from '~e2e/support/header';
 
@@ -28,26 +29,30 @@ const forwardMessageTo = async (fixtures: Fixtures, username: string) => {
 	await tapHeaderItem(fixtures, 'forward-message-view-send', 'Send');
 };
 
-test('forwards a message to a direct message', { tags: ['test-3'], timeout: 300_000 }, async fixtures => {
-	const { screen } = fixtures;
-	const user = await createUser();
-	const otherUser = await createUser();
-	const room = await createRandomRoom(user);
+test(
+	'forwards a message to a direct message',
+	{ tags: ['test-3'], timeout: 300_000 },
+	withFixtures(async fixtures => {
+		const { screen } = fixtures;
+		const user = await createUser();
+		const otherUser = await createUser();
+		const room = await createRandomRoom(user);
 
-	await loginWithDeepLink(fixtures, user);
-	await searchAndNavigateRoom(fixtures, otherUser.username);
-	await sendMessage(fixtures, 'Hello user');
-	await backToRoomsList(fixtures);
+		await loginWithDeepLink(fixtures, user);
+		await searchAndNavigateRoom(fixtures, otherUser.username);
+		await sendMessage(fixtures, 'Hello user');
+		await backToRoomsList(fixtures);
 
-	await searchAndNavigateRoom(fixtures, room.name);
-	await sendMessage(fixtures, 'Hello room');
-	await openMessageActions(fixtures, 'Hello room');
-	await screen.getByText('Forward').tap();
-	await forwardMessageTo(fixtures, otherUser.username);
-	await expectRoomTitle(fixtures, room.name);
+		await searchAndNavigateRoom(fixtures, room.name);
+		await sendMessage(fixtures, 'Hello room');
+		await openMessageActions(fixtures, 'Hello room');
+		await screen.getByText('Forward').tap();
+		await forwardMessageTo(fixtures, otherUser.username);
+		await expectRoomTitle(fixtures, room.name);
 
-	await backToRoomsList(fixtures);
-	await searchAndNavigateRoom(fixtures, otherUser.username);
-	await expectVisible(fixtures, 'message-content-Hello user');
-	await expectVisible(fixtures, `reply-${user.name}-Hello room`);
-});
+		await backToRoomsList(fixtures);
+		await searchAndNavigateRoom(fixtures, otherUser.username);
+		await expectVisible(fixtures, 'message-content-Hello user');
+		await expectVisible(fixtures, `reply-${user.name}-Hello room`);
+	})
+);

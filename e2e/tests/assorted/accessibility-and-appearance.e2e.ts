@@ -2,7 +2,7 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { expectTexts, goBackUntil, loginWithDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
+import { expectTexts, goBackUntil, loginWithDeepLink, LONG_TIMEOUT, withFixtures } from '~e2e/support/flows';
 import { goToAccessibilityAndAppearance, toggleAccessibilitySwitchAndOpenRoom } from '~e2e/support/settings';
 
 const MENTIONS_SWITCH = 'accessibility-mentions-with-at-symbol-switch';
@@ -20,7 +20,7 @@ afterEach(deleteCreatedUsers);
 test(
 	'toggles mention and room symbols from accessibility and appearance',
 	{ tags: ['test-6'], platforms: ['android'], timeout: 600_000 },
-	async fixtures => {
+	withFixtures(async fixtures => {
 		const { screen } = fixtures;
 		const user = await createUser();
 		await loginWithDeepLink(fixtures, user);
@@ -43,5 +43,5 @@ test(
 			await goBackUntil(fixtures, 'rooms-list-view');
 			await goToAccessibilityAndAppearance(fixtures);
 		}
-	}
+	})
 );

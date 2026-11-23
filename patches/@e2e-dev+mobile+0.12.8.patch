@@ -1,0 +1,70 @@
+diff --git a/node_modules/@e2e-dev/mobile/dist/errors.js b/node_modules/@e2e-dev/mobile/dist/errors.js
+index 9165602..dc6539c 100644
+--- a/node_modules/@e2e-dev/mobile/dist/errors.js
++++ b/node_modules/@e2e-dev/mobile/dist/errors.js
+@@ -254,6 +254,9 @@ export function isRunnerFailure(error) {
+  * present. The check is per capture and the capture is a read, so one retry
+  * is safe and usually enough.
+  */
++export function isRunnerBusy(cause) {
++    return details(cause).runnerErrorCode === 'RUNNER_BUSY';
++}
+ export function isSnapshotPresentationFailure(error) {
+     return error instanceof Error && isPresentationFailure(error.cause);
+ }
+diff --git a/node_modules/@e2e-dev/mobile/dist/surface.js b/node_modules/@e2e-dev/mobile/dist/surface.js
+index 8511c8b..2e22184 100644
+--- a/node_modules/@e2e-dev/mobile/dist/surface.js
++++ b/node_modules/@e2e-dev/mobile/dist/surface.js
+@@ -15,7 +15,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, w
+ import { tmpdir } from 'node:os';
+ import path from 'node:path';
+ import { EngineError, KEY_NAMES, parseKey, raceAbort, rejectUnknownKeys, stopProviderRecording, withinCleanupBudget, ConfigurationError, TestError, } from '@e2e-dev/core/engine';
+-import { isAppNotRunning, isSnapshotPresentationFailure, isUnreadableCapture, ORIGIN_UNKNOWN_BOUNDS, ORIGIN_WARNING, runCommand, staleOr } from './errors.js';
++import { isAppNotRunning, isRunnerBusy, isSnapshotPresentationFailure, isUnreadableCapture, ORIGIN_UNKNOWN_BOUNDS, ORIGIN_WARNING, runCommand, staleOr } from './errors.js';
+ import { pointerInteraction, DEFAULT_LONG_PRESS_MS } from './actions.js';
+ import { resolveExpression } from './locate.js';
+ import { isWithin, KEYBOARD_KINDS, keyboardBand, mayTakeText, normalizeKind, projectSnapshot, ROOT_ID, screenRoot, screenTitle, } from './nodes.js';
+@@ -37,6 +37,8 @@ const UNINSTALLED_BUILD = "the build the target's `app.appPath` names installed
+  * Maestro's `hideKeyboard` uses.
+  */
+ const KEYBOARD_DRAG_RATIO = 0.03;
++const RUNNER_BUSY_BUDGET_MS = 60_000;
++const RUNNER_BUSY_RETRY_MS = 1_000;
+ /** What a test does instead when the engine cannot send the keyboard away. */
+ const KEYBOARD_ALTERNATIVES = 'Tap the app\'s own Done or close control, or press Enter on the field when submitting is what you want.';
+ /**
+@@ -367,7 +369,23 @@ export class AgentDeviceSurface {
+      */
+     async command(label, run, signal) {
+         const client = this.requireClient();
+-        return runCommand(label, () => this.track(run(client)), signal ?? new AbortController().signal, this.where);
++        const operationSignal = signal ?? new AbortController().signal;
++        return runCommand(label, () => this.untilRunnerIdle(() => run(client), operationSignal), operationSignal, this.where);
++    }
++    async untilRunnerIdle(run, signal) {
++        const deadline = Date.now() + RUNNER_BUSY_BUDGET_MS;
++        for (;;) {
++            try {
++                return await this.track(run());
++            }
++            catch (cause) {
++                if (!isRunnerBusy(cause) || Date.now() >= deadline)
++                    throw cause;
++                await sleep(RUNNER_BUSY_RETRY_MS, signal);
++                if (signal.aborted)
++                    throw cause;
++            }
++        }
+     }
+     /**
+      * Runs a fixture command that changes the screen (a back, the home screen,
+@@ -1302,7 +1320,7 @@ export class AgentDeviceSurface {
+             }
+         };
+         try {
+-            await raceAbort(() => this.track(run()), operation.signal, label);
++            await raceAbort(() => this.untilRunnerIdle(run, operation.signal), operation.signal, label);
+         }
+         catch (cause) {
+             throw staleOr(cause, label, this.where);

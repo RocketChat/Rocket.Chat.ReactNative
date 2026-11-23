@@ -2,7 +2,15 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers, getProfileInfo, login } from '~e2e/support/api';
-import { hideKeyboard, loginWithDeepLink, type Fixtures, LONG_TIMEOUT, fillWhenUncovered, goBack } from '~e2e/support/flows';
+import {
+	hideKeyboard,
+	loginWithDeepLink,
+	type Fixtures,
+	LONG_TIMEOUT,
+	fillWhenUncovered,
+	goBack,
+	withFixtures
+} from '~e2e/support/flows';
 import { openSidebar } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
@@ -48,32 +56,36 @@ const tapDiscardAlertButton = async (fixtures: Fixtures, name: RegExp) => {
 	await screen.getByRole('button', { name }).last().tap();
 };
 
-test('changes the avatar', { tags: ['test-3'] }, async fixtures => {
-	const { screen } = fixtures;
-	const user = await createUser();
-	const { userId } = await login(user);
+test(
+	'changes the avatar',
+	{ tags: ['test-3'] },
+	withFixtures(async fixtures => {
+		const { screen } = fixtures;
+		const user = await createUser();
+		const { userId } = await login(user);
 
-	await loginWithDeepLink(fixtures, user);
-	await openSidebar(fixtures);
-	await expect(screen.getByTestId('sidebar-profile')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByTestId('sidebar-profile').tap();
-	await expect(screen.getByTestId('profile-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+		await loginWithDeepLink(fixtures, user);
+		await openSidebar(fixtures);
+		await expect(screen.getByTestId('sidebar-profile')).toBeVisible({ timeout: LONG_TIMEOUT });
+		await screen.getByTestId('sidebar-profile').tap();
+		await expect(screen.getByTestId('profile-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await openChangeAvatar(fixtures);
-	await expect(screen.getByTestId('change-avatar-view-avatar')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await expect(screen.getByTestId('reset-avatar-suggestion')).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByTestId('reset-avatar-suggestion').tap({ position: { x: 8, y: 8 } });
-	await tapDiscardAlertButton(fixtures, /^Cancel$/i);
-	await tapDiscardAlertButton(fixtures, /^Discard$/i);
-	await expect(screen.getByTestId('profile-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+		await openChangeAvatar(fixtures);
+		await expect(screen.getByTestId('change-avatar-view-avatar')).toBeVisible({ timeout: LONG_TIMEOUT });
+		await expect(screen.getByTestId('reset-avatar-suggestion')).toBeVisible({ timeout: LONG_TIMEOUT });
+		await screen.getByTestId('reset-avatar-suggestion').tap({ position: { x: 8, y: 8 } });
+		await tapDiscardAlertButton(fixtures, /^Cancel$/i);
+		await tapDiscardAlertButton(fixtures, /^Discard$/i);
+		await expect(screen.getByTestId('profile-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await changeAvatarWith(fixtures, userId, () => screen.getByText('Upload image').tap());
+		await changeAvatarWith(fixtures, userId, () => screen.getByText('Upload image').tap());
 
-	await changeAvatarWith(fixtures, userId, () => screen.getByText('Take a photo').tap());
+		await changeAvatarWith(fixtures, userId, () => screen.getByText('Take a photo').tap());
 
-	await changeAvatarWith(fixtures, userId, async () => {
-		await fillWhenUncovered(screen.getByTestId('change-avatar-view-avatar-url'), AVATAR_URL);
-		await hideKeyboard(fixtures);
-		await screen.getByText('Fetch image from URL').tap();
-	});
-});
+		await changeAvatarWith(fixtures, userId, async () => {
+			await fillWhenUncovered(screen.getByTestId('change-avatar-view-avatar-url'), AVATAR_URL);
+			await hideKeyboard(fixtures);
+			await screen.getByText('Fetch image from URL').tap();
+		});
+	})
+);

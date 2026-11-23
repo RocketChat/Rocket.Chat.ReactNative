@@ -2,7 +2,7 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
-import { loginWithDeepLink, navigateToRoom, LONG_TIMEOUT } from '~e2e/support/flows';
+import { loginWithDeepLink, navigateToRoom, LONG_TIMEOUT, withFixtures } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 import { delay } from '~e2e/support/timing';
 
@@ -17,7 +17,7 @@ afterEach(deleteCreatedUsers);
 test(
 	'delivers messages received while the device was offline',
 	{ tags: ['test-5'], platforms: ['android'], timeout: 600_000 },
-	async fixtures => {
+	withFixtures(async fixtures => {
 		const { screen, device } = fixtures;
 		const user = await createUser();
 		const sender = await createUser();
@@ -43,5 +43,5 @@ test(
 		await expect(messageContent('3')).toBeVisible({ timeout: 120_000 });
 		await expect(messageContent('1')).toBeVisible();
 		await expect(messageContent('2')).toBeVisible();
-	}
+	})
 );

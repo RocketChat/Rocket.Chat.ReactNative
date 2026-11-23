@@ -14,7 +14,8 @@ import {
 	expectVisible,
 	goBackUntil,
 	succeeds,
-	headerItem
+	headerItem,
+	withFixtures
 } from '~e2e/support/flows';
 import { tapHeaderItem } from '~e2e/support/header';
 import { navigateToRoomInfo } from '~e2e/support/room';
@@ -150,50 +151,54 @@ const expectFormReset = async (fixtures: Fixtures, roomName: string) => {
 	await expect(screen.getByTestId(editViewTestId('react-when-ro'))).toBeHidden();
 };
 
-test('shows and edits room info', { tags: ['test-8'], timeout: 600_000 }, async fixtures => {
-	const user = await createUser();
-	const room = await createRandomRoom(user, 'p');
-	const newRoomName = `${room.name}new`;
+test(
+	'shows and edits room info',
+	{ tags: ['test-8'], timeout: 600_000 },
+	withFixtures(async fixtures => {
+		const user = await createUser();
+		const room = await createRandomRoom(user, 'p');
+		const newRoomName = `${room.name}new`;
 
-	await loginWithDeepLink(fixtures, user);
-	await navigateToRoomInfo(fixtures, room.name);
-	await expectInfoView(fixtures);
+		await loginWithDeepLink(fixtures, user);
+		await navigateToRoomInfo(fixtures, room.name);
+		await expectInfoView(fixtures);
 
-	await openEditView(fixtures);
-	await expectEditView(fixtures);
+		await openEditView(fixtures);
+		await expectEditView(fixtures);
 
-	await reopenEditView(fixtures);
-	await fillAndResetForm(fixtures);
-	await expectFormReset(fixtures, room.name);
+		await reopenEditView(fixtures);
+		await fillAndResetForm(fixtures);
+		await expectFormReset(fixtures, room.name);
 
-	await reopenEditView(fixtures);
-	await fillEditField(fixtures, 'name', newRoomName);
-	await submitAndReturnToInfo(fixtures);
-	await expectInfoText(fixtures, newRoomName);
+		await reopenEditView(fixtures);
+		await fillEditField(fixtures, 'name', newRoomName);
+		await submitAndReturnToInfo(fixtures);
+		await expectInfoText(fixtures, newRoomName);
 
-	await openEditView(fixtures);
-	await fillEditFields(fixtures, [
-		['topic', 'new topic'],
-		['announcement', 'new announcement'],
-		['description', 'new description']
-	]);
-	await submitAndReturnToInfo(fixtures);
-	for (const text of ['new description', 'new topic', 'new announcement']) {
-		await expectInfoText(fixtures, text);
-	}
+		await openEditView(fixtures);
+		await fillEditFields(fixtures, [
+			['topic', 'new topic'],
+			['announcement', 'new announcement'],
+			['description', 'new description']
+		]);
+		await submitAndReturnToInfo(fixtures);
+		for (const text of ['new description', 'new topic', 'new announcement']) {
+			await expectInfoText(fixtures, text);
+		}
 
-	await openEditView(fixtures);
-	await makeRoomPublic(fixtures);
-	await submitEdit(fixtures);
-	await expect.poll(async () => (await get(`rooms.info?roomId=${room._id}`, user)).room.t, { timeout: LONG_TIMEOUT }).toBe('c');
+		await openEditView(fixtures);
+		await makeRoomPublic(fixtures);
+		await submitEdit(fixtures);
+		await expect.poll(async () => (await get(`rooms.info?roomId=${room._id}`, user)).room.t, { timeout: LONG_TIMEOUT }).toBe('c');
 
-	await tapEditControl(fixtures, 'archive');
-	await confirmAlert(fixtures, /Do you really want to archive this room/, /^Yes, archive it/i);
+		await tapEditControl(fixtures, 'archive');
+		await confirmAlert(fixtures, /Do you really want to archive this room/, /^Yes, archive it/i);
 
-	await tapEditControl(fixtures, 'delete');
-	await confirmAlert(fixtures, /Deleting a room will delete all messages posted within the room/, /^Yes, delete it/i);
+		await tapEditControl(fixtures, 'delete');
+		await confirmAlert(fixtures, /Deleting a room will delete all messages posted within the room/, /^Yes, delete it/i);
 
-	await navigateToRoomInfo(fixtures, 'roles-test');
-	await expectVisible(fixtures, 'user-roles');
-	await expectVisible(fixtures, 'user-role-Livechat-Agent');
-});
+		await navigateToRoomInfo(fixtures, 'roles-test');
+		await expectVisible(fixtures, 'user-roles');
+		await expectVisible(fixtures, 'user-role-Livechat-Agent');
+	})
+);

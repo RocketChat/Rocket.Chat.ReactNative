@@ -14,7 +14,8 @@ import {
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenVisible,
-	roomTitle
+	roomTitle,
+	withFixtures
 } from '~e2e/support/flows';
 import { expectRoomTitle } from '~e2e/support/header';
 import { registerAccount } from '~e2e/support/onboarding';
@@ -84,92 +85,104 @@ const createDeepLinkTargets = async () => {
 
 const shareLink = (text: string) => `rocketchat://shareextension?text=${text}`;
 
-test('handles auth deep links', { tags: ['test-4'] }, async fixtures => {
-	const { screen } = fixtures;
-	const { room, authLink } = await createDeepLinkTargets();
-	const roomItem = screen.getByTestId(`rooms-list-view-item-${room.name}`);
+test(
+	'handles auth deep links',
+	{ tags: ['test-4'] },
+	withFixtures(async fixtures => {
+		const { screen } = fixtures;
+		const { room, authLink } = await createDeepLinkTargets();
+		const roomItem = screen.getByTestId(`rooms-list-view-item-${room.name}`);
 
-	await launchApp(fixtures);
-	await coldStartLink(fixtures, getDeepLink('auth', data.server, { userId: '123', token: 'abc' }));
-	await expectVisible(fixtures, 'workspace-view');
+		await launchApp(fixtures);
+		await coldStartLink(fixtures, getDeepLink('auth', data.server, { userId: '123', token: 'abc' }));
+		await expectVisible(fixtures, 'workspace-view');
 
-	await launchApp(fixtures);
-	await coldStartLink(fixtures, authLink());
-	await expectRoomTitle(fixtures, room.name);
-	await backToRoomsList(fixtures);
-	await checkServer(fixtures, data.server);
-	await expect(roomItem).toBeVisible({ timeout: LONG_TIMEOUT });
-});
+		await launchApp(fixtures);
+		await coldStartLink(fixtures, authLink());
+		await expectRoomTitle(fixtures, room.name);
+		await backToRoomsList(fixtures);
+		await checkServer(fixtures, data.server);
+		await expect(roomItem).toBeVisible({ timeout: LONG_TIMEOUT });
+	})
+);
 
-test('handles room, thread and share deep links with two workspaces', { tags: ['test-7'], timeout: 900_000 }, async fixtures => {
-	const { screen } = fixtures;
-	const { room, roomPath, threadMessage, thread, authLink, roomLink } = await createDeepLinkTargets();
-	const roomItem = screen.getByTestId(`rooms-list-view-item-${room.name}`);
+test(
+	'handles room, thread and share deep links with two workspaces',
+	{ tags: ['test-7'], timeout: 900_000 },
+	withFixtures(async fixtures => {
+		const { screen } = fixtures;
+		const { room, roomPath, threadMessage, thread, authLink, roomLink } = await createDeepLinkTargets();
+		const roomItem = screen.getByTestId(`rooms-list-view-item-${room.name}`);
 
-	await launchApp(fixtures);
-	await navigateToRegister(fixtures, data.alternateServer);
-	await registerAccount(fixtures);
+		await launchApp(fixtures);
+		await navigateToRegister(fixtures, data.alternateServer);
+		await registerAccount(fixtures);
 
-	await coldStartLink(fixtures, authLink());
-	await expectRoomTitle(fixtures, room.name);
-	await backToRoomsList(fixtures);
-	await checkServer(fixtures, data.server);
-	await expect(roomItem).toBeVisible({ timeout: LONG_TIMEOUT });
+		await coldStartLink(fixtures, authLink());
+		await expectRoomTitle(fixtures, room.name);
+		await backToRoomsList(fixtures);
+		await checkServer(fixtures, data.server);
+		await expect(roomItem).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await coldStartLink(fixtures, roomLink);
-	await expectRoomTitle(fixtures, room.name);
+		await coldStartLink(fixtures, roomLink);
+		await expectRoomTitle(fixtures, room.name);
 
-	await coldStartLink(fixtures, getDeepLink('room', data.server, { path: `${roomPath}/thread/${thread.message._id}` }));
-	await expectRoomTitle(fixtures, threadMessage);
+		await coldStartLink(fixtures, getDeepLink('room', data.server, { path: `${roomPath}/thread/${thread.message._id}` }));
+		await expectRoomTitle(fixtures, threadMessage);
 
-	await coldStartLink(fixtures, getDeepLink('room', data.server, { rid: room._id }));
-	await expectRoomTitle(fixtures, room.name);
-	await backToRoomsList(fixtures);
+		await coldStartLink(fixtures, getDeepLink('room', data.server, { rid: room._id }));
+		await expectRoomTitle(fixtures, room.name);
+		await backToRoomsList(fixtures);
 
-	await sendAppToBackground(fixtures);
-	await openDeepLink(fixtures, roomLink, roomTitle(fixtures, room.name));
-	await expectRoomTitle(fixtures, room.name);
+		await sendAppToBackground(fixtures);
+		await openDeepLink(fixtures, roomLink, roomTitle(fixtures, room.name));
+		await expectRoomTitle(fixtures, room.name);
 
-	await relaunchApp(fixtures, data.server);
-	await selectServer(fixtures, data.alternateServer);
-	await checkServer(fixtures, data.alternateServer);
-	await coldStartLink(fixtures, roomLink);
-	await expectRoomTitle(fixtures, room.name);
+		await relaunchApp(fixtures, data.server);
+		await selectServer(fixtures, data.alternateServer);
+		await checkServer(fixtures, data.alternateServer);
+		await coldStartLink(fixtures, roomLink);
+		await expectRoomTitle(fixtures, room.name);
 
-	await coldStartLink(fixtures, getDeepLink('room', 'https://google.com', {}));
-	await expectVisible(fixtures, 'rooms-list-view');
+		await coldStartLink(fixtures, getDeepLink('room', 'https://google.com', {}));
+		await expectVisible(fixtures, 'rooms-list-view');
 
-	const firstShare = random();
-	await coldStartLink(fixtures, shareLink(firstShare));
-	await expectVisible(fixtures, 'share-list-view');
-	await shareTextTo(fixtures, room.name, firstShare);
+		const firstShare = random();
+		await coldStartLink(fixtures, shareLink(firstShare));
+		await expectVisible(fixtures, 'share-list-view');
+		await shareTextTo(fixtures, room.name, firstShare);
 
-	const secondShare = random();
-	await backToRoomsList(fixtures);
-	await selectServer(fixtures, data.alternateServer);
-	await checkServer(fixtures, data.alternateServer);
-	await coldStartLink(fixtures, shareLink(secondShare));
-	await expectVisible(fixtures, 'share-list-view');
-	await tapWhenVisible(fixtures, `server-item-${data.alternateServer}`);
-	await expectVisible(fixtures, 'select-server-view');
-	await screen.getByTestId(`server-item-${data.server}`).tap();
-	await expectVisible(fixtures, 'share-list-view');
-	await expectVisible(fixtures, `server-item-${data.server}`);
-	await shareTextTo(fixtures, room.name, secondShare);
-});
+		const secondShare = random();
+		await backToRoomsList(fixtures);
+		await selectServer(fixtures, data.alternateServer);
+		await checkServer(fixtures, data.alternateServer);
+		await coldStartLink(fixtures, shareLink(secondShare));
+		await expectVisible(fixtures, 'share-list-view');
+		await tapWhenVisible(fixtures, `server-item-${data.alternateServer}`);
+		await expectVisible(fixtures, 'select-server-view');
+		await screen.getByTestId(`server-item-${data.server}`).tap();
+		await expectVisible(fixtures, 'share-list-view');
+		await expectVisible(fixtures, `server-item-${data.server}`);
+		await shareTextTo(fixtures, room.name, secondShare);
+	})
+);
 
-test('handles share and login prompt deep links without a workspace', { tags: ['test-4'] }, async fixtures => {
-	const { room, authLink } = await createDeepLinkTargets();
+test(
+	'handles share and login prompt deep links without a workspace',
+	{ tags: ['test-4'] },
+	withFixtures(async fixtures => {
+		const { room, authLink } = await createDeepLinkTargets();
 
-	await launchApp(fixtures);
-	await coldStartLink(fixtures, shareLink('whatever'));
-	await expectVisible(fixtures, 'new-server-view');
+		await launchApp(fixtures);
+		await coldStartLink(fixtures, shareLink('whatever'));
+		await expectVisible(fixtures, 'new-server-view');
 
-	await answerLoginPrompt(fixtures, authLink({ forceLoginPrompt: 'true' }), /^Cancel$/i);
-	await expectVisible(fixtures, 'new-server-view');
-	await expect(roomTitle(fixtures, room.name)).toBeHidden();
+		await answerLoginPrompt(fixtures, authLink({ forceLoginPrompt: 'true' }), /^Cancel$/i);
+		await expectVisible(fixtures, 'new-server-view');
+		await expect(roomTitle(fixtures, room.name)).toBeHidden();
 
-	await answerLoginPrompt(fixtures, authLink({ forceLoginPrompt: 'true' }), /^Login$/i);
-	await expectRoomTitleToleratingSnapshotFailures(fixtures, room.name);
-	await backToRoomsList(fixtures);
-});
+		await answerLoginPrompt(fixtures, authLink({ forceLoginPrompt: 'true' }), /^Login$/i);
+		await expectRoomTitleToleratingSnapshotFailures(fixtures, room.name);
+		await backToRoomsList(fixtures);
+	})
+);

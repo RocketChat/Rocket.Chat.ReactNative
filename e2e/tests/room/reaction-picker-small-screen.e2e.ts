@@ -8,7 +8,8 @@ import {
 	type Fixtures,
 	tapWhenVisible,
 	expectVisible,
-	openMessageActions
+	openMessageActions,
+	withFixtures
 } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
@@ -25,7 +26,7 @@ const scrollPickerUntilVisible = async ({ screen }: Fixtures, testId: string) =>
 test(
 	'reaches the last emoji of the people category on small screens',
 	{ tags: ['test-9'], platforms: ['ios'] },
-	async fixtures => {
+	withFixtures(async fixtures => {
 		const message = 'random-message';
 		const user = await createUser();
 		const room = await createRandomRoom(user);
@@ -41,5 +42,5 @@ test(
 		await scrollPickerUntilVisible(fixtures, 'emoji-footprints');
 		await tapWhenVisible(fixtures, 'emoji-footprints');
 		await expectVisible(fixtures, 'message-reaction-:footprints:');
-	}
+	})
 );

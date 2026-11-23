@@ -11,7 +11,8 @@ import {
 	type Fixtures,
 	LONG_TIMEOUT,
 	fillWhenUncovered,
-	tapWhenUncovered
+	tapWhenUncovered,
+	withFixtures
 } from '~e2e/support/flows';
 import { random, type RandomUser } from '~e2e/support/random';
 import { openProfile } from '~e2e/support/settings';
@@ -86,23 +87,27 @@ const changePassword = async (fixtures: Fixtures, user: RandomUser, profileSaved
 	throw new Error(`Password change was still rate limited after ${PASSWORD_CHANGE_ATTEMPTS} attempts`);
 };
 
-test('edits profile info and changes password', { tags: ['test-2'] }, async fixtures => {
-	const { screen } = fixtures;
-	const user = await createUser();
+test(
+	'edits profile info and changes password',
+	{ tags: ['test-2'] },
+	withFixtures(async fixtures => {
+		const { screen } = fixtures;
+		const user = await createUser();
 
-	await loginWithDeepLink(fixtures, user);
-	await openProfile(fixtures);
-	await expectAllVisible(fixtures, [
-		'profile-view-avatar',
-		'avatar-edit-button',
-		'profile-view-name',
-		'profile-view-username',
-		'profile-view-email'
-	]);
-	await screen.scrollUntilVisible(screen.getByTestId('profile-view-submit'));
-	await screen.scrollUntilVisible(screen.getByTestId('profile-view-change-my-password-button'));
-	await screen.scrollUntilVisible(screen.getByTestId('profile-view-name'), { direction: 'up' });
+		await loginWithDeepLink(fixtures, user);
+		await openProfile(fixtures);
+		await expectAllVisible(fixtures, [
+			'profile-view-avatar',
+			'avatar-edit-button',
+			'profile-view-name',
+			'profile-view-username',
+			'profile-view-email'
+		]);
+		await screen.scrollUntilVisible(screen.getByTestId('profile-view-submit'));
+		await screen.scrollUntilVisible(screen.getByTestId('profile-view-change-my-password-button'));
+		await screen.scrollUntilVisible(screen.getByTestId('profile-view-name'), { direction: 'up' });
 
-	const profileSavedAt = await editBasicInfo(fixtures, user);
-	await changePassword(fixtures, user, profileSavedAt);
-});
+		const profileSavedAt = await editBasicInfo(fixtures, user);
+		await changePassword(fixtures, user, profileSavedAt);
+	})
+);

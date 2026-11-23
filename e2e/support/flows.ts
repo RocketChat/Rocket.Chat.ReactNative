@@ -7,7 +7,12 @@ import { getDeepLink, login, type Credentials } from './api';
 import { data } from './data';
 import { delay } from './timing';
 
-export type Fixtures = TestFixtures & { device: Device };
+export type Fixtures = Pick<TestFixtures, 'app' | 'platform' | 'screen'> & { device: Device };
+
+export const withFixtures =
+	(body: (fixtures: Fixtures) => Promise<void>) =>
+	({ app, device, platform, screen }: Fixtures) =>
+		body({ app, device, platform, screen });
 
 export const LONG_TIMEOUT = 60_000;
 

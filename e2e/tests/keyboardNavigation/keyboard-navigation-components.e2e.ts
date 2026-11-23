@@ -2,7 +2,7 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT, goBack } from '~e2e/support/flows';
+import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT, goBack, withFixtures } from '~e2e/support/flows';
 import {
 	expectLabel,
 	expectText,
@@ -34,7 +34,7 @@ afterEach(restoreKeyboardSettings);
 test(
 	'navigates accessibility switches, theme radios and alert options with a hardware keyboard',
 	{ tags: ['test-9'], platforms: ['android'], timeout: 600_000 },
-	async fixtures => {
+	withFixtures(async fixtures => {
 		const { screen } = fixtures;
 		const user = await createUser();
 		await hideSoftKeyboardWithHardwareKeyboard();
@@ -88,5 +88,5 @@ test(
 		await expectAlertOptionsClosed(fixtures);
 		await expectText(fixtures, 'Toasts');
 		await expectText(fixtures, 'Show alerts as');
-	}
+	})
 );

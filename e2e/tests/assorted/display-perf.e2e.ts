@@ -2,7 +2,15 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { isVisibleNow, loginWithDeepLink, LONG_TIMEOUT, succeeds, type Fixtures, headerItem } from '~e2e/support/flows';
+import {
+	isVisibleNow,
+	loginWithDeepLink,
+	LONG_TIMEOUT,
+	succeeds,
+	type Fixtures,
+	headerItem,
+	withFixtures
+} from '~e2e/support/flows';
 import { goToDisplayPreferences, goToRoomListFromDisplayPreferences } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
@@ -36,41 +44,45 @@ const switchRow = async ({ screen }: Fixtures, testId: string, title: string, en
 	await expect(wanted).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-test('changes the rooms list display preferences', { tags: ['test-5'] }, async fixtures => {
-	const { screen } = fixtures;
-	const user = await createUser();
-	const lastMessages = screen.getByTestId('room-item-last-message-container', { visible: true });
-	const avatars = screen.getByTestId('avatar', { visible: true });
-	const generalRow = screen.getByTestId('rooms-list-view-item-general');
+test(
+	'changes the rooms list display preferences',
+	{ tags: ['test-5'] },
+	withFixtures(async fixtures => {
+		const { screen } = fixtures;
+		const user = await createUser();
+		const lastMessages = screen.getByTestId('room-item-last-message-container', { visible: true });
+		const avatars = screen.getByTestId('avatar', { visible: true });
+		const generalRow = screen.getByTestId('rooms-list-view-item-general');
 
-	await loginWithDeepLink(fixtures, user);
-	for (const target of [
-		generalRow,
-		headerItem(fixtures, 'rooms-list-view-create-channel', 'Create new channel, team, direct message or discussion'),
-		headerItem(fixtures, 'rooms-list-view-sidebar', 'Menu')
-	]) {
-		await expect(target).toBeVisible({ timeout: LONG_TIMEOUT });
-	}
+		await loginWithDeepLink(fixtures, user);
+		for (const target of [
+			generalRow,
+			headerItem(fixtures, 'rooms-list-view-create-channel', 'Create new channel, team, direct message or discussion'),
+			headerItem(fixtures, 'rooms-list-view-sidebar', 'Menu')
+		]) {
+			await expect(target).toBeVisible({ timeout: LONG_TIMEOUT });
+		}
 
-	await goToDisplayPreferences(fixtures);
-	for (const testId of displayPreferenceOptions) {
-		await expect(screen.getByTestId(testId)).toBeVisible({ timeout: LONG_TIMEOUT });
-	}
+		await goToDisplayPreferences(fixtures);
+		for (const testId of displayPreferenceOptions) {
+			await expect(screen.getByTestId(testId)).toBeVisible({ timeout: LONG_TIMEOUT });
+		}
 
-	await switchRow(fixtures, 'display-pref-view-expanded', 'Expanded', true);
-	await goToRoomListFromDisplayPreferences(fixtures);
-	await expect(lastMessages.first()).toBeVisible({ timeout: LONG_TIMEOUT });
+		await switchRow(fixtures, 'display-pref-view-expanded', 'Expanded', true);
+		await goToRoomListFromDisplayPreferences(fixtures);
+		await expect(lastMessages.first()).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await goToDisplayPreferences(fixtures);
-	await switchRow(fixtures, 'display-pref-view-condensed', 'Condensed', true);
-	await goToRoomListFromDisplayPreferences(fixtures);
-	await expect(generalRow).toBeVisible({ timeout: LONG_TIMEOUT });
-	await expect(lastMessages).toHaveCount(0, { timeout: LONG_TIMEOUT });
-	await expect(avatars.first()).toBeVisible({ timeout: LONG_TIMEOUT });
+		await goToDisplayPreferences(fixtures);
+		await switchRow(fixtures, 'display-pref-view-condensed', 'Condensed', true);
+		await goToRoomListFromDisplayPreferences(fixtures);
+		await expect(generalRow).toBeVisible({ timeout: LONG_TIMEOUT });
+		await expect(lastMessages).toHaveCount(0, { timeout: LONG_TIMEOUT });
+		await expect(avatars.first()).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await goToDisplayPreferences(fixtures);
-	await switchRow(fixtures, 'display-pref-view-avatars', 'Avatars', false);
-	await goToRoomListFromDisplayPreferences(fixtures);
-	await expect(generalRow).toBeVisible({ timeout: LONG_TIMEOUT });
-	await expect(avatars).toHaveCount(0, { timeout: LONG_TIMEOUT });
-});
+		await goToDisplayPreferences(fixtures);
+		await switchRow(fixtures, 'display-pref-view-avatars', 'Avatars', false);
+		await goToRoomListFromDisplayPreferences(fixtures);
+		await expect(generalRow).toBeVisible({ timeout: LONG_TIMEOUT });
+		await expect(avatars).toHaveCount(0, { timeout: LONG_TIMEOUT });
+	})
+);

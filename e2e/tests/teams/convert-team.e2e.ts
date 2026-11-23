@@ -2,7 +2,15 @@ import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { goBack, goBackUntil, loginWithDeepLink, navigateToRoomActions, type Fixtures, LONG_TIMEOUT } from '~e2e/support/flows';
+import {
+	goBack,
+	goBackUntil,
+	loginWithDeepLink,
+	navigateToRoomActions,
+	type Fixtures,
+	LONG_TIMEOUT,
+	withFixtures
+} from '~e2e/support/flows';
 import { expectRoomTitle, tapHeaderItem } from '~e2e/support/header';
 import { random } from '~e2e/support/random';
 import { createChannel } from '~e2e/support/teams';
@@ -63,22 +71,26 @@ const convertTeamToChannel = async (fixtures: Fixtures, team: string, channelToD
 	await expect(screen.getByTestId(`rooms-list-view-item-${channelToDelete}`)).toBeHidden({ timeout: LONG_TIMEOUT });
 };
 
-test('converts channels and teams', { tags: ['test-6'] }, async fixtures => {
-	const user = await createUser();
-	const toBeConverted = `to-be-converted-${random()}`;
-	const toBeMoved = `to-be-moved-${random()}`;
-	const publicChannelToBeConverted = `channel-public-to-be-converted-${random()}`;
+test(
+	'converts channels and teams',
+	{ tags: ['test-6'] },
+	withFixtures(async fixtures => {
+		const user = await createUser();
+		const toBeConverted = `to-be-converted-${random()}`;
+		const toBeMoved = `to-be-moved-${random()}`;
+		const publicChannelToBeConverted = `channel-public-to-be-converted-${random()}`;
 
-	await loginWithDeepLink(fixtures, user);
+		await loginWithDeepLink(fixtures, user);
 
-	await createChannel(fixtures, publicChannelToBeConverted, { publicChannel: true });
-	await convertChannelToTeam(fixtures, publicChannelToBeConverted);
+		await createChannel(fixtures, publicChannelToBeConverted, { publicChannel: true });
+		await convertChannelToTeam(fixtures, publicChannelToBeConverted);
 
-	await createChannel(fixtures, toBeConverted);
-	await convertChannelToTeam(fixtures, toBeConverted);
+		await createChannel(fixtures, toBeConverted);
+		await convertChannelToTeam(fixtures, toBeConverted);
 
-	await createChannel(fixtures, toBeMoved);
-	await moveChannelToTeam(fixtures, toBeMoved, toBeConverted);
+		await createChannel(fixtures, toBeMoved);
+		await moveChannelToTeam(fixtures, toBeMoved, toBeConverted);
 
-	await convertTeamToChannel(fixtures, toBeConverted, toBeMoved);
-});
+		await convertTeamToChannel(fixtures, toBeConverted, toBeMoved);
+	})
+);
