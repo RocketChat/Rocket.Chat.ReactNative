@@ -1,5 +1,5 @@
 import { useMemo, type FC } from 'react';
-import { type StyleProp, StyleSheet, type TextStyle, View, useWindowDimensions } from 'react-native';
+import { View, useWindowDimensions } from 'react-native';
 import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 import isEmpty from 'lodash/isEmpty';
 
@@ -29,7 +29,6 @@ interface IMarkdownProps {
 	channels?: IUserChannel[];
 	navToRoomInfo?: Function;
 	onLinkPress?: TOnLinkPress;
-	textStyle?: StyleProp<TextStyle>;
 }
 
 const Markdown: FC<IMarkdownProps> = ({
@@ -39,8 +38,7 @@ const Markdown: FC<IMarkdownProps> = ({
 	navToRoomInfo,
 	useRealName,
 	username = '',
-	onLinkPress,
-	textStyle
+	onLinkPress
 }: IMarkdownProps) => {
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
@@ -118,7 +116,6 @@ const Markdown: FC<IMarkdownProps> = ({
 						markdown={segment.content}
 						accessibilityLabel={segment.accessibilityLabel}
 						markdownStyle={markdownStyle}
-						containerStyle={StyleSheet.flatten(textStyle) ?? undefined}
 						flavor='github'
 						md4cFlags={{ latexMath: true }}
 						selectable={false}
