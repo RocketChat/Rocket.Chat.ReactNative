@@ -62,6 +62,7 @@ export const buildMarkdownStyle = (colors: TColors, isBigEmojiOnly: boolean, fon
 		[`^${TIMESTAMP_SCHEME}`]: { color: colors.fontDefault, backgroundColor: colors.surfaceSelected, underline: false }
 	},
 	image: {
+		borderRadius: 0,
 		maxHeight: isBigEmojiOnly ? 30 * fontScale : 300,
 		resizeMode: 'contain'
 	},
