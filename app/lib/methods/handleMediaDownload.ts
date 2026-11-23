@@ -188,13 +188,14 @@ interface ISharedDownload {
 	resumable: FileSystem.DownloadResumable;
 	file: Promise<IDownloadedFile>;
 	attachedListeners: number;
+	transferred: boolean;
 }
 
-type TListenerState = 'attached' | 'saving' | 'detached' | 'canceled';
+type TListenerState = 'attached' | 'released' | 'canceled';
 
 export interface IMediaDownload {
 	uri: Promise<string>;
-	cancel: () => void;
+	cancel: () => boolean;
 	detach: () => void;
 }
 
@@ -288,11 +289,14 @@ const startSharedDownload = ({
 		headers: headers as Record<string, string>
 	});
 
-	const downloadAndDecrypt = async (): Promise<IDownloadedFile> => {
+	const downloadAndDecrypt = async (onTransferred: () => void): Promise<IDownloadedFile> => {
 		let result: FileSystem.FileSystemDownloadResult | undefined;
 		const decrypted = !!(encryption && originalChecksum);
 		try {
 			result = await resumable.downloadAsync();
+			if (result) {
+				onTransferred();
+			}
 			if (result && encryption && originalChecksum) {
 				await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
 			}
@@ -306,7 +310,14 @@ const startSharedDownload = ({
 		return { uri: result.uri, decrypted };
 	};
 
-	const download: ISharedDownload = { resumable, file: downloadAndDecrypt(), attachedListeners: 0 };
+	const download: ISharedDownload = {
+		resumable,
+		attachedListeners: 0,
+		transferred: false,
+		file: downloadAndDecrypt(() => {
+			download.transferred = true;
+		})
+	};
 	activeDownloads.set(downloadKey, download);
 	download.file.then(
 		() => removeActiveDownload(downloadKey, download),
@@ -330,7 +341,7 @@ export function downloadMediaFile({
 	encryption?: TAttachmentEncryption;
 	originalChecksum?: string;
 }): IMediaDownload {
-	let stop: (cancelTransfer: boolean) => void = () => {};
+	let stop: (cancelTransfer: boolean) => boolean = () => false;
 	const uri = new Promise<string>((resolve, reject) => {
 		const path = getFilePath({ type, mimeType, urlToCache: downloadUrl });
 		if (!path) {
@@ -344,16 +355,17 @@ export function downloadMediaFile({
 		let state: TListenerState = 'attached';
 
 		stop = cancelTransfer => {
-			if (state !== 'attached') {
-				return;
+			if (state !== 'attached' || (cancelTransfer && download.transferred)) {
+				return false;
 			}
-			state = cancelTransfer ? 'canceled' : 'detached';
+			state = cancelTransfer ? 'canceled' : 'released';
 			download.attachedListeners -= 1;
 			reject(new Error(cancelTransfer ? 'Media download canceled' : 'Media download detached'));
 			if (cancelTransfer && download.attachedListeners === 0) {
 				removeActiveDownload(downloadKey, download);
 				download.resumable.cancelAsync().catch(() => {});
 			}
+			return true;
 		};
 
 		download.file
@@ -361,13 +373,19 @@ export function downloadMediaFile({
 				if (state === 'canceled') {
 					return;
 				}
-				if (state === 'attached') {
-					state = 'saving';
+				if (encryption && originalChecksum && !decrypted) {
+					throw new Error('Media download was not decrypted');
 				}
-				await persistMessage(messageId, fileUri, decrypted, downloadUrl);
+				await persistMessage(messageId, fileUri, !!encryption, downloadUrl);
 				resolve(fileUri);
 			})
 			.catch(reject);
 	});
-	return { uri, cancel: () => stop(true), detach: () => stop(false) };
+	return {
+		uri,
+		cancel: () => stop(true),
+		detach: () => {
+			stop(false);
+		}
+	};
 }

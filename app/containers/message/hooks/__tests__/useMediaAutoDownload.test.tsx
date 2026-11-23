@@ -42,7 +42,7 @@ const mockGetState = store.getState as jest.Mock;
 
 const URL = 'https://open.rocket.chat/file.png';
 
-const mediaDownload = (uri: Promise<string>) => ({ uri, cancel: jest.fn(), detach: jest.fn() });
+const mediaDownload = (uri: Promise<string>) => ({ uri, cancel: jest.fn(() => true), detach: jest.fn() });
 
 const pendingMediaDownload = () => {
 	let finish: (uri: string) => void = () => {};
@@ -53,7 +53,10 @@ const pendingMediaDownload = () => {
 			stop = reject;
 		})
 	);
-	handle.cancel.mockImplementation(() => stop(new Error('canceled')));
+	handle.cancel.mockImplementation(() => {
+		stop(new Error('canceled'));
+		return true;
+	});
 	handle.detach.mockImplementation(() => stop(new Error('detached')));
 	return { handle, finish: (uri: string) => finish(uri) };
 };
@@ -257,6 +260,21 @@ describe('useMediaAutoDownload', () => {
 			await act(async () => result.current.onPress());
 			expect(handle.cancel).toHaveBeenCalledTimes(1);
 			expect(result.current.status).toBe('to-download');
+		});
+
+		it('keeps loading when the download ignores Cancel because the file already arrived', async () => {
+			mockIsDownloadActive.mockReturnValue(true);
+			const { handle, finish } = pendingMediaDownload();
+			handle.cancel.mockReturnValue(false);
+			mockDownloadMediaFile.mockReturnValue(handle);
+			const { result } = renderMediaHook({ file: { image_url: '/file.png' } });
+			await waitFor(() => expect(result.current.status).toBe('loading'));
+
+			await act(async () => result.current.onPress());
+			expect(result.current.status).toBe('loading');
+
+			await act(async () => finish('file://arrived'));
+			expect(result.current.status).toBe('downloaded');
 		});
 
 		it('downloads again after a cancel', async () => {

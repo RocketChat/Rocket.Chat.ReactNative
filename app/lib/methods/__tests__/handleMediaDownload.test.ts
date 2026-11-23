@@ -9,6 +9,7 @@ import {
 	persistMessage
 } from '../handleMediaDownload';
 import database from '../../database';
+import { Encryption } from '../../encryption';
 import { getMessageById } from '../../database/services/Message';
 import { getThreadById } from '../../database/services/Thread';
 import { getThreadMessageById } from '../../database/services/ThreadMessage';
@@ -40,6 +41,10 @@ jest.mock('../../database/services/Thread', () => ({
 
 jest.mock('../../database/services/ThreadMessage', () => ({
 	getThreadMessageById: jest.fn()
+}));
+
+jest.mock('../../encryption', () => ({
+	Encryption: { addFileToDecryptFileQueue: jest.fn() }
 }));
 
 jest.mock('expo-file-system/legacy', () => ({
@@ -377,22 +382,19 @@ describe('downloadMediaFile', () => {
 		transfer.resolve({ uri: fileUri });
 		await flush();
 
-		mediaDownload.cancel();
+		expect(mediaDownload.cancel()).toBe(false);
 		finishSave();
 
 		await expect(mediaDownload.uri).resolves.toBe(fileUri);
 		expect(cancelAsync).not.toHaveBeenCalled();
 	});
 
-	it('marks a joined Message decrypted only when the shared download decrypted the file', async () => {
+	it('fails an encrypted Message that joined a download which did not decrypt the file', async () => {
 		const { transfer } = mockTransfer();
-		const records = Object.fromEntries(
-			['plain', 'encrypted'].map(id => [
-				id,
-				makeFakeRecord(`messages#${id}`, { attachments: [{ image_url: '/file-upload/abc/photo.jpg', e2e: 'pending' }] })
-			])
-		);
-		(getMessageById as jest.Mock).mockImplementation(async (id: string) => records[id]);
+		const encryptedRecord = makeFakeRecord('messages#encrypted', {
+			attachments: [{ image_url: '/file-upload/abc/photo.jpg', e2e: 'pending' }]
+		});
+		(getMessageById as jest.Mock).mockImplementation(async (id: string) => (id === 'encrypted' ? encryptedRecord : null));
 		const plain = startMessageDownload('plain');
 		const encrypted = downloadMediaFile({
 			messageId: 'encrypted',
@@ -403,10 +405,38 @@ describe('downloadMediaFile', () => {
 		});
 
 		transfer.resolve({ uri: fileUri });
-		await Promise.all([plain.uri, encrypted.uri]);
 
-		expect(records.encrypted.attachments[0].e2e).toBeUndefined();
-		expect(records.encrypted.attachments[0].title_link).toBe(fileUri);
+		await expect(plain.uri).resolves.toBe(fileUri);
+		await expect(encrypted.uri).rejects.toThrow('Media download was not decrypted');
+		expect(encryptedRecord.attachments[0].e2e).toBe('pending');
+		expect(encryptedRecord.attachments[0].title_link).toBeUndefined();
+	});
+
+	it('ignores Cancel once the transfer has finished, while the file is decrypted', async () => {
+		const { transfer, cancelAsync } = mockTransfer();
+		let finishDecrypt: () => void = () => {};
+		const mockDecrypt = Encryption.addFileToDecryptFileQueue as jest.Mock;
+		mockDecrypt.mockReturnValue(
+			new Promise(resolve => {
+				finishDecrypt = () => resolve(undefined);
+			})
+		);
+		const mediaDownload = downloadMediaFile({
+			messageId: 'encrypted',
+			type: 'image',
+			downloadUrl,
+			encryption: { iv: 'iv', key: {} },
+			originalChecksum: 'checksum'
+		});
+		transfer.resolve({ uri: fileUri });
+		await flush();
+		expect(mockDecrypt).toHaveBeenCalled();
+
+		expect(mediaDownload.cancel()).toBe(false);
+		finishDecrypt();
+
+		await expect(mediaDownload.uri).resolves.toBe(fileUri);
+		expect(cancelAsync).not.toHaveBeenCalled();
 	});
 
 	it('keeps a newer download active when a canceled transfer settles after it started', async () => {

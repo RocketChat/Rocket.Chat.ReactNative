@@ -133,7 +133,9 @@ export const useMediaAutoDownload = ({
 	};
 
 	const cancel = () => {
-		activeDownload.current?.cancel();
+		if (!activeDownload.current?.cancel()) {
+			return;
+		}
 		activeDownload.current = null;
 		dispatchDownloadEvent('download_canceled');
 	};
@@ -162,6 +164,7 @@ export const useMediaAutoDownload = ({
 	};
 
 	useEffect(() => {
+		isUnmounted.current = false;
 		const handleCache = async () => {
 			if (url) {
 				const isCached = await checkCache();
