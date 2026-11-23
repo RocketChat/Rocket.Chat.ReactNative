@@ -1024,6 +1024,54 @@ describe('deepLinking saga — known workspace waits for its own sign-in', () =>
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 	});
 
+	it('does not count a session left over from the previous workspace as signed in', async () => {
+		storeUserFor(OTHER_HOST);
+		const { store } = setupStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+		store.dispatch(loginSuccess({ id: 'user-a' } as any));
+		store.dispatch(setUser({ id: HOST_USER_ID }));
+
+		store.dispatch(deepLinkingOpen(makeParams(ROOM_PARAMS)));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().login.isAuthenticated).toBe(true);
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+	});
+
+	it('does not open while the signed-in session belongs to its workspace but the user is another one', async () => {
+		storeUserFor(OTHER_HOST);
+		const { store } = setupStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+		store.dispatch(loginSuccess({ id: HOST_USER_ID } as any));
+		store.dispatch(setUser({ id: 'user-a' }));
+
+		store.dispatch(deepLinkingOpen(makeParams(ROOM_PARAMS)));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+	});
+
+	it('does not mark a cold start for the current workspace as changing workspace', async () => {
+		storeUserFor(HOST);
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParams(ROOM_PARAMS)));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().server.changingServer).toBe(false);
+	});
+
+	it('ends the native call when a newer link cancels a failed VoIP accept', async () => {
+		jest.mocked(RNCallKeep.endCall).mockClear();
+		storeUserFor(OTHER_HOST);
+		const { store } = setupStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+
+		store.dispatch(deepLinkingOpen(makeParams({ callId: 'call-1', username: 'bob', voipAcceptFailed: true }) as any));
+		await flushSagaMicrotasks();
+		store.dispatch(deepLinkingOpen(makeParams(ROOM_PARAMS)));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(RNCallKeep.endCall)).toHaveBeenCalledWith('call-1');
+	});
+
 	it('ends the native call when a failed VoIP accept cannot reach its workspace', async () => {
 		jest.mocked(RNCallKeep.endCall).mockClear();
 		storeUserFor(OTHER_HOST);

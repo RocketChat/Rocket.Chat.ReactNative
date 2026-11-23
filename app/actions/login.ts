@@ -95,12 +95,6 @@ export function setUser(user: Partial<IUser>): ISetUser {
 	};
 }
 
-export function clearAuthenticated(): Action {
-	return {
-		type: types.LOGIN.CLEAR_AUTHENTICATED
-	};
-}
-
 export function clearUser(): Action {
 	return {
 		type: types.USER.CLEAR

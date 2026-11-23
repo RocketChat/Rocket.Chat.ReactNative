@@ -260,7 +260,10 @@ const handleShareExtension = function* handleOpen({ params }) {
 };
 
 const isSignedInto = (host, userId) => state =>
-	state.server.server === host && state.login.isAuthenticated && state.login.user.id === userId;
+	state.server.server === host &&
+	state.login.isAuthenticated &&
+	state.login.user.id === userId &&
+	state.login.signedInUserId === userId;
 
 const isConnectedAs = (host, userId) => state =>
 	state.server.server === host && state.server.connected && state.login.user.id === userId;
@@ -304,16 +307,20 @@ const selectKnownWorkspace = function* selectKnownWorkspace({ host, version, use
 		yield fallbackNavigation();
 		return false;
 	}
-	yield put(selectServerRequest(host, version, true, selectedServer !== host));
+	yield put(selectServerRequest(host, version, true, !!selectedServer && selectedServer !== host));
 	return yield* waitForWorkspace(host, userId);
 };
 
 const openKnownWorkspace = function* openKnownWorkspace({ params, version, userId }) {
-	const isOpen = yield* selectKnownWorkspace({ host: params.host, version, userId });
-	if (!isOpen && params.voipAcceptFailed) {
-		endVoipCall(params.callId);
+	let isOpen = false;
+	try {
+		isOpen = yield* selectKnownWorkspace({ host: params.host, version, userId });
+		return isOpen;
+	} finally {
+		if (!isOpen && params.voipAcceptFailed) {
+			endVoipCall(params.callId);
+		}
 	}
-	return isOpen;
 };
 
 const waitForInsideRoot = function* waitForInsideRoot() {

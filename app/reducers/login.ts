@@ -26,6 +26,7 @@ export interface ILogin {
 	user: Partial<IUser>;
 	isLocalAuthenticated: boolean;
 	isAuthenticated: boolean;
+	signedInUserId?: string;
 	isFetching: boolean;
 	error: Record<string, any>;
 	services: Record<string, any>;
@@ -64,6 +65,7 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 				...state,
 				isFetching: false,
 				isAuthenticated: true,
+				signedInUserId: action.user.id,
 				user: userAfterLogin(state.user, action.user),
 				failure: false,
 				error: {}
@@ -75,11 +77,6 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 				isAuthenticated: false,
 				failure: true,
 				error: action.err
-			};
-		case types.LOGIN.CLEAR_AUTHENTICATED:
-			return {
-				...state,
-				isAuthenticated: false
 			};
 		case types.LOGOUT:
 			return initialState;
