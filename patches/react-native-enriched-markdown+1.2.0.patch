@@ -23,16 +23,10 @@ index 6e970c2..9cc855b 100644
        }
      }
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
-index 9aea981..00e09cd 100644
+index 9aea981..55d5b0a 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
-@@ -1,19 +1,21 @@
- package com.swmansion.enriched.markdown.spans
- 
- import android.content.Context
--import android.graphics.Bitmap
- import android.graphics.Canvas
- import android.graphics.Color
+@@ -7,13 +7,16 @@ import android.graphics.Color
  import android.graphics.Paint
  import android.graphics.Path
  import android.graphics.Rect
@@ -49,33 +43,22 @@ index 9aea981..00e09cd 100644
  import android.widget.TextView
  import androidx.core.graphics.createBitmap
  import androidx.core.graphics.drawable.toDrawable
-@@ -23,8 +25,10 @@ import com.swmansion.enriched.markdown.EnrichedMarkdownText
+@@ -23,6 +26,7 @@ import com.swmansion.enriched.markdown.EnrichedMarkdownText
  import com.swmansion.enriched.markdown.styles.ImageSourceOverride
  import com.swmansion.enriched.markdown.styles.StyleConfig
  import com.swmansion.enriched.markdown.utils.common.findEnrichedMarkdownAncestor
 +import com.swmansion.enriched.markdown.utils.text.AnimatedImageDecoder
  import com.swmansion.enriched.markdown.utils.text.ImageCache
  import com.swmansion.enriched.markdown.utils.text.ImageDownloader
-+import com.swmansion.enriched.markdown.utils.text.LoadedImage
  import com.swmansion.enriched.markdown.utils.text.LocalImageLoader
- import com.swmansion.enriched.markdown.utils.text.view.repaintSpan
- import java.lang.ref.WeakReference
-@@ -52,7 +56,7 @@ class ImageSpan(
-   private var loadedDrawable: Drawable? = null
-   private val height: Int = if (isInline) styleConfig.inlineImageStyle.size.toInt() else styleConfig.imageStyle.height.toInt()
- 
--  private val borderRadiusPx: Int = styleConfig.imageStyle.borderRadius.toInt()
-+  private val borderRadiusPx: Int = if (isInline) 0 else styleConfig.imageStyle.borderRadius.toInt()
-   private val maxHeightPx: Int = if (isInline) 0 else styleConfig.imageStyle.maxHeight.toInt()
-   private val aspectRatio: Float = if (isInline) 0f else styleConfig.imageStyle.aspectRatio
-   private val resizeMode: String = if (isInline) "" else styleConfig.imageStyle.resizeMode
-@@ -104,7 +108,59 @@ class ImageSpan(
+@@ -104,6 +108,65 @@ class ImageSpan(
    private var onBoxHeightChanged: (() -> Unit)? = null
    private var boxHeightReported = false
  
-+  private var animatedSource: LoadedImage.Animated? = null
 +  private var animationDecodeRequested = false
-+  private var animation: Animatable? = null
++
++  private val animation: Animatable?
++    get() = sourceDrawable as? Animatable
 +
 +  private val animationCallback =
 +    object : Drawable.Callback {
@@ -83,6 +66,7 @@ index 9aea981..00e09cd 100644
 +        val view = viewRef?.get()
 +        if (view == null || !isHostedBy(view)) {
 +          animation?.stop()
++          view?.removeOnAttachStateChangeListener(hostAttachListener)
 +          return
 +        }
 +        view.invalidate()
@@ -116,6 +100,7 @@ index 9aea981..00e09cd 100644
 +
 +      override fun onViewDetachedFromWindow(view: View) {
 +        animation?.stop()
++        if (!isHostedBy(view)) view.removeOnAttachStateChangeListener(this)
 +      }
 +    }
 +
@@ -124,65 +109,49 @@ index 9aea981..00e09cd 100644
 +    return text.getSpanStart(this) >= 0
 +  }
 +
++  private fun followHostAttachState(view: TextView) {
++    view.removeOnAttachStateChangeListener(hostAttachListener)
++    view.addOnAttachStateChangeListener(hostAttachListener)
++  }
++
    private fun intrinsicImageSize(): Pair<Int, Int> {
-+    animatedSource?.let { return it.width to it.height }
      sourceDrawable?.let { return it.intrinsicWidth to it.intrinsicHeight }
      val cached = ImageCache.getOriginal(requestKey) ?: return 0 to 0
-     return cached.width to cached.height
-@@ -163,17 +219,59 @@ class ImageSpan(
-       ImageDownloader.download(context, requestUrl, requestHeaders, ::handleLoadResult)
-     } else {
-       val cached = ImageCache.getOriginal(requestKey)
--      val bitmap = cached ?: LocalImageLoader.load(context, requestUrl)
--      if (bitmap != null && cached == null) ImageCache.putOriginal(requestKey, bitmap)
--      handleLoadResult(bitmap)
-+      val image = cached ?: LocalImageLoader.load(context, requestUrl)?.let(LoadedImage::Still)
-+      if (image != null && cached == null) ImageCache.putOriginal(requestKey, image)
-+      handleLoadResult(image)
-     }
+@@ -170,10 +233,44 @@ class ImageSpan(
    }
  
--  private fun handleLoadResult(bitmap: Bitmap?) {
-+  private fun handleLoadResult(image: LoadedImage?) {
-+    when (image) {
-+      null -> {
-+        showDrawable(null)
-+      }
-+
-+      is LoadedImage.Still -> {
-+        showDrawable(image.bitmap.toDrawable(context.resources))
-+      }
-+
-+      is LoadedImage.Animated -> {
-+        animatedSource = image
-+        decodeAnimationOnceHosted()
-+      }
-+    }
+   private fun handleLoadResult(bitmap: Bitmap?) {
++    showDrawable(bitmap?.toDrawable(context.resources))
++    decodeAnimationOnceHosted()
 +  }
 +
 +  private fun decodeAnimationOnceHosted() {
-+    val source = animatedSource ?: return
 +    if (animationDecodeRequested || viewRef?.get() == null) return
++    val still = sourceDrawable ?: return
++    val encoded = ImageCache.getAnimatedSource(requestKey) ?: return
 +    animationDecodeRequested = true
-+    val (decodeWidth, decodeHeight) = animationDecodeSizeWithoutUpscaling(source)
-+    AnimatedImageDecoder.decode(source, decodeWidth, decodeHeight, context.resources) { drawable ->
-+      if (drawable is Animatable) {
-+        drawable.callback = animationCallback
-+        animation = drawable
-+        if (viewRef?.get()?.isAttachedToWindow == true) drawable.start()
-+      }
++    val (decodeWidth, decodeHeight) = animationDecodeSizeWithoutUpscaling(still.intrinsicWidth, still.intrinsicHeight)
++    AnimatedImageDecoder.decode(encoded, decodeWidth, decodeHeight) { drawable ->
++      if (drawable !is Animatable) return@decode
++      drawable.callback = animationCallback
 +      showDrawable(drawable)
++      val view = viewRef?.get() ?: return@decode
++      followHostAttachState(view)
++      if (view.isAttachedToWindow) drawable.start()
 +    }
 +  }
 +
-+  private fun animationDecodeSizeWithoutUpscaling(source: LoadedImage.Animated): Pair<Int, Int> {
++  private fun animationDecodeSizeWithoutUpscaling(
++    sourceWidth: Int,
++    sourceHeight: Int,
++  ): Pair<Int, Int> {
 +    val boxWidth = if (isInline) height else cachedWidth
 +    val boxHeight = if (isInline) height else resolveBoxHeight(cachedWidth)
-+    if (boxWidth <= 0 || boxHeight <= 0) return source.width to source.height
-+    val widthScale = boxWidth.toFloat() / source.width
-+    val heightScale = boxHeight.toFloat() / source.height
++    if (boxWidth <= 0 || boxHeight <= 0) return sourceWidth to sourceHeight
++    val widthScale = boxWidth.toFloat() / sourceWidth
++    val heightScale = boxHeight.toFloat() / sourceHeight
 +    val scale = minOf(1f, if (isInline) minOf(widthScale, heightScale) else maxOf(widthScale, heightScale))
-+    return (source.width * scale).toInt().coerceAtLeast(1) to (source.height * scale).toInt().coerceAtLeast(1)
++    return (sourceWidth * scale).toInt().coerceAtLeast(1) to (sourceHeight * scale).toInt().coerceAtLeast(1)
 +  }
 +
 +  private fun showDrawable(drawable: Drawable?) {
@@ -194,7 +163,7 @@ index 9aea981..00e09cd 100644
        ImageCache.markFailed(requestKey)
        loadFailed = true
        if (!wasFailed) refreshForSize(previousSize)
-@@ -181,7 +279,7 @@ class ImageSpan(
+@@ -181,7 +278,7 @@ class ImageSpan(
      }
      ImageCache.clearFailed(requestKey)
      loadFailed = false
@@ -203,7 +172,7 @@ index 9aea981..00e09cd 100644
      wrapAndAssignDrawable(previousSize)
    }
  
-@@ -217,7 +315,9 @@ class ImageSpan(
+@@ -217,7 +314,9 @@ class ImageSpan(
      val base = sourceDrawable ?: return
      boxHeight = resolveBoxHeight(targetWidth)
  
@@ -214,7 +183,7 @@ index 9aea981..00e09cd 100644
  
      if (cachedBitmap != null) {
        loadedDrawable =
-@@ -234,7 +334,7 @@ class ImageSpan(
+@@ -234,7 +333,7 @@ class ImageSpan(
            isBlockImage = !isInline,
            resizeMode = resizeMode,
            legacySizing = legacySizing,
@@ -223,17 +192,17 @@ index 9aea981..00e09cd 100644
          )
      }
    }
-@@ -289,7 +389,9 @@ class ImageSpan(
+@@ -289,7 +388,9 @@ class ImageSpan(
      onBoxHeightChanged: (() -> Unit)? = null,
    ) {
      this.onBoxHeightChanged = onBoxHeightChanged
 +    viewRef?.get()?.removeOnAttachStateChangeListener(hostAttachListener)
      viewRef = WeakReference(view)
-+    view.addOnAttachStateChangeListener(hostAttachListener)
++    if (animation != null) followHostAttachState(view)
      if (!isInline) {
        val availableWidth = getAvailableWidth(view)
        if (availableWidth > 0) {
-@@ -304,6 +406,7 @@ class ImageSpan(
+@@ -304,6 +405,7 @@ class ImageSpan(
          if (!boxHeightReported && boxHeight != placeholderBoxHeight) notifyBoxHeightMayHaveChanged(view)
        }
      }
@@ -241,45 +210,6 @@ index 9aea981..00e09cd 100644
    }
  
    private fun updateWidthAndRecreate(newWidth: Int) {
-diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkPillIconCache.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkPillIconCache.kt
-index 9510b5f..8ba0a98 100644
---- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkPillIconCache.kt
-+++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkPillIconCache.kt
-@@ -7,8 +7,10 @@ import android.os.SystemClock
- import android.util.LruCache
- import androidx.annotation.VisibleForTesting
- import androidx.core.graphics.scale
-+import com.swmansion.enriched.markdown.utils.text.AnimatedImageDecoder
- import com.swmansion.enriched.markdown.utils.text.ImageCache
- import com.swmansion.enriched.markdown.utils.text.ImageDownloader
-+import com.swmansion.enriched.markdown.utils.text.LoadedImage
- import com.swmansion.enriched.markdown.utils.text.LocalImageLoader
- import java.io.File
- import kotlin.math.max
-@@ -42,7 +44,22 @@ internal object LinkPillIconCache {
- 
-   /** Replaceable so unit tests never touch the network. */
-   @VisibleForTesting
--  internal var remoteLoader: (Context, String, Map<String, String>, (Bitmap?) -> Unit) -> Unit = ImageDownloader::download
-+  internal var remoteLoader: (Context, String, Map<String, String>, (Bitmap?) -> Unit) -> Unit = ::downloadStill
-+
-+  private fun downloadStill(
-+    context: Context,
-+    iconUri: String,
-+    headers: Map<String, String>,
-+    onLoaded: (Bitmap?) -> Unit,
-+  ) {
-+    ImageDownloader.download(context, iconUri, headers) { image ->
-+      when (image) {
-+        null -> onLoaded(null)
-+        is LoadedImage.Still -> onLoaded(image.bitmap)
-+        is LoadedImage.Animated -> AnimatedImageDecoder.decodeFirstFrame(image, REMOTE_MAX_DIMENSION, REMOTE_MAX_DIMENSION, onLoaded)
-+      }
-+    }
-+  }
- 
-   @VisibleForTesting
-   internal var clock: () -> Long = SystemClock::uptimeMillis
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkSpan.kt
 index ff00069..75f1228 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkSpan.kt
@@ -312,15 +242,12 @@ index ff00069..75f1228 100644
      textPaint.isUnderlineText = variant?.underline ?: styleCache.linkUnderline
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/AnimatedImageDecoder.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/AnimatedImageDecoder.kt
 new file mode 100644
-index 0000000..ce6d0fb
+index 0000000..5c73576
 --- /dev/null
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/AnimatedImageDecoder.kt
-@@ -0,0 +1,102 @@
+@@ -0,0 +1,52 @@
 +package com.swmansion.enriched.markdown.utils.text
 +
-+import android.content.res.Resources
-+import android.graphics.Bitmap
-+import android.graphics.BitmapFactory
 +import android.graphics.ImageDecoder
 +import android.graphics.drawable.Drawable
 +import android.os.Build
@@ -328,7 +255,6 @@ index 0000000..ce6d0fb
 +import android.os.Looper
 +import android.util.Log
 +import androidx.annotation.RequiresApi
-+import androidx.core.graphics.drawable.toDrawable
 +import java.nio.ByteBuffer
 +import java.util.concurrent.Executors
 +
@@ -339,123 +265,79 @@ index 0000000..ce6d0fb
 +  private val mainHandler = Handler(Looper.getMainLooper())
 +
 +  fun decode(
-+    image: LoadedImage.Animated,
++    encoded: ByteArray,
 +    targetWidth: Int,
 +    targetHeight: Int,
-+    resources: Resources,
 +    callback: (Drawable?) -> Unit,
 +  ) {
++    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
++      callback(null)
++      return
++    }
 +    executor.execute {
-+      val drawable =
-+        decodeAnimation(image, targetWidth, targetHeight)
-+          ?: decodeStill(image, targetWidth, targetHeight)?.toDrawable(resources)
++      val drawable = decodeOrNull(encoded, targetWidth, targetHeight)
 +      mainHandler.post { callback(drawable) }
 +    }
 +  }
 +
-+  fun decodeFirstFrame(
-+    image: LoadedImage.Animated,
-+    targetWidth: Int,
-+    targetHeight: Int,
-+    callback: (Bitmap?) -> Unit,
-+  ) {
-+    executor.execute {
-+      val bitmap = decodeStill(image, targetWidth, targetHeight)
-+      mainHandler.post { callback(bitmap) }
-+    }
-+  }
-+
-+  private fun decodeAnimation(
-+    image: LoadedImage.Animated,
-+    targetWidth: Int,
-+    targetHeight: Int,
-+  ): Drawable? {
-+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) return null
-+    try {
-+      return decodeWithImageDecoder(image.encoded, targetWidth, targetHeight)
-+    } catch (_: OutOfMemoryError) {
-+      Log.e(TAG, "OOM decoding animated image ${targetWidth}x$targetHeight")
-+      return null
-+    } catch (e: Exception) {
-+      Log.e(TAG, "Failed to decode animated image", e)
-+      return null
-+    }
-+  }
-+
 +  @RequiresApi(Build.VERSION_CODES.P)
-+  private fun decodeWithImageDecoder(
++  private fun decodeOrNull(
 +    encoded: ByteArray,
 +    targetWidth: Int,
 +    targetHeight: Int,
-+  ): Drawable =
-+    ImageDecoder.decodeDrawable(ImageDecoder.createSource(ByteBuffer.wrap(encoded))) { decoder, _, _ ->
-+      decoder.setTargetSize(targetWidth, targetHeight)
-+    }
-+
-+  private fun decodeStill(
-+    image: LoadedImage.Animated,
-+    targetWidth: Int,
-+    targetHeight: Int,
-+  ): Bitmap? {
-+    val options =
-+      BitmapFactory.Options().apply {
-+        inSampleSize = sampleSize(image, targetWidth, targetHeight)
-+      }
++  ): Drawable? =
 +    try {
-+      return BitmapFactory.decodeByteArray(image.encoded, 0, image.encoded.size, options)
++      ImageDecoder.decodeDrawable(ImageDecoder.createSource(ByteBuffer.wrap(encoded))) { decoder, _, _ ->
++        decoder.setTargetSize(targetWidth, targetHeight)
++      }
 +    } catch (_: OutOfMemoryError) {
-+      Log.e(TAG, "OOM decoding still image ${targetWidth}x$targetHeight")
-+      return null
++      Log.e(TAG, "OOM decoding animated image ${targetWidth}x$targetHeight")
++      null
++    } catch (e: Exception) {
++      Log.e(TAG, "Failed to decode animated image", e)
++      null
 +    }
-+  }
-+
-+  private fun sampleSize(
-+    image: LoadedImage.Animated,
-+    targetWidth: Int,
-+    targetHeight: Int,
-+  ): Int {
-+    val downscale = minOf(image.width / targetWidth, image.height / targetHeight)
-+    return if (downscale <= 1) 1 else Integer.highestOneBit(downscale)
-+  }
 +}
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt
-index ccbf799..e50d8d9 100644
+index ccbf799..ef2ac9f 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt
-@@ -9,7 +9,13 @@ object ImageCache {
+@@ -8,9 +8,17 @@ object ImageCache {
+   private const val ORIGINAL_CACHE_SIZE = 20 * 1024 * 1024
    private const val PROCESSED_CACHE_SIZE = 30 * 1024 * 1024
    private const val FAILED_KEYS_SIZE = 200
++  private const val ANIMATED_SOURCE_CACHE_SIZE = 20 * 1024 * 1024
  
--  private val originalCache = bitmapLruCache(ORIGINAL_CACHE_SIZE)
-+  private val originalCache =
-+    object : LruCache<String, LoadedImage>(ORIGINAL_CACHE_SIZE) {
+   private val originalCache = bitmapLruCache(ORIGINAL_CACHE_SIZE)
+   private val processedCache = bitmapLruCache(PROCESSED_CACHE_SIZE)
++  private val animatedSourceCache =
++    object : LruCache<String, ByteArray>(ANIMATED_SOURCE_CACHE_SIZE) {
 +      override fun sizeOf(
 +        key: String,
-+        value: LoadedImage,
-+      ): Int = value.byteCount
++        value: ByteArray,
++      ): Int = value.size
 +    }
-   private val processedCache = bitmapLruCache(PROCESSED_CACHE_SIZE)
  
    // Measurement builds its own spans, so the requests that failed have to be readable
-@@ -43,13 +49,13 @@ object ImageCache {
-     return url + "|" + digest.joinToString(separator = "") { "%02x".format(it) }
+   // by a new span: without this it would size an inline image as the square it never drew.
+@@ -52,6 +60,15 @@ object ImageCache {
+     originalCache.put(url, bitmap)
    }
  
--  fun getOriginal(url: String): Bitmap? = originalCache.get(url)
-+  fun getOriginal(url: String): LoadedImage? = originalCache.get(url)
- 
-   fun putOriginal(
-     url: String,
--    bitmap: Bitmap,
-+    image: LoadedImage,
-   ) {
--    originalCache.put(url, bitmap)
-+    originalCache.put(url, image)
-   }
- 
++  fun getAnimatedSource(requestKey: String): ByteArray? = animatedSourceCache.get(requestKey)
++
++  fun putAnimatedSource(
++    requestKey: String,
++    encoded: ByteArray,
++  ) {
++    animatedSourceCache.put(requestKey, encoded)
++  }
++
    fun hasFailed(requestKey: String): Boolean = failedKeys.get(requestKey) != null
+ 
+   fun markFailed(requestKey: String) {
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
-index eefcf9f..67fbe61 100644
+index eefcf9f..ddb0cc5 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
 @@ -7,6 +7,7 @@ import android.os.Handler
@@ -466,7 +348,7 @@ index eefcf9f..67fbe61 100644
  import okhttp3.Cache
  import okhttp3.CacheControl
  import okhttp3.Call
-@@ -22,22 +23,46 @@ object ImageDownloader {
+@@ -22,12 +23,16 @@ object ImageDownloader {
    private const val TAG = "ImageDownloader"
    private const val DISK_CACHE_SIZE = 100L * 1024 * 1024
    private const val TIMEOUT = 15L
@@ -483,11 +365,10 @@ index eefcf9f..67fbe61 100644
    // No disk cache: it keys by URL alone and would mix header sets.
    @Volatile
    private var headerClient: OkHttpClient? = null
-   private var maxTargetWidth: Int = 0
+@@ -35,6 +40,16 @@ object ImageDownloader {
  
--  private val inFlight = HashMap<String, MutableList<(Bitmap?) -> Unit>>()
-+  private val inFlight = HashMap<String, MutableList<(LoadedImage?) -> Unit>>()
-+
+   private val inFlight = HashMap<String, MutableList<(Bitmap?) -> Unit>>()
+ 
 +  private fun isAnimatedFormat(bytes: ByteArray): Boolean {
 +    val isGif = bytes.size > 4 && String(bytes, 0, 4, Charsets.US_ASCII) == "GIF8"
 +    val isAnimatedWebp =
@@ -498,24 +379,10 @@ index eefcf9f..67fbe61 100644
 +    return isGif || isAnimatedWebp
 +  }
 +
-+  private fun decodeLoadedImage(bytes: ByteArray): LoadedImage? {
-+    if (isAnimatedFormat(bytes)) {
-+      val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-+      BitmapFactory.decodeByteArray(bytes, 0, bytes.size, bounds)
-+      if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return null
-+      return LoadedImage.Animated(bytes, bounds.outWidth, bounds.outHeight)
-+    }
-+    return decodeDownsampled(bytes, maxTargetWidth)?.let(LoadedImage::Still)
-+  }
- 
    /** Replaceable so unit tests never touch the network. */
    @VisibleForTesting
--  internal var remoteLoader: (Context, String, Map<String, String>, (Bitmap?) -> Unit) -> Unit = ::fetch
-+  internal var remoteLoader: (Context, String, Map<String, String>, (LoadedImage?) -> Unit) -> Unit = ::fetch
- 
-   private fun getClient(context: Context): OkHttpClient =
-     client ?: synchronized(this) {
-@@ -56,28 +81,43 @@ object ImageDownloader {
+   internal var remoteLoader: (Context, String, Map<String, String>, (Bitmap?) -> Unit) -> Unit = ::fetch
+@@ -56,14 +71,29 @@ object ImageDownloader {
          .also { headerClient = it }
      }
  
@@ -548,130 +415,53 @@ index eefcf9f..67fbe61 100644
    }
  
    fun download(
-     context: Context,
-     url: String,
-     headers: Map<String, String> = emptyMap(),
--    callback: (Bitmap?) -> Unit,
-+    callback: (LoadedImage?) -> Unit,
-   ) = remoteLoader(context, url, headers, callback)
- 
-   private fun fetch(
-     context: Context,
-     url: String,
-     headers: Map<String, String>,
--    callback: (Bitmap?) -> Unit,
-+    callback: (LoadedImage?) -> Unit,
-   ) {
-     val headers = ImageCache.normalizedHeaders(headers)
-     val requestKey = ImageCache.requestKey(url, headers)
-@@ -128,11 +168,11 @@ object ImageDownloader {
-           call: Call,
-           response: Response,
-         ) {
--          val bitmap =
-+          val image =
+@@ -132,6 +162,7 @@ object ImageDownloader {
              response.use {
                try {
                  val bytes = it.body?.bytes() ?: return@use null
--                decodeDownsampled(bytes, maxTargetWidth)
-+                decodeLoadedImage(bytes)
++                if (isAnimatedFormat(bytes)) ImageCache.putAnimatedSource(requestKey, bytes)
+                 decodeDownsampled(bytes, maxTargetWidth)
                } catch (_: OutOfMemoryError) {
                  Log.e(TAG, "OOM decoding image: $url")
-                 null
-@@ -142,8 +182,8 @@ object ImageDownloader {
-               }
-             }
- 
--          bitmap?.let { ImageCache.putOriginal(requestKey, it) }
--          dispatchCallbacks(requestKey, bitmap)
-+          image?.let { ImageCache.putOriginal(requestKey, it) }
-+          dispatchCallbacks(requestKey, image)
-         }
- 
-         override fun onFailure(
-@@ -218,11 +258,11 @@ object ImageDownloader {
- 
-   private fun dispatchCallbacks(
-     requestKey: String,
--    bitmap: Bitmap?,
-+    image: LoadedImage?,
-   ) {
-     val callbacks = synchronized(inFlight) { inFlight.remove(requestKey) } ?: return
-     mainHandler.post {
--      callbacks.forEach { it(bitmap) }
-+      callbacks.forEach { it(image) }
-     }
-   }
- }
-diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/LoadedImage.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/LoadedImage.kt
-new file mode 100644
-index 0000000..cacd638
---- /dev/null
-+++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/LoadedImage.kt
-@@ -0,0 +1,25 @@
-+package com.swmansion.enriched.markdown.utils.text
-+
-+import android.graphics.Bitmap
-+
-+sealed interface LoadedImage {
-+  val width: Int
-+  val height: Int
-+  val byteCount: Int
-+
-+  class Still(
-+    val bitmap: Bitmap,
-+  ) : LoadedImage {
-+    override val width: Int get() = bitmap.width
-+    override val height: Int get() = bitmap.height
-+    override val byteCount: Int get() = bitmap.allocationByteCount
-+  }
-+
-+  class Animated(
-+    val encoded: ByteArray,
-+    override val width: Int,
-+    override val height: Int,
-+  ) : LoadedImage {
-+    override val byteCount: Int get() = encoded.size
-+  }
-+}
 diff --git a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
-index feaff1d..29f5f93 100644
+index feaff1d..70e6900 100644
 --- a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
 +++ b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
-@@ -62,6 +62,10 @@
+@@ -62,6 +62,11 @@
  #import "StyleConfig.h"
  #import "StylePropsUtils.h"
  #import "TableContainerView.h"
 +#if !TARGET_OS_OSX
++#import "ENRMLinkLongPressRecognizer.h"
 +#import "ENRMMarkdownTextView.h"
 +#import "ENRMTableIOSGridView.h"
 +#endif
  #import "TaskListTapUtils.h"
  #import "TextViewLayoutManager.h"
  #import <React/RCTUtils.h>
-@@ -88,7 +92,8 @@ typedef NS_OPTIONS(NSUInteger, ENRMDirtyFlags) {
- 
- static char kENRMSegmentFadeAnimatorKey;
- 
--@interface EnrichedMarkdown () <RCTEnrichedMarkdownViewProtocol, UITextViewDelegate, ENRMImageLayoutObserver>
-+@interface EnrichedMarkdown () <RCTEnrichedMarkdownViewProtocol, UITextViewDelegate, UIGestureRecognizerDelegate,
-+                                 ENRMImageLayoutObserver>
- + (ENRMMd4cFlags *)flagsFromProps:(const EnrichedMarkdownMd4cFlagsStruct &)props;
- - (void)emitLinkPress:(NSString *)url;
- - (void)emitLinkLongPress:(NSString *)url;
-@@ -1245,6 +1250,11 @@ static char kENRMSegmentFadeAnimatorKey;
+@@ -1244,10 +1249,20 @@ static char kENRMSegmentFadeAnimatorKey;
+   ENRMTapRecognizer *tapRecognizer = [[ENRMTapRecognizer alloc] initWithTarget:self action:@selector(textTapped:)];
    [view.textView addGestureRecognizer:tapRecognizer];
  
++  __weak EnrichedMarkdown *weakSelf = self;
  #if !TARGET_OS_OSX
-+  UILongPressGestureRecognizer *linkLongPressRecognizer =
-+      [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(textLongPressed:)];
-+  linkLongPressRecognizer.delegate = self;
++  ENRMLinkLongPressRecognizer *linkLongPressRecognizer = [[ENRMLinkLongPressRecognizer alloc]
++      initWithLinkPreviewEnabled:^BOOL {
++        EnrichedMarkdown *strongSelf = weakSelf;
++        return strongSelf != nil && strongSelf->_enableLinkPreview;
++      }
++      onLinkLongPress:^(NSString *url) {
++        [weakSelf emitLinkLongPress:url];
++      }];
 +  [view.textView addGestureRecognizer:linkLongPressRecognizer];
 +
    view.textView.delegate = self;
  #else
-   __weak EnrichedMarkdown *weakSelf = self;
-@@ -1466,6 +1476,13 @@ static char kENRMSegmentFadeAnimatorKey;
+-  __weak EnrichedMarkdown *weakSelf = self;
+   [view setContextMenuProvider:^NSMenu *_Nullable(NSMenu *baseMenu, NSTextView *textView) {
+     EnrichedMarkdown *strongSelf = weakSelf;
+     if (!strongSelf) {
+@@ -1466,6 +1481,13 @@ static char kENRMSegmentFadeAnimatorKey;
    }
  
    _selectable = newViewProps.selectable;
@@ -685,7 +475,7 @@ index feaff1d..29f5f93 100644
  
    for (RCTUIView *segment in _segmentViews) {
      if ([segment isKindOfClass:[EnrichedMarkdownInternalText class]]) {
-@@ -1786,20 +1803,40 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
+@@ -1786,20 +1808,40 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
  }
  #endif
  
@@ -732,7 +522,7 @@ index feaff1d..29f5f93 100644
      }
  
      if (![segment isKindOfClass:[EnrichedMarkdownInternalText class]]) {
-@@ -1807,12 +1844,7 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
+@@ -1807,12 +1849,7 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
      }
      EnrichedMarkdownInternalText *textSegment = (EnrichedMarkdownInternalText *)segment;
      CGPoint segmentPoint = [self convertPoint:point toView:textSegment.textView];
@@ -746,7 +536,7 @@ index feaff1d..29f5f93 100644
        // Only where textTapped would emit, so a parent Pressable still gets the rest, as on Android.
        BOOL isTextPress = _enableTextPress && textSegment.textView.selectedRange.length == 0 &&
                           textPressIndexAtPoint(textSegment.textView, segmentPoint) != NSNotFound;
-@@ -1825,6 +1857,7 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
+@@ -1825,6 +1862,7 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
  
    return [super touchEventEmitterAtPoint:point];
  }
@@ -754,38 +544,8 @@ index feaff1d..29f5f93 100644
  
  #if TARGET_OS_OSX
  - (void)mouseDown:(NSEvent *)event
-@@ -1989,6 +2022,29 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
-   }
- }
- 
-+#if !TARGET_OS_OSX
-+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-+{
-+  ENRMPlatformTextView *textView = (ENRMPlatformTextView *)gestureRecognizer.view;
-+  if (textView.selectable || _enableLinkPreview) {
-+    return NO;
-+  }
-+  return linkURLAtPoint(textView, [touch locationInView:textView]) != nil;
-+}
-+
-+- (void)textLongPressed:(UILongPressGestureRecognizer *)recognizer
-+{
-+  if (recognizer.state != UIGestureRecognizerStateBegan) {
-+    return;
-+  }
-+  ENRMPlatformTextView *textView = (ENRMPlatformTextView *)recognizer.view;
-+  NSString *url = linkURLAtPoint(textView, [recognizer locationInView:textView]);
-+  if (url) {
-+    [self emitLinkLongPress:url];
-+  }
-+}
-+#endif
-+
- // TODO: Remove API_AVAILABLE(ios(16.0)) guard when the minimum iOS deployment target in RN is bumped to 16.
- #if !TARGET_OS_OSX
- - (UIMenu *)textView:(UITextView *)textView
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
-index dddff1d..6ee363a 100644
+index dddff1d..0bc87bc 100644
 --- a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
 +++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
 @@ -4,6 +4,7 @@
@@ -809,19 +569,15 @@ index dddff1d..6ee363a 100644
  
  @end
  
-@@ -123,9 +130,8 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
-     _cachedMaxHeight = [config imageMaxHeight];
-     _cachedAspectRatio = [config imageAspectRatio];
-     _cachedResizeMode = [config imageResizeMode];
--    CGFloat inlineImageSize = [config inlineImageSize];
--    CGFloat inlineScale = isInline && inlineImageSize > 0 ? _cachedHeight / inlineImageSize : 1.0;
--    _cachedBorderRadius = [config imageBorderRadius] * inlineScale;
-+    _cachedBorderRadius = isInline ? 0 : [config imageBorderRadius];
+@@ -126,6 +133,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+     CGFloat inlineImageSize = [config inlineImageSize];
+     CGFloat inlineScale = isInline && inlineImageSize > 0 ? _cachedHeight / inlineImageSize : 1.0;
+     _cachedBorderRadius = [config imageBorderRadius] * inlineScale;
 +    _displayedContainers = [NSHashTable weakObjectsHashTable];
  
      // The resolved font, so the alt text grows with the user's text size like the paragraph does.
      _failurePlaceholder = [[ENRMImageFailurePlaceholder alloc] initWithAltText:altText
-@@ -218,6 +224,9 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -218,6 +226,9 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
                  characterIndex:(NSUInteger)characterIndex
  {
    self.textContainer = textContainer;
@@ -831,7 +587,7 @@ index dddff1d..6ee363a 100644
  
    if (self.loadFailed) {
      return [self failureImageForSize:imageBounds.size] ?: self.placeholderImage;
-@@ -228,7 +237,76 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -228,7 +239,76 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
      [self processAndApplyImage:self.originalImage withTargetWidth:imageBounds.size.width];
    }
  
@@ -909,7 +665,7 @@ index dddff1d..6ee363a 100644
  }
  
  - (RCTUIImage *)failureImageForSize:(CGSize)size
-@@ -297,6 +375,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -297,6 +377,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
    if ([processedKey isEqualToString:self.lastProcessedKey])
      return;
    self.lastProcessedKey = processedKey;
@@ -918,19 +674,18 @@ index dddff1d..6ee363a 100644
    RCTUIImage *cachedProcessed = [[ENRMImageAttachment processedImageCache] objectForKey:processedKey];
  
 diff --git a/node_modules/react-native-enriched-markdown/ios/segments/ENRMBlockquoteContainerView.mm b/node_modules/react-native-enriched-markdown/ios/segments/ENRMBlockquoteContainerView.mm
-index 41956f0..fee7461 100644
+index 41956f0..673ff31 100644
 --- a/node_modules/react-native-enriched-markdown/ios/segments/ENRMBlockquoteContainerView.mm
 +++ b/node_modules/react-native-enriched-markdown/ios/segments/ENRMBlockquoteContainerView.mm
-@@ -116,7 +116,7 @@ static UIEdgeInsets ENRMBlockquoteContentInsets(StyleConfig *config)
- @end
- 
- #if !TARGET_OS_OSX
--@interface ENRMBlockquoteContainerView () <UITextViewDelegate, ENRMLinkContextMenuSource>
-+@interface ENRMBlockquoteContainerView () <UITextViewDelegate, UIGestureRecognizerDelegate, ENRMLinkContextMenuSource>
- @end
- #endif
- 
-@@ -209,6 +209,7 @@ static UIEdgeInsets ENRMBlockquoteContentInsets(StyleConfig *config)
+@@ -4,6 +4,7 @@
+ #import "ENRMCodeBlockContainerView.h"
+ #import "ENRMFeatureFlags.h"
+ #import "ENRMLinkContextMenus.h"
++#import "ENRMLinkLongPressRecognizer.h"
+ #import "ENRMSegmentHeightMeasurer.h"
+ #import "ENRMTableIOSGridView.h"
+ #import "ENRMTextInteractionUtils.h"
+@@ -209,6 +210,7 @@ static UIEdgeInsets ENRMBlockquoteContentInsets(StyleConfig *config)
                        view.accessibilityInfo = segment.textResult.accessibilityInfo;
                        view.accessibilityLabels = strongSelf.accessibilityLabels;
                        view.onSelectionCopy = strongSelf.onSelectionCopy;
@@ -938,47 +693,25 @@ index 41956f0..fee7461 100644
                        [view applyAttributedText:segment.textResult.attributedText context:segment.textResult.context];
                        if (strongSelf) {
                          [strongSelf attachLinkTapToTextView:view];
-@@ -393,10 +394,40 @@ static UIEdgeInsets ENRMBlockquoteContentInsets(StyleConfig *config)
+@@ -393,6 +395,18 @@ static UIEdgeInsets ENRMBlockquoteContentInsets(StyleConfig *config)
    ENRMTapRecognizer *tap = [[ENRMTapRecognizer alloc] initWithTarget:self action:@selector(handleTextTap:)];
    [view.textView addGestureRecognizer:tap];
  #if !TARGET_OS_OSX
-+  UILongPressGestureRecognizer *linkLongPress =
-+      [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTextLongPress:)];
-+  linkLongPress.delegate = self;
++  __weak ENRMBlockquoteContainerView *weakSelf = self;
++  ENRMLinkLongPressRecognizer *linkLongPress = [[ENRMLinkLongPressRecognizer alloc]
++      initWithLinkPreviewEnabled:^BOOL {
++        return weakSelf.dynamicProps.enableLinkPreview;
++      }
++      onLinkLongPress:^(NSString *url) {
++        ENRMBlockquoteContainerView *strongSelf = weakSelf;
++        if (strongSelf.onLinkLongPress) {
++          strongSelf.onLinkLongPress(url);
++        }
++      }];
 +  [view.textView addGestureRecognizer:linkLongPress];
    view.textView.delegate = self;
  #endif
  }
- 
-+#if !TARGET_OS_OSX
-+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-+{
-+  if (![gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
-+    return YES;
-+  }
-+  ENRMPlatformTextView *textView = (ENRMPlatformTextView *)gestureRecognizer.view;
-+  if (textView.selectable || self.dynamicProps.enableLinkPreview) {
-+    return NO;
-+  }
-+  return linkURLAtPoint(textView, [touch locationInView:textView]) != nil;
-+}
-+
-+- (void)handleTextLongPress:(UILongPressGestureRecognizer *)recognizer
-+{
-+  if (recognizer.state != UIGestureRecognizerStateBegan) {
-+    return;
-+  }
-+  ENRMPlatformTextView *textView = (ENRMPlatformTextView *)recognizer.view;
-+  NSString *url = linkURLAtPoint(textView, [recognizer locationInView:textView]);
-+  if (url && self.onLinkLongPress) {
-+    self.onLinkLongPress(url);
-+  }
-+}
-+#endif
-+
- - (void)handleTextTap:(ENRMTapRecognizer *)recognizer
- {
-   ENRMPlatformTextView *textView = (ENRMPlatformTextView *)recognizer.view;
 diff --git a/node_modules/react-native-enriched-markdown/ios/segments/ENRMDynamicBlockProps.h b/node_modules/react-native-enriched-markdown/ios/segments/ENRMDynamicBlockProps.h
 index abf4ab3..44dd173 100644
 --- a/node_modules/react-native-enriched-markdown/ios/segments/ENRMDynamicBlockProps.h
@@ -1251,6 +984,84 @@ index 3ef8cd6..7d073f7 100644
  #else
          RCTUIImage *image = (data && !error) ? [[RCTUIImage alloc] initWithData:data] : nil;
  #endif
+diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMLinkLongPressRecognizer.h b/node_modules/react-native-enriched-markdown/ios/utils/ENRMLinkLongPressRecognizer.h
+new file mode 100644
+index 0000000..6cd8a98
+--- /dev/null
++++ b/node_modules/react-native-enriched-markdown/ios/utils/ENRMLinkLongPressRecognizer.h
+@@ -0,0 +1,18 @@
++#pragma once
++#import "ENRMUIKit.h"
++
++#if !TARGET_OS_OSX
++
++NS_ASSUME_NONNULL_BEGIN
++
++/// Long press on a link in a non-selectable text view without link preview; emits the link URL once the press begins.
++@interface ENRMLinkLongPressRecognizer : UILongPressGestureRecognizer
++
++- (instancetype)initWithLinkPreviewEnabled:(BOOL (^)(void))linkPreviewEnabled
++                           onLinkLongPress:(void (^)(NSString *url))onLinkLongPress;
++
++@end
++
++NS_ASSUME_NONNULL_END
++
++#endif
+diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMLinkLongPressRecognizer.m b/node_modules/react-native-enriched-markdown/ios/utils/ENRMLinkLongPressRecognizer.m
+new file mode 100644
+index 0000000..d781f11
+--- /dev/null
++++ b/node_modules/react-native-enriched-markdown/ios/utils/ENRMLinkLongPressRecognizer.m
+@@ -0,0 +1,48 @@
++#import "ENRMLinkLongPressRecognizer.h"
++#import "LinkTapUtils.h"
++
++#if !TARGET_OS_OSX
++
++@interface ENRMLinkLongPressRecognizer () <UIGestureRecognizerDelegate>
++@property (nonatomic, copy) BOOL (^linkPreviewEnabled)(void);
++@property (nonatomic, copy) void (^onLinkLongPress)(NSString *url);
++@end
++
++@implementation ENRMLinkLongPressRecognizer
++
++- (instancetype)initWithLinkPreviewEnabled:(BOOL (^)(void))linkPreviewEnabled
++                           onLinkLongPress:(void (^)(NSString *url))onLinkLongPress
++{
++  if (self = [super initWithTarget:nil action:nil]) {
++    _linkPreviewEnabled = [linkPreviewEnabled copy];
++    _onLinkLongPress = [onLinkLongPress copy];
++    [self addTarget:self action:@selector(handleLongPress)];
++    self.delegate = self;
++  }
++  return self;
++}
++
++- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
++{
++  ENRMPlatformTextView *textView = (ENRMPlatformTextView *)self.view;
++  if (textView.selectable || self.linkPreviewEnabled()) {
++    return NO;
++  }
++  return linkURLAtPoint(textView, [touch locationInView:textView]) != nil;
++}
++
++- (void)handleLongPress
++{
++  if (self.state != UIGestureRecognizerStateBegan) {
++    return;
++  }
++  ENRMPlatformTextView *textView = (ENRMPlatformTextView *)self.view;
++  NSString *url = linkURLAtPoint(textView, [self locationInView:textView]);
++  if (url) {
++    self.onLinkLongPress(url);
++  }
++}
++
++@end
++
++#endif
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.h b/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.h
 index 3f00233..9acd497 100644
 --- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.h
