@@ -1,4 +1,4 @@
-import { all, call, cancel, delay, fork, put, race, select, spawn, take, takeLatest } from 'redux-saga/effects';
+import { all, call, cancel, delay, fork, put, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
@@ -313,16 +313,7 @@ const checkVoipPermission = async () => {
 
 const startVoipFork = function* startVoipFork() {
 	yield call(checkVoipPermission);
-
-	// Re-check on permission/module changes. selectServer's DB-read phase covers warm relaunches;
-	// PERMISSIONS.SET / ENTERPRISE_MODULES.SET cover first-login on a fresh server; PERMISSIONS.UPDATE
-	// covers runtime changes pushed by the server (handled in connect.ts's stream-notify-logged listener).
-	// Stop on LOGOUT, a new LOGIN.SUCCESS, or SERVER.SELECT_REQUEST so we never leak the saga across
-	// workspace switches.
-	yield race({
-		recheck: takeLatest([types.PERMISSIONS.SET, types.PERMISSIONS.UPDATE, types.ENTERPRISE_MODULES.SET], checkVoipPermission),
-		stop: take([types.LOGOUT, types.LOGIN.SUCCESS, types.SERVER.SELECT_REQUEST])
-	});
+	yield takeLatest([types.PERMISSIONS.SET, types.PERMISSIONS.UPDATE, types.ENTERPRISE_MODULES.SET], checkVoipPermission);
 };
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
@@ -333,10 +324,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		const server = yield select(getServer);
 		yield put(roomsRequest());
 		yield put(encryptionInit());
-		// VoIP must spawn before the awaited fetches so it survives the 2s cancel race in root().
-		// On warm relaunch, redux is already populated by selectServer; on cold login, it re-checks
-		// when PERMISSIONS.SET / ENTERPRISE_MODULES.SET land.
-		yield spawn(startVoipFork);
+		yield fork(startVoipFork);
 		yield call(fetchPermissions);
 		yield call(fetchEnterpriseModules, { user });
 		yield fork(fetchCustomEmojisFork);
@@ -490,25 +478,26 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 	}
 };
 
+const endsPostLoginSession = (action, sessionServer) =>
+	action.type !== types.SERVER.SELECT_REQUEST || action.server !== sessionServer;
+
 const root = function* root() {
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.USER.SET, handleSetUser);
 	yield takeLatest(types.DELETE_ACCOUNT, handleDeleteAccount);
 
+	let postLoginSession = null;
 	while (true) {
-		const params = yield take(types.LOGIN.SUCCESS);
-		const loginSuccessTask = yield fork(handleLoginSuccess, params);
-		// Only cancel handleLoginSuccess if a workspace switch interrupts it.
-		// Cancelling on the 2s timeout would rip the saga before it reaches
-		// appStart(ROOT_INSIDE), stranding users on the login screen when
-		// permissions/enterprise fetches run long (issue #7333).
-		const { selectRequest } = yield race({
-			selectRequest: take(types.SERVER.SELECT_REQUEST),
-			timeout: delay(2000)
-		});
-		if (selectRequest) {
-			yield cancel(loginSuccessTask);
+		const action = yield take([types.LOGIN.SUCCESS, types.LOGOUT, types.SERVER.SELECT_REQUEST]);
+		if (postLoginSession && endsPostLoginSession(action, postLoginSession.server)) {
+			yield cancel(postLoginSession.task);
+			postLoginSession = null;
+		}
+		if (action.type === types.LOGIN.SUCCESS) {
+			const server = yield select(getServer);
+			const task = yield fork(handleLoginSuccess, action);
+			postLoginSession = { server, task };
 		}
 	}
 };
