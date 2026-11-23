@@ -3,7 +3,7 @@ import { type MarkdownStyle } from 'react-native-enriched-markdown';
 
 import { type TColors } from '~/theme';
 import { interWeight } from '~/views/Styles';
-import { CHANNEL_SCHEME, ME_QUERY, TEAM_QUERY, TIMESTAMP_SCHEME, USER_SCHEME } from './linkSchemes';
+import { CHANNEL_SCHEME, ME_QUERY, TIMESTAMP_SCHEME, USER_SCHEME } from './linkSchemes';
 
 const codeFontFamily = Platform.select({ ios: 'Courier New', android: 'monospace' });
 
@@ -57,7 +57,6 @@ export const buildMarkdownStyle = (colors: TColors, isBigEmojiOnly: boolean, fon
 	linkVariants: {
 		[`^${USER_SCHEME}(all|here)$`]: { color: colors.statusFontService, underline: false },
 		[`^${USER_SCHEME}[^?]+\\${ME_QUERY}$`]: { color: colors.statusFontDanger, underline: false },
-		[`^${USER_SCHEME}[^?]+\\${TEAM_QUERY}$`]: { color: colors.statusFontWarning, underline: false },
 		[`^${USER_SCHEME}`]: { color: colors.statusFontWarning, underline: false },
 		[`^${CHANNEL_SCHEME}`]: { color: colors.fontInfo, underline: false },
 		[`^${TIMESTAMP_SCHEME}`]: { color: colors.fontDefault, backgroundColor: colors.surfaceSelected, underline: false }
