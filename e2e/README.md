@@ -50,7 +50,7 @@ pnpm exec e2e run --target android --tag test-5  # one CI shard
 
 Optional variables: `E2E_IOS_DEVICE` (simulator name or UDID, default `iPhone 17 Pro`) and `E2E_ANDROID_DEVICE` (serial, default `emulator-5554`).
 
-Results land in `.e2e/`: `report.json`, and per failure an accessibility tree (`failure/screen.txt`) and screenshot under `artifacts/`.
+Results land in `.e2e/`: `report.json`, and per failure a trace (`trace.md`), an accessibility tree (`attempt-<n>/screen-at-failure.txt`) and screenshots under `results/<test>/`.
 
 On Android emulators with Google Play services, disable autofill first, or the password manager can take over the login form: `adb shell settings put secure autofill_service null`.
 
