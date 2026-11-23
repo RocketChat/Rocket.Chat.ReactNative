@@ -15,7 +15,15 @@ import type {
 import dayjs from '~/lib/dayjs';
 import { type IUserMention, type IUserChannel } from './interfaces';
 import { type TGetCustomEmoji } from '~/definitions/IEmoji';
-import { CHANNEL_SCHEME, ME_QUERY, TEAM_QUERY, TIMESTAMP_FULL_FORMAT, TIMESTAMP_SCHEME, USER_SCHEME } from './linkSchemes';
+import {
+	CHANNEL_SCHEME,
+	ME_QUERY,
+	TEAM_QUERY,
+	TIMESTAMP_FULL_FORMAT,
+	TIMESTAMP_SCHEME,
+	USER_SCHEME,
+	isInternalLink
+} from './linkSchemes';
 
 export interface ISerializeContext {
 	mentions?: IUserMention[];
@@ -194,40 +202,89 @@ const padMathSpan = (span: string, before: string, after: string): string => {
 
 const toLinkLabelValue = (label: LinkBlock['value']['label']): Inlines[] => (Array.isArray(label) ? label : [label]);
 
-const serializeInline = (nodes: Inlines[], context: ISerializeContext): string => {
-	const parts = nodes.map(node => serializeInlineNode(node, context));
-	return parts
-		.map((part, index) =>
-			nodes[index].type === 'INLINE_KATEX'
-				? padMathSpan(part, parts.slice(0, index).join(''), parts.slice(index + 1).join(''))
-				: part
-		)
-		.join('');
+const DELIMITED_TYPES = new Set<Inlines['type']>(['BOLD', 'ITALIC', 'STRIKE', 'MENTION_USER', 'MENTION_CHANNEL']);
+const EMPHASIS_DELIMITER_CHARS = '*_~';
+
+const DELIMITER_WHITESPACE = '[\\p{Zs}\\t\\n\\v\\f\\r]';
+const EDGE_WHITESPACE = new RegExp(`^(${DELIMITER_WHITESPACE}*)(.*?)(${DELIMITER_WHITESPACE}*)$`, 'su');
+const DELIMITER_BOUNDARY = new RegExp(`${DELIMITER_WHITESPACE}|[\\p{P}\\p{S}]`, 'u');
+
+const wrapEmphasis = (content: string, delimiter: string): string => {
+	const [, leading = '', core = '', trailing = ''] = content.match(EDGE_WHITESPACE) ?? [];
+	return core ? `${leading}${delimiter}${core}${delimiter}${trailing}` : `${leading}${trailing}`;
 };
 
-const serializeInlineNode = (node: Inlines, context: ISerializeContext): string => {
+const isEmphasisDelimiterBoundary = (char: string | undefined, delimiterChar: string): boolean =>
+	char === undefined || (char !== delimiterChar && DELIMITER_BOUNDARY.test(char));
+
+const needsHairSpace = (delimiterChar: string | undefined, neighbor: string | undefined): boolean =>
+	!!delimiterChar && EMPHASIS_DELIMITER_CHARS.includes(delimiterChar) && !isEmphasisDelimiterBoundary(neighbor, delimiterChar);
+
+const padEmphasisSpan = (span: string, before: string, after: string): string => {
+	const leading = needsHairSpace(span[0], before.at(-1)) ? HAIR_SPACE : '';
+	const trailing = needsHairSpace(span.at(-1), after[0]) ? HAIR_SPACE : '';
+	return `${leading}${span}${trailing}`;
+};
+
+const padSpan = (node: Inlines, span: string, before: string, after: string): string => {
+	if (node.type === 'INLINE_KATEX') {
+		return padMathSpan(span, before, after);
+	}
+	if (DELIMITED_TYPES.has(node.type)) {
+		return padEmphasisSpan(span, before, after);
+	}
+	return span;
+};
+
+const isRenderedLink = (node: LinkBlock): boolean => !!node.value.src.value && !isInternalLink(node.value.src.value);
+
+const withoutDroppedLinks = (nodes: Inlines[]): Inlines[] =>
+	nodes.flatMap(node =>
+		node.type === 'LINK' && !isRenderedLink(node) ? withoutDroppedLinks(toLinkLabelValue(node.value.label)) : [node]
+	);
+
+interface IInlineScope {
+	insideLink: boolean;
+	insideBold: boolean;
+}
+
+const TOP_LEVEL_SCOPE: IInlineScope = { insideLink: false, insideBold: false };
+
+const serializeInline = (inlines: Inlines[], context: ISerializeContext, scope = TOP_LEVEL_SCOPE): string => {
+	const nodes = withoutDroppedLinks(inlines);
+	const parts = nodes.map(node => serializeInlineNode(node, context, scope));
+	return parts.reduce(
+		(serialized, part, index) => serialized + padSpan(nodes[index], part, serialized, parts.slice(index + 1).join('')),
+		''
+	);
+};
+
+const serializeMentionInScope = (mention: IResolvedMention, scope: IInlineScope): string => {
+	if (!scope.insideLink) {
+		return serializeMention(mention);
+	}
+	const text = escapePlainText(mention.text);
+	return mention.url && !scope.insideBold ? `**${text}**` : text;
+};
+
+const serializeInlineNode = (node: Inlines, context: ISerializeContext, scope: IInlineScope): string => {
 	switch (node.type) {
 		case 'PLAIN_TEXT':
 			return escapePlainText(node.value);
 		case 'BOLD':
-			return `**${serializeInline(node.value, context)}**`;
+			return wrapEmphasis(serializeInline(node.value, context, { ...scope, insideBold: true }), '**');
 		case 'ITALIC':
-			return `_${serializeInline(node.value, context)}_`;
+			return wrapEmphasis(serializeInline(node.value, context, scope), '_');
 		case 'STRIKE':
-			return `~~${serializeInline(node.value, context)}~~`;
+			return wrapEmphasis(serializeInline(node.value, context, scope), '~~');
 		case 'SPOILER':
-			return `||${serializeInline(node.value, context)}||`;
-		case 'LINK': {
-			const label = serializeInline(toLinkLabelValue(node.value.label), context);
-			if (!node.value.src.value) {
-				return label;
-			}
-			return `[${label}](${escapeUrl(node.value.src.value)})`;
-		}
+			return `||${serializeInline(node.value, context, scope)}||`;
+		case 'LINK':
+			return `[${serializeInline(toLinkLabelValue(node.value.label), context, { ...scope, insideLink: true })}](${escapeUrl(node.value.src.value)})`;
 		case 'MENTION_USER':
-			return serializeMention(resolveUserMention(node.value.value, context));
+			return serializeMentionInScope(resolveUserMention(node.value.value, context), scope);
 		case 'MENTION_CHANNEL':
-			return serializeMention(resolveChannelMention(node.value.value, context));
+			return serializeMentionInScope(resolveChannelMention(node.value.value, context), scope);
 		case 'EMOJI':
 			return serializeEmoji(node, context);
 		case 'INLINE_CODE':
@@ -236,6 +293,9 @@ const serializeInlineNode = (node: Inlines, context: ISerializeContext): string 
 			return serializeMath(node.value, '$');
 		case 'TIMESTAMP': {
 			const label = formatTimestampLabel(node.value);
+			if (scope.insideLink) {
+				return escapePlainText(label);
+			}
 			const unixSeconds = timestampToUnixSeconds(node.value.timestamp);
 			return `[${escapePlainText(` ${label} `)}](${escapeUrl(`${TIMESTAMP_SCHEME}${unixSeconds}`)})`;
 		}

@@ -904,7 +904,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
       <Text
         accessibilityLabel="Italic:  rocket.cat   name1   all   here   test-channel "
       >
-        Italic: _ 
+        Italic:  _
         <Text
           accessibilityRole="link"
           onLongPress={[Function]}
@@ -912,7 +912,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
         >
           rocket\\.cat
         </Text>
-         _ _ 
+        _   _
         <Text
           accessibilityRole="link"
           onLongPress={[Function]}
@@ -920,7 +920,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
         >
           name1
         </Text>
-         _ _ 
+        _   _
         <Text
           accessibilityRole="link"
           onLongPress={[Function]}
@@ -928,7 +928,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
         >
           all
         </Text>
-         _ _ 
+        _   _
         <Text
           accessibilityRole="link"
           onLongPress={[Function]}
@@ -936,7 +936,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
         >
           here
         </Text>
-         _ _ 
+        _   _
         <Text
           accessibilityRole="link"
           onLongPress={[Function]}
@@ -944,7 +944,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
         >
           test\\-channel
         </Text>
-         _
+        _ 
       </Text>
     </View>
     <View

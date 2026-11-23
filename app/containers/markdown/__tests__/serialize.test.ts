@@ -162,6 +162,49 @@ describe('markdown serialize', () => {
 		expect(serialize('[a\n\nb](https://a.co)')).toBe('[a b](<https://a.co>)');
 	});
 
+	describe('emphasis next to words and punctuation', () => {
+		it('pads a strike closer followed by a letter so the strike still closes', () => {
+			expect(serialize('~old~new')).toBe('~~old~~ new');
+		});
+
+		it('pads a bold opener after a letter when the bold starts with punctuation', () => {
+			expect(serialize('a*"q"*')).toBe('a **"q"**');
+		});
+
+		it('pads an italic opener after a non-ASCII letter so the underscore still opens', () => {
+			expect(serialize('é_x_')).toBe('é _x_');
+		});
+
+		it('leaves emphasis between spaces and punctuation unpadded', () => {
+			expect(serialize('(*bold*) _it_.')).toBe('\\(**bold**\\) _it_\\.');
+		});
+	});
+
+	describe('links the user wrote', () => {
+		const mentions: ISerializeContext['mentions'] = [{ _id: 'u1', username: 'john', name: 'John', type: 'user' }];
+		const channels: ISerializeContext['channels'] = [{ _id: 'c1', name: 'general' }];
+
+		it('renders a mention inside a link label as bold text so links never nest', () => {
+			expect(serialize('[~@john~](https://x.co)', { mentions })).toBe('[~~**john**~~](<https://x.co>)');
+		});
+
+		it('does not bold a mention again inside a bold link label', () => {
+			expect(serialize('[*a @john*](https://x.co)', { mentions })).toBe('[**a john**](<https://x.co>)');
+		});
+
+		it('renders a channel inside a link label as bold text', () => {
+			expect(serialize('[~#general~](https://x.co)', { channels })).toBe('[~~**general**~~](<https://x.co>)');
+		});
+
+		it('renders a timestamp inside a link label as its text', () => {
+			expect(serialize('[_<t:1735689600:d>_](https://x.co)')).not.toContain('timestamp://');
+		});
+
+		it.each(['user://u1', 'channel://c1', 'timestamp://1', 'USER://u1'])('shows only the label of a link to %s', url => {
+			expect(serialize(`[x](${url})`)).toBe('x');
+		});
+	});
+
 	it('escapes entities and backticks in link destinations so the opened URL matches the label', () => {
 		expect(serialize('[x](https://a.co/?q=1&amp;b)')).toBe('[x](<https://a.co/?q=1\\&amp;b>)');
 		expect(serialize('[x](https://a.co/`b)')).toBe('[x](<https://a.co/\\`b>)');
@@ -176,7 +219,7 @@ describe('markdown serialize katex', () => {
 
 	it('pads inline math next to a word so its delimiters still open and close', () => {
 		expect(serializeWithKatex('\\(![](https://img.example/a.png)\\)A')).toBe('$![](https://img.example/a.png)$\u200AA');
-		expect(serializeWithKatex('\\(a\\)\\(b\\)')).toBe('$a$\u200A\u200A$b$');
+		expect(serializeWithKatex('\\(a\\)\\(b\\)')).toBe('$a$\u200A$b$');
 	});
 
 	it('keeps block math on one line so its lines are not read as markdown blocks', () => {
