@@ -12,18 +12,17 @@ export const Layout = ({ isPreview, isHeader }: { isPreview?: boolean; isHeader:
 	const { blocks } = useBlocks();
 	const showTimeLarge = isLargeFontScale && isHeader;
 
-	let layout;
 	if (blocks && blocks.length) {
-		layout = <BlocksLayout showTimeLarge={showTimeLarge} />;
-	} else if (type === 'jitsi_call_started') {
-		layout = <JitsiLayout showTimeLarge={showTimeLarge} />;
-	} else if (type === 'discussion-created') {
-		layout = <DiscussionLayout showTimeLarge={showTimeLarge} />;
-	} else if (isPreview) {
-		layout = <PreviewLayout showTimeLarge={showTimeLarge} />;
-	} else {
-		layout = <StandardLayout showTimeLarge={showTimeLarge} />;
+		return <BlocksLayout showTimeLarge={showTimeLarge} />;
 	}
-
-	return layout;
+	if (type === 'jitsi_call_started') {
+		return <JitsiLayout showTimeLarge={showTimeLarge} />;
+	}
+	if (type === 'discussion-created') {
+		return <DiscussionLayout showTimeLarge={showTimeLarge} />;
+	}
+	if (isPreview) {
+		return <PreviewLayout showTimeLarge={showTimeLarge} />;
+	}
+	return <StandardLayout showTimeLarge={showTimeLarge} />;
 };
