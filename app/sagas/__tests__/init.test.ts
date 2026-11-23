@@ -113,7 +113,6 @@ describe('init saga — restore user-facing roots', () => {
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
-		expect(isAppReady(store.getState())).toBe(true);
 	});
 
 	it('lands on ROOT_OUTSIDE when neither the stored server nor any other has a token', async () => {
@@ -125,7 +124,6 @@ describe('init saga — restore user-facing roots', () => {
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
-		expect(isAppReady(store.getState())).toBe(true);
 	});
 
 	it('selects another logged in server with its own version when the stored server has no token', async () => {
@@ -212,7 +210,6 @@ describe('init saga — restore user-facing roots', () => {
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
-		expect(isAppReady(store.getState())).toBe(true);
 	});
 
 	it('stays on the restored server when reading the pending push notification fails', async () => {

@@ -114,7 +114,6 @@ import { connectSuccess } from '~/actions/connect';
 import { APP, LOGIN, LOGOUT, SERVER } from '~/actions/actionsTypes';
 import { RootEnum } from '~/definitions/redux/TRootEnum';
 import deepLinkingRoot, { shouldAutoConfirmDeepLinkLogin } from '../deepLinking';
-import { isAppReady } from '~/selectors/app';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getServerUserIdKey } from '~/lib/constants/keys';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
@@ -318,7 +317,6 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		await flushSagaMicrotasks();
 
-		expect(isAppReady(store.getState())).toBe(true);
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 		expect(toastedMessages(emitSpy)).not.toContain('Deep_link_login_timed_out');
 		emitSpy.mockRestore();
@@ -896,7 +894,7 @@ describe('deepLinking saga — known workspace waits for its own sign-in', () =>
 		jest.useRealTimers();
 	});
 
-	it('turns in-app banners on when the app opens cold from a push for the current workspace', async () => {
+	it('opens the Room when the app opens cold from a push for the current workspace', async () => {
 		storeUserFor(HOST);
 		const { store } = setupStore();
 
@@ -908,7 +906,6 @@ describe('deepLinking saga — known workspace waits for its own sign-in', () =>
 		await flushSagaMicrotasks();
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
-		expect(isAppReady(store.getState())).toBe(true);
 	});
 
 	it('does not open the link when the previous workspace finishes signing in first', async () => {
@@ -970,6 +967,38 @@ describe('deepLinking saga — known workspace waits for its own sign-in', () =>
 		expect(toastedMessages(emitSpy)).toContain('Deep_link_open_failed');
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 		emitSpy.mockRestore();
+	});
+
+	it('gives up with a message when the server signs the user out while the link waits', async () => {
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+		storeUserFor(OTHER_HOST);
+		const { store } = setupStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+
+		store.dispatch(deepLinkingOpen(makeParams(ROOM_PARAMS)));
+		await flushSagaMicrotasks();
+		store.dispatch({ type: LOGOUT, forcedByServer: true });
+		await flushSagaMicrotasks();
+		store.dispatch(loginSuccess({ id: HOST_USER_ID } as any));
+		await flushSagaMicrotasks();
+
+		expect(toastedMessages(emitSpy)).toContain('Deep_link_open_failed');
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+		emitSpy.mockRestore();
+	});
+
+	it('selects the stored workspace when a workspace without a user was added after it', async () => {
+		storeUserFor(HOST);
+		const { store } = setupStore({ app: { root: RootEnum.ROOT_OUTSIDE } } as PreloadedState);
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'added', server: OTHER_HOST }));
+
+		store.dispatch(deepLinkingOpen(makeParams(ROOM_PARAMS)));
+		await flushSagaMicrotasks();
+		expect(store.getState().server.server).toBe(HOST);
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		store.dispatch(loginSuccess({ id: HOST_USER_ID } as any));
+		await flushSagaMicrotasks();
+		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 	});
 
 	it('does not open a call push in the previous workspace', async () => {

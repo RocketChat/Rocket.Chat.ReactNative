@@ -269,19 +269,23 @@ const waitForSignIn = function* waitForSignIn(host, userId) {
 	return true;
 };
 
-const waitForWorkspace = function* waitForWorkspace(host, userId) {
-	const { signedIn, failed, timedOut } = yield race({
-		signedIn: call(waitForSignIn, host, userId),
-		failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE]),
+const raceUntilLogoutOrTimeout = function* raceUntilLogoutOrTimeout(effects) {
+	return yield race({
+		...effects,
 		loggedOut: take(types.LOGOUT),
 		timedOut: delay(DEEP_LINK_WAIT_TIMEOUT)
+	});
+};
+
+const waitForWorkspace = function* waitForWorkspace(host, userId) {
+	const { signedIn } = yield* raceUntilLogoutOrTimeout({
+		signedIn: call(waitForSignIn, host, userId),
+		failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE])
 	});
 	if (signedIn) {
 		return true;
 	}
-	if (failed || timedOut) {
-		showToast(I18n.t('Deep_link_open_failed'));
-	}
+	showToast(I18n.t('Deep_link_open_failed'));
 	yield fallbackNavigation();
 	return false;
 };
@@ -298,15 +302,11 @@ const authenticateAndSelectServer = function* authenticateAndSelectServer(host, 
 	return yield* waitForWorkspace(host, userId);
 };
 
-const handleKnownServerDeepLink = function* handleKnownServerDeepLink({ params, host, version, userId }) {
-	try {
-		if (yield* authenticateAndSelectServer(host, version, userId, true)) {
-			yield completeDeepLinkNavigation(params);
-		}
-	} catch (e) {
-		log(e);
-		yield fallbackNavigation();
+const openKnownWorkspace = function* openKnownWorkspace({ host, version, userId, changeServer }) {
+	if (yield select(isSignedInto(host, userId))) {
+		return true;
 	}
+	return yield* authenticateAndSelectServer(host, version, userId, changeServer);
 };
 
 const waitForInsideRoot = function* waitForInsideRoot() {
@@ -314,10 +314,8 @@ const waitForInsideRoot = function* waitForInsideRoot() {
 	if (currentRoot === RootEnum.ROOT_INSIDE) {
 		return true;
 	}
-	const { inside, timedOut } = yield race({
-		inside: take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE),
-		loggedOut: take(types.LOGOUT),
-		timedOut: delay(DEEP_LINK_WAIT_TIMEOUT)
+	const { inside, timedOut } = yield* raceUntilLogoutOrTimeout({
+		inside: take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE)
 	});
 	if (timedOut) {
 		showToast(I18n.t('Deep_link_open_failed'));
@@ -336,11 +334,9 @@ const waitForServerConnection = function* waitForServerConnection() {
 
 const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, hostAlreadyConnected = false }) {
 	if (!hostAlreadyConnected) {
-		const { connected, failed, timedOut } = yield race({
+		const { connected, failed, timedOut } = yield* raceUntilLogoutOrTimeout({
 			connected: call(waitForServerConnection),
-			failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE]),
-			loggedOut: take(types.LOGOUT),
-			timedOut: delay(DEEP_LINK_WAIT_TIMEOUT)
+			failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE])
 		});
 		if (timedOut) {
 			showToast(I18n.t('Deep_link_login_timed_out'));
@@ -364,13 +360,8 @@ const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, host
 	return !!signedIn;
 };
 
-const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord, skipLoginConsent }) {
+const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, serverRecord, skipLoginConsent }) {
 	const { host } = params;
-	// search if deep link's server already exists
-	if (user && serverRecord) {
-		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version, userId: user });
-		return;
-	}
 	if (!skipLoginConsent && requiresDeepLinkConsent(params, serverRecord) && !(yield ensureDeepLinkConsent(host, params))) {
 		if (params.voipAcceptFailed) {
 			endVoipCall(params.callId);
@@ -443,17 +434,18 @@ const handleOpen = function* handleOpen({ params, skipLoginConsent }) {
 
 	const serverRecord = yield getServerById(host);
 
-	// TODO: needs better test
-	// if deep link is from same server
-	if (server === host && user && serverRecord) {
-		const connected = yield select(state => state.server.connected);
-		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version, user))) {
-			return;
+	if (user && serverRecord) {
+		try {
+			if (yield* openKnownWorkspace({ host, version: serverRecord.version, userId: user, changeServer: server !== host })) {
+				yield completeDeepLinkNavigation(params);
+			}
+		} catch (e) {
+			log(e);
+			yield fallbackNavigation();
 		}
-		yield completeDeepLinkNavigation(params);
-	} else {
-		yield handleOpenDifferentServer({ params, server, user, serverRecord, skipLoginConsent });
+		return;
 	}
+	yield handleOpenDifferentServer({ params, server, serverRecord, skipLoginConsent });
 };
 
 const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
@@ -505,17 +497,8 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 
 	const serverRecord = yield getServerById(host);
 
-	if (server === host && user && serverRecord) {
-		const connected = yield select(state => state.server.connected);
-		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version, user))) {
-			return;
-		}
-		yield handleNavigateCallRoom({ params });
-		return;
-	}
-
 	if (user && serverRecord) {
-		if (yield* authenticateAndSelectServer(host, serverRecord.version, user, true)) {
+		if (yield* openKnownWorkspace({ host, version: serverRecord.version, userId: user, changeServer: server !== host })) {
 			yield handleNavigateCallRoom({ params });
 		}
 		return;
