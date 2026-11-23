@@ -26,7 +26,7 @@ jest.mock('react-native-easy-toast', () => {
 let mockAlertDisplayType: TAlertDisplayType = 'TOAST';
 
 jest.mock('~/lib/methods/userPreferences', () => ({
-	useUserPreferences: () => [mockAlertDisplayType, jest.fn()]
+	getString: () => mockAlertDisplayType
 }));
 
 const Screen = ({ withPrompt }: { withPrompt: boolean }) => (

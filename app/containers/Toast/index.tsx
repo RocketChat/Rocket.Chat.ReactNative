@@ -4,9 +4,9 @@ import EasyToast from 'react-native-easy-toast';
 
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
-import { useToastHost } from './useToastHost';
+import { registerToastHost } from './toastHosts';
 
-export { LISTENER } from './listener';
+export { LISTENER } from './toastHosts';
 
 const styles = StyleSheet.create({
 	toast: {
@@ -22,11 +22,9 @@ const styles = StyleSheet.create({
 
 const Toast = (): ReactElement => {
 	const { colors, theme } = useTheme();
-	const setToastHost = useToastHost();
-
 	return (
 		<EasyToast
-			ref={setToastHost}
+			ref={registerToastHost}
 			position='center'
 			style={[styles.toast, { backgroundColor: colors.surfaceDark }]}
 			textStyle={[styles.text, { color: theme === 'light' ? colors.fontWhite : colors.fontPureBlack }]}
