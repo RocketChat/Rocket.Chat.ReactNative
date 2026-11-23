@@ -968,6 +968,20 @@ index bda3a64..f00db11 100644
  - (nullable ENRMTableIOSItemHit *)linkAtPoint:(CGPoint)point;
  
  - (void)updateWithRows:(NSArray<ENRMTableIOSRowData *> *)rows
+diff --git a/node_modules/react-native-enriched-markdown/ios/segments/ENRMTableIOSGridView.m b/node_modules/react-native-enriched-markdown/ios/segments/ENRMTableIOSGridView.m
+index 7a49023..8094ac0 100644
+--- a/node_modules/react-native-enriched-markdown/ios/segments/ENRMTableIOSGridView.m
++++ b/node_modules/react-native-enriched-markdown/ios/segments/ENRMTableIOSGridView.m
+@@ -196,8 +196,7 @@ static ENRMTableIOSItemHit *itemInAttributedString(NSAttributedString *text, CGR
+ 
+   NSRange glyphRange = [layoutManager glyphRangeForCharacterRange:itemRange actualCharacterRange:NULL];
+   CGRect frame = [layoutManager boundingRectForGlyphRange:glyphRange inTextContainer:textContainer];
+-  // Links keep nearest-glyph hits; an image needs the tap inside its bounds.
+-  if (imageURL && !CGRectContainsPoint(frame, local))
++  if (!CGRectContainsPoint(frame, local))
+     return nil;
+ 
+   ENRMTableIOSItemHit *hit = [[ENRMTableIOSItemHit alloc] init];
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.h b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.h
 index 0f84844..ddbd0f8 100644
 --- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.h
@@ -1060,3 +1074,35 @@ index 3ef8cd6..ff142ad 100644
  #else
          RCTUIImage *image = (data && !error) ? [[RCTUIImage alloc] initWithData:data] : nil;
  #endif
+diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.h b/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.h
+index 3f00233..9acd497 100644
+--- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.h
++++ b/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.h
+@@ -13,7 +13,7 @@ extern "C" {
+ NSUInteger ENRMCharacterIndexForTap(ENRMPlatformTextView *textView, ENRMTapRecognizer *recognizer);
+ 
+ /// Returns the character index in textView's text storage corresponding to
+-/// the given point (in textView coordinates), or NSNotFound if out of range.
++/// the given point (in textView coordinates), or NSNotFound unless the point lies on that character's glyph.
+ NSUInteger ENRMCharacterIndexAtPoint(ENRMPlatformTextView *textView, CGPoint point);
+ 
+ #ifdef __cplusplus
+diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.m b/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.m
+index d73646f..d911e2b 100644
+--- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.m
++++ b/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.m
+@@ -10,7 +10,13 @@ NSUInteger ENRMCharacterIndexAtPoint(ENRMPlatformTextView *textView, CGPoint poi
+                   fractionOfDistanceBetweenInsertionPoints:NULL];
+ 
+   NSUInteger length = ENRMGetAttributedText(textView).length;
+-  return index < length ? index : NSNotFound;
++  if (index >= length)
++    return NSNotFound;
++
++  NSUInteger glyphIndex = [layoutManager glyphIndexForCharacterAtIndex:index];
++  CGRect glyphRect = [layoutManager boundingRectForGlyphRange:NSMakeRange(glyphIndex, 1)
++                                              inTextContainer:textView.textContainer];
++  return CGRectContainsPoint(CGRectInset(glyphRect, -4, 0), adjusted) ? index : NSNotFound;
+ }
+ 
+ NSUInteger ENRMCharacterIndexForTap(ENRMPlatformTextView *textView, ENRMTapRecognizer *recognizer)
