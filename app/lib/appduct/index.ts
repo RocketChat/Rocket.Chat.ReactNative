@@ -76,6 +76,15 @@ const hasLeftShareExtension = (state: IApplicationState) => hasStarted(state) &&
 
 const waitForAppStart = (signal: AbortSignal) => waitUntil(hasLeftShareExtension, signal);
 
+const hasFinishedLoading = (state: IApplicationState) =>
+	hasStarted(state) && state.app.root !== RootEnum.ROOT_LOADING_SHARE_EXTENSION;
+
+const closeShareExtension = () => {
+	if (store.getState().app.root === RootEnum.ROOT_SHARE_EXTENSION) {
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+	}
+};
+
 const waitForNavigatorReady = (signal: AbortSignal) =>
 	new Promise<void>((resolve, reject) => {
 		if (Navigation.navigationRef.current?.isReady()) {
@@ -639,7 +648,8 @@ registerTool({
 		required: ['root']
 	}),
 	handler: async (_input, { signal }) => {
-		await waitForAppStart(signal);
+		await waitUntil(hasFinishedLoading, signal);
+		closeShareExtension();
 		if (store.getState().app.root === RootEnum.ROOT_INSIDE) {
 			await removeServersExcept(store.getState().server.server);
 			const loggedOut = waitForLogout(signal);
