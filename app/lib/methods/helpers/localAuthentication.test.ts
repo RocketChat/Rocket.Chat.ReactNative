@@ -273,6 +273,20 @@ describe('handleLocalAuthentication', () => {
 		}
 	);
 
+	it('relock marker cleared during the enrollment check → does not force the passcode', async () => {
+		mockTrustState('relockPendingWhileEnabled');
+		mockedHasEnrollment.mockImplementationOnce(() => {
+			mockTrustState('enrolled');
+			return Promise.resolve(true);
+		});
+
+		await handleLocalAuthentication();
+
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: true });
+		expect(lastEmitPayload()?.reason).toBeUndefined();
+		expect(mockedInvalidate).not.toHaveBeenCalled();
+	});
+
 	it('kill-before-passcode: modal never resolves → relock debt is persisted and NOT cleared', async () => {
 		mockTrustState('enrolled');
 		mockedHasEnrollment.mockResolvedValueOnce(false);
@@ -761,6 +775,7 @@ describe('handleLocalAuthentication relockReason option', () => {
 
 		expect(mockedHasEnrollment).not.toHaveBeenCalled();
 		expect(mockedIsEnrollmentValid).not.toHaveBeenCalled();
+		expect(mockedReadTrustState).not.toHaveBeenCalled();
 		expect(lastEmitPayload()?.reason).toBeUndefined();
 	});
 
