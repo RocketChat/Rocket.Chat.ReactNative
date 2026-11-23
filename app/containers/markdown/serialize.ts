@@ -16,12 +16,11 @@ import dayjs from '~/lib/dayjs';
 import { type IUserMention, type IUserChannel } from './interfaces';
 import { type TGetCustomEmoji } from '~/definitions/IEmoji';
 import {
-	CHANNEL_SCHEME,
-	ME_QUERY,
-	TEAM_QUERY,
 	TIMESTAMP_FULL_FORMAT,
-	TIMESTAMP_SCHEME,
-	USER_SCHEME,
+	type TUserLinkKind,
+	buildChannelLink,
+	buildTimestampLink,
+	buildUserLink,
 	isInternalLink
 } from './linkSchemes';
 
@@ -82,7 +81,7 @@ const formatTimestampLabel = (value: TimestampBlock['value']): string => {
 interface IUserMentionLabel {
 	label: string;
 	rid: string;
-	query: string;
+	kind: TUserLinkKind;
 }
 
 const resolveUserMentionLabel = (mention: string, context: ISerializeContext): IUserMentionLabel | null => {
@@ -93,9 +92,9 @@ const resolveUserMentionLabel = (mention: string, context: ISerializeContext): I
 
 	const label = found.type === 'user' ? (context.useRealName && found.name ? found.name : found.username) : found.name;
 	const itsMe = mention === context.username;
-	const query = found.type === 'team' ? TEAM_QUERY : itsMe ? ME_QUERY : '';
+	const kind = found.type === 'team' ? 'team' : itsMe ? 'me' : 'user';
 
-	return { label: label ?? mention, rid: found._id, query };
+	return { label: label ?? mention, rid: found._id, kind };
 };
 
 const findChannelRid = (hashtag: string, context: ISerializeContext): string | null => {
@@ -111,13 +110,13 @@ interface IResolvedMention {
 const resolveUserMention = (mention: string, context: ISerializeContext): IResolvedMention => {
 	const prefix = context.mentionsWithAtSymbol ? '@' : '';
 	if (mention === 'all' || mention === 'here') {
-		return { text: prefix + mention, url: `${USER_SCHEME}${mention}` };
+		return { text: prefix + mention, url: buildUserLink(mention) };
 	}
 	const resolved = resolveUserMentionLabel(mention, context);
 	if (!resolved) {
 		return { text: `@${mention}` };
 	}
-	return { text: prefix + resolved.label, url: `${USER_SCHEME}${resolved.rid}${resolved.query}` };
+	return { text: prefix + resolved.label, url: buildUserLink(resolved.rid, resolved.kind) };
 };
 
 const resolveChannelMention = (hashtag: string, context: ISerializeContext): IResolvedMention => {
@@ -126,7 +125,7 @@ const resolveChannelMention = (hashtag: string, context: ISerializeContext): IRe
 		return { text: `#${hashtag}` };
 	}
 	const prefix = context.roomsWithHashTagSymbol ? '#' : '';
-	return { text: prefix + hashtag, url: `${CHANNEL_SCHEME}${rid}` };
+	return { text: prefix + hashtag, url: buildChannelLink(rid) };
 };
 
 const serializeMention = ({ text, url }: IResolvedMention): string =>
@@ -325,7 +324,7 @@ const serializeInlineNode = (node: Inlines, context: ISerializeContext, scope: I
 				return escapePlainText(label);
 			}
 			const unixSeconds = timestampToUnixSeconds(node.value.timestamp);
-			return `[${escapePlainText(` ${label} `)}](${escapeUrl(`${TIMESTAMP_SCHEME}${unixSeconds}`)})`;
+			return `[${escapePlainText(` ${label} `)}](${escapeUrl(buildTimestampLink(unixSeconds))})`;
 		}
 		case 'IMAGE':
 			return `![](${escapeUrl(node.value.src.value)})`;

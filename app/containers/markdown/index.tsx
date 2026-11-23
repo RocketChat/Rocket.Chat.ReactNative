@@ -48,7 +48,7 @@ const Markdown: FC<IMarkdownProps> = ({
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
-	const { handleLinkPress, handleLinkLongPress } = useMarkdownLinkPress({ channels, navToRoomInfo, onLinkPress });
+	const { handleLinkPress, handleLinkLongPress } = useMarkdownLinkPress({ navToRoomInfo, onLinkPress });
 	const parseOptions = useParseOptions();
 
 	const { tokens, segments } = useMemo(() => {

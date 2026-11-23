@@ -4,7 +4,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 
 import I18n from '~/i18n';
 import dayjs from '~/lib/dayjs';
-import { CHANNEL_SCHEME, ME_QUERY, TEAM_QUERY, TIMESTAMP_FULL_FORMAT, TIMESTAMP_SCHEME, USER_SCHEME } from '../linkSchemes';
+import { TIMESTAMP_FULL_FORMAT, isInternalLink, parseInternalLink } from '../linkSchemes';
 import { useTheme } from '~/theme';
 import { LISTENER } from '~/containers/Toast';
 import EventEmitter from '~/lib/methods/helpers/events';
@@ -16,18 +16,14 @@ import { getRoomInfo } from '~/lib/services/restApi';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { sendLoadingEvent } from '~/containers/Loading';
-import { type IUserChannel, type TOnLinkPress } from '../interfaces';
+import { type TOnLinkPress } from '../interfaces';
 
 interface IUseMarkdownLinkPressParams {
-	channels?: IUserChannel[];
 	navToRoomInfo?: Function;
 	onLinkPress?: TOnLinkPress;
 }
 
-const isInternalScheme = (url: string): boolean =>
-	url.startsWith(USER_SCHEME) || url.startsWith(CHANNEL_SCHEME) || url.startsWith(TIMESTAMP_SCHEME);
-
-export const useMarkdownLinkPress = ({ channels, navToRoomInfo, onLinkPress }: IUseMarkdownLinkPressParams) => {
+export const useMarkdownLinkPress = ({ navToRoomInfo, onLinkPress }: IUseMarkdownLinkPressParams) => {
 	const { theme } = useTheme();
 	const isMasterDetail = useMasterDetail();
 
@@ -57,27 +53,24 @@ export const useMarkdownLinkPress = ({ channels, navToRoomInfo, onLinkPress }: I
 
 	const handleLinkPress = useCallback(
 		(url: string) => {
-			if (url.startsWith(USER_SCHEME)) {
-				const [rid, query = ''] = url.slice(USER_SCHEME.length).split('?');
-				if (rid === 'all' || rid === 'here' || `?${query}` === TEAM_QUERY) {
+			const internalLink = parseInternalLink(url);
+			if (internalLink?.type === 'user') {
+				const { rid, kind } = internalLink;
+				if (rid === 'all' || rid === 'here' || kind === 'team') {
 					return;
 				}
 				logEvent(events.ROOM_MENTION_GO_USER_INFO);
-				navToRoomInfo?.({ t: 'd', rid, itsMe: `?${query}` === ME_QUERY });
+				navToRoomInfo?.({ t: 'd', rid, itsMe: kind === 'me' });
 				return;
 			}
 
-			if (url.startsWith(CHANNEL_SCHEME)) {
-				const rid = url.slice(CHANNEL_SCHEME.length);
-				if (channels?.some(channel => channel._id === rid)) {
-					handleChannelPress(rid);
-				}
+			if (internalLink?.type === 'channel') {
+				handleChannelPress(internalLink.rid);
 				return;
 			}
 
-			if (url.startsWith(TIMESTAMP_SCHEME)) {
-				const unixSeconds = Number(url.slice(TIMESTAMP_SCHEME.length));
-				const message = dayjs(unixSeconds * 1000).format(TIMESTAMP_FULL_FORMAT);
+			if (internalLink?.type === 'timestamp') {
+				const message = dayjs(internalLink.unixSeconds * 1000).format(TIMESTAMP_FULL_FORMAT);
 				EventEmitter.emit(LISTENER, { message });
 				return;
 			}
@@ -94,11 +87,11 @@ export const useMarkdownLinkPress = ({ channels, navToRoomInfo, onLinkPress }: I
 
 			openLink(url, theme);
 		},
-		[channels, navToRoomInfo, onLinkPress, theme, handleChannelPress]
+		[navToRoomInfo, onLinkPress, theme, handleChannelPress]
 	);
 
 	const handleLinkLongPress = useCallback((url: string) => {
-		if (isInternalScheme(url)) {
+		if (isInternalLink(url)) {
 			return;
 		}
 
