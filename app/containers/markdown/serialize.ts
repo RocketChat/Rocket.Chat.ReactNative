@@ -2,7 +2,6 @@ import type {
 	Root,
 	BigEmoji,
 	Paragraph,
-	Blocks,
 	Inlines,
 	Emoji as EmojiBlock,
 	Link as LinkBlock,
@@ -454,8 +453,14 @@ const plainTextTable = ({ value: { header, rows } }: Table, context: ISerializeC
 		.map(cells => cells.map(cell => plainTextInline(cell.value, context)).join(', '))
 		.join('\n');
 
-const serializeBlock = (block: Paragraph | Blocks, context: ISerializeContext): string => {
+type TRootBlock = Root[number];
+
+const serializeBlock = (block: TRootBlock, context: ISerializeContext): string => {
 	switch (block.type) {
+		case 'BIG_EMOJI':
+			return block.value.map(emojiBlock => serializeEmoji(emojiBlock, context)).join('');
+		case 'KATEX':
+			return serializeMath(block.value, '$$');
 		case 'PARAGRAPH':
 			return serializeParagraphValue(block.value, context) ?? '';
 		case 'HEADING':
@@ -492,8 +497,12 @@ const serializeBlock = (block: Paragraph | Blocks, context: ISerializeContext): 
 	}
 };
 
-const plainTextBlock = (block: Paragraph | Blocks, context: ISerializeContext): string => {
+const plainTextBlock = (block: TRootBlock, context: ISerializeContext): string => {
 	switch (block.type) {
+		case 'BIG_EMOJI':
+			return block.value.map(emojiBlock => emojiDisplayText(emojiBlock, context)).join(' ');
+		case 'KATEX':
+			return block.value;
 		case 'PARAGRAPH':
 			return plainTextParagraphValue(block.value, context) ?? '';
 		case 'HEADING':
@@ -515,34 +524,11 @@ const plainTextBlock = (block: Paragraph | Blocks, context: ISerializeContext): 
 	}
 };
 
-export const buildRenderSegments = (tokens: Root, context: ISerializeContext): TRenderSegment[] => {
-	if (isBigEmojiOnly(tokens)) {
-		const content = tokens[0].value.map(emojiBlock => serializeEmoji(emojiBlock, context)).join('');
-		const accessibilityLabel = tokens[0].value.map(emojiBlock => emojiDisplayText(emojiBlock, context)).join(' ');
-		return [{ type: 'markdown', content, accessibilityLabel }];
-	}
-
-	const segments: TRenderSegment[] = [];
-
-	for (const block of tokens as Array<Paragraph | Blocks>) {
-		if (block.type === 'KATEX') {
-			const content = serializeMath(block.value, '$$');
-			if (content) {
-				segments.push({ type: 'markdown', content, accessibilityLabel: block.value });
-			}
-			continue;
-		}
-
+export const buildRenderSegments = (tokens: Root, context: ISerializeContext): TRenderSegment[] =>
+	(tokens as TRootBlock[]).flatMap((block): TRenderSegment[] => {
 		if (block.type === 'LINE_BREAK') {
-			segments.push({ type: 'linebreak' });
-			continue;
+			return [{ type: 'linebreak' }];
 		}
-
 		const content = serializeBlock(block, context);
-		if (content) {
-			segments.push({ type: 'markdown', content, accessibilityLabel: plainTextBlock(block, context) });
-		}
-	}
-
-	return segments;
-};
+		return content ? [{ type: 'markdown', content, accessibilityLabel: plainTextBlock(block, context) }] : [];
+	});
