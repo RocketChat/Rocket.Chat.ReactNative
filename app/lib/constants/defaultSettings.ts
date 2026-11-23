@@ -192,6 +192,9 @@ export const defaultSettings = {
 	Message_AudioRecorderEnabled: {
 		type: 'valueAsBoolean'
 	},
+	Message_CustomDomain_AutoLink: {
+		type: 'valueAsString'
+	},
 	Message_GroupingPeriod: {
 		type: 'valueAsNumber'
 	},
