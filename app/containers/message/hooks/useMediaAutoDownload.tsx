@@ -1,18 +1,16 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 
 import { type IAttachment } from '~/definitions/IAttachment';
 import { type IUserMessage } from '~/definitions/IMessage';
 import { isImageBase64 } from '~/lib/methods/isImageBase64';
 import { fetchAutoDownloadEnabled } from '~/lib/methods/autoDownloadPreference';
 import {
-	cancelDownload,
 	downloadMediaFile,
 	getMediaCache,
 	isDownloadActive,
 	type MediaTypes,
 	type TDownloadState
 } from '~/lib/methods/handleMediaDownload';
-import { emitter } from '~/lib/methods/helpers/emitter';
 import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
 import { useMessageId } from '../stores/MessageStore';
@@ -91,11 +89,7 @@ export const useMediaAutoDownload = ({
 		originalUrl
 	);
 	const isEncrypted = currentFile.e2e === 'pending';
-
-	const resumeDownload = () => {
-		dispatchDownloadEvent('download_started');
-		emitter.on(`downloadMedia${url}`, downloadMediaListener);
-	};
+	const downloadAbortController = useRef<AbortController | null>(null);
 
 	const tryAutoDownload = async () => {
 		const isCurrentUserAuthor = author?._id === user.id;
@@ -108,6 +102,8 @@ export const useMediaAutoDownload = ({
 	const download = async () => {
 		const mimeType = getFileProperty(currentFile, fileType, 'type');
 		const originalChecksum = file.hashes?.sha256;
+		const abortController = new AbortController();
+		downloadAbortController.current = abortController;
 		try {
 			dispatchDownloadEvent('download_started');
 			const uri = await downloadMediaFile({
@@ -116,13 +112,22 @@ export const useMediaAutoDownload = ({
 				type: fileType,
 				mimeType,
 				encryption: file.encryption,
-				originalChecksum
+				originalChecksum,
+				signal: abortController.signal
 			});
 			setDecrypted();
 			updateCurrentFile(uri);
 		} catch (e) {
-			dispatchDownloadEvent('download_failed');
+			if (!abortController.signal.aborted) {
+				dispatchDownloadEvent('download_failed');
+			}
 		}
+	};
+
+	const cancel = () => {
+		downloadAbortController.current?.abort();
+		downloadAbortController.current = null;
+		dispatchDownloadEvent('download_canceled');
 	};
 
 	const updateCurrentFile = (uri: string) => {
@@ -148,10 +153,6 @@ export const useMediaAutoDownload = ({
 		return result?.exists;
 	};
 
-	const downloadMediaListener = (uri: string) => {
-		updateCurrentFile(uri);
-	};
-
 	useEffect(() => {
 		const handleCache = async () => {
 			if (url) {
@@ -160,7 +161,7 @@ export const useMediaAutoDownload = ({
 					return;
 				}
 				if (isDownloadActive(url)) {
-					resumeDownload();
+					await download();
 					return;
 				}
 				await tryAutoDownload();
@@ -171,16 +172,11 @@ export const useMediaAutoDownload = ({
 		} else {
 			handleCache();
 		}
-
-		return () => {
-			emitter.off(`downloadMedia${url}`, downloadMediaListener);
-		};
 	}, []);
 
 	const onPress = () => {
 		if (status === 'loading') {
-			cancelDownload(url);
-			dispatchDownloadEvent('download_canceled');
+			cancel();
 			return;
 		}
 		if (status === 'to-download') {

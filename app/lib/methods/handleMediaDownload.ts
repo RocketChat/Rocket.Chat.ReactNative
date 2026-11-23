@@ -1,6 +1,5 @@
 import * as FileSystem from 'expo-file-system/legacy';
 import * as mime from 'react-native-mime-types';
-import isEmpty from 'lodash/isEmpty';
 import { type Model } from '@nozbe/watermelondb';
 
 import { type IAttachment, type TAttachmentEncryption } from '~/definitions/IAttachment';
@@ -8,7 +7,6 @@ import { type TMessageModel } from '~/definitions/IMessage';
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
-import { emitter } from './helpers/emitter';
 import { Encryption } from '../encryption';
 import { getMessageById } from '../database/services/Message';
 import { getThreadMessageById } from '../database/services/ThreadMessage';
@@ -181,25 +179,29 @@ export const deleteMediaFiles = async (serverUrl: string): Promise<void> => {
 	}
 };
 
-const downloadQueue: { [index: string]: FileSystem.DownloadResumable } = {};
+interface IDownloadSubscriber {
+	resolve: (uri: string) => void;
+	reject: (error: Error) => void;
+}
+
+interface IActiveDownload {
+	resumable: FileSystem.DownloadResumable;
+	subscribers: Set<IDownloadSubscriber>;
+}
+
+const activeDownloads = new Map<string, IActiveDownload>();
 
 export const mediaDownloadKey = (messageUrl: string) => `${sanitizeLikeString(messageUrl)}`;
 
 export function isDownloadActive(messageUrl: string): boolean {
-	return !!downloadQueue[mediaDownloadKey(messageUrl)];
+	return activeDownloads.has(mediaDownloadKey(messageUrl));
 }
 
-export async function cancelDownload(messageUrl: string): Promise<void> {
-	const downloadKey = mediaDownloadKey(messageUrl);
-	if (!isEmpty(downloadQueue[downloadKey])) {
-		try {
-			await downloadQueue[downloadKey].cancelAsync();
-		} catch {
-			// Do nothing
-		}
-		delete downloadQueue[downloadKey];
+const removeActiveDownload = (downloadKey: string, download: IActiveDownload) => {
+	if (activeDownloads.get(downloadKey) === download) {
+		activeDownloads.delete(downloadKey);
 	}
-}
+};
 
 export const matchDownloadUrl = (att: IAttachment, downloadUrl: string) =>
 	(att.image_url && downloadUrl.includes(att.image_url)) ||
@@ -258,13 +260,78 @@ export const persistMessage = async (messageId: string, uri: string, encryption:
 	});
 };
 
+const startDownload = ({
+	downloadKey,
+	path,
+	messageId,
+	downloadUrl,
+	encryption,
+	originalChecksum
+}: {
+	downloadKey: string;
+	path: string;
+	messageId: string;
+	downloadUrl: string;
+	encryption?: TAttachmentEncryption;
+	originalChecksum?: string;
+}): IActiveDownload => {
+	const download: IActiveDownload = {
+		resumable: FileSystem.createDownloadResumable(downloadUrl, path, {
+			headers: headers as Record<string, string>
+		}),
+		subscribers: new Set()
+	};
+	activeDownloads.set(downloadKey, download);
+
+	const run = async () => {
+		const result = await download.resumable.downloadAsync();
+		if (!result) {
+			throw new Error('Media download ended without a file');
+		}
+		if (encryption && originalChecksum) {
+			await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
+		}
+		await persistMessage(messageId, result.uri, !!encryption, downloadUrl);
+		return result.uri;
+	};
+
+	const settleSubscribers = (settle: (subscriber: IDownloadSubscriber) => void) => {
+		removeActiveDownload(downloadKey, download);
+		const subscribers = [...download.subscribers];
+		download.subscribers.clear();
+		subscribers.forEach(settle);
+	};
+
+	run().then(
+		uri => settleSubscribers(subscriber => subscriber.resolve(uri)),
+		error => {
+			console.error(error);
+			settleSubscribers(subscriber => subscriber.reject(error));
+		}
+	);
+
+	return download;
+};
+
+const unsubscribe = (downloadKey: string, download: IActiveDownload, subscriber: IDownloadSubscriber) => {
+	if (!download.subscribers.delete(subscriber)) {
+		return;
+	}
+	subscriber.reject(new Error('Media download canceled'));
+	if (download.subscribers.size === 0) {
+		removeActiveDownload(downloadKey, download);
+		download.resumable.cancelAsync().catch(() => {});
+	}
+};
+
 export function downloadMediaFile({
 	messageId,
 	type,
 	mimeType,
 	downloadUrl,
 	encryption,
-	originalChecksum
+	originalChecksum,
+	signal
 }: {
 	messageId: string;
 	type: MediaTypes;
@@ -272,37 +339,22 @@ export function downloadMediaFile({
 	downloadUrl: string;
 	encryption?: TAttachmentEncryption;
 	originalChecksum?: string;
+	signal?: AbortSignal;
 }): Promise<string> {
-	return new Promise(async (resolve, reject) => {
-		let downloadKey = '';
-		try {
-			const path = getFilePath({ type, mimeType, urlToCache: downloadUrl });
-			if (!path) {
-				return reject();
-			}
-			downloadKey = mediaDownloadKey(downloadUrl);
-			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path, {
-				headers: headers as Record<string, string>
-			});
-			const result = await downloadQueue[downloadKey].downloadAsync();
-
-			if (!result) {
-				return reject();
-			}
-
-			if (encryption && originalChecksum) {
-				await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
-			}
-
-			await persistMessage(messageId, result.uri, !!encryption, downloadUrl);
-
-			emitter.emit(`downloadMedia${downloadUrl}`, result.uri);
-			return resolve(result.uri);
-		} catch (e) {
-			console.error(e);
-			return reject();
-		} finally {
-			delete downloadQueue[downloadKey];
+	return new Promise((resolve, reject) => {
+		if (signal?.aborted) {
+			return reject(new Error('Media download canceled'));
 		}
+		const path = getFilePath({ type, mimeType, urlToCache: downloadUrl });
+		if (!path) {
+			return reject(new Error('Media download has no file path'));
+		}
+		const downloadKey = mediaDownloadKey(downloadUrl);
+		const download =
+			activeDownloads.get(downloadKey) ??
+			startDownload({ downloadKey, path, messageId, downloadUrl, encryption, originalChecksum });
+		const subscriber: IDownloadSubscriber = { resolve, reject };
+		download.subscribers.add(subscriber);
+		signal?.addEventListener('abort', () => unsubscribe(downloadKey, download, subscriber), { once: true });
 	});
 }

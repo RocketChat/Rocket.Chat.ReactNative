@@ -1,4 +1,13 @@
-import { getFilePath, getFilename, matchDownloadUrl, persistMessage } from './handleMediaDownload';
+import * as FileSystem from 'expo-file-system/legacy';
+
+import {
+	downloadMediaFile,
+	getFilePath,
+	getFilename,
+	isDownloadActive,
+	matchDownloadUrl,
+	persistMessage
+} from './handleMediaDownload';
 import database from '../database';
 import { getMessageById } from '../database/services/Message';
 import { getThreadById } from '../database/services/Thread';
@@ -31,6 +40,11 @@ jest.mock('../database/services/Thread', () => ({
 
 jest.mock('../database/services/ThreadMessage', () => ({
 	getThreadMessageById: jest.fn()
+}));
+
+jest.mock('expo-file-system/legacy', () => ({
+	documentDirectory: 'file:///documents/',
+	createDownloadResumable: jest.fn()
 }));
 
 jest.mock('../store/auxStore', () => ({
@@ -222,5 +236,101 @@ describe('persistMessage', () => {
 		await persistMessage(messageId, uri, false, downloadUrl);
 
 		expect(mockDbBatch).not.toHaveBeenCalled();
+	});
+});
+
+describe('downloadMediaFile', () => {
+	const downloadUrl = 'https://server.com/file-upload/abc/photo.jpg';
+	const mockCreateDownloadResumable = FileSystem.createDownloadResumable as jest.Mock;
+
+	const createTransfer = () => {
+		let resolve: (result: { uri: string } | undefined) => void = () => {};
+		let reject: (error: Error) => void = () => {};
+		const promise = new Promise<{ uri: string } | undefined>((onResolve, onReject) => {
+			resolve = onResolve;
+			reject = onReject;
+		});
+		return { promise, resolve, reject };
+	};
+
+	const mockTransfer = () => {
+		const transfer = createTransfer();
+		const cancelAsync = jest.fn(() => {
+			transfer.resolve(undefined);
+			return Promise.resolve();
+		});
+		mockCreateDownloadResumable.mockReturnValueOnce({ downloadAsync: () => transfer.promise, cancelAsync });
+		return { transfer, cancelAsync };
+	};
+
+	const startMessageDownload = (messageId: string) => {
+		const abortController = new AbortController();
+		const download = downloadMediaFile({ messageId, type: 'image', downloadUrl, signal: abortController.signal });
+		download.catch(() => {});
+		return { download, cancel: () => abortController.abort() };
+	};
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		jest.spyOn(console, 'error').mockImplementation(() => {});
+		(getMessageById as jest.Mock).mockResolvedValue(null);
+		(getThreadById as jest.Mock).mockResolvedValue(null);
+		(getThreadMessageById as jest.Mock).mockResolvedValue(null);
+	});
+
+	it('finishes the other Message when one Message cancels a joined download', async () => {
+		const { transfer, cancelAsync } = mockTransfer();
+		const first = startMessageDownload('first');
+		const second = startMessageDownload('second');
+
+		first.cancel();
+		await expect(first.download).rejects.toThrow('Media download canceled');
+		expect(cancelAsync).not.toHaveBeenCalled();
+
+		transfer.resolve({ uri: 'file:///documents/photo.jpg' });
+		await expect(second.download).resolves.toBe('file:///documents/photo.jpg');
+		expect(mockCreateDownloadResumable).toHaveBeenCalledTimes(1);
+		expect(isDownloadActive(downloadUrl)).toBe(false);
+	});
+
+	it('fails every joined Message when the transfer fails', async () => {
+		const { transfer } = mockTransfer();
+		const first = startMessageDownload('first');
+		const second = startMessageDownload('second');
+
+		transfer.reject(new Error('network down'));
+
+		await expect(first.download).rejects.toThrow('network down');
+		await expect(second.download).rejects.toThrow('network down');
+		expect(isDownloadActive(downloadUrl)).toBe(false);
+	});
+
+	it('stops the transfer once every joined Message cancels', async () => {
+		const { cancelAsync } = mockTransfer();
+		const first = startMessageDownload('first');
+		const second = startMessageDownload('second');
+
+		first.cancel();
+		second.cancel();
+
+		await expect(second.download).rejects.toThrow('Media download canceled');
+		expect(cancelAsync).toHaveBeenCalledTimes(1);
+		expect(isDownloadActive(downloadUrl)).toBe(false);
+	});
+
+	it('keeps a newer download active when a canceled transfer settles after it started', async () => {
+		const stale = mockTransfer();
+		stale.cancelAsync.mockResolvedValue(undefined);
+		const canceled = startMessageDownload('first');
+		canceled.cancel();
+
+		const fresh = mockTransfer();
+		const retry = startMessageDownload('first');
+		stale.transfer.resolve(undefined);
+		await flush();
+
+		expect(isDownloadActive(downloadUrl)).toBe(true);
+		fresh.transfer.resolve({ uri: 'file:///documents/photo.jpg' });
+		await expect(retry.download).resolves.toBe('file:///documents/photo.jpg');
 	});
 });
