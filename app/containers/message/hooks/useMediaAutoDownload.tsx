@@ -91,17 +91,18 @@ export const useMediaAutoDownload = ({
 	);
 	const isEncrypted = currentFile.e2e === 'pending';
 	const activeDownload = useRef<IMediaDownload | null>(null);
+	const isUnmounted = useRef(false);
 
 	const tryAutoDownload = async () => {
 		const isCurrentUserAuthor = author?._id === user.id;
 		const isAutoDownloadEnabled = fetchAutoDownloadEnabled(`${fileType}PreferenceDownload`);
-		if (isAutoDownloadEnabled || isCurrentUserAuthor) {
+		if (isAutoDownloadEnabled || isCurrentUserAuthor || isDownloadActive(url)) {
 			await download();
 		}
 	};
 
 	const download = async () => {
-		if (activeDownload.current) {
+		if (activeDownload.current || isUnmounted.current) {
 			return;
 		}
 		const mimeType = getFileProperty(currentFile, fileType, 'type');
@@ -167,10 +168,6 @@ export const useMediaAutoDownload = ({
 				if (isCached) {
 					return;
 				}
-				if (isDownloadActive(url)) {
-					await download();
-					return;
-				}
 				await tryAutoDownload();
 			}
 		};
@@ -181,6 +178,7 @@ export const useMediaAutoDownload = ({
 		}
 
 		return () => {
+			isUnmounted.current = true;
 			activeDownload.current?.detach();
 			activeDownload.current = null;
 		};

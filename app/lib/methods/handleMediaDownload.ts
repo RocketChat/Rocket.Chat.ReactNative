@@ -179,11 +179,18 @@ export const deleteMediaFiles = async (serverUrl: string): Promise<void> => {
 	}
 };
 
+interface IDownloadedFile {
+	uri: string;
+	decrypted: boolean;
+}
+
 interface ISharedDownload {
 	resumable: FileSystem.DownloadResumable;
-	fileUri: Promise<string>;
+	file: Promise<IDownloadedFile>;
 	attachedListeners: number;
 }
+
+type TListenerState = 'attached' | 'saving' | 'detached' | 'canceled';
 
 export interface IMediaDownload {
 	uri: Promise<string>;
@@ -281,26 +288,27 @@ const startSharedDownload = ({
 		headers: headers as Record<string, string>
 	});
 
-	const downloadAndDecrypt = async () => {
+	const downloadAndDecrypt = async (): Promise<IDownloadedFile> => {
 		let result: FileSystem.FileSystemDownloadResult | undefined;
+		const decrypted = !!(encryption && originalChecksum);
 		try {
 			result = await resumable.downloadAsync();
 			if (result && encryption && originalChecksum) {
 				await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
 			}
 		} catch (error) {
-			log(error);
+			console.error(error);
 			throw error;
 		}
 		if (!result) {
 			throw new Error('Media download canceled');
 		}
-		return result.uri;
+		return { uri: result.uri, decrypted };
 	};
 
-	const download: ISharedDownload = { resumable, fileUri: downloadAndDecrypt(), attachedListeners: 0 };
+	const download: ISharedDownload = { resumable, file: downloadAndDecrypt(), attachedListeners: 0 };
 	activeDownloads.set(downloadKey, download);
-	download.fileUri.then(
+	download.file.then(
 		() => removeActiveDownload(downloadKey, download),
 		() => removeActiveDownload(downloadKey, download)
 	);
@@ -333,15 +341,13 @@ export function downloadMediaFile({
 			activeDownloads.get(downloadKey) ??
 			startSharedDownload({ downloadKey, path, messageId, downloadUrl, encryption, originalChecksum });
 		download.attachedListeners += 1;
-		let attached = true;
-		let canceled = false;
+		let state: TListenerState = 'attached';
 
 		stop = cancelTransfer => {
-			if (!attached) {
+			if (state !== 'attached') {
 				return;
 			}
-			attached = false;
-			canceled = cancelTransfer;
+			state = cancelTransfer ? 'canceled' : 'detached';
 			download.attachedListeners -= 1;
 			reject(new Error(cancelTransfer ? 'Media download canceled' : 'Media download detached'));
 			if (cancelTransfer && download.attachedListeners === 0) {
@@ -350,21 +356,18 @@ export function downloadMediaFile({
 			}
 		};
 
-		download.fileUri
-			.then(async fileUri => {
-				if (canceled) {
+		download.file
+			.then(async ({ uri: fileUri, decrypted }) => {
+				if (state === 'canceled') {
 					return;
 				}
-				await persistMessage(messageId, fileUri, !!encryption, downloadUrl);
+				if (state === 'attached') {
+					state = 'saving';
+				}
+				await persistMessage(messageId, fileUri, decrypted, downloadUrl);
 				resolve(fileUri);
 			})
-			.catch(reject)
-			.finally(() => {
-				if (attached) {
-					attached = false;
-					download.attachedListeners -= 1;
-				}
-			});
+			.catch(reject);
 	});
 	return { uri, cancel: () => stop(true), detach: () => stop(false) };
 }

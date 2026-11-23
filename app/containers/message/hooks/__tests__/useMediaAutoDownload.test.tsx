@@ -295,6 +295,21 @@ describe('useMediaAutoDownload', () => {
 			expect(result.current.status).toBe('to-download');
 		});
 
+		it('does not start a download when the Message unmounts during the cache check', async () => {
+			let finishCacheCheck: (cache: { exists: boolean }) => void = () => {};
+			mockGetMediaCache.mockReturnValue(
+				new Promise(resolve => {
+					finishCacheCheck = resolve;
+				})
+			);
+			mockIsDownloadActive.mockReturnValue(true);
+			const { unmount } = renderMediaHook({ file: { image_url: '/img' } });
+
+			unmount();
+			await act(async () => finishCacheCheck({ exists: false }));
+			expect(mockDownloadMediaFile).not.toHaveBeenCalled();
+		});
+
 		it('detaches without canceling when the Message unmounts mid-download', async () => {
 			mockIsDownloadActive.mockReturnValue(true);
 			const { handle } = pendingMediaDownload();

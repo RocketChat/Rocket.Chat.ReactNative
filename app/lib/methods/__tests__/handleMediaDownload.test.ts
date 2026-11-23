@@ -272,6 +272,7 @@ describe('downloadMediaFile', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
+		jest.spyOn(console, 'error').mockImplementation(() => {});
 		(getMessageById as jest.Mock).mockResolvedValue(null);
 		(getThreadById as jest.Mock).mockResolvedValue(null);
 		(getThreadMessageById as jest.Mock).mockResolvedValue(null);
@@ -362,6 +363,50 @@ describe('downloadMediaFile', () => {
 		expect(records.first.attachments[0].title_link).toBe(fileUri);
 		expect(records.second.attachments[0].title_link).toBe(fileUri);
 		expect(records.third.attachments[0].title_link).toBeUndefined();
+	});
+
+	it('finishes as downloaded when Cancel arrives while the file is being saved', async () => {
+		const { transfer, cancelAsync } = mockTransfer();
+		let finishSave: () => void = () => {};
+		(getMessageById as jest.Mock).mockReturnValue(
+			new Promise(resolve => {
+				finishSave = () => resolve(null);
+			})
+		);
+		const mediaDownload = startMessageDownload('first');
+		transfer.resolve({ uri: fileUri });
+		await flush();
+
+		mediaDownload.cancel();
+		finishSave();
+
+		await expect(mediaDownload.uri).resolves.toBe(fileUri);
+		expect(cancelAsync).not.toHaveBeenCalled();
+	});
+
+	it('marks a joined Message decrypted only when the shared download decrypted the file', async () => {
+		const { transfer } = mockTransfer();
+		const records = Object.fromEntries(
+			['plain', 'encrypted'].map(id => [
+				id,
+				makeFakeRecord(`messages#${id}`, { attachments: [{ image_url: '/file-upload/abc/photo.jpg', e2e: 'pending' }] })
+			])
+		);
+		(getMessageById as jest.Mock).mockImplementation(async (id: string) => records[id]);
+		const plain = startMessageDownload('plain');
+		const encrypted = downloadMediaFile({
+			messageId: 'encrypted',
+			type: 'image',
+			downloadUrl,
+			encryption: { iv: 'iv', key: {} },
+			originalChecksum: 'checksum'
+		});
+
+		transfer.resolve({ uri: fileUri });
+		await Promise.all([plain.uri, encrypted.uri]);
+
+		expect(records.encrypted.attachments[0].e2e).toBeUndefined();
+		expect(records.encrypted.attachments[0].title_link).toBe(fileUri);
 	});
 
 	it('keeps a newer download active when a canceled transfer settles after it started', async () => {
