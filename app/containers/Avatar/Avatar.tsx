@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Image } from 'expo-image';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import AvatarEmoji from './AvatarEmoji';
+import Emoji from '../message/components/Emoji';
 import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
 import { headers } from '~/lib/methods/helpers/fetch';
 import { SubscriptionType } from '~/definitions/ISubscription';
@@ -11,6 +11,19 @@ import { type IAvatar } from './interfaces';
 import I18n from '~/i18n';
 import Touch from '../Touch';
 import { AVATAR_BORDER_RADIUS } from './constants';
+import { useTheme } from '~/theme';
+import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import sharedStyles from '~/views/Styles';
+
+const styles = StyleSheet.create({
+	emoji: {
+		...sharedStyles.textRegular,
+		textAlign: 'center',
+		textAlignVertical: 'center'
+	}
+});
+
+const AVATAR_EMOJI_FONT_SIZE = 30;
 
 const Avatar = memo(
 	({
@@ -37,6 +50,9 @@ const Avatar = memo(
 		accessibilityLabel,
 		accessible = true
 	}: IAvatar) => {
+		const { colors } = useTheme();
+		const { fontScaleLimited } = useResponsiveLayout();
+
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
 		}
@@ -50,7 +66,18 @@ const Avatar = memo(
 
 		let image;
 		if (emoji) {
-			image = <AvatarEmoji emoji={emoji} style={avatarStyle} />;
+			const emojiFontSize = AVATAR_EMOJI_FONT_SIZE * fontScaleLimited;
+			image = (
+				<Emoji
+					content={emoji}
+					standardEmojiStyle={[
+						styles.emoji,
+						{ color: colors.fontDefault, fontSize: emojiFontSize, lineHeight: emojiFontSize },
+						avatarStyle
+					]}
+					customEmojiStyle={avatarStyle}
+				/>
+			);
 		} else {
 			let uri = avatar;
 			if (!isStatic) {
