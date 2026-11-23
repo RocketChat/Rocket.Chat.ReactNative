@@ -112,15 +112,21 @@ export default class EncryptionRoom {
 		return this.hasSessionKey();
 	}
 
-	setRoomKey = ({ keyID, roomKey, sessionKeyExportedString, algorithm }: TRoomKey) => {
+	assignRoomKey = ({ keyID, roomKey, sessionKeyExportedString, algorithm }: TRoomKey) => {
 		this.keyID = keyID;
 		this.roomKey = roomKey;
 		this.sessionKeyExportedString = sessionKeyExportedString;
 		this.algorithm = algorithm;
 	};
 
+	setRoomKey = (key: TRoomKey) => {
+		this.assignRoomKey(key);
+		this.readyPromise.resolve();
+	};
+
 	clearRoomKey = () => {
-		this.setRoomKey({ keyID: '', roomKey: new ArrayBuffer(0), sessionKeyExportedString: '', algorithm: '' });
+		this.assignRoomKey({ keyID: '', roomKey: new ArrayBuffer(0), sessionKeyExportedString: '', algorithm: '' });
+		this.readyPromise = this.createReadyPromise();
 	};
 
 	getHeldRoomKey = (): TRoomKey | null => {
@@ -131,17 +137,19 @@ export default class EncryptionRoom {
 		return { keyID, roomKey, sessionKeyExportedString, algorithm };
 	};
 
-	isConfirmedKeyID = (keyID: string) => {
-		const confirmedKeyID = this.subscription?.e2eKeyId;
-		return !confirmedKeyID || confirmedKeyID === keyID;
+	isRotatedRoomKey = ({ keyID, sessionKeyExportedString }: Pick<TRoomKey, 'keyID' | 'sessionKeyExportedString'>) => {
+		const serverKeyID = this.subscription?.e2eKeyId;
+		if (!serverKeyID || serverKeyID === keyID) {
+			return false;
+		}
+		const legacyKeyIDs = [sha256(sessionKeyExportedString).slice(0, 12), Base64.encode(sessionKeyExportedString).slice(0, 12)];
+		return !legacyKeyIDs.includes(serverKeyID);
 	};
 
 	dropRotatedRoomKey = () => {
-		if (!this.ready || this.isConfirmedKeyID(this.keyID)) {
-			return;
+		if (this.ready && this.isRotatedRoomKey(this)) {
+			this.clearRoomKey();
 		}
-		this.clearRoomKey();
-		this.readyPromise = this.createReadyPromise();
 	};
 
 	failHandshake = () => {
@@ -186,13 +194,11 @@ export default class EncryptionRoom {
 		const { privateKey } = this.encryption;
 		this.establishing = true;
 		if (E2ESuggestedKey && (await this.acceptSuggestedRoomKey(E2ESuggestedKey, privateKey))) {
-			this.readyPromise.resolve();
 			this.encryption.deleteRoomInstance(this.roomId);
 			return;
 		}
 
 		if (E2EKey && (await this.importStoredRoomKey(E2EKey, privateKey))) {
-			this.readyPromise.resolve();
 			return;
 		}
 
@@ -200,7 +206,6 @@ export default class EncryptionRoom {
 		if (!e2eKeyId) {
 			try {
 				await this.createRoomKey();
-				this.readyPromise.resolve();
 				this.encryption.deleteRoomInstance(this.roomId);
 				return;
 			} catch (error) {
@@ -235,7 +240,10 @@ export default class EncryptionRoom {
 	importStoredRoomKey = async (E2EKey: string, privateKey: string) => {
 		try {
 			const storedKey = await this.importRoomKey(E2EKey, privateKey);
-			if (!this.isConfirmedKeyID(storedKey.keyID)) {
+			if (this.isRotatedRoomKey(storedKey)) {
+				await this.updateLocalSubscription(record => {
+					record.E2EKey = undefined;
+				});
 				return false;
 			}
 			this.setRoomKey(storedKey);
@@ -337,22 +345,22 @@ export default class EncryptionRoom {
 			return false;
 		}
 		await e2eResetRoomKey(this.roomId, e2eKey, newKey.keyID);
+		await this.updateLocalSubscription(record => {
+			record.e2eKeyId = newKey.keyID;
+			record.E2EKey = e2eKey;
+		});
 		this.setRoomKey(newKey);
-		await this.storeConfirmedRoomKey(newKey.keyID, e2eKey);
 		return true;
 	}
 
-	storeConfirmedRoomKey = async (keyID: string, E2EKey: string) => {
+	updateLocalSubscription = async (updater: (record: TSubscriptionModel) => void) => {
 		try {
 			const subscription = await getSubscriptionByRoomId(this.roomId);
 			if (!subscription) {
 				return;
 			}
 			await database.active.write(async () => {
-				await subscription.update(record => {
-					record.e2eKeyId = keyID;
-					record.E2EKey = E2EKey;
-				});
+				await subscription.update(updater);
 			});
 		} catch (e) {
 			log(e);

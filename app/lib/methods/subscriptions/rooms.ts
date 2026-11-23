@@ -129,22 +129,21 @@ export const createOrUpdateSubscription = async (subscription: ISubscription, ro
 		let placeholderRoom: TRoomModel | null = null;
 		if (!room && subscription) {
 			try {
-				const r = await roomsCollection.find(subscription.rid);
-				placeholderRoom = r;
+				placeholderRoom = await roomsCollection.find(subscription.rid);
 				// We have to create a plain obj so we can manipulate it on `merge`
 				// Can we do it in a better way?
 				room = {
-					v: r.v,
-					ro: r.ro,
-					tags: r.tags,
-					servedBy: r.servedBy,
-					encrypted: r.encrypted,
-					e2eKeyId: r.e2eKeyId,
-					broadcast: r.broadcast,
-					customFields: r.customFields,
-					departmentId: r.departmentId,
-					livechatData: r.livechatData,
-					avatarETag: r.avatarETag
+					v: placeholderRoom.v,
+					ro: placeholderRoom.ro,
+					tags: placeholderRoom.tags,
+					servedBy: placeholderRoom.servedBy,
+					encrypted: placeholderRoom.encrypted,
+					e2eKeyId: placeholderRoom.e2eKeyId,
+					broadcast: placeholderRoom.broadcast,
+					customFields: placeholderRoom.customFields,
+					departmentId: placeholderRoom.departmentId,
+					livechatData: placeholderRoom.livechatData,
+					avatarETag: placeholderRoom.avatarETag
 				} as IRoom;
 			} catch (error) {
 				// Do nothing
@@ -188,12 +187,11 @@ export const createOrUpdateSubscription = async (subscription: ISubscription, ro
 						})
 					);
 				}
+				if (placeholderRoom) {
+					batch.push(placeholderRoom.prepareDestroyPermanently());
+				}
 			} catch (e) {
 				log(e);
-			}
-
-			if (placeholderRoom) {
-				batch.push(placeholderRoom.prepareDestroyPermanently());
 			}
 
 			if (lastMessage) {
