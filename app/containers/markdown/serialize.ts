@@ -1,6 +1,5 @@
 import type {
 	Root,
-	BigEmoji,
 	Paragraph,
 	Inlines,
 	Emoji as EmojiBlock,
@@ -40,7 +39,7 @@ export type TRenderSegment = { type: 'markdown'; content: string; accessibilityL
 
 const ESCAPE_PATTERN = /[\\`*_{}[\]()#+\-.!|~^$=<>&]/g;
 
-export const escapePlainText = (value: string): string => value.replace(ESCAPE_PATTERN, '\\$&').replace(/\s*\n\s*/g, ' ');
+const escapePlainText = (value: string): string => value.replace(ESCAPE_PATTERN, '\\$&').replace(/\s*\n\s*/g, ' ');
 
 const escapeUrl = (url: string): string => `<${url.replace(/[\\<>&`]/g, '\\$&')}>`;
 
@@ -158,11 +157,10 @@ const rendersAsEmoji = (block: EmojiBlock, context: ISerializeContext): boolean 
 	return context.formatShortnameToUnicode(emojiToken) !== emojiToken;
 };
 
-export const isBigEmojiOnly = (tokens: Root | null, context: ISerializeContext): tokens is [BigEmoji] =>
-	!!tokens &&
-	tokens.length === 1 &&
-	tokens[0].type === 'BIG_EMOJI' &&
-	tokens[0].value.every(block => rendersAsEmoji(block, context));
+export const isBigEmojiOnly = (root: Root, context: ISerializeContext): boolean => {
+	const [firstBlock] = root;
+	return root.length === 1 && firstBlock.type === 'BIG_EMOJI' && firstBlock.value.every(block => rendersAsEmoji(block, context));
+};
 
 const WORD_JOINER = '\u2060';
 
@@ -234,12 +232,12 @@ const serializeMath = (latex: string, delimiter: '$' | '$$'): string => {
 
 const isMathDelimiterBoundary = (char: string | undefined): boolean => char === undefined || /[\s!-#%-/:-@[-`{-~]/.test(char);
 
-const padMathSpan = (span: string, before: string, after: string): string => {
+const padMathSpan = (span: string, before: string, nextChar: string | undefined): string => {
 	if (!span.startsWith('$')) {
 		return span;
 	}
 	const leading = isMathDelimiterBoundary(before.at(-1)) ? '' : HAIR_SPACE;
-	const trailing = isMathDelimiterBoundary(after[0]) ? '' : HAIR_SPACE;
+	const trailing = isMathDelimiterBoundary(nextChar) ? '' : HAIR_SPACE;
 	return `${leading}${span}${trailing}`;
 };
 
@@ -263,23 +261,23 @@ const isEmphasisDelimiterBoundary = (char: string | undefined, delimiterChar: st
 const needsHairSpace = (delimiterChar: string | undefined, neighbor: string | undefined): boolean =>
 	!!delimiterChar && EMPHASIS_DELIMITER_CHARS.includes(delimiterChar) && !isEmphasisDelimiterBoundary(neighbor, delimiterChar);
 
-const padEmphasisSpan = (span: string, before: string, after: string): string => {
+const padEmphasisSpan = (span: string, before: string, nextChar: string | undefined): string => {
 	const leading = needsHairSpace(span[0], before.at(-1)) ? HAIR_SPACE : '';
-	const trailing = needsHairSpace(span.at(-1), after[0]) ? HAIR_SPACE : '';
+	const trailing = needsHairSpace(span.at(-1), nextChar) ? HAIR_SPACE : '';
 	return `${leading}${span}${trailing}`;
 };
 
 const padCodeSpan = (span: string, before: string): string => (before.endsWith('`') ? `${HAIR_SPACE}${span}` : span);
 
-const padSpan = (node: Inlines, span: string, before: string, after: string): string => {
+const padSpan = (node: Inlines, span: string, before: string, nextChar: string | undefined): string => {
 	if (span.startsWith('`')) {
 		return padCodeSpan(span, before);
 	}
 	if (node.type === 'INLINE_KATEX') {
-		return padMathSpan(span, before, after);
+		return padMathSpan(span, before, nextChar);
 	}
 	if (DELIMITED_TYPES.has(node.type)) {
-		return padEmphasisSpan(span, before, after);
+		return padEmphasisSpan(span, before, nextChar);
 	}
 	return span;
 };
@@ -298,13 +296,21 @@ interface IInlineScope {
 
 const TOP_LEVEL_SCOPE: IInlineScope = { insideLink: false, insideBold: false };
 
+const firstCharsAfter = (parts: string[]): (string | undefined)[] => {
+	const nextChars = new Array<string | undefined>(parts.length);
+	let nextChar: string | undefined;
+	for (let index = parts.length - 1; index >= 0; index -= 1) {
+		nextChars[index] = nextChar;
+		nextChar = parts[index][0] ?? nextChar;
+	}
+	return nextChars;
+};
+
 const serializeInline = (inlines: Inlines[], context: ISerializeContext, scope = TOP_LEVEL_SCOPE): string => {
 	const nodes = withoutDroppedLinks(inlines);
 	const parts = nodes.map(node => serializeInlineNode(node, context, scope));
-	return parts.reduce(
-		(serialized, part, index) => serialized + padSpan(nodes[index], part, serialized, parts.slice(index + 1).join('')),
-		''
-	);
+	const nextChars = firstCharsAfter(parts);
+	return parts.reduce((serialized, part, index) => serialized + padSpan(nodes[index], part, serialized, nextChars[index]), '');
 };
 
 const serializeMentionInScope = (mention: IResolvedMention, scope: IInlineScope): string => {
@@ -534,8 +540,8 @@ const plainTextBlock = (block: TRootBlock, context: ISerializeContext): string =
 	}
 };
 
-export const buildRenderSegments = (tokens: Root, context: ISerializeContext): TRenderSegment[] =>
-	(tokens as TRootBlock[]).flatMap((block): TRenderSegment[] => {
+export const buildRenderSegments = (root: Root, context: ISerializeContext): TRenderSegment[] =>
+	(root as TRootBlock[]).flatMap((block): TRenderSegment[] => {
 		if (block.type === 'LINE_BREAK') {
 			return [{ type: 'linebreak' }];
 		}
