@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 import ascii, { asciiRegexp } from './ascii';
 import { useAppSelector } from '../useAppSelector';
 import { useCustomEmoji } from '../useCustomEmoji';
@@ -36,36 +34,30 @@ const useShortnameToUnicode = (isEmojiPicker?: boolean) => {
 	const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji);
 	const customEmojis = useCustomEmoji();
 
-	const replaceShortnameWithUnicode = useCallback(
-		(shortname: string) => {
-			const customEmojiOverridesBuiltIn = customEmojis(shortname.replace(/:/g, ''));
-			if (customEmojiOverridesBuiltIn) {
-				return shortname;
+	const replaceShortnameWithUnicode = (shortname: string) => {
+		const customEmojiOverridesBuiltIn = customEmojis(shortname.replace(/:/g, ''));
+		if (customEmojiOverridesBuiltIn) {
+			return shortname;
+		}
+		return shortnameToUnicodeMap[shortname] || legacyShortnameToUnicodeMap[shortname] || shortname;
+	};
+	const formatShortnameToUnicode = (str: string) => {
+		str = str.replace(shortnamePattern, replaceShortnameWithUnicode);
+		str = str.replace(regAscii, (entire, _m1, m2, m3) => {
+			const isKnownAscii = !!m3 && unescapeHTML(m3) in ascii;
+			if (!isKnownAscii) {
+				return entire;
 			}
-			return shortnameToUnicodeMap[shortname] || legacyShortnameToUnicodeMap[shortname] || shortname;
-		},
-		[customEmojis]
-	);
-	const formatShortnameToUnicode = useCallback(
-		(str: string) => {
-			str = str.replace(shortnamePattern, replaceShortnameWithUnicode);
-			str = str.replace(regAscii, (entire, _m1, m2, m3) => {
-				const isKnownAscii = !!m3 && unescapeHTML(m3) in ascii;
-				if (!isKnownAscii) {
-					return entire;
-				}
 
-				m3 = unescapeHTML(m3);
+			m3 = unescapeHTML(m3);
 
-				if (!convertAsciiEmoji && !isEmojiPicker) {
-					return m2 + m3;
-				}
-				return m2 + ascii[m3];
-			});
-			return str;
-		},
-		[replaceShortnameWithUnicode, convertAsciiEmoji, isEmojiPicker]
-	);
+			if (!convertAsciiEmoji && !isEmojiPicker) {
+				return m2 + m3;
+			}
+			return m2 + ascii[m3];
+		});
+		return str;
+	};
 
 	return {
 		formatShortnameToUnicode
