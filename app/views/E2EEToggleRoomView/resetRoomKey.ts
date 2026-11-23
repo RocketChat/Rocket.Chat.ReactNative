@@ -4,7 +4,6 @@ import I18n from '~/i18n';
 import { Encryption } from '~/lib/encryption';
 import log from '~/lib/methods/helpers/log';
 import { showToast } from '~/lib/methods/helpers/showToast';
-import { e2eResetRoomKey } from '~/lib/services/restApi';
 import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
 
 export const resetRoomKey = (rid: string) => {
@@ -27,13 +26,11 @@ export const resetRoomKey = (rid: string) => {
 							return;
 						}
 
-						const { e2eKey, e2eKeyId } = (await e2eRoom.resetRoomKey()) ?? {};
-
-						if (!e2eKey || !e2eKeyId) {
+						const isReset = await e2eRoom.resetRoomKey();
+						if (!isReset) {
 							return;
 						}
 
-						await e2eResetRoomKey(rid, e2eKey, e2eKeyId);
 						showToast(I18n.t('Encryption_keys_reset'));
 					} catch (e) {
 						if (isTwoFactorCancelled(e)) {
