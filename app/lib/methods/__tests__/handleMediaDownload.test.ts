@@ -7,16 +7,16 @@ import {
 	isDownloadActive,
 	matchDownloadUrl,
 	persistMessage
-} from './handleMediaDownload';
-import database from '../database';
-import { getMessageById } from '../database/services/Message';
-import { getThreadById } from '../database/services/Thread';
-import { getThreadMessageById } from '../database/services/ThreadMessage';
-import { createBatchMock, deferred, flush, makeFakeRecord } from '../database/__tests__/mockedWatermelonDB';
+} from '../handleMediaDownload';
+import database from '../../database';
+import { getMessageById } from '../../database/services/Message';
+import { getThreadById } from '../../database/services/Thread';
+import { getThreadMessageById } from '../../database/services/ThreadMessage';
+import { createBatchMock, deferred, flush, makeFakeRecord } from '../../database/__tests__/mockedWatermelonDB';
 
 const mockDbBatch = createBatchMock();
-jest.mock('../database', () => {
-	const { createWriterLock } = require('../database/__tests__/mockedWatermelonDB');
+jest.mock('../../database', () => {
+	const { createWriterLock } = require('../../database/__tests__/mockedWatermelonDB');
 	const write = createWriterLock();
 	return {
 		__esModule: true,
@@ -30,15 +30,15 @@ jest.mock('../database', () => {
 	};
 });
 
-jest.mock('../database/services/Message', () => ({
+jest.mock('../../database/services/Message', () => ({
 	getMessageById: jest.fn()
 }));
 
-jest.mock('../database/services/Thread', () => ({
+jest.mock('../../database/services/Thread', () => ({
 	getThreadById: jest.fn()
 }));
 
-jest.mock('../database/services/ThreadMessage', () => ({
+jest.mock('../../database/services/ThreadMessage', () => ({
 	getThreadMessageById: jest.fn()
 }));
 
@@ -47,7 +47,7 @@ jest.mock('expo-file-system/legacy', () => ({
 	createDownloadResumable: jest.fn()
 }));
 
-jest.mock('../store/auxStore', () => ({
+jest.mock('../../store/auxStore', () => ({
 	store: { getState: () => ({ server: { server: 'https://server.com' } }) }
 }));
 
@@ -241,6 +241,7 @@ describe('persistMessage', () => {
 
 describe('downloadMediaFile', () => {
 	const downloadUrl = 'https://server.com/file-upload/abc/photo.jpg';
+	const fileUri = 'file:///documents/photo.jpg';
 	const mockCreateDownloadResumable = FileSystem.createDownloadResumable as jest.Mock;
 
 	const createTransfer = () => {
@@ -264,15 +265,13 @@ describe('downloadMediaFile', () => {
 	};
 
 	const startMessageDownload = (messageId: string) => {
-		const abortController = new AbortController();
-		const download = downloadMediaFile({ messageId, type: 'image', downloadUrl, signal: abortController.signal });
-		download.catch(() => {});
-		return { download, cancel: () => abortController.abort() };
+		const mediaDownload = downloadMediaFile({ messageId, type: 'image', downloadUrl });
+		mediaDownload.uri.catch(() => {});
+		return mediaDownload;
 	};
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		jest.spyOn(console, 'error').mockImplementation(() => {});
 		(getMessageById as jest.Mock).mockResolvedValue(null);
 		(getThreadById as jest.Mock).mockResolvedValue(null);
 		(getThreadMessageById as jest.Mock).mockResolvedValue(null);
@@ -284,11 +283,11 @@ describe('downloadMediaFile', () => {
 		const second = startMessageDownload('second');
 
 		first.cancel();
-		await expect(first.download).rejects.toThrow('Media download canceled');
+		await expect(first.uri).rejects.toThrow('Media download canceled');
 		expect(cancelAsync).not.toHaveBeenCalled();
 
-		transfer.resolve({ uri: 'file:///documents/photo.jpg' });
-		await expect(second.download).resolves.toBe('file:///documents/photo.jpg');
+		transfer.resolve({ uri: fileUri });
+		await expect(second.uri).resolves.toBe(fileUri);
 		expect(mockCreateDownloadResumable).toHaveBeenCalledTimes(1);
 		expect(isDownloadActive(downloadUrl)).toBe(false);
 	});
@@ -300,8 +299,8 @@ describe('downloadMediaFile', () => {
 
 		transfer.reject(new Error('network down'));
 
-		await expect(first.download).rejects.toThrow('network down');
-		await expect(second.download).rejects.toThrow('network down');
+		await expect(first.uri).rejects.toThrow('network down');
+		await expect(second.uri).rejects.toThrow('network down');
 		expect(isDownloadActive(downloadUrl)).toBe(false);
 	});
 
@@ -313,16 +312,62 @@ describe('downloadMediaFile', () => {
 		first.cancel();
 		second.cancel();
 
-		await expect(second.download).rejects.toThrow('Media download canceled');
+		await expect(second.uri).rejects.toThrow('Media download canceled');
 		expect(cancelAsync).toHaveBeenCalledTimes(1);
 		expect(isDownloadActive(downloadUrl)).toBe(false);
+	});
+
+	it('stops the transfer when a Message that left and came back cancels', async () => {
+		const { cancelAsync } = mockTransfer();
+		const beforeScroll = startMessageDownload('first');
+		beforeScroll.detach();
+		expect(cancelAsync).not.toHaveBeenCalled();
+		expect(isDownloadActive(downloadUrl)).toBe(true);
+
+		const afterScroll = startMessageDownload('first');
+		afterScroll.cancel();
+
+		expect(cancelAsync).toHaveBeenCalledTimes(1);
+		expect(isDownloadActive(downloadUrl)).toBe(false);
+	});
+
+	it('saves the file for a Message that left before the transfer finished', async () => {
+		const { transfer } = mockTransfer();
+		const messageRecord = makeFakeRecord('messages#first', { attachments: [{ image_url: '/file-upload/abc/photo.jpg' }] });
+		(getMessageById as jest.Mock).mockImplementation(async (id: string) => (id === 'first' ? messageRecord : null));
+		startMessageDownload('first').detach();
+
+		transfer.resolve({ uri: fileUri });
+		await flush();
+
+		expect(messageRecord.attachments[0].title_link).toBe(fileUri);
+	});
+
+	it('saves the file under each joined Message id, except the one that canceled', async () => {
+		const { transfer } = mockTransfer();
+		const records = Object.fromEntries(
+			['first', 'second', 'third'].map(id => [
+				id,
+				makeFakeRecord(`messages#${id}`, { attachments: [{ image_url: '/file-upload/abc/photo.jpg' }] })
+			])
+		);
+		(getMessageById as jest.Mock).mockImplementation(async (id: string) => records[id]);
+		const first = startMessageDownload('first');
+		const second = startMessageDownload('second');
+		startMessageDownload('third').cancel();
+
+		transfer.resolve({ uri: fileUri });
+		await Promise.all([first.uri, second.uri]);
+
+		expect(records.first.attachments[0].title_link).toBe(fileUri);
+		expect(records.second.attachments[0].title_link).toBe(fileUri);
+		expect(records.third.attachments[0].title_link).toBeUndefined();
 	});
 
 	it('keeps a newer download active when a canceled transfer settles after it started', async () => {
 		const stale = mockTransfer();
 		stale.cancelAsync.mockResolvedValue(undefined);
-		const canceled = startMessageDownload('first');
-		canceled.cancel();
+		startMessageDownload('first').cancel();
 
 		const fresh = mockTransfer();
 		const retry = startMessageDownload('first');
@@ -330,7 +375,7 @@ describe('downloadMediaFile', () => {
 		await flush();
 
 		expect(isDownloadActive(downloadUrl)).toBe(true);
-		fresh.transfer.resolve({ uri: 'file:///documents/photo.jpg' });
-		await expect(retry.download).resolves.toBe('file:///documents/photo.jpg');
+		fresh.transfer.resolve({ uri: fileUri });
+		await expect(retry.uri).resolves.toBe(fileUri);
 	});
 });

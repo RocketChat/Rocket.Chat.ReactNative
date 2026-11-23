@@ -179,17 +179,19 @@ export const deleteMediaFiles = async (serverUrl: string): Promise<void> => {
 	}
 };
 
-interface IDownloadSubscriber {
-	resolve: (uri: string) => void;
-	reject: (error: Error) => void;
-}
-
-interface IActiveDownload {
+interface ISharedDownload {
 	resumable: FileSystem.DownloadResumable;
-	subscribers: Set<IDownloadSubscriber>;
+	fileUri: Promise<string>;
+	attachedListeners: number;
 }
 
-const activeDownloads = new Map<string, IActiveDownload>();
+export interface IMediaDownload {
+	uri: Promise<string>;
+	cancel: () => void;
+	detach: () => void;
+}
+
+const activeDownloads = new Map<string, ISharedDownload>();
 
 export const mediaDownloadKey = (messageUrl: string) => `${sanitizeLikeString(messageUrl)}`;
 
@@ -197,7 +199,7 @@ export function isDownloadActive(messageUrl: string): boolean {
 	return activeDownloads.has(mediaDownloadKey(messageUrl));
 }
 
-const removeActiveDownload = (downloadKey: string, download: IActiveDownload) => {
+const removeActiveDownload = (downloadKey: string, download: ISharedDownload) => {
 	if (activeDownloads.get(downloadKey) === download) {
 		activeDownloads.delete(downloadKey);
 	}
@@ -260,7 +262,7 @@ export const persistMessage = async (messageId: string, uri: string, encryption:
 	});
 };
 
-const startDownload = ({
+const startSharedDownload = ({
 	downloadKey,
 	path,
 	messageId,
@@ -274,54 +276,35 @@ const startDownload = ({
 	downloadUrl: string;
 	encryption?: TAttachmentEncryption;
 	originalChecksum?: string;
-}): IActiveDownload => {
-	const download: IActiveDownload = {
-		resumable: FileSystem.createDownloadResumable(downloadUrl, path, {
-			headers: headers as Record<string, string>
-		}),
-		subscribers: new Set()
-	};
-	activeDownloads.set(downloadKey, download);
+}): ISharedDownload => {
+	const resumable = FileSystem.createDownloadResumable(downloadUrl, path, {
+		headers: headers as Record<string, string>
+	});
 
-	const run = async () => {
-		const result = await download.resumable.downloadAsync();
+	const downloadAndDecrypt = async () => {
+		let result: FileSystem.FileSystemDownloadResult | undefined;
+		try {
+			result = await resumable.downloadAsync();
+			if (result && encryption && originalChecksum) {
+				await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
+			}
+		} catch (error) {
+			log(error);
+			throw error;
+		}
 		if (!result) {
-			throw new Error('Media download ended without a file');
+			throw new Error('Media download canceled');
 		}
-		if (encryption && originalChecksum) {
-			await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
-		}
-		await persistMessage(messageId, result.uri, !!encryption, downloadUrl);
 		return result.uri;
 	};
 
-	const settleSubscribers = (settle: (subscriber: IDownloadSubscriber) => void) => {
-		removeActiveDownload(downloadKey, download);
-		const subscribers = [...download.subscribers];
-		download.subscribers.clear();
-		subscribers.forEach(settle);
-	};
-
-	run().then(
-		uri => settleSubscribers(subscriber => subscriber.resolve(uri)),
-		error => {
-			console.error(error);
-			settleSubscribers(subscriber => subscriber.reject(error));
-		}
+	const download: ISharedDownload = { resumable, fileUri: downloadAndDecrypt(), attachedListeners: 0 };
+	activeDownloads.set(downloadKey, download);
+	download.fileUri.then(
+		() => removeActiveDownload(downloadKey, download),
+		() => removeActiveDownload(downloadKey, download)
 	);
-
 	return download;
-};
-
-const unsubscribe = (downloadKey: string, download: IActiveDownload, subscriber: IDownloadSubscriber) => {
-	if (!download.subscribers.delete(subscriber)) {
-		return;
-	}
-	subscriber.reject(new Error('Media download canceled'));
-	if (download.subscribers.size === 0) {
-		removeActiveDownload(downloadKey, download);
-		download.resumable.cancelAsync().catch(() => {});
-	}
 };
 
 export function downloadMediaFile({
@@ -330,8 +313,7 @@ export function downloadMediaFile({
 	mimeType,
 	downloadUrl,
 	encryption,
-	originalChecksum,
-	signal
+	originalChecksum
 }: {
 	messageId: string;
 	type: MediaTypes;
@@ -339,12 +321,9 @@ export function downloadMediaFile({
 	downloadUrl: string;
 	encryption?: TAttachmentEncryption;
 	originalChecksum?: string;
-	signal?: AbortSignal;
-}): Promise<string> {
-	return new Promise((resolve, reject) => {
-		if (signal?.aborted) {
-			return reject(new Error('Media download canceled'));
-		}
+}): IMediaDownload {
+	let stop: (cancelTransfer: boolean) => void = () => {};
+	const uri = new Promise<string>((resolve, reject) => {
 		const path = getFilePath({ type, mimeType, urlToCache: downloadUrl });
 		if (!path) {
 			return reject(new Error('Media download has no file path'));
@@ -352,9 +331,40 @@ export function downloadMediaFile({
 		const downloadKey = mediaDownloadKey(downloadUrl);
 		const download =
 			activeDownloads.get(downloadKey) ??
-			startDownload({ downloadKey, path, messageId, downloadUrl, encryption, originalChecksum });
-		const subscriber: IDownloadSubscriber = { resolve, reject };
-		download.subscribers.add(subscriber);
-		signal?.addEventListener('abort', () => unsubscribe(downloadKey, download, subscriber), { once: true });
+			startSharedDownload({ downloadKey, path, messageId, downloadUrl, encryption, originalChecksum });
+		download.attachedListeners += 1;
+		let attached = true;
+		let canceled = false;
+
+		stop = cancelTransfer => {
+			if (!attached) {
+				return;
+			}
+			attached = false;
+			canceled = cancelTransfer;
+			download.attachedListeners -= 1;
+			reject(new Error(cancelTransfer ? 'Media download canceled' : 'Media download detached'));
+			if (cancelTransfer && download.attachedListeners === 0) {
+				removeActiveDownload(downloadKey, download);
+				download.resumable.cancelAsync().catch(() => {});
+			}
+		};
+
+		download.fileUri
+			.then(async fileUri => {
+				if (canceled) {
+					return;
+				}
+				await persistMessage(messageId, fileUri, !!encryption, downloadUrl);
+				resolve(fileUri);
+			})
+			.catch(reject)
+			.finally(() => {
+				if (attached) {
+					attached = false;
+					download.attachedListeners -= 1;
+				}
+			});
 	});
+	return { uri, cancel: () => stop(true), detach: () => stop(false) };
 }

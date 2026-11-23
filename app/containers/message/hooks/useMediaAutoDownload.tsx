@@ -7,6 +7,7 @@ import { fetchAutoDownloadEnabled } from '~/lib/methods/autoDownloadPreference';
 import {
 	downloadMediaFile,
 	getMediaCache,
+	type IMediaDownload,
 	isDownloadActive,
 	type MediaTypes,
 	type TDownloadState
@@ -89,7 +90,7 @@ export const useMediaAutoDownload = ({
 		originalUrl
 	);
 	const isEncrypted = currentFile.e2e === 'pending';
-	const downloadAbortController = useRef<AbortController | null>(null);
+	const activeDownload = useRef<IMediaDownload | null>(null);
 
 	const tryAutoDownload = async () => {
 		const isCurrentUserAuthor = author?._id === user.id;
@@ -100,33 +101,39 @@ export const useMediaAutoDownload = ({
 	};
 
 	const download = async () => {
+		if (activeDownload.current) {
+			return;
+		}
 		const mimeType = getFileProperty(currentFile, fileType, 'type');
 		const originalChecksum = file.hashes?.sha256;
-		const abortController = new AbortController();
-		downloadAbortController.current = abortController;
+		const mediaDownload = downloadMediaFile({
+			messageId: id,
+			downloadUrl: url,
+			type: fileType,
+			mimeType,
+			encryption: file.encryption,
+			originalChecksum
+		});
+		activeDownload.current = mediaDownload;
+		dispatchDownloadEvent('download_started');
 		try {
-			dispatchDownloadEvent('download_started');
-			const uri = await downloadMediaFile({
-				messageId: id,
-				downloadUrl: url,
-				type: fileType,
-				mimeType,
-				encryption: file.encryption,
-				originalChecksum,
-				signal: abortController.signal
-			});
+			const uri = await mediaDownload.uri;
 			setDecrypted();
 			updateCurrentFile(uri);
-		} catch (e) {
-			if (!abortController.signal.aborted) {
+		} catch {
+			if (activeDownload.current === mediaDownload) {
 				dispatchDownloadEvent('download_failed');
+			}
+		} finally {
+			if (activeDownload.current === mediaDownload) {
+				activeDownload.current = null;
 			}
 		}
 	};
 
 	const cancel = () => {
-		downloadAbortController.current?.abort();
-		downloadAbortController.current = null;
+		activeDownload.current?.cancel();
+		activeDownload.current = null;
 		dispatchDownloadEvent('download_canceled');
 	};
 
@@ -172,6 +179,11 @@ export const useMediaAutoDownload = ({
 		} else {
 			handleCache();
 		}
+
+		return () => {
+			activeDownload.current?.detach();
+			activeDownload.current = null;
+		};
 	}, []);
 
 	const onPress = () => {

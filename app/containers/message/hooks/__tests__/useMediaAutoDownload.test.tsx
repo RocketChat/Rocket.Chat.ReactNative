@@ -42,10 +42,21 @@ const mockGetState = store.getState as jest.Mock;
 
 const URL = 'https://open.rocket.chat/file.png';
 
-const downloadUntilCanceled = ({ signal }: { signal: AbortSignal }) =>
-	new Promise<string>((_resolve, reject) => {
-		signal.addEventListener('abort', () => reject(new Error('canceled')));
-	});
+const mediaDownload = (uri: Promise<string>) => ({ uri, cancel: jest.fn(), detach: jest.fn() });
+
+const pendingMediaDownload = () => {
+	let finish: (uri: string) => void = () => {};
+	let stop: (error: Error) => void = () => {};
+	const handle = mediaDownload(
+		new Promise<string>((resolve, reject) => {
+			finish = resolve;
+			stop = reject;
+		})
+	);
+	handle.cancel.mockImplementation(() => stop(new Error('canceled')));
+	handle.detach.mockImplementation(() => stop(new Error('detached')));
+	return { handle, finish: (uri: string) => finish(uri) };
+};
 const USER = { id: 'user-1', username: 'john', token: 'token' };
 
 mockedStore.dispatch(setUser(USER));
@@ -98,7 +109,7 @@ describe('useMediaAutoDownload', () => {
 		mockGetMediaCache.mockResolvedValue({ exists: false });
 		mockIsDownloadActive.mockReturnValue(false);
 		mockFetchAutoDownloadEnabled.mockReturnValue(false);
-		mockDownloadMediaFile.mockResolvedValue('file://downloaded');
+		mockDownloadMediaFile.mockImplementation(() => mediaDownload(Promise.resolve('file://downloaded')));
 	});
 
 	describe('getFileType selection', () => {
@@ -172,12 +183,8 @@ describe('useMediaAutoDownload', () => {
 
 		it('joins an active download and shows loading until it finishes', async () => {
 			mockIsDownloadActive.mockReturnValue(true);
-			let finishDownload: (uri: string) => void = () => {};
-			mockDownloadMediaFile.mockReturnValue(
-				new Promise<string>(resolve => {
-					finishDownload = resolve;
-				})
-			);
+			const { handle, finish: finishDownload } = pendingMediaDownload();
+			mockDownloadMediaFile.mockReturnValue(handle);
 			const { result } = renderMediaHook({ file: { image_url: '/file.png' } });
 			await waitFor(() => expect(result.current.status).toBe('loading'));
 			expect(mockDownloadMediaFile).toHaveBeenCalledWith(expect.objectContaining({ downloadUrl: URL }));
@@ -189,7 +196,7 @@ describe('useMediaAutoDownload', () => {
 
 		it('returns to to-download when the joined download fails', async () => {
 			mockIsDownloadActive.mockReturnValue(true);
-			mockDownloadMediaFile.mockRejectedValue(new Error('boom'));
+			mockDownloadMediaFile.mockImplementation(() => mediaDownload(Promise.reject(new Error('boom'))));
 			const { result } = renderMediaHook({ file: { image_url: '/file.png' } });
 			await waitFor(() => expect(mockDownloadMediaFile).toHaveBeenCalled());
 			await waitFor(() => expect(result.current.status).toBe('to-download'));
@@ -220,7 +227,7 @@ describe('useMediaAutoDownload', () => {
 
 		it('returns to to-download when the download fails', async () => {
 			mockFetchAutoDownloadEnabled.mockReturnValue(true);
-			mockDownloadMediaFile.mockRejectedValue(new Error('boom'));
+			mockDownloadMediaFile.mockImplementation(() => mediaDownload(Promise.reject(new Error('boom'))));
 			const { result } = renderMediaHook({ file: { image_url: '/img' } });
 			await waitFor(() => expect(mockDownloadMediaFile).toHaveBeenCalled());
 			await waitFor(() => expect(result.current.status).toBe('to-download'));
@@ -228,7 +235,7 @@ describe('useMediaAutoDownload', () => {
 
 		it('retries and succeeds after a previous download failure', async () => {
 			mockFetchAutoDownloadEnabled.mockReturnValue(true);
-			mockDownloadMediaFile.mockRejectedValueOnce(new Error('boom'));
+			mockDownloadMediaFile.mockImplementationOnce(() => mediaDownload(Promise.reject(new Error('boom'))));
 			const { result } = renderMediaHook({ file: { image_url: '/img' } });
 			await waitFor(() => expect(mockDownloadMediaFile).toHaveBeenCalledTimes(1));
 			await waitFor(() => expect(result.current.status).toBe('to-download'));
@@ -240,20 +247,20 @@ describe('useMediaAutoDownload', () => {
 	});
 
 	describe('onPress', () => {
-		it('aborts only its own download and returns to to-download while loading', async () => {
+		it('cancels only its own download and returns to to-download while loading', async () => {
 			mockIsDownloadActive.mockReturnValue(true);
-			mockDownloadMediaFile.mockImplementation(downloadUntilCanceled);
+			const { handle } = pendingMediaDownload();
+			mockDownloadMediaFile.mockReturnValue(handle);
 			const { result } = renderMediaHook({ file: { image_url: '/file.png' } });
 			await waitFor(() => expect(result.current.status).toBe('loading'));
-			const { signal } = mockDownloadMediaFile.mock.calls[0][0];
 
 			await act(async () => result.current.onPress());
-			expect(signal.aborted).toBe(true);
+			expect(handle.cancel).toHaveBeenCalledTimes(1);
 			expect(result.current.status).toBe('to-download');
 		});
 
 		it('downloads again after a cancel', async () => {
-			mockDownloadMediaFile.mockImplementationOnce(downloadUntilCanceled);
+			mockDownloadMediaFile.mockImplementationOnce(() => pendingMediaDownload().handle);
 			const { result } = renderMediaHook({ file: { image_url: '/img' } });
 			await flushMount();
 
@@ -265,6 +272,39 @@ describe('useMediaAutoDownload', () => {
 			await act(async () => result.current.onPress());
 			await waitFor(() => expect(result.current.status).toBe('downloaded'));
 			expect(mockDownloadMediaFile).toHaveBeenCalledTimes(2);
+		});
+
+		it('starts one download when the mount auto-download and a tap overlap', async () => {
+			let finishCacheCheck: (cache: { exists: boolean }) => void = () => {};
+			mockGetMediaCache.mockReturnValue(
+				new Promise(resolve => {
+					finishCacheCheck = resolve;
+				})
+			);
+			mockFetchAutoDownloadEnabled.mockReturnValue(true);
+			const { handle } = pendingMediaDownload();
+			mockDownloadMediaFile.mockReturnValue(handle);
+			const { result } = renderMediaHook({ file: { image_url: '/img' } });
+
+			await act(async () => result.current.onPress());
+			await act(async () => finishCacheCheck({ exists: false }));
+			expect(mockDownloadMediaFile).toHaveBeenCalledTimes(1);
+
+			await act(async () => result.current.onPress());
+			expect(handle.cancel).toHaveBeenCalledTimes(1);
+			expect(result.current.status).toBe('to-download');
+		});
+
+		it('detaches without canceling when the Message unmounts mid-download', async () => {
+			mockIsDownloadActive.mockReturnValue(true);
+			const { handle } = pendingMediaDownload();
+			mockDownloadMediaFile.mockReturnValue(handle);
+			const { result, unmount } = renderMediaHook({ file: { image_url: '/file.png' } });
+			await waitFor(() => expect(result.current.status).toBe('loading'));
+
+			unmount();
+			expect(handle.detach).toHaveBeenCalledTimes(1);
+			expect(handle.cancel).not.toHaveBeenCalled();
 		});
 
 		it('starts a download when pressed in the to-download state', async () => {
