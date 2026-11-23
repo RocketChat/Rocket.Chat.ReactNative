@@ -551,6 +551,19 @@ describe('Encryption key distribution', () => {
 			expect(provideUsersSuggestedGroupKeys).toHaveBeenCalledTimes(1);
 		});
 
+		it('creates no room instances when the client stops during the subscriptions query', async () => {
+			const step = new Deferred();
+			jest.mocked(db.get).mockImplementationOnce(() => ({ query: () => step.then(() => waitingSubscriptions) }));
+			const firstRun = encryption.initiateKeyDistribution();
+
+			encryption.stop();
+			step.resolve();
+			await firstRun;
+
+			expect(mockHandshake).not.toHaveBeenCalled();
+			expect(encryption.roomInstances).toEqual({});
+		});
+
 		it('stops sampling rooms for the old run after a stop', async () => {
 			jest.mocked(db.get).mockImplementation(() => ({
 				query: () => Promise.resolve([...waitingSubscriptions, { rid: 'r2', usersWaitingForE2EKeys: [{ userId: 'other-user' }] }])
