@@ -31,9 +31,14 @@ const waitForE2eEnable = function* waitForE2eEnable() {
 	return e2eEnable;
 };
 
-const uploadKeysMissingFromServer = function* uploadKeysMissingFromServer(serverKeys, userId, server, signal) {
-	if (serverKeys?.success && !serverKeys.publicKey) {
-		yield Encryption.uploadKeys(userId, server, signal);
+const uploadKeysMissingFromServer = function* uploadKeysMissingFromServer({ serverKeys, userId, server, storedKeys, signal }) {
+	if (!serverKeys?.success || serverKeys.publicKey) {
+		return;
+	}
+	try {
+		yield Encryption.uploadKeys(userId, server, storedKeys, signal);
+	} catch (e) {
+		log(e);
 	}
 };
 
@@ -78,17 +83,18 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		}
 
 		// Fetch stored public e2e key for this server
-		let storedPublicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
-
-		// Prevent parse undefined
-		if (storedPublicKey) {
-			storedPublicKey = EJSON.parse(storedPublicKey);
-		}
+		const storedPublicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
 		if (storedPublicKey && storedPrivateKey) {
 			// Persist these keys
-			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey, controller.signal);
-			yield* uploadKeysMissingFromServer(keys, user.id, server, controller.signal);
+			yield Encryption.persistKeys(server, EJSON.parse(storedPublicKey), storedPrivateKey, controller.signal);
+			yield* uploadKeysMissingFromServer({
+				serverKeys: keys,
+				userId: user.id,
+				server,
+				storedKeys: { publicKey: storedPublicKey, privateKey: storedPrivateKey },
+				signal: controller.signal
+			});
 		} else {
 			// Create new keys since the user doesn't have any
 			yield Encryption.createKeys(user.id, server, controller.signal);

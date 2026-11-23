@@ -312,6 +312,49 @@ describe('encryption saga — sign-out while ENCRYPTION.INIT is in flight', () =
 
 		expect(e2eRequestSubscriptionKeys).toHaveBeenCalledTimes(1);
 	});
+
+	it('keeps the password of an upload still in flight when a newer setup uploads the keys again', async () => {
+		const firstUpload = createDeferred<void>();
+		jest.mocked(e2eFetchMyKeys).mockResolvedValueOnce(NO_KEYS).mockResolvedValueOnce(NO_KEYS);
+		jest.mocked(rsaGenerateKeys).mockResolvedValueOnce(keyPairFor('A'));
+		jest.mocked(generatePassphrase).mockResolvedValueOnce('first passphrase');
+		jest
+			.mocked(e2eSetUserPublicAndPrivateKeys)
+			.mockReturnValueOnce(firstUpload.promise as ReturnType<typeof e2eSetUserPublicAndPrivateKeys>)
+			.mockRejectedValueOnce(new Error('error-keys-already-set'));
+		const { store } = createRecordingStore(encryptionRoot);
+
+		signIn(store, USER_A);
+		await drainEventLoop();
+		expect(e2eSetUserPublicAndPrivateKeys).toHaveBeenCalledTimes(1);
+
+		store.dispatch(encryptionInit());
+		await drainEventLoop();
+		firstUpload.resolve();
+		await drainEventLoop();
+
+		const [firstCall, secondCall] = jest.mocked(e2eSetUserPublicAndPrivateKeys).mock.calls;
+		expect(secondCall).toEqual(firstCall);
+		expect(generatePassphrase).toHaveBeenCalledTimes(1);
+		expect(mockPreferences.get(RANDOM_PASSWORD_STORAGE)).toBe('first passphrase');
+		expect(store.getState().encryption.banner).toBe(E2E_BANNER_TYPE.SAVE_PASSWORD);
+	});
+
+	it('enables E2EE with the stored keys when uploading them fails', async () => {
+		mockPreferences.set(PUBLIC_KEY_STORAGE, JSON.stringify({ kty: 'RSA', n: 'A-public-pem', e: 'AQAB' }));
+		mockPreferences.set(PRIVATE_KEY_STORAGE, JSON.stringify({ kty: 'RSA', n: 'A-private-pem', e: 'AQAB' }));
+		jest.mocked(e2eFetchMyKeys).mockResolvedValueOnce(NO_KEYS);
+		jest.mocked(e2eSetUserPublicAndPrivateKeys).mockRejectedValueOnce(new Error('Network request failed'));
+		const { store } = createRecordingStore(encryptionRoot);
+
+		signIn(store, USER_A);
+		await drainEventLoop();
+
+		expect(e2eSetUserPublicAndPrivateKeys).toHaveBeenCalledTimes(1);
+		expect(Encryption.privateKey).toBe('imported:A-private-pem');
+		expect(store.getState().encryption.enabled).toBe(true);
+		expect(Encryption.userId).toBe(USER_A.id);
+	});
 });
 
 describe('encryption saga — sign-out while ENCRYPTION.DECODE_KEY is in flight', () => {
