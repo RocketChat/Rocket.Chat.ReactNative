@@ -80,6 +80,8 @@ open class MainApplication : Application(), ReactApplication {
     SSLPinningTurboModule.installClientCertificates(this)
 
     ReactFontManager.getInstance().addCustomFont(this, "Inter", R.font.inter)
+    ReactFontManager.getInstance().addCustomFont(this, "Inter-Medium", R.font.inter_medium)
+    ReactFontManager.getInstance().addCustomFont(this, "Inter-SemiBold", R.font.inter_semibold)
 
     // Load the native entry point for the New Architecture
     loadReactNative(this)

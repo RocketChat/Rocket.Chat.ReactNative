@@ -2,6 +2,16 @@ import { Platform, StyleSheet, type TextStyle } from 'react-native';
 
 import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants/tablet';
 
+const dropsIntermediateFontWeights = Platform.OS === 'android' && Number(Platform.Version) < 28;
+
+type TIntermediateFontWeight = '500' | '600';
+
+export const interWeight = (
+	fontWeight: TIntermediateFontWeight,
+	legacyFontFamily: string
+): { fontFamily: string; fontWeight?: TIntermediateFontWeight } =>
+	dropsIntermediateFontWeights ? { fontFamily: legacyFontFamily } : { fontFamily: 'Inter', fontWeight };
+
 const defaultTextStyle: TextStyle = {
 	textAlign: 'left',
 	backgroundColor: 'transparent',
@@ -81,13 +91,11 @@ export default StyleSheet.create({
 	},
 	textMedium: {
 		...defaultTextStyle,
-		fontFamily: 'Inter',
-		fontWeight: '500'
+		...interWeight('500', 'Inter-Medium')
 	},
 	textSemibold: {
 		...defaultTextStyle,
-		fontFamily: 'Inter',
-		fontWeight: '600'
+		...interWeight('600', 'Inter-SemiBold')
 	},
 	textBold: {
 		...defaultTextStyle,
