@@ -387,6 +387,60 @@ index dddff1d..b442851 100644
    CGFloat sourceWidth = image.size.width;
    CGFloat sourceHeight = image.size.height;
    if (sourceWidth <= 0 || sourceHeight <= 0)
+diff --git a/node_modules/react-native-enriched-markdown/ios/segments/ENRMBlockquoteContainerView.mm b/node_modules/react-native-enriched-markdown/ios/segments/ENRMBlockquoteContainerView.mm
+index 41956f0..75f7c99 100644
+--- a/node_modules/react-native-enriched-markdown/ios/segments/ENRMBlockquoteContainerView.mm
++++ b/node_modules/react-native-enriched-markdown/ios/segments/ENRMBlockquoteContainerView.mm
+@@ -116,7 +116,7 @@ static UIEdgeInsets ENRMBlockquoteContentInsets(StyleConfig *config)
+ @end
+ 
+ #if !TARGET_OS_OSX
+-@interface ENRMBlockquoteContainerView () <UITextViewDelegate, ENRMLinkContextMenuSource>
++@interface ENRMBlockquoteContainerView () <UITextViewDelegate, UIGestureRecognizerDelegate, ENRMLinkContextMenuSource>
+ @end
+ #endif
+ 
+@@ -393,10 +393,40 @@ static UIEdgeInsets ENRMBlockquoteContentInsets(StyleConfig *config)
+   ENRMTapRecognizer *tap = [[ENRMTapRecognizer alloc] initWithTarget:self action:@selector(handleTextTap:)];
+   [view.textView addGestureRecognizer:tap];
+ #if !TARGET_OS_OSX
++  UILongPressGestureRecognizer *linkLongPress =
++      [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTextLongPress:)];
++  linkLongPress.delegate = self;
++  [view.textView addGestureRecognizer:linkLongPress];
+   view.textView.delegate = self;
+ #endif
+ }
+ 
++#if !TARGET_OS_OSX
++- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
++{
++  if (![gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
++    return YES;
++  }
++  ENRMPlatformTextView *textView = (ENRMPlatformTextView *)gestureRecognizer.view;
++  if (textView.selectable || self.dynamicProps.enableLinkPreview) {
++    return NO;
++  }
++  return linkURLAtPoint(textView, [touch locationInView:textView]) != nil;
++}
++
++- (void)handleTextLongPress:(UILongPressGestureRecognizer *)recognizer
++{
++  if (recognizer.state != UIGestureRecognizerStateBegan) {
++    return;
++  }
++  ENRMPlatformTextView *textView = (ENRMPlatformTextView *)recognizer.view;
++  NSString *url = linkURLAtPoint(textView, [recognizer locationInView:textView]);
++  if (url && self.onLinkLongPress) {
++    self.onLinkLongPress(url);
++  }
++}
++#endif
++
+ - (void)handleTextTap:(ENRMTapRecognizer *)recognizer
+ {
+   ENRMPlatformTextView *textView = (ENRMPlatformTextView *)recognizer.view;
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
 index 3ef8cd6..c745617 100644
 --- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
