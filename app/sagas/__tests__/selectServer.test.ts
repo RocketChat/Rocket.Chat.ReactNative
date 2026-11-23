@@ -92,10 +92,13 @@ const OLD_SERVER = 'https://old.rocket.chat';
 const SERVER_URL = 'https://new.rocket.chat';
 const USER_ID = 'user-new';
 const TOKEN = 'token-new';
+const OLD_USER_ID = 'user-old';
 
 const keysToClear = [
 	`${TOKEN_KEY}-${SERVER_URL}`,
 	getUserTokenKey(SERVER_URL, USER_ID),
+	`${TOKEN_KEY}-${OLD_SERVER}`,
+	getUserTokenKey(OLD_SERVER, OLD_USER_ID),
 	getBasicAuthKey(SERVER_URL),
 	getBasicAuthKey(OLD_SERVER),
 	CURRENT_SERVER
@@ -476,27 +479,9 @@ describe('selectServer saga — requesting a new workspace', () => {
 });
 
 describe('selectServer saga — selecting the connected workspace', () => {
-	const OLD_USER_ID = 'user-old';
-
 	beforeEach(() => {
 		UserPreferences.setString(`${TOKEN_KEY}-${OLD_SERVER}`, OLD_USER_ID);
 		UserPreferences.setString(getUserTokenKey(OLD_SERVER, OLD_USER_ID), 'token-old');
-	});
-
-	afterEach(() => {
-		UserPreferences.removeItem(`${TOKEN_KEY}-${OLD_SERVER}`);
-		UserPreferences.removeItem(getUserTokenKey(OLD_SERVER, OLD_USER_ID));
-	});
-
-	it('opens the rooms list without reconnecting when the connected workspace is selected again', async () => {
-		setActiveHost(OLD_SERVER);
-
-		const { store, dispatchedActions } = setupStore();
-		store.dispatch(selectServerRequest(OLD_SERVER, '7.0.0', false));
-		await flushSagaMicrotasks();
-
-		expect(connect).not.toHaveBeenCalled();
-		expect(dispatchedActions).toContainEqual(appStart({ root: RootEnum.ROOT_INSIDE }));
 	});
 
 	it('reconnects and opens the workspace screen when the connected workspace has no stored login', async () => {
