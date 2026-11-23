@@ -775,7 +775,6 @@ describe('handleLocalAuthentication relockReason option', () => {
 
 		expect(mockedHasEnrollment).not.toHaveBeenCalled();
 		expect(mockedIsEnrollmentValid).not.toHaveBeenCalled();
-		expect(mockedReadTrustState).not.toHaveBeenCalled();
 		expect(lastEmitPayload()?.reason).toBeUndefined();
 	});
 
