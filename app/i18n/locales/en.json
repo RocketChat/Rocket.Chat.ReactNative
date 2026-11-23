@@ -260,6 +260,7 @@
   "Deep_link_login_title": "Sign in to this workspace?",
   "Deep_link_open_declined": "Workspace link dismissed.",
   "Deep_link_open_description": "A link is asking to open {{server}}. Only continue if you opened this link yourself and trust it.",
+  "Deep_link_open_failed": "Could not open the link. Try again.",
   "Deep_link_open_title": "Open this workspace?",
   "Default": "Default",
   "Default_browser": "Default browser",

@@ -7,7 +7,6 @@ import { APP, APP_STATE } from '../actions/actionsTypes';
 export interface IApp {
 	root?: RootEnum;
 	text?: string;
-	ready: boolean;
 	foreground: boolean;
 	background: boolean;
 	notificationPresenceCap: boolean;
@@ -17,7 +16,6 @@ export interface IApp {
 export const initialState: IApp = {
 	root: undefined,
 	text: undefined,
-	ready: false,
 	foreground: true,
 	background: false,
 	notificationPresenceCap: false,
@@ -43,16 +41,6 @@ export default function app(state = initialState, action: TActionApp): IApp {
 				...state,
 				root: action.root,
 				text: action.text
-			};
-		case APP.INIT:
-			return {
-				...state,
-				ready: false
-			};
-		case APP.READY:
-			return {
-				...state,
-				ready: true
 			};
 		case APP.SET_NOTIFICATION_PRESENCE_CAP:
 			return {

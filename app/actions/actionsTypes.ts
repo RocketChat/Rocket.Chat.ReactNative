@@ -37,7 +37,6 @@ export const INQUIRY = createRequestTypes('INQUIRY', [
 export const ROUTING_CONFIG = createRequestTypes('ROUTING_CONFIG');
 export const APP = createRequestTypes('APP', [
 	'START',
-	'READY',
 	'INIT',
 	'INIT_LOCAL_SETTINGS',
 	'SET_NOTIFICATION_PRESENCE_CAP',

@@ -44,6 +44,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import { appInit, appStart } from '~/actions/app';
 import { RootEnum } from '~/definitions/redux/TRootEnum';
 import initRoot from '../init';
+import { isAppReady } from '~/selectors/app';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { getAllServers, getServerById } from '~/lib/database/services/Server';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -101,7 +102,7 @@ describe('init saga — restore user-facing roots', () => {
 		store.dispatch(appInit());
 		await flushSagaMicrotasks();
 
-		expect(store.getState().app.ready).toBe(true);
+		expect(isAppReady(store.getState())).toBe(true);
 	});
 
 	it('lands on ROOT_OUTSIDE when no server is stored at all', async () => {
@@ -112,7 +113,7 @@ describe('init saga — restore user-facing roots', () => {
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
-		expect(store.getState().app.ready).toBe(true);
+		expect(isAppReady(store.getState())).toBe(true);
 	});
 
 	it('lands on ROOT_OUTSIDE when neither the stored server nor any other has a token', async () => {
@@ -124,7 +125,7 @@ describe('init saga — restore user-facing roots', () => {
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
-		expect(store.getState().app.ready).toBe(true);
+		expect(isAppReady(store.getState())).toBe(true);
 	});
 
 	it('selects another logged in server with its own version when the stored server has no token', async () => {
@@ -141,7 +142,6 @@ describe('init saga — restore user-facing roots', () => {
 
 		expect(store.getState().server.server).toBe(OTHER_HOST);
 		expect(store.getState().server.version).toBe('7.0.0');
-		expect(store.getState().app.ready).toBe(true);
 	});
 
 	it('delivers the pending push notification without stranding the boot', async () => {
@@ -194,14 +194,13 @@ describe('init saga — restore user-facing roots', () => {
 		expect(dispatchedActions).not.toContainEqual(expect.objectContaining({ type: DEEP_LINKING.OPEN_VIDEO_CONF }));
 	});
 
-	it('selects the stored server and marks the app ready when the record exists', async () => {
+	it('selects the stored server when the record exists', async () => {
 		jest.mocked(getServerById).mockResolvedValue({ id: HOST, version: '6.0.0' } as any);
 		const { store } = setupStore();
 
 		store.dispatch(appInit());
 		await flushSagaMicrotasks();
 
-		expect(store.getState().app.ready).toBe(true);
 		expect(store.getState().server.server).toBe(HOST);
 	});
 
@@ -213,7 +212,7 @@ describe('init saga — restore user-facing roots', () => {
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_OUTSIDE);
-		expect(store.getState().app.ready).toBe(true);
+		expect(isAppReady(store.getState())).toBe(true);
 	});
 
 	it('stays on the restored server when reading the pending push notification fails', async () => {

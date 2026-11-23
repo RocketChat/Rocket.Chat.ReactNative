@@ -9,6 +9,7 @@ import Navigation from '~/lib/navigation/appNavigation';
 import { getActiveRoute } from '~/lib/methods/helpers/navigation';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { setInAppFeedback } from '~/actions/inAppFeedback';
+import { isAppReady } from '~/selectors/app';
 import I18n from '~/i18n';
 import { INAPP_NOTIFICATION_EMITTER } from '~/lib/constants/notifications';
 
@@ -53,7 +54,7 @@ const isSuppressed = (messageType?: string) => {
 const InAppNotification = memo(() => {
 	const { appState, subscribedRoom } = useAppSelector(state => ({
 		subscribedRoom: state.room.subscribedRoom,
-		appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
+		appState: isAppReady(state) && state.app.foreground ? 'foreground' : 'background'
 	}));
 
 	const dispatch = useDispatch();

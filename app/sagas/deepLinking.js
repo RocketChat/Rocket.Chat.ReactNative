@@ -4,7 +4,7 @@ import { all, call, delay, put, race, select, take, takeLatest } from 'redux-sag
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
-import { appInit, appStart, appReady } from '../actions/app';
+import { appInit, appStart } from '../actions/app';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import { loginRequest } from '../actions/login';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
@@ -38,7 +38,7 @@ const roomTypes = {
 	channels: 'l'
 };
 
-const DEEP_LINK_SIGN_IN_TIMEOUT = 60_000;
+const DEEP_LINK_WAIT_TIMEOUT = 60_000;
 
 export const shouldAutoConfirmDeepLinkLogin = (isE2E, params = {}) => isE2E && params.forceLoginPrompt !== 'true';
 
@@ -259,9 +259,34 @@ const handleShareExtension = function* handleOpen({ params }) {
 	}
 };
 
-// Unlocks, then reconnects to `host` and waits for the login to land. Returns false when the unlock
-// was canceled or superseded, so the caller can bail instead of navigating.
-const authenticateAndSelectServer = function* authenticateAndSelectServer(host, version, changeServer = false) {
+const isSignedInto = (host, userId) => state =>
+	state.server.server === host && state.login.isAuthenticated && state.login.user.id === userId;
+
+const waitForSignIn = function* waitForSignIn(host, userId) {
+	while (!(yield select(isSignedInto(host, userId)))) {
+		yield take(types.LOGIN.SUCCESS);
+	}
+	return true;
+};
+
+const waitForWorkspace = function* waitForWorkspace(host, userId) {
+	const { signedIn, failed, timedOut } = yield race({
+		signedIn: call(waitForSignIn, host, userId),
+		failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE]),
+		loggedOut: take(types.LOGOUT),
+		timedOut: delay(DEEP_LINK_WAIT_TIMEOUT)
+	});
+	if (signedIn) {
+		return true;
+	}
+	if (failed || timedOut) {
+		showToast(I18n.t('Deep_link_open_failed'));
+	}
+	yield fallbackNavigation();
+	return false;
+};
+
+const authenticateAndSelectServer = function* authenticateAndSelectServer(host, version, userId, changeServer = false) {
 	try {
 		yield localAuthenticate(host);
 	} catch (e) {
@@ -270,20 +295,34 @@ const authenticateAndSelectServer = function* authenticateAndSelectServer(host, 
 		return false;
 	}
 	yield put(selectServerRequest(host, version, true, changeServer));
-	yield take(types.LOGIN.SUCCESS);
-	return true;
+	return yield* waitForWorkspace(host, userId);
 };
 
-const handleKnownServerDeepLink = function* handleKnownServerDeepLink({ params, host, version }) {
+const handleKnownServerDeepLink = function* handleKnownServerDeepLink({ params, host, version, userId }) {
 	try {
-		yield localAuthenticate(host);
-		yield put(selectServerRequest(host, version, true, true));
-		yield take(types.LOGIN.SUCCESS);
-		yield completeDeepLinkNavigation(params);
+		if (yield* authenticateAndSelectServer(host, version, userId, true)) {
+			yield completeDeepLinkNavigation(params);
+		}
 	} catch (e) {
-		logUnlessUserCanceled(e);
+		log(e);
 		yield fallbackNavigation();
 	}
+};
+
+const waitForInsideRoot = function* waitForInsideRoot() {
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot === RootEnum.ROOT_INSIDE) {
+		return true;
+	}
+	const { inside, timedOut } = yield race({
+		inside: take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE),
+		loggedOut: take(types.LOGOUT),
+		timedOut: delay(DEEP_LINK_WAIT_TIMEOUT)
+	});
+	if (timedOut) {
+		showToast(I18n.t('Deep_link_open_failed'));
+	}
+	return !!inside;
 };
 
 const waitForServerConnection = function* waitForServerConnection() {
@@ -301,7 +340,7 @@ const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, host
 			connected: call(waitForServerConnection),
 			failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE]),
 			loggedOut: take(types.LOGOUT),
-			timedOut: delay(DEEP_LINK_SIGN_IN_TIMEOUT)
+			timedOut: delay(DEEP_LINK_WAIT_TIMEOUT)
 		});
 		if (timedOut) {
 			showToast(I18n.t('Deep_link_login_timed_out'));
@@ -329,7 +368,7 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 	const { host } = params;
 	// search if deep link's server already exists
 	if (user && serverRecord) {
-		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
+		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version, userId: user });
 		return;
 	}
 	if (!skipLoginConsent && requiresDeepLinkConsent(params, serverRecord) && !(yield ensureDeepLinkConsent(host, params))) {
@@ -362,10 +401,8 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 	if (!(yield* signInWithDeepLinkToken({ params, hostAlreadyConnected }))) {
 		return;
 	}
-	yield put(appReady({}));
-	const currentRoot = yield select(state => state.app.root);
-	if (currentRoot !== RootEnum.ROOT_INSIDE) {
-		yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
+	if (!(yield* waitForInsideRoot())) {
+		return;
 	}
 	yield completeDeepLinkNavigation(params);
 };
@@ -410,7 +447,7 @@ const handleOpen = function* handleOpen({ params, skipLoginConsent }) {
 	// if deep link is from same server
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
-		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version))) {
+		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version, user))) {
 			return;
 		}
 		yield completeDeepLinkNavigation(params);
@@ -470,7 +507,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
-		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version))) {
+		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version, user))) {
 			return;
 		}
 		yield handleNavigateCallRoom({ params });
@@ -478,7 +515,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 	}
 
 	if (user && serverRecord) {
-		if (yield* authenticateAndSelectServer(host, serverRecord.version, true)) {
+		if (yield* authenticateAndSelectServer(host, serverRecord.version, user, true)) {
 			yield handleNavigateCallRoom({ params });
 		}
 		return;
