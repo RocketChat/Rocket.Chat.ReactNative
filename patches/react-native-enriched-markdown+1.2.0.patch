@@ -220,10 +220,21 @@ index eefcf9f..d35299e 100644
                } catch (_: OutOfMemoryError) {
                  Log.e(TAG, "OOM decoding image: $url")
 diff --git a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
-index feaff1d..c310b15 100644
+index feaff1d..29f5f93 100644
 --- a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
 +++ b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
-@@ -88,7 +88,8 @@ typedef NS_OPTIONS(NSUInteger, ENRMDirtyFlags) {
+@@ -62,6 +62,10 @@
+ #import "StyleConfig.h"
+ #import "StylePropsUtils.h"
+ #import "TableContainerView.h"
++#if !TARGET_OS_OSX
++#import "ENRMMarkdownTextView.h"
++#import "ENRMTableIOSGridView.h"
++#endif
+ #import "TaskListTapUtils.h"
+ #import "TextViewLayoutManager.h"
+ #import <React/RCTUtils.h>
+@@ -88,7 +92,8 @@ typedef NS_OPTIONS(NSUInteger, ENRMDirtyFlags) {
  
  static char kENRMSegmentFadeAnimatorKey;
  
@@ -233,7 +244,7 @@ index feaff1d..c310b15 100644
  + (ENRMMd4cFlags *)flagsFromProps:(const EnrichedMarkdownMd4cFlagsStruct &)props;
  - (void)emitLinkPress:(NSString *)url;
  - (void)emitLinkLongPress:(NSString *)url;
-@@ -1245,6 +1246,11 @@ static char kENRMSegmentFadeAnimatorKey;
+@@ -1245,6 +1250,11 @@ static char kENRMSegmentFadeAnimatorKey;
    [view.textView addGestureRecognizer:tapRecognizer];
  
  #if !TARGET_OS_OSX
@@ -245,7 +256,7 @@ index feaff1d..c310b15 100644
    view.textView.delegate = self;
  #else
    __weak EnrichedMarkdown *weakSelf = self;
-@@ -1466,6 +1472,13 @@ static char kENRMSegmentFadeAnimatorKey;
+@@ -1466,6 +1476,13 @@ static char kENRMSegmentFadeAnimatorKey;
    }
  
    _selectable = newViewProps.selectable;
@@ -259,7 +270,76 @@ index feaff1d..c310b15 100644
  
    for (RCTUIView *segment in _segmentViews) {
      if ([segment isKindOfClass:[EnrichedMarkdownInternalText class]]) {
-@@ -1989,6 +2002,29 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
+@@ -1786,20 +1803,40 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
+ }
+ #endif
+ 
++#if !TARGET_OS_OSX
+ - (facebook::react::SharedTouchEventEmitter)touchEventEmitterAtPoint:(CGPoint)point
+ {
+-  for (RCTUIView *segment in _segmentViews) {
+-    if ([segment isKindOfClass:[TableContainerView class]]) {
+-      CGPoint segmentPoint = [self convertPoint:point toView:segment];
+-#if !TARGET_OS_OSX
+-      if ([segment pointInside:segmentPoint withEvent:nil]) {
++  for (UIView *view = [self hitTest:point withEvent:nil]; view && view != self; view = view.superview) {
++    CGPoint viewPoint = [self convertPoint:point toView:view];
++    if ([view isKindOfClass:[ENRMTableIOSGridView class]]) {
++      ENRMTableIOSItemHit *item = [(ENRMTableIOSGridView *)view itemAtPoint:viewPoint];
++      if (item && (item.kind == ENRMTableIOSItemKindLink || _enableImagePress)) {
++        return nil;
++      }
++      break;
++    }
++    if ([view isKindOfClass:[ENRMMarkdownTextView class]]) {
++      UITextView *textView = (UITextView *)view;
++      BOOL isTextPress = _enableTextPress && textView.selectedRange.length == 0 &&
++                         textPressIndexAtPoint(textView, viewPoint) != NSNotFound;
++      if (isTextPress || isPointOnInteractiveElement(textView, viewPoint, _enableImagePress, NO)) {
+         return nil;
+       }
++      break;
++    }
++  }
++
++  return [super touchEventEmitterAtPoint:point];
++}
+ #else
++- (facebook::react::SharedTouchEventEmitter)touchEventEmitterAtPoint:(CGPoint)point
++{
++  for (RCTUIView *segment in _segmentViews) {
++    if ([segment isKindOfClass:[TableContainerView class]]) {
++      CGPoint segmentPoint = [self convertPoint:point toView:segment];
+       if (CGRectContainsPoint(segment.bounds, segmentPoint)) {
+         return nil;
+       }
+-#endif
+     }
+ 
+     if (![segment isKindOfClass:[EnrichedMarkdownInternalText class]]) {
+@@ -1807,12 +1844,7 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
+     }
+     EnrichedMarkdownInternalText *textSegment = (EnrichedMarkdownInternalText *)segment;
+     CGPoint segmentPoint = [self convertPoint:point toView:textSegment.textView];
+-#if !TARGET_OS_OSX
+-    BOOL isInsideView = [textSegment.textView pointInside:segmentPoint withEvent:nil];
+-#else
+-    BOOL isInsideView = CGRectContainsPoint(textSegment.textView.bounds, segmentPoint);
+-#endif
+-    if (isInsideView) {
++    if (CGRectContainsPoint(textSegment.textView.bounds, segmentPoint)) {
+       // Only where textTapped would emit, so a parent Pressable still gets the rest, as on Android.
+       BOOL isTextPress = _enableTextPress && textSegment.textView.selectedRange.length == 0 &&
+                          textPressIndexAtPoint(textSegment.textView, segmentPoint) != NSNotFound;
+@@ -1825,6 +1857,7 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
+ 
+   return [super touchEventEmitterAtPoint:point];
+ }
++#endif
+ 
+ #if TARGET_OS_OSX
+ - (void)mouseDown:(NSEvent *)event
+@@ -1989,6 +2022,29 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
    }
  }
  
@@ -487,6 +567,18 @@ index e3cac3f..409e19a 100644
      _enableLinkPreview = YES;
      _enableBlockContextMenu = YES;
      _enableCodeBlockPress = NO;
+diff --git a/node_modules/react-native-enriched-markdown/ios/segments/ENRMTableIOSGridView.h b/node_modules/react-native-enriched-markdown/ios/segments/ENRMTableIOSGridView.h
+index bda3a64..f00db11 100644
+--- a/node_modules/react-native-enriched-markdown/ios/segments/ENRMTableIOSGridView.h
++++ b/node_modules/react-native-enriched-markdown/ios/segments/ENRMTableIOSGridView.h
+@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, ENRMTableIOSItemKind) {
+ /// Asked when a touch lands on a link: a link with a menu is left to the context-menu
+ /// interaction, so the long-press recognizer must not take that touch.
+ @property (nonatomic, copy, nullable) BOOL (^hasLinkContextMenu)(NSString *url);
++- (nullable ENRMTableIOSItemHit *)itemAtPoint:(CGPoint)point;
+ - (nullable ENRMTableIOSItemHit *)linkAtPoint:(CGPoint)point;
+ 
+ - (void)updateWithRows:(NSArray<ENRMTableIOSRowData *> *)rows
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
 index 3ef8cd6..c745617 100644
 --- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
