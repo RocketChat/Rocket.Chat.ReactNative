@@ -1178,8 +1178,11 @@ export const editMediaMessage = async (
 	}
 };
 
-let lastToken = '';
-let lastVoipToken = '';
+const registeredPushTokens = new Map<string, { token: string; voipToken: string }>();
+
+export const forgetRegisteredPushToken = (server: string): void => {
+	registeredPushTokens.delete(server);
+};
 
 type TRegisterPushTokenData = {
 	id?: string;
@@ -1197,15 +1200,13 @@ export const registerPushToken = async (): Promise<void> => {
 		return;
 	}
 
-	if (token === lastToken && voipToken === lastVoipToken) {
+	const server = sdk.host;
+	if (!server) {
 		return;
 	}
 
-	// SDK is initialized on connect() only after a server is selected and the user is logged in.
-	// On a fresh-install cold-start, FCM/APNS and iOS PushKit can deliver tokens before that
-	// happens; bail without recording lastToken/lastVoipToken so registerPushTokenFork retries
-	// after login (and a later VoipPushTokenRegistered emission can still re-fire this path).
-	if (!sdk.isInitialized) {
+	const registered = registeredPushTokens.get(server);
+	if (registered?.token === token && registered.voipToken === voipToken) {
 		return;
 	}
 
@@ -1233,21 +1234,19 @@ export const registerPushToken = async (): Promise<void> => {
 	try {
 		// RC 0.60.0
 		await sdk.post('push.token', data);
-		lastToken = token;
-		lastVoipToken = voipToken;
+		registeredPushTokens.set(server, { token, voipToken });
 	} catch (e) {
 		log(e);
 	}
 };
 
 // TODO: add voip token removal
-export const removePushToken = async (): Promise<void> => {
+export const removePushToken = async (server: string): Promise<void> => {
 	const token = getDeviceToken();
 	if (!token) {
 		return;
 	}
-	lastToken = '';
-	lastVoipToken = '';
+	forgetRegisteredPushToken(server);
 	if (!sdk.isInitialized) {
 		return;
 	}

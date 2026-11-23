@@ -21,6 +21,7 @@ jest.mock('../sdk', () => {
 });
 
 const SDK_HOST = 'https://open.rocket.chat';
+const OTHER_SDK_HOST = 'https://other.rocket.chat';
 
 jest.mock('~/lib/notifications/deviceToken', () => ({
 	getDeviceToken: jest.fn()
@@ -64,12 +65,14 @@ function loadPushTokenApi(platform: 'ios' | 'android' = 'android', mockServerVer
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
 	const voipNative = require('~/lib/native/NativeVoip').default;
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	const { registerPushToken, removePushToken } = require('../restApi');
+	const { registerPushToken, removePushToken, forgetRegisteredPushToken } = require('../restApi');
 	return {
 		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 		registerPushToken: registerPushToken as typeof import('../restApi').registerPushToken,
 		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 		removePushToken: removePushToken as typeof import('../restApi').removePushToken,
+		// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+		forgetRegisteredPushToken: forgetRegisteredPushToken as typeof import('../restApi').forgetRegisteredPushToken,
 		getDeviceToken: jest.mocked(notifications.getDeviceToken),
 		getLastVoipToken: jest.mocked(voipNative.getLastVoipToken)
 	};
@@ -253,6 +256,20 @@ describe('registerPushToken', () => {
 		const payload = mockSdkPost.mock.calls[0][1] as Record<string, unknown>;
 		expect(Object.prototype.hasOwnProperty.call(payload, 'voipToken')).toBe(false);
 	});
+
+	it('registers the same token on every workspace the user signs in to', async () => {
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios');
+		getToken.mockReturnValue('apns-token');
+		getVoip.mockReturnValue('voip-token');
+
+		await registerPushToken();
+		mockSdk.setClient({ host: OTHER_SDK_HOST });
+		await registerPushToken();
+		mockSdk.setClient({ host: SDK_HOST });
+		await registerPushToken();
+
+		expect(mockSdkPost).toHaveBeenCalledTimes(2);
+	});
 });
 
 describe('removePushToken', () => {
@@ -270,7 +287,7 @@ describe('removePushToken', () => {
 		await registerPushToken();
 		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 
-		await removePushToken();
+		await removePushToken(SDK_HOST);
 		expect(mockSdkDel).toHaveBeenCalledWith('push.token', { token: 'apns-token' });
 
 		await registerPushToken();
@@ -286,7 +303,7 @@ describe('removePushToken', () => {
 		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 
 		getToken.mockReturnValue('');
-		await removePushToken();
+		await removePushToken(SDK_HOST);
 		expect(mockSdkDel).not.toHaveBeenCalled();
 
 		getToken.mockReturnValue('apns-token');
@@ -303,10 +320,51 @@ describe('removePushToken', () => {
 		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 
 		mockSdk.setClient(null);
-		await removePushToken();
+		await removePushToken(SDK_HOST);
 		expect(mockSdkDel).not.toHaveBeenCalled();
 
 		mockSdk.setClient({ host: SDK_HOST });
+		await registerPushToken();
+
+		expect(mockSdkPost).toHaveBeenCalledTimes(2);
+	});
+
+	it('keeps the registration of other workspaces', async () => {
+		const { registerPushToken, removePushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios');
+		getToken.mockReturnValue('apns-token');
+		getVoip.mockReturnValue('voip-token');
+		await registerPushToken();
+		mockSdk.setClient({ host: OTHER_SDK_HOST });
+		await registerPushToken();
+		expect(mockSdkPost).toHaveBeenCalledTimes(2);
+
+		await removePushToken(OTHER_SDK_HOST);
+		mockSdk.setClient({ host: SDK_HOST });
+		await registerPushToken();
+
+		expect(mockSdkPost).toHaveBeenCalledTimes(2);
+	});
+});
+
+describe('forgetRegisteredPushToken', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockSdkPost.mockResolvedValue(undefined);
+		mockSdk.setClient({ host: SDK_HOST });
+	});
+
+	it('registers again on a workspace that was removed and added back', async () => {
+		const {
+			registerPushToken,
+			forgetRegisteredPushToken,
+			getDeviceToken: getToken,
+			getLastVoipToken: getVoip
+		} = loadPushTokenApi('ios');
+		getToken.mockReturnValue('apns-token');
+		getVoip.mockReturnValue('voip-token');
+		await registerPushToken();
+
+		forgetRegisteredPushToken(SDK_HOST);
 		await registerPushToken();
 
 		expect(mockSdkPost).toHaveBeenCalledTimes(2);

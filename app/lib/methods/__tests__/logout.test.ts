@@ -27,6 +27,7 @@ jest.mock('~/lib/services/connect', () => ({
 }));
 
 jest.mock('~/lib/services/restApi', () => ({
+	forgetRegisteredPushToken: jest.fn(),
 	removePushToken: jest.fn()
 }));
 
@@ -48,6 +49,7 @@ import { clearRemovedWorkspaceCertificate } from '~/lib/methods/helpers/sslPinni
 import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import sdk from '~/lib/services/sdk';
 import { disconnect } from '~/lib/services/connect';
+import { forgetRegisteredPushToken, removePushToken } from '~/lib/services/restApi';
 import database from '~/lib/database';
 import UserPreferences from '~/lib/methods/userPreferences';
 import {
@@ -173,6 +175,13 @@ describe('removeServer', () => {
 			jest.mocked(clearRemovedWorkspaceCertificate).mock.invocationCallOrder[0]
 		);
 	});
+
+	it('forgets the push token registration of the removed server only', async () => {
+		await removeServer({ server: SERVER });
+
+		expect(forgetRegisteredPushToken).toHaveBeenCalledTimes(1);
+		expect(forgetRegisteredPushToken).toHaveBeenCalledWith(SERVER);
+	});
 });
 
 describe('logout', () => {
@@ -211,6 +220,14 @@ describe('logout', () => {
 
 		expect(mockSdkLogout).toHaveBeenCalled();
 		expect(disconnect).toHaveBeenCalled();
+	});
+
+	it('removes the push token of the server being logged out', async () => {
+		seedServer(SERVER, USER_ID);
+
+		await logout({ server: SERVER });
+
+		expect(removePushToken).toHaveBeenCalledWith(SERVER);
 	});
 
 	it('drops an ongoing conference call so it cannot outlive the session', async () => {
