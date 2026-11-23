@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
@@ -151,8 +152,8 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun applyInterFont() {
-        val interRegular = ResourcesCompat.getFont(this, R.font.inter_regular) ?: return
-        val interBold = ResourcesCompat.getFont(this, R.font.inter_bold) ?: interRegular
+        val interRegular = ResourcesCompat.getFont(this, R.font.inter) ?: return
+        val interBold = Typeface.create(interRegular, Typeface.BOLD)
         listOf(
             R.id.header_text,
             R.id.host_name,
