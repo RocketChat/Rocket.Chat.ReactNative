@@ -99,6 +99,18 @@ jest.mock('~/lib/methods/helpers/hasPermission', () => ({
 	hasPermission: jest.fn(() => Promise.resolve([true, false]))
 }));
 
+jest.mock('~/lib/database/services/Server', () => ({
+	getServerById: jest.fn(() => Promise.resolve(null))
+}));
+
+jest.mock('~/containers/ActionSheet/Provider', () => ({
+	showActionSheetRef: jest.fn()
+}));
+
+jest.mock('~/lib/hooks/useMasterDetail', () => ({
+	getIsMasterDetail: jest.fn(() => false)
+}));
+
 let mockStore: Store | null = null;
 jest.mock('~/lib/store/auxStore', () => ({
 	store: { getState: () => mockStore?.getState() }
@@ -109,9 +121,13 @@ import type { Store } from 'redux';
 import loginRoot from '../login';
 import { deleteAccount, loginSuccess, logout } from '~/actions/login';
 import { setPermissions } from '~/actions/permissions';
+import { setSupportedVersions } from '~/actions/supportedVersions';
+import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
+import { getServerById } from '~/lib/database/services/Server';
+import type { TServerModel } from '~/definitions/IServer';
 import { selectServerRequest, selectServerSuccess } from '~/actions/server';
 import UserPreferences from '~/lib/methods/userPreferences';
-import { CURRENT_SERVER, TOKEN_KEY, getUserTokenKey } from '~/lib/constants/keys';
+import { CURRENT_SERVER, getServerUserIdKey, getUserTokenKey } from '~/lib/constants/keys';
 import { getPermissions } from '~/lib/methods/getPermissions';
 import { mediaSessionInstance } from '~/lib/services/voip/MediaSessionInstance';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
@@ -126,7 +142,7 @@ const holdPermissionsFetch = () => {
 		() =>
 			new Promise<void>(resolve => {
 				release = resolve;
-			}) as any
+			})
 	);
 	return () => release();
 };
@@ -147,11 +163,11 @@ afterEach(() => {
 
 describe('login saga — post-login session', () => {
 	beforeEach(() => {
-		UserPreferences.removeItem(`${TOKEN_KEY}-${SERVER_A}`);
+		UserPreferences.removeItem(getServerUserIdKey(SERVER_A));
 		UserPreferences.removeItem(getUserTokenKey(SERVER_A, USER.id));
 		UserPreferences.removeItem(CURRENT_SERVER);
 		jest.clearAllMocks();
-		jest.mocked(getPermissions).mockResolvedValue(undefined as any);
+		jest.mocked(getPermissions).mockResolvedValue(undefined);
 	});
 
 	it('runs the post-login work for a second login that arrives right after the first', async () => {
@@ -191,29 +207,15 @@ describe('login saga — post-login session', () => {
 		releasePermissions();
 		await flushSagaMicrotasks();
 
+		expect(UserPreferences.getString(getServerUserIdKey(SERVER_A))).toBe(USER.id);
 		expect(persistedToken()).toBe(USER.token);
 		expect(UserPreferences.getString(CURRENT_SERVER)).toBe(SERVER_A);
 	});
 
-	it('cancels the post-login work when another workspace is selected mid-login', async () => {
-		const releasePermissions = holdPermissionsFetch();
-		const { store } = startLoggedInStore();
-
-		store.dispatch(loginSuccess(USER));
-		await flushSagaMicrotasks();
-		store.dispatch(selectServerRequest(SERVER_B, '7.0.0'));
-		await flushSagaMicrotasks();
-		releasePermissions();
-		await flushSagaMicrotasks();
-
-		expect(UserPreferences.getString(`${TOKEN_KEY}-${SERVER_A}`)).toBeNull();
-		expect(persistedToken()).toBeNull();
-		expect(UserPreferences.getString(CURRENT_SERVER)).toBeNull();
-	});
-
 	it.each([
 		['logout', logout],
-		['account deletion', deleteAccount]
+		['account deletion', deleteAccount],
+		['a switch to another workspace', () => selectServerRequest(SERVER_B, '7.0.0')]
 	])('cancels the post-login work and the VoIP watcher on %s', async (_, endSession) => {
 		const releasePermissions = holdPermissionsFetch();
 		const { store } = startLoggedInStore();
@@ -227,7 +229,30 @@ describe('login saga — post-login session', () => {
 		store.dispatch(setPermissions({}));
 		await flushSagaMicrotasks();
 
+		expect(UserPreferences.getString(getServerUserIdKey(SERVER_A))).toBeNull();
 		expect(persistedToken()).toBeNull();
+		expect(UserPreferences.getString(CURRENT_SERVER)).toBeNull();
 		expect(mediaSessionInstance.init).not.toHaveBeenCalled();
+	});
+
+	it('shows the supported-versions warning even when the session ends while its timestamp is saved', async () => {
+		let releaseWarningTimestamp = () => {};
+		jest.mocked(getServerById).mockResolvedValue({
+			supportedVersionsWarningAt: new Date(0),
+			update: () =>
+				new Promise<void>(resolve => {
+					releaseWarningTimestamp = resolve;
+				})
+		} as unknown as TServerModel);
+		const { store } = startLoggedInStore();
+		store.dispatch(setSupportedVersions({ status: 'warn' }));
+
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+		store.dispatch(logout());
+		releaseWarningTimestamp();
+		await flushSagaMicrotasks();
+
+		expect(showActionSheetRef).toHaveBeenCalledTimes(1);
 	});
 });
