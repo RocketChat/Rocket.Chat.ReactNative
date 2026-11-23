@@ -551,21 +551,23 @@ describe('Encryption key distribution', () => {
 			expect(provideUsersSuggestedGroupKeys).toHaveBeenCalledTimes(1);
 		});
 
-		it('keeps one interval for the new sign-in after a stop during a run', async () => {
-			const blockedStep = blockOnce(jest.mocked(fetchUsersWaitingForGroupKey), {
-				success: true,
-				usersWaitingForE2EKeys: usersWaiting
-			});
+		it('stops sampling rooms for the old run after a stop', async () => {
+			jest.mocked(db.get).mockImplementation(() => ({
+				query: () => Promise.resolve([...waitingSubscriptions, { rid: 'r2', usersWaitingForE2EKeys: [{ userId: 'other-user' }] }])
+			}));
+			const blockedStep = blockOnce(mockHandshake, undefined);
 			const firstRun = encryption.initiateKeyDistribution();
 			await jest.advanceTimersByTimeAsync(0);
 
 			encryption.stop();
-			await encryption.initiateKeyDistribution();
+			const handshakesBeforeResume = mockHandshake.mock.calls.length;
 			blockedStep.resolve();
 			await firstRun;
-			await jest.advanceTimersByTimeAsync(KEY_DISTRIBUTION_INTERVAL);
 
-			expect(provideUsersSuggestedGroupKeys).toHaveBeenCalledTimes(2);
+			expect(handshakesBeforeResume).toBe(1);
+			expect(mockHandshake).toHaveBeenCalledTimes(1);
+			expect(encryption.roomInstances).toEqual({});
+			expect(fetchUsersWaitingForGroupKey).not.toHaveBeenCalled();
 		});
 	});
 });
