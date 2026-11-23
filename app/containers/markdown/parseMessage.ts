@@ -9,6 +9,8 @@ export const parseMessage = (msg: string, options: Options): Root => {
 	const key = cacheKey(msg, options);
 	const cached = parseCache.get(key);
 	if (cached) {
+		parseCache.delete(key);
+		parseCache.set(key, cached);
 		return cached;
 	}
 
