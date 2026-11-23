@@ -8,7 +8,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
@@ -18,7 +17,6 @@ import android.view.WindowManager
 import android.view.View
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -88,7 +86,6 @@ class IncomingCallActivity : Activity() {
         setContentView(R.layout.activity_incoming_call)
         applyNavigationBar()
         applyButtonBackgrounds()
-        applyInterFont()
 
         val voipPayload = VoipPayload.fromBundle(intent.extras)
         if (voipPayload == null || !voipPayload.isVoipIncomingCall()) {
@@ -149,20 +146,6 @@ class IncomingCallActivity : Activity() {
                 cornerRadius = cornerRadiusPx
             }
         }
-    }
-
-    private fun applyInterFont() {
-        val interRegular = ResourcesCompat.getFont(this, R.font.inter) ?: return
-        val interBold = Typeface.create(interRegular, Typeface.BOLD)
-        listOf(
-            R.id.header_text,
-            R.id.host_name,
-            R.id.incoming_call_reject_label,
-            R.id.incoming_call_accept_label
-        ).forEach { id ->
-            findViewById<TextView>(id)?.setTypeface(interRegular)
-        }
-        findViewById<TextView>(R.id.caller_name)?.setTypeface(interBold)
     }
 
     private fun updateUI(payload: VoipPayload) {
