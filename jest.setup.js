@@ -286,6 +286,11 @@ jest.mock('./app/lib/native/NativeSSLPinningAndroid', () => ({
 	}
 }));
 
+jest.mock('./app/lib/native/NativeMarkdownImageDownloader', () => ({
+	__esModule: true,
+	default: { setUserAgent: jest.fn() }
+}));
+
 jest.mock('./app/lib/methods/helpers/externalInput', () => ({
 	isExternalKeyboardConnected: jest.fn(() => false)
 }));

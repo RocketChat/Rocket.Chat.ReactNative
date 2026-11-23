@@ -19,6 +19,7 @@ import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboModule;
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
+import chat.rocket.reactnative.networking.MarkdownImageDownloaderTurboPackage
 import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
@@ -47,6 +48,7 @@ open class MainApplication : Application(), ReactApplication {
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
               add(SSLPinningTurboPackage())
+              add(MarkdownImageDownloaderTurboPackage())
               add(WatermelonDBJSIPackage())
               add(VideoConfTurboPackage())
               add(PushNotificationTurboPackage())

@@ -11,6 +11,7 @@
 #import <SocketRocket/SRWebSocket.h>
 #import "EXSessionTaskDispatcher.h"
 #import <SDWebImage/SDWebImageDownloader.h>
+#import <ReactNativeEnrichedMarkdown/ENRMImageDownloader.h>
 #if __has_include(<ExpoModulesCore/ExpoModulesCore-Swift.h>)
 #import <ExpoModulesCore/ExpoModulesCore-Swift.h>
 #else
@@ -69,6 +70,9 @@ static void hookClientCertificateChallenge(Class cls)
 {
   hookClientCertificateChallenge([SDWebImageDownloader class]);
   hookClientCertificateChallenge([URLSessionSessionDelegateProxy class]);
+  [ENRMImageDownloader setClientCredentialProvider:^NSURLCredential *(NSURLAuthenticationChallenge *challenge) {
+    return [Challenge clientCertificateCredential:challenge];
+  }];
 }
 
 @end
