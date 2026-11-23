@@ -58,7 +58,11 @@ export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOpti
 	},
 	headerTintColor: themes[theme].fontDefault,
 	...(hasNativeHeaderBar
-		? { headerTitleStyle: { color: themes[theme].fontTitlesLabels }, headerSubtitleColor: themes[theme].fontSecondaryInfo }
+		? {
+				headerShadowVisible: false,
+				headerTitleStyle: { color: themes[theme].fontTitlesLabels },
+				headerSubtitleColor: themes[theme].fontSecondaryInfo
+			}
 		: { headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 } })
 });
 
