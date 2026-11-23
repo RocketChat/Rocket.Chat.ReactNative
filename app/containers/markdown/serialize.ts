@@ -252,7 +252,12 @@ const padEmphasisSpan = (span: string, before: string, after: string): string =>
 	return `${leading}${span}${trailing}`;
 };
 
+const padCodeSpan = (span: string, before: string): string => (before.endsWith('`') ? `${HAIR_SPACE}${span}` : span);
+
 const padSpan = (node: Inlines, span: string, before: string, after: string): string => {
+	if (span.startsWith('`')) {
+		return padCodeSpan(span, before);
+	}
 	if (node.type === 'INLINE_KATEX') {
 		return padMathSpan(span, before, after);
 	}

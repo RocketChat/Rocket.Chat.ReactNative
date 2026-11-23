@@ -240,6 +240,10 @@ describe('markdown serialize katex', () => {
 		expect(serializeWithKatex('\\(<https://a.co>\\)')).toBe('`<https://a.co>`');
 	});
 
+	it('separates adjacent code spans so their backtick runs do not merge', () => {
+		expect(serializeWithKatex('\\(<https://a.co>\\)\\(a`b\\)')).toBe('`<https://a.co>`\u200A``a`b``');
+	});
+
 	it('drops empty formulas instead of emitting a bare double dollar', () => {
 		expect(serializeWithKatex('a \\(\\) b')).toBe('a  b');
 	});
