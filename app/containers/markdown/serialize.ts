@@ -169,12 +169,40 @@ const serializeInlineCode = (value: { value: string }): string => {
 };
 
 const HAIR_SPACE = ' ';
-const LATEX_COMMENT = /(^|[^\\])%.*$/gm;
+const LATEX_VERB = /\\verb\*?([^a-zA-Z*\s])/y;
 const ANGLE_AUTOLINK = /<[A-Za-z][A-Za-z0-9.+-]{1,31}:[^\s<>]*>|<[^\s<>@]+@[^\s<>]+>/;
 
+const latexTokenLength = (latex: string, start: number): number => {
+	if (latex[start] !== '\\') {
+		return 1;
+	}
+	LATEX_VERB.lastIndex = start;
+	const verb = LATEX_VERB.exec(latex);
+	if (verb) {
+		const closing = latex.indexOf(verb[1], start + verb[0].length);
+		return closing === -1 ? latex.length - start : closing + 1 - start;
+	}
+	return 2;
+};
+
+const withoutLatexComments = (latex: string): string => {
+	let kept = '';
+	let index = 0;
+	while (index < latex.length) {
+		if (latex[index] === '%') {
+			const lineEnd = latex.indexOf('\n', index);
+			index = lineEnd === -1 ? latex.length : lineEnd;
+			continue;
+		}
+		const length = latexTokenLength(latex, index);
+		kept += latex.slice(index, index + length);
+		index += length;
+	}
+	return kept;
+};
+
 const flattenLatex = (latex: string): string =>
-	latex
-		.replace(LATEX_COMMENT, '$1')
+	withoutLatexComments(latex)
 		.replace(/\s*\n\s*/g, ' ')
 		.trim();
 

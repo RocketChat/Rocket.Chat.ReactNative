@@ -226,6 +226,15 @@ describe('markdown serialize katex', () => {
 		expect(serializeWithKatex('\\[a\n\n> b % note\nc\\]')).toBe('$$a > b c$$');
 	});
 
+	it('drops a comment that follows a LaTeX line break without dropping the next rows', () => {
+		expect(serializeWithKatex('\\[a \\\\% note\nc \\\\ d\\]')).toBe('$$a \\\\ c \\\\ d$$');
+	});
+
+	it('keeps an escaped percent sign and one inside verb', () => {
+		expect(serializeWithKatex('\\(\\verb|50%| x\\)')).toBe('$\\verb|50%| x$');
+		expect(serializeWithKatex('\\(50\\% x\\)')).toBe('$50\\% x$');
+	});
+
 	it('falls back to inline code when the formula cannot be a math span', () => {
 		expect(serializeWithKatex('\\(a`b\\)')).toBe('``a`b``');
 		expect(serializeWithKatex('\\(<https://a.co>\\)')).toBe('`<https://a.co>`');
