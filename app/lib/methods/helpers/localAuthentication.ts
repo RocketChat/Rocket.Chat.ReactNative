@@ -19,7 +19,12 @@ import {
 } from '~/lib/constants/localAuthentication';
 import I18n from '~/i18n';
 import { setLocalAuthenticated } from '~/actions/login';
-import { type BiometricInvalidationReason, type BiometricPromptCopy, type TrustResult } from '~/definitions/IBiometricTrustStore';
+import {
+	type BiometricInvalidationReason,
+	type BiometricPromptCopy,
+	type BiometricTrustState,
+	type TrustResult
+} from '~/definitions/IBiometricTrustStore';
 import { type TServerModel } from '~/definitions/IServer';
 import log from './log';
 import EventEmitter from './events';
@@ -241,24 +246,31 @@ const hideSplashScreen = async () => {
  */
 export type TRelockReason = 'none' | 'checkFailed' | BiometricInvalidationReason;
 
+const isBiometryEnabled = (trust: BiometricTrustState): boolean => trust === 'enrolled' || trust === 'relockPendingWhileEnabled';
+
 const getRelockReason = async (): Promise<TRelockReason> => {
-	// Cheap flag first: passcode-only users shouldn't pay the native capability check per lock event.
-	if (biometricTrustStore.isEnabled()) {
-		const enrollment = await checkBiometricEnrollment();
-		if (enrollment.state === 'error') {
-			log(enrollment.cause);
-			return 'checkFailed';
-		}
-		if (enrollment.state === 'invalid') {
-			return 'enrollmentChanged';
-		}
-		if (enrollment.state === 'absent') {
+	const trust = biometricTrustStore.readTrustState();
+	switch (trust) {
+		case 'disabled':
+			return 'none';
+		case 'invalidatedPendingRelock':
 			return 'trustLost';
+		case 'enrolled':
+		case 'relockPendingWhileEnabled': {
+			const enrollment = await checkBiometricEnrollment();
+			if (enrollment.state === 'error') {
+				log(enrollment.cause);
+				return 'checkFailed';
+			}
+			if (enrollment.state === 'invalid') {
+				return 'enrollmentChanged';
+			}
+			if (enrollment.state === 'absent') {
+				return 'trustLost';
+			}
+			return trust === 'relockPendingWhileEnabled' ? 'relockRequired' : 'none';
 		}
-		return biometricTrustStore.isRelockPending() ? 'relockRequired' : 'none';
 	}
-	// Warm foreground surfaces the change live; cold launch reads the marker the init migration left.
-	return biometricTrustStore.isRelockPending() ? 'trustLost' : 'none';
 };
 
 interface IHandleLocalAuthentication {
@@ -268,12 +280,10 @@ interface IHandleLocalAuthentication {
 }
 
 export const handleLocalAuthentication = async ({ canCloseModal = false, relockReason }: IHandleLocalAuthentication = {}) => {
-	const biometryEnabled = biometricTrustStore.isEnabled();
+	const biometryEnabled = isBiometryEnabled(biometricTrustStore.readTrustState());
 
 	const reason = relockReason ?? (await getRelockReason());
 	if (reason !== 'none' && reason !== 'checkFailed') {
-		// No else: with the flag off, both routes to a non-'none' reason run through getRelockReason,
-		// whose only such return is gated on isRelockPending() — already true, so re-arming was a no-op.
 		if (biometryEnabled) {
 			await biometricTrustStore.invalidate();
 		}

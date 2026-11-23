@@ -14,7 +14,7 @@ jest.mock('./index', () => ({
 		setEnabled: jest.fn(),
 		disableBiometry: jest.fn(),
 		invalidate: jest.fn(),
-		isRelockPending: jest.fn(),
+		readTrustState: jest.fn(),
 		setRelockPending: jest.fn()
 	}
 }));

@@ -4,8 +4,9 @@ import { biometricTrustStore, classifyError } from './index';
 import { clearEnrollmentKey, bindEnrollmentKey, isEnrollmentValid } from './nativeEnrollmentCheck';
 import UserPreferences from '../methods/userPreferences';
 import {
-	BIOMETRIC_TRUST_MIGRATION_V1_DONE,
-	BIOMETRIC_TRUST_SENTINEL_SERVICE as SENTINEL_SERVICE
+	BIOMETRIC_PENDING_RELOCK_KEY,
+	BIOMETRIC_TRUST_SENTINEL_SERVICE as SENTINEL_SERVICE,
+	BIOMETRY_ENABLED_KEY
 } from '../constants/localAuthentication';
 
 jest.mock('../methods/userPreferences', () => ({
@@ -32,7 +33,7 @@ jest.mock('./nativeEnrollmentCheck', () => ({
 }));
 
 const mockedKeychain = Keychain as jest.Mocked<typeof Keychain>;
-const mockedSetBool = UserPreferences.setBool as jest.Mock;
+const mockedGetBool = UserPreferences.getBool as jest.Mock;
 const mockedBindEnrollmentKey = bindEnrollmentKey as jest.Mock;
 const mockedClearEnrollmentKey = clearEnrollmentKey as jest.Mock;
 const mockedIsEnrollmentValid = isEnrollmentValid as jest.Mock;
@@ -93,14 +94,6 @@ describe('biometricTrustStore', () => {
 			});
 		});
 
-		it('marks the install trust-initialized on success so the migration grandfather path cannot fire', async () => {
-			mockedKeychain.setGenericPassword.mockResolvedValueOnce(true as any);
-
-			await biometricTrustStore.enroll();
-
-			expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
-		});
-
 		it('does not bind the native enrollment key when the sentinel write fails', async () => {
 			mockedKeychain.setGenericPassword.mockRejectedValueOnce(new Error('errSecUserCancel'));
 
@@ -109,17 +102,15 @@ describe('biometricTrustStore', () => {
 			expect(mockedBindEnrollmentKey).not.toHaveBeenCalled();
 		});
 
-		it('classifies setGenericPassword failures and leaves the marker untouched', async () => {
+		it('classifies setGenericPassword failures', async () => {
 			mockedKeychain.setGenericPassword.mockRejectedValueOnce(new Error('errSecUserCancel'));
 			expect(await biometricTrustStore.enroll()).toEqual({ kind: 'canceled' });
-			expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 		});
 
 		it('reports unavailable when the write resolves false', async () => {
 			mockedKeychain.setGenericPassword.mockResolvedValueOnce(false as any);
 
 			expect(await biometricTrustStore.enroll()).toEqual({ kind: 'unavailable' });
-			expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 			expect(mockedBindEnrollmentKey).not.toHaveBeenCalled();
 		});
 
@@ -140,7 +131,6 @@ describe('biometricTrustStore', () => {
 
 					expect(await biometricTrustStore.enroll()).toEqual({ kind: 'unavailable' });
 					expect(mockedKeychain.resetGenericPassword).toHaveBeenCalledTimes(1);
-					expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 					expect(mockedBindEnrollmentKey).not.toHaveBeenCalled();
 				}
 			);
@@ -149,7 +139,6 @@ describe('biometricTrustStore', () => {
 				mockedKeychain.setGenericPassword.mockResolvedValueOnce({ service: SENTINEL_SERVICE, storage } as any);
 
 				expect(await biometricTrustStore.enroll()).toEqual({ kind: 'success' });
-				expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 				expect(mockedBindEnrollmentKey).toHaveBeenCalledTimes(1);
 			});
 		});
@@ -183,8 +172,6 @@ describe('biometricTrustStore', () => {
 
 				expect(await biometricTrustStore.enroll()).toEqual({ kind: 'unavailable' });
 				expect(mockedKeychain.resetGenericPassword).toHaveBeenCalledTimes(1);
-				// Marker left set would block the migration's grandfather rescue on every later launch.
-				expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 			});
 		});
 
@@ -201,7 +188,6 @@ describe('biometricTrustStore', () => {
 
 			expect(await biometricTrustStore.enroll()).toEqual({ kind: 'success' });
 			expect(mockedBindEnrollmentKey).not.toHaveBeenCalled();
-			expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 		});
 	});
 
@@ -273,6 +259,29 @@ describe('biometricTrustStore', () => {
 
 			expect(setEnabled).toHaveBeenCalledWith(false);
 			jest.restoreAllMocks();
+		});
+	});
+
+	describe('readTrustState', () => {
+		it.each([
+			[false, false, 'disabled'],
+			[true, false, 'enrolled'],
+			[false, true, 'invalidatedPendingRelock'],
+			[true, true, 'relockPendingWhileEnabled']
+		])('enabled=%s, relock pending=%s → %s', (enabled, relockPending, state) => {
+			mockedGetBool.mockImplementation((key: string) => {
+				if (key === BIOMETRY_ENABLED_KEY) return enabled;
+				if (key === BIOMETRIC_PENDING_RELOCK_KEY) return relockPending;
+				return null;
+			});
+
+			expect(biometricTrustStore.readTrustState()).toBe(state);
+		});
+
+		it('reads a fresh install with neither key written as disabled', () => {
+			mockedGetBool.mockReturnValue(null);
+
+			expect(biometricTrustStore.readTrustState()).toBe('disabled');
 		});
 	});
 

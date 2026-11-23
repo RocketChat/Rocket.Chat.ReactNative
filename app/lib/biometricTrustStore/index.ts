@@ -5,7 +5,6 @@ import UserPreferences from '../methods/userPreferences';
 import { isAndroid } from '../methods/helpers/deviceInfo';
 import { clearEnrollmentKey, bindEnrollmentKey, isEnrollmentValid } from './nativeEnrollmentCheck';
 import {
-	BIOMETRIC_TRUST_MIGRATION_V1_DONE,
 	BIOMETRIC_TRUST_SENTINEL_SERVICE as SENTINEL_SERVICE,
 	BIOMETRIC_TRUST_SENTINEL_USERNAME as SENTINEL_USERNAME,
 	BIOMETRIC_TRUST_SENTINEL_VALUE as SENTINEL_VALUE,
@@ -74,9 +73,6 @@ export const biometricTrustStore: IBiometricTrustStore = {
 				await biometricTrustStore.disenroll();
 				return { kind: 'unavailable' };
 			}
-			// Marks the install trust-initialized so invalidation can't reach the grandfather path.
-			// After the enrollment key: a marker left behind on the failure path would block the grandfather rescue.
-			UserPreferences.setBool(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 			return { kind: 'success' };
 		} catch (e) {
 			return classifyError(e);
@@ -127,8 +123,12 @@ export const biometricTrustStore: IBiometricTrustStore = {
 		UserPreferences.setBool(BIOMETRY_ENABLED_KEY, enabled);
 	},
 
-	isRelockPending() {
-		return UserPreferences.getBool(BIOMETRIC_PENDING_RELOCK_KEY) ?? false;
+	readTrustState() {
+		const relockPending = UserPreferences.getBool(BIOMETRIC_PENDING_RELOCK_KEY) ?? false;
+		if (biometricTrustStore.isEnabled()) {
+			return relockPending ? 'relockPendingWhileEnabled' : 'enrolled';
+		}
+		return relockPending ? 'invalidatedPendingRelock' : 'disabled';
 	},
 
 	setRelockPending(pending: boolean) {
