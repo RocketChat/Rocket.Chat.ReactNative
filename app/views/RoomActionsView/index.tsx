@@ -13,7 +13,7 @@ import Avatar from '~/containers/Avatar';
 import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import * as List from '~/containers/List';
 import Disclosure from '~/containers/NativeListRow/components/Disclosure';
-import { MarkdownPreview } from '~/containers/markdown';
+import Markdown, { MarkdownPreview } from '~/containers/markdown';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
 import SafeAreaView from '~/containers/SafeAreaView';
 import StatusRows from '~/containers/Status/StatusRows';
@@ -793,7 +793,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 									statusTextColor={themes[theme].fontSecondaryInfo}
 									fontSecondaryInfo={themes[theme].fontSecondaryInfo}
 									renderStatusText={text => (
-										<MarkdownPreview msg={text} style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]} />
+										<Markdown msg={text} textStyle={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]} />
 									)}
 									textStyle={styles.roomDescription}
 									secondaryTextStyle={styles.roomDescription}
