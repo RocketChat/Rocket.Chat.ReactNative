@@ -17,7 +17,11 @@ import { useUserPreferences } from '~/lib/methods/userPreferences';
 import { USER_MENTIONS_PREFERENCES_KEY, ROOM_MENTIONS_PREFERENCES_KEY } from '~/lib/constants/keys';
 import { getUserSelector } from '~/selectors/login';
 import log from '~/lib/methods/helpers/log';
+import { headers } from '~/lib/methods/helpers/fetch';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import styles from './styles';
+
+const imageRequestHeaders = isIOS && headers['User-Agent'] ? { 'User-Agent': headers['User-Agent'] } : undefined;
 
 export { default as MarkdownPreview } from './components/Preview';
 
@@ -118,6 +122,7 @@ const Markdown: FC<IMarkdownProps> = ({
 						markdownStyle={markdownStyle}
 						flavor='github'
 						md4cFlags={{ latexMath: true }}
+						imageRequestHeaders={imageRequestHeaders}
 						selectable={false}
 						enableTaskListItemToggle={false}
 						enableBlockContextMenu={false}
