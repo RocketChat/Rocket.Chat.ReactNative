@@ -728,56 +728,44 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
   }
   testID="avatar"
 >
-  <View
-    style={
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={8}
+    containerViewRef={{"current":"Object"}}
+    contentFit="contain"
+    contentPosition={
       {
-        "transform": [
-          {
-            "translateY": 0,
-          },
-        ],
+        "left": "50%",
+        "top": "50%",
       }
     }
-  >
-    <ViewManagerAdapter_ExpoImage
-      borderRadius={8}
-      containerViewRef={{"current":"Object"}}
-      contentFit="contain"
-      contentPosition={
+    height={56}
+    nativeViewRef={{"current":"NativeComponent"}}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    sfEffect={null}
+    source={
+      [
         {
-          "left": "50%",
-          "top": "50%",
-        }
+          "uri": "https://open.rocket.chat/emoji-custom/troll.jpg",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 8,
+        "height": 56,
+        "width": 56,
       }
-      height={56}
-      nativeViewRef={{"current":"NativeComponent"}}
-      onError={[Function]}
-      onLoad={[Function]}
-      onLoadStart={[Function]}
-      onProgress={[Function]}
-      placeholder={[]}
-      sfEffect={null}
-      source={
-        [
-          {
-            "uri": "https://open.rocket.chat/emoji-custom/troll.jpg",
-          },
-        ]
-      }
-      style={
-        {
-          "borderRadius": 8,
-          "height": 56,
-          "width": 56,
-        }
-      }
-      svgVariables={null}
-      symbolSize={null}
-      symbolWeight={null}
-      transition={null}
-      width={56}
-    />
-  </View>
+    }
+    svgVariables={null}
+    symbolSize={null}
+    symbolWeight={null}
+    transition={null}
+    width={56}
+  />
 </View>
 `;
 

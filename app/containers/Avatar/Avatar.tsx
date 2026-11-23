@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Image } from 'expo-image';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import Emoji from '../markdown/components/emoji/Emoji';
+import AvatarEmoji from './AvatarEmoji';
 import { getAvatarURL } from '~/lib/methods/helpers/getAvatarUrl';
 import { headers } from '~/lib/methods/helpers/fetch';
 import { SubscriptionType } from '~/definitions/ISubscription';
@@ -50,13 +50,7 @@ const Avatar = memo(
 
 		let image;
 		if (emoji) {
-			image = (
-				<Emoji
-					block={{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: emoji }, shortCode: emoji }}
-					style={avatarStyle}
-					isAvatar={true}
-				/>
-			);
+			image = <AvatarEmoji emoji={emoji} style={avatarStyle} />;
 		} else {
 			let uri = avatar;
 			if (!isStatic) {
