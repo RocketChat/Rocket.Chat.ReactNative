@@ -28,6 +28,7 @@ import {
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../constants/keys';
 import { type IEncryption } from '../definitions';
 import getSingleMessage from '../../methods/getSingleMessage';
+import database from '../../database';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
 import { createQuoteAttachment } from '../helpers/createQuoteAttachment';
@@ -73,9 +74,15 @@ jest.mock('../../services/restApi', () => ({
 	e2eResetRoomKey: jest.fn()
 }));
 
+let mockWriteQueue: Promise<unknown> = Promise.resolve();
+const mockSerializedWrite = (writer: () => Promise<unknown>) => {
+	const run = mockWriteQueue.then(writer);
+	mockWriteQueue = run.catch(() => undefined);
+	return run;
+};
 jest.mock('../../database', () => ({
 	__esModule: true,
-	default: { active: { write: (writer: () => Promise<unknown>) => writer() } }
+	default: { active: { write: (writer: () => Promise<unknown>) => mockSerializedWrite(writer) } }
 }));
 
 jest.mock('../../database/services/Subscription', () => ({
@@ -141,9 +148,9 @@ const buildRoomKey = (keyID: string) => ({
 	algorithm: 'A256GCM' as const
 });
 
-const createRoomHoldingKey = (encryptionOverrides: Partial<IEncryption> = {}) => {
+const createRoomHoldingKey = (keyID = 'held', encryptionOverrides: Partial<IEncryption> = {}) => {
 	const room = createRoom(encryptionOverrides);
-	room.setRoomKey(buildRoomKey('held'));
+	room.setRoomKey(buildRoomKey(keyID));
 	return room;
 };
 
@@ -306,8 +313,7 @@ describe('resetRoomKey', () => {
 	});
 
 	it('sends the new key encrypted for the current user and holds it once the server accepts the reset', async () => {
-		const room = createRoom({ publicKey: 'pub-key' });
-		room.setRoomKey(buildRoomKey('previous'));
+		const room = createRoomHoldingKey('previous', { publicKey: 'pub-key' });
 		const newKey = buildRoomKey('k1');
 		jest.spyOn(room, 'createNewRoomKey').mockResolvedValue(newKey);
 		jest.spyOn(room, 'encryptRoomKeyForUser').mockResolvedValue('encrypted-for-me');
@@ -360,8 +366,7 @@ describe('resetRoomKey', () => {
 	});
 
 	it('keeps the previous key when the server rejects the reset', async () => {
-		const room = createRoom({ publicKey: 'pub-key' });
-		room.setRoomKey(buildRoomKey('previous'));
+		const room = createRoomHoldingKey('previous', { publicKey: 'pub-key' });
 		jest.spyOn(room, 'createNewRoomKey').mockResolvedValue(buildRoomKey('k1'));
 		jest.spyOn(room, 'encryptRoomKeyForUser').mockResolvedValue('encrypted-for-me');
 		const error = new Error('reset refused');
@@ -375,8 +380,7 @@ describe('resetRoomKey', () => {
 	});
 
 	it('returns false without calling the server when the new key cannot be encrypted for the current user', async () => {
-		const room = createRoom({ publicKey: 'pub-key' });
-		room.setRoomKey(buildRoomKey('previous'));
+		const room = createRoomHoldingKey('previous', { publicKey: 'pub-key' });
 		jest.spyOn(room, 'createNewRoomKey').mockResolvedValue(buildRoomKey('k1'));
 		jest.spyOn(room, 'encryptRoomKeyForUser').mockResolvedValue(undefined);
 
@@ -1474,8 +1478,7 @@ describe('handshake', () => {
 	});
 
 	it('imports the new E2EKey when another member rotated the room key', async () => {
-		const room = createRoom({ privateKey: 'priv' });
-		room.setRoomKey(buildRoomKey('old-kid'));
+		const room = createRoomHoldingKey('old-kid', { privateKey: 'priv' });
 		room.subscription = { encrypted: true, e2eKeyId: 'new-kid', E2EKey: 'new-key' } as any;
 		jest.spyOn(room, 'importRoomKey').mockResolvedValue(buildRoomKey('new-kid'));
 
@@ -1487,8 +1490,7 @@ describe('handshake', () => {
 	});
 
 	it('drops the stale key and requests the new one when the room key was rotated before this member received it', async () => {
-		const room = createRoom({ privateKey: 'priv' });
-		room.setRoomKey(buildRoomKey('old-kid'));
+		const room = createRoomHoldingKey('old-kid', { privateKey: 'priv' });
 		room.subscription = { encrypted: true, e2eKeyId: 'new-kid' } as any;
 		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
 		const shareSpy = jest.spyOn(room, 'encryptKeyForOtherParticipants');
@@ -1505,9 +1507,9 @@ describe('handshake', () => {
 	});
 
 	it('requests the new key instead of re-importing the stale E2EKey left from before the rotation', async () => {
-		const room = createRoom({ privateKey: 'priv' });
-		room.setRoomKey(buildRoomKey('old-kid'));
+		const room = createRoomHoldingKey('old-kid', { privateKey: 'priv' });
 		room.subscription = { encrypted: true, e2eKeyId: 'new-kid', E2EKey: 'old-key' } as any;
+		mockGetSubscriptionByRoomId.mockResolvedValue(null);
 		jest.spyOn(room, 'importRoomKey').mockResolvedValue(buildRoomKey('old-kid'));
 		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
 
@@ -1519,7 +1521,7 @@ describe('handshake', () => {
 		(room.requestRoomKey as unknown as { stop: () => void }).stop();
 	});
 
-	it('clears the refused E2EKey from the local subscription so the missing-key state shows', async () => {
+	it('clears the refused E2EKey after a handshake that runs inside a database write', async () => {
 		const room = createRoom({ privateKey: 'priv' });
 		const subscriptionRecord: any = {
 			encrypted: true,
@@ -1532,9 +1534,33 @@ describe('handshake', () => {
 		jest.spyOn(room, 'importRoomKey').mockResolvedValue(buildRoomKey('old-kid'));
 		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
 
-		await room.handshake();
+		await database.active.write(() => room.handshake());
+		await database.active.write(() => Promise.resolve());
 
 		expect(subscriptionRecord.E2EKey).toBeUndefined();
+		(room.requestRoomKey as unknown as { stop: () => void }).stop();
+	});
+
+	it('keeps a newer E2EKey written while the refused one was being cleared', async () => {
+		const room = createRoom({ privateKey: 'priv' });
+		const subscriptionRecord: any = {
+			encrypted: true,
+			e2eKeyId: 'new-kid',
+			E2EKey: 'old-key',
+			update: (updater: (record: unknown) => void) => Promise.resolve(updater(subscriptionRecord))
+		};
+		room.subscription = subscriptionRecord;
+		mockGetSubscriptionByRoomId.mockImplementationOnce(() => {
+			subscriptionRecord.E2EKey = 'new-key';
+			return Promise.resolve(subscriptionRecord);
+		});
+		jest.spyOn(room, 'importRoomKey').mockResolvedValue(buildRoomKey('old-kid'));
+		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
+
+		await room.handshake();
+		await database.active.write(() => Promise.resolve());
+
+		expect(subscriptionRecord.E2EKey).toBe('new-key');
 		(room.requestRoomKey as unknown as { stop: () => void }).stop();
 	});
 
@@ -1560,9 +1586,7 @@ describe('handshake', () => {
 	);
 
 	it('holds a concurrent handshake until the rotated room key is imported', async () => {
-		const room = createRoom({ privateKey: 'priv' });
-		room.setRoomKey(buildRoomKey('old-kid'));
-		room.readyPromise.resolve();
+		const room = createRoomHoldingKey('old-kid', { privateKey: 'priv' });
 		await room.readyPromise;
 		room.subscription = { encrypted: true, e2eKeyId: 'new-kid', E2EKey: 'new-key' } as any;
 		let finishImport = () => {};
@@ -1593,8 +1617,7 @@ describe('handshake', () => {
 	});
 
 	it('keeps the held key without re-fetching when it matches the server keyID', async () => {
-		const room = createRoom({ privateKey: 'priv' });
-		room.setRoomKey(buildRoomKey('kid'));
+		const room = createRoomHoldingKey('kid', { privateKey: 'priv' });
 		room.subscription = { encrypted: true, e2eKeyId: 'kid', E2EKey: 'key' } as any;
 		const importSpy = jest.spyOn(room, 'importRoomKey');
 

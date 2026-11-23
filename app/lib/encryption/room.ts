@@ -72,6 +72,9 @@ type TRoomKey = {
 	algorithm: TAlgorithm;
 };
 
+const sha256KeyID = (sessionKeyExportedString: string) => sha256(sessionKeyExportedString).slice(0, 12);
+const base64KeyID = (sessionKeyExportedString: string) => Base64.encode(sessionKeyExportedString).slice(0, 12);
+
 export default class EncryptionRoom {
 	roomId: string;
 	userId: string;
@@ -142,7 +145,7 @@ export default class EncryptionRoom {
 		if (!serverKeyID || serverKeyID === keyID) {
 			return false;
 		}
-		const legacyKeyIDs = [sha256(sessionKeyExportedString).slice(0, 12), Base64.encode(sessionKeyExportedString).slice(0, 12)];
+		const legacyKeyIDs = [sha256KeyID(sessionKeyExportedString), base64KeyID(sessionKeyExportedString)];
 		return !legacyKeyIDs.includes(serverKeyID);
 	};
 
@@ -241,9 +244,7 @@ export default class EncryptionRoom {
 		try {
 			const storedKey = await this.importRoomKey(E2EKey, privateKey);
 			if (this.isRotatedRoomKey(storedKey)) {
-				await this.updateLocalSubscription(record => {
-					record.E2EKey = undefined;
-				});
+				this.clearRefusedRoomKey(E2EKey);
 				return false;
 			}
 			this.setRoomKey(storedKey);
@@ -322,8 +323,8 @@ export default class EncryptionRoom {
 		};
 		const sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
 		const keyID = compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')
-			? (await sha256(sessionKeyExportedString)).slice(0, 12)
-			: Base64.encode(sessionKeyExportedString).slice(0, 12);
+			? sha256KeyID(sessionKeyExportedString)
+			: base64KeyID(sessionKeyExportedString);
 		return { keyID, roomKey, sessionKeyExportedString, algorithm: 'A128CBC' };
 	};
 
@@ -352,6 +353,13 @@ export default class EncryptionRoom {
 		this.setRoomKey(newKey);
 		return true;
 	}
+
+	clearRefusedRoomKey = (refusedE2EKey: string) =>
+		this.updateLocalSubscription(record => {
+			if (record.E2EKey === refusedE2EKey) {
+				record.E2EKey = undefined;
+			}
+		});
 
 	updateLocalSubscription = async (updater: (record: TSubscriptionModel) => void) => {
 		try {

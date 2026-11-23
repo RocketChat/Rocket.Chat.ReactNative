@@ -191,11 +191,12 @@ describe('createOrUpdateSubscription room placeholder', () => {
 		const placeholderRoom = { e2eKeyId: 'stale-key-id', prepareDestroyPermanently: jest.fn(() => destroyedPlaceholder) };
 		const roomsCollection = database.active.get('rooms') as unknown as { find: jest.Mock };
 		roomsCollection.find.mockResolvedValueOnce(placeholderRoom);
-		(getSubscriptionByRoomId as jest.Mock).mockResolvedValue(makeSubscriptionRecord());
+		const subscriptionRecord = makeSubscriptionRecord();
+		(getSubscriptionByRoomId as jest.Mock).mockResolvedValue(subscriptionRecord);
 
 		await createOrUpdateSubscription({ rid, _id: rid } as any, undefined as any);
 
-		expect(mockDbBatch).toHaveBeenCalledWith(expect.arrayContaining([destroyedPlaceholder]));
+		expect(mockDbBatch).toHaveBeenCalledWith(expect.arrayContaining([subscriptionRecord, destroyedPlaceholder]));
 	});
 
 	it('keeps the room placeholder when the subscription update cannot be prepared', async () => {
@@ -211,6 +212,6 @@ describe('createOrUpdateSubscription room placeholder', () => {
 
 		await createOrUpdateSubscription({ rid, _id: rid } as any, undefined as any);
 
-		expect(mockDbBatch).not.toHaveBeenCalledWith(expect.arrayContaining([destroyedPlaceholder]));
+		expect(placeholderRoom.prepareDestroyPermanently).not.toHaveBeenCalled();
 	});
 });
