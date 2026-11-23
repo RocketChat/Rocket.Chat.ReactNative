@@ -246,11 +246,11 @@ const hideSplashScreen = async () => {
  */
 export type TRelockReason = 'none' | 'checkFailed' | BiometricInvalidationReason;
 
-const isBiometryEnabled = (trust: BiometricTrustState): boolean => trust === 'enrolled' || trust === 'relockPendingWhileEnabled';
+const hasPendingRelock = (trust: BiometricTrustState): boolean =>
+	trust === 'relockPendingWhileEnabled' || trust === 'invalidatedPendingRelock';
 
 const getRelockReason = async (): Promise<TRelockReason> => {
-	const trust = biometricTrustStore.readTrustState();
-	switch (trust) {
+	switch (biometricTrustStore.readTrustState()) {
 		case 'disabled':
 			return 'none';
 		case 'invalidatedPendingRelock':
@@ -268,7 +268,7 @@ const getRelockReason = async (): Promise<TRelockReason> => {
 			if (enrollment.state === 'absent') {
 				return 'trustLost';
 			}
-			return trust === 'relockPendingWhileEnabled' ? 'relockRequired' : 'none';
+			return hasPendingRelock(biometricTrustStore.readTrustState()) ? 'relockRequired' : 'none';
 		}
 	}
 };
@@ -280,7 +280,7 @@ interface IHandleLocalAuthentication {
 }
 
 export const handleLocalAuthentication = async ({ canCloseModal = false, relockReason }: IHandleLocalAuthentication = {}) => {
-	const biometryEnabled = isBiometryEnabled(biometricTrustStore.readTrustState());
+	const biometryEnabled = biometricTrustStore.isEnabled();
 
 	const reason = relockReason ?? (await getRelockReason());
 	if (reason !== 'none' && reason !== 'checkFailed') {
