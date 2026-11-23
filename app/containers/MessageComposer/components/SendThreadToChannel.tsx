@@ -12,7 +12,7 @@ import sharedStyles from '~/views/Styles';
 import I18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import database from '~/lib/database';
-import { compareServerVersion } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 
 export const SendThreadToChannel = (): ReactElement | null => {

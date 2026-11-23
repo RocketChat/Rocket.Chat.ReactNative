@@ -1,7 +1,7 @@
 import { shallowEqual, useDispatch } from 'react-redux';
 
 import { setPreference } from '~/actions/sortPreferences';
-import { type IPreferences } from '~/definitions';
+import { type IPreferences } from '~/definitions/IPreferences';
 import { type DisplayMode, type SortBy } from '~/lib/constants/constantDisplayMode';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { saveSortPreference } from '~/lib/methods/userPreferencesMethods';

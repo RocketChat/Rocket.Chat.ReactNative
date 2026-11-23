@@ -12,7 +12,7 @@ import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 import { type ShareInsideStackParamList } from '../definitions/navigationTypes';
-import { type TServerModel } from '../definitions';
+import { type TServerModel } from '../definitions/IServer';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { selectServerRequest } from '../actions/server';
 import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';

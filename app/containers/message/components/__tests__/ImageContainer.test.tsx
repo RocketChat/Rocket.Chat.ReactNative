@@ -3,7 +3,7 @@ import { type ComponentProps } from 'react';
 import { A11y } from 'react-native-a11y-order';
 import { Provider } from 'react-redux';
 
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 import { mockedStore } from '~/reducers/mockedStore';

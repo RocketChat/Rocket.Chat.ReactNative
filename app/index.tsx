@@ -10,7 +10,7 @@ import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useRespons
 import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
-import { ActionSheetProvider } from './containers/ActionSheet';
+import { ActionSheetProvider } from './containers/ActionSheet/Provider';
 import ConferenceCall from './containers/ConferenceCall';
 import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';

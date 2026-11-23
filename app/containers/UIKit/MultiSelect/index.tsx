@@ -8,7 +8,7 @@ import { type IText } from '../interfaces';
 import Chips from './Chips';
 import Input from './Input';
 import styles from './styles';
-import { useActionSheet } from '~/containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 import { MultiSelectContent } from './MultiSelectContent';
 
 export interface IItemData {

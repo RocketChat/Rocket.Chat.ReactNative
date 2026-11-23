@@ -1,7 +1,7 @@
 import database from '..';
 import { type TAppDatabase } from '../interfaces';
-import { ROLES_TABLE } from '../model';
-import { type TRoleModel } from '~/definitions';
+import { ROLES_TABLE } from '../model/Role';
+import { type TRoleModel } from '~/definitions/IRole';
 
 const getCollection = (db: TAppDatabase) => db.get(ROLES_TABLE);
 

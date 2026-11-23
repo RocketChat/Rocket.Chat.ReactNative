@@ -1,7 +1,8 @@
 import { type ReactElement } from 'react';
 import { createStructuredSelector } from 'reselect';
 
-import { type IApplicationState, type IUser } from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type IUser } from '~/definitions/IUser';
 import { getUserSelector } from '~/selectors/login';
 import Avatar from './Avatar';
 import { type IAvatar } from './interfaces';

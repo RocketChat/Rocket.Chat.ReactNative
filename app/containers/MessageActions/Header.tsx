@@ -10,7 +10,8 @@ import { addFrequentlyUsed } from '~/lib/methods/emojis';
 import { useFrequentlyUsedEmoji } from '~/lib/hooks/useFrequentlyUsedEmoji';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import sharedStyles from '~/views/Styles';
-import { type IEmoji, type TAnyMessageModel } from '~/definitions';
+import { type IEmoji } from '~/definitions/IEmoji';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import Touch from '../Touch';
 import I18n from '~/i18n';
 

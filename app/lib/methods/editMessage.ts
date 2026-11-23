@@ -1,4 +1,4 @@
-import { type IMessage } from '~/definitions';
+import { type IMessage } from '~/definitions/IMessage';
 import { closeUnclosedCodeBlock } from './helpers/closeUnclosedCodeBlock';
 import { Encryption } from '../encryption';
 import sdk from '../services/sdk';

@@ -2,7 +2,7 @@ import { goRoom } from '~/lib/methods/helpers/goRoom';
 import Navigation from '~/lib/navigation/appNavigation';
 import { useCallStore } from './useCallStore';
 import { navigateToCallRoom } from './navigateToCallRoom';
-import { SubscriptionType } from '~/definitions';
+import { SubscriptionType } from '~/definitions/ISubscription';
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
