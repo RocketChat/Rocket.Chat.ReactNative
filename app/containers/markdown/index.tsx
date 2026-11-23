@@ -122,6 +122,8 @@ const Markdown: FC<IMarkdownProps> = ({
 						flavor='github'
 						md4cFlags={{ latexMath: true }}
 						selectable={false}
+						enableTaskListItemToggle={false}
+						enableBlockContextMenu={false}
 						onLinkPress={event => handleLinkPress(event.url)}
 						onLinkLongPress={event => handleLinkLongPress(event.url)}
 					/>
