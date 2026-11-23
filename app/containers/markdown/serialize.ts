@@ -368,38 +368,26 @@ const plainTextNode = (node: Inlines, context: ISerializeContext): string => {
 	}
 };
 
-const trimForceTrimNodes = (value: Paragraph['value']): Paragraph['value'] =>
-	value.map((node, index) =>
-		index === 1 && node.type === 'PLAIN_TEXT' ? { ...node, value: node.value.replace(/^\s+/, '') } : node
-	);
+const isBlankLink = (node: Inlines | undefined): boolean =>
+	node?.type === 'LINK' &&
+	toLinkLabelValue(node.value.label).every(labelNode => labelNode.type === 'PLAIN_TEXT' && labelNode.value.trim() === '');
 
-const resolveParagraphNodes = (value: Paragraph['value']): Paragraph['value'] | null => {
-	if (value[0]?.type === 'LINK') {
-		const label = value[0].value.label;
-		const labelText = (Array.isArray(label) ? label[0] : label)?.value?.toString().trim() ?? '';
-		if (labelText === '') {
-			if (value.length === 1) {
-				return null;
-			}
-			if (value.length === 2 && value[1].type === 'PLAIN_TEXT' && value[1].value.trim() === '') {
-				return null;
-			}
-			return trimForceTrimNodes(value);
-		}
+const resolveParagraphNodes = (value: Paragraph['value']): Paragraph['value'] => {
+	if (!isBlankLink(value[0])) {
+		return value;
 	}
-
-	return value;
+	const [, next, ...rest] = value;
+	if (next?.type === 'PLAIN_TEXT') {
+		return [{ ...next, value: next.value.trimStart() }, ...rest];
+	}
+	return value.slice(1);
 };
 
-const serializeParagraphValue = (value: Paragraph['value'], context: ISerializeContext): string | null => {
-	const nodes = resolveParagraphNodes(value);
-	return nodes ? withoutLeadingIndent(serializeInline(nodes, context)) : null;
-};
+const serializeParagraphValue = (value: Paragraph['value'], context: ISerializeContext): string =>
+	withoutLeadingIndent(serializeInline(resolveParagraphNodes(value), context));
 
-const plainTextParagraphValue = (value: Paragraph['value'], context: ISerializeContext): string | null => {
-	const nodes = resolveParagraphNodes(value);
-	return nodes ? plainTextInline(nodes, context) : null;
-};
+const plainTextParagraphValue = (value: Paragraph['value'], context: ISerializeContext): string =>
+	plainTextInline(resolveParagraphNodes(value), context);
 
 const indentLines = (text: string, width: number): string => {
 	const indent = ' '.repeat(width);
@@ -467,12 +455,12 @@ const serializeBlock = (block: TRootBlock, context: ISerializeContext): string =
 		case 'KATEX':
 			return serializeMath(block.value, '$$');
 		case 'PARAGRAPH':
-			return serializeParagraphValue(block.value, context) ?? '';
+			return serializeParagraphValue(block.value, context);
 		case 'HEADING':
 			return `${'#'.repeat(block.level)} ${serializeInline(block.value, context)}`;
 		case 'QUOTE':
 			return block.value
-				.map(item => serializeParagraphValue(item.value, context) ?? '')
+				.map(item => serializeParagraphValue(item.value, context))
 				.map(line => `> ${line}`)
 				.join('\\\n');
 		case 'UNORDERED_LIST':
@@ -509,17 +497,17 @@ const plainTextBlock = (block: TRootBlock, context: ISerializeContext): string =
 		case 'KATEX':
 			return block.value;
 		case 'PARAGRAPH':
-			return plainTextParagraphValue(block.value, context) ?? '';
+			return plainTextParagraphValue(block.value, context);
 		case 'HEADING':
 			return plainTextInline(block.value, context);
 		case 'QUOTE':
-			return block.value.map(item => plainTextParagraphValue(item.value, context) ?? '').join('\n');
+			return block.value.map(item => plainTextParagraphValue(item.value, context)).join('\n');
 		case 'UNORDERED_LIST':
 		case 'ORDERED_LIST':
 		case 'TASKS':
 			return plainTextList(block, context);
 		case 'SPOILER_BLOCK':
-			return block.value.map(paragraph => plainTextParagraphValue(paragraph.value, context) ?? '').join('\n');
+			return block.value.map(paragraph => plainTextParagraphValue(paragraph.value, context)).join('\n');
 		case 'TABLE':
 			return plainTextTable(block, context);
 		case 'CODE':

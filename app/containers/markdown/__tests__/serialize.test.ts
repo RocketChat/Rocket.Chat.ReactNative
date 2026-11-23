@@ -205,6 +205,24 @@ describe('markdown serialize', () => {
 		});
 	});
 
+	describe('blank leading link', () => {
+		it('drops a leading link whose label is blank and trims the text after it', () => {
+			expect(serialize('[ ](https://open.rocket.chat/channel/general?msg=abc) hello')).toBe('hello');
+		});
+
+		it('drops a blank leading link inside a quote', () => {
+			expect(serialize('> [ ](https://open.rocket.chat/channel/general?msg=abc) hello')).toBe('> hello');
+		});
+
+		it('renders nothing for a paragraph that is only a blank link', () => {
+			expect(serialize('[ ](https://open.rocket.chat/channel/general?msg=abc)')).toBe('');
+		});
+
+		it('keeps a leading link with a label', () => {
+			expect(serialize('[a](https://a.co) hello')).toBe('[a](<https://a.co>) hello');
+		});
+	});
+
 	it('escapes entities and backticks in link destinations so the opened URL matches the label', () => {
 		expect(serialize('[x](https://a.co/?q=1&amp;b)')).toBe('[x](<https://a.co/?q=1\\&amp;b>)');
 		expect(serialize('[x](https://a.co/`b)')).toBe('[x](<https://a.co/\\`b>)');
