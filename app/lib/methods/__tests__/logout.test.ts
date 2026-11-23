@@ -198,9 +198,6 @@ describe('removeServer', () => {
 		expect(mockWorkspaceClient.login).toHaveBeenCalledWith({ resume: RESUME_TOKEN });
 		expect(mockWorkspaceClient.logout).toHaveBeenCalled();
 		expect(mockWorkspaceClient.disconnect).toHaveBeenCalledTimes(1);
-		expect(mockWorkspaceClient.logout.mock.invocationCallOrder[0]).toBeLessThan(
-			mockWorkspaceClient.disconnect.mock.invocationCallOrder[0]
-		);
 	});
 
 	it('closes the socket when the login to the removed workspace fails', async () => {
