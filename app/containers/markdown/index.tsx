@@ -59,7 +59,7 @@ const Markdown: FC<IMarkdownProps> = ({
 		}
 
 		try {
-			const parsed = parseMessage(msg, parseOptions);
+			const parsed = parseMessage(String(msg), parseOptions);
 			if (isEmpty(parsed)) {
 				return { tokens: null, segments: [] };
 			}

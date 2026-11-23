@@ -38,4 +38,10 @@ describe('Markdown textStyle integration', () => {
 
 		expect(onLinkPress).toHaveBeenCalledWith('https://rocket.chat');
 	});
+
+	it('renders an attachment field value that is not a string as its text', () => {
+		const { UNSAFE_getByType } = render(<Markdown msg={42 as unknown as string} />);
+
+		expect(UNSAFE_getByType(EnrichedMarkdownText).props.markdown).toBe('42');
+	});
 });
