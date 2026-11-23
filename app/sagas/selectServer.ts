@@ -17,7 +17,7 @@ import {
 	serverFailure
 } from '../actions/server';
 import { clearSettings } from '../actions/settings';
-import { clearUser, setUser } from '../actions/login';
+import { clearAuthenticated, clearUser, setUser } from '../actions/login';
 import { clearActiveUsers } from '../actions/activeUsers';
 import database from '../lib/database';
 import log, { logServerVersion } from '../lib/methods/helpers/log';
@@ -194,6 +194,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		if (user) {
 			yield put(clearSettings());
+			yield put(clearAuthenticated());
 			yield put(setUser(user));
 			yield connect({ server, logoutOnError: true });
 			yield* startInsideUnlessSharing();

@@ -76,6 +76,11 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 				failure: true,
 				error: action.err
 			};
+		case types.LOGIN.CLEAR_AUTHENTICATED:
+			return {
+				...state,
+				isAuthenticated: false
+			};
 		case types.LOGOUT:
 			return initialState;
 		case types.USER.SET:

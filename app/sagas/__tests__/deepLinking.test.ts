@@ -107,7 +107,7 @@ jest.mock('~/lib/methods/helpers/normalizeDeepLinkingServerHost', () => ({
 import RNCallKeep from 'react-native-callkeep';
 
 import { deepLinkingOpen, deepLinkingClickCallPush } from '~/actions/deepLinking';
-import { loginFailure, loginSuccess, logout } from '~/actions/login';
+import { loginFailure, loginSuccess, logout, setUser } from '~/actions/login';
 import { selectServerFailure, selectServerSuccess } from '~/actions/server';
 import { appStart } from '~/actions/app';
 import { connectSuccess } from '~/actions/connect';
@@ -796,8 +796,6 @@ describe('deepLinking saga — server already connected, should skip changing se
 		expect(dispatchedActions).toEqual(expect.arrayContaining([expect.objectContaining({ type: APP.INIT })]));
 	});
 
-	// Same workspace as the link, server disconnected: the unlock runs inline in handleOpen instead of
-	// handleKnownServerDeepLink, so it needs its own root recovery.
 	const setupFailedUnlockSameServer = (error: Error) => {
 		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
 			if (key === 'currentServer') return HOST;
@@ -984,6 +982,59 @@ describe('deepLinking saga — known workspace waits for its own sign-in', () =>
 		expect(toastedMessages(emitSpy)).toContain('Deep_link_open_failed');
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 		emitSpy.mockRestore();
+	});
+
+	it('keeps waiting when connecting to the workspace aborts the previous workspace login', async () => {
+		storeUserFor(OTHER_HOST);
+		const { store } = setupStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+
+		store.dispatch(deepLinkingOpen(makeParams(ROOM_PARAMS)));
+		await flushSagaMicrotasks();
+		store.dispatch(loginFailure({ message: 'Aborted' }));
+		await flushSagaMicrotasks();
+		store.dispatch(loginSuccess({ id: HOST_USER_ID } as any));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+	});
+
+	it('opens the Room from local data when its workspace is selected but offline', async () => {
+		storeUserFor(HOST);
+		const { store, dispatchedActions } = setupStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		store.dispatch(setUser({ id: HOST_USER_ID }));
+
+		store.dispatch(deepLinkingOpen(makeParams(ROOM_PARAMS)));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+		expect(dispatchedActions.filter(action => action.type === SERVER.SELECT_REQUEST)).toHaveLength(0);
+	});
+
+	it('does not open the link while a logout has cleared the user of the connected workspace', async () => {
+		storeUserFor(HOST);
+		const { store } = setupStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		store.dispatch(setUser({ id: HOST_USER_ID }));
+		store.dispatch(logout(true));
+
+		store.dispatch(deepLinkingOpen(makeParams(ROOM_PARAMS)));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+	});
+
+	it('ends the native call when a failed VoIP accept cannot reach its workspace', async () => {
+		jest.mocked(RNCallKeep.endCall).mockClear();
+		storeUserFor(OTHER_HOST);
+		const { store } = setupStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+
+		store.dispatch(deepLinkingOpen(makeParams({ callId: 'call-1', username: 'bob', voipAcceptFailed: true }) as any));
+		await flushSagaMicrotasks();
+		store.dispatch(selectServerFailure());
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(RNCallKeep.endCall)).toHaveBeenCalledWith('call-1');
 	});
 
 	it('selects the stored workspace when a workspace without a user was added after it', async () => {

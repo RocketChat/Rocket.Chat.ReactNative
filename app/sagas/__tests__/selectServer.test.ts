@@ -71,6 +71,7 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import selectServerRoot from '../selectServer';
+import { loginSuccess } from '~/actions/login';
 import { selectServerRequest, serverRequest } from '~/actions/server';
 import { appStart } from '~/actions/app';
 import { RootEnum } from '~/definitions/redux/TRootEnum';
@@ -118,6 +119,7 @@ afterEach(cancelSagaTasks);
 
 beforeEach(() => {
 	jest.clearAllMocks();
+	setActiveHost(undefined);
 	keysToClear.forEach(key => UserPreferences.removeItem(key));
 	UserPreferences.setString(CURRENT_SERVER, OLD_SERVER);
 	applyBasicAuth(SERVER_URL);
@@ -136,6 +138,31 @@ describe('selectServer saga — resolving the target workspace user', () => {
 		expect(store.getState().login.user).toMatchObject({ id: USER_ID, token: TOKEN });
 		expect(dispatchedActions.map(action => action.type)).not.toContain(SERVER.SELECT_FAILURE);
 		expect(UserPreferences.getString(CURRENT_SERVER)).toBe(SERVER_URL);
+	});
+
+	it('stops counting the previous workspace as signed in when the socket switches', async () => {
+		UserPreferences.setString(`${TOKEN_KEY}-${SERVER_URL}`, USER_ID);
+		UserPreferences.setString(getUserTokenKey(SERVER_URL, USER_ID), TOKEN);
+		jest.mocked(getLoggedUserById).mockResolvedValue({ id: USER_ID, token: TOKEN, username: 'new' } as any);
+		setActiveHost(OLD_SERVER);
+		const { store } = setupStore();
+		store.dispatch(loginSuccess({ id: 'previous-user' } as any));
+
+		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().login.isAuthenticated).toBe(false);
+	});
+
+	it('keeps the session when the selected workspace already owns the socket', async () => {
+		setActiveHost(SERVER_URL);
+		const { store } = setupStore();
+		store.dispatch(loginSuccess({ id: USER_ID } as any));
+
+		store.dispatch(selectServerRequest(SERVER_URL, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().login.isAuthenticated).toBe(true);
 	});
 
 	it('falls back to the token stored under the server-scoped key when there is no record', async () => {

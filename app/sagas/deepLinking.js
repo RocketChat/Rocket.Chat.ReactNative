@@ -262,6 +262,9 @@ const handleShareExtension = function* handleOpen({ params }) {
 const isSignedInto = (host, userId) => state =>
 	state.server.server === host && state.login.isAuthenticated && state.login.user.id === userId;
 
+const isConnectedAs = (host, userId) => state =>
+	state.server.server === host && state.server.connected && state.login.user.id === userId;
+
 const waitForSignIn = function* waitForSignIn(host, userId) {
 	while (!(yield select(isSignedInto(host, userId)))) {
 		yield take(types.LOGIN.SUCCESS);
@@ -269,18 +272,17 @@ const waitForSignIn = function* waitForSignIn(host, userId) {
 	return true;
 };
 
-const raceUntilLogoutOrTimeout = function* raceUntilLogoutOrTimeout(effects) {
-	return yield race({
+const raceUntilLogoutOrTimeout = effects =>
+	race({
 		...effects,
 		loggedOut: take(types.LOGOUT),
 		timedOut: delay(DEEP_LINK_WAIT_TIMEOUT)
 	});
-};
 
 const waitForWorkspace = function* waitForWorkspace(host, userId) {
-	const { signedIn } = yield* raceUntilLogoutOrTimeout({
+	const { signedIn } = yield raceUntilLogoutOrTimeout({
 		signedIn: call(waitForSignIn, host, userId),
-		failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE])
+		failed: take(types.SERVER.SELECT_FAILURE)
 	});
 	if (signedIn) {
 		return true;
@@ -290,7 +292,11 @@ const waitForWorkspace = function* waitForWorkspace(host, userId) {
 	return false;
 };
 
-const authenticateAndSelectServer = function* authenticateAndSelectServer(host, version, userId, changeServer = false) {
+const selectKnownWorkspace = function* selectKnownWorkspace({ host, version, userId }) {
+	if (yield select(isConnectedAs(host, userId))) {
+		return true;
+	}
+	const selectedServer = yield select(state => state.server.server);
 	try {
 		yield localAuthenticate(host);
 	} catch (e) {
@@ -298,15 +304,16 @@ const authenticateAndSelectServer = function* authenticateAndSelectServer(host, 
 		yield fallbackNavigation();
 		return false;
 	}
-	yield put(selectServerRequest(host, version, true, changeServer));
+	yield put(selectServerRequest(host, version, true, selectedServer !== host));
 	return yield* waitForWorkspace(host, userId);
 };
 
-const openKnownWorkspace = function* openKnownWorkspace({ host, version, userId, changeServer }) {
-	if (yield select(isSignedInto(host, userId))) {
-		return true;
+const openKnownWorkspace = function* openKnownWorkspace({ params, version, userId }) {
+	const isOpen = yield* selectKnownWorkspace({ host: params.host, version, userId });
+	if (!isOpen && params.voipAcceptFailed) {
+		endVoipCall(params.callId);
 	}
-	return yield* authenticateAndSelectServer(host, version, userId, changeServer);
+	return isOpen;
 };
 
 const waitForInsideRoot = function* waitForInsideRoot() {
@@ -314,10 +321,10 @@ const waitForInsideRoot = function* waitForInsideRoot() {
 	if (currentRoot === RootEnum.ROOT_INSIDE) {
 		return true;
 	}
-	const { inside, timedOut } = yield* raceUntilLogoutOrTimeout({
+	const { inside } = yield raceUntilLogoutOrTimeout({
 		inside: take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE)
 	});
-	if (timedOut) {
+	if (!inside) {
 		showToast(I18n.t('Deep_link_open_failed'));
 	}
 	return !!inside;
@@ -334,7 +341,7 @@ const waitForServerConnection = function* waitForServerConnection() {
 
 const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, hostAlreadyConnected = false }) {
 	if (!hostAlreadyConnected) {
-		const { connected, failed, timedOut } = yield* raceUntilLogoutOrTimeout({
+		const { connected, failed, timedOut } = yield raceUntilLogoutOrTimeout({
 			connected: call(waitForServerConnection),
 			failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE])
 		});
@@ -436,7 +443,7 @@ const handleOpen = function* handleOpen({ params, skipLoginConsent }) {
 
 	if (user && serverRecord) {
 		try {
-			if (yield* openKnownWorkspace({ host, version: serverRecord.version, userId: user, changeServer: server !== host })) {
+			if (yield* openKnownWorkspace({ params, version: serverRecord.version, userId: user })) {
 				yield completeDeepLinkNavigation(params);
 			}
 		} catch (e) {
@@ -498,7 +505,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 	const serverRecord = yield getServerById(host);
 
 	if (user && serverRecord) {
-		if (yield* openKnownWorkspace({ host, version: serverRecord.version, userId: user, changeServer: server !== host })) {
+		if (yield* openKnownWorkspace({ params, version: serverRecord.version, userId: user })) {
 			yield handleNavigateCallRoom({ params });
 		}
 		return;
