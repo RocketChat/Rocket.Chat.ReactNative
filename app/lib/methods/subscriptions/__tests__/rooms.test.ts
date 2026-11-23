@@ -3,6 +3,7 @@ import { updateLastOpen } from '../../updateLastOpen';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { getMessageById } from '~/lib/database/services/Message';
 import log from '../../helpers/log';
+import database from '~/lib/database';
 
 jest.mock('../../../services/sdk', () => ({
 	__esModule: true,
@@ -176,5 +177,24 @@ describe('createOrUpdateSubscription concurrency', () => {
 		const loggedPendingChanges = (log as jest.Mock).mock.calls.some(([error]) => /pending changes/.test(error?.message));
 		expect(loggedPendingChanges).toBe(false);
 		expect(record.lastOpen).toEqual(new Date('2026-01-01T12:00:00.000Z'));
+	});
+});
+
+describe('createOrUpdateSubscription room placeholder', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockDbBatch.mockResolvedValue(undefined);
+	});
+
+	it('deletes the room placeholder once it seeded the subscription, so a later update cannot reapply its stale values', async () => {
+		const destroyedPlaceholder = { destroyed: rid };
+		const placeholderRoom = { e2eKeyId: 'stale-key-id', prepareDestroyPermanently: jest.fn(() => destroyedPlaceholder) };
+		const roomsCollection = database.active.get('rooms') as unknown as { find: jest.Mock };
+		roomsCollection.find.mockResolvedValueOnce(placeholderRoom);
+		(getSubscriptionByRoomId as jest.Mock).mockResolvedValue(makeSubscriptionRecord());
+
+		await createOrUpdateSubscription({ rid, _id: rid } as any, undefined as any);
+
+		expect(mockDbBatch).toHaveBeenCalledWith(expect.arrayContaining([destroyedPlaceholder]));
 	});
 });

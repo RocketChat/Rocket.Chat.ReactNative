@@ -126,9 +126,11 @@ export const createOrUpdateSubscription = async (subscription: ISubscription, ro
 			}
 		}
 
+		let placeholderRoom: TRoomModel | null = null;
 		if (!room && subscription) {
 			try {
 				const r = await roomsCollection.find(subscription.rid);
+				placeholderRoom = r;
 				// We have to create a plain obj so we can manipulate it on `merge`
 				// Can we do it in a better way?
 				room = {
@@ -188,6 +190,10 @@ export const createOrUpdateSubscription = async (subscription: ISubscription, ro
 				}
 			} catch (e) {
 				log(e);
+			}
+
+			if (placeholderRoom) {
+				batch.push(placeholderRoom.prepareDestroyPermanently());
 			}
 
 			if (lastMessage) {
