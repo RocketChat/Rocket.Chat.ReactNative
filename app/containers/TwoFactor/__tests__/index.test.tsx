@@ -1,7 +1,7 @@
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 
-import TwoFactor from '.';
-import Toast from '../Toast';
+import TwoFactor from '..';
+import Toast from '../../Toast';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import { twoFactor } from '~/lib/services/twoFactor/twoFactor';
 import { isTwoFactorCancelled } from '~/lib/services/twoFactor/twoFactorCancelled';
