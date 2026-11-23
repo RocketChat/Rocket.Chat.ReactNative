@@ -1,4 +1,5 @@
 import { Alert } from 'react-native';
+import { copyAsync } from 'expo-file-system/legacy';
 
 import { sendFileMessage } from '../sendFileMessage';
 import { sendFileMessageV2 } from '../sendFileMessageV2';
@@ -202,5 +203,22 @@ describe.each([
 		latestSend().reject({ status: 403 });
 		await expect(sent).rejects.toEqual({ status: 403 });
 		expect(mockRows.get(getUploadPath(sharedPath, rid))?.error).toBe(true);
+	});
+
+	it('marks the row failed when copying the file to the cache fails, and lets the file be sent again', async () => {
+		const sharedPath = 'content://media/pic.jpg';
+		const copyError = new Error('copy failed');
+		(copyAsync as jest.Mock).mockRejectedValueOnce(copyError);
+		await expect(send(rid, { ...file(), path: sharedPath }, undefined, server, user)).rejects.toBe(copyError);
+		expect(mockRows.get(getUploadPath(sharedPath, rid))?.error).toBe(true);
+		expect(isUploadActive(sharedPath, rid)).toBe(false);
+
+		const second = send(rid, { ...file(), path: sharedPath }, undefined, server, user);
+		await flush();
+		expect(Alert.alert).not.toHaveBeenCalled();
+		expect(mockSends).toHaveLength(1);
+		latestSend().resolve(acceptedResponse);
+		await expect(second).resolves.toBeUndefined();
+		expect(mockRows.has(getUploadPath(sharedPath, rid))).toBe(false);
 	});
 });
