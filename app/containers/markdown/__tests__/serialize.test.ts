@@ -1,6 +1,6 @@
 import { parse } from '@rocket.chat/message-parser';
 
-import { buildRenderSegments, type ISerializeContext } from '../serialize';
+import { buildRenderSegments, isBigEmojiOnly, type ISerializeContext } from '../serialize';
 
 const baseContext: ISerializeContext = {
 	mentions: [],
@@ -264,5 +264,34 @@ describe('markdown serialize katex', () => {
 
 	it('drops empty formulas instead of emitting a bare double dollar', () => {
 		expect(serializeWithKatex('a \\(\\) b')).toBe('a  b');
+	});
+});
+
+describe('isBigEmojiOnly', () => {
+	const formatShortnameToUnicode: ISerializeContext['formatShortnameToUnicode'] = shortname =>
+		({ ':smile:': '😄', ':slight_smile:': '🙂' })[shortname] ?? shortname;
+	const getCustomEmoji: ISerializeContext['getCustomEmoji'] = name =>
+		name === 'marioparty' ? { name: 'marioparty', extension: 'gif' } : null;
+	const bigEmojiOnly = (msg: string, ctx: Partial<ISerializeContext> = {}) =>
+		isBigEmojiOnly(parse(msg, { emoticons: true }), { ...baseContext, formatShortnameToUnicode, getCustomEmoji, ...ctx });
+
+	it.each(['😀', ':smile:', ':marioparty:', ':smile: 😀 :marioparty:', ':)'])('is true for %s', msg => {
+		expect(bigEmojiOnly(msg)).toBe(true);
+	});
+
+	it('is false for a shortcode that is not an emoji', () => {
+		expect(bigEmojiOnly(':notanemoji:')).toBe(false);
+	});
+
+	it('is false when one of several shortcodes is not an emoji', () => {
+		expect(bigEmojiOnly(':smile: :notanemoji:')).toBe(false);
+	});
+
+	it('is false for an ascii emoticon when the user does not convert them', () => {
+		expect(bigEmojiOnly(':)', { convertAsciiEmoji: false })).toBe(false);
+	});
+
+	it('is false for a sentence with an emoji', () => {
+		expect(bigEmojiOnly('hi :smile:')).toBe(false);
 	});
 });

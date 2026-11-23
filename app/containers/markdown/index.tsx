@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import { type IUserMention, type IUserChannel, type TOnLinkPress } from './interfaces';
 import { parseMessage } from './parseMessage';
-import { buildRenderSegments, isBigEmojiOnly } from './serialize';
+import { buildRenderSegments, isBigEmojiOnly, type ISerializeContext } from './serialize';
 import { buildMarkdownStyle } from './buildMarkdownStyle';
 import { useMarkdownLinkPress } from './hooks/useMarkdownLinkPress';
 import { useParseOptions } from './hooks/useParseOptions';
@@ -55,35 +55,36 @@ const Markdown: FC<IMarkdownProps> = ({
 	const { handleLinkPress, handleLinkLongPress } = useMarkdownLinkPress({ navToRoomInfo, onLinkPress });
 	const parseOptions = useParseOptions();
 
-	const { tokens, segments } = useMemo(() => {
+	const { bigEmojiOnly, segments } = useMemo(() => {
 		if (!msg) {
-			return { tokens: null, segments: [] };
+			return { bigEmojiOnly: false, segments: [] };
 		}
 
 		try {
 			const parsed = parseMessage(String(msg), parseOptions);
 			if (isEmpty(parsed)) {
-				return { tokens: null, segments: [] };
+				return { bigEmojiOnly: false, segments: [] };
 			}
 
+			const serializeContext: ISerializeContext = {
+				mentions,
+				channels,
+				useRealName,
+				username,
+				mentionsWithAtSymbol: mentionsWithAtSymbol ?? false,
+				roomsWithHashTagSymbol: roomsWithHashTagSymbol ?? false,
+				getCustomEmoji,
+				baseUrl,
+				convertAsciiEmoji,
+				formatShortnameToUnicode
+			};
 			return {
-				tokens: parsed,
-				segments: buildRenderSegments(parsed, {
-					mentions,
-					channels,
-					useRealName,
-					username,
-					mentionsWithAtSymbol: mentionsWithAtSymbol ?? false,
-					roomsWithHashTagSymbol: roomsWithHashTagSymbol ?? false,
-					getCustomEmoji,
-					baseUrl,
-					convertAsciiEmoji,
-					formatShortnameToUnicode
-				})
+				bigEmojiOnly: isBigEmojiOnly(parsed, serializeContext),
+				segments: buildRenderSegments(parsed, serializeContext)
 			};
 		} catch (error) {
 			log(error);
-			return { tokens: null, segments: [] };
+			return { bigEmojiOnly: false, segments: [] };
 		}
 	}, [
 		msg,
@@ -100,7 +101,6 @@ const Markdown: FC<IMarkdownProps> = ({
 		formatShortnameToUnicode
 	]);
 
-	const bigEmojiOnly = isBigEmojiOnly(tokens);
 	const markdownStyle = useMemo(() => buildMarkdownStyle(colors, bigEmojiOnly, fontScale), [colors, bigEmojiOnly, fontScale]);
 
 	if (segments.length === 0) {

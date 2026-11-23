@@ -52,9 +52,6 @@ const timestampToUnixSeconds = (timestamp: string): number => {
 	return Math.floor(dayjs(timestamp).valueOf() / 1000);
 };
 
-export const isBigEmojiOnly = (tokens: Root | null): tokens is [BigEmoji] =>
-	!!tokens && tokens.length === 1 && tokens[0].type === 'BIG_EMOJI';
-
 const formatTimestampLabel = (value: TimestampBlock['value']): string => {
 	const timestampMs = timestampToUnixSeconds(value.timestamp) * 1000;
 	switch (value.format) {
@@ -146,11 +143,31 @@ const emojiDisplayText = (block: EmojiBlock, context: ISerializeContext): string
 	return emojiUnicode;
 };
 
+const customEmojiFor = (block: EmojiBlock, context: ISerializeContext) =>
+	'unicode' in block ? null : context.getCustomEmoji(block.value.value.replace(/:/g, ''));
+
+const rendersAsEmoji = (block: EmojiBlock, context: ISerializeContext): boolean => {
+	if ('unicode' in block || customEmojiFor(block, context)) {
+		return true;
+	}
+	const isAsciiEmoji = block.value.value !== block.shortCode;
+	if (isAsciiEmoji && !context.convertAsciiEmoji) {
+		return false;
+	}
+	const emojiToken = `:${block.shortCode}:`;
+	return context.formatShortnameToUnicode(emojiToken) !== emojiToken;
+};
+
+export const isBigEmojiOnly = (tokens: Root | null, context: ISerializeContext): tokens is [BigEmoji] =>
+	!!tokens &&
+	tokens.length === 1 &&
+	tokens[0].type === 'BIG_EMOJI' &&
+	tokens[0].value.every(block => rendersAsEmoji(block, context));
+
 const WORD_JOINER = '\u2060';
 
 const serializeEmoji = (block: EmojiBlock, context: ISerializeContext): string => {
-	const emojiName = 'unicode' in block ? '' : block.value.value.replace(/:/g, '');
-	const customEmoji = 'unicode' in block ? null : context.getCustomEmoji(emojiName);
+	const customEmoji = customEmojiFor(block, context);
 	if (customEmoji) {
 		return `${WORD_JOINER}![](${context.baseUrl}/emoji-custom/${encodeURIComponent(customEmoji.name)}.${customEmoji.extension})`;
 	}
