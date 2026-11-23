@@ -4,6 +4,7 @@ import encryption from './encryption';
 import database from '../database';
 import Deferred from './helpers/deferred';
 import { KEY_DISTRIBUTION_INTERVAL } from './constants';
+import { fetchUsersWaitingForGroupKey, provideUsersSuggestedGroupKeys } from '../services/restApi';
 
 jest.unmock('./encryption');
 
@@ -93,13 +94,15 @@ const mockRoomEncrypt = jest.fn();
 const mockRoomEncryptFile = jest.fn();
 const mockHasSessionKey = jest.fn();
 const mockHandshake = jest.fn().mockResolvedValue(undefined);
+const mockEncryptGroupKey = jest.fn();
 jest.mock('./room', () => ({
 	__esModule: true,
 	default: jest.fn().mockImplementation(() => ({
 		handshake: mockHandshake,
 		hasSessionKey: () => mockHasSessionKey(),
 		encrypt: (m: any) => mockRoomEncrypt(m),
-		encryptFile: (rid: string, file: any) => mockRoomEncryptFile(rid, file)
+		encryptFile: (rid: string, file: any) => mockRoomEncryptFile(rid, file),
+		encryptGroupKeyForParticipantsWaitingForTheKeys: (users: unknown) => mockEncryptGroupKey(users)
 	}))
 }));
 
@@ -484,5 +487,85 @@ describe('Encryption key distribution', () => {
 		await initiating;
 
 		expect(runsWhileFirstIsRunning).toBe(1);
+	});
+
+	describe('when the client stops during a run and a new sign-in starts', () => {
+		const usersWaiting = { r1: [{ _id: 'other-user', public_key: 'public-key' }] };
+		const waitingSubscriptions = [{ rid: 'r1', usersWaitingForE2EKeys: [{ userId: 'other-user' }] }];
+
+		const blockOnce = (mock: jest.Mock, resolvedValue: unknown) => {
+			const step = new Deferred();
+			mock.mockImplementationOnce(() => step.then(() => resolvedValue));
+			return step;
+		};
+
+		beforeEach(() => {
+			jest.mocked(db.get).mockImplementation(() => ({ query: () => Promise.resolve(waitingSubscriptions) }));
+			mockHasSessionKey.mockReturnValue(true);
+			mockHandshake.mockResolvedValue(undefined);
+			mockEncryptGroupKey.mockResolvedValue([{ _id: 'other-user', key: 'encrypted-key' }]);
+			jest.mocked(fetchUsersWaitingForGroupKey).mockResolvedValue({ success: true, usersWaitingForE2EKeys: usersWaiting } as any);
+			jest.mocked(provideUsersSuggestedGroupKeys).mockResolvedValue({ success: true } as any);
+			encryption.userId = 'first-user';
+		});
+
+		afterEach(() => {
+			mockHasSessionKey.mockReset();
+			mockHandshake.mockReset();
+			mockEncryptGroupKey.mockReset();
+			jest.mocked(fetchUsersWaitingForGroupKey).mockReset();
+			jest.mocked(provideUsersSuggestedGroupKeys).mockReset();
+		});
+
+		const blockingSteps: [string, () => Deferred][] = [
+			[
+				'subscriptions query',
+				() => {
+					const step = new Deferred();
+					jest.mocked(db.get).mockImplementationOnce(() => ({ query: () => step.then(() => waitingSubscriptions) }));
+					return step;
+				}
+			],
+			['room handshake while sampling', () => blockOnce(mockHandshake, undefined)],
+			[
+				'fetching users waiting for the key',
+				() => blockOnce(jest.mocked(fetchUsersWaitingForGroupKey), { success: true, usersWaitingForE2EKeys: usersWaiting })
+			],
+			['encrypting the group key', () => blockOnce(mockEncryptGroupKey, [{ _id: 'other-user', key: 'encrypted-key' }])]
+		];
+
+		it.each(blockingSteps)('stops the old run waiting on the %s and runs only the new one', async (_step, blockStep) => {
+			const blockedStep = blockStep();
+			const firstRun = encryption.initiateKeyDistribution();
+			await jest.advanceTimersByTimeAsync(0);
+
+			encryption.stop();
+			encryption.userId = 'second-user';
+			await encryption.initiateKeyDistribution();
+			const providedBySecondRun = jest.mocked(provideUsersSuggestedGroupKeys).mock.calls.length;
+
+			blockedStep.resolve();
+			await firstRun;
+
+			expect(providedBySecondRun).toBe(1);
+			expect(provideUsersSuggestedGroupKeys).toHaveBeenCalledTimes(1);
+		});
+
+		it('keeps one interval for the new sign-in after a stop during a run', async () => {
+			const blockedStep = blockOnce(jest.mocked(fetchUsersWaitingForGroupKey), {
+				success: true,
+				usersWaitingForE2EKeys: usersWaiting
+			});
+			const firstRun = encryption.initiateKeyDistribution();
+			await jest.advanceTimersByTimeAsync(0);
+
+			encryption.stop();
+			await encryption.initiateKeyDistribution();
+			blockedStep.resolve();
+			await firstRun;
+			await jest.advanceTimersByTimeAsync(KEY_DISTRIBUTION_INTERVAL);
+
+			expect(provideUsersSuggestedGroupKeys).toHaveBeenCalledTimes(2);
+		});
 	});
 });
