@@ -1,11 +1,9 @@
-import { useState } from 'react';
 import { type AccessibilityActionEvent } from 'react-native';
-import { type SharedValue, useAnimatedReaction } from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
+import { type SharedValue } from 'react-native-reanimated';
 
 import i18n from '~/i18n';
-import { useIsScreenReaderEnabled } from '~/lib/hooks/useIsScreenReaderEnabled';
 import { formatMediaTime } from '../formatMediaTime';
+import { type IShownTime } from './useShownTime';
 
 export const SEEK_STEP_SECONDS = 5;
 
@@ -19,31 +17,13 @@ const STEP_BY_ACTION: Record<string, number> = {
 interface ISeekAccessibility {
 	progress: SharedValue<number>;
 	duration: SharedValue<number>;
+	shownTime: IShownTime;
+	showTime: (time: number, total: number) => void;
 	enabled: boolean;
 	onChangeTime: (time: number) => void;
 }
 
-export const useSeekAccessibility = ({ progress, duration, enabled, onChangeTime }: ISeekAccessibility) => {
-	const screenReaderEnabled = useIsScreenReaderEnabled();
-	const [announced, setAnnounced] = useState({ time: 0, duration: 0 });
-
-	const announce = (time: number, total: number) => setAnnounced({ time, duration: total });
-
-	useAnimatedReaction(
-		() => {
-			if (!screenReaderEnabled) {
-				return null;
-			}
-			return { time: Math.floor(progress.get() * duration.get()), total: Math.floor(duration.get()) };
-		},
-		(current, previous) => {
-			if (current && (current.time !== previous?.time || current.total !== previous?.total)) {
-				scheduleOnRN(announce, current.time, current.total);
-			}
-		},
-		[screenReaderEnabled]
-	);
-
+export const useSeekAccessibility = ({ progress, duration, shownTime, showTime, enabled, onChangeTime }: ISeekAccessibility) => {
 	const onAccessibilityAction = (event: AccessibilityActionEvent) => {
 		const step = STEP_BY_ACTION[event.nativeEvent.actionName];
 		const total = duration.get();
@@ -51,7 +31,7 @@ export const useSeekAccessibility = ({ progress, duration, enabled, onChangeTime
 			return;
 		}
 		const time = Math.min(Math.max(progress.get() * total + step, 0), total);
-		announce(time, total);
+		showTime(time, total);
 		onChangeTime(time);
 	};
 
@@ -59,11 +39,11 @@ export const useSeekAccessibility = ({ progress, duration, enabled, onChangeTime
 		accessible: true,
 		accessibilityRole: 'adjustable' as const,
 		accessibilityLabel: i18n.t('Audio_position'),
-		accessibilityValue: announced.duration
+		accessibilityValue: shownTime.duration
 			? {
 					text: i18n.t('Audio_position_value', {
-						current: formatMediaTime(announced.time),
-						total: formatMediaTime(announced.duration)
+						current: formatMediaTime(shownTime.time),
+						total: formatMediaTime(shownTime.duration)
 					})
 				}
 			: undefined,

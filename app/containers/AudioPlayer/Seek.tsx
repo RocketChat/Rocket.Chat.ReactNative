@@ -1,7 +1,7 @@
-import { type LayoutChangeEvent, View, TextInput, type TextInputProps, TouchableNativeFeedback } from 'react-native';
+import { type LayoutChangeEvent, Text, View } from 'react-native';
 import { GestureDetector, useCompetingGestures, usePanGesture, useTapGesture } from 'react-native-gesture-handler';
-import Animated, { type SharedValue, useAnimatedProps, useDerivedValue, useSharedValue } from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
+import { type SharedValue, useDerivedValue, useSharedValue } from 'react-native-reanimated';
+import { scheduleOnRN, scheduleOnUI } from 'react-native-worklets';
 
 import styles from './styles';
 import { useTheme } from '~/theme';
@@ -9,10 +9,11 @@ import { ACTIVE_OFFSET_X } from './constants';
 import { formatProgressLabel } from './formatMediaTime';
 import Waveform from '../Waveform';
 import { useSeekAccessibility } from './hooks/useSeekAccessibility';
-
-const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+import { useShownTime } from './hooks/useShownTime';
 
 const NOT_SCRUBBING = -1;
+
+const keepTouchFromMessage = () => true;
 
 interface ISeek {
 	duration: SharedValue<number>;
@@ -53,6 +54,15 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 		scheduleOnRN(onChangeTime, fraction * duration.get());
 	};
 
+	const finishScrub = (time: number) => {
+		onChangeTime(time);
+		scheduleOnUI(() => {
+			'worklet';
+
+			scrubProgress.set(NOT_SCRUBBING);
+		});
+	};
+
 	const onLayout = (event: LayoutChangeEvent) => {
 		trackWidth.set(event.nativeEvent.layout.width || 1);
 	};
@@ -68,10 +78,11 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 		},
 		onFinalize: event => {
 			if (scrubProgress.get() === NOT_SCRUBBING) return;
-			scrubProgress.set(NOT_SCRUBBING);
-			if (!event.canceled) {
-				seekTo(progressAt(event.x));
+			if (event.canceled) {
+				scrubProgress.set(NOT_SCRUBBING);
+				return;
 			}
+			scheduleOnRN(finishScrub, progressAt(event.x) * duration.get());
 		}
 	});
 
@@ -85,29 +96,26 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 	});
 
 	const seekGesture = useCompetingGestures(panGesture, tapGesture);
-	const accessibilityProps = useSeekAccessibility({ progress, duration, enabled: loaded, onChangeTime });
+	const { shownTime, showTime } = useShownTime(progress, duration);
+	const accessibilityProps = useSeekAccessibility({ progress, duration, shownTime, showTime, enabled: loaded, onChangeTime });
 
-	const timeLabelAnimatedProps = useAnimatedProps(() => {
-		return { text: formatProgressLabel(progress.get() * duration.get(), duration.get()) } as TextInputProps;
-	});
-
-	// TouchableNativeFeedback is avoiding do a long press message when seeking the audio
 	return (
-		<TouchableNativeFeedback>
-			<View style={styles.seekContainer}>
+		<View style={styles.seekContainer}>
+			<View testID='audio-seek' style={styles.seek} {...accessibilityProps}>
 				<GestureDetector gesture={seekGesture}>
-					<View testID='audio-seek' style={styles.seek} onLayout={onLayout} {...accessibilityProps}>
+					<View
+						testID='audio-seek-track'
+						style={styles.seekTrack}
+						onLayout={onLayout}
+						onStartShouldSetResponder={keepTouchFromMessage}>
 						<Waveform peaks={peaks} progress={progress} />
 					</View>
 				</GestureDetector>
-				<AnimatedTextInput
-					defaultValue={formatProgressLabel(0, 0)}
-					editable={false}
-					style={[styles.timeLabel, { color: colors.fontSecondaryInfo }]}
-					animatedProps={timeLabelAnimatedProps}
-				/>
 			</View>
-		</TouchableNativeFeedback>
+			<Text testID='audio-time' numberOfLines={1} style={[styles.timeLabel, { color: colors.fontSecondaryInfo }]}>
+				{formatProgressLabel(shownTime.time, shownTime.duration)}
+			</Text>
+		</View>
 	);
 };
 

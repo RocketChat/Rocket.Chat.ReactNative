@@ -33,9 +33,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		minWidth: 0
 	},
+	seekTrack: {
+		height: '100%',
+		justifyContent: 'center'
+	},
 	timeLabel: {
 		flexShrink: 0,
-		padding: 0,
 		fontSize: 12,
 		lineHeight: 16,
 		fontVariant: ['tabular-nums'],

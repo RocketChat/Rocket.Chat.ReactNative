@@ -6,7 +6,6 @@ import { useSharedValue } from 'react-native-reanimated';
 import Seek from '../Seek';
 
 jest.mock('~/theme', () => ({ useTheme: () => ({ colors: {} }) }));
-jest.mock('~/lib/hooks/useIsScreenReaderEnabled', () => ({ useIsScreenReaderEnabled: () => false }));
 jest.mock('react-native-gesture-handler', () => {
 	const actual = jest.requireActual('react-native-gesture-handler');
 	return { ...actual, usePanGesture: jest.fn(actual.usePanGesture), useTapGesture: jest.fn(actual.useTapGesture) };
@@ -25,7 +24,7 @@ const setup = () => {
 	const { currentTime, duration } = result.current;
 	const onChangeTime = jest.fn();
 	render(<Seek currentTime={currentTime} duration={duration} loaded onChangeTime={onChangeTime} />);
-	fireEvent(screen.getByTestId('audio-seek'), 'layout', { nativeEvent: { layout: { width: TRACK_WIDTH } } });
+	fireEvent(screen.getByTestId('audio-seek-track'), 'layout', { nativeEvent: { layout: { width: TRACK_WIDTH } } });
 	return {
 		pan: lastGesture(jest.mocked(usePanGesture)),
 		tap: lastGesture(jest.mocked(useTapGesture)),
@@ -113,6 +112,7 @@ test('adjusting up seeks forward a few seconds and announces the new position', 
 	adjust('increment');
 	expect(onChangeTime).toHaveBeenCalledWith(35);
 	expect(screen.getByTestId('audio-seek').props.accessibilityValue).toEqual({ text: '0:35 of 2:00' });
+	expect(screen.getByText('0:35 / 2:00')).toBeOnTheScreen();
 });
 
 test('adjusting down seeks back a few seconds, not past the start', () => {
