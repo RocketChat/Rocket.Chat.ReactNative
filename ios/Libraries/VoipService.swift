@@ -517,20 +517,32 @@ public final class VoipService: NSObject {
             return
         }
 
-        api.fetch(request: MediaCallsAnswerRequest(
-            callId: payload.callId,
-            contractId: DeviceUID.uid(),
-            answer: "accept",
-            supportedFeatures: ["audio", "hold"]
-        )) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .resource(let response) where response.success:
-                    finishAccept(true)
-                default:
-                    finishAccept(false)
+        func sendAccept(_ supportedFeatures: [String], completion: @escaping (Bool) -> Void) {
+            api.fetch(request: MediaCallsAnswerRequest(
+                callId: payload.callId,
+                contractId: DeviceUID.uid(),
+                answer: "accept",
+                supportedFeatures: supportedFeatures
+            )) { result in
+                DispatchQueue.main.async {
+                    if case .resource(let response) = result, response.success {
+                        completion(true)
+                    } else {
+                        completion(false)
+                    }
                 }
             }
+        }
+
+        let features = storage.voipCallFeatures(for: payload.host)
+        let baseFeatures = features.filter { $0 != "conference-escalation" }
+        sendAccept(features) { success in
+            // A stale escalation flag sends a feature the server may no longer know, which it rejects.
+            if success || baseFeatures.count == features.count || finishAcceptInvoked[0] {
+                finishAccept(success)
+                return
+            }
+            sendAccept(baseFeatures, completion: finishAccept)
         }
     }
 

@@ -28,6 +28,8 @@ export const getLegacyUserTokenKey = (userId: string): string => `${TOKEN_KEY}-$
 export const getUserTokenKey = (server: string, userId: string): string => `${TOKEN_KEY}-${server}-${userId}`;
 export const TOKEN_KEY_SERVER_SCOPED_MIGRATED = 'RC_TOKEN_KEY_SERVER_SCOPED_MIGRATED';
 export const CURRENT_SERVER = 'currentServer';
+// Read natively by voipCallFeatures() (iOS MMKV.swift, Android Ejson).
+export const getVoipConferenceEscalationKey = (server: string): string => `${server}-RC_VOIP_CONFERENCE_ESCALATION`;
 export const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';
 export const getBasicAuthKey = (server: string): string => `${BASIC_AUTH_KEY}-${server}`;

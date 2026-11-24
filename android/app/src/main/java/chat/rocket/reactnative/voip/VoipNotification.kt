@@ -72,8 +72,6 @@ class VoipNotification(private val context: Context) {
         private const val CALLKEEP_CONNECTION_SERVICE_CLASS = "io.wazo.callkeep.VoiceConnectionService"
         private const val DISCONNECT_REASON_MISSED = 6
 
-        /** Keep in sync with MediaSessionStore features (audio-only today). */
-        private val SUPPORTED_VOIP_FEATURES = JSONArray().apply { put("audio") }
         private val timeoutHandler = Handler(Looper.getMainLooper())
         private val timeoutCallbacks = mutableMapOf<String, Runnable>()
         private val ddpRegistry = VoipPerCallDdpRegistry<DDPClient> { client ->
@@ -314,14 +312,19 @@ class VoipNotification(private val context: Context) {
             timeoutRunnable = postedTimeout
             timeoutHandler.postDelayed(postedTimeout, 10_000L)
 
-            MediaCallsAnswerRequest.fetch(
-                context = context,
-                host = payload.host,
-                callId = payload.callId,
-                contractId = deviceId(context),
-                answer = "accept",
-                supportedFeatures = listOf("audio", "hold")
-            ) { success ->
+            fun sendAccept(supportedFeatures: List<String>, onResult: (Boolean) -> Unit) {
+                MediaCallsAnswerRequest.fetch(
+                    context = context,
+                    host = payload.host,
+                    callId = payload.callId,
+                    contractId = deviceId(context),
+                    answer = "accept",
+                    supportedFeatures = supportedFeatures,
+                    onResult = onResult
+                )
+            }
+
+            fun handleAcceptResult(success: Boolean) {
                 // Late-success guard: if the handler deadline already fired (finished == true)
                 // and the server accepted the call, we must send a reject so server state
                 // matches client state (the client already tore down the call).
@@ -341,9 +344,20 @@ class VoipNotification(private val context: Context) {
                             Log.d(TAG, "Late-accept reconcile-reject for ${payload.callId} succeeded=$rejectSucceeded")
                         }
                     }
-                    return@fetch
+                    return
                 }
                 finish(success)
+            }
+
+            val features = Ejson().apply { host = payload.host }.voipCallFeatures()
+            val baseFeatures = features - "conference-escalation"
+            sendAccept(features) { success ->
+                // A stale escalation flag sends a feature the server may no longer know, which it rejects.
+                if (success || baseFeatures.size == features.size || finished.get()) {
+                    handleAcceptResult(success)
+                    return@sendAccept
+                }
+                sendAccept(baseFeatures, ::handleAcceptResult)
             }
         }
 

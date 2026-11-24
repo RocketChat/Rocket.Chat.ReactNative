@@ -10,6 +10,7 @@ import { mediaDevices } from 'react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
 
 import { MediaCallLogger } from './MediaCallLogger';
+import { getSupportedCallFeatures } from './conferenceEscalation';
 
 type SignalTransport = MediaSignalTransport<ClientMediaSignal>;
 
@@ -65,7 +66,10 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 			displayMediaFactory: (constraints: any) => mediaDevices.getUserMedia(constraints) as unknown as Promise<MediaStream>,
 			randomStringFactory,
 			logger: new MediaCallLogger(),
-			features: ['audio', 'hold'],
+			// The session reads this on every call request/accept, so it follows the server setting.
+			get features() {
+				return getSupportedCallFeatures();
+			},
 			mobileDeviceId
 		});
 

@@ -39,6 +39,15 @@ extension MMKVBridge {
 		return userId
 	}
 	
+	/// Mirrored by watchConferenceEscalation() (JS) from the VoIP_TeamCollab_Video_Escalation_Enabled setting.
+	func voipCallFeatures(for server: String) -> [String] {
+		let host = server.hasSuffix("/") ? String(server.dropLast()) : server
+		if string(forKey: "\(host)-RC_VOIP_CONFERENCE_ESCALATION") == "true" {
+			return ["audio", "hold", "conference-escalation"]
+		}
+		return ["audio", "hold"]
+	}
+
 	func privateKey(for server: String) -> String? {
 		guard let privateKey = string(forKey: "\(server)-RC_E2E_PRIVATE_KEY") else {
 			return nil

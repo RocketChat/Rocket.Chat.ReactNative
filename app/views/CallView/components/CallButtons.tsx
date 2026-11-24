@@ -38,6 +38,7 @@ export const CallButtons = () => {
 	const isOnHold = useCallStore(state => state.isOnHold);
 	const isSpeakerOn = useCallStore(state => state.isSpeakerOn);
 	const roomId = useCallStore(state => state.roomId);
+	const escalated = useCallStore(state => state.escalated);
 
 	const toggleMute = useCallStore(state => state.toggleMute);
 	const toggleHold = useCallStore(state => state.toggleHold);
@@ -55,7 +56,7 @@ export const CallButtons = () => {
 	const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
 	const speakerDisabled = callState === 'none';
 	const messageDisabled = roomId == null;
-	const canStartVideoCall = callState === 'active' && roomId != null && videoCallEnabled;
+	const canStartVideoCall = callState === 'active' && roomId != null && videoCallEnabled && !escalated;
 
 	const handleStartVideoCall = () => {
 		showConfirmationAlert({

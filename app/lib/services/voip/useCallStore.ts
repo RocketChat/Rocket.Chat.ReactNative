@@ -75,6 +75,8 @@ interface CallStoreState {
 	isSpeakerOn: boolean;
 	callStartTime: number | null;
 	focused: boolean;
+	/** The peer switched this call to a video conference. */
+	escalated: boolean;
 	controlsVisible: boolean;
 	dialpadValue: string;
 
@@ -99,6 +101,7 @@ interface CallStoreActions {
 	toggleSpeaker: () => void;
 	toggleControlsVisible: () => void;
 	toggleFocus: () => void;
+	markEscalated: (callId: string) => void;
 	endCall: () => void;
 	/** Clears UI/call fields but keeps nativeAcceptedCallId. Restarts the 15s timer (media init calls reset and clears the old timer first). */
 	reset: () => void;
@@ -122,6 +125,7 @@ const initialState: CallStoreState = {
 	callStartTime: null,
 	contact: {},
 	focused: true,
+	escalated: false,
 	controlsVisible: true,
 	dialpadValue: '',
 	roomId: null,
@@ -282,6 +286,13 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		}
 	},
 
+	markEscalated: (callId: string) => {
+		if (get().callId !== callId) {
+			return;
+		}
+		set({ escalated: true, controlsVisible: true });
+	},
+
 	setDialpadValue: (value: string) => {
 		const { call } = get();
 		if (!call) return;
@@ -344,6 +355,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 }));
 
 export const useCallContact = () => useCallStore(state => state.contact);
+export const useIsCallEscalated = () => useCallStore(state => state.escalated);
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);
 export const useControlsVisible = () => {
 	const controlsVisible = useCallStore(state => state.controlsVisible);

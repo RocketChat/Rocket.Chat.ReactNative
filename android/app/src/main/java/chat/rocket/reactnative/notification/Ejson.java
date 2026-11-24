@@ -8,6 +8,8 @@ import com.tencent.mmkv.MMKV;
 import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.List;
 
 import chat.rocket.reactnative.BuildConfig;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
@@ -242,6 +244,16 @@ public class Ejson {
         }
         
         return userId != null ? userId : "";
+    }
+
+    /** Mirrored by watchConferenceEscalation() (JS) from the VoIP_TeamCollab_Video_Escalation_Enabled setting. */
+    public List<String> voipCallFeatures() {
+        String serverURL = serverURL();
+        MMKV mmkv = getMMKV();
+        if (mmkv != null && serverURL != null && "true".equals(mmkv.decodeString(serverURL.concat("-RC_VOIP_CONFERENCE_ESCALATION")))) {
+            return Arrays.asList("audio", "hold", "conference-escalation");
+        }
+        return Arrays.asList("audio", "hold");
     }
 
     public String privateKey() {

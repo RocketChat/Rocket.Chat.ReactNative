@@ -216,6 +216,34 @@ describe('useCallStore roomId', () => {
 	});
 });
 
+describe('useCallStore escalated', () => {
+	beforeEach(() => {
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('markEscalated flags the current call and shows the controls', () => {
+		useCallStore.getState().setCall(createMockCall('esc-call').call);
+		useCallStore.setState({ controlsVisible: false });
+		useCallStore.getState().markEscalated('esc-call');
+		expect(useCallStore.getState().escalated).toBe(true);
+		expect(useCallStore.getState().controlsVisible).toBe(true);
+	});
+
+	it('markEscalated ignores other calls', () => {
+		useCallStore.getState().setCall(createMockCall('esc-call').call);
+		useCallStore.getState().markEscalated('other-call');
+		expect(useCallStore.getState().escalated).toBe(false);
+	});
+
+	it('reset clears escalated', () => {
+		useCallStore.getState().setCall(createMockCall('esc-call').call);
+		useCallStore.getState().markEscalated('esc-call');
+		useCallStore.getState().reset();
+		expect(useCallStore.getState().escalated).toBe(false);
+	});
+});
+
 describe('useCallStore direction', () => {
 	beforeEach(() => {
 		useCallStore.getState().resetNativeCallId();

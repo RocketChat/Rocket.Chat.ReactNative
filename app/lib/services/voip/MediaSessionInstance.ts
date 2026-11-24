@@ -37,6 +37,7 @@ import { requestVoipCallPermissions } from '~/lib/methods/voipCallPermissions';
 import I18n from '~/i18n';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
 import { acceptNativeCallWithReadiness as runAcceptNativeCallGate } from './acceptNativeCall';
+import { isEscalatedNotification, watchConferenceEscalation } from './conferenceEscalation';
 
 const mediaCallLogger = new MediaCallLogger();
 
@@ -48,6 +49,16 @@ class MediaSessionInstance {
 	private mediaSessionStoreChangeUnsubscribe: (() => void) | null = null;
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
 	private storeIceServersUnsubscribe: (() => void) | null = null;
+	private conferenceEscalationUnsubscribe: (() => void) | null = null;
+
+	/** media-signaling 1.0.0-rc.1 has no `escalated` notification, so the app handles it before the session. */
+	private processSignal(signal: ServerMediaSignal): Promise<void> {
+		if (isEscalatedNotification(signal)) {
+			useCallStore.getState().markEscalated(signal.callId);
+			return Promise.resolve();
+		}
+		return this.instance?.processSignal(signal) ?? Promise.resolve();
+	}
 
 	private tryAnswerIfNativeAcceptedNotification(signal: ServerMediaSignal, useGate = false): void {
 		const { call, nativeAcceptedCallId } = useCallStore.getState();
@@ -80,7 +91,7 @@ class MediaSessionInstance {
 			for (const signal of signals) {
 				// Sequential replay: signals depend on prior state mutations.
 				// eslint-disable-next-line no-await-in-loop
-				await this.instance.processSignal(signal);
+				await this.processSignal(signal);
 				this.tryAnswerIfNativeAcceptedNotification(signal);
 			}
 		} catch (error) {
@@ -101,6 +112,7 @@ class MediaSessionInstance {
 
 		registerGlobals();
 		this.configureIceServers();
+		this.conferenceEscalationUnsubscribe = watchConferenceEscalation();
 
 		mediaSessionStore.setWebRTCProcessorFactory(
 			(config: WebRTCProcessorConfig) =>
@@ -148,7 +160,7 @@ class MediaSessionInstance {
 			const signal = ddpMessage.fields.args[0];
 			try {
 				// `tryAnswerIfNativeAcceptedNotification` reads the state this signal mutates.
-				await this.instance.processSignal(signal);
+				await this.processSignal(signal);
 			} catch (error) {
 				log(error);
 			}
@@ -368,6 +380,10 @@ class MediaSessionInstance {
 		if (this.storeIceServersUnsubscribe) {
 			this.storeIceServersUnsubscribe();
 			this.storeIceServersUnsubscribe = null;
+		}
+		if (this.conferenceEscalationUnsubscribe) {
+			this.conferenceEscalationUnsubscribe();
+			this.conferenceEscalationUnsubscribe = null;
 		}
 		mediaSessionStore.dispose();
 		this.instance = null;

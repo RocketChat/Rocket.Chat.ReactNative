@@ -321,5 +321,8 @@ export const defaultSettings = {
 	VoIP_TeamCollab_SIP_Integration_For_Internal_Calls: {
 		type: 'valueAsBoolean'
 	},
+	VoIP_TeamCollab_Video_Escalation_Enabled: {
+		type: 'valueAsBoolean'
+	},
 	...deprecatedSettings
 } as const;

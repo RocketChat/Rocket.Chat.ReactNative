@@ -20,6 +20,10 @@ export type VideoConferenceEndpoints = {
 		POST: (params: VideoConfJoinProps) => { url: string; providerName: string };
 	};
 
+	'media-calls.conference': {
+		GET: (params: { callId: string }) => { conferenceId: string; providerName: string; url: string };
+	};
+
 	'video-conference.cancel': {
 		POST: (params: VideoConfCancelProps) => void;
 	};

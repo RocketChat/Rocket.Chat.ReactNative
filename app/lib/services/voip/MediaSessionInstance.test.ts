@@ -38,6 +38,7 @@ const mockGetDMSubscriptionByUsername = jest.mocked(getDMSubscriptionByUsername)
 const mockGetUidDirectMessage = jest.mocked(getUidDirectMessage);
 
 const mockCallStoreReset = jest.fn();
+const mockMarkEscalated = jest.fn();
 const mockSetRoomId = jest.fn();
 const mockSetDirection = jest.fn();
 const mockUseCallStoreGetState = jest.fn(() => ({
@@ -50,6 +51,13 @@ const mockUseCallStoreGetState = jest.fn(() => ({
 	callId: null as string | null,
 	nativeAcceptedCallId: null as string | null,
 	roomId: null as string | null
+}));
+
+jest.mock('./conferenceEscalation', () => ({
+	isEscalatedNotification: (signal: { type?: string; notification?: string }) =>
+		signal.type === 'notification' && signal.notification === 'escalated',
+	getSupportedCallFeatures: () => ['audio', 'hold'],
+	watchConferenceEscalation: () => jest.fn()
 }));
 
 jest.mock('./useCallStore', () => ({
@@ -517,6 +525,36 @@ describe('MediaSessionInstance', () => {
 			// the `'ended'` listener before async `hangup()` could fire `Navigation.back()`, so a
 			// `CallView` here would render null and strand the user.
 			expect(Navigation.navigate).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('stream-notify-user (notification/escalated)', () => {
+		it('marks the call escalated without handing the signal to the session', async () => {
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				markEscalated: mockMarkEscalated,
+				call: null,
+				callId: 'call-1',
+				nativeAcceptedCallId: null,
+				roomId: null
+			} as ReturnType<typeof mockUseCallStoreGetState>);
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			session.processSignal.mockClear();
+			getStreamNotifyHandler()({
+				msg: 'changed',
+				fields: {
+					eventName: 'uid/media-signal',
+					args: [{ type: 'notification', notification: 'escalated', callId: 'call-1' }]
+				}
+			});
+			await Promise.resolve();
+			expect(mockMarkEscalated).toHaveBeenCalledWith('call-1');
+			expect(session.processSignal).not.toHaveBeenCalled();
 		});
 	});
 
