@@ -5,23 +5,20 @@ import { computeWaveformPeaks } from './computeWaveformPeaks';
 
 const DECODE_SAMPLE_RATE = 8000;
 
-export type TWaveform = number[] | null;
-
-const waveforms = new Map<string, TWaveform>();
+const waveforms = new Map<string, number[]>();
 const listeners = new Map<string, Set<() => void>>();
 const queue: string[] = [];
 let decoding: string | null = null;
 
 const isWanted = (fileUri: string) => !!listeners.get(fileUri)?.size && !waveforms.has(fileUri);
 
-const decodeWaveform = async (fileUri: string): Promise<TWaveform> => {
+const decodeWaveform = async (fileUri: string): Promise<number[]> => {
 	try {
 		const buffer = await decodeAudioData(fileUri, DECODE_SAMPLE_RATE);
-		const peaks = computeWaveformPeaks(buffer.getChannelData(0));
-		return peaks.length ? peaks : null;
+		return computeWaveformPeaks(buffer.getChannelData(0));
 	} catch (error) {
 		log(error);
-		return null;
+		return [];
 	}
 };
 
@@ -42,7 +39,7 @@ const decodeNext = async () => {
 	decodeNext();
 };
 
-export const getWaveform = (fileUri: string): TWaveform | undefined => waveforms.get(fileUri);
+export const getWaveform = (fileUri: string): number[] | undefined => waveforms.get(fileUri);
 
 export const subscribeWaveform = (fileUri: string, listener: () => void) => {
 	const fileListeners = listeners.get(fileUri) ?? new Set<() => void>();

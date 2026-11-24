@@ -1,20 +1,16 @@
-import { fitPeaks, layoutBars } from '../layoutBars';
+import { countBars, fitPeaks } from '../layoutBars';
 
-describe('layoutBars', () => {
+describe('countBars', () => {
 	it('fits every bar with a gap of at least one point', () => {
-		expect(layoutBars(159, 40)).toEqual({ count: 40, gap: 1 });
-	});
-
-	it('spreads the bars when the track is wider than they need', () => {
-		expect(layoutBars(300, 40)).toEqual({ count: 40, gap: 4 });
+		expect(countBars(159, 40)).toBe(40);
 	});
 
 	it('draws fewer bars on a narrow track', () => {
-		expect(layoutBars(79, 40)).toEqual({ count: 20, gap: 1 });
+		expect(countBars(79, 40)).toBe(20);
 	});
 
 	it('always draws at least one bar', () => {
-		expect(layoutBars(0, 40)).toEqual({ count: 1, gap: 1 });
+		expect(countBars(0, 40)).toBe(1);
 	});
 });
 

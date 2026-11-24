@@ -92,7 +92,7 @@ describe('waveformStore', () => {
 
 		store.subscribeWaveform('file:///a.webm', jest.fn());
 
-		expect(store.getWaveform('file:///a.webm')).toBeNull();
+		expect(store.getWaveform('file:///a.webm')).toEqual([]);
 		expect(mockDecode).toHaveBeenCalledTimes(1);
 	});
 
@@ -103,6 +103,6 @@ describe('waveformStore', () => {
 		pending.get('file:///a.m4a')?.resolve([0.5]);
 		await flush();
 
-		expect(store.getWaveform('file:///a.m4a')).toBeNull();
+		expect(store.getWaveform('file:///a.m4a')).toEqual([]);
 	});
 });

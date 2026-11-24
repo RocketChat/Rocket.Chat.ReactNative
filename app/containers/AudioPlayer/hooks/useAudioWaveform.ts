@@ -11,5 +11,5 @@ export const useAudioWaveform = (fileUri: string, isDownloaded: boolean): number
 	const enabled = isDownloaded && isLocalFile(fileUri);
 	const subscribe = useCallback((onChange: () => void) => subscribeWaveform(fileUri, onChange), [fileUri]);
 	const getSnapshot = useCallback(() => getWaveform(fileUri), [fileUri]);
-	return useSyncExternalStore(enabled ? subscribe : ignoreChanges, enabled ? getSnapshot : noWaveform) ?? undefined;
+	return useSyncExternalStore(enabled ? subscribe : ignoreChanges, enabled ? getSnapshot : noWaveform);
 };

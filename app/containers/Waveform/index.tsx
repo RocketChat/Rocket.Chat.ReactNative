@@ -13,9 +13,9 @@ interface IWaveform {
 
 const Waveform = ({ peaks, progress }: IWaveform) => {
 	const { colors } = useTheme();
-	const { bars, gap, onLayout } = useWaveformBars(peaks);
+	const { bars, onLayout } = useWaveformBars(peaks);
 	return (
-		<View testID='waveform' style={[styles.track, { gap }]} onLayout={onLayout}>
+		<View testID='waveform' style={styles.track} onLayout={onLayout}>
 			{bars.map(({ peak, position }, index) => (
 				<WaveformBar
 					key={index}

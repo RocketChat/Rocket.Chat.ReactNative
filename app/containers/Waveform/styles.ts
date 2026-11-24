@@ -7,7 +7,7 @@ export default StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'space-around',
 		height: 28,
 		minWidth: 0,
 		overflow: 'hidden'

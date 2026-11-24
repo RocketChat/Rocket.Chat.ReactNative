@@ -34,7 +34,10 @@ const setup = () => {
 	};
 };
 
-afterEach(() => jest.clearAllMocks());
+afterEach(() => {
+	jest.clearAllMocks();
+	jest.restoreAllMocks();
+});
 
 test('a tap seeks to where it lands on the track', async () => {
 	const { tap, onChangeTime } = setup();
@@ -59,7 +62,6 @@ test('in a right-to-left layout a tap seeks from the right edge, where the audio
 		])
 	);
 	expect(onChangeTime).toHaveBeenCalledWith(30);
-	jest.restoreAllMocks();
 });
 
 test('a drag seeks once, on release, to where the finger left the track', async () => {

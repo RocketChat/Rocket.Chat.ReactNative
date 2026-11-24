@@ -85819,20 +85819,15 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                           <View
                                             onLayout={[Function]}
                                             style={
-                                              [
-                                                {
-                                                  "alignItems": "center",
-                                                  "flex": 1,
-                                                  "flexDirection": "row",
-                                                  "height": 28,
-                                                  "justifyContent": "center",
-                                                  "minWidth": 0,
-                                                  "overflow": "hidden",
-                                                },
-                                                {
-                                                  "gap": 1,
-                                                },
-                                              ]
+                                              {
+                                                "alignItems": "center",
+                                                "flex": 1,
+                                                "flexDirection": "row",
+                                                "height": 28,
+                                                "justifyContent": "space-around",
+                                                "minWidth": 0,
+                                                "overflow": "hidden",
+                                              }
                                             }
                                             testID="waveform"
                                           >
@@ -99460,20 +99455,15 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                           <View
                                             onLayout={[Function]}
                                             style={
-                                              [
-                                                {
-                                                  "alignItems": "center",
-                                                  "flex": 1,
-                                                  "flexDirection": "row",
-                                                  "height": 28,
-                                                  "justifyContent": "center",
-                                                  "minWidth": 0,
-                                                  "overflow": "hidden",
-                                                },
-                                                {
-                                                  "gap": 1,
-                                                },
-                                              ]
+                                              {
+                                                "alignItems": "center",
+                                                "flex": 1,
+                                                "flexDirection": "row",
+                                                "height": 28,
+                                                "justifyContent": "space-around",
+                                                "minWidth": 0,
+                                                "overflow": "hidden",
+                                              }
                                             }
                                             testID="waveform"
                                           >
@@ -164274,20 +164264,15 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >
@@ -165363,20 +165348,15 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >
@@ -166464,20 +166444,15 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >
@@ -167345,20 +167320,15 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >
@@ -168380,20 +168350,15 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >
@@ -169369,20 +169334,15 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >
@@ -170250,20 +170210,15 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >
@@ -171657,20 +171612,15 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >
@@ -172958,20 +172908,15 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >
@@ -173993,20 +173938,15 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >
@@ -175094,20 +175034,15 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >
@@ -176083,20 +176018,15 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >
@@ -176964,20 +176894,15 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 <View
                                   onLayout={[Function]}
                                   style={
-                                    [
-                                      {
-                                        "alignItems": "center",
-                                        "flex": 1,
-                                        "flexDirection": "row",
-                                        "height": 28,
-                                        "justifyContent": "center",
-                                        "minWidth": 0,
-                                        "overflow": "hidden",
-                                      },
-                                      {
-                                        "gap": 1,
-                                      },
-                                    ]
+                                    {
+                                      "alignItems": "center",
+                                      "flex": 1,
+                                      "flexDirection": "row",
+                                      "height": 28,
+                                      "justifyContent": "space-around",
+                                      "minWidth": 0,
+                                      "overflow": "hidden",
+                                    }
                                   }
                                   testID="waveform"
                                 >

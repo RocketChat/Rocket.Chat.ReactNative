@@ -30,5 +30,5 @@ test('draws fewer, merged bars on a narrow track', () => {
 
 test('places each bar where a touch at that point of the track lands', () => {
 	const bars = renderWaveform([1, 1], 100) as { props: { position: number } }[];
-	expect(bars.map(bar => bar.props.position)).toEqual([0.015, 0.985]);
+	expect(bars.map(bar => bar.props.position)).toEqual([0.25, 0.75]);
 });
