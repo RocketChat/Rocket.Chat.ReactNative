@@ -7,6 +7,7 @@ import {
 	openDeepLink,
 	scrollAndTap,
 	succeeds,
+	succeedsTreatingHangAsMiss,
 	tapUntilVisible,
 	tapWhenUncovered,
 	type Fixtures
@@ -64,14 +65,19 @@ describe('flow error boundaries', () => {
 		await expect(succeeds(Promise.reject(failure('ASSERTION_FAILED')))).resolves.toBe(false);
 	});
 
-	it('returns false when the assertion read timed out', async () => {
+	it('propagates a read that hung instead of treating it as an assertion miss', async () => {
 		const error = Object.assign(failure('ACTION_FAILED'), { cause: failure('OPERATION_TIMEOUT') });
-		await expect(succeeds(Promise.reject(error))).resolves.toBe(false);
+		await expect(succeeds(Promise.reject(error))).rejects.toBe(error);
 	});
 
-	it('propagates an action failure that is not a timed-out read', async () => {
+	it('returns false for a hung read when the caller treats a hang as a miss', async () => {
+		const error = Object.assign(failure('ACTION_FAILED'), { cause: failure('OPERATION_TIMEOUT') });
+		await expect(succeedsTreatingHangAsMiss(Promise.reject(error))).resolves.toBe(false);
+	});
+
+	it('propagates an action failure that is not a hung read when the caller treats a hang as a miss', async () => {
 		const error = Object.assign(failure('ACTION_FAILED'), { cause: failure('NOT_ACTIONABLE') });
-		await expect(succeeds(Promise.reject(error))).rejects.toBe(error);
+		await expect(succeedsTreatingHangAsMiss(Promise.reject(error))).rejects.toBe(error);
 	});
 
 	it.each(['ENGINE_FAILURE', 'INVALID_STATE', 'LOCATOR_AMBIGUOUS', 'ACTION_MAY_HAVE_COMMITTED', 'CANCELLED'])(

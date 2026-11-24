@@ -14,22 +14,36 @@ export const withFixtures =
 	({ app, device, platform, screen }: Fixtures) =>
 		body({ app, device, platform, screen });
 
+type AgentFixtures = Fixtures & Pick<TestFixtures, 'agent'>;
+
+export const withAgentFixtures =
+	(body: (fixtures: AgentFixtures) => Promise<void>) =>
+	({ agent, app, device, platform, screen }: AgentFixtures) =>
+		body({ agent, app, device, platform, screen });
+
 export const LONG_TIMEOUT = 60_000;
 
 const errorCode = (error: unknown) => (error as { code?: string } | null)?.code;
 
-const isTimedOutRead = (error: unknown) =>
+const isAssertionMiss = (error: unknown) => errorCode(error) === 'ASSERTION_FAILED';
+
+const isHungRead = (error: unknown) =>
 	errorCode(error) === 'ACTION_FAILED' && errorCode((error as { cause?: unknown } | null)?.cause) === 'OPERATION_TIMEOUT';
 
-export const succeeds = async (assertion: Promise<unknown>) => {
+const passes = async (assertion: Promise<unknown>, isMiss: (error: unknown) => boolean) => {
 	try {
 		await assertion;
 		return true;
 	} catch (error) {
-		if (errorCode(error) !== 'ASSERTION_FAILED' && !isTimedOutRead(error)) throw error;
+		if (!isMiss(error)) throw error;
 		return false;
 	}
 };
+
+export const succeeds = (assertion: Promise<unknown>) => passes(assertion, isAssertionMiss);
+
+export const succeedsTreatingHangAsMiss = (assertion: Promise<unknown>) =>
+	passes(assertion, error => isAssertionMiss(error) || isHungRead(error));
 
 export const isVisibleNow = (locator: Locator) => locator.isVisible();
 

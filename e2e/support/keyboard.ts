@@ -2,7 +2,7 @@ import { expect, type Locator } from 'e2e';
 
 import { adb } from './adb';
 import type { Fixtures } from './flows';
-import { LONG_TIMEOUT, escapeRegExp, succeeds } from './flows';
+import { LONG_TIMEOUT, escapeRegExp, succeedsTreatingHangAsMiss } from './flows';
 import { delay } from './timing';
 
 const KEY_CODES = {
@@ -113,7 +113,7 @@ export const leaveTouchMode = () => pressKeys('down');
 export const pressKeyTimes = (key: HardwareKey, times: number) => pressKeys(...Array.from({ length: times }, () => key));
 
 const isFocusedItself = ({ screen }: Fixtures, testId: string) =>
-	succeeds(expect(screen.getByTestId(testId)).toBeFocused({ timeout: FOCUS_CHECK_TIMEOUT }));
+	succeedsTreatingHangAsMiss(expect(screen.getByTestId(testId)).toBeFocused({ timeout: FOCUS_CHECK_TIMEOUT }));
 
 const WRAPPER_CENTER_TOLERANCE = 4;
 
