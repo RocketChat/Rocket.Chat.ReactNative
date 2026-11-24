@@ -32,20 +32,29 @@ export const openRoomSearch = (fixtures: Fixtures) => selectRoomMenuOption(fixtu
 
 const roomMenuButton = (fixtures: Fixtures) => headerItem(fixtures, ROOM_MENU.testId, ROOM_MENU.iosLabel);
 
+const pointBelowRoomMenu = async ({ screen }: Fixtures) => {
+	const roomViewBox = await screen.getByTestId('room-view').first().boundingBox();
+	if (!roomViewBox) {
+		throw new Error('room-view has no bounding box to tap outside the room menu');
+	}
+	return { x: roomViewBox.x + roomViewBox.width / 2, y: roomViewBox.y + roomViewBox.height * 0.8 };
+};
+
+const closeRoomMenu = async (fixtures: Fixtures, iosDismissPoint?: { x: number; y: number }) => {
+	if (iosDismissPoint) {
+		await fixtures.screen.tapAt(iosDismissPoint);
+	} else {
+		await fixtures.screen.getByTestId('action-sheet-handle').tap();
+	}
+};
+
 export const expectRoomMenuOptions = async (fixtures: Fixtures, options: readonly HeaderMenuEntry[]) => {
-	const { screen, platform } = fixtures;
+	const iosDismissPoint = fixtures.platform === 'ios' ? await pointBelowRoomMenu(fixtures) : undefined;
 	await tapWhenVisible(fixtures, roomMenuButton(fixtures));
 	for (const option of [...options, ROOM_SEARCH]) {
 		await expect(headerMenuOption(fixtures, option)).toBeVisible({ timeout: LONG_TIMEOUT });
 	}
-	if (platform === 'android') {
-		await screen.getByTestId('action-sheet-handle').tap();
-	} else {
-		const roomViewBox = await screen.getByTestId('room-view').first().boundingBox();
-		if (roomViewBox) {
-			await screen.tapAt({ x: roomViewBox.x + roomViewBox.width / 2, y: roomViewBox.y + roomViewBox.height * 0.8 });
-		}
-	}
+	await closeRoomMenu(fixtures, iosDismissPoint);
 	await expect(headerMenuOption(fixtures, ROOM_SEARCH)).toBeHidden({ timeout: LONG_TIMEOUT });
 };
 
