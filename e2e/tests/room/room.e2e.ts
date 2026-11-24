@@ -18,6 +18,7 @@ import {
 	openMessageActions,
 	tapUntilVisible,
 	fillWhenUncovered,
+	replaceTextUntilHeld,
 	tapSend,
 	typeUntilListed
 } from '~e2e/support/flows';
@@ -104,7 +105,7 @@ const editMessage = async (fixtures: Fixtures) => {
 	await sendMessage(fixtures, 'edit');
 	await hideKeyboard(fixtures);
 	await startMessageAction(fixtures, 'edit', 'edit');
-	await fillWhenUncovered(composer(fixtures), 'edited');
+	await replaceTextUntilHeld(composer(fixtures), 'edited');
 	await tapSend(fixtures);
 	await expectVisible(fixtures, 'message-content-edited');
 	await expectVisible(fixtures, 'edited-edited');

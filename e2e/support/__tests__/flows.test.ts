@@ -6,6 +6,7 @@ import {
 	isVisibleNow,
 	launchApp,
 	openDeepLink,
+	replaceTextUntilHeld,
 	scrollAndTap,
 	succeeds,
 	tapUntilVisible,
@@ -15,10 +16,11 @@ import {
 
 const mockToBeVisible = jest.fn();
 const mockToBeHidden = jest.fn();
+const mockToHaveValue = jest.fn();
 const mockPoll = jest.fn();
 
 jest.mock('e2e', () => ({
-	expect: Object.assign(() => ({ toBeVisible: mockToBeVisible, toBeHidden: mockToBeHidden }), {
+	expect: Object.assign(() => ({ toBeVisible: mockToBeVisible, toBeHidden: mockToBeHidden, toHaveValue: mockToHaveValue }), {
 		poll: (read: () => Promise<boolean>, options: unknown) => mockPoll(read, options)
 	})
 }));
@@ -53,6 +55,7 @@ beforeEach(() => {
 	jest.clearAllMocks();
 	mockToBeVisible.mockReset().mockResolvedValue(undefined);
 	mockToBeHidden.mockReset().mockResolvedValue(undefined);
+	mockToHaveValue.mockReset().mockResolvedValue(undefined);
 	mockPoll.mockImplementation((read: () => Promise<boolean>) => ({
 		toBe: async (expected: boolean) => {
 			if ((await read()) !== expected) throw failure('ASSERTION_FAILED');
@@ -203,5 +206,24 @@ describe('going back', () => {
 		const error = failure('ENGINE_FAILURE');
 		backButton.tap.mockRejectedValueOnce(error);
 		await expect(goBack(fixtures)).rejects.toBe(error);
+	});
+});
+
+describe('replacing text', () => {
+	const field = () => ({ fill: jest.fn(() => Promise.resolve()) });
+
+	it('fills again when the text does not stick', async () => {
+		const input = field();
+		mockToHaveValue.mockRejectedValueOnce(failure('ASSERTION_FAILED'));
+		await replaceTextUntilHeld(input as unknown as Locator, 'edited');
+		expect(input.fill).toHaveBeenCalledTimes(2);
+	});
+
+	it('fails once every fill loses the text', async () => {
+		const input = field();
+		const lost = failure('ASSERTION_FAILED');
+		mockToHaveValue.mockRejectedValue(lost);
+		await expect(replaceTextUntilHeld(input as unknown as Locator, 'edited')).rejects.toBe(lost);
+		expect(input.fill).toHaveBeenCalledTimes(3);
 	});
 });

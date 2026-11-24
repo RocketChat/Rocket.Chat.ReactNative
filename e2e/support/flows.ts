@@ -277,6 +277,20 @@ const fillConfirmed = async (locator: Locator, text: string) => {
 export const fillWhenUncovered = (locator: Locator, text: string, timeout = LONG_TIMEOUT) =>
 	retryWhileUnreachable(() => fillConfirmed(locator, text), timeout);
 
+const FILLED_VALUE_TIMEOUT = 5_000;
+const REPLACE_TEXT_ATTEMPTS = 3;
+
+export const replaceTextUntilHeld = async (locator: Locator, text: string) => {
+	for (let attempt = 1; attempt < REPLACE_TEXT_ATTEMPTS; attempt++) {
+		await fillWhenUncovered(locator, text);
+		if (await succeeds(expect(locator).toHaveValue(text, { timeout: FILLED_VALUE_TIMEOUT }))) {
+			return;
+		}
+	}
+	await fillWhenUncovered(locator, text);
+	await expect(locator).toHaveValue(text, { timeout: FILLED_VALUE_TIMEOUT });
+};
+
 export const tapWhenVisible = async ({ screen }: Fixtures, testIdOrTarget: string | Locator) => {
 	const target = typeof testIdOrTarget === 'string' ? screen.getByTestId(testIdOrTarget).first() : testIdOrTarget;
 	await expect(target).toBeVisible({ timeout: LONG_TIMEOUT });
