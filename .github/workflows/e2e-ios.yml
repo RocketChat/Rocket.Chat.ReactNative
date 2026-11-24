@@ -184,7 +184,6 @@ jobs:
           path: |
             .e2e/report.json
             .e2e/junit.xml
-            .e2e/artifacts
             .e2e/results
           retention-days: 7
 
@@ -200,7 +199,6 @@ jobs:
           path: |
             .e2e/report.json
             .e2e/junit.xml
-            .e2e/artifacts
             .e2e/results
           retention-days: 7
           overwrite: true

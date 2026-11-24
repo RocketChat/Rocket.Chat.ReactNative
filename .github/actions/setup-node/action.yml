@@ -19,7 +19,7 @@ runs:
         SEGMENT_DOWNLOAD_TIMEOUT_MINS: 4
       with:
         path: node_modules
-        key: node-modules-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pnpm-lock.yaml', 'package.json', 'patches/**') }}
+        key: node-modules-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pnpm-lock.yaml', 'package.json', '.npmrc', 'patches/**') }}
 
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
       env:
