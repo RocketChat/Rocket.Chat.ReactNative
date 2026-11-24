@@ -5,6 +5,7 @@ import { getDeviceToken } from '../notifications';
 import { isSsl } from './helpers/isSsl';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
+import AudioManager from './AudioManager';
 import { disconnect } from '../services/connect';
 import sdk from '../services/sdk';
 import {
@@ -117,6 +118,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 
 export async function logout({ server }: { server: string }): Promise<void> {
 	closeConferenceCall();
+	AudioManager.closeAudio();
 	try {
 		await clearServerCookies(server);
 	} catch (e) {

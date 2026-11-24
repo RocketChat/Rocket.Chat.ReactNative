@@ -10,6 +10,7 @@ import { store } from '../store/auxStore';
 import { buildConferenceUrl } from './helpers/buildConferenceUrl';
 import { isSecureHttpUrl } from './helpers/isConferenceUrl';
 import log from './helpers/log';
+import AudioManager from './AudioManager';
 import { requestVoipCallPermissions } from './voipCallPermissions';
 
 type TConferenceTarget = { callId: string; rid?: string } | { rid: string };
@@ -57,6 +58,7 @@ export const openConferenceCall = async (target: TConferenceTarget): Promise<voi
 		return;
 	}
 
+	AudioManager.pauseAudio();
 	useConferenceCallStore.getState().open({ callId: targetId(target), url, rid: target.rid, server });
 	expandConferenceCall();
 };

@@ -4,7 +4,7 @@ import { getMessageById } from '~/lib/database/services/Message';
 import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
-import { useAppSelector } from '~/lib/hooks/useAppSelector';
+import { getSenderName } from '~/lib/methods/helpers/getSenderName';
 import { type IUserMessage } from '~/definitions/IMessage';
 
 interface INowPlayingAudioSource {
@@ -27,7 +27,6 @@ const findRoomName = async (rid: string) => {
 };
 
 export const useNowPlayingAudioDetails = (rid: string, msgId?: string) => {
-	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name) as boolean;
 	const sourceKey = `${rid}-${msgId}`;
 	const [source, setSource] = useState<INowPlayingAudioSource>({ sourceKey: '' });
 
@@ -46,7 +45,7 @@ export const useNowPlayingAudioDetails = (rid: string, msgId?: string) => {
 	}, [rid, msgId, sourceKey]);
 
 	const loaded = source.sourceKey === sourceKey;
-	const senderName = loaded ? (useRealName && source.sender?.name) || source.sender?.username : undefined;
+	const senderName = loaded && source.sender ? getSenderName(source.sender) : undefined;
 	const roomName = loaded ? source.roomName : undefined;
 	return { title: senderName || roomName || '', roomName: senderName ? roomName : undefined };
 };

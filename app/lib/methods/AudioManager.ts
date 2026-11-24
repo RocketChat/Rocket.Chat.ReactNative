@@ -67,12 +67,20 @@ class AudioManagerClass {
 		});
 	}
 
-	private releaseAudio(audioKey: string) {
+	private releasePlayer(audioKey: string) {
 		this.audioSubscriptions[audioKey]?.();
-		this.audioQueue[audioKey]?.release();
 		delete this.audioSubscriptions[audioKey];
-		delete this.audioCallbacks[audioKey];
+		try {
+			this.audioQueue[audioKey]?.release();
+		} catch (error) {
+			log(error);
+		}
 		delete this.audioQueue[audioKey];
+	}
+
+	private releaseAudio(audioKey: string) {
+		this.releasePlayer(audioKey);
+		delete this.audioCallbacks[audioKey];
 		delete this.audioUris[audioKey];
 		delete this.audioPositions[audioKey];
 		delete this.audioRates[audioKey];
@@ -104,7 +112,6 @@ class AudioManagerClass {
 
 	loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string {
 		const audioKey = getAudioKey({ msgId, rid, uri });
-		this.addAudioRendered(audioKey);
 		this.audioUris[audioKey] = uri;
 		this.audioMeta[audioKey] = { msgId, rid };
 		this.detachedAudioKeys.delete(audioKey);
@@ -118,6 +125,10 @@ class AudioManagerClass {
 	}
 
 	async playAudio(audioKey: string) {
+		if (!this.audioQueue[audioKey] && !this.audioUris[audioKey]) {
+			return;
+		}
+
 		if (this.audioPlaying) {
 			this.pauseAudio();
 		}
@@ -139,16 +150,19 @@ class AudioManagerClass {
 			this.subscribeToStatus(audioKey);
 		}
 
-		if (!this.audioQueue[audioKey]) {
-			return;
-		}
-
 		try {
 			await setAudioModeAsync(AUDIO_MODE);
+			if (!this.audioQueue[audioKey]) {
+				return;
+			}
 			this.audioPlaying = audioKey;
 			this.setRate(audioKey, this.audioRates[audioKey]);
-			this.audioQueue[audioKey]?.play();
-			this.startNowPlaying(audioKey);
+			this.audioQueue[audioKey].play();
+			if (this.audioMeta[audioKey]?.msgId) {
+				this.startNowPlaying(audioKey);
+			} else {
+				this.clearNowPlaying();
+			}
 			emitter.emit('audioFocused', audioKey);
 		} catch (error) {
 			log(error);
@@ -235,10 +249,7 @@ class AudioManagerClass {
 				if (this.detachedAudioKeys.has(audioKey)) {
 					this.releaseAudio(audioKey);
 				} else {
-					this.audioSubscriptions[audioKey]?.();
-					delete this.audioSubscriptions[audioKey];
-					this.audioQueue[audioKey].release();
-					delete this.audioQueue[audioKey];
+					this.releasePlayer(audioKey);
 					this.audioPositions[audioKey] = 0;
 				}
 				if (this.audioPlaying === audioKey) {
@@ -316,11 +327,7 @@ class AudioManagerClass {
 				delete this.audioCallbacks[audioKey];
 				return;
 			}
-			try {
-				this.releaseAudio(audioKey);
-			} catch (error) {
-				log(error);
-			}
+			this.releaseAudio(audioKey);
 		});
 	}
 }

@@ -9,6 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { userAgent } from '~/lib/constants/userAgent';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { isIOS } from '~/lib/methods/helpers/deviceInfo';
+import AudioManager from '~/lib/methods/AudioManager';
 import { getRoomIdFromJitsiCallUrl } from '~/lib/methods/helpers/getRoomIdFromJitsiCall';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '~/lib/methods/videoConfTimer';
@@ -102,6 +103,7 @@ const JitsiMeetView = (): ReactElement => {
 
 	useEffect(() => {
 		setCookies();
+		AudioManager.pauseAudio();
 	}, []);
 
 	const callUrl = `${url}${url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true`;

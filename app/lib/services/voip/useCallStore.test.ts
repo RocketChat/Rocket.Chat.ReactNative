@@ -4,6 +4,7 @@ import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
 import NativeVoipModule from '~/lib/native/NativeVoip';
+import AudioManager from '~/lib/methods/AudioManager';
 import { pendingHangups } from './pendingHangups';
 import { useCallStore } from './useCallStore';
 
@@ -12,6 +13,8 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 	__esModule: true,
 	default: (...args: unknown[]) => mockLog(...args)
 }));
+
+jest.mock('~/lib/methods/AudioManager', () => ({ __esModule: true, default: { pauseAudio: jest.fn() } }));
 
 const mockPlayCallEndedSound = jest.fn(() => Promise.resolve());
 jest.mock('./playCallEndedSound', () => ({
@@ -485,6 +488,13 @@ describe('useCallStore audio route sync (Android)', () => {
 
 	afterEach(() => {
 		(Platform as { OS: string }).OS = originalOS;
+	});
+
+	it('setCall pauses the audio message that is playing', () => {
+		(AudioManager.pauseAudio as jest.Mock).mockClear();
+		const { call } = createMockCall('audio-message-1');
+		useCallStore.getState().setCall(call);
+		expect(AudioManager.pauseAudio).toHaveBeenCalledTimes(1);
 	});
 
 	it('setCall fires startAudioRouteSync', () => {

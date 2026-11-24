@@ -121,8 +121,8 @@ const AudioPlayer = ({
 			const immediate = setImmediate(async () => {
 				try {
 					audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
-					if (!navigation.isFocused()) {
-						AudioManager.removeAudioRendered(audioUri.current);
+					if (navigation.isFocused()) {
+						AudioManager.addAudioRendered(audioUri.current);
 					}
 					AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
 					AudioManager.setRate(audioUri.current, playbackSpeed);

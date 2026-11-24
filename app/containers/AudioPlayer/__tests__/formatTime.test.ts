@@ -1,4 +1,4 @@
-import { formatTime } from './utils';
+import { formatTime } from '../formatTime';
 
 describe('formatTime', () => {
 	it('formats sub-minute duration as mm:ss with both parts zero-padded', () => {

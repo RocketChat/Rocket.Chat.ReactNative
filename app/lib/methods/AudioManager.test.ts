@@ -2,6 +2,8 @@ jest.mock('../database/services/Message', () => ({
 	getMessageById: jest.fn(() => Promise.resolve(null))
 }));
 
+jest.mock('./helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+
 jest.mock('./getFilePathAudio', () => ({
 	getFilePathAudio: jest.fn(() => 'file://x')
 }));
@@ -194,6 +196,7 @@ describe('AudioManager', () => {
 		const { AudioManager, players } = setup();
 		const firstKey = AudioManager.loadAudio({ msgId: 'a', rid: 'room', uri: 'file://x' });
 		const nextKey = AudioManager.loadAudio({ msgId: 'b', rid: 'room', uri: 'file://x' });
+		AudioManager.addAudioRendered(nextKey);
 		const nextMessage = { id: 'b', attachments: [{ audio_url: '/x', audio_type: 'audio/mp3' }] } as TMessageModel;
 		jest
 			.spyOn(AudioManager, 'getNextAudioMessage')
@@ -381,6 +384,47 @@ describe('AudioManager', () => {
 			AudioManager.setOnPlaybackStatusUpdate(key, callback);
 
 			expect(callback).not.toHaveBeenCalled();
+		});
+
+		it('an audio without a message, like a recording preview, never becomes the now playing one', async () => {
+			const { AudioManager, players } = setup();
+			const messageKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			const previewKey = AudioManager.loadAudio({ rid: 'room', uri: 'file://recording.aac' });
+			await AudioManager.playAudio(messageKey);
+
+			await AudioManager.playAudio(previewKey);
+			expect(getNowPlaying()).toBeNull();
+
+			AudioManager.unloadRoomAudios('room');
+			expect(players[1].release).toHaveBeenCalled();
+		});
+
+		it('tapping an audio that never loaded keeps the now playing audio', async () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(key);
+			AudioManager.unloadRoomAudios('room');
+
+			await AudioManager.playAudio('');
+
+			expect(players[0].release).not.toHaveBeenCalled();
+			expect(players[0].pause).not.toHaveBeenCalled();
+			expect(getNowPlaying()).toMatchObject({ audioKey: key, playing: true });
+		});
+
+		it('leaving the room while play is starting does not play the released audio', async () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+
+			const log = require('./helpers/log').default as jest.Mock;
+
+			const playing = AudioManager.playAudio(key);
+			AudioManager.unloadRoomAudios('room');
+			await playing;
+
+			expect(log).not.toHaveBeenCalled();
+			expect(players[0].play).not.toHaveBeenCalled();
+			expect(getNowPlaying()).toBeNull();
 		});
 	});
 

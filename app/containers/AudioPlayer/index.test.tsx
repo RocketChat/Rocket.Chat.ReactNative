@@ -400,9 +400,15 @@ describe('AudioPlayer', () => {
 			});
 			render(<AudioPlayer {...defaultProps} />);
 
-			await waitFor(() => expect(AudioManager.loadAudio).toHaveBeenCalled());
+			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
 
-			await waitFor(() => expect(AudioManager.removeAudioRendered).toHaveBeenCalled());
+			expect(AudioManager.addAudioRendered).not.toHaveBeenCalled();
+		});
+
+		it('adds an audio loaded on the focused screen to the rendered set', async () => {
+			render(<AudioPlayer {...defaultProps} />);
+
+			await waitFor(() => expect(AudioManager.addAudioRendered).toHaveBeenCalled());
 		});
 
 		it('calls removeAudioRendered when screen is blurred', () => {

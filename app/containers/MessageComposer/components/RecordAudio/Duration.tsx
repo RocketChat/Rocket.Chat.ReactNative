@@ -4,7 +4,7 @@ import { useAudioRecorderState, type AudioRecorder } from 'expo-audio';
 
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
-import { formatTime } from './utils';
+import { formatTime } from '~/containers/AudioPlayer/formatTime';
 
 export const Duration = ({ audioRecorder }: { audioRecorder: AudioRecorder }) => {
 	const [styles] = useStyle();

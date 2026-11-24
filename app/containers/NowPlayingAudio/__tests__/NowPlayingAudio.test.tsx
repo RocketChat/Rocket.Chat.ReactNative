@@ -8,7 +8,7 @@ import { useNowPlayingAudioStore, type INowPlayingAudio } from '~/lib/methods/us
 jest.mock('~/lib/methods/AudioManager', () => ({ playAudio: jest.fn(), pauseAudio: jest.fn(), closeAudio: jest.fn() }));
 jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
 jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => false }));
-jest.mock('~/lib/hooks/useAppSelector', () => ({ useAppSelector: () => true }));
+jest.mock('~/lib/store/auxStore', () => ({ store: { getState: () => ({ settings: { UI_Use_Real_Name: true } }) } }));
 jest.mock('~/lib/methods/helpers/getRoomTitle', () => ({ getRoomTitle: (room: { fname: string }) => room.fname }));
 jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: jest.fn(() => Promise.resolve({ u: { username: 'jane.doe', name: 'Jane Doe' } }))
