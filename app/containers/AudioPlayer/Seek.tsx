@@ -1,11 +1,12 @@
-import { type LayoutChangeEvent, Text, View } from 'react-native';
+import { I18nManager, type LayoutChangeEvent, Text, View } from 'react-native';
 import { GestureDetector, useCompetingGestures, usePanGesture, useTapGesture } from 'react-native-gesture-handler';
 import { type SharedValue, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import { scheduleOnRN, scheduleOnUI } from 'react-native-worklets';
 
 import styles from './styles';
 import { useTheme } from '~/theme';
-import { ACTIVE_OFFSET_X } from './constants';
+import { SCROLL_FAIL_OFFSET_Y, SCRUB_ACTIVE_OFFSET_X } from './constants';
+import { clamp } from './playbackClock';
 import { formatProgressLabel } from './formatMediaTime';
 import Waveform from '../Waveform';
 import { useSeekAccessibility } from './hooks/useSeekAccessibility';
@@ -19,19 +20,14 @@ interface ISeek {
 	duration: SharedValue<number>;
 	currentTime: SharedValue<number>;
 	loaded: boolean;
-	peaks?: number[] | null;
+	peaks?: number[];
 	onChangeTime: (time: number) => void;
-}
-
-function clamp(value: number, min: number, max: number) {
-	'worklet';
-
-	return Math.min(Math.max(value, min), max);
 }
 
 const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: ISeek) => {
 	const { colors } = useTheme();
 
+	const { isRTL } = I18nManager;
 	const trackWidth = useSharedValue(1);
 	const scrubProgress = useSharedValue(NOT_SCRUBBING);
 
@@ -52,16 +48,17 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 	const progressAt = (x: number) => {
 		'worklet';
 
-		return clamp(x / trackWidth.get(), 0, 1);
+		const fromLeft = clamp(x / trackWidth.get(), 0, 1);
+		return isRTL ? 1 - fromLeft : fromLeft;
 	};
 
-	const seekTo = (fraction: number) => {
+	const timeAt = (x: number) => {
 		'worklet';
 
-		scheduleOnRN(onChangeTime, fraction * duration.get());
+		return progressAt(x) * duration.get();
 	};
 
-	const finishScrub = (time: number) => {
+	const finishSeek = (time: number) => {
 		onChangeTime(time);
 		scheduleOnUI(() => {
 			'worklet';
@@ -76,7 +73,8 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 
 	const panGesture = usePanGesture({
 		enabled: loaded,
-		activeOffsetX: [-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X],
+		activeOffsetX: [-SCRUB_ACTIVE_OFFSET_X, SCRUB_ACTIVE_OFFSET_X],
+		failOffsetY: [-SCROLL_FAIL_OFFSET_Y, SCROLL_FAIL_OFFSET_Y],
 		onActivate: event => {
 			scrubProgress.set(progressAt(event.x));
 		},
@@ -89,7 +87,7 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 				scrubProgress.set(NOT_SCRUBBING);
 				return;
 			}
-			scheduleOnRN(finishScrub, progressAt(event.x) * duration.get());
+			scheduleOnRN(finishSeek, timeAt(event.x));
 		}
 	});
 
@@ -97,7 +95,7 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 		enabled: loaded,
 		onDeactivate: event => {
 			if (!event.canceled) {
-				seekTo(progressAt(event.x));
+				scheduleOnRN(finishSeek, timeAt(event.x));
 			}
 		}
 	});
@@ -115,6 +113,7 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 				accessibilityRole={seekAccessibility.accessibilityRole}
 				accessibilityLabel={seekAccessibility.accessibilityLabel}
 				accessibilityValue={seekAccessibility.accessibilityValue}
+				accessibilityState={seekAccessibility.accessibilityState}
 				accessibilityActions={seekAccessibility.accessibilityActions}
 				onAccessibilityAction={seekAccessibility.onAccessibilityAction}>
 				<GestureDetector gesture={seekGesture}>

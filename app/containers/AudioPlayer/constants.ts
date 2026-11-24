@@ -4,4 +4,6 @@ export const AUDIO_BUTTON_HIT_SLOP = { top: 8, right: 8, bottom: 8, left: 8 };
 
 export const AUDIO_PLAYBACK_SPEED = 'audioPlaybackSpeed';
 
-export const ACTIVE_OFFSET_X = 0.001;
+export const SCRUB_ACTIVE_OFFSET_X = 10;
+
+export const SCROLL_FAIL_OFFSET_Y = 10;

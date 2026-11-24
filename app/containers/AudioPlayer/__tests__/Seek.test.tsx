@@ -1,4 +1,5 @@
 import { act, fireEvent, render, renderHook, screen } from '@testing-library/react-native';
+import { I18nManager } from 'react-native';
 import { State, usePanGesture, useTapGesture } from 'react-native-gesture-handler';
 import { fireGestureHandler } from 'react-native-gesture-handler/jest-utils';
 import { useSharedValue } from 'react-native-reanimated';
@@ -45,6 +46,20 @@ test('a tap seeks to where it lands on the track', async () => {
 		])
 	);
 	expect(onChangeTime).toHaveBeenCalledWith(90);
+});
+
+test('in a right-to-left layout a tap seeks from the right edge, where the audio starts', async () => {
+	jest.replaceProperty(I18nManager, 'isRTL', true);
+	const { tap, onChangeTime } = setup();
+	await act(() =>
+		fireGestureHandler(tap, [
+			{ state: State.BEGAN, x: 150 },
+			{ state: State.ACTIVE, x: 150 },
+			{ state: State.END, x: 150 }
+		])
+	);
+	expect(onChangeTime).toHaveBeenCalledWith(30);
+	jest.restoreAllMocks();
 });
 
 test('a drag seeks once, on release, to where the finger left the track', async () => {
@@ -123,4 +138,14 @@ test('adjusting down seeks back a few seconds, not past the start', () => {
 	currentTime.value = 2;
 	adjust('decrement');
 	expect(onChangeTime).toHaveBeenLastCalledWith(0);
+});
+
+test('before the audio loads, the seek bar reads as disabled and offers no seek actions', () => {
+	const { result } = renderHook(() => ({ currentTime: useSharedValue(0), duration: useSharedValue(0) }));
+	render(
+		<Seek currentTime={result.current.currentTime} duration={result.current.duration} loaded={false} onChangeTime={jest.fn()} />
+	);
+	const seekBar = screen.getByTestId('audio-seek');
+	expect(seekBar.props.accessibilityState).toEqual({ disabled: true });
+	expect(seekBar.props.accessibilityActions).toBeUndefined();
 });
