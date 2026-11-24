@@ -114,22 +114,6 @@ platform :ios do
     )
   end
 
-  desc "Build app for Simulator"
-  lane :build_simulator do
-    gym(
-      scheme: "RocketChat",
-      workspace: "RocketChat.xcworkspace",
-      destination: "generic/platform=iOS Simulator",
-      skip_package_ipa: true,
-      output_name: "Rocket.Chat",
-      output_directory: "./fastlane/output",
-      build_path: "./fastlane/build",
-      configuration: "Release",
-      derived_data_path: "./fastlane/derived_data",
-      xcargs: "-parallelizeTargets -jobs 4 ARCHS=arm64"
-    )
-  end
-
   after_all do |lane|
     delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])
   end
