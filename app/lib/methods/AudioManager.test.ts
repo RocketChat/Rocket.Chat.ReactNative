@@ -427,6 +427,20 @@ describe('AudioManager', () => {
 			expect(getNowPlaying()).toBeNull();
 		});
 
+		it('pauseAudioIfPlaying pauses only the audio it names', async () => {
+			const { AudioManager, players } = setup();
+			const playingKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			const idleKey = AudioManager.loadAudio({ rid: 'room', uri: 'file://b.mp3' });
+			await AudioManager.playAudio(playingKey);
+
+			AudioManager.pauseAudioIfPlaying(idleKey);
+			expect(players[0].pause).not.toHaveBeenCalled();
+
+			AudioManager.pauseAudioIfPlaying(playingKey);
+			expect(players[0].pause).toHaveBeenCalledTimes(1);
+			expect(getNowPlaying()).toMatchObject({ audioKey: playingKey, playing: false });
+		});
+
 		it('an audio from a left room stays in the rooms list player when the next audio fails to start', async () => {
 			const { AudioManager, players } = setup();
 			const leftKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });

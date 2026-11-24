@@ -16,6 +16,7 @@ jest.mock('~/lib/methods/AudioManager', () => ({
 		addAudioRendered: jest.fn(),
 		removeAudioRendered: jest.fn(),
 		pauseAudio: jest.fn(),
+		pauseAudioIfPlaying: jest.fn(),
 		playAudio: jest.fn(),
 		setPositionAsync: jest.fn(() => Promise.resolve())
 	}
@@ -417,6 +418,24 @@ describe('AudioPlayer', () => {
 			act(() => capturedBlurCb!());
 
 			expect(AudioManager.removeAudioRendered).toHaveBeenCalled();
+		});
+
+		it('keeps a message audio playing when the screen is blurred', () => {
+			render(<AudioPlayer {...defaultProps} />);
+
+			act(() => capturedBlurCb!());
+
+			expect(AudioManager.pauseAudioIfPlaying).not.toHaveBeenCalled();
+		});
+
+		it('pauses an audio with no message, like a file in the Files list, when the screen is blurred', async () => {
+			(AudioManager.loadAudio as jest.Mock).mockReturnValue('file-key');
+			render(<AudioPlayer {...defaultProps} msgId={undefined} />);
+			await act(() => new Promise(resolve => setImmediate(resolve)));
+
+			act(() => capturedBlurCb!());
+
+			expect(AudioManager.pauseAudioIfPlaying).toHaveBeenCalledWith('file-key');
 		});
 
 		it('calls both unsubscribe functions on unmount', () => {

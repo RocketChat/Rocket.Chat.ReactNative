@@ -183,6 +183,12 @@ class AudioManagerClass {
 		}
 	}
 
+	pauseAudioIfPlaying(audioKey: string): void {
+		if (this.audioPlaying === audioKey) {
+			this.pauseAudio();
+		}
+	}
+
 	async closeAudio() {
 		const audioKey = this.nowPlaying?.audioKey;
 		if (!audioKey) {

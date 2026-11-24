@@ -149,13 +149,16 @@ const AudioPlayer = ({
 		});
 		const unsubscribeBlur = navigation.addListener('blur', () => {
 			AudioManager.removeAudioRendered(audioUri.current);
+			if (!msgId) {
+				AudioManager.pauseAudioIfPlaying(audioUri.current);
+			}
 		});
 
 		return () => {
 			unsubscribeFocus();
 			unsubscribeBlur();
 		};
-	}, [navigation]);
+	}, [navigation, msgId]);
 
 	useEffect(() => {
 		const audioFocusedEventHandler = (audioFocused: string) => {
