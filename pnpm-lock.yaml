@@ -99,8 +99,8 @@ importers:
         specifier: 0.31.36
         version: 0.31.36
       '@rocket.chat/mobile-crypto':
-        specifier: RocketChat/rocket.chat-mobile-crypto#c94f30a971427b1a9d87f226978af02be7509d8f
-        version: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/c94f30a971427b1a9d87f226978af02be7509d8f(react-native-nitro-modules@0.37.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
+        specifier: RocketChat/rocket.chat-mobile-crypto#a9f94eb98ec482affe751653459355a1fe958dea
+        version: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/a9f94eb98ec482affe751653459355a1fe958dea(react-native-nitro-modules@0.37.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       '@rocket.chat/sdk':
         specifier: RocketChat/Rocket.Chat.js.SDK#ecf4fedcf8ab6121e62a6b95bb48823afd805afd
         version: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/ecf4fedcf8ab6121e62a6b95bb48823afd805afd
@@ -191,9 +191,6 @@ importers:
       js-sha256:
         specifier: 0.9.0
         version: 0.9.0
-      jsrsasign:
-        specifier: 11.0.0
-        version: 11.0.0
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -438,9 +435,6 @@ importers:
       '@types/jest':
         specifier: 29.5.14
         version: 29.5.14
-      '@types/jsrsasign':
-        specifier: ^10.5.8
-        version: 10.5.15
       '@types/lodash':
         specifier: ^4.14.188
         version: 4.17.21
@@ -3347,8 +3341,8 @@ packages:
     resolution: {integrity: sha512-Z8kmWHKswEYH9dnr6iU61DJG2BAmCTkvhXhZ4dtFHe8/UThgr8cJcFSpSJi/y8Fh7LakzQIsgq+xMZ1OcwZU+g==}
     engines: {node: 22.16.0}
 
-  '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/c94f30a971427b1a9d87f226978af02be7509d8f':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/c94f30a971427b1a9d87f226978af02be7509d8f}
+  '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/a9f94eb98ec482affe751653459355a1fe958dea':
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/a9f94eb98ec482affe751653459355a1fe958dea}
     version: 0.4.0
     peerDependencies:
       react: '*'
@@ -3593,9 +3587,6 @@ packages:
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
-
-  '@types/jsrsasign@10.5.15':
-    resolution: {integrity: sha512-3stUTaSRtN09PPzVWR6aySD9gNnuymz+WviNHoTb85dKu+BjaV4uBbWWGykBBJkfwPtcNZVfTn2lbX00U+yhpQ==}
 
   '@types/lodash@4.17.21':
     resolution: {integrity: sha512-FOvQ0YPD5NOfPgMzJihoT+Za5pdkDJWcbpuj1DjaKZIr/gxodQjY/uWEFlTNqW2ugXHUiL8lRQgw63dzKHZdeQ==}
@@ -6411,9 +6402,6 @@ packages:
 
   jsonify@0.0.1:
     resolution: {integrity: sha512-2/Ki0GcmuqSrgFyelQq9M05y7PS0mEwuIzrf3f1fPqkVDVRvZrPZtVSMHxdgo8Aq0sxAOb/cr2aqqA3LeWHVPg==}
-
-  jsrsasign@11.0.0:
-    resolution: {integrity: sha512-BtRwVKS+5dsgPpAtzJcpo5OoWjSs1/zllSBG0+8o8/aV0Ki76m6iZwHnwnsqoTdhfFZDN1XIdcaZr5ZkP+H2gg==}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -12293,7 +12281,7 @@ snapshots:
     dependencies:
       tldts: 6.1.86
 
-  '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/c94f30a971427b1a9d87f226978af02be7509d8f(react-native-nitro-modules@0.37.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)':
+  '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/a9f94eb98ec482affe751653459355a1fe958dea(react-native-nitro-modules@0.37.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)':
     dependencies:
       react: 19.2.3
       react-native: 0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
@@ -12586,8 +12574,6 @@ snapshots:
 
   '@types/json5@0.0.29':
     optional: true
-
-  '@types/jsrsasign@10.5.15': {}
 
   '@types/lodash@4.17.21': {}
 
@@ -15910,8 +15896,6 @@ snapshots:
       graceful-fs: 4.2.11
 
   jsonify@0.0.1: {}
-
-  jsrsasign@11.0.0: {}
 
   keyv@4.5.4:
     dependencies:

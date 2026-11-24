@@ -1,4 +1,5 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { rsaImportPublicKey, rsaVerifyJwt } from '@rocket.chat/mobile-crypto';
 
 import { getServerInfo } from '../getServerInfo';
 import fetch from '~/lib/methods/helpers/fetch';
@@ -6,6 +7,7 @@ import log from '~/lib/methods/helpers/log';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { store } from '~/lib/store/auxStore';
 import { getSupportedVersionsCloud } from '~/lib/services/restApi';
+import { getServerById } from '~/lib/database/services/Server';
 import { getBasicAuthKey, getServerUserIdKey, getUserTokenKey } from '~/lib/constants/keys';
 import { mockGlobalFetch } from '~/lib/testUtils/mockGlobalFetch';
 
@@ -199,5 +201,91 @@ describe('getServerInfo cloud lookup', () => {
 			`${attackerServer}/api/info`,
 			`${attackerServer}/api/v1/settings.public?_id=uniqueID`
 		]);
+	});
+});
+
+describe('getServerInfo supported versions', () => {
+	const supportedVersionsKey = { kind: 'supported-versions-key' };
+	const supportedVersionsPayload = { timestamp: '2026-11-01T00:00:00.000Z', enforcementStartDate: '2027-01-01T00:00:00.000Z' };
+
+	const mockServerInfo = (serverInfo: object) =>
+		mockedFetch.mockResolvedValue({ json: () => Promise.resolve({ success: true, version: '7.0.0', ...serverInfo }) } as any);
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		jest.mocked(store.getState).mockReturnValue({ login: { user: undefined }, server: { version: '7.0.0' } } as any);
+		getString.mockReturnValue(null as any);
+		jest.mocked(rsaImportPublicKey).mockResolvedValue(supportedVersionsKey as any);
+		jest.mocked(rsaVerifyJwt).mockResolvedValue(JSON.stringify(supportedVersionsPayload));
+		jest.mocked(getServerById).mockResolvedValue(null);
+	});
+
+	it('returns the payload of a server token that verifies against the supported versions key', async () => {
+		mockServerInfo({ supportedVersions: { signed: 'server-token' } });
+
+		const serverInfo = await getServerInfo(currentServer);
+
+		expect(rsaVerifyJwt).toHaveBeenCalledWith(supportedVersionsKey, 'server-token');
+		expect(serverInfo).toMatchObject({ success: true, supportedVersions: supportedVersionsPayload });
+		expect(getSupportedVersionsCloud).not.toHaveBeenCalled();
+	});
+
+	it('falls back to the cloud token when the server token fails verification', async () => {
+		jest.mocked(rsaVerifyJwt).mockRejectedValueOnce(new Error('JWT signature verification failed'));
+		jest.mocked(getSupportedVersionsCloud).mockResolvedValue({ json: () => Promise.resolve({ signed: 'cloud-token' }) } as any);
+		mockedFetch.mockResolvedValueOnce({
+			json: () => Promise.resolve({ success: true, version: '7.0.0', supportedVersions: { signed: 'forged-token' } })
+		} as any);
+		mockedFetch.mockResolvedValueOnce({ json: () => Promise.resolve({ settings: [{ value: 'unique-id' }] }) } as any);
+
+		const serverInfo = await getServerInfo(currentServer);
+
+		expect(rsaVerifyJwt).toHaveBeenLastCalledWith(supportedVersionsKey, 'cloud-token');
+		expect(serverInfo).toMatchObject({ success: true, supportedVersions: supportedVersionsPayload });
+	});
+
+	it('returns no supported versions when the cloud token also fails verification', async () => {
+		jest.mocked(rsaVerifyJwt).mockRejectedValue(new Error('JWT signature verification failed'));
+		jest.mocked(getSupportedVersionsCloud).mockResolvedValue({ json: () => Promise.resolve({ signed: 'cloud-token' }) } as any);
+		mockedFetch.mockResolvedValueOnce({
+			json: () => Promise.resolve({ success: true, version: '7.0.0', supportedVersions: { signed: 'forged-token' } })
+		} as any);
+		mockedFetch.mockResolvedValueOnce({ json: () => Promise.resolve({ settings: [{ value: 'unique-id' }] }) } as any);
+
+		const serverInfo = await getServerInfo(currentServer);
+
+		expect(serverInfo).toMatchObject({ success: true, supportedVersions: null });
+	});
+
+	it('skips verification when the server sends no token', async () => {
+		mockServerInfo({});
+		jest.mocked(getServerById).mockResolvedValue({ supportedVersionsUpdatedAt: new Date() } as any);
+
+		await getServerInfo(currentServer);
+
+		expect(rsaVerifyJwt).not.toHaveBeenCalled();
+	});
+
+	it('drops an unverified server token when the cloud was asked recently', async () => {
+		jest.mocked(rsaVerifyJwt).mockRejectedValue(new Error('JWT signature verification failed'));
+		mockServerInfo({ supportedVersions: { signed: 'forged-token' } });
+		jest.mocked(getServerById).mockResolvedValue({ supportedVersionsUpdatedAt: new Date() } as any);
+
+		const serverInfo = await getServerInfo(currentServer);
+
+		expect(serverInfo).toMatchObject({ success: true });
+		expect(serverInfo).not.toHaveProperty('supportedVersions.signed');
+	});
+
+	it('verifies again after a failed key import', async () => {
+		mockServerInfo({ supportedVersions: { signed: 'server-token' } });
+		jest.mocked(getServerById).mockResolvedValue({ supportedVersionsUpdatedAt: new Date() } as any);
+		jest.mocked(rsaImportPublicKey).mockRejectedValueOnce(new Error('key import failed'));
+
+		const afterFailedImport = await getServerInfo(currentServer);
+		const afterRecoveredImport = await getServerInfo(currentServer);
+
+		expect(afterFailedImport.success && afterFailedImport.supportedVersions).toBeUndefined();
+		expect(afterRecoveredImport).toMatchObject({ success: true, supportedVersions: supportedVersionsPayload });
 	});
 });

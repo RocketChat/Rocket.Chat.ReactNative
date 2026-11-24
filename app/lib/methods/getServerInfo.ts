@@ -1,4 +1,4 @@
-import { KJUR } from 'jsrsasign';
+import { rsaImportPublicKey, rsaVerifyJwt } from '@rocket.chat/mobile-crypto';
 
 import dayjs from '../dayjs';
 import { getSupportedVersionsCloud } from '../services/restApi';
@@ -32,19 +32,13 @@ export type TServerInfoResult = IServerInfoSuccess | IServerInfoFailure;
 
 const SV_CLOUD_UPDATE_INTERVAL = 12; // hours
 
-// Verifies if JWT is valid and returns the payload
-const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
+const verifyJWT = async (jwt?: string): Promise<ISupportedVersionsData | null> => {
+	if (!jwt) {
+		return null;
+	}
 	try {
-		if (!jwt) {
-			return null;
-		}
-		const isValid = KJUR.jws.JWS.verify(jwt, SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY, ['RS256']);
-		if (!isValid) {
-			return null;
-		}
-
-		const { payloadObj } = KJUR.jws.JWS.parse(jwt);
-		return payloadObj as ISupportedVersions;
+		const payload = await rsaVerifyJwt(await rsaImportPublicKey(SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY), jwt);
+		return JSON.parse(payload) as ISupportedVersions;
 	} catch {
 		return null;
 	}
@@ -72,7 +66,7 @@ export async function getServerInfo(server: string, signal?: AbortSignal): Promi
 			}
 
 			// Makes use of signed JWT to get supported versions
-			const supportedVersions = verifyJWT(serverInfo.supportedVersions?.signed);
+			const supportedVersions = await verifyJWT(serverInfo.supportedVersions?.signed);
 
 			// if backend doesn't have supported versions or JWT is invalid, request from cloud
 			if (!supportedVersions) {
@@ -84,7 +78,8 @@ export async function getServerInfo(server: string, signal?: AbortSignal): Promi
 				) {
 					return {
 						...serverInfo,
-						success: true
+						success: true,
+						supportedVersions: undefined
 					};
 				}
 
@@ -94,12 +89,13 @@ export async function getServerInfo(server: string, signal?: AbortSignal): Promi
 				if (!cloudInfo) {
 					return {
 						...serverInfo,
-						success: true
+						success: true,
+						supportedVersions: undefined
 					};
 				}
 
 				// Makes use of signed JWT to get supported versions
-				const supportedVersionsCloud = verifyJWT(cloudInfo?.signed);
+				const supportedVersionsCloud = await verifyJWT(cloudInfo?.signed);
 
 				return {
 					...serverInfo,
