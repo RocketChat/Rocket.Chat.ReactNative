@@ -52,10 +52,10 @@ const NowPlayingAudioBar = ({ audio, style }: INowPlayingAudioProps & { audio: I
 				<View style={styles.subtitleRow}>
 					{roomName ? (
 						<Text numberOfLines={1} style={[styles.subtitle, styles.roomName, { color: colors.fontSecondaryInfo }]}>
-							{`${roomName} · `}
+							{roomName}
 						</Text>
 					) : null}
-					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}>{progress}</Text>
+					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}>{roomName ? ` · ${progress}` : progress}</Text>
 				</View>
 			</Pressable>
 			<NativeButton
