@@ -40,6 +40,6 @@ export const useNowPlayingAudioDetails = (rid: string, msgId: string) => {
 		};
 	}, [rid, msgId]);
 
-	const senderName = source.sender ? getSenderName(source.sender) || source.sender.username : undefined;
+	const senderName = source.sender ? getSenderName(source.sender) : undefined;
 	return { title: senderName || source.roomName || '', roomName: senderName ? source.roomName : undefined };
 };

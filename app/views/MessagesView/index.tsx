@@ -75,7 +75,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 	private rid: string;
 	private t: SubscriptionType;
 	private content: any;
-	private listsFiles: boolean;
 
 	constructor(props: IMessagesViewProps) {
 		super(props);
@@ -89,7 +88,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		this.content = this.defineMessagesViewContent(props.route.params?.name);
-		this.listsFiles = props.route.params?.name === 'Files';
 	}
 
 	componentDidMount() {
@@ -261,7 +259,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 							return {} as IUrl;
 						});
 					}
-					return this.listsFiles ? { ...message } : { ...message, id: message._id };
+					return { ...message };
 				});
 				this.setState({
 					messages: [...messages, ...urlRenderMessages],

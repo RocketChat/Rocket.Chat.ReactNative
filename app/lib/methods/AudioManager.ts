@@ -139,8 +139,6 @@ class AudioManagerClass {
 			this.pauseAudio();
 		}
 
-		const previousAudioKey = this.nowPlaying?.audioKey;
-
 		if (!this.audioQueue[audioKey]) {
 			const sound = createAudioPlayer({ uri: this.audioUris[audioKey] });
 			this.audioQueue[audioKey] = sound;
@@ -160,6 +158,7 @@ class AudioManagerClass {
 			this.audioPlaying = audioKey;
 			this.setRate(audioKey, this.audioRates[audioKey]);
 			this.audioQueue[audioKey].play();
+			const previousAudioKey = this.nowPlaying?.audioKey;
 			if (previousAudioKey && previousAudioKey !== audioKey) {
 				this.releaseIfDetached(previousAudioKey);
 			}
