@@ -7,7 +7,7 @@ jest.mock('~/theme', () => ({
 	useTheme: () => ({ colors: { badgeBackgroundLevel1: 'muted', badgeBackgroundLevel2: 'primary' } })
 }));
 
-const renderWaveform = (peaks: number[] | null | undefined, width: number) => {
+const renderWaveform = (peaks: number[] | undefined, width: number) => {
 	const { result } = renderHook(() => useSharedValue(0));
 	render(<Waveform peaks={peaks} progress={result.current} />);
 	const track = screen.getByTestId('waveform');
@@ -26,4 +26,9 @@ test('draws fewer, merged bars on a narrow track', () => {
 	const bars = renderWaveform(peaks, 79) as { props: { peak: number } }[];
 	expect(bars).toHaveLength(20);
 	expect(bars[bars.length - 1].props.peak).toBe(1);
+});
+
+test('places each bar where a touch at that point of the track lands', () => {
+	const bars = renderWaveform([1, 1], 100) as { props: { position: number } }[];
+	expect(bars.map(bar => bar.props.position)).toEqual([0.015, 0.985]);
 });

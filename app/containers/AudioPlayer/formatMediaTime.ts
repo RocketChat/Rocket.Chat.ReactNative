@@ -1,8 +1,6 @@
 export const UNKNOWN_MEDIA_TIME = '-:--';
 
 export const formatMediaTime = (seconds: number) => {
-	'worklet';
-
 	if (!Number.isFinite(seconds) || seconds < 0) {
 		return UNKNOWN_MEDIA_TIME;
 	}
@@ -14,8 +12,6 @@ export const formatMediaTime = (seconds: number) => {
 };
 
 export const formatProgressLabel = (currentTime: number, duration: number) => {
-	'worklet';
-
 	if (!duration) {
 		return `${UNKNOWN_MEDIA_TIME} / ${UNKNOWN_MEDIA_TIME}`;
 	}

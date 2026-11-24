@@ -7,7 +7,7 @@ import WaveformBar from './WaveformBar';
 import { useWaveformBars } from './hooks/useWaveformBars';
 
 interface IWaveform {
-	peaks?: number[] | null;
+	peaks?: number[];
 	progress: SharedValue<number>;
 }
 
@@ -16,11 +16,11 @@ const Waveform = ({ peaks, progress }: IWaveform) => {
 	const { bars, gap, onLayout } = useWaveformBars(peaks);
 	return (
 		<View testID='waveform' style={[styles.track, { gap }]} onLayout={onLayout}>
-			{bars.map((peak, index) => (
+			{bars.map(({ peak, position }, index) => (
 				<WaveformBar
 					key={index}
 					peak={peak}
-					position={(index + 0.5) / bars.length}
+					position={position}
 					progress={progress}
 					playedColor={colors.badgeBackgroundLevel2}
 					unplayedColor={colors.badgeBackgroundLevel1}

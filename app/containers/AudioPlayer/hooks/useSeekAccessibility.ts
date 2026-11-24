@@ -3,6 +3,7 @@ import { type SharedValue } from 'react-native-reanimated';
 
 import i18n from '~/i18n';
 import { formatMediaTime } from '../formatMediaTime';
+import { clamp } from '../playbackClock';
 import { type IShownTime } from './useShownTime';
 
 export const SEEK_STEP_SECONDS = 5;
@@ -37,7 +38,7 @@ export const useSeekAccessibility = ({
 		if (!enabled || !step || !total) {
 			return;
 		}
-		const time = Math.min(Math.max(shownSeconds.get() + step, 0), total);
+		const time = clamp(shownSeconds.get() + step, 0, total);
 		showTime(time, total);
 		onChangeTime(time);
 	};
@@ -54,7 +55,8 @@ export const useSeekAccessibility = ({
 					})
 				}
 			: undefined,
-		accessibilityActions: ACCESSIBILITY_ACTIONS,
+		accessibilityState: { disabled: !enabled },
+		accessibilityActions: enabled ? ACCESSIBILITY_ACTIONS : undefined,
 		onAccessibilityAction
 	};
 };
