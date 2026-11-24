@@ -105,6 +105,7 @@ const editMessage = async (fixtures: Fixtures) => {
 	await sendMessage(fixtures, 'edit');
 	await hideKeyboard(fixtures);
 	await startMessageAction(fixtures, 'edit', 'edit');
+	await expect(composer(fixtures)).toHaveValue('edit', { timeout: LONG_TIMEOUT });
 	await replaceTextUntilHeld(composer(fixtures), 'edited');
 	await tapSend(fixtures);
 	await expectVisible(fixtures, 'message-content-edited');
@@ -176,9 +177,7 @@ const sendSavedDraft = async (fixtures: Fixtures, roomName: string) => {
 const replaceDraftKeepingQuote = async (fixtures: Fixtures, roomName: string, original: string, text: string) => {
 	await leaveAndReopenRoom(fixtures, roomName);
 	await expectVisible(fixtures, `markdown-preview-${original}`);
-	await composer(fixtures).clear();
-	await fillWhenUncovered(composer(fixtures), text);
-	await expect(composer(fixtures)).toHaveValue(text, { timeout: LONG_TIMEOUT });
+	await replaceTextUntilHeld(composer(fixtures), text);
 };
 
 const saveQuoteDraft = async (fixtures: Fixtures) => {

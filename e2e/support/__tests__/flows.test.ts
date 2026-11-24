@@ -38,6 +38,7 @@ const failure = (code: string) => Object.assign(new Error(code), { code });
 const locator = () => ({
 	isVisible: jest.fn(() => Promise.resolve(false)),
 	tap: jest.fn(() => Promise.resolve()),
+	fill: jest.fn(() => Promise.resolve()),
 	scrollUntilVisible: jest.fn(() => Promise.resolve())
 });
 const asLocator = (target: ReturnType<typeof locator>) => target as unknown as Locator;
@@ -210,20 +211,18 @@ describe('going back', () => {
 });
 
 describe('replacing text', () => {
-	const field = () => ({ fill: jest.fn(() => Promise.resolve()) });
-
 	it('fills again when the text does not stick', async () => {
-		const input = field();
+		const input = locator();
 		mockToHaveValue.mockRejectedValueOnce(failure('ASSERTION_FAILED'));
-		await replaceTextUntilHeld(input as unknown as Locator, 'edited');
+		await replaceTextUntilHeld(asLocator(input), 'edited');
 		expect(input.fill).toHaveBeenCalledTimes(2);
 	});
 
 	it('fails once every fill loses the text', async () => {
-		const input = field();
+		const input = locator();
 		const lost = failure('ASSERTION_FAILED');
 		mockToHaveValue.mockRejectedValue(lost);
-		await expect(replaceTextUntilHeld(input as unknown as Locator, 'edited')).rejects.toBe(lost);
+		await expect(replaceTextUntilHeld(asLocator(input), 'edited')).rejects.toBe(lost);
 		expect(input.fill).toHaveBeenCalledTimes(3);
 	});
 });

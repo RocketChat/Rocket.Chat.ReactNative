@@ -40,21 +40,21 @@ const pointBelowRoomMenu = async ({ screen }: Fixtures) => {
 	return { x: roomViewBox.x + roomViewBox.width / 2, y: roomViewBox.y + roomViewBox.height * 0.8 };
 };
 
-const closeRoomMenu = async (fixtures: Fixtures, iosDismissPoint?: { x: number; y: number }) => {
-	if (iosDismissPoint) {
-		await fixtures.screen.tapAt(iosDismissPoint);
-	} else {
-		await fixtures.screen.getByTestId('action-sheet-handle').tap();
+const prepareRoomMenuDismissal = async (fixtures: Fixtures) => {
+	if (fixtures.platform !== 'ios') {
+		return () => fixtures.screen.getByTestId('action-sheet-handle').tap();
 	}
+	const dismissPoint = await pointBelowRoomMenu(fixtures);
+	return () => fixtures.screen.tapAt(dismissPoint);
 };
 
 export const expectRoomMenuOptions = async (fixtures: Fixtures, options: readonly HeaderMenuEntry[]) => {
-	const iosDismissPoint = fixtures.platform === 'ios' ? await pointBelowRoomMenu(fixtures) : undefined;
+	const closeRoomMenu = await prepareRoomMenuDismissal(fixtures);
 	await tapWhenVisible(fixtures, roomMenuButton(fixtures));
 	for (const option of [...options, ROOM_SEARCH]) {
 		await expect(headerMenuOption(fixtures, option)).toBeVisible({ timeout: LONG_TIMEOUT });
 	}
-	await closeRoomMenu(fixtures, iosDismissPoint);
+	await closeRoomMenu();
 	await expect(headerMenuOption(fixtures, ROOM_SEARCH)).toBeHidden({ timeout: LONG_TIMEOUT });
 };
 

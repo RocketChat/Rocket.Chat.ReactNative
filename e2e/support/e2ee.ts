@@ -162,6 +162,7 @@ export const editMessage = async (fixtures: Fixtures, message: string, edited: s
 	const { screen } = fixtures;
 	await openMessageActions(fixtures, message);
 	await tapTextWhenVisible(fixtures, 'Edit');
+	await expect(screen.getByTestId('message-composer-input')).toHaveValue(message, { timeout: LONG_TIMEOUT });
 	await replaceTextUntilHeld(screen.getByTestId('message-composer-input'), edited);
 	await tapSend(fixtures);
 };
