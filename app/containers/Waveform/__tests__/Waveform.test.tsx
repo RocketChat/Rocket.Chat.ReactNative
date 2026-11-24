@@ -15,8 +15,11 @@ const renderWaveform = (peaks: number[] | undefined, width: number) => {
 	return screen.getByTestId('waveform').props.children as unknown[];
 };
 
-test('draws a flat placeholder while the waveform is missing', () => {
-	const bars = renderWaveform(undefined, 300);
+test.each([
+	['not decoded yet', undefined],
+	['failed to decode', []]
+])('draws a flat placeholder when the waveform is %s', (_state, peaks) => {
+	const bars = renderWaveform(peaks, 300);
 	expect(bars).toHaveLength(40);
 	expect(bars.every(bar => (bar as { props: { peak: number } }).props.peak === 0)).toBe(true);
 });
