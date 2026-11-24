@@ -106,10 +106,13 @@ platform :ios do
       targets: "Rocket.Chat.Watch",
     )
 
+    compilation_cache_path = ENV["XCODE_COMPILATION_CACHE_PATH"]
+    compilation_cache_xcargs = compilation_cache_path ? " COMPILATION_CACHE_ENABLE_CACHING=YES COMPILATION_CACHE_CAS_PATH=#{compilation_cache_path}" : ""
+
     gym(
       scheme: "RocketChat",
       workspace: "RocketChat.xcworkspace",
-      xcargs: "-allowProvisioningUpdates",
+      xcargs: "-allowProvisioningUpdates#{compilation_cache_xcargs}",
       output_name: "Rocket.Chat"
     )
   end
