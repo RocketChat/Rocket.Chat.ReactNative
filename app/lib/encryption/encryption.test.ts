@@ -492,6 +492,8 @@ describe('Encryption key distribution', () => {
 	describe('when the client stops during a run and a new sign-in starts', () => {
 		const usersWaiting = { r1: [{ _id: 'other-user', public_key: 'public-key' }] };
 		const waitingSubscriptions = [{ rid: 'r1', usersWaitingForE2EKeys: [{ userId: 'other-user' }] }];
+		const waitingForKeyResponse = { success: true, usersWaitingForE2EKeys: usersWaiting };
+		const encryptedKeys = [{ _id: 'other-user', key: 'encrypted-key' }];
 
 		const blockOnce = (mock: jest.Mock, resolvedValue: unknown) => {
 			const step = new Deferred();
@@ -499,12 +501,18 @@ describe('Encryption key distribution', () => {
 			return step;
 		};
 
+		const blockSubscriptionsQuery = () => {
+			const step = new Deferred();
+			jest.mocked(db.get).mockImplementationOnce(() => ({ query: () => step.then(() => waitingSubscriptions) }));
+			return step;
+		};
+
 		beforeEach(() => {
 			jest.mocked(db.get).mockImplementation(() => ({ query: () => Promise.resolve(waitingSubscriptions) }));
 			mockHasSessionKey.mockReturnValue(true);
 			mockHandshake.mockResolvedValue(undefined);
-			mockEncryptGroupKey.mockResolvedValue([{ _id: 'other-user', key: 'encrypted-key' }]);
-			jest.mocked(fetchUsersWaitingForGroupKey).mockResolvedValue({ success: true, usersWaitingForE2EKeys: usersWaiting } as any);
+			mockEncryptGroupKey.mockResolvedValue(encryptedKeys);
+			jest.mocked(fetchUsersWaitingForGroupKey).mockResolvedValue(waitingForKeyResponse as any);
 			jest.mocked(provideUsersSuggestedGroupKeys).mockResolvedValue({ success: true } as any);
 			encryption.userId = 'first-user';
 		});
@@ -517,47 +525,46 @@ describe('Encryption key distribution', () => {
 			jest.mocked(provideUsersSuggestedGroupKeys).mockReset();
 		});
 
-		const blockingSteps: [string, () => Deferred][] = [
-			[
-				'subscriptions query',
-				() => {
-					const step = new Deferred();
-					jest.mocked(db.get).mockImplementationOnce(() => ({ query: () => step.then(() => waitingSubscriptions) }));
-					return step;
-				}
-			],
-			['room handshake while sampling', () => blockOnce(mockHandshake, undefined)],
+		const blockingSteps: [string, () => Deferred, number, number][] = [
+			['subscriptions query', blockSubscriptionsQuery, 1, 1],
+			['room handshake while sampling', () => blockOnce(mockHandshake, undefined), 1, 1],
 			[
 				'fetching users waiting for the key',
-				() => blockOnce(jest.mocked(fetchUsersWaitingForGroupKey), { success: true, usersWaitingForE2EKeys: usersWaiting })
+				() => blockOnce(jest.mocked(fetchUsersWaitingForGroupKey), waitingForKeyResponse),
+				2,
+				1
 			],
-			['encrypting the group key', () => blockOnce(mockEncryptGroupKey, [{ _id: 'other-user', key: 'encrypted-key' }])]
+			['encrypting the group key', () => blockOnce(mockEncryptGroupKey, encryptedKeys), 2, 2]
 		];
 
-		it.each(blockingSteps)('stops the old run waiting on the %s and runs only the new one', async (_step, blockStep) => {
-			const blockedStep = blockStep();
-			const firstRun = encryption.initiateKeyDistribution();
-			await jest.advanceTimersByTimeAsync(0);
+		it.each(blockingSteps)(
+			'stops the old run waiting on the %s and runs only the new one',
+			async (_step, blockStep, expectedFetches, expectedEncryptions) => {
+				const blockedStep = blockStep();
+				const firstRun = encryption.initiateKeyDistribution();
+				await jest.advanceTimersByTimeAsync(0);
 
-			encryption.stop();
-			encryption.userId = 'second-user';
-			await encryption.initiateKeyDistribution();
-			const providedBySecondRun = jest.mocked(provideUsersSuggestedGroupKeys).mock.calls.length;
+				encryption.stop();
+				encryption.userId = 'second-user';
+				await encryption.initiateKeyDistribution();
+				const providedBySecondRun = jest.mocked(provideUsersSuggestedGroupKeys).mock.calls.length;
 
-			blockedStep.resolve();
-			await firstRun;
+				blockedStep.resolve();
+				await firstRun;
 
-			expect(providedBySecondRun).toBe(1);
-			expect(provideUsersSuggestedGroupKeys).toHaveBeenCalledTimes(1);
-		});
+				expect(providedBySecondRun).toBe(1);
+				expect(provideUsersSuggestedGroupKeys).toHaveBeenCalledTimes(1);
+				expect(fetchUsersWaitingForGroupKey).toHaveBeenCalledTimes(expectedFetches);
+				expect(mockEncryptGroupKey).toHaveBeenCalledTimes(expectedEncryptions);
+			}
+		);
 
 		it('creates no room instances when the client stops during the subscriptions query', async () => {
-			const step = new Deferred();
-			jest.mocked(db.get).mockImplementationOnce(() => ({ query: () => step.then(() => waitingSubscriptions) }));
+			const blockedStep = blockSubscriptionsQuery();
 			const firstRun = encryption.initiateKeyDistribution();
 
 			encryption.stop();
-			step.resolve();
+			blockedStep.resolve();
 			await firstRun;
 
 			expect(mockHandshake).not.toHaveBeenCalled();
