@@ -275,6 +275,8 @@ PODS:
   - MMKVCore (2.4.0)
   - MobileCrypto (0.4.0):
     - hermes-engine
+    - MobileCryptoCore
+    - NitroModules
     - RCTRequired
     - RCTTypeSafety
     - React-Core
@@ -295,6 +297,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - MobileCryptoCore (0.4.0)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
@@ -3057,6 +3060,7 @@ DEPENDENCIES:
   - MMKV
   - MMKVCore
   - "MobileCrypto (from `../node_modules/@rocket.chat/mobile-crypto`)"
+  - "MobileCryptoCore (from `../node_modules/@rocket.chat/mobile-crypto`)"
   - NitroMmkv (from `../node_modules/react-native-mmkv`)
   - NitroModules (from `../node_modules/react-native-nitro-modules`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -3268,6 +3272,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-v250829098.0.17
   MobileCrypto:
+    :path: "../node_modules/@rocket.chat/mobile-crypto"
+  MobileCryptoCore:
     :path: "../node_modules/@rocket.chat/mobile-crypto"
   NitroMmkv:
     :path: "../node_modules/react-native-mmkv"
@@ -3539,7 +3545,8 @@ SPEC CHECKSUMS:
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   MMKV: 86859fdfa2b0b21db1fd6e48788474a6416a2c77
   MMKVCore: 3d16ce9f7d411e135020915fde98a056859a1efa
-  MobileCrypto: 182433a43bce9ff7ac5b0a46ca09e907b5194e92
+  MobileCrypto: f01a54a40da363fc998a7463849e856d9b61853f
+  MobileCryptoCore: 73f7efd3ea7dc90f213687b9a52908b6f436399b
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   NitroMmkv: 38b271a19e7e152025a6893160c98326872ea05f
   NitroModules: 6232dc95a28a7a221227e618733ce0e674e8753b
@@ -3658,6 +3665,6 @@ SPEC CHECKSUMS:
   Yoga: 269d501078efa6b25cd57f7f326fc3da213580be
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 3ef18da69ac141a16cded1b74c0bc71b2f7216a7
+PODFILE CHECKSUM: 2874f598e791aa23db930d7659ada462c89db36d
 
 COCOAPODS: 1.15.2

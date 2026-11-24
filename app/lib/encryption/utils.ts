@@ -1,15 +1,11 @@
-import ByteBuffer from 'bytebuffer';
-import { aesDecryptFile, aesEncryptFile, randomBytes } from '@rocket.chat/mobile-crypto';
+import { randomBytes } from '@rocket.chat/mobile-crypto';
 
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
-import * as hexLite from './helpers/hex-lite';
 import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { store } from '../store/auxStore';
 
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
-
-export const bufferToHex = hexLite.fromBuffer;
 
 // @ts-ignore
 export const b64ToBuffer = (base64: string): ArrayBuffer => toByteArray(base64).buffer;
@@ -58,33 +54,6 @@ export const utf8ToBuffer = (utf8: string): ArrayBuffer => {
 	return array.buffer;
 };
 
-export const bufferToUtf8 = (buffer: ArrayBuffer): string => {
-	const uintArray = new Uint8Array(buffer) as number[] & Uint8Array;
-	const encodedString = String.fromCharCode.apply(null, uintArray);
-	return decodeURIComponent(escape(encodedString));
-};
-
-export const splitVectorData = (text: ArrayBuffer): ArrayBuffer[] => {
-	const vector = text.slice(0, 16);
-	const data = text.slice(16);
-	return [vector, data];
-};
-
-export const joinVectorData = (vector: ArrayBuffer, data: ArrayBuffer): ArrayBuffer => {
-	const output = new Uint8Array(vector.byteLength + data.byteLength);
-	output.set(new Uint8Array(vector), 0);
-	output.set(new Uint8Array(data), vector.byteLength);
-	return output.buffer;
-};
-
-export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uint8Array): string => {
-	if (typeof thing === 'string') {
-		return thing;
-	}
-	// @ts-ignore
-	return new ByteBuffer.wrap(thing).toString('binary');
-};
-
 // https://github.com/RocketChat/Rocket.Chat/blob/b94db45cab297a3bcbafca4d135d83c898222380/apps/meteor/app/mentions/lib/MentionsParser.ts#L50
 const userMentionRegex = (pattern: string) => new RegExp(`(^|\\s|>)@(${pattern}(@(${pattern}))?(:([0-9a-zA-Z-_.]+))?)`, 'gm');
 const channelMentionRegex = (pattern: string) => new RegExp(`(^|\\s|>)#(${pattern}(@(${pattern}))?)`, 'gm');
@@ -102,8 +71,6 @@ export const getE2EEMentions = (message?: string) => {
 	};
 };
 
-export const generateAESCTRKey = () => randomBytes(32);
-
 interface IExportedKey {
 	kty: string;
 	alg: string;
@@ -112,7 +79,7 @@ interface IExportedKey {
 	key_ops: string[];
 }
 
-export const exportAESCTR = (key: ArrayBuffer): IExportedKey => {
+export const exportAESCTR = (key: string): IExportedKey => {
 	// Web Crypto format of a Secret Key
 	const exportedKey = {
 		// Type of Secret Key
@@ -120,7 +87,7 @@ export const exportAESCTR = (key: ArrayBuffer): IExportedKey => {
 		// Algorithm
 		alg: 'A256CTR',
 		// Base64URI encoded array of bytes
-		k: bufferToB64URI(key),
+		k: key,
 		// Specific Web Crypto properties
 		ext: true,
 		key_ops: ['encrypt', 'decrypt']
@@ -128,10 +95,6 @@ export const exportAESCTR = (key: ArrayBuffer): IExportedKey => {
 
 	return exportedKey;
 };
-
-export const encryptAESCTR = (path: string, key: string, vector: string): Promise<string> => aesEncryptFile(path, key, vector);
-
-export const decryptAESCTR = (path: string, key: string, vector: string): Promise<string> => aesDecryptFile(path, key, vector);
 
 // Missing room encryption key
 export const isMissingRoomE2EEKey = ({
@@ -236,10 +199,12 @@ export const encodePrefixedBase64 = (prefix: string, data: ArrayBuffer): string 
 	return prefix + base64Data;
 };
 
-export const parsePrivateKey = (
-	privateKey: string,
-	userId: string
-): { iv: ArrayBuffer; ciphertext: ArrayBuffer; salt: string; iterations: number; version: 'v1' | 'v2' } => {
+type TParsedPrivateKey = { salt: string; iterations: number } & (
+	| { version: 'v1'; ivAndCiphertext: string }
+	| { version: 'v2'; iv: string; ciphertext: string }
+);
+
+export const parsePrivateKey = (privateKey: string, userId: string): TParsedPrivateKey => {
 	const json: unknown = JSON.parse(privateKey);
 	if (typeof json !== 'object' || json === null) {
 		throw new TypeError('Invalid private key format');
@@ -255,21 +220,11 @@ export const parsePrivateKey = (
 		'iterations' in json &&
 		typeof json.iterations === 'number'
 	) {
-		// v2: { iv: base64, ciphertext: base64, salt: string }
-		return {
-			iv: b64ToBuffer(json.iv),
-			ciphertext: b64ToBuffer(json.ciphertext),
-			salt,
-			iterations: json.iterations,
-			version: 'v2'
-		};
+		return { iv: json.iv, ciphertext: json.ciphertext, salt, iterations: json.iterations, version: 'v2' };
 	}
 
 	if ('$binary' in json && typeof json.$binary === 'string') {
-		// v1: { $binary: base64(iv[16] + ciphertext) }
-		const binary = b64ToBuffer(json.$binary);
-		const [iv, ciphertext] = splitVectorData(binary);
-		return { iv, ciphertext, salt, iterations: 1000, version: 'v1' };
+		return { ivAndCiphertext: json.$binary, salt, iterations: 1000, version: 'v1' };
 	}
 
 	throw new TypeError('Invalid private key format');
@@ -310,10 +265,7 @@ export async function generatePassphrase() {
 	for (let i = 0; i < WORD_COUNT; i++) {
 		let v: number;
 		do {
-			// eslint-disable-next-line no-await-in-loop
-			const randomBase64 = await randomBytes(4);
-			const randomBuffer = b64ToBuffer(randomBase64);
-			const randomArray = new Uint8Array(randomBuffer);
+			const randomArray = new Uint8Array(randomBytes(4));
 
 			// Combine 4 bytes into 32-bit big-endian integer
 			v = (randomArray[0] << 24) | (randomArray[1] << 16) | (randomArray[2] << 8) | randomArray[3];

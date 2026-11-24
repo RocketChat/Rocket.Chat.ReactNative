@@ -1,4 +1,3 @@
-import EJSON from 'ejson';
 import { put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import { ENCRYPTION, LOGOUT, SERVER, SETTINGS } from '../actions/actionsTypes';
@@ -72,12 +71,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		}
 
 		// Fetch stored public e2e key for this server
-		let storedPublicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
-
-		// Prevent parse undefined
-		if (storedPublicKey) {
-			storedPublicKey = EJSON.parse(storedPublicKey);
-		}
+		const storedPublicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
 		if (storedPublicKey && storedPrivateKey) {
 			// Persist these keys
@@ -118,13 +112,11 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		// Fetch server stored e2e keys
 		const keys = yield e2eFetchMyKeys();
 
-		const publicKey = EJSON.parse(keys?.publicKey);
-
 		// Decode the current server key
 		const privateKey = yield Encryption.decodePrivateKey(keys?.privateKey, password, user.id);
 
 		// Persist these decrypted keys
-		yield Encryption.persistKeys(server, publicKey, privateKey);
+		yield Encryption.persistKeys(server, keys?.publicKey, privateKey);
 
 		// Decrypt all pending messages/subscriptions
 		Encryption.initialize(user.id);
