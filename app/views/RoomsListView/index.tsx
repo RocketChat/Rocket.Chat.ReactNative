@@ -9,7 +9,6 @@ import { shallowEqual, useStore } from 'react-redux';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { ChangePasswordRequired } from '~/containers/ChangePasswordRequired';
-import NowPlayingAudio from '~/containers/NowPlayingAudio';
 import { FLOATING_ACTION_BUTTON_CLEARANCE } from '~/containers/FloatingActionButton';
 import RoomItem from '~/containers/RoomItem';
 import { type IRoomItem } from '~/containers/RoomItem/interfaces';
@@ -33,6 +32,7 @@ import { useTheme } from '~/theme';
 import Container from './components/Container';
 import ListHeader from './components/ListHeader';
 import NewMessageButton from './components/NewMessageButton';
+import RoomsListNowPlayingAudio from './components/RoomsListNowPlayingAudio';
 import SectionHeader from './components/SectionHeader';
 import SectionRevealFooter from './components/SectionRevealFooter';
 import RoomsSearchProvider, { RoomsSearchContext } from './contexts/RoomsSearchProvider';
@@ -178,7 +178,7 @@ const RoomsListView = memo(function RoomsListView() {
 
 	return (
 		<>
-			{searchEnabled ? null : <NowPlayingAudio />}
+			{searchEnabled ? null : <RoomsListNowPlayingAudio />}
 			<Animated.FlatList
 				data={searchEnabled ? searchResults : subscriptions}
 				keyExtractor={item => `${item.rid}-${searchEnabled}`}

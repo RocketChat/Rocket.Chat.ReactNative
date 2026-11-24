@@ -48,7 +48,8 @@ describe('NowPlayingAudio', () => {
 		await renderWithAudio(playingAudio);
 
 		expect(screen.getByText('Jane Doe')).toBeOnTheScreen();
-		expect(screen.getByText('General · 00:12 / 01:30')).toBeOnTheScreen();
+		expect(screen.getByText('General · ')).toBeOnTheScreen();
+		expect(screen.getByText('00:12 / 01:30')).toBeOnTheScreen();
 	});
 
 	it('pauses a playing audio and plays a paused one', async () => {
@@ -82,6 +83,6 @@ describe('NowPlayingAudio', () => {
 
 		expect(screen.getByLabelText('Pause')).toBeOnTheScreen();
 		expect(screen.getByLabelText('Close audio player')).toBeOnTheScreen();
-		expect(screen.getByLabelText('Audio message from Jane Doe, General · 00:12 / 01:30')).toBeOnTheScreen();
+		expect(screen.getByLabelText('Audio message from Jane Doe, General, 00:12 / 01:30')).toBeOnTheScreen();
 	});
 });

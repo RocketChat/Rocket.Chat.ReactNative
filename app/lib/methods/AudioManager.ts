@@ -220,7 +220,7 @@ class AudioManagerClass {
 		this.audioCallbacks[audioKey] = callback;
 		this.subscribeToStatus(audioKey);
 		const status = this.audioQueue[audioKey]?.currentStatus;
-		if (status) {
+		if (status && this.nowPlaying?.audioKey === audioKey) {
 			callback(status);
 		}
 	}

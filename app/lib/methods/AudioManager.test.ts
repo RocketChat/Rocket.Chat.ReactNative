@@ -359,9 +359,10 @@ describe('AudioManager', () => {
 			expect(getNowPlaying()).toBeNull();
 		});
 
-		it('a newly registered callback receives the current status at once', () => {
+		it('a callback registered for the now playing audio receives its current status at once', async () => {
 			const { AudioManager, players } = setup();
 			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(key);
 			const currentStatus = { isLoaded: true, playing: true, currentTime: 4, duration: 9 };
 			players[0].currentStatus = currentStatus;
 			const callback = jest.fn();
@@ -369,6 +370,17 @@ describe('AudioManager', () => {
 			AudioManager.setOnPlaybackStatusUpdate(key, callback);
 
 			expect(callback).toHaveBeenCalledWith(currentStatus);
+		});
+
+		it('a callback registered for any other audio waits for its next status', () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			players[0].currentStatus = { isLoaded: true, playing: false, currentTime: 0, duration: 0 };
+			const callback = jest.fn();
+
+			AudioManager.setOnPlaybackStatusUpdate(key, callback);
+
+			expect(callback).not.toHaveBeenCalled();
 		});
 	});
 

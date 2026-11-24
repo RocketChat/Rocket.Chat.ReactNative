@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -11,16 +11,20 @@ import styles from './styles';
 
 const HIT_SLOP = { top: 12, bottom: 12, left: 12, right: 12 };
 
-const NowPlayingAudioBar = ({ audio }: { audio: INowPlayingAudio }) => {
+interface INowPlayingAudioProps {
+	style?: StyleProp<ViewStyle>;
+}
+
+const NowPlayingAudioBar = ({ audio, style }: INowPlayingAudioProps & { audio: INowPlayingAudio }) => {
 	const { colors } = useTheme();
 	const { title, roomName, togglePlayPause, close, openSourceRoom } = useNowPlayingAudioActions(audio);
 	const progress = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-	const subtitle = roomName ? `${roomName} · ${progress}` : progress;
+	const accessibilityDetails = roomName ? `${roomName}, ${progress}` : progress;
 
 	return (
 		<View
 			testID='now-playing-audio'
-			style={[styles.container, { backgroundColor: colors.surfaceLight, borderBottomColor: colors.strokeExtraLight }]}>
+			style={[styles.container, { backgroundColor: colors.surfaceLight, borderBottomColor: colors.strokeExtraLight }, style]}>
 			<NativeButton
 				testID='now-playing-audio-play-pause'
 				accessible
@@ -38,16 +42,21 @@ const NowPlayingAudioBar = ({ audio }: { audio: INowPlayingAudio }) => {
 			<Pressable
 				testID='now-playing-audio-open-room'
 				accessibilityRole='button'
-				accessibilityLabel={`${i18n.t('Audio_message_from', { name: title })}, ${subtitle}`}
+				accessibilityLabel={`${i18n.t('Audio_message_from', { name: title })}, ${accessibilityDetails}`}
 				accessibilityHint={i18n.t('Opens_the_room_of_this_audio_message')}
 				style={styles.details}
 				onPress={openSourceRoom}>
 				<Text numberOfLines={1} style={[styles.title, { color: colors.fontTitlesLabels }]}>
 					{title}
 				</Text>
-				<Text numberOfLines={1} style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}>
-					{subtitle}
-				</Text>
+				<View style={styles.subtitleRow}>
+					{roomName ? (
+						<Text numberOfLines={1} style={[styles.subtitle, styles.roomName, { color: colors.fontSecondaryInfo }]}>
+							{`${roomName} · `}
+						</Text>
+					) : null}
+					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}>{progress}</Text>
+				</View>
 			</Pressable>
 			<NativeButton
 				testID='now-playing-audio-close'
@@ -63,12 +72,12 @@ const NowPlayingAudioBar = ({ audio }: { audio: INowPlayingAudio }) => {
 	);
 };
 
-const NowPlayingAudio = () => {
+const NowPlayingAudio = ({ style }: INowPlayingAudioProps) => {
 	const audio = useNowPlayingAudio();
 	if (!audio) {
 		return null;
 	}
-	return <NowPlayingAudioBar audio={audio} />;
+	return <NowPlayingAudioBar audio={audio} style={style} />;
 };
 
 export default NowPlayingAudio;

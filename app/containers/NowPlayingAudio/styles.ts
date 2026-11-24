@@ -28,6 +28,12 @@ export default StyleSheet.create({
 		lineHeight: 22,
 		...sharedStyles.textSemibold
 	},
+	subtitleRow: {
+		flexDirection: 'row'
+	},
+	roomName: {
+		flexShrink: 1
+	},
 	subtitle: {
 		fontSize: 14,
 		lineHeight: 20,
