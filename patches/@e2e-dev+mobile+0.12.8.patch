@@ -16,7 +16,7 @@ index 9165602..76699fa 100644
   * True for a translated snapshot the iOS runner acquired but could not
   * present. The check is per capture and the capture is a read, so one retry
 diff --git a/node_modules/@e2e-dev/mobile/dist/surface.js b/node_modules/@e2e-dev/mobile/dist/surface.js
-index 8511c8b..3504dee 100644
+index 8511c8b..038599a 100644
 --- a/node_modules/@e2e-dev/mobile/dist/surface.js
 +++ b/node_modules/@e2e-dev/mobile/dist/surface.js
 @@ -15,7 +15,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, w
@@ -64,17 +64,32 @@ index 8511c8b..3504dee 100644
      }
      /**
       * Runs a fixture command that changes the screen (a back, the home screen,
-@@ -815,13 +835,24 @@ export class AgentDeviceSurface {
+@@ -782,7 +802,7 @@ export class AgentDeviceSurface {
+             this.installedApp = installed.app;
+         return installed;
+     }
+-    async snapshot(signal, interactiveOnly, budget) {
++    async snapshot(signal, interactiveOnly, budget, waitsOutContentPoor = true) {
+         let last = {};
+         let captureMs = 0;
+         for (const backoffMs of SPARSE_RETRY_BACKOFF_MS) {
+@@ -795,7 +815,7 @@ export class AgentDeviceSurface {
+             if (signal.aborted)
+                 throw new EngineError('CANCELLED', 'snapshot cancelled', { retryable: false });
+             const startedAt = Date.now();
+-            last = await this.capture(signal, interactiveOnly, budget);
++            last = await this.capture(signal, interactiveOnly, budget, waitsOutContentPoor);
+             captureMs = Date.now() - startedAt;
+             this.launching = false;
+             if (last.appBundleId !== undefined || last.appName !== undefined) {
+@@ -813,15 +833,36 @@ export class AgentDeviceSurface {
+      * the retry is safe; a second failure is the runner's and propagates. Each
+      * capture runs under `budget`, so one the budget abandoned is not retried.
       */
-     async capture(signal, interactiveOnly, budget) {
-         const take = () => budget.read(() => this.command('snapshot', (client) => client.capture.snapshot({ interactiveOnly }), signal));
--        try {
--            return await take();
--        }
--        catch (cause) {
--            if (signal.aborted || !isSnapshotPresentationFailure(cause))
--                throw cause;
--            return take();
+-    async capture(signal, interactiveOnly, budget) {
+-        const take = () => budget.read(() => this.command('snapshot', (client) => client.capture.snapshot({ interactiveOnly }), signal));
++    async capture(signal, interactiveOnly, budget, waitsOutContentPoor) {
++        const take = () => this.abandonableRead(budget, signal, (attemptSignal) => this.command('snapshot', (client) => client.capture.snapshot({ interactiveOnly }), attemptSignal));
 +        const deadline = Date.now() + CONTENT_POOR_BUDGET_MS;
 +        for (;;) {
 +            const startedAt = Date.now();
@@ -87,16 +102,51 @@ index 8511c8b..3504dee 100644
 +                if (isSnapshotPresentationFailure(cause))
 +                    return take();
 +                const nextReadMs = CONTENT_POOR_RETRY_MS + Date.now() - startedAt;
-+                if (!isContentPoorCapture(cause) || Date.now() >= deadline || budget.remainingMs() <= nextReadMs)
++                if (!waitsOutContentPoor || !isContentPoorCapture(cause) || Date.now() >= deadline || budget.remainingMs() <= nextReadMs)
 +                    throw cause;
 +                await sleep(CONTENT_POOR_RETRY_MS, signal);
 +                if (signal.aborted)
 +                    throw cause;
 +            }
++        }
++    }
++    async abandonableRead(budget, signal, dispatch) {
++        const attempt = new AbortController();
+         try {
+-            return await take();
++            return await budget.read(() => dispatch(AbortSignal.any([signal, attempt.signal])));
+         }
+         catch (cause) {
+-            if (signal.aborted || !isSnapshotPresentationFailure(cause))
+-                throw cause;
+-            return take();
++            attempt.abort();
++            throw cause;
          }
      }
      /**
-@@ -1302,7 +1333,7 @@ export class AgentDeviceSurface {
+@@ -829,9 +870,9 @@ export class AgentDeviceSurface {
+      * anything is open is an empty screen rather than a fault: the model's next
+      * move is the open tool, and failing the step would take that move away.
+      */
+-    async snapshotOrEmpty(operation, interactiveOnly, budget) {
++    async snapshotOrEmpty(operation, interactiveOnly, budget, waitsOutContentPoor = true) {
+         try {
+-            return await this.snapshot(operation.signal, interactiveOnly, budget);
++            return await this.snapshot(operation.signal, interactiveOnly, budget, waitsOutContentPoor);
+         }
+         catch (cause) {
+             if (!this.managesApp && cause instanceof EngineError && cause.code === 'INVALID_STATE')
+@@ -852,7 +893,7 @@ export class AgentDeviceSurface {
+     async locateSnapshot(operation, budget) {
+         const startedMs = Date.now();
+         try {
+-            return await this.snapshotOrEmpty(operation, false, budget);
++            return await this.snapshotOrEmpty(operation, false, budget, false);
+         }
+         catch (cause) {
+             const arriving = isUnreadableCapture(cause) || (this.launching && isAppNotRunning(cause));
+@@ -1302,7 +1343,7 @@ export class AgentDeviceSurface {
              }
          };
          try {
@@ -105,3 +155,21 @@ index 8511c8b..3504dee 100644
          }
          catch (cause) {
              throw staleOr(cause, label, this.where);
+@@ -1541,7 +1582,7 @@ export class AgentDeviceSurface {
+      * abandons the capture.
+      */
+     captureScreenshot(signal, read, capture, budget) {
+-        return budget.read(() => this.command('screenshot', async (client) => {
++        return this.abandonableRead(budget, signal, (attemptSignal) => this.command('screenshot', async (client) => {
+             const directory = mkdtempSync(path.join(tmpdir(), 'e2e-agent-device-'));
+             const file = path.join(directory, 'screenshot.png');
+             try {
+@@ -1550,7 +1591,7 @@ export class AgentDeviceSurface {
+             finally {
+                 rmSync(directory, { recursive: true, force: true });
+             }
+-        }, signal));
++        }, attemptSignal));
+     }
+     /**
+      * Screenshot with every secure node on the current screen painted over.
