@@ -6,6 +6,7 @@ import { useSharedValue } from 'react-native-reanimated';
 import Seek from '../Seek';
 
 jest.mock('~/theme', () => ({ useTheme: () => ({ colors: {} }) }));
+jest.mock('~/lib/hooks/useIsScreenReaderEnabled', () => ({ useIsScreenReaderEnabled: () => false }));
 jest.mock('react-native-gesture-handler', () => {
 	const actual = jest.requireActual('react-native-gesture-handler');
 	return { ...actual, usePanGesture: jest.fn(actual.usePanGesture), useTapGesture: jest.fn(actual.useTapGesture) };
@@ -95,4 +96,31 @@ test('a touch that never becomes a drag does not seek through the pan', async ()
 		])
 	);
 	expect(onChangeTime).not.toHaveBeenCalled();
+});
+
+const adjust = (actionName: 'increment' | 'decrement') =>
+	fireEvent(screen.getByTestId('audio-seek'), 'accessibilityAction', { nativeEvent: { actionName } });
+
+test('the seek bar is an adjustable control named for the audio position', () => {
+	setup();
+	const seekBar = screen.getByTestId('audio-seek');
+	expect(seekBar.props.accessibilityRole).toBe('adjustable');
+	expect(seekBar.props.accessibilityLabel).toBe('Audio position');
+});
+
+test('adjusting up seeks forward a few seconds and announces the new position', () => {
+	const { onChangeTime } = setup();
+	adjust('increment');
+	expect(onChangeTime).toHaveBeenCalledWith(35);
+	expect(screen.getByTestId('audio-seek').props.accessibilityValue).toEqual({ text: '0:35 of 2:00' });
+});
+
+test('adjusting down seeks back a few seconds, not past the start', () => {
+	const { currentTime, onChangeTime } = setup();
+	adjust('decrement');
+	expect(onChangeTime).toHaveBeenLastCalledWith(25);
+
+	currentTime.value = 2;
+	adjust('decrement');
+	expect(onChangeTime).toHaveBeenLastCalledWith(0);
 });

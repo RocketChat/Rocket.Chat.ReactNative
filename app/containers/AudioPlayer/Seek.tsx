@@ -8,6 +8,7 @@ import { useTheme } from '~/theme';
 import { ACTIVE_OFFSET_X } from './constants';
 import { formatProgressLabel } from './formatMediaTime';
 import Waveform from '../Waveform';
+import { useSeekAccessibility } from './hooks/useSeekAccessibility';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
@@ -84,6 +85,7 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 	});
 
 	const seekGesture = useCompetingGestures(panGesture, tapGesture);
+	const accessibilityProps = useSeekAccessibility({ progress, duration, enabled: loaded, onChangeTime });
 
 	const timeLabelAnimatedProps = useAnimatedProps(() => {
 		return { text: formatProgressLabel(progress.get() * duration.get(), duration.get()) } as TextInputProps;
@@ -94,7 +96,7 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 		<TouchableNativeFeedback>
 			<View style={styles.seekContainer}>
 				<GestureDetector gesture={seekGesture}>
-					<View testID='audio-seek' style={styles.seek} onLayout={onLayout}>
+					<View testID='audio-seek' style={styles.seek} onLayout={onLayout} {...accessibilityProps}>
 						<Waveform peaks={peaks} progress={progress} />
 					</View>
 				</GestureDetector>
