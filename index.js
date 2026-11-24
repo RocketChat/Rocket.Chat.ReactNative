@@ -6,7 +6,7 @@ import DeviceInfo from 'react-native-device-info';
 
 import { name as appName } from './app.json';
 
-if (__DEV__ || process.env.RUNNING_E2E_TESTS === 'true') {
+if (__DEV__ || process.env.APPDUCT_ENABLED === '1') {
 	require('./app/lib/appduct');
 }
 

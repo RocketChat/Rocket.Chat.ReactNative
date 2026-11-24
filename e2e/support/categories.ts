@@ -1,19 +1,8 @@
 import { expect } from 'e2e';
 
 import { getRoomCategory, getSidebarCategories, type Credentials, type SidebarCategory } from './api';
-import {
-	escapeRegExp,
-	expectVisible,
-	fillSettled,
-	type Fixtures,
-	isVisibleNow,
-	LONG_TIMEOUT,
-	scrollAndTap,
-	succeeds,
-	tapWhenVisible
-} from './flows';
+import { expectVisible, fillSettled, type Fixtures, LONG_TIMEOUT, scrollAndTap, tapUntilHidden, tapWhenVisible } from './flows';
 import { tapHeaderItem } from './header';
-import { closeActionSheet } from './teams';
 
 export const groupRoomsByCategory = (fixtures: Fixtures) =>
 	fixtures.appduct.call('set_preference', { name: 'groupByType', value: true });
@@ -36,26 +25,12 @@ export const openCategorySettings = async (fixtures: Fixtures) => {
 	await expectVisible(fixtures, 'category-settings-view');
 };
 
-const MOVE_TAP_ATTEMPTS = 3;
-const MOVE_RESPONSE_TIMEOUT = 5_000;
-
 export const moveOpenRoomToCategory = async (fixtures: Fixtures, category: SidebarCategory) => {
 	const { screen } = fixtures;
-	const sheet = screen.getByTestId('move-to-category-sheet');
-	const option = screen.getByTestId(`move-to-category-${category._id}`);
-	const selected = screen.getByLabel(new RegExp(`^${escapeRegExp(category.name)} Checked$`));
+	const optionTestId = `move-to-category-${category._id}`;
 	await scrollAndTap(screen.getByTestId('room-actions-scrollview'), screen.getByTestId('room-actions-category'));
-	await expect(option).toBeVisible({ timeout: LONG_TIMEOUT });
-	for (let attempt = 1; attempt <= MOVE_TAP_ATTEMPTS; attempt += 1) {
-		if (!(await isVisibleNow(sheet)) || (await isVisibleNow(selected))) {
-			break;
-		}
-		await option.tap();
-		await succeeds(expect(sheet).toBeHidden({ timeout: MOVE_RESPONSE_TIMEOUT }));
-	}
-	if (await isVisibleNow(sheet)) {
-		await closeActionSheet(fixtures);
-	}
+	await expectVisible(fixtures, optionTestId);
+	await tapUntilHidden(fixtures, optionTestId, 'move-to-category-sheet');
 };
 
 export const waitForCategoryNamed = async (credentials: Credentials, name: string) => {

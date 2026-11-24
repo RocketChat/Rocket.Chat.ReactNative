@@ -528,7 +528,14 @@ const dismissLeftoverAlert = ({ screen }: Fixtures) => tapIfVisible(screen.getBy
 
 const appductErrorType = (error: unknown) => (error as { type?: string } | null)?.type;
 
-const APP_DEFECT_ERRORS = ['tool_not_found', 'tool_execution_error', 'tool_serialization_error', 'invalid_request'];
+const APP_DEFECT_ERRORS = [
+	'tool_not_found',
+	'tool_input_validation_error',
+	'tool_output_validation_error',
+	'tool_execution_error',
+	'tool_serialization_error',
+	'invalid_request'
+];
 
 const loginThroughAppduct = async (fixtures: Fixtures, session: Session, server: string) => {
 	await fixtures.appduct.call('reset_app');
@@ -594,6 +601,7 @@ export const navigateToRegister = async ({ screen }: Fixtures, server = data.ser
 
 const BACK_BUTTON_TEST_IDS = ['custom-header-back', 'header-back', 'BackButton'];
 const BACK_ATTEMPTS = 4;
+const BACK_TAP_ATTEMPTS = 2;
 const BACK_STEP_TIMEOUT = 10_000;
 
 const IOS_BACK_LABEL = /^Back(, .*)?$/;
@@ -608,7 +616,7 @@ export const goBack = async ({ screen, platform }: Fixtures) => {
 			await tapWhenUncovered(await firstVisible(backButtons, BACK_STEP_TIMEOUT));
 			return;
 		} catch (error) {
-			if (errorCode(error) !== 'LOCATOR_NOT_FOUND' || attempt >= BACK_ATTEMPTS) throw error;
+			if (errorCode(error) !== 'LOCATOR_NOT_FOUND' || attempt >= BACK_TAP_ATTEMPTS) throw error;
 		}
 	}
 };

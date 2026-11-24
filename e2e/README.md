@@ -36,7 +36,7 @@ A passing `agent.act` step is recorded in `.e2e/cache` and replays without a mod
 
 ## Running tests
 
-1. Build a release app: an iOS simulator `.app` or an Android `.apk`. Debug builds load JS from Metro. Build with `APPDUCT_ENABLED=1` and `RUNNING_E2E_TESTS=true` (set both for `pod install` too): the first links Appduct into the release app, and the second loads the Appduct tools the tests use for setup.
+1. Build a release app: an iOS simulator `.app` or an Android `.apk`. Debug builds load JS from Metro. Build with `APPDUCT_ENABLED=1` and `RUNNING_E2E_TESTS=true` (set both for `pod install` too): the first links Appduct into the release app and loads the Appduct tools the tests use for setup, and the second turns on the app's e2e test behaviour.
 2. Boot a simulator or emulator.
 3. Run:
 

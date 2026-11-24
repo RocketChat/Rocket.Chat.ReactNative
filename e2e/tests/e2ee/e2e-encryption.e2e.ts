@@ -10,7 +10,7 @@ import {
 	expectMessages,
 	navigateToE2EESecurity,
 	openEncryptedRoom,
-	openRoomPastPasswordBanner,
+	openRoomFromList,
 	quoteMessage,
 	resetE2EEKey,
 	resetRoomKey,
@@ -38,7 +38,7 @@ test('encrypts, decrypts, quotes, resets keys and edits messages', { tags: ['tes
 	await expect(screen.getByTestId(`reply-${userA.username}-m1`)).toBeVisible({ timeout: LONG_TIMEOUT });
 
 	await loginToApp(fixtures, userB);
-	await openRoomPastPasswordBanner(fixtures, room);
+	await openRoomFromList(fixtures, room);
 	await expect(screen.getByTestId('room-view-encrypted-room')).toBeVisible({ timeout: LONG_TIMEOUT });
 
 	await loginToApp(fixtures, userA);
@@ -61,10 +61,10 @@ test('encrypts, decrypts, quotes, resets keys and edits messages', { tags: ['tes
 	await navigateToE2EESecurity(fixtures);
 	await changeE2EEPassword(fixtures);
 	await fixtures.app.restart();
-	await openRoomPastPasswordBanner(fixtures, room);
+	await openRoomFromList(fixtures, room);
 	await resetRoomKey(fixtures);
 	await backToRoomsList(fixtures);
-	await openRoomPastPasswordBanner(fixtures, room);
+	await openRoomFromList(fixtures, room);
 	await sendMessage(fixtures, 'm4');
 
 	await loginToApp(fixtures, userB);
