@@ -126,9 +126,9 @@ export const biometricTrustStore: IBiometricTrustStore = {
 	readTrustState() {
 		const relockPending = UserPreferences.getBool(BIOMETRIC_PENDING_RELOCK_KEY) ?? false;
 		if (biometricTrustStore.isEnabled()) {
-			return relockPending ? 'relockPendingWhileEnabled' : 'enrolled';
+			return relockPending ? 'enabledRelockPending' : 'enabled';
 		}
-		return relockPending ? 'invalidatedPendingRelock' : 'disabled';
+		return relockPending ? 'disabledRelockPending' : 'disabled';
 	},
 
 	setRelockPending(pending: boolean) {

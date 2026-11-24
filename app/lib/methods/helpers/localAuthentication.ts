@@ -247,16 +247,16 @@ const hideSplashScreen = async () => {
 export type TRelockReason = 'none' | 'checkFailed' | BiometricInvalidationReason;
 
 const hasPendingRelock = (trust: BiometricTrustState): boolean =>
-	trust === 'relockPendingWhileEnabled' || trust === 'invalidatedPendingRelock';
+	trust === 'enabledRelockPending' || trust === 'disabledRelockPending';
 
 const getRelockReason = async (): Promise<TRelockReason> => {
 	switch (biometricTrustStore.readTrustState()) {
 		case 'disabled':
 			return 'none';
-		case 'invalidatedPendingRelock':
+		case 'disabledRelockPending':
 			return 'trustLost';
-		case 'enrolled':
-		case 'relockPendingWhileEnabled': {
+		case 'enabled':
+		case 'enabledRelockPending': {
 			const enrollment = await checkBiometricEnrollment();
 			if (enrollment.state === 'error') {
 				log(enrollment.cause);

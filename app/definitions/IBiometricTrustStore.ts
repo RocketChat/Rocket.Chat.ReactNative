@@ -11,7 +11,7 @@ export type BiometricInvalidationReason = 'enrollmentChanged' | 'trustLost' | 'r
 // Localized copy for the OS biometric prompt shown by verify().
 export type BiometricPromptCopy = { title: string; cancel: string };
 
-export type BiometricTrustState = 'disabled' | 'enrolled' | 'invalidatedPendingRelock' | 'relockPendingWhileEnabled';
+export type BiometricTrustState = 'disabled' | 'enabled' | 'disabledRelockPending' | 'enabledRelockPending';
 
 export interface IBiometricTrustStore {
 	enroll(): Promise<TrustResult>;

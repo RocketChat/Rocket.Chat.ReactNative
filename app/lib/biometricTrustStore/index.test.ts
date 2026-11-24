@@ -265,9 +265,9 @@ describe('biometricTrustStore', () => {
 	describe('readTrustState', () => {
 		it.each([
 			[false, false, 'disabled'],
-			[true, false, 'enrolled'],
-			[false, true, 'invalidatedPendingRelock'],
-			[true, true, 'relockPendingWhileEnabled']
+			[true, false, 'enabled'],
+			[false, true, 'disabledRelockPending'],
+			[true, true, 'enabledRelockPending']
 		])('enabled=%s, relock pending=%s → %s', (enabled, relockPending, state) => {
 			mockedGetBool.mockImplementation((key: string) => {
 				if (key === BIOMETRY_ENABLED_KEY) return enabled;

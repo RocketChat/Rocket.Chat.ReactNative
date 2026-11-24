@@ -115,7 +115,7 @@ const mockedIsEnrolled = LocalAuthentication.isEnrolledAsync as jest.Mock;
 
 const mockTrustState = (state: BiometricTrustState) => {
 	mockedReadTrustState.mockReturnValue(state);
-	mockedIsEnabled.mockReturnValue(state === 'enrolled' || state === 'relockPendingWhileEnabled');
+	mockedIsEnabled.mockReturnValue(state === 'enabled' || state === 'enabledRelockPending');
 };
 
 const lastEmitPayload = () => {
@@ -156,7 +156,7 @@ describe('handleLocalAuthentication', () => {
 	});
 
 	it('biometry enabled and supported → opens modal with hasBiometry: true, no upstream prompt', async () => {
-		mockTrustState('enrolled');
+		mockTrustState('enabled');
 
 		await handleLocalAuthentication();
 
@@ -165,7 +165,7 @@ describe('handleLocalAuthentication', () => {
 	});
 
 	it('warm path: biometry enabled but sentinel gone → forces passcode, disables biometry, sets a neutral reason', async () => {
-		mockTrustState('enrolled');
+		mockTrustState('enabled');
 		mockedHasEnrollment.mockResolvedValueOnce(false);
 
 		await handleLocalAuthentication();
@@ -179,7 +179,7 @@ describe('handleLocalAuthentication', () => {
 	});
 
 	it('Android path: sentinel survives but native enrollment key reports invalidated → forces passcode with reason', async () => {
-		mockTrustState('enrolled');
+		mockTrustState('enabled');
 		mockedHasEnrollment.mockResolvedValue(true); // Android keeps the sentinel after an enrollment change
 		mockedIsEnrollmentValid.mockResolvedValueOnce(false); // ...but the keystore enrollment key is invalidated
 
@@ -210,7 +210,7 @@ describe('handleLocalAuthentication', () => {
 			}
 		]
 	])('fail closed, not destructive: %s → forces passcode and keeps the enrollment', async (_label, arrange) => {
-		mockTrustState('enrolled');
+		mockTrustState('enabled');
 		arrange();
 
 		await handleLocalAuthentication();
@@ -225,7 +225,7 @@ describe('handleLocalAuthentication', () => {
 	});
 
 	it('relock pending with biometry on: enrollment intact → forces passcode, neutral reason', async () => {
-		mockTrustState('relockPendingWhileEnabled');
+		mockTrustState('enabledRelockPending');
 
 		await handleLocalAuthentication();
 
@@ -236,7 +236,7 @@ describe('handleLocalAuthentication', () => {
 
 	// The marker is the only thing that survives the process, so a persistent failure must not clear it.
 	it('leaves a pending relock marker set when the check fails', async () => {
-		mockTrustState('relockPendingWhileEnabled');
+		mockTrustState('enabledRelockPending');
 		mockedHasEnrollment.mockRejectedValueOnce(new Error('keychain read failed'));
 
 		await handleLocalAuthentication();
@@ -246,7 +246,7 @@ describe('handleLocalAuthentication', () => {
 
 	it('cold-launch path: migration already disabled biometry but left relock pending → still forces passcode with reason', async () => {
 		// Init migration ran first, reconciled the flag off and persisted the relock marker.
-		mockTrustState('invalidatedPendingRelock');
+		mockTrustState('disabledRelockPending');
 
 		await handleLocalAuthentication();
 
@@ -258,10 +258,10 @@ describe('handleLocalAuthentication', () => {
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
-	it.each(['relockPendingWhileEnabled', 'invalidatedPendingRelock'] as const)(
+	it.each(['enabledRelockPending', 'disabledRelockPending'] as const)(
 		'relock marker written during the enrollment check (%s) → still forces the passcode',
 		async stateAfterCheck => {
-			mockTrustState('enrolled');
+			mockTrustState('enabled');
 			mockedHasEnrollment.mockImplementationOnce(() => {
 				mockTrustState(stateAfterCheck);
 				return Promise.resolve(true);
@@ -274,9 +274,9 @@ describe('handleLocalAuthentication', () => {
 	);
 
 	it('relock marker cleared during the enrollment check → does not force the passcode', async () => {
-		mockTrustState('relockPendingWhileEnabled');
+		mockTrustState('enabledRelockPending');
 		mockedHasEnrollment.mockImplementationOnce(() => {
-			mockTrustState('enrolled');
+			mockTrustState('enabled');
 			return Promise.resolve(true);
 		});
 
@@ -288,7 +288,7 @@ describe('handleLocalAuthentication', () => {
 	});
 
 	it('kill-before-passcode: modal never resolves → relock debt is persisted and NOT cleared', async () => {
-		mockTrustState('enrolled');
+		mockTrustState('enabled');
 		mockedHasEnrollment.mockResolvedValueOnce(false);
 		mockedEmit.mockImplementation(() => {});
 
@@ -320,7 +320,7 @@ describe('handleLocalAuthentication', () => {
 	});
 
 	it('biometry enabled with an enrolled unlabeled biometric type → still opens modal with hasBiometry: true', async () => {
-		mockTrustState('enrolled');
+		mockTrustState('enabled');
 		(LocalAuthentication.supportedAuthenticationTypesAsync as jest.Mock).mockResolvedValueOnce([
 			LocalAuthentication.AuthenticationType.IRIS
 		]);
@@ -332,7 +332,7 @@ describe('handleLocalAuthentication', () => {
 	});
 
 	it('biometry enabled but device not enrolled → opens modal with hasBiometry: false', async () => {
-		mockTrustState('enrolled');
+		mockTrustState('enabled');
 		mockedIsEnrolled.mockResolvedValueOnce(false);
 
 		await handleLocalAuthentication();
@@ -350,7 +350,7 @@ describe('handleLocalAuthentication', () => {
 	});
 
 	it('forced-passcode unlock → clears the persisted failure counter', async () => {
-		mockTrustState('enrolled');
+		mockTrustState('enabled');
 		mockedIsEnrollmentValid.mockResolvedValueOnce(false);
 
 		await handleLocalAuthentication();
@@ -379,7 +379,7 @@ describe('localAuthenticate', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedGetString.mockReturnValue('stored-passcode');
-		mockTrustState('enrolled');
+		mockTrustState('enabled');
 		mockedHasEnrollment.mockResolvedValue(false);
 		mockedIsEnrollmentValid.mockResolvedValue(true);
 		mockedIsEnrolled.mockResolvedValue(true);
@@ -759,7 +759,7 @@ describe('enableBiometry', () => {
 describe('handleLocalAuthentication relockReason option', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockTrustState('enrolled');
+		mockTrustState('enabled');
 		mockedIsEnrolled.mockResolvedValue(true);
 		mockedHasEnrollment.mockResolvedValue(true);
 		mockedIsEnrollmentValid.mockResolvedValue(true);
