@@ -26,7 +26,7 @@ export interface ILogin {
 	user: Partial<IUser>;
 	isLocalAuthenticated: boolean;
 	isAuthenticated: boolean;
-	signedInUserId?: string;
+	signedInServer?: string;
 	isFetching: boolean;
 	error: Record<string, any>;
 	services: Record<string, any>;
@@ -48,6 +48,9 @@ export const initialState: ILogin = {
 	failure: false
 };
 
+const endSignInOnWorkspaceSwitch = (state: ILogin, server: string): ILogin =>
+	server === state.signedInServer ? state : { ...state, isAuthenticated: false, signedInServer: undefined };
+
 export default function login(state = initialState, action: TActionsLogin): ILogin {
 	switch (action.type) {
 		case types.APP.INIT:
@@ -65,10 +68,17 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 				...state,
 				isFetching: false,
 				isAuthenticated: true,
-				signedInUserId: action.user.id,
+				signedInServer: action.server,
 				user: userAfterLogin(state.user, action.user),
 				failure: false,
 				error: {}
+			};
+		case types.SERVER.SELECT_REQUEST:
+			return endSignInOnWorkspaceSwitch(state, action.server);
+		case types.LOGIN.CANCEL:
+			return {
+				...state,
+				isFetching: false
 			};
 		case types.LOGIN.FAILURE:
 			return {

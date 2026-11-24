@@ -155,6 +155,11 @@ const completeDeepLinkNavigation = function* completeDeepLinkNavigation(params) 
 const fallbackNavigation = function* fallbackNavigation() {
 	const currentRoot = yield select(state => state.app.root);
 	if (currentRoot === RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+		const userId = yield select(state => state.login.user.id);
+		if (userId) {
+			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			return;
+		}
 		yield put(appStart({ root: RootEnum.ROOT_LOADING }));
 	} else if (currentRoot) {
 		return;
@@ -262,10 +267,7 @@ const handleShareExtension = function* handleOpen({ params }) {
 };
 
 const isSignedInto = (host, userId) => state =>
-	state.server.server === host &&
-	state.login.isAuthenticated &&
-	state.login.user.id === userId &&
-	state.login.signedInUserId === userId;
+	state.server.server === host && state.login.isAuthenticated && state.login.user.id === userId;
 
 const isConnectedAs = (host, userId) => state =>
 	state.server.server === host && state.server.connected && state.login.user.id === userId;

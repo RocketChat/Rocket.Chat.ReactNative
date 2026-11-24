@@ -6,7 +6,7 @@ import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd, serverInitAdd } from '../actions/server';
-import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
+import { loginCancel, loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import I18n, { setLanguage } from '../i18n';
@@ -101,8 +101,52 @@ const authenticateIgnoringCancel = function* authenticateIgnoringCancel(server) 
 	}
 };
 
+const findServerIconURL = async server => {
+	try {
+		const serverRecord = await database.servers.get('servers').find(server);
+		return serverRecord.iconURL;
+	} catch {
+		return null;
+	}
+};
+
+const saveUsernameInServerHistory = (server, username) =>
+	database.servers.write(async () => {
+		try {
+			const [serverHistoryRecord] = await database.servers.get('servers_history').query(Q.where('url', server)).fetch();
+			if (!serverHistoryRecord) {
+				return;
+			}
+			const iconURL = await findServerIconURL(server);
+			await serverHistoryRecord.update(s => {
+				s.username = username;
+				if (iconURL) {
+					s.iconURL = iconURL;
+				}
+			});
+		} catch (e) {
+			log(e);
+		}
+	});
+
+const finishLogin = function* finishLogin({ result, server, registerCustomFields }) {
+	if (!result.username) {
+		yield put(serverFinishAdd());
+		yield put(setUser(result));
+		yield put(appStart({ root: RootEnum.ROOT_SET_USERNAME }));
+		return;
+	}
+	yield* authenticateIgnoringCancel(server);
+	yield call(saveUsernameInServerHistory, server, result.username);
+	yield put(loginSuccess(result, server));
+	if (registerCustomFields) {
+		yield* saveCustomFields(registerCustomFields, result);
+	}
+};
+
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, registerCustomFields }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
+	const server = sdk.host;
 	try {
 		let result;
 		if (credentials.resume) {
@@ -110,49 +154,12 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
 		}
-		if (!result.username) {
-			yield put(serverFinishAdd());
-			yield put(setUser(result));
-			yield put(appStart({ root: RootEnum.ROOT_SET_USERNAME }));
-		} else {
-			const server = yield select(getServer);
-			yield* authenticateIgnoringCancel(server);
-
-			// Saves username on server history
-			const serversDB = database.servers;
-			const serversHistoryCollection = serversDB.get('servers_history');
-			const serversCollection = serversDB.get('servers');
-			yield serversDB.write(async () => {
-				try {
-					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
-					if (serversHistory?.length) {
-						const serverHistoryRecord = serversHistory[0];
-						// Get server iconURL from servers table
-						let iconURL = null;
-						try {
-							const serverRecord = await serversCollection.find(server);
-							iconURL = serverRecord.iconURL;
-						} catch (e) {
-							// Server record might not exist yet
-						}
-						// this is updating on every login just to save `updated_at`
-						// keeping this server as the most recent on autocomplete order
-						await serverHistoryRecord.update(s => {
-							s.username = result.username;
-							if (iconURL) {
-								s.iconURL = iconURL;
-							}
-						});
-					}
-				} catch (e) {
-					log(e);
-				}
-			});
-			yield put(loginSuccess(result));
-			if (registerCustomFields) {
-				yield* saveCustomFields(registerCustomFields, result);
-			}
+		const selectedServer = yield select(getServer);
+		if (selectedServer !== server || sdk.host !== server) {
+			yield put(loginCancel());
+			return;
 		}
+		yield* finishLogin({ result, server, registerCustomFields });
 	} catch (e) {
 		if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
 			logEvent(events.LOGOUT_BY_SERVER);
