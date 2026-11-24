@@ -1,7 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { afterEach, test } from '~e2e/support/fixtures';
 import {
 	loginWithDeepLink,
 	searchAndNavigateRoom,
@@ -10,8 +10,7 @@ import {
 	tapWhenVisible,
 	escapeRegExp,
 	expectVisible,
-	goBack,
-	withFixtures
+	goBack
 } from '~e2e/support/flows';
 import { expectRoomTitle } from '~e2e/support/header';
 
@@ -49,43 +48,39 @@ const inlineTarget = ({ screen, platform }: Fixtures, messageTestId: string, nam
 		? screen.getByRole('button', { name: new RegExp(`^${escapeRegExp(name)}$`) })
 		: screen.getByTestId(messageTestId);
 
-test(
-	'opens markdown mentions, links and threads',
-	{ tags: ['test-2'] },
-	withFixtures(async fixtures => {
-		const { screen } = fixtures;
-		const user = await createUser();
-		await loginWithDeepLink(fixtures, user);
-		await searchAndNavigateRoom(fixtures, ROOM);
-		for (const testId of [linkMessage, channelMentionMessage, userMentionMessage, threadMessage]) {
-			await expectVisible(fixtures, testId);
-		}
-		await expect(screen.getByTestId(threadButton)).toBeVisible();
+test('opens markdown mentions, links and threads', { tags: ['test-2'] }, async ({ fixtures }) => {
+	const { screen } = fixtures;
+	const user = await createUser();
+	await loginWithDeepLink(fixtures, user);
+	await searchAndNavigateRoom(fixtures, ROOM);
+	for (const testId of [linkMessage, channelMentionMessage, userMentionMessage, threadMessage]) {
+		await expectVisible(fixtures, testId);
+	}
+	await expect(screen.getByTestId(threadButton)).toBeVisible();
 
-		await inlineTarget(fixtures, channelMentionMessage, 'detox-public').tap();
-		await expectVisible(fixtures, 'room-info-view');
-		await expect(screen.getByText('detox-public', { exact: false }).first()).toBeVisible();
-		await goBack(fixtures);
-		await expectBackInRoom(fixtures);
+	await inlineTarget(fixtures, channelMentionMessage, 'detox-public').tap();
+	await expectVisible(fixtures, 'room-info-view');
+	await expect(screen.getByText('detox-public', { exact: false }).first()).toBeVisible();
+	await goBack(fixtures);
+	await expectBackInRoom(fixtures);
 
-		await inlineTarget(fixtures, linkMessage, LINK).tap();
-		await expectLinkAlert(fixtures, 'Link Pressed');
-		await inlineTarget(fixtures, linkMessage, LINK).longPress();
-		await expectLinkAlert(fixtures, 'Link Long Pressed');
+	await inlineTarget(fixtures, linkMessage, LINK).tap();
+	await expectLinkAlert(fixtures, 'Link Pressed');
+	await inlineTarget(fixtures, linkMessage, LINK).longPress();
+	await expectLinkAlert(fixtures, 'Link Long Pressed');
 
-		await inlineTarget(fixtures, userMentionMessage, 'e2e_admin').tap();
-		await expect(screen.getByText('User info', { exact: false }).first()).toBeVisible({ timeout: LONG_TIMEOUT });
-		await expect(screen.getByText('e2e_admin', { exact: false }).first()).toBeVisible();
-		await goBack(fixtures);
-		await expectBackInRoom(fixtures);
+	await inlineTarget(fixtures, userMentionMessage, 'e2e_admin').tap();
+	await expect(screen.getByText('User info', { exact: false }).first()).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expect(screen.getByText('e2e_admin', { exact: false }).first()).toBeVisible();
+	await goBack(fixtures);
+	await expectBackInRoom(fixtures);
 
-		await screen.getByTestId(threadMessage).tap();
-		await expectThreadOpened(fixtures);
+	await screen.getByTestId(threadMessage).tap();
+	await expectThreadOpened(fixtures);
 
-		await screen.getByTestId(threadButton).tap();
-		await expectThreadOpened(fixtures);
+	await screen.getByTestId(threadButton).tap();
+	await expectThreadOpened(fixtures);
 
-		await tapWhenVisible(fixtures, threadReply);
-		await expectRoomTitle(fixtures, /^message with thread$/i);
-	})
-);
+	await tapWhenVisible(fixtures, threadReply);
+	await expectRoomTitle(fixtures, /^message with thread$/i);
+});

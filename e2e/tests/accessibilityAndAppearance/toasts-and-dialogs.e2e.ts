@@ -1,15 +1,14 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { afterEach, test } from '~e2e/support/fixtures';
 import {
 	expectVisible,
 	type Fixtures,
 	loginWithDeepLink,
 	LONG_TIMEOUT,
 	tapUntilHidden,
-	tapWhenVisible,
-	withFixtures
+	tapWhenVisible
 } from '~e2e/support/flows';
 import { tapHeaderItem } from '~e2e/support/header';
 import { expectLabel } from '~e2e/support/keyboard';
@@ -73,24 +72,20 @@ const saveStatus = async (fixtures: Fixtures, status: 'online' | 'offline') => {
 
 afterEach(deleteCreatedUsers);
 
-test(
-	'shows alerts as toasts or dialogs',
-	{ tags: ['test-3'] },
-	withFixtures(async fixtures => {
-		const { screen } = fixtures;
-		const user = await createUser();
-		await loginWithDeepLink(fixtures, user);
+test('shows alerts as toasts or dialogs', { tags: ['test-3'] }, async ({ fixtures }) => {
+	const { screen } = fixtures;
+	const user = await createUser();
+	await loginWithDeepLink(fixtures, user);
 
-		await openSidebar(fixtures);
-		await openAccessibility(fixtures);
-		await expectToastsSelected(fixtures);
-		await saveStatus(fixtures, 'offline');
+	await openSidebar(fixtures);
+	await openAccessibility(fixtures);
+	await expectToastsSelected(fixtures);
+	await saveStatus(fixtures, 'offline');
 
-		await openAccessibility(fixtures);
-		await selectDialogs(fixtures);
-		await saveStatus(fixtures, 'online');
-		const okButton = screen.getByRole('button', { name: /^OK$/i });
-		await expect(okButton).toBeVisible({ timeout: LONG_TIMEOUT });
-		await okButton.tap();
-	})
-);
+	await openAccessibility(fixtures);
+	await selectDialogs(fixtures);
+	await saveStatus(fixtures, 'online');
+	const okButton = screen.getByRole('button', { name: /^OK$/i });
+	await expect(okButton).toBeVisible({ timeout: LONG_TIMEOUT });
+	await okButton.tap();
+});

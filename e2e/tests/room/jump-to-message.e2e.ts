@@ -1,7 +1,7 @@
-import { test } from '@e2e-dev/mobile';
 import { expect, type Locator } from 'e2e';
 
 import { adminCredentials } from '~e2e/support/api';
+import { test } from '~e2e/support/fixtures';
 import { clearLocalCache, openSettings } from '~e2e/support/settings';
 import { delay } from '~e2e/support/timing';
 import {
@@ -15,8 +15,7 @@ import {
 	succeeds,
 	tapUntilVisible,
 	goBack,
-	roomTitle,
-	withFixtures
+	roomTitle
 } from '~e2e/support/flows';
 import { expectRoomTitle, openRoomSearch } from '~e2e/support/header';
 
@@ -109,60 +108,56 @@ const tapCenterUntilVisible = async ({ screen }: Fixtures, target: Locator, expe
 const scrollUntilLoaded = ({ screen }: Fixtures, target: Locator, direction: 'up' | 'down') =>
 	screen.getByTestId('room-view-messages').scrollUntilVisible(target, { direction, timeout: PAGINATION_TIMEOUT });
 
-test(
-	'jumps to messages',
-	{ tags: ['test-3'], retries: 0, timeout: 900_000 },
-	withFixtures(async fixtures => {
-		const { screen } = fixtures;
-		await loginWithDeepLink(fixtures, adminCredentials());
+test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, async ({ fixtures }) => {
+	const { screen } = fixtures;
+	await loginWithDeepLink(fixtures, adminCredentials());
 
-		await searchAndNavigateRoom(fixtures, ROOM);
-		await expect(testIdContaining(fixtures, 'Quote first message')).toBeVisible({ timeout: LONG_TIMEOUT });
-		await jumpToMessageFrom(fixtures, 'Quote first message');
-		await expectMessages(fixtures, [1, 2]);
-		await tapWhenVisible(fixtures, 'nav-jump-to-bottom');
-		await expect(testIdContaining(fixtures, "Go to jumping-thread's thread")).toBeVisible({ timeout: LONG_TIMEOUT });
-		await clearCache(fixtures);
+	await searchAndNavigateRoom(fixtures, ROOM);
+	await expect(testIdContaining(fixtures, 'Quote first message')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await jumpToMessageFrom(fixtures, 'Quote first message');
+	await expectMessages(fixtures, [1, 2]);
+	await tapWhenVisible(fixtures, 'nav-jump-to-bottom');
+	await expect(testIdContaining(fixtures, "Go to jumping-thread's thread")).toBeVisible({ timeout: LONG_TIMEOUT });
+	await clearCache(fixtures);
 
-		await searchAndNavigateRoom(fixtures, ROOM);
-		await expectVisible(fixtures, 'room-view-messages');
-		await expect(testIdContaining(fixtures, 'Quote first message')).toBeVisible({ timeout: LONG_TIMEOUT });
-		await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-249'), 'up');
-		await clearCache(fixtures);
+	await searchAndNavigateRoom(fixtures, ROOM);
+	await expectVisible(fixtures, 'room-view-messages');
+	await expect(testIdContaining(fixtures, 'Quote first message')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-249'), 'up');
+	await clearCache(fixtures);
 
-		await searchAndNavigateRoom(fixtures, ROOM);
-		await searchMessage(fixtures, '30');
-		await expectMessages(fixtures, [29, 30, 31]);
+	await searchAndNavigateRoom(fixtures, ROOM);
+	await searchMessage(fixtures, '30');
+	await expectMessages(fixtures, [29, 30, 31]);
 
-		const loadOlder = screen.getByText('Load older', { visible: true });
-		await scrollUntilLoaded(fixtures, loadOlder, 'up');
-		await expectVisible(fixtures, 'message-content-5');
-		await tapCenterUntilVisible(fixtures, loadOlder, 'message-content-4', 'up');
-		await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-1'), 'up');
-		await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-50'), 'down');
-		const loadNewer = screen.getByText('Load newer', { visible: true });
-		for (const lastLoaded of [104, 154, 202]) {
-			await scrollUntilLoaded(fixtures, loadNewer, 'down');
-			await tapCenterUntilVisible(fixtures, loadNewer, `message-content-${lastLoaded}`, 'down');
-		}
-		await goBack(fixtures);
+	const loadOlder = screen.getByText('Load older', { visible: true });
+	await scrollUntilLoaded(fixtures, loadOlder, 'up');
+	await expectVisible(fixtures, 'message-content-5');
+	await tapCenterUntilVisible(fixtures, loadOlder, 'message-content-4', 'up');
+	await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-1'), 'up');
+	await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-50'), 'down');
+	const loadNewer = screen.getByText('Load newer', { visible: true });
+	for (const lastLoaded of [104, 154, 202]) {
+		await scrollUntilLoaded(fixtures, loadNewer, 'down');
+		await tapCenterUntilVisible(fixtures, loadNewer, `message-content-${lastLoaded}`, 'down');
+	}
+	await goBack(fixtures);
 
-		await searchAndNavigateRoom(fixtures, ROOM);
-		await jumpToMessageFrom(fixtures, "Go to jumping-thread's thread");
-		await expectThreadMessage(fixtures, "Go to jumping-thread's thread");
-		await leaveThread(fixtures);
+	await searchAndNavigateRoom(fixtures, ROOM);
+	await jumpToMessageFrom(fixtures, "Go to jumping-thread's thread");
+	await expectThreadMessage(fixtures, "Go to jumping-thread's thread");
+	await leaveThread(fixtures);
 
-		const threadMessageInRoom = testIdContaining(fixtures, 'thread message sent to main room');
-		await expect(threadMessageInRoom).toBeVisible({ timeout: LONG_TIMEOUT });
-		await tapUntilVisible(fixtures, threadMessageInRoom, roomTitle(fixtures, 'thread 1'));
-		await expectThreadMessage(fixtures, 'thread message sent to main room');
-		await leaveThread(fixtures);
+	const threadMessageInRoom = testIdContaining(fixtures, 'thread message sent to main room');
+	await expect(threadMessageInRoom).toBeVisible({ timeout: LONG_TIMEOUT });
+	await tapUntilVisible(fixtures, threadMessageInRoom, roomTitle(fixtures, 'thread 1'));
+	await expectThreadMessage(fixtures, 'thread message sent to main room');
+	await leaveThread(fixtures);
 
-		await jumpToMessageWithLongPress(fixtures, screen.getByTestId(/reply-.*-quoted/).first());
-		await expectThreadMessage(fixtures, 'quoted');
-		await leaveThread(fixtures);
+	await jumpToMessageWithLongPress(fixtures, screen.getByTestId(/reply-.*-quoted/).first());
+	await expectThreadMessage(fixtures, 'quoted');
+	await leaveThread(fixtures);
 
-		await searchMessage(fixtures, 'to be searched');
-		await expectThreadMessage(fixtures, 'to be searched');
-	})
-);
+	await searchMessage(fixtures, 'to be searched');
+	await expectThreadMessage(fixtures, 'to be searched');
+});

@@ -1,9 +1,9 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
-import { launchApp, LONG_TIMEOUT, withFixtures } from '~e2e/support/flows';
+import { afterEach, test } from '~e2e/support/fixtures';
+import { launchApp, LONG_TIMEOUT } from '~e2e/support/flows';
 import {
 	hideSoftKeyboardWithHardwareKeyboard,
 	moveFocusTo,
@@ -20,7 +20,7 @@ afterEach(restoreKeyboardSettings);
 test(
 	'logs in from onboarding with a hardware keyboard',
 	{ tags: ['test-9'], platforms: ['android'], timeout: 600_000 },
-	withFixtures(async fixtures => {
+	async ({ fixtures }) => {
 		const { screen } = fixtures;
 		const user = await createUser();
 		await hideSoftKeyboardWithHardwareKeyboard();
@@ -42,5 +42,5 @@ test(
 		await moveFocusTo(fixtures, 'login-view-submit');
 		await pressKeys('enter');
 		await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
-	})
+	}
 );

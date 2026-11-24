@@ -1,7 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { afterEach, test } from '~e2e/support/fixtures';
 import {
 	expectAllVisible,
 	loginWithDeepLink,
@@ -9,8 +9,7 @@ import {
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenVisible,
-	goBack,
-	withFixtures
+	goBack
 } from '~e2e/support/flows';
 import { tapHeaderItem } from '~e2e/support/header';
 import { goToUserPreferences } from '~e2e/support/settings';
@@ -50,60 +49,56 @@ const openAsciiEmojiRoomFromProfile = async (fixtures: Fixtures, lastMessage: st
 	await expect(screen.getByText(messageText)).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-test(
-	'shows notification preferences',
-	{ tags: ['test-2'] },
-	withFixtures(async fixtures => {
-		const { screen } = fixtures;
-		const user = await createUser();
+test('shows notification preferences', { tags: ['test-2'] }, async ({ fixtures }) => {
+	const { screen } = fixtures;
+	const user = await createUser();
 
-		await loginWithDeepLink(fixtures, user);
-		await goToUserPreferences(fixtures);
-		for (const testId of ['preferences-view-notifications', 'preferences-view-enable-message-parser']) {
-			await expect(screen.getByTestId(testId)).toBeVisible({ timeout: LONG_TIMEOUT });
-		}
-		await expect(convertAsciiToEmojiSwitch(fixtures)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await loginWithDeepLink(fixtures, user);
+	await goToUserPreferences(fixtures);
+	for (const testId of ['preferences-view-notifications', 'preferences-view-enable-message-parser']) {
+		await expect(screen.getByTestId(testId)).toBeVisible({ timeout: LONG_TIMEOUT });
+	}
+	await expect(convertAsciiToEmojiSwitch(fixtures)).toBeVisible({ timeout: LONG_TIMEOUT });
 
-		await screen.getByTestId('preferences-view-notifications').tap();
-		await checkPreferenceOptions(
-			fixtures,
-			'user-notification-preference-view-alert',
-			notificationOptions('desktopNotifications', ['default', 'all', 'mentions', 'nothing'])
-		);
-		await expect(screen.getByTestId('user-notification-preference-view-in-app-vibration')).toBeVisible();
-		await checkPreferenceOptions(
-			fixtures,
-			'user-notification-preference-view-push-notification',
-			notificationOptions('pushNotifications', ['default', 'all', 'mentions', 'nothing'])
-		);
+	await screen.getByTestId('preferences-view-notifications').tap();
+	await checkPreferenceOptions(
+		fixtures,
+		'user-notification-preference-view-alert',
+		notificationOptions('desktopNotifications', ['default', 'all', 'mentions', 'nothing'])
+	);
+	await expect(screen.getByTestId('user-notification-preference-view-in-app-vibration')).toBeVisible();
+	await checkPreferenceOptions(
+		fixtures,
+		'user-notification-preference-view-push-notification',
+		notificationOptions('pushNotifications', ['default', 'all', 'mentions', 'nothing'])
+	);
 
-		await screen.getByTestId('user-notification-preference-view-troubleshooting').tap();
-		await expectAllVisible(fixtures, [
-			'push-troubleshoot-view-allow-push-notifications',
-			'push-troubleshoot-view-push-gateway-connection',
-			'push-troubleshoot-view-notification-delay'
-		]);
-		await goBack(fixtures);
+	await screen.getByTestId('user-notification-preference-view-troubleshooting').tap();
+	await expectAllVisible(fixtures, [
+		'push-troubleshoot-view-allow-push-notifications',
+		'push-troubleshoot-view-push-gateway-connection',
+		'push-troubleshoot-view-notification-delay'
+	]);
+	await goBack(fixtures);
 
-		await checkPreferenceOptions(
-			fixtures,
-			'user-notification-preference-view-email-alert',
-			notificationOptions('emailNotificationMode', ['mentions', 'nothing'])
-		);
-		await goBack(fixtures);
+	await checkPreferenceOptions(
+		fixtures,
+		'user-notification-preference-view-email-alert',
+		notificationOptions('emailNotificationMode', ['mentions', 'nothing'])
+	);
+	await goBack(fixtures);
 
-		if (fixtures.platform !== 'android') {
-			return;
-		}
+	if (fixtures.platform !== 'android') {
+		return;
+	}
 
-		await goBack(fixtures);
-		await openAsciiEmojiRoomFromProfile(fixtures, 'e2e_admin: :(', ':(');
-		await expect(screen.getByText('😞')).toBeHidden({ timeout: LONG_TIMEOUT });
+	await goBack(fixtures);
+	await openAsciiEmojiRoomFromProfile(fixtures, 'e2e_admin: :(', ':(');
+	await expect(screen.getByText('😞')).toBeHidden({ timeout: LONG_TIMEOUT });
 
-		await goBack(fixtures);
-		await goToUserPreferences(fixtures);
-		await convertAsciiToEmojiSwitch(fixtures).tap();
-		await goBack(fixtures);
-		await openAsciiEmojiRoomFromProfile(fixtures, 'e2e_admin: 😞', '😞');
-	})
-);
+	await goBack(fixtures);
+	await goToUserPreferences(fixtures);
+	await convertAsciiToEmojiSwitch(fixtures).tap();
+	await goBack(fixtures);
+	await openAsciiEmojiRoomFromProfile(fixtures, 'e2e_admin: 😞', '😞');
+});

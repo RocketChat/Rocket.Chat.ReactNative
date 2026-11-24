@@ -1,7 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { afterEach, test } from '~e2e/support/fixtures';
 import {
 	goBack,
 	loginWithDeepLink,
@@ -10,8 +10,7 @@ import {
 	tapWhenVisible,
 	expectVisible,
 	fillWhenUncovered,
-	hideKeyboard,
-	withFixtures
+	hideKeyboard
 } from '~e2e/support/flows';
 import { expectRoomTitle, tapHeaderItem, submitSelectedUsers } from '~e2e/support/header';
 import { random } from '~e2e/support/random';
@@ -47,64 +46,60 @@ const expectRoomCreated = async (fixtures: Fixtures, name: string) => {
 	await expectVisible(fixtures, `rooms-list-view-item-${name}`);
 };
 
-test(
-	'creates rooms',
-	{ tags: ['test-4'] },
-	withFixtures(async fixtures => {
-		const { screen } = fixtures;
-		const user = await createUser();
-		await loginWithDeepLink(fixtures, user);
+test('creates rooms', { tags: ['test-4'] }, async ({ fixtures }) => {
+	const { screen } = fixtures;
+	const user = await createUser();
+	await loginWithDeepLink(fixtures, user);
 
-		await openNewMessage(fixtures);
-		await expectVisible(fixtures, 'new-message-view-search');
-		await tapHeaderItem(fixtures, 'new-message-view-close', 'Close');
-		await expectVisible(fixtures, 'rooms-list-view');
+	await openNewMessage(fixtures);
+	await expectVisible(fixtures, 'new-message-view-search');
+	await tapHeaderItem(fixtures, 'new-message-view-close', 'Close');
+	await expectVisible(fixtures, 'rooms-list-view');
 
-		await openNewMessage(fixtures);
-		await tapWhenVisible(fixtures, 'new-message-view-search');
-		await fillWhenUncovered(screen.getByTestId('new-message-view-search'), 'rocket.cat');
-		await tapWhenVisible(fixtures, 'new-message-view-item-rocket.cat');
-		await expectVisible(fixtures, 'room-view');
-		await expectRoomTitle(fixtures, 'rocket.cat');
-		await goBack(fixtures);
-		await expectVisible(fixtures, 'rooms-list-view');
+	await openNewMessage(fixtures);
+	await tapWhenVisible(fixtures, 'new-message-view-search');
+	await fillWhenUncovered(screen.getByTestId('new-message-view-search'), 'rocket.cat');
+	await tapWhenVisible(fixtures, 'new-message-view-item-rocket.cat');
+	await expectVisible(fixtures, 'room-view');
+	await expectRoomTitle(fixtures, 'rocket.cat');
+	await goBack(fixtures);
+	await expectVisible(fixtures, 'rooms-list-view');
 
-		await openSelectUsers(fixtures);
-		await selectUser(fixtures, 'rocket.cat');
-		await tapWhenVisible(fixtures, 'selected-user-rocket.cat');
-		await expect(screen.getByTestId('selected-user-rocket.cat')).toBeHidden({ timeout: LONG_TIMEOUT });
-		await tapWhenVisible(fixtures, 'select-users-view-item-rocket.cat');
-		await expectVisible(fixtures, 'selected-user-rocket.cat');
-		await submitSelectedUsers(fixtures);
-		await expectVisible(fixtures, 'create-channel-view');
-		for (const field of ['create-channel-name', 'create-channel-type', 'create-channel-readonly', 'create-channel-broadcast']) {
-			await expectVisible(fixtures, field);
-		}
+	await openSelectUsers(fixtures);
+	await selectUser(fixtures, 'rocket.cat');
+	await tapWhenVisible(fixtures, 'selected-user-rocket.cat');
+	await expect(screen.getByTestId('selected-user-rocket.cat')).toBeHidden({ timeout: LONG_TIMEOUT });
+	await tapWhenVisible(fixtures, 'select-users-view-item-rocket.cat');
+	await expectVisible(fixtures, 'selected-user-rocket.cat');
+	await submitSelectedUsers(fixtures);
+	await expectVisible(fixtures, 'create-channel-view');
+	for (const field of ['create-channel-name', 'create-channel-type', 'create-channel-readonly', 'create-channel-broadcast']) {
+		await expectVisible(fixtures, field);
+	}
 
-		await submitChannelName(fixtures, 'general');
-		await expect(screen.getByText(/A channel with name general exists/)).toBeVisible({ timeout: LONG_TIMEOUT });
-		await screen.getByRole('button', { name: /^OK$/i }).tap();
+	await submitChannelName(fixtures, 'general');
+	await expect(screen.getByText(/A channel with name general exists/)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await screen.getByRole('button', { name: /^OK$/i }).tap();
 
-		const publicRoomName = `public${random()}`;
-		await fillChannelName(fixtures, publicRoomName);
-		await tapWhenVisible(fixtures, 'create-channel-type');
-		await tapWhenVisible(fixtures, 'create-channel-submit');
-		await expectRoomCreated(fixtures, publicRoomName);
+	const publicRoomName = `public${random()}`;
+	await fillChannelName(fixtures, publicRoomName);
+	await tapWhenVisible(fixtures, 'create-channel-type');
+	await tapWhenVisible(fixtures, 'create-channel-submit');
+	await expectRoomCreated(fixtures, publicRoomName);
 
-		const privateRoomName = `private${random()}`;
-		await openSelectUsers(fixtures);
-		await tapWhenVisible(fixtures, 'select-users-view-item-rocket.cat');
-		await expectVisible(fixtures, 'selected-user-rocket.cat');
-		await submitSelectedUsers(fixtures);
-		await expectVisible(fixtures, 'create-channel-view');
-		await submitChannelName(fixtures, privateRoomName);
-		await expectRoomCreated(fixtures, privateRoomName);
+	const privateRoomName = `private${random()}`;
+	await openSelectUsers(fixtures);
+	await tapWhenVisible(fixtures, 'select-users-view-item-rocket.cat');
+	await expectVisible(fixtures, 'selected-user-rocket.cat');
+	await submitSelectedUsers(fixtures);
+	await expectVisible(fixtures, 'create-channel-view');
+	await submitChannelName(fixtures, privateRoomName);
+	await expectRoomCreated(fixtures, privateRoomName);
 
-		const emptyRoomName = `empty${random()}`;
-		await openSelectUsers(fixtures);
-		await submitSelectedUsers(fixtures);
-		await expectVisible(fixtures, 'create-channel-view');
-		await submitChannelName(fixtures, emptyRoomName);
-		await expectRoomCreated(fixtures, emptyRoomName);
-	})
-);
+	const emptyRoomName = `empty${random()}`;
+	await openSelectUsers(fixtures);
+	await submitSelectedUsers(fixtures);
+	await expectVisible(fixtures, 'create-channel-view');
+	await submitChannelName(fixtures, emptyRoomName);
+	await expectRoomCreated(fixtures, emptyRoomName);
+});

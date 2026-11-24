@@ -1,7 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createRandomTeam, createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { afterEach, test } from '~e2e/support/fixtures';
 import {
 	backToRoomsList,
 	confirmAlert,
@@ -14,8 +14,7 @@ import {
 	LONG_TIMEOUT,
 	fillWhenUncovered,
 	roomTitle,
-	headerSearchInput,
-	withFixtures
+	headerSearchInput
 } from '~e2e/support/flows';
 import {
 	expectRoomMenuOptions,
@@ -146,45 +145,41 @@ const leaveTeam = async (fixtures: Fixtures, team: string, channels: { existing:
 	await expect(screen.getByTestId(`rooms-list-view-item-${team}`)).toBeHidden({ timeout: LONG_TIMEOUT });
 };
 
-test(
-	'manages a team',
-	{ tags: ['test-3'] },
-	withFixtures(async fixtures => {
-		const { screen } = fixtures;
-		const owner = await createUser();
-		const member = await createUser();
-		const team = await createRandomTeam(owner);
-		const room = await createRandomRoom(owner);
-		const privateChannel = `private${random()}-channel-team`;
+test('manages a team', { tags: ['test-3'] }, async ({ fixtures }) => {
+	const { screen } = fixtures;
+	const owner = await createUser();
+	const member = await createUser();
+	const team = await createRandomTeam(owner);
+	const room = await createRandomRoom(owner);
+	const privateChannel = `private${random()}-channel-team`;
 
-		await loginWithDeepLink(fixtures, owner);
-		await navigateToRoom(fixtures, team);
-		await expectRoomHeaderButtons(fixtures);
+	await loginWithDeepLink(fixtures, owner);
+	await navigateToRoom(fixtures, team);
+	await expectRoomHeaderButtons(fixtures);
 
-		await openTeamChannels(fixtures);
-		await expect(headerSearchInput(fixtures, 'team-channels-view-search')).toBeVisible({ timeout: LONG_TIMEOUT });
-		await createTeamChannel(fixtures, privateChannel);
-		await openTeamChannels(fixtures);
-		await screen.getByTestId(`rooms-list-view-item-${privateChannel}`).tap();
-		await expectRoomTitle(fixtures, privateChannel);
-		await expectRoomHeaderButtons(fixtures);
-		await backToRoomsList(fixtures);
+	await openTeamChannels(fixtures);
+	await expect(headerSearchInput(fixtures, 'team-channels-view-search')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await createTeamChannel(fixtures, privateChannel);
+	await openTeamChannels(fixtures);
+	await screen.getByTestId(`rooms-list-view-item-${privateChannel}`).tap();
+	await expectRoomTitle(fixtures, privateChannel);
+	await expectRoomHeaderButtons(fixtures);
+	await backToRoomsList(fixtures);
 
-		await navigateToRoom(fixtures, team);
-		await openTeamChannels(fixtures);
-		await addExistingChannel(fixtures, team, room.name);
-		await openTeamChannels(fixtures);
-		await expectVisible(fixtures, `rooms-list-view-item-${room.name}`);
+	await navigateToRoom(fixtures, team);
+	await openTeamChannels(fixtures);
+	await addExistingChannel(fixtures, team, room.name);
+	await openTeamChannels(fixtures);
+	await expectVisible(fixtures, `rooms-list-view-item-${room.name}`);
 
-		await toggleAutoJoin(fixtures, privateChannel);
-		await goBackUntil(fixtures, 'room-actions-view');
-		await goBackUntil(fixtures, roomTitle(fixtures, team));
-		await screen.getByTestId('room-header').first().tap();
-		await expectVisible(fixtures, 'room-actions-view');
+	await toggleAutoJoin(fixtures, privateChannel);
+	await goBackUntil(fixtures, 'room-actions-view');
+	await goBackUntil(fixtures, roomTitle(fixtures, team));
+	await screen.getByTestId('room-header').first().tap();
+	await expectVisible(fixtures, 'room-actions-view');
 
-		await addMembers(fixtures, ['rocket.cat', member.username]);
-		await removeMemberKeepingChannel(fixtures, 'rocket.cat', privateChannel);
-		await setMemberAsOwner(fixtures, member.username);
-		await leaveTeam(fixtures, team, { existing: room.name, created: privateChannel });
-	})
-);
+	await addMembers(fixtures, ['rocket.cat', member.username]);
+	await removeMemberKeepingChannel(fixtures, 'rocket.cat', privateChannel);
+	await setMemberAsOwner(fixtures, member.username);
+	await leaveTeam(fixtures, team, { existing: room.name, created: privateChannel });
+});

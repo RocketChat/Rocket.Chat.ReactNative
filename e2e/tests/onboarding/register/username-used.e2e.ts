@@ -1,20 +1,16 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { launchApp, navigateToRegister, withFixtures } from '~e2e/support/flows';
+import { afterEach, test } from '~e2e/support/fixtures';
+import { launchApp, navigateToRegister } from '~e2e/support/flows';
 import { fillRegisterForm } from '~e2e/support/onboarding';
 
 afterEach(deleteCreatedUsers);
 
-test(
-	'rejects a username already in use',
-	{ tags: ['test-6'] },
-	withFixtures(async fixtures => {
-		const user = await createUser();
-		await launchApp(fixtures);
-		await navigateToRegister(fixtures);
-		await fillRegisterForm(fixtures, { ...user, email: `new${user.email}` });
-		await expect(fixtures.screen.getByText('Username is already in use.')).toBeVisible();
-	})
-);
+test('rejects a username already in use', { tags: ['test-6'] }, async ({ fixtures }) => {
+	const user = await createUser();
+	await launchApp(fixtures);
+	await navigateToRegister(fixtures);
+	await fillRegisterForm(fixtures, { ...user, email: `new${user.email}` });
+	await expect(fixtures.screen.getByText('Username is already in use.')).toBeVisible();
+});

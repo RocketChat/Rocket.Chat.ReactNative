@@ -1,16 +1,8 @@
-import { test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { account, data } from '~e2e/support/data';
-import {
-	firstVisible,
-	launchApp,
-	navigateToLogin,
-	LONG_TIMEOUT,
-	fillWhenUncovered,
-	type Fixtures,
-	withFixtures
-} from '~e2e/support/flows';
+import { test } from '~e2e/support/fixtures';
+import { firstVisible, launchApp, navigateToLogin, LONG_TIMEOUT, fillWhenUncovered, type Fixtures } from '~e2e/support/flows';
 import { dismissBrowserFirstRunPrompts, dismissPasswordManagerPrompt } from '~e2e/support/onboarding';
 
 const SAFARI_APP = 'com.apple.mobilesafari';
@@ -43,40 +35,36 @@ const fillSamlField = async (fixtures: Fixtures, label: string, text: string) =>
 	await fillWhenUncovered(field, text);
 };
 
-test(
-	'logs in with SAML',
-	{ tags: ['test-7'], skip: SAML_WORKSPACE_DOWN },
-	withFixtures(async fixtures => {
-		const { device, screen } = fixtures;
-		const isIOS = fixtures.platform === 'ios';
-		await launchApp(fixtures);
-		await navigateToLogin(fixtures, data.candidateServer);
-		const rocketChatApp = await device.foregroundApp();
+test('logs in with SAML', { tags: ['test-7'], skip: SAML_WORKSPACE_DOWN }, async ({ fixtures }) => {
+	const { device, screen } = fixtures;
+	const isIOS = fixtures.platform === 'ios';
+	await launchApp(fixtures);
+	await navigateToLogin(fixtures, data.candidateServer);
+	const rocketChatApp = await device.foregroundApp();
 
-		await expect(screen.getByText('Login on web')).toBeVisible({ timeout: LONG_TIMEOUT });
-		await screen.getByText('Login on web').tap();
-		if (isIOS) {
-			await switchToApp(fixtures, SAFARI_APP);
-		}
-		await dismissBrowserFirstRunPrompts(fixtures, screen.getByText('Email or username').first());
-		await screen.scrollUntilVisible(screen.getByText('SAML'));
-		await screen.swipe({ direction: 'down' });
-		await screen.getByText('SAML').tap();
-		const samlForm = screen.getByText('Enter your username and password');
-		const roomsList = screen.getByTestId('rooms-list-view');
-		const openInAppPrompt = screen.getByText(/Open this page in .Rocket\.Chat.\?/, { visible: true });
-		if ((await firstVisible([samlForm, openInAppPrompt, roomsList])) === samlForm) {
-			await fillSamlField(fixtures, 'Username', account.saml.username);
-			await fillSamlField(fixtures, 'Password', account.saml.password);
-			await samlControl(fixtures, 'button', 'Login').tap();
-			await dismissPasswordManagerPrompt(fixtures, isIOS ? [roomsList, openInAppPrompt] : [roomsList]);
-		}
-		if (isIOS && (await firstVisible([openInAppPrompt, roomsList])) === openInAppPrompt) {
-			await screen.getByRole('button', 'Open').first().tap();
-		}
-		if (isIOS) {
-			await switchToApp(fixtures, rocketChatApp.bundleId ?? rocketChatApp.name);
-		}
-		await expect(roomsList).toBeVisible({ timeout: LONG_TIMEOUT });
-	})
-);
+	await expect(screen.getByText('Login on web')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await screen.getByText('Login on web').tap();
+	if (isIOS) {
+		await switchToApp(fixtures, SAFARI_APP);
+	}
+	await dismissBrowserFirstRunPrompts(fixtures, screen.getByText('Email or username').first());
+	await screen.scrollUntilVisible(screen.getByText('SAML'));
+	await screen.swipe({ direction: 'down' });
+	await screen.getByText('SAML').tap();
+	const samlForm = screen.getByText('Enter your username and password');
+	const roomsList = screen.getByTestId('rooms-list-view');
+	const openInAppPrompt = screen.getByText(/Open this page in .Rocket\.Chat.\?/, { visible: true });
+	if ((await firstVisible([samlForm, openInAppPrompt, roomsList])) === samlForm) {
+		await fillSamlField(fixtures, 'Username', account.saml.username);
+		await fillSamlField(fixtures, 'Password', account.saml.password);
+		await samlControl(fixtures, 'button', 'Login').tap();
+		await dismissPasswordManagerPrompt(fixtures, isIOS ? [roomsList, openInAppPrompt] : [roomsList]);
+	}
+	if (isIOS && (await firstVisible([openInAppPrompt, roomsList])) === openInAppPrompt) {
+		await screen.getByRole('button', 'Open').first().tap();
+	}
+	if (isIOS) {
+		await switchToApp(fixtures, rocketChatApp.bundleId ?? rocketChatApp.name);
+	}
+	await expect(roomsList).toBeVisible({ timeout: LONG_TIMEOUT });
+});

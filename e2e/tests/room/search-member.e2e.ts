@@ -1,7 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { afterEach, test } from '~e2e/support/fixtures';
 import {
 	fillSettled,
 	loginWithDeepLink,
@@ -11,8 +11,7 @@ import {
 	tapWhenVisible,
 	expectVisible,
 	openRoomActions,
-	headerSearchInput,
-	withFixtures
+	headerSearchInput
 } from '~e2e/support/flows';
 import { selectHeaderMenuOption } from '~e2e/support/header';
 
@@ -33,37 +32,33 @@ const filterByStatus = async (fixtures: Fixtures, status: 'online' | 'all') => {
 	);
 };
 
-test(
-	'searches members of a room',
-	{ tags: ['test-5'] },
-	withFixtures(async fixtures => {
-		const { screen } = fixtures;
-		const user = await createUser();
-		const noMembersFound = screen.getByText('No members found');
+test('searches members of a room', { tags: ['test-5'] }, async ({ fixtures }) => {
+	const { screen } = fixtures;
+	const user = await createUser();
+	const noMembersFound = screen.getByText('No members found');
 
-		await loginWithDeepLink(fixtures, user);
-		await navigateToRoom(fixtures, 'general');
-		await openRoomActions(fixtures);
-		await tapWhenVisible(fixtures, 'room-actions-members');
-		await expect(headerSearchInput(fixtures, 'room-members-view-search')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await loginWithDeepLink(fixtures, user);
+	await navigateToRoom(fixtures, 'general');
+	await openRoomActions(fixtures);
+	await tapWhenVisible(fixtures, 'room-actions-members');
+	await expect(headerSearchInput(fixtures, 'room-members-view-search')).toBeVisible({ timeout: LONG_TIMEOUT });
 
-		await searchMember(fixtures, 'rohit.bansal');
-		await expectVisible(fixtures, 'room-members-view-item-rohit.bansal');
+	await searchMember(fixtures, 'rohit.bansal');
+	await expectVisible(fixtures, 'room-members-view-item-rohit.bansal');
 
-		await filterByStatus(fixtures, 'online');
-		await expect(noMembersFound).toBeVisible({ timeout: LONG_TIMEOUT });
+	await filterByStatus(fixtures, 'online');
+	await expect(noMembersFound).toBeVisible({ timeout: LONG_TIMEOUT });
 
-		await filterByStatus(fixtures, 'all');
-		await expectVisible(fixtures, 'room-members-view-item-rohit.bansal');
-		await (
-			fixtures.platform === 'ios' ? screen.getByRole('button', { name: 'Clear text' }) : screen.getByTestId('clear-text-input')
-		).tap();
+	await filterByStatus(fixtures, 'all');
+	await expectVisible(fixtures, 'room-members-view-item-rohit.bansal');
+	await (
+		fixtures.platform === 'ios' ? screen.getByRole('button', { name: 'Clear text' }) : screen.getByTestId('clear-text-input')
+	).tap();
 
-		const secondUser = await createUser();
-		await searchMember(fixtures, secondUser.username);
-		await expectVisible(fixtures, `room-members-view-item-${secondUser.username}`);
+	const secondUser = await createUser();
+	await searchMember(fixtures, secondUser.username);
+	await expectVisible(fixtures, `room-members-view-item-${secondUser.username}`);
 
-		await searchMember(fixtures, 'nonexistentuser12345');
-		await expect(noMembersFound).toBeVisible({ timeout: LONG_TIMEOUT });
-	})
-);
+	await searchMember(fixtures, 'nonexistentuser12345');
+	await expect(noMembersFound).toBeVisible({ timeout: LONG_TIMEOUT });
+});

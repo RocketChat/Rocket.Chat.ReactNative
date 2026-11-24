@@ -1,7 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers, sendMessage as sendMessageAsUser } from '~e2e/support/api';
+import { afterEach, test } from '~e2e/support/fixtures';
 import {
 	hideKeyboard,
 	loginWithDeepLink,
@@ -19,8 +19,7 @@ import {
 	tapUntilVisible,
 	fillWhenUncovered,
 	tapSend,
-	typeUntilListed,
-	withFixtures
+	typeUntilListed
 } from '~e2e/support/flows';
 import { expectRoomTitle } from '~e2e/support/header';
 import { deleteMessage } from '~e2e/support/room';
@@ -207,75 +206,59 @@ const openRoomWithOwnMessage = async (fixtures: Fixtures) => {
 	return { user, room };
 };
 
-test(
-	'autocompletes and reacts to messages in a room',
-	{ tags: ['test-2'] },
-	withFixtures(async fixtures => {
-		const { user } = await openRoomWithOwnMessage(fixtures);
+test('autocompletes and reacts to messages in a room', { tags: ['test-2'] }, async ({ fixtures }) => {
+	const { user } = await openRoomWithOwnMessage(fixtures);
 
-		await expectAutocomplete(fixtures, ':joy', ':joy:', { selected: 'joy', alsoListed: ['joystick'] });
-		await expectAutocomplete(fixtures, `@${user.username}`, `@${user.username}`, { selected: user.username });
-		await expectAutocomplete(fixtures, '#translation-test', '#translation-test', { selected: 'translation-test' });
+	await expectAutocomplete(fixtures, ':joy', ':joy:', { selected: 'joy', alsoListed: ['joystick'] });
+	await expectAutocomplete(fixtures, `@${user.username}`, `@${user.username}`, { selected: user.username });
+	await expectAutocomplete(fixtures, '#translation-test', '#translation-test', { selected: 'translation-test' });
 
-		await reactFromPicker(fixtures, 'grinning');
-		await reactBySearch(fixtures, 'laughing');
-		await tapWhenVisible(fixtures, 'message-reaction-:grinning:');
-		await expectHidden(fixtures, 'message-reaction-:grinning:');
+	await reactFromPicker(fixtures, 'grinning');
+	await reactBySearch(fixtures, 'laughing');
+	await tapWhenVisible(fixtures, 'message-reaction-:grinning:');
+	await expectHidden(fixtures, 'message-reaction-:grinning:');
 
-		await startMessageAction(fixtures, MESSAGE, 'emoji-grinning');
-		await expectVisible(fixtures, 'message-reaction-:grinning:');
+	await startMessageAction(fixtures, MESSAGE, 'emoji-grinning');
+	await expectVisible(fixtures, 'message-reaction-:grinning:');
 
-		await tapWhenVisible(fixtures, 'message-add-reaction');
-		await expectVisible(fixtures, 'reaction-picker');
-		await expectVisible(fixtures, 'emoji-grinning');
-		await tapWhenVisible(fixtures, 'emoji-picker-tab-emoji');
-		await tapWhenVisible(fixtures, 'emoji-wink');
-		await expectVisible(fixtures, 'message-reaction-:wink:');
+	await tapWhenVisible(fixtures, 'message-add-reaction');
+	await expectVisible(fixtures, 'reaction-picker');
+	await expectVisible(fixtures, 'emoji-grinning');
+	await tapWhenVisible(fixtures, 'emoji-picker-tab-emoji');
+	await tapWhenVisible(fixtures, 'emoji-wink');
+	await expectVisible(fixtures, 'message-reaction-:wink:');
 
-		await toggleReactionsList(fixtures, 'laughing');
-	})
-);
+	await toggleReactionsList(fixtures, 'laughing');
+});
 
-test(
-	'opens profiles and edits, quotes and deletes messages in a room',
-	{ tags: ['test-2'] },
-	withFixtures(async fixtures => {
-		const { user, room } = await openRoomWithOwnMessage(fixtures);
+test('opens profiles and edits, quotes and deletes messages in a room', { tags: ['test-2'] }, async ({ fixtures }) => {
+	const { user, room } = await openRoomWithOwnMessage(fixtures);
 
-		const otherUser = await createUser();
-		await sendMessageAsUser(otherUser, room._id, 'new message');
-		await expectProfileFromUsername(fixtures, user.username, room.name);
-		await expectProfileFromUsername(fixtures, otherUser.username, room.name);
+	const otherUser = await createUser();
+	await sendMessageAsUser(otherUser, room._id, 'new message');
+	await expectProfileFromUsername(fixtures, user.username, room.name);
+	await expectProfileFromUsername(fixtures, otherUser.username, room.name);
 
-		await editMessage(fixtures);
-		await quoteMessage(fixtures, user.name);
+	await editMessage(fixtures);
+	await quoteMessage(fixtures, user.name);
 
-		await backToRoomsList(fixtures);
-		await tapWhenVisible(fixtures, 'markdown-preview-You: quoted');
-		await expectRoomTitle(fixtures, room.name);
+	await backToRoomsList(fixtures);
+	await tapWhenVisible(fixtures, 'markdown-preview-You: quoted');
+	await expectRoomTitle(fixtures, room.name);
 
-		await sendMessage(fixtures, 'message to delete');
-		await deleteMessage(fixtures, 'message to delete');
-	})
-);
+	await sendMessage(fixtures, 'message to delete');
+	await deleteMessage(fixtures, 'message to delete');
+});
 
-test(
-	'replies to a room message in a direct message',
-	{ tags: ['test-2'] },
-	withFixtures(async fixtures => {
-		await loginWithDeepLink(fixtures, await createUser());
-		await replyInDirectMessage(fixtures);
-	})
-);
+test('replies to a room message in a direct message', { tags: ['test-2'] }, async ({ fixtures }) => {
+	await loginWithDeepLink(fixtures, await createUser());
+	await replyInDirectMessage(fixtures);
+});
 
-test(
-	'keeps composer drafts, with and without a quote',
-	{ tags: ['test-2'] },
-	withFixtures(async fixtures => {
-		const user = await createUser();
-		const room = await createRandomRoom(user);
-		await loginWithDeepLink(fixtures, user);
-		await sendSavedDraft(fixtures, room.name);
-		await saveQuoteDraft(fixtures);
-	})
-);
+test('keeps composer drafts, with and without a quote', { tags: ['test-2'] }, async ({ fixtures }) => {
+	const user = await createUser();
+	const room = await createRandomRoom(user);
+	await loginWithDeepLink(fixtures, user);
+	await sendSavedDraft(fixtures, room.name);
+	await saveQuoteDraft(fixtures);
+});

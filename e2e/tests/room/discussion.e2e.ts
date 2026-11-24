@@ -1,7 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { afterEach, test } from '~e2e/support/fixtures';
 import {
 	goBack,
 	hideKeyboard,
@@ -15,8 +15,7 @@ import {
 	tapWhenVisible,
 	expectVisible,
 	fillWhenUncovered,
-	headerItem,
-	withFixtures
+	headerItem
 } from '~e2e/support/flows';
 import { expectRoomTitle, submitSelectedUsers } from '~e2e/support/header';
 import { random } from '~e2e/support/random';
@@ -95,31 +94,27 @@ const checkRoomActions = async (fixtures: Fixtures) => {
 	await expectVisible(fixtures, 'rooms-list-view');
 };
 
-test(
-	'creates and navigates discussions',
-	{ tags: ['test-5'] },
-	withFixtures(async fixtures => {
-		const user = await createUser();
-		const room = await createRandomRoom(user);
-		const discussionFromNewMessage = `${random()} Discussion NewMessageView`;
-		const discussionFromComposer = `${random()} Discussion MessageComposer actions`;
-		await loginWithDeepLink(fixtures, user);
+test('creates and navigates discussions', { tags: ['test-5'] }, async ({ fixtures }) => {
+	const user = await createUser();
+	const room = await createRandomRoom(user);
+	const discussionFromNewMessage = `${random()} Discussion NewMessageView`;
+	const discussionFromComposer = `${random()} Discussion MessageComposer actions`;
+	await loginWithDeepLink(fixtures, user);
 
-		await createDiscussionFromNewMessage(fixtures, room.name, discussionFromNewMessage);
-		await hideKeyboard(fixtures);
-		await goBack(fixtures);
-		await expectVisible(fixtures, `rooms-list-view-item-${discussionFromNewMessage}`);
+	await createDiscussionFromNewMessage(fixtures, room.name, discussionFromNewMessage);
+	await hideKeyboard(fixtures);
+	await goBack(fixtures);
+	await expectVisible(fixtures, `rooms-list-view-item-${discussionFromNewMessage}`);
 
-		await navigateToRoom(fixtures, room.name);
-		await createDiscussionFromComposer(fixtures, room.name, discussionFromComposer);
-		await createDiscussionFromMessage(fixtures);
-		await checkRoomActions(fixtures);
+	await navigateToRoom(fixtures, room.name);
+	await createDiscussionFromComposer(fixtures, room.name, discussionFromComposer);
+	await createDiscussionFromMessage(fixtures);
+	await checkRoomActions(fixtures);
 
-		await navigateToRoom(fixtures, room.name);
-		await tapWhenVisible(fixtures, 'room-header');
-		await tapWhenVisible(fixtures, 'room-actions-discussions');
-		await expectVisible(fixtures, 'discussions-view');
-		await tapWhenVisible(fixtures, `discussions-view-${discussionFromNewMessage}`);
-		await expectRoomTitle(fixtures, discussionFromNewMessage);
-	})
-);
+	await navigateToRoom(fixtures, room.name);
+	await tapWhenVisible(fixtures, 'room-header');
+	await tapWhenVisible(fixtures, 'room-actions-discussions');
+	await expectVisible(fixtures, 'discussions-view');
+	await tapWhenVisible(fixtures, `discussions-view-${discussionFromNewMessage}`);
+	await expectRoomTitle(fixtures, discussionFromNewMessage);
+});

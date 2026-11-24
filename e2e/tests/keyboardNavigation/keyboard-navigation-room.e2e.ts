@@ -1,8 +1,8 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { loginWithDeepLink, LONG_TIMEOUT, withFixtures } from '~e2e/support/flows';
+import { afterEach, test } from '~e2e/support/fixtures';
+import { loginWithDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
 import {
 	hideSoftKeyboardWithHardwareKeyboard,
 	leaveTouchMode,
@@ -20,7 +20,7 @@ afterEach(restoreKeyboardSettings);
 test(
 	'sends a message and an emoji with a hardware keyboard',
 	{ tags: ['test-9'], platforms: ['android'], timeout: 600_000 },
-	withFixtures(async fixtures => {
+	async ({ fixtures }) => {
 		const { screen } = fixtures;
 		const user = await createUser();
 		const room = await createRandomRoom(user);
@@ -51,5 +51,5 @@ test(
 		await moveFocusTo(fixtures, 'message-composer-send', 'up');
 		await pressKeys('enter');
 		await expect(screen.getByTestId('message-content-😀')).toBeVisible({ timeout: LONG_TIMEOUT });
-	})
+	}
 );

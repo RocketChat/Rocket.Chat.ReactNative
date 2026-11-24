@@ -1,9 +1,9 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
-import { logout, LONG_TIMEOUT, withFixtures } from '~e2e/support/flows';
+import { afterEach, test } from '~e2e/support/fixtures';
+import { logout, LONG_TIMEOUT } from '~e2e/support/flows';
 import { loginWithDeepLinkIntoRunningApp } from '~e2e/support/onboarding';
 
 afterEach(deleteCreatedUsers);
@@ -11,7 +11,7 @@ afterEach(deleteCreatedUsers);
 test(
 	'fully renders the servers history sheet on a small screen',
 	{ tags: ['test-9'], platforms: ['ios'], timeout: 300_000 },
-	withFixtures(async fixtures => {
+	async ({ fixtures }) => {
 		const { screen } = fixtures;
 		const user = await createUser();
 		const historyItem = screen.getByTestId(`servers-history-${data.server}`);
@@ -25,5 +25,5 @@ test(
 		await expect(historyItem).toBeVisible();
 		await historyItem.tap();
 		await expect(screen.getByTestId('login-view-submit')).toBeVisible({ timeout: LONG_TIMEOUT });
-	})
+	}
 );

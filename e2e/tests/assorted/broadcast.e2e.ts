@@ -1,7 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { afterEach, test } from '~e2e/support/fixtures';
 import {
 	goBackUntil,
 	hideKeyboard,
@@ -11,8 +11,7 @@ import {
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenVisible,
-	fillWhenUncovered,
-	withFixtures
+	fillWhenUncovered
 } from '~e2e/support/flows';
 import { expectRoomTitle, submitSelectedUsers } from '~e2e/support/header';
 import { random } from '~e2e/support/random';
@@ -56,37 +55,33 @@ const returnToRoom = async (fixtures: Fixtures, room: string) => {
 	await expectRoomTitle(fixtures, room);
 };
 
-test(
-	'creates a broadcast room and replies to its message',
-	{ tags: ['test-7'] },
-	withFixtures(async fixtures => {
-		const { screen } = fixtures;
-		const room = `broadcast${random()}`;
-		const owner = await createUser();
-		const member = await createUser();
+test('creates a broadcast room and replies to its message', { tags: ['test-7'] }, async ({ fixtures }) => {
+	const { screen } = fixtures;
+	const room = `broadcast${random()}`;
+	const owner = await createUser();
+	const member = await createUser();
 
-		await loginWithDeepLink(fixtures, owner);
-		await createBroadcastChannel(fixtures, room, member.username);
-		await expectBroadcastInRoomInfo(fixtures);
-		await returnToRoom(fixtures, room);
-		await sendMessage(fixtures, 'message');
+	await loginWithDeepLink(fixtures, owner);
+	await createBroadcastChannel(fixtures, room, member.username);
+	await expectBroadcastInRoomInfo(fixtures);
+	await returnToRoom(fixtures, room);
+	await sendMessage(fixtures, 'message');
 
-		await loginWithDeepLink(fixtures, member);
-		await searchAndNavigateRoom(fixtures, room);
-		await expect(screen.getByTestId('message-composer')).toBeHidden();
-		await expect(screen.getByLabel('This room is read only')).toBeVisible();
-		await expect(screen.getByTestId('message-content-message')).toBeVisible();
+	await loginWithDeepLink(fixtures, member);
+	await searchAndNavigateRoom(fixtures, room);
+	await expect(screen.getByTestId('message-composer')).toBeHidden();
+	await expect(screen.getByLabel('This room is read only')).toBeVisible();
+	await expect(screen.getByTestId('message-content-message')).toBeVisible();
 
-		await screen.getByTestId('message-broadcast-reply').tap();
-		await expectRoomTitle(fixtures, owner.username);
-		await fillWhenUncovered(screen.getByTestId('message-composer-input'), 'broadcastreply');
-		await screen.getByTestId('message-composer-send').tap();
-		const reply = screen.getByText(/broadcastreply/).first();
-		await expect(reply).toBeVisible({ timeout: LONG_TIMEOUT });
-		await expect(screen.getByTestId(`reply-${owner.username}-message`)).toBeVisible({ timeout: LONG_TIMEOUT });
-		await reply.longPress();
-		await expect(screen.getByText('Jump to message')).toBeVisible({ timeout: LONG_TIMEOUT });
-		await screen.getByText('Jump to message').tap();
-		await expectRoomTitle(fixtures, room);
-	})
-);
+	await screen.getByTestId('message-broadcast-reply').tap();
+	await expectRoomTitle(fixtures, owner.username);
+	await fillWhenUncovered(screen.getByTestId('message-composer-input'), 'broadcastreply');
+	await screen.getByTestId('message-composer-send').tap();
+	const reply = screen.getByText(/broadcastreply/).first();
+	await expect(reply).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expect(screen.getByTestId(`reply-${owner.username}-message`)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await reply.longPress();
+	await expect(screen.getByText('Jump to message')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await screen.getByText('Jump to message').tap();
+	await expectRoomTitle(fixtures, room);
+});

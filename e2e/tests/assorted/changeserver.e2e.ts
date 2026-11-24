@@ -1,9 +1,9 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
-import { loginWithDeepLink, LONG_TIMEOUT, withFixtures } from '~e2e/support/flows';
+import { afterEach, test } from '~e2e/support/fixtures';
+import { loginWithDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
 import { registerOnWorkspace } from '~e2e/support/onboarding';
 import {
 	addServerFromServersList,
@@ -16,40 +16,36 @@ import {
 
 afterEach(deleteCreatedUsers);
 
-test(
-	'switches between servers and keeps the last one on relaunch',
-	{ tags: ['test-6'] },
-	withFixtures(async fixtures => {
-		const { screen } = fixtures;
-		const user = await createUser();
-		const room = await createRandomRoom(user);
-		const roomItem = screen.getByTestId(`rooms-list-view-item-${room.name}`);
+test('switches between servers and keeps the last one on relaunch', { tags: ['test-6'] }, async ({ fixtures }) => {
+	const { screen } = fixtures;
+	const user = await createUser();
+	const room = await createRandomRoom(user);
+	const roomItem = screen.getByTestId(`rooms-list-view-item-${room.name}`);
 
-		await loginWithDeepLink(fixtures, user);
+	await loginWithDeepLink(fixtures, user);
 
-		await openServersList(fixtures);
-		await addServerFromServersList(fixtures, data.alternateServer);
-		await relaunchApp(fixtures, data.server);
+	await openServersList(fixtures);
+	await addServerFromServersList(fixtures, data.alternateServer);
+	await relaunchApp(fixtures, data.server);
 
-		await openServersList(fixtures);
-		await screen.getByTestId(`server-item-${data.alternateServer}`).tap();
-		await expect(screen.getByTestId('workspace-view')).toBeVisible({ timeout: LONG_TIMEOUT });
-		await registerOnWorkspace(fixtures);
-		await expect(roomItem).toBeHidden({ timeout: LONG_TIMEOUT });
+	await openServersList(fixtures);
+	await screen.getByTestId(`server-item-${data.alternateServer}`).tap();
+	await expect(screen.getByTestId('workspace-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await registerOnWorkspace(fixtures);
+	await expect(roomItem).toBeHidden({ timeout: LONG_TIMEOUT });
 
-		await relaunchApp(fixtures, data.alternateServer);
-		await checkServer(fixtures, data.alternateServer);
+	await relaunchApp(fixtures, data.alternateServer);
+	await checkServer(fixtures, data.alternateServer);
 
-		await selectServer(fixtures, data.server);
-		await expect(roomItem).toBeVisible({ timeout: LONG_TIMEOUT });
-		await checkServer(fixtures, data.server);
+	await selectServer(fixtures, data.server);
+	await expect(roomItem).toBeVisible({ timeout: LONG_TIMEOUT });
+	await checkServer(fixtures, data.server);
 
-		await relaunchApp(fixtures, data.server);
-		await checkServer(fixtures, data.server);
+	await relaunchApp(fixtures, data.server);
+	await checkServer(fixtures, data.server);
 
-		await deleteServer(fixtures, data.alternateServer);
-		await openServersList(fixtures);
-		await expect(screen.getByTestId(`server-item-${data.alternateServer}`)).toBeHidden({ timeout: LONG_TIMEOUT });
-		await expect(screen.getByTestId(`server-item-${data.server}`)).toBeVisible();
-	})
-);
+	await deleteServer(fixtures, data.alternateServer);
+	await openServersList(fixtures);
+	await expect(screen.getByTestId(`server-item-${data.alternateServer}`)).toBeHidden({ timeout: LONG_TIMEOUT });
+	await expect(screen.getByTestId(`server-item-${data.server}`)).toBeVisible();
+});

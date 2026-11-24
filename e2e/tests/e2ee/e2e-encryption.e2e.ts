@@ -1,4 +1,3 @@
-import { afterEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
@@ -16,7 +15,8 @@ import {
 	resetRoomKey,
 	setupE2EEUser
 } from '~e2e/support/e2ee';
-import { backToRoomsList, loginWithDeepLink, sendMessage, LONG_TIMEOUT, withFixtures } from '~e2e/support/flows';
+import { afterEach, test } from '~e2e/support/fixtures';
+import { backToRoomsList, loginWithDeepLink, sendMessage, LONG_TIMEOUT } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 
 afterEach(deleteCreatedUsers);
@@ -24,7 +24,7 @@ afterEach(deleteCreatedUsers);
 test(
 	'encrypts, decrypts, quotes, resets keys and edits messages',
 	{ tags: ['test-1'], timeout: 1_200_000 },
-	withFixtures(async fixtures => {
+	async ({ fixtures }) => {
 		const { screen } = fixtures;
 		const room = `encrypted${random()}`;
 		const userA = await createUser();
@@ -78,5 +78,5 @@ test(
 		await sendMessage(fixtures, 'm99');
 		await editMessage(fixtures, 'm99', 'm6');
 		await expectMessages(fixtures, ['m0', 'm1', 'm2', 'm3', 'm4', 'm6']);
-	})
+	}
 );

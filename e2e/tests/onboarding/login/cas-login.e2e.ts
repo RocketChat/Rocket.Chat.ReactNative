@@ -1,7 +1,7 @@
-import { test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
 
 import { account, data } from '~e2e/support/data';
+import { test } from '~e2e/support/fixtures';
 import {
 	hideKeyboard,
 	launchApp,
@@ -9,32 +9,27 @@ import {
 	LONG_TIMEOUT,
 	fillWhenUncovered,
 	tapWhenUncovered,
-	type Fixtures,
-	withFixtures
+	type Fixtures
 } from '~e2e/support/flows';
 import { casField, dismissPasswordManagerPrompt } from '~e2e/support/onboarding';
 
 const closeKeyboard = (fixtures: Fixtures) => hideKeyboard(fixtures, fixtures.screen.getByRole('button', /^(Done|selected)$/));
 
-test(
-	'logs in with CAS',
-	{ tags: ['test-7'] },
-	withFixtures(async fixtures => {
-		const { screen } = fixtures;
-		await launchApp(fixtures);
-		await navigateToLogin(fixtures, data.candidateServer);
+test('logs in with CAS', { tags: ['test-7'] }, async ({ fixtures }) => {
+	const { screen } = fixtures;
+	await launchApp(fixtures);
+	await navigateToLogin(fixtures, data.candidateServer);
 
-		await expect(screen.getByText('Continue with CAS')).toBeVisible({ timeout: LONG_TIMEOUT });
-		await screen.getByText('Continue with CAS').tap();
-		await expect(screen.getByText('CAS Login')).toBeVisible({ timeout: LONG_TIMEOUT });
-		await expect(casField(fixtures, 'password')).toBeVisible();
-		await fillWhenUncovered(casField(fixtures, 'username'), account.cas.username);
-		await closeKeyboard(fixtures);
-		await fillWhenUncovered(casField(fixtures, 'password'), account.cas.password);
-		await closeKeyboard(fixtures);
-		await tapWhenUncovered(screen.getByText('Sign in'));
-		const roomsList = screen.getByTestId('rooms-list-view');
-		await dismissPasswordManagerPrompt(fixtures, [roomsList]);
-		await expect(roomsList).toBeVisible({ timeout: LONG_TIMEOUT });
-	})
-);
+	await expect(screen.getByText('Continue with CAS')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await screen.getByText('Continue with CAS').tap();
+	await expect(screen.getByText('CAS Login')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expect(casField(fixtures, 'password')).toBeVisible();
+	await fillWhenUncovered(casField(fixtures, 'username'), account.cas.username);
+	await closeKeyboard(fixtures);
+	await fillWhenUncovered(casField(fixtures, 'password'), account.cas.password);
+	await closeKeyboard(fixtures);
+	await tapWhenUncovered(screen.getByText('Sign in'));
+	const roomsList = screen.getByTestId('rooms-list-view');
+	await dismissPasswordManagerPrompt(fixtures, [roomsList]);
+	await expect(roomsList).toBeVisible({ timeout: LONG_TIMEOUT });
+});
