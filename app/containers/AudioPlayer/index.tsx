@@ -147,16 +147,20 @@ const AudioPlayer = ({
 			AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
 			AudioManager.addAudioRendered(audioUri.current);
 		});
-		const unsubscribeBlur = navigation.addListener('blur', () => {
-			AudioManager.removeAudioRendered(audioUri.current);
+		const pauseAudioWithoutMessage = () => {
 			if (!msgId) {
 				AudioManager.pauseAudioIfPlaying(audioUri.current);
 			}
+		};
+		const unsubscribeBlur = navigation.addListener('blur', () => {
+			AudioManager.removeAudioRendered(audioUri.current);
+			pauseAudioWithoutMessage();
 		});
 
 		return () => {
 			unsubscribeFocus();
 			unsubscribeBlur();
+			pauseAudioWithoutMessage();
 		};
 	}, [navigation, msgId]);
 

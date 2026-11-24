@@ -438,6 +438,24 @@ describe('AudioPlayer', () => {
 			expect(AudioManager.pauseAudioIfPlaying).toHaveBeenCalledWith('file-key');
 		});
 
+		it('pauses an audio with no message when its screen closes', async () => {
+			(AudioManager.loadAudio as jest.Mock).mockReturnValue('file-key');
+			const { unmount } = render(<AudioPlayer {...defaultProps} msgId={undefined} />);
+			await act(() => new Promise(resolve => setImmediate(resolve)));
+
+			act(() => unmount());
+
+			expect(AudioManager.pauseAudioIfPlaying).toHaveBeenCalledWith('file-key');
+		});
+
+		it('keeps a message audio playing when its screen closes', () => {
+			const { unmount } = render(<AudioPlayer {...defaultProps} />);
+
+			act(() => unmount());
+
+			expect(AudioManager.pauseAudioIfPlaying).not.toHaveBeenCalled();
+		});
+
 		it('calls both unsubscribe functions on unmount', () => {
 			const { unmount } = render(<AudioPlayer {...defaultProps} />);
 
