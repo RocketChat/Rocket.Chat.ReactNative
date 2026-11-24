@@ -100,7 +100,7 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 	const accessibilityProps = useSeekAccessibility({ progress, duration, shownTime, showTime, enabled: loaded, onChangeTime });
 
 	return (
-		<View style={styles.seekContainer}>
+		<>
 			<View testID='audio-seek' style={styles.seek} {...accessibilityProps}>
 				<GestureDetector gesture={seekGesture}>
 					<View
@@ -115,7 +115,7 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 			<Text testID='audio-time' numberOfLines={1} style={[styles.timeLabel, { color: colors.fontSecondaryInfo }]}>
 				{formatProgressLabel(shownTime.time, shownTime.duration)}
 			</Text>
-		</View>
+		</>
 	);
 };
 

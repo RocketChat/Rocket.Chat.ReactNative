@@ -2,11 +2,14 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '~/views/Styles';
 
+const MIN_WAVEFORM_WIDTH = 96;
+
 const styles = StyleSheet.create({
 	audioContainer: {
 		flex: 1,
 		maxWidth: 368,
 		flexDirection: 'row',
+		flexWrap: 'wrap',
 		alignItems: 'center',
 		gap: 12,
 		padding: 8,
@@ -20,25 +23,18 @@ const styles = StyleSheet.create({
 		borderRadius: 4,
 		justifyContent: 'center'
 	},
-	seekContainer: {
-		flexDirection: 'row',
-		flex: 1,
-		alignItems: 'center',
-		gap: 12,
-		minWidth: 0
-	},
 	seek: {
-		flex: 1,
+		flexGrow: 1,
+		flexBasis: MIN_WAVEFORM_WIDTH,
 		height: 32,
-		justifyContent: 'center',
-		minWidth: 0
+		justifyContent: 'center'
 	},
 	seekTrack: {
 		height: '100%',
 		justifyContent: 'center'
 	},
 	timeLabel: {
-		flexShrink: 0,
+		flexShrink: 1,
 		fontSize: 12,
 		lineHeight: 16,
 		fontVariant: ['tabular-nums'],
@@ -50,7 +46,7 @@ const styles = StyleSheet.create({
 	},
 	containerPlaybackSpeed: {
 		minWidth: 48,
-		height: 32,
+		minHeight: 32,
 		paddingHorizontal: 8,
 		borderRadius: 4,
 		justifyContent: 'center',
