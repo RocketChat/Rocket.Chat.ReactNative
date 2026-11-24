@@ -368,3 +368,21 @@ describe('isBigEmojiOnly', () => {
 		expect(bigEmojiOnly('hi :smile:')).toBe(false);
 	});
 });
+
+describe('markdown ascii emoticons', () => {
+	const toSmiley = (shortname: string) => (shortname === ':slight_smile:' ? '🙂' : shortname);
+	const serializeEmoticons = (msg: string, convertAsciiEmoji: boolean) =>
+		buildRenderSegments(parse(msg, { emoticons: true }), {
+			...baseContext,
+			convertAsciiEmoji,
+			formatShortnameToUnicode: toSmiley
+		});
+
+	it('converts an ascii emoticon to its emoji when the user converts them', () => {
+		expect(serializeEmoticons('hi :)', true)).toEqual([{ type: 'markdown', content: 'hi 🙂' }]);
+	});
+
+	it('shows an ascii emoticon as typed when the user does not convert them', () => {
+		expect(serializeEmoticons('hi :)', false)).toEqual([{ type: 'markdown', content: 'hi :\\)' }]);
+	});
+});
