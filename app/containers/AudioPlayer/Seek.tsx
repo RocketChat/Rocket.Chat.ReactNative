@@ -93,7 +93,8 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 
 	const tapGesture = useTapGesture({
 		enabled: loaded,
-		maxDistance: SCRUB_ACTIVE_OFFSET_X,
+		maxDeltaX: SCRUB_ACTIVE_OFFSET_X,
+		maxDeltaY: SCROLL_FAIL_OFFSET_Y,
 		maxDuration: SEEK_TAP_MAX_DURATION_MS,
 		onDeactivate: event => {
 			if (!event.canceled) {
