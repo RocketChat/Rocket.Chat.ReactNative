@@ -51,7 +51,6 @@ const Markdown: FC<IMarkdownProps> = ({
 					<EnrichedMarkdownText
 						key={`markdown-${index}`}
 						markdown={segment.content}
-						accessibilityLabel={segment.accessibilityLabel}
 						markdownStyle={markdownStyle}
 						flavor='github'
 						md4cFlags={{ latexMath: true }}

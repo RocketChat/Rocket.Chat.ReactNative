@@ -35,7 +35,7 @@ export interface ISerializeContext {
 	formatShortnameToUnicode: (shortname: string) => string;
 }
 
-export type TRenderSegment = { type: 'markdown'; content: string; accessibilityLabel: string } | { type: 'linebreak' };
+export type TRenderSegment = { type: 'markdown'; content: string } | { type: 'linebreak' };
 
 const ESCAPE_PATTERN = /[\\`*_{}[\]()#+\-.!|~^$=<>&]/g;
 
@@ -360,37 +360,6 @@ const serializeInlineNode = (node: Inlines, context: ISerializeContext, scope: I
 	}
 };
 
-const plainTextInline = (nodes: Inlines[], context: ISerializeContext): string =>
-	nodes.map(node => plainTextNode(node, context)).join('');
-
-const plainTextNode = (node: Inlines, context: ISerializeContext): string => {
-	switch (node.type) {
-		case 'PLAIN_TEXT':
-			return node.value;
-		case 'BOLD':
-		case 'ITALIC':
-		case 'STRIKE':
-		case 'SPOILER':
-			return plainTextInline(node.value, context);
-		case 'LINK':
-			return plainTextInline(toLinkLabelValue(node.value.label), context);
-		case 'MENTION_USER':
-			return resolveUserMention(node.value.value, context).text;
-		case 'MENTION_CHANNEL':
-			return resolveChannelMention(node.value.value, context).text;
-		case 'EMOJI':
-			return emojiDisplayText(node, context);
-		case 'INLINE_CODE':
-			return node.value.value;
-		case 'INLINE_KATEX':
-			return node.value;
-		case 'TIMESTAMP':
-			return formatTimestampLabel(node.value);
-		default:
-			return '';
-	}
-};
-
 const isBlankLink = (node: Inlines | undefined): boolean =>
 	node?.type === 'LINK' &&
 	toLinkLabelValue(node.value.label).every(labelNode => labelNode.type === 'PLAIN_TEXT' && labelNode.value.trim() === '');
@@ -408,9 +377,6 @@ const resolveParagraphNodes = (value: Paragraph['value']): Paragraph['value'] =>
 
 const serializeParagraphValue = (value: Paragraph['value'], context: ISerializeContext): string =>
 	withoutLeadingIndent(serializeInline(resolveParagraphNodes(value), context));
-
-const plainTextParagraphValue = (value: Paragraph['value'], context: ISerializeContext): string =>
-	plainTextInline(resolveParagraphNodes(value), context);
 
 const indentLines = (text: string, width: number): string => {
 	const indent = ' '.repeat(width);
@@ -436,11 +402,6 @@ const serializeList = (list: NestedList, context: ISerializeContext): string =>
 		})
 		.join('\n');
 
-const plainTextList = (list: NestedList, context: ISerializeContext): string =>
-	list.value
-		.flatMap(item => [plainTextInline(item.value, context), ...(item.nested ?? []).map(child => plainTextList(child, context))])
-		.join('\n');
-
 const tableAlignmentMarker = (cell: TableCell): string => {
 	switch (cell.align) {
 		case 'left':
@@ -463,11 +424,6 @@ const serializeTable = ({ value: { header, rows } }: Table, context: ISerializeC
 		`| ${header.map(tableAlignmentMarker).join(' | ')} |`,
 		...rows.map(row => serializeTableRow(row.value, context))
 	].join('\n');
-
-const plainTextTable = ({ value: { header, rows } }: Table, context: ISerializeContext): string =>
-	[header, ...rows.map(row => row.value)]
-		.map(cells => cells.map(cell => plainTextInline(cell.value, context)).join(', '))
-		.join('\n');
 
 type TRootBlock = Root[number];
 
@@ -513,38 +469,11 @@ const serializeBlock = (block: TRootBlock, context: ISerializeContext): string =
 	}
 };
 
-const plainTextBlock = (block: TRootBlock, context: ISerializeContext): string => {
-	switch (block.type) {
-		case 'BIG_EMOJI':
-			return block.value.map(emojiBlock => emojiDisplayText(emojiBlock, context)).join(' ');
-		case 'KATEX':
-			return block.value;
-		case 'PARAGRAPH':
-			return plainTextParagraphValue(block.value, context);
-		case 'HEADING':
-			return plainTextInline(block.value, context);
-		case 'QUOTE':
-			return block.value.map(item => plainTextParagraphValue(item.value, context)).join('\n');
-		case 'UNORDERED_LIST':
-		case 'ORDERED_LIST':
-		case 'TASKS':
-			return plainTextList(block, context);
-		case 'SPOILER_BLOCK':
-			return block.value.map(paragraph => plainTextParagraphValue(paragraph.value, context)).join('\n');
-		case 'TABLE':
-			return plainTextTable(block, context);
-		case 'CODE':
-			return block.value.map(line => line.value.value).join('\n');
-		default:
-			return '';
-	}
-};
-
 export const buildRenderSegments = (root: Root, context: ISerializeContext): TRenderSegment[] =>
 	(root as TRootBlock[]).flatMap((block): TRenderSegment[] => {
 		if (block.type === 'LINE_BREAK') {
 			return [{ type: 'linebreak' }];
 		}
 		const content = serializeBlock(block, context);
-		return content ? [{ type: 'markdown', content, accessibilityLabel: plainTextBlock(block, context) }] : [];
+		return content ? [{ type: 'markdown', content }] : [];
 	});

@@ -17,14 +17,10 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="This is block quote"
-    >
+    <Text>
       &gt; This is block quote
     </Text>
-    <Text
-      accessibilityLabel="this is a normal line"
-    >
+    <Text>
       this is a normal line
     </Text>
   </View>
@@ -48,9 +44,7 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="This is inline code"
-    >
+    <Text>
       This is \`inline code\`
     </Text>
   </View>
@@ -61,14 +55,10 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Inline code has back-ticks around it."
-    >
+    <Text>
       Inline \`code\` has \`back-ticks around\` it\\.
     </Text>
-    <Text
-      accessibilityLabel="Code block"
-    >
+    <Text>
       \`\`\`
 Code block
 \`\`\`
@@ -94,9 +84,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Unicode: 😃😇👍"
-    >
+    <Text>
       Unicode: 😃😇👍
     </Text>
   </View>
@@ -107,9 +95,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Shortnames: 😂 👍️"
-    >
+    <Text>
       Shortnames: 😂 👍️
     </Text>
   </View>
@@ -120,9 +106,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Custom emojis: :react_rocket: :nyan_rocket: :marioparty:"
-    >
+    <Text>
       Custom emojis: ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png) ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png) ⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
     </Text>
   </View>
@@ -133,9 +117,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="😃 👍️ :marioparty:"
-    >
+    <Text>
       😃👍️⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
     </Text>
   </View>
@@ -159,9 +141,7 @@ exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="test-channel #unknown"
-    >
+    <Text>
       <Text
         accessibilityRole="link"
         onLongPress={[Function]}
@@ -192,9 +172,7 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Header 1"
-    >
+    <Text>
       # Header 1
     </Text>
   </View>
@@ -205,9 +183,7 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Header 2"
-    >
+    <Text>
       ## Header 2
     </Text>
   </View>
@@ -218,9 +194,7 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Header 3"
-    >
+    <Text>
       ### Header 3
     </Text>
   </View>
@@ -231,9 +205,7 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Header 4"
-    >
+    <Text>
       #### Header 4
     </Text>
   </View>
@@ -257,9 +229,7 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="H1 bold italic strike code 🚀 rocket.cat test-channel https://rocket.chat"
-    >
+    <Text>
       # H1 **bold** _italic_ ~~strike~~ \`code\` 🚀 
       <Text
         accessibilityRole="link"
@@ -293,9 +263,7 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="H2 bold italic strike code 🚀 rocket.cat test-channel https://rocket.chat"
-    >
+    <Text>
       ## H2 **bold** _italic_ ~~strike~~ \`code\` 🚀 
       <Text
         accessibilityRole="link"
@@ -329,9 +297,7 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="H3 bold italic strike code 🚀 rocket.cat test-channel https://rocket.chat"
-    >
+    <Text>
       ### H3 **bold** _italic_ ~~strike~~ \`code\` 🚀 
       <Text
         accessibilityRole="link"
@@ -365,9 +331,7 @@ exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="H4 bold italic strike code 🚀 rocket.cat test-channel https://rocket.chat"
-    >
+    <Text>
       #### H4 **bold** _italic_ ~~strike~~ \`code\` 🚀 
       <Text
         accessibilityRole="link"
@@ -414,9 +378,7 @@ exports[`Story Snapshots: HorizontalRule should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Above"
-    >
+    <Text>
       Above
     </Text>
     <View
@@ -426,9 +388,7 @@ exports[`Story Snapshots: HorizontalRule should match snapshot 1`] = `
         }
       }
     />
-    <Text
-      accessibilityLabel=""
-    >
+    <Text>
       ---
     </Text>
     <View
@@ -438,9 +398,7 @@ exports[`Story Snapshots: HorizontalRule should match snapshot 1`] = `
         }
       }
     />
-    <Text
-      accessibilityLabel="Below"
-    >
+    <Text>
       Below
     </Text>
   </View>
@@ -464,9 +422,7 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel=""
-    >
+    <Text>
       ![](&lt;https://play.google.com/intl/en_us/badges/images/badge_new.png&gt;)
     </Text>
   </View>
@@ -490,9 +446,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Markdown link: [description](url)"
-    >
+    <Text>
       <Text
         accessibilityRole="link"
         onLongPress={[Function]}
@@ -518,9 +472,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Formatted Link: <url|description>"
-    >
+    <Text>
       <Text
         accessibilityRole="link"
         onLongPress={[Function]}
@@ -538,9 +490,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Markdown link and the text with default style"
-    >
+    <Text>
       <Text
         accessibilityRole="link"
         onLongPress={[Function]}
@@ -558,9 +508,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Markdown link and the text continues on the next line"
-    >
+    <Text>
       <Text
         accessibilityRole="link"
         onLongPress={[Function]}
@@ -591,12 +539,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Open Source
-Rocket.Chat
-nodejs
-ReactNative"
-    >
+    <Text>
       - Open Source
 - 
       <Text
@@ -618,10 +561,7 @@ ReactNative"
       }
     }
   >
-    <Text
-      accessibilityLabel="Open Source
-Rocket.Chat"
-    >
+    <Text>
       1. Open Source
 2. 
       <Text
@@ -640,15 +580,7 @@ Rocket.Chat"
       }
     }
   >
-    <Text
-      accessibilityLabel="bold 
-italic 
-strikethrough 
-bold italic 
-bold strikethrough 
-italic strikethrough 
-bold italic strikethrough"
-    >
+    <Text>
       - **bold** 
 - _italic_ 
 - ~~strikethrough~~ 
@@ -679,9 +611,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="rocket.cat name1 all here @unknown team"
-      >
+      <Text>
         <Text
           accessibilityRole="link"
           onLongPress={[Function]}
@@ -730,9 +660,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="Rocket Cat Name all here @unknown team"
-      >
+      <Text>
         <Text
           accessibilityRole="link"
           onLongPress={[Function]}
@@ -796,9 +724,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="Normal: rocket.cat name1 all here test-channel"
-      >
+      <Text>
         Normal: 
         <Text
           accessibilityRole="link"
@@ -848,9 +774,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="Bold: rocket.cat name1 all here test-channel"
-      >
+      <Text>
         Bold: **
         <Text
           accessibilityRole="link"
@@ -901,9 +825,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="Italic:  rocket.cat   name1   all   here   test-channel "
-      >
+      <Text>
         Italic:  _
         <Text
           accessibilityRole="link"
@@ -954,9 +876,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="Strikethrough: rocket.cat name1 all here test-channel"
-      >
+      <Text>
         Strikethrough: ~~
         <Text
           accessibilityRole="link"
@@ -1007,9 +927,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="Italic + Bold + Strikethrough: rocket.cat name1 all here test-channel"
-      >
+      <Text>
         Italic \\+ Bold \\+ Strikethrough: _~~**
         <Text
           accessibilityRole="link"
@@ -1074,12 +992,7 @@ exports[`Story Snapshots: NestedLists should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="item 1
-subitem A
-subitem B
-item 2"
-    >
+    <Text>
       - item 1
   - subitem A
   - subitem B
@@ -1092,13 +1005,7 @@ item 2"
         }
       }
     />
-    <Text
-      accessibilityLabel="first
-done
-todo
-deep
-second"
-    >
+    <Text>
       1. first
    - [x] done
    - [ ] todo
@@ -1295,9 +1202,7 @@ exports[`Story Snapshots: Spoilers should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Inline hidden text spoiler"
-    >
+    <Text>
       Inline ||hidden text|| spoiler
     </Text>
   </View>
@@ -1321,11 +1226,7 @@ exports[`Story Snapshots: Tables should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Left, Center, Right
-bold, italic, code
-@rocket.cat, #general, 😄"
-    >
+    <Text>
       | Left | Center | Right |
 | :--- | :---: | ---: |
 | **bold** | _italic_ | \`code\` |
@@ -1352,9 +1253,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="This is Rocket.Chat"
-    >
+    <Text>
       This is 
       <Text
         accessibilityRole="link"
@@ -1372,9 +1271,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    >
+    <Text>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua\\.
     </Text>
   </View>
@@ -1385,19 +1282,13 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="a"
-    >
+    <Text>
       a
     </Text>
-    <Text
-      accessibilityLabel="b"
-    >
+    <Text>
       b
     </Text>
-    <Text
-      accessibilityLabel="c"
-    >
+    <Text>
       c
     </Text>
     <View
@@ -1407,9 +1298,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
         }
       }
     />
-    <Text
-      accessibilityLabel="d"
-    >
+    <Text>
       d
     </Text>
     <View
@@ -1426,9 +1315,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
         }
       }
     />
-    <Text
-      accessibilityLabel="e"
-    >
+    <Text>
       e
     </Text>
   </View>
@@ -1439,9 +1326,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="a       b                                                                             c"
-    >
+    <Text>
       a       b                                                                             c
     </Text>
   </View>
@@ -1452,9 +1337,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Emphasis: bold italic strikethrough bold with italic bold with strike bold with italic and strike italic with strike"
-    >
+    <Text>
       Emphasis: **bold** _italic_ ~~strikethrough~~ **_bold with italic_** **~~bold with strike~~** **_~~bold with italic and strike~~_** _~~italic with strike~~_
     </Text>
   </View>
@@ -1478,9 +1361,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Unix timestamp formats"
-    >
+    <Text>
       Unix timestamp formats
     </Text>
   </View>
@@ -1491,9 +1372,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="t - Short time: 12:00 AM"
-    >
+    <Text>
       t \\- Short time: 
       <Text
         accessibilityRole="link"
@@ -1511,9 +1390,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="T - Long time: 12:00:00 AM"
-    >
+    <Text>
       T \\- Long time: 
       <Text
         accessibilityRole="link"
@@ -1531,9 +1408,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="d - Short date: 01/01/2025"
-    >
+    <Text>
       d \\- Short date: 
       <Text
         accessibilityRole="link"
@@ -1551,9 +1426,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="D - Long date: Wednesday, Jan 01, 2025"
-    >
+    <Text>
       D \\- Long date: 
       <Text
         accessibilityRole="link"
@@ -1571,9 +1444,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="f - Short date/time: Wednesday, Jan 01, 2025 12:00 AM"
-    >
+    <Text>
       f \\- Short date/time: 
       <Text
         accessibilityRole="link"
@@ -1591,9 +1462,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="F - Long date/time: Wednesday, Jan 01, 2025 12:00:00 AM"
-    >
+    <Text>
       F \\- Long date/time: 
       <Text
         accessibilityRole="link"
@@ -1611,9 +1480,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="R - Relative time: a year ago"
-    >
+    <Text>
       R \\- Relative time: 
       <Text
         accessibilityRole="link"
@@ -1631,9 +1498,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="ISO timestamp formats"
-    >
+    <Text>
       ISO timestamp formats
     </Text>
   </View>
@@ -1644,9 +1509,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="t - Short time: 12:00 AM"
-    >
+    <Text>
       t \\- Short time: 
       <Text
         accessibilityRole="link"
@@ -1664,9 +1527,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="T - Long time: 12:00:00 AM"
-    >
+    <Text>
       T \\- Long time: 
       <Text
         accessibilityRole="link"
@@ -1684,9 +1545,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="d - Short date: 01/01/2025"
-    >
+    <Text>
       d \\- Short date: 
       <Text
         accessibilityRole="link"
@@ -1704,9 +1563,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="D - Long date: Wednesday, Jan 01, 2025"
-    >
+    <Text>
       D \\- Long date: 
       <Text
         accessibilityRole="link"
@@ -1724,9 +1581,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="f - Short date/time: Wednesday, Jan 01, 2025 12:00 AM"
-    >
+    <Text>
       f \\- Short date/time: 
       <Text
         accessibilityRole="link"
@@ -1744,9 +1599,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="F - Long date/time: Wednesday, Jan 01, 2025 12:00:00 AM"
-    >
+    <Text>
       F \\- Long date/time: 
       <Text
         accessibilityRole="link"
@@ -1764,9 +1617,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="R - Relative time: a year ago"
-    >
+    <Text>
       R \\- Relative time: 
       <Text
         accessibilityRole="link"

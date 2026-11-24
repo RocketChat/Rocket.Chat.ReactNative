@@ -128,7 +128,7 @@ describe('markdown serialize', () => {
 	it('serializes a block-level KATEX node as a block math segment', () => {
 		const tokens: Parameters<typeof buildRenderSegments>[0] = [{ type: 'KATEX', value: 'x^2' }];
 		const segments = buildRenderSegments(tokens, baseContext);
-		expect(segments).toEqual([{ type: 'markdown', content: '$$x^2$$', accessibilityLabel: 'x^2' }]);
+		expect(segments).toEqual([{ type: 'markdown', content: '$$x^2$$' }]);
 	});
 
 	it('indents nested lists under their parent item by the parent marker width', () => {
@@ -240,8 +240,7 @@ describe('markdown serialize', () => {
 		expect(buildRenderSegments(parse('@all #general'), mentionContext)).toEqual([
 			{
 				type: 'markdown',
-				content: '[**@all**](<user://all>) [**\\#general**](<channel://GENERAL>)',
-				accessibilityLabel: '@all #general'
+				content: '[**@all**](<user://all>) [**\\#general**](<channel://GENERAL>)'
 			}
 		]);
 	});
@@ -304,13 +303,13 @@ const segmentsFor = (msg: string, katexEnabled: boolean, dollarSyntax: boolean, 
 describe('markdown katex settings', () => {
 	it('serializes inline dollar math as a latex math span when dollar syntax is enabled', () => {
 		expect(segmentsFor('Inline $x^2 + y^2 = z^2$ katex', true, true, false)).toEqual([
-			{ type: 'markdown', content: 'Inline $x^2 + y^2 = z^2$ katex', accessibilityLabel: 'Inline x^2 + y^2 = z^2 katex' }
+			{ type: 'markdown', content: 'Inline $x^2 + y^2 = z^2$ katex' }
 		]);
 	});
 
 	it('escapes dollar signs as plain text when dollar syntax is disabled', () => {
 		expect(segmentsFor('Inline $x^2$ katex', true, false, true)).toEqual([
-			{ type: 'markdown', content: 'Inline \\$x\\^2\\$ katex', accessibilityLabel: 'Inline $x^2$ katex' }
+			{ type: 'markdown', content: 'Inline \\$x\\^2\\$ katex' }
 		]);
 	});
 
@@ -318,28 +317,25 @@ describe('markdown katex settings', () => {
 		expect(segmentsFor('$$\\int_0^1 x\\,dx = \\frac{1}{2}$$', true, true, false)).toEqual([
 			{
 				type: 'markdown',
-				content: '$$\\int_0^1 x\\,dx = \\frac{1}{2}$$',
-				accessibilityLabel: '\\int_0^1 x\\,dx = \\frac{1}{2}'
+				content: '$$\\int_0^1 x\\,dx = \\frac{1}{2}$$'
 			}
 		]);
 	});
 
 	it('serializes bracket matrix math as a native block math segment when parenthesis syntax is enabled', () => {
 		const matrix = '\\frac{a}{b} + \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}';
-		expect(segmentsFor(`\\[${matrix}\\]`, true, false, true)).toEqual([
-			{ type: 'markdown', content: `$$${matrix}$$`, accessibilityLabel: matrix }
-		]);
+		expect(segmentsFor(`\\[${matrix}\\]`, true, false, true)).toEqual([{ type: 'markdown', content: `$$${matrix}$$` }]);
 	});
 
 	it('serializes parenthesis math as a latex math span when parenthesis syntax is enabled', () => {
 		expect(segmentsFor('Paren \\(a+b\\) inline', true, false, true)).toEqual([
-			{ type: 'markdown', content: 'Paren $a+b$ inline', accessibilityLabel: 'Paren a+b inline' }
+			{ type: 'markdown', content: 'Paren $a+b$ inline' }
 		]);
 	});
 
 	it('keeps math delimiters as plain text when katex is disabled', () => {
 		expect(segmentsFor('Paren \\(a+b\\) and $x$', false, true, true)).toEqual([
-			{ type: 'markdown', content: 'Paren \\\\\\(a\\+b\\\\\\) and \\$x\\$', accessibilityLabel: 'Paren \\(a+b\\) and $x$' }
+			{ type: 'markdown', content: 'Paren \\\\\\(a\\+b\\\\\\) and \\$x\\$' }
 		]);
 	});
 });
