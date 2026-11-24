@@ -1,10 +1,12 @@
 import '@appduct/react-native/auto';
 import { jsonSchema, registerTool } from '@appduct/react-native';
 import { Q } from '@nozbe/watermelondb';
-import { first, firstValueFrom, fromEvent, takeUntil } from 'rxjs';
+import { first } from 'rxjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { appStart } from '~/actions/app';
+import { hideActionSheetRef } from '~/containers/ActionSheet/Provider';
+import { sendLoadingEvent } from '~/containers/Loading';
 import { deepLinkingOpen } from '~/actions/deepLinking';
 import { logout } from '~/actions/login';
 import { selectServerClear } from '~/actions/server';
@@ -67,23 +69,12 @@ const waitUntil = async (isDone: (state: IApplicationState) => boolean, signal: 
 
 const hasRoot = (state: IApplicationState) => !!state.app.root;
 
-const hasStarted = (state: IApplicationState) => hasRoot(state) && state.app.root !== RootEnum.ROOT_LOADING;
+const LOADING_ROOTS = [undefined, RootEnum.ROOT_LOADING, RootEnum.ROOT_LOADING_SHARE_EXTENSION];
 
-const isInShareExtension = (state: IApplicationState) =>
-	state.app.root === RootEnum.ROOT_SHARE_EXTENSION || state.app.root === RootEnum.ROOT_LOADING_SHARE_EXTENSION;
+const hasFinishedLoading = (state: IApplicationState) => !LOADING_ROOTS.includes(state.app.root);
 
-const hasLeftShareExtension = (state: IApplicationState) => hasStarted(state) && !isInShareExtension(state);
-
-const waitForAppStart = (signal: AbortSignal) => waitUntil(hasLeftShareExtension, signal);
-
-const hasFinishedLoading = (state: IApplicationState) =>
-	hasStarted(state) && state.app.root !== RootEnum.ROOT_LOADING_SHARE_EXTENSION;
-
-const closeShareExtension = () => {
-	if (store.getState().app.root === RootEnum.ROOT_SHARE_EXTENSION) {
-		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
-	}
-};
+const waitForAppStart = (signal: AbortSignal) =>
+	waitUntil(state => hasFinishedLoading(state) && state.app.root !== RootEnum.ROOT_SHARE_EXTENSION, signal);
 
 const waitForNavigatorReady = (signal: AbortSignal) =>
 	new Promise<void>((resolve, reject) => {
@@ -378,19 +369,19 @@ registerTool({
 	}
 });
 
-const waitForSubscription = async (name: string, signal: AbortSignal) => {
-	const [subscription] = await firstValueFrom(
-		database.active
+const waitForSubscription = (name: string, signal: AbortSignal) =>
+	new Promise<TSubscriptionModel>((resolve, reject) => {
+		const observation = database.active
 			.get<TSubscriptionModel>(SUBSCRIPTIONS_TABLE)
 			.query(Q.or(Q.where('name', name), Q.where('fname', name)), Q.take(1))
 			.observe()
-			.pipe(
-				first(subscriptions => subscriptions.length > 0),
-				takeUntil(fromEvent(signal, 'abort'))
-			)
-	);
-	return subscription;
-};
+			.pipe(first(subscriptions => subscriptions.length > 0))
+			.subscribe(([room]) => resolve(room));
+		signal.addEventListener('abort', () => {
+			observation.unsubscribe();
+			reject(signal.reason);
+		});
+	});
 
 registerTool({
 	name: 'open_room',
@@ -624,6 +615,11 @@ const remountOutside = async (signal: AbortSignal) => {
 	await waitForNavigationState(isRootRouteMounted('OutsideStack'), signal);
 };
 
+const closeOverlays = () => {
+	hideActionSheetRef();
+	sendLoadingEvent({ visible: false });
+};
+
 const disconnectFromWorkspace = () => {
 	disconnect();
 	store.dispatch(selectServerClear());
@@ -639,7 +635,7 @@ const resetPreferences = async () => {
 registerTool({
 	name: 'reset_app',
 	description:
-		'Return the running app to a first launch without restarting it: log out of every workspace, remove their data and the workspace history, and clear stored preferences. Resolves on the add workspace screen.',
+		'Return the running app to a first launch without restarting it: close open action sheets and loading overlays, log out of every workspace, remove their data and the workspace history, and clear stored preferences. Resolves on the add workspace screen.',
 	timeoutMs: 60_000,
 	inputSchema: jsonSchema<Record<string, never>>({ type: 'object', properties: {}, additionalProperties: false }),
 	outputSchema: jsonSchema<{ root: string }>({
@@ -649,9 +645,10 @@ registerTool({
 	}),
 	handler: async (_input, { signal }) => {
 		await waitUntil(hasFinishedLoading, signal);
-		closeShareExtension();
-		if (store.getState().app.root === RootEnum.ROOT_INSIDE) {
-			await removeServersExcept(store.getState().server.server);
+		closeOverlays();
+		const { app, server } = store.getState();
+		if (app.root === RootEnum.ROOT_INSIDE || app.root === RootEnum.ROOT_SHARE_EXTENSION) {
+			await removeServersExcept(server.server);
 			const loggedOut = waitForLogout(signal);
 			store.dispatch(logout());
 			await loggedOut;
