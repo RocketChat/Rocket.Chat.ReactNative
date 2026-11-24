@@ -7,3 +7,5 @@ export const AUDIO_PLAYBACK_SPEED = 'audioPlaybackSpeed';
 export const SCRUB_ACTIVE_OFFSET_X = 10;
 
 export const SCROLL_FAIL_OFFSET_Y = 10;
+
+export const SEEK_TAP_MAX_DURATION_MS = 60_000;

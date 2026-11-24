@@ -5,7 +5,7 @@ import { scheduleOnRN, scheduleOnUI } from 'react-native-worklets';
 
 import styles from './styles';
 import { useTheme } from '~/theme';
-import { SCROLL_FAIL_OFFSET_Y, SCRUB_ACTIVE_OFFSET_X } from './constants';
+import { SCROLL_FAIL_OFFSET_Y, SCRUB_ACTIVE_OFFSET_X, SEEK_TAP_MAX_DURATION_MS } from './constants';
 import { clamp } from './playbackClock';
 import { formatProgressLabel } from './formatMediaTime';
 import Waveform from '../Waveform';
@@ -93,6 +93,8 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 
 	const tapGesture = useTapGesture({
 		enabled: loaded,
+		maxDistance: SCRUB_ACTIVE_OFFSET_X,
+		maxDuration: SEEK_TAP_MAX_DURATION_MS,
 		onDeactivate: event => {
 			if (!event.canceled) {
 				scheduleOnRN(finishSeek, timeAt(event.x));
