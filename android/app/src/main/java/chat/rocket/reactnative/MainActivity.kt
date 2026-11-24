@@ -34,8 +34,9 @@ class MainActivity : ReactActivity() {
     }
     super.onCreate(null)
 
-    // Handle notification intents
-    intent?.let { NotificationIntentHandler.handleIntent(this, it) }
+    if (savedInstanceState == null) {
+      intent?.let { NotificationIntentHandler.handleIntent(this, it) }
+    }
   }
 
   private fun isReactRunning(): Boolean = reactHost?.currentReactContext != null
