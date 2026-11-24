@@ -49,8 +49,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const scale = useSharedValue(1);
 	const isPanning = useSharedValue(false);
 	const contextX = useSharedValue(0);
-	const savedTranslateX = useSharedValue(0);
-	const savedCurrentTime = useSharedValue(0);
+	const scrubTime = useSharedValue(0);
 
 	const styleLine = useAnimatedStyle(() => ({
 		width: translateX.value
@@ -71,8 +70,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		onActivate: () => {
 			isPanning.set(true);
 			contextX.set(translateX.get());
-			savedTranslateX.set(translateX.get());
-			savedCurrentTime.set(currentTime.get());
+			scrubTime.set(currentTime.get());
 			scale.set(withTiming(1.3, { duration: 150 }));
 		},
 		onUpdate: event => {
@@ -83,23 +81,21 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 			if (!isPanning.get()) return;
 			isPanning.set(false);
 			scale.set(withTiming(1, { duration: 150 }));
-			if (event.canceled) {
-				translateX.set(savedTranslateX.get());
-				currentTime.set(savedCurrentTime.get());
-			} else {
-				scheduleOnRN(onChangeTime, currentTime.get());
+			if (!event.canceled) {
+				scheduleOnRN(onChangeTime, scrubTime.get());
 			}
 		}
 	});
 
 	useDerivedValue(() => {
 		if (isPanning.get()) {
-			currentTime.set((translateX.get() * duration.get()) / maxWidth.get() || 0);
+			scrubTime.set((translateX.get() * duration.get()) / maxWidth.get() || 0);
+			timeLabel.set(formatTime(scrubTime.get()));
 		} else {
 			translateX.set((currentTime.get() * maxWidth.get()) / duration.get() || 0);
+			timeLabel.set(formatTime(currentTime.get()));
 		}
-		timeLabel.set(formatTime(currentTime.get()));
-	}, [translateX, maxWidth, duration, isPanning, currentTime]);
+	}, [translateX, maxWidth, duration, isPanning, currentTime, scrubTime]);
 
 	const timeLabelAnimatedProps = useAnimatedProps(() => {
 		if (currentTime.value !== 0) {

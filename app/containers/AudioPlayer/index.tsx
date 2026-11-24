@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import type { AudioStatus } from 'expo-audio';
 
@@ -17,6 +16,7 @@ import { emitter } from '~/lib/methods/helpers/emitter';
 import { type TAudioState } from './types';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
 import log from '~/lib/methods/helpers/log';
+import { usePlaybackClock } from './hooks/usePlaybackClock';
 
 interface IAudioPlayerProps {
 	fileUri: string;
@@ -42,8 +42,7 @@ const AudioPlayer = ({
 	const [playbackSpeed] = useUserPreferences<number>(AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS[1]);
 	const [paused, setPaused] = useState(true);
 	const [focused, setFocused] = useState(false);
-	const duration = useSharedValue(0);
-	const currentTime = useSharedValue(0);
+	const playbackClock = usePlaybackClock(playbackSpeed ?? AVAILABLE_SPEEDS[1]);
 	const { colors } = useTheme();
 	const audioUri = useRef<string>('');
 	const navigation = useNavigation();
@@ -51,7 +50,7 @@ const AudioPlayer = ({
 	const onPlaybackStatusUpdate = (status: AudioStatus): void => {
 		if (status) {
 			onPlaying(status);
-			handlePlaybackStatusUpdate(status);
+			playbackClock.onStatus(status);
 			onEnd(status);
 		}
 	};
@@ -64,21 +63,10 @@ const AudioPlayer = ({
 		}
 	};
 
-	const handlePlaybackStatusUpdate = (data: AudioStatus): void => {
-		if (!data.isLoaded) return;
-		const durationSeconds = data.duration || 0;
-		duration.set(durationSeconds > 0 ? durationSeconds : 0);
-		const currentSecond = data.currentTime || 0;
-		if (currentSecond <= durationSeconds) {
-			currentTime.set(currentSecond);
-		}
-	};
-
 	const onEnd = (data: AudioStatus) => {
 		if (data.isLoaded && data.didJustFinish) {
 			try {
 				setPaused(true);
-				currentTime.set(0);
 				AudioManager.setPositionAsync(audioUri.current, 0).catch(log);
 			} catch (error) {
 				log(error);
@@ -86,13 +74,13 @@ const AudioPlayer = ({
 		}
 	};
 
-	const setPosition = async (time: number): Promise<void> => {
-		await AudioManager.setPositionAsync(audioUri.current, time);
-	};
+	const setPosition = (time: number) =>
+		playbackClock.seek(time, seconds => AudioManager.setPositionAsync(audioUri.current, seconds));
 
 	const togglePlayPause = async () => {
 		try {
 			if (!paused) {
+				playbackClock.pause();
 				await AudioManager.pauseAudio();
 			} else {
 				await AudioManager.playAudio(audioUri.current);
@@ -178,7 +166,12 @@ const AudioPlayer = ({
 	return (
 		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceLight, borderColor: colors.strokeExtraLight }]}>
 			<PlayButton disabled={disabled} audioState={audioState} onPress={onPress} />
-			<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isDownloaded} onChangeTime={setPosition} />
+			<Seek
+				currentTime={playbackClock.position}
+				duration={playbackClock.duration}
+				loaded={!disabled && isDownloaded}
+				onChangeTime={setPosition}
+			/>
 			{audioState === 'playing' || focused ? <PlaybackSpeed /> : null}
 		</View>
 	);
