@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '~/views/Styles';
-import { THUMB_SEEK_SIZE } from './constants';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -32,21 +31,10 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		flex: 1
 	},
-	line: {
-		height: 4,
-		borderRadius: 2,
-		width: '100%'
-	},
 	duration: {
 		marginHorizontal: 12,
 		fontSize: 14,
 		...sharedStyles.textRegular
-	},
-	thumbSeek: {
-		height: THUMB_SEEK_SIZE,
-		width: THUMB_SEEK_SIZE,
-		borderRadius: THUMB_SEEK_SIZE / 2,
-		position: 'absolute'
 	},
 	containerPlaybackSpeed: {
 		width: 36,

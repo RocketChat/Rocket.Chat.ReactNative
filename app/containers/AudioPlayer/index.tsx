@@ -17,6 +17,7 @@ import { type TAudioState } from './types';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
 import log from '~/lib/methods/helpers/log';
 import { usePlaybackClock } from './hooks/usePlaybackClock';
+import { useAudioWaveform } from './hooks/useAudioWaveform';
 
 interface IAudioPlayerProps {
 	fileUri: string;
@@ -43,6 +44,7 @@ const AudioPlayer = ({
 	const [paused, setPaused] = useState(true);
 	const [focused, setFocused] = useState(false);
 	const playbackClock = usePlaybackClock(playbackSpeed ?? AVAILABLE_SPEEDS[1]);
+	const waveform = useAudioWaveform(fileUri, isDownloaded);
 	const { colors } = useTheme();
 	const audioUri = useRef<string>('');
 	const navigation = useNavigation();
@@ -170,6 +172,7 @@ const AudioPlayer = ({
 				currentTime={playbackClock.position}
 				duration={playbackClock.duration}
 				loaded={!disabled && isDownloaded}
+				peaks={waveform}
 				onChangeTime={setPosition}
 			/>
 			{audioState === 'playing' || focused ? <PlaybackSpeed /> : null}

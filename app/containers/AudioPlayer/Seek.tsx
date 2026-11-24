@@ -1,25 +1,22 @@
 import { type LayoutChangeEvent, View, TextInput, type TextInputProps, TouchableNativeFeedback } from 'react-native';
-import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
-import Animated, {
-	type SharedValue,
-	useAnimatedProps,
-	useAnimatedStyle,
-	useDerivedValue,
-	useSharedValue,
-	withTiming
-} from 'react-native-reanimated';
+import { GestureDetector, useCompetingGestures, usePanGesture, useTapGesture } from 'react-native-gesture-handler';
+import Animated, { type SharedValue, useAnimatedProps, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import styles from './styles';
 import { useTheme } from '~/theme';
-import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE, ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
+import { ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
+import Waveform from '../Waveform';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+
+const NOT_SCRUBBING = -1;
 
 interface ISeek {
 	duration: SharedValue<number>;
 	currentTime: SharedValue<number>;
 	loaded: boolean;
+	peaks?: number[] | null;
 	onChangeTime: (time: number) => void;
 }
 
@@ -29,7 +26,6 @@ function clamp(value: number, min: number, max: number) {
 	return Math.min(Math.max(value, min), max);
 }
 
-// https://docs.swmansion.com/react-native-reanimated/docs/2.x/fundamentals/worklets/
 const formatTime = (ms: number) => {
 	'worklet';
 
@@ -40,75 +36,68 @@ const formatTime = (ms: number) => {
 	return `${formattedMinutes}:${formattedSeconds}`;
 };
 
-const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) => {
+const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: ISeek) => {
 	const { colors } = useTheme();
 
-	const maxWidth = useSharedValue(1);
-	const translateX = useSharedValue(0);
-	const timeLabel = useSharedValue(DEFAULT_TIME_LABEL);
-	const scale = useSharedValue(1);
-	const isPanning = useSharedValue(false);
-	const contextX = useSharedValue(0);
-	const scrubTime = useSharedValue(0);
+	const trackWidth = useSharedValue(1);
+	const scrubProgress = useSharedValue(NOT_SCRUBBING);
 
-	const styleLine = useAnimatedStyle(() => ({
-		width: translateX.value
-	}));
+	const progress = useDerivedValue(() => {
+		if (scrubProgress.get() !== NOT_SCRUBBING) {
+			return scrubProgress.get();
+		}
+		return duration.get() ? clamp(currentTime.get() / duration.get(), 0, 1) : 0;
+	});
 
-	const styleThumb = useAnimatedStyle(() => ({
-		transform: [{ translateX: translateX.value - THUMB_SEEK_SIZE / 2 }, { scale: scale.value }]
-	}));
+	const progressAt = (x: number) => {
+		'worklet';
+
+		return clamp(x / trackWidth.get(), 0, 1);
+	};
+
+	const seekTo = (fraction: number) => {
+		'worklet';
+
+		scheduleOnRN(onChangeTime, fraction * duration.get());
+	};
 
 	const onLayout = (event: LayoutChangeEvent) => {
-		const { width } = event.nativeEvent.layout;
-		maxWidth.set(width);
+		trackWidth.set(event.nativeEvent.layout.width || 1);
 	};
 
 	const panGesture = usePanGesture({
 		enabled: loaded,
 		activeOffsetX: [-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X],
-		onActivate: () => {
-			isPanning.set(true);
-			contextX.set(translateX.get());
-			scrubTime.set(currentTime.get());
-			scale.set(withTiming(1.3, { duration: 150 }));
+		onActivate: event => {
+			scrubProgress.set(progressAt(event.x));
 		},
 		onUpdate: event => {
-			const newX = contextX.get() + event.translationX;
-			translateX.set(clamp(newX, 0, maxWidth.get()));
+			scrubProgress.set(progressAt(event.x));
 		},
 		onFinalize: event => {
-			if (!isPanning.get()) return;
-			isPanning.set(false);
-			scale.set(withTiming(1, { duration: 150 }));
+			if (scrubProgress.get() === NOT_SCRUBBING) return;
+			scrubProgress.set(NOT_SCRUBBING);
 			if (!event.canceled) {
-				scheduleOnRN(onChangeTime, scrubTime.get());
+				seekTo(progressAt(event.x));
 			}
 		}
 	});
 
-	useDerivedValue(() => {
-		if (isPanning.get()) {
-			scrubTime.set((translateX.get() * duration.get()) / maxWidth.get() || 0);
-			timeLabel.set(formatTime(scrubTime.get()));
-		} else {
-			translateX.set((currentTime.get() * maxWidth.get()) / duration.get() || 0);
-			timeLabel.set(formatTime(currentTime.get()));
+	const tapGesture = useTapGesture({
+		enabled: loaded,
+		onDeactivate: event => {
+			if (!event.canceled) {
+				seekTo(progressAt(event.x));
+			}
 		}
-	}, [translateX, maxWidth, duration, isPanning, currentTime, scrubTime]);
+	});
+
+	const seekGesture = useCompetingGestures(panGesture, tapGesture);
 
 	const timeLabelAnimatedProps = useAnimatedProps(() => {
-		if (currentTime.value !== 0) {
-			return {
-				text: timeLabel.value
-			} as TextInputProps;
-		}
-		return {
-			text: formatTime(duration.value)
-		} as TextInputProps;
-	}, [timeLabel, duration, currentTime]);
-
-	const thumbColor = loaded ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundPrimaryDisabled;
+		const shownTime = progress.get() * duration.get();
+		return { text: formatTime(shownTime || duration.get()) } as TextInputProps;
+	});
 
 	// TouchableNativeFeedback is avoiding do a long press message when seeking the audio
 	return (
@@ -120,14 +109,11 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 					style={[styles.duration, { color: colors.fontDefault }]}
 					animatedProps={timeLabelAnimatedProps}
 				/>
-				<View style={styles.seek} onLayout={onLayout}>
-					<View style={[styles.line, { backgroundColor: colors.strokeLight }]}>
-						<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
+				<GestureDetector gesture={seekGesture}>
+					<View testID='audio-seek' style={styles.seek} onLayout={onLayout}>
+						<Waveform peaks={peaks} progress={progress} />
 					</View>
-					<GestureDetector gesture={panGesture}>
-						<Animated.View hitSlop={SEEK_HIT_SLOP} style={[styles.thumbSeek, { backgroundColor: thumbColor }, styleThumb]} />
-					</GestureDetector>
-				</View>
+				</GestureDetector>
 			</View>
 		</TouchableNativeFeedback>
 	);

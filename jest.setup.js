@@ -49,7 +49,12 @@ jest.mock('react-native-reanimated', () => {
 		withTiming: jest.fn(value => value),
 		useAnimatedGestureHandler: jest.fn(() => jest.fn()),
 		useAnimatedStyle: jest.fn(fn => fn),
-		useDerivedValue: jest.fn(fn => fn)
+		useDerivedValue: jest.fn(derive => ({
+			get value() {
+				return derive();
+			},
+			get: derive
+		}))
 	};
 });
 
