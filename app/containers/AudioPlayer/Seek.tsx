@@ -13,6 +13,7 @@ import { scheduleOnRN } from 'react-native-worklets';
 import styles from './styles';
 import { useTheme } from '~/theme';
 import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE, ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
+import { formatTime } from './formatTime';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
@@ -28,17 +29,6 @@ function clamp(value: number, min: number, max: number) {
 
 	return Math.min(Math.max(value, min), max);
 }
-
-// https://docs.swmansion.com/react-native-reanimated/docs/2.x/fundamentals/worklets/
-const formatTime = (ms: number) => {
-	'worklet';
-
-	const minutes = Math.floor(ms / 60);
-	const remainingSeconds = Math.floor(ms % 60);
-	const formattedMinutes = String(minutes).padStart(2, '0');
-	const formattedSeconds = String(remainingSeconds).padStart(2, '0');
-	return `${formattedMinutes}:${formattedSeconds}`;
-};
 
 const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) => {
 	const { colors } = useTheme();

@@ -68,7 +68,7 @@ describe('AudioPlayer', () => {
 			if (event === 'blur') capturedBlurCb = cb;
 			return mockUnsubscribe;
 		});
-		(useNavigation as jest.Mock).mockReturnValue({ navigate: jest.fn(), addListener: mockAddListener });
+		(useNavigation as jest.Mock).mockReturnValue({ navigate: jest.fn(), addListener: mockAddListener, isFocused: () => true });
 
 		capturedAudioFocusedCb = undefined;
 		(emitter.on as jest.Mock).mockImplementation((event: string, cb: (audioFocused: string) => void) => {
@@ -390,6 +390,19 @@ describe('AudioPlayer', () => {
 
 			expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled();
 			expect(AudioManager.addAudioRendered).toHaveBeenCalled();
+		});
+
+		it('keeps an audio loaded while the screen is covered out of the rendered set', async () => {
+			(useNavigation as jest.Mock).mockReturnValue({
+				navigate: jest.fn(),
+				addListener: jest.fn(() => jest.fn()),
+				isFocused: () => false
+			});
+			render(<AudioPlayer {...defaultProps} />);
+
+			await waitFor(() => expect(AudioManager.loadAudio).toHaveBeenCalled());
+
+			await waitFor(() => expect(AudioManager.removeAudioRendered).toHaveBeenCalled());
 		});
 
 		it('calls removeAudioRendered when screen is blurred', () => {

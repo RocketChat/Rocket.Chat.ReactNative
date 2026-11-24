@@ -9,6 +9,7 @@ import { shallowEqual, useStore } from 'react-redux';
 import ActivityIndicator from '~/containers/ActivityIndicator';
 import BackgroundContainer from '~/containers/BackgroundContainer';
 import { ChangePasswordRequired } from '~/containers/ChangePasswordRequired';
+import NowPlayingAudio from '~/containers/NowPlayingAudio';
 import { FLOATING_ACTION_BUTTON_CLEARANCE } from '~/containers/FloatingActionButton';
 import RoomItem from '~/containers/RoomItem';
 import { type IRoomItem } from '~/containers/RoomItem/interfaces';
@@ -35,6 +36,7 @@ import NewMessageButton from './components/NewMessageButton';
 import SectionHeader from './components/SectionHeader';
 import SectionRevealFooter from './components/SectionRevealFooter';
 import RoomsSearchProvider, { RoomsSearchContext } from './contexts/RoomsSearchProvider';
+import { useCloseAudioOnWorkspaceExit } from './hooks/useCloseAudioOnWorkspaceExit';
 import { useCollapsedGroups } from './hooks/useCollapsedGroups';
 import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useHeader } from './hooks/useHeader';
@@ -50,6 +52,7 @@ const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const RoomsListView = memo(function RoomsListView() {
 	useHeader();
 	useWarmUpMessageBlocks();
+	useCloseAudioOnWorkspaceExit();
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
@@ -175,6 +178,7 @@ const RoomsListView = memo(function RoomsListView() {
 
 	return (
 		<>
+			{searchEnabled ? null : <NowPlayingAudio />}
 			<Animated.FlatList
 				data={searchEnabled ? searchResults : subscriptions}
 				keyExtractor={item => `${item.rid}-${searchEnabled}`}
