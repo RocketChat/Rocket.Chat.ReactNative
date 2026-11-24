@@ -39,6 +39,7 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 }
 
 export async function removeServerData({ server }: { server: string }): Promise<void> {
+	forgetRegisteredPushToken(server);
 	try {
 		const batch: Model[] = [];
 		const serversDB = database.servers;
@@ -90,7 +91,6 @@ async function logoutFromServer(server: string, resume: string): Promise<void> {
 }
 
 export async function removeServer({ server }: { server: string }): Promise<void> {
-	forgetRegisteredPushToken(server);
 	try {
 		const userId = UserPreferences.getString(getServerUserIdKey(server));
 		if (userId) {
@@ -132,7 +132,7 @@ export async function logout({ server }: { server: string }): Promise<void> {
 	}
 
 	try {
-		await removePushToken(server);
+		await removePushToken();
 	} catch (e) {
 		log(e);
 	}

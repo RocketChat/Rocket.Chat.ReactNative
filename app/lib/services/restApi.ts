@@ -1179,8 +1179,10 @@ export const editMediaMessage = async (
 };
 
 const registeredPushTokens = new Map<string, { token: string; voipToken: string }>();
+let forgottenRegistrationsCount = 0;
 
 export const forgetRegisteredPushToken = (server: string): void => {
+	forgottenRegistrationsCount += 1;
 	registeredPushTokens.delete(server);
 };
 
@@ -1191,7 +1193,8 @@ type TRegisterPushTokenData = {
 	appName: string;
 	voipToken?: string;
 };
-export const registerPushToken = async (): Promise<void> => {
+const registerPushTokenOnCurrentServer = async (): Promise<void> => {
+	const uniqueId = await getUniqueId();
 	const token = getDeviceToken();
 	// Always returns an empty string on Android
 	const voipToken = NativeVoipModule.getLastVoipToken();
@@ -1209,23 +1212,16 @@ export const registerPushToken = async (): Promise<void> => {
 	if (registered?.token === token && registered.voipToken === voipToken) {
 		return;
 	}
+	const forgottenRegistrationsCountAtStart = forgottenRegistrationsCount;
 
 	const serverVersion = reduxStore.getState().server.version;
-	let data: TRegisterPushTokenData = {
-		value: '',
-		type: '',
+	const data: TRegisterPushTokenData = {
+		value: token,
+		type: isIOS ? 'apn' : 'gcm',
 		appName: getBundleId
 	};
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
-		data.id = await getUniqueId();
-	}
-	if (token) {
-		const type = isIOS ? 'apn' : 'gcm';
-		data = {
-			...data,
-			value: token,
-			type
-		};
+		data.id = uniqueId;
 	}
 	if (voipToken && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0')) {
 		data.voipToken = voipToken;
@@ -1234,19 +1230,28 @@ export const registerPushToken = async (): Promise<void> => {
 	try {
 		// RC 0.60.0
 		await sdk.post('push.token', data);
-		registeredPushTokens.set(server, { token, voipToken });
+		if (forgottenRegistrationsCount === forgottenRegistrationsCountAtStart) {
+			registeredPushTokens.set(server, { token, voipToken });
+		}
 	} catch (e) {
 		log(e);
 	}
 };
 
+let pushTokenRegistrationQueue: Promise<void> = Promise.resolve();
+
+export const registerPushToken = (): Promise<void> => {
+	const registration = pushTokenRegistrationQueue.then(registerPushTokenOnCurrentServer);
+	pushTokenRegistrationQueue = registration.catch(() => undefined);
+	return registration;
+};
+
 // TODO: add voip token removal
-export const removePushToken = async (server: string): Promise<void> => {
+export const removePushToken = async (): Promise<void> => {
 	const token = getDeviceToken();
 	if (!token) {
 		return;
 	}
-	forgetRegisteredPushToken(server);
 	if (!sdk.isInitialized) {
 		return;
 	}
