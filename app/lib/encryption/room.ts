@@ -227,6 +227,10 @@ export default class EncryptionRoom {
 	acceptSuggestedRoomKey = async (E2ESuggestedKey: string, privateKey: string) => {
 		try {
 			const suggestedKey = await this.importRoomKey(E2ESuggestedKey, privateKey);
+			if (this.isRotatedRoomKey(suggestedKey)) {
+				await e2eRejectSuggestedGroupKey(this.roomId);
+				return false;
+			}
 			try {
 				await e2eAcceptSuggestedGroupKey(this.roomId);
 				this.setRoomKey(suggestedKey);
@@ -244,7 +248,6 @@ export default class EncryptionRoom {
 		try {
 			const storedKey = await this.importRoomKey(E2EKey, privateKey);
 			if (this.isRotatedRoomKey(storedKey)) {
-				this.clearRefusedRoomKey(E2EKey);
 				return false;
 			}
 			this.setRoomKey(storedKey);
@@ -346,32 +349,29 @@ export default class EncryptionRoom {
 			return false;
 		}
 		await e2eResetRoomKey(this.roomId, e2eKey, newKey.keyID);
-		await this.updateLocalSubscription(record => {
+		const isSavedLocally = await this.updateLocalSubscription(record => {
 			record.e2eKeyId = newKey.keyID;
 			record.E2EKey = e2eKey;
 		});
-		this.setRoomKey(newKey);
+		if (isSavedLocally) {
+			this.setRoomKey(newKey);
+		}
 		return true;
 	}
-
-	clearRefusedRoomKey = (refusedE2EKey: string) =>
-		this.updateLocalSubscription(record => {
-			if (record.E2EKey === refusedE2EKey) {
-				record.E2EKey = undefined;
-			}
-		});
 
 	updateLocalSubscription = async (updater: (record: TSubscriptionModel) => void) => {
 		try {
 			const subscription = await getSubscriptionByRoomId(this.roomId);
 			if (!subscription) {
-				return;
+				return false;
 			}
 			await database.active.write(async () => {
 				await subscription.update(updater);
 			});
+			return true;
 		} catch (e) {
 			log(e);
+			return false;
 		}
 	};
 

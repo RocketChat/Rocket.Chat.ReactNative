@@ -14,4 +14,13 @@ describe('merge', () => {
 
 		expect(storedSubscription.category).toBeUndefined();
 	});
+
+	it('clears the stored room key when the server subscription no longer has one', () => {
+		const storedSubscription = { E2EKey: 'rotated-out-key' };
+		const subscription = { _id: 'sub-1', rid: 'room-1', name: 'general' } as IServerSubscription;
+
+		Object.assign(storedSubscription, merge(subscription));
+
+		expect(storedSubscription.E2EKey).toBeUndefined();
+	});
 });
