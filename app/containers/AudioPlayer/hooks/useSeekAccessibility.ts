@@ -15,7 +15,7 @@ const STEP_BY_ACTION: Record<string, number> = {
 };
 
 interface ISeekAccessibility {
-	progress: SharedValue<number>;
+	shownSeconds: SharedValue<number>;
 	duration: SharedValue<number>;
 	shownTime: IShownTime;
 	showTime: (time: number, total: number) => void;
@@ -23,14 +23,21 @@ interface ISeekAccessibility {
 	onChangeTime: (time: number) => void;
 }
 
-export const useSeekAccessibility = ({ progress, duration, shownTime, showTime, enabled, onChangeTime }: ISeekAccessibility) => {
+export const useSeekAccessibility = ({
+	shownSeconds,
+	duration,
+	shownTime,
+	showTime,
+	enabled,
+	onChangeTime
+}: ISeekAccessibility) => {
 	const onAccessibilityAction = (event: AccessibilityActionEvent) => {
 		const step = STEP_BY_ACTION[event.nativeEvent.actionName];
 		const total = duration.get();
 		if (!enabled || !step || !total) {
 			return;
 		}
-		const time = Math.min(Math.max(progress.get() * total + step, 0), total);
+		const time = Math.min(Math.max(shownSeconds.get() + step, 0), total);
 		showTime(time, total);
 		onChangeTime(time);
 	};

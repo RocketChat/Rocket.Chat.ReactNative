@@ -7,13 +7,13 @@ export interface IShownTime {
 	duration: number;
 }
 
-export const useShownTime = (progress: SharedValue<number>, duration: SharedValue<number>) => {
+export const useShownTime = (shownSeconds: SharedValue<number>, duration: SharedValue<number>) => {
 	const [shownTime, setShownTime] = useState<IShownTime>({ time: 0, duration: 0 });
 
-	const showTime = (time: number, total: number) => setShownTime({ time: Math.floor(time), duration: Math.floor(total) });
+	const showTime = (time: number, total: number) => setShownTime({ time: Math.floor(time), duration: Math.round(total) });
 
 	useAnimatedReaction(
-		() => ({ time: Math.floor(progress.get() * duration.get()), total: Math.floor(duration.get()) }),
+		() => ({ time: Math.floor(shownSeconds.get()), total: Math.round(duration.get()) }),
 		(current, previous) => {
 			if (current.time !== previous?.time || current.total !== previous?.total) {
 				scheduleOnRN(showTime, current.time, current.total);

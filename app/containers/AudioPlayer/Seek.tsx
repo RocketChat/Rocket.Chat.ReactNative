@@ -42,6 +42,13 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 		return duration.get() ? clamp(currentTime.get() / duration.get(), 0, 1) : 0;
 	});
 
+	const shownSeconds = useDerivedValue(() => {
+		if (scrubProgress.get() !== NOT_SCRUBBING) {
+			return scrubProgress.get() * duration.get();
+		}
+		return clamp(currentTime.get(), 0, duration.get());
+	});
+
 	const progressAt = (x: number) => {
 		'worklet';
 
@@ -96,12 +103,20 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 	});
 
 	const seekGesture = useCompetingGestures(panGesture, tapGesture);
-	const { shownTime, showTime } = useShownTime(progress, duration);
-	const accessibilityProps = useSeekAccessibility({ progress, duration, shownTime, showTime, enabled: loaded, onChangeTime });
+	const { shownTime, showTime } = useShownTime(shownSeconds, duration);
+	const seekAccessibility = useSeekAccessibility({ shownSeconds, duration, shownTime, showTime, enabled: loaded, onChangeTime });
 
 	return (
 		<>
-			<View testID='audio-seek' style={styles.seek} {...accessibilityProps}>
+			<View
+				testID='audio-seek'
+				style={styles.seek}
+				accessible={seekAccessibility.accessible}
+				accessibilityRole={seekAccessibility.accessibilityRole}
+				accessibilityLabel={seekAccessibility.accessibilityLabel}
+				accessibilityValue={seekAccessibility.accessibilityValue}
+				accessibilityActions={seekAccessibility.accessibilityActions}
+				onAccessibilityAction={seekAccessibility.onAccessibilityAction}>
 				<GestureDetector gesture={seekGesture}>
 					<View
 						testID='audio-seek-track'

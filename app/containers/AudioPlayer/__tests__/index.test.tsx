@@ -2,8 +2,8 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useNavigation } from '@react-navigation/native';
 
-import AudioPlayer from '.';
-import Seek from './Seek';
+import AudioPlayer from '..';
+import Seek from '../Seek';
 import AudioManager from '~/lib/methods/AudioManager';
 
 jest.mock('~/lib/methods/AudioManager', () => ({
