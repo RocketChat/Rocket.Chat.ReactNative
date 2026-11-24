@@ -1,7 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { loginWithDeepLink, tapWhenVisible, expectVisible } from '~e2e/support/flows';
+import { loginToApp, tapWhenVisible, expectVisible } from '~e2e/support/flows';
 import { expectRoomTitle, submitSelectedUsers } from '~e2e/support/header';
 import { openNewMessage, selectUser } from '~e2e/support/room';
 
@@ -10,7 +10,7 @@ afterEach(deleteCreatedUsers);
 test('creates a group DM', { tags: ['test-2'] }, async fixtures => {
 	const user = await createUser();
 	const otherUser = await createUser();
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await openNewMessage(fixtures);
 	await expectVisible(fixtures, 'new-message-view-search');

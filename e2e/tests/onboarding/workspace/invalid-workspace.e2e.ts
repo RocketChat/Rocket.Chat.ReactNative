@@ -1,4 +1,4 @@
-import { test } from '@e2e-dev/mobile';
+import { test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { launchApp, fillWhenUncovered } from '~e2e/support/flows';
