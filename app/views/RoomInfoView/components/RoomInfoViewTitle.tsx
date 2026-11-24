@@ -8,7 +8,7 @@ import styles from '../styles';
 import { useTheme } from '~/theme';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
 import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
-import Markdown from '~/containers/markdown';
+import StatusText from '~/containers/Status/StatusText';
 import StatusRows from '~/containers/Status/StatusRows';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { LISTENER } from '~/containers/Toast';
@@ -64,7 +64,7 @@ const RoomInfoViewTitle = ({
 					statusExpiresAt={statusExpiresAt}
 					statusTextColor={colors.fontTitlesLabels}
 					fontSecondaryInfo={colors.fontSecondaryInfo}
-					renderStatusText={text => <Markdown msg={text} textStyle={[styles.statusText, { color: colors.fontTitlesLabels }]} />}
+					renderStatusText={text => <StatusText msg={text} textStyle={[styles.statusText, { color: colors.fontTitlesLabels }]} />}
 					textStyle={styles.statusText}
 					secondaryTextStyle={styles.expiryText}
 					rowStyle={styles.statusRow}

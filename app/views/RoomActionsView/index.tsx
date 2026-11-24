@@ -13,10 +13,11 @@ import Avatar from '~/containers/Avatar';
 import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import * as List from '~/containers/List';
 import Disclosure from '~/containers/NativeListRow/components/Disclosure';
-import Markdown, { MarkdownPreview } from '~/containers/markdown';
+import { MarkdownPreview } from '~/containers/markdown';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
 import SafeAreaView from '~/containers/SafeAreaView';
 import StatusRows from '~/containers/Status/StatusRows';
+import StatusText from '~/containers/Status/StatusText';
 import { type IApplicationState } from '~/definitions/redux';
 import { type IBaseScreen } from '~/definitions';
 import { type ISubscription, SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
@@ -793,7 +794,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 									statusTextColor={themes[theme].fontSecondaryInfo}
 									fontSecondaryInfo={themes[theme].fontSecondaryInfo}
 									renderStatusText={text => (
-										<Markdown msg={text} textStyle={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]} />
+										<StatusText msg={text} textStyle={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]} />
 									)}
 									textStyle={styles.roomDescription}
 									secondaryTextStyle={styles.roomDescription}
