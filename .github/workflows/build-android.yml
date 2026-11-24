@@ -22,6 +22,7 @@ jobs:
 
   build-android:
     name: Build
+    # No Ruby 2.7.7 build for ubuntu-26.04: https://github.com/ruby/ruby-builder/releases/tag/toolcache
     runs-on: ubuntu-24.04
     permissions:
       contents: read
