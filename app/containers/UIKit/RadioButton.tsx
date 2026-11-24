@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import I18n from '~/i18n';
 import Radio from '../Radio';
 import Touch from '../Touch';
 import sharedStyles from '~/views/Styles';
@@ -30,6 +29,9 @@ export const RadioButton = ({ element, value, loading, onChange }: IRadioButton)
 	const options = element.options || [];
 
 	const onPress = (optionValue: Option['value']) => {
+		if (optionValue === selected) {
+			return;
+		}
 		setSelected(optionValue);
 		onChange({ value: optionValue });
 	};
@@ -48,7 +50,8 @@ export const RadioButton = ({ element, value, loading, onChange }: IRadioButton)
 						style={styles.option}
 						accessible
 						accessibilityRole='radio'
-						accessibilityLabel={`${label}, ${checked ? I18n.t('Selected') : I18n.t('Unselected')}`}>
+						accessibilityLabel={label}
+						accessibilityState={{ checked, disabled: loading }}>
 						<Radio check={checked} />
 						<Text style={[styles.label, { color: colors.fontDefault }]}>{label}</Text>
 					</Touch>

@@ -54,7 +54,7 @@ export interface IElement {
 	placeholder?: IText;
 	actionId?: string;
 	initialValue?: any;
-	initialOption?: Option;
+	initialOption?: Option | Option[];
 	options?: Option[];
 	text?: IText;
 	value?: any;

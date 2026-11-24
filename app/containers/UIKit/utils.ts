@@ -7,7 +7,8 @@ import { type IElement, type IText } from './interfaces';
 
 export const textParser = ([{ text }]: IText[]) => text;
 
-export const getInitialValue = (element: IElement) => element.initialValue || element.initialOption?.value;
+export const getInitialValue = ({ initialValue, initialOption }: Pick<IElement, 'initialValue' | 'initialOption'>) =>
+	initialValue ?? (Array.isArray(initialOption) ? undefined : initialOption?.value);
 
 export const defaultContext: any = {
 	action: (...args: any) => console.log(args),
@@ -35,12 +36,16 @@ interface IUseBlockContext {
 	actionId: string;
 	appId?: string;
 	initialValue?: string;
+	initialOption?: IElement['initialOption'];
 	url?: string;
 }
 
-export const useBlockContext = ({ blockId, actionId, appId, initialValue }: IUseBlockContext, context: BlockContext): TReturn => {
+export const useBlockContext = (
+	{ blockId, actionId, appId, initialValue, initialOption }: IUseBlockContext,
+	context: BlockContext
+): TReturn => {
 	const { action, appId: appIdFromContext, viewId, state, language, errors, values = {} } = useContext(KitContext);
-	const { value = initialValue } = values[actionId] || {};
+	const { value = getInitialValue({ initialValue, initialOption }) } = values[actionId] || {};
 	const [loading, setLoading] = useState(false);
 
 	const error = errors && actionId && errors[actionId];

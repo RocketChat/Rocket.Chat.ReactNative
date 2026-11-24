@@ -5321,7 +5321,7 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           accessibilityState={
             {
               "busy": undefined,
-              "checked": undefined,
+              "checked": false,
               "disabled": false,
               "expanded": undefined,
               "selected": undefined,
@@ -5375,8 +5375,14 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Active, Unselected"
+            accessibilityLabel="Active"
             accessibilityRole="radio"
+            accessibilityState={
+              {
+                "checked": false,
+                "disabled": false,
+              }
+            }
             accessible={true}
             style={
               {
@@ -5467,7 +5473,7 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           accessibilityState={
             {
               "busy": undefined,
-              "checked": undefined,
+              "checked": true,
               "disabled": false,
               "expanded": undefined,
               "selected": undefined,
@@ -5521,8 +5527,14 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Inactive, Selected"
+            accessibilityLabel="Inactive"
             accessibilityRole="radio"
+            accessibilityState={
+              {
+                "checked": true,
+                "disabled": false,
+              }
+            }
             accessible={true}
             style={
               {
@@ -5647,7 +5659,7 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           accessibilityState={
             {
               "busy": undefined,
-              "checked": undefined,
+              "checked": false,
               "disabled": false,
               "expanded": undefined,
               "selected": undefined,
@@ -5701,8 +5713,14 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Active, Unselected"
+            accessibilityLabel="Active"
             accessibilityRole="radio"
+            accessibilityState={
+              {
+                "checked": false,
+                "disabled": false,
+              }
+            }
             accessible={true}
             style={
               {
@@ -5793,7 +5811,7 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           accessibilityState={
             {
               "busy": undefined,
-              "checked": undefined,
+              "checked": false,
               "disabled": false,
               "expanded": undefined,
               "selected": undefined,
@@ -5847,8 +5865,14 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Inactive, Unselected"
+            accessibilityLabel="Inactive"
             accessibilityRole="radio"
+            accessibilityState={
+              {
+                "checked": false,
+                "disabled": false,
+              }
+            }
             accessible={true}
             style={
               {

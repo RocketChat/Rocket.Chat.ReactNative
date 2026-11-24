@@ -35,7 +35,7 @@ jest.mock('~/lib/apps/actions', () => ({
 	triggerSubmitView: jest.fn()
 }));
 
-const modalData = (triggerId: string) => ({
+const modalData = (triggerId: string, blocks: object[] = []) => ({
 	appId: 'app-id',
 	viewId: 'view-id',
 	triggerId,
@@ -44,7 +44,7 @@ const modalData = (triggerId: string) => ({
 		title: { type: 'plain_text', text: 'Title' },
 		close: { type: 'plain_text', text: 'Cancel' },
 		submit: { type: 'plain_text', text: 'Submit' },
-		blocks: []
+		blocks
 	}
 });
 
@@ -73,18 +73,51 @@ describe('ModalBlockView', () => {
 		expect(navigation.replace).toHaveBeenCalledWith('ModalBlockView', { data: reopened });
 	});
 
-	describe('closing', () => {
-		const renderHeader = (navigation: TNavigation) => {
-			render(renderModal(modalData('trigger-1'), navigation));
-			const { headerLeft, headerRight } = navigation.setOptions.mock.calls[0][0];
-			render(
-				<>
-					{headerLeft()}
-					{headerRight()}
-				</>
-			);
-		};
+	const renderHeader = (navigation: TNavigation, data = modalData('trigger-1')) => {
+		render(renderModal(data, navigation));
+		const { headerLeft, headerRight } = navigation.setOptions.mock.calls[0][0];
+		render(
+			<>
+				{headerLeft()}
+				{headerRight()}
+			</>
+		);
+	};
 
+	it('submits the initialOption of radio_button and static_select fields untouched by the user', async () => {
+		jest.mocked(triggerSubmitView).mockResolvedValueOnce(false);
+		const option = (value: string) => ({ text: { type: 'plain_text', text: value }, value });
+		const input = (blockId: string, element: object) => ({
+			type: 'input',
+			blockId,
+			label: { type: 'plain_text', text: blockId },
+			element
+		});
+		renderHeader(
+			mockNavigation(),
+			modalData('trigger-1', [
+				input('radio-block', {
+					type: 'radio_button',
+					actionId: 'radio',
+					options: [option('a'), option('b')],
+					initialOption: option('b')
+				}),
+				input('select-block', { type: 'static_select', actionId: 'select', options: [option('c')], initialOption: option('c') }),
+				input('empty-block', { type: 'radio_button', actionId: 'empty', options: [option('')], initialOption: option('') }),
+				input('none-block', { type: 'radio_button', actionId: 'none', options: [option('d')] })
+			])
+		);
+
+		await act(async () => fireEvent.press(screen.getByTestId('submit-modal-uikit')));
+
+		expect(jest.mocked(triggerSubmitView).mock.calls[0][0].payload.view.state).toEqual({
+			'radio-block': { radio: 'b' },
+			'select-block': { select: 'c' },
+			'empty-block': { empty: '' }
+		});
+	});
+
+	describe('closing', () => {
 		it('closes once the app accepts the submit', async () => {
 			jest.mocked(triggerSubmitView).mockResolvedValueOnce(true);
 			const navigation = mockNavigation();

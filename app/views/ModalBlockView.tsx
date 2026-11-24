@@ -64,7 +64,7 @@ const groupStateByBlockIdMap = (obj: any, [key, { blockId, value }]: TElementToS
 };
 const groupStateByBlockId = (obj: { [key: string]: any }) => Object.entries(obj).reduce(groupStateByBlockIdMap, {});
 const filterInputFields = ({ element, elements = [] }: { element: any; elements?: any[] }) => {
-	if (element && getInitialValue(element)) {
+	if (element && getInitialValue(element) !== undefined) {
 		return true;
 	}
 	if (elements.length && elements.map(e => ({ element: e })).filter(filterInputFields).length) {

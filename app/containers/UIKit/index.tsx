@@ -14,7 +14,7 @@ import {
 import Markdown, { MarkdownPreview } from '../markdown';
 import Button from './Button';
 import { FormTextInput } from '../TextInput';
-import { getInitialValue, textParser, useBlockContext } from './utils';
+import { textParser, useBlockContext } from './utils';
 import { themes } from '~/lib/constants/colors';
 import sharedStyles from '~/views/Styles';
 import { Divider } from './Divider';
@@ -181,10 +181,7 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 	}
 
 	radio_button(element: IElement, context: BlockContext): ReactElement {
-		const [{ loading, value }, action] = useBlockContext(
-			{ ...element, actionId: element.actionId || '', initialValue: getInitialValue(element) },
-			context
-		);
+		const [{ loading, value }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
 		return <RadioButton element={element} value={value} loading={loading} onChange={action} />;
 	}
 
