@@ -1,3 +1,4 @@
+import { afterAll, afterEach, beforeAll, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers, sendMessage as sendMessageFromServer } from '~e2e/support/api';
@@ -12,7 +13,6 @@ import {
 	type ClientCertificate,
 	type ClientCertificateProxy
 } from '~e2e/support/clientCertificate';
-import { afterAll, afterEach, beforeAll, test } from '~e2e/support/fixtures';
 import { fillWhenUncovered, launchApp, loginWithForm, LONG_TIMEOUT, navigateToRoom, sendMessage } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 

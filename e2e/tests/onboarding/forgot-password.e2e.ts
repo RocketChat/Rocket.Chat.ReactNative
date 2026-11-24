@@ -1,7 +1,7 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { afterEach, test } from '~e2e/support/fixtures';
 import { launchApp, navigateToLogin, LONG_TIMEOUT, fillWhenUncovered } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);

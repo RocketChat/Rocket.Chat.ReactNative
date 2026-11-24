@@ -1,7 +1,7 @@
+import { test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { account, data } from '~e2e/support/data';
-import { test } from '~e2e/support/fixtures';
 import {
 	hideKeyboard,
 	launchApp,

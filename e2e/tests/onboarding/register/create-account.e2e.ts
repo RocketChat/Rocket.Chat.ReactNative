@@ -1,7 +1,7 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { deleteCreatedUsers, trackUserForCleanup } from '~e2e/support/api';
-import { afterEach, test } from '~e2e/support/fixtures';
 import { launchApp, navigateToRegister, LONG_TIMEOUT } from '~e2e/support/flows';
 import { fillRegisterForm } from '~e2e/support/onboarding';
 import { randomUser } from '~e2e/support/random';

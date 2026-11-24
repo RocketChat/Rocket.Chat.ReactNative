@@ -1,8 +1,9 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { afterEach, test } from '~e2e/support/fixtures';
-import { isVisibleNow, loginWithDeepLink, LONG_TIMEOUT, succeeds, type Fixtures, headerItem } from '~e2e/support/flows';
+import { openScreen } from '~e2e/support/appduct';
+import { isVisibleNow, loginToApp, LONG_TIMEOUT, succeeds, type Fixtures, headerItem } from '~e2e/support/flows';
 import { goToDisplayPreferences, goToRoomListFromDisplayPreferences } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
@@ -43,7 +44,7 @@ test('changes the rooms list display preferences', { tags: ['test-5'] }, async (
 	const avatars = screen.getByTestId('avatar', { visible: true });
 	const generalRow = screen.getByTestId('rooms-list-view-item-general');
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	for (const target of [
 		generalRow,
 		headerItem(fixtures, 'rooms-list-view-create-channel', 'Create new channel, team, direct message or discussion'),
@@ -61,14 +62,14 @@ test('changes the rooms list display preferences', { tags: ['test-5'] }, async (
 	await goToRoomListFromDisplayPreferences(fixtures);
 	await expect(lastMessages.first()).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await goToDisplayPreferences(fixtures);
+	await openScreen(fixtures, 'DisplayPrefsView');
 	await switchRow(fixtures, 'display-pref-view-condensed', 'Condensed', true);
 	await goToRoomListFromDisplayPreferences(fixtures);
 	await expect(generalRow).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expect(lastMessages).toHaveCount(0, { timeout: LONG_TIMEOUT });
 	await expect(avatars.first()).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await goToDisplayPreferences(fixtures);
+	await openScreen(fixtures, 'DisplayPrefsView');
 	await switchRow(fixtures, 'display-pref-view-avatars', 'Avatars', false);
 	await goToRoomListFromDisplayPreferences(fixtures);
 	await expect(generalRow).toBeVisible({ timeout: LONG_TIMEOUT });

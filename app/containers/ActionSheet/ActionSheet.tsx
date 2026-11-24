@@ -45,15 +45,15 @@ const ActionSheet = memo(
 
 		useEffect(() => () => clearTimeout(pendingPresentTimeoutRef.current), []);
 
+		const dismissSheet = () => sheetRef.current?.dismiss().catch(() => {});
+
 		const hide = () => {
 			desiredOptionsRef.current = null;
 			clearTimeout(pendingPresentTimeoutRef.current);
 			const phase = phaseRef.current;
 			if (phase === 'idle' || phase === 'dismissing') return;
 			phaseRef.current = 'dismissing';
-			if (phase === 'presented') {
-				sheetRef.current?.dismiss();
-			}
+			dismissSheet();
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		};
@@ -114,8 +114,8 @@ const ActionSheet = memo(
 		};
 
 		const onDidPresent = () => {
-			if (phaseRef.current === 'dismissing') {
-				sheetRef.current?.dismiss();
+			if (phaseRef.current !== 'presenting') {
+				dismissSheet();
 				return;
 			}
 			phaseRef.current = 'presented';

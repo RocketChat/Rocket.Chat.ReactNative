@@ -1,12 +1,12 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { afterEach, test } from '~e2e/support/fixtures';
 import {
 	goBack,
 	hideKeyboard,
-	loginWithDeepLink,
-	navigateToRoom,
+	loginToApp,
 	sendMessage,
 	type Fixtures,
 	LONG_TIMEOUT,
@@ -99,19 +99,19 @@ test('creates and navigates discussions', { tags: ['test-5'] }, async ({ fixture
 	const room = await createRandomRoom(user);
 	const discussionFromNewMessage = `${random()} Discussion NewMessageView`;
 	const discussionFromComposer = `${random()} Discussion MessageComposer actions`;
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await createDiscussionFromNewMessage(fixtures, room.name, discussionFromNewMessage);
 	await hideKeyboard(fixtures);
 	await goBack(fixtures);
 	await expectVisible(fixtures, `rooms-list-view-item-${discussionFromNewMessage}`);
 
-	await navigateToRoom(fixtures, room.name);
+	await openRoom(fixtures, room.name);
 	await createDiscussionFromComposer(fixtures, room.name, discussionFromComposer);
 	await createDiscussionFromMessage(fixtures);
 	await checkRoomActions(fixtures);
 
-	await navigateToRoom(fixtures, room.name);
+	await openRoom(fixtures, room.name);
 	await tapWhenVisible(fixtures, 'room-header');
 	await tapWhenVisible(fixtures, 'room-actions-discussions');
 	await expectVisible(fixtures, 'discussions-view');

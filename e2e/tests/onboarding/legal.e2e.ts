@@ -1,6 +1,6 @@
+import { test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
-import { test } from '~e2e/support/fixtures';
 import { goBackUntil, launchApp, navigateToLogin } from '~e2e/support/flows';
 import { tapHeaderItem } from '~e2e/support/header';
 

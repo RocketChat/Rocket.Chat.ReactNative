@@ -1,8 +1,8 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { afterEach, test } from '~e2e/support/fixtures';
-import { expectAllVisible, tapUntilHidden, loginWithDeepLink, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
+import { expectAllVisible, tapUntilHidden, loginToApp, LONG_TIMEOUT, tapWhenVisible } from '~e2e/support/flows';
 import { tapHeaderItem } from '~e2e/support/header';
 import { openSidebar } from '~e2e/support/settings';
 
@@ -11,7 +11,7 @@ afterEach(deleteCreatedUsers);
 test('changes status and status text', { tags: ['test-4'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const user = await createUser();
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await openSidebar(fixtures);
 	await tapWhenVisible(fixtures, 'sidebar-custom-status-online');
 	await expect(screen.getByTestId('status-view')).toBeVisible({ timeout: LONG_TIMEOUT });

@@ -1,11 +1,11 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createRandomRoom, createUser, deleteCreatedUsers, sendMessage as sendMessageAsUser } from '~e2e/support/api';
-import { afterEach, test } from '~e2e/support/fixtures';
 import {
 	hideKeyboard,
-	loginWithDeepLink,
-	navigateToRoom,
+	loginToApp,
 	searchAndNavigateRoom,
 	sendMessage,
 	type Fixtures,
@@ -87,7 +87,7 @@ const expectProfileFromUsername = async (fixtures: Fixtures, username: string, r
 	await expect(screen.getByText(`@${username}`, { exact: false }).first()).toBeVisible({ timeout: LONG_TIMEOUT });
 	await goBackUntil(fixtures, 'room-view');
 	await backToRoomsList(fixtures);
-	await navigateToRoom(fixtures, roomName);
+	await openRoom(fixtures, roomName);
 };
 
 const startMessageAction = async (fixtures: Fixtures, message: string, action: string) => {
@@ -122,7 +122,7 @@ const joinRoom = async (fixtures: Fixtures, roomName: string) => {
 	await expectHidden(fixtures, 'room-view-join-button');
 	await backToRoomsList(fixtures);
 	await expectVisible(fixtures, `rooms-list-view-item-${roomName}`);
-	await navigateToRoom(fixtures, roomName);
+	await openRoom(fixtures, roomName);
 	await expect(fixtures.screen.getByText(/joined the channel/)).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
@@ -154,7 +154,7 @@ const replyInDirectMessage = async (fixtures: Fixtures) => {
 
 const leaveAndReopenRoom = async (fixtures: Fixtures, roomName: string) => {
 	await backToRoomsList(fixtures);
-	await navigateToRoom(fixtures, roomName);
+	await openRoom(fixtures, roomName);
 };
 
 const typeDraft = async (fixtures: Fixtures, text: string) => {
@@ -163,7 +163,7 @@ const typeDraft = async (fixtures: Fixtures, text: string) => {
 };
 
 const sendSavedDraft = async (fixtures: Fixtures, roomName: string) => {
-	await searchAndNavigateRoom(fixtures, roomName);
+	await openRoom(fixtures, roomName);
 	await typeDraft(fixtures, 'draft');
 	await leaveAndReopenRoom(fixtures, roomName);
 	await expect(composer(fixtures)).toHaveValue('draft', { timeout: LONG_TIMEOUT });
@@ -200,8 +200,8 @@ const saveQuoteDraft = async (fixtures: Fixtures) => {
 const openRoomWithOwnMessage = async (fixtures: Fixtures) => {
 	const user = await createUser();
 	const room = await createRandomRoom(user);
-	await loginWithDeepLink(fixtures, user);
-	await navigateToRoom(fixtures, room.name);
+	await loginToApp(fixtures, user);
+	await openRoom(fixtures, room.name);
 	await sendMessage(fixtures, MESSAGE);
 	return { user, room };
 };
@@ -251,14 +251,14 @@ test('opens profiles and edits, quotes and deletes messages in a room', { tags: 
 });
 
 test('replies to a room message in a direct message', { tags: ['test-2'] }, async ({ fixtures }) => {
-	await loginWithDeepLink(fixtures, await createUser());
+	await loginToApp(fixtures, await createUser());
 	await replyInDirectMessage(fixtures);
 });
 
 test('keeps composer drafts, with and without a quote', { tags: ['test-2'] }, async ({ fixtures }) => {
 	const user = await createUser();
 	const room = await createRandomRoom(user);
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await sendSavedDraft(fixtures, room.name);
 	await saveQuoteDraft(fixtures);
 });

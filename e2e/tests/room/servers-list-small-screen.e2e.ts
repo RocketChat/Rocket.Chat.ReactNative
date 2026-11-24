@@ -1,6 +1,7 @@
-import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { afterEach, test } from '~e2e/support/fixtures';
-import { loginWithDeepLink, tapUntilVisible, tapWhenVisible, expectVisible } from '~e2e/support/flows';
+
+import { createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { loginToApp, tapUntilVisible, tapWhenVisible, expectVisible } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
@@ -9,7 +10,7 @@ test(
 	{ tags: ['test-9'], platforms: ['ios'] },
 	async ({ fixtures }) => {
 		const user = await createUser();
-		await loginWithDeepLink(fixtures, user);
+		await loginToApp(fixtures, user);
 
 		await tapUntilVisible(fixtures, fixtures.screen.getByTestId('rooms-list-header-servers-list-button'), 'action-sheet');
 		await expectVisible(fixtures, 'rooms-list-header-servers-list');

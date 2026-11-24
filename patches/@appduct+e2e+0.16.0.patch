@@ -1,0 +1,55 @@
+diff --git a/node_modules/@appduct/e2e/dist/index.d.ts b/node_modules/@appduct/e2e/dist/index.d.ts
+index 1a8194b..bd224fc 100644
+--- a/node_modules/@appduct/e2e/dist/index.d.ts
++++ b/node_modules/@appduct/e2e/dist/index.d.ts
+@@ -17,7 +17,7 @@
+  * });
+  * ```
+  */
+-import type { TestAPI, TestFixtures } from "e2e";
++import type { TestAPI, TestFixtures, WorkerFixtures } from "e2e";
+ import { type Appduct } from "./session.js";
+ export { appductTools } from "./agent-tools.js";
+ export type { Appduct, EventWait } from "./session.js";
+@@ -26,6 +26,6 @@ export type { Appduct, EventWait } from "./session.js";
+  * for the next test while the app stays connected. `base` is
+  * e2e's `test`, an engine's typed `test`, or one you already extended.
+  */
+-export declare const withAppduct: <Fixtures extends TestFixtures>(base: TestAPI<Fixtures>) => TestAPI<Fixtures & {
++export declare const withAppduct: <Fixtures extends TestFixtures, Worker extends WorkerFixtures = WorkerFixtures>(base: TestAPI<Fixtures, Worker>) => TestAPI<Fixtures & {
+     appduct: Appduct;
+-}>;
++}, Worker>;
+diff --git a/node_modules/@appduct/e2e/dist/index.js b/node_modules/@appduct/e2e/dist/index.js
+index 0774ef9..7256c53 100644
+--- a/node_modules/@appduct/e2e/dist/index.js
++++ b/node_modules/@appduct/e2e/dist/index.js
+@@ -9,14 +9,10 @@ const clock = {
+ };
+ /** One per worker process, shared by every `withAppduct` test in it. */
+ const sessions = createSessions(clock);
+-/** Reads the engine's fixture for the platform only when pairing, since e2e acquires fixtures on access. */
+-const targetOf = (fixtures) => {
+-    const { platform } = fixtures;
+-    if (platform === "web")
+-        return { platform, browser: fixtures.browser };
++const targetOf = ({ platform, device }) => {
+     if (platform === "ios" || platform === "android")
+-        return { platform, device: fixtures.device };
+-    throw new Error(`Appduct pairs with web, iOS and Android targets, not "${platform}".`);
++        return { platform, device };
++    throw new Error(`Appduct pairs with iOS and Android targets, not "${platform}".`);
+ };
+ /**
+  * Adds an `appduct` fixture to `base`: the app's Appduct session, connected on first use and kept
+@@ -24,8 +20,8 @@ const targetOf = (fixtures) => {
+  * e2e's `test`, an engine's typed `test`, or one you already extended.
+  */
+ export const withAppduct = (base) => {
+-    const appduct = async (fixtures, use) => {
+-        const session = sessions.forTest(() => pairWith(targetOf(fixtures), appductDaemon, clock));
++    const appduct = async ({ platform, device }, use) => {
++        const session = sessions.forTest(() => pairWith(targetOf({ platform, device }), appductDaemon, clock));
+         const withdraw = offerToAgent(session);
+         try {
+             await use(session);

@@ -1,15 +1,9 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createDM, createRandomRoom, createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
-import { afterEach, test } from '~e2e/support/fixtures';
-import {
-	goBackUntil,
-	loginWithDeepLink,
-	searchAndNavigateRoom,
-	type Fixtures,
-	LONG_TIMEOUT,
-	roomTitle
-} from '~e2e/support/flows';
+import { goBackUntil, loginToApp, type Fixtures, LONG_TIMEOUT, roomTitle } from '~e2e/support/flows';
 
 afterEach(deleteCreatedUsers);
 
@@ -26,18 +20,18 @@ const tapNotification = async ({ screen }: Fixtures, message: string) => {
 test('opens the DM from an in-app notification', { tags: ['test-6'] }, async ({ fixtures }) => {
 	const sender = await createUser();
 	const receiver = await createUser();
-	const room = await createRandomRoom(sender);
+	const room = await createRandomRoom(receiver);
 	const directMessage = await createDM(receiver, sender.username);
 	const senderRoomTitle = roomTitle(fixtures, sender.username);
 
-	await loginWithDeepLink(fixtures, receiver);
+	await loginToApp(fixtures, receiver);
 
 	await sendMessage(sender, directMessage.room.rid, 'Message in DM');
 	await tapNotification(fixtures, 'Message in DM');
 	await expect(senderRoomTitle).toBeVisible({ timeout: LONG_TIMEOUT });
 	await goBackUntil(fixtures, 'rooms-list-view');
 
-	await searchAndNavigateRoom(fixtures, room.name);
+	await openRoom(fixtures, room.name);
 	await sendMessage(sender, directMessage.room.rid, 'Another msg');
 	await tapNotification(fixtures, 'Another msg');
 	await expect(senderRoomTitle).toBeVisible({ timeout: LONG_TIMEOUT });

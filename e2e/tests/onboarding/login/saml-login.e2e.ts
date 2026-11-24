@@ -1,7 +1,7 @@
+import { test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { account, data } from '~e2e/support/data';
-import { test } from '~e2e/support/fixtures';
 import { firstVisible, launchApp, navigateToLogin, LONG_TIMEOUT, fillWhenUncovered, type Fixtures } from '~e2e/support/flows';
 import { dismissBrowserFirstRunPrompts, dismissPasswordManagerPrompt } from '~e2e/support/onboarding';
 

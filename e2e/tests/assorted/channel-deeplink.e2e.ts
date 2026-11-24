@@ -1,7 +1,8 @@
+import { afterEach, test } from '~e2e/support/fixtures';
+
 import { createRandomRoom, createUser, deleteCreatedUsers, getDeepLink } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
-import { afterEach, test } from '~e2e/support/fixtures';
-import { loginWithDeepLink, openDeepLink, type Fixtures } from '~e2e/support/flows';
+import { loginToApp, openDeepLink, type Fixtures } from '~e2e/support/flows';
 import { expectRoomTitle } from '~e2e/support/header';
 
 afterEach(deleteCreatedUsers);
@@ -17,7 +18,7 @@ test('opens groups and channels from deep links', { tags: ['test-6'] }, async ({
 	const group = await createRandomRoom(user, 'p');
 	const channel = await createRandomRoom(user, 'c');
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await coldStartRoomLink(fixtures, `group/${group.name}`, group.name);
 	await coldStartRoomLink(fixtures, `group/${group._id}`, group.name);

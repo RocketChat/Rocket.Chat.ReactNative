@@ -204,7 +204,7 @@ const TwoFactor = memo(() => {
 							<Button title={I18n.t('Verify')} type='primary' style={styles.button} onPress={onSubmit} testID='two-factor-send' />
 						</View>
 					</View>
-					<Toast />
+					{visible ? <Toast /> : null}
 				</GestureHandlerRootView>
 			</KeyboardView>
 		</Modal>

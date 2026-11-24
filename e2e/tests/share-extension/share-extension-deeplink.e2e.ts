@@ -1,8 +1,8 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { afterEach, test } from '~e2e/support/fixtures';
-import { loginWithDeepLink, openDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
+import { loginToApp, openDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
 import {
 	expectGroupMessageCount,
 	openPhotoShareSheet,
@@ -40,7 +40,7 @@ test(
 		const user = await createUser();
 		const room = await createRandomRoom(user, 'p');
 
-		await loginWithDeepLink(fixtures, user);
+		await loginToApp(fixtures, user);
 		const rocketChatApp = await device.foregroundApp();
 		await device.closeApp();
 
@@ -73,7 +73,7 @@ test(
 		const { device } = fixtures;
 		const user = await createUser();
 
-		await loginWithDeepLink(fixtures, user);
+		await loginToApp(fixtures, user);
 		const rocketChatApp = await device.foregroundApp();
 
 		await openPhotoShareSheet(fixtures);

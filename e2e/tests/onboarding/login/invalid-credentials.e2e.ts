@@ -1,6 +1,6 @@
+import { test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
-import { test } from '~e2e/support/fixtures';
 import { launchApp, navigateToLogin, submitLoginForm } from '~e2e/support/flows';
 
 test('rejects invalid credentials', { tags: ['test-1'] }, async ({ fixtures }) => {

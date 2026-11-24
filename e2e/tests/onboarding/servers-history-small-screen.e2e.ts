@@ -1,8 +1,8 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
-import { afterEach, test } from '~e2e/support/fixtures';
 import { logout, LONG_TIMEOUT } from '~e2e/support/flows';
 import { loginWithDeepLinkIntoRunningApp } from '~e2e/support/onboarding';
 

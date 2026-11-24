@@ -1,20 +1,20 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers, deleteUserByUsername, getOwnEmail } from '~e2e/support/api';
-import { afterEach, test } from '~e2e/support/fixtures';
+import { openScreen } from '~e2e/support/appduct';
 import {
 	expectAllVisible,
 	firstVisible,
 	replaceText,
 	hideKeyboard,
-	loginWithDeepLink,
+	loginToApp,
 	type Fixtures,
 	LONG_TIMEOUT,
 	fillWhenUncovered,
 	tapWhenUncovered
 } from '~e2e/support/flows';
 import { random, type RandomUser } from '~e2e/support/random';
-import { openProfile } from '~e2e/support/settings';
 import { delay } from '~e2e/support/timing';
 
 const PASSWORD_CHANGE_ATTEMPTS = 2;
@@ -90,8 +90,8 @@ test('edits profile info and changes password', { tags: ['test-2'] }, async ({ f
 	const { screen } = fixtures;
 	const user = await createUser();
 
-	await loginWithDeepLink(fixtures, user);
-	await openProfile(fixtures);
+	await loginToApp(fixtures, user);
+	await openScreen(fixtures, 'ProfileView');
 	await expectAllVisible(fixtures, [
 		'profile-view-avatar',
 		'avatar-edit-button',

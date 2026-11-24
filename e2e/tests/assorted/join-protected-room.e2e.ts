@@ -1,10 +1,10 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
-import { afterEach, test } from '~e2e/support/fixtures';
 import {
-	loginWithDeepLink,
+	loginToApp,
 	searchAndNavigateRoom,
 	sendMessage,
 	LONG_TIMEOUT,
@@ -21,7 +21,7 @@ test('joins a protected room with a join code', { tags: ['test-8'] }, async ({ f
 	const joinCodeSheet = screen.getByTestId('join-code');
 	const user = await createUser();
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await searchAndNavigateRoom(fixtures, name);
 
 	await tapWhenVisible(fixtures, 'room-view-join-button');

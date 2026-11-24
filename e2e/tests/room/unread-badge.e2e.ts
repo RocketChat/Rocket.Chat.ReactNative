@@ -1,6 +1,7 @@
-import { createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
 import { afterEach, test } from '~e2e/support/fixtures';
-import { loginWithDeepLink } from '~e2e/support/flows';
+
+import { createUser, deleteCreatedUsers, sendMessage } from '~e2e/support/api';
+import { loginToApp } from '~e2e/support/flows';
 import { expectBadgeClearsAfterOpeningRoom } from '~e2e/support/room';
 
 const NORMAL_MESSAGE = 'message-mark-as-unread';
@@ -14,7 +15,7 @@ test('shows unread and mention badges', { tags: ['test-6'], platforms: ['android
 	const sendFromOtherUser = (text: string) => sendMessage(otherUser, userHandle, text);
 	const mentionUser = () => sendFromOtherUser(userHandle);
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await sendFromOtherUser(NORMAL_MESSAGE);
 	await expectBadgeClearsAfterOpeningRoom(fixtures, otherUser.username, 'unread-badge-1');

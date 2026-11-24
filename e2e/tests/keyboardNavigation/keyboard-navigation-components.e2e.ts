@@ -1,8 +1,8 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { afterEach, test } from '~e2e/support/fixtures';
-import { loginWithDeepLink, type Fixtures, LONG_TIMEOUT, goBack } from '~e2e/support/flows';
+import { loginToApp, type Fixtures, LONG_TIMEOUT, goBack } from '~e2e/support/flows';
 import {
 	expectLabel,
 	expectText,
@@ -39,7 +39,7 @@ test(
 		const user = await createUser();
 		await hideSoftKeyboardWithHardwareKeyboard();
 		await leaveTouchMode();
-		await loginWithDeepLink(fixtures, user);
+		await loginToApp(fixtures, user);
 
 		await expect(screen.getByText('Save your encryption password')).toBeVisible({ timeout: LONG_TIMEOUT });
 		await waitForFocus(fixtures, 'rooms-list-view-sidebar');

@@ -1,10 +1,9 @@
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect, type Locator } from 'e2e';
 
 import { createDM, createRandomRoom, createUser, deleteCreatedUsers, sendMessage as sendMessageAsUser } from '~e2e/support/api';
-import { afterEach, test } from '~e2e/support/fixtures';
 import {
-	loginWithDeepLink,
-	navigateToRoomActions,
+	loginToApp,
 	sendMessage,
 	type Fixtures,
 	LONG_TIMEOUT,
@@ -24,6 +23,7 @@ import {
 } from '~e2e/support/flows';
 import { expectRoomTitle, selectHeaderMenuOption, submitSelectedUsers } from '~e2e/support/header';
 import { expandActionSheet, selectUser } from '~e2e/support/room';
+import { openRoomScreen } from '~e2e/support/appduct';
 
 afterEach(deleteCreatedUsers);
 
@@ -250,8 +250,8 @@ test('manages a room through its actions', { tags: ['test-5'], timeout: 900_000 
 	const otherUser = await createUser();
 	const room = await createRandomRoom(user);
 
-	await loginWithDeepLink(fixtures, user);
-	await navigateToRoomActions(fixtures, room.name);
+	await loginToApp(fixtures, user);
+	await openRoomScreen(fixtures, 'RoomActionsView', room.name);
 	for (const action of ROOM_ACTIONS) {
 		await fixtures.screen.scrollUntilVisible(fixtures.screen.getByTestId(`room-actions-${action}`));
 	}

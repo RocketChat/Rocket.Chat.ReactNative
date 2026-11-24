@@ -1,6 +1,6 @@
+import { test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
-import { test } from '~e2e/support/fixtures';
 import { launchApp, fillWhenUncovered } from '~e2e/support/flows';
 
 test('rejects an invalid workspace URL', { tags: ['test-8'] }, async ({ fixtures }) => {
