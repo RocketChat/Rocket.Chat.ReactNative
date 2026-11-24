@@ -499,7 +499,6 @@ class Encryption {
 			return;
 		}
 
-		const isStale = () => this.keyDistributionInterval !== interval;
 		let distributing = false;
 		const keyDistribution = async () => {
 			if (distributing) {
@@ -542,6 +541,7 @@ class Encryption {
 		};
 
 		const interval = setInterval(keyDistribution, KEY_DISTRIBUTION_INTERVAL);
+		const isStale = () => this.keyDistributionInterval !== interval;
 		this.keyDistributionInterval = interval;
 		await keyDistribution();
 	};
