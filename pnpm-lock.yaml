@@ -113,9 +113,6 @@ importers:
       axios:
         specifier: 0.30.3
         version: 0.30.3
-      bytebuffer:
-        specifier: ~5.0.1
-        version: 5.0.1
       color2k:
         specifier: 1.2.4
         version: 1.2.4
@@ -429,9 +426,6 @@ importers:
       '@testing-library/react-native':
         specifier: ^13.2.0
         version: 13.3.3(jest@29.7.0(@types/node@25.0.3)(babel-plugin-macros@3.1.0))(react-native@0.86.3(@babel/core@7.29.7)(@react-native-community/cli@20.0.0(typescript@7.0.2))(@react-native/jest-preset@0.86.3(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react-test-renderer@19.2.3(react@19.2.3))(react@19.2.3)
-      '@types/bytebuffer':
-        specifier: ~5.0.49
-        version: 5.0.49
       '@types/ejson':
         specifier: ^2.1.3
         version: 2.2.2
@@ -3541,9 +3535,6 @@ packages:
   '@types/babel__traverse@7.28.0':
     resolution: {integrity: sha512-8PvcXf70gTDZBgt9ptxJ8elBeBjcLOAcOtoO/mPJjtji1+CdGbHgm77om1GrsPxsiE+uXIpNSK64UYaIwQXd4Q==}
 
-  '@types/bytebuffer@5.0.49':
-    resolution: {integrity: sha512-lV4YLiolMdD4upDmr4vnfiwV/FN9Jg33eNTSFMkHqyMKqTIAn5TmFTYsARwXwUXeFU7yzRpECmWV1SOhIvdkRQ==}
-
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
 
@@ -3608,9 +3599,6 @@ packages:
 
   '@types/lodash@4.17.21':
     resolution: {integrity: sha512-FOvQ0YPD5NOfPgMzJihoT+Za5pdkDJWcbpuj1DjaKZIr/gxodQjY/uWEFlTNqW2ugXHUiL8lRQgw63dzKHZdeQ==}
-
-  '@types/long@3.0.32':
-    resolution: {integrity: sha512-ZXyOOm83p7X8p3s0IYM3VeueNmHpkk/yMlP8CLeOnEcu6hIwPH7YjZBvhQkR0ZFS2DqZAxKtJ/M5fcuv3OU5BA==}
 
   '@types/node@25.0.3':
     resolution: {integrity: sha512-W609buLVRVmeW693xKfzHeIV6nJGGz98uCPfeXI1ELMLXVeKYZ9m15fAMSaUPBHYLGFsVRcMmSCksQOrZV9BYA==}
@@ -4452,10 +4440,6 @@ packages:
 
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
-
-  bytebuffer@5.0.1:
-    resolution: {integrity: sha512-IuzSdmADppkZ6DlpycMkm8l9zeEq16fWtLvunEwFiYciR/BHo4E8/xs5piFquG+Za8OWmMqHF8zuRviz2LHvRQ==}
-    engines: {node: '>=0.8'}
 
   bytes@3.1.2:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
@@ -6589,10 +6573,6 @@ packages:
   logkitty@0.7.1:
     resolution: {integrity: sha512-/3ER20CTTbahrCrpYfPn7Xavv9diBROZpoXGVZDWMw4b/X4uuUwAC0ki85tgsdMRONURyIJbcOvS94QsUBYPbQ==}
     hasBin: true
-
-  long@3.2.0:
-    resolution: {integrity: sha512-ZYvPPOMqUwPoDsbJaR10iQJYnMuZhRTvHYl62ErLIEX7RgFlziSBUUvrt3OVfc47QlHHpzPZYP17g3Fv7oeJkg==}
-    engines: {node: '>=0.6'}
 
   long@5.3.2:
     resolution: {integrity: sha512-mNAgZ1GmyNhD7AuqnTG3/VQ26o760+ZYBPKjPvugO8+nLbYfX6TVpJPseBvopbdY+qpZ/lKUnmEc1LeZYS3QAA==}
@@ -12541,11 +12521,6 @@ snapshots:
     dependencies:
       '@babel/types': 7.29.0
 
-  '@types/bytebuffer@5.0.49':
-    dependencies:
-      '@types/long': 3.0.32
-      '@types/node': 25.0.3
-
   '@types/chai@5.2.3':
     dependencies:
       '@types/deep-eql': 4.0.2
@@ -12615,8 +12590,6 @@ snapshots:
   '@types/jsrsasign@10.5.15': {}
 
   '@types/lodash@4.17.21': {}
-
-  '@types/long@3.0.32': {}
 
   '@types/node@25.0.3':
     dependencies:
@@ -13537,10 +13510,6 @@ snapshots:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
-
-  bytebuffer@5.0.1:
-    dependencies:
-      long: 3.2.0
 
   bytes@3.1.2: {}
 
@@ -16073,8 +16042,6 @@ snapshots:
       ansi-fragments: 0.2.1
       dayjs: 1.11.18
       yargs: 15.4.1
-
-  long@3.2.0: {}
 
   long@5.3.2: {}
 

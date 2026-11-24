@@ -68,8 +68,8 @@ class PrefixedData {
 }
 
 class RoomKeyResult {
-    AESKey decryptedKey;
-    String algorithm;
+    final AESKey decryptedKey;
+    final String algorithm;
     
     RoomKeyResult(AESKey decryptedKey, String algorithm) {
         this.decryptedKey = decryptedKey;
@@ -256,9 +256,18 @@ class Encryption {
     }
 
     private String decryptContent(Ejson.Content content, AESKey roomKey) {
-        String decryptedText = "rc.v2.aes-sha2".equals(content.algorithm)
-                ? MobileCryptoNative.INSTANCE.aesGcmDecrypt(content.ciphertext, content.iv, roomKey)
-                : MobileCryptoNative.INSTANCE.aesCbcDecrypt(content.ciphertext.substring(12), roomKey);
+        String decryptedText;
+        if ("rc.v2.aes-sha2".equals(content.algorithm)) {
+            if (content.ciphertext == null || content.iv == null) {
+                return null;
+            }
+            decryptedText = MobileCryptoNative.INSTANCE.aesGcmDecrypt(content.ciphertext, content.iv, roomKey);
+        } else {
+            if (content.ciphertext == null || content.ciphertext.length() <= 12) {
+                return null;
+            }
+            decryptedText = MobileCryptoNative.INSTANCE.aesCbcDecrypt(content.ciphertext.substring(12), roomKey);
+        }
         if (decryptedText == null) {
             return null;
         }
@@ -288,7 +297,7 @@ class Encryption {
             }
             
             RoomKeyResult roomKeyResult = decryptRoomKey(room.e2eKey, ejson);
-            if (roomKeyResult == null || roomKeyResult.decryptedKey == null) {
+            if (roomKeyResult == null) {
                 Log.w(TAG, "Cannot decrypt: room key decryption failed");
                 return null;
             }
@@ -332,7 +341,7 @@ class Encryption {
             }
 
             RoomKeyResult roomKeyResult = decryptRoomKey(room.e2eKey, ejson);
-            if (roomKeyResult == null || roomKeyResult.decryptedKey == null) {
+            if (roomKeyResult == null) {
                 return null;
             }
             AESKey e2eKey = roomKeyResult.decryptedKey;

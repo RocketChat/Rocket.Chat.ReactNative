@@ -111,12 +111,15 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 
 		// Fetch server stored e2e keys
 		const keys = yield e2eFetchMyKeys();
+		if (!keys?.publicKey) {
+			throw new Error('Public key not found on the server');
+		}
 
 		// Decode the current server key
 		const privateKey = yield Encryption.decodePrivateKey(keys?.privateKey, password, user.id);
 
 		// Persist these decrypted keys
-		yield Encryption.persistKeys(server, keys?.publicKey, privateKey);
+		yield Encryption.persistKeys(server, keys.publicKey, privateKey);
 
 		// Decrypt all pending messages/subscriptions
 		Encryption.initialize(user.id);

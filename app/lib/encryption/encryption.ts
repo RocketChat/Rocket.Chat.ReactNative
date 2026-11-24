@@ -1,11 +1,11 @@
 import { Q } from '@nozbe/watermelondb';
 import EJSON from 'ejson';
+import { deleteAsync } from 'expo-file-system/legacy';
+import { Base64 } from 'js-base64';
 import {
-	aesCbcDecrypt,
 	aesCbcEncrypt,
 	aesDecryptFile,
 	aesDeriveKey,
-	aesGcmDecrypt,
 	aesGcmEncrypt,
 	rsaGenerateKeys,
 	rsaImportPrivateKey,
@@ -45,7 +45,7 @@ import { KEY_DISTRIBUTION_INTERVAL, MAX_CONCURRENT_QUEUE } from './constants';
 import type { IDecryptionFileQueue, TDecryptFile } from './definitions';
 import Deferred from './helpers/deferred';
 import EncryptionRoom from './room';
-import { utf8ToBuffer, bufferToB64, parsePrivateKey, generatePassphrase } from './utils';
+import { aesDecrypt, parsePrivateKey, generatePassphrase } from './utils';
 
 const ROOM_KEY_EXCHANGE_SIZE = 10;
 
@@ -207,18 +207,14 @@ class Encryption {
 
 	// Decode a private key fetched from server
 	decodePrivateKey = async (privateKey: string, password: string, userId: string) => {
-		const parsedKey = parsePrivateKey(privateKey, userId);
-		const masterKey = await this.generateMasterKey(password, parsedKey.salt, parsedKey.iterations);
-
-		if (parsedKey.version === 'v2') {
-			return aesGcmDecrypt(masterKey, { iv: parsedKey.iv, ciphertext: parsedKey.ciphertext });
-		}
-		return aesCbcDecrypt(masterKey, parsedKey.ivAndCiphertext);
+		const { salt, iterations, encrypted } = parsePrivateKey(privateKey, userId);
+		const masterKey = await this.generateMasterKey(password, salt, iterations);
+		return aesDecrypt(masterKey, encrypted);
 	};
 
 	// Generate a user master key, this is based on salt and a password
 	generateMasterKey = (password: string, salt: string, iterations: number): Promise<AESKey> =>
-		aesDeriveKey(bufferToB64(utf8ToBuffer(password)), bufferToB64(utf8ToBuffer(salt)), {
+		aesDeriveKey(Base64.encode(password), Base64.encode(salt), {
 			iterations,
 			byteLength: 32,
 			hash: 'SHA256'
@@ -238,7 +234,6 @@ class Encryption {
 		// Encode the private key
 		const encodedPrivateKey = await this.encodePrivateKey(privateKey, password, this.userId as string);
 
-		// This public key is already encoded using EJSON.stringify in the `persistKeys` method
 		const publicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
 		if (!publicKey) {
@@ -624,8 +619,14 @@ class Encryption {
 		return !!roomE2E?.hasSessionKey();
 	};
 
-	decryptFile: TDecryptFile = (_messageId, path, encryption, originalChecksum) =>
-		aesDecryptFile({ path, key: encryption.key.k, iv: encryption.iv, sha256: originalChecksum });
+	decryptFile: TDecryptFile = async (_messageId, path, encryption, originalChecksum) => {
+		try {
+			return await aesDecryptFile({ path, key: encryption.key.k, iv: encryption.iv, sha256: originalChecksum });
+		} catch (error) {
+			await deleteAsync(path, { idempotent: true });
+			throw error;
+		}
+	};
 
 	addFileToDecryptFileQueue: TDecryptFile = (messageId, path, encryption, originalChecksum) =>
 		new Promise((resolve, reject) => {

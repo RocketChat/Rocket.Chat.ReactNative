@@ -3,10 +3,8 @@ import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 import {
-	aesCbcDecrypt,
 	aesCbcEncrypt,
 	aesEncryptFile,
-	aesGcmDecrypt,
 	aesGcmEncrypt,
 	aesGenerateKey,
 	aesImportKey,
@@ -28,15 +26,7 @@ import Deferred from './helpers/deferred';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { debounce } from '../methods/helpers/debounce';
 import log from '../methods/helpers/log';
-import {
-	b64ToBuffer,
-	bufferToB64,
-	getE2EEMentions,
-	exportAESCTR,
-	getFileExtension,
-	decodePrefixedBase64,
-	encodePrefixedBase64
-} from './utils';
+import { aesDecrypt, getE2EEMentions, exportAESCTR, getFileExtension, decodePrefixedBase64, encodePrefixedBase64 } from './utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import {
 	e2eRejectSuggestedGroupKey,
@@ -209,7 +199,7 @@ export default class EncryptionRoom {
 			const [kid, encryptedData] = decodePrefixedBase64(E2EKey);
 
 			// Decrypt the session key
-			const sessionKeyExportedString = await rsaDecrypt(privateKey, bufferToB64(encryptedData));
+			const sessionKeyExportedString = await rsaDecrypt(privateKey, encryptedData);
 
 			const keyID = kid;
 			const parsedKey = EJSON.parse(sessionKeyExportedString);
@@ -358,8 +348,7 @@ export default class EncryptionRoom {
 		try {
 			const userKey = await rsaImportPublicKey(publicKey);
 			const encryptedUserKey = await rsaEncrypt(userKey, this.sessionKeyExportedString);
-			const encryptedBuffer = b64ToBuffer(encryptedUserKey);
-			return encodePrefixedBase64(this.keyID, encryptedBuffer);
+			return encodePrefixedBase64(this.keyID, encryptedUserKey);
 		} catch (e) {
 			log(e);
 		}
@@ -626,7 +615,7 @@ export default class EncryptionRoom {
 	};
 
 	doDecrypt = async (encrypted: AESGCMCiphertext | string, key: AESKey) => {
-		const plaintext = typeof encrypted === 'string' ? await aesCbcDecrypt(key, encrypted) : await aesGcmDecrypt(key, encrypted);
+		const plaintext = await aesDecrypt(key, encrypted);
 		return EJSON.parse(plaintext);
 	};
 
@@ -652,8 +641,7 @@ export default class EncryptionRoom {
 			}
 
 			return await this.doDecrypt(encrypted, this.roomKey);
-		} catch (error) {
-			console.error(error);
+		} catch {
 			return null;
 		}
 	};

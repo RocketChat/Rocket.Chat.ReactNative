@@ -18,7 +18,7 @@ import {
 } from '@rocket.chat/mobile-crypto';
 
 import EncryptionRoom from './room';
-import { bufferToB64, bufferToB64URI, encodePrefixedBase64 } from './utils';
+import { bufferToB64 } from './utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import { type IEncryption } from './definitions';
 import getSingleMessage from '../methods/getSingleMessage';
@@ -145,11 +145,11 @@ describe('EncryptionRoom constructor', () => {
 describe('importRoomKey', () => {
 	it('decrypts an E2EKey into session key, room key, keyID and algorithm', async () => {
 		const room = createRoom();
-		const roomKeyBytes = new Uint8Array(32).fill(9).buffer;
+		const roomKeyBytes = new Uint8Array(32).fill(9);
 		const sessionKeyExported = {
 			kty: 'oct',
 			alg: 'A256GCM',
-			k: bufferToB64URI(roomKeyBytes),
+			k: Base64.fromUint8Array(roomKeyBytes, true),
 			ext: true,
 			key_ops: ['encrypt', 'decrypt']
 		};
@@ -327,14 +327,14 @@ describe('encryptRoomKeyForUser', () => {
 		const importedUserKey = { name: 'imported-user-key' };
 		const publicKeyJwk = EJSON.stringify({ n: 'pub' });
 		mockRsaImportPublicKey.mockResolvedValue(importedUserKey);
-		const encryptedBuffer = new Uint8Array(256).fill(4).buffer;
-		mockRsaEncrypt.mockResolvedValue(bufferToB64(encryptedBuffer));
+		const encryptedUserKey = build256ByteBase64(4);
+		mockRsaEncrypt.mockResolvedValue(encryptedUserKey);
 
 		const result = await room.encryptRoomKeyForUser(publicKeyJwk);
 
 		expect(mockRsaImportPublicKey).toHaveBeenCalledWith(publicKeyJwk);
 		expect(mockRsaEncrypt).toHaveBeenCalledWith(importedUserKey, 'session-string');
-		expect(result).toBe(encodePrefixedBase64('kid1', encryptedBuffer));
+		expect(result).toBe(`kid1${encryptedUserKey}`);
 	});
 
 	it('logs and returns undefined when the rsa operation fails', async () => {
@@ -873,13 +873,11 @@ describe('decryptContent', () => {
 		room.keyID = 'abcdefghijkl';
 		room.roomKey = roomKey;
 		mockAesCbcDecrypt.mockRejectedValueOnce(new Error('bad decrypt'));
-		const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
 		const result = await room.decryptContent('abcdefghijklbase64-iv-and-ciphertext' as any);
 
 		expect(mockAesCbcDecrypt).toHaveBeenCalledWith(roomKey, 'base64-iv-and-ciphertext');
 		expect(result).toBeNull();
-		consoleError.mockRestore();
 	});
 
 	it('returns null when parsing the payload throws', async () => {
@@ -887,12 +885,10 @@ describe('decryptContent', () => {
 		jest.spyOn(room, 'parse').mockImplementation(() => {
 			throw new Error('bad payload');
 		});
-		const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
 		const result = await room.decryptContent('payload' as any);
 
 		expect(result).toBeNull();
-		consoleError.mockRestore();
 	});
 });
 
