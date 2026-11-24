@@ -5,15 +5,16 @@ import sharedStyles from '~/views/Styles';
 const styles = StyleSheet.create({
 	audioContainer: {
 		flex: 1,
+		maxWidth: 368,
 		flexDirection: 'row',
 		alignItems: 'center',
-		height: 56,
+		gap: 12,
+		padding: 8,
 		borderWidth: 1,
 		borderRadius: 4
 	},
 	playPauseButton: {
 		alignItems: 'center',
-		marginLeft: 16,
 		height: 32,
 		width: 32,
 		borderRadius: 4,
@@ -23,24 +24,32 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		flex: 1,
 		alignItems: 'center',
-		height: '100%'
+		gap: 12,
+		minWidth: 0
 	},
 	seek: {
-		marginRight: 12,
-		height: '100%',
+		flex: 1,
+		height: 32,
 		justifyContent: 'center',
-		flex: 1
+		minWidth: 0
 	},
-	duration: {
-		marginHorizontal: 12,
-		fontSize: 14,
+	timeLabel: {
+		flexShrink: 0,
+		padding: 0,
+		fontSize: 12,
+		lineHeight: 16,
+		fontVariant: ['tabular-nums'],
 		...sharedStyles.textRegular
 	},
+	playbackSpeedSlot: {
+		minWidth: 64,
+		alignItems: 'center'
+	},
 	containerPlaybackSpeed: {
-		width: 36,
-		height: 24,
+		minWidth: 48,
+		height: 32,
+		paddingHorizontal: 8,
 		borderRadius: 4,
-		marginRight: 16,
 		justifyContent: 'center',
 		alignItems: 'center',
 		overflow: 'hidden'

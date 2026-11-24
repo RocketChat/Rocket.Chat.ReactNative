@@ -5,7 +5,8 @@ import { scheduleOnRN } from 'react-native-worklets';
 
 import styles from './styles';
 import { useTheme } from '~/theme';
-import { ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
+import { ACTIVE_OFFSET_X } from './constants';
+import { formatProgressLabel } from './formatMediaTime';
 import Waveform from '../Waveform';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -25,16 +26,6 @@ function clamp(value: number, min: number, max: number) {
 
 	return Math.min(Math.max(value, min), max);
 }
-
-const formatTime = (ms: number) => {
-	'worklet';
-
-	const minutes = Math.floor(ms / 60);
-	const remainingSeconds = Math.floor(ms % 60);
-	const formattedMinutes = String(minutes).padStart(2, '0');
-	const formattedSeconds = String(remainingSeconds).padStart(2, '0');
-	return `${formattedMinutes}:${formattedSeconds}`;
-};
 
 const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: ISeek) => {
 	const { colors } = useTheme();
@@ -95,25 +86,24 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 	const seekGesture = useCompetingGestures(panGesture, tapGesture);
 
 	const timeLabelAnimatedProps = useAnimatedProps(() => {
-		const shownTime = progress.get() * duration.get();
-		return { text: formatTime(shownTime || duration.get()) } as TextInputProps;
+		return { text: formatProgressLabel(progress.get() * duration.get(), duration.get()) } as TextInputProps;
 	});
 
 	// TouchableNativeFeedback is avoiding do a long press message when seeking the audio
 	return (
 		<TouchableNativeFeedback>
 			<View style={styles.seekContainer}>
-				<AnimatedTextInput
-					defaultValue={DEFAULT_TIME_LABEL}
-					editable={false}
-					style={[styles.duration, { color: colors.fontDefault }]}
-					animatedProps={timeLabelAnimatedProps}
-				/>
 				<GestureDetector gesture={seekGesture}>
 					<View testID='audio-seek' style={styles.seek} onLayout={onLayout}>
 						<Waveform peaks={peaks} progress={progress} />
 					</View>
 				</GestureDetector>
+				<AnimatedTextInput
+					defaultValue={formatProgressLabel(0, 0)}
+					editable={false}
+					style={[styles.timeLabel, { color: colors.fontSecondaryInfo }]}
+					animatedProps={timeLabelAnimatedProps}
+				/>
 			</View>
 		</TouchableNativeFeedback>
 	);
