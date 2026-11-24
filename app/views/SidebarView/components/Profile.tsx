@@ -31,7 +31,7 @@ const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamL
 		<>
 			<List.Separator />
 			<TouchableWithoutFeedback onPress={onPressUser} testID='sidebar-close-drawer'>
-				<View style={[styles.header, { backgroundColor: colors.surfaceRoom }]}>
+				<View style={[styles.header, { backgroundColor: colors.surfaceLight }]}>
 					<Avatar text={username} style={styles.avatar} size={30} />
 					<View style={styles.headerTextContainer}>
 						<View style={styles.headerUsername}>

@@ -10,7 +10,6 @@ import ActivityIndicator from '~/containers/ActivityIndicator';
 import { CustomIcon, type TIconsName } from '~/containers/CustomIcon';
 import SafeAreaView from '~/containers/SafeAreaView';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
-import { useListBackgroundColor } from '~/containers/NativeListRow/hooks/useListBackgroundColor';
 import SearchBox from '~/containers/SearchBox';
 import UserItem from '~/containers/UserItem';
 import { type IGetRoomRoles } from '~/definitions/IRole';
@@ -91,7 +90,6 @@ const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
 const RoomMembersView = (): ReactElement => {
 	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const listBackgroundColor = useListBackgroundColor(colors.surfaceHover);
 
 	const { params } = useRoute<RouteProp<ModalStackParamList, 'RoomMembersView'>>();
 	const navigation = useNavigation<NavigationProp<ModalStackParamList, 'RoomMembersView'>>();
@@ -447,12 +445,12 @@ const RoomMembersView = (): ReactElement => {
 						username={item.username}
 						onPress={() => onPressUser(item)}
 						testID={`room-members-view-item-${item.username}`}
-						style={{ backgroundColor: colors.surfaceRoom }}
+						style={{ backgroundColor: colors.surfaceLight }}
 						isFirst={index === 0}
 						isLast={index === state.members.length - 1}
 					/>
 				)}
-				style={[styles.list, { backgroundColor: listBackgroundColor }]}
+				style={[styles.list, { backgroundColor: colors.surfaceTint }]}
 				contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom }}
 				keyExtractor={item => item._id}
 				ItemSeparatorComponent={RowSeparator}

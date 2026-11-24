@@ -10,7 +10,7 @@ const StackItem = ({ item }: { item: IStackItem }) => {
 			title={item.title}
 			left={() => <List.Icon name={item.icon} />}
 			onPress={item.onPress}
-			backgroundColor={item.selected ? colors.strokeLight : undefined}
+			backgroundColor={item.selected ? colors.surfaceSelected : undefined}
 			testID={item.testID}
 			disabled={item.disabled}
 		/>

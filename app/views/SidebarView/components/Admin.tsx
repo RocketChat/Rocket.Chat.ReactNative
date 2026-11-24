@@ -28,7 +28,7 @@ const Admin = ({ currentScreen }: { currentScreen: string }) => {
 				testID='sidebar-admin'
 				left={() => <List.Icon name='settings' />}
 				onPress={() => sidebarNavigate(routeName)}
-				backgroundColor={currentScreen === routeName ? colors.strokeLight : undefined}
+				backgroundColor={currentScreen === routeName ? colors.surfaceSelected : undefined}
 			/>
 			<List.Separator />
 		</>
