@@ -185,6 +185,7 @@ jobs:
             .e2e/report.json
             .e2e/junit.xml
             .e2e/results
+            .e2e/artifacts
           retention-days: 7
 
       - name: Wait Before Retrying the E2E Report Upload
@@ -200,5 +201,6 @@ jobs:
             .e2e/report.json
             .e2e/junit.xml
             .e2e/results
+            .e2e/artifacts
           retention-days: 7
           overwrite: true
