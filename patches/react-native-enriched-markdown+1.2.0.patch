@@ -1094,3 +1094,116 @@ index d73646f..d911e2b 100644
  }
  
  NSUInteger ENRMCharacterIndexForTap(ENRMPlatformTextView *textView, ENRMTapRecognizer *recognizer)
+diff --git a/node_modules/react-native-enriched-markdown/ios/utils/MarkdownAccessibilityElementBuilder.m b/node_modules/react-native-enriched-markdown/ios/utils/MarkdownAccessibilityElementBuilder.m
+index ccdffff..97b5cba 100644
+--- a/node_modules/react-native-enriched-markdown/ios/utils/MarkdownAccessibilityElementBuilder.m
++++ b/node_modules/react-native-enriched-markdown/ios/utils/MarkdownAccessibilityElementBuilder.m
+@@ -88,30 +88,24 @@ static const CGFloat kFocusRectPadding = 2.0;
+                                                           inTextView:(UITextView *)textView
+                                                            container:(id)container
+ {
+-  NSMutableArray<UIAccessibilityElement *> *elements = [NSMutableArray array];
+   NSArray *sortedSpecials = [specials sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *a, NSDictionary *b) {
+     return [@([a[@"range"] rangeValue].location) compare:@([b[@"range"] rangeValue].location)];
+   }];
+ 
++  NSMutableArray<UIAccessibilityElement *> *specialElements = [NSMutableArray array];
++  NSMutableString *paragraphText = [NSMutableString string];
++  BOOL hasPlainText = NO;
+   NSUInteger segmentStart = paragraphRange.location;
++
+   for (NSDictionary *item in sortedSpecials) {
+     NSRange itemRange = [item[@"range"] rangeValue];
+ 
+     if (itemRange.location > segmentStart) {
+-      NSRange beforeRange = NSMakeRange(segmentStart, itemRange.location - segmentStart);
+-      NSString *beforeText = [[fullText substringWithRange:beforeRange]
+-          stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+-      if (beforeText.length > 0 && [self hasAlphanumericContent:beforeText]) {
+-        [elements addObject:[self createElementForRange:beforeRange
+-                                                   type:ElementTypeText
+-                                                   text:beforeText
+-                                               isLinked:NO
+-                                                heading:headingLevel
+-                                               listInfo:listInfo
+-                                                 labels:labels
+-                                                   view:textView
+-                                              container:container]];
+-      }
++      NSString *gapText = [self spokenTextInRange:NSMakeRange(segmentStart, itemRange.location - segmentStart)
++                                      textStorage:textView.textStorage
++                                           labels:labels];
++      hasPlainText = hasPlainText || [self hasAlphanumericContent:gapText];
++      [paragraphText appendString:gapText];
+     }
+ 
+     ElementType type = ElementTypeLink;
+@@ -130,34 +124,44 @@ static const CGFloat kFocusRectPadding = 2.0;
+       if ([attachment isKindOfClass:ENRMLinkPillAttachment.class])
+         label = [(ENRMLinkPillAttachment *)attachment linkAccessibilityLabel];
+     }
+-    [elements addObject:[self createElementForRange:itemRange
+-                                               type:type
+-                                               text:label
+-                                           isLinked:[item[@"isLinked"] boolValue]
+-                                            heading:0
+-                                           listInfo:listInfo
+-                                             labels:labels
+-                                               view:textView
+-                                          container:container]];
+-    segmentStart = NSMaxRange(itemRange);
++    [paragraphText appendString:label ?: @""];
++    [specialElements addObject:[self createElementForRange:itemRange
++                                                      type:type
++                                                      text:label
++                                                  isLinked:[item[@"isLinked"] boolValue]
++                                                   heading:0
++                                                  listInfo:listInfo
++                                                    labels:labels
++                                                      view:textView
++                                                 container:container]];
++    segmentStart = MAX(segmentStart, NSMaxRange(itemRange));
+   }
+ 
+   if (segmentStart < NSMaxRange(paragraphRange)) {
+-    NSRange afterRange = NSMakeRange(segmentStart, NSMaxRange(paragraphRange) - segmentStart);
+-    NSString *afterText = [[fullText substringWithRange:afterRange]
+-        stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+-    if (afterText.length > 0 && [self hasAlphanumericContent:afterText]) {
+-      [elements addObject:[self createElementForRange:afterRange
+-                                                 type:ElementTypeText
+-                                                 text:afterText
+-                                             isLinked:NO
+-                                              heading:headingLevel
+-                                             listInfo:listInfo
+-                                               labels:labels
+-                                                 view:textView
+-                                            container:container]];
+-    }
++    NSString *trailingText =
++        [self spokenTextInRange:NSMakeRange(segmentStart, NSMaxRange(paragraphRange) - segmentStart)
++                    textStorage:textView.textStorage
++                         labels:labels];
++    hasPlainText = hasPlainText || [self hasAlphanumericContent:trailingText];
++    [paragraphText appendString:trailingText];
+   }
++
++  if (!hasPlainText) {
++    return specialElements;
++  }
++
++  NSMutableArray<UIAccessibilityElement *> *elements = [NSMutableArray array];
++  [elements addObject:[self createElementForRange:paragraphRange
++                                             type:ElementTypeText
++                                             text:[paragraphText stringByTrimmingCharactersInSet:
++                                                                     [NSCharacterSet whitespaceAndNewlineCharacterSet]]
++                                         isLinked:NO
++                                          heading:headingLevel
++                                         listInfo:listInfo
++                                           labels:labels
++                                             view:textView
++                                        container:container]];
++  [elements addObjectsFromArray:specialElements];
+   return elements;
+ }
+ 
