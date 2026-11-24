@@ -6,21 +6,12 @@ jest.mock('~/lib/store/auxStore', () => ({
 }));
 
 describe('merge', () => {
-	it('clears the stored category when the subscription no longer has one', () => {
-		const storedSubscription = { category: 'work' };
+	it.each(['category', 'E2EKey'])('clears the stored %s when the server subscription no longer has one', field => {
+		const storedSubscription: Record<string, unknown> = { [field]: 'stale-value' };
 		const subscription = { _id: 'sub-1', rid: 'room-1', name: 'general' } as IServerSubscription;
 
 		Object.assign(storedSubscription, merge(subscription));
 
-		expect(storedSubscription.category).toBeUndefined();
-	});
-
-	it('clears the stored room key when the server subscription no longer has one', () => {
-		const storedSubscription = { E2EKey: 'rotated-out-key' };
-		const subscription = { _id: 'sub-1', rid: 'room-1', name: 'general' } as IServerSubscription;
-
-		Object.assign(storedSubscription, merge(subscription));
-
-		expect(storedSubscription.E2EKey).toBeUndefined();
+		expect(storedSubscription[field]).toBeUndefined();
 	});
 });

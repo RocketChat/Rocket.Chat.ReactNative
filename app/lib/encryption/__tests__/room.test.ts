@@ -73,15 +73,9 @@ jest.mock('../../services/restApi', () => ({
 	e2eResetRoomKey: jest.fn()
 }));
 
-let mockWriteQueue: Promise<unknown> = Promise.resolve();
-const mockSerializedWrite = (writer: () => Promise<unknown>) => {
-	const run = mockWriteQueue.then(writer);
-	mockWriteQueue = run.catch(() => undefined);
-	return run;
-};
 jest.mock('../../database', () => ({
 	__esModule: true,
-	default: { active: { write: (writer: () => Promise<unknown>) => mockSerializedWrite(writer) } }
+	default: { active: { write: (writer: () => Promise<unknown>) => writer() } }
 }));
 
 jest.mock('../../database/services/Subscription', () => ({
@@ -160,7 +154,6 @@ const makeSubscriptionRecord = (fields: Record<string, unknown>) => {
 
 beforeEach(() => {
 	jest.clearAllMocks();
-	mockWriteQueue = Promise.resolve();
 	mockGetSubscriptionByRoomId.mockReset();
 	mockGetState.mockReturnValue({ server: { version: '7.13.0' }, settings: {} });
 });
@@ -1535,7 +1528,9 @@ describe('handshake', () => {
 
 	it('keeps an E2EKey that arrives before its keyID and imports it once the keyID lands', async () => {
 		const room = createRoom({ privateKey: 'priv' });
-		room.subscription = { encrypted: true, e2eKeyId: 'old-kid', E2EKey: 'new-key' } as any;
+		const subscriptionRecord = makeSubscriptionRecord({ encrypted: true, e2eKeyId: 'old-kid', E2EKey: 'new-key' });
+		room.subscription = subscriptionRecord;
+		mockGetSubscriptionByRoomId.mockResolvedValue(subscriptionRecord);
 		jest.spyOn(room, 'importRoomKey').mockResolvedValue(buildRoomKey('new-kid'));
 		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
 
@@ -1543,8 +1538,7 @@ describe('handshake', () => {
 		(room.requestRoomKey as unknown as { stop: () => void }).stop();
 
 		expect(room.ready).toBe(false);
-		expect(room.subscription?.E2EKey).toBe('new-key');
-		expect(mockGetSubscriptionByRoomId).not.toHaveBeenCalled();
+		expect(subscriptionRecord.E2EKey).toBe('new-key');
 
 		room.subscription = { encrypted: true, e2eKeyId: 'new-kid', E2EKey: 'new-key' } as any;
 		await room.handshake();

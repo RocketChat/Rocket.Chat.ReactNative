@@ -227,17 +227,17 @@ export default class EncryptionRoom {
 	acceptSuggestedRoomKey = async (E2ESuggestedKey: string, privateKey: string) => {
 		try {
 			const suggestedKey = await this.importRoomKey(E2ESuggestedKey, privateKey);
-			if (this.isRotatedRoomKey(suggestedKey)) {
-				await e2eRejectSuggestedGroupKey(this.roomId);
-				return false;
-			}
-			try {
-				await e2eAcceptSuggestedGroupKey(this.roomId);
+			const isAccepted =
+				!this.isRotatedRoomKey(suggestedKey) &&
+				(await e2eAcceptSuggestedGroupKey(this.roomId).then(
+					() => true,
+					() => false
+				));
+			if (isAccepted) {
 				this.setRoomKey(suggestedKey);
 				return true;
-			} catch {
-				await e2eRejectSuggestedGroupKey(this.roomId);
 			}
+			await e2eRejectSuggestedGroupKey(this.roomId);
 		} catch (e) {
 			log(e);
 		}
