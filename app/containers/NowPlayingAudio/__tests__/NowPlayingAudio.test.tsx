@@ -4,6 +4,8 @@ import NowPlayingAudio from '..';
 import AudioManager from '~/lib/methods/AudioManager';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { useNowPlayingAudioStore, type INowPlayingAudio } from '~/lib/methods/useNowPlayingAudioStore';
+import { getMessageById } from '~/lib/database/services/Message';
+import { type TMessageModel } from '~/definitions/IMessage';
 
 jest.mock('~/lib/methods/AudioManager', () => ({ playAudio: jest.fn(), pauseAudio: jest.fn(), closeAudio: jest.fn() }));
 jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
@@ -50,6 +52,26 @@ describe('NowPlayingAudio', () => {
 		expect(screen.getByText('Jane Doe')).toBeOnTheScreen();
 		expect(screen.getByText('General')).toBeOnTheScreen();
 		expect(screen.getByText('· 00:12 / 01:30')).toBeOnTheScreen();
+	});
+
+	it('shows the sender username when the sender has no name', async () => {
+		jest.mocked(getMessageById).mockResolvedValueOnce({ u: { _id: 'u1', username: 'jane.doe' } } as TMessageModel);
+
+		await renderWithAudio(playingAudio);
+
+		expect(screen.getByText('jane.doe')).toBeOnTheScreen();
+	});
+
+	it('shows the details of the next audio once it replaces the previous one', async () => {
+		await renderWithAudio(playingAudio);
+		jest.mocked(getMessageById).mockResolvedValueOnce({ u: { _id: 'u2', username: 'john', name: 'John Roe' } } as TMessageModel);
+
+		await act(async () => {
+			useNowPlayingAudioStore.setState({ audio: { ...playingAudio, audioKey: 'msg-2-room-1-file://b.mp3', msgId: 'msg-2' } });
+		});
+
+		expect(screen.getByText('John Roe')).toBeOnTheScreen();
+		expect(screen.queryByText('Jane Doe')).toBeNull();
 	});
 
 	it('pauses a playing audio and plays a paused one', async () => {

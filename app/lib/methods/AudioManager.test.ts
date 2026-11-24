@@ -426,6 +426,24 @@ describe('AudioManager', () => {
 			expect(players[0].play).not.toHaveBeenCalled();
 			expect(getNowPlaying()).toBeNull();
 		});
+
+		it('an audio from a left room stays in the rooms list player when the next audio fails to start', async () => {
+			const { AudioManager, players } = setup();
+			const leftKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(leftKey);
+			AudioManager.unloadRoomAudios('room');
+			const otherKey = AudioManager.loadAudio({ msgId: 'm2', rid: 'other', uri: 'file://b.mp3' });
+
+			const playing = AudioManager.playAudio(otherKey);
+			AudioManager.unloadRoomAudios('other');
+			await playing;
+
+			expect(players[0].release).not.toHaveBeenCalled();
+			expect(getNowPlaying()).toMatchObject({ audioKey: leftKey, playing: false });
+
+			await AudioManager.playAudio(leftKey);
+			expect(players[0].play).toHaveBeenCalledTimes(2);
+		});
 	});
 
 	describe('key helpers', () => {

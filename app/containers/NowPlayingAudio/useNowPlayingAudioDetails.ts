@@ -5,18 +5,15 @@ import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import { getSenderName } from '~/lib/methods/helpers/getSenderName';
+import log from '~/lib/methods/helpers/log';
 import { type IUserMessage } from '~/definitions/IMessage';
 
 interface INowPlayingAudioSource {
-	sourceKey: string;
 	sender?: IUserMessage;
 	roomName?: string;
 }
 
-const findAudioMessageSender = async (msgId?: string) => {
-	if (!msgId) {
-		return undefined;
-	}
+const findAudioMessageSender = async (msgId: string) => {
 	const message = (await getMessageById(msgId)) ?? (await getThreadMessageById(msgId));
 	return message?.u;
 };
@@ -26,26 +23,23 @@ const findRoomName = async (rid: string) => {
 	return subscription ? getRoomTitle(subscription) : undefined;
 };
 
-export const useNowPlayingAudioDetails = (rid: string, msgId?: string) => {
-	const sourceKey = `${rid}-${msgId}`;
-	const [source, setSource] = useState<INowPlayingAudioSource>({ sourceKey: '' });
+export const useNowPlayingAudioDetails = (rid: string, msgId: string) => {
+	const [source, setSource] = useState<INowPlayingAudioSource>({});
 
 	useEffect(() => {
 		let active = true;
 		Promise.all([findAudioMessageSender(msgId), findRoomName(rid)])
 			.then(([sender, roomName]) => {
 				if (active) {
-					setSource({ sourceKey, sender, roomName });
+					setSource({ sender, roomName });
 				}
 			})
-			.catch(() => undefined);
+			.catch(log);
 		return () => {
 			active = false;
 		};
-	}, [rid, msgId, sourceKey]);
+	}, [rid, msgId]);
 
-	const loaded = source.sourceKey === sourceKey;
-	const senderName = loaded && source.sender ? getSenderName(source.sender) : undefined;
-	const roomName = loaded ? source.roomName : undefined;
-	return { title: senderName || roomName || '', roomName: senderName ? roomName : undefined };
+	const senderName = source.sender ? getSenderName(source.sender) || source.sender.username : undefined;
+	return { title: senderName || source.roomName || '', roomName: senderName ? source.roomName : undefined };
 };

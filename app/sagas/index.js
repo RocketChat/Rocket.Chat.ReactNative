@@ -16,6 +16,7 @@ import createDiscussion from './createDiscussion';
 import encryption from './encryption';
 import videoConf from './videoConf';
 import troubleshootingNotification from './troubleshootingNotification';
+import audio from './audio';
 
 const root = function* root() {
 	yield all([
@@ -34,7 +35,8 @@ const root = function* root() {
 		routingConfig(),
 		encryption(),
 		videoConf(),
-		troubleshootingNotification()
+		troubleshootingNotification(),
+		audio()
 	]);
 };
 

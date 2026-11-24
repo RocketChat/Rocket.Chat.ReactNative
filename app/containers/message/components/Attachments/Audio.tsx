@@ -6,7 +6,7 @@ import AudioPlayer from '~/containers/AudioPlayer';
 import Markdown from '~/containers/markdown';
 import { useMediaAutoDownload } from '~/containers/message/hooks/useMediaAutoDownload';
 import { useMessageUser, useRid } from '~/containers/message/stores/MessageRoomStore';
-import { useMessageId } from '~/containers/message/stores/MessageStore';
+import { useMessageField } from '~/containers/message/stores/MessageStore';
 
 interface IMessageAudioProps {
 	file: IAttachment;
@@ -16,7 +16,7 @@ interface IMessageAudioProps {
 
 const MessageAudio = ({ file, author, msg }: IMessageAudioProps) => {
 	const user = useMessageUser();
-	const id = useMessageId();
+	const id = useMessageField(item => item.id ?? item._id);
 	const rid = useRid();
 	const { status, onPress, url } = useMediaAutoDownload({ file, author });
 

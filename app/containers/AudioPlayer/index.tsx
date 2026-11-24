@@ -132,7 +132,7 @@ const AudioPlayer = ({
 			});
 			return () => clearImmediate(immediate);
 		}
-	}, [fileUri, isDownloaded]);
+	}, [fileUri, isDownloaded, msgId, rid, navigation]);
 
 	useEffect(() => {
 		if (paused) {

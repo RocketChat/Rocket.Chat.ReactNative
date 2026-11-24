@@ -4,7 +4,7 @@ import { type NetInfoStateType } from '@react-native-community/netinfo';
 import { type RootEnum } from '../definitions/redux/TRootEnum';
 import { APP } from './actionsTypes';
 
-interface IAppStart extends Action {
+export interface IAppStart extends Action {
 	root: RootEnum;
 	text?: string;
 }

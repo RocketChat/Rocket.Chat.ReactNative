@@ -46,6 +46,7 @@
 			"app/sagas/login.js",
 			"app/sagas/rooms.js",
 			"app/sagas/selectServer.ts",
+			"app/sagas/audio.ts",
 			"app/lib/services/connect.ts"
 		]
 	},

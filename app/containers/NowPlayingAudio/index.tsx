@@ -7,6 +7,7 @@ import NativeButton from '~/containers/NativeButton';
 import { formatTime } from '~/containers/AudioPlayer/formatTime';
 import { type INowPlayingAudio } from '~/lib/methods/useNowPlayingAudioStore';
 import { useNowPlayingAudio, useNowPlayingAudioActions } from './useNowPlayingAudio';
+import { useNowPlayingAudioDetails } from './useNowPlayingAudioDetails';
 import styles from './styles';
 
 const HIT_SLOP = { top: 12, bottom: 12, left: 12, right: 12 };
@@ -17,7 +18,8 @@ interface INowPlayingAudioProps {
 
 const NowPlayingAudioBar = ({ audio, style }: INowPlayingAudioProps & { audio: INowPlayingAudio }) => {
 	const { colors } = useTheme();
-	const { title, roomName, togglePlayPause, close, openSourceRoom } = useNowPlayingAudioActions(audio);
+	const { title, roomName } = useNowPlayingAudioDetails(audio.rid, audio.msgId);
+	const { togglePlayPause, close, openSourceRoom } = useNowPlayingAudioActions(audio);
 	const progress = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
 	const accessibilityDetails = roomName ? `${roomName}, ${progress}` : progress;
 
@@ -77,7 +79,7 @@ const NowPlayingAudio = ({ style }: INowPlayingAudioProps) => {
 	if (!audio) {
 		return null;
 	}
-	return <NowPlayingAudioBar audio={audio} style={style} />;
+	return <NowPlayingAudioBar key={audio.audioKey} audio={audio} style={style} />;
 };
 
 export default NowPlayingAudio;

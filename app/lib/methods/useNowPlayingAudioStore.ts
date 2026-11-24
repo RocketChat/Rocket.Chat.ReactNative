@@ -3,7 +3,7 @@ import { create } from 'zustand';
 export interface INowPlayingAudio {
 	audioKey: string;
 	rid: string;
-	msgId?: string;
+	msgId: string;
 	playing: boolean;
 	currentTime: number;
 	duration: number;

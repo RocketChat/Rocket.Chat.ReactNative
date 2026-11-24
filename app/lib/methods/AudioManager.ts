@@ -42,9 +42,13 @@ class AudioManagerClass {
 		return useNowPlayingAudioStore.getState().audio;
 	}
 
-	private updateNowPlaying(changes: Partial<INowPlayingAudio>) {
+	private isNowPlaying(audioKey: string) {
+		return this.nowPlaying?.audioKey === audioKey;
+	}
+
+	private updateNowPlaying(audioKey: string, changes: Partial<INowPlayingAudio>) {
 		const { nowPlaying } = this;
-		if (nowPlaying) {
+		if (nowPlaying?.audioKey === audioKey) {
 			useNowPlayingAudioStore.setState({ audio: { ...nowPlaying, ...changes } });
 		}
 	}
@@ -53,13 +57,13 @@ class AudioManagerClass {
 		useNowPlayingAudioStore.setState({ audio: null });
 	}
 
-	private startNowPlaying(audioKey: string) {
+	private startNowPlaying(audioKey: string, msgId: string) {
 		const player = this.audioQueue[audioKey];
 		useNowPlayingAudioStore.setState({
 			audio: {
 				audioKey,
 				rid: this.audioMeta[audioKey].rid,
-				msgId: this.audioMeta[audioKey].msgId,
+				msgId,
 				playing: true,
 				currentTime: player?.currentTime ?? 0,
 				duration: player?.duration ?? 0
@@ -89,9 +93,11 @@ class AudioManagerClass {
 	}
 
 	private releaseIfDetached(audioKey: string) {
-		if (this.detachedAudioKeys.has(audioKey)) {
-			this.releaseAudio(audioKey);
+		if (!this.detachedAudioKeys.has(audioKey)) {
+			return false;
 		}
+		this.releaseAudio(audioKey);
+		return true;
 	}
 
 	private subscribeToStatus(audioKey: string) {
@@ -134,12 +140,8 @@ class AudioManagerClass {
 		}
 
 		const previousAudioKey = this.nowPlaying?.audioKey;
-		if (previousAudioKey && previousAudioKey !== audioKey) {
-			this.releaseIfDetached(previousAudioKey);
-		}
 
-		// If player was released, recreate it
-		if (!this.audioQueue[audioKey] && this.audioUris[audioKey]) {
+		if (!this.audioQueue[audioKey]) {
 			const sound = createAudioPlayer({ uri: this.audioUris[audioKey] });
 			this.audioQueue[audioKey] = sound;
 
@@ -158,8 +160,12 @@ class AudioManagerClass {
 			this.audioPlaying = audioKey;
 			this.setRate(audioKey, this.audioRates[audioKey]);
 			this.audioQueue[audioKey].play();
-			if (this.audioMeta[audioKey]?.msgId) {
-				this.startNowPlaying(audioKey);
+			if (previousAudioKey && previousAudioKey !== audioKey) {
+				this.releaseIfDetached(previousAudioKey);
+			}
+			const msgId = this.audioMeta[audioKey]?.msgId;
+			if (msgId) {
+				this.startNowPlaying(audioKey, msgId);
 			} else {
 				this.clearNowPlaying();
 			}
@@ -172,9 +178,7 @@ class AudioManagerClass {
 	pauseAudio(): void {
 		if (this.audioPlaying) {
 			this.audioQueue[this.audioPlaying]?.pause();
-			if (this.nowPlaying?.audioKey === this.audioPlaying) {
-				this.updateNowPlaying({ playing: false });
-			}
+			this.updateNowPlaying(this.audioPlaying, { playing: false });
 			this.audioPlaying = '';
 		}
 	}
@@ -187,8 +191,7 @@ class AudioManagerClass {
 		this.pauseAudio();
 		this.clearNowPlaying();
 		emitter.emit('audioFocused', '');
-		if (this.detachedAudioKeys.has(audioKey)) {
-			this.releaseAudio(audioKey);
+		if (this.releaseIfDetached(audioKey)) {
 			return;
 		}
 		await this.setPositionAsync(audioKey, 0);
@@ -224,8 +227,8 @@ class AudioManagerClass {
 			return;
 		}
 		this.audioCallbacks[audioKey]?.(status);
-		if (this.nowPlaying?.audioKey === audioKey && status.isLoaded) {
-			this.updateNowPlaying({ playing: status.playing, currentTime: status.currentTime, duration: status.duration });
+		if (status.isLoaded) {
+			this.updateNowPlaying(audioKey, { playing: status.playing, currentTime: status.currentTime, duration: status.duration });
 		}
 		this.onEnd(audioKey, status);
 	}
@@ -234,7 +237,7 @@ class AudioManagerClass {
 		this.audioCallbacks[audioKey] = callback;
 		this.subscribeToStatus(audioKey);
 		const status = this.audioQueue[audioKey]?.currentStatus;
-		if (status && this.nowPlaying?.audioKey === audioKey) {
+		if (status && this.isNowPlaying(audioKey)) {
 			callback(status);
 		}
 	}
@@ -246,16 +249,14 @@ class AudioManagerClass {
 
 		if (status.isLoaded && status.didJustFinish) {
 			try {
-				if (this.detachedAudioKeys.has(audioKey)) {
-					this.releaseAudio(audioKey);
-				} else {
+				if (!this.releaseIfDetached(audioKey)) {
 					this.releasePlayer(audioKey);
 					this.audioPositions[audioKey] = 0;
 				}
 				if (this.audioPlaying === audioKey) {
 					this.audioPlaying = '';
 				}
-				if (this.nowPlaying?.audioKey === audioKey) {
+				if (this.isNowPlaying(audioKey)) {
 					this.clearNowPlaying();
 				}
 				emitter.emit('audioFocused', '');
