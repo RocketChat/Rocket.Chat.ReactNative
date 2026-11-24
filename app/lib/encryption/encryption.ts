@@ -1,18 +1,16 @@
 import { Q } from '@nozbe/watermelondb';
 import EJSON from 'ejson';
 import { deleteAsync } from 'expo-file-system/legacy';
+import { Base64 } from 'js-base64';
 import {
-	pbkdf2Hash,
-	aesEncrypt,
-	aesDecrypt,
-	randomBytes,
+	aesCbcEncrypt,
+	aesDecryptFile,
+	aesDeriveKey,
+	aesGcmEncrypt,
 	rsaGenerateKeys,
-	rsaImportKey,
-	rsaExportKey,
-	type JWK,
-	calculateFileChecksum,
-	aesGcmDecrypt,
-	aesGcmEncrypt
+	rsaImportPrivateKey,
+	type AESKey,
+	type RSAPrivateKey
 } from '@rocket.chat/mobile-crypto';
 import sampleSize from 'lodash/sampleSize';
 
@@ -47,23 +45,13 @@ import { KEY_DISTRIBUTION_INTERVAL, MAX_CONCURRENT_QUEUE } from './constants';
 import type { IDecryptionFileQueue, TDecryptFile } from './definitions';
 import Deferred from './helpers/deferred';
 import EncryptionRoom from './room';
-import {
-	decryptAESCTR,
-	joinVectorData,
-	utf8ToBuffer,
-	bufferToB64,
-	bufferToHex,
-	bufferToUtf8,
-	b64ToBuffer,
-	parsePrivateKey,
-	generatePassphrase
-} from './utils';
+import { aesDecrypt, parsePrivateKey, generatePassphrase } from './utils';
 
 const ROOM_KEY_EXCHANGE_SIZE = 10;
 
 class Encryption {
 	ready: boolean;
-	privateKey: string | null;
+	privateKey: RSAPrivateKey | null;
 	publicKey: string | null;
 	readyPromise: Deferred;
 	userId: string | null;
@@ -168,34 +156,33 @@ class Encryption {
 	};
 
 	// Persist keys on UserPreferences
-	persistKeys = async (server: string, publicKey: JWK, privateKey: string) => {
-		const privateJWK = JSON.parse(privateKey);
-		this.privateKey = await rsaImportKey(privateJWK);
-		this.publicKey = EJSON.stringify(publicKey);
-		UserPreferences.setString(`${server}-${E2E_PUBLIC_KEY}`, this.publicKey);
+	persistKeys = async (server: string, publicKey: string, privateKey: string) => {
+		this.privateKey = await rsaImportPrivateKey(privateKey);
+		this.publicKey = publicKey;
+		UserPreferences.setString(`${server}-${E2E_PUBLIC_KEY}`, publicKey);
 		UserPreferences.setString(`${server}-${E2E_PRIVATE_KEY}`, privateKey);
 	};
 
 	// Could not obtain public-private keypair from server.
 	createKeys = async (userId: string, server: string) => {
 		// Generate new keys
-		const key = await rsaGenerateKeys(2048);
+		const { publicKey, privateKey } = await rsaGenerateKeys(2048);
 
 		// Cast these keys to the properly server format
-		const publicKey = await rsaExportKey(key.public);
-		const privateKey = await rsaExportKey(key.private);
+		const publicJwk = publicKey.exportJwk();
+		const privateJwk = privateKey.exportJwk();
 
 		// Persist these new keys
-		this.persistKeys(server, publicKey, EJSON.stringify(privateKey));
+		await this.persistKeys(server, publicJwk, privateJwk);
 
 		// Create a password to encode the private key
 		const password = await this.createRandomPassword(server);
 
 		// Encode the private key
-		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, userId);
+		const encodedPrivateKey = await this.encodePrivateKey(privateJwk, password, userId);
 
 		// Send the new keys to the server
-		await e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+		await e2eSetUserPublicAndPrivateKeys(publicJwk, encodedPrivateKey);
 
 		// Request e2e keys of all encrypted rooms
 		await e2eRequestSubscriptionKeys();
@@ -208,51 +195,30 @@ class Encryption {
 		const isV2 = compareServerVersion(version, 'greaterThanOrEqualTo', '7.13.0');
 
 		const salt = isV2 ? `v2:${userId}:mobile` : userId;
-		const keyBase64 = await this.generateMasterKey(password, salt, isV2 ? 100000 : 1000);
-		const ivB64 = isV2 ? await randomBytes(12) : await randomBytes(16);
-		const ivArrayBuffer = b64ToBuffer(ivB64);
-		const keyHex = bufferToHex(b64ToBuffer(keyBase64));
-		const ivHex = bufferToHex(ivArrayBuffer);
+		const masterKey = await this.generateMasterKey(password, salt, isV2 ? 100000 : 1000);
 
 		if (isV2) {
-			const ciphertextB64 = await aesGcmEncrypt(bufferToB64(utf8ToBuffer(privateKey)), keyHex, ivHex);
-			return EJSON.stringify({ iv: ivB64, ciphertext: ciphertextB64, salt, iterations: 100000 });
+			const { iv, ciphertext } = await aesGcmEncrypt(masterKey, privateKey);
+			return EJSON.stringify({ iv, ciphertext, salt, iterations: 100000 });
 		}
 
-		// v1
-		const data = b64ToBuffer(await aesEncrypt(bufferToB64(utf8ToBuffer(privateKey)), keyHex, ivHex));
-		return EJSON.stringify(new Uint8Array(joinVectorData(ivArrayBuffer, data)));
+		return JSON.stringify({ $binary: await aesCbcEncrypt(masterKey, privateKey) });
 	};
 
 	// Decode a private key fetched from server
 	decodePrivateKey = async (privateKey: string, password: string, userId: string) => {
-		const { iv: ivBuffer, ciphertext: ciphertextBuffer, iterations, version, salt } = parsePrivateKey(privateKey, userId);
-		const ciphertextB64 = bufferToB64(ciphertextBuffer);
-		const ivHex = bufferToHex(ivBuffer);
-
-		const keyBase64 = await this.generateMasterKey(password, salt, iterations);
-		const keyHex = bufferToHex(b64ToBuffer(keyBase64));
-
-		let privKeyBase64;
-		if (version === 'v2') {
-			privKeyBase64 = await aesGcmDecrypt(ciphertextB64, keyHex, ivHex);
-		} else {
-			privKeyBase64 = await aesDecrypt(ciphertextB64, keyHex, ivHex);
-		}
-		return bufferToUtf8(b64ToBuffer(privKeyBase64));
+		const { salt, iterations, encrypted } = parsePrivateKey(privateKey, userId);
+		const masterKey = await this.generateMasterKey(password, salt, iterations);
+		return aesDecrypt(masterKey, encrypted);
 	};
 
 	// Generate a user master key, this is based on salt and a password
-	generateMasterKey = async (password: string, salt: string, iterations: number): Promise<string> => {
-		const hash = 'SHA256';
-		const keyLen = 32;
-
-		const passwordBase64 = bufferToB64(utf8ToBuffer(password));
-		const saltBase64 = bufferToB64(utf8ToBuffer(salt));
-
-		const masterKeyBase64 = await pbkdf2Hash(passwordBase64, saltBase64, iterations, keyLen, hash);
-		return masterKeyBase64;
-	};
+	generateMasterKey = (password: string, salt: string, iterations: number): Promise<AESKey> =>
+		aesDeriveKey(Base64.encode(password), Base64.encode(salt), {
+			iterations,
+			byteLength: 32,
+			hash: 'SHA256'
+		});
 
 	// Create a random password to local created keys
 	createRandomPassword = async (server: string) => {
@@ -263,12 +229,11 @@ class Encryption {
 
 	changePassword = async (server: string, password: string) => {
 		// Cast key to the format server is expecting
-		const privateKey = await rsaExportKey(this.privateKey as string);
+		const privateKey = (this.privateKey as RSAPrivateKey).exportJwk();
 
 		// Encode the private key
-		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, this.userId as string);
+		const encodedPrivateKey = await this.encodePrivateKey(privateKey, password, this.userId as string);
 
-		// This public key is already encoded using EJSON.stringify in the `persistKeys` method
 		const publicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
 		if (!publicKey) {
@@ -655,15 +620,12 @@ class Encryption {
 	};
 
 	decryptFile: TDecryptFile = async (_messageId, path, encryption, originalChecksum) => {
-		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
-		if (decryptedFile) {
-			const checksum = await calculateFileChecksum(decryptedFile);
-			if (checksum !== originalChecksum) {
-				await deleteAsync(decryptedFile);
-				return null;
-			}
+		try {
+			return await aesDecryptFile({ path, key: encryption.key.k, iv: encryption.iv, sha256: originalChecksum });
+		} catch (error) {
+			await deleteAsync(path, { idempotent: true });
+			throw error;
 		}
-		return decryptedFile;
 	};
 
 	addFileToDecryptFileQueue: TDecryptFile = (messageId, path, encryption, originalChecksum) =>

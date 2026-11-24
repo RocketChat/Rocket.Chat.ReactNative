@@ -1,3 +1,5 @@
+import { type RSAPrivateKey } from '@rocket.chat/mobile-crypto';
+
 import { type TAttachmentEncryption } from '~/definitions/IAttachment';
 import { type TSendFileMessageFileInfo } from '~/definitions/IUpload';
 
@@ -21,16 +23,16 @@ export type TDecryptFile = (
 	path: string,
 	encryption: TAttachmentEncryption,
 	originalChecksum: string
-) => Promise<string | null>;
+) => Promise<string>;
 
 export interface IDecryptionFileQueue {
 	params: Parameters<TDecryptFile>;
-	resolve: (value: string | null | PromiseLike<string | null>) => void;
+	resolve: (value: string | PromiseLike<string>) => void;
 	reject: (reason?: any) => void;
 }
 
 export interface IEncryption {
-	privateKey: string | null;
+	privateKey: RSAPrivateKey | null;
 	publicKey: string | null;
 	deleteRoomInstance: (rid: string) => void;
 }

@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import CommonCrypto
-import MobileCrypto
+import MobileCryptoCore
+import Security
 
 // MARK: - Helper Structs
 struct PrefixedData {
@@ -16,20 +16,13 @@ struct PrefixedData {
   let data: Data
 }
 
-struct ParsedMessage {
-  let keyId: String
-  let iv: Data
-  let ciphertext: String
-  let algorithm: String
-}
-
 struct RoomKeyResult {
-  let decryptedKey: String
+  let decryptedKey: AESKey
   let algorithm: String
 }
 
 final class Encryption {
-  final var roomKey: String? = nil
+  final var roomKey: AESKey? = nil
   final var keyId: String? = nil
   final var algorithm: String? = nil
   
@@ -38,16 +31,8 @@ final class Encryption {
   private let server: String
   private let rid: String
   
-  private var userKey: String? {
-    if let privateKeyJson = self.privateKey {
-      guard let json = try? JSONSerialization.jsonObject(with: privateKeyJson.data(using: .utf8)!, options: []) as? [String: Any] else {
-        return nil
-      }
-      
-      return RSACrypto.importJwkKey(json)
-    }
-    
-    return nil
+  private var userKey: SecKey? {
+    privateKey.flatMap { MobileCryptoNative.rsaImportPrivateKey($0) }
   }
   
   private final let encoder: JSONEncoder = {
@@ -100,38 +85,6 @@ final class Encryption {
     return prefix + base64Data
   }
   
-  private func parseMessage(content: EncryptedContent) -> ParsedMessage? {
-    if content.algorithm == "rc.v2.aes-sha2" {
-      guard let ciphertext = content.ciphertext as String?,
-            let keyId = content.kid,
-            let ivString = content.iv,
-            let ivData = Data(base64Encoded: ivString) else {
-        return nil
-      }
-      
-      return ParsedMessage(keyId: keyId, iv: ivData, ciphertext: ciphertext, algorithm: "rc.v2.aes-sha2")
-    } else {
-      // V1 format: keyId + base64(iv + data)
-      guard let ciphertext = content.ciphertext as String?, content.ciphertext.count > 12 else {
-        return nil
-      }
-      
-      let index = ciphertext.index(ciphertext.startIndex, offsetBy: 12)
-      let keyId = String(ciphertext[..<index])
-      let msg = String(ciphertext[index...])
-      
-      guard let data = msg.toData(), data.count > kCCBlockSizeAES128 else {
-        return nil
-      }
-      
-      let iv = data.subdata(in: 0..<kCCBlockSizeAES128)
-      let ciphertextData = data.subdata(in: kCCBlockSizeAES128..<data.count)
-      let ciphertextWithoutPrefix = ciphertextData.base64EncodedString()
-      
-      return ParsedMessage(keyId: keyId, iv: iv, ciphertext: ciphertextWithoutPrefix, algorithm: "rc.v1.aes-sha2")
-    }
-  }
-  
   func decryptRoomKey(E2EKey: String) -> RoomKeyResult? {
     guard let userKey = userKey else {
       return nil
@@ -145,55 +98,37 @@ final class Encryption {
     keyId = parsed.prefix
     
     // Decrypt the session key
-    guard let decryptedMessage = RSACrypto.decrypt(parsed.data.base64EncodedString(), privateKeyPem: userKey),
+    guard let decryptedMessage = MobileCryptoNative.rsaDecrypt(parsed.data.base64EncodedString(), privateKey: userKey),
           let messageData = decryptedMessage.data(using: .utf8),
-          let sessionKey = try? JSONSerialization.jsonObject(with: messageData, options: []) as? [String: Any] else {
+          let sessionKey = try? JSONSerialization.jsonObject(with: messageData, options: []) as? [String: Any],
+          let k = sessionKey["k"] as? String,
+          let decryptedKey = MobileCryptoNative.aesImportKey(k) else {
       return nil
     }
     
-    // Determine format and extract key information
-    if let k = sessionKey["k"] as? String,
-      let alg = sessionKey["alg"] as? String, alg == "A256GCM" {
-      // V2 format
-      guard let base64Encoded = k.toData() else {
-        return nil
-      }
-      let decryptedKey = CryptoUtils.bytes(toHex: base64Encoded)
-      return RoomKeyResult(decryptedKey: decryptedKey, algorithm: "rc.v2.aes-sha2")
-    } else if let k = sessionKey["k"] as? String {
-      // V1 format
-      guard let base64Encoded = k.toData() else {
-        return nil
-      }
-      let decryptedKey = CryptoUtils.bytes(toHex: base64Encoded)
-      return RoomKeyResult(decryptedKey: decryptedKey, algorithm: "rc.v1.aes-sha2")
-    }
-    
-    return nil
+    let isV2 = sessionKey["alg"] as? String == "A256GCM"
+    return RoomKeyResult(decryptedKey: decryptedKey, algorithm: isV2 ? "rc.v2.aes-sha2" : "rc.v1.aes-sha2")
   }
     
   func decryptContent(content: EncryptedContent) -> String? {
-    guard let roomKey = self.roomKey,
-          let parsed = parseMessage(content: content),
-          let kid = parsed.keyId as String?,
-          let ivData = parsed.iv as Data?,
-          let ciphertext = parsed.ciphertext as String? else {
+    guard let roomKey = self.roomKey else {
       return nil
     }
     
-    let ivHex = CryptoUtils.bytes(toHex: ivData)
-    let decryptedBase64: String?
-    
-    if parsed.algorithm == "rc.v2.aes-sha2" {
-      // Use AES-GCM decryption
-      decryptedBase64 = AESCrypto.decryptGcmBase64(ciphertext, keyHex: roomKey, ivHex: ivHex)
+    let decryptedText: String?
+    if content.algorithm == "rc.v2.aes-sha2" {
+      guard let iv = content.iv else {
+        return nil
+      }
+      decryptedText = MobileCryptoNative.aesGcmDecrypt(content.ciphertext, iv: iv, key: roomKey)
     } else {
-      // Use AES-CBC decryption
-      decryptedBase64 = AESCrypto.decryptBase64(ciphertext, keyHex: roomKey, ivHex: ivHex)
+      guard content.ciphertext.count > 12 else {
+        return nil
+      }
+      decryptedText = MobileCryptoNative.aesCbcDecrypt(String(content.ciphertext.dropFirst(12)), key: roomKey)
     }
     
-    guard let decryptedBase64 = decryptedBase64,
-          let decryptedData = Data(base64Encoded: decryptedBase64) else {
+    guard let decryptedData = decryptedText?.data(using: .utf8) else {
       return nil
     }
     
@@ -217,54 +152,33 @@ final class Encryption {
     }
     
     let m = Message(msg: message)
-    guard let cypherData = try? encoder.encode(m) else {
+    guard let cypherData = try? encoder.encode(m),
+          let plaintext = String(data: cypherData, encoding: .utf8) else {
       return nil
     }
     
-    let cypherBase64 = cypherData.base64EncodedString()
-    
     if algorithm == "rc.v2.aes-sha2" {
-      // V2 format: Use AES-GCM with 12-byte IV
-      guard let randomBytesHex = RandomUtils.generateRandomKeyHex(12),
-            let iv = Data(hexString: randomBytesHex) else {
-        return nil
-      }
-      
-      let ivHex = CryptoUtils.bytes(toHex: iv)
-      
-      guard let encryptedBase64 = AESCrypto.encryptGcmBase64(cypherBase64, keyHex: roomKey, ivHex: ivHex) else {
+      guard let encrypted = MobileCryptoNative.aesGcmEncrypt(plaintext, key: roomKey) else {
         return nil
       }
       
       return EncryptedContent(
         algorithm: algorithm,
-        ciphertext: encryptedBase64,
+        ciphertext: encrypted.ciphertext,
         kid: keyId,
-        iv: iv.base64EncodedString()
-      )
-    } else {
-      // V1 format: Use AES-CBC with 16-byte IV
-      guard let randomBytesHex = RandomUtils.generateRandomKeyHex(UInt(kCCBlockSizeAES128)),
-            let iv = Data(hexString: randomBytesHex) else {
-        return nil
-      }
-      
-      let ivHex = CryptoUtils.bytes(toHex: iv)
-      
-      guard let encryptedBase64 = AESCrypto.encryptBase64(cypherBase64, keyHex: roomKey, ivHex: ivHex),
-            let encryptedData = Data(base64Encoded: encryptedBase64) else {
-        return nil
-      }
-      
-      let joined = Data.join(vector: iv, data: encryptedData)
-      let fullCiphertext = keyId + joined.base64EncodedString()
-      
-      return EncryptedContent(
-        algorithm: algorithm,
-        ciphertext: fullCiphertext,
-        kid: nil,
-        iv: nil
+        iv: encrypted.iv
       )
     }
+    
+    guard let ivAndCiphertext = MobileCryptoNative.aesCbcEncrypt(plaintext, key: roomKey) else {
+      return nil
+    }
+    
+    return EncryptedContent(
+      algorithm: algorithm,
+      ciphertext: keyId + ivAndCiphertext,
+      kid: nil,
+      iv: nil
+    )
   }
 }

@@ -3,16 +3,18 @@ import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 import {
-	rsaDecrypt,
-	randomBytes,
-	rsaImportKey,
-	rsaEncrypt,
-	aesEncrypt,
-	calculateFileChecksum,
-	aesDecrypt,
+	aesCbcEncrypt,
+	aesEncryptFile,
 	aesGcmEncrypt,
-	aesGcmDecrypt,
-	randomUuid
+	aesGenerateKey,
+	aesImportKey,
+	randomUuid,
+	rsaDecrypt,
+	rsaEncrypt,
+	rsaImportPublicKey,
+	type AESGCMCiphertext,
+	type AESKey,
+	type RSAPrivateKey
 } from '@rocket.chat/mobile-crypto';
 
 import getSingleMessage from '../methods/getSingleMessage';
@@ -24,24 +26,7 @@ import Deferred from './helpers/deferred';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { debounce } from '../methods/helpers/debounce';
 import log from '../methods/helpers/log';
-import {
-	b64ToBuffer,
-	bufferToB64,
-	bufferToB64URI,
-	bufferToUtf8,
-	getE2EEMentions,
-	encryptAESCTR,
-	exportAESCTR,
-	generateAESCTRKey,
-	getFileExtension,
-	joinVectorData,
-	splitVectorData,
-	toString,
-	utf8ToBuffer,
-	bufferToHex,
-	decodePrefixedBase64,
-	encodePrefixedBase64
-} from './utils';
+import { aesDecrypt, getE2EEMentions, exportAESCTR, getFileExtension, decodePrefixedBase64, encodePrefixedBase64 } from './utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import {
 	e2eRejectSuggestedGroupKey,
@@ -72,7 +57,7 @@ export default class EncryptionRoom {
 	sessionKeyExportedString: string;
 	keyID: string;
 	algorithm: TAlgorithm;
-	roomKey: ArrayBuffer;
+	roomKey: AESKey | null;
 	subscription: TSubscriptionModel | null;
 	encryption: IEncryption;
 
@@ -85,7 +70,7 @@ export default class EncryptionRoom {
 		this.keyID = '';
 		this.algorithm = '';
 		this.sessionKeyExportedString = '';
-		this.roomKey = new ArrayBuffer(0);
+		this.roomKey = null;
 		this.readyPromise = this.createReadyPromise();
 		this.subscription = null;
 	}
@@ -207,19 +192,18 @@ export default class EncryptionRoom {
 	// Import roomKey as an AES Decrypt key
 	importRoomKey = async (
 		E2EKey: string,
-		privateKey: string
-	): Promise<{ sessionKeyExportedString: string; roomKey: ArrayBuffer; keyID: string; algorithm: TAlgorithm }> => {
+		privateKey: RSAPrivateKey
+	): Promise<{ sessionKeyExportedString: string; roomKey: AESKey; keyID: string; algorithm: TAlgorithm }> => {
 		try {
 			// Parse the encrypted key using prefixed base64
 			const [kid, encryptedData] = decodePrefixedBase64(E2EKey);
 
 			// Decrypt the session key
-			const decryptedKey = await rsaDecrypt(bufferToB64(encryptedData), privateKey);
-			const sessionKeyExportedString = toString(decryptedKey);
+			const sessionKeyExportedString = await rsaDecrypt(privateKey, encryptedData);
 
 			const keyID = kid;
 			const parsedKey = EJSON.parse(sessionKeyExportedString);
-			const roomKey: ArrayBuffer = b64ToBuffer(parsedKey.k);
+			const roomKey = aesImportKey(parsedKey.k);
 
 			return {
 				sessionKeyExportedString,
@@ -238,7 +222,7 @@ export default class EncryptionRoom {
 		const { version } = store.getState().server;
 		// v2
 		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.13.0')) {
-			this.roomKey = b64ToBuffer(await randomBytes(32));
+			this.roomKey = aesGenerateKey(32);
 			// Web Crypto format of a Secret Key
 			const sessionKeyExported = {
 				// Type of Secret Key
@@ -246,19 +230,19 @@ export default class EncryptionRoom {
 				// Algorithm
 				alg: 'A256GCM',
 				// Base64URI encoded array of bytes
-				k: bufferToB64URI(this.roomKey),
+				k: this.roomKey.exportBase64Url(),
 				// Specific Web Crypto properties
 				ext: true,
 				key_ops: ['encrypt', 'decrypt']
 			};
-			this.keyID = await randomUuid();
+			this.keyID = randomUuid();
 			this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
 			this.algorithm = 'A256GCM';
 			return;
 		}
 
 		// v1
-		this.roomKey = b64ToBuffer(await randomBytes(16));
+		this.roomKey = aesGenerateKey(16);
 		// Web Crypto format of a Secret Key
 		const sessionKeyExported = {
 			// Type of Secret Key
@@ -266,7 +250,7 @@ export default class EncryptionRoom {
 			// Algorithm
 			alg: 'A128CBC',
 			// Base64URI encoded array of bytes
-			k: bufferToB64URI(this.roomKey),
+			k: this.roomKey.exportBase64Url(),
 			// Specific Web Crypto properties
 			ext: true,
 			key_ops: ['encrypt', 'decrypt']
@@ -362,10 +346,9 @@ export default class EncryptionRoom {
 	// Encrypt the room key to each user in
 	encryptRoomKeyForUser = async (publicKey: string) => {
 		try {
-			const userKey = await rsaImportKey(EJSON.parse(publicKey));
-			const encryptedUserKey = await rsaEncrypt(this.sessionKeyExportedString as string, userKey);
-			const encryptedBuffer = b64ToBuffer(encryptedUserKey as string);
-			return encodePrefixedBase64(this.keyID, encryptedBuffer);
+			const userKey = await rsaImportPublicKey(publicKey);
+			const encryptedUserKey = await rsaEncrypt(userKey, this.sessionKeyExportedString);
+			return encodePrefixedBase64(this.keyID, encryptedUserKey);
 		} catch (e) {
 			log(e);
 		}
@@ -390,7 +373,7 @@ export default class EncryptionRoom {
 		let userKey;
 
 		try {
-			userKey = await rsaImportKey(EJSON.parse(publicKey));
+			userKey = await rsaImportPublicKey(publicKey);
 		} catch (e) {
 			log(e);
 			return;
@@ -402,7 +385,7 @@ export default class EncryptionRoom {
 				if (!oldRoomKey.E2EKey) {
 					continue;
 				}
-				const encryptedKey = await rsaEncrypt(oldRoomKey.E2EKey, userKey);
+				const encryptedKey = await rsaEncrypt(userKey, oldRoomKey.E2EKey);
 				const encryptedUserKey = oldRoomKey.e2eKeyId + encryptedKey;
 				keys.push({ ...oldRoomKey, E2EKey: encryptedUserKey });
 			}
@@ -462,25 +445,23 @@ export default class EncryptionRoom {
 		| { algorithm: 'rc.v2.aes-sha2'; kid: string; iv: string; ciphertext: string }
 		| { algorithm: 'rc.v1.aes-sha2'; ciphertext: string }
 	> => {
-		const textBuffer = utf8ToBuffer(text);
+		if (!this.roomKey) {
+			throw new Error('Room key is not available');
+		}
+
 		if (this.algorithm === 'A256GCM') {
-			const vectorBase64 = await randomBytes(12);
-			const vector = b64ToBuffer(vectorBase64);
-			const data = await aesGcmEncrypt(bufferToB64(textBuffer), bufferToHex(this.roomKey), bufferToHex(vector));
+			const { iv, ciphertext } = await aesGcmEncrypt(this.roomKey, text);
 			return {
 				algorithm: 'rc.v2.aes-sha2' as const,
 				kid: this.keyID,
-				iv: vectorBase64,
-				ciphertext: data
+				iv,
+				ciphertext
 			};
 		}
 
-		const vectorBase64 = await randomBytes(16);
-		const vector = b64ToBuffer(vectorBase64);
-		const data = b64ToBuffer(await aesEncrypt(bufferToB64(textBuffer), bufferToHex(this.roomKey), bufferToHex(vector)));
 		return {
 			algorithm: 'rc.v1.aes-sha2' as const,
-			ciphertext: this.keyID + bufferToB64(joinVectorData(vector, data))
+			ciphertext: this.keyID + (await aesCbcEncrypt(this.roomKey, text))
 		};
 	};
 
@@ -512,12 +493,8 @@ export default class EncryptionRoom {
 
 	encryptFile = async (_rid: string, file: TSendFileMessageFileInfo): TEncryptFileResult => {
 		const { path } = file;
-		const vectorBuffer = b64ToBuffer(await randomBytes(16));
-		const keyBuffer = b64ToBuffer(await generateAESCTRKey());
-		const exportedKey = await exportAESCTR(keyBuffer);
-		const ivBase64 = bufferToB64(vectorBuffer);
-		const checksum = await calculateFileChecksum(path);
-		const encryptedFile = await encryptAESCTR(path, exportedKey.k, ivBase64);
+		const { path: encryptedPath, key, iv: ivBase64, sha256: checksum } = await aesEncryptFile(path);
+		const exportedKey = exportAESCTR(key);
 
 		const getContent: TGetContent = async (_id, fileUrl) => {
 			const attachments: IAttachment[] = [];
@@ -612,7 +589,7 @@ export default class EncryptionRoom {
 				...file,
 				type: 'file',
 				name: sha256(file.name ?? 'File message'),
-				path: encryptedFile
+				path: encryptedPath
 			},
 			getContent,
 			fileContent
@@ -627,38 +604,19 @@ export default class EncryptionRoom {
 		return data;
 	};
 
-	parse = (
-		payload: string | IMessage['content']
-	): {
-		kid: string;
-		iv: ArrayBuffer;
-		ciphertext: string;
-	} => {
+	parse = (payload: string | IMessage['content']): { kid: string; encrypted: AESGCMCiphertext | string } => {
 		// v2: {"kid":"...", "iv": "...", "ciphertext":"..."}
 		if (typeof payload !== 'string' && payload?.algorithm === 'rc.v2.aes-sha2') {
-			return { kid: payload.kid, iv: b64ToBuffer(payload.iv), ciphertext: payload.ciphertext };
+			return { kid: payload.kid, encrypted: { iv: payload.iv, ciphertext: payload.ciphertext } };
 		}
 		// v1: kid + base64(vector + ciphertext)
 		const message = typeof payload === 'string' ? payload : payload?.ciphertext || '';
-		const kid = message.slice(0, 12);
-		const contentBuffer = b64ToBuffer(message.slice(12) as string);
-		const [iv, ciphertext] = splitVectorData(contentBuffer);
-		return { kid, iv, ciphertext: bufferToB64(ciphertext) };
+		return { kid: message.slice(0, 12), encrypted: message.slice(12) };
 	};
 
-	doDecrypt = async (ciphertext: string, key: ArrayBuffer, iv: ArrayBuffer, algorithm: TAlgorithm) => {
-		const keyHex = bufferToHex(key);
-		const ivHex = bufferToHex(iv);
-		let decrypted;
-		if (algorithm === 'A256GCM') {
-			decrypted = await aesGcmDecrypt(ciphertext, keyHex, ivHex);
-		} else {
-			decrypted = await aesDecrypt(ciphertext, keyHex, ivHex);
-		}
-		if (!decrypted) {
-			return null;
-		}
-		return EJSON.parse(bufferToUtf8(b64ToBuffer(decrypted)));
+	doDecrypt = async (encrypted: AESGCMCiphertext | string, key: AESKey) => {
+		const plaintext = await aesDecrypt(key, encrypted);
+		return EJSON.parse(plaintext);
 	};
 
 	decryptContent = async (content: IMessage['content'] | string) => {
@@ -667,20 +625,23 @@ export default class EncryptionRoom {
 				return null;
 			}
 
-			const { kid, iv, ciphertext } = this.parse(content);
+			const { kid, encrypted } = this.parse(content);
 
 			if (kid !== this.keyID) {
 				const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === kid);
 				if (oldRoomKey?.E2EKey && this.encryption.privateKey) {
-					const { roomKey, algorithm } = await this.importRoomKey(oldRoomKey.E2EKey, this.encryption.privateKey);
-					return this.doDecrypt(ciphertext, roomKey, iv, algorithm);
+					const { roomKey } = await this.importRoomKey(oldRoomKey.E2EKey, this.encryption.privateKey);
+					return await this.doDecrypt(encrypted, roomKey);
 				}
 				return null;
 			}
 
-			return this.doDecrypt(ciphertext, this.roomKey, iv, this.algorithm);
-		} catch (error) {
-			console.error(error);
+			if (!this.roomKey) {
+				return null;
+			}
+
+			return await this.doDecrypt(encrypted, this.roomKey);
+		} catch {
 			return null;
 		}
 	};

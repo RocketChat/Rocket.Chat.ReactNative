@@ -13,15 +13,6 @@ extension String {
     return unicodeScalars.map{ .init($0.value, radix: 16, uppercase: false) }.joined()
   }
   
-  func toData() -> Data? {
-    // Add padding if needed
-    var base64Encoded = self.padding(toLength: ((self.count + 3) / 4) * 4, withPad: "=", startingAt: 0)
-    // Decode URL safe encoded base64
-    base64Encoded = base64Encoded.replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
-
-    return Data(base64Encoded: base64Encoded, options: .ignoreUnknownCharacters)
-  }
-  
   func removeTrailingSlash() -> String {
     var url = self
     if (url.last == "/") {

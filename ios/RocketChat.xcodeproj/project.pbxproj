@@ -76,7 +76,6 @@
 		1E54BA1D2BC9E8030073903D /* MessageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54BA1C2BC9E8030073903D /* MessageMapper.swift */; };
 		1E54BA202BC9E9B60073903D /* MergedRoomMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54BA1F2BC9E9B60073903D /* MergedRoomMapper.swift */; };
 		1E598AE42515057D002BDFBD /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE32515057D002BDFBD /* Date+Extensions.swift */; };
-		1E598AE725150660002BDFBD /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE625150660002BDFBD /* Data+Extensions.swift */; };
 		1E598AE925151A63002BDFBD /* SendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE825151A63002BDFBD /* SendMessage.swift */; };
 		1E638E992B5F0A2900E645E4 /* ChatScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E638E982B5F0A2900E645E4 /* ChatScrollView.swift */; };
 		1E638E9E2B5F0F5800E645E4 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E638E9D2B5F0F5800E645E4 /* URL+Extensions.swift */; };
@@ -173,7 +172,6 @@
 		7AAB3E1F257E6A6E00707CF6 /* RocketChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E470E822513A71E00E3DD1D /* RocketChat.swift */; };
 		7AAB3E20257E6A6E00707CF6 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F61632512955D00871711 /* HTTPMethod.swift */; };
 		7AAB3E21257E6A6E00707CF6 /* Payload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8262511303900FEF824 /* Payload.swift */; };
-		7AAB3E23257E6A6E00707CF6 /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE625150660002BDFBD /* Data+Extensions.swift */; };
 		7AAB3E24257E6A6E00707CF6 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE32515057D002BDFBD /* Date+Extensions.swift */; };
 		7AAB3E25257E6A6E00707CF6 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1C2F7F250FCB69005DCE7D /* Database.swift */; };
 		7AAB3E26257E6A6E00707CF6 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67380324DC529B0009E081 /* String+Extensions.swift */; };
@@ -362,7 +360,6 @@
 		1E54BA1C2BC9E8030073903D /* MessageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageMapper.swift; sourceTree = "<group>"; };
 		1E54BA1F2BC9E9B60073903D /* MergedRoomMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergedRoomMapper.swift; sourceTree = "<group>"; };
 		1E598AE32515057D002BDFBD /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
-		1E598AE625150660002BDFBD /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		1E598AE825151A63002BDFBD /* SendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessage.swift; sourceTree = "<group>"; };
 		1E638E982B5F0A2900E645E4 /* ChatScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatScrollView.swift; sourceTree = "<group>"; };
 		1E638E9D2B5F0F5800E645E4 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
@@ -737,7 +734,6 @@
 			children = (
 				1E01C81B2511208400FEF824 /* URL+Extensions.swift */,
 				1E598AE32515057D002BDFBD /* Date+Extensions.swift */,
-				1E598AE625150660002BDFBD /* Data+Extensions.swift */,
 				1E67380324DC529B0009E081 /* String+Extensions.swift */,
 				1ED038A02B508FE700C007D4 /* FileManager+Extensions.swift */,
 				1ED038A42B50900800C007D4 /* Bundle+Extensions.swift */,
@@ -1698,7 +1694,6 @@
 				1E2F61662512958900871711 /* Push.swift in Sources */,
 				1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */,
 				1EB8EF722510F1EE00F352B7 /* Storage.swift in Sources */,
-				1E598AE725150660002BDFBD /* Data+Extensions.swift in Sources */,
 				1E2F615B25128F9A00871711 /* API.swift in Sources */,
 				1E01C8272511303900FEF824 /* Payload.swift in Sources */,
 				85160EB6C143E0493FE5F014 /* ExpoModulesProvider.swift in Sources */,
@@ -1732,7 +1727,6 @@
 				7AAB3E20257E6A6E00707CF6 /* HTTPMethod.swift in Sources */,
 				7AAB3E21257E6A6E00707CF6 /* Payload.swift in Sources */,
 				7A37D6FF2F896C360095EBA1 /* MediaCallsAnswerRequest.swift in Sources */,
-				7AAB3E23257E6A6E00707CF6 /* Data+Extensions.swift in Sources */,
 				7AAB3E24257E6A6E00707CF6 /* Date+Extensions.swift in Sources */,
 				7AAB3E25257E6A6E00707CF6 /* Database.swift in Sources */,
 				7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */,

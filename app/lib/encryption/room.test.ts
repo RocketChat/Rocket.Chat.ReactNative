@@ -3,28 +3,22 @@ import { Base64 } from 'js-base64';
 import { sha256 } from 'js-sha256';
 import {
 	rsaDecrypt,
-	randomBytes,
-	rsaImportKey,
+	rsaImportPublicKey,
 	rsaEncrypt,
-	aesEncrypt,
-	calculateFileChecksum,
-	aesDecrypt,
+	aesCbcEncrypt,
+	aesCbcDecrypt,
 	aesGcmEncrypt,
 	aesGcmDecrypt,
+	aesGenerateKey,
+	aesImportKey,
 	randomUuid,
-	aesEncryptFile
+	aesEncryptFile,
+	type AESKey,
+	type RSAPrivateKey
 } from '@rocket.chat/mobile-crypto';
 
 import EncryptionRoom from './room';
-import {
-	b64ToBuffer,
-	bufferToB64,
-	bufferToB64URI,
-	bufferToHex,
-	joinVectorData,
-	utf8ToBuffer,
-	encodePrefixedBase64
-} from './utils';
+import { bufferToB64 } from './utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import { type IEncryption } from './definitions';
 import getSingleMessage from '../methods/getSingleMessage';
@@ -43,17 +37,17 @@ import {
 
 jest.mock('@rocket.chat/mobile-crypto', () => ({
 	rsaDecrypt: jest.fn(),
-	randomBytes: jest.fn(),
-	rsaImportKey: jest.fn(),
+	rsaImportPublicKey: jest.fn(),
 	rsaEncrypt: jest.fn(),
-	aesEncrypt: jest.fn(),
-	calculateFileChecksum: jest.fn(),
-	aesDecrypt: jest.fn(),
+	aesCbcEncrypt: jest.fn(),
+	aesCbcDecrypt: jest.fn(),
 	aesGcmEncrypt: jest.fn(),
 	aesGcmDecrypt: jest.fn(),
+	aesGenerateKey: jest.fn(),
+	aesImportKey: jest.fn(),
+	randomBytes: jest.fn(),
 	randomUuid: jest.fn(),
-	aesEncryptFile: jest.fn(),
-	aesDecryptFile: jest.fn()
+	aesEncryptFile: jest.fn()
 }));
 
 jest.mock('../methods/getSingleMessage', () => ({
@@ -89,14 +83,14 @@ jest.mock('../store/auxStore', () => ({
 }));
 
 const mockRsaDecrypt = rsaDecrypt as jest.Mock;
-const mockRandomBytes = randomBytes as jest.Mock;
-const mockRsaImportKey = rsaImportKey as jest.Mock;
+const mockRsaImportPublicKey = rsaImportPublicKey as jest.Mock;
 const mockRsaEncrypt = rsaEncrypt as jest.Mock;
-const mockAesEncrypt = aesEncrypt as jest.Mock;
-const mockCalculateFileChecksum = calculateFileChecksum as jest.Mock;
-const mockAesDecrypt = aesDecrypt as jest.Mock;
+const mockAesCbcEncrypt = aesCbcEncrypt as jest.Mock;
+const mockAesCbcDecrypt = aesCbcDecrypt as jest.Mock;
 const mockAesGcmEncrypt = aesGcmEncrypt as jest.Mock;
 const mockAesGcmDecrypt = aesGcmDecrypt as jest.Mock;
+const mockAesGenerateKey = aesGenerateKey as jest.Mock;
+const mockAesImportKey = aesImportKey as jest.Mock;
 const mockRandomUuid = randomUuid as jest.Mock;
 const mockAesEncryptFile = aesEncryptFile as jest.Mock;
 
@@ -113,8 +107,12 @@ const mockE2eGetUsersOfRoomWithoutKey = e2eGetUsersOfRoomWithoutKey as jest.Mock
 const mockProvideUsersSuggestedGroupKeys = provideUsersSuggestedGroupKeys as jest.Mock;
 const mockE2eUpdateGroupKey = e2eUpdateGroupKey as jest.Mock;
 
+const createAesKey = (base64Url = 'exported-room-key') => ({ exportBase64Url: () => base64Url }) as unknown as AESKey;
+
+const userPrivateKey = { exportJwk: () => '{"kty":"RSA"}' } as unknown as RSAPrivateKey;
+
 const createEncryption = (overrides: Partial<IEncryption> = {}): IEncryption => ({
-	privateKey: 'private-key',
+	privateKey: userPrivateKey,
 	publicKey: 'public-key',
 	deleteRoomInstance: jest.fn(),
 	...overrides
@@ -139,7 +137,7 @@ describe('EncryptionRoom constructor', () => {
 		expect(room.keyID).toBe('');
 		expect(room.algorithm).toBe('');
 		expect(room.sessionKeyExportedString).toBe('');
-		expect(room.roomKey.byteLength).toBe(0);
+		expect(room.roomKey).toBeNull();
 		expect(room.subscription).toBeNull();
 	});
 });
@@ -147,34 +145,37 @@ describe('EncryptionRoom constructor', () => {
 describe('importRoomKey', () => {
 	it('decrypts an E2EKey into session key, room key, keyID and algorithm', async () => {
 		const room = createRoom();
-		const roomKeyBytes = new Uint8Array(32).fill(9).buffer;
+		const roomKeyBytes = new Uint8Array(32).fill(9);
 		const sessionKeyExported = {
 			kty: 'oct',
 			alg: 'A256GCM',
-			k: bufferToB64URI(roomKeyBytes),
+			k: Base64.fromUint8Array(roomKeyBytes, true),
 			ext: true,
 			key_ops: ['encrypt', 'decrypt']
 		};
 		const sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
+		const importedRoomKey = createAesKey(sessionKeyExported.k);
 		mockRsaDecrypt.mockResolvedValue(sessionKeyExportedString);
+		mockAesImportKey.mockReturnValue(importedRoomKey);
 		const e2eKey = `kid123${build256ByteBase64()}`;
 
-		const result = await room.importRoomKey(e2eKey, 'my-private-key');
+		const result = await room.importRoomKey(e2eKey, userPrivateKey);
 
-		expect(mockRsaDecrypt).toHaveBeenCalledWith(build256ByteBase64(), 'my-private-key');
+		expect(mockRsaDecrypt).toHaveBeenCalledWith(userPrivateKey, build256ByteBase64());
+		expect(mockAesImportKey).toHaveBeenCalledWith(sessionKeyExported.k);
 		expect(result.keyID).toBe('kid123');
 		expect(result.algorithm).toBe('A256GCM');
 		expect(result.sessionKeyExportedString).toBe(sessionKeyExportedString);
-		expect(bufferToB64(result.roomKey)).toBe(bufferToB64(b64ToBuffer(sessionKeyExported.k)));
+		expect(result.roomKey).toBe(importedRoomKey);
 	});
 
 	it('wraps any failure (malformed input, bad decrypt, invalid EJSON) into a plain Error', async () => {
 		const room = createRoom();
 
-		await expect(room.importRoomKey('too-short', 'priv')).rejects.toThrow();
+		await expect(room.importRoomKey('too-short', userPrivateKey)).rejects.toThrow();
 
 		mockRsaDecrypt.mockResolvedValue('not-valid-ejson');
-		await expect(room.importRoomKey(`kid123${build256ByteBase64()}`, 'priv')).rejects.toThrow();
+		await expect(room.importRoomKey(`kid123${build256ByteBase64()}`, userPrivateKey)).rejects.toThrow();
 	});
 });
 
@@ -190,35 +191,36 @@ describe('hasSessionKey', () => {
 describe('createNewRoomKey', () => {
 	it('creates an A256GCM key with a random UUID keyID for servers >= 7.13.0', async () => {
 		mockGetState.mockReturnValue({ server: { version: '7.13.0' } });
-		mockRandomBytes.mockResolvedValue(bufferToB64(new Uint8Array(32).fill(3).buffer));
-		mockRandomUuid.mockResolvedValue('uuid-123');
+		mockAesGenerateKey.mockReturnValue(createAesKey('generated-256-bit-key'));
+		mockRandomUuid.mockReturnValue('uuid-123');
 		const room = createRoom();
 
 		await room.createNewRoomKey();
 
-		expect(mockRandomBytes).toHaveBeenCalledWith(32);
+		expect(mockAesGenerateKey).toHaveBeenCalledWith(32);
 		expect(room.algorithm).toBe('A256GCM');
 		expect(room.keyID).toBe('uuid-123');
 		const parsed = EJSON.parse(room.sessionKeyExportedString);
 		expect(parsed).toMatchObject({ kty: 'oct', alg: 'A256GCM', ext: true, key_ops: ['encrypt', 'decrypt'] });
-		expect(parsed.k).toBe(bufferToB64URI(room.roomKey));
+		expect(parsed.k).toBe('generated-256-bit-key');
 	});
 
 	it('creates an A128CBC key with a sha256-derived keyID for 7.0.0 <= servers < 7.13.0', async () => {
 		mockGetState.mockReturnValue({ server: { version: '7.5.0' } });
-		mockRandomBytes.mockResolvedValue(bufferToB64(new Uint8Array(16).fill(5).buffer));
+		mockAesGenerateKey.mockReturnValue(createAesKey('generated-128-bit-key'));
 		const room = createRoom();
 
 		await room.createNewRoomKey();
 
-		expect(mockRandomBytes).toHaveBeenCalledWith(16);
+		expect(mockAesGenerateKey).toHaveBeenCalledWith(16);
 		expect(room.algorithm).toBe('A128CBC');
+		expect(EJSON.parse(room.sessionKeyExportedString).k).toBe('generated-128-bit-key');
 		expect(room.keyID).toBe(sha256(room.sessionKeyExportedString).slice(0, 12));
 	});
 
 	it('creates an A128CBC key with a base64-derived keyID for servers < 7.0.0', async () => {
 		mockGetState.mockReturnValue({ server: { version: '6.5.0' } });
-		mockRandomBytes.mockResolvedValue(bufferToB64(new Uint8Array(16).fill(5).buffer));
+		mockAesGenerateKey.mockReturnValue(createAesKey('generated-128-bit-key'));
 		const room = createRoom();
 
 		await room.createNewRoomKey();
@@ -322,22 +324,24 @@ describe('encryptRoomKeyForUser', () => {
 		const room = createRoom();
 		room.keyID = 'kid1';
 		room.sessionKeyExportedString = 'session-string';
-		mockRsaImportKey.mockResolvedValue('imported-user-key');
-		const encryptedBuffer = new Uint8Array(256).fill(4).buffer;
-		mockRsaEncrypt.mockResolvedValue(bufferToB64(encryptedBuffer));
+		const importedUserKey = { name: 'imported-user-key' };
+		const publicKeyJwk = EJSON.stringify({ n: 'pub' });
+		mockRsaImportPublicKey.mockResolvedValue(importedUserKey);
+		const encryptedUserKey = build256ByteBase64(4);
+		mockRsaEncrypt.mockResolvedValue(encryptedUserKey);
 
-		const result = await room.encryptRoomKeyForUser(EJSON.stringify({ n: 'pub' }));
+		const result = await room.encryptRoomKeyForUser(publicKeyJwk);
 
-		expect(mockRsaImportKey).toHaveBeenCalledWith({ n: 'pub' });
-		expect(mockRsaEncrypt).toHaveBeenCalledWith('session-string', 'imported-user-key');
-		expect(result).toBe(encodePrefixedBase64('kid1', encryptedBuffer));
+		expect(mockRsaImportPublicKey).toHaveBeenCalledWith(publicKeyJwk);
+		expect(mockRsaEncrypt).toHaveBeenCalledWith(importedUserKey, 'session-string');
+		expect(result).toBe(`kid1${encryptedUserKey}`);
 	});
 
 	it('logs and returns undefined when the rsa operation fails', async () => {
 		const room = createRoom();
 		room.keyID = 'kid1';
 		room.sessionKeyExportedString = 's';
-		mockRsaImportKey.mockRejectedValue(new Error('bad key'));
+		mockRsaImportPublicKey.mockRejectedValue(new Error('bad key'));
 
 		const result = await room.encryptRoomKeyForUser(EJSON.stringify({ n: 'pub' }));
 
@@ -354,7 +358,7 @@ describe('encryptOldKeysForParticipant', () => {
 
 	it('logs and returns undefined when the public key cannot be imported', async () => {
 		const room = createRoom();
-		mockRsaImportKey.mockRejectedValue(new Error('bad key'));
+		mockRsaImportPublicKey.mockRejectedValue(new Error('bad key'));
 
 		const result = await room.encryptOldKeysForParticipant(EJSON.stringify({ n: 'bad-pub' }), [{ e2eKeyId: 'a', E2EKey: 'x' }]);
 
@@ -363,16 +367,23 @@ describe('encryptOldKeysForParticipant', () => {
 
 	it('re-encrypts each old key, prefixed with its own keyID, skipping entries without an E2EKey', async () => {
 		const room = createRoom();
-		mockRsaImportKey.mockResolvedValue('imported');
-		mockRsaEncrypt.mockImplementation((data: string) => `enc(${data})`);
+		const importedUserKey = { name: 'imported-user-key' };
+		const publicKeyJwk = EJSON.stringify({ n: 'pub' });
+		mockRsaImportPublicKey.mockResolvedValue(importedUserKey);
+		mockRsaEncrypt.mockImplementation((_publicKey: unknown, plaintext: string) => `enc(${plaintext})`);
 		const oldKeys = [
 			{ e2eKeyId: 'k1', E2EKey: 'old-key-1', ts: 't1' },
 			{ e2eKeyId: 'k2', ts: 't2' },
 			{ e2eKeyId: 'k3', E2EKey: 'old-key-3', ts: 't3' }
 		];
 
-		const result = await room.encryptOldKeysForParticipant(EJSON.stringify({ n: 'pub' }), oldKeys);
+		const result = await room.encryptOldKeysForParticipant(publicKeyJwk, oldKeys);
 
+		expect(mockRsaImportPublicKey).toHaveBeenCalledWith(publicKeyJwk);
+		expect(mockRsaEncrypt.mock.calls).toEqual([
+			[importedUserKey, 'old-key-1'],
+			[importedUserKey, 'old-key-3']
+		]);
 		expect(result).toEqual([
 			{ e2eKeyId: 'k1', ts: 't1', E2EKey: 'k1enc(old-key-1)' },
 			{ e2eKeyId: 'k3', ts: 't3', E2EKey: 'k3enc(old-key-3)' }
@@ -388,12 +399,12 @@ describe('exportOldRoomKeys', () => {
 	});
 
 	it('skips keys without an E2EKey and keys that fail to decrypt, keeping the rest', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		jest.spyOn(room, 'importRoomKey').mockImplementation((E2EKey: string) => {
 			if (E2EKey === 'bad') throw new Error('cannot decrypt');
 			return Promise.resolve({
 				sessionKeyExportedString: `decrypted(${E2EKey})`,
-				roomKey: new ArrayBuffer(0),
+				roomKey: createAesKey(),
 				keyID: 'kid',
 				algorithm: 'A256GCM'
 			});
@@ -537,41 +548,34 @@ describe('encryptGroupKeyForParticipantsWaitingForTheKeys', () => {
 });
 
 describe('encryptText', () => {
-	it('uses AES-GCM with a 12-byte IV for the A256GCM algorithm', async () => {
+	it('uses AES-GCM for the A256GCM algorithm, sending the native iv and ciphertext', async () => {
 		const room = createRoom();
+		const roomKey = createAesKey();
 		room.algorithm = 'A256GCM';
 		room.keyID = 'kid';
-		room.roomKey = new Uint8Array(32).fill(2).buffer;
-		const ivB64 = bufferToB64(new Uint8Array(12).fill(9).buffer);
-		mockRandomBytes.mockResolvedValue(ivB64);
-		mockAesGcmEncrypt.mockResolvedValue('gcm-ciphertext');
+		room.roomKey = roomKey;
+		mockAesGcmEncrypt.mockResolvedValue({ iv: 'gcm-iv', ciphertext: 'gcm-ciphertext' });
 
 		const result = await room.encryptText('hello');
 
-		expect(mockRandomBytes).toHaveBeenCalledWith(12);
-		expect(mockAesGcmEncrypt).toHaveBeenCalledWith(
-			bufferToB64(utf8ToBuffer('hello')),
-			bufferToHex(room.roomKey),
-			bufferToHex(b64ToBuffer(ivB64))
-		);
-		expect(result).toEqual({ algorithm: 'rc.v2.aes-sha2', kid: 'kid', iv: ivB64, ciphertext: 'gcm-ciphertext' });
+		expect(mockAesGcmEncrypt).toHaveBeenCalledWith(roomKey, 'hello');
+		expect(mockAesCbcEncrypt).not.toHaveBeenCalled();
+		expect(result).toEqual({ algorithm: 'rc.v2.aes-sha2', kid: 'kid', iv: 'gcm-iv', ciphertext: 'gcm-ciphertext' });
 	});
 
-	it('uses AES-CBC with a 16-byte IV for any other algorithm, prefixing the ciphertext with the keyID', async () => {
+	it('uses AES-CBC for any other algorithm, prefixing the ciphertext with the keyID', async () => {
 		const room = createRoom();
+		const roomKey = createAesKey();
 		room.algorithm = 'A128CBC';
 		room.keyID = 'kid';
-		room.roomKey = new Uint8Array(16).fill(2).buffer;
-		const ivB64 = bufferToB64(new Uint8Array(16).fill(9).buffer);
-		mockRandomBytes.mockResolvedValue(ivB64);
-		const cipherB64 = bufferToB64(new Uint8Array([1, 2, 3]).buffer);
-		mockAesEncrypt.mockResolvedValue(cipherB64);
+		room.roomKey = roomKey;
+		mockAesCbcEncrypt.mockResolvedValue('base64-iv-and-ciphertext');
 
 		const result = await room.encryptText('hello');
 
-		expect(mockRandomBytes).toHaveBeenCalledWith(16);
-		const expectedCiphertext = `kid${bufferToB64(joinVectorData(b64ToBuffer(ivB64), b64ToBuffer(cipherB64)))}`;
-		expect(result).toEqual({ algorithm: 'rc.v1.aes-sha2', ciphertext: expectedCiphertext });
+		expect(mockAesCbcEncrypt).toHaveBeenCalledWith(roomKey, 'hello');
+		expect(mockAesGcmEncrypt).not.toHaveBeenCalled();
+		expect(result).toEqual({ algorithm: 'rc.v1.aes-sha2', ciphertext: 'kidbase64-iv-and-ciphertext' });
 	});
 });
 
@@ -585,11 +589,11 @@ describe('encrypt', () => {
 	});
 
 	it('returns nothing when a suggested key was imported but the room never became ready', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2ESuggestedKey: 'suggested-key', e2eKeyId: 'kid' });
 		jest
 			.spyOn(room, 'importRoomKey')
-			.mockResolvedValue({ keyID: 'sug-kid', roomKey: new ArrayBuffer(0), sessionKeyExportedString: 's', algorithm: 'A256GCM' });
+			.mockResolvedValue({ keyID: 'sug-kid', roomKey: createAesKey(), sessionKeyExportedString: 's', algorithm: 'A256GCM' });
 		mockE2eAcceptSuggestedGroupKey.mockRejectedValue(new Error('accept failed'));
 		mockE2eRejectSuggestedGroupKey.mockResolvedValue({ success: true });
 		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
@@ -633,9 +637,12 @@ describe('encryptFile', () => {
 	const baseFile = { path: 'file:///a.png', name: 'a.png', size: 1234, type: 'image/png', width: 100, height: 200 } as any;
 
 	beforeEach(() => {
-		mockRandomBytes.mockImplementation((n: number) => bufferToB64(new Uint8Array(n).fill(n === 16 ? 1 : 2).buffer));
-		mockCalculateFileChecksum.mockResolvedValue('checksum123');
-		mockAesEncryptFile.mockResolvedValue('file:///encrypted-path');
+		mockAesEncryptFile.mockResolvedValue({
+			path: 'file:///encrypted-path',
+			key: 'file-key',
+			iv: 'file-iv',
+			sha256: 'checksum123'
+		});
 	});
 
 	const lastEncryptTextCall = (room: EncryptionRoom) => {
@@ -651,7 +658,7 @@ describe('encryptFile', () => {
 
 		const result = await room.encryptFile('room1', baseFile);
 
-		expect(mockAesEncryptFile).toHaveBeenCalled();
+		expect(mockAesEncryptFile).toHaveBeenCalledWith('file:///a.png');
 		expect(result.file.path).toBe('file:///encrypted-path');
 		expect(result.file.type).toBe('file');
 		expect(result.file.name).toBe(sha256('a.png'));
@@ -741,6 +748,10 @@ describe('encryptFile', () => {
 		const parsed = EJSON.parse(lastEncryptTextCall(room));
 		expect(parsed.attachments[0]).toMatchObject({ size: 1234, format: 'PDF' });
 		expect(parsed.attachments[0].hashes).toEqual({ sha256: 'checksum123' });
+		expect(parsed.attachments[0].encryption).toEqual({
+			key: { kty: 'oct', alg: 'A256CTR', k: 'file-key', ext: true, key_ops: ['encrypt', 'decrypt'] },
+			iv: 'file-iv'
+		});
 	});
 });
 
@@ -752,69 +763,56 @@ describe('parse', () => {
 
 		const result = room.parse(payload);
 
-		expect(result.kid).toBe('kid1');
-		expect(bufferToB64(result.iv)).toBe(iv);
-		expect(result.ciphertext).toBe('ct');
+		expect(result).toEqual({ kid: 'kid1', encrypted: { iv, ciphertext: 'ct' } });
 	});
 
 	it('parses v1 string payloads as a 12-char kid followed by base64(iv + ciphertext)', () => {
 		const room = createRoom();
-		const iv = new Uint8Array(16).fill(2).buffer;
-		const data = new Uint8Array([9, 9, 9]).buffer;
-		const payload = `abcdefghijkl${bufferToB64(joinVectorData(iv, data))}`;
+		const ivAndCiphertext = bufferToB64(new Uint8Array(19).fill(2).buffer);
+		const payload = `abcdefghijkl${ivAndCiphertext}`;
 
 		const result = room.parse(payload);
 
-		expect(result.kid).toBe('abcdefghijkl');
-		expect(bufferToB64(result.iv)).toBe(bufferToB64(iv));
-		expect(result.ciphertext).toBe(bufferToB64(data));
+		expect(result).toEqual({ kid: 'abcdefghijkl', encrypted: ivAndCiphertext });
 	});
 
 	it('parses v1 object payloads that carry the ciphertext string', () => {
 		const room = createRoom();
-		const iv = new Uint8Array(16).fill(3).buffer;
-		const data = new Uint8Array([7, 7]).buffer;
-		const message = `abcdefghijkl${bufferToB64(joinVectorData(iv, data))}`;
+		const ivAndCiphertext = bufferToB64(new Uint8Array(18).fill(3).buffer);
+		const message = `abcdefghijkl${ivAndCiphertext}`;
 
 		const result = room.parse({ ciphertext: message } as any);
 
-		expect(result.kid).toBe('abcdefghijkl');
-		expect(result.ciphertext).toBe(bufferToB64(data));
+		expect(result).toEqual({ kid: 'abcdefghijkl', encrypted: ivAndCiphertext });
 	});
 });
 
 describe('doDecrypt', () => {
-	it('uses AES-GCM decrypt for A256GCM and parses the plaintext EJSON', async () => {
+	it('uses AES-GCM decrypt for an iv and ciphertext pair and parses the plaintext EJSON', async () => {
 		const room = createRoom();
+		const roomKey = createAesKey();
+		const encrypted = { iv: 'gcm-iv', ciphertext: 'gcm-ciphertext' };
 		const payload = { msg: 'hello' };
-		mockAesGcmDecrypt.mockResolvedValue(bufferToB64(utf8ToBuffer(EJSON.stringify(payload))));
+		mockAesGcmDecrypt.mockResolvedValue(EJSON.stringify(payload));
 
-		const result = await room.doDecrypt('ct', new Uint8Array(32).buffer, new Uint8Array(12).buffer, 'A256GCM');
+		const result = await room.doDecrypt(encrypted, roomKey);
 
-		expect(mockAesGcmDecrypt).toHaveBeenCalled();
-		expect(mockAesDecrypt).not.toHaveBeenCalled();
+		expect(mockAesGcmDecrypt).toHaveBeenCalledWith(roomKey, encrypted);
+		expect(mockAesCbcDecrypt).not.toHaveBeenCalled();
 		expect(result).toEqual(payload);
 	});
 
-	it('uses AES-CBC decrypt for any other algorithm', async () => {
+	it('uses AES-CBC decrypt for a base64 iv and ciphertext string', async () => {
 		const room = createRoom();
+		const roomKey = createAesKey();
 		const payload = { msg: 'world' };
-		mockAesDecrypt.mockResolvedValue(bufferToB64(utf8ToBuffer(EJSON.stringify(payload))));
+		mockAesCbcDecrypt.mockResolvedValue(EJSON.stringify(payload));
 
-		const result = await room.doDecrypt('ct', new Uint8Array(16).buffer, new Uint8Array(16).buffer, 'A128CBC');
+		const result = await room.doDecrypt('base64-iv-and-ciphertext', roomKey);
 
-		expect(mockAesDecrypt).toHaveBeenCalled();
+		expect(mockAesCbcDecrypt).toHaveBeenCalledWith(roomKey, 'base64-iv-and-ciphertext');
 		expect(mockAesGcmDecrypt).not.toHaveBeenCalled();
 		expect(result).toEqual(payload);
-	});
-
-	it('returns null when the native layer yields no plaintext', async () => {
-		const room = createRoom();
-		mockAesDecrypt.mockResolvedValue(null);
-
-		const result = await room.doDecrypt('ct', new Uint8Array(16).buffer, new Uint8Array(16).buffer, 'A128CBC');
-
-		expect(result).toBeNull();
 	});
 });
 
@@ -828,32 +826,33 @@ describe('decryptContent', () => {
 	it('decrypts with the current room key when the kid matches', async () => {
 		const room = createRoom();
 		room.keyID = 'current';
-		room.roomKey = new Uint8Array(32).buffer;
+		room.roomKey = createAesKey();
 		room.algorithm = 'A256GCM';
-		jest.spyOn(room, 'parse').mockReturnValue({ kid: 'current', iv: new Uint8Array(12).buffer, ciphertext: 'ct' });
+		const encrypted = { iv: 'gcm-iv', ciphertext: 'ct' };
+		jest.spyOn(room, 'parse').mockReturnValue({ kid: 'current', encrypted });
 		jest.spyOn(room, 'doDecrypt').mockResolvedValue({ msg: 'plain' });
 
 		const result = await room.decryptContent('payload' as any);
 
-		expect(room.doDecrypt).toHaveBeenCalledWith('ct', room.roomKey, expect.any(ArrayBuffer), 'A256GCM');
+		expect(room.doDecrypt).toHaveBeenCalledWith(encrypted, room.roomKey);
 		expect(result).toEqual({ msg: 'plain' });
 	});
 
 	it('falls back to a matching old room key when the kid does not match the current one', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		room.keyID = 'current';
 		room.subscription = { oldRoomKeys: [{ e2eKeyId: 'old', E2EKey: 'oldkey', ts: new Date() }] } as any;
-		jest.spyOn(room, 'parse').mockReturnValue({ kid: 'old', iv: new Uint8Array(12).buffer, ciphertext: 'ct' });
-		const oldRoomKeyBuffer = new Uint8Array(16).buffer;
+		jest.spyOn(room, 'parse').mockReturnValue({ kid: 'old', encrypted: 'base64-iv-and-ciphertext' });
+		const oldRoomKey = createAesKey('old-room-key');
 		jest
 			.spyOn(room, 'importRoomKey')
-			.mockResolvedValue({ roomKey: oldRoomKeyBuffer, algorithm: 'A128CBC', keyID: 'old', sessionKeyExportedString: 's' });
+			.mockResolvedValue({ roomKey: oldRoomKey, algorithm: 'A128CBC', keyID: 'old', sessionKeyExportedString: 's' });
 		jest.spyOn(room, 'doDecrypt').mockResolvedValue({ msg: 'old-plain' });
 
 		const result = await room.decryptContent('payload' as any);
 
-		expect(room.importRoomKey).toHaveBeenCalledWith('oldkey', 'priv');
-		expect(room.doDecrypt).toHaveBeenCalledWith('ct', oldRoomKeyBuffer, expect.any(ArrayBuffer), 'A128CBC');
+		expect(room.importRoomKey).toHaveBeenCalledWith('oldkey', userPrivateKey);
+		expect(room.doDecrypt).toHaveBeenCalledWith('base64-iv-and-ciphertext', oldRoomKey);
 		expect(result).toEqual({ msg: 'old-plain' });
 	});
 
@@ -861,10 +860,23 @@ describe('decryptContent', () => {
 		const room = createRoom();
 		room.keyID = 'current';
 		room.subscription = null;
-		jest.spyOn(room, 'parse').mockReturnValue({ kid: 'unknown', iv: new Uint8Array(12).buffer, ciphertext: 'ct' });
+		jest.spyOn(room, 'parse').mockReturnValue({ kid: 'unknown', encrypted: { iv: 'gcm-iv', ciphertext: 'ct' } });
 
 		const result = await room.decryptContent('payload' as any);
 
+		expect(result).toBeNull();
+	});
+
+	it('returns null when the native layer rejects the decryption', async () => {
+		const room = createRoom();
+		const roomKey = createAesKey();
+		room.keyID = 'abcdefghijkl';
+		room.roomKey = roomKey;
+		mockAesCbcDecrypt.mockRejectedValueOnce(new Error('bad decrypt'));
+
+		const result = await room.decryptContent('abcdefghijklbase64-iv-and-ciphertext' as any);
+
+		expect(mockAesCbcDecrypt).toHaveBeenCalledWith(roomKey, 'base64-iv-and-ciphertext');
 		expect(result).toBeNull();
 	});
 
@@ -873,12 +885,10 @@ describe('decryptContent', () => {
 		jest.spyOn(room, 'parse').mockImplementation(() => {
 			throw new Error('bad payload');
 		});
-		const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
 		const result = await room.decryptContent('payload' as any);
 
 		expect(result).toBeNull();
-		consoleError.mockRestore();
 	});
 });
 
@@ -1169,11 +1179,11 @@ describe('handshake', () => {
 	});
 
 	it('imports and accepts a suggested group key, discarding the cached room instance once it is ready', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2ESuggestedKey: 'suggested-key' });
 		jest
 			.spyOn(room, 'importRoomKey')
-			.mockResolvedValue({ keyID: 'sug-kid', roomKey: new ArrayBuffer(0), sessionKeyExportedString: 's', algorithm: 'A256GCM' });
+			.mockResolvedValue({ keyID: 'sug-kid', roomKey: createAesKey(), sessionKeyExportedString: 's', algorithm: 'A256GCM' });
 		mockE2eAcceptSuggestedGroupKey.mockResolvedValue({ success: true });
 
 		await room.handshake();
@@ -1186,12 +1196,12 @@ describe('handshake', () => {
 	});
 
 	it('rejects the suggested group key and falls through to the E2EKey when accepting it fails', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2ESuggestedKey: 'suggested-key', E2EKey: 'main-key' });
 		jest.spyOn(room, 'importRoomKey').mockImplementation((key: string) =>
 			Promise.resolve({
 				keyID: key === 'suggested-key' ? 'sug-kid' : 'main-kid',
-				roomKey: new ArrayBuffer(0),
+				roomKey: createAesKey(),
 				sessionKeyExportedString: 's',
 				algorithm: 'A256GCM'
 			})
@@ -1207,13 +1217,13 @@ describe('handshake', () => {
 	});
 
 	it('logs and falls through to the E2EKey when importing the suggested key throws', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2ESuggestedKey: 'suggested-key', E2EKey: 'main-key' });
 		jest.spyOn(room, 'importRoomKey').mockImplementation((key: string) => {
 			if (key === 'suggested-key') throw new Error('cannot decrypt suggestion');
 			return Promise.resolve({
 				keyID: 'main-kid',
-				roomKey: new ArrayBuffer(0),
+				roomKey: createAesKey(),
 				sessionKeyExportedString: 's',
 				algorithm: 'A256GCM'
 			});
@@ -1226,11 +1236,11 @@ describe('handshake', () => {
 	});
 
 	it('imports the E2EKey and becomes ready', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2EKey: 'main-key' });
 		jest
 			.spyOn(room, 'importRoomKey')
-			.mockResolvedValue({ keyID: 'main-kid', roomKey: new ArrayBuffer(0), sessionKeyExportedString: 's', algorithm: 'A256GCM' });
+			.mockResolvedValue({ keyID: 'main-kid', roomKey: createAesKey(), sessionKeyExportedString: 's', algorithm: 'A256GCM' });
 
 		await room.handshake();
 
@@ -1240,7 +1250,7 @@ describe('handshake', () => {
 	});
 
 	it('creates a brand new room key and discards the cached instance when there is no e2eKeyId at all', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
 		const createRoomKeySpy = jest.spyOn(room, 'createRoomKey').mockImplementation(() => {
 			room.keyID = 'brand-new';
@@ -1256,7 +1266,7 @@ describe('handshake', () => {
 	});
 
 	it('releases a concurrent handshake once the brand new room key is created', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
 		let finishCreatingKey = () => {};
 		let markCreatingStarted = () => {};
@@ -1280,7 +1290,7 @@ describe('handshake', () => {
 	});
 
 	it('requests the room key from other participants when a keyId exists but no key material does', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, e2eKeyId: 'pending-kid' });
 		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
 
@@ -1292,7 +1302,7 @@ describe('handshake', () => {
 	});
 
 	it('rejects a concurrent handshake when the running one ends without a room key', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2EKey: 'broken-key', e2eKeyId: 'pending-kid' });
 		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
 		let failImport = (_error: Error) => {};
@@ -1320,7 +1330,7 @@ describe('handshake', () => {
 	});
 
 	it('lets a later handshake retry after a suggested key fails and the key must be requested', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true, E2ESuggestedKey: 'suggested-key', e2eKeyId: 'pending-kid' });
 		mockE2eRequestRoomKey.mockResolvedValue({ success: true });
 		const importSpy = jest.spyOn(room, 'importRoomKey').mockRejectedValue(new Error('cannot decrypt suggestion'));
@@ -1334,7 +1344,7 @@ describe('handshake', () => {
 	});
 
 	it('logs and still requests the room key when creating a brand new key fails', async () => {
-		const room = createRoom({ privateKey: 'priv' });
+		const room = createRoom({ privateKey: userPrivateKey });
 		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
 		jest.spyOn(room, 'createRoomKey').mockRejectedValue(new Error('cannot create'));
 		mockE2eRequestRoomKey.mockResolvedValue({ success: true });

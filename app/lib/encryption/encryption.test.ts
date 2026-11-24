@@ -1,5 +1,8 @@
 // Bypass the global mock of `app/lib/encryption` declared in jest.setup.js by
 // importing directly from the file. We exercise the real `encryptMessage` here.
+import { aesDecryptFile, aesDeriveKey } from '@rocket.chat/mobile-crypto';
+import { deleteAsync } from 'expo-file-system/legacy';
+
 import encryption from './encryption';
 import database from '../database';
 import Deferred from './helpers/deferred';
@@ -10,16 +13,15 @@ jest.unmock('./encryption');
 // Heavy native deps and helpers are not relevant to encryptMessage's branching;
 // stub them so the module can be loaded in jsdom/node without a native runtime.
 jest.mock('@rocket.chat/mobile-crypto', () => ({
-	pbkdf2Hash: jest.fn(),
-	aesEncrypt: jest.fn(),
-	aesDecrypt: jest.fn(),
+	aesCbcDecrypt: jest.fn(),
+	aesCbcEncrypt: jest.fn(),
+	aesDecryptFile: jest.fn(),
+	aesDeriveKey: jest.fn(),
+	aesGcmDecrypt: jest.fn(),
+	aesGcmEncrypt: jest.fn(),
 	randomBytes: jest.fn(),
 	rsaGenerateKeys: jest.fn(),
-	rsaImportKey: jest.fn(),
-	rsaExportKey: jest.fn(),
-	calculateFileChecksum: jest.fn(),
-	aesGcmDecrypt: jest.fn(),
-	aesGcmEncrypt: jest.fn()
+	rsaImportPrivateKey: jest.fn()
 }));
 
 jest.mock('expo-file-system/legacy', () => ({
@@ -484,5 +486,50 @@ describe('Encryption key distribution', () => {
 		await initiating;
 
 		expect(runsWhileFirstIsRunning).toBe(1);
+	});
+});
+
+describe('Encryption.decryptFile', () => {
+	const fileEncryption = { key: { k: 'file-key' }, iv: 'file-iv' } as any;
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('keeps the decrypted file in place', async () => {
+		(aesDecryptFile as jest.Mock).mockResolvedValue('file:///media/photo.jpg');
+
+		await expect(encryption.decryptFile('m1', 'file:///media/photo.jpg', fileEncryption, 'checksum')).resolves.toBe(
+			'file:///media/photo.jpg'
+		);
+		expect(aesDecryptFile).toHaveBeenCalledWith({
+			path: 'file:///media/photo.jpg',
+			key: 'file-key',
+			iv: 'file-iv',
+			sha256: 'checksum'
+		});
+		expect(deleteAsync).not.toHaveBeenCalled();
+	});
+
+	it('deletes the downloaded file when decryption fails, so the next attempt downloads it again', async () => {
+		const checksumMismatch = new Error('checksum mismatch');
+		(aesDecryptFile as jest.Mock).mockRejectedValue(checksumMismatch);
+
+		await expect(encryption.decryptFile('m1', 'file:///media/photo.jpg', fileEncryption, 'checksum')).rejects.toBe(
+			checksumMismatch
+		);
+		expect(deleteAsync).toHaveBeenCalledWith('file:///media/photo.jpg', { idempotent: true });
+	});
+});
+
+describe('Encryption.generateMasterKey', () => {
+	it('derives the key from the UTF-8 bytes of the password and salt', async () => {
+		await encryption.generateMasterKey('senha ção', 'v2:user:mobile', 100000);
+
+		expect(aesDeriveKey).toHaveBeenCalledWith('c2VuaGEgw6fDo28=', 'djI6dXNlcjptb2JpbGU=', {
+			iterations: 100000,
+			byteLength: 32,
+			hash: 'SHA256'
+		});
 	});
 });

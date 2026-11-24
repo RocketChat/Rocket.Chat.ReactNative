@@ -1,89 +1,14 @@
-import ByteBuffer from 'bytebuffer';
-import { aesDecryptFile, aesEncryptFile, randomBytes } from '@rocket.chat/mobile-crypto';
+import { aesCbcDecrypt, aesGcmDecrypt, randomBytes, type AESGCMCiphertext, type AESKey } from '@rocket.chat/mobile-crypto';
 
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
-import * as hexLite from './helpers/hex-lite';
 import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { store } from '../store/auxStore';
-
-const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
-
-export const bufferToHex = hexLite.fromBuffer;
 
 // @ts-ignore
 export const b64ToBuffer = (base64: string): ArrayBuffer => toByteArray(base64).buffer;
 
 export const bufferToB64 = (arrayBuffer: ArrayBuffer): string => fromByteArray(new Uint8Array(arrayBuffer));
-
-// ArrayBuffer -> Base64 URI Safe
-// https://github.com/herrjemand/Base64URL-ArrayBuffer/blob/master/lib/base64url-arraybuffer.js
-export const bufferToB64URI = (buffer: ArrayBuffer): string => {
-	const uintArray = new Uint8Array(buffer);
-	const len = uintArray.length;
-	let base64 = '';
-
-	for (let i = 0; i < len; i += 3) {
-		base64 += BASE64URI[uintArray[i] >> 2];
-		base64 += BASE64URI[((uintArray[i] & 3) << 4) | (uintArray[i + 1] >> 4)];
-		base64 += BASE64URI[((uintArray[i + 1] & 15) << 2) | (uintArray[i + 2] >> 6)];
-		base64 += BASE64URI[uintArray[i + 2] & 63];
-	}
-
-	if (len % 3 === 2) {
-		base64 = base64.substring(0, base64.length - 1);
-	} else if (len % 3 === 1) {
-		base64 = base64.substring(0, base64.length - 2);
-	}
-
-	return base64;
-};
-
-export const utf8ToBuffer = (utf8: string): ArrayBuffer => {
-	const bytes = [];
-
-	let i = 0;
-	utf8 = encodeURI(utf8);
-	while (i < utf8.length) {
-		const byte = utf8.charCodeAt(i++);
-		if (byte === 37) {
-			bytes.push(parseInt(utf8.substr(i, 2), 16));
-			i += 2;
-		} else {
-			bytes.push(byte);
-		}
-	}
-
-	const array = new Uint8Array(bytes);
-	return array.buffer;
-};
-
-export const bufferToUtf8 = (buffer: ArrayBuffer): string => {
-	const uintArray = new Uint8Array(buffer) as number[] & Uint8Array;
-	const encodedString = String.fromCharCode.apply(null, uintArray);
-	return decodeURIComponent(escape(encodedString));
-};
-
-export const splitVectorData = (text: ArrayBuffer): ArrayBuffer[] => {
-	const vector = text.slice(0, 16);
-	const data = text.slice(16);
-	return [vector, data];
-};
-
-export const joinVectorData = (vector: ArrayBuffer, data: ArrayBuffer): ArrayBuffer => {
-	const output = new Uint8Array(vector.byteLength + data.byteLength);
-	output.set(new Uint8Array(vector), 0);
-	output.set(new Uint8Array(data), vector.byteLength);
-	return output.buffer;
-};
-
-export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uint8Array): string => {
-	if (typeof thing === 'string') {
-		return thing;
-	}
-	// @ts-ignore
-	return new ByteBuffer.wrap(thing).toString('binary');
-};
 
 // https://github.com/RocketChat/Rocket.Chat/blob/b94db45cab297a3bcbafca4d135d83c898222380/apps/meteor/app/mentions/lib/MentionsParser.ts#L50
 const userMentionRegex = (pattern: string) => new RegExp(`(^|\\s|>)@(${pattern}(@(${pattern}))?(:([0-9a-zA-Z-_.]+))?)`, 'gm');
@@ -102,8 +27,6 @@ export const getE2EEMentions = (message?: string) => {
 	};
 };
 
-export const generateAESCTRKey = () => randomBytes(32);
-
 interface IExportedKey {
 	kty: string;
 	alg: string;
@@ -112,7 +35,7 @@ interface IExportedKey {
 	key_ops: string[];
 }
 
-export const exportAESCTR = (key: ArrayBuffer): IExportedKey => {
+export const exportAESCTR = (key: string): IExportedKey => {
 	// Web Crypto format of a Secret Key
 	const exportedKey = {
 		// Type of Secret Key
@@ -120,7 +43,7 @@ export const exportAESCTR = (key: ArrayBuffer): IExportedKey => {
 		// Algorithm
 		alg: 'A256CTR',
 		// Base64URI encoded array of bytes
-		k: bufferToB64URI(key),
+		k: key,
 		// Specific Web Crypto properties
 		ext: true,
 		key_ops: ['encrypt', 'decrypt']
@@ -128,10 +51,6 @@ export const exportAESCTR = (key: ArrayBuffer): IExportedKey => {
 
 	return exportedKey;
 };
-
-export const encryptAESCTR = (path: string, key: string, vector: string): Promise<string> => aesEncryptFile(path, key, vector);
-
-export const decryptAESCTR = (path: string, key: string, vector: string): Promise<string> => aesDecryptFile(path, key, vector);
 
 // Missing room encryption key
 export const isMissingRoomE2EEKey = ({
@@ -197,49 +116,37 @@ const DECODED_LENGTH = 256;
 // ((4 * 256 / 3) + 3) & ~3 = 344
 const ENCODED_LENGTH = 344;
 
-export const decodePrefixedBase64 = (input: string): [prefix: string, data: ArrayBuffer] => {
-	// 1. Validate the input string length
+export const decodePrefixedBase64 = (input: string): [prefix: string, base64Data: string] => {
 	if (input.length < ENCODED_LENGTH) {
 		throw new RangeError('Invalid input length.');
 	}
 
-	// 2. Split the string into its two parts
 	const prefix = input.slice(0, -ENCODED_LENGTH);
 	const base64Data = input.slice(-ENCODED_LENGTH);
 
-	// 3. Decode the Base64 string
-	const bytes = b64ToBuffer(base64Data);
-
-	if (bytes.byteLength !== DECODED_LENGTH) {
-		// This is a sanity check in case the Base64 string was valid but didn't decode to 256 bytes.
+	if (b64ToBuffer(base64Data).byteLength !== DECODED_LENGTH) {
 		throw new RangeError('Decoded data length is too short.');
 	}
 
-	return [prefix, bytes];
+	return [prefix, base64Data];
 };
 
-export const encodePrefixedBase64 = (prefix: string, data: ArrayBuffer): string => {
-	// 1. Validate the input data length
-	if (data.byteLength !== DECODED_LENGTH) {
-		throw new RangeError(`Input data length is ${data.byteLength}, but expected ${DECODED_LENGTH} bytes.`);
+export const encodePrefixedBase64 = (prefix: string, base64Data: string): string => {
+	const decodedLength = b64ToBuffer(base64Data).byteLength;
+	if (decodedLength !== DECODED_LENGTH) {
+		throw new RangeError(`Input data length is ${decodedLength}, but expected ${DECODED_LENGTH} bytes.`);
 	}
 
-	// 2. Convert the byte array to base64
-	const base64Data = bufferToB64(data);
-
 	if (base64Data.length !== ENCODED_LENGTH) {
-		// This is a sanity check in case something went wrong during encoding.
 		throw new RangeError(`Encoded Base64 length is ${base64Data.length}, but expected ${ENCODED_LENGTH} characters.`);
 	}
 
-	// 3. Concatenate the prefix and the Base64 string
 	return prefix + base64Data;
 };
 
-export const parsePrivateKey = (
-	privateKey: string,
-	userId: string
-): { iv: ArrayBuffer; ciphertext: ArrayBuffer; salt: string; iterations: number; version: 'v1' | 'v2' } => {
+type TParsedPrivateKey = { salt: string; iterations: number; encrypted: AESGCMCiphertext | string };
+
+export const parsePrivateKey = (privateKey: string, userId: string): TParsedPrivateKey => {
 	const json: unknown = JSON.parse(privateKey);
 	if (typeof json !== 'object' || json === null) {
 		throw new TypeError('Invalid private key format');
@@ -255,25 +162,18 @@ export const parsePrivateKey = (
 		'iterations' in json &&
 		typeof json.iterations === 'number'
 	) {
-		// v2: { iv: base64, ciphertext: base64, salt: string }
-		return {
-			iv: b64ToBuffer(json.iv),
-			ciphertext: b64ToBuffer(json.ciphertext),
-			salt,
-			iterations: json.iterations,
-			version: 'v2'
-		};
+		return { salt, iterations: json.iterations, encrypted: { iv: json.iv, ciphertext: json.ciphertext } };
 	}
 
 	if ('$binary' in json && typeof json.$binary === 'string') {
-		// v1: { $binary: base64(iv[16] + ciphertext) }
-		const binary = b64ToBuffer(json.$binary);
-		const [iv, ciphertext] = splitVectorData(binary);
-		return { iv, ciphertext, salt, iterations: 1000, version: 'v1' };
+		return { salt, iterations: 1000, encrypted: json.$binary };
 	}
 
 	throw new TypeError('Invalid private key format');
 };
+
+export const aesDecrypt = (key: AESKey, encrypted: AESGCMCiphertext | string): Promise<string> =>
+	typeof encrypted === 'string' ? aesCbcDecrypt(key, encrypted) : aesGcmDecrypt(key, encrypted);
 
 export const getFileExtension = (fileName?: string): string => {
 	if (!fileName) {
@@ -310,10 +210,7 @@ export async function generatePassphrase() {
 	for (let i = 0; i < WORD_COUNT; i++) {
 		let v: number;
 		do {
-			// eslint-disable-next-line no-await-in-loop
-			const randomBase64 = await randomBytes(4);
-			const randomBuffer = b64ToBuffer(randomBase64);
-			const randomArray = new Uint8Array(randomBuffer);
+			const randomArray = new Uint8Array(randomBytes(4));
 
 			// Combine 4 bytes into 32-bit big-endian integer
 			v = (randomArray[0] << 24) | (randomArray[1] << 16) | (randomArray[2] << 8) | randomArray[3];

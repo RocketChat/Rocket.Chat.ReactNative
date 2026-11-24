@@ -6,17 +6,14 @@ import android.database.Cursor;
 import android.util.Base64;
 import android.util.Log;
 
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import chat.rocket.mobilecrypto.algorithms.AESCrypto;
-import chat.rocket.mobilecrypto.algorithms.RSACrypto;
-import chat.rocket.mobilecrypto.algorithms.CryptoUtils;
+import chat.rocket.mobilecrypto.AESKey;
+import chat.rocket.mobilecrypto.MobileCryptoNative;
 import com.nozbe.watermelondb.WMDatabase;
 
-import java.security.SecureRandom;
-import java.util.Arrays;
+import java.security.PrivateKey;
 
 @Keep
 class Message {
@@ -46,18 +43,6 @@ class DecryptedContent {
     }
 }
 
-@Keep
-class PrivateKey {
-    String d;
-    String dp;
-    String dq;
-    String e;
-    String n;
-    String p;
-    String q;
-    String qi;
-}
-
 class RoomKey {
     String k;
 }
@@ -82,25 +67,11 @@ class PrefixedData {
     }
 }
 
-class ParsedMessage {
-    String keyId;
-    byte[] iv;
-    String ciphertext;
-    String algorithm;
-    
-    ParsedMessage(String keyId, byte[] iv, String ciphertext, String algorithm) {
-        this.keyId = keyId;
-        this.iv = iv;
-        this.ciphertext = ciphertext;
-        this.algorithm = algorithm;
-    }
-}
-
 class RoomKeyResult {
-    String decryptedKey;
-    String algorithm;
+    final AESKey decryptedKey;
+    final String algorithm;
     
-    RoomKeyResult(String decryptedKey, String algorithm) {
+    RoomKeyResult(AESKey decryptedKey, String algorithm) {
         this.decryptedKey = decryptedKey;
         this.algorithm = algorithm;
     }
@@ -155,27 +126,6 @@ class Encryption {
         return new PrefixedData(prefix, data);
     }
 
-    private ParsedMessage parseMessage(Ejson.Content content) {
-        if ("rc.v2.aes-sha2".equals(content.algorithm)) {
-            // V2 format: Extract kid, iv, ciphertext from content
-            byte[] iv = Base64.decode(content.iv, Base64.NO_WRAP);
-            return new ParsedMessage(content.kid, iv, content.ciphertext, "rc.v2.aes-sha2");
-        } else {
-            // V1 format: keyID + base64(iv + ciphertext) embedded in ciphertext
-            String ciphertext = content.ciphertext;
-            String keyId = ciphertext.substring(0, 12);
-            String contentBase64 = ciphertext.substring(12);
-            byte[] contentBuffer = Base64.decode(contentBase64, Base64.NO_WRAP);
-            
-            // Split IV (first 16 bytes) and ciphertext (rest)
-            byte[] iv = Arrays.copyOfRange(contentBuffer, 0, 16);
-            byte[] ciphertextBytes = Arrays.copyOfRange(contentBuffer, 16, contentBuffer.length);
-            String ciphertextWithoutPrefix = Base64.encodeToString(ciphertextBytes, Base64.NO_WRAP);
-            
-            return new ParsedMessage(keyId, iv, ciphertextWithoutPrefix, "rc.v1.aes-sha2");
-        }
-    }
-
     public Room readRoom(final Ejson ejson, Context context) {
         String dbName = getDatabaseName(ejson.serverURL(), context);
         WMDatabase db = null;
@@ -228,49 +178,19 @@ class Encryption {
         return name;
     }
 
-    public String readUserKey(final Ejson ejson) throws Exception {
-        String privateKey = ejson.privateKey();
-        if (privateKey == null) {
+    public PrivateKey readUserKey(final Ejson ejson) {
+        String storedKey = ejson.privateKey();
+        if (storedKey == null) {
             return null;
         }
 
-        PrivateKey privKey;
-        try {
-            // First, try parsing as direct JSON object
-            privKey = gson.fromJson(privateKey, PrivateKey.class);
-        } catch (com.google.gson.JsonSyntaxException e) {
-            // If that fails, it might be a JSON-encoded string (double-encoded)
-            // Try parsing as a string first, then parse that string as JSON
-            try {
-                String decoded = gson.fromJson(privateKey, String.class);
-                privKey = gson.fromJson(decoded, PrivateKey.class);
-            } catch (Exception e2) {
-                Log.e(TAG, "Failed to parse private key", e2);
-                throw new Exception("Failed to parse private key: " + e2.getMessage(), e2);
-            }
-        }
-
-        if (privKey == null) {
+        JsonElement parsedKey = gson.fromJson(storedKey, JsonElement.class);
+        if (parsedKey == null || parsedKey.isJsonNull()) {
             return null;
         }
 
-        // Validate that required fields are present
-        if (privKey.n == null || privKey.e == null || privKey.d == null) {
-            Log.e(TAG, "PrivateKey missing required fields (n, e, or d)");
-            return null;
-        }
-
-        WritableMap jwk = Arguments.createMap();
-        jwk.putString("n", privKey.n);
-        jwk.putString("e", privKey.e);
-        jwk.putString("d", privKey.d);
-        jwk.putString("p", privKey.p);
-        jwk.putString("q", privKey.q);
-        jwk.putString("dp", privKey.dp);
-        jwk.putString("dq", privKey.dq);
-        jwk.putString("qi", privKey.qi);
-
-        return RSACrypto.INSTANCE.importJwkKey(jwk);
+        String jwk = parsedKey.isJsonPrimitive() ? parsedKey.getAsString() : parsedKey.toString();
+        return MobileCryptoNative.INSTANCE.rsaImportPrivateKey(jwk);
     }
 
     public RoomKeyResult decryptRoomKey(final String e2eKey, final Ejson ejson) throws Exception {
@@ -289,21 +209,16 @@ class Encryption {
         }
         
         // Decrypt the session key
-        String userKey = readUserKey(ejson);
+        PrivateKey userKey = readUserKey(ejson);
         if (userKey == null) {
             return null;
         }
         
         String base64EncryptedData = Base64.encodeToString(parsed.data, Base64.NO_WRAP);
-        String decrypted;
-        try {
-            decrypted = RSACrypto.INSTANCE.decrypt(base64EncryptedData, userKey);
-            if (decrypted == null) {
-                return null;
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "RSA decryption failed", e);
-            throw e;
+        String decrypted = MobileCryptoNative.INSTANCE.rsaDecrypt(base64EncryptedData, userKey);
+        if (decrypted == null) {
+            Log.e(TAG, "RSA decryption failed");
+            return null;
         }
         
         // Parse sessionKey to determine v1 vs v2 from "alg" field
@@ -322,17 +237,12 @@ class Encryption {
             return null;
         }
         
-        String k = sessionKey.get("k").getAsString();
-        byte[] decoded;
-        try {
-            decoded = Base64.decode(k, Base64.NO_PADDING | Base64.NO_WRAP | Base64.URL_SAFE);
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to decode 'k' from base64", e);
-            throw e;
+        AESKey decryptedKey = MobileCryptoNative.INSTANCE.aesImportKey(sessionKey.get("k").getAsString());
+        if (decryptedKey == null) {
+            Log.e(TAG, "Failed to import room key");
+            return null;
         }
-        
-        String decryptedKey = CryptoUtils.INSTANCE.bytesToHex(decoded);
-        
+
         // Determine format from "alg" field
         String algorithm;
         if (sessionKey.has("alg") && "A256GCM".equals(sessionKey.get("alg").getAsString())) {
@@ -345,23 +255,23 @@ class Encryption {
         return new RoomKeyResult(decryptedKey, algorithm);
     }
 
-    private String decryptContent(Ejson.Content content, String e2eKey) throws Exception {
-        ParsedMessage parsed = parseMessage(content);
-        
-        String ivHex = CryptoUtils.INSTANCE.bytesToHex(parsed.iv);
-        String decrypted;
-        
-        if ("rc.v2.aes-sha2".equals(parsed.algorithm)) {
-            // Use AES-GCM decryption
-            decrypted = AESCrypto.INSTANCE.decryptGcmBase64(parsed.ciphertext, e2eKey, ivHex);
+    private String decryptContent(Ejson.Content content, AESKey roomKey) {
+        String decryptedText;
+        if ("rc.v2.aes-sha2".equals(content.algorithm)) {
+            if (content.ciphertext == null || content.iv == null) {
+                return null;
+            }
+            decryptedText = MobileCryptoNative.INSTANCE.aesGcmDecrypt(content.ciphertext, content.iv, roomKey);
         } else {
-            // Use AES-CBC decryption
-            decrypted = AESCrypto.INSTANCE.decryptBase64(parsed.ciphertext, e2eKey, ivHex);
+            if (content.ciphertext == null || content.ciphertext.length() <= 12) {
+                return null;
+            }
+            decryptedText = MobileCryptoNative.INSTANCE.aesCbcDecrypt(content.ciphertext.substring(12), roomKey);
         }
-        
-        byte[] data = Base64.decode(decrypted, Base64.NO_WRAP);
-        String decryptedText = new String(data, "UTF-8");
-        
+        if (decryptedText == null) {
+            return null;
+        }
+
         // Try to parse as DecryptedContent first
         try {
             DecryptedContent m = gson.fromJson(decryptedText, DecryptedContent.class);
@@ -387,12 +297,12 @@ class Encryption {
             }
             
             RoomKeyResult roomKeyResult = decryptRoomKey(room.e2eKey, ejson);
-            if (roomKeyResult == null || roomKeyResult.decryptedKey == null) {
+            if (roomKeyResult == null) {
                 Log.w(TAG, "Cannot decrypt: room key decryption failed");
                 return null;
             }
             
-            String e2eKey = roomKeyResult.decryptedKey;
+            AESKey e2eKey = roomKeyResult.decryptedKey;
             
             // Try v2 format (content field) first
             if (ejson.content != null && ejson.content.algorithm != null) {
@@ -431,70 +341,30 @@ class Encryption {
             }
 
             RoomKeyResult roomKeyResult = decryptRoomKey(room.e2eKey, ejson);
-            if (roomKeyResult == null || roomKeyResult.decryptedKey == null) {
+            if (roomKeyResult == null) {
                 return null;
             }
-            String e2eKey = roomKeyResult.decryptedKey;
+            AESKey e2eKey = roomKeyResult.decryptedKey;
 
-            Message m = new Message(message);
-            String cypher = gson.toJson(m);
+            String cypher = gson.toJson(new Message(message));
 
-            SecureRandom random = new SecureRandom();
-            byte[] bytes;
-            String encryptedData;
-            
             if ("rc.v2.aes-sha2".equals(algorithm)) {
-                // V2 format: Use AES-GCM with 12-byte IV
-                bytes = new byte[12];
-                random.nextBytes(bytes);
-                encryptedData = AESCrypto.INSTANCE.encryptGcmBase64(
-                    Base64.encodeToString(cypher.getBytes("UTF-8"), Base64.NO_WRAP), 
-                    e2eKey, 
-                    CryptoUtils.INSTANCE.bytesToHex(bytes)
-                );
-                
-                return new EncryptionContent(
-                    algorithm,
-                    encryptedData,
-                    keyId,
-                    Base64.encodeToString(bytes, Base64.NO_WRAP)
-                );
-            } else {
-                // V1 format: Use AES-CBC with 16-byte IV
-                bytes = new byte[16];
-                random.nextBytes(bytes);
-                encryptedData = AESCrypto.INSTANCE.encryptBase64(
-                    Base64.encodeToString(cypher.getBytes("UTF-8"), Base64.NO_WRAP), 
-                    e2eKey, 
-                    CryptoUtils.INSTANCE.bytesToHex(bytes)
-                );
-                byte[] data = Base64.decode(encryptedData, Base64.NO_WRAP);
-                
-                // Return full ciphertext for v1
-                String fullCiphertext = keyId + Base64.encodeToString(concat(bytes, data), Base64.NO_WRAP);
-                return new EncryptionContent(algorithm, fullCiphertext);
+                MobileCryptoNative.EncryptedText encrypted = MobileCryptoNative.INSTANCE.aesGcmEncrypt(cypher, e2eKey);
+                if (encrypted == null) {
+                    return null;
+                }
+                return new EncryptionContent(algorithm, encrypted.getCiphertext(), keyId, encrypted.getIv());
             }
+
+            String ivAndCiphertext = MobileCryptoNative.INSTANCE.aesCbcEncrypt(cypher, e2eKey);
+            if (ivAndCiphertext == null) {
+                return null;
+            }
+            return new EncryptionContent(algorithm, keyId + ivAndCiphertext);
         } catch (Exception e) {
             Log.e("[ROCKETCHAT][E2E]", Log.getStackTraceString(e));
         }
 
         return null;
-    }
-
-    static byte[] concat(byte[]... arrays) {
-        int totalLength = 0;
-        for (byte[] array : arrays) {
-            totalLength += array.length;
-        }
-
-        byte[] result = new byte[totalLength];
-        int currentIndex = 0;
-
-        for (byte[] array : arrays) {
-            System.arraycopy(array, 0, result, currentIndex, array.length);
-            currentIndex += array.length;
-        }
-
-        return result;
     }
 }
