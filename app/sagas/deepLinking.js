@@ -154,7 +154,9 @@ const completeDeepLinkNavigation = function* completeDeepLinkNavigation(params) 
 
 const fallbackNavigation = function* fallbackNavigation() {
 	const currentRoot = yield select(state => state.app.root);
-	if (currentRoot) {
+	if (currentRoot === RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+		yield put(appStart({ root: RootEnum.ROOT_LOADING }));
+	} else if (currentRoot) {
 		return;
 	}
 	yield put(appInit());
@@ -312,15 +314,10 @@ const selectKnownWorkspace = function* selectKnownWorkspace({ host, version, use
 };
 
 const openKnownWorkspace = function* openKnownWorkspace({ params, version, userId }) {
-	let isOpen = false;
-	try {
-		isOpen = yield* selectKnownWorkspace({ host: params.host, version, userId });
-		return isOpen;
-	} finally {
-		if (!isOpen && params.voipAcceptFailed) {
-			endVoipCall(params.callId);
-		}
+	if (params.voipAcceptFailed) {
+		endVoipCall(params.callId);
 	}
+	return yield* selectKnownWorkspace({ host: params.host, version, userId });
 };
 
 const waitForInsideRoot = function* waitForInsideRoot() {

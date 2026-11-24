@@ -1072,6 +1072,20 @@ describe('deepLinking saga — known workspace waits for its own sign-in', () =>
 		expect(jest.mocked(RNCallKeep.endCall)).toHaveBeenCalledWith('call-1');
 	});
 
+	it('keeps the state of a newer call whose link cancels a failed VoIP accept', async () => {
+		jest.mocked(resetVoipState).mockClear();
+		storeUserFor(OTHER_HOST);
+		const { store } = setupStore({ app: { root: RootEnum.ROOT_INSIDE } } as PreloadedState);
+
+		store.dispatch(deepLinkingOpen(makeParams({ callId: 'call-1', username: 'bob', voipAcceptFailed: true }) as any));
+		await flushSagaMicrotasks();
+		jest.mocked(resetVoipState).mockClear();
+		store.dispatch(deepLinkingOpen(makeParams(ROOM_PARAMS)));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(resetVoipState)).not.toHaveBeenCalled();
+	});
+
 	it('ends the native call when a failed VoIP accept cannot reach its workspace', async () => {
 		jest.mocked(RNCallKeep.endCall).mockClear();
 		storeUserFor(OTHER_HOST);
@@ -1558,6 +1572,23 @@ describe('deepLinking saga — handleShareExtension user-facing roots', () => {
 		await flushSagaMicrotasks();
 
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_SHARE_EXTENSION);
+	});
+
+	it('leaves the share loading screen when a newer link replaces the share sheet and gives up', async () => {
+		jest.useFakeTimers();
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		const { store, dispatchedActions } = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+		store.dispatch(deepLinkingOpen(makeParams({ rid: 'room-1', path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(60_000);
+		await flushSagaMicrotasks();
+		jest.useRealTimers();
+
+		expect(store.getState().app.root).not.toBe(RootEnum.ROOT_LOADING_SHARE_EXTENSION);
+		expect(dispatchedActions).toEqual(expect.arrayContaining([expect.objectContaining({ type: APP.INIT })]));
 	});
 });
 
