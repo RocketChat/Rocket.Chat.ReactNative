@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react-native';
+import { act, render, fireEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
@@ -7,6 +7,9 @@ import { useCallStore } from '~/lib/services/voip/useCallStore';
 import { mockedStore } from '~/reducers/mockedStore';
 import * as stories from './CallerInfo.stories';
 import { generateSnapshots } from '~/.rnstorybook/generateSnapshots';
+import { joinEscalatedConference } from '~/lib/services/voip/conferenceEscalation';
+
+jest.mock('~/lib/services/voip/conferenceEscalation', () => ({ joinEscalatedConference: jest.fn() }));
 
 const mockCallStartTime = 1713340800000;
 
@@ -28,6 +31,10 @@ const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mock
 
 describe('CallerInfo', () => {
 	beforeEach(() => {
+		useCallStore.getState().reset();
+	});
+
+	afterAll(() => {
 		useCallStore.getState().reset();
 	});
 
@@ -67,6 +74,20 @@ describe('CallerInfo', () => {
 		expect(useCallStore.getState().controlsVisible).toBe(false);
 		fireEvent.press(getByTestId('caller-info-toggle'));
 		expect(useCallStore.getState().controlsVisible).toBe(true);
+	});
+
+	it('offers to join the video call once the peer escalated it', () => {
+		setStoreState({ displayName: 'Bob Burnquist' });
+		const { queryByTestId, getByTestId } = render(
+			<Wrapper>
+				<CallerInfo />
+			</Wrapper>
+		);
+		expect(queryByTestId('call-view-escalated')).toBeNull();
+
+		act(() => useCallStore.setState({ escalated: true }));
+		fireEvent.press(getByTestId('call-view-join-video'));
+		expect(joinEscalatedConference).toHaveBeenCalledTimes(1);
 	});
 });
 

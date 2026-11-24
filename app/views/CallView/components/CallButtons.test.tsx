@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react-native';
+import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { type ReactNode } from 'react';
 
@@ -7,6 +7,7 @@ import { useCallStore } from '~/lib/services/voip/useCallStore';
 import { CallButtons } from './CallButtons';
 import { useCallLayoutMode } from '../useCallLayoutMode';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
 
 jest.mock('../useCallLayoutMode', () => ({
 	useCallLayoutMode: jest.fn(() => ({ layoutMode: 'narrow' }))
@@ -17,8 +18,9 @@ jest.mock('~/containers/ActionSheet/Provider', () => ({
 	hideActionSheetRef: jest.fn()
 }));
 
+let mockVideoCallEnabled = false;
 jest.mock('~/lib/hooks/useVideoConf', () => ({
-	useVideoConf: () => ({ startCall: jest.fn(), showInitCallActionSheet: jest.fn(), callEnabled: false })
+	useVideoConf: () => ({ startCall: jest.fn(), showInitCallActionSheet: jest.fn(), callEnabled: mockVideoCallEnabled })
 }));
 
 jest.mock('react-native-incall-manager', () => ({
@@ -66,6 +68,25 @@ describe('CallButtons', () => {
 		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
 		(useResponsiveLayout as jest.Mock).mockReturnValue({ width: 375, height: 812 });
 		useCallStore.getState().reset();
+		mockVideoCallEnabled = false;
+	});
+
+	it('hides "Start video call" once the peer escalated the call', () => {
+		mockVideoCallEnabled = true;
+		const moreOptionIds = () => {
+			jest.mocked(showActionSheetRef).mockClear();
+			const { getByTestId, unmount } = render(<CallButtons />, { wrapper: Wrapper });
+			fireEvent.press(getByTestId('call-view-more'));
+			unmount();
+			const { options } = jest.mocked(showActionSheetRef).mock.calls[0][0] as { options: { testID: string }[] };
+			return options.map(option => option.testID);
+		};
+
+		setStoreState({ features: ['direct-message'] });
+		expect(moreOptionIds()).toContain('call-view-more-video');
+
+		setStoreState({ features: ['direct-message'], escalated: true });
+		expect(moreOptionIds()).not.toContain('call-view-more-video');
 	});
 
 	it('renders all 6 buttons', () => {

@@ -111,6 +111,7 @@ function createMockCall(callId: string, options?: { initialState?: string }) {
 		callId,
 		state: initialState,
 		hidden: false,
+		escalated: false,
 		service: 'webrtc',
 		features: ['audio', 'hold', 'dialpad'],
 		localParticipant,
@@ -215,6 +216,38 @@ describe('useCallStore roomId', () => {
 		const { call } = createMockCall('persist-call');
 		useCallStore.getState().setCall(call);
 		expect(useCallStore.getState().roomId).toBe('room-persist-1');
+	});
+});
+
+describe('useCallStore escalated', () => {
+	beforeEach(() => {
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('flags the call and shows the controls when it is escalated', () => {
+		const { call, emit } = createMockCall('esc-call');
+		useCallStore.getState().setCall(call);
+		useCallStore.setState({ controlsVisible: false });
+		(call as { escalated: boolean }).escalated = true;
+		emit('escalated');
+		expect(useCallStore.getState().escalated).toBe(true);
+		expect(useCallStore.getState().controlsVisible).toBe(true);
+	});
+
+	it('picks up a call that was already escalated', () => {
+		const { call } = createMockCall('esc-call');
+		(call as { escalated: boolean }).escalated = true;
+		useCallStore.getState().setCall(call);
+		expect(useCallStore.getState().escalated).toBe(true);
+	});
+
+	it('reset clears escalated', () => {
+		const { call, emit } = createMockCall('esc-call');
+		useCallStore.getState().setCall(call);
+		emit('escalated');
+		useCallStore.getState().reset();
+		expect(useCallStore.getState().escalated).toBe(false);
 	});
 });
 

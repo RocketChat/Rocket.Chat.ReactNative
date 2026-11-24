@@ -96,6 +96,8 @@ interface CallStoreState {
 	service: CallService | null;
 	/** What the call UI may offer, from the features the server enabled for the call. */
 	features: CallFeature[];
+	/** The call was switched to a video conference. */
+	escalated: boolean;
 	controlsVisible: boolean;
 	dialpadValue: string;
 
@@ -145,6 +147,7 @@ const initialState: CallStoreState = {
 	focused: true,
 	service: null,
 	features: [],
+	escalated: false,
 	controlsVisible: true,
 	dialpadValue: '',
 	roomId: null,
@@ -184,6 +187,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			remoteHeld: remote?.held ?? false,
 			contact: getRemoteContact(call),
 			callStartTime: call.state === 'active' ? (call.activeTimestamp?.getTime() ?? Date.now()) : null,
+			escalated: call.escalated,
 			...getCallFeatures(call)
 		});
 
@@ -261,11 +265,16 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			Navigation.back();
 		};
 
+		const handleEscalated = () => {
+			set({ escalated: true, controlsVisible: true });
+		};
+
 		call.emitter.on('stateChange', handleStateChange);
 		call.emitter.on('trackStateChange', handleTrackStateChange);
 		call.emitter.on('contactUpdate', handleContactUpdate);
 		call.emitter.on('ended', handleEnded);
 		call.emitter.on('hidden', handleHidden);
+		call.emitter.on('escalated', handleEscalated);
 
 		callListenersCleanup = () => {
 			call.emitter.off('stateChange', handleStateChange);
@@ -273,6 +282,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			call.emitter.off('contactUpdate', handleContactUpdate);
 			call.emitter.off('ended', handleEnded);
 			call.emitter.off('hidden', handleHidden);
+			call.emitter.off('escalated', handleEscalated);
 		};
 	},
 
@@ -388,6 +398,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 export const useCallContact = () => useCallStore(state => state.contact);
 export const useCallFeature = (feature: CallFeature) => useCallStore(state => state.features.includes(feature));
 export const useIsControlOnlyCall = () => useCallStore(state => state.service === 'cti');
+export const useIsCallEscalated = () => useCallStore(state => state.escalated);
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);
 export const useControlsVisible = () => {
 	const controlsVisible = useCallStore(state => state.controlsVisible);

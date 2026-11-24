@@ -38,6 +38,7 @@ export const CallButtons = () => {
 	const isMuted = useCallStore(state => state.isMuted);
 	const isOnHold = useCallStore(state => state.isOnHold);
 	const isSpeakerOn = useCallStore(state => state.isSpeakerOn);
+	const escalated = useCallStore(state => state.escalated);
 
 	const toggleMute = useCallStore(state => state.toggleMute);
 	const toggleHold = useCallStore(state => state.toggleHold);
@@ -57,7 +58,7 @@ export const CallButtons = () => {
 		transform: [{ translateY: withTiming(controlsVisible ? 0 : 100, { duration: CONTROLS_ANIMATION_DURATION }) }]
 	}));
 
-	const canStartVideoCall = callState === 'active' && roomId != null && videoCallEnabled;
+	const canStartVideoCall = callState === 'active' && roomId != null && videoCallEnabled && !escalated;
 
 	const handleStartVideoCall = () => {
 		showConfirmationAlert({
