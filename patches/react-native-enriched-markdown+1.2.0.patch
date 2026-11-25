@@ -380,10 +380,15 @@ index ccbf799..25a6a44 100644
  
    fun hasFailed(requestKey: String): Boolean = failedKeys.get(requestKey) != null
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
-index eefcf9f..0c96d39 100644
+index eefcf9f..1122d20 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
-@@ -7,6 +7,7 @@ import android.os.Handler
+@@ -3,10 +3,12 @@ package com.swmansion.enriched.markdown.utils.text
+ import android.content.Context
+ import android.graphics.Bitmap
+ import android.graphics.BitmapFactory
++import android.os.Build
+ import android.os.Handler
  import android.os.Looper
  import android.util.Log
  import androidx.annotation.VisibleForTesting
@@ -391,7 +396,7 @@ index eefcf9f..0c96d39 100644
  import okhttp3.Cache
  import okhttp3.CacheControl
  import okhttp3.Call
-@@ -22,22 +23,36 @@ object ImageDownloader {
+@@ -22,22 +24,37 @@ object ImageDownloader {
    private const val TAG = "ImageDownloader"
    private const val DISK_CACHE_SIZE = 100L * 1024 * 1024
    private const val TIMEOUT = 15L
@@ -413,7 +418,8 @@ index eefcf9f..0c96d39 100644
 -  private val inFlight = HashMap<String, MutableList<(Bitmap?) -> Unit>>()
 +  private val inFlight = HashMap<String, MutableList<(OriginalImage?) -> Unit>>()
 +
-+  private fun isAnimatedFormat(bytes: ByteArray): Boolean {
++  private fun isDecodableAnimation(bytes: ByteArray): Boolean {
++    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) return false
 +    val isGif = bytes.size > 4 && String(bytes, 0, 4, Charsets.US_ASCII) == "GIF8"
 +    val isAnimatedWebp =
 +      bytes.size > 20 &&
@@ -430,7 +436,7 @@ index eefcf9f..0c96d39 100644
  
    private fun getClient(context: Context): OkHttpClient =
      client ?: synchronized(this) {
-@@ -56,14 +71,29 @@ object ImageDownloader {
+@@ -56,14 +73,29 @@ object ImageDownloader {
          .also { headerClient = it }
      }
  
@@ -463,7 +469,7 @@ index eefcf9f..0c96d39 100644
    }
  
    fun download(
-@@ -71,18 +101,25 @@ object ImageDownloader {
+@@ -71,18 +103,25 @@ object ImageDownloader {
      url: String,
      headers: Map<String, String> = emptyMap(),
      callback: (Bitmap?) -> Unit,
@@ -491,7 +497,7 @@ index eefcf9f..0c96d39 100644
        callback(it)
        return
      }
-@@ -128,11 +165,12 @@ object ImageDownloader {
+@@ -128,11 +167,12 @@ object ImageDownloader {
            call: Call,
            response: Response,
          ) {
@@ -502,11 +508,11 @@ index eefcf9f..0c96d39 100644
                  val bytes = it.body?.bytes() ?: return@use null
 -                decodeDownsampled(bytes, maxTargetWidth)
 +                val still = decodeDownsampled(bytes, maxTargetWidth) ?: return@use null
-+                OriginalImage(still, if (isAnimatedFormat(bytes)) bytes else null)
++                OriginalImage(still, if (isDecodableAnimation(bytes)) bytes else null)
                } catch (_: OutOfMemoryError) {
                  Log.e(TAG, "OOM decoding image: $url")
                  null
-@@ -142,8 +180,8 @@ object ImageDownloader {
+@@ -142,8 +182,8 @@ object ImageDownloader {
                }
              }
  
@@ -517,7 +523,7 @@ index eefcf9f..0c96d39 100644
          }
  
          override fun onFailure(
-@@ -218,11 +256,11 @@ object ImageDownloader {
+@@ -218,11 +258,11 @@ object ImageDownloader {
  
    private fun dispatchCallbacks(
      requestKey: String,
