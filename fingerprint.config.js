@@ -28,7 +28,7 @@ module.exports = {
 		})),
 		{ type: 'dir', filePath: codegenConfig.jsSrcsDir.replace(/^\.\//, ''), reasons: ['codegenSpecs'] },
 		{ type: 'contents', id: 'codegenConfig', contents: JSON.stringify(codegenConfig), reasons: ['codegenConfig'] },
-		{ type: 'contents', id: 'reanimatedConfig', contents: JSON.stringify(reanimated), reasons: ['reanimatedConfig'] },
+		{ type: 'contents', id: 'reanimatedConfig', contents: JSON.stringify(reanimated ?? null), reasons: ['reanimatedConfig'] },
 		...(platform === 'ios' ? [] : androidResourceAssetFiles()).map(filePath => ({
 			type: 'file',
 			filePath,

@@ -17,7 +17,7 @@ const renderSectionHeader = ({ empty = false } = {}) => {
 			empty={empty}
 			onOpen={onOpen}
 			onToggle={onToggle}
-			badgeEntering={noAnimation}
+			badgeFadeIn={{ fadesOnMount: () => false, spring: {} }}
 			badgeExiting={noAnimation}
 		/>
 	);
