@@ -18,7 +18,7 @@ import {
 	getUserTokenKey
 } from '../constants/keys';
 import UserPreferences from './userPreferences';
-import { removePushToken } from '../services/restApi';
+import { forgetRegisteredPushToken, removePushToken } from '../services/restApi';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
 import { clearServerCookies } from './helpers/setServerCookies';
 import { clearRemovedWorkspaceCertificate } from './helpers/sslPinning';
@@ -39,6 +39,7 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 }
 
 export async function removeServerData({ server }: { server: string }): Promise<void> {
+	forgetRegisteredPushToken(server);
 	try {
 		const batch: Model[] = [];
 		const serversDB = database.servers;
