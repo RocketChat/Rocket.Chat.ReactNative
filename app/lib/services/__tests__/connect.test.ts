@@ -22,6 +22,7 @@ const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args
 	return Promise.resolve({ stop });
 });
 const mockSdkConnect = jest.fn<Promise<void>, []>(() => Promise.resolve());
+const mockSdkAbort = jest.fn<void, []>();
 const mockSdkDisconnect = jest.fn<void, []>();
 const mockSdkLogin = jest.fn<Promise<void>, [unknown]>(() => Promise.resolve());
 const mockSdkCurrent: Record<string, unknown> = {
@@ -40,6 +41,7 @@ jest.mock('../sdk', () => ({
 			await mockSdkLogin(credentials);
 			return mockSdkCurrent.currentLogin ?? null;
 		},
+		abort: () => mockSdkAbort(),
 		get currentLogin() {
 			return mockSdkCurrent.currentLogin;
 		}

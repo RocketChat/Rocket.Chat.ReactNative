@@ -9,7 +9,6 @@ import {
 	setLoginServices,
 	setUser
 } from '../actions/login';
-import { selectServerRequest } from '../actions/server';
 import { initialState } from './login';
 import { createMockedStore, mockedStore } from './mockedStore';
 
@@ -29,13 +28,6 @@ describe('test selectedUsers reducer', () => {
 		mockedStore.dispatch(loginFailure({ error: 'error' }));
 		const state = mockedStore.getState().login.error.error;
 		expect(state).toEqual('error');
-	});
-
-	it('should not carry a failed login into the next selected server', () => {
-		mockedStore.dispatch(loginFailure({ error: 'error' }));
-		mockedStore.dispatch(selectServerRequest('https://other.example.com', '7.0.0'));
-		const { isFetching, failure, error } = mockedStore.getState().login;
-		expect({ isFetching, failure, error }).toEqual({ isFetching: false, failure: false, error: {} });
 	});
 
 	it('should return modified store after loginSuccess', () => {

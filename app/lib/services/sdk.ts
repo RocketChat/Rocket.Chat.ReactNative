@@ -82,13 +82,16 @@ class Sdk {
 		return client.currentLogin ?? null;
 	}
 
+	abort(): void {
+		this.activeSdk.abort();
+	}
+
 	subscribeNotifyUser() {
 		return this.activeSdk.subscribeNotifyUser();
 	}
 
 	disconnect(): void {
 		if (this.sdk) {
-			this.sdk.abort();
 			this.sdk.disconnect();
 			this.sdk = null;
 		}
