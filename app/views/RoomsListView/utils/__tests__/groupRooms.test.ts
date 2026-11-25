@@ -224,6 +224,23 @@ describe('groupRooms', () => {
 		]);
 	});
 
+	it('keeps the ungrouped list in sort order even when the Conversations category keeps unread rooms on top', () => {
+		const chats = [room({ rid: 'read' }), room({ rid: 'unread', unread: 1 }), room({ rid: 'older-read' })];
+		const categoryUnreadOptions = new Map([['Conversations', { showUnreads: true, keepUnreadsOnTop: true }]]);
+
+		expect(
+			layout(
+				buildRoomList(chats, {
+					...options,
+					customCategoryNames: new Map(),
+					categoryUnreadOptions,
+					showFavorites: false,
+					groupByType: false
+				})
+			)
+		).toEqual(['read', 'unread', 'older-read']);
+	});
+
 	it('keeps unread rooms visible in the collapsed Unread section that always displays them', () => {
 		const chats = [room({ rid: 'unread', unread: 1 })];
 		const categoryUnreadOptions = new Map([['Unread', { showUnreads: true, keepUnreadsOnTop: false }]]);

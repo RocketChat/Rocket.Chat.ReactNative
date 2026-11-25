@@ -87,14 +87,14 @@ const roomsGroup = (
 	{ collapsedGroups, title, unreadOptions = NO_UNREAD_OPTIONS, keepWhenEmpty = false }: RoomsGroupOptions
 ) => {
 	const { showUnreads, keepUnreadsOnTop } = unreadOptions;
-	if (!rooms.length && !(header && keepWhenEmpty)) {
+	if (!header) {
+		return rooms;
+	}
+	if (!rooms.length && !keepWhenEmpty) {
 		return [];
 	}
 	const [unreadRooms, readRooms] = partition(rooms, filterIsUnread);
 	const orderedRooms = keepUnreadsOnTop ? [...unreadRooms, ...readRooms] : rooms;
-	if (!header) {
-		return orderedRooms;
-	}
 	const collapsed = collapsedGroups.has(header);
 	if (!collapsed) {
 		return [sectionHeader({ rooms, badgeSourceRooms: rooms, header, title }), ...orderedRooms];
