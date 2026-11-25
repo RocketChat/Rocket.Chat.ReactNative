@@ -13,6 +13,10 @@ on:
 
 permissions: {}
 
+env:
+  RUNNING_E2E_TESTS: true
+  APPDUCT_ENABLED: 1
+
 jobs:
   native-fingerprint:
     runs-on: ubuntu-latest
@@ -133,8 +137,6 @@ jobs:
       - name: Bundle JS into app
         if: ${{ !inputs.seed-only }}
         run: .github/scripts/bundle-ios-app.sh "$APP_PATH"
-        env:
-          RUNNING_E2E_TESTS: true
 
       - name: Upload Artifact
         if: ${{ !inputs.seed-only }}

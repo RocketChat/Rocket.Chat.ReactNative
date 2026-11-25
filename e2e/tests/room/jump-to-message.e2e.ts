@@ -1,12 +1,11 @@
-import { test } from '@e2e-dev/mobile';
+import { test } from '~e2e/support/fixtures';
 import { expect, type Locator } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { adminCredentials } from '~e2e/support/api';
-import { clearLocalCache, openSettings } from '~e2e/support/settings';
 import { delay } from '~e2e/support/timing';
 import {
-	loginWithDeepLink,
-	searchAndNavigateRoom,
+	loginToApp,
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenVisible,
@@ -51,13 +50,6 @@ const expectThreadMessage = async (fixtures: Fixtures, text: string) => {
 const leaveThread = async (fixtures: Fixtures) => {
 	await goBack(fixtures);
 	await expectRoomTitle(fixtures, THREAD_ROOM);
-};
-
-const clearCache = async (fixtures: Fixtures) => {
-	await expectVisible(fixtures, 'room-view');
-	await goBack(fixtures);
-	await openSettings(fixtures);
-	await clearLocalCache(fixtures);
 };
 
 const searchMessage = async (fixtures: Fixtures, text: string) => {
@@ -110,23 +102,23 @@ const scrollUntilLoaded = ({ screen }: Fixtures, target: Locator, direction: 'up
 
 test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, async fixtures => {
 	const { screen } = fixtures;
-	await loginWithDeepLink(fixtures, adminCredentials());
+	await loginToApp(fixtures, adminCredentials());
 
-	await searchAndNavigateRoom(fixtures, ROOM);
+	await openRoom(fixtures, ROOM);
 	await expect(testIdContaining(fixtures, 'Quote first message')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await jumpToMessageFrom(fixtures, 'Quote first message');
 	await expectMessages(fixtures, [1, 2]);
 	await tapWhenVisible(fixtures, 'nav-jump-to-bottom');
 	await expect(testIdContaining(fixtures, "Go to jumping-thread's thread")).toBeVisible({ timeout: LONG_TIMEOUT });
-	await clearCache(fixtures);
+	await fixtures.appduct.call('clear_cache');
 
-	await searchAndNavigateRoom(fixtures, ROOM);
+	await openRoom(fixtures, ROOM);
 	await expectVisible(fixtures, 'room-view-messages');
 	await expect(testIdContaining(fixtures, 'Quote first message')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await scrollUntilLoaded(fixtures, screen.getByTestId('message-content-249'), 'up');
-	await clearCache(fixtures);
+	await fixtures.appduct.call('clear_cache');
 
-	await searchAndNavigateRoom(fixtures, ROOM);
+	await openRoom(fixtures, ROOM);
 	await searchMessage(fixtures, '30');
 	await expectMessages(fixtures, [29, 30, 31]);
 
@@ -143,7 +135,7 @@ test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, as
 	}
 	await goBack(fixtures);
 
-	await searchAndNavigateRoom(fixtures, ROOM);
+	await openRoom(fixtures, ROOM);
 	await jumpToMessageFrom(fixtures, "Go to jumping-thread's thread");
 	await expectThreadMessage(fixtures, "Go to jumping-thread's thread");
 	await leaveThread(fixtures);

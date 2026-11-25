@@ -337,8 +337,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		// On warm relaunch, redux is already populated by selectServer; on cold login, it re-checks
 		// when PERMISSIONS.SET / ENTERPRISE_MODULES.SET land.
 		yield spawn(startVoipFork);
-		yield call(fetchPermissions);
-		yield call(fetchEnterpriseModules, { user });
+		yield all([call(fetchPermissions), call(fetchEnterpriseModules, { user })]);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
 		yield fork(fetchAppsFork);

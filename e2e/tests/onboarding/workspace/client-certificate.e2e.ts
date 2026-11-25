@@ -1,4 +1,4 @@
-import { afterAll, afterEach, beforeAll, test } from '@e2e-dev/mobile';
+import { afterAll, afterEach, beforeAll, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers, sendMessage as sendMessageFromServer } from '~e2e/support/api';
