@@ -747,3 +747,62 @@ export const InfoCardLongText = () =>
 		}
 	]);
 InfoCardLongText.storyName = 'Info Card - Long text';
+
+export const MarkdownBlock = () =>
+	UiKitMessage([
+		{
+			type: 'markdown',
+			appId: 'pr-status',
+			blockId: 'markdown',
+			text: '**Bold** text with a [link](https://rocket.chat)\nand a second line'
+		}
+	]);
+MarkdownBlock.storyName = 'Markdown block';
+
+const previewFooter = {
+	type: 'context',
+	appId: 'pr-status',
+	blockId: 'footer',
+	elements: [{ type: 'mrkdwn', text: '[diegolmello](https://github.com/diegolmello) · 🟢 Open · ✅ Ready to merge · +229 −134' }]
+};
+
+export const PreviewWithImage = () =>
+	UiKitMessage([
+		{
+			type: 'preview',
+			appId: 'pr-status',
+			blockId: 'preview-image',
+			title: [{ type: 'plain_text', text: '#7940 chore: bump react-native-reanimated to 4.8.0 and worklets to 0.14.0' }],
+			description: [{ type: 'mrkdwn', text: '🟡 CI running · 19/26 done\n➖ No reviews' }],
+			externalUrl: 'https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/7940',
+			preview: { url: 'https://picsum.photos/1200/600', dimensions: { width: 1200, height: 600 } },
+			footer: previewFooter
+		}
+	]);
+PreviewWithImage.storyName = 'Preview - Image';
+
+export const PreviewWithThumb = () =>
+	UiKitMessage([
+		{
+			type: 'preview',
+			appId: 'pr-status',
+			blockId: 'preview-thumb',
+			title: [{ type: 'mrkdwn', text: '*Rocket.Chat* release notes' }],
+			description: [{ type: 'plain_text', text: longText }],
+			thumb: { url: 'https://picsum.photos/200' },
+			footer: previewFooter
+		}
+	]);
+PreviewWithThumb.storyName = 'Preview - Thumb';
+
+export const PreviewTextOnly = () =>
+	UiKitMessage([
+		{
+			type: 'preview',
+			appId: 'pr-status',
+			blockId: 'preview-text',
+			title: [{ type: 'plain_text', text: 'Preview without image or link' }],
+			description: [{ type: 'plain_text', text: 'Description' }]
+		}
+	]);
+PreviewTextOnly.storyName = 'Preview - Text only';

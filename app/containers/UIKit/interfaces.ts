@@ -287,3 +287,17 @@ export interface IInfoCard extends Omit<InfoCardBlock, 'rows'> {
 }
 export type IBlockActionForView = ViewBlockActionUserInteraction;
 export type IViewClosedInteraction = ViewClosedUserInteraction;
+
+interface IPreviewImage {
+	url: string;
+	dimensions?: { width: number; height: number };
+}
+export interface IPreview {
+	title: IText[];
+	description: IText[];
+	preview?: IPreviewImage;
+	thumb?: IPreviewImage;
+	externalUrl?: string;
+	footer?: Block;
+	parser: IParser;
+}

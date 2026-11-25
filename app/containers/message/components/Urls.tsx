@@ -87,7 +87,7 @@ const getImageStyles = (dimensions: ImageDimensions, maxSize: number) => {
 	return { imageStyle, containerStyle };
 };
 
-const UrlImage = ({
+export const UrlImage = ({
 	image,
 	hasContent,
 	knownDimensions
