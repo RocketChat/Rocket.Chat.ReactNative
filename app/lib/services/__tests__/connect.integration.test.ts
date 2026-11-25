@@ -83,6 +83,11 @@ const REST_LOGIN_ME = {
 	requirePasswordChange: false
 };
 
+const restLoginResponse = () => ({
+	status: 200,
+	json: () => Promise.resolve({ status: 'success', data: { userId: 'user-id', authToken: 'auth-token', me: REST_LOGIN_ME } })
+});
+
 let redux: ReturnType<typeof makeReduxStore>;
 let collections: Record<string, ReturnType<typeof makeCollection>>;
 
@@ -103,11 +108,7 @@ beforeEach(() => {
 	global.fetch = jest.fn((url: unknown) => {
 		const target = String(url);
 		if (target.includes('/api/v1/login')) {
-			return Promise.resolve({
-				status: 200,
-				json: () =>
-					Promise.resolve({ status: 'success', data: { userId: 'user-id', authToken: 'auth-token', me: REST_LOGIN_ME } })
-			});
+			return Promise.resolve(restLoginResponse());
 		}
 		return Promise.resolve({ status: 200, json: () => Promise.resolve({ success: false }) });
 	}) as unknown as typeof fetch;
@@ -240,12 +241,7 @@ describe('connect() over the real SDK', () => {
 			(_url: unknown, options?: { signal?: AbortSignal }) =>
 				new Promise((resolve, reject) => {
 					options?.signal?.addEventListener('abort', () => reject(new Error('aborted')));
-					answerLogin = () =>
-						resolve({
-							status: 200,
-							json: () =>
-								Promise.resolve({ status: 'success', data: { userId: 'user-id', authToken: 'auth-token', me: REST_LOGIN_ME } })
-						});
+					answerLogin = () => resolve(restLoginResponse());
 				})
 		) as unknown as typeof fetch;
 		await connect({ server: 'https://example.com' });
