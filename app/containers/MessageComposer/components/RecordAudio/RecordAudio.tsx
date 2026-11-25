@@ -118,7 +118,7 @@ export const RecordAudio = (): ReactElement | null => {
 		return (
 			<View style={styles.review}>
 				<View style={styles.audioPlayer}>
-					<AudioPlayer fileUri={audioRecorder.uri ?? ''} rid={rid} downloadState='downloaded' />
+					<AudioPlayer fileUri={audioRecorder.uri ?? ''} rid={rid} downloadState='downloaded' isRecordingPreview />
 				</View>
 				<View style={styles.buttons}>
 					<CancelButton onPress={cancelRecording} />

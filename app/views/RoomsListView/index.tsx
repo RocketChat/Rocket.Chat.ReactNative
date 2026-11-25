@@ -32,7 +32,6 @@ import { useTheme } from '~/theme';
 import Container from './components/Container';
 import ListHeader from './components/ListHeader';
 import NewMessageButton from './components/NewMessageButton';
-import RoomsListNowPlayingAudio from './components/RoomsListNowPlayingAudio';
 import SectionHeader from './components/SectionHeader';
 import SectionRevealFooter from './components/SectionRevealFooter';
 import RoomsSearchProvider, { RoomsSearchContext } from './contexts/RoomsSearchProvider';
@@ -176,7 +175,6 @@ const RoomsListView = memo(function RoomsListView() {
 
 	return (
 		<>
-			{searchEnabled ? null : <RoomsListNowPlayingAudio />}
 			<Animated.FlatList
 				data={searchEnabled ? searchResults : subscriptions}
 				keyExtractor={item => `${item.rid}-${searchEnabled}`}

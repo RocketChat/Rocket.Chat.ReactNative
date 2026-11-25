@@ -1,4 +1,5 @@
-import { Pressable, Text, View, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';
@@ -6,18 +7,16 @@ import { CustomIcon } from '~/containers/CustomIcon';
 import NativeButton from '~/containers/NativeButton';
 import { formatTime } from '~/containers/AudioPlayer/formatTime';
 import { type INowPlayingAudio } from '~/lib/methods/useNowPlayingAudioStore';
-import { useNowPlayingAudio, useNowPlayingAudioActions } from './useNowPlayingAudio';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
+import { useNowPlayingAudio, useNowPlayingAudioActions, useIsInCall } from './useNowPlayingAudio';
 import { useNowPlayingAudioDetails } from './useNowPlayingAudioDetails';
 import styles from './styles';
 
 const HIT_SLOP = { top: 12, bottom: 12, left: 12, right: 12 };
 
-interface INowPlayingAudioProps {
-	style?: StyleProp<ViewStyle>;
-}
-
-const NowPlayingAudioBar = ({ audio, style }: INowPlayingAudioProps & { audio: INowPlayingAudio }) => {
+const NowPlayingAudioBar = ({ audio }: { audio: INowPlayingAudio }) => {
 	const { colors } = useTheme();
+	const insets = useSafeAreaInsets();
 	const { title, roomName } = useNowPlayingAudioDetails(audio.rid, audio.msgId);
 	const { togglePlayPause, close, openSourceRoom } = useNowPlayingAudioActions(audio);
 	const progress = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
@@ -26,7 +25,11 @@ const NowPlayingAudioBar = ({ audio, style }: INowPlayingAudioProps & { audio: I
 	return (
 		<View
 			testID='now-playing-audio'
-			style={[styles.container, { backgroundColor: colors.surfaceLight, borderBottomColor: colors.strokeExtraLight }, style]}>
+			style={[
+				styles.container,
+				{ backgroundColor: colors.surfaceLight, borderBottomColor: colors.strokeExtraLight },
+				hasNativeHeaderBar && { paddingTop: insets.top, height: styles.container.height + insets.top }
+			]}>
 			<NativeButton
 				testID='now-playing-audio-play-pause'
 				accessible
@@ -74,12 +77,13 @@ const NowPlayingAudioBar = ({ audio, style }: INowPlayingAudioProps & { audio: I
 	);
 };
 
-const NowPlayingAudio = ({ style }: INowPlayingAudioProps) => {
+const NowPlayingAudio = () => {
 	const audio = useNowPlayingAudio();
-	if (!audio) {
+	const isInCall = useIsInCall();
+	if (!audio || isInCall) {
 		return null;
 	}
-	return <NowPlayingAudioBar key={audio.audioKey} audio={audio} style={style} />;
+	return <NowPlayingAudioBar key={audio.audioKey} audio={audio} />;
 };
 
 export default NowPlayingAudio;

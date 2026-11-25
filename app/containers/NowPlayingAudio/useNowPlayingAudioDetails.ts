@@ -13,7 +13,10 @@ interface INowPlayingAudioSource {
 	roomName?: string;
 }
 
-const findAudioMessageSender = async (msgId: string) => {
+const findAudioMessageSender = async (msgId?: string) => {
+	if (!msgId) {
+		return undefined;
+	}
 	const message = (await getMessageById(msgId)) ?? (await getThreadMessageById(msgId));
 	return message?.u;
 };
@@ -23,7 +26,7 @@ const findRoomName = async (rid: string) => {
 	return subscription ? getRoomTitle(subscription) : undefined;
 };
 
-export const useNowPlayingAudioDetails = (rid: string, msgId: string) => {
+export const useNowPlayingAudioDetails = (rid: string, msgId?: string) => {
 	const [source, setSource] = useState<INowPlayingAudioSource>({});
 
 	useEffect(() => {

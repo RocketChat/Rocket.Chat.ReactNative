@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
@@ -26,6 +26,7 @@ interface IAudioPlayerProps {
 	rid: string;
 	// It's optional when comes from MessagesView
 	msgId?: string;
+	isRecordingPreview?: boolean;
 }
 
 const AudioPlayer = ({
@@ -34,7 +35,8 @@ const AudioPlayer = ({
 	onPlayButtonPress = () => {},
 	downloadState,
 	msgId,
-	rid
+	rid,
+	isRecordingPreview = false
 }: IAudioPlayerProps) => {
 	const isLoading = downloadState === 'loading';
 	const isDownloaded = downloadState === 'downloaded';
@@ -116,23 +118,29 @@ const AudioPlayer = ({
 		}
 	};
 
+	const onStatusUpdate = useEffectEvent(onPlaybackStatusUpdate);
+
+	const listenToAudio = useEffectEvent(() => {
+		AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onStatusUpdate);
+		AudioManager.setRate(audioUri.current, playbackSpeed);
+	});
+
 	useEffect(() => {
 		if (fileUri && isDownloaded) {
-			const immediate = setImmediate(async () => {
+			const immediate = setImmediate(() => {
 				try {
-					audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
+					audioUri.current = AudioManager.loadAudio({ msgId, rid, uri: fileUri, isRecordingPreview });
 					if (navigation.isFocused()) {
 						AudioManager.addAudioRendered(audioUri.current);
 					}
-					AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
-					AudioManager.setRate(audioUri.current, playbackSpeed);
+					listenToAudio();
 				} catch {
 					// do nothing
 				}
 			});
 			return () => clearImmediate(immediate);
 		}
-	}, [fileUri, isDownloaded, msgId, rid, navigation]);
+	}, [fileUri, isDownloaded, msgId, rid, isRecordingPreview, navigation]);
 
 	useEffect(() => {
 		if (paused) {
@@ -144,25 +152,25 @@ const AudioPlayer = ({
 
 	useEffect(() => {
 		const unsubscribeFocus = navigation.addListener('focus', () => {
-			AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+			AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onStatusUpdate);
 			AudioManager.addAudioRendered(audioUri.current);
 		});
-		const pauseAudioWithoutMessage = () => {
-			if (!msgId) {
+		const pauseRecordingPreview = () => {
+			if (isRecordingPreview) {
 				AudioManager.pauseAudioIfPlaying(audioUri.current);
 			}
 		};
 		const unsubscribeBlur = navigation.addListener('blur', () => {
 			AudioManager.removeAudioRendered(audioUri.current);
-			pauseAudioWithoutMessage();
+			pauseRecordingPreview();
 		});
 
 		return () => {
 			unsubscribeFocus();
 			unsubscribeBlur();
-			pauseAudioWithoutMessage();
+			pauseRecordingPreview();
 		};
-	}, [navigation, msgId]);
+	}, [navigation, isRecordingPreview]);
 
 	useEffect(() => {
 		const audioFocusedEventHandler = (audioFocused: string) => {

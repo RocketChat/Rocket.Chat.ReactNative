@@ -6,6 +6,8 @@ import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { useNowPlayingAudioStore, type INowPlayingAudio } from '~/lib/methods/useNowPlayingAudioStore';
 import { getMessageById } from '~/lib/database/services/Message';
 import { type TMessageModel } from '~/definitions/IMessage';
+import { useCallStore } from '~/lib/services/voip/useCallStore';
+import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 
 jest.mock('~/lib/methods/AudioManager', () => ({ playAudio: jest.fn(), pauseAudio: jest.fn(), closeAudio: jest.fn() }));
 jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
@@ -72,6 +74,42 @@ describe('NowPlayingAudio', () => {
 
 		expect(screen.getByText('John Roe')).toBeOnTheScreen();
 		expect(screen.queryByText('Jane Doe')).toBeNull();
+	});
+
+	it('shows the room as the title of an audio with no message, like a file in the Files list', async () => {
+		await renderWithAudio({ ...playingAudio, audioKey: 'undefined-room-1-file://upload.mp3', msgId: undefined });
+
+		expect(screen.getByText('General')).toBeOnTheScreen();
+		expect(screen.getByText('00:12 / 01:30')).toBeOnTheScreen();
+		expect(getMessageById).not.toHaveBeenCalled();
+	});
+
+	it('opens the room of an audio with no message without jumping to a message', async () => {
+		await renderWithAudio({ ...playingAudio, msgId: undefined });
+
+		fireEvent.press(screen.getByTestId('now-playing-audio-open-room'));
+
+		expect(goRoom).toHaveBeenCalledWith({ item: { rid: 'room-1' }, isMasterDetail: false, jumpToMessageId: undefined });
+	});
+
+	it('hides during a voice call', async () => {
+		useCallStore.setState({ call: {} as ReturnType<typeof useCallStore.getState>['call'] });
+
+		await renderWithAudio(playingAudio);
+
+		expect(screen.queryByTestId('now-playing-audio')).toBeNull();
+		act(() => useCallStore.setState({ call: null }));
+		expect(screen.getByTestId('now-playing-audio')).toBeOnTheScreen();
+	});
+
+	it('hides during a conference call', async () => {
+		useConferenceCallStore.setState({ callId: 'call-1' });
+
+		await renderWithAudio(playingAudio);
+
+		expect(screen.queryByTestId('now-playing-audio')).toBeNull();
+		act(() => useConferenceCallStore.setState({ callId: undefined }));
+		expect(screen.getByTestId('now-playing-audio')).toBeOnTheScreen();
 	});
 
 	it('pauses a playing audio and plays a paused one', async () => {

@@ -249,7 +249,7 @@ describe('AudioManager', () => {
 			expect(AudioManager[field]).not.toHaveProperty([liveKey]);
 		}
 		expect(AudioManager['audioUris'][otherKey]).toBe('file://x');
-		expect(AudioManager['audioMeta'][otherKey]).toEqual({ msgId: 'c', rid: 'other' });
+		expect(AudioManager['audioMeta'][otherKey]).toEqual({ msgId: 'c', rid: 'other', isRecordingPreview: false });
 		jest.spyOn(AudioManager, 'getNextAudioMessage').mockResolvedValue({ id: 'a', attachments: [{}] } as TMessageModel);
 		const playAudio = jest.spyOn(AudioManager, 'playAudio');
 		await AudioManager.playNextAudioInSequence(liveKey);
@@ -375,7 +375,22 @@ describe('AudioManager', () => {
 			expect(callback).toHaveBeenCalledWith(currentStatus);
 		});
 
-		it('a callback registered for any other audio waits for its next status', () => {
+		it('a callback registered for an audio paused partway receives its current status at once', async () => {
+			const { AudioManager, players } = setup();
+			const fileKey = AudioManager.loadAudio({ rid: 'room', uri: 'file://upload.mp3' });
+			const messageKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(fileKey);
+			await AudioManager.playAudio(messageKey);
+			const currentStatus = { isLoaded: true, playing: false, currentTime: 42, duration: 90 };
+			players[0].currentStatus = currentStatus;
+			const callback = jest.fn();
+
+			AudioManager.setOnPlaybackStatusUpdate(fileKey, callback);
+
+			expect(callback).toHaveBeenCalledWith(currentStatus);
+		});
+
+		it('a callback registered for an audio still at its start waits for its next status', () => {
 			const { AudioManager, players } = setup();
 			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
 			players[0].currentStatus = { isLoaded: true, playing: false, currentTime: 0, duration: 0 };
@@ -386,10 +401,10 @@ describe('AudioManager', () => {
 			expect(callback).not.toHaveBeenCalled();
 		});
 
-		it('an audio without a message, like a recording preview, never becomes the now playing one', async () => {
+		it('a recording preview never becomes the now playing audio', async () => {
 			const { AudioManager, players } = setup();
 			const messageKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
-			const previewKey = AudioManager.loadAudio({ rid: 'room', uri: 'file://recording.aac' });
+			const previewKey = AudioManager.loadAudio({ rid: 'room', uri: 'file://recording.aac', isRecordingPreview: true });
 			await AudioManager.playAudio(messageKey);
 
 			await AudioManager.playAudio(previewKey);
@@ -397,6 +412,15 @@ describe('AudioManager', () => {
 
 			AudioManager.unloadRoomAudios('room');
 			expect(players[1].release).toHaveBeenCalled();
+		});
+
+		it('an audio without a message, like a file in the Files list, becomes the now playing one', async () => {
+			const { AudioManager } = setup();
+			const fileKey = AudioManager.loadAudio({ rid: 'room', uri: 'file://upload.mp3' });
+
+			await AudioManager.playAudio(fileKey);
+
+			expect(getNowPlaying()).toMatchObject({ audioKey: fileKey, rid: 'room', msgId: undefined, playing: true });
 		});
 
 		it('tapping an audio that never loaded keeps the now playing audio', async () => {

@@ -20,7 +20,7 @@ class AudioManagerClass {
 	private audioRates: { [audioKey: string]: number };
 	private audioSubscriptions: { [audioKey: string]: () => void };
 	private audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void };
-	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string } };
+	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string; isRecordingPreview: boolean } };
 	private audioPlaying: string;
 	private audiosRendered: Set<string>;
 	private detachedAudioKeys: Set<string>;
@@ -57,12 +57,13 @@ class AudioManagerClass {
 		useNowPlayingAudioStore.setState({ audio: null });
 	}
 
-	private startNowPlaying(audioKey: string, msgId: string) {
+	private startNowPlaying(audioKey: string) {
 		const player = this.audioQueue[audioKey];
+		const { rid, msgId } = this.audioMeta[audioKey];
 		useNowPlayingAudioStore.setState({
 			audio: {
 				audioKey,
-				rid: this.audioMeta[audioKey].rid,
+				rid,
 				msgId,
 				playing: true,
 				currentTime: player?.currentTime ?? 0,
@@ -116,10 +117,20 @@ class AudioManagerClass {
 		this.audiosRendered.delete(audioKey);
 	};
 
-	loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string {
+	loadAudio({
+		msgId,
+		rid,
+		uri,
+		isRecordingPreview = false
+	}: {
+		rid: string;
+		msgId?: string;
+		uri: string;
+		isRecordingPreview?: boolean;
+	}): string {
 		const audioKey = getAudioKey({ msgId, rid, uri });
 		this.audioUris[audioKey] = uri;
-		this.audioMeta[audioKey] = { msgId, rid };
+		this.audioMeta[audioKey] = { msgId, rid, isRecordingPreview };
 		this.detachedAudioKeys.delete(audioKey);
 		if (this.audioQueue[audioKey]) {
 			return audioKey;
@@ -162,11 +173,10 @@ class AudioManagerClass {
 			if (previousAudioKey && previousAudioKey !== audioKey) {
 				this.releaseIfDetached(previousAudioKey);
 			}
-			const msgId = this.audioMeta[audioKey]?.msgId;
-			if (msgId) {
-				this.startNowPlaying(audioKey, msgId);
-			} else {
+			if (this.audioMeta[audioKey]?.isRecordingPreview) {
 				this.clearNowPlaying();
+			} else {
+				this.startNowPlaying(audioKey);
 			}
 			emitter.emit('audioFocused', audioKey);
 		} catch (error) {
@@ -242,7 +252,8 @@ class AudioManagerClass {
 		this.audioCallbacks[audioKey] = callback;
 		this.subscribeToStatus(audioKey);
 		const status = this.audioQueue[audioKey]?.currentStatus;
-		if (status && this.isNowPlaying(audioKey)) {
+		const hasMovedFromStart = !!status?.isLoaded && status.currentTime > 0;
+		if (status && (this.isNowPlaying(audioKey) || hasMovedFromStart)) {
 			callback(status);
 		}
 	}
