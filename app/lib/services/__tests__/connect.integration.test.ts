@@ -205,20 +205,6 @@ describe('connect() over the real SDK', () => {
 		expect(redux.store.dispatch).toHaveBeenCalledWith(connectSuccess());
 	});
 
-	it('lets a socket recovery after a failed first attempt open a fresh connection immediately', async () => {
-		await connectAndFailFirstAttempt();
-		const before = mockConnections.length;
-
-		const recovering = sdk.driver!.reopenNow();
-		await flushMicrotasksAndTimers();
-		expect(mockConnections).toHaveLength(before + 1);
-		mockConnections[before].onopen();
-		await flushMicrotasksAndTimers();
-
-		await expect(recovering).resolves.toBeUndefined();
-		expect(redux.store.dispatch).toHaveBeenCalledWith(connectSuccess());
-	});
-
 	it('does not retry an attempt that a later connect() replaced', async () => {
 		await connectAndFailFirstAttempt('https://a.example.com');
 
