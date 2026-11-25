@@ -3,6 +3,7 @@ const withStorybook = require('@storybook/react-native/metro/withStorybook');
 
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config');
+const { getBundleModeMetroConfig } = require('react-native-worklets/bundleMode');
 
 const defaultConfig = getDefaultConfig(__dirname);
 
@@ -18,7 +19,7 @@ const config = {
 	}
 };
 
-const finalConfig = wrapWithReanimatedMetroConfig(mergeConfig(getDefaultConfig(__dirname), config));
+const finalConfig = getBundleModeMetroConfig(wrapWithReanimatedMetroConfig(mergeConfig(getDefaultConfig(__dirname), config)));
 
 const storybookOptions = {
 	// set to false to disable storybook specific settings

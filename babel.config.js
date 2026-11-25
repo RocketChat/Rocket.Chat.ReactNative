@@ -1,13 +1,19 @@
 const getAliasConfig = require('./config/import-aliases');
 
+/** @type {import('react-native-worklets/plugin').PluginOptions} */
+const workletsPluginOptions = {
+	bundleMode: true,
+	importForwarding: { moduleNames: ['@rocket.chat/message-parser'] }
+};
+
 module.exports = {
-	presets: ['babel-preset-expo'],
+	presets: [['babel-preset-expo', { worklets: false, reanimated: false }]],
 	plugins: [
 		['module-resolver', { alias: getAliasConfig().babel }],
 		['@babel/plugin-proposal-decorators', { legacy: true }],
 		'@babel/plugin-transform-named-capturing-groups-regex',
 		['transform-inline-environment-variables', { include: ['RUNNING_E2E_TESTS', 'USE_STORYBOOK'] }],
-		'react-native-worklets/plugin'
+		['react-native-worklets/plugin', workletsPluginOptions]
 	],
 	overrides: [
 		{
