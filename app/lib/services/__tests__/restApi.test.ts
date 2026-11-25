@@ -146,6 +146,32 @@ describe('registerPushToken', () => {
 		expect(mockSdkPost).not.toHaveBeenCalled();
 	});
 
+	it('does not post a VoIP token without a device push token', async () => {
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios', '8.4.0');
+		getToken.mockReturnValue('');
+		getVoip.mockReturnValue('voip-token');
+
+		await registerPushToken();
+
+		expect(mockSdkPost).not.toHaveBeenCalled();
+	});
+
+	it('posts both tokens again when a VoIP token arrives after the push token was registered', async () => {
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios', '8.4.0');
+		getToken.mockReturnValue('apns-token');
+		getVoip.mockReturnValue('');
+		await registerPushToken();
+
+		getVoip.mockReturnValue('voip-token');
+		await registerPushToken();
+
+		expect(mockSdkPost).toHaveBeenCalledTimes(2);
+		expect(mockSdkPost).toHaveBeenLastCalledWith(
+			'push.token',
+			expect.objectContaining({ value: 'apns-token', voipToken: 'voip-token' })
+		);
+	});
+
 	it('on iOS registers apn payload without voipToken when VoIP token is missing', async () => {
 		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadPushTokenApi('ios');
 		getToken.mockReturnValue('apns-token');
