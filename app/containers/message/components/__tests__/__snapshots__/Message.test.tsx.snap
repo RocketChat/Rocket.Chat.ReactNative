@@ -29973,7 +29973,30 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                       }
                     >
                       <Text>
-                        ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
+                        ⁠!
+                        <Text
+                          accessibilityRole="link"
+                          onLongPress={[Function]}
+                          onPress={[Function]}
+                        >
+                          react\\rocket
+                        </Text>
+                        ⁠!
+                        <Text
+                          accessibilityRole="link"
+                          onLongPress={[Function]}
+                          onPress={[Function]}
+                        >
+                          nyan\\rocket
+                        </Text>
+                        ⁠!
+                        <Text
+                          accessibilityRole="link"
+                          onLongPress={[Function]}
+                          onPress={[Function]}
+                        >
+                          marioparty
+                        </Text>
                       </Text>
                     </View>
                   </View>
@@ -30371,7 +30394,14 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                       }
                     >
                       <Text>
-                        ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)
+                        ⁠!
+                        <Text
+                          accessibilityRole="link"
+                          onLongPress={[Function]}
+                          onPress={[Function]}
+                        >
+                          react\\rocket
+                        </Text>
                       </Text>
                     </View>
                   </View>
@@ -30769,7 +30799,14 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                       }
                     >
                       <Text>
-                        🤙⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)
+                        🤙⁠!
+                        <Text
+                          accessibilityRole="link"
+                          onLongPress={[Function]}
+                          onPress={[Function]}
+                        >
+                          react\\rocket
+                        </Text>
                       </Text>
                     </View>
                   </View>
@@ -32374,7 +32411,30 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                       }
                     >
                       <Text>
-                        ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
+                        ⁠!
+                        <Text
+                          accessibilityRole="link"
+                          onLongPress={[Function]}
+                          onPress={[Function]}
+                        >
+                          react\\rocket
+                        </Text>
+                        ⁠!
+                        <Text
+                          accessibilityRole="link"
+                          onLongPress={[Function]}
+                          onPress={[Function]}
+                        >
+                          nyan\\rocket
+                        </Text>
+                        ⁠!
+                        <Text
+                          accessibilityRole="link"
+                          onLongPress={[Function]}
+                          onPress={[Function]}
+                        >
+                          marioparty
+                        </Text>
                       </Text>
                     </View>
                   </View>
@@ -32772,7 +32832,14 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                       }
                     >
                       <Text>
-                        ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)
+                        ⁠!
+                        <Text
+                          accessibilityRole="link"
+                          onLongPress={[Function]}
+                          onPress={[Function]}
+                        >
+                          react\\rocket
+                        </Text>
                       </Text>
                     </View>
                   </View>
@@ -33170,7 +33237,14 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                       }
                     >
                       <Text>
-                        🤙⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)
+                        🤙⁠!
+                        <Text
+                          accessibilityRole="link"
+                          onLongPress={[Function]}
+                          onPress={[Function]}
+                        >
+                          react\\rocket
+                        </Text>
                       </Text>
                     </View>
                   </View>
@@ -79324,7 +79398,14 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                               }
                             >
                               <Text>
-                                How are you? ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                                How are you? ⁠!
+                                <Text
+                                  accessibilityRole="link"
+                                  onLongPress={[Function]}
+                                  onPress={[Function]}
+                                >
+                                  nyan\\rocket
+                                </Text>
                               </Text>
                             </View>
                           </View>
@@ -79447,7 +79528,14 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                               }
                             >
                               <Text>
-                                How are you? ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                                How are you? ⁠!
+                                <Text
+                                  accessibilityRole="link"
+                                  onLongPress={[Function]}
+                                  onPress={[Function]}
+                                >
+                                  nyan\\rocket
+                                </Text>
                               </Text>
                             </View>
                           </View>
@@ -80723,7 +80811,15 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                   }
                                 >
                                   <Text>
-                                    Are you seeing this mario ⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif) ?
+                                    Are you seeing this mario ⁠!
+                                    <Text
+                                      accessibilityRole="link"
+                                      onLongPress={[Function]}
+                                      onPress={[Function]}
+                                    >
+                                      marioparty
+                                    </Text>
+                                     ?
                                   </Text>
                                 </View>
                                 <View
@@ -87935,7 +88031,14 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                               }
                             >
                               <Text>
-                                How are you? ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                                How are you? ⁠!
+                                <Text
+                                  accessibilityRole="link"
+                                  onLongPress={[Function]}
+                                  onPress={[Function]}
+                                >
+                                  nyan\\rocket
+                                </Text>
                               </Text>
                             </View>
                           </View>
@@ -89200,7 +89303,15 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                   }
                                 >
                                   <Text>
-                                    Are you seeing this mario ⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif) ?
+                                    Are you seeing this mario ⁠!
+                                    <Text
+                                      accessibilityRole="link"
+                                      onLongPress={[Function]}
+                                      onPress={[Function]}
+                                    >
+                                      marioparty
+                                    </Text>
+                                     ?
                                   </Text>
                                 </View>
                                 <View
@@ -136163,7 +136274,14 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                       }
                     >
                       <Text>
-                        Message ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                        Message ⁠!
+                        <Text
+                          accessibilityRole="link"
+                          onLongPress={[Function]}
+                          onPress={[Function]}
+                        >
+                          nyan\\rocket
+                        </Text>
                       </Text>
                     </View>
                   </View>
@@ -139515,7 +139633,14 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                       }
                     >
                       <Text>
-                        Message ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                        Message ⁠!
+                        <Text
+                          accessibilityRole="link"
+                          onLongPress={[Function]}
+                          onPress={[Function]}
+                        >
+                          nyan\\rocket
+                        </Text>
                       </Text>
                     </View>
                   </View>
@@ -145034,7 +145159,14 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                       <View
@@ -146765,7 +146897,14 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                       <View
@@ -147692,7 +147831,14 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                       <View
@@ -149323,7 +149469,14 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                       <View
@@ -150341,7 +150494,14 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                     </View>
@@ -150589,7 +150749,14 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                     </View>
@@ -150699,7 +150866,14 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                     </View>
@@ -151219,7 +151393,14 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                     </View>
@@ -151467,7 +151648,14 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                     </View>
@@ -151896,7 +152084,14 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                       <View
@@ -152482,7 +152677,14 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                       <View
@@ -152662,7 +152864,14 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                       <View
@@ -154121,7 +154330,14 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description for Base64 Attachment ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description for Base64 Attachment ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                       <View
@@ -156314,7 +156530,14 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description for Base64 Attachment ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description for Base64 Attachment ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                       <View
@@ -156884,7 +157107,14 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                       <View
@@ -158368,7 +158598,14 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                         }
                       >
                         <Text>
-                          This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
+                          This is a description ⁠!
+                          <Text
+                            accessibilityRole="link"
+                            onLongPress={[Function]}
+                            onPress={[Function]}
+                          >
+                            nyan\\rocket
+                          </Text>
                         </Text>
                       </View>
                       <View

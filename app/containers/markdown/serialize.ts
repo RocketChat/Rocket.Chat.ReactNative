@@ -142,7 +142,9 @@ const serializeEmoji = (block: EmojiBlock, context: ISerializeContext): string =
 	const emoji = resolveEmoji(block, context);
 	switch (emoji.kind) {
 		case 'custom':
-			return `${WORD_JOINER}![](${context.baseUrl}/emoji-custom/${encodeURIComponent(emoji.customEmoji.name)}.${emoji.customEmoji.extension})`;
+			return `${WORD_JOINER}![${escapePlainText(emoji.customEmoji.name)}](${context.baseUrl}/emoji-custom/${encodeURIComponent(
+				emoji.customEmoji.name
+			)}.${emoji.customEmoji.extension})`;
 		case 'unicode':
 		case 'plain':
 			return escapePlainText(emoji.text);

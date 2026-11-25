@@ -80,7 +80,7 @@ describe('markdown serialize', () => {
 	describe('custom emoji', () => {
 		const getCustomEmoji: ISerializeContext['getCustomEmoji'] = name =>
 			name === 'marioparty' ? { name: 'marioparty', extension: 'gif' } : null;
-		const marioparty = '\u2060![](https://open.rocket.chat/emoji-custom/marioparty.gif)';
+		const marioparty = '\u2060![marioparty](https://open.rocket.chat/emoji-custom/marioparty.gif)';
 
 		it('serializes a custom emoji as an image after a word joiner so it renders inline', () => {
 			expect(serialize(':marioparty:', { getCustomEmoji })).toBe(marioparty);
@@ -97,6 +97,14 @@ describe('markdown serialize', () => {
 		it('keeps a custom emoji inline within a sentence', () => {
 			expect(serialize(':marioparty: hello :marioparty: world', { getCustomEmoji })).toBe(
 				`${marioparty} hello ${marioparty} world`
+			);
+		});
+
+		it('names the emoji in the image alt text so VoiceOver reads it', () => {
+			const getUnderscoredEmoji: ISerializeContext['getCustomEmoji'] = name =>
+				name === 'react_rocket' ? { name: 'react_rocket', extension: 'png' } : null;
+			expect(serialize(':react_rocket:', { getCustomEmoji: getUnderscoredEmoji })).toBe(
+				'⁠![react\\_rocket](https://open.rocket.chat/emoji-custom/react_rocket.png)'
 			);
 		});
 	});

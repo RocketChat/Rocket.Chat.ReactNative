@@ -1280,10 +1280,10 @@ index 933d898..5af86bf 100644
  
    if (includeImages && attrs[@"imageURL"] != nil)
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/MarkdownAccessibilityElementBuilder.m b/node_modules/react-native-enriched-markdown/ios/utils/MarkdownAccessibilityElementBuilder.m
-index ccdffff..97b5cba 100644
+index ccdffff..12e5809 100644
 --- a/node_modules/react-native-enriched-markdown/ios/utils/MarkdownAccessibilityElementBuilder.m
 +++ b/node_modules/react-native-enriched-markdown/ios/utils/MarkdownAccessibilityElementBuilder.m
-@@ -88,30 +88,24 @@ static const CGFloat kFocusRectPadding = 2.0;
+@@ -88,30 +88,25 @@ static const CGFloat kFocusRectPadding = 2.0;
                                                            inTextView:(UITextView *)textView
                                                             container:(id)container
  {
@@ -1293,6 +1293,7 @@ index ccdffff..97b5cba 100644
    }];
  
 +  NSMutableArray<UIAccessibilityElement *> *specialElements = [NSMutableArray array];
++  NSMutableArray<UIAccessibilityElement *> *linkElements = [NSMutableArray array];
 +  NSMutableString *paragraphText = [NSMutableString string];
 +  BOOL hasPlainText = NO;
    NSUInteger segmentStart = paragraphRange.location;
@@ -1323,7 +1324,7 @@ index ccdffff..97b5cba 100644
      }
  
      ElementType type = ElementTypeLink;
-@@ -130,34 +124,44 @@ static const CGFloat kFocusRectPadding = 2.0;
+@@ -130,34 +125,49 @@ static const CGFloat kFocusRectPadding = 2.0;
        if ([attachment isKindOfClass:ENRMLinkPillAttachment.class])
          label = [(ENRMLinkPillAttachment *)attachment linkAccessibilityLabel];
      }
@@ -1338,16 +1339,21 @@ index ccdffff..97b5cba 100644
 -                                          container:container]];
 -    segmentStart = NSMaxRange(itemRange);
 +    [paragraphText appendString:label ?: @""];
-+    [specialElements addObject:[self createElementForRange:itemRange
-+                                                      type:type
-+                                                      text:label
-+                                                  isLinked:[item[@"isLinked"] boolValue]
-+                                                   heading:0
-+                                                  listInfo:listInfo
-+                                                    labels:labels
-+                                                      view:textView
-+                                                 container:container]];
 +    segmentStart = MAX(segmentStart, NSMaxRange(itemRange));
++    if (type == ElementTypeImage && label.length == 0)
++      continue;
++    UIAccessibilityElement *element = [self createElementForRange:itemRange
++                                                             type:type
++                                                             text:label
++                                                         isLinked:[item[@"isLinked"] boolValue]
++                                                          heading:0
++                                                         listInfo:listInfo
++                                                           labels:labels
++                                                             view:textView
++                                                        container:container];
++    [specialElements addObject:element];
++    if (type == ElementTypeLink || [item[@"isLinked"] boolValue])
++      [linkElements addObject:element];
    }
  
    if (segmentStart < NSMaxRange(paragraphRange)) {
@@ -1388,7 +1394,7 @@ index ccdffff..97b5cba 100644
 +                                           labels:labels
 +                                             view:textView
 +                                        container:container]];
-+  [elements addObjectsFromArray:specialElements];
++  [elements addObjectsFromArray:linkElements];
    return elements;
  }
  

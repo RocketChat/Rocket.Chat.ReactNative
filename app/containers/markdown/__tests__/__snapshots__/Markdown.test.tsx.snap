@@ -107,7 +107,30 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
     }
   >
     <Text>
-      Custom emojis: ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png) ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png) ⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
+      Custom emojis: ⁠!
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        react\\rocket
+      </Text>
+       ⁠!
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        nyan\\rocket
+      </Text>
+       ⁠!
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        marioparty
+      </Text>
     </Text>
   </View>
   <View
@@ -118,7 +141,14 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
     }
   >
     <Text>
-      😃👍️⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
+      😃👍️⁠!
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        marioparty
+      </Text>
     </Text>
   </View>
 </View>
