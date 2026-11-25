@@ -1,9 +1,17 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { type IUser, type TSendFileMessageFileInfo, type TUploadModel } from '~/definitions';
+import { type IUser } from '~/definitions/IUser';
+import { type TSendFileMessageFileInfo, type TUploadModel } from '~/definitions/IUpload';
 import database from '~/lib/database';
 import FileUpload from '../helpers/fileUpload';
-import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
+import {
+	copyFileToCacheDirectoryIfNeeded,
+	createUploadRecord,
+	endUpload,
+	isUploadCancelled,
+	persistUploadError,
+	uploadQueue
+} from './utils';
 import { type IFormData } from '../helpers/fileUpload/definitions';
 
 export async function sendFileMessage(
@@ -16,6 +24,7 @@ export async function sendFileMessage(
 ): Promise<void> {
 	let uploadPath: string | null = '';
 	let uploadRecord: TUploadModel | null;
+	let upload: FileUpload | undefined;
 	try {
 		const { id, token } = user;
 		const uploadUrl = `${server}/api/v1/rooms.upload/${rid}`;
@@ -28,14 +37,14 @@ export async function sendFileMessage(
 			return;
 		}
 
-		fileInfo.path = await copyFileToCacheDirectoryIfNeeded(fileInfo.path, fileInfo.name);
+		const fileUri = await copyFileToCacheDirectoryIfNeeded(fileInfo.path, fileInfo.name);
 
 		const formData: IFormData[] = [];
 		formData.push({
 			name: 'file',
 			type: fileInfo.type,
 			filename: fileInfo.name || 'fileMessage',
-			uri: fileInfo.path
+			uri: fileUri
 		});
 
 		if (fileInfo.description) {
@@ -66,7 +75,7 @@ export async function sendFileMessage(
 			'X-User-Id': id
 		};
 
-		uploadQueue[uploadPath] = new FileUpload(uploadUrl, headers, formData, async (loaded, total) => {
+		upload = new FileUpload(uploadUrl, headers, formData, async (loaded, total) => {
 			try {
 				await db.write(async () => {
 					await uploadRecord?.update(u => {
@@ -77,16 +86,21 @@ export async function sendFileMessage(
 				console.error(e);
 			}
 		});
-		await uploadQueue[uploadPath].send();
+		uploadQueue[uploadPath] = upload;
+		await upload.send();
 		await db.write(async () => {
 			await uploadRecord?.destroyPermanently();
 		});
 	} catch (e) {
-		if (uploadPath && !uploadQueue[uploadPath]) {
+		if (upload && isUploadCancelled(uploadPath, upload)) {
 			console.log('Upload cancelled');
 		} else {
 			await persistUploadError(fileInfo.path, rid);
 			throw e;
+		}
+	} finally {
+		if (upload) {
+			endUpload(uploadPath, upload);
 		}
 	}
 }

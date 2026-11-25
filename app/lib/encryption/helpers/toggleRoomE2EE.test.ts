@@ -173,7 +173,7 @@ describe('toggleRoomE2EE', () => {
 
 	it('keeps the new value when the save succeeds', async () => {
 		const { store } = createStore(false);
-		mockSaveRoomSettings.mockResolvedValue({ result: true });
+		mockSaveRoomSettings.mockResolvedValue(undefined);
 
 		await toggleRoomE2EE('rid-1');
 		await pressAlertButton('Enable');

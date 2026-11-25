@@ -1,9 +1,9 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
-import { loginWithDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
+import { loginToApp, LONG_TIMEOUT } from '~e2e/support/flows';
 import { registerOnWorkspace } from '~e2e/support/onboarding';
 import { addServerFromServersList, checkServer, deleteServer, openServersList } from '~e2e/support/servers';
 
@@ -13,7 +13,7 @@ test('deletes a server from the servers list', { tags: ['test-8'] }, async fixtu
 	const { screen } = fixtures;
 	const user = await createUser();
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await checkServer(fixtures, data.server);
 
 	await openServersList(fixtures);

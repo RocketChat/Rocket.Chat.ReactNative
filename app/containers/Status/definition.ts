@@ -1,6 +1,6 @@
 import { type TextProps } from 'react-native';
 
-import { type TUserStatus } from '~/definitions';
+import { type TUserStatus } from '~/definitions/TUserStatus';
 
 export interface IStatus extends TextProps {
 	id: string;

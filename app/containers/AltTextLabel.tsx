@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { useActionSheet } from './ActionSheet';
+import { useActionSheet } from './ActionSheet/Provider';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';

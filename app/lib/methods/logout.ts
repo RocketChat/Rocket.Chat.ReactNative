@@ -2,7 +2,7 @@ import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import type Model from '@nozbe/watermelondb/Model';
 
 import { getDeviceToken } from '../notifications';
-import { isSsl } from './helpers';
+import { isSsl } from './helpers/isSsl';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import { disconnect } from '../services/connect';
@@ -74,18 +74,20 @@ export async function removeServerDatabase({ server }: { server: string }): Prom
 }
 
 async function logoutFromServer(server: string, resume: string): Promise<void> {
+	const workspaceClient = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 	try {
-		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-		await sdk.login({ resume });
+		await workspaceClient.login({ resume });
 
 		const token = getDeviceToken();
 		if (token) {
-			await sdk.del('push.token', { token });
+			await workspaceClient.del('push.token', { token });
 		}
 
-		await sdk.logout();
+		await workspaceClient.logout();
 	} catch (e) {
 		log(e);
+	} finally {
+		workspaceClient.disconnect().catch(log);
 	}
 }
 

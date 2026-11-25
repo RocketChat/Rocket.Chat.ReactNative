@@ -5,7 +5,7 @@ import JitsiLayout from '../Layout/JitsiLayout';
 import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import { MessageRoomProvider } from '~/containers/message/stores/MessageRoomStore';
 import { mockedStore } from '~/reducers/mockedStore';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import I18n from '~/i18n';
 
 const item = {

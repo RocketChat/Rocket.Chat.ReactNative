@@ -16,16 +16,12 @@ import {
 } from '@rocket.chat/mobile-crypto';
 import sampleSize from 'lodash/sampleSize';
 
-import {
-	type IMessage,
-	type IServerAttachment,
-	type ISubscription,
-	type TMessageModel,
-	type TSendFileMessageFileInfo,
-	type TSubscriptionModel,
-	type TThreadMessageModel,
-	type TThreadModel
-} from '~/definitions';
+import { type IMessage, type TMessageModel } from '~/definitions/IMessage';
+import { type IServerAttachment } from '~/definitions/IAttachment';
+import { type ISubscription, type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type TSendFileMessageFileInfo } from '~/definitions/IUpload';
+import { type TThreadMessageModel } from '~/definitions/IThreadMessage';
+import { type TThreadModel } from '~/definitions/IThread';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,
@@ -39,7 +35,7 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import log from '../methods/helpers/log';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import UserPreferences from '../methods/userPreferences';
-import { compareServerVersion } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import {
 	e2eSetUserPublicAndPrivateKeys,
 	e2eRequestSubscriptionKeys,
@@ -47,7 +43,7 @@ import {
 	provideUsersSuggestedGroupKeys
 } from '../services/restApi';
 import { store } from '../store/auxStore';
-import { MAX_CONCURRENT_QUEUE } from './constants';
+import { KEY_DISTRIBUTION_INTERVAL, MAX_CONCURRENT_QUEUE } from './constants';
 import type { IDecryptionFileQueue, TDecryptFile } from './definitions';
 import Deferred from './helpers/deferred';
 import EncryptionRoom from './room';
@@ -128,6 +124,10 @@ class Encryption {
 		this.privateKey = null;
 		this.publicKey = null;
 		this.roomInstances = {};
+		if (this.keyDistributionInterval) {
+			clearInterval(this.keyDistributionInterval);
+		}
+		this.keyDistributionInterval = null;
 		// Cancel ongoing encryption/decryption requests
 		this.readyPromise.reject();
 		// Reset Deferred
@@ -474,15 +474,8 @@ class Encryption {
 
 		const randomRoomIds = sampleSize(roomIds, ROOM_KEY_EXCHANGE_SIZE);
 
-		const sampleIds: string[] = [];
-		for await (const roomId of randomRoomIds) {
-			const roomE2E = await this.getRoomInstance(roomId);
-			if (!roomE2E || !roomE2E?.hasSessionKey()) {
-				continue;
-			}
-
-			sampleIds.push(roomId);
-		}
+		const roomInstances = await Promise.all(randomRoomIds.map(roomId => this.getRoomInstance(roomId)));
+		const sampleIds = randomRoomIds.filter((_, index) => roomInstances[index]?.hasSessionKey());
 
 		if (!sampleIds.length && roomIds.length > limit) {
 			return this.getSample(roomIds, limit - 1);
@@ -496,7 +489,12 @@ class Encryption {
 			return;
 		}
 
+		let distributing = false;
 		const keyDistribution = async () => {
+			if (distributing) {
+				return;
+			}
+			distributing = true;
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			try {
@@ -527,11 +525,13 @@ class Encryption {
 				}
 			} catch (e) {
 				log(e);
+			} finally {
+				distributing = false;
 			}
 		};
 
+		this.keyDistributionInterval = setInterval(keyDistribution, KEY_DISTRIBUTION_INTERVAL);
 		await keyDistribution();
-		this.keyDistributionInterval = setInterval(keyDistribution, 10000);
 	};
 
 	// Creating the instance is enough to generate room e2ee key
@@ -613,17 +613,38 @@ class Encryption {
 			throw new Error('Subscription not found');
 		}
 
-		const { E2E_Enable_Encrypt_Files } = store.getState().settings;
-		if (!subscription.encrypted || (E2E_Enable_Encrypt_Files !== undefined && !E2E_Enable_Encrypt_Files)) {
+		const { E2E_Enable, E2E_Enable_Encrypt_Files } = store.getState().settings;
+		if (
+			E2E_Enable === false ||
+			!subscription.encrypted ||
+			(E2E_Enable_Encrypt_Files !== undefined && !E2E_Enable_Encrypt_Files)
+		) {
 			// Send a non encrypted message
 			return { file };
 		}
 
 		const roomE2E = await this.getRoomInstance(rid);
-		if (!roomE2E || !roomE2E?.hasSessionKey()) {
-			return { file };
+		if (!roomE2E?.hasSessionKey()) {
+			throw new Error('Room encryption key is not available');
 		}
 		return roomE2E.encryptFile(rid, file);
+	};
+
+	canSendToRoom = async (rid: string): Promise<boolean> => {
+		const subscription = await getSubscriptionByRoomId(rid);
+		if (!subscription) {
+			return false;
+		}
+		if (!subscription.encrypted || store.getState().settings.E2E_Enable === false) {
+			return true;
+		}
+		try {
+			await this.establishing;
+		} catch {
+			return false;
+		}
+		const roomE2E = await this.getRoomInstance(rid);
+		return !!roomE2E?.hasSessionKey();
 	};
 
 	decryptFile: TDecryptFile = async (_messageId, path, encryption, originalChecksum) => {

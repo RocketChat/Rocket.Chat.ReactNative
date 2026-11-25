@@ -232,8 +232,8 @@ describe('loadMessagesForRoom', () => {
 		);
 	});
 
-	it('falls back to settings.Hide_System_Messages when sub.sysMes is a boolean (not an array)', async () => {
-		mockedGetSubscriptionByRoomId.mockResolvedValue({ sysMes: true } as any);
+	it.each([[true], [['ul']]])('applies settings.Hide_System_Messages when sub.sysMes is %j', async sysMes => {
+		mockedGetSubscriptionByRoomId.mockResolvedValue({ sysMes } as any);
 
 		const firstBatch = buildHiddenBatch('first', 50);
 		const secondBatch = Array.from({ length: 50 }, (_, index) =>

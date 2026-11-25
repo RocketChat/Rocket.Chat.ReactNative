@@ -8,12 +8,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import { ControlledFormTextInput } from '../containers/TextInput';
+import { ControlledFormTextInput } from '../containers/TextInput/ControlledFormTextInput';
 import I18n from '../i18n';
 import { forgotPassword } from '../lib/services/restApi';
 import { type OutsideParamList } from '../stacks/types';
 import { useTheme } from '../theme';
-import { showErrorAlert } from '../lib/methods/helpers';
+import { showErrorAlert } from '../lib/methods/helpers/info';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
 

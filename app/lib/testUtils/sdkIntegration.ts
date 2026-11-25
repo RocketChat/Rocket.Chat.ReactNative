@@ -1,7 +1,7 @@
 import type * as RocketChatSdk from '@rocket.chat/sdk';
 import type { Store } from 'redux';
 
-import type { IApplicationState } from '~/definitions';
+import type { IApplicationState } from '~/definitions/redux';
 import type sdk from '../services/sdk';
 import type { ISocketDriver } from '../services/sdk';
 
@@ -54,7 +54,8 @@ export interface IMockSdkDriver extends ISocketDriver {
 		openTimeout?: ReturnType<typeof setTimeout>;
 		open(): Promise<void>;
 		send(message: Record<string, unknown>): Promise<unknown>;
-		subscriptions: Record<string, { id: string; name: string; params: string[]; unsubscribe: jest.Mock }>;
+		subscribe(name: string, params: unknown[]): Promise<unknown>;
+		login(credentials: { resume: string }): Promise<unknown>;
 	};
 }
 
@@ -116,24 +117,31 @@ export async function buildConnectedDriver(connections: MockConnection[], userId
 	return driver;
 }
 
-export function addMediaSubs(driver: IMockSdkDriver, userId: string): void {
-	['media-signal', 'media-calls'].forEach((name, index) => {
-		const id = `sub-${index}`;
-		driver.socket.subscriptions[id] = {
-			id,
-			name: 'stream-notify-user',
-			params: [`${userId}/${name}`],
-			unsubscribe: jest.fn()
-		};
-	});
+export async function addMediaSubs(driver: IMockSdkDriver, userId: string): Promise<void> {
+	const subscribing = Promise.all(
+		['media-signal', 'media-calls'].map(name => driver.socket.subscribe('stream-notify-user', [`${userId}/${name}`]))
+	);
+	await jest.advanceTimersByTimeAsync(0);
+	await subscribing;
+}
+
+export async function resumeLogin(driver: IMockSdkDriver): Promise<void> {
+	const loggingIn = driver.socket.login({ resume: 'auth-token' });
+	await jest.advanceTimersByTimeAsync(0);
+	await loggingIn;
 }
 
 export function backdateLastPing(driver: IMockSdkDriver, ageMs: number): void {
 	driver.socket.lastPing = Date.now() - ageMs;
 }
 
-export function stopAnsweringFrames(connection: MockConnection): void {
-	connection.send.mockImplementation(() => undefined);
+export function stopAnsweringFrames(connection: MockConnection, msg?: string): void {
+	const answer = connection.send.getMockImplementation();
+	connection.send.mockImplementation((frame: string) => {
+		if (msg && (JSON.parse(frame) as IDdpMessage).msg !== msg) {
+			answer?.(frame);
+		}
+	});
 }
 
 export interface IMockCollection {

@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 import * as FileSystem from 'expo-file-system/legacy';
 
 import { getUploadByPath } from '~/lib/database/services/Upload';
-import { type IUpload, type TUploadModel } from '~/definitions';
+import { type IUpload, type TUploadModel } from '~/definitions/IUpload';
 import i18n from '~/i18n';
 import database from '~/lib/database';
 import log from '../helpers/log';
@@ -17,6 +17,15 @@ export const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 export function isUploadActive(path: string, rid: string): boolean {
 	return !!uploadQueue[getUploadPath(path, rid)];
 }
+
+export const isUploadCancelled = (uploadPath: string | null, upload: IFileUpload): boolean =>
+	!uploadPath || uploadQueue[uploadPath] !== upload;
+
+export const endUpload = (uploadPath: string | null, upload: IFileUpload): void => {
+	if (uploadPath && uploadQueue[uploadPath] === upload) {
+		delete uploadQueue[uploadPath];
+	}
+};
 
 export async function cancelUpload(item: TUploadModel, rid: string): Promise<void> {
 	const uploadPath = getUploadPath(item.path, rid);

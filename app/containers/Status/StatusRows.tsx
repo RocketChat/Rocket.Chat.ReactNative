@@ -3,7 +3,7 @@ import { StyleSheet, type StyleProp, Text, type TextStyle, View, type ViewStyle 
 
 import Status from '.';
 import { CustomIcon } from '../CustomIcon';
-import { type TUserStatus, STATUS_I18N_KEYS } from '~/definitions';
+import { type TUserStatus, STATUS_I18N_KEYS } from '~/definitions/TUserStatus';
 import { formatStatusExpiry } from '~/lib/methods/helpers/formatStatusExpiry';
 import I18n from '~/i18n';
 

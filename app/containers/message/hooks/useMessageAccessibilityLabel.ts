@@ -2,7 +2,7 @@ import i18n from '~/i18n';
 import translationLanguages from '~/lib/constants/translationLanguages';
 import { useImageDescriptionLabel } from './useImageDescriptionLabel';
 import { getInfoMessage } from '../utils';
-import { type IUserChannel, type IUserMention } from '~/definitions';
+import { type IUserChannel, type IUserMention } from '~/definitions/IMessage';
 import {
 	useContentData,
 	useIsEncrypted,

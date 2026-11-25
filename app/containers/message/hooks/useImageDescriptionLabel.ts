@@ -1,6 +1,6 @@
 import i18n from '~/i18n';
 import { useAltTextSupported } from '~/lib/hooks/useAltTextSupported';
-import { type IAttachment } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
 
 export const useImageDescriptionLabel = (attachments: IAttachment[] | undefined, msg: string | undefined): string => {
 	const isAltTextSupported = useAltTextSupported();

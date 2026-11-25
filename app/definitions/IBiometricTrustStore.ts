@@ -11,6 +11,8 @@ export type BiometricInvalidationReason = 'enrollmentChanged' | 'trustLost' | 'r
 // Localized copy for the OS biometric prompt shown by verify().
 export type BiometricPromptCopy = { title: string; cancel: string };
 
+export type BiometricTrustState = 'disabled' | 'enabled' | 'disabledRelockPending' | 'enabledRelockPending';
+
 export interface IBiometricTrustStore {
 	enroll(): Promise<TrustResult>;
 	disenroll(): Promise<void>;
@@ -22,8 +24,7 @@ export interface IBiometricTrustStore {
 	isEnrollmentValid(): Promise<boolean>;
 	isEnabled(): boolean;
 	setEnabled(enabled: boolean): void;
-	// Forces a passcode on the next unlock regardless of the auto-lock window.
-	isRelockPending(): boolean;
+	readTrustState(): BiometricTrustState;
 	setRelockPending(pending: boolean): void;
 	invalidate(): Promise<void>;
 	// Disenroll and clear the flag as one operation. Disenroll is best-effort, so this cannot fail:

@@ -1,6 +1,6 @@
 import { PixelRatio } from 'react-native';
 
-import { SubscriptionType } from '~/definitions';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import { type IAvatar } from '~/containers/Avatar/interfaces';
 import { compareServerVersion } from './compareServerVersion';
 

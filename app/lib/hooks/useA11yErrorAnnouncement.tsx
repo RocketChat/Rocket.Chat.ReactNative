@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { AccessibilityInfo } from 'react-native';
 import { type FieldErrorsImpl } from 'react-hook-form';
 
-import { useDebounce } from '../methods/helpers';
+import { useDebounce } from '../methods/helpers/debounce';
 import { accessibilityErrorAnnouncementDebounceTime } from '../constants/debounceConfig';
 
 type TInputValues = {

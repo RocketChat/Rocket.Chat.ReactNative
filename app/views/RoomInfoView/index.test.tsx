@@ -21,8 +21,7 @@ jest.mock('~/lib/database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn().mockResolvedValue(null)
 }));
 
-jest.mock('~/lib/methods/helpers', () => ({
-	...jest.requireActual('~/lib/methods/helpers'),
+jest.mock('~/lib/methods/helpers/hasPermission', () => ({
 	hasPermission: jest.fn().mockResolvedValue([false])
 }));
 
@@ -46,7 +45,7 @@ jest.mock('~/lib/hooks/useVideoConf', () => ({
 	useVideoConf: () => ({ callEnabled: false, disabledTooltip: false, showInitCallActionSheet: jest.fn() })
 }));
 
-jest.mock('~/lib/hooks/useNewMediaCall', () => ({
+jest.mock('~/lib/hooks/useNewMediaCall/useNewMediaCall', () => ({
 	useNewMediaCall: () => ({ openNewMediaCall: jest.fn(), hasMediaCallPermission: false, isInActiveCall: false })
 }));
 
@@ -58,7 +57,7 @@ jest.mock('./hooks', () => ({
 	useE2EEWarning: () => false
 }));
 
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	useActionSheet: () => ({ showActionSheet: jest.fn() })
 }));
 
