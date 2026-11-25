@@ -1,4 +1,5 @@
-import { select, takeLatest } from 'redux-saga/effects';
+import { reloadAppAsync } from 'expo';
+import { call, select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
@@ -7,6 +8,7 @@ import { RootEnum } from '../definitions/redux/TRootEnum';
 import { recoverSocket } from '../lib/services/socketHealth';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';
+import { hasDeviceLanguageChanged } from '../i18n';
 
 const isAuthAndConnected = function* isAuthAndConnected() {
 	const login = yield select(state => state.login);
@@ -15,6 +17,10 @@ const isAuthAndConnected = function* isAuthAndConnected() {
 };
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
+	if (hasDeviceLanguageChanged()) {
+		yield call(reloadAppAsync, 'Device language change');
+		return;
+	}
 	const appRoot = yield select(state => state.app.root);
 	if (appRoot !== RootEnum.ROOT_INSIDE) {
 		return;
