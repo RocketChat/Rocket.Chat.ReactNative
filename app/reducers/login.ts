@@ -78,6 +78,13 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 			};
 		case types.LOGOUT:
 			return initialState;
+		case types.SERVER.SELECT_REQUEST:
+			return {
+				...state,
+				isFetching: false,
+				failure: false,
+				error: {}
+			};
 		case types.USER.SET:
 			if (isSubsetOf(action.user, state.user)) {
 				return state;
