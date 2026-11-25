@@ -21,14 +21,14 @@ interface IRoomBodyFocusAnchorProps {
 export const RoomBodyFocusAnchor = ({ children }: IRoomBodyFocusAnchorProps) => {
 	const disabled = useRoomStore(fromSubscription(isInviteSubscription, false));
 
-	if (!hasNativeHeaderBar || !isExternalKeyboardConnected()) {
+	if (!hasNativeHeaderBar) {
 		return <>{children}</>;
 	}
 
 	return (
 		<>
 			<KeyboardFocusView
-				autoFocus={!disabled}
+				autoFocus={isExternalKeyboardConnected() && !disabled}
 				accessibilityElementsHidden
 				focusable={!disabled}
 				canBeFocused={!disabled}
