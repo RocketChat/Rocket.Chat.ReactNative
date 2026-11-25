@@ -8,7 +8,7 @@ import { CallButtons } from './components/CallButtons';
 import { styles as callViewStyles } from './styles';
 import { useTheme } from '~/theme';
 import { useCallStore } from '~/lib/services/voip/useCallStore';
-import { ActionSheetProvider } from '~/containers/ActionSheet';
+import { ActionSheetProvider } from '~/containers/ActionSheet/Provider';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,

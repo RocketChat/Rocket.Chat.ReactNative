@@ -10,7 +10,7 @@ import styles from './styles';
 import { useTheme } from '~/theme';
 import { type IItemData } from '.';
 import { debounce } from '~/lib/methods/helpers/debounce';
-import { useActionSheet } from '~/containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 
 interface IMultiSelectContentProps {
 	onSearch?: (keyword: string) => IItemData[] | Promise<IItemData[] | undefined>;

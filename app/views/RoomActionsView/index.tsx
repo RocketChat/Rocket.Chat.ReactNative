@@ -17,14 +17,10 @@ import { MarkdownPreview } from '~/containers/markdown';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
 import SafeAreaView from '~/containers/SafeAreaView';
 import StatusRows from '~/containers/Status/StatusRows';
-import {
-	type IApplicationState,
-	type IBaseScreen,
-	type ISubscription,
-	type IUser,
-	SubscriptionType,
-	type TSubscriptionModel
-} from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type IBaseScreen } from '~/definitions';
+import { type ISubscription, SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type IUser } from '~/definitions/IUser';
 import { type IActiveUser } from '~/reducers/activeUsers';
 import { withDimensions } from '~/lib/hooks/withDimensions';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -42,17 +38,15 @@ import { ERoomType } from '~/definitions/ERoomType';
 import { E2E_ROOM_TYPES } from '~/lib/constants/keys';
 import { themes } from '~/lib/constants/colors';
 import { getPermalinkChannel } from '~/lib/methods/getPermalinks';
-import {
-	canAutoTranslate as canAutoTranslateMethod,
-	getRoomAvatar,
-	getRoomTitle,
-	getUidDirectMessage,
-	hasPermission,
-	isGroupChat,
-	compareServerVersion,
-	isIOS,
-	isTeamRoom
-} from '~/lib/methods/helpers';
+import { canAutoTranslate as canAutoTranslateMethod } from '~/lib/methods/helpers/canAutoTranslate';
+import { getRoomAvatar } from '~/lib/methods/helpers/getRoomAvatar';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
+import { hasPermission } from '~/lib/methods/helpers/hasPermission';
+import { isGroupChat } from '~/lib/methods/helpers/isGroupChat';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
+import { isTeamRoom } from '~/lib/methods/helpers/room';
 import {
 	getUserInfo,
 	toggleBlockUser,
@@ -68,7 +62,7 @@ import {
 	returnLivechat
 } from '~/lib/services/restApi';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
-import { type IActionSheetProvider, withActionSheet } from '~/containers/ActionSheet';
+import { type IActionSheetProvider, withActionSheet } from '~/containers/ActionSheet/Provider';
 import { type MasterDetailInsideStackParamList } from '~/stacks/MasterDetailStack/types';
 import { closeLivechat } from '~/lib/methods/helpers/closeLivechat';
 import { type ILivechatDepartment } from '~/definitions/ILivechatDepartment';
@@ -221,7 +215,6 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 	async componentDidMount() {
 		this.mounted = true;
 		const { room, member } = this.state;
-		const { encryptionEnabled } = this.props;
 		if (room.rid) {
 			if (!room.id) {
 				if (room.t === SubscriptionType.OMNICHANNEL) {
@@ -233,53 +226,62 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 				}
 			}
 
-			if (room && (await this.canViewMembers())) {
-				try {
-					const counters = await getRoomCounters(room.rid, room.t as any);
-					if (counters.success) {
-						await this.updateUsersCount(counters.members);
-						this.setState({ joined: counters.joined, membersCount: counters.members });
-					}
-				} catch (e) {
-					log(e);
-				}
-			} else if (room.t === 'd' && isEmpty(member)) {
-				this.updateRoomMember();
-			}
-
-			const canAutoTranslate = canAutoTranslateMethod();
-			const { editRoomPermission, toggleRoomE2EEncryptionPermission, createTeamPermission, convertTeamPermission } = this.props;
-			const [[canEdit, canToggleEncryption, canCreateTeam, canAddChannelToTeam, canConvertTeam], canViewMembers] =
-				await Promise.all([
-					hasPermission(
-						[
-							editRoomPermission,
-							toggleRoomE2EEncryptionPermission,
-							createTeamPermission,
-							this.getMoveToTeamPermission(),
-							convertTeamPermission
-						],
-						room.rid
-					),
-					this.canViewMembers()
-				]);
-			const hasE2EEWarning = EncryptionUtils.hasE2EEWarning({
-				encryptionEnabled,
-				E2EKey: room.E2EKey,
-				roomEncrypted: room.encrypted
-			});
-
-			this.setState({
-				canAutoTranslate,
-				canEdit,
-				canToggleEncryption,
-				canViewMembers,
-				canCreateTeam,
-				canAddChannelToTeam,
-				canConvertTeam,
-				hasE2EEWarning
-			});
+			const canViewMembers = await this.canViewMembers();
+			await Promise.all([this.loadMembers(room, member, canViewMembers), this.loadActionFlags(room, canViewMembers)]);
 		}
+	}
+
+	private async loadMembers(room: TSubscriptionModel, member: Partial<IUser>, canViewMembers: boolean) {
+		if (canViewMembers) {
+			try {
+				const counters = await getRoomCounters(room.rid, room.t as any);
+				if (counters.success) {
+					await this.updateUsersCount(counters.members);
+					this.setState({ joined: counters.joined, membersCount: counters.members });
+				}
+			} catch (e) {
+				log(e);
+			}
+		} else if (room.t === 'd' && isEmpty(member)) {
+			this.updateRoomMember();
+		}
+	}
+
+	private async loadActionFlags(room: TSubscriptionModel, canViewMembers: boolean) {
+		const canAutoTranslate = canAutoTranslateMethod();
+		const {
+			encryptionEnabled,
+			editRoomPermission,
+			toggleRoomE2EEncryptionPermission,
+			createTeamPermission,
+			convertTeamPermission
+		} = this.props;
+		const [canEdit, canToggleEncryption, canCreateTeam, canAddChannelToTeam, canConvertTeam] = await hasPermission(
+			[
+				editRoomPermission,
+				toggleRoomE2EEncryptionPermission,
+				createTeamPermission,
+				this.getMoveToTeamPermission(),
+				convertTeamPermission
+			],
+			room.rid
+		);
+		const hasE2EEWarning = EncryptionUtils.hasE2EEWarning({
+			encryptionEnabled,
+			E2EKey: room.E2EKey,
+			roomEncrypted: room.encrypted
+		});
+
+		this.setState({
+			canAutoTranslate,
+			canEdit,
+			canToggleEncryption,
+			canViewMembers,
+			canCreateTeam,
+			canAddChannelToTeam,
+			canConvertTeam,
+			hasE2EEWarning
+		});
 	}
 
 	private async loadOmnichannelRoom(rid: string) {

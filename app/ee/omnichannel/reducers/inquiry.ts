@@ -1,4 +1,5 @@
-import { type IOmnichannelRoom, type TApplicationActions } from '~/definitions';
+import { type IOmnichannelRoom } from '~/definitions/IRoom';
+import { type TApplicationActions } from '~/definitions/redux';
 import { INQUIRY } from '~/actions/actionsTypes';
 
 export interface IInquiry {

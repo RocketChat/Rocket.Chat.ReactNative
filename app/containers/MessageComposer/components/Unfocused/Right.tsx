@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { useFocused } from '~/containers/MessageComposer/context';
 import { useEmojiKeyboard } from '~/containers/MessageComposer/hooks/useEmojiKeyboard';
-import { MicOrSendButton } from '../Buttons';
+import { MicOrSendButton } from '../Buttons/MicOrSendButton';
 import { MIN_HEIGHT } from '~/containers/MessageComposer/constants';
 import { CancelEdit } from '../CancelEdit';
 

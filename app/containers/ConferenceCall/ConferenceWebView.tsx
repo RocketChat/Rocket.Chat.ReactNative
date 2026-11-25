@@ -13,7 +13,7 @@ import {
 import i18n from '~/i18n';
 import { userAgent } from '~/lib/constants/userAgent';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { isConferenceUrl, isHttpsUrl } from '~/lib/methods/helpers/isConferenceUrl';
 import log from '~/lib/methods/helpers/log';
 import openLink from '~/lib/methods/helpers/openLink';
@@ -36,7 +36,7 @@ const ConferenceWebView = ({ url, expanded, onClose, onOpenLink }: IConferenceWe
 	const { id: userId, token } = useAppSelector(state => getUserSelector(state));
 	const server = useAppSelector(state => state.server.server);
 	const { theme, colors } = useTheme();
-	const webviewRef = useRef<WebView>(null);
+	const webviewRef = useRef<WebView<object>>(null);
 	const loaded = useRef(false);
 	const [failed, setFailed] = useState(false);
 

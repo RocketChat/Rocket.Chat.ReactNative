@@ -4,7 +4,9 @@ import Reactions from '../Reactions';
 import { MessageProviders } from '~/containers/message/__tests__/testHelpers';
 import { setUser } from '~/actions/login';
 import { mockedStore } from '~/reducers/mockedStore';
-import { type IReaction, type IUseRoomMessageHandlersResult, type TAnyMessageModel } from '~/definitions';
+import { type IReaction } from '~/definitions/IReaction';
+import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 
 const initialMockedStoreState = () => {
 	mockedStore.dispatch(

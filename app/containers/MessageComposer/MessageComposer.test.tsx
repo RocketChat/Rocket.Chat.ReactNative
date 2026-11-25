@@ -11,7 +11,8 @@ import { selectServerRequest } from '~/actions/server';
 import { setUser } from '~/actions/login';
 import { mockedStore } from '~/reducers/mockedStore';
 import { type IPermissionsState } from '~/reducers/permissions';
-import { type IMessage, type IShareAttachment, type TMessageActionState } from '~/definitions';
+import { type IMessage, type TMessageActionState } from '~/definitions/IMessage';
+import { type IShareAttachment } from '~/definitions/IAttachment';
 import { colors } from '~/lib/constants/colors';
 import { type ComposerState } from './ComposerStore';
 import { ComposerProvider } from './ComposerStore';
@@ -94,8 +95,8 @@ const initialStoreState = () => {
 };
 initialStoreState();
 
-jest.mock('~/lib/database/services/Message', () => ({
-	getMessageById: (messageId: any) => ({
+jest.mock('~/lib/database/services/Message', () => {
+	const getMessage = (messageId: any) => ({
 		id: messageId,
 		rid: 'rid',
 		msg: messageId !== 'image' ? `Message ${messageId}` : undefined,
@@ -107,8 +108,9 @@ jest.mock('~/lib/database/services/Message', () => ({
 						}
 					]
 				: []
-	})
-}));
+	});
+	return { getMessageById: getMessage, getMessageOrThreadMessageById: getMessage };
+});
 
 const initialContext = {
 	rid: 'rid',

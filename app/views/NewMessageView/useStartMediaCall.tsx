@@ -1,6 +1,6 @@
-import { showActionSheetRef } from '~/containers/ActionSheet';
-import { useMediaCallPermission } from '~/lib/hooks/useMediaCallPermission';
-import { NewMediaCall } from '~/containers/NewMediaCall';
+import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
+import { useMediaCallPermission } from '~/lib/hooks/useMediaCallPermission/useMediaCallPermission';
+import { NewMediaCall } from '~/containers/NewMediaCall/NewMediaCall';
 import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
 import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
 import { isSelfUserId } from '~/lib/services/voip/isSelfUserId';

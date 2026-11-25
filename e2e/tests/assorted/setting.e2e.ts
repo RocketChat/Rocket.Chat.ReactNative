@@ -1,17 +1,18 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
+import { openScreen } from '~e2e/support/appduct';
 import {
 	expectAllVisible,
 	goBack,
-	loginWithDeepLink,
+	loginToApp,
 	type Fixtures,
 	LONG_TIMEOUT,
 	tapWhenUncovered,
 	tapWhenVisible
 } from '~e2e/support/flows';
-import { openSettings } from '~e2e/support/settings';
+import { clearLocalCache, openSettings } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
 
@@ -37,7 +38,7 @@ test('shows settings, clears cache and opens legal', { tags: ['test-2'] }, async
 	const room = await createRandomRoom(user);
 	const settingsView = screen.getByTestId('settings-view');
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await openSettings(fixtures);
 	await expectAllVisible(fixtures, [
 		'settings-view-language',
@@ -69,14 +70,10 @@ test('shows settings, clears cache and opens legal', { tags: ['test-2'] }, async
 	await goBack(fixtures);
 
 	await expect(settingsView).toBeVisible({ timeout: LONG_TIMEOUT });
-	await fixtures.screen.scrollUntilVisible(fixtures.screen.getByTestId('settings-view-clear-cache'));
-	await tapWhenVisible(fixtures, 'settings-view-clear-cache');
-	await expect(screen.getByText(/This will clear all your offline data/)).toBeVisible({ timeout: LONG_TIMEOUT });
-	await screen.getByRole('button', { name: /^Clear$/i }).tap();
-	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+	await clearLocalCache(fixtures);
 	await expect(screen.getByTestId(`rooms-list-view-item-${room.name}`)).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await openSettings(fixtures);
+	await openScreen(fixtures, 'SettingsView');
 	await tapWhenVisible(fixtures, 'settings-view-legal');
 	await expect(screen.getByTestId('legal-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await expectAllVisible(fixtures, ['legal-terms-button', 'legal-privacy-button']);

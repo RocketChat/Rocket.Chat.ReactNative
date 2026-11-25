@@ -5,7 +5,8 @@ import Attachments from '../Attachments/Attachments';
 import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 import { mockedStore } from '~/reducers/mockedStore';
-import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { fileDownloadAndPreview } from '~/lib/methods/helpers/fileDownload';
 
 jest.mock('~/containers/markdown', () => {

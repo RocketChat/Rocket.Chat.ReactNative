@@ -17,7 +17,16 @@ export const openSettings = async (fixtures: Fixtures) => {
 	await expect(fixtures.screen.getByTestId('settings-view')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
-export const openProfile = async (fixtures: Fixtures) => {
+export const clearLocalCache = async (fixtures: Fixtures) => {
+	const { screen } = fixtures;
+	await screen.scrollUntilVisible(screen.getByTestId('settings-view-clear-cache'));
+	await tapWhenVisible(fixtures, 'settings-view-clear-cache');
+	await expect(screen.getByText(/This will clear all your offline data/)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await screen.getByRole('button', { name: /^Clear$/i }).tap();
+	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+};
+
+const openProfile = async (fixtures: Fixtures) => {
 	await openSidebar(fixtures);
 	await tapWhenVisible(fixtures, 'sidebar-profile');
 	await expect(fixtures.screen.getByTestId('profile-view')).toBeVisible({ timeout: LONG_TIMEOUT });
@@ -42,12 +51,6 @@ export const enterPasscode = async ({ screen }: Fixtures, passcode: string) => {
 	for (const digit of passcode) {
 		await screen.getByTestId(`passcode-button-${digit}`).tap();
 	}
-};
-
-export const goToAccessibilityAndAppearance = async (fixtures: Fixtures) => {
-	await openSidebar(fixtures);
-	await tapWhenVisible(fixtures, 'sidebar-accessibility');
-	await expect(fixtures.screen.getByTestId('accessibility-view-list')).toBeVisible({ timeout: LONG_TIMEOUT });
 };
 
 export const toggleAccessibilitySwitchAndOpenRoom = async (fixtures: Fixtures, switchTestId: string) => {

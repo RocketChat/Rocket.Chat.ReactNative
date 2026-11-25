@@ -1,4 +1,4 @@
-import { type SubscriptionType } from '~/definitions';
+import { type SubscriptionType } from '~/definitions/ISubscription';
 
 export interface ICategoryRoom {
 	rid: string;

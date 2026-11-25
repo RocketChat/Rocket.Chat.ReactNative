@@ -1,5 +1,7 @@
 import { ACTIVE_USERS } from '../actions/actionsTypes';
-import { type TApplicationActions, type TStatusSource, type TUserStatus } from '../definitions';
+import { type TApplicationActions } from '../definitions/redux';
+import { type TStatusSource } from '../definitions/TStatusSource';
+import { type TUserStatus } from '../definitions/TUserStatus';
 
 export interface IActiveUser {
 	status: TUserStatus;

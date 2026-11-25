@@ -17,8 +17,8 @@ const mockAddEventListener = jest.fn();
 const mockRNCallKeepClearInitialEvents = jest.fn();
 const mockSetCurrentCallActive = jest.fn();
 
-jest.mock('~/lib/methods/helpers', () => ({
-	...jest.requireActual('~/lib/methods/helpers'),
+jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
+	...jest.requireActual('~/lib/methods/helpers/deviceInfo'),
 	isIOS: false
 }));
 

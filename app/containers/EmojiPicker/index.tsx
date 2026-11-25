@@ -7,7 +7,7 @@ import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
 import styles from './styles';
 import { categories } from '~/lib/constants/emojis/categories';
-import { type IEmoji } from '~/definitions';
+import { type IEmoji } from '~/definitions/IEmoji';
 import { addFrequentlyUsed } from '~/lib/methods/emojis';
 import { type IEmojiPickerProps, EventTypes } from './interfaces';
 import { CustomIcon, type TIconsName } from '../CustomIcon';

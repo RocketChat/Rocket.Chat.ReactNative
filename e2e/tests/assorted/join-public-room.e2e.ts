@@ -1,15 +1,16 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
 import { data } from '~e2e/support/data';
 import {
 	backToRoomsList,
 	expectAllHidden,
 	expectAllVisible,
-	loginWithDeepLink,
-	navigateToRoom,
-	navigateToRoomActions,
+	expectVisible,
+	loginToApp,
+	openRoomActions,
 	searchAndNavigateRoom,
 	sendMessage,
 	LONG_TIMEOUT
@@ -34,14 +35,14 @@ test('previews, joins and leaves a public room', { tags: ['test-3'] }, async fix
 	const room = data.channels.detoxpublic.name;
 	const user = await createUser();
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await searchAndNavigateRoom(fixtures, room);
 
 	await expectAllVisible(fixtures, ['room-view', 'room-header', 'room-view-join', 'room-view-join-button']);
 	await expect(screen.getByText('You are in preview mode')).toBeVisible();
 	await expect(screen.getByTestId('message-composer')).toBeHidden();
 
-	await navigateToRoomActions(fixtures, room);
+	await openRoomActions(fixtures);
 	await expectAllVisible(fixtures, COMMON_ROOM_ACTIONS);
 	await expectAllHidden(fixtures, ['room-actions-notifications', 'room-actions-leave-channel']);
 
@@ -50,13 +51,14 @@ test('previews, joins and leaves a public room', { tags: ['test-3'] }, async fix
 	await screen.getByTestId('room-view-join-button').tap();
 	await expect(screen.getByTestId('room-view-join-button')).toBeHidden({ timeout: LONG_TIMEOUT });
 	await backToRoomsList(fixtures);
-	await navigateToRoom(fixtures, room);
+	await expectVisible(fixtures, `rooms-list-view-item-${room}`);
+	await openRoom(fixtures, room);
 	await expectAllVisible(fixtures, ['room-view', 'message-composer']);
 	await expect(screen.getByTestId('room-view-join')).toBeHidden();
 
 	await sendMessage(fixtures, random(5));
 
-	await navigateToRoomActions(fixtures, room);
+	await openRoomActions(fixtures);
 	await expectAllVisible(fixtures, COMMON_ROOM_ACTIONS);
 	await screen.scrollUntilVisible(screen.getByTestId('room-actions-notifications'));
 	await screen.scrollUntilVisible(screen.getByTestId('room-actions-leave-channel'));

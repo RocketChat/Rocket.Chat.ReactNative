@@ -50,6 +50,19 @@
 		]
 	},
 	{
+		"test": "e2e/tests/assorted/custom-categories.e2e.ts",
+		"dependsOn": [
+			"app/views/CreateCategoryView/**",
+			"app/views/CategoryView/**",
+			"app/views/CategorySettingsView/**",
+			"app/containers/MoveToCategorySheet/**",
+			"app/views/RoomsListView/**",
+			"app/views/NewMessageView/**",
+			"app/views/RoomActionsView/**",
+			"app/lib/methods/assignRoomToCategory.ts"
+		]
+	},
+	{
 		"test": "e2e/tests/assorted/deeplink.e2e.ts",
 		"dependsOn": [
 			"app/views/NewServerView/**",
@@ -244,6 +257,17 @@
 		"dependsOn": ["app/views/NewServerView/**", "app/sagas/login.js"]
 	},
 	{
+		"test": "e2e/tests/onboarding/workspace/client-certificate.e2e.ts",
+		"dependsOn": [
+			"app/views/NewServerView/**",
+			"app/lib/methods/helpers/sslPinning.ts",
+			"app/lib/native/NativeSSLPinningAndroid.ts",
+			"app/sagas/selectServer.ts",
+			"app/sagas/init.js",
+			"app/sagas/login.js"
+		]
+	},
+	{
 		"test": "e2e/tests/onboarding/workspace/invalid-workspace.e2e.ts",
 		"dependsOn": ["app/views/NewServerView/**", "app/sagas/login.js"]
 	},
@@ -281,6 +305,16 @@
 			"app/views/DiscussionsView/**",
 			"app/sagas/room.js",
 			"app/sagas/createDiscussion.js"
+		]
+	},
+	{
+		"test": "e2e/tests/room/edit-thread-message.e2e.ts",
+		"dependsOn": [
+			"app/views/RoomView/**",
+			"app/containers/MessageComposer/**",
+			"app/containers/MessageActions/**",
+			"app/lib/database/services/Message.ts",
+			"app/sagas/room.js"
 		]
 	},
 	{

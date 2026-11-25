@@ -12,22 +12,18 @@ import { ChangePasswordRequired } from '~/containers/ChangePasswordRequired';
 import { FLOATING_ACTION_BUTTON_CLEARANCE } from '~/containers/FloatingActionButton';
 import RoomItem from '~/containers/RoomItem';
 import { type IRoomItem } from '~/containers/RoomItem/interfaces';
-import { type IApplicationState } from '~/definitions';
-import { SupportedVersionsExpired } from '~/containers/SupportedVersions';
+import { type IApplicationState } from '~/definitions/redux';
+import { SupportedVersionsExpired } from '~/containers/SupportedVersions/SupportedVersionsExpired';
 import i18n from '~/i18n';
 import { MAX_SIDEBAR_WIDTH } from '~/lib/constants/tablet';
 import { DRAWER_SWIPE_EDGE_WIDTH } from '~/lib/constants/gestures';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
-import {
-	getRoomAvatar,
-	getRoomTitle,
-	getUidDirectMessage,
-	hasNativeHeaderBar,
-	isIOS,
-	isRead,
-	isTablet
-} from '~/lib/methods/helpers';
+import { getRoomAvatar } from '~/lib/methods/helpers/getRoomAvatar';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
+import { isRead } from '~/lib/methods/helpers/isRead';
+import { hasNativeHeaderBar, isIOS, isTablet } from '~/lib/methods/helpers/deviceInfo';
 import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 import { getUserSelector } from '~/selectors/login';

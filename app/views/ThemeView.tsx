@@ -6,7 +6,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { type IThemePreference, type TDarkLevel, type TThemeMode } from '../definitions/ITheme';
 import I18n from '../i18n';
 import { THEME_PREFERENCES_KEY } from '../lib/constants/keys';
-import { supportSystemTheme } from '../lib/methods/helpers';
+import { supportSystemTheme } from '../lib/methods/helpers/deviceInfo';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import UserPreferences from '../lib/methods/userPreferences';
 import { useTheme } from '../theme';

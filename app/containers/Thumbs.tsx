@@ -5,7 +5,7 @@ import { RectButton } from '~/containers/GestureButtons';
 import { BUTTON_HIT_SLOP } from './message/utils';
 import { CustomIcon } from './CustomIcon';
 import { useTheme } from '../theme';
-import { type IShareAttachment } from '../definitions';
+import { type IShareAttachment } from '../definitions/IAttachment';
 import Touch from './Touch';
 
 export const THUMBS_HEIGHT = 74;

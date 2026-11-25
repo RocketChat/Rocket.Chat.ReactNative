@@ -11,7 +11,12 @@ jest.mock('~/lib/navigation/appNavigation', () => ({
 	}
 }));
 jest.mock('~/lib/database/services/Subscription', () => ({ getSubscriptionByRoomId: jest.fn(() => Promise.resolve(null)) }));
-jest.mock('./helpers', () => ({ getRoomTitle: jest.fn(() => 'Room'), getUidDirectMessage: jest.fn() }));
+jest.mock('./getRoomTitle', () => ({
+	getRoomTitle: jest.fn(() => 'Room')
+}));
+jest.mock('./getUidDirectMessage', () => ({
+	getUidDirectMessage: jest.fn()
+}));
 
 describe('goRoom navigation', () => {
 	it('navigates without creating a RoomStore during the transition', async () => {
