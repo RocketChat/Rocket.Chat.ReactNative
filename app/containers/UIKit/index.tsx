@@ -182,7 +182,7 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 
 	radio_button(element: IElement, context: BlockContext): ReactElement {
 		const [{ loading, value }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
-		return <RadioButton element={element} value={value} loading={loading} onChange={action} />;
+		return <RadioButton key={element.actionId} element={element} value={value} loading={loading} onChange={action} />;
 	}
 
 	selectInput(element: IElement, context: BlockContext): ReactElement {

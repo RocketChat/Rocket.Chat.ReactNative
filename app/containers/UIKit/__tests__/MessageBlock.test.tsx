@@ -1,5 +1,5 @@
 import { Provider } from 'react-redux';
-import { render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 
 import { MessageBlock, ModalBlockWithContext } from '../MessageBlock';
 import { mockedStore } from '~/reducers/mockedStore';
@@ -58,5 +58,34 @@ describe('MessageBlock', () => {
 
 		expect(screen.getAllByText('Section text')).toHaveLength(2);
 		expectNoKeyWarning(consoleError);
+	});
+
+	it('does not carry a radio selection over to a different radio that replaces it in the same block', async () => {
+		const radioBlock = (actionId: string) => ({
+			type: 'input',
+			blockId: 'question',
+			label: { type: 'plain_text', text: actionId },
+			element: {
+				type: 'radio_button',
+				actionId,
+				options: [
+					{ text: { type: 'plain_text', text: 'Yes' }, value: 'yes' },
+					{ text: { type: 'plain_text', text: 'No' }, value: 'no' }
+				]
+			}
+		});
+		const modal = (actionId: string) => (
+			<Provider store={mockedStore}>
+				<ModalBlockWithContext blocks={[radioBlock(actionId)]} state={jest.fn()} values={{}} />
+			</Provider>
+		);
+		const { rerender } = render(modal('first'));
+
+		await act(() => fireEvent.press(screen.getByTestId('uikit-radio-first-yes')));
+		expect(screen.getByTestId('uikit-radio-first-yes')).toBeChecked();
+
+		rerender(modal('second'));
+
+		expect(screen.getByTestId('uikit-radio-second-yes')).not.toBeChecked();
 	});
 });
