@@ -5753,6 +5753,7 @@ exports[`Story Snapshots: PreviewTextOnly should match snapshot 1`] = `
 
 exports[`Story Snapshots: PreviewWithImage should match snapshot 1`] = `
 <View
+  accessibilityRole="link"
   accessibilityState={
     {
       "busy": undefined,

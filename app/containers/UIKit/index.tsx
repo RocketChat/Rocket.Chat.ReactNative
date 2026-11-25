@@ -68,13 +68,12 @@ const styles = StyleSheet.create({
 
 const plainText = ({ text } = { text: '' }) => text;
 
+const LAYOUT_BLOCK_TYPES_MISSING_FROM_UI_KIT_MESSAGES = ['info_card', 'markdown'];
+
 class MessageParser extends UiKitParserMessage<ReactElement> {
 	constructor() {
 		super();
-		// Compatibility for @rocket.chat/ui-kit@0.39.0 where info_card is exported
-		// but still missing from message allowed layout block types.
-		this.allowedLayoutBlockTypes.add('info_card' as any);
-		this.allowedLayoutBlockTypes.add('markdown' as any);
+		LAYOUT_BLOCK_TYPES_MISSING_FROM_UI_KIT_MESSAGES.forEach(type => this.allowedLayoutBlockTypes.add(type as any));
 	}
 
 	get current() {

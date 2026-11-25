@@ -6,6 +6,9 @@ import type {
 	Markdown,
 	ModalView,
 	PlainText,
+	PreviewBlockBase,
+	PreviewBlockWithPreview,
+	PreviewBlockWithThumb,
 	ServerInteraction,
 	ViewBlockActionUserInteraction,
 	ViewClosedUserInteraction,
@@ -288,16 +291,11 @@ export interface IInfoCard extends Omit<InfoCardBlock, 'rows'> {
 export type IBlockActionForView = ViewBlockActionUserInteraction;
 export type IViewClosedInteraction = ViewClosedUserInteraction;
 
-interface IPreviewImage {
-	url: string;
-	dimensions?: { width: number; height: number };
-}
-export interface IPreview {
-	title: IText[];
-	description: IText[];
+export type IPreviewImage = PreviewBlockWithPreview['preview'];
+export interface IPreview extends Pick<PreviewBlockBase, 'title' | 'description'> {
 	preview?: IPreviewImage;
-	thumb?: IPreviewImage;
+	thumb?: PreviewBlockWithThumb['thumb'];
 	externalUrl?: string;
-	footer?: Block;
+	footer?: Omit<IContext, 'parser'>;
 	parser: IParser;
 }

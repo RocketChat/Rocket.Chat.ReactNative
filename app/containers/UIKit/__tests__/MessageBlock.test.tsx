@@ -1,4 +1,6 @@
 import { Provider } from 'react-redux';
+import { StyleSheet } from 'react-native';
+import { Image as ExpoImage } from 'expo-image';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import { MessageBlock, ModalBlockWithContext } from '../MessageBlock';
@@ -64,6 +66,24 @@ const prStatusBlocks = [
 	}
 ];
 
+const [, previewBlock] = prStatusBlocks;
+
+const appMessage = (blocks: object[]) => (
+	<Provider store={mockedStore}>
+		<MessageBlock blocks={blocks} context={{ appId: 'pr-status', rid: 'room-1', action: jest.fn() }} />
+	</Provider>
+);
+
+const renderAppMessage = (blocks: object[]) => render(appMessage(blocks));
+
+const imageWithUri = (uri: string) => {
+	const image = screen.UNSAFE_queryAllByType(ExpoImage).find(({ props }) => props.source?.uri === uri);
+	if (!image) {
+		throw new Error(`No image with uri ${uri}`);
+	}
+	return image;
+};
+
 const sectionBlock = { type: 'section', blockId: 'section', text: { type: 'plain_text', text: 'Section text' } };
 
 const expectNoKeyWarning = (consoleError: jest.SpyInstance) =>
@@ -95,11 +115,7 @@ describe('MessageBlock', () => {
 	});
 
 	it('renders the markdown, preview and actions blocks of an app message', () => {
-		render(
-			<Provider store={mockedStore}>
-				<MessageBlock blocks={prStatusBlocks} context={{ appId: 'pr-status', rid: 'room-1', action: jest.fn() }} />
-			</Provider>
-		);
+		renderAppMessage(prStatusBlocks);
 
 		expect(screen.getByText('https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/7940')).toBeOnTheScreen();
 		expect(screen.getByText('#7940 chore: bump react-native-reanimated to 4.8.0')).toBeOnTheScreen();
@@ -107,18 +123,40 @@ describe('MessageBlock', () => {
 		expect(screen.getByText(/No reviews/)).toBeOnTheScreen();
 		expect(screen.getByText(/Open · ✅ Ready to merge/)).toBeOnTheScreen();
 		expect(screen.getByText('Refresh')).toBeOnTheScreen();
+		expectNoKeyWarning(consoleError);
 	});
 
 	it('opens the preview external URL when the card is tapped', () => {
-		render(
-			<Provider store={mockedStore}>
-				<MessageBlock blocks={prStatusBlocks} context={{ appId: 'pr-status', rid: 'room-1', action: jest.fn() }} />
-			</Provider>
-		);
+		renderAppMessage(prStatusBlocks);
 
 		fireEvent.press(screen.getByText('#7940 chore: bump react-native-reanimated to 4.8.0'));
 
 		expect(openLink).toHaveBeenCalledWith('https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/7940', 'light');
+	});
+
+	it('renders a preview block sent without title or description', () => {
+		renderAppMessage([{ type: 'preview', appId: 'pr-status', blockId: 'preview', footer: previewBlock.footer }]);
+
+		expect(screen.getByText(/Open · ✅ Ready to merge/)).toBeOnTheScreen();
+	});
+
+	it('loads the new preview image after a failed one is replaced', () => {
+		const failedUrl = 'https://example.com/failed.png';
+		const replacedUrl = 'https://example.com/replaced.png';
+		const view = renderAppMessage([{ ...previewBlock, preview: { url: failedUrl, dimensions: { width: 1200, height: 600 } } }]);
+		fireEvent(imageWithUri(failedUrl), 'error');
+
+		view.rerender(appMessage([{ ...previewBlock, preview: { url: replacedUrl, dimensions: { width: 1200, height: 600 } } }]));
+
+		expect(imageWithUri(replacedUrl)).toBeTruthy();
+	});
+
+	it('ignores preview image dimensions of zero', () => {
+		const url = 'https://example.com/zero.png';
+		renderAppMessage([{ ...previewBlock, preview: { url, dimensions: { width: 1200, height: 0 } } }]);
+
+		const imageStyle = StyleSheet.flatten(imageWithUri(url).props.style);
+		expect(Number.isFinite(imageStyle.aspectRatio ?? 1)).toBe(true);
 	});
 
 	it('renders modal blocks without key warnings', () => {

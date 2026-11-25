@@ -1,19 +1,14 @@
 import { Fragment } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { BlockContext } from '@rocket.chat/ui-kit';
 
-import I18n from '~/i18n';
-import { LISTENER } from '~/containers/Toast';
-import EventEmitter from '~/lib/methods/helpers/events';
-import openLink from '~/lib/methods/helpers/openLink';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
+import { useLinkPressHandlers } from '~/lib/hooks/useLinkPressHandlers';
 import { MarkdownPreview } from '../markdown';
 import { UrlImage } from '../message/components/Urls';
 import { Context } from './Context';
 import { Thumb } from './Image';
-import { type IParser, type IPreview, type IText } from './interfaces';
+import { type IPreview, type IPreviewImage, type IText } from './interfaces';
 
 const styles = StyleSheet.create({
 	card: {
@@ -49,40 +44,29 @@ const PreviewTitle = ({ text }: { text: IText }) => {
 	);
 };
 
-const renderDescription = (parser: IParser, text: IText) =>
-	text.type === 'mrkdwn' ? parser.mrkdwn?.(text, BlockContext.NONE) : parser.plain_text?.(text, BlockContext.NONE);
+const measuredDimensions = ({ dimensions }: IPreviewImage) => (dimensions?.width && dimensions?.height ? dimensions : undefined);
 
-export const Preview = ({ title, description, preview, thumb, externalUrl, footer, parser }: IPreview) => {
-	const { colors, theme } = useTheme();
-
-	const onPress = () => {
-		if (externalUrl) {
-			openLink(externalUrl, theme);
-		}
-	};
-
-	const onLongPress = () => {
-		if (!externalUrl) {
-			return;
-		}
-		Clipboard.setString(externalUrl);
-		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
-	};
+export const Preview = ({ title = [], description = [], preview, thumb, externalUrl, footer, parser }: IPreview) => {
+	const { colors } = useTheme();
+	const { onPress, onLongPress } = useLinkPressHandlers(externalUrl ?? '');
 
 	return (
 		<Pressable
 			disabled={!externalUrl}
 			onPress={onPress}
 			onLongPress={onLongPress}
+			accessibilityRole={externalUrl ? 'link' : undefined}
 			style={[styles.card, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeLight }]}>
-			{preview?.url ? <UrlImage image={preview.url} hasContent knownDimensions={preview.dimensions} /> : null}
+			{preview?.url ? (
+				<UrlImage key={preview.url} image={preview.url} hasContent knownDimensions={measuredDimensions(preview)} />
+			) : null}
 			<View style={styles.body}>
 				<View style={styles.content}>
 					{title.map((text, index) => (
 						<PreviewTitle key={`title-${index}`} text={text} />
 					))}
 					{description.map((text, index) => (
-						<Fragment key={`description-${index}`}>{renderDescription(parser, text)}</Fragment>
+						<Fragment key={`description-${index}`}>{parser.text(text)}</Fragment>
 					))}
 					{footer ? <Context {...footer} parser={parser} /> : null}
 				</View>
