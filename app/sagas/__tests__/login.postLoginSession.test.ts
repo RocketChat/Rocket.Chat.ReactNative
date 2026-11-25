@@ -265,14 +265,14 @@ describe('login saga — post-login session', () => {
 		expect(await voipRechecks(store)).toBe(true);
 	});
 
-	it('restarts with the user as it was when the switch began, not as it was at login', async () => {
+	it('restarts with the current user, keeping profile changes made since login and during the switch', async () => {
 		const { store } = startLoggedInStore();
-		store.dispatch(loginSuccess(USER));
+		store.dispatch(loginSuccess({ ...USER, status: 'online', language: 'en' }));
 		await flushSagaMicrotasks();
-		store.dispatch(setUser({ status: 'busy', language: 'pt-BR' }));
+		store.dispatch(setUser({ language: 'pt-BR' }));
 
 		store.dispatch(selectServerRequest(SERVER_B, '7.0.0'));
-		store.dispatch(setUser({ id: 'user-b', username: 'userb', status: 'online', language: 'en' }));
+		store.dispatch(setUser({ status: 'busy' }));
 		store.dispatch(selectServerRequest(SERVER_A, '7.0.0'));
 		store.dispatch(selectServerCancel());
 		await flushSagaMicrotasks();

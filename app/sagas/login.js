@@ -505,10 +505,10 @@ const runPostLoginSession = function* runPostLoginSession({ user }) {
 		if (ended?.type !== types.SERVER.SELECT_REQUEST) {
 			return;
 		}
-		sessionUser = yield select(getUser);
 		if (!(yield call(isReselectedBeforeSwitching, server))) {
 			return;
 		}
+		sessionUser = yield select(getUser);
 	}
 };
 
