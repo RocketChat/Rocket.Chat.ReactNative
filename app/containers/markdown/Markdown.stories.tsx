@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { type Root } from '@rocket.chat/message-parser';
 
 import Markdown, { MarkdownPreview } from '.';
 import { setCustomEmojis } from '~/actions/customEmojis';
@@ -270,5 +271,21 @@ export const Timestamp = () => (
 		<Markdown msg='f - Short date/time: <t:2025-01-01T00:00:00.000+00:00:f>' />
 		<Markdown msg='F - Long date/time: <t:2025-01-01T00:00:00.000+00:00:F>' />
 		<Markdown msg='R - Relative time: <t:2025-01-01T00:00:00.000+00:00:R>' />
+	</View>
+);
+
+const emojiWithoutShortCode = (name: string) => ({ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: name } });
+
+export const EmojiFromServersBefore5 = () => (
+	<View style={styles.container}>
+		<Markdown msg=':smile:' md={[{ type: 'BIG_EMOJI', value: [emojiWithoutShortCode('smile')] }] as unknown as Root} />
+		<Markdown
+			msg='Hello :smile:'
+			md={
+				[
+					{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'Hello ' }, emojiWithoutShortCode('smile')] }
+				] as unknown as Root
+			}
+		/>
 	</View>
 );

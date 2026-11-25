@@ -120,11 +120,11 @@ const resolveEmoji = (block: EmojiBlock, context: ISerializeContext): TResolvedE
 	if (customEmoji) {
 		return { kind: 'custom', customEmoji };
 	}
-	const isAsciiEmoji = block.value.value !== block.shortCode;
+	const isAsciiEmoji = !!block.shortCode && block.value.value !== block.shortCode;
 	if (isAsciiEmoji && !context.convertAsciiEmoji) {
 		return { kind: 'plain', text: block.value.value };
 	}
-	const shortname = `:${block.shortCode}:`;
+	const shortname = `:${block.shortCode || block.value.value}:`;
 	const unicode = context.formatShortnameToUnicode(shortname);
 	return unicode === shortname ? { kind: 'plain', text: shortname } : { kind: 'unicode', text: unicode };
 };

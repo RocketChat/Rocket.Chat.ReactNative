@@ -1,4 +1,4 @@
-import { parse, type Options } from '@rocket.chat/message-parser';
+import { parse, type Options, type Root } from '@rocket.chat/message-parser';
 
 import { buildRenderSegments, isBigEmojiOnly, type ISerializeContext } from '../serialize';
 
@@ -376,5 +376,34 @@ describe('markdown ascii emoticons', () => {
 
 	it('shows an ascii emoticon as typed when the user does not convert them', () => {
 		expect(serialize('hi :)', { convertAsciiEmoji: false, formatShortnameToUnicode: toSmiley }, emoticons)).toBe('hi :\\)');
+	});
+});
+
+describe('server md stored before 5.0', () => {
+	const formatShortnameToUnicode: ISerializeContext['formatShortnameToUnicode'] = shortname =>
+		shortname === ':smile:' ? '😄' : shortname;
+	const smileWithoutShortCode = { type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: 'smile' } };
+	const bigSmile = [{ type: 'BIG_EMOJI', value: [smileWithoutShortCode] }] as unknown as Root;
+	const sentence = [
+		{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'hi ' }, smileWithoutShortCode] }
+	] as unknown as Root;
+	const serializeRoot = (root: Root, ctx: Partial<ISerializeContext>) =>
+		buildRenderSegments(root, { ...baseContext, formatShortnameToUnicode, ...ctx })
+			.map(segment => (segment.type === 'markdown' ? segment.content : ''))
+			.join('\n\n');
+
+	it.each([true, false])('shows an emoji without shortCode as its emoji when convertAsciiEmoji is %s', convertAsciiEmoji => {
+		expect(serializeRoot(sentence, { convertAsciiEmoji })).toBe('hi 😄');
+	});
+
+	it('draws a lone emoji without shortCode at the big emoji size', () => {
+		expect(isBigEmojiOnly(bigSmile, { ...baseContext, formatShortnameToUnicode, convertAsciiEmoji: false })).toBe(true);
+	});
+
+	it('shows an unknown name without shortCode as the shortname', () => {
+		const unknown = [
+			{ type: 'PARAGRAPH', value: [{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: 'notanemoji' } }] }
+		] as unknown as Root;
+		expect(serializeRoot(unknown, { convertAsciiEmoji: false })).toBe(':notanemoji:');
 	});
 });
