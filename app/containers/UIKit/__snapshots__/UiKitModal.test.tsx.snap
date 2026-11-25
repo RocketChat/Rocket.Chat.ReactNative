@@ -5375,7 +5375,6 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Active"
             accessibilityRole="radio"
             accessibilityState={
               {
@@ -5527,7 +5526,6 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Inactive"
             accessibilityRole="radio"
             accessibilityState={
               {
@@ -5713,7 +5711,6 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Active"
             accessibilityRole="radio"
             accessibilityState={
               {
@@ -5865,7 +5862,6 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Inactive"
             accessibilityRole="radio"
             accessibilityState={
               {

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
-import { RadioButton } from './RadioButton';
-import { type IElement } from './interfaces';
+import { RadioButton } from '../RadioButton';
+import { type IElement } from '../interfaces';
 
 const element: IElement = {
 	type: 'radio_button',
@@ -20,17 +20,17 @@ describe('UIKit RadioButton', () => {
 		fireEvent.press(screen.getByTestId('uikit-radio-forwarding-active'));
 
 		expect(onChange).toHaveBeenCalledWith({ value: 'active' });
-		expect(screen.getByTestId('uikit-radio-forwarding-active').props.accessibilityState).toMatchObject({ checked: true });
-		expect(screen.getByTestId('uikit-radio-forwarding-inactive').props.accessibilityState).toMatchObject({ checked: false });
+		expect(screen.getByTestId('uikit-radio-forwarding-active')).toBeChecked();
+		expect(screen.getByTestId('uikit-radio-forwarding-inactive')).not.toBeChecked();
 	});
 
-	test('does not send an action when the selected option is pressed again', () => {
+	test('sends the action again when the selected option is pressed, so a failed action can be retried', () => {
 		const onChange = jest.fn();
 		render(<RadioButton element={element} value='inactive' loading={false} onChange={onChange} />);
 
 		fireEvent.press(screen.getByTestId('uikit-radio-forwarding-inactive'));
 
-		expect(onChange).not.toHaveBeenCalled();
+		expect(onChange).toHaveBeenCalledWith({ value: 'inactive' });
 	});
 
 	test('does not change the selection while loading', () => {
@@ -40,9 +40,8 @@ describe('UIKit RadioButton', () => {
 		fireEvent.press(screen.getByTestId('uikit-radio-forwarding-active'));
 
 		expect(onChange).not.toHaveBeenCalled();
-		expect(screen.getByTestId('uikit-radio-forwarding-inactive').props.accessibilityState).toMatchObject({
-			checked: true,
-			disabled: true
-		});
+		const selected = screen.getByTestId('uikit-radio-forwarding-inactive');
+		expect(selected).toBeChecked();
+		expect(selected).toBeDisabled();
 	});
 });

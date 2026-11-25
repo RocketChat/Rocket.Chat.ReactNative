@@ -29,9 +29,6 @@ export const RadioButton = ({ element, value, loading, onChange }: IRadioButton)
 	const options = element.options || [];
 
 	const onPress = (optionValue: Option['value']) => {
-		if (optionValue === selected) {
-			return;
-		}
 		setSelected(optionValue);
 		onChange({ value: optionValue });
 	};
@@ -40,7 +37,6 @@ export const RadioButton = ({ element, value, loading, onChange }: IRadioButton)
 		<View accessibilityRole='radiogroup'>
 			{options.map(option => {
 				const checked = selected === option.value;
-				const label = textParser([option.text]);
 				return (
 					<Touch
 						key={option.value}
@@ -50,10 +46,9 @@ export const RadioButton = ({ element, value, loading, onChange }: IRadioButton)
 						style={styles.option}
 						accessible
 						accessibilityRole='radio'
-						accessibilityLabel={label}
 						accessibilityState={{ checked, disabled: loading }}>
 						<Radio check={checked} />
-						<Text style={[styles.label, { color: colors.fontDefault }]}>{label}</Text>
+						<Text style={[styles.label, { color: colors.fontDefault }]}>{textParser([option.text])}</Text>
 					</Touch>
 				);
 			})}
