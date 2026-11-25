@@ -325,8 +325,7 @@ const handleLoginSuccess = function* handleLoginSuccess(user, server) {
 		yield put(roomsRequest());
 		yield put(encryptionInit());
 		yield fork(startVoipFork);
-		yield call(fetchPermissions);
-		yield call(fetchEnterpriseModules, { user });
+		yield all([call(fetchPermissions), call(fetchEnterpriseModules, { user })]);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
 		yield fork(fetchAppsFork);

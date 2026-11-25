@@ -160,37 +160,39 @@ export async function subscribeSettings(): Promise<void> {
 
 type IData = ISettingsIcon | IPreparedSettings;
 
+interface ISettingsPage {
+	success: boolean;
+	settings: IData[];
+	total: number;
+}
+
 export async function getSettings(server: string): Promise<void> {
 	try {
 		const db = database.active;
 		const loginSettingKeys = new Set(loginSettings);
 		const settingsParams = Object.keys(defaultSettings).filter(key => !loginSettingKeys.has(key));
-		// RC 0.60.0
-		let offset = 0;
-		let remaining;
-		let settings: IData[] = [];
 		const serverVersion = reduxStore.getState().server.version;
 		const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
 			? `${server}/api/v1/settings.public?_id=${settingsParams.join(',')}`
 			: `${server}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}`;
-		// Iterate over paginated results to retrieve all settings
-		do {
-			// TODO: why is no-await-in-loop enforced in the first place?
-			/* eslint-disable no-await-in-loop */
+		const fetchSettingsPage = async (offset: number): Promise<ISettingsPage> => {
 			const response = await fetchForWorkspace(server, `${url}&offset=${offset}`);
+			return response.json();
+		};
 
-			const result = await response.json();
-			if (!result.success) {
-				return;
-			}
-
-			offset += result.settings.length;
-			settings = [...settings, ...result.settings];
-			remaining = result.total - settings.length;
-			/* eslint-enable no-await-in-loop */
-		} while (remaining > 0);
-
-		const data: IData[] = settings;
+		const firstPage = await fetchSettingsPage(0);
+		if (!firstPage.success) {
+			return;
+		}
+		const pageSize = firstPage.settings.length;
+		const pageCount = pageSize ? Math.ceil(firstPage.total / pageSize) : 1;
+		const remainingPages = await Promise.all(
+			Array.from({ length: pageCount - 1 }, (_, index) => fetchSettingsPage((index + 1) * pageSize))
+		);
+		if (remainingPages.some(page => !page.success)) {
+			return;
+		}
+		const data = [firstPage, ...remainingPages].flatMap(page => page.settings);
 		const filteredSettings: IPreparedSettings[] = _prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 		const parsedSettings = parseSettings(filteredSettings);

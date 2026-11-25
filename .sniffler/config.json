@@ -23,6 +23,7 @@
 			".github/workflows/**",
 			".github/scripts/**",
 			"app/index.tsx",
+			"app/lib/appduct/**",
 			"app/lib/notifications/push.ts",
 			"app/lib/notifications/index.ts",
 			"app/lib/services/connect.ts",
