@@ -1,13 +1,15 @@
 import * as Haptics from 'expo-haptics';
 import { memo, useState } from 'react';
 import { type GestureResponderEvent, Pressable, Text, View } from 'react-native';
-import Animated, { type EntryExitAnimationFunction } from 'react-native-reanimated';
+import { type EntryExitAnimationFunction } from 'react-native-reanimated';
 
 import { CustomIcon } from '~/containers/CustomIcon';
 import UnreadBadge from '~/containers/UnreadBadge';
 import i18n from '~/i18n';
 import { useTheme } from '~/theme';
 import styles from '../styles';
+import { type IMountFade } from '../hooks/useFadeInOnMount';
+import FadeInOnMount from './FadeInOnMount';
 import SectionChevron from './SectionChevron';
 
 interface ISectionHeader {
@@ -23,7 +25,7 @@ interface ISectionHeader {
 	tunreadGroup?: string[];
 	onToggle: (header: string, headerBottom: number) => void;
 	onOpen: (header: string, title: string) => void;
-	badgeEntering: EntryExitAnimationFunction;
+	badgeFadeIn: IMountFade;
 	badgeExiting: EntryExitAnimationFunction;
 }
 
@@ -40,7 +42,7 @@ const SectionHeader = ({
 	tunreadGroup,
 	onToggle,
 	onOpen,
-	badgeEntering,
+	badgeFadeIn,
 	badgeExiting
 }: ISectionHeader) => {
 	const { colors } = useTheme();
@@ -98,7 +100,7 @@ const SectionHeader = ({
 				accessibilityState={{ expanded: !showsCollapsed, disabled: empty }}
 				testID={`rooms-list-section-${header}`}>
 				{collapsed ? (
-					<Animated.View entering={badgeEntering} exiting={badgeExiting}>
+					<FadeInOnMount fadeIn={badgeFadeIn} exiting={badgeExiting}>
 						<UnreadBadge
 							unread={unread}
 							userMentions={userMentions}
@@ -107,7 +109,7 @@ const SectionHeader = ({
 							tunreadUser={tunreadUser}
 							tunreadGroup={tunreadGroup}
 						/>
-					</Animated.View>
+					</FadeInOnMount>
 				) : null}
 				<SectionChevron collapsed={showsCollapsed} color={empty ? colors.fontDisabled : colors.fontDefault} />
 			</Pressable>

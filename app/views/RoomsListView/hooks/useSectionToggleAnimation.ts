@@ -14,6 +14,7 @@ import {
 } from 'react-native-reanimated';
 import { runOnUISync } from 'react-native-worklets';
 
+import { type IMountFade } from './useFadeInOnMount';
 import { useSectionReveal } from './useSectionReveal';
 
 const SPRING_STIFFNESS = 520;
@@ -70,16 +71,18 @@ const reflow = (values: LayoutAnimationsValues) => {
 	};
 };
 
+const isInsideToggle = (isToggling: SharedValue<boolean>, toggleAnimatedAt: SharedValue<number>) => {
+	'worklet';
+	const animatedAt = toggleAnimatedAt.get();
+	return isToggling.get() && (!animatedAt || Date.now() - animatedAt < TOGGLE_SETTLE_MS);
+};
+
 const isAnimatingToggle = (isToggling: SharedValue<boolean>, toggleAnimatedAt: SharedValue<number>) => {
 	'worklet';
-	if (!isToggling.get()) {
-		return false;
+	if (isToggling.get() && !toggleAnimatedAt.get()) {
+		toggleAnimatedAt.set(Date.now());
 	}
-	const now = Date.now();
-	if (!toggleAnimatedAt.get()) {
-		toggleAnimatedAt.set(now);
-	}
-	return now - toggleAnimatedAt.get() < TOGGLE_SETTLE_MS;
+	return isInsideToggle(isToggling, toggleAnimatedAt);
 };
 
 export const SECTION_REFLOW: ILayoutAnimationBuilder = { build: () => reflow };
@@ -119,23 +122,24 @@ export const useSectionToggleAnimation = (
 		toggleGroup(group);
 	};
 
-	const fade =
-		(fromOpacity: number, toOpacity: number, spring: WithSpringConfig): EntryExitAnimationFunction =>
+	const fadeOut =
+		(spring: WithSpringConfig): EntryExitAnimationFunction =>
 		() => {
 			'worklet';
 			if (isReducedMotion || !isAnimatingToggle(isToggling, toggleAnimatedAt)) {
 				return { initialValues: {}, animations: {} };
 			}
 			return {
-				initialValues: { opacity: fromOpacity },
-				animations: { opacity: withDelay(FIRST_DRAWN_FRAME_DELAY_MS, withSpring(toOpacity, spring)) }
+				initialValues: { opacity: 1 },
+				animations: { opacity: withDelay(FIRST_DRAWN_FRAME_DELAY_MS, withSpring(0, spring)) }
 			};
 		};
 
-	const rowEntering = fade(0, 1, SECTION_SPRING);
-	const rowExiting = fade(1, 0, SECTION_SPRING);
-	const badgeEntering = fade(0, 1, BADGE_IN_SPRING);
-	const badgeExiting = fade(1, 0, BADGE_OUT_SPRING);
+	const fadesOnMount = () => !isReducedMotion && isInsideToggle(isToggling, toggleAnimatedAt);
+	const rowFadeIn: IMountFade = { fadesOnMount, spring: SECTION_SPRING };
+	const rowExiting = fadeOut(SECTION_SPRING);
+	const badgeFadeIn: IMountFade = { fadesOnMount, spring: BADGE_IN_SPRING };
+	const badgeExiting = fadeOut(BADGE_OUT_SPRING);
 
 	const coverEntering: EntryExitAnimationFunction = () => {
 		'worklet';
@@ -162,9 +166,9 @@ export const useSectionToggleAnimation = (
 
 	return {
 		onToggle,
-		rowEntering,
+		rowFadeIn,
 		rowExiting,
-		badgeEntering,
+		badgeFadeIn,
 		badgeExiting,
 		revealKey: cover.revealKey,
 		coverEntering: cover.revealKey && !isReducedMotion ? coverEntering : undefined,

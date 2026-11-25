@@ -30,6 +30,7 @@ import { getUserSelector } from '~/selectors/login';
 import { type ChatsStackParamList } from '~/stacks/types';
 import { useTheme } from '~/theme';
 import Container from './components/Container';
+import FadeInOnMount from './components/FadeInOnMount';
 import ListHeader from './components/ListHeader';
 import NewMessageButton from './components/NewMessageButton';
 import SectionHeader from './components/SectionHeader';
@@ -64,7 +65,7 @@ const RoomsListView = memo(function RoomsListView() {
 	const getItemLayout = useGetItemLayout();
 	const { collapsedGroups, toggleGroup } = useCollapsedGroups();
 	const { subscriptions, loading } = useSubscriptions(collapsedGroups);
-	const { onToggle, rowEntering, rowExiting, badgeEntering, badgeExiting, revealKey, coverEntering, coverExiting } =
+	const { onToggle, rowFadeIn, rowExiting, badgeFadeIn, badgeExiting, revealKey, coverEntering, coverExiting } =
 		useSectionToggleAnimation(collapsedGroups, toggleGroup, subscriptions.length);
 	const store = useStore<IApplicationState>();
 	const focusedRoom = useAppSelector(state => (isMasterDetail ? state.room.subscribedRoom : undefined));
@@ -120,7 +121,7 @@ const RoomsListView = memo(function RoomsListView() {
 					tunreadGroup={item.tunreadGroup}
 					onToggle={onToggle}
 					onOpen={onOpenSection}
-					badgeEntering={badgeEntering}
+					badgeFadeIn={badgeFadeIn}
 					badgeExiting={badgeExiting}
 				/>
 			);
@@ -131,7 +132,7 @@ const RoomsListView = memo(function RoomsListView() {
 		const swipeEnabled = !(item?.search || item?.joinCodeRequired || item?.outside);
 
 		return (
-			<Animated.View entering={rowEntering} exiting={rowExiting}>
+			<FadeInOnMount fadeIn={rowFadeIn} exiting={rowExiting}>
 				<RoomItem
 					item={item}
 					id={id}
@@ -150,7 +151,7 @@ const RoomsListView = memo(function RoomsListView() {
 					showAvatar={showAvatar}
 					displayMode={displayMode}
 				/>
-			</Animated.View>
+			</FadeInOnMount>
 		);
 	};
 
