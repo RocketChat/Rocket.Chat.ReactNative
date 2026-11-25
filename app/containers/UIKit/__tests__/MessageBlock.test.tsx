@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Provider } from 'react-redux';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 
@@ -58,6 +59,36 @@ describe('MessageBlock', () => {
 
 		expect(screen.getAllByText('Section text')).toHaveLength(2);
 		expectNoKeyWarning(consoleError);
+	});
+
+	it('lets a modal radio take another option once its first action settles', async () => {
+		const option = (value: string) => ({ text: { type: 'plain_text', text: value }, value });
+		const blocks = [
+			{
+				type: 'input',
+				blockId: 'question',
+				label: { type: 'plain_text', text: 'Question' },
+				element: { type: 'radio_button', actionId: 'q', options: [option('yes'), option('no')] }
+			}
+		];
+		const Modal = () => {
+			const [values, setValues] = useState({});
+			const state = ({ actionId, value, blockId }: { actionId: string; value: string; blockId: string }) =>
+				setValues(current => ({ ...current, [actionId]: { value, blockId } }));
+			return <ModalBlockWithContext blocks={blocks} state={state} values={values} />;
+		};
+		render(
+			<Provider store={mockedStore}>
+				<Modal />
+			</Provider>
+		);
+
+		act(() => {
+			fireEvent.press(screen.getByTestId('uikit-radio-q-yes'));
+		});
+		await act(async () => {});
+
+		expect(screen.getByTestId('uikit-radio-q-no')).not.toBeDisabled();
 	});
 
 	it('does not carry a radio selection over to a different radio that replaces it in the same block', async () => {
