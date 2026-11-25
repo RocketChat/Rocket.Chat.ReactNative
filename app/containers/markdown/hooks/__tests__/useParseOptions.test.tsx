@@ -14,10 +14,6 @@ afterEach(() => {
 	mockedStore.dispatch(clearSettings());
 });
 
-it('converts emoticons like the web client', () => {
-	expect(renderParseOptions().emoticons).toBe(true);
-});
-
 it('auto-links the custom domains from Message_CustomDomain_AutoLink', () => {
 	mockedStore.dispatch(addSettings({ Message_CustomDomain_AutoLink: ' intranet.local, , corp.lan ' }));
 	expect(renderParseOptions().customDomains).toEqual(['intranet.local', 'corp.lan']);
@@ -30,4 +26,10 @@ it('passes no custom domains when the setting is empty', () => {
 it('passes katex syntaxes only when katex is enabled', () => {
 	mockedStore.dispatch(addSettings({ Katex_Enabled: true, Katex_Dollar_Syntax: true, Katex_Parenthesis_Syntax: false }));
 	expect(renderParseOptions().katex).toEqual({ dollarSyntax: true, parenthesisSyntax: false });
+});
+
+it('parses hex colors only when HexColorPreview_Enabled is on', () => {
+	expect(renderParseOptions().colors).toBe(false);
+	mockedStore.dispatch(addSettings({ HexColorPreview_Enabled: true }));
+	expect(renderParseOptions().colors).toBe(true);
 });

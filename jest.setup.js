@@ -22,6 +22,10 @@ loadAsyncMock.mockImplementation(() => Promise.resolve({ width: 200, height: 300
 
 jest.mock('react-native-worklets', () => jest.requireActual('react-native-worklets/lib/module/mock'));
 
+jest.mock('./app/containers/markdown/parseOffThread', () => ({
+	parseOffThread: (msg, options, onParsed) => onParsed(jest.requireActual('@rocket.chat/message-parser').parse(msg, options))
+}));
+
 jest.mock('react-native-reanimated/src/css/native/proxy', () => ({
 	...jest.requireActual('react-native-reanimated/src/css/native/proxy'),
 	setCSSEventHandler: jest.fn()

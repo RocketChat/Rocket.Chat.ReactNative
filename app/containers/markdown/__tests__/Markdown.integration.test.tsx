@@ -1,7 +1,9 @@
 import { render } from '@testing-library/react-native';
 import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
+import { type Root } from '@rocket.chat/message-parser';
 
 import Markdown from '..';
+import { MESSAGE_MAX_PARSE_LENGTH } from '../hooks/useMessageRoot';
 
 jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn(() => false)
@@ -36,9 +38,19 @@ describe('Markdown integration', () => {
 		expect(onLinkPress).toHaveBeenCalledWith('https://rocket.chat');
 	});
 
-	it('renders an attachment field value that is not a string as its text', () => {
-		const { UNSAFE_getByType } = render(<Markdown msg={42 as unknown as string} />);
+	it('renders the server-parsed tree instead of parsing the text again', () => {
+		const md: Root = [{ type: 'PARAGRAPH', value: [{ type: 'BOLD', value: [{ type: 'PLAIN_TEXT', value: 'from server' }] }] }];
 
-		expect(UNSAFE_getByType(EnrichedMarkdownText).props.markdown).toBe('42');
+		const { UNSAFE_getByType } = render(<Markdown msg='from text' md={md} />);
+
+		expect(UNSAFE_getByType(EnrichedMarkdownText).props.markdown).toBe('**from server**');
+	});
+
+	it('shows a message longer than the parse limit as plain text, like the web client', () => {
+		const msg = `**${'a'.repeat(MESSAGE_MAX_PARSE_LENGTH)}**`;
+
+		const { UNSAFE_getByType } = render(<Markdown msg={msg} />);
+
+		expect(UNSAFE_getByType(EnrichedMarkdownText).props.markdown).toBe(`\\*\\*${'a'.repeat(MESSAGE_MAX_PARSE_LENGTH)}\\*\\*`);
 	});
 });

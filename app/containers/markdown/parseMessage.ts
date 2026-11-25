@@ -1,28 +1,56 @@
-import { parse, type Options, type Root } from '@rocket.chat/message-parser';
+import { type Options, type Root } from '@rocket.chat/message-parser';
+
+import { parseOffThread } from './parseOffThread';
+import { toPlainTextRoot } from './toPlainTextRoot';
 
 const PARSE_CACHE_MAX = 200;
-const parseCache = new Map<string, Root>();
+const parsedRoots = new Map<string, Root>();
+const listenersByKey = new Map<string, Set<() => void>>();
+const parsingKeys = new Set<string>();
 
-const cacheKey = (msg: string, options: Options): string => `${JSON.stringify(options)}\n${msg}`;
+export const parseCacheKey = (msg: string, options: Options): string => `${JSON.stringify(options)}\n${msg}`;
 
-export const parseMessage = (msg: string, options: Options): Root => {
-	const key = cacheKey(msg, options);
-	const cached = parseCache.get(key);
-	if (cached) {
-		parseCache.delete(key);
-		parseCache.set(key, cached);
-		return cached;
-	}
+export const getParsedRoot = (key: string): Root | undefined => parsedRoots.get(key);
 
-	const tokens = parse(msg, options);
+const markRecentlyUsed = (key: string, root: Root): void => {
+	parsedRoots.delete(key);
+	parsedRoots.set(key, root);
+};
 
-	if (parseCache.size >= PARSE_CACHE_MAX) {
-		const oldestKey = parseCache.keys().next().value;
+const storeParsedRoot = (key: string, root: Root): void => {
+	if (parsedRoots.size >= PARSE_CACHE_MAX) {
+		const oldestKey = parsedRoots.keys().next().value;
 		if (oldestKey !== undefined) {
-			parseCache.delete(oldestKey);
+			parsedRoots.delete(oldestKey);
+		}
+	}
+	parsedRoots.set(key, root);
+	parsingKeys.delete(key);
+	listenersByKey.get(key)?.forEach(listener => listener());
+};
+
+export const subscribeToParsedRoot = (msg: string, options: Options, listener: () => void): (() => void) => {
+	const key = parseCacheKey(msg, options);
+	const cachedRoot = parsedRoots.get(key);
+	const listeners = listenersByKey.get(key);
+
+	if (listeners) {
+		listeners.add(listener);
+	} else {
+		listenersByKey.set(key, new Set([listener]));
+		if (cachedRoot) {
+			markRecentlyUsed(key, cachedRoot);
+		} else if (!parsingKeys.has(key)) {
+			parsingKeys.add(key);
+			parseOffThread(msg, options, root => storeParsedRoot(key, root ?? toPlainTextRoot(msg)));
 		}
 	}
 
-	parseCache.set(key, tokens);
-	return tokens;
+	return () => {
+		const keyListeners = listenersByKey.get(key);
+		keyListeners?.delete(listener);
+		if (keyListeners?.size === 0) {
+			listenersByKey.delete(key);
+		}
+	};
 };

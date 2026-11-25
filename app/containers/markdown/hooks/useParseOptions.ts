@@ -15,14 +15,16 @@ export const useParseOptions = (): Options => {
 	const katexEnabled = useSetting('Katex_Enabled') === true;
 	const dollarSyntax = useSetting('Katex_Dollar_Syntax') === true;
 	const parenthesisSyntax = useSetting('Katex_Parenthesis_Syntax') === true;
+	const colors = useSetting('HexColorPreview_Enabled') === true;
 	const customDomainsSetting = useSetting('Message_CustomDomain_AutoLink');
 
 	return useMemo(
 		(): Options => ({
+			colors,
 			emoticons: true,
 			customDomains: toDomainList(customDomainsSetting),
 			...(katexEnabled && { katex: { dollarSyntax, parenthesisSyntax } })
 		}),
-		[katexEnabled, dollarSyntax, parenthesisSyntax, customDomainsSetting]
+		[colors, katexEnabled, dollarSyntax, parenthesisSyntax, customDomainsSetting]
 	);
 };

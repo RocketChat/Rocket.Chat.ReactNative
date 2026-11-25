@@ -147,6 +147,9 @@ export const defaultSettings = {
 	FEDERATION_Enabled: {
 		type: 'valueAsBoolean'
 	},
+	HexColorPreview_Enabled: {
+		type: 'valueAsBoolean'
+	},
 	Hide_System_Messages: {
 		type: 'valueAsArray'
 	},

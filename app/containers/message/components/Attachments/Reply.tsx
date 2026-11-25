@@ -151,7 +151,7 @@ const Fields = ({ attachment }: { attachment: IAttachment }) => {
 			{attachment.fields.map(field => (
 				<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 					<Text style={[styles.fieldTitle, { color: colors.fontDefault }]}>{field.title}</Text>
-					<Markdown msg={field?.value || ''} username={user?.username} />
+					<Markdown msg={String(field.value ?? '')} username={user?.username} />
 				</View>
 			))}
 		</View>

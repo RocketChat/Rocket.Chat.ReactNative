@@ -1,5 +1,6 @@
 import { useMemo, type FC } from 'react';
 import { View, useWindowDimensions } from 'react-native';
+import { type Root } from '@rocket.chat/message-parser';
 import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 
 import { type IUserMention, type IUserChannel, type TOnLinkPress } from './interfaces';
@@ -13,6 +14,7 @@ export { default as MarkdownPreview } from './components/Preview';
 
 interface IMarkdownProps {
 	msg?: string | null;
+	md?: Root;
 	mentions?: IUserMention[];
 	username?: string;
 	useRealName?: boolean;
@@ -23,6 +25,7 @@ interface IMarkdownProps {
 
 const Markdown: FC<IMarkdownProps> = ({
 	msg,
+	md,
 	mentions,
 	channels,
 	navToRoomInfo,
@@ -33,7 +36,7 @@ const Markdown: FC<IMarkdownProps> = ({
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
 	const { handleLinkPress, handleLinkLongPress } = useMarkdownLinkPress({ navToRoomInfo, onLinkPress });
-	const { segments, bigEmojiOnly } = useMarkdownSegments({ msg, mentions, channels, useRealName, username });
+	const { segments, bigEmojiOnly } = useMarkdownSegments({ msg: msg ?? '', md, mentions, channels, useRealName, username });
 	const markdownStyle = useMemo(() => buildMarkdownStyle(colors, bigEmojiOnly, fontScale), [colors, bigEmojiOnly, fontScale]);
 
 	if (segments.length === 0) {

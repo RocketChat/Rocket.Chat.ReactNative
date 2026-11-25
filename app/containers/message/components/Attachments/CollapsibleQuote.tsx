@@ -93,7 +93,7 @@ const Fields = ({ attachment }: IMessageFields) => {
 					<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: colors.fontDefault }]}>
 						{field.title}
 					</Text>
-					<Markdown msg={field?.value || ''} username={user?.username} />
+					<Markdown msg={String(field.value ?? '')} username={user?.username} />
 				</View>
 			))}
 		</>

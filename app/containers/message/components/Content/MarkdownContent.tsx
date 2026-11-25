@@ -2,6 +2,7 @@ import Markdown from '~/containers/markdown';
 import { useSetting } from '~/lib/hooks/useSetting';
 import { useMarkdownData, useMessageText, useOnLinkPress } from '~/containers/message/stores/MessageStore';
 import { useMessageUser, useNavToRoomInfo } from '~/containers/message/stores/MessageRoomStore';
+import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
 import ContentWrapper from './ContentWrapper';
 
 const MarkdownContent = () => {
@@ -9,13 +10,15 @@ const MarkdownContent = () => {
 	const user = useMessageUser();
 	const onLinkPress = useOnLinkPress();
 	const navToRoomInfo = useNavToRoomInfo();
-	const { mentions, channels } = useMarkdownData();
-	const { messageText } = useMessageText();
+	const { md, mentions, channels, t: type } = useMarkdownData();
+	const { messageText, isTranslated } = useMessageText();
+	const serverRoot = type === E2E_MESSAGE_TYPE || isTranslated ? undefined : md;
 
 	return (
 		<ContentWrapper>
 			<Markdown
 				msg={messageText}
+				md={serverRoot}
 				username={user?.username ?? ''}
 				channels={channels}
 				mentions={mentions}
