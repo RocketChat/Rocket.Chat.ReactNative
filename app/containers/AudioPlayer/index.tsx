@@ -19,6 +19,7 @@ interface IAudioPlayerProps {
 	onPlayButtonPress?: Function;
 	downloadState: TDownloadState;
 	rid: string;
+	tmid?: string;
 	// It's optional when comes from MessagesView
 	msgId?: string;
 	isRecordingPreview?: boolean;
@@ -31,6 +32,7 @@ const AudioPlayer = ({
 	downloadState,
 	msgId,
 	rid,
+	tmid,
 	isRecordingPreview = false
 }: IAudioPlayerProps) => {
 	const isLoading = downloadState === 'loading';
@@ -79,7 +81,7 @@ const AudioPlayer = ({
 				playbackClock.pause();
 				await AudioManager.pauseAudio();
 			} else {
-				await AudioManager.playAudio(audioUri.current);
+				await AudioManager.playAudio(audioUri.current, { tmid });
 			}
 		} catch {
 			// Do nothing
@@ -111,7 +113,7 @@ const AudioPlayer = ({
 		if (fileUri && isDownloaded) {
 			const immediate = setImmediate(() => {
 				try {
-					audioUri.current = AudioManager.loadAudio({ msgId, rid, uri: fileUri, isRecordingPreview });
+					audioUri.current = AudioManager.loadAudio({ msgId, rid, tmid, uri: fileUri, isRecordingPreview });
 					if (navigation.isFocused()) {
 						AudioManager.addAudioRendered(audioUri.current);
 					}
@@ -122,7 +124,7 @@ const AudioPlayer = ({
 			});
 			return () => clearImmediate(immediate);
 		}
-	}, [fileUri, isDownloaded, msgId, rid, isRecordingPreview, navigation]);
+	}, [fileUri, isDownloaded, msgId, rid, tmid, isRecordingPreview, navigation]);
 
 	useEffect(() => {
 		if (paused) {

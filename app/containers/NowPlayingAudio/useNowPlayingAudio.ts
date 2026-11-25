@@ -5,7 +5,7 @@ import { goRoom } from '~/lib/methods/helpers/goRoom';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
 import { useNowPlayingAudioStore, type INowPlayingAudio } from '~/lib/methods/useNowPlayingAudioStore';
-import { useFocusedRoomStore } from '~/lib/methods/useFocusedRoomStore';
+import { isSameRoomScreen, useFocusedRoomStore } from '~/lib/methods/useFocusedRoomStore';
 import { useCallStore } from '~/lib/services/voip/useCallStore';
 import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from '~/containers/AudioPlayer/constants';
@@ -58,4 +58,5 @@ export const useIsInCall = () => {
 	return hasCall || hasConferenceCall;
 };
 
-export const useIsRoomFocused = (rid: string) => useFocusedRoomStore(state => state.rid === rid);
+export const useIsAudioScreenFocused = (audio: INowPlayingAudio | null) =>
+	useFocusedRoomStore(state => audio !== null && isSameRoomScreen(state.screen, audio));

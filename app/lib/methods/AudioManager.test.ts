@@ -271,6 +271,21 @@ describe('AudioManager', () => {
 			expect(getNowPlaying()).toMatchObject({ audioKey: key, playing: false });
 		});
 
+		it('the now playing audio keeps the thread it was last played from, also when played from the audio player', async () => {
+			const { AudioManager } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+
+			await AudioManager.playAudio(key, { tmid: 'thread-1' });
+			expect(getNowPlaying()).toMatchObject({ audioKey: key, rid: 'room', tmid: 'thread-1' });
+
+			AudioManager.pauseAudio();
+			await AudioManager.playAudio(key);
+			expect(getNowPlaying()).toMatchObject({ audioKey: key, tmid: 'thread-1' });
+
+			await AudioManager.playAudio(key, {});
+			expect(getNowPlaying()).toMatchObject({ audioKey: key, tmid: undefined });
+		});
+
 		it('a paused status of the now playing audio reaches the store', async () => {
 			const { AudioManager } = setup();
 			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });

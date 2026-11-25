@@ -233,7 +233,7 @@ describe('AudioPlayer', () => {
 
 			fireEvent.press(getByTestId('play-button'));
 
-			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key'));
+			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key', { tmid: undefined }));
 		});
 	});
 
@@ -245,7 +245,7 @@ describe('AudioPlayer', () => {
 
 			fireEvent.press(getByTestId('play-button'));
 
-			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key'));
+			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key', { tmid: undefined }));
 		});
 
 		it('calls AudioManager.pauseAudio when audio is currently playing', async () => {
@@ -623,7 +623,7 @@ describe('AudioPlayer', () => {
 			const currentTimeValue = seekProp('currentTime');
 
 			fireEvent.press(getByTestId('play-button'));
-			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key'));
+			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key', { tmid: undefined }));
 
 			act(() => {
 				statusCb({ isLoaded: true, playing: true, currentTime: 5, duration: 30 });

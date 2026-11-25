@@ -19,7 +19,7 @@ class AudioManagerClass {
 	private audioRates: { [audioKey: string]: number };
 	private audioSubscriptions: { [audioKey: string]: () => void };
 	private audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void };
-	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string; isRecordingPreview: boolean } };
+	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string; tmid?: string; isRecordingPreview: boolean } };
 	private audioPlaying: string;
 	private audiosRendered: Set<string>;
 	private detachedAudioKeys: Set<string>;
@@ -59,9 +59,9 @@ class AudioManagerClass {
 	}
 
 	private startNowPlaying(audioKey: string) {
-		const { rid, msgId } = this.audioMeta[audioKey];
+		const { rid, msgId, tmid } = this.audioMeta[audioKey];
 		useNowPlayingAudioStore.setState({
-			audio: { audioKey, rid, msgId, uri: this.audioUris[audioKey], playing: true }
+			audio: { audioKey, rid, msgId, tmid, uri: this.audioUris[audioKey], playing: true }
 		});
 	}
 
@@ -113,17 +113,19 @@ class AudioManagerClass {
 	loadAudio({
 		msgId,
 		rid,
+		tmid,
 		uri,
 		isRecordingPreview = false
 	}: {
 		rid: string;
 		msgId?: string;
+		tmid?: string;
 		uri: string;
 		isRecordingPreview?: boolean;
 	}): string {
 		const audioKey = getAudioKey({ msgId, rid, uri });
 		this.audioUris[audioKey] = uri;
-		this.audioMeta[audioKey] = { msgId, rid, isRecordingPreview };
+		this.audioMeta[audioKey] = { msgId, rid, tmid, isRecordingPreview };
 		this.detachedAudioKeys.delete(audioKey);
 		if (this.audioQueue[audioKey]) {
 			return audioKey;
@@ -134,9 +136,12 @@ class AudioManagerClass {
 		return audioKey;
 	}
 
-	async playAudio(audioKey: string) {
+	async playAudio(audioKey: string, playedFrom?: { tmid?: string }) {
 		if (!this.audioQueue[audioKey] && !this.audioUris[audioKey]) {
 			return;
+		}
+		if (playedFrom && this.audioMeta[audioKey]) {
+			this.audioMeta[audioKey].tmid = playedFrom.tmid;
 		}
 
 		if (this.audioPlaying) {

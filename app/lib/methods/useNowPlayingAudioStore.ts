@@ -4,6 +4,7 @@ export interface INowPlayingAudio {
 	audioKey: string;
 	rid: string;
 	msgId?: string;
+	tmid?: string;
 	uri: string;
 	playing: boolean;
 }

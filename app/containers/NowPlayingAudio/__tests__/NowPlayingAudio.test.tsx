@@ -9,6 +9,7 @@ import { type TMessageModel } from '~/definitions/IMessage';
 import { useCallStore } from '~/lib/services/voip/useCallStore';
 import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import { useFocusedRoomStore } from '~/lib/methods/useFocusedRoomStore';
+import { themedHeader } from '~/lib/methods/helpers/navigation';
 
 jest.mock('~/lib/methods/AudioManager', () => ({
 	playAudio: jest.fn(),
@@ -47,7 +48,7 @@ const renderWithAudio = async (audio: INowPlayingAudio | null) => {
 describe('NowPlayingAudio', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		useFocusedRoomStore.setState({ rid: null });
+		useFocusedRoomStore.setState({ screen: null });
 	});
 
 	it('renders nothing while no audio is playing', async () => {
@@ -66,13 +67,33 @@ describe('NowPlayingAudio', () => {
 	});
 
 	it('hides while the room of the audio is on screen', async () => {
-		useFocusedRoomStore.setState({ rid: 'room-1' });
+		useFocusedRoomStore.setState({ screen: { rid: 'room-1' } });
 
 		await renderWithAudio(playingAudio);
 
 		expect(screen.queryByTestId('now-playing-audio')).toBeNull();
-		act(() => useFocusedRoomStore.setState({ rid: 'room-2' }));
+		act(() => useFocusedRoomStore.setState({ screen: { rid: 'room-2' } }));
 		expect(screen.getByTestId('now-playing-audio')).toBeOnTheScreen();
+	});
+
+	it('shows in a thread of the room for an audio played in the room, and hides in the thread it was played from', async () => {
+		useFocusedRoomStore.setState({ screen: { rid: 'room-1', tmid: 'thread-1' } });
+
+		await renderWithAudio(playingAudio);
+
+		expect(screen.getByTestId('now-playing-audio')).toBeOnTheScreen();
+		act(() => useNowPlayingAudioStore.setState({ audio: { ...playingAudio, tmid: 'thread-1' } }));
+		expect(screen.queryByTestId('now-playing-audio')).toBeNull();
+		act(() => useFocusedRoomStore.setState({ screen: { rid: 'room-1' } }));
+		expect(screen.getByTestId('now-playing-audio')).toBeOnTheScreen();
+	});
+
+	it('uses the header background', async () => {
+		await renderWithAudio(playingAudio);
+
+		const { headerStyle } = themedHeader('light') as { headerStyle: { backgroundColor: string } };
+
+		expect(screen.getByTestId('now-playing-audio')).toHaveStyle({ backgroundColor: headerStyle.backgroundColor });
 	});
 
 	it('follows the statuses of the audio playing', async () => {

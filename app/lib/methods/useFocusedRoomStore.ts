@@ -1,15 +1,23 @@
 import { create } from 'zustand';
 
-interface IFocusedRoomStore {
-	rid: string | null;
+export interface IRoomScreen {
+	rid: string;
+	tmid?: string;
 }
 
-export const useFocusedRoomStore = create<IFocusedRoomStore>(() => ({ rid: null }));
+interface IFocusedRoomStore {
+	screen: IRoomScreen | null;
+}
 
-export const focusRoom = (rid: string) => useFocusedRoomStore.setState({ rid });
+export const useFocusedRoomStore = create<IFocusedRoomStore>(() => ({ screen: null }));
 
-export const blurRoom = (rid: string) => {
-	if (useFocusedRoomStore.getState().rid === rid) {
-		useFocusedRoomStore.setState({ rid: null });
+export const isSameRoomScreen = (screen: IRoomScreen | null, other: IRoomScreen) =>
+	screen?.rid === other.rid && screen.tmid === other.tmid;
+
+export const focusRoom = (screen: IRoomScreen) => useFocusedRoomStore.setState({ screen });
+
+export const blurRoom = (screen: IRoomScreen) => {
+	if (isSameRoomScreen(useFocusedRoomStore.getState().screen, screen)) {
+		useFocusedRoomStore.setState({ screen: null });
 	}
 };

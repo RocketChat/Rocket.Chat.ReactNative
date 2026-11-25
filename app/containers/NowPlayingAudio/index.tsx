@@ -10,7 +10,7 @@ import { type INowPlayingAudio } from '~/lib/methods/useNowPlayingAudioStore';
 import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import {
 	useIsInCall,
-	useIsRoomFocused,
+	useIsAudioScreenFocused,
 	useNowPlayingAudio,
 	useNowPlayingAudioActions,
 	useNowPlayingAudioPlayback
@@ -32,7 +32,7 @@ const NowPlayingAudioBar = ({ audio }: { audio: INowPlayingAudio }) => {
 			testID='now-playing-audio'
 			style={[
 				styles.container,
-				{ backgroundColor: colors.surfaceLight, borderBottomColor: colors.strokeExtraLight },
+				{ backgroundColor: colors.surfaceNeutral, borderBottomColor: colors.strokeExtraLight },
 				hasNativeHeaderBar && { paddingTop: insets.top + styles.container.paddingVertical }
 			]}>
 			<View style={styles.header}>
@@ -82,8 +82,8 @@ const NowPlayingAudioBar = ({ audio }: { audio: INowPlayingAudio }) => {
 const NowPlayingAudio = () => {
 	const audio = useNowPlayingAudio();
 	const isInCall = useIsInCall();
-	const isRoomFocused = useIsRoomFocused(audio?.rid ?? '');
-	if (!audio || isInCall || isRoomFocused) {
+	const isAudioScreenFocused = useIsAudioScreenFocused(audio);
+	if (!audio || isInCall || isAudioScreenFocused) {
 		return null;
 	}
 	return <NowPlayingAudioBar key={audio.audioKey} audio={audio} />;

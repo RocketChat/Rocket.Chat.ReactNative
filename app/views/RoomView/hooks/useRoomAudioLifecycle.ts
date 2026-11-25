@@ -10,9 +10,10 @@ export function useRoomAudioLifecycle(rid: string | undefined, tmid: string | un
 			if (!rid) {
 				return;
 			}
-			focusRoom(rid);
-			return () => blurRoom(rid);
-		}, [rid])
+			const screen = { rid, tmid };
+			focusRoom(screen);
+			return () => blurRoom(screen);
+		}, [rid, tmid])
 	);
 
 	useEffect(
