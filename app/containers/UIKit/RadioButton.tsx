@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
 export const RadioButton = ({ element, value, loading, onChange }: IRadioButton) => {
 	const { colors } = useTheme();
 	const [pick, setPick] = useState<{ value: Option['value'] }>();
-	const [pickedOn, setPickedOn] = useState(value);
-	if (value !== pickedOn) {
-		setPickedOn(value);
+	const [prevValue, setPrevValue] = useState(value);
+	if (value !== prevValue) {
+		setPrevValue(value);
 		setPick(undefined);
 	}
 	const selected = pick ? pick.value : value;
@@ -48,19 +48,19 @@ export const RadioButton = ({ element, value, loading, onChange }: IRadioButton)
 		<View accessibilityRole='radiogroup'>
 			{options.map(option => {
 				const checked = selected === option.value;
+				const label = textParser([option.text]);
 				return (
-					<Touch
-						key={option.value}
-						testID={`uikit-radio-${element.actionId}-${option.value}`}
-						onPress={() => onPress(option.value)}
-						disabled={loading}
-						style={styles.option}
-						accessible
-						accessibilityLabel={textParser([option.text])}
-						accessibilityRole='radio'
-						accessibilityState={{ checked, disabled: loading }}>
-						<Radio check={checked} />
-						<Text style={[styles.label, { color: colors.fontDefault }]}>{textParser([option.text])}</Text>
+					<Touch key={option.value} onPress={() => onPress(option.value)} disabled={loading}>
+						<View
+							testID={`uikit-radio-${element.actionId}-${option.value}`}
+							style={styles.option}
+							accessible
+							accessibilityLabel={label}
+							accessibilityRole='radio'
+							accessibilityState={{ checked, disabled: loading }}>
+							<Radio check={checked} />
+							<Text style={[styles.label, { color: colors.fontDefault }]}>{label}</Text>
+						</View>
 					</Touch>
 				);
 			})}

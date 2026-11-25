@@ -5317,11 +5317,10 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityRole="radio"
           accessibilityState={
             {
               "busy": undefined,
-              "checked": false,
+              "checked": undefined,
               "disabled": false,
               "expanded": undefined,
               "selected": undefined,
@@ -5375,74 +5374,78 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Active"
-            accessibilityRole="radio"
-            accessibilityState={
-              {
-                "checked": false,
-                "disabled": false,
-              }
-            }
-            accessible={true}
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 8,
-                "paddingVertical": 6,
-              }
-            }
-            testID="uikit-radio-immediate-forwarding-active"
+            style={{}}
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
+              accessibilityLabel="Active"
+              accessibilityRole="radio"
+              accessibilityState={
+                {
+                  "checked": false,
+                  "disabled": false,
+                }
+              }
+              accessible={true}
               style={
-                [
-                  {
-                    "color": "#9EA2A8",
-                    "fontSize": 20,
-                  },
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 8,
+                  "paddingVertical": 6,
+                }
+              }
+              testID="uikit-radio-immediate-forwarding-active"
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
                   [
                     {
-                      "lineHeight": 20,
+                      "color": "#9EA2A8",
+                      "fontSize": 20,
                     },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flex": 1,
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontVariant": [
-                      "tabular-nums",
+                    [
+                      {
+                        "lineHeight": 20,
+                      },
+                      undefined,
                     ],
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                  },
-                ]
-              }
-            >
-              Active
-            </Text>
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "flex": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "lineHeight": 22,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Active
+              </Text>
+            </View>
           </View>
         </View>
       </ExternalKeyboardView>
@@ -5469,11 +5472,10 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityRole="radio"
           accessibilityState={
             {
               "busy": undefined,
-              "checked": true,
+              "checked": undefined,
               "disabled": false,
               "expanded": undefined,
               "selected": undefined,
@@ -5527,74 +5529,78 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Inactive"
-            accessibilityRole="radio"
-            accessibilityState={
-              {
-                "checked": true,
-                "disabled": false,
-              }
-            }
-            accessible={true}
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 8,
-                "paddingVertical": 6,
-              }
-            }
-            testID="uikit-radio-immediate-forwarding-inactive"
+            style={{}}
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
+              accessibilityLabel="Inactive"
+              accessibilityRole="radio"
+              accessibilityState={
+                {
+                  "checked": true,
+                  "disabled": false,
+                }
+              }
+              accessible={true}
               style={
-                [
-                  {
-                    "color": "#156FF5",
-                    "fontSize": 20,
-                  },
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 8,
+                  "paddingVertical": 6,
+                }
+              }
+              testID="uikit-radio-immediate-forwarding-inactive"
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
                   [
                     {
-                      "lineHeight": 20,
+                      "color": "#156FF5",
+                      "fontSize": 20,
                     },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flex": 1,
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontVariant": [
-                      "tabular-nums",
+                    [
+                      {
+                        "lineHeight": 20,
+                      },
+                      undefined,
                     ],
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                  },
-                ]
-              }
-            >
-              Inactive
-            </Text>
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "flex": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "lineHeight": 22,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Inactive
+              </Text>
+            </View>
           </View>
         </View>
       </ExternalKeyboardView>
@@ -5655,11 +5661,10 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityRole="radio"
           accessibilityState={
             {
               "busy": undefined,
-              "checked": false,
+              "checked": undefined,
               "disabled": false,
               "expanded": undefined,
               "selected": undefined,
@@ -5713,74 +5718,78 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Active"
-            accessibilityRole="radio"
-            accessibilityState={
-              {
-                "checked": false,
-                "disabled": false,
-              }
-            }
-            accessible={true}
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 8,
-                "paddingVertical": 6,
-              }
-            }
-            testID="uikit-radio-busy-forwarding-active"
+            style={{}}
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
+              accessibilityLabel="Active"
+              accessibilityRole="radio"
+              accessibilityState={
+                {
+                  "checked": false,
+                  "disabled": false,
+                }
+              }
+              accessible={true}
               style={
-                [
-                  {
-                    "color": "#9EA2A8",
-                    "fontSize": 20,
-                  },
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 8,
+                  "paddingVertical": 6,
+                }
+              }
+              testID="uikit-radio-busy-forwarding-active"
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
                   [
                     {
-                      "lineHeight": 20,
+                      "color": "#9EA2A8",
+                      "fontSize": 20,
                     },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flex": 1,
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontVariant": [
-                      "tabular-nums",
+                    [
+                      {
+                        "lineHeight": 20,
+                      },
+                      undefined,
                     ],
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                  },
-                ]
-              }
-            >
-              Active
-            </Text>
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "flex": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "lineHeight": 22,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Active
+              </Text>
+            </View>
           </View>
         </View>
       </ExternalKeyboardView>
@@ -5807,11 +5816,10 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityRole="radio"
           accessibilityState={
             {
               "busy": undefined,
-              "checked": false,
+              "checked": undefined,
               "disabled": false,
               "expanded": undefined,
               "selected": undefined,
@@ -5865,74 +5873,78 @@ exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
           underlayColor="#E4E7EA"
         >
           <View
-            accessibilityLabel="Inactive"
-            accessibilityRole="radio"
-            accessibilityState={
-              {
-                "checked": false,
-                "disabled": false,
-              }
-            }
-            accessible={true}
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 8,
-                "paddingVertical": 6,
-              }
-            }
-            testID="uikit-radio-busy-forwarding-inactive"
+            style={{}}
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
+              accessibilityLabel="Inactive"
+              accessibilityRole="radio"
+              accessibilityState={
+                {
+                  "checked": false,
+                  "disabled": false,
+                }
+              }
+              accessible={true}
               style={
-                [
-                  {
-                    "color": "#9EA2A8",
-                    "fontSize": 20,
-                  },
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 8,
+                  "paddingVertical": 6,
+                }
+              }
+              testID="uikit-radio-busy-forwarding-inactive"
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
                   [
                     {
-                      "lineHeight": 20,
+                      "color": "#9EA2A8",
+                      "fontSize": 20,
                     },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flex": 1,
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontVariant": [
-                      "tabular-nums",
+                    [
+                      {
+                        "lineHeight": 20,
+                      },
+                      undefined,
                     ],
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                  },
-                ]
-              }
-            >
-              Inactive
-            </Text>
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "flex": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontVariant": [
+                        "tabular-nums",
+                      ],
+                      "fontWeight": "400",
+                      "lineHeight": 22,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Inactive
+              </Text>
+            </View>
           </View>
         </View>
       </ExternalKeyboardView>

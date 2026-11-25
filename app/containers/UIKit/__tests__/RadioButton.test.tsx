@@ -123,6 +123,12 @@ describe('UIKit RadioButton', () => {
 		expect(screen.getByTestId('uikit-radio-forwarding-inactive')).toHaveProp('accessibilityLabel', 'Inactive');
 	});
 
+	test('exposes one radio per option, so TalkBack does not stop on the pressable wrapper too', () => {
+		render(<RadioButton element={element} value='inactive' loading={false} onChange={jest.fn()} />);
+
+		expect(screen.getAllByRole('radio')).toHaveLength(2);
+	});
+
 	test('does not change the selection while loading', () => {
 		const onChange = jest.fn().mockResolvedValue(true);
 		render(<RadioButton element={element} value='inactive' loading onChange={onChange} />);

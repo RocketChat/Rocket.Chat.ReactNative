@@ -96,7 +96,6 @@ const Touch = forwardRef<any, ITouchProps>(
 					testID={testID}
 					accessible={accessible}
 					accessibilityRole={props.accessibilityRole}
-					accessibilityState={props.accessibilityState}
 					accessibilityLabel={accessibilityLabel}
 					accessibilityHint={accessibilityHint}
 					accessibilityActions={accessibilityActions}
