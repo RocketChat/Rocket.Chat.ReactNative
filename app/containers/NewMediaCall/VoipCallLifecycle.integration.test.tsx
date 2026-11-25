@@ -150,14 +150,6 @@ jest.mock('~/lib/hooks/useIsScreenReaderEnabled', () => ({
 jest.mock('./PeerList', () => ({ PeerList: () => null }));
 jest.mock('./FilterHeader', () => ({ FilterHeader: () => null }));
 jest.mock('./SelectedPeer', () => ({ SelectedPeer: () => null }));
-// getPeerAutocompleteOptions → restApi → @rocket.chat/mobile-crypto (ESM, not transformable).
-jest.mock('~/lib/services/voip/getPeerAutocompleteOptions', () => ({
-	getPeerAutocompleteOptions: jest.fn().mockResolvedValue([])
-}));
-// navigateToCallRoom → goRoom → restApi → encryption → ESM fail.
-jest.mock('~/lib/services/voip/navigateToCallRoom', () => ({
-	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
-}));
 // Gate boundary mock: the DDP listener now routes accepted signals through
 // acceptNativeCallWithReadiness rather than calling answerCall directly. The
 // gate's own unit tests cover readiness orchestration; this file asserts the

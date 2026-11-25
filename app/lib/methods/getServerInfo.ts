@@ -1,14 +1,8 @@
-import { KJUR } from 'jsrsasign';
+import { rsaImportPublicKey, rsaVerifyJwt } from '@rocket.chat/mobile-crypto';
 
 import dayjs from '../dayjs';
 import { getSupportedVersionsCloud } from '../services/restApi';
-import {
-	type TCloudInfo,
-	type IServerInfo,
-	type ISupportedVersions,
-	type ISupportedVersionsData,
-	type IApiServerInfo
-} from '~/definitions/IServer';
+import { type TCloudInfo, type IServerInfo, type ISupportedVersionsData, type IApiServerInfo } from '~/definitions/IServer';
 import { selectServerFailure } from '~/actions/server';
 import { store } from '../store/auxStore';
 import I18n from '~/i18n';
@@ -32,19 +26,13 @@ export type TServerInfoResult = IServerInfoSuccess | IServerInfoFailure;
 
 const SV_CLOUD_UPDATE_INTERVAL = 12; // hours
 
-// Verifies if JWT is valid and returns the payload
-const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
+const verifyJWT = async (jwt?: string): Promise<ISupportedVersionsData | null> => {
+	if (!jwt) {
+		return null;
+	}
 	try {
-		if (!jwt) {
-			return null;
-		}
-		const isValid = KJUR.jws.JWS.verify(jwt, SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY, ['RS256']);
-		if (!isValid) {
-			return null;
-		}
-
-		const { payloadObj } = KJUR.jws.JWS.parse(jwt);
-		return payloadObj as ISupportedVersions;
+		const payload = await rsaVerifyJwt(await rsaImportPublicKey(SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY), jwt);
+		return JSON.parse(payload) as ISupportedVersionsData;
 	} catch {
 		return null;
 	}
@@ -71,42 +59,9 @@ export async function getServerInfo(server: string, signal?: AbortSignal): Promi
 				};
 			}
 
-			// Makes use of signed JWT to get supported versions
-			const supportedVersions = verifyJWT(serverInfo.supportedVersions?.signed);
-
-			// if backend doesn't have supported versions or JWT is invalid, request from cloud
-			if (!supportedVersions) {
-				// fetches from cloud only every 12h
-				const serverRecord = await getServerById(server);
-				if (
-					serverRecord?.supportedVersionsUpdatedAt &&
-					dayjs(new Date()).diff(serverRecord?.supportedVersionsUpdatedAt, 'hours') <= SV_CLOUD_UPDATE_INTERVAL
-				) {
-					return {
-						...serverInfo,
-						success: true
-					};
-				}
-
-				const cloudInfo = await getCloudInfo(server, serverInfo.version, signal);
-
-				// Allows airgapped servers to use the app until enforcementStartDate
-				if (!cloudInfo) {
-					return {
-						...serverInfo,
-						success: true
-					};
-				}
-
-				// Makes use of signed JWT to get supported versions
-				const supportedVersionsCloud = verifyJWT(cloudInfo?.signed);
-
-				return {
-					...serverInfo,
-					success: true,
-					supportedVersions: supportedVersionsCloud
-				};
-			}
+			const supportedVersions =
+				(await verifyJWT(serverInfo.supportedVersions?.signed)) ??
+				(await getCloudSupportedVersions(server, serverInfo.version, signal));
 
 			return {
 				...serverInfo,
@@ -155,4 +110,20 @@ export const getCloudInfo = async (domain: string, serverVersion: string, signal
 		}
 		return null;
 	}
+};
+
+const getCloudSupportedVersions = async (
+	server: string,
+	serverVersion: string,
+	signal?: AbortSignal
+): Promise<ISupportedVersionsData | null> => {
+	const serverRecord = await getServerById(server);
+	if (
+		serverRecord?.supportedVersionsUpdatedAt &&
+		dayjs(new Date()).diff(serverRecord.supportedVersionsUpdatedAt, 'hours') <= SV_CLOUD_UPDATE_INTERVAL
+	) {
+		return null;
+	}
+	const cloudInfo = await getCloudInfo(server, serverVersion, signal);
+	return cloudInfo ? verifyJWT(cloudInfo.signed) : null;
 };
