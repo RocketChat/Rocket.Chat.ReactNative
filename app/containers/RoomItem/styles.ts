@@ -47,9 +47,6 @@ export default StyleSheet.create({
 		marginLeft: 4,
 		...sharedStyles.textMedium
 	},
-	updateAlert: {
-		...sharedStyles.textBold
-	},
 	status: {
 		marginRight: 2
 	},

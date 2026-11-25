@@ -321,7 +321,7 @@ export const ComposerInput = memo(
 		// Edit/quote
 		useEffect(() => {
 			const fetchMessageAndSetInput = async (messageId: string) => {
-				const message = await getMessageById(messageId);
+				const message = await getMessageById(messageId, tmid);
 				if (message) {
 					setInput(message?.msg || (altTextSupported ? '' : message?.attachments?.[0]?.description || ''));
 				}
@@ -344,7 +344,7 @@ export const ComposerInput = memo(
 			if (action?.kind === 'quote' && action.messageIds.length) {
 				focus();
 			}
-		}, [action]);
+		}, [action, tmid]);
 
 		useFocusEffect(
 			useCallback(() => {

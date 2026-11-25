@@ -1,11 +1,11 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUserWithPasswordChange, deleteCreatedUsers } from '~e2e/support/api';
 import {
 	fillWhenUncovered,
 	hideKeyboard,
-	loginWithDeepLink,
+	loginToApp,
 	loginWithForm,
 	logout,
 	navigateToLogin,
@@ -20,7 +20,7 @@ test('requires a password change on first login', { tags: ['test-5'] }, async fi
 	const { screen } = fixtures;
 	const user = await createUserWithPasswordChange();
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await expect(screen.getByText('You need to change your password')).toBeVisible({ timeout: LONG_TIMEOUT });
 	await screen.getByTestId('change-password-required-button').tap();
 	await fillWhenUncovered(screen.getByTestId('change-password-view-new-password'), NEW_PASSWORD);

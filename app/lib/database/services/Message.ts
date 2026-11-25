@@ -1,22 +1,12 @@
 import database from '..';
 import { type TAppDatabase } from '../interfaces';
 import { MESSAGES_TABLE } from '../model/Message';
+import { getThreadById } from './Thread';
 import { getThreadMessageById } from './ThreadMessage';
 
 const getCollection = (db: TAppDatabase) => db.get(MESSAGES_TABLE);
 
-export const getMessageById = async (messageId: string | null, tmid?: string | null) => {
-	if (!messageId) {
-		return null;
-	}
-
-	if (tmid) {
-		const threadMessage = await getThreadMessageById(messageId);
-		if (threadMessage) {
-			return threadMessage;
-		}
-	}
-
+const findInMessages = async (messageId: string) => {
 	const db = database.active;
 	const messageCollection = getCollection(db);
 	try {
@@ -26,3 +16,18 @@ export const getMessageById = async (messageId: string | null, tmid?: string | n
 		return null;
 	}
 };
+
+export const getMessageById = async (messageId: string | null, tmid?: string | null) => {
+	if (!messageId) {
+		return null;
+	}
+
+	if (!tmid) {
+		return findInMessages(messageId);
+	}
+
+	return (await getThreadMessageById(messageId)) ?? (await findInMessages(messageId)) ?? getThreadById(messageId);
+};
+
+export const getMessageOrThreadMessageById = async (messageId: string) =>
+	(await findInMessages(messageId)) ?? getThreadMessageById(messageId);

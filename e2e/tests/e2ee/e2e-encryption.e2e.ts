@@ -1,4 +1,4 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
@@ -16,7 +16,7 @@ import {
 	resetRoomKey,
 	setupE2EEUser
 } from '~e2e/support/e2ee';
-import { backToRoomsList, loginWithDeepLink, sendMessage, LONG_TIMEOUT } from '~e2e/support/flows';
+import { backToRoomsList, loginToApp, sendMessage, LONG_TIMEOUT } from '~e2e/support/flows';
 import { random } from '~e2e/support/random';
 
 afterEach(deleteCreatedUsers);
@@ -37,27 +37,27 @@ test('encrypts, decrypts, quotes, resets keys and edits messages', { tags: ['tes
 	await quoteMessage(fixtures, 'm1', 'm2');
 	await expect(screen.getByTestId(`reply-${userA.username}-m1`)).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await loginWithDeepLink(fixtures, userB);
+	await loginToApp(fixtures, userB);
 	await openRoomFromList(fixtures, room);
 	await expect(screen.getByTestId('room-view-encrypted-room')).toBeVisible({ timeout: LONG_TIMEOUT });
 
-	await loginWithDeepLink(fixtures, userA);
+	await loginToApp(fixtures, userA);
 	await openEncryptedRoom(fixtures, room);
 	await expectLastMessageUnread(fixtures);
 
-	await loginWithDeepLink(fixtures, userB);
+	await loginToApp(fixtures, userB);
 	await openEncryptedRoom(fixtures, room);
 	await expectMessages(fixtures, ['m0', 'm1', 'm2']);
 	await sendMessage(fixtures, 'm3');
 
-	await loginWithDeepLink(fixtures, userA);
+	await loginToApp(fixtures, userA);
 	await openEncryptedRoom(fixtures, room);
 	await expectMessages(fixtures, ['m0', 'm1', 'm2', 'm3']);
 
-	await loginWithDeepLink(fixtures, userA);
+	await loginToApp(fixtures, userA);
 	await navigateToE2EESecurity(fixtures);
 	await resetE2EEKey(fixtures);
-	await loginWithDeepLink(fixtures, userA);
+	await loginToApp(fixtures, userA);
 	await navigateToE2EESecurity(fixtures);
 	await changeE2EEPassword(fixtures);
 	await fixtures.app.restart();
@@ -67,7 +67,7 @@ test('encrypts, decrypts, quotes, resets keys and edits messages', { tags: ['tes
 	await openRoomFromList(fixtures, room);
 	await sendMessage(fixtures, 'm4');
 
-	await loginWithDeepLink(fixtures, userB);
+	await loginToApp(fixtures, userB);
 	await openEncryptedRoom(fixtures, room);
 	await sendMessage(fixtures, 'm5');
 	await expectMessages(fixtures, ['m0', 'm1', 'm2', 'm3', 'm4', 'm5']);

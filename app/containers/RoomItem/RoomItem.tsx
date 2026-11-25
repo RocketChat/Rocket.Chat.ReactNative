@@ -63,6 +63,7 @@ const RoomItem = ({
 }: IRoomItemProps) => {
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
+	const isUnread = alert && !hideUnreadStatus;
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, type }),
 		[lastMessage, username, useRealName, showLastMessage, type]
@@ -114,10 +115,11 @@ const RoomItem = ({
 								teamMain={teamMain}
 								sourceType={sourceType}
 								abacAttributes={abacAttributes}
+								isUnread={isUnread}
 							/>
-							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+							<Title name={name} isUnread={isUnread} />
 							{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
-							{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
+							{isLargeFontScale ? null : <UpdatedAt date={date} isUnread={isUnread} />}
 						</View>
 						<View style={styles.row} testID='room-item-last-message-container'>
 							<LastMessage
@@ -126,6 +128,7 @@ const RoomItem = ({
 								showLastMessage={showLastMessage}
 								username={username || ''}
 								useRealName={useRealName}
+								isUnread={isUnread}
 							/>
 							<UnreadBadge
 								unread={unread}
@@ -147,7 +150,7 @@ const RoomItem = ({
 								/>
 							) : null}
 						</View>
-						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
+						{isLargeFontScale ? <UpdatedAt date={date} isUnread={isUnread} /> : null}
 					</>
 				) : (
 					<>
@@ -161,8 +164,9 @@ const RoomItem = ({
 								teamMain={teamMain}
 								sourceType={sourceType}
 								abacAttributes={abacAttributes}
+								isUnread={isUnread}
 							/>
-							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+							<Title name={name} isUnread={isUnread} />
 							{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
 							{isInvited ? (
 								<CustomIcon
@@ -175,7 +179,7 @@ const RoomItem = ({
 							) : null}
 
 							<View style={styles.wrapUpdatedAndBadge}>
-								{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
+								{isLargeFontScale ? null : <UpdatedAt date={date} isUnread={isUnread} />}
 								<UnreadBadge
 									unread={unread}
 									userMentions={userMentions}
@@ -188,7 +192,7 @@ const RoomItem = ({
 								/>
 							</View>
 						</View>
-						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
+						{isLargeFontScale ? <UpdatedAt date={date} isUnread={isUnread} /> : null}
 					</>
 				)}
 			</Wrapper>

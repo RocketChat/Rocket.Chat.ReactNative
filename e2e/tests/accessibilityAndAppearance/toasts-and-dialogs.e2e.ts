@@ -1,18 +1,11 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import {
-	expectVisible,
-	type Fixtures,
-	loginWithDeepLink,
-	LONG_TIMEOUT,
-	tapUntilHidden,
-	tapWhenVisible
-} from '~e2e/support/flows';
+import { openScreen } from '~e2e/support/appduct';
+import { expectVisible, type Fixtures, loginToApp, LONG_TIMEOUT, tapUntilHidden, tapWhenVisible } from '~e2e/support/flows';
 import { tapHeaderItem } from '~e2e/support/header';
 import { expectLabel } from '~e2e/support/keyboard';
-import { openSidebar } from '~e2e/support/settings';
 
 const TOAST_CHECKED = 'Toasts. Dismissed automatically. Checked';
 const DIALOG_UNCHECKED = 'Dialogs. Require manual dismissal. Unchecked';
@@ -75,10 +68,9 @@ afterEach(deleteCreatedUsers);
 test('shows alerts as toasts or dialogs', { tags: ['test-3'] }, async fixtures => {
 	const { screen } = fixtures;
 	const user = await createUser();
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
-	await openSidebar(fixtures);
-	await openAccessibility(fixtures);
+	await openScreen(fixtures, 'AccessibilityAndAppearanceView');
 	await expectToastsSelected(fixtures);
 	await saveStatus(fixtures, 'offline');
 
