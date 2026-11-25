@@ -7,7 +7,6 @@ const MIN_WAVEFORM_WIDTH = 96;
 const styles = StyleSheet.create({
 	audioContainer: {
 		flex: 1,
-		maxWidth: 368,
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		alignItems: 'center',
@@ -40,12 +39,8 @@ const styles = StyleSheet.create({
 		fontVariant: ['tabular-nums'],
 		...sharedStyles.textRegular
 	},
-	playbackSpeedSlot: {
-		minWidth: 64,
-		alignItems: 'center'
-	},
 	containerPlaybackSpeed: {
-		minWidth: 48,
+		minWidth: 64,
 		minHeight: 32,
 		paddingHorizontal: 8,
 		borderRadius: 4,
@@ -54,8 +49,8 @@ const styles = StyleSheet.create({
 		overflow: 'hidden'
 	},
 	playbackSpeedText: {
-		fontSize: 14,
-		...sharedStyles.textBold
+		fontSize: 13,
+		...sharedStyles.textSemibold
 	}
 });
 

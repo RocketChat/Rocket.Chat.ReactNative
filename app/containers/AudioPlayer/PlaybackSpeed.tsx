@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 
 import i18n from '~/i18n';
 import styles from './styles';
@@ -18,16 +18,14 @@ const PlaybackSpeed = () => {
 	};
 
 	return (
-		<View style={styles.playbackSpeedSlot}>
-			<NativeButton
-				testID='playback-speed'
-				accessible
-				accessibilityLabel={i18n.t('Playback_speed', { playbackSpeed: `${playbackSpeed} x` })}
-				onPress={onPress}
-				style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
-				<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary }]}>{playbackSpeed}x</Text>
-			</NativeButton>
-		</View>
+		<NativeButton
+			testID='playback-speed'
+			accessible
+			accessibilityLabel={i18n.t('Playback_speed', { playbackSpeed: `${playbackSpeed} x` })}
+			onPress={onPress}
+			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
+			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary }]}>{playbackSpeed}x</Text>
+		</NativeButton>
 	);
 };
 

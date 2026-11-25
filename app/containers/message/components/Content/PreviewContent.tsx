@@ -1,16 +1,9 @@
 import { MarkdownPreview } from '~/containers/markdown';
-import { getPreviewMessageFromAttachment } from '~/containers/message/utils';
-import { useAttachments, useMessageText } from '~/containers/message/stores/MessageStore';
-import { useAutoTranslate } from '~/containers/message/stores/MessageRoomStore';
 import ContentWrapper from './ContentWrapper';
+import { usePreviewMessage } from './useContentVariant';
 
 const PreviewContent = () => {
-	const { messageText } = useMessageText();
-	const attachments = useAttachments();
-	const { autoTranslateLanguage } = useAutoTranslate();
-
-	const previewMsg =
-		messageText || (attachments?.length ? getPreviewMessageFromAttachment(attachments[0], autoTranslateLanguage) : undefined);
+	const previewMsg = usePreviewMessage();
 
 	if (!previewMsg) {
 		return null;
