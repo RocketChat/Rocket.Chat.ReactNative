@@ -482,12 +482,28 @@ const endsPostLoginSession = server => action =>
 	action.type === types.DELETE_ACCOUNT ||
 	(action.type === types.SERVER.SELECT_REQUEST && action.server !== server);
 
+const isReselectedBeforeSwitching = function* isReselectedBeforeSwitching(server) {
+	while (true) {
+		const action = yield take([types.SERVER.SELECT_CANCEL, types.METEOR.REQUEST, types.LOGOUT, types.DELETE_ACCOUNT]);
+		if (action.type !== types.SERVER.SELECT_CANCEL) {
+			return false;
+		}
+		if ((yield select(getServer)) === server) {
+			return true;
+		}
+	}
+};
+
 const runPostLoginSession = function* runPostLoginSession({ user }) {
 	const server = yield select(getServer);
-	yield race({
-		session: call(handleLoginSuccess, user, server),
-		ended: take(endsPostLoginSession(server))
-	});
+	let isRunning = true;
+	while (isRunning) {
+		const { ended } = yield race({
+			session: call(handleLoginSuccess, user, server),
+			ended: take(endsPostLoginSession(server))
+		});
+		isRunning = ended?.type === types.SERVER.SELECT_REQUEST && (yield call(isReselectedBeforeSwitching, server));
+	}
 };
 
 const root = function* root() {

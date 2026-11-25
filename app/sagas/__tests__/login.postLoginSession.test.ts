@@ -125,7 +125,8 @@ import { setSupportedVersions } from '~/actions/supportedVersions';
 import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
 import { getServerById } from '~/lib/database/services/Server';
 import type { TServerModel } from '~/definitions/IServer';
-import { selectServerRequest, selectServerSuccess } from '~/actions/server';
+import { connectRequest } from '~/actions/connect';
+import { selectServerCancel, selectServerRequest, selectServerSuccess } from '~/actions/server';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { CURRENT_SERVER, getServerUserIdKey, getUserTokenKey } from '~/lib/constants/keys';
 import { getPermissions } from '~/lib/methods/getPermissions';
@@ -233,6 +234,69 @@ describe('login saga — post-login session', () => {
 		expect(persistedToken()).toBeNull();
 		expect(UserPreferences.getString(CURRENT_SERVER)).toBeNull();
 		expect(mediaSessionInstance.init).not.toHaveBeenCalled();
+	});
+
+	const switchAwayAndBack = (store: Store) => {
+		store.dispatch(selectServerRequest(SERVER_B, '7.0.0'));
+		store.dispatch(selectServerRequest(SERVER_A, '7.0.0'));
+		store.dispatch(selectServerCancel());
+	};
+
+	const voipRechecks = async (store: Store) => {
+		jest.mocked(mediaSessionInstance.init).mockClear();
+		store.dispatch(setPermissions({}));
+		await flushSagaMicrotasks();
+		return jest.mocked(mediaSessionInstance.init).mock.calls.length > 0;
+	};
+
+	it('restarts the post-login work when the workspace is selected again before the switch connects', async () => {
+		const { store } = startLoggedInStore();
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+		UserPreferences.removeItem(getUserTokenKey(SERVER_A, USER.id));
+		jest.mocked(getPermissions).mockClear();
+
+		switchAwayAndBack(store);
+		await flushSagaMicrotasks();
+
+		expect(getPermissions).toHaveBeenCalledTimes(1);
+		expect(persistedToken()).toBe(USER.token);
+		expect(store.getState().login.user.id).toBe(USER.id);
+		expect(await voipRechecks(store)).toBe(true);
+	});
+
+	it.each([
+		['the other workspace starts connecting', () => connectRequest()],
+		['the user logs out', () => logout()],
+		['the account is deleted', () => deleteAccount()]
+	])('does not restart the post-login work after %s', async (_, interrupt) => {
+		const { store } = startLoggedInStore();
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+		jest.mocked(getPermissions).mockClear();
+
+		store.dispatch(selectServerRequest(SERVER_B, '7.0.0'));
+		store.dispatch(interrupt());
+		store.dispatch(selectServerRequest(SERVER_A, '7.0.0'));
+		store.dispatch(selectServerCancel());
+		await flushSagaMicrotasks();
+
+		expect(getPermissions).not.toHaveBeenCalled();
+		expect(await voipRechecks(store)).toBe(false);
+	});
+
+	it('does not restart the post-login work when another workspace is selected again', async () => {
+		const { store } = startLoggedInStore();
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+		jest.mocked(getPermissions).mockClear();
+
+		store.dispatch(selectServerRequest(SERVER_B, '7.0.0'));
+		store.dispatch(selectServerCancel());
+		await flushSagaMicrotasks();
+
+		expect(getPermissions).not.toHaveBeenCalled();
+		expect(await voipRechecks(store)).toBe(false);
 	});
 
 	it('shows the supported-versions warning even when the session ends while its timestamp is saved', async () => {
