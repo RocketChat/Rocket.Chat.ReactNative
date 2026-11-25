@@ -90,6 +90,20 @@ describe('UIKit RadioButton', () => {
 		expect(screen.getByTestId('uikit-radio-forwarding-inactive')).not.toBeChecked();
 	});
 
+	test('keeps an accepted later tap when an earlier overlapping action fails', async () => {
+		const resolvers: ((succeeded: boolean) => void)[] = [];
+		const onChange = jest.fn(() => new Promise<boolean>(resolve => resolvers.push(resolve)));
+		render(<RadioButton element={threeOptions} value='inactive' loading={false} onChange={onChange} />);
+
+		fireEvent.press(screen.getByTestId('uikit-radio-forwarding-active'));
+		fireEvent.press(screen.getByTestId('uikit-radio-forwarding-busy'));
+		await act(() => resolvers[1](true));
+		await act(() => resolvers[0](false));
+
+		expect(screen.getByTestId('uikit-radio-forwarding-busy')).toBeChecked();
+		expect(screen.getByTestId('uikit-radio-forwarding-inactive')).not.toBeChecked();
+	});
+
 	test('does not change the selection while loading', () => {
 		const onChange = jest.fn().mockResolvedValue(true);
 		render(<RadioButton element={element} value='inactive' loading onChange={onChange} />);
