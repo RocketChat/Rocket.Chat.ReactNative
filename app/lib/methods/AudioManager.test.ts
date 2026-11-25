@@ -271,14 +271,44 @@ describe('AudioManager', () => {
 			expect(getNowPlaying()).toMatchObject({ audioKey: key, playing: false });
 		});
 
-		it('status updates of the now playing audio reach the store', async () => {
+		it('a paused status of the now playing audio reaches the store', async () => {
 			const { AudioManager } = setup();
 			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
 			await AudioManager.playAudio(key);
 
-			AudioManager.onPlaybackStatusUpdate(key, { isLoaded: true, playing: true, currentTime: 3, duration: 9 } as AudioStatus);
+			AudioManager.onPlaybackStatusUpdate(key, { isLoaded: true, playing: false, currentTime: 3, duration: 9 } as AudioStatus);
 
-			expect(getNowPlaying()).toMatchObject({ playing: true, currentTime: 3, duration: 9 });
+			expect(getNowPlaying()).toMatchObject({ audioKey: key, uri: 'file://a.mp3', playing: false });
+		});
+
+		it('status updates of the now playing audio reach its listeners, and those of other audios do not', async () => {
+			const { AudioManager } = setup();
+			const playingKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			const otherKey = AudioManager.loadAudio({ msgId: 'm2', rid: 'room', uri: 'file://b.mp3' });
+			await AudioManager.playAudio(playingKey);
+			const listener = jest.fn();
+			const unsubscribe = AudioManager.subscribeToNowPlayingStatus(listener);
+			const status = { isLoaded: true, playing: true, currentTime: 3, duration: 9 } as AudioStatus;
+
+			AudioManager.onPlaybackStatusUpdate(playingKey, status);
+			AudioManager.onPlaybackStatusUpdate(otherKey, { ...status, currentTime: 1 });
+			unsubscribe();
+			AudioManager.onPlaybackStatusUpdate(playingKey, { ...status, currentTime: 4 });
+
+			expect(listener.mock.calls).toEqual([[status]]);
+		});
+
+		it('a new listener receives the current status of the now playing audio at once', async () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(key);
+			const currentStatus = { isLoaded: true, playing: true, currentTime: 4, duration: 9 };
+			players[0].currentStatus = currentStatus;
+			const listener = jest.fn();
+
+			AudioManager.subscribeToNowPlayingStatus(listener);
+
+			expect(listener).toHaveBeenCalledWith(currentStatus);
 		});
 
 		it('leaving the room keeps the now playing audio and releases the others', async () => {

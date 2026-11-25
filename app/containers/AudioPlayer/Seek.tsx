@@ -22,9 +22,10 @@ interface ISeek {
 	loaded: boolean;
 	peaks?: number[];
 	onChangeTime: (time: number) => void;
+	testIDPrefix?: string;
 }
 
-const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: ISeek) => {
+const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime, testIDPrefix = '' }: ISeek) => {
 	const { colors } = useTheme();
 
 	const { isRTL } = I18nManager;
@@ -110,7 +111,7 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 	return (
 		<>
 			<View
-				testID='audio-seek'
+				testID={`${testIDPrefix}audio-seek`}
 				style={styles.seek}
 				accessible={seekAccessibility.accessible}
 				accessibilityRole={seekAccessibility.accessibilityRole}
@@ -121,7 +122,7 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 				onAccessibilityAction={seekAccessibility.onAccessibilityAction}>
 				<GestureDetector gesture={seekGesture}>
 					<View
-						testID='audio-seek-track'
+						testID={`${testIDPrefix}audio-seek-track`}
 						style={styles.seekTrack}
 						onLayout={onLayout}
 						onStartShouldSetResponder={keepTouchFromMessage}>
@@ -129,7 +130,10 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 					</View>
 				</GestureDetector>
 			</View>
-			<Text testID='audio-time' numberOfLines={1} style={[styles.timeLabel, { color: colors.fontSecondaryInfo }]}>
+			<Text
+				testID={`${testIDPrefix}audio-time`}
+				numberOfLines={1}
+				style={[styles.timeLabel, { color: colors.fontSecondaryInfo }]}>
 				{formatProgressLabel(shownTime.time, shownTime.duration)}
 			</Text>
 		</>

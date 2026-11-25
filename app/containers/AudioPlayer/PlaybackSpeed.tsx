@@ -7,7 +7,7 @@ import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
 import NativeButton from '../NativeButton';
 
-const PlaybackSpeed = () => {
+const PlaybackSpeed = ({ testIDPrefix = '' }: { testIDPrefix?: string }) => {
 	const [playbackSpeed, setPlaybackSpeed] = useUserPreferences<number>(AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS[1]);
 	const { colors } = useTheme();
 
@@ -20,7 +20,7 @@ const PlaybackSpeed = () => {
 	return (
 		<View style={styles.playbackSpeedSlot}>
 			<NativeButton
-				testID='playback-speed'
+				testID={`${testIDPrefix}playback-speed`}
 				accessible
 				accessibilityLabel={i18n.t('Playback_speed', { playbackSpeed: `${playbackSpeed} x` })}
 				onPress={onPress}

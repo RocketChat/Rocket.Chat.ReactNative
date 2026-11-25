@@ -4,40 +4,37 @@ import sharedStyles from '~/views/Styles';
 
 export default StyleSheet.create({
 	container: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		height: 56,
 		paddingHorizontal: 12,
-		gap: 12,
+		paddingVertical: 8,
+		gap: 8,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
-	playPauseButton: {
+	header: {
+		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center',
-		height: 32,
-		width: 32,
-		borderRadius: 4
+		gap: 12
 	},
 	details: {
 		flex: 1,
-		justifyContent: 'center',
-		height: '100%'
+		flexDirection: 'row',
+		alignItems: 'baseline',
+		gap: 8
 	},
 	title: {
+		flexShrink: 0,
+		maxWidth: '60%',
 		fontSize: 16,
 		lineHeight: 22,
 		...sharedStyles.textSemibold
 	},
-	subtitleRow: {
-		flexDirection: 'row'
-	},
 	roomName: {
-		flexShrink: 1
-	},
-	subtitle: {
+		flexShrink: 1,
 		fontSize: 14,
 		lineHeight: 20,
 		...sharedStyles.textRegular
+	},
+	controls: {
+		flexDirection: 'row'
 	},
 	closeButton: {
 		alignItems: 'center',

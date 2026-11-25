@@ -1,14 +1,9 @@
 import { useEffect, useEffectEvent, useRef, useState } from 'react';
-import { View } from 'react-native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useNavigation } from '@react-navigation/native';
 import type { AudioStatus } from 'expo-audio';
 
-import { useTheme } from '~/theme';
-import styles from './styles';
-import Seek from './Seek';
-import PlaybackSpeed from './PlaybackSpeed';
-import PlayButton from './PlayButton';
+import AudioControls from './AudioControls';
 import AudioManager from '~/lib/methods/AudioManager';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
 import { type TDownloadState } from '~/lib/methods/handleMediaDownload';
@@ -45,7 +40,6 @@ const AudioPlayer = ({
 	const [paused, setPaused] = useState(true);
 	const playbackClock = usePlaybackClock(playbackSpeed ?? AVAILABLE_SPEEDS[1]);
 	const waveform = useAudioWaveform(fileUri, isDownloaded);
-	const { colors } = useTheme();
 	const audioUri = useRef<string>('');
 	const navigation = useNavigation();
 
@@ -172,17 +166,16 @@ const AudioPlayer = ({
 	}
 
 	return (
-		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
-			<PlayButton disabled={disabled} audioState={audioState} onPress={onPress} />
-			<Seek
-				currentTime={playbackClock.position}
-				duration={playbackClock.duration}
-				loaded={!disabled && isDownloaded}
-				peaks={waveform}
-				onChangeTime={setPosition}
-			/>
-			<PlaybackSpeed />
-		</View>
+		<AudioControls
+			audioState={audioState}
+			disabled={disabled}
+			loaded={!disabled && isDownloaded}
+			currentTime={playbackClock.position}
+			duration={playbackClock.duration}
+			peaks={waveform}
+			onPlayPress={onPress}
+			onSeek={setPosition}
+		/>
 	);
 };
 

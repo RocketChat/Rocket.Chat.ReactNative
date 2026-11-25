@@ -8,8 +8,16 @@ import { getMessageById } from '~/lib/database/services/Message';
 import { type TMessageModel } from '~/definitions/IMessage';
 import { useCallStore } from '~/lib/services/voip/useCallStore';
 import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
+import { useFocusedRoomStore } from '~/lib/methods/useFocusedRoomStore';
 
-jest.mock('~/lib/methods/AudioManager', () => ({ playAudio: jest.fn(), pauseAudio: jest.fn(), closeAudio: jest.fn() }));
+jest.mock('~/lib/methods/AudioManager', () => ({
+	playAudio: jest.fn(),
+	pauseAudio: jest.fn(),
+	closeAudio: jest.fn(),
+	setRate: jest.fn(),
+	setPositionAsync: jest.fn(() => Promise.resolve()),
+	subscribeToNowPlayingStatus: jest.fn(() => jest.fn())
+}));
 jest.mock('~/lib/methods/helpers/goRoom', () => ({ goRoom: jest.fn() }));
 jest.mock('~/lib/hooks/useMasterDetail', () => ({ useMasterDetail: () => false }));
 jest.mock('~/lib/store/auxStore', () => ({ store: { getState: () => ({ settings: { UI_Use_Real_Name: true } }) } }));
@@ -26,9 +34,8 @@ const playingAudio: INowPlayingAudio = {
 	audioKey: 'msg-1-room-1-file://a.mp3',
 	rid: 'room-1',
 	msgId: 'msg-1',
-	playing: true,
-	currentTime: 12,
-	duration: 90
+	uri: 'file://a.mp3',
+	playing: true
 };
 
 const renderWithAudio = async (audio: INowPlayingAudio | null) => {
@@ -40,6 +47,7 @@ const renderWithAudio = async (audio: INowPlayingAudio | null) => {
 describe('NowPlayingAudio', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		useFocusedRoomStore.setState({ rid: null });
 	});
 
 	it('renders nothing while no audio is playing', async () => {
@@ -48,12 +56,29 @@ describe('NowPlayingAudio', () => {
 		expect(screen.queryByTestId('now-playing-audio')).toBeNull();
 	});
 
-	it('shows the sender, the room, the elapsed time and the duration', async () => {
+	it('shows the sender, the room and the audio controls of a Message', async () => {
 		await renderWithAudio(playingAudio);
 
 		expect(screen.getByText('Jane Doe')).toBeOnTheScreen();
 		expect(screen.getByText('General')).toBeOnTheScreen();
-		expect(screen.getByText('· 00:12 / 01:30')).toBeOnTheScreen();
+		expect(screen.getByTestId('now-playing-audio-audio-seek')).toBeOnTheScreen();
+		expect(screen.getByTestId('now-playing-audio-playback-speed')).toBeOnTheScreen();
+	});
+
+	it('hides while the room of the audio is on screen', async () => {
+		useFocusedRoomStore.setState({ rid: 'room-1' });
+
+		await renderWithAudio(playingAudio);
+
+		expect(screen.queryByTestId('now-playing-audio')).toBeNull();
+		act(() => useFocusedRoomStore.setState({ rid: 'room-2' }));
+		expect(screen.getByTestId('now-playing-audio')).toBeOnTheScreen();
+	});
+
+	it('follows the statuses of the audio playing', async () => {
+		await renderWithAudio(playingAudio);
+
+		expect(AudioManager.subscribeToNowPlayingStatus).toHaveBeenCalledTimes(1);
 	});
 
 	it('shows the sender username when the sender has no name', async () => {
@@ -80,7 +105,6 @@ describe('NowPlayingAudio', () => {
 		await renderWithAudio({ ...playingAudio, audioKey: 'undefined-room-1-file://upload.mp3', msgId: undefined });
 
 		expect(screen.getByText('General')).toBeOnTheScreen();
-		expect(screen.getByText('00:12 / 01:30')).toBeOnTheScreen();
 		expect(getMessageById).not.toHaveBeenCalled();
 	});
 
@@ -114,11 +138,11 @@ describe('NowPlayingAudio', () => {
 
 	it('pauses a playing audio and plays a paused one', async () => {
 		await renderWithAudio(playingAudio);
-		fireEvent.press(screen.getByTestId('now-playing-audio-play-pause'));
+		fireEvent.press(screen.getByTestId('now-playing-audio-play-button'));
 		expect(AudioManager.pauseAudio).toHaveBeenCalled();
 
 		act(() => useNowPlayingAudioStore.setState({ audio: { ...playingAudio, playing: false } }));
-		fireEvent.press(screen.getByTestId('now-playing-audio-play-pause'));
+		fireEvent.press(screen.getByTestId('now-playing-audio-play-button'));
 		expect(AudioManager.playAudio).toHaveBeenCalledWith(playingAudio.audioKey);
 	});
 
@@ -141,8 +165,7 @@ describe('NowPlayingAudio', () => {
 	it('labels its controls for screen readers', async () => {
 		await renderWithAudio(playingAudio);
 
-		expect(screen.getByLabelText('Pause')).toBeOnTheScreen();
 		expect(screen.getByLabelText('Close audio player')).toBeOnTheScreen();
-		expect(screen.getByLabelText('Audio message from Jane Doe, General, 00:12 / 01:30')).toBeOnTheScreen();
+		expect(screen.getByLabelText('Audio message from Jane Doe, General')).toBeOnTheScreen();
 	});
 });

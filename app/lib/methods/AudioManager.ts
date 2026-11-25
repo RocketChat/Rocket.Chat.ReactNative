@@ -23,6 +23,7 @@ class AudioManagerClass {
 	private audioPlaying: string;
 	private audiosRendered: Set<string>;
 	private detachedAudioKeys: Set<string>;
+	private nowPlayingStatusListeners: Set<(status: AudioStatus) => void>;
 
 	constructor() {
 		this.audioQueue = {};
@@ -35,6 +36,7 @@ class AudioManagerClass {
 		this.audioPlaying = '';
 		this.audiosRendered = new Set<string>();
 		this.detachedAudioKeys = new Set<string>();
+		this.nowPlayingStatusListeners = new Set();
 	}
 
 	private get nowPlaying() {
@@ -57,17 +59,9 @@ class AudioManagerClass {
 	}
 
 	private startNowPlaying(audioKey: string) {
-		const player = this.audioQueue[audioKey];
 		const { rid, msgId } = this.audioMeta[audioKey];
 		useNowPlayingAudioStore.setState({
-			audio: {
-				audioKey,
-				rid,
-				msgId,
-				playing: true,
-				currentTime: player?.currentTime ?? 0,
-				duration: player?.duration ?? 0
-			}
+			audio: { audioKey, rid, msgId, uri: this.audioUris[audioKey], playing: true }
 		});
 	}
 
@@ -239,8 +233,11 @@ class AudioManagerClass {
 			return;
 		}
 		this.audioCallbacks[audioKey]?.(status);
-		if (status.isLoaded) {
-			this.updateNowPlaying(audioKey, { playing: status.playing, currentTime: status.currentTime, duration: status.duration });
+		if (this.isNowPlaying(audioKey)) {
+			if (status.isLoaded && status.playing !== this.nowPlaying?.playing) {
+				this.updateNowPlaying(audioKey, { playing: status.playing });
+			}
+			this.nowPlayingStatusListeners.forEach(listener => listener(status));
 		}
 		this.onEnd(audioKey, status);
 	}
@@ -253,6 +250,18 @@ class AudioManagerClass {
 		if (status && (this.isNowPlaying(audioKey) || hasMovedFromStart)) {
 			callback(status);
 		}
+	}
+
+	subscribeToNowPlayingStatus(listener: (status: AudioStatus) => void): () => void {
+		this.nowPlayingStatusListeners.add(listener);
+		const audioKey = this.nowPlaying?.audioKey;
+		const status = audioKey ? this.audioQueue[audioKey]?.currentStatus : undefined;
+		if (status) {
+			listener(status);
+		}
+		return () => {
+			this.nowPlayingStatusListeners.delete(listener);
+		};
 	}
 
 	async onEnd(audioKey: string, status: AudioStatus): Promise<void> {
