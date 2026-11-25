@@ -17,6 +17,8 @@ class ShareRocketChatRN: UIViewController {
         components.scheme = appScheme
         components.host = "shareextension"
         components.queryItems = params.map { URLQueryItem(name: $0.key, value: $0.value) }
+        // URLComponents leaves "+" unescaped, and the JS query parser reads it as a space.
+        components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
         return components.url
     }
 
@@ -53,52 +55,103 @@ class ShareRocketChatRN: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        guard let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem,
-              let attachments = extensionItem.attachments else {
+        // Hosts may split one share across several input items and attachments (Firefox sends the
+        // page URL and its title separately), so every attachment is considered.
+        let attachments = (extensionContext?.inputItems ?? [])
+            .compactMap { ($0 as? NSExtensionItem)?.attachments }
+            .flatMap { $0 }
+
+        if attachments.isEmpty {
             self.completeRequest()
             return
         }
 
-        // Handle URL or Text using the first attachment only
-        if let firstAttachment = attachments.first {
-            if firstAttachment.hasItemConformingToTypeIdentifier("public.url") {
-                firstAttachment.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
-                    if let url = data as? URL {
-                        if url.isFileURL {
-                            // Handle all file URLs
-                            self.handleAllFileURLs(items: attachments)
-                        } else {
-                            // Handle as a web URL
-                            self.handleUrl(item: firstAttachment)
-                        }
-                    }
-                }
-                return
-            } else if firstAttachment.hasItemConformingToTypeIdentifier("public.text") {
-                self.handleText(item: firstAttachment)
-                return
-            }
+        let isUrlOrText = { (item: NSItemProvider) in
+            item.hasItemConformingToTypeIdentifier("public.url") || item.hasItemConformingToTypeIdentifier("public.text")
+        }
+        if attachments.allSatisfy(isUrlOrText) {
+            self.handleUrlsAndText(items: attachments)
+            return
         }
 
         // Handle Media (Images, Videos) and Data (PDFs, etc.) for all attachments
         self.handleMultipleMediaAndData(items: attachments)
     }
 
-    private func handleText(item: NSItemProvider) {
-        item.loadItem(forTypeIdentifier: "public.text", options: nil) { (data, error) in
-            if let text = data as? String,
-               let url = self.shareExtensionURL(params: ["text": text]) {
-                _ = self.openURL(url)
+    private enum SharedContent {
+        case webUrl(String)
+        case fileUrl
+        case text(String)
+    }
+
+    private func loadUrlOrText(item: NSItemProvider, completion: @escaping (SharedContent?) -> Void) {
+        if item.hasItemConformingToTypeIdentifier("public.url") {
+            item.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
+                guard let url = data as? URL else {
+                    completion(nil)
+                    return
+                }
+                completion(url.isFileURL ? .fileUrl : .webUrl(url.absoluteString))
             }
-            self.completeRequest()
+            return
+        }
+        item.loadItem(forTypeIdentifier: "public.text", options: nil) { (data, error) in
+            if let text = data as? String {
+                completion(.text(text))
+            } else if let text = data as? NSAttributedString {
+                completion(.text(text.string))
+            } else if let data = data as? Data, let text = String(data: data, encoding: .utf8) {
+                completion(.text(text))
+            } else {
+                completion(nil)
+            }
         }
     }
 
-    private func handleUrl(item: NSItemProvider) {
-        item.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
-            if let url = data as? URL,
-               let finalUrl = self.shareExtensionURL(params: ["url": url.absoluteString]) {
-                _ = self.openURL(finalUrl)
+    private func handleUrlsAndText(items: [NSItemProvider]) {
+        var contents = [SharedContent?](repeating: nil, count: items.count)
+        let lock = NSLock()
+        let dispatchGroup = DispatchGroup()
+
+        for (index, item) in items.enumerated() {
+            dispatchGroup.enter()
+            self.loadUrlOrText(item: item) { content in
+                lock.lock()
+                contents[index] = content
+                lock.unlock()
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            if contents.contains(where: { if case .fileUrl = $0 { return true } else { return false } }) {
+                self.handleAllFileURLs(items: items)
+                return
+            }
+
+            var texts = [String]()
+            var urls = [String]()
+            for case let content? in contents {
+                switch content {
+                case .text(let text):
+                    let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !trimmed.isEmpty && !texts.contains(trimmed) {
+                        texts.append(trimmed)
+                    }
+                case .webUrl(let url):
+                    if !urls.contains(url) {
+                        urls.append(url)
+                    }
+                case .fileUrl:
+                    break
+                }
+            }
+            // Skip a URL the shared text already carries.
+            urls.removeAll { url in texts.contains { $0.contains(url) } }
+            let message = (texts + urls).joined(separator: "\n")
+
+            if !message.isEmpty, let url = self.shareExtensionURL(params: ["text": message]) {
+                _ = self.openURL(url)
             }
             self.completeRequest()
         }
