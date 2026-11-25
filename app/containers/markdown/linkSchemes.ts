@@ -3,7 +3,6 @@ export const CHANNEL_SCHEME = 'channel://';
 export const TIMESTAMP_SCHEME = 'timestamp://';
 export const ME_QUERY = '?me=1';
 export const TEAM_QUERY = '?team=1';
-export const TIMESTAMP_FULL_FORMAT = 'dddd, MMM DD, YYYY hh:mm A';
 
 export type TUserLinkKind = 'user' | 'me' | 'team';
 
@@ -27,20 +26,20 @@ const userLinkKind = (query: string): TUserLinkKind => {
 	return 'user';
 };
 
+const startsWithScheme = (url: string, scheme: string): boolean => url.slice(0, scheme.length).toLowerCase() === scheme;
+
 export const parseInternalLink = (url: string): TInternalLink | null => {
-	if (url.startsWith(USER_SCHEME)) {
+	if (startsWithScheme(url, USER_SCHEME)) {
 		const [rid, query] = url.slice(USER_SCHEME.length).split('?');
 		return { type: 'user', rid, kind: userLinkKind(query ? `?${query}` : '') };
 	}
-	if (url.startsWith(CHANNEL_SCHEME)) {
+	if (startsWithScheme(url, CHANNEL_SCHEME)) {
 		return { type: 'channel', rid: url.slice(CHANNEL_SCHEME.length) };
 	}
-	if (url.startsWith(TIMESTAMP_SCHEME)) {
+	if (startsWithScheme(url, TIMESTAMP_SCHEME)) {
 		return { type: 'timestamp', unixSeconds: Number(url.slice(TIMESTAMP_SCHEME.length)) };
 	}
 	return null;
 };
 
-const INTERNAL_SCHEMES = [USER_SCHEME, CHANNEL_SCHEME, TIMESTAMP_SCHEME];
-
-export const isInternalLink = (url: string): boolean => INTERNAL_SCHEMES.some(scheme => url.toLowerCase().startsWith(scheme));
+export const isInternalLink = (url: string): boolean => parseInternalLink(url) !== null;

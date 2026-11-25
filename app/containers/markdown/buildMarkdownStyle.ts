@@ -7,33 +7,32 @@ import { CHANNEL_SCHEME, ME_QUERY, TIMESTAMP_SCHEME, USER_SCHEME } from './linkS
 
 const codeFontFamily = Platform.select({ ios: 'Courier New', android: 'monospace' });
 
+const BIG_EMOJI_SIZE = 30;
+
+const bodyTextStyle = (colors: TColors) => ({
+	fontFamily: 'Inter',
+	fontSize: 16,
+	lineHeight: 22,
+	color: colors.fontDefault
+});
+
 export const buildMarkdownStyle = (colors: TColors, isBigEmojiOnly: boolean, fontScale: number): MarkdownStyle => ({
 	paragraph: {
-		fontFamily: 'Inter',
-		fontSize: isBigEmojiOnly ? 30 : 16,
-		lineHeight: isBigEmojiOnly ? 43 : 22,
-		color: colors.fontDefault
+		...bodyTextStyle(colors),
+		...(isBigEmojiOnly && { fontSize: BIG_EMOJI_SIZE, lineHeight: 43 })
 	},
 	h1: { fontFamily: 'Inter', fontWeight: 'bold', fontSize: 24, lineHeight: 30, color: colors.fontDefault },
 	h2: { fontFamily: 'Inter', fontWeight: 'bold', fontSize: 22, lineHeight: 28, color: colors.fontDefault },
-	h3: { ...interWeight('600', 'Inter-SemiBold'), fontSize: 20, lineHeight: 26, color: colors.fontDefault },
-	h4: { ...interWeight('600', 'Inter-SemiBold'), fontSize: 18, lineHeight: 24, color: colors.fontDefault },
+	h3: { ...interWeight('600'), fontSize: 20, lineHeight: 26, color: colors.fontDefault },
+	h4: { ...interWeight('600'), fontSize: 18, lineHeight: 24, color: colors.fontDefault },
 	blockquote: {
-		fontFamily: 'Inter',
-		fontSize: 16,
-		lineHeight: 22,
-		color: colors.fontDefault,
+		...bodyTextStyle(colors),
 		borderColor: colors.strokeLight,
 		backgroundColor: colors.strokeLight,
 		borderWidth: 0,
 		padding: 4
 	},
-	list: {
-		fontFamily: 'Inter',
-		fontSize: 16,
-		lineHeight: 22,
-		color: colors.fontDefault
-	},
+	list: bodyTextStyle(colors),
 	code: {
 		fontFamily: codeFontFamily,
 		color: colors.fontDefault,
@@ -63,20 +62,17 @@ export const buildMarkdownStyle = (colors: TColors, isBigEmojiOnly: boolean, fon
 	},
 	image: {
 		borderRadius: 0,
-		maxHeight: isBigEmojiOnly ? 30 * fontScale : 300,
+		maxHeight: isBigEmojiOnly ? BIG_EMOJI_SIZE * fontScale : 300,
 		resizeMode: 'contain'
 	},
 	inlineImage: {
-		size: (isBigEmojiOnly ? 30 : 19) * fontScale
+		size: (isBigEmojiOnly ? BIG_EMOJI_SIZE : 19) * fontScale
 	},
 	taskList: {
 		checkedColor: colors.fontDefault
 	},
 	table: {
-		fontFamily: 'Inter',
-		fontSize: 16,
-		lineHeight: 22,
-		color: colors.fontDefault,
+		...bodyTextStyle(colors),
 		headerFontFamily: 'Inter',
 		headerTextColor: colors.fontTitlesLabels,
 		headerBackgroundColor: colors.surfaceNeutral,

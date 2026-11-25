@@ -7,7 +7,10 @@ describe('parseInternalLink', () => {
 		['user://t1?team=1', { type: 'user', rid: 't1', kind: 'team' }],
 		['user://all', { type: 'user', rid: 'all', kind: 'user' }],
 		['channel://c1', { type: 'channel', rid: 'c1' }],
-		['timestamp://1735689600', { type: 'timestamp', unixSeconds: 1735689600 }]
+		['timestamp://1735689600', { type: 'timestamp', unixSeconds: 1735689600 }],
+		['USER://abc', { type: 'user', rid: 'abc', kind: 'user' }],
+		['Channel://Cid', { type: 'channel', rid: 'Cid' }],
+		['TIMESTAMP://1735689600', { type: 'timestamp', unixSeconds: 1735689600 }]
 	])('reads %s', (url, expected) => {
 		expect(parseInternalLink(url)).toEqual(expected);
 	});

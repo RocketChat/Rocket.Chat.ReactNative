@@ -4,7 +4,8 @@ import Clipboard from '@react-native-clipboard/clipboard';
 
 import I18n from '~/i18n';
 import dayjs from '~/lib/dayjs';
-import { TIMESTAMP_FULL_FORMAT, isInternalLink, parseInternalLink } from '../linkSchemes';
+import { isInternalLink, parseInternalLink } from '../linkSchemes';
+import { TIMESTAMP_FULL_FORMAT } from '../serialize';
 import { useTheme } from '~/theme';
 import { LISTENER } from '~/containers/Toast';
 import EventEmitter from '~/lib/methods/helpers/events';

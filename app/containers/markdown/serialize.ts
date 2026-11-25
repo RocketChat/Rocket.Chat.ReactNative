@@ -2,6 +2,7 @@ import type {
 	Root,
 	Paragraph,
 	Inlines,
+	Color as ColorBlock,
 	Emoji as EmojiBlock,
 	Link as LinkBlock,
 	Timestamp as TimestampBlock,
@@ -12,15 +13,8 @@ import type {
 
 import dayjs from '~/lib/dayjs';
 import { type IUserMention, type IUserChannel } from './interfaces';
-import { type TGetCustomEmoji } from '~/definitions/IEmoji';
-import {
-	TIMESTAMP_FULL_FORMAT,
-	type TUserLinkKind,
-	buildChannelLink,
-	buildTimestampLink,
-	buildUserLink,
-	isInternalLink
-} from './linkSchemes';
+import { type ICustomEmoji, type TGetCustomEmoji } from '~/definitions/IEmoji';
+import { buildChannelLink, buildTimestampLink, buildUserLink, isInternalLink } from './linkSchemes';
 
 export interface ISerializeContext {
 	mentions?: IUserMention[];
@@ -43,6 +37,19 @@ const escapePlainText = (value: string): string => value.replace(ESCAPE_PATTERN,
 
 const escapeUrl = (url: string): string => `<${url.replace(/[\\<>&`]/g, '\\$&')}>`;
 
+const URL_CHARACTER_TO_ENCODE = /%(?![0-9A-Fa-f]{2})|[^A-Za-z0-9;,/?:@&=+$\-_.!~*'()#%]/gu;
+const ENCODED_REPLACEMENT_CHARACTER = encodeURIComponent('\uFFFD');
+
+const percentEncodeCharacter = (character: string): string => {
+	try {
+		return encodeURIComponent(character);
+	} catch {
+		return ENCODED_REPLACEMENT_CHARACTER;
+	}
+};
+
+const percentEncodeUrl = (url: string): string => url.replace(URL_CHARACTER_TO_ENCODE, percentEncodeCharacter);
+
 const withoutLeadingIndent = (line: string): string => line.replace(/^[ \t]+/, '');
 
 const timestampToUnixSeconds = (timestamp: string): number => {
@@ -51,50 +58,22 @@ const timestampToUnixSeconds = (timestamp: string): number => {
 	return Math.floor(dayjs(timestamp).valueOf() / 1000);
 };
 
-const formatTimestampLabel = (value: TimestampBlock['value']): string => {
-	const timestampMs = timestampToUnixSeconds(value.timestamp) * 1000;
-	switch (value.format) {
-		case 't':
-			return dayjs(timestampMs).format('hh:mm A');
-		case 'T':
-			return dayjs(timestampMs).format('hh:mm:ss A');
-		case 'd':
-			return dayjs(timestampMs).format('MM/DD/YYYY');
-		case 'D':
-			return dayjs(timestampMs).format('dddd, MMM DD, YYYY');
-		case 'f':
-			return dayjs(timestampMs).format(TIMESTAMP_FULL_FORMAT);
-		case 'F':
-			return dayjs(timestampMs).format('dddd, MMM DD, YYYY hh:mm:ss A');
-		case 'R':
-			return dayjs(timestampMs).fromNow();
-		default:
-			return 'Invalid Date';
-	}
+export const TIMESTAMP_FULL_FORMAT = 'dddd, MMM DD, YYYY hh:mm A';
+
+type TTimestampFormat = TimestampBlock['value']['format'];
+
+const TIMESTAMP_FORMATS: Record<Exclude<TTimestampFormat, 'R'>, string> = {
+	t: 'hh:mm A',
+	T: 'hh:mm:ss A',
+	d: 'MM/DD/YYYY',
+	D: 'dddd, MMM DD, YYYY',
+	f: TIMESTAMP_FULL_FORMAT,
+	F: 'dddd, MMM DD, YYYY hh:mm:ss A'
 };
 
-interface IUserMentionLabel {
-	label: string;
-	rid: string;
-	kind: TUserLinkKind;
-}
-
-const resolveUserMentionLabel = (mention: string, context: ISerializeContext): IUserMentionLabel | null => {
-	const found = context.mentions?.find(candidate => candidate && (candidate.username === mention || candidate.name === mention));
-	if (!found) {
-		return null;
-	}
-
-	const label = found.type === 'user' ? (context.useRealName && found.name ? found.name : found.username) : found.name;
-	const itsMe = mention === context.username;
-	const kind = found.type === 'team' ? 'team' : itsMe ? 'me' : 'user';
-
-	return { label: label ?? mention, rid: found._id, kind };
-};
-
-const findChannelRid = (hashtag: string, context: ISerializeContext): string | null => {
-	const found = context.channels?.find(channel => channel.name === hashtag);
-	return found?._id ?? null;
+const formatTimestampLabel = (unixSeconds: number, format: TTimestampFormat): string => {
+	const time = dayjs(unixSeconds * 1000);
+	return format === 'R' ? time.fromNow() : time.format(TIMESTAMP_FORMATS[format]);
 };
 
 interface IResolvedMention {
@@ -107,55 +86,50 @@ const resolveUserMention = (mention: string, context: ISerializeContext): IResol
 	if (mention === 'all' || mention === 'here') {
 		return { text: prefix + mention, url: buildUserLink(mention) };
 	}
-	const resolved = resolveUserMentionLabel(mention, context);
-	if (!resolved) {
+	const found = context.mentions?.find(candidate => candidate && (candidate.username === mention || candidate.name === mention));
+	if (!found) {
 		return { text: `@${mention}` };
 	}
-	return { text: prefix + resolved.label, url: buildUserLink(resolved.rid, resolved.kind) };
+	const label = found.type === 'user' ? (context.useRealName && found.name ? found.name : found.username) : found.name;
+	const kind = found.type === 'team' ? 'team' : mention === context.username ? 'me' : 'user';
+	return { text: prefix + (label ?? mention), url: buildUserLink(found._id, kind) };
 };
 
 const resolveChannelMention = (hashtag: string, context: ISerializeContext): IResolvedMention => {
-	const rid = findChannelRid(hashtag, context);
-	if (!rid) {
+	const channel = context.channels?.find(candidate => candidate.name === hashtag);
+	if (!channel?._id) {
 		return { text: `#${hashtag}` };
 	}
 	const prefix = context.roomsWithHashTagSymbol ? '#' : '';
-	return { text: prefix + hashtag, url: buildChannelLink(rid) };
+	return { text: prefix + hashtag, url: buildChannelLink(channel._id) };
 };
 
 const serializeMention = ({ text, url }: IResolvedMention): string =>
 	url ? `[**${escapePlainText(text)}**](${escapeUrl(url)})` : escapePlainText(text);
 
-const emojiDisplayText = (block: EmojiBlock, context: ISerializeContext): string => {
+type TResolvedEmoji =
+	| { kind: 'custom'; customEmoji: ICustomEmoji }
+	| { kind: 'unicode'; text: string }
+	| { kind: 'plain'; text: string };
+
+const resolveEmoji = (block: EmojiBlock, context: ISerializeContext): TResolvedEmoji => {
 	if ('unicode' in block) {
-		return block.unicode;
+		return { kind: 'unicode', text: block.unicode };
 	}
-
-	const emojiToken = `:${block.shortCode}:`;
-	const emojiUnicode = context.formatShortnameToUnicode(emojiToken);
-	const isAsciiEmoji = block.value.value !== block.shortCode;
-
-	if (!context.convertAsciiEmoji && isAsciiEmoji) {
-		return block.value.value;
-	}
-
-	return emojiUnicode;
-};
-
-const customEmojiFor = (block: EmojiBlock, context: ISerializeContext) =>
-	'unicode' in block ? null : context.getCustomEmoji(block.value.value.replace(/:/g, ''));
-
-const rendersAsEmoji = (block: EmojiBlock, context: ISerializeContext): boolean => {
-	if ('unicode' in block || customEmojiFor(block, context)) {
-		return true;
+	const customEmoji = context.getCustomEmoji(block.value.value.replace(/:/g, ''));
+	if (customEmoji) {
+		return { kind: 'custom', customEmoji };
 	}
 	const isAsciiEmoji = block.value.value !== block.shortCode;
 	if (isAsciiEmoji && !context.convertAsciiEmoji) {
-		return false;
+		return { kind: 'plain', text: block.value.value };
 	}
-	const emojiToken = `:${block.shortCode}:`;
-	return context.formatShortnameToUnicode(emojiToken) !== emojiToken;
+	const shortname = `:${block.shortCode}:`;
+	const unicode = context.formatShortnameToUnicode(shortname);
+	return unicode === shortname ? { kind: 'plain', text: shortname } : { kind: 'unicode', text: unicode };
 };
+
+const rendersAsEmoji = (block: EmojiBlock, context: ISerializeContext): boolean => resolveEmoji(block, context).kind !== 'plain';
 
 export const isBigEmojiOnly = (root: Root, context: ISerializeContext): boolean => {
 	const [firstBlock] = root;
@@ -165,19 +139,32 @@ export const isBigEmojiOnly = (root: Root, context: ISerializeContext): boolean 
 const WORD_JOINER = '\u2060';
 
 const serializeEmoji = (block: EmojiBlock, context: ISerializeContext): string => {
-	const customEmoji = customEmojiFor(block, context);
-	if (customEmoji) {
-		return `${WORD_JOINER}![](${context.baseUrl}/emoji-custom/${encodeURIComponent(customEmoji.name)}.${customEmoji.extension})`;
+	const emoji = resolveEmoji(block, context);
+	switch (emoji.kind) {
+		case 'custom':
+			return `${WORD_JOINER}![](${context.baseUrl}/emoji-custom/${encodeURIComponent(emoji.customEmoji.name)}.${emoji.customEmoji.extension})`;
+		case 'unicode':
+		case 'plain':
+			return escapePlainText(emoji.text);
 	}
-
-	return escapePlainText(emojiDisplayText(block, context));
 };
 
-const serializeInlineCode = (value: { value: string }): string => {
-	const text = value.value;
-	const longestTickRun = Math.max(0, ...(text.match(/`+/g) ?? []).map(run => run.length));
-	const fence = '`'.repeat(longestTickRun + 1);
-	const padded = text.startsWith('`') || text.endsWith('`') ? ` ${text} ` : text;
+const toHexByte = (channel: number): string => channel.toString(16).padStart(2, '0');
+
+const serializeColor = ({ r, g, b, a }: ColorBlock['value']): string => {
+	const channels = a === 255 ? [r, g, b] : [r, g, b, a];
+	return escapePlainText(`color:#${channels.map(toHexByte).join('')}`);
+};
+
+const longestBacktickRun = (text: string): number =>
+	(text.match(/`+/g) ?? []).reduce((longest, run) => Math.max(longest, run.length), 0);
+
+const backtickFence = (code: string, minimumLength: number): string =>
+	'`'.repeat(Math.max(minimumLength, longestBacktickRun(code) + 1));
+
+const serializeInlineCode = (code: string): string => {
+	const fence = backtickFence(code, 1);
+	const padded = code.startsWith('`') || code.endsWith('`') ? ` ${code} ` : code;
 	return `${fence}${padded}${fence}`;
 };
 
@@ -227,7 +214,7 @@ const serializeMath = (latex: string, delimiter: '$' | '$$'): string => {
 	if (!flatLatex) {
 		return '';
 	}
-	return isSafeMathSpanContent(flatLatex) ? `${delimiter}${flatLatex}${delimiter}` : serializeInlineCode({ value: flatLatex });
+	return isSafeMathSpanContent(flatLatex) ? `${delimiter}${flatLatex}${delimiter}` : serializeInlineCode(flatLatex);
 };
 
 const isMathDelimiterBoundary = (char: string | undefined): boolean => char === undefined || /[\s!-#%-/:-@[-`{-~]/.test(char);
@@ -342,19 +329,21 @@ const serializeInlineNode = (node: Inlines, context: ISerializeContext, scope: I
 		case 'EMOJI':
 			return serializeEmoji(node, context);
 		case 'INLINE_CODE':
-			return serializeInlineCode(node.value);
+			return serializeInlineCode(node.value.value);
 		case 'INLINE_KATEX':
 			return serializeMath(node.value, '$');
 		case 'TIMESTAMP': {
-			const label = formatTimestampLabel(node.value);
+			const unixSeconds = timestampToUnixSeconds(node.value.timestamp);
+			const label = formatTimestampLabel(unixSeconds, node.value.format);
 			if (scope.insideLink) {
 				return escapePlainText(label);
 			}
-			const unixSeconds = timestampToUnixSeconds(node.value.timestamp);
 			return `[${escapePlainText(` ${label} `)}](${escapeUrl(buildTimestampLink(unixSeconds))})`;
 		}
 		case 'IMAGE':
-			return `![](${escapeUrl(node.value.src.value)})`;
+			return `![](${escapeUrl(percentEncodeUrl(node.value.src.value))})`;
+		case 'COLOR':
+			return serializeColor(node.value);
 		default:
 			return '';
 	}
@@ -457,12 +446,9 @@ const serializeBlock = (block: TRootBlock, context: ISerializeContext): string =
 		case 'HORIZONTAL_RULE':
 			return '---';
 		case 'CODE': {
-			const lines = block.value.map(line => line.value.value).join('\n');
-			let fence = '```';
-			while (lines.includes(fence)) {
-				fence += '`';
-			}
-			return `${fence}\n${lines}\n${fence}`;
+			const code = block.value.map(line => line.value.value).join('\n');
+			const fence = backtickFence(code, 3);
+			return `${fence}\n${code}\n${fence}`;
 		}
 		default:
 			return '';

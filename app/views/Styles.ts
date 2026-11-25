@@ -6,11 +6,13 @@ const dropsIntermediateFontWeights = Platform.OS === 'android' && Number(Platfor
 
 type TIntermediateFontWeight = '500' | '600';
 
-export const interWeight = (
-	fontWeight: TIntermediateFontWeight,
-	legacyFontFamily: string
-): { fontFamily: string; fontWeight?: TIntermediateFontWeight } =>
-	dropsIntermediateFontWeights ? { fontFamily: legacyFontFamily } : { fontFamily: 'Inter', fontWeight };
+const LEGACY_INTER_FAMILIES: Record<TIntermediateFontWeight, string> = {
+	'500': 'Inter-Medium',
+	'600': 'Inter-SemiBold'
+};
+
+export const interWeight = (fontWeight: TIntermediateFontWeight): { fontFamily: string; fontWeight?: TIntermediateFontWeight } =>
+	dropsIntermediateFontWeights ? { fontFamily: LEGACY_INTER_FAMILIES[fontWeight] } : { fontFamily: 'Inter', fontWeight };
 
 const defaultTextStyle: TextStyle = {
 	textAlign: 'left',
@@ -91,11 +93,11 @@ export default StyleSheet.create({
 	},
 	textMedium: {
 		...defaultTextStyle,
-		...interWeight('500', 'Inter-Medium')
+		...interWeight('500')
 	},
 	textSemibold: {
 		...defaultTextStyle,
-		...interWeight('600', 'Inter-SemiBold')
+		...interWeight('600')
 	},
 	textBold: {
 		...defaultTextStyle,

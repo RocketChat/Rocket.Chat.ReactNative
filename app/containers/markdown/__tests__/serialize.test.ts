@@ -1,13 +1,6 @@
-import { parse } from '@rocket.chat/message-parser';
-import { renderHook } from '@testing-library/react-native';
+import { parse, type Options } from '@rocket.chat/message-parser';
 
 import { buildRenderSegments, isBigEmojiOnly, type ISerializeContext } from '../serialize';
-import { useParseOptions } from '../hooks/useParseOptions';
-import { useSetting } from '~/lib/hooks/useSetting';
-
-jest.mock('~/lib/hooks/useSetting', () => ({
-	useSetting: jest.fn()
-}));
 
 const baseContext: ISerializeContext = {
 	mentions: [],
@@ -22,15 +15,10 @@ const baseContext: ISerializeContext = {
 	formatShortnameToUnicode: shortname => shortname
 };
 
-const serialize = (msg: string, ctx: Partial<ISerializeContext> = {}) => {
-	const segments = buildRenderSegments(parse(msg), { ...baseContext, ...ctx });
-	return segments
-		.map(segment => {
-			if (segment.type === 'markdown') return segment.content;
-			return '';
-		})
+const serialize = (msg: string, ctx: Partial<ISerializeContext> = {}, parseOptions: Options = {}) =>
+	buildRenderSegments(parse(msg, parseOptions), { ...baseContext, ...ctx })
+		.map(segment => (segment.type === 'markdown' ? segment.content : ''))
 		.join('\n\n');
-};
 
 describe('markdown serialize', () => {
 	it('escapes plain text so literal punctuation is not reinterpreted as markdown', () => {
@@ -207,9 +195,12 @@ describe('markdown serialize', () => {
 			expect(serialize('[_<t:1735689600:d>_](https://x.co)')).not.toContain('timestamp://');
 		});
 
-		it.each(['user://u1', 'channel://c1', 'timestamp://1', 'USER://u1'])('shows only the label of a link to %s', url => {
-			expect(serialize(`[x](${url})`)).toBe('x');
-		});
+		it.each(['user://u1', 'channel://c1', 'timestamp://1', 'USER://abc', 'Channel://c1', 'TIMESTAMP://1'])(
+			'shows only the label of a link to %s',
+			url => {
+				expect(serialize(`[x](${url})`)).toBe('x');
+			}
+		);
 	});
 
 	describe('blank leading link', () => {
@@ -245,6 +236,31 @@ describe('markdown serialize', () => {
 		]);
 	});
 
+	it('shows a hex color preview as the text the user typed', () => {
+		expect(serialize('a color:#ff0000', {}, { colors: true })).toBe('a color:\\#ff0000');
+		expect(serialize('color:#FF000080', {}, { colors: true })).toBe('color:\\#ff000080');
+	});
+
+	describe('image urls', () => {
+		it('percent-encodes non-ASCII characters so the image URL is valid', () => {
+			expect(serialize('![](https://img.example/café.png)')).toBe('![](<https://img.example/caf%C3%A9.png>)');
+			expect(serialize('![](https://img.example/😀.png)')).toBe('![](<https://img.example/%F0%9F%98%80.png>)');
+		});
+
+		it('percent-encodes the ASCII characters encodeURI encodes', () => {
+			expect(serialize('![](https://img.example/[a]{b}"c.png)')).toBe('![](<https://img.example/%5Ba%5D%7Bb%7D%22c.png>)');
+		});
+
+		it('keeps existing percent escapes and encodes a bare percent sign', () => {
+			expect(serialize('![](https://img.example/caf%C3%A9.png)')).toBe('![](<https://img.example/caf%C3%A9.png>)');
+			expect(serialize('![](https://img.example/100%.png)')).toBe('![](<https://img.example/100%25.png>)');
+		});
+
+		it('leaves link destinations as written', () => {
+			expect(serialize('[x](https://a.co/café)')).toBe('[x](<https://a.co/café>)');
+		});
+	});
+
 	it('escapes entities and backticks in link destinations so the opened URL matches the label', () => {
 		expect(serialize('[x](https://a.co/?q=1&amp;b)')).toBe('[x](<https://a.co/?q=1\\&amp;b>)');
 		expect(serialize('[x](https://a.co/`b)')).toBe('[x](<https://a.co/\\`b>)');
@@ -252,91 +268,72 @@ describe('markdown serialize', () => {
 });
 
 describe('markdown serialize katex', () => {
-	const serializeWithKatex = (msg: string) =>
-		buildRenderSegments(parse(msg, { katex: { dollarSyntax: true, parenthesisSyntax: true } }), baseContext)
-			.map(segment => (segment.type === 'markdown' ? segment.content : ''))
-			.join('\n\n');
+	const allKatex: Options = { katex: { dollarSyntax: true, parenthesisSyntax: true } };
 
 	it('pads inline math next to a word so its delimiters still open and close', () => {
-		expect(serializeWithKatex('\\(![](https://img.example/a.png)\\)A')).toBe('$![](https://img.example/a.png)$\u200AA');
-		expect(serializeWithKatex('\\(a\\)\\(b\\)')).toBe('$a$\u200A$b$');
+		expect(serialize('\\(![](https://img.example/a.png)\\)A', {}, allKatex)).toBe('$![](https://img.example/a.png)$\u200AA');
+		expect(serialize('\\(a\\)\\(b\\)', {}, allKatex)).toBe('$a$\u200A$b$');
 	});
 
 	it('keeps block math on one line so its lines are not read as markdown blocks', () => {
-		expect(serializeWithKatex('\\[a\n\n> b % note\nc\\]')).toBe('$$a > b c$$');
+		expect(serialize('\\[a\n\n> b % note\nc\\]', {}, allKatex)).toBe('$$a > b c$$');
 	});
 
 	it('drops a comment that follows a LaTeX line break without dropping the next rows', () => {
-		expect(serializeWithKatex('\\[a \\\\% note\nc \\\\ d\\]')).toBe('$$a \\\\ c \\\\ d$$');
+		expect(serialize('\\[a \\\\% note\nc \\\\ d\\]', {}, allKatex)).toBe('$$a \\\\ c \\\\ d$$');
 	});
 
 	it('keeps an escaped percent sign and one inside verb', () => {
-		expect(serializeWithKatex('\\(\\verb|50%| x\\)')).toBe('$\\verb|50%| x$');
-		expect(serializeWithKatex('\\(50\\% x\\)')).toBe('$50\\% x$');
+		expect(serialize('\\(\\verb|50%| x\\)', {}, allKatex)).toBe('$\\verb|50%| x$');
+		expect(serialize('\\(50\\% x\\)', {}, allKatex)).toBe('$50\\% x$');
 	});
 
 	it('falls back to inline code when the formula cannot be a math span', () => {
-		expect(serializeWithKatex('\\(a`b\\)')).toBe('``a`b``');
-		expect(serializeWithKatex('\\(<https://a.co>\\)')).toBe('`<https://a.co>`');
+		expect(serialize('\\(a`b\\)', {}, allKatex)).toBe('``a`b``');
+		expect(serialize('\\(<https://a.co>\\)', {}, allKatex)).toBe('`<https://a.co>`');
 	});
 
 	it('separates adjacent code spans so their backtick runs do not merge', () => {
-		expect(serializeWithKatex('\\(<https://a.co>\\)\\(a`b\\)')).toBe('`<https://a.co>`\u200A``a`b``');
+		expect(serialize('\\(<https://a.co>\\)\\(a`b\\)', {}, allKatex)).toBe('`<https://a.co>`\u200A``a`b``');
 	});
 
 	it('drops empty formulas instead of emitting a bare double dollar', () => {
-		expect(serializeWithKatex('a \\(\\) b')).toBe('a  b');
+		expect(serialize('a \\(\\) b', {}, allKatex)).toBe('a  b');
 	});
 });
 
-const segmentsFor = (msg: string, katexEnabled: boolean, dollarSyntax: boolean, parenthesisSyntax: boolean) => {
-	const settings: Record<string, boolean> = {
-		Katex_Enabled: katexEnabled,
-		Katex_Dollar_Syntax: dollarSyntax,
-		Katex_Parenthesis_Syntax: parenthesisSyntax
-	};
-	jest.mocked(useSetting).mockImplementation(key => settings[key]);
-	const { result } = renderHook(() => useParseOptions());
-	return buildRenderSegments(parse(msg, result.current), baseContext);
-};
-
 describe('markdown katex settings', () => {
+	const katexOptions = (dollarSyntax: boolean, parenthesisSyntax: boolean): Options => ({
+		emoticons: true,
+		katex: { dollarSyntax, parenthesisSyntax }
+	});
+	const katexDisabled: Options = { emoticons: true };
+
 	it('serializes inline dollar math as a latex math span when dollar syntax is enabled', () => {
-		expect(segmentsFor('Inline $x^2 + y^2 = z^2$ katex', true, true, false)).toEqual([
-			{ type: 'markdown', content: 'Inline $x^2 + y^2 = z^2$ katex' }
-		]);
+		expect(serialize('Inline $x^2 + y^2 = z^2$ katex', {}, katexOptions(true, false))).toBe('Inline $x^2 + y^2 = z^2$ katex');
 	});
 
 	it('escapes dollar signs as plain text when dollar syntax is disabled', () => {
-		expect(segmentsFor('Inline $x^2$ katex', true, false, true)).toEqual([
-			{ type: 'markdown', content: 'Inline \\$x\\^2\\$ katex' }
-		]);
+		expect(serialize('Inline $x^2$ katex', {}, katexOptions(false, true))).toBe('Inline \\$x\\^2\\$ katex');
 	});
 
 	it('splits double dollar math into a native block math segment when dollar syntax is enabled', () => {
-		expect(segmentsFor('$$\\int_0^1 x\\,dx = \\frac{1}{2}$$', true, true, false)).toEqual([
-			{
-				type: 'markdown',
-				content: '$$\\int_0^1 x\\,dx = \\frac{1}{2}$$'
-			}
-		]);
+		expect(serialize('$$\\int_0^1 x\\,dx = \\frac{1}{2}$$', {}, katexOptions(true, false))).toBe(
+			'$$\\int_0^1 x\\,dx = \\frac{1}{2}$$'
+		);
 	});
 
 	it('serializes bracket matrix math as a native block math segment when parenthesis syntax is enabled', () => {
 		const matrix = '\\frac{a}{b} + \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}';
-		expect(segmentsFor(`\\[${matrix}\\]`, true, false, true)).toEqual([{ type: 'markdown', content: `$$${matrix}$$` }]);
+		expect(serialize(`\\[${matrix}\\]`, {}, katexOptions(false, true))).toBe(`$$${matrix}$$`);
 	});
 
 	it('serializes parenthesis math as a latex math span when parenthesis syntax is enabled', () => {
-		expect(segmentsFor('Paren \\(a+b\\) inline', true, false, true)).toEqual([
-			{ type: 'markdown', content: 'Paren $a+b$ inline' }
-		]);
+		expect(serialize('Paren \\(a+b\\) inline', {}, katexOptions(false, true))).toBe('Paren $a+b$ inline');
 	});
 
 	it('keeps math delimiters as plain text when katex is disabled', () => {
-		expect(segmentsFor('Paren \\(a+b\\) and $x$', false, true, true)).toEqual([
-			{ type: 'markdown', content: 'Paren \\\\\\(a\\+b\\\\\\) and \\$x\\$' }
-		]);
+		expect(serialize('Paren \\(a+b\\) and $x$', {}, katexDisabled)).toBe('Paren \\\\\\(a\\+b\\\\\\) and \\$x\\$');
 	});
 });
 
@@ -371,18 +368,13 @@ describe('isBigEmojiOnly', () => {
 
 describe('markdown ascii emoticons', () => {
 	const toSmiley = (shortname: string) => (shortname === ':slight_smile:' ? '🙂' : shortname);
-	const serializeEmoticons = (msg: string, convertAsciiEmoji: boolean) =>
-		buildRenderSegments(parse(msg, { emoticons: true }), {
-			...baseContext,
-			convertAsciiEmoji,
-			formatShortnameToUnicode: toSmiley
-		});
+	const emoticons: Options = { emoticons: true };
 
 	it('converts an ascii emoticon to its emoji when the user converts them', () => {
-		expect(serializeEmoticons('hi :)', true)).toEqual([{ type: 'markdown', content: 'hi 🙂' }]);
+		expect(serialize('hi :)', { convertAsciiEmoji: true, formatShortnameToUnicode: toSmiley }, emoticons)).toBe('hi 🙂');
 	});
 
 	it('shows an ascii emoticon as typed when the user does not convert them', () => {
-		expect(serializeEmoticons('hi :)', false)).toEqual([{ type: 'markdown', content: 'hi :\\)' }]);
+		expect(serialize('hi :)', { convertAsciiEmoji: false, formatShortnameToUnicode: toSmiley }, emoticons)).toBe('hi :\\)');
 	});
 });
