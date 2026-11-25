@@ -78,7 +78,7 @@ jobs:
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ${{ env.XCODE_COMPILATION_CACHE_PATH }}
-          key: xcode-cas-ios-release-${{ hashFiles('ios/Podfile.lock') }}-${{ github.run_id }}
+          key: xcode-cas-ios-release-${{ hashFiles('ios/Podfile.lock') }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
             xcode-cas-ios-release-${{ hashFiles('ios/Podfile.lock') }}-
             xcode-cas-ios-release-
@@ -107,10 +107,11 @@ jobs:
           echo "Xcode compilation cache: $hits hits, $misses misses, $size on disk" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Save Xcode compilation cache
+        if: ${{ github.ref == 'refs/heads/develop' }}
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ${{ env.XCODE_COMPILATION_CACHE_PATH }}
-          key: xcode-cas-ios-release-${{ hashFiles('ios/Podfile.lock') }}-${{ github.run_id }}
+          key: xcode-cas-ios-release-${{ hashFiles('ios/Podfile.lock') }}-${{ github.run_id }}-${{ github.run_attempt }}
 
       - parallel:
           - name: Upload IPA artifact
