@@ -26,11 +26,20 @@ const styles = StyleSheet.create({
 export const RadioButton = ({ element, value, loading, onChange }: IRadioButton) => {
 	const { colors } = useTheme();
 	const [selected, setSelected] = useState(value);
+	const [syncedValue, setSyncedValue] = useState(value);
+	if (value !== syncedValue) {
+		setSyncedValue(value);
+		setSelected(value);
+	}
 	const options = element.options || [];
 
-	const onPress = (optionValue: Option['value']) => {
+	const onPress = async (optionValue: Option['value']) => {
+		const previous = selected;
 		setSelected(optionValue);
-		onChange({ value: optionValue });
+		const succeeded = await onChange({ value: optionValue });
+		if (!succeeded) {
+			setSelected(previous);
+		}
 	};
 
 	return (

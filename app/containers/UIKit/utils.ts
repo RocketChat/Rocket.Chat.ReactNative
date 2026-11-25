@@ -27,7 +27,7 @@ type TObjectReturn = {
 	language: any;
 };
 
-type TFunctionReturn = (value: any) => Promise<void>;
+type TFunctionReturn = (value: any) => Promise<boolean>;
 
 type TReturn = [TObjectReturn, TFunctionReturn];
 
@@ -64,7 +64,8 @@ export const useBlockContext = (
 				try {
 					if (appId === 'videoconf-core' && blockId) {
 						setLoading(false);
-						return videoConfJoin(blockId);
+						await videoConfJoin(blockId);
+						return true;
 					}
 					await action({
 						blockId,
@@ -74,9 +75,11 @@ export const useBlockContext = (
 						viewId
 					});
 				} catch (e) {
-					// do nothing
+					setLoading(false);
+					return false;
 				}
 				setLoading(false);
+				return true;
 			}
 		];
 	}
@@ -99,9 +102,11 @@ export const useBlockContext = (
 					value
 				});
 			} catch (e) {
-				// do nothing
+				setLoading(false);
+				return false;
 			}
 			setLoading(false);
+			return true;
 		}
 	];
 };

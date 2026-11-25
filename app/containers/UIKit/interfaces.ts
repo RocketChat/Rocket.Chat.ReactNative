@@ -195,7 +195,7 @@ export interface IContext extends Block {
 export interface IDatePicker {
 	element: IElement;
 	language: string;
-	action: (params: { value: unknown }) => Promise<void>;
+	action: (params: { value: unknown }) => Promise<unknown>;
 	context: BlockContext;
 	loading: boolean;
 	value: string;
@@ -225,7 +225,7 @@ export interface IRadioButton {
 	element: IElement;
 	value?: Option['value'];
 	loading: boolean;
-	onChange: (params: { value: Option['value'] }) => void;
+	onChange: (params: { value: Option['value'] }) => Promise<boolean>;
 }
 
 export interface IThumb {
@@ -239,7 +239,7 @@ export interface IImage {
 
 export interface IOverflow {
 	element: IElement;
-	action: (params: { value: unknown }) => Promise<void>;
+	action: (params: { value: unknown }) => Promise<unknown>;
 	loading: boolean;
 	parser: IParser;
 	context: BlockContext;
