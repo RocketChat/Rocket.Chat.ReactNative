@@ -129,6 +129,11 @@ const saveUsernameInServerHistory = (server, username) =>
 		}
 	});
 
+const isWorkspaceStillSelected = function* isWorkspaceStillSelected(server) {
+	const selectedServer = yield select(getServer);
+	return selectedServer === server && sdk.host === server;
+};
+
 const finishLogin = function* finishLogin({ result, server, registerCustomFields }) {
 	if (!result.username) {
 		yield put(serverFinishAdd());
@@ -137,6 +142,10 @@ const finishLogin = function* finishLogin({ result, server, registerCustomFields
 		return;
 	}
 	yield* authenticateIgnoringCancel(server);
+	if (!(yield* isWorkspaceStillSelected(server))) {
+		yield put(loginCancel());
+		return;
+	}
 	yield call(saveUsernameInServerHistory, server, result.username);
 	yield put(loginSuccess(result, server));
 	if (registerCustomFields) {
@@ -154,13 +163,16 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
 		}
-		const selectedServer = yield select(getServer);
-		if (selectedServer !== server || sdk.host !== server) {
+		if (!(yield* isWorkspaceStillSelected(server))) {
 			yield put(loginCancel());
 			return;
 		}
 		yield* finishLogin({ result, server, registerCustomFields });
 	} catch (e) {
+		if (!(yield* isWorkspaceStillSelected(server))) {
+			yield put(loginCancel());
+			return;
+		}
 		if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
 			logEvent(events.LOGOUT_BY_SERVER);
 			yield put(logoutAction(true, 'Logged_out_by_server'));

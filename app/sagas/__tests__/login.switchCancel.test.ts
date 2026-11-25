@@ -97,8 +97,9 @@ jest.mock('~/lib/database', () => ({
 }));
 
 import loginRoot from '../login';
-import { loginRequest, loginSuccess } from '~/actions/login';
-import { LOGIN } from '~/actions/actionsTypes';
+import { loginRequest, loginSuccess, setUser } from '~/actions/login';
+import { LOGIN, LOGOUT } from '~/actions/actionsTypes';
+import { localAuthenticate } from '~/lib/methods/helpers/localAuthentication';
 import { login } from '~/lib/services/connect';
 import { selectServerRequest, selectServerSuccess } from '~/actions/server';
 import UserPreferences from '~/lib/methods/userPreferences';
@@ -213,5 +214,90 @@ describe('login saga — a login that answers after a workspace switch', () => {
 			expect.arrayContaining([expect.objectContaining({ type: LOGIN.SUCCESS, server: SERVER_A })])
 		);
 		expect(store.getState().login.signedInServer).toBe(SERVER_A);
+	});
+
+	it('drops the login when the workspace changes while the app waits to be unlocked', async () => {
+		jest.mocked(login).mockResolvedValue(USER_B as any);
+		let unlock: () => void = () => {};
+		jest.mocked(localAuthenticate).mockImplementation(
+			() =>
+				new Promise<void>(resolve => {
+					unlock = resolve;
+				}) as any
+		);
+		const { store, dispatchedActions } = setupStore();
+		store.dispatch(selectServerSuccess({ server: SERVER_A, version: '7.0.0', name: 'A' }));
+
+		store.dispatch(loginRequest({ resume: USER_B.token }));
+		await flushSagaMicrotasks();
+		store.dispatch(selectServerRequest(SERVER_B, '7.0.0'));
+		unlock();
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions.map(action => action.type)).not.toContain(LOGIN.SUCCESS);
+		expect(store.getState().login.isAuthenticated).toBe(false);
+		expect(store.getState().login.user.token).toBeUndefined();
+	});
+
+	it('signs in after the unlock when the workspace stays the same', async () => {
+		jest.mocked(login).mockResolvedValue(USER_B as any);
+		jest.mocked(localAuthenticate).mockResolvedValue(undefined as any);
+		const { store, dispatchedActions } = setupStore();
+		store.dispatch(selectServerSuccess({ server: SERVER_A, version: '7.0.0', name: 'A' }));
+
+		store.dispatch(loginRequest({ resume: USER_B.token }));
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions.map(action => action.type)).toContain(LOGIN.SUCCESS);
+	});
+});
+
+describe('login saga — a login that fails after a workspace switch', () => {
+	const rejectLoginLater = () => {
+		let reject: (error: unknown) => void = () => {};
+		jest.mocked(login).mockImplementation(
+			() =>
+				new Promise((_resolve, rejectLogin) => {
+					reject = rejectLogin;
+				}) as any
+		);
+		return (error: unknown) => reject(error);
+	};
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('does not sign out of the newly selected workspace when the previous workspace rejects the token', async () => {
+		const reject = rejectLoginLater();
+		const { store, dispatchedActions } = setupStore();
+		store.dispatch(selectServerSuccess({ server: SERVER_A, version: '7.0.0', name: 'A' }));
+		store.dispatch(setUser({ id: USER_B.id }));
+
+		store.dispatch(loginRequest({ resume: USER_B.token }));
+		await flushSagaMicrotasks();
+		store.dispatch(selectServerRequest(SERVER_B, '7.0.0'));
+		reject({ status: 401 });
+		await flushSagaMicrotasks();
+
+		const types = dispatchedActions.map(action => action.type);
+		expect(types).not.toContain(LOGOUT);
+		expect(types).not.toContain(LOGIN.FAILURE);
+		expect(types).toContain(LOGIN.CANCEL);
+		expect(store.getState().login.isFetching).toBe(false);
+	});
+
+	it('signs out when the selected workspace rejects the token', async () => {
+		const reject = rejectLoginLater();
+		const { store, dispatchedActions } = setupStore();
+		store.dispatch(selectServerSuccess({ server: SERVER_A, version: '7.0.0', name: 'A' }));
+		store.dispatch(setUser({ id: USER_B.id }));
+
+		store.dispatch(loginRequest({ resume: USER_B.token }));
+		await flushSagaMicrotasks();
+		reject({ status: 401 });
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions.map(action => action.type)).toContain(LOGOUT);
 	});
 });

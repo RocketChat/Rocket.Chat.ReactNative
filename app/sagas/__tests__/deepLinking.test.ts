@@ -107,7 +107,7 @@ jest.mock('~/lib/methods/helpers/normalizeDeepLinkingServerHost', () => ({
 import RNCallKeep from 'react-native-callkeep';
 
 import { deepLinkingOpen, deepLinkingClickCallPush } from '~/actions/deepLinking';
-import { loginFailure, loginSuccess, logout, setUser } from '~/actions/login';
+import { loginCancel, loginFailure, loginSuccess, logout, setUser } from '~/actions/login';
 import { selectServerFailure, selectServerSuccess } from '~/actions/server';
 import { appStart } from '~/actions/app';
 import { connectSuccess } from '~/actions/connect';
@@ -383,6 +383,30 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
 		store.dispatch(logout(true, 'Token_expired'));
+		await flushSagaMicrotasks();
+
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any, HOST));
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		await flushSagaMicrotasks();
+
+		expect(toastedMessages(emitSpy)).not.toContain('Deep_link_login_failed');
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+		emitSpy.mockRestore();
+	});
+
+	it('stops waiting without a toast when a workspace switch cancels the deep link login', async () => {
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+		const { store } = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await jest.advanceTimersByTimeAsync(1000);
+		await flushSagaMicrotasks();
+
+		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+		store.dispatch(loginCancel());
 		await flushSagaMicrotasks();
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any, HOST));

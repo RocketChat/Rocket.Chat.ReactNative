@@ -365,6 +365,7 @@ const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, host
 	const { signedIn, failed } = yield race({
 		signedIn: take(types.LOGIN.SUCCESS),
 		failed: take(types.LOGIN.FAILURE),
+		cancelled: take(types.LOGIN.CANCEL),
 		loggedOut: take(types.LOGOUT)
 	});
 	if (failed) {
