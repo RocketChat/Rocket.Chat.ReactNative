@@ -274,6 +274,14 @@ export const Timestamp = () => (
 	</View>
 );
 
+export const NonStringValues = () => (
+	<View style={styles.container}>
+		<Markdown msg='A livechat custom field stored as a number or boolean:' />
+		<Markdown msg={42 as unknown as string} />
+		<Markdown msg={true as unknown as string} />
+	</View>
+);
+
 const emojiWithoutShortCode = (name: string) => ({ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: name } });
 
 export const EmojiFromServersBefore5 = () => (

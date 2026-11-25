@@ -36,7 +36,14 @@ const Markdown: FC<IMarkdownProps> = ({
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
 	const { handleLinkPress, handleLinkLongPress } = useMarkdownLinkPress({ navToRoomInfo, onLinkPress });
-	const { segments, bigEmojiOnly } = useMarkdownSegments({ msg: msg ?? '', md, mentions, channels, useRealName, username });
+	const { segments, bigEmojiOnly } = useMarkdownSegments({
+		msg: String(msg || ''),
+		md,
+		mentions,
+		channels,
+		useRealName,
+		username
+	});
 	const markdownStyle = useMemo(() => buildMarkdownStyle(colors, bigEmojiOnly, fontScale), [colors, bigEmojiOnly, fontScale]);
 
 	if (segments.length === 0) {

@@ -1051,6 +1051,52 @@ exports[`Story Snapshots: NestedLists should match snapshot 1`] = `
 </View>
 `;
 
+exports[`Story Snapshots: NonStringValues should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      A livechat custom field stored as a number or boolean:
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      42
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      true
+    </Text>
+  </View>
+</View>
+`;
+
 exports[`Story Snapshots: Preview should match snapshot 1`] = `
 <View
   style={
