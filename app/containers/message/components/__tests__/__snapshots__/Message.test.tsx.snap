@@ -85680,6 +85680,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                           "flexDirection": "row",
                                           "flexWrap": "wrap",
                                           "gap": 12,
+                                          "maxWidth": 368,
                                           "padding": 8,
                                         },
                                         {
@@ -99315,6 +99316,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                           "flexDirection": "row",
                                           "flexWrap": "wrap",
                                           "gap": 12,
+                                          "maxWidth": 368,
                                           "padding": 8,
                                         },
                                         {
@@ -164123,6 +164125,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
@@ -165206,6 +165209,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
@@ -166301,6 +166305,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
@@ -167176,6 +167181,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
@@ -168205,6 +168211,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
@@ -169188,6 +169195,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
@@ -170063,6 +170071,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
@@ -171464,6 +171473,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
@@ -172759,6 +172769,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
@@ -173788,6 +173799,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
@@ -174883,6 +174895,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
@@ -175866,6 +175879,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
@@ -176741,6 +176755,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 "flexDirection": "row",
                                 "flexWrap": "wrap",
                                 "gap": 12,
+                                "maxWidth": 368,
                                 "padding": 8,
                               },
                               {
