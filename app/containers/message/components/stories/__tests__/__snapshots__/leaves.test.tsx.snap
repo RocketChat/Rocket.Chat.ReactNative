@@ -265,9 +265,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="This is a plain text message"
-    >
+    <Text>
       This is a plain text message
     </Text>
   </View>
@@ -2664,9 +2662,7 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Image 1"
-        >
+        <Text>
           Image 1
         </Text>
       </View>
@@ -2846,9 +2842,7 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Image 2"
-        >
+        <Text>
           Image 2
         </Text>
       </View>
@@ -3028,9 +3022,7 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Image 3"
-        >
+        <Text>
           Image 3
         </Text>
       </View>
@@ -3210,9 +3202,7 @@ exports[`Story Snapshots: MultipleImagesOldServer should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Image 4"
-        >
+        <Text>
           Image 4
         </Text>
       </View>
@@ -4408,9 +4398,7 @@ exports[`Story Snapshots: SingleImageOldServer should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="A wavy orange and black pattern, designed to be used as a wallpaper"
-        >
+        <Text>
           A wavy orange and black pattern, designed to be used as a wallpaper
         </Text>
       </View>

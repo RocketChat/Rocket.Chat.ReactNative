@@ -1066,9 +1066,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Voice call ended"
-                >
+                <Text>
                   **Voice call ended**
                 </Text>
               </View>
@@ -1113,9 +1111,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="00:06"
-                >
+                <Text>
                   **00:06**
                 </Text>
               </View>
@@ -1227,9 +1223,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Voice call transferred"
-                >
+                <Text>
                   **Voice call transferred**
                 </Text>
               </View>
@@ -1274,9 +1268,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="00:06"
-                >
+                <Text>
                   **00:06**
                 </Text>
               </View>
@@ -1388,9 +1380,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Voice call not answered"
-                >
+                <Text>
                   **Voice call not answered**
                 </Text>
               </View>
@@ -1502,9 +1492,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Voice call failed"
-                >
+                <Text>
                   **Voice call failed**
                 </Text>
               </View>
@@ -1626,9 +1614,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Voice call ended"
-                >
+                <Text>
                   **Voice call ended**
                 </Text>
               </View>
@@ -1673,9 +1659,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="00:06"
-                >
+                <Text>
                   **00:06**
                 </Text>
               </View>
@@ -1787,9 +1771,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Voice call transferred"
-                >
+                <Text>
                   **Voice call transferred**
                 </Text>
               </View>
@@ -1834,9 +1816,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="00:06"
-                >
+                <Text>
                   **00:06**
                 </Text>
               </View>
@@ -1948,9 +1928,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Voice call not answered"
-                >
+                <Text>
                   **Voice call not answered**
                 </Text>
               </View>
@@ -2062,9 +2040,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Voice call failed"
-                >
+                <Text>
                   **Voice call failed**
                 </Text>
               </View>
@@ -2186,9 +2162,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Voice call ended"
-                >
+                <Text>
                   **Voice call ended**
                 </Text>
               </View>
@@ -2233,9 +2207,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="00:06"
-                >
+                <Text>
                   **00:06**
                 </Text>
               </View>
@@ -2347,9 +2319,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Voice call transferred"
-                >
+                <Text>
                   **Voice call transferred**
                 </Text>
               </View>
@@ -2394,9 +2364,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="00:06"
-                >
+                <Text>
                   **00:06**
                 </Text>
               </View>
@@ -2508,9 +2476,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Voice call not answered"
-                >
+                <Text>
                   **Voice call not answered**
                 </Text>
               </View>
@@ -2622,9 +2588,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Voice call failed"
-                >
+                <Text>
                   **Voice call failed**
                 </Text>
               </View>
@@ -2691,9 +2655,7 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            accessibilityLabel="Voice call ended"
-          >
+          <Text>
             **Voice call ended**
           </Text>
         </View>
@@ -2738,9 +2700,7 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            accessibilityLabel="Voice call failed"
-          >
+          <Text>
             **Voice call failed**
           </Text>
         </View>
@@ -2785,9 +2745,7 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            accessibilityLabel="Voice call not answered"
-          >
+          <Text>
             **Voice call not answered**
           </Text>
         </View>
@@ -2832,9 +2790,7 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
             }
           }
         >
-          <Text
-            accessibilityLabel="Voice call transferred"
-          >
+          <Text>
             **Voice call transferred**
           </Text>
         </View>
@@ -3546,9 +3502,7 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="Section"
-      >
+      <Text>
         Section
       </Text>
     </View>
@@ -3584,9 +3538,7 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="Section + button"
-      >
+      <Text>
         Section \\+ button
       </Text>
     </View>
@@ -3693,9 +3645,7 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="Section + DatePicker"
-      >
+      <Text>
         Section \\+ DatePicker
       </Text>
     </View>
@@ -3789,9 +3739,7 @@ exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Regular message: the reference font size"
-    >
+    <Text>
       Regular message: the reference font size
     </Text>
   </View>
@@ -3822,9 +3770,7 @@ exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Section mrkdwn: must match the message above"
-        >
+        <Text>
           Section mrkdwn: must match the message above
         </Text>
       </View>
@@ -3837,14 +3783,10 @@ exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      accessibilityLabel="Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2"
-    >
+    <Text>
       Updating workspace from 8\\.7\\.0\\-rc\\.1 to 8\\.7\\.0\\-rc\\.2
     </Text>
-    <Text
-      accessibilityLabel="		changes: https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2"
-    >
+    <Text>
       changes: 
       <Text
         accessibilityRole="link"
@@ -3882,14 +3824,10 @@ exports[`Story Snapshots: SectionFontSizeParity should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Updating workspace from 8.7.0-rc.1 to 8.7.0-rc.2"
-        >
+        <Text>
           Updating workspace from 8\\.7\\.0\\-rc\\.1 to 8\\.7\\.0\\-rc\\.2
         </Text>
-        <Text
-          accessibilityLabel="		changes: https://github.com/RocketChat/Rocket.Chat/compare/8.7.0-rc.1...8.7.0-rc.2"
-        >
+        <Text>
           changes: 
           <Text
             accessibilityRole="link"
@@ -3933,14 +3871,10 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="List:"
-      >
+      <Text>
         **List**:
       </Text>
-      <Text
-        accessibilityLabel="Item"
-      >
+      <Text>
         1. Item
       </Text>
     </View>
@@ -3977,9 +3911,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Section + select"
-        >
+        <Text>
           Section \\+ select
         </Text>
       </View>
@@ -4089,9 +4021,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Section + select with value undefined"
-        >
+        <Text>
           Section \\+ select with value undefined
         </Text>
       </View>
@@ -4205,9 +4135,7 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="Section + Overflow"
-      >
+      <Text>
         Section \\+ Overflow
       </Text>
     </View>
@@ -4366,9 +4294,7 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        accessibilityLabel="Section + select"
-      >
+      <Text>
         Section \\+ select
       </Text>
     </View>

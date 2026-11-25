@@ -387,9 +387,7 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This message is inside an archived room"
-                      >
+                      <Text>
                         This message is inside an archived room
                       </Text>
                     </View>
@@ -792,9 +790,7 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This message is inside an archived room"
-                      >
+                      <Text>
                         This message is inside an archived room
                       </Text>
                     </View>
@@ -1315,9 +1311,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Rocket.Chat, the best open source chat"
-                              >
+                              <Text>
                                 <Text
                                   accessibilityRole="link"
                                   onLongPress={[Function]}
@@ -2018,9 +2012,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Rocket.Chat, the best open source chat"
-                              >
+                              <Text>
                                 <Text
                                   accessibilityRole="link"
                                   onLongPress={[Function]}
@@ -2611,9 +2603,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This message has no avatar."
-                      >
+                      <Text>
                         This message has no avatar\\.
                       </Text>
                     </View>
@@ -3011,9 +3001,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This message uses the user's profile picture as the avatar."
-                      >
+                      <Text>
                         This message uses the user's profile picture as the avatar\\.
                       </Text>
                     </View>
@@ -3397,9 +3385,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This message uses a Unicode emoji as the avatar."
-                      >
+                      <Text>
                         This message uses a Unicode emoji as the avatar\\.
                       </Text>
                     </View>
@@ -3793,9 +3779,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This message uses a custom animated emoji as the avatar."
-                      >
+                      <Text>
                         This message uses a custom animated emoji as the avatar\\.
                       </Text>
                     </View>
@@ -4189,9 +4173,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This message uses a custom static emoji as the avatar."
-                      >
+                      <Text>
                         This message uses a custom static emoji as the avatar\\.
                       </Text>
                     </View>
@@ -4602,9 +4584,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -5002,9 +4982,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                      >
+                      <Text>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua\\.
                       </Text>
                     </View>
@@ -5415,9 +5393,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -5815,9 +5791,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                      >
+                      <Text>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua\\.
                       </Text>
                     </View>
@@ -6228,9 +6202,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Testing block quote"
-                      >
+                      <Text>
                         &gt; Testing block quote
                       </Text>
                     </View>
@@ -6630,14 +6602,10 @@ Testing block quote"
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Testing block quote"
-                      >
+                      <Text>
                         &gt; Testing block quote
                       </Text>
-                      <Text
-                        accessibilityLabel="Testing block quote"
-                      >
+                      <Text>
                         Testing block quote
                       </Text>
                     </View>
@@ -7048,9 +7016,7 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Testing block quote"
-                      >
+                      <Text>
                         &gt; Testing block quote
                       </Text>
                     </View>
@@ -7450,14 +7416,10 @@ Testing block quote"
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Testing block quote"
-                      >
+                      <Text>
                         &gt; Testing block quote
                       </Text>
-                      <Text
-                        accessibilityLabel="Testing block quote"
-                      >
+                      <Text>
                         Testing block quote
                       </Text>
                     </View>
@@ -7868,9 +7830,7 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Broadcasted message"
-                      >
+                      <Text>
                         Broadcasted message
                       </Text>
                     </View>
@@ -8404,9 +8364,7 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Broadcasted message"
-                      >
+                      <Text>
                         Broadcasted message
                       </Text>
                     </View>
@@ -8940,9 +8898,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -9605,9 +9561,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Title collapsed"
-                              >
+                              <Text>
                                 Title collapsed
                               </Text>
                             </View>
@@ -9661,9 +9615,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -9708,9 +9660,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -9732,9 +9682,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -10145,9 +10093,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -10810,9 +10756,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Title collapsed"
-                              >
+                              <Text>
                                 Title collapsed
                               </Text>
                             </View>
@@ -10866,9 +10810,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -10913,9 +10855,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -10937,9 +10877,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -11350,9 +11288,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This is the main message body."
-                      >
+                      <Text>
                         This is the main message body\\.
                       </Text>
                     </View>
@@ -12017,9 +11953,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="This attachment text should NOT appear as plain text above the message or duplicate before the block."
-                              >
+                              <Text>
                                 This attachment text should NOT appear as plain text above the message or duplicate before the block\\.
                               </Text>
                             </View>
@@ -12073,9 +12007,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -12120,9 +12052,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -12167,9 +12097,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="This field value could also contribute to duplicate text when expanded."
-                                  >
+                                  <Text>
                                     This field value could also contribute to duplicate text when expanded\\.
                                   </Text>
                                 </View>
@@ -12185,9 +12113,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="Attachment description that might also leak as duplicate plain text."
-                        >
+                        <Text>
                           Attachment description that might also leak as duplicate plain text\\.
                         </Text>
                       </View>
@@ -12204,9 +12130,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This is the main message body."
-                      >
+                      <Text>
                         This is the main message body\\.
                       </Text>
                     </View>
@@ -12617,9 +12541,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This is the main message body."
-                      >
+                      <Text>
                         This is the main message body\\.
                       </Text>
                     </View>
@@ -13284,9 +13206,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="This attachment text should NOT appear as plain text above the message or duplicate before the block."
-                              >
+                              <Text>
                                 This attachment text should NOT appear as plain text above the message or duplicate before the block\\.
                               </Text>
                             </View>
@@ -13340,9 +13260,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -13387,9 +13305,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -13434,9 +13350,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="This field value could also contribute to duplicate text when expanded."
-                                  >
+                                  <Text>
                                     This field value could also contribute to duplicate text when expanded\\.
                                   </Text>
                                 </View>
@@ -13452,9 +13366,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="Attachment description that might also leak as duplicate plain text."
-                        >
+                        <Text>
                           Attachment description that might also leak as duplicate plain text\\.
                         </Text>
                       </View>
@@ -13471,9 +13383,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This is the main message body."
-                      >
+                      <Text>
                         This is the main message body\\.
                       </Text>
                     </View>
@@ -14014,9 +13924,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -14061,9 +13969,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -14207,9 +14113,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -14254,9 +14158,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -14400,9 +14302,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -14447,9 +14347,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -14996,9 +14894,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -15043,9 +14939,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -15189,9 +15083,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -15236,9 +15128,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -15382,9 +15272,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -15429,9 +15317,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -15959,9 +15845,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Custom fields"
-                              >
+                              <Text>
                                 Custom fields
                               </Text>
                             </View>
@@ -16015,9 +15899,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -16062,9 +15944,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -16086,9 +15966,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -16597,9 +16475,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Custom fields"
-                              >
+                              <Text>
                                 Custom fields
                               </Text>
                             </View>
@@ -16653,9 +16529,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -16700,9 +16574,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -16747,9 +16619,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 3"
-                                  >
+                                  <Text>
                                     Value 3
                                   </Text>
                                 </View>
@@ -16794,9 +16664,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 4"
-                                  >
+                                  <Text>
                                     Value 4
                                   </Text>
                                 </View>
@@ -16841,9 +16709,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 5"
-                                  >
+                                  <Text>
                                     Value 5
                                   </Text>
                                 </View>
@@ -16865,9 +16731,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -17389,9 +17253,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Custom fields"
-                              >
+                              <Text>
                                 Custom fields
                               </Text>
                             </View>
@@ -17445,9 +17307,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -17492,9 +17352,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -17516,9 +17374,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -18027,9 +17883,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Custom fields"
-                              >
+                              <Text>
                                 Custom fields
                               </Text>
                             </View>
@@ -18083,9 +17937,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -18130,9 +17982,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     Value 2
                                   </Text>
                                 </View>
@@ -18177,9 +18027,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 3"
-                                  >
+                                  <Text>
                                     Value 3
                                   </Text>
                                 </View>
@@ -18224,9 +18072,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 4"
-                                  >
+                                  <Text>
                                     Value 4
                                   </Text>
                                 </View>
@@ -18271,9 +18117,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 5"
-                                  >
+                                  <Text>
                                     Value 5
                                   </Text>
                                 </View>
@@ -18295,9 +18139,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -18708,9 +18550,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Fourth message"
-                      >
+                      <Text>
                         Fourth message
                       </Text>
                     </View>
@@ -19176,9 +19016,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Third message"
-                      >
+                      <Text>
                         Third message
                       </Text>
                     </View>
@@ -19371,9 +19209,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Second message"
-                      >
+                      <Text>
                         Second message
                       </Text>
                     </View>
@@ -19778,9 +19614,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Second message"
-                      >
+                      <Text>
                         Second message
                       </Text>
                     </View>
@@ -20255,9 +20089,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="First message"
-                      >
+                      <Text>
                         First message
                       </Text>
                     </View>
@@ -20668,9 +20500,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Fourth message"
-                      >
+                      <Text>
                         Fourth message
                       </Text>
                     </View>
@@ -21136,9 +20966,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Third message"
-                      >
+                      <Text>
                         Third message
                       </Text>
                     </View>
@@ -21331,9 +21159,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Second message"
-                      >
+                      <Text>
                         Second message
                       </Text>
                     </View>
@@ -21738,9 +21564,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Second message"
-                      >
+                      <Text>
                         Second message
                       </Text>
                     </View>
@@ -22215,9 +22039,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="First message"
-                      >
+                      <Text>
                         First message
                       </Text>
                     </View>
@@ -27294,9 +27116,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message header"
-                      >
+                      <Text>
                         Message header
                       </Text>
                     </View>
@@ -27442,9 +27262,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message without header"
-                      >
+                      <Text>
                         Message without header
                       </Text>
                     </View>
@@ -27934,9 +27752,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message header"
-                      >
+                      <Text>
                         Message header
                       </Text>
                     </View>
@@ -28082,9 +27898,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message without header"
-                      >
+                      <Text>
                         Message without header
                       </Text>
                     </View>
@@ -28539,9 +28353,7 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message being edited"
-                      >
+                      <Text>
                         Message being edited
                       </Text>
                     </View>
@@ -28953,9 +28765,7 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message being edited"
-                      >
+                      <Text>
                         Message being edited
                       </Text>
                     </View>
@@ -29366,9 +29176,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="👊 🤙 👏"
-                      >
+                      <Text>
                         👊🤙👏
                       </Text>
                     </View>
@@ -29766,9 +29574,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="👏"
-                      >
+                      <Text>
                         👏
                       </Text>
                     </View>
@@ -30166,9 +29972,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel=":react_rocket: :nyan_rocket: :marioparty:"
-                      >
+                      <Text>
                         ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
                       </Text>
                     </View>
@@ -30566,9 +30370,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel=":react_rocket:"
-                      >
+                      <Text>
                         ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)
                       </Text>
                     </View>
@@ -30966,9 +30768,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="🤙 :react_rocket:"
-                      >
+                      <Text>
                         🤙⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)
                       </Text>
                     </View>
@@ -31366,9 +31166,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="🤙:react_rocket:🤙🤙"
-                      >
+                      <Text>
                         🤙:react\\_rocket:🤙🤙
                       </Text>
                     </View>
@@ -31779,9 +31577,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="👊 🤙 👏"
-                      >
+                      <Text>
                         👊🤙👏
                       </Text>
                     </View>
@@ -32179,9 +31975,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="👏"
-                      >
+                      <Text>
                         👏
                       </Text>
                     </View>
@@ -32579,9 +32373,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel=":react_rocket: :nyan_rocket: :marioparty:"
-                      >
+                      <Text>
                         ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif)
                       </Text>
                     </View>
@@ -32979,9 +32771,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel=":react_rocket:"
-                      >
+                      <Text>
                         ⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)
                       </Text>
                     </View>
@@ -33379,9 +33169,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="🤙 :react_rocket:"
-                      >
+                      <Text>
                         🤙⁠![](https://open.rocket.chat/emoji-custom/react_rocket.png)
                       </Text>
                     </View>
@@ -33779,9 +33567,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="🤙:react_rocket:🤙🤙"
-                      >
+                      <Text>
                         🤙:react\\_rocket:🤙🤙
                       </Text>
                     </View>
@@ -42816,9 +42602,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="This message has error"
-                >
+                <Text>
                   This message has error
                 </Text>
               </View>
@@ -43209,9 +42993,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="This message has error too"
-                >
+                <Text>
                   This message has error too
                 </Text>
               </View>
@@ -43615,9 +43397,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="This message has error"
-                >
+                <Text>
                   This message has error
                 </Text>
               </View>
@@ -44008,9 +43788,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="This message has error too"
-                >
+                <Text>
                   This message has error too
                 </Text>
               </View>
@@ -44563,9 +44341,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Check out this Python file"
-                      >
+                      <Text>
                         Check out this Python file
                       </Text>
                     </View>
@@ -45108,9 +44884,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="TypeScript component"
-                      >
+                      <Text>
                         TypeScript component
                       </Text>
                     </View>
@@ -45653,9 +45427,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Configuration file"
-                      >
+                      <Text>
                         Configuration file
                       </Text>
                     </View>
@@ -46163,9 +45935,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="This is the main entry point for the application"
-                              >
+                              <Text>
                                 This is the **main** entry point for the application
                               </Text>
                             </View>
@@ -46185,9 +45955,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="File with description"
-                      >
+                      <Text>
                         File with description
                       </Text>
                     </View>
@@ -47162,9 +46930,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Check out this Python file"
-                      >
+                      <Text>
                         Check out this Python file
                       </Text>
                     </View>
@@ -47707,9 +47473,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="TypeScript component"
-                      >
+                      <Text>
                         TypeScript component
                       </Text>
                     </View>
@@ -48252,9 +48016,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Configuration file"
-                      >
+                      <Text>
                         Configuration file
                       </Text>
                     </View>
@@ -48762,9 +48524,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="This is the main entry point for the application"
-                              >
+                              <Text>
                                 This is the **main** entry point for the application
                               </Text>
                             </View>
@@ -48784,9 +48544,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="File with description"
-                      >
+                      <Text>
                         File with description
                       </Text>
                     </View>
@@ -49690,9 +49448,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="File.pdf"
-                              >
+                              <Text>
                                 File\\.pdf
                               </Text>
                             </View>
@@ -49791,9 +49547,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="File.pdf"
-                              >
+                              <Text>
                                 File\\.pdf
                               </Text>
                             </View>
@@ -49813,9 +49567,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="multi file"
-                      >
+                      <Text>
                         multi file
                       </Text>
                     </View>
@@ -50226,9 +49978,7 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -50639,9 +50389,7 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -51052,9 +50800,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="..."
-                      >
+                      <Text>
                         \\.\\.\\.
                       </Text>
                     </View>
@@ -51452,9 +51198,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Different user"
-                      >
+                      <Text>
                         Different user
                       </Text>
                     </View>
@@ -51600,9 +51344,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This is the third message"
-                      >
+                      <Text>
                         This is the third message
                       </Text>
                     </View>
@@ -51755,9 +51497,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This is the second message"
-                      >
+                      <Text>
                         This is the second message
                       </Text>
                     </View>
@@ -52162,9 +51902,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This is the first message"
-                      >
+                      <Text>
                         This is the first message
                       </Text>
                     </View>
@@ -52575,9 +52313,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="..."
-                      >
+                      <Text>
                         \\.\\.\\.
                       </Text>
                     </View>
@@ -52975,9 +52711,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Different user"
-                      >
+                      <Text>
                         Different user
                       </Text>
                     </View>
@@ -53123,9 +52857,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This is the third message"
-                      >
+                      <Text>
                         This is the third message
                       </Text>
                     </View>
@@ -53278,9 +53010,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This is the second message"
-                      >
+                      <Text>
                         This is the second message
                       </Text>
                     </View>
@@ -53685,9 +53415,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="This is the first message"
-                      >
+                      <Text>
                         This is the first message
                       </Text>
                     </View>
@@ -54742,9 +54470,7 @@ exports[`Story Snapshots: InlineKatex should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="xˆ2 + yˆ2 - zˆ2"
-                      >
+                      <Text>
                         $xˆ2 + yˆ2 - zˆ2$
                       </Text>
                     </View>
@@ -55155,9 +54881,7 @@ exports[`Story Snapshots: InlineKatexLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="xˆ2 + yˆ2 - zˆ2"
-                      >
+                      <Text>
                         $xˆ2 + yˆ2 - zˆ2$
                       </Text>
                     </View>
@@ -56614,9 +56338,7 @@ exports[`Story Snapshots: Katex should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel=" \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }"
-                      >
+                      <Text>
                         $$\\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }$$
                       </Text>
                     </View>
@@ -57027,9 +56749,7 @@ exports[`Story Snapshots: KatexArray should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel=" \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{testing} & \\text{testingII} & \\text{testing III} & \\text{testing IV} & \\text{testV} & \\text{testVI} \\\\ \\hline \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} \\\\ \\hline\\text{TEST} & \\text{✅} & \\text{test} & \\text{test} & \\text{test} & \\text{✅} \\\\ \\hline \\end{array} "
-                      >
+                      <Text>
                         $$\\begin{array}{|c|c|c|c|c|c|} \\hline \\text{testing} & \\text{testingII} & \\text{testing III} & \\text{testing IV} & \\text{testV} & \\text{testVI} \\\\ \\hline \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} \\\\ \\hline\\text{TEST} & \\text{✅} & \\text{test} & \\text{test} & \\text{test} & \\text{✅} \\\\ \\hline \\end{array}$$
                       </Text>
                     </View>
@@ -57440,9 +57160,7 @@ exports[`Story Snapshots: KatexArrayLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel=" \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{testing} & \\text{testingII} & \\text{testing III} & \\text{testing IV} & \\text{testV} & \\text{testVI} \\\\ \\hline \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} \\\\ \\hline\\text{TEST} & \\text{✅} & \\text{test} & \\text{test} & \\text{test} & \\text{✅} \\\\ \\hline \\end{array} "
-                      >
+                      <Text>
                         $$\\begin{array}{|c|c|c|c|c|c|} \\hline \\text{testing} & \\text{testingII} & \\text{testing III} & \\text{testing IV} & \\text{testV} & \\text{testVI} \\\\ \\hline \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} \\\\ \\hline\\text{TEST} & \\text{✅} & \\text{test} & \\text{test} & \\text{test} & \\text{✅} \\\\ \\hline \\end{array}$$
                       </Text>
                     </View>
@@ -57853,9 +57571,7 @@ exports[`Story Snapshots: KatexLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel=" \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }"
-                      >
+                      <Text>
                         $$\\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }$$
                       </Text>
                     </View>
@@ -58270,16 +57986,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Dogs
-cats"
-                      >
+                      <Text>
                         - Dogs
 - cats
                       </Text>
-                      <Text
-                        accessibilityLabel="cats"
-                      >
+                      <Text>
                         - cats
                       </Text>
                     </View>
@@ -58679,10 +58390,7 @@ cats"
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Dogs 
-Cats"
-                      >
+                      <Text>
                         1. Dogs 
 2. Cats
                       </Text>
@@ -59081,9 +58789,7 @@ Cats"
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Dogs"
-                      >
+                      <Text>
                         1. Dogs
                       </Text>
                     </View>
@@ -59229,9 +58935,7 @@ Cats"
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Cats"
-                      >
+                      <Text>
                         2. Cats
                       </Text>
                     </View>
@@ -59653,16 +59357,11 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Dogs
-cats"
-                      >
+                      <Text>
                         - Dogs
 - cats
                       </Text>
-                      <Text
-                        accessibilityLabel="cats"
-                      >
+                      <Text>
                         - cats
                       </Text>
                     </View>
@@ -60062,10 +59761,7 @@ cats"
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Dogs 
-Cats"
-                      >
+                      <Text>
                         1. Dogs 
 2. Cats
                       </Text>
@@ -60464,9 +60160,7 @@ Cats"
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Dogs"
-                      >
+                      <Text>
                         1. Dogs
                       </Text>
                     </View>
@@ -60612,9 +60306,7 @@ Cats"
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Cats"
-                      >
+                      <Text>
                         2. Cats
                       </Text>
                     </View>
@@ -61032,9 +60724,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="this is a normal message"
-                      >
+                      <Text>
                         this is a normal message
                       </Text>
                     </View>
@@ -61468,9 +61158,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Edited message"
-                      >
+                      <Text>
                         Edited message
                       </Text>
                     </View>
@@ -61903,9 +61591,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Translated message"
-                      >
+                      <Text>
                         Translated message
                       </Text>
                     </View>
@@ -62781,9 +62467,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Error message"
-                >
+                <Text>
                   Error message
                 </Text>
               </View>
@@ -63209,9 +62893,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message with read receipt"
-                      >
+                      <Text>
                         Message with read receipt
                       </Text>
                     </View>
@@ -65853,9 +65535,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="this is a normal message"
-                      >
+                      <Text>
                         this is a normal message
                       </Text>
                     </View>
@@ -66289,9 +65969,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Edited message"
-                      >
+                      <Text>
                         Edited message
                       </Text>
                     </View>
@@ -66724,9 +66402,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Translated message"
-                      >
+                      <Text>
                         Translated message
                       </Text>
                     </View>
@@ -67602,9 +67278,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Error message"
-                >
+                <Text>
                   Error message
                 </Text>
               </View>
@@ -68030,9 +67704,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message with read receipt"
-                      >
+                      <Text>
                         Message with read receipt
                       </Text>
                     </View>
@@ -70674,9 +70346,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="rocket.cat diego.mello all here #general team"
-                      >
+                      <Text>
                         <Text
                           accessibilityRole="link"
                           onLongPress={[Function]}
@@ -71112,9 +70782,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="rocket.cat Lorem ipsum dolor diego.mello sit amet, all consectetur adipiscing here elit, sed do eiusmod tempor #general incididunt ut labore et dolore magna aliqua."
-                      >
+                      <Text>
                         <Text
                           accessibilityRole="link"
                           onLongPress={[Function]}
@@ -71556,9 +71224,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="rocket.cat diego.mello all here #general team"
-                      >
+                      <Text>
                         <Text
                           accessibilityRole="link"
                           onLongPress={[Function]}
@@ -71994,9 +71660,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="rocket.cat Lorem ipsum dolor diego.mello sit amet, all consectetur adipiscing here elit, sed do eiusmod tempor #general incididunt ut labore et dolore magna aliqua."
-                      >
+                      <Text>
                         <Text
                           accessibilityRole="link"
                           onLongPress={[Function]}
@@ -72832,9 +72496,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Forwarded message with file inside"
-                      >
+                      <Text>
                         Forwarded message with file inside
                       </Text>
                     </View>
@@ -73542,9 +73204,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Forwarded message with nested image"
-                      >
+                      <Text>
                         Forwarded message with nested image
                       </Text>
                     </View>
@@ -73685,9 +73345,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Nested image from forwarded message"
-                                  >
+                                  <Text>
                                     Nested image from forwarded message
                                   </Text>
                                 </View>
@@ -74252,9 +73910,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Forwarded message with nested audio"
-                      >
+                      <Text>
                         Forwarded message with nested audio
                       </Text>
                     </View>
@@ -75033,9 +74689,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Forwarded message with nested video"
-                      >
+                      <Text>
                         Forwarded message with nested video
                       </Text>
                     </View>
@@ -75688,9 +75342,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message forwarded twice with file inside"
-                      >
+                      <Text>
                         Message forwarded twice with file inside
                       </Text>
                     </View>
@@ -76584,9 +76236,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="I'm fine!"
-                      >
+                      <Text>
                         I'm fine\\!
                       </Text>
                     </View>
@@ -76732,9 +76382,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="I'm fine!"
-                      >
+                      <Text>
                         I'm fine\\!
                       </Text>
                     </View>
@@ -77201,9 +76849,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="I'm fine!"
-                      >
+                      <Text>
                         I'm fine\\!
                       </Text>
                     </View>
@@ -77349,9 +76995,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="I'm fine!"
-                      >
+                      <Text>
                         I'm fine\\!
                       </Text>
                     </View>
@@ -77831,9 +77475,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="I'm fine!"
-                      >
+                      <Text>
                         I'm fine\\!
                       </Text>
                     </View>
@@ -77979,9 +77621,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="I'm fine!"
-                      >
+                      <Text>
                         I'm fine\\!
                       </Text>
                     </View>
@@ -78448,9 +78088,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="I'm fine!"
-                      >
+                      <Text>
                         I'm fine\\!
                       </Text>
                     </View>
@@ -78596,9 +78234,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="I'm fine!"
-                      >
+                      <Text>
                         I'm fine\\!
                       </Text>
                     </View>
@@ -79158,9 +78794,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="How are you?"
-                              >
+                              <Text>
                                 How are you?
                               </Text>
                             </View>
@@ -79180,9 +78814,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="I'm fine!"
-                      >
+                      <Text>
                         I'm fine\\!
                       </Text>
                     </View>
@@ -79691,9 +79323,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="How are you? :nyan_rocket:"
-                              >
+                              <Text>
                                 How are you? ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                               </Text>
                             </View>
@@ -79816,9 +79446,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="How are you? :nyan_rocket:"
-                              >
+                              <Text>
                                 How are you? ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                               </Text>
                             </View>
@@ -79832,9 +79460,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="Reply attachment can have a description"
-                        >
+                        <Text>
                           Reply attachment can have a description
                         </Text>
                       </View>
@@ -79851,9 +79477,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="I'm fine!"
-                      >
+                      <Text>
                         I'm fine\\!
                       </Text>
                     </View>
@@ -80251,9 +79875,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Looks cool!"
-                      >
+                      <Text>
                         Looks cool\\!
                       </Text>
                     </View>
@@ -80394,9 +80016,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="What you think about this one?"
-                                  >
+                                  <Text>
                                     What you think about this one?
                                   </Text>
                                 </View>
@@ -80961,9 +80581,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Yes, I am"
-                      >
+                      <Text>
                         Yes, I am
                       </Text>
                     </View>
@@ -81104,9 +80722,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Are you seeing this mario :marioparty: ?"
-                                  >
+                                  <Text>
                                     Are you seeing this mario ⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif) ?
                                   </Text>
                                 </View>
@@ -81852,9 +81468,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Here is the file"
-                      >
+                      <Text>
                         Here is the file
                       </Text>
                     </View>
@@ -82385,9 +81999,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="This is a configuration file with important settings"
-                              >
+                              <Text>
                                 This is a configuration file with **important** settings
                               </Text>
                             </View>
@@ -82407,9 +82019,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Got it!"
-                      >
+                      <Text>
                         Got it\\!
                       </Text>
                     </View>
@@ -83135,9 +82745,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Multiple files"
-                      >
+                      <Text>
                         Multiple files
                       </Text>
                     </View>
@@ -83716,9 +83324,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Here is the file"
-                      >
+                      <Text>
                         Here is the file
                       </Text>
                     </View>
@@ -84249,9 +83855,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="This is a configuration file with important settings"
-                              >
+                              <Text>
                                 This is a configuration file with **important** settings
                               </Text>
                             </View>
@@ -84271,9 +83875,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Got it!"
-                      >
+                      <Text>
                         Got it\\!
                       </Text>
                     </View>
@@ -84999,9 +84601,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Multiple files"
-                      >
+                      <Text>
                         Multiple files
                       </Text>
                     </View>
@@ -85399,9 +84999,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Forwarded message with nested audio"
-                      >
+                      <Text>
                         Forwarded message with nested audio
                       </Text>
                     </View>
@@ -86180,9 +85778,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Forwarded message with nested video"
-                      >
+                      <Text>
                         Forwarded message with nested video
                       </Text>
                     </View>
@@ -86835,9 +86431,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message forwarded twice with file inside"
-                      >
+                      <Text>
                         Message forwarded twice with file inside
                       </Text>
                     </View>
@@ -87811,9 +87405,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="How are you?"
-                              >
+                              <Text>
                                 How are you?
                               </Text>
                             </View>
@@ -87833,9 +87425,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="I'm fine!"
-                      >
+                      <Text>
                         I'm fine\\!
                       </Text>
                     </View>
@@ -88344,9 +87934,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="How are you? :nyan_rocket:"
-                              >
+                              <Text>
                                 How are you? ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                               </Text>
                             </View>
@@ -88366,9 +87954,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="I'm fine!"
-                      >
+                      <Text>
                         I'm fine\\!
                       </Text>
                     </View>
@@ -88766,9 +88352,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Looks cool!"
-                      >
+                      <Text>
                         Looks cool\\!
                       </Text>
                     </View>
@@ -88909,9 +88493,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="What you think about this one?"
-                                  >
+                                  <Text>
                                     What you think about this one?
                                   </Text>
                                 </View>
@@ -89476,9 +89058,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Yes, I am"
-                      >
+                      <Text>
                         Yes, I am
                       </Text>
                     </View>
@@ -89619,9 +89199,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Are you seeing this mario :marioparty: ?"
-                                  >
+                                  <Text>
                                     Are you seeing this mario ⁠![](https://open.rocket.chat/emoji-custom/marioparty.gif) ?
                                   </Text>
                                 </View>
@@ -90200,9 +89778,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="How are you?"
-                      >
+                      <Text>
                         How are you?
                       </Text>
                     </View>
@@ -94899,9 +94475,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="How are you?"
-                      >
+                      <Text>
                         How are you?
                       </Text>
                     </View>
@@ -99597,9 +99171,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Small name (2 chars)"
-                      >
+                      <Text>
                         Small name \\(2 chars\\)
                       </Text>
                     </View>
@@ -100599,9 +100171,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Medium name (8 chars)"
-                      >
+                      <Text>
                         Medium name \\(8 chars\\)
                       </Text>
                     </View>
@@ -101601,9 +101171,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Long name (22 chars) - should truncate"
-                      >
+                      <Text>
                         Long name \\(22 chars\\) \\- should truncate
                       </Text>
                     </View>
@@ -102646,9 +102214,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message header"
-                      >
+                      <Text>
                         Message header
                       </Text>
                     </View>
@@ -102794,9 +102360,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message without header"
-                      >
+                      <Text>
                         Message without header
                       </Text>
                     </View>
@@ -103274,9 +102838,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message header"
-                      >
+                      <Text>
                         Message header
                       </Text>
                     </View>
@@ -103422,9 +102984,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message without header"
-                      >
+                      <Text>
                         Message without header
                       </Text>
                     </View>
@@ -103872,9 +103432,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Reactions"
-                      >
+                      <Text>
                         Reactions
                       </Text>
                     </View>
@@ -104832,9 +104390,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Multiple Reactions"
-                      >
+                      <Text>
                         Multiple Reactions
                       </Text>
                     </View>
@@ -106281,9 +105837,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Reactions"
-                      >
+                      <Text>
                         Reactions
                       </Text>
                     </View>
@@ -107241,9 +106795,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Multiple Reactions"
-                      >
+                      <Text>
                         Multiple Reactions
                       </Text>
                     </View>
@@ -108691,9 +108243,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="How are you?"
-                      >
+                      <Text>
                         How are you?
                       </Text>
                     </View>
@@ -110405,9 +109955,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="How are you?"
-                      >
+                      <Text>
                         How are you?
                       </Text>
                     </View>
@@ -114897,9 +114445,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Test Button"
-                      >
+                      <Text>
                         Test Button
                       </Text>
                     </View>
@@ -115377,9 +114923,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="🥑 Message with markdown"
-                      >
+                      <Text>
                         🥑 **Message with markdown**
                       </Text>
                       <View
@@ -115389,9 +114933,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                           }
                         }
                       />
-                      <Text
-                        accessibilityLabel="Some text"
-                      >
+                      <Text>
                         _Some text_
                       </Text>
                       <View
@@ -115401,9 +114943,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                           }
                         }
                       />
-                      <Text
-                        accessibilityLabel="This is a test"
-                      >
+                      <Text>
                         This is a test
                       </Text>
                     </View>
@@ -115894,9 +115434,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Test Button"
-                      >
+                      <Text>
                         Test Button
                       </Text>
                     </View>
@@ -116374,9 +115912,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="🥑 Message with markdown"
-                      >
+                      <Text>
                         🥑 **Message with markdown**
                       </Text>
                       <View
@@ -116386,9 +115922,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                           }
                         }
                       />
-                      <Text
-                        accessibilityLabel="Some text"
-                      >
+                      <Text>
                         _Some text_
                       </Text>
                       <View
@@ -116398,9 +115932,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                           }
                         }
                       />
-                      <Text
-                        accessibilityLabel="This is a test"
-                      >
+                      <Text>
                         This is a test
                       </Text>
                     </View>
@@ -116888,9 +116420,7 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -117301,9 +116831,7 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -130536,9 +130064,7 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Temp message"
-                      >
+                      <Text>
                         Temp message
                       </Text>
                     </View>
@@ -130945,9 +130471,7 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Temp message"
-                      >
+                      <Text>
                         Temp message
                       </Text>
                     </View>
@@ -131468,9 +130992,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Image text"
-                              >
+                              <Text>
                                 Image text
                               </Text>
                             </View>
@@ -131534,9 +131056,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="this is a thumbnail"
-                      >
+                      <Text>
                         this is a thumbnail
                       </Text>
                     </View>
@@ -132057,9 +131577,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Image text"
-                              >
+                              <Text>
                                 Image text
                               </Text>
                             </View>
@@ -132123,9 +131641,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="this is a thumbnail"
-                      >
+                      <Text>
                         this is a thumbnail
                       </Text>
                     </View>
@@ -132536,9 +132052,7 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Testing"
-                      >
+                      <Text>
                         Testing
                       </Text>
                     </View>
@@ -132949,9 +132463,7 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Testing"
-                      >
+                      <Text>
                         Testing
                       </Text>
                     </View>
@@ -133397,9 +132909,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message translated"
-                      >
+                      <Text>
                         Message translated
                       </Text>
                     </View>
@@ -133845,9 +133355,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message translated"
-                      >
+                      <Text>
                         Message translated
                       </Text>
                     </View>
@@ -134369,9 +133877,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Custom fields"
-                              >
+                              <Text>
                                 Custom fields
                               </Text>
                             </View>
@@ -134425,9 +133931,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -134472,9 +133976,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     <Text
                                       accessibilityRole="link"
                                       onLongPress={[Function]}
@@ -134605,9 +134107,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Custom fields 2"
-                              >
+                              <Text>
                                 Custom fields 2
                               </Text>
                             </View>
@@ -134661,9 +134161,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -134708,9 +134206,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     **Value 2**
                                   </Text>
                                 </View>
@@ -134732,9 +134228,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -135256,9 +134750,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Custom fields"
-                              >
+                              <Text>
                                 Custom fields
                               </Text>
                             </View>
@@ -135312,9 +134804,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -135359,9 +134849,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     <Text
                                       accessibilityRole="link"
                                       onLongPress={[Function]}
@@ -135492,9 +134980,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="Custom fields 2"
-                              >
+                              <Text>
                                 Custom fields 2
                               </Text>
                             </View>
@@ -135548,9 +135034,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 1"
-                                  >
+                                  <Text>
                                     Value 1
                                   </Text>
                                 </View>
@@ -135595,9 +135079,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                     }
                                   }
                                 >
-                                  <Text
-                                    accessibilityLabel="Value 2"
-                                  >
+                                  <Text>
                                     **Value 2**
                                   </Text>
                                 </View>
@@ -135619,9 +135101,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -136682,9 +136162,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message :nyan_rocket:"
-                      >
+                      <Text>
                         Message ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                       </Text>
                     </View>
@@ -140036,9 +139514,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message :nyan_rocket:"
-                      >
+                      <Text>
                         Message ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                       </Text>
                     </View>
@@ -140828,9 +140304,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Small username (2 chars)"
-                      >
+                      <Text>
                         Small username \\(2 chars\\)
                       </Text>
                     </View>
@@ -141830,9 +141304,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Medium username (8 chars)"
-                      >
+                      <Text>
                         Medium username \\(8 chars\\)
                       </Text>
                     </View>
@@ -142832,9 +142304,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Long username (22 chars) - should truncate"
-                      >
+                      <Text>
                         Long username \\(22 chars\\) \\- should truncate
                       </Text>
                     </View>
@@ -143869,9 +143339,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -144291,9 +143759,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -144726,9 +144192,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -145148,9 +144612,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -145571,9 +145033,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -145975,9 +145435,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="Header false"
-                        >
+                        <Text>
                           Header false
                         </Text>
                       </View>
@@ -146376,9 +145834,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="multi file"
-                      >
+                      <Text>
                         multi file
                       </Text>
                     </View>
@@ -147308,9 +146764,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -148237,9 +147691,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -148631,9 +148083,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="First message"
-                      >
+                      <Text>
                         First message
                       </Text>
                     </View>
@@ -148796,9 +148246,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description"
-                        >
+                        <Text>
                           This is a description
                         </Text>
                       </View>
@@ -149595,9 +149043,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="multi file"
-                      >
+                      <Text>
                         multi file
                       </Text>
                     </View>
@@ -149876,9 +149322,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -150882,9 +150326,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="File.pdf"
-                              >
+                              <Text>
                                 File\\.pdf
                               </Text>
                             </View>
@@ -150898,9 +150340,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -151134,9 +150574,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="File.pdf"
-                              >
+                              <Text>
                                 File\\.pdf
                               </Text>
                             </View>
@@ -151150,9 +150588,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -151248,9 +150684,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="File.pdf"
-                              >
+                              <Text>
                                 File\\.pdf
                               </Text>
                             </View>
@@ -151264,9 +150698,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -151772,9 +151204,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="File.pdf"
-                              >
+                              <Text>
                                 File\\.pdf
                               </Text>
                             </View>
@@ -151788,9 +151218,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -152024,9 +151452,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                                 }
                               }
                             >
-                              <Text
-                                accessibilityLabel="File.pdf"
-                              >
+                              <Text>
                                 File\\.pdf
                               </Text>
                             </View>
@@ -152040,9 +151466,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -152471,9 +151895,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -153033,9 +152455,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message, not description"
-                      >
+                      <Text>
                         Message, not description
                       </Text>
                     </View>
@@ -153061,9 +152481,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -153243,9 +152661,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -153966,9 +153382,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="multi file"
-                      >
+                      <Text>
                         multi file
                       </Text>
                     </View>
@@ -154706,9 +154120,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description for Base64 Attachment :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description for Base64 Attachment ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -155278,9 +154690,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description"
-                        >
+                        <Text>
                           This is a description
                         </Text>
                       </View>
@@ -155598,9 +155008,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="Header false"
-                        >
+                        <Text>
                           Header false
                         </Text>
                       </View>
@@ -156167,9 +155575,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="multi file"
-                      >
+                      <Text>
                         multi file
                       </Text>
                     </View>
@@ -156907,9 +156313,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description for Base64 Attachment :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description for Base64 Attachment ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -157479,9 +156883,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -157757,9 +157159,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="Header false"
-                        >
+                        <Text>
                           Header false
                         </Text>
                       </View>
@@ -158284,9 +157684,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="multi file"
-                      >
+                      <Text>
                         multi file
                       </Text>
                     </View>
@@ -158969,9 +158367,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                           }
                         }
                       >
-                        <Text
-                          accessibilityLabel="This is a description :nyan_rocket:"
-                        >
+                        <Text>
                           This is a description ⁠![](https://open.rocket.chat/emoji-custom/nyan_rocket.png)
                         </Text>
                       </View>
@@ -160006,9 +159402,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="multi file"
-                      >
+                      <Text>
                         multi file
                       </Text>
                     </View>
@@ -160429,9 +159823,7 @@ exports[`Story Snapshots: WithoutHeader should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>
@@ -160597,9 +159989,7 @@ exports[`Story Snapshots: WithoutHeaderLargeFont should match snapshot 1`] = `
                         }
                       }
                     >
-                      <Text
-                        accessibilityLabel="Message"
-                      >
+                      <Text>
                         Message
                       </Text>
                     </View>

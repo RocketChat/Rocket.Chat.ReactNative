@@ -139,9 +139,7 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Details"
-        >
+        <Text>
           Details
         </Text>
       </View>
@@ -812,9 +810,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Actions with Show More 🚀"
-        >
+        <Text>
           **Actions with Show More** 🚀
         </Text>
         <View
@@ -824,9 +820,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
             }
           }
         />
-        <Text
-          accessibilityLabel="This modal demonstrates the "Show more" functionality. The actions block has 8 buttons, but only the first 5 are visible initially. Click "Show more" to reveal all buttons."
-        >
+        <Text>
           This modal demonstrates the "Show more" functionality\\. The actions block has 8 buttons, but only the first 5 are visible initially\\. Click "Show more" to reveal all buttons\\.
         </Text>
       </View>
@@ -1558,9 +1552,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="This actions block has 8 buttons but only shows 5 initially. Click "Show more" to see all buttons!"
-        >
+        <Text>
           This actions block has **8 buttons** but only shows **5** initially\\. Click "Show more" to see all buttons\\!
         </Text>
       </View>
@@ -1651,9 +1643,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Finish interface componests (3 hours)"
-        >
+        <Text>
           Finish interface componests \\(3 hours\\)
         </Text>
       </View>
@@ -1809,9 +1799,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="English Class (1 hour)"
-        >
+        <Text>
           English Class \\(1 hour\\)
         </Text>
       </View>
@@ -1967,9 +1955,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Send an email to John (15min)"
-        >
+        <Text>
           Send an email to John \\(15min\\)
         </Text>
       </View>
@@ -2781,9 +2767,7 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Update Spec final assets"
-        >
+        <Text>
           Update Spec final assets
         </Text>
       </View>
@@ -3226,9 +3210,7 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="How could be the life in Mars?"
-        >
+        <Text>
           How could be the life in Mars?
         </Text>
       </View>
@@ -3343,14 +3325,10 @@ exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Next stop, Mars!"
-        >
+        <Text>
           **Next stop, Mars\\!**
         </Text>
-        <Text
-          accessibilityLabel="Mussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Diuretics paradis num copo é motivis de denguis. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Aenean aliquam molestie leo, vitae iaculis nisl."
-        >
+        <Text>
           Mussum Ipsum, cacilds vidis litro abertis\\. Admodum accumsan disputationi eu sit\\. Vide electram sadipscing et per\\. Diuretics paradis num copo é motivis de denguis\\. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis\\. Aenean aliquam molestie leo, vitae iaculis nisl\\.
         </Text>
       </View>
@@ -4503,19 +4481,13 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Bruno Quadros,"
-        >
+        <Text>
           **Bruno Quadros**,
         </Text>
-        <Text
-          accessibilityLabel="Please review your details for your travel expense."
-        >
+        <Text>
           Please review your details for your **travel expense**\\.
         </Text>
-        <Text
-          accessibilityLabel="Expense no. DA921."
-        >
+        <Text>
           Expense no\\. **DA921**\\.
         </Text>
       </View>
@@ -4603,14 +4575,10 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Date:"
-        >
+        <Text>
           **Date:**
         </Text>
-        <Text
-          accessibilityLabel="11/02/2020"
-        >
+        <Text>
           11/02/2020
         </Text>
       </View>
@@ -4643,14 +4611,10 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Category:"
-        >
+        <Text>
           **Category:**
         </Text>
-        <Text
-          accessibilityLabel="Travel"
-        >
+        <Text>
           Travel
         </Text>
       </View>
@@ -4683,14 +4647,10 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Cost:"
-        >
+        <Text>
           **Cost:**
         </Text>
-        <Text
-          accessibilityLabel="$150.00 USD"
-        >
+        <Text>
           \\$150\\.00 USD
         </Text>
       </View>
@@ -4723,14 +4683,10 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Notes:"
-        >
+        <Text>
           **Notes:**
         </Text>
-        <Text
-          accessibilityLabel="WebSummit Conference"
-        >
+        <Text>
           WebSummit Conference
         </Text>
       </View>
@@ -4768,14 +4724,10 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Rocket.Chat is free, unlimited and open source 🚀"
-        >
+        <Text>
           **Rocket\\.Chat is free, unlimited and open source** 🚀
         </Text>
-        <Text
-          accessibilityLabel="If you have any doubt ask to @rocketcat"
-        >
+        <Text>
           If you have any doubt ask to @rocketcat
         </Text>
       </View>
@@ -4833,14 +4785,10 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Text 1"
-        >
+        <Text>
           **Text 1**
         </Text>
-        <Text
-          accessibilityLabel="Description, Mussum Ipsum, cacilds vidis litro"
-        >
+        <Text>
           Description, Mussum Ipsum, cacilds vidis litro
         </Text>
       </View>
@@ -4868,14 +4816,10 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Text 2"
-        >
+        <Text>
           **Text 2**
         </Text>
-        <Text
-          accessibilityLabel="Description, Mussum Ipsum, cacilds vidis litro"
-        >
+        <Text>
           Description, Mussum Ipsum, cacilds vidis litro
         </Text>
       </View>
@@ -4916,14 +4860,10 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Text 3"
-        >
+        <Text>
           **Text 3**
         </Text>
-        <Text
-          accessibilityLabel="Description, Mussum Ipsum, cacilds vidis litro"
-        >
+        <Text>
           Description, Mussum Ipsum, cacilds vidis litro
         </Text>
       </View>
@@ -4951,14 +4891,10 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           }
         }
       >
-        <Text
-          accessibilityLabel="Text 4"
-        >
+        <Text>
           **Text 4**
         </Text>
-        <Text
-          accessibilityLabel="Description, Mussum Ipsum, cacilds vidis litro"
-        >
+        <Text>
           Description, Mussum Ipsum, cacilds vidis litro
         </Text>
       </View>
