@@ -223,15 +223,14 @@ describe('connect() over the real SDK', () => {
 	it('does not retry an attempt that a later connect() replaced', async () => {
 		await connect({ server: 'https://a.example.com' });
 		await flushMicrotasksAndTimers();
-		expect(mockConnections).toHaveLength(1);
-		const replaced = mockConnections[0];
-		replaced.close.mockImplementation(() => {
-			replaced.readyState = 3;
-			replaced.onclose({ code: 1000 });
-		});
+		mockConnections[0].onerror();
+		await flushMicrotasksAndTimers();
 
 		await connect({ server: 'https://b.example.com' });
 		await flushMicrotasksAndTimers();
+		await jest.runOnlyPendingTimersAsync();
+		await flushMicrotasksAndTimers();
+
 		expect(mockConnections).toHaveLength(2);
 	});
 });
