@@ -272,7 +272,7 @@ export const installClientCertificate = async (fixtures: Fixtures, certificate: 
 	await copyFile(p12Path(certificate), join(storage, P12_FILE));
 };
 
-export const removeClientCertificateFiles = async ({ platform }: Fixtures, certificate: ClientCertificate) => {
+export const removeClientCertificateFiles = async ({ platform }: Pick<Fixtures, 'platform'>, certificate: ClientCertificate) => {
 	if (platform === 'android') {
 		await rootAdb();
 		await adb('shell', 'rm', '-f', await androidCertificateAuthorityPath(certificate), `${androidDownloads}/${P12_FILE}`);

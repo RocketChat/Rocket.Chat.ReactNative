@@ -581,10 +581,13 @@ describe('Encryption key distribution', () => {
 			expect(encryption.roomInstances).toEqual({});
 		});
 
-		it('stops sampling rooms for the old run after a stop', async () => {
-			jest.mocked(db.get).mockImplementation(() => ({
-				query: () => Promise.resolve([...waitingSubscriptions, { rid: 'r2', usersWaitingForE2EKeys: [{ userId: 'other-user' }] }])
+		it('does not retry sampling with a smaller limit after a stop', async () => {
+			const roomsWithoutSessionKey = ['r1', 'r2', 'r3', 'r4'].map(rid => ({
+				rid,
+				usersWaitingForE2EKeys: [{ userId: 'other-user' }]
 			}));
+			jest.mocked(db.get).mockImplementation(() => ({ query: () => Promise.resolve(roomsWithoutSessionKey) }));
+			mockHasSessionKey.mockReturnValue(false);
 			const blockedStep = blockOnce(mockHandshake, undefined);
 			const firstRun = encryption.initiateKeyDistribution();
 			await jest.advanceTimersByTimeAsync(0);
@@ -594,8 +597,8 @@ describe('Encryption key distribution', () => {
 			blockedStep.resolve();
 			await firstRun;
 
-			expect(handshakesBeforeResume).toBe(1);
-			expect(mockHandshake).toHaveBeenCalledTimes(1);
+			expect(handshakesBeforeResume).toBe(roomsWithoutSessionKey.length);
+			expect(mockHandshake).toHaveBeenCalledTimes(roomsWithoutSessionKey.length);
 			expect(encryption.roomInstances).toEqual({});
 			expect(fetchUsersWaitingForGroupKey).not.toHaveBeenCalled();
 		});
