@@ -59,6 +59,23 @@ describe('UIKit RadioButton', () => {
 		expect(screen.getByTestId('uikit-radio-forwarding-active')).not.toBeChecked();
 	});
 
+	test('keeps a value from props that arrives while a failing action is pending', async () => {
+		const threeOptions: IElement = {
+			...element,
+			options: [...(element.options ?? []), { text: { type: 'plain_text', text: 'Busy' }, value: 'busy' }]
+		};
+		let resolveAction: (succeeded: boolean) => void = () => {};
+		const onChange = jest.fn(() => new Promise<boolean>(resolve => (resolveAction = resolve)));
+		const { rerender } = render(<RadioButton element={threeOptions} value='inactive' loading={false} onChange={onChange} />);
+
+		fireEvent.press(screen.getByTestId('uikit-radio-forwarding-active'));
+		rerender(<RadioButton element={threeOptions} value='busy' loading={false} onChange={onChange} />);
+		await act(() => resolveAction(false));
+
+		expect(screen.getByTestId('uikit-radio-forwarding-busy')).toBeChecked();
+		expect(screen.getByTestId('uikit-radio-forwarding-inactive')).not.toBeChecked();
+	});
+
 	test('does not change the selection while loading', () => {
 		const onChange = jest.fn().mockResolvedValue(true);
 		render(<RadioButton element={element} value='inactive' loading onChange={onChange} />);

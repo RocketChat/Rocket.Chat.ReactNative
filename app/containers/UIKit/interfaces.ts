@@ -195,7 +195,7 @@ export interface IContext extends Block {
 export interface IDatePicker {
 	element: IElement;
 	language: string;
-	action: (params: { value: unknown }) => Promise<unknown>;
+	action: (params: { value: unknown }) => Promise<boolean>;
 	context: BlockContext;
 	loading: boolean;
 	value: string;
@@ -239,7 +239,7 @@ export interface IImage {
 
 export interface IOverflow {
 	element: IElement;
-	action: (params: { value: unknown }) => Promise<unknown>;
+	action: (params: { value: unknown }) => Promise<boolean>;
 	loading: boolean;
 	parser: IParser;
 	context: BlockContext;

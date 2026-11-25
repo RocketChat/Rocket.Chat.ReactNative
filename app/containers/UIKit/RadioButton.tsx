@@ -38,7 +38,7 @@ export const RadioButton = ({ element, value, loading, onChange }: IRadioButton)
 		setSelected(optionValue);
 		const succeeded = await onChange({ value: optionValue });
 		if (!succeeded) {
-			setSelected(previous);
+			setSelected(current => (current === optionValue ? previous : current));
 		}
 	};
 

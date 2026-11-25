@@ -74,12 +74,12 @@ export const useBlockContext = (
 						value,
 						viewId
 					});
-				} catch (e) {
-					setLoading(false);
+					return true;
+				} catch {
 					return false;
+				} finally {
+					setLoading(false);
 				}
-				setLoading(false);
-				return true;
 			}
 		];
 	}
@@ -101,12 +101,12 @@ export const useBlockContext = (
 					actionId,
 					value
 				});
-			} catch (e) {
-				setLoading(false);
+				return true;
+			} catch {
 				return false;
+			} finally {
+				setLoading(false);
 			}
-			setLoading(false);
-			return true;
 		}
 	];
 };
