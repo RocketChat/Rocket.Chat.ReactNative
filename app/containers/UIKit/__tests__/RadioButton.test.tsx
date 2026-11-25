@@ -116,6 +116,33 @@ describe('UIKit RadioButton', () => {
 		expect(screen.getByTestId('uikit-radio-forwarding-active')).not.toBeChecked();
 	});
 
+	test('drops the local selection when the options change under the same value', async () => {
+		const onChange = jest.fn().mockResolvedValue(true);
+		const { rerender } = render(<RadioButton element={element} value={undefined} loading={false} onChange={onChange} />);
+
+		await act(() => fireEvent.press(screen.getByTestId('uikit-radio-forwarding-active')));
+		rerender(<RadioButton element={threeOptions} value={undefined} loading={false} onChange={onChange} />);
+
+		expect(screen.getByTestId('uikit-radio-forwarding-active')).not.toBeChecked();
+	});
+
+	test('drops the local selection when the option labels change under the same values', async () => {
+		const onChange = jest.fn().mockResolvedValue(true);
+		const relabeled: IElement = {
+			...element,
+			options: [
+				{ text: { type: 'plain_text', text: 'On' }, value: 'active' },
+				{ text: { type: 'plain_text', text: 'Off' }, value: 'inactive' }
+			]
+		};
+		const { rerender } = render(<RadioButton element={element} value={undefined} loading={false} onChange={onChange} />);
+
+		await act(() => fireEvent.press(screen.getByTestId('uikit-radio-forwarding-active')));
+		rerender(<RadioButton element={relabeled} value={undefined} loading={false} onChange={onChange} />);
+
+		expect(screen.getByTestId('uikit-radio-forwarding-active')).not.toBeChecked();
+	});
+
 	test('labels each option with its text only, so screen readers skip the radio icon', () => {
 		render(<RadioButton element={element} value='inactive' loading={false} onChange={jest.fn()} />);
 

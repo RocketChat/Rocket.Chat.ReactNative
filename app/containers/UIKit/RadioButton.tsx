@@ -26,13 +26,14 @@ const styles = StyleSheet.create({
 export const RadioButton = ({ element, value, loading, onChange }: IRadioButton) => {
 	const { colors } = useTheme();
 	const [pick, setPick] = useState<{ value: Option['value'] }>();
-	const [prevValue, setPrevValue] = useState(value);
-	if (value !== prevValue) {
-		setPrevValue(value);
+	const options = element.options || [];
+	const optionsKey = options.map(option => `${option.value}\u0000${textParser([option.text])}`).join('\u0000');
+	const [prev, setPrev] = useState({ value, optionsKey });
+	if (value !== prev.value || optionsKey !== prev.optionsKey) {
+		setPrev({ value, optionsKey });
 		setPick(undefined);
 	}
 	const selected = pick ? pick.value : value;
-	const options = element.options || [];
 
 	const onPress = async (optionValue: Option['value']) => {
 		const previous = pick;
