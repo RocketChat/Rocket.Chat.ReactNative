@@ -14,7 +14,7 @@ jest.mock('@rocket.chat/ui-kit', () => ({
 	}
 }));
 
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	useActionSheet: () => ({
 		showActionSheet: mockShowActionSheet,
 		hideActionSheet: mockHideActionSheet

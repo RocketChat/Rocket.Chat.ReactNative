@@ -4,7 +4,7 @@ import dayjs from '../dayjs';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
-import { type IMessage } from '~/definitions';
+import { type IMessage } from '~/definitions/IMessage';
 import updateMessages from './updateMessages';
 import { getSurroundingMessages } from '../services/restApi';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';

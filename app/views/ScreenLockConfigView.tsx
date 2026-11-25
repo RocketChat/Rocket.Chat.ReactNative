@@ -19,7 +19,8 @@ import { biometricTrustStore } from '../lib/biometricTrustStore';
 import { themes } from '../lib/constants/colors';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import { type IApplicationState, type TServerModel } from '../definitions';
+import { type IApplicationState } from '../definitions/redux';
+import { type TServerModel } from '../definitions/IServer';
 import Switch from '../containers/Switch';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 

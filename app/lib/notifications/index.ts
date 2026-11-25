@@ -3,7 +3,8 @@ import { Platform } from 'react-native';
 
 import { appInit } from '~/actions/app';
 import { deepLinkingClickCallPush, deepLinkingOpen } from '~/actions/deepLinking';
-import { type INotification, SubscriptionType } from '~/definitions';
+import { type INotification } from '~/definitions/INotification';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import { store } from '../store/auxStore';
 import { pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
 
@@ -86,12 +87,11 @@ export const setBadgeCount = (count?: number): void => {
 	setNotificationsBadgeCount(count);
 };
 export const removeNotificationsAndBadge = async (): Promise<void> => {
-	await removeAllNotifications();
-	await setNotificationsBadgeCount();
+	await Promise.all([removeAllNotifications(), setNotificationsBadgeCount()]);
 };
 export const initializePushNotifications = async (): Promise<INotification | { configured: boolean } | null> => {
-	await setNotificationsBadgeCount();
-	return pushNotificationConfigure(onNotification);
+	const [, notification] = await Promise.all([setNotificationsBadgeCount(), pushNotificationConfigure(onNotification)]);
+	return notification;
 };
 
 const dispatchPendingNotification = (pendingNotification: string): void => {

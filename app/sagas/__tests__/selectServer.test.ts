@@ -73,7 +73,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import selectServerRoot from '../selectServer';
 import { selectServerRequest, serverRequest } from '~/actions/server';
 import { appStart } from '~/actions/app';
-import { RootEnum } from '~/definitions';
+import { RootEnum } from '~/definitions/redux/TRootEnum';
 import { SERVER } from '~/actions/actionsTypes';
 import UserPreferences from '~/lib/methods/userPreferences';
 import { applyBasicAuth } from '~/lib/methods/serverBasicAuth';

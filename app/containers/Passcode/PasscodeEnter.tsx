@@ -10,7 +10,7 @@ import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '
 import { biometryAuth, resetAttempts } from '~/lib/methods/helpers/localAuthentication';
 import log from '~/lib/methods/helpers/log';
 import { resolveBiometricTrust } from '~/lib/biometricTrustStore/resolveBiometricTrust';
-import { type BiometricInvalidationReason } from '~/definitions';
+import { type BiometricInvalidationReason } from '~/definitions/IBiometricTrustStore';
 import { getDiff, getLockedUntil } from './utils';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
 import I18n from '~/i18n';

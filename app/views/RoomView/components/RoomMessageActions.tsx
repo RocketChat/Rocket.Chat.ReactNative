@@ -1,7 +1,7 @@
 import MessageActions from '~/containers/MessageActions';
 import MessageErrorActions from '~/containers/MessageErrorActions';
 import { type IRoomMessageActionsProps } from '../definitions';
-import { type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import { isSubscriptionModel } from '~/definitions/TRoom';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { getUserSelector } from '~/selectors/login';

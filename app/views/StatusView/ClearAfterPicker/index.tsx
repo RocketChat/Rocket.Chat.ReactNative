@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 
-import { useActionSheet } from '~/containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 import * as List from '~/containers/List';
 import { useIsNativeList } from '~/containers/List/native/context';
 import I18n from '~/i18n';

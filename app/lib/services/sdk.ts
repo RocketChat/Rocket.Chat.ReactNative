@@ -13,7 +13,8 @@ import {
 	type PathFor,
 	type ResultFor
 } from '~/definitions/rest/helpers';
-import { compareServerVersion, random } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { random } from '../methods/helpers/random';
 
 export interface ISocketDriver {
 	readonly connected: boolean;

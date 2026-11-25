@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { type IApplicationState, type TServerModel } from '~/definitions';
+import { type IApplicationState } from '~/definitions/redux';
+import { type TServerModel } from '~/definitions/IServer';
 import database from '../database';
 import { useAppSelector } from '../hooks/useAppSelector';
 

@@ -2,13 +2,10 @@ import { type Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { MESSAGE_TYPE_ANY_LOAD } from '../constants/messageTypeLoad';
-import {
-	type IMessage,
-	type TMessageModel,
-	type TSubscriptionModel,
-	type TThreadMessageModel,
-	type TThreadModel
-} from '~/definitions';
+import { type IMessage, type TMessageModel } from '~/definitions/IMessage';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
+import { type TThreadMessageModel } from '~/definitions/IThreadMessage';
+import { type TThreadModel } from '~/definitions/IThread';
 import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { Encryption } from '../encryption';

@@ -2,7 +2,7 @@ import { settings } from '@rocket.chat/sdk';
 
 import { TWO_FACTOR } from '~/lib/constants/twoFactor';
 import EventEmitter from '~/lib/methods/helpers/events';
-import { type ILoginCredentials } from '~/definitions';
+import { type ILoginCredentials } from '~/definitions/ILoginCredentials';
 import { TwoFactorCancelledError } from './twoFactorCancelled';
 
 interface ITwoFactor {

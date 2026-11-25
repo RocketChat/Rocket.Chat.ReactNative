@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import type { ReactElement } from 'react';
 
-import { FormTextInput } from '~/containers/TextInput';
+import { FormTextInput } from '~/containers/TextInput/FormTextInput';
 import { styles } from './styles';
 import DialpadButton from './DialpadButton';
 import { DialpadProvider } from './DialpadContext';

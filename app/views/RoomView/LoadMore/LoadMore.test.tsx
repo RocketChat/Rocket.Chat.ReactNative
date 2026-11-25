@@ -4,7 +4,7 @@ import { render, screen, userEvent } from '@testing-library/react-native';
 
 import { createMockedStore } from '~/reducers/mockedStore';
 import { MessageTypeLoad } from '~/lib/constants/messageTypeLoad';
-import { type MessageType } from '~/definitions';
+import { type MessageType } from '~/definitions/IMessage';
 import LoadMore from '.';
 
 jest.unmock('~/lib/hooks/useResponsiveLayout/useResponsiveLayout');

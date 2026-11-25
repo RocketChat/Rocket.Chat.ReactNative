@@ -1,0 +1,32 @@
+diff --git a/node_modules/react-native-keyboard-controller/ios/KeyboardControllerModuleImpl.swift b/node_modules/react-native-keyboard-controller/ios/KeyboardControllerModuleImpl.swift
+index 39cd165..6249e65 100644
+--- a/node_modules/react-native-keyboard-controller/ios/KeyboardControllerModuleImpl.swift
++++ b/node_modules/react-native-keyboard-controller/ios/KeyboardControllerModuleImpl.swift
+@@ -31,12 +31,14 @@ public class KeyboardControllerModuleImpl: NSObject {
+         input.inputView = UIView()
+         input.reloadInputViews()
+ 
+-        NotificationCenter.default.addObserver(
+-          self,
+-          selector: #selector(onResponderResigned(_:)),
+-          name: UITextField.textDidEndEditingNotification,
+-          object: input
+-        )
++        for name in [UITextField.textDidEndEditingNotification, UITextView.textDidEndEditingNotification] {
++          NotificationCenter.default.addObserver(
++            self,
++            selector: #selector(onResponderResigned(_:)),
++            name: name,
++            object: input
++          )
++        }
+       } else {
+         responder?.resignFirstResponder()
+       }
+@@ -78,5 +80,6 @@ public class KeyboardControllerModuleImpl: NSObject {
+     }
+ 
+     NotificationCenter.default.removeObserver(self, name: UITextField.textDidEndEditingNotification, object: input)
++    NotificationCenter.default.removeObserver(self, name: UITextView.textDidEndEditingNotification, object: input)
+   }
+ }

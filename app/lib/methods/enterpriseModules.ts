@@ -3,7 +3,7 @@ import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import log from './helpers/log';
 import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '~/actions/enterpriseModules';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion } from './helpers/compareServerVersion';
 
 const LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE = 'omnichannel-mobile-enterprise';
 const LICENSE_LIVECHAT_ENTERPRISE = 'livechat-enterprise';

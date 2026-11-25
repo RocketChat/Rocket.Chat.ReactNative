@@ -5,7 +5,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 import UserPreferences from '../userPreferences';
 import I18n from '~/i18n';
 import { extractHostname } from './server';
-import { type ICertificate } from '~/definitions';
+import { type ICertificate } from '~/definitions/ICertificate';
 import { CERTIFICATE_KEY, CURRENT_SERVER } from '~/lib/constants/keys';
 import NativeSSLPinningAndroid from '~/lib/native/NativeSSLPinningAndroid';
 import { getAllServers } from '~/lib/database/services/Server';

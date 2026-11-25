@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Image, type ImageStyle } from 'expo-image';
 
-import { type IOmnichannelSource, type TUserStatus } from '~/definitions';
+import { type IOmnichannelSource } from '~/definitions/IRoom';
+import { type TUserStatus } from '~/definitions/TUserStatus';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { CustomIcon } from '../CustomIcon';
 import { getOmnichannelIconName, getOmnichannelSidebarIconUri } from './roomTypeIconName';

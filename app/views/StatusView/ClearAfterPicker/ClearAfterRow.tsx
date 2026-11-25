@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 
-import { useActionSheet } from '~/containers/ActionSheet';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 import * as List from '~/containers/List';
 import I18n from '~/i18n';
 import DatePickerSheetContent from './DatePickerSheetContent';

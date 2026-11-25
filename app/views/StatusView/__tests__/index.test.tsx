@@ -50,7 +50,7 @@ jest.mock('~/lib/methods/helpers/info', () => ({
 
 const mockShowActionSheet = jest.fn();
 const mockHideActionSheet = jest.fn();
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
 }));
 

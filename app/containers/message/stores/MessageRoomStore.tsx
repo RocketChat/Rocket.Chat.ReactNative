@@ -3,7 +3,9 @@ import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { shallowEqual } from 'react-redux';
 
-import { type IUseRoomMessageHandlersResult, type IUser, type TAnyMessageModel } from '~/definitions';
+import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
+import { type IUser } from '~/definitions/IUser';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useLiveRef } from '~/lib/hooks/useLiveRef';
 import { useSetting } from '~/lib/hooks/useSetting';
