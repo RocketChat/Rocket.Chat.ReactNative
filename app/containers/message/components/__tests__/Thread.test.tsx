@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import Thread from '../Thread';
 import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { mockedStore } from '~/reducers/mockedStore';
 
 const baseContextValue: Partial<MessageRoomState> = {

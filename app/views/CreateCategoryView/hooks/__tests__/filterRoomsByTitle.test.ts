@@ -1,4 +1,4 @@
-import { SubscriptionType } from '~/definitions';
+import { SubscriptionType } from '~/definitions/ISubscription';
 import { filterRoomsByTitle } from '../useCategoryRoomCandidates';
 
 const general = { rid: 'general', title: 'general', avatar: 'general', t: SubscriptionType.CHANNEL };

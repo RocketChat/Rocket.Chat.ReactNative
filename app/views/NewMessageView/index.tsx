@@ -10,7 +10,8 @@ import ActivityIndicator from '~/containers/ActivityIndicator';
 import { headerLeftCloseModal } from '~/lib/methods/helpers/navigation/headerActions';
 import * as List from '~/containers/List';
 import SafeAreaView from '~/containers/SafeAreaView';
-import { type ISearch, type TSubscriptionModel } from '~/definitions';
+import { type ISearch } from '~/definitions/ISearch';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import I18n from '~/i18n';
 import database from '~/lib/database';
 import { useTheme } from '~/theme';
@@ -21,7 +22,7 @@ import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import RowSeparator from '~/containers/NativeListRow/components/Separator';
 import Item from './Item';
 import HeaderNewMessage from './HeaderNewMessage';
-import { getUidDirectMessage } from '~/lib/methods/helpers/helpers';
+import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import { type TNewMessageChat, useOpenChat } from './hooks/useOpenChat';
 

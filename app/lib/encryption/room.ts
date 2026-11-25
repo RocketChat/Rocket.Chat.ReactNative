@@ -16,16 +16,13 @@ import {
 } from '@rocket.chat/mobile-crypto';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import type {
-	IAttachment,
-	IMessage,
-	TSendFileMessageFileInfo,
-	IServerAttachment,
-	TSubscriptionModel,
-	ISubscription
-} from '~/definitions';
+import type { IAttachment, IServerAttachment } from '~/definitions/IAttachment';
+import type { IMessage } from '~/definitions/IMessage';
+import type { TSendFileMessageFileInfo } from '~/definitions/IUpload';
+import type { TSubscriptionModel, ISubscription } from '~/definitions/ISubscription';
 import Deferred from './helpers/deferred';
-import { compareServerVersion, debounce } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { debounce } from '../methods/helpers/debounce';
 import log from '../methods/helpers/log';
 import {
 	b64ToBuffer,
@@ -327,8 +324,10 @@ export default class EncryptionRoom {
 	// Create an encrypted key for this room based on users
 	encryptKeyForOtherParticipants = async () => {
 		try {
-			const decryptedOldGroupKeys = await this.exportOldRoomKeys(this.subscription?.oldRoomKeys);
-			const result = await e2eGetUsersOfRoomWithoutKey(this.roomId);
+			const [decryptedOldGroupKeys, result] = await Promise.all([
+				this.exportOldRoomKeys(this.subscription?.oldRoomKeys),
+				e2eGetUsersOfRoomWithoutKey(this.roomId)
+			]);
 			if (result.success) {
 				const { users } = result;
 				if (!users.length) {
@@ -336,14 +335,16 @@ export default class EncryptionRoom {
 				}
 				const { version } = store.getState().server;
 				if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
-					const usersSuggestedGroupKeys = { [this.roomId]: [] as any[] };
-					for await (const user of users) {
-						const key = await this.encryptRoomKeyForUser(user.e2e!.public_key);
-						const oldKeys = await this.encryptOldKeysForParticipant(user.e2e?.public_key, decryptedOldGroupKeys);
-
-						usersSuggestedGroupKeys[this.roomId].push({ _id: user._id, key, ...(oldKeys && { oldKeys }) });
-					}
-					await provideUsersSuggestedGroupKeys(usersSuggestedGroupKeys);
+					const suggestedKeys = await Promise.all(
+						users.map(async user => {
+							const [key, oldKeys] = await Promise.all([
+								this.encryptRoomKeyForUser(user.e2e!.public_key),
+								this.encryptOldKeysForParticipant(user.e2e?.public_key, decryptedOldGroupKeys)
+							]);
+							return { _id: user._id, key, ...(oldKeys && { oldKeys }) };
+						})
+					);
+					await provideUsersSuggestedGroupKeys({ [this.roomId]: suggestedKeys });
 				} else {
 					await Promise.all(
 						users.map(async user => {
@@ -488,9 +489,9 @@ export default class EncryptionRoom {
 	};
 
 	// Encrypt messages
-	encrypt = async (message: IMessage): Promise<IMessage> => {
+	encrypt = async (message: IMessage): Promise<IMessage | undefined> => {
 		if (!this.ready) {
-			return message;
+			return;
 		}
 
 		try {
@@ -511,8 +512,6 @@ export default class EncryptionRoom {
 			// Do nothing
 			console.error(e);
 		}
-
-		return message;
 	};
 
 	encryptFile = async (_rid: string, file: TSendFileMessageFileInfo): TEncryptFileResult => {

@@ -9,7 +9,7 @@ import sdk from '../sdk';
 import { addMediaSubs, buildConnectedDriver } from '~/lib/testUtils/sdkIntegration';
 import type { IMockSdk, IMockSdkDriver, MockConnection } from '~/lib/testUtils/sdkIntegration';
 import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
-import type { IApplicationState } from '~/definitions';
+import type { IApplicationState } from '~/definitions/redux';
 
 jest.mock('./terminateNativeCall', () => ({
 	terminateNativeCall: jest.fn()
@@ -105,7 +105,6 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId: jest.fn() });
 		mockRecoverSocket.mockResolvedValue('reopened');
 		driver = await buildConnectedDriver(mockConnections, USER_ID);
-		addMediaSubs(driver, USER_ID);
 		(sdk as unknown as IMockSdk).setClient({ driver });
 	});
 
@@ -124,6 +123,7 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 		await jest.advanceTimersByTimeAsync(0);
 		expect(mediaSession.answerCall).not.toHaveBeenCalled();
 		redux.setLoginReady();
+		await addMediaSubs(driver, USER_ID);
 
 		await jest.advanceTimersByTimeAsync(200);
 		await gate;
@@ -137,12 +137,18 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 	it('releases its store listener and readiness polling as soon as readiness lands', async () => {
 		redux.setLoginReady();
 		const mediaSession = makeMediaSession();
+		const timersBefore = jest.getTimerCount();
 
 		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
+		await jest.advanceTimersByTimeAsync(0);
+		expect(jest.getTimerCount()).toBeGreaterThan(timersBefore);
+
+		await addMediaSubs(driver, USER_ID);
 		await jest.advanceTimersByTimeAsync(200);
 		await gate;
 
 		expect(redux.listenerCount()).toBe(0);
+		expect(jest.getTimerCount()).toBe(timersBefore);
 
 		// Nothing is left scheduled: no late failure ladder.
 		await jest.advanceTimersByTimeAsync(60000);
@@ -151,14 +157,12 @@ describe('acceptNativeCallWithReadiness against real login readiness', () => {
 	});
 
 	it('runs the failure ladder once and leaves nothing behind when readiness never lands', async () => {
-		driver.socket.subscriptions = {};
 		const resetNativeCallId = jest.fn();
 		mockGetCallState.mockReturnValue({ call: null, resetNativeCallId });
 		const mediaSession = makeMediaSession();
 
 		const gate = acceptNativeCallWithReadiness(CALL_ID, mediaSession);
 
-		// Login never authenticates and the media subs never ack.
 		await jest.advanceTimersByTimeAsync(READINESS_TIMEOUT);
 		await gate;
 

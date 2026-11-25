@@ -6,7 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import I18n from '~/i18n';
 import Button from '~/containers/Button';
 import KeyboardView from '~/containers/KeyboardView';
-import { FormTextInput } from '~/containers/TextInput';
+import { FormTextInput } from '~/containers/TextInput/FormTextInput';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
 import { joinRoom } from '~/lib/services/restApi';

@@ -10,7 +10,7 @@ import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useRespons
 import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
-import { ActionSheetProvider } from './containers/ActionSheet';
+import { ActionSheetProvider } from './containers/ActionSheet/Provider';
 import ConferenceCall from './containers/ConferenceCall';
 import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
@@ -112,17 +112,16 @@ export default class Root extends Component<{}, IState> {
 	init = async () => {
 		store.dispatch(appInitLocalSettings());
 
-		if (hasNativeHeaderBar) {
-			await preloadHeaderIcons().catch(log);
-		}
+		const [, initialNotification] = await Promise.all([
+			hasNativeHeaderBar ? preloadHeaderIcons().catch(log) : undefined,
+			initializePushNotifications()
+		]);
 
-		// Open app from push notification
-		const notification = await initializePushNotifications();
-		if (notification) {
-			if ('configured' in notification) {
+		if (initialNotification) {
+			if ('configured' in initialNotification) {
 				return;
 			}
-			onNotification(notification);
+			onNotification(initialNotification);
 			return;
 		}
 

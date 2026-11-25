@@ -1,4 +1,5 @@
-import { type BiometricInvalidationReason, type ILoginCredentials } from '~/definitions';
+import { type BiometricInvalidationReason } from '~/definitions/IBiometricTrustStore';
+import { type ILoginCredentials } from '~/definitions/ILoginCredentials';
 import { type IEmitUserInteraction } from '~/containers/UIKit/interfaces';
 import log from './log';
 

@@ -1,4 +1,4 @@
-import { type ISidebarCategory } from '~/definitions';
+import { type ISidebarCategory } from '~/definitions/IUser';
 import { useSidebarCategories } from '~/views/RoomsListView/hooks/useSidebarCategories';
 import { SYSTEM_GROUPS } from '~/views/RoomsListView/utils/sidebarGroupOrder';
 import { useCustomCategory } from './useCustomCategory';

@@ -6,7 +6,8 @@ import { MessageProvider } from '~/containers/message/stores/MessageStore';
 import { MessageRoomProvider, type MessageRoomState } from '~/containers/message/stores/MessageRoomStore';
 import { setUser } from '~/actions/login';
 import { mockedStore } from '~/reducers/mockedStore';
-import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
 
 mockedStore.dispatch(

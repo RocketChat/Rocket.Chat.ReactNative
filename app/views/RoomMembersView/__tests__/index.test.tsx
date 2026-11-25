@@ -28,7 +28,7 @@ jest.mock('~/lib/hooks/useMasterDetail', () => ({
 	useMasterDetail: () => false
 }));
 
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	useActionSheet: () => ({ showActionSheet: jest.fn() })
 }));
 

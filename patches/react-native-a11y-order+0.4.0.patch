@@ -1,0 +1,176 @@
+diff --git a/node_modules/react-native-a11y-order/ios/services/RNAOA11yOrderLinking.h b/node_modules/react-native-a11y-order/ios/services/RNAOA11yOrderLinking.h
+index 5758525..262bc55 100644
+--- a/node_modules/react-native-a11y-order/ios/services/RNAOA11yOrderLinking.h
++++ b/node_modules/react-native-a11y-order/ios/services/RNAOA11yOrderLinking.h
+@@ -15,6 +15,7 @@
+ 
+ - (void)add:(NSNumber*)position withOrderKey:(NSString*)orderKey withObject:(NSObject*)obj;
+ - (void)remove:(NSNumber*)position withOrderKey:(NSString*)orderKey;
++- (void)remove:(NSNumber*)position withOrderKey:(NSString*)orderKey withObject:(NSObject*)obj;
+ - (void)setContainer:(NSString*)orderKey withView:(UIView*) view;
+ - (void)removeContainer:(NSString*)orderKey;
+ - (void)update:(NSNumber*)position lastPosition:(NSNumber*)_position withOrderKey:(NSString*)_orderKey withView:(UIView*) view;
+diff --git a/node_modules/react-native-a11y-order/ios/services/RNAOA11yOrderLinking.mm b/node_modules/react-native-a11y-order/ios/services/RNAOA11yOrderLinking.mm
+index bddf6bc..b08969c 100644
+--- a/node_modules/react-native-a11y-order/ios/services/RNAOA11yOrderLinking.mm
++++ b/node_modules/react-native-a11y-order/ios/services/RNAOA11yOrderLinking.mm
+@@ -47,6 +47,13 @@
+     }
+ }
+ 
++-(void)remove:(NSNumber*)position withOrderKey:(NSString*)orderKey withObject:(NSObject*)obj {
++    RNAOA11yRelashioship* relashioship = [_relationships objectForKey: orderKey];
++    if(relashioship != nil) {
++        [relashioship remove:position withObject:obj];
++    }
++}
++
+ -(void)setContainer:(NSString*)orderKey withView:(UIView*) view {
+     RNAOA11yRelashioship* relashioship = [_relationships objectForKey: orderKey];
+     if(relashioship != nil) {
+diff --git a/node_modules/react-native-a11y-order/ios/services/RNAOA11yRelashioship.h b/node_modules/react-native-a11y-order/ios/services/RNAOA11yRelashioship.h
+index 1722b0d..4aacc52 100644
+--- a/node_modules/react-native-a11y-order/ios/services/RNAOA11yRelashioship.h
++++ b/node_modules/react-native-a11y-order/ios/services/RNAOA11yRelashioship.h
+@@ -13,6 +13,7 @@
+ 
+ - (void)add:(NSNumber*)position withObject:(NSObject*)obj;
+ - (void)remove:(NSNumber*)position;
++- (void)remove:(NSNumber*)position withObject:(NSObject*)obj;
+ - (void)update:(NSNumber*)lastPosition withPosition:(NSNumber*)position withObject:(NSObject*)obj;
+ - (void)clear;
+ - (void)setContainer:(UIView*)view;
+diff --git a/node_modules/react-native-a11y-order/ios/services/RNAOA11yRelashioship.mm b/node_modules/react-native-a11y-order/ios/services/RNAOA11yRelashioship.mm
+index c8c4eb4..4e9b7b8 100644
+--- a/node_modules/react-native-a11y-order/ios/services/RNAOA11yRelashioship.mm
++++ b/node_modules/react-native-a11y-order/ios/services/RNAOA11yRelashioship.mm
+@@ -24,12 +24,25 @@
+     return self;
+ }
+ 
++- (void)refreshContainer {
++    if(_container != nil) {
++        [_container setAccessibilityElements: [_positions getValues]];
++    }
++}
++
+ - (void)add:(NSNumber*)position withObject:(NSObject*)obj {
+     [_positions put:position withObject:obj];
++    [self refreshContainer];
+ }
+ 
+ -(void)remove:(NSNumber*)position {
+     [_positions remove:position];
++    [self refreshContainer];
++}
++
++-(void)remove:(NSNumber*)position withObject:(NSObject*)obj {
++    [_positions remove:position withObject:obj];
++    [self refreshContainer];
+ }
+ 
+ -(void)setContainer:(UIView*)view {
+diff --git a/node_modules/react-native-a11y-order/ios/services/RNAOSortedMap.h b/node_modules/react-native-a11y-order/ios/services/RNAOSortedMap.h
+index 5ae1cdb..44755ee 100644
+--- a/node_modules/react-native-a11y-order/ios/services/RNAOSortedMap.h
++++ b/node_modules/react-native-a11y-order/ios/services/RNAOSortedMap.h
+@@ -13,6 +13,7 @@
+ 
+ - (void)put:(NSNumber*)position withObject:(NSObject*)obj;
+ - (void)remove:(NSNumber*)position;
++- (void)remove:(NSNumber*)position withObject:(NSObject*)obj;
+ - (void)update:(NSNumber*)position withPosition:(NSNumber*)position withObject:(NSObject*)obj;
+ - (void)clear;
+ - (NSArray*)getValues;
+diff --git a/node_modules/react-native-a11y-order/ios/services/RNAOSortedMap.mm b/node_modules/react-native-a11y-order/ios/services/RNAOSortedMap.mm
+index 1312fb6..7bb570a 100644
+--- a/node_modules/react-native-a11y-order/ios/services/RNAOSortedMap.mm
++++ b/node_modules/react-native-a11y-order/ios/services/RNAOSortedMap.mm
+@@ -70,6 +70,7 @@
+ 
+ - (void)remove:(NSNumber*)position withObject:(NSObject*)obj {
+     if([_dirctionary objectForKey:position] == obj) {
++        _hasBeenChanged = YES;
+         NSUInteger positionIndex = [_sortedKeys indexOfObject:position];
+         if (positionIndex != NSNotFound) {
+             [_sortedKeys removeObjectAtIndex:positionIndex];
+diff --git a/node_modules/react-native-a11y-order/ios/views/RNAOA11yIndexView/RNAOA11yIndexView.mm b/node_modules/react-native-a11y-order/ios/views/RNAOA11yIndexView/RNAOA11yIndexView.mm
+index 4469867..0b29559 100644
+--- a/node_modules/react-native-a11y-order/ios/views/RNAOA11yIndexView/RNAOA11yIndexView.mm
++++ b/node_modules/react-native-a11y-order/ios/views/RNAOA11yIndexView/RNAOA11yIndexView.mm
+@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, A11yOrderType) {
+ 
+ @implementation RNAOA11yIndexView {
+     BOOL isLinked;
++    __weak UIView *linkedView;
+ }
+ 
+ - (UIView *)findFirstAccessibleChild:(UIView *)parentView {
+@@ -81,11 +82,30 @@ typedef NS_ENUM(NSInteger, A11yOrderType) {
+ - (void)linkIndex:(UIView *)subview {
+     if(_position != nil && _orderKey != nil && !isLinked) {
+         UIView* view = [self getFocusView: subview];
++        if(view == nil) {
++            return;
++        }
+         [[RNAOA11yOrderLinking sharedInstance] add: _position withOrderKey:_orderKey withObject:view];
++        linkedView = view;
+         isLinked = YES;
+     }
+ }
+ 
++- (void)unlinkIndex {
++    if(isLinked && _position != nil && _orderKey != nil) {
++        [[RNAOA11yOrderLinking sharedInstance] remove:_position withOrderKey:_orderKey withObject:linkedView];
++    }
++    isLinked = NO;
++    linkedView = nil;
++}
++
++- (void)layoutSubviews {
++    [super layoutSubviews];
++    if(self.subviews.count > 0) {
++        [self linkIndex:self.subviews[0]];
++    }
++}
++
+ - (void)didAddSubview:(UIView *)subview {
+     [super didAddSubview:subview];
+     [self linkIndex:subview];
+@@ -94,8 +114,9 @@ typedef NS_ENUM(NSInteger, A11yOrderType) {
+ 
+ - (void)willRemoveSubview:(UIView *)subview {
+     [super willRemoveSubview:subview];
+-    if(_position != nil && _orderKey != nil) {
+-        [[RNAOA11yOrderLinking sharedInstance] remove:_position withOrderKey:_orderKey];
++    if(subview == linkedView) {
++        [self unlinkIndex];
++        [self setNeedsLayout];
+     }
+ }
+ 
+@@ -104,6 +125,7 @@ typedef NS_ENUM(NSInteger, A11yOrderType) {
+         if(_orderKey != nil && self.subviews.count > 0 && isLinked) {
+           UIView* view = [self getFocusView: self.subviews[0]];
+             [[RNAOA11yOrderLinking sharedInstance] update:position lastPosition:_position withOrderKey: _orderKey withView: view];
++            linkedView = view;
+         }
+         _position = position;
+     }
+@@ -118,6 +140,7 @@ typedef NS_ENUM(NSInteger, A11yOrderType) {
+     if(_orderKey != nil && _position != nil && self.subviews.count > 0 && isLinked) {
+           UIView* view = [self getFocusView: self.subviews[0]];
+             [[RNAOA11yOrderLinking sharedInstance] update:_position lastPosition:_position withOrderKey: _orderKey withView: view];
++            linkedView = view;
+         }
+     _orderFocusType = orderType;
+     }
+@@ -200,7 +223,7 @@ typedef NS_ENUM(NSInteger, A11yOrderType) {
+ 
+ - (void)prepareForRecycle
+ {
+-    isLinked = NO;
++    [self unlinkIndex];
+     _position = nil;
+     _orderKey = nil;
+     [super prepareForRecycle];

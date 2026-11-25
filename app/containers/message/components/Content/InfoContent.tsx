@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import styles from '~/containers/message/styles';
 import { getInfoMessage, messageHaveAuthorName } from '~/containers/message/utils';
 import { useTheme } from '~/theme';
-import { type MessageTypesValues } from '~/definitions';
+import { type MessageTypesValues } from '~/definitions/IMessage';
 import { useInfoData, useMessageAuthor, useMessageText } from '~/containers/message/stores/MessageStore';
 import User from '../User';
 

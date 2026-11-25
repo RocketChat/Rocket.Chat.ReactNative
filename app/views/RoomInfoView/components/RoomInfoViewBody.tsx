@@ -1,6 +1,7 @@
 import { type ReactElement } from 'react';
 
-import { type ISubscription, SubscriptionType, type IUser } from '~/definitions';
+import { type ISubscription, SubscriptionType } from '~/definitions/ISubscription';
+import { type IUser } from '~/definitions/IUser';
 import { type ILivechatVisitorModified } from '~/definitions/ILivechatVisitor';
 import Channel from '../Channel';
 import Direct from '../Direct';

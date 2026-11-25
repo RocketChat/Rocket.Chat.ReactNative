@@ -2,7 +2,7 @@ import { AccessibilityInfo, Switch as RNSwitch, type SwitchProps } from 'react-n
 import { type ReactElement } from 'react';
 
 import { useTheme } from '~/theme';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import I18n from '~/i18n';
 import { useIsNativeList } from '~/containers/List/native/context';
 import NativeListToggle from '~/containers/List/native/components/Toggle';

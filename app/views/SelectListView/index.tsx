@@ -14,7 +14,7 @@ import SafeAreaView from '~/containers/SafeAreaView';
 import SearchBox from '~/containers/SearchBox';
 import sharedStyles from '../Styles';
 import Item from './Item';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { type TDataSelect } from '~/definitions/IDataSelect';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { checkedStateLabel } from '~/containers/List/native/utils/itemProps';

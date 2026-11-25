@@ -10,7 +10,7 @@ jest.mock('~/containers/MessageComposer/hooks/useComposerAppActionOptions', () =
 }));
 
 const mockShowActionSheet = jest.fn();
-jest.mock('~/containers/ActionSheet', () => ({
+jest.mock('~/containers/ActionSheet/Provider', () => ({
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: jest.fn() })
 }));
 
@@ -29,8 +29,10 @@ jest.mock('~/containers/MessageComposer/context', () => {
 	};
 });
 
-jest.mock('~/containers/MessageComposer/hooks', () => ({
-	useCanUploadFile: () => false,
+jest.mock('~/containers/MessageComposer/hooks/useCanUploadFile', () => ({
+	useCanUploadFile: () => false
+}));
+jest.mock('~/containers/MessageComposer/hooks/useChooseMedia', () => ({
 	useChooseMedia: () => ({ takePhoto: jest.fn(), takeVideo: jest.fn(), chooseFromLibrary: jest.fn(), chooseFile: jest.fn() })
 }));
 jest.mock('~/lib/hooks/usePermissions', () => ({ usePermissions: () => [false] }));

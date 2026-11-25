@@ -1,6 +1,6 @@
 import Button from '~/containers/Button';
 import { useOnAnswerButtonPress } from '~/containers/message/stores/MessageRoomStore';
-import { type IAttachment } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
 import openLink from '~/lib/methods/helpers/openLink';
 import Markdown from '~/containers/markdown';
 

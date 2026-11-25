@@ -3,10 +3,10 @@ import type Model from '@nozbe/watermelondb/Model';
 
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
-import { useActionSheet } from './ActionSheet';
+import { useActionSheet } from './ActionSheet/Provider';
 import I18n from '../i18n';
 import log from '../lib/methods/helpers/log';
-import { type TMessageModel } from '../definitions';
+import { type TMessageModel } from '../definitions/IMessage';
 import { resendMessage } from '../lib/methods/sendMessage';
 
 export interface IMessageErrorActions {

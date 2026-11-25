@@ -1,5 +1,6 @@
 import { SET_CUSTOM_EMOJIS } from '../actions/actionsTypes';
-import { type ICustomEmojis, type TApplicationActions } from '../definitions';
+import { type ICustomEmojis } from '../definitions/IEmoji';
+import { type TApplicationActions } from '../definitions/redux';
 
 export const initialState: ICustomEmojis = {};
 

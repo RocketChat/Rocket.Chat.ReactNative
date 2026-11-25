@@ -6,8 +6,8 @@ import I18n from '~/i18n';
 import { useTheme } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import Button from '~/containers/Button';
-import { ControlledFormTextInput } from '~/containers/TextInput';
-import { useActionSheet } from '~/containers/ActionSheet';
+import { ControlledFormTextInput } from '~/containers/TextInput/ControlledFormTextInput';
+import { useActionSheet } from '~/containers/ActionSheet/Provider';
 
 const styles = StyleSheet.create({
 	subtitleText: {

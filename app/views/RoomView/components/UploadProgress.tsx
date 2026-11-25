@@ -11,7 +11,8 @@ import { CustomIcon } from '~/containers/CustomIcon';
 import { themes } from '~/lib/constants/colors';
 import sharedStyles from '~/views/Styles';
 import { type TSupportedThemes, withTheme } from '~/theme';
-import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '~/definitions';
+import { type TSendFileMessageFileInfo, type TUploadModel } from '~/definitions/IUpload';
+import { type IUser } from '~/definitions/IUser';
 import { sendFileMessage } from '~/lib/methods/sendFileMessage';
 import { cancelUpload, isUploadActive } from '~/lib/methods/sendFileMessage/utils';
 

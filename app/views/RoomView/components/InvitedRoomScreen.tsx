@@ -1,4 +1,4 @@
-import { type IInviteSubscription } from '~/definitions';
+import { type IInviteSubscription } from '~/definitions/ISubscription';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { useTheme } from '~/theme';
 import { InvitedRoom } from './InvitedRoom';

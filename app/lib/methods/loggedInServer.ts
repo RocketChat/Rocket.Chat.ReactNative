@@ -1,4 +1,4 @@
-import { type TServerModel } from '~/definitions';
+import { type TServerModel } from '~/definitions/IServer';
 import { getServerUserIdKey, getUserTokenKey } from '../constants/keys';
 import { getAllServers } from '../database/services/Server';
 import UserPreferences from './userPreferences';

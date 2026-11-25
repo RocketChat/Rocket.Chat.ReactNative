@@ -1,4 +1,4 @@
-import { type ISubscription } from '~/definitions';
+import { type ISubscription } from '~/definitions/ISubscription';
 import { type TSettingsValues } from '~/reducers/settings';
 
 export const getHiddenSystemMessages = (

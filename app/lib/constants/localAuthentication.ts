@@ -2,8 +2,6 @@ export const PASSCODE_KEY = 'kPasscode';
 export const LOCKED_OUT_TIMER_KEY = 'kLockedOutTimer';
 export const ATTEMPTS_KEY = 'kAttempts';
 export const BIOMETRY_ENABLED_KEY = 'kBiometryEnabled';
-export const BIOMETRIC_TRUST_MIGRATION_V1_DONE = 'kBiometricTrustMigrationV1Done';
-// Set when the init migration consumes an enrollment change; forces a passcode on the next unlock.
 export const BIOMETRIC_PENDING_RELOCK_KEY = 'kBiometricPendingRelock';
 
 // Keychain sentinel used by the biometric trust store to detect enrollment changes.

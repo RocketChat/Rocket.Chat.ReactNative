@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '~/i18n';
 import { useTheme } from '~/theme';
-import { isAndroid } from '~/lib/methods/helpers';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import { type IActionSheetItem, Item } from './Item';
 import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';

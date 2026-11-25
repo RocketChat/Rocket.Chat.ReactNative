@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { all, call as callEffect, put, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
@@ -28,7 +28,8 @@ import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
-import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
+import { type IServerInfo, type TServerModel } from '../definitions/IServer';
+import { RootEnum } from '../definitions/redux/TRootEnum';
 import { CURRENT_SERVER } from '../lib/constants/keys';
 import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { getStoredSession } from '../lib/methods/loggedInServer';
@@ -238,8 +239,10 @@ const UNANSWERED_HOST_PROBE_TIMEOUT_MS = 30000;
 const probeServer = function* probeServer(server: string, signal: AbortSignal) {
 	const serverInfo = yield* getServerInfoSaga({ server, signal });
 	if (serverInfo) {
-		yield* call(getLoginServices, server, signal);
-		yield* call(getLoginSettings, { server, serverVersion: serverInfo.version, signal });
+		yield all([
+			callEffect(getLoginServices, server, signal),
+			callEffect(getLoginSettings, { server, serverVersion: serverInfo.version, signal })
+		]);
 	}
 	return serverInfo;
 };

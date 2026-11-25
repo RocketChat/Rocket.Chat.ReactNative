@@ -1,9 +1,10 @@
 import { Q } from '@nozbe/watermelondb';
 import { useEffect, useState } from 'react';
 
-import { type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 import database from '~/lib/database';
-import { getRoomAvatar, getRoomTitle } from '~/lib/methods/helpers';
+import { getRoomAvatar } from '~/lib/methods/helpers/getRoomAvatar';
+import { getRoomTitle } from '~/lib/methods/helpers/getRoomTitle';
 import log from '~/lib/methods/helpers/log';
 import { type ICategoryRoom } from '../types';
 

@@ -1,4 +1,3 @@
-import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
@@ -7,9 +6,10 @@ import { store as reduxStore } from '../store/auxStore';
 import { setActiveUsers } from '~/actions/activeUsers';
 import { setUser } from '~/actions/login';
 import database from '../database';
-import { type IUser } from '~/definitions';
+import { type IUser } from '~/definitions/IUser';
 import sdk from '../services/sdk';
-import { compareServerVersion, normalizeStatusExpiresAt } from './helpers';
+import { compareServerVersion } from './helpers/compareServerVersion';
+import { normalizeStatusExpiresAt } from './helpers/normalizeStatusExpiresAt';
 import log from './helpers/log';
 import userPreferences from './userPreferences';
 import { NOTIFICATION_PRESENCE_CAP } from '../constants/notifications';
@@ -90,9 +90,7 @@ export async function getUsersPresence(usersParams: string[]) {
 					ret[_id] = { status, statusText, statusExpiresAt: normalizedStatusExpiresAt, statusSource };
 					return ret;
 				}, {});
-				InteractionManager.runAfterInteractions(() => {
-					reduxStore.dispatch(setActiveUsers(activeUsers));
-				});
+				reduxStore.dispatch(setActiveUsers(activeUsers));
 
 				const db = database.active;
 				const userCollection = db.get('users');

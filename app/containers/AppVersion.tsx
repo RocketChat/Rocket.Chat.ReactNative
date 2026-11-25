@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import sharedStyles from '../views/Styles';
-import { getReadableVersion } from '../lib/methods/helpers';
+import { getReadableVersion } from '../lib/methods/helpers/deviceInfo';
 import I18n from '../i18n';
 import { useTheme } from '../theme';
 
