@@ -10,7 +10,7 @@ const getParserRuntime = (): WorkletRuntime => {
 	return parserRuntime;
 };
 
-export const parseOffThread = (msg: string, options: Options, onParsed: (root: Root | null) => void): void => {
+const parseOnRuntime = (msg: string, options: Options): Promise<Root> =>
 	runOnRuntimeAsync(
 		getParserRuntime(),
 		(text: string, parseOptions: Options) => {
@@ -19,7 +19,18 @@ export const parseOffThread = (msg: string, options: Options, onParsed: (root: R
 		},
 		msg,
 		options
-	).then(onParsed, error => {
+	);
+
+export const parseOffThread = (msg: string, options: Options, onParsed: (root: Root | null) => void): void => {
+	let pendingRoot: Promise<Root>;
+	try {
+		pendingRoot = parseOnRuntime(msg, options);
+	} catch (error) {
+		log(error);
+		onParsed(null);
+		return;
+	}
+	pendingRoot.then(onParsed, error => {
 		log(error);
 		onParsed(null);
 	});

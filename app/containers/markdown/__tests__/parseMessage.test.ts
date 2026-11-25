@@ -78,6 +78,19 @@ describe('subscribeToParsedRoot', () => {
 		]);
 	});
 
+	it('shows plain text right away and notifies the subscriber when the parse fails before it starts', () => {
+		const store = loadFreshStore();
+		const listener = jest.fn();
+		parseOffThreadMock.mockImplementationOnce((_msg, _options, onParsed) => onParsed(null));
+
+		store.subscribeToParsedRoot('no runtime', {}, listener);
+
+		expect(listener).toHaveBeenCalledTimes(1);
+		expect(store.getParsedRoot('no runtime', {})).toEqual([
+			{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'no runtime' }] }
+		]);
+	});
+
 	it('keeps a recently shown message cached while older ones are evicted', () => {
 		const store = loadFreshStore();
 		parseOffThreadMock.mockImplementation((msg, options, onParsed) =>
