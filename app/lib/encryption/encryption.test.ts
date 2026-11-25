@@ -525,21 +525,31 @@ describe('Encryption key distribution', () => {
 			jest.mocked(provideUsersSuggestedGroupKeys).mockReset();
 		});
 
-		const blockingSteps: [string, () => Deferred, number, number][] = [
-			['subscriptions query', blockSubscriptionsQuery, 1, 1],
-			['room handshake while sampling', () => blockOnce(mockHandshake, undefined), 1, 1],
-			[
-				'fetching users waiting for the key',
-				() => blockOnce(jest.mocked(fetchUsersWaitingForGroupKey), waitingForKeyResponse),
-				2,
-				1
-			],
-			['encrypting the group key', () => blockOnce(mockEncryptGroupKey, encryptedKeys), 2, 2]
+		const blockingSteps = [
+			{ step: 'subscriptions query', blockStep: blockSubscriptionsQuery, expectedFetches: 1, expectedEncryptions: 1 },
+			{
+				step: 'room handshake while sampling',
+				blockStep: () => blockOnce(mockHandshake, undefined),
+				expectedFetches: 1,
+				expectedEncryptions: 1
+			},
+			{
+				step: 'fetching users waiting for the key',
+				blockStep: () => blockOnce(jest.mocked(fetchUsersWaitingForGroupKey), waitingForKeyResponse),
+				expectedFetches: 2,
+				expectedEncryptions: 1
+			},
+			{
+				step: 'encrypting the group key',
+				blockStep: () => blockOnce(mockEncryptGroupKey, encryptedKeys),
+				expectedFetches: 2,
+				expectedEncryptions: 2
+			}
 		];
 
 		it.each(blockingSteps)(
-			'stops the old run waiting on the %s and runs only the new one',
-			async (_step, blockStep, expectedFetches, expectedEncryptions) => {
+			'stops the old run waiting on the $step and runs only the new one',
+			async ({ blockStep, expectedFetches, expectedEncryptions }) => {
 				const blockedStep = blockStep();
 				const firstRun = encryption.initiateKeyDistribution();
 				await jest.advanceTimersByTimeAsync(0);
