@@ -211,6 +211,14 @@ describe('getServerInfo supported versions', () => {
 	const mockServerInfo = (serverInfo: object) =>
 		mockedFetch.mockResolvedValue({ json: () => Promise.resolve({ success: true, version: '7.0.0', ...serverInfo }) } as any);
 
+	const mockCloudFallback = () => {
+		jest.mocked(getSupportedVersionsCloud).mockResolvedValue({ json: () => Promise.resolve({ signed: 'cloud-token' }) } as any);
+		mockedFetch.mockResolvedValueOnce({
+			json: () => Promise.resolve({ success: true, version: '7.0.0', supportedVersions: { signed: 'forged-token' } })
+		} as any);
+		mockedFetch.mockResolvedValueOnce({ json: () => Promise.resolve({ settings: [{ value: 'unique-id' }] }) } as any);
+	};
+
 	beforeEach(() => {
 		jest.clearAllMocks();
 		jest.mocked(store.getState).mockReturnValue({ login: { user: undefined }, server: { version: '7.0.0' } } as any);
@@ -232,11 +240,7 @@ describe('getServerInfo supported versions', () => {
 
 	it('falls back to the cloud token when the server token fails verification', async () => {
 		jest.mocked(rsaVerifyJwt).mockRejectedValueOnce(new Error('JWT signature verification failed'));
-		jest.mocked(getSupportedVersionsCloud).mockResolvedValue({ json: () => Promise.resolve({ signed: 'cloud-token' }) } as any);
-		mockedFetch.mockResolvedValueOnce({
-			json: () => Promise.resolve({ success: true, version: '7.0.0', supportedVersions: { signed: 'forged-token' } })
-		} as any);
-		mockedFetch.mockResolvedValueOnce({ json: () => Promise.resolve({ settings: [{ value: 'unique-id' }] }) } as any);
+		mockCloudFallback();
 
 		const serverInfo = await getServerInfo(currentServer);
 
@@ -246,11 +250,7 @@ describe('getServerInfo supported versions', () => {
 
 	it('returns no supported versions when the cloud token also fails verification', async () => {
 		jest.mocked(rsaVerifyJwt).mockRejectedValue(new Error('JWT signature verification failed'));
-		jest.mocked(getSupportedVersionsCloud).mockResolvedValue({ json: () => Promise.resolve({ signed: 'cloud-token' }) } as any);
-		mockedFetch.mockResolvedValueOnce({
-			json: () => Promise.resolve({ success: true, version: '7.0.0', supportedVersions: { signed: 'forged-token' } })
-		} as any);
-		mockedFetch.mockResolvedValueOnce({ json: () => Promise.resolve({ settings: [{ value: 'unique-id' }] }) } as any);
+		mockCloudFallback();
 
 		const serverInfo = await getServerInfo(currentServer);
 
@@ -273,8 +273,7 @@ describe('getServerInfo supported versions', () => {
 
 		const serverInfo = await getServerInfo(currentServer);
 
-		expect(serverInfo).toMatchObject({ success: true });
-		expect(serverInfo).not.toHaveProperty('supportedVersions.signed');
+		expect(serverInfo).toMatchObject({ success: true, supportedVersions: null });
 	});
 
 	it('verifies again after a failed key import', async () => {
@@ -285,7 +284,7 @@ describe('getServerInfo supported versions', () => {
 		const afterFailedImport = await getServerInfo(currentServer);
 		const afterRecoveredImport = await getServerInfo(currentServer);
 
-		expect(afterFailedImport.success && afterFailedImport.supportedVersions).toBeUndefined();
+		expect(afterFailedImport).toMatchObject({ success: true, supportedVersions: null });
 		expect(afterRecoveredImport).toMatchObject({ success: true, supportedVersions: supportedVersionsPayload });
 	});
 });
