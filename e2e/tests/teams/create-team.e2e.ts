@@ -1,8 +1,8 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers, get } from '~e2e/support/api';
-import { expectHidden, expectVisible, loginWithDeepLink } from '~e2e/support/flows';
+import { expectHidden, expectVisible, loginToApp } from '~e2e/support/flows';
 import { tapHeaderItem } from '~e2e/support/header';
 import { randomTeamName } from '~e2e/support/random';
 import { createTeam } from '~e2e/support/teams';
@@ -14,7 +14,7 @@ test('creates and deletes a team', { tags: ['test-7'] }, async fixtures => {
 	const user = await createUser();
 	const teamName = randomTeamName();
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await createTeam(fixtures, teamName);
 	await expect(screen.getByTestId('room-view-messages')).toBeVisible();
 
