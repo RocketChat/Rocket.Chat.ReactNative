@@ -6,7 +6,7 @@ import { formatMediaTime } from '../formatMediaTime';
 import { clamp } from '../playbackClock';
 import { type IShownTime } from './useShownTime';
 
-export const SEEK_STEP_SECONDS = 5;
+const SEEK_STEP_SECONDS = 5;
 
 const ACCESSIBILITY_ACTIONS = [{ name: 'increment' }, { name: 'decrement' }];
 

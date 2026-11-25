@@ -1,6 +1,7 @@
 import { decodeAudioData } from 'react-native-audio-api';
 import { getInfoAsync } from 'expo-file-system/legacy';
 
+import database from '~/lib/database';
 import log from '../helpers/log';
 import { computeWaveformPeaks } from './computeWaveformPeaks';
 import { readSavedWaveform, saveWaveform } from './savedWaveforms';
@@ -15,16 +16,16 @@ let decoding: string | null = null;
 
 const isWanted = (fileUri: string) => !!listeners.get(fileUri)?.size && !waveforms.has(fileUri);
 
-const isSmallEnoughToDecode = async (fileUri: string) => {
-	const info = await getInfoAsync(fileUri);
-	return info.exists && info.size <= MAX_DECODED_FILE_BYTES;
-};
+const isSmallEnoughToDecode = (fileUri: string) =>
+	getInfoAsync(fileUri)
+		.then(info => info.exists && info.size <= MAX_DECODED_FILE_BYTES)
+		.catch(error => {
+			log(error);
+			return false;
+		});
 
 const decodeWaveform = async (fileUri: string): Promise<number[]> => {
 	try {
-		if (!(await isSmallEnoughToDecode(fileUri))) {
-			return [];
-		}
 		const buffer = await decodeAudioData(fileUri, DECODE_SAMPLE_RATE);
 		return computeWaveformPeaks(buffer.getChannelData(0));
 	} catch (error) {
@@ -33,33 +34,17 @@ const decodeWaveform = async (fileUri: string): Promise<number[]> => {
 	}
 };
 
-const loadSavedWaveform = async (fileUri: string) => {
-	try {
-		return await readSavedWaveform(fileUri);
-	} catch (error) {
-		log(error);
-		return undefined;
-	}
-};
-
-const saveDecodedWaveform = async (fileUri: string, peaks: number[]) => {
-	if (!peaks.length) {
-		return;
-	}
-	try {
-		await saveWaveform(fileUri, peaks);
-	} catch (error) {
-		log(error);
-	}
-};
-
 const loadWaveform = async (fileUri: string): Promise<number[]> => {
-	const saved = await loadSavedWaveform(fileUri);
+	const db = database.active;
+	const saved = await readSavedWaveform(db, fileUri).catch(log);
 	if (saved) {
 		return saved;
 	}
+	if (!(await isSmallEnoughToDecode(fileUri))) {
+		return [];
+	}
 	const decoded = await decodeWaveform(fileUri);
-	await saveDecodedWaveform(fileUri, decoded);
+	saveWaveform(db, fileUri, decoded).catch(log);
 	return decoded;
 };
 

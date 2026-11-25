@@ -30,7 +30,7 @@ jest.mock('expo-keep-awake', () => ({
 }));
 
 jest.mock('~/theme', () => ({
-	useTheme: () => ({ theme: 'light', colors: { surfaceLight: '#ffffff', strokeExtraLight: '#eeeeee' } })
+	useTheme: () => ({ theme: 'light', colors: { surfaceTint: '#ffffff', strokeExtraLight: '#eeeeee' } })
 }));
 
 let capturedFocusCb: (() => void) | undefined;

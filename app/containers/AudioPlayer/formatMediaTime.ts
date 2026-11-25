@@ -1,4 +1,4 @@
-export const UNKNOWN_MEDIA_TIME = '-:--';
+const UNKNOWN_MEDIA_TIME = '-:--';
 
 export const formatMediaTime = (seconds: number) => {
 	if (!Number.isFinite(seconds) || seconds < 0) {

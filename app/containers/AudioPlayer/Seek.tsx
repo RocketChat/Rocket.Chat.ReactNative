@@ -38,12 +38,7 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 		return duration.get() ? clamp(currentTime.get() / duration.get(), 0, 1) : 0;
 	});
 
-	const shownSeconds = useDerivedValue(() => {
-		if (scrubProgress.get() !== NOT_SCRUBBING) {
-			return scrubProgress.get() * duration.get();
-		}
-		return clamp(currentTime.get(), 0, duration.get());
-	});
+	const shownSeconds = useDerivedValue(() => progress.get() * duration.get());
 
 	const progressAt = (x: number) => {
 		'worklet';
@@ -109,16 +104,7 @@ const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: IS
 
 	return (
 		<>
-			<View
-				testID='audio-seek'
-				style={styles.seek}
-				accessible={seekAccessibility.accessible}
-				accessibilityRole={seekAccessibility.accessibilityRole}
-				accessibilityLabel={seekAccessibility.accessibilityLabel}
-				accessibilityValue={seekAccessibility.accessibilityValue}
-				accessibilityState={seekAccessibility.accessibilityState}
-				accessibilityActions={seekAccessibility.accessibilityActions}
-				onAccessibilityAction={seekAccessibility.onAccessibilityAction}>
+			<View testID='audio-seek' style={styles.seek} {...seekAccessibility}>
 				<GestureDetector gesture={seekGesture}>
 					<View
 						testID='audio-seek-track'

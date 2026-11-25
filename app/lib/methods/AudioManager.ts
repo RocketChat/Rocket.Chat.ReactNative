@@ -135,6 +135,10 @@ class AudioManagerClass {
 			this.onPlaybackStatusUpdate(audioKey, status, callback);
 		});
 		if (sub) this.audioSubscriptions[audioKey] = () => sub.remove?.();
+		const status = this.audioQueue[audioKey]?.currentStatus;
+		if (status?.isLoaded) {
+			callback(status);
+		}
 	}
 
 	async onEnd(audioKey: string, status: AudioStatus): Promise<void> {

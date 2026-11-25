@@ -14,6 +14,11 @@ jest.mock('expo-file-system/legacy', () => ({
 	getInfoAsync: async (fileUri: string) => ({ exists: true, size: mockFileSize(fileUri) })
 }));
 
+const mockActiveDatabase = { name: 'open.rocket.chat' };
+const mockDatabases = { active: mockActiveDatabase };
+
+jest.mock('~/lib/database', () => mockDatabases);
+
 const mockReadSaved = jest.fn();
 const mockSave = jest.fn();
 
@@ -53,6 +58,7 @@ describe('waveformStore', () => {
 		mockFileSize.mockReset().mockReturnValue(1024);
 		mockReadSaved.mockReset().mockResolvedValue(undefined);
 		mockSave.mockReset().mockResolvedValue(undefined);
+		mockDatabases.active = mockActiveDatabase;
 	});
 
 	it('decodes a file once for every view showing it and notifies each view', async () => {
@@ -136,7 +142,19 @@ describe('waveformStore', () => {
 		pending.get('file:///a.m4a')?.resolve(loudSamples);
 		await flush();
 
-		expect(mockSave).toHaveBeenCalledWith('file:///a.m4a', store.getWaveform('file:///a.m4a'));
+		expect(mockSave).toHaveBeenCalledWith(mockActiveDatabase, 'file:///a.m4a', store.getWaveform('file:///a.m4a'));
+	});
+
+	it('saves the waveform in the workspace it was read from, even after a workspace switch', async () => {
+		const pending = deferredDecodes();
+		const store = loadStore();
+		store.subscribeWaveform('file:///a.m4a', jest.fn());
+		await flush();
+		mockDatabases.active = { name: 'other.rocket.chat' };
+		pending.get('file:///a.m4a')?.resolve(loudSamples);
+		await flush();
+
+		expect(mockSave).toHaveBeenCalledWith(mockActiveDatabase, 'file:///a.m4a', expect.any(Array));
 	});
 
 	it('shows a saved waveform without decoding the file', async () => {
@@ -163,7 +181,7 @@ describe('waveformStore', () => {
 		expect(store.getWaveform('file:///long.m4a')).toEqual([]);
 	});
 
-	it('does not save a failed decode', async () => {
+	it('saves a failed decode as no waveform, so the next app start does not decode it again', async () => {
 		const pending = deferredDecodes();
 		const store = loadStore();
 		store.subscribeWaveform('file:///a.webm', jest.fn());
@@ -171,7 +189,17 @@ describe('waveformStore', () => {
 		pending.get('file:///a.webm')?.reject(new Error('unsupported format'));
 		await flush();
 
-		expect(mockSave).not.toHaveBeenCalled();
+		expect(mockSave).toHaveBeenCalledWith(mockActiveDatabase, 'file:///a.webm', []);
+	});
+
+	it('shows a saved failed decode as no waveform without decoding the file', async () => {
+		mockReadSaved.mockResolvedValue([]);
+		const store = loadStore();
+		store.subscribeWaveform('file:///a.webm', jest.fn());
+		await flush();
+
+		expect(mockDecode).not.toHaveBeenCalled();
+		expect(store.getWaveform('file:///a.webm')).toEqual([]);
 	});
 
 	it('still decodes and shows the waveform when the database fails', async () => {

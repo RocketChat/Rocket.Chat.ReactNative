@@ -18,12 +18,13 @@ const MessageAudio = ({ file, author, msg }: IMessageAudioProps) => {
 	const user = useMessageUser();
 	const id = useMessageId();
 	const rid = useRid();
-	const { status, onPress, url } = useMediaAutoDownload({ file, author });
+	const { status, onPress, url, currentFile } = useMediaAutoDownload({ file, author });
+	const fileUri = status === 'downloaded' ? (currentFile.title_link ?? url) : url;
 
 	return (
 		<View style={{ gap: 4 }}>
 			{msg ? <Markdown msg={msg} username={user?.username} /> : null}
-			<AudioPlayer msgId={id} fileUri={url} downloadState={status} onPlayButtonPress={onPress} rid={rid ?? ''} />
+			<AudioPlayer msgId={id} fileUri={fileUri} downloadState={status} onPlayButtonPress={onPress} rid={rid ?? ''} />
 		</View>
 	);
 };

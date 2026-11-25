@@ -84,7 +84,7 @@ export const useMediaAutoDownload = ({
 	const currentFile = fileOverrides ? { ...file, ...fileOverrides } : file;
 	const originalUrl = getOriginalURL(file);
 	const url = formatAttachmentUrl(
-		currentFile.title_link || getFileProperty(currentFile, fileType, 'url'),
+		file.title_link || getFileProperty(currentFile, fileType, 'url'),
 		user.id,
 		user.token,
 		baseUrl,

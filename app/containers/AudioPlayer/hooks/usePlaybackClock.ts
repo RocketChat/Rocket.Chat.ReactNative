@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useFrameCallback, useSharedValue } from 'react-native-reanimated';
+import { useDerivedValue, useFrameCallback, useSharedValue } from 'react-native-reanimated';
 import { scheduleOnRN, scheduleOnUI } from 'react-native-worklets';
 import type { AudioStatus } from 'expo-audio';
 
@@ -17,14 +17,12 @@ import {
 
 export const usePlaybackClock = (rate: number) => {
 	const clock = useSharedValue<IPlaybackClock>(createPlaybackClock(rate));
-	const position = useSharedValue(0);
+	const position = useDerivedValue(() => clock.get().shown);
 	const duration = useSharedValue(0);
 	const seekGeneration = useRef(0);
 
 	const frameCallback = useFrameCallback(({ timeSincePreviousFrame }) => {
-		const next = advanceFrame(clock.get(), (timeSincePreviousFrame ?? 0) / 1000, duration.get());
-		clock.set(next);
-		position.set(next.shown);
+		clock.set(advanceFrame(clock.get(), (timeSincePreviousFrame ?? 0) / 1000, duration.get()));
 	}, false);
 	const setFrameCallbackActive = frameCallback.setActive;
 
@@ -33,7 +31,6 @@ export const usePlaybackClock = (rate: number) => {
 
 		const wasPlaying = clock.get().playing;
 		clock.set(next);
-		position.set(next.shown);
 		if (next.playing !== wasPlaying) {
 			scheduleOnRN(setFrameCallbackActive, next.playing);
 		}
