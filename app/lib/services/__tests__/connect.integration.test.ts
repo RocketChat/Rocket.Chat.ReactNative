@@ -184,7 +184,10 @@ describe('connect() over the real SDK', () => {
 		expect(mockConnections).toHaveLength(1);
 		mockConnections[0].onerror();
 		await flushMicrotasksAndTimers();
+		expect(mockConnections).toHaveLength(1);
 
+		await jest.runOnlyPendingTimersAsync();
+		await flushMicrotasksAndTimers();
 		expect(mockConnections).toHaveLength(2);
 		mockConnections[1].onerror();
 		await flushMicrotasksAndTimers();
@@ -196,6 +199,24 @@ describe('connect() over the real SDK', () => {
 		mockConnections[2].onopen();
 		await flushMicrotasksAndTimers();
 
+		expect(redux.store.dispatch).toHaveBeenCalledWith(connectSuccess());
+	});
+
+	it('lets a socket recovery after a failed first attempt open a fresh connection immediately', async () => {
+		await connect({ server: 'https://example.com' });
+		await flushMicrotasksAndTimers();
+		mockConnections[0].onerror();
+		await flushMicrotasksAndTimers();
+
+		const before = mockConnections.length;
+
+		const recovering = sdk.driver!.reopenNow();
+		await flushMicrotasksAndTimers();
+		expect(mockConnections).toHaveLength(before + 1);
+		mockConnections[before].onopen();
+		await flushMicrotasksAndTimers();
+
+		await expect(recovering).resolves.toBeUndefined();
 		expect(redux.store.dispatch).toHaveBeenCalledWith(connectSuccess());
 	});
 
