@@ -112,17 +112,16 @@ export default class Root extends Component<{}, IState> {
 	init = async () => {
 		store.dispatch(appInitLocalSettings());
 
-		if (hasNativeHeaderBar) {
-			await preloadHeaderIcons().catch(log);
-		}
+		const [, initialNotification] = await Promise.all([
+			hasNativeHeaderBar ? preloadHeaderIcons().catch(log) : undefined,
+			initializePushNotifications()
+		]);
 
-		// Open app from push notification
-		const notification = await initializePushNotifications();
-		if (notification) {
-			if ('configured' in notification) {
+		if (initialNotification) {
+			if ('configured' in initialNotification) {
 				return;
 			}
-			onNotification(notification);
+			onNotification(initialNotification);
 			return;
 		}
 
