@@ -33,14 +33,14 @@ describe('subscribeToParsedRoot', () => {
 
 		store.subscribeToParsedRoot('**hi**', {}, first);
 		store.subscribeToParsedRoot('**hi**', {}, second);
-		expect(store.getParsedRoot(store.parseCacheKey('**hi**', {}))).toBeUndefined();
+		expect(store.getParsedRoot('**hi**', {})).toBeUndefined();
 
 		finishParse(0);
 
 		expect(parseOffThreadMock).toHaveBeenCalledTimes(1);
 		expect(first).toHaveBeenCalledTimes(1);
 		expect(second).toHaveBeenCalledTimes(1);
-		expect(store.getParsedRoot(store.parseCacheKey('**hi**', {}))?.[0].type).toBe('PARAGRAPH');
+		expect(store.getParsedRoot('**hi**', {})?.[0].type).toBe('PARAGRAPH');
 	});
 
 	it('does not parse again when a message remounts while its parse is in flight', () => {
@@ -62,8 +62,8 @@ describe('subscribeToParsedRoot', () => {
 		finishParse(0);
 		finishParse(1);
 
-		expect(JSON.stringify(store.getParsedRoot(store.parseCacheKey('hi :)', {})))).not.toContain('EMOJI');
-		expect(JSON.stringify(store.getParsedRoot(store.parseCacheKey('hi :)', emoticons)))).toContain('EMOJI');
+		expect(JSON.stringify(store.getParsedRoot('hi :)', {}))).not.toContain('EMOJI');
+		expect(JSON.stringify(store.getParsedRoot('hi :)', emoticons))).toContain('EMOJI');
 	});
 
 	it('shows the text as plain paragraphs when the parse fails', () => {
@@ -72,7 +72,7 @@ describe('subscribeToParsedRoot', () => {
 
 		store.subscribeToParsedRoot('**a**\nb', {}, jest.fn());
 
-		expect(store.getParsedRoot(store.parseCacheKey('**a**\nb', {}))).toEqual([
+		expect(store.getParsedRoot('**a**\nb', {})).toEqual([
 			{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: '**a**' }] },
 			{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'b' }] }
 		]);
@@ -86,7 +86,7 @@ describe('subscribeToParsedRoot', () => {
 			)
 		);
 		const show = (msg: string) => store.subscribeToParsedRoot(msg, {}, jest.fn())();
-		const cached = (msg: string) => store.getParsedRoot(store.parseCacheKey(msg, {}));
+		const cached = (msg: string) => store.getParsedRoot(msg, {});
 
 		show('lru first');
 		show('lru second');
@@ -96,5 +96,45 @@ describe('subscribeToParsedRoot', () => {
 
 		expect(cached('lru first')).toBeDefined();
 		expect(cached('lru second')).toBeUndefined();
+	});
+
+	it('keeps the root of a mounted message while 200 other messages store theirs', () => {
+		const store = loadFreshStore();
+		store.subscribeToParsedRoot('still mounted', {}, jest.fn());
+		finishParse(0);
+		parseOffThreadMock.mockImplementation((msg, options, onParsed) =>
+			onParsed(
+				jest.requireActual<typeof import('@rocket.chat/message-parser')>('@rocket.chat/message-parser').parse(msg, options)
+			)
+		);
+
+		Array.from({ length: 200 }, (_, index) => store.subscribeToParsedRoot(`other ${index}`, {}, jest.fn())());
+
+		expect(store.getParsedRoot('still mounted', {})?.[0].type).toBe('PARAGRAPH');
+		expect(store.getParsedRoot('other 0', {})).toBeUndefined();
+		expect(store.getParsedRoot('other 199', {})).toBeDefined();
+	});
+});
+
+describe('getParsedRoot', () => {
+	it('shows a message longer than the parse limit as the same plain text root without parsing it', () => {
+		const store = loadFreshStore();
+		const msg = `**${'a'.repeat(store.MESSAGE_MAX_PARSE_LENGTH)}**`;
+
+		store.subscribeToParsedRoot(msg, {}, jest.fn());
+		const root = store.getParsedRoot(msg, {});
+
+		expect(parseOffThreadMock).not.toHaveBeenCalled();
+		expect(root).toEqual([{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: msg }] }]);
+		expect(store.getParsedRoot(msg, {})).toBe(root);
+	});
+
+	it('shows nothing for an empty message without parsing it', () => {
+		const store = loadFreshStore();
+
+		store.subscribeToParsedRoot('', {}, jest.fn());
+
+		expect(parseOffThreadMock).not.toHaveBeenCalled();
+		expect(store.getParsedRoot('', {})).toEqual([]);
 	});
 });

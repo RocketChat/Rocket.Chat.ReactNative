@@ -3,7 +3,7 @@ import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 import { type Root } from '@rocket.chat/message-parser';
 
 import Markdown from '..';
-import { MESSAGE_MAX_PARSE_LENGTH } from '../hooks/useMessageRoot';
+import { MESSAGE_MAX_PARSE_LENGTH } from '../parseMessage';
 
 jest.mock('~/lib/hooks/useAppSelector', () => ({
 	useAppSelector: jest.fn(() => false)
