@@ -23,10 +23,16 @@ index 6e970c2..9cc855b 100644
        }
      }
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
-index 9aea981..55d5b0a 100644
+index 9aea981..e033160 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
-@@ -7,13 +7,16 @@ import android.graphics.Color
+@@ -1,19 +1,21 @@
+ package com.swmansion.enriched.markdown.spans
+ 
+ import android.content.Context
+-import android.graphics.Bitmap
+ import android.graphics.Canvas
+ import android.graphics.Color
  import android.graphics.Paint
  import android.graphics.Path
  import android.graphics.Rect
@@ -43,7 +49,7 @@ index 9aea981..55d5b0a 100644
  import android.widget.TextView
  import androidx.core.graphics.createBitmap
  import androidx.core.graphics.drawable.toDrawable
-@@ -23,6 +26,7 @@ import com.swmansion.enriched.markdown.EnrichedMarkdownText
+@@ -23,9 +25,11 @@ import com.swmansion.enriched.markdown.EnrichedMarkdownText
  import com.swmansion.enriched.markdown.styles.ImageSourceOverride
  import com.swmansion.enriched.markdown.styles.StyleConfig
  import com.swmansion.enriched.markdown.utils.common.findEnrichedMarkdownAncestor
@@ -51,11 +57,18 @@ index 9aea981..55d5b0a 100644
  import com.swmansion.enriched.markdown.utils.text.ImageCache
  import com.swmansion.enriched.markdown.utils.text.ImageDownloader
  import com.swmansion.enriched.markdown.utils.text.LocalImageLoader
-@@ -104,6 +108,65 @@ class ImageSpan(
++import com.swmansion.enriched.markdown.utils.text.OriginalImage
+ import com.swmansion.enriched.markdown.utils.text.view.repaintSpan
+ import java.lang.ref.WeakReference
+ import java.util.concurrent.Executors
+@@ -104,6 +108,68 @@ class ImageSpan(
    private var onBoxHeightChanged: (() -> Unit)? = null
    private var boxHeightReported = false
  
 +  private var animationDecodeRequested = false
++
++  // Held from the load until the span is hosted, so a cache eviction in between cannot lose them.
++  private var pendingAnimatedSource: ByteArray? = null
 +
 +  private val animation: Animatable?
 +    get() = sourceDrawable as? Animatable
@@ -117,19 +130,37 @@ index 9aea981..55d5b0a 100644
    private fun intrinsicImageSize(): Pair<Int, Int> {
      sourceDrawable?.let { return it.intrinsicWidth to it.intrinsicHeight }
      val cached = ImageCache.getOriginal(requestKey) ?: return 0 to 0
-@@ -170,10 +233,44 @@ class ImageSpan(
+@@ -160,20 +226,56 @@ class ImageSpan(
+     if (requestUrl.isEmpty()) return
+     val scheme = Uri.parse(requestUrl).scheme?.lowercase()
+     if (scheme == "http" || scheme == "https") {
+-      ImageDownloader.download(context, requestUrl, requestHeaders, ::handleLoadResult)
++      ImageDownloader.downloadOriginal(context, requestUrl, requestHeaders, ::handleLoadResult)
+     } else {
+-      val cached = ImageCache.getOriginal(requestKey)
+-      val bitmap = cached ?: LocalImageLoader.load(context, requestUrl)
+-      if (bitmap != null && cached == null) ImageCache.putOriginal(requestKey, bitmap)
+-      handleLoadResult(bitmap)
++      val cached = ImageCache.getOriginalImage(requestKey)
++      val image = cached ?: LocalImageLoader.load(context, requestUrl)?.let { OriginalImage(it) }
++      if (image != null && cached == null) ImageCache.putOriginal(requestKey, image)
++      handleLoadResult(image)
+     }
    }
  
-   private fun handleLoadResult(bitmap: Bitmap?) {
-+    showDrawable(bitmap?.toDrawable(context.resources))
+-  private fun handleLoadResult(bitmap: Bitmap?) {
++  private fun handleLoadResult(image: OriginalImage?) {
++    pendingAnimatedSource = image?.animatedSource
++    showDrawable(image?.bitmap?.toDrawable(context.resources))
 +    decodeAnimationOnceHosted()
 +  }
 +
 +  private fun decodeAnimationOnceHosted() {
 +    if (animationDecodeRequested || viewRef?.get() == null) return
 +    val still = sourceDrawable ?: return
-+    val encoded = ImageCache.getAnimatedSource(requestKey) ?: return
++    val encoded = pendingAnimatedSource ?: return
 +    animationDecodeRequested = true
++    pendingAnimatedSource = null
 +    val (decodeWidth, decodeHeight) = animationDecodeSizeWithoutUpscaling(still.intrinsicWidth, still.intrinsicHeight)
 +    AnimatedImageDecoder.decode(encoded, decodeWidth, decodeHeight) { drawable ->
 +      if (drawable !is Animatable) return@decode
@@ -163,7 +194,7 @@ index 9aea981..55d5b0a 100644
        ImageCache.markFailed(requestKey)
        loadFailed = true
        if (!wasFailed) refreshForSize(previousSize)
-@@ -181,7 +278,7 @@ class ImageSpan(
+@@ -181,7 +283,7 @@ class ImageSpan(
      }
      ImageCache.clearFailed(requestKey)
      loadFailed = false
@@ -172,7 +203,7 @@ index 9aea981..55d5b0a 100644
      wrapAndAssignDrawable(previousSize)
    }
  
-@@ -217,7 +314,9 @@ class ImageSpan(
+@@ -217,7 +319,9 @@ class ImageSpan(
      val base = sourceDrawable ?: return
      boxHeight = resolveBoxHeight(targetWidth)
  
@@ -183,7 +214,7 @@ index 9aea981..55d5b0a 100644
  
      if (cachedBitmap != null) {
        loadedDrawable =
-@@ -234,7 +333,7 @@ class ImageSpan(
+@@ -234,7 +338,7 @@ class ImageSpan(
            isBlockImage = !isInline,
            resizeMode = resizeMode,
            legacySizing = legacySizing,
@@ -192,7 +223,7 @@ index 9aea981..55d5b0a 100644
          )
      }
    }
-@@ -289,7 +388,9 @@ class ImageSpan(
+@@ -289,7 +393,9 @@ class ImageSpan(
      onBoxHeightChanged: (() -> Unit)? = null,
    ) {
      this.onBoxHeightChanged = onBoxHeightChanged
@@ -202,7 +233,7 @@ index 9aea981..55d5b0a 100644
      if (!isInline) {
        val availableWidth = getAvailableWidth(view)
        if (availableWidth > 0) {
-@@ -304,6 +405,7 @@ class ImageSpan(
+@@ -304,6 +410,7 @@ class ImageSpan(
          if (!boxHeightReported && boxHeight != placeholderBoxHeight) notifyBoxHeightMayHaveChanged(view)
        }
      }
@@ -299,45 +330,57 @@ index 0000000..5c73576
 +    }
 +}
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt
-index ccbf799..ef2ac9f 100644
+index ccbf799..25a6a44 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt
-@@ -8,9 +8,17 @@ object ImageCache {
-   private const val ORIGINAL_CACHE_SIZE = 20 * 1024 * 1024
+@@ -4,12 +4,24 @@ import android.graphics.Bitmap
+ import android.util.LruCache
+ import java.security.MessageDigest
+ 
++class OriginalImage(
++  val bitmap: Bitmap,
++  val animatedSource: ByteArray? = null,
++)
++
+ object ImageCache {
+-  private const val ORIGINAL_CACHE_SIZE = 20 * 1024 * 1024
++  private const val ORIGINAL_CACHE_SIZE = 40 * 1024 * 1024
    private const val PROCESSED_CACHE_SIZE = 30 * 1024 * 1024
    private const val FAILED_KEYS_SIZE = 200
-+  private const val ANIMATED_SOURCE_CACHE_SIZE = 20 * 1024 * 1024
  
-   private val originalCache = bitmapLruCache(ORIGINAL_CACHE_SIZE)
-   private val processedCache = bitmapLruCache(PROCESSED_CACHE_SIZE)
-+  private val animatedSourceCache =
-+    object : LruCache<String, ByteArray>(ANIMATED_SOURCE_CACHE_SIZE) {
+-  private val originalCache = bitmapLruCache(ORIGINAL_CACHE_SIZE)
++  // The still and its animated bytes share one entry, so they are evicted together.
++  private val originalCache =
++    object : LruCache<String, OriginalImage>(ORIGINAL_CACHE_SIZE) {
 +      override fun sizeOf(
 +        key: String,
-+        value: ByteArray,
-+      ): Int = value.size
++        value: OriginalImage,
++      ): Int = value.bitmap.allocationByteCount + (value.animatedSource?.size ?: 0)
 +    }
+   private val processedCache = bitmapLruCache(PROCESSED_CACHE_SIZE)
  
    // Measurement builds its own spans, so the requests that failed have to be readable
-   // by a new span: without this it would size an inline image as the square it never drew.
-@@ -52,6 +60,15 @@ object ImageCache {
-     originalCache.put(url, bitmap)
+@@ -43,13 +55,15 @@ object ImageCache {
+     return url + "|" + digest.joinToString(separator = "") { "%02x".format(it) }
    }
  
-+  fun getAnimatedSource(requestKey: String): ByteArray? = animatedSourceCache.get(requestKey)
+-  fun getOriginal(url: String): Bitmap? = originalCache.get(url)
++  fun getOriginal(url: String): Bitmap? = originalCache.get(url)?.bitmap
 +
-+  fun putAnimatedSource(
-+    requestKey: String,
-+    encoded: ByteArray,
-+  ) {
-+    animatedSourceCache.put(requestKey, encoded)
-+  }
-+
-   fun hasFailed(requestKey: String): Boolean = failedKeys.get(requestKey) != null
++  fun getOriginalImage(url: String): OriginalImage? = originalCache.get(url)
  
-   fun markFailed(requestKey: String) {
+   fun putOriginal(
+     url: String,
+-    bitmap: Bitmap,
++    image: OriginalImage,
+   ) {
+-    originalCache.put(url, bitmap)
++    originalCache.put(url, image)
+   }
+ 
+   fun hasFailed(requestKey: String): Boolean = failedKeys.get(requestKey) != null
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
-index eefcf9f..ddb0cc5 100644
+index eefcf9f..0c96d39 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
 @@ -7,6 +7,7 @@ import android.os.Handler
@@ -348,7 +391,7 @@ index eefcf9f..ddb0cc5 100644
  import okhttp3.Cache
  import okhttp3.CacheControl
  import okhttp3.Call
-@@ -22,12 +23,16 @@ object ImageDownloader {
+@@ -22,22 +23,36 @@ object ImageDownloader {
    private const val TAG = "ImageDownloader"
    private const val DISK_CACHE_SIZE = 100L * 1024 * 1024
    private const val TIMEOUT = 15L
@@ -365,10 +408,11 @@ index eefcf9f..ddb0cc5 100644
    // No disk cache: it keys by URL alone and would mix header sets.
    @Volatile
    private var headerClient: OkHttpClient? = null
-@@ -35,6 +40,16 @@ object ImageDownloader {
+   private var maxTargetWidth: Int = 0
  
-   private val inFlight = HashMap<String, MutableList<(Bitmap?) -> Unit>>()
- 
+-  private val inFlight = HashMap<String, MutableList<(Bitmap?) -> Unit>>()
++  private val inFlight = HashMap<String, MutableList<(OriginalImage?) -> Unit>>()
++
 +  private fun isAnimatedFormat(bytes: ByteArray): Boolean {
 +    val isGif = bytes.size > 4 && String(bytes, 0, 4, Charsets.US_ASCII) == "GIF8"
 +    val isAnimatedWebp =
@@ -378,10 +422,14 @@ index eefcf9f..ddb0cc5 100644
 +        (bytes[20].toInt() and WEBP_ANIMATION_FLAG) != 0
 +    return isGif || isAnimatedWebp
 +  }
-+
+ 
    /** Replaceable so unit tests never touch the network. */
    @VisibleForTesting
-   internal var remoteLoader: (Context, String, Map<String, String>, (Bitmap?) -> Unit) -> Unit = ::fetch
+-  internal var remoteLoader: (Context, String, Map<String, String>, (Bitmap?) -> Unit) -> Unit = ::fetch
++  internal var remoteLoader: (Context, String, Map<String, String>, (OriginalImage?) -> Unit) -> Unit = ::fetch
+ 
+   private fun getClient(context: Context): OkHttpClient =
+     client ?: synchronized(this) {
 @@ -56,14 +71,29 @@ object ImageDownloader {
          .also { headerClient = it }
      }
@@ -415,14 +463,74 @@ index eefcf9f..ddb0cc5 100644
    }
  
    fun download(
-@@ -132,6 +162,7 @@ object ImageDownloader {
+@@ -71,18 +101,25 @@ object ImageDownloader {
+     url: String,
+     headers: Map<String, String> = emptyMap(),
+     callback: (Bitmap?) -> Unit,
++  ) = remoteLoader(context, url, headers) { callback(it?.bitmap) }
++
++  fun downloadOriginal(
++    context: Context,
++    url: String,
++    headers: Map<String, String> = emptyMap(),
++    callback: (OriginalImage?) -> Unit,
+   ) = remoteLoader(context, url, headers, callback)
+ 
+   private fun fetch(
+     context: Context,
+     url: String,
+     headers: Map<String, String>,
+-    callback: (Bitmap?) -> Unit,
++    callback: (OriginalImage?) -> Unit,
+   ) {
+     val headers = ImageCache.normalizedHeaders(headers)
+     val requestKey = ImageCache.requestKey(url, headers)
+ 
+-    ImageCache.getOriginal(requestKey)?.let {
++    ImageCache.getOriginalImage(requestKey)?.let {
+       callback(it)
+       return
+     }
+@@ -128,11 +165,12 @@ object ImageDownloader {
+           call: Call,
+           response: Response,
+         ) {
+-          val bitmap =
++          val image =
              response.use {
                try {
                  val bytes = it.body?.bytes() ?: return@use null
-+                if (isAnimatedFormat(bytes)) ImageCache.putAnimatedSource(requestKey, bytes)
-                 decodeDownsampled(bytes, maxTargetWidth)
+-                decodeDownsampled(bytes, maxTargetWidth)
++                val still = decodeDownsampled(bytes, maxTargetWidth) ?: return@use null
++                OriginalImage(still, if (isAnimatedFormat(bytes)) bytes else null)
                } catch (_: OutOfMemoryError) {
                  Log.e(TAG, "OOM decoding image: $url")
+                 null
+@@ -142,8 +180,8 @@ object ImageDownloader {
+               }
+             }
+ 
+-          bitmap?.let { ImageCache.putOriginal(requestKey, it) }
+-          dispatchCallbacks(requestKey, bitmap)
++          image?.let { ImageCache.putOriginal(requestKey, it) }
++          dispatchCallbacks(requestKey, image)
+         }
+ 
+         override fun onFailure(
+@@ -218,11 +256,11 @@ object ImageDownloader {
+ 
+   private fun dispatchCallbacks(
+     requestKey: String,
+-    bitmap: Bitmap?,
++    image: OriginalImage?,
+   ) {
+     val callbacks = synchronized(inFlight) { inFlight.remove(requestKey) } ?: return
+     mainHandler.post {
+-      callbacks.forEach { it(bitmap) }
++      callbacks.forEach { it(image) }
+     }
+   }
+ }
 diff --git a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
 index feaff1d..3f0a4b0 100644
 --- a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
