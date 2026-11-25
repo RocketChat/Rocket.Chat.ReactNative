@@ -2,7 +2,15 @@ import { expect } from 'e2e';
 
 import { groupMessageCount, type Credentials } from './api';
 import type { Fixtures } from './flows';
-import { firstVisible, LONG_TIMEOUT, PHOTOS_NOTIFICATIONS_PROMPT, succeeds, tapIfVisible, tapUntilVisible } from './flows';
+import {
+	firstVisible,
+	LONG_TIMEOUT,
+	PHOTOS_NOTIFICATIONS_PROMPT,
+	readOutcome,
+	succeeds,
+	tapIfVisible,
+	tapUntilVisible
+} from './flows';
 
 const PHOTOS_APP = 'com.apple.mobileslideshow';
 const ANDROID_FILES_APP = 'com.google.android.documentsui';
@@ -59,7 +67,7 @@ export const shareToRocketChat = async ({ device, screen }: Fixtures, rocketChat
 	const shareList = screen.getByTestId('share-list-view');
 	await screen.scrollUntilVisible(shareCell, { direction: 'right', timeout: SHORT_TIMEOUT });
 	await shareCell.tap();
-	if (!(await succeeds(expect(shareList).toBeVisible({ timeout: SHARE_TARGET_RESPONSE_TIMEOUT })))) {
+	if ((await readOutcome(expect(shareList).toBeVisible({ timeout: SHARE_TARGET_RESPONSE_TIMEOUT }))) !== 'passed') {
 		await device.openApp(rocketChatApp);
 	}
 	await expect(shareList).toBeVisible({ timeout: LONG_TIMEOUT });
