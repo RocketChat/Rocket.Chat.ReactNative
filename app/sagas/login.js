@@ -50,6 +50,7 @@ import { store as reduxStore } from '../lib/store/auxStore';
 import { startInsideUnlessSharing } from './selectServer';
 
 const getServer = state => state.server.server;
+const getUser = state => state.login.user;
 const loginWithPasswordCall = args => loginWithPassword(args);
 const loginCall = credentials => login(credentials);
 const logoutCall = args => logout(args);
@@ -496,13 +497,19 @@ const isReselectedBeforeSwitching = function* isReselectedBeforeSwitching(server
 
 const runPostLoginSession = function* runPostLoginSession({ user }) {
 	const server = yield select(getServer);
-	let isRunning = true;
-	while (isRunning) {
+	let sessionUser = user;
+	while (true) {
 		const { ended } = yield race({
-			session: call(handleLoginSuccess, user, server),
+			session: call(handleLoginSuccess, sessionUser, server),
 			ended: take(endsPostLoginSession(server))
 		});
-		isRunning = ended?.type === types.SERVER.SELECT_REQUEST && (yield call(isReselectedBeforeSwitching, server));
+		if (ended?.type !== types.SERVER.SELECT_REQUEST) {
+			return;
+		}
+		sessionUser = yield select(getUser);
+		if (!(yield call(isReselectedBeforeSwitching, server))) {
+			return;
+		}
 	}
 };
 

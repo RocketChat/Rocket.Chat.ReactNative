@@ -119,7 +119,7 @@ jest.mock('~/lib/store/auxStore', () => ({
 import type { Store } from 'redux';
 
 import loginRoot from '../login';
-import { deleteAccount, loginSuccess, logout } from '~/actions/login';
+import { deleteAccount, loginSuccess, logout, setUser } from '~/actions/login';
 import { setPermissions } from '~/actions/permissions';
 import { setSupportedVersions } from '~/actions/supportedVersions';
 import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
@@ -263,6 +263,26 @@ describe('login saga — post-login session', () => {
 		expect(persistedToken()).toBe(USER.token);
 		expect(store.getState().login.user.id).toBe(USER.id);
 		expect(await voipRechecks(store)).toBe(true);
+	});
+
+	it('restarts with the user as it was when the switch began, not as it was at login', async () => {
+		const { store } = startLoggedInStore();
+		store.dispatch(loginSuccess(USER));
+		await flushSagaMicrotasks();
+		store.dispatch(setUser({ status: 'busy', language: 'pt-BR' }));
+
+		store.dispatch(selectServerRequest(SERVER_B, '7.0.0'));
+		store.dispatch(setUser({ id: 'user-b', username: 'userb', status: 'online', language: 'en' }));
+		store.dispatch(selectServerRequest(SERVER_A, '7.0.0'));
+		store.dispatch(selectServerCancel());
+		await flushSagaMicrotasks();
+
+		expect(store.getState().login.user).toMatchObject({
+			id: USER.id,
+			username: USER.username,
+			status: 'busy',
+			language: 'pt-BR'
+		});
 	});
 
 	it.each([
