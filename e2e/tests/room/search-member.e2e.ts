@@ -1,18 +1,9 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
+import { openRoomScreen } from '~e2e/support/appduct';
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import {
-	fillSettled,
-	loginWithDeepLink,
-	navigateToRoom,
-	type Fixtures,
-	LONG_TIMEOUT,
-	tapWhenVisible,
-	expectVisible,
-	openRoomActions,
-	headerSearchInput
-} from '~e2e/support/flows';
+import { fillSettled, loginToApp, type Fixtures, LONG_TIMEOUT, expectVisible, headerSearchInput } from '~e2e/support/flows';
 import { selectHeaderMenuOption } from '~e2e/support/header';
 
 afterEach(deleteCreatedUsers);
@@ -37,10 +28,8 @@ test('searches members of a room', { tags: ['test-5'] }, async fixtures => {
 	const user = await createUser();
 	const noMembersFound = screen.getByText('No members found');
 
-	await loginWithDeepLink(fixtures, user);
-	await navigateToRoom(fixtures, 'general');
-	await openRoomActions(fixtures);
-	await tapWhenVisible(fixtures, 'room-actions-members');
+	await loginToApp(fixtures, user);
+	await openRoomScreen(fixtures, 'RoomMembersView', 'general');
 	await expect(headerSearchInput(fixtures, 'room-members-view-search')).toBeVisible({ timeout: LONG_TIMEOUT });
 
 	await searchMember(fixtures, 'rohit.bansal');

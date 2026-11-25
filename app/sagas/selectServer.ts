@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { all, call as callEffect, put, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
@@ -156,7 +156,9 @@ export const startInsideUnlessSharing = function* startInsideUnlessSharing() {
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
 		yield* call(applyServerCertificate, server);
-		if (sdk.host === server) {
+		yield* call(migrateTokenKeysToServerScoped);
+		const { userId, token } = getStoredSession(server);
+		if (sdk.host === server && token) {
 			applyBasicAuth(server);
 			yield* startInsideUnlessSharing();
 			yield put(selectServerCancel());
@@ -165,8 +167,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
-		yield* call(migrateTokenKeysToServerScoped);
-		const { userId, token } = getStoredSession(server);
 		let user = null;
 		if (userId && token) {
 			// search credentials on database
@@ -239,8 +239,10 @@ const UNANSWERED_HOST_PROBE_TIMEOUT_MS = 30000;
 const probeServer = function* probeServer(server: string, signal: AbortSignal) {
 	const serverInfo = yield* getServerInfoSaga({ server, signal });
 	if (serverInfo) {
-		yield* call(getLoginServices, server, signal);
-		yield* call(getLoginSettings, { server, serverVersion: serverInfo.version, signal });
+		yield all([
+			callEffect(getLoginServices, server, signal),
+			callEffect(getLoginSettings, { server, serverVersion: serverInfo.version, signal })
+		]);
 	}
 	return serverInfo;
 };

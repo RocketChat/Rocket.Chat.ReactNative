@@ -87,12 +87,11 @@ export const setBadgeCount = (count?: number): void => {
 	setNotificationsBadgeCount(count);
 };
 export const removeNotificationsAndBadge = async (): Promise<void> => {
-	await removeAllNotifications();
-	await setNotificationsBadgeCount();
+	await Promise.all([removeAllNotifications(), setNotificationsBadgeCount()]);
 };
 export const initializePushNotifications = async (): Promise<INotification | { configured: boolean } | null> => {
-	await setNotificationsBadgeCount();
-	return pushNotificationConfigure(onNotification);
+	const [, notification] = await Promise.all([setNotificationsBadgeCount(), pushNotificationConfigure(onNotification)]);
+	return notification;
 };
 
 const dispatchPendingNotification = (pendingNotification: string): void => {

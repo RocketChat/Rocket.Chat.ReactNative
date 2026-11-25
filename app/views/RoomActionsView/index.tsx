@@ -215,7 +215,6 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 	async componentDidMount() {
 		this.mounted = true;
 		const { room, member } = this.state;
-		const { encryptionEnabled } = this.props;
 		if (room.rid) {
 			if (!room.id) {
 				if (room.t === SubscriptionType.OMNICHANNEL) {
@@ -227,53 +226,62 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 				}
 			}
 
-			if (room && (await this.canViewMembers())) {
-				try {
-					const counters = await getRoomCounters(room.rid, room.t as any);
-					if (counters.success) {
-						await this.updateUsersCount(counters.members);
-						this.setState({ joined: counters.joined, membersCount: counters.members });
-					}
-				} catch (e) {
-					log(e);
-				}
-			} else if (room.t === 'd' && isEmpty(member)) {
-				this.updateRoomMember();
-			}
-
-			const canAutoTranslate = canAutoTranslateMethod();
-			const { editRoomPermission, toggleRoomE2EEncryptionPermission, createTeamPermission, convertTeamPermission } = this.props;
-			const [[canEdit, canToggleEncryption, canCreateTeam, canAddChannelToTeam, canConvertTeam], canViewMembers] =
-				await Promise.all([
-					hasPermission(
-						[
-							editRoomPermission,
-							toggleRoomE2EEncryptionPermission,
-							createTeamPermission,
-							this.getMoveToTeamPermission(),
-							convertTeamPermission
-						],
-						room.rid
-					),
-					this.canViewMembers()
-				]);
-			const hasE2EEWarning = EncryptionUtils.hasE2EEWarning({
-				encryptionEnabled,
-				E2EKey: room.E2EKey,
-				roomEncrypted: room.encrypted
-			});
-
-			this.setState({
-				canAutoTranslate,
-				canEdit,
-				canToggleEncryption,
-				canViewMembers,
-				canCreateTeam,
-				canAddChannelToTeam,
-				canConvertTeam,
-				hasE2EEWarning
-			});
+			const canViewMembers = await this.canViewMembers();
+			await Promise.all([this.loadMembers(room, member, canViewMembers), this.loadActionFlags(room, canViewMembers)]);
 		}
+	}
+
+	private async loadMembers(room: TSubscriptionModel, member: Partial<IUser>, canViewMembers: boolean) {
+		if (canViewMembers) {
+			try {
+				const counters = await getRoomCounters(room.rid, room.t as any);
+				if (counters.success) {
+					await this.updateUsersCount(counters.members);
+					this.setState({ joined: counters.joined, membersCount: counters.members });
+				}
+			} catch (e) {
+				log(e);
+			}
+		} else if (room.t === 'd' && isEmpty(member)) {
+			this.updateRoomMember();
+		}
+	}
+
+	private async loadActionFlags(room: TSubscriptionModel, canViewMembers: boolean) {
+		const canAutoTranslate = canAutoTranslateMethod();
+		const {
+			encryptionEnabled,
+			editRoomPermission,
+			toggleRoomE2EEncryptionPermission,
+			createTeamPermission,
+			convertTeamPermission
+		} = this.props;
+		const [canEdit, canToggleEncryption, canCreateTeam, canAddChannelToTeam, canConvertTeam] = await hasPermission(
+			[
+				editRoomPermission,
+				toggleRoomE2EEncryptionPermission,
+				createTeamPermission,
+				this.getMoveToTeamPermission(),
+				convertTeamPermission
+			],
+			room.rid
+		);
+		const hasE2EEWarning = EncryptionUtils.hasE2EEWarning({
+			encryptionEnabled,
+			E2EKey: room.E2EKey,
+			roomEncrypted: room.encrypted
+		});
+
+		this.setState({
+			canAutoTranslate,
+			canEdit,
+			canToggleEncryption,
+			canViewMembers,
+			canCreateTeam,
+			canAddChannelToTeam,
+			canConvertTeam,
+			hasE2EEWarning
+		});
 	}
 
 	private async loadOmnichannelRoom(rid: string) {

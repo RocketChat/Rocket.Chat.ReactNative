@@ -27,6 +27,7 @@ jest.mock('~/lib/services/connect', () => ({
 }));
 
 jest.mock('~/lib/services/restApi', () => ({
+	forgetRegisteredPushToken: jest.fn(),
 	removePushToken: jest.fn()
 }));
 
@@ -35,6 +36,18 @@ jest.mock('~/lib/methods/helpers/sslPinning', () => ({
 }));
 
 const mockSdkLogout = jest.fn();
+
+const mockWorkspaceClient = {
+	login: jest.fn(),
+	del: jest.fn(),
+	logout: jest.fn(),
+	disconnect: jest.fn(() => Promise.resolve())
+};
+
+jest.mock('@rocket.chat/sdk', () => ({
+	Rocketchat: jest.fn(() => mockWorkspaceClient),
+	settings: {}
+}));
 
 jest.mock('~/lib/services/sdk', () => {
 	const { makeSdkMock } = jest.requireActual<typeof SdkIntegration>('~/lib/testUtils/sdkIntegration');
@@ -48,6 +61,7 @@ import { clearRemovedWorkspaceCertificate } from '~/lib/methods/helpers/sslPinni
 import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import sdk from '~/lib/services/sdk';
 import { disconnect } from '~/lib/services/connect';
+import { forgetRegisteredPushToken } from '~/lib/services/restApi';
 import database from '~/lib/database';
 import UserPreferences from '~/lib/methods/userPreferences';
 import {
@@ -57,7 +71,8 @@ import {
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
 	TOKEN_KEY,
-	getBasicAuthKey
+	getBasicAuthKey,
+	getUserTokenKey
 } from '~/lib/constants/keys';
 
 const mockSdk = sdk as unknown as SdkIntegration.IMockSdk;
@@ -66,6 +81,7 @@ const SERVER = 'https://a.rocket.chat';
 const OTHER_SERVER = 'https://b.rocket.chat';
 const USER_ID = 'user-a';
 const OTHER_USER_ID = 'user-b';
+const RESUME_TOKEN = 'resume-token-a';
 
 const tokenKey = (suffix: string): string => `${TOKEN_KEY}-${suffix}`;
 const certificateKey = (server: string): string => `${CERTIFICATE_KEY}-${server}`;
@@ -85,6 +101,7 @@ const keysToClear = [
 	tokenKey(USER_ID),
 	tokenKey(OTHER_USER_ID),
 	certificateKey(SERVER),
+	getUserTokenKey(SERVER, USER_ID),
 	CURRENT_SERVER
 ];
 
@@ -147,6 +164,12 @@ describe('removeServerData', () => {
 		expect(UserPreferences.getString(certificateKey(SERVER))).toBe('client-certificate');
 	});
 
+	it('forgets the push token registration of the removed server', async () => {
+		await removeServerData({ server: SERVER });
+
+		expect(forgetRegisteredPushToken).toHaveBeenCalledWith(SERVER);
+	});
+
 	it('skips the user token key when the server has no stored userId', async () => {
 		seedServer(SERVER);
 		UserPreferences.setString(tokenKey(USER_ID), `token-${USER_ID}`);
@@ -172,6 +195,28 @@ describe('removeServer', () => {
 		expect(jest.mocked(database.servers.batch).mock.invocationCallOrder[0]).toBeLessThan(
 			jest.mocked(clearRemovedWorkspaceCertificate).mock.invocationCallOrder[0]
 		);
+	});
+
+	it('closes the socket it opened to log out of the removed workspace', async () => {
+		seedServer(SERVER, USER_ID);
+		UserPreferences.setString(getUserTokenKey(SERVER, USER_ID), RESUME_TOKEN);
+
+		await removeServer({ server: SERVER });
+
+		expect(mockWorkspaceClient.login).toHaveBeenCalledWith({ resume: RESUME_TOKEN });
+		expect(mockWorkspaceClient.logout).toHaveBeenCalled();
+		expect(mockWorkspaceClient.disconnect).toHaveBeenCalledTimes(1);
+	});
+
+	it('closes the socket when the login to the removed workspace fails', async () => {
+		seedServer(SERVER, USER_ID);
+		UserPreferences.setString(getUserTokenKey(SERVER, USER_ID), RESUME_TOKEN);
+		mockWorkspaceClient.login.mockRejectedValueOnce(new Error('invalid token'));
+
+		await removeServer({ server: SERVER });
+
+		expect(mockWorkspaceClient.logout).not.toHaveBeenCalled();
+		expect(mockWorkspaceClient.disconnect).toHaveBeenCalledTimes(1);
 	});
 });
 

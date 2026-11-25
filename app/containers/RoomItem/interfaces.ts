@@ -27,14 +27,12 @@ export interface IRightActionsProps {
 
 export interface ITitleProps {
 	name: string;
-	hideUnreadStatus: boolean;
-	alert: boolean;
+	isUnread: boolean;
 }
 
 export interface IUpdatedAtProps {
 	date: string;
-	hideUnreadStatus: boolean;
-	alert: boolean;
+	isUnread: boolean;
 }
 
 export interface IWrapperProps extends IIconOrAvatar {
@@ -58,6 +56,7 @@ export interface ITypeIconProps {
 	style?: object;
 	sourceType: IOmnichannelSource;
 	abacAttributes?: ISubscription['abacAttributes'];
+	isUnread: boolean;
 }
 
 interface IRoomItemTouchables {
@@ -127,6 +126,7 @@ export interface ILastMessageProps {
 	showLastMessage: boolean;
 	username: string;
 	useRealName: boolean;
+	isUnread: boolean;
 }
 
 export interface ITouchableProps extends IRoomItemTouchables {
