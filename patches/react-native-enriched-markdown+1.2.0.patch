@@ -884,19 +884,34 @@ index bda3a64..f00db11 100644
  
  - (void)updateWithRows:(NSArray<ENRMTableIOSRowData *> *)rows
 diff --git a/node_modules/react-native-enriched-markdown/ios/segments/ENRMTableIOSGridView.m b/node_modules/react-native-enriched-markdown/ios/segments/ENRMTableIOSGridView.m
-index 7a49023..8094ac0 100644
+index 7a49023..17d59e5 100644
 --- a/node_modules/react-native-enriched-markdown/ios/segments/ENRMTableIOSGridView.m
 +++ b/node_modules/react-native-enriched-markdown/ios/segments/ENRMTableIOSGridView.m
-@@ -196,8 +196,7 @@ static ENRMTableIOSItemHit *itemInAttributedString(NSAttributedString *text, CGR
+@@ -1,4 +1,5 @@
+ #import "ENRMTableIOSGridView.h"
++#import "ENRMTextHitTest.h"
+ #import "LinkTapUtils.h"
+ 
+ #if !TARGET_OS_OSX
+@@ -180,7 +181,7 @@ static ENRMTableIOSItemHit *itemInAttributedString(NSAttributedString *text, CGR
+   NSUInteger glyphIndex = [layoutManager glyphIndexForPoint:local
+                                             inTextContainer:textContainer
+                              fractionOfDistanceThroughGlyph:&fraction];
+-  if (glyphIndex >= layoutManager.numberOfGlyphs)
++  if (glyphIndex >= layoutManager.numberOfGlyphs || !ENRMGlyphContainsPoint(layoutManager, textContainer, glyphIndex, local))
+     return nil;
+   NSUInteger charIndex = [layoutManager characterIndexForGlyphAtIndex:glyphIndex];
+   if (charIndex >= text.length)
+@@ -196,9 +197,6 @@ static ENRMTableIOSItemHit *itemInAttributedString(NSAttributedString *text, CGR
  
    NSRange glyphRange = [layoutManager glyphRangeForCharacterRange:itemRange actualCharacterRange:NULL];
    CGRect frame = [layoutManager boundingRectForGlyphRange:glyphRange inTextContainer:textContainer];
 -  // Links keep nearest-glyph hits; an image needs the tap inside its bounds.
 -  if (imageURL && !CGRectContainsPoint(frame, local))
-+  if (!CGRectContainsPoint(frame, local))
-     return nil;
+-    return nil;
  
    ENRMTableIOSItemHit *hit = [[ENRMTableIOSItemHit alloc] init];
+   hit.kind = linkURL ? ENRMTableIOSItemKindLink : ENRMTableIOSItemKindImage;
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.h b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.h
 index 0f84844..c664034 100644
 --- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.h
@@ -1198,10 +1213,10 @@ index 0000000..d781f11
 +
 +#endif
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.h b/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.h
-index 3f00233..9acd497 100644
+index 3f00233..ec96af5 100644
 --- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.h
 +++ b/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.h
-@@ -13,7 +13,7 @@ extern "C" {
+@@ -13,9 +13,13 @@ extern "C" {
  NSUInteger ENRMCharacterIndexForTap(ENRMPlatformTextView *textView, ENRMTapRecognizer *recognizer);
  
  /// Returns the character index in textView's text storage corresponding to
@@ -1209,12 +1224,18 @@ index 3f00233..9acd497 100644
 +/// the given point (in textView coordinates), or NSNotFound unless the point lies on that character's glyph.
  NSUInteger ENRMCharacterIndexAtPoint(ENRMPlatformTextView *textView, CGPoint point);
  
++/// Returns YES when the point (in text container coordinates) lies on the glyph, with 4pt of horizontal slack.
++BOOL ENRMGlyphContainsPoint(NSLayoutManager *layoutManager, NSTextContainer *textContainer, NSUInteger glyphIndex,
++                            CGPoint point);
++
  #ifdef __cplusplus
+ }
+ #endif
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.m b/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.m
-index d73646f..d911e2b 100644
+index d73646f..41f20de 100644
 --- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.m
 +++ b/node_modules/react-native-enriched-markdown/ios/utils/ENRMTextHitTest.m
-@@ -10,7 +10,13 @@ NSUInteger ENRMCharacterIndexAtPoint(ENRMPlatformTextView *textView, CGPoint poi
+@@ -10,7 +10,18 @@ NSUInteger ENRMCharacterIndexAtPoint(ENRMPlatformTextView *textView, CGPoint poi
                    fractionOfDistanceBetweenInsertionPoints:NULL];
  
    NSUInteger length = ENRMGetAttributedText(textView).length;
@@ -1223,9 +1244,14 @@ index d73646f..d911e2b 100644
 +    return NSNotFound;
 +
 +  NSUInteger glyphIndex = [layoutManager glyphIndexForCharacterAtIndex:index];
-+  CGRect glyphRect = [layoutManager boundingRectForGlyphRange:NSMakeRange(glyphIndex, 1)
-+                                              inTextContainer:textView.textContainer];
-+  return CGRectContainsPoint(CGRectInset(glyphRect, -4, 0), adjusted) ? index : NSNotFound;
++  return ENRMGlyphContainsPoint(layoutManager, textView.textContainer, glyphIndex, adjusted) ? index : NSNotFound;
++}
++
++BOOL ENRMGlyphContainsPoint(NSLayoutManager *layoutManager, NSTextContainer *textContainer, NSUInteger glyphIndex,
++                            CGPoint point)
++{
++  CGRect glyphRect = [layoutManager boundingRectForGlyphRange:NSMakeRange(glyphIndex, 1) inTextContainer:textContainer];
++  return CGRectContainsPoint(CGRectInset(glyphRect, -4, 0), point);
  }
  
  NSUInteger ENRMCharacterIndexForTap(ENRMPlatformTextView *textView, ENRMTapRecognizer *recognizer)
