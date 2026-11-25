@@ -4,6 +4,7 @@ import I18n from '~/i18n';
 import { showConfirmationAlert } from '~/lib/methods/helpers/info';
 import SSLPinning, { getServerCertificate } from '~/lib/methods/helpers/sslPinning';
 import log from '~/lib/methods/helpers/log';
+import { showToast } from '~/lib/methods/helpers/showToast';
 
 const useCertificate = () => {
 	const [certificate, setCertificate] = useState<string | null>(null);
@@ -11,6 +12,10 @@ const useCertificate = () => {
 	const chooseCertificate = async (server: string) => {
 		try {
 			const certificate = await SSLPinning?.pickCertificate(server);
+			if (!certificate) {
+				showToast(I18n.t('No_certificate_selected'));
+				return;
+			}
 			setCertificate(certificate);
 		} catch {
 			// Do nothing
