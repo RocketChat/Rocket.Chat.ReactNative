@@ -25,13 +25,18 @@ const styles = StyleSheet.create({
 
 export const RadioButton = ({ element, value, loading, onChange }: IRadioButton) => {
 	const { colors } = useTheme();
-	const [pick, setPick] = useState<{ value: Option['value']; madeOn: IRadioButton['value'] }>();
-	const selected = pick && pick.madeOn === value ? pick.value : value;
+	const [pick, setPick] = useState<{ value: Option['value'] }>();
+	const [pickedOn, setPickedOn] = useState(value);
+	if (value !== pickedOn) {
+		setPickedOn(value);
+		setPick(undefined);
+	}
+	const selected = pick ? pick.value : value;
 	const options = element.options || [];
 
 	const onPress = async (optionValue: Option['value']) => {
 		const previous = pick;
-		const next = { value: optionValue, madeOn: value };
+		const next = { value: optionValue };
 		setPick(next);
 		const succeeded = await onChange({ value: optionValue });
 		if (!succeeded) {
@@ -51,6 +56,7 @@ export const RadioButton = ({ element, value, loading, onChange }: IRadioButton)
 						disabled={loading}
 						style={styles.option}
 						accessible
+						accessibilityLabel={textParser([option.text])}
 						accessibilityRole='radio'
 						accessibilityState={{ checked, disabled: loading }}>
 						<Radio check={checked} />

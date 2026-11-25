@@ -71,7 +71,7 @@ describe('UIKit RadioButton', () => {
 
 		fireEvent.press(screen.getByTestId('uikit-radio-forwarding-active'));
 		rerender(<RadioButton element={threeOptions} value='busy' loading={false} onChange={onChange} />);
-		await act(() => resolveAction(false));
+		await act(async () => resolveAction(false));
 
 		expect(screen.getByTestId('uikit-radio-forwarding-busy')).toBeChecked();
 		expect(screen.getByTestId('uikit-radio-forwarding-inactive')).not.toBeChecked();
@@ -84,7 +84,7 @@ describe('UIKit RadioButton', () => {
 
 		fireEvent.press(screen.getByTestId('uikit-radio-forwarding-active'));
 		rerender(<RadioButton element={element} value='active' loading={false} onChange={onChange} />);
-		await act(() => resolveAction(false));
+		await act(async () => resolveAction(false));
 
 		expect(screen.getByTestId('uikit-radio-forwarding-active')).toBeChecked();
 		expect(screen.getByTestId('uikit-radio-forwarding-inactive')).not.toBeChecked();
@@ -97,11 +97,30 @@ describe('UIKit RadioButton', () => {
 
 		fireEvent.press(screen.getByTestId('uikit-radio-forwarding-active'));
 		fireEvent.press(screen.getByTestId('uikit-radio-forwarding-busy'));
-		await act(() => resolvers[1](true));
-		await act(() => resolvers[0](false));
+		await act(async () => resolvers[1](true));
+		await act(async () => resolvers[0](false));
 
 		expect(screen.getByTestId('uikit-radio-forwarding-busy')).toBeChecked();
 		expect(screen.getByTestId('uikit-radio-forwarding-inactive')).not.toBeChecked();
+	});
+
+	test('drops the local selection when the value from props changes, even back to the value it was made against', async () => {
+		const onChange = jest.fn().mockResolvedValue(true);
+		const { rerender } = render(<RadioButton element={threeOptions} value='inactive' loading={false} onChange={onChange} />);
+
+		await act(() => fireEvent.press(screen.getByTestId('uikit-radio-forwarding-active')));
+		rerender(<RadioButton element={threeOptions} value='busy' loading={false} onChange={onChange} />);
+		rerender(<RadioButton element={threeOptions} value='inactive' loading={false} onChange={onChange} />);
+
+		expect(screen.getByTestId('uikit-radio-forwarding-inactive')).toBeChecked();
+		expect(screen.getByTestId('uikit-radio-forwarding-active')).not.toBeChecked();
+	});
+
+	test('labels each option with its text only, so screen readers skip the radio icon', () => {
+		render(<RadioButton element={element} value='inactive' loading={false} onChange={jest.fn()} />);
+
+		expect(screen.getByTestId('uikit-radio-forwarding-active')).toHaveProp('accessibilityLabel', 'Active');
+		expect(screen.getByTestId('uikit-radio-forwarding-inactive')).toHaveProp('accessibilityLabel', 'Inactive');
 	});
 
 	test('does not change the selection while loading', () => {
