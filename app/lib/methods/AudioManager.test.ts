@@ -2,6 +2,8 @@ jest.mock('../database/services/Message', () => ({
 	getMessageById: jest.fn(() => Promise.resolve(null))
 }));
 
+jest.mock('./helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+
 jest.mock('./getFilePathAudio', () => ({
 	getFilePathAudio: jest.fn(() => 'file://x')
 }));
@@ -87,7 +89,7 @@ describe('AudioManager', () => {
 		await AudioManager.loadAudio({ rid: 'room-2', uri: 'file://b.mp3' });
 		const [player1, player2] = players;
 
-		await AudioManager.unloadRoomAudios('room-1');
+		AudioManager.unloadRoomAudios('room-1');
 
 		expect(player1.release).toHaveBeenCalled();
 		expect(player2.release).not.toHaveBeenCalled();
@@ -99,7 +101,7 @@ describe('AudioManager', () => {
 		await AudioManager.loadAudio({ rid: 'room-10', uri: 'file://x.mp3' });
 		const [playerSubstring, playerExact] = players;
 
-		await AudioManager.unloadRoomAudios('room-1');
+		AudioManager.unloadRoomAudios('room-1');
 
 		expect(playerSubstring.release).toHaveBeenCalled();
 		expect(playerExact.release).not.toHaveBeenCalled();
@@ -194,6 +196,7 @@ describe('AudioManager', () => {
 		const { AudioManager, players } = setup();
 		const firstKey = AudioManager.loadAudio({ msgId: 'a', rid: 'room', uri: 'file://x' });
 		const nextKey = AudioManager.loadAudio({ msgId: 'b', rid: 'room', uri: 'file://x' });
+		AudioManager.addAudioRendered(nextKey);
 		const nextMessage = { id: 'b', attachments: [{ audio_url: '/x', audio_type: 'audio/mp3' }] } as TMessageModel;
 		jest
 			.spyOn(AudioManager, 'getNextAudioMessage')
@@ -228,7 +231,7 @@ describe('AudioManager', () => {
 		AudioManager.setRate(completedKey, 2);
 		await AudioManager.onEnd(completedKey, { isLoaded: true, didJustFinish: true } as AudioStatus);
 
-		await AudioManager.unloadRoomAudios('room');
+		AudioManager.unloadRoomAudios('room');
 
 		expect(players[0].release).toHaveBeenCalledTimes(1);
 		expect(players[1].release).toHaveBeenCalledTimes(1);
@@ -246,11 +249,284 @@ describe('AudioManager', () => {
 			expect(AudioManager[field]).not.toHaveProperty([liveKey]);
 		}
 		expect(AudioManager['audioUris'][otherKey]).toBe('file://x');
-		expect(AudioManager['audioMeta'][otherKey]).toEqual({ msgId: 'c', rid: 'other' });
+		expect(AudioManager['audioMeta'][otherKey]).toEqual({ msgId: 'c', rid: 'other', isRecordingPreview: false });
 		jest.spyOn(AudioManager, 'getNextAudioMessage').mockResolvedValue({ id: 'a', attachments: [{}] } as TMessageModel);
 		const playAudio = jest.spyOn(AudioManager, 'playAudio');
 		await AudioManager.playNextAudioInSequence(liveKey);
 		expect(playAudio).not.toHaveBeenCalled();
+	});
+
+	describe('now playing audio', () => {
+		const finished = { isLoaded: true, didJustFinish: true } as AudioStatus;
+		const getNowPlaying = () => require('./useNowPlayingAudioStore').useNowPlayingAudioStore.getState().audio;
+
+		it('playAudio makes the audio the now playing one, and pauseAudio keeps it paused', async () => {
+			const { AudioManager } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+
+			await AudioManager.playAudio(key);
+			expect(getNowPlaying()).toMatchObject({ audioKey: key, rid: 'room', msgId: 'm1', playing: true });
+
+			AudioManager.pauseAudio();
+			expect(getNowPlaying()).toMatchObject({ audioKey: key, playing: false });
+		});
+
+		it('the now playing audio keeps the thread it was last played from, also when played from the audio player', async () => {
+			const { AudioManager } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+
+			await AudioManager.playAudio(key, { tmid: 'thread-1' });
+			expect(getNowPlaying()).toMatchObject({ audioKey: key, rid: 'room', tmid: 'thread-1' });
+
+			AudioManager.pauseAudio();
+			await AudioManager.playAudio(key);
+			expect(getNowPlaying()).toMatchObject({ audioKey: key, tmid: 'thread-1' });
+
+			await AudioManager.playAudio(key, {});
+			expect(getNowPlaying()).toMatchObject({ audioKey: key, tmid: undefined });
+		});
+
+		it('a paused status of the now playing audio reaches the store', async () => {
+			const { AudioManager } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(key);
+
+			AudioManager.onPlaybackStatusUpdate(key, { isLoaded: true, playing: false, currentTime: 3, duration: 9 } as AudioStatus);
+
+			expect(getNowPlaying()).toMatchObject({ audioKey: key, uri: 'file://a.mp3', playing: false });
+		});
+
+		it('status updates of the now playing audio reach its listeners, and those of other audios do not', async () => {
+			const { AudioManager } = setup();
+			const playingKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			const otherKey = AudioManager.loadAudio({ msgId: 'm2', rid: 'room', uri: 'file://b.mp3' });
+			await AudioManager.playAudio(playingKey);
+			const listener = jest.fn();
+			const unsubscribe = AudioManager.subscribeToNowPlayingStatus(listener);
+			const status = { isLoaded: true, playing: true, currentTime: 3, duration: 9 } as AudioStatus;
+
+			AudioManager.onPlaybackStatusUpdate(playingKey, status);
+			AudioManager.onPlaybackStatusUpdate(otherKey, { ...status, currentTime: 1 });
+			unsubscribe();
+			AudioManager.onPlaybackStatusUpdate(playingKey, { ...status, currentTime: 4 });
+
+			expect(listener.mock.calls).toEqual([[status]]);
+		});
+
+		it('a new listener receives the current status of the now playing audio at once', async () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(key);
+			const currentStatus = { isLoaded: true, playing: true, currentTime: 4, duration: 9 };
+			players[0].currentStatus = currentStatus;
+			const listener = jest.fn();
+
+			AudioManager.subscribeToNowPlayingStatus(listener);
+
+			expect(listener).toHaveBeenCalledWith(currentStatus);
+		});
+
+		it('leaving the room keeps the now playing audio and releases the others', async () => {
+			const { AudioManager, players } = setup();
+			const playingKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			AudioManager.loadAudio({ msgId: 'm2', rid: 'room', uri: 'file://b.mp3' });
+			await AudioManager.playAudio(playingKey);
+
+			AudioManager.unloadRoomAudios('room');
+
+			expect(players[0].release).not.toHaveBeenCalled();
+			expect(players[0].pause).not.toHaveBeenCalled();
+			expect(players[1].release).toHaveBeenCalled();
+			expect(getNowPlaying()).toMatchObject({ audioKey: playingKey, playing: true });
+		});
+
+		it('an audio that ends after its room was left is released and hides the player', async () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(key);
+			AudioManager.unloadRoomAudios('room');
+
+			await AudioManager.onEnd(key, finished);
+
+			expect(players[0].release).toHaveBeenCalledTimes(1);
+			expect(getNowPlaying()).toBeNull();
+			expect(AudioManager['audioUris']).not.toHaveProperty([key]);
+		});
+
+		it('playing another audio releases the previous one when its room was left', async () => {
+			const { AudioManager, players } = setup();
+			const leftKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(leftKey);
+			AudioManager.unloadRoomAudios('room');
+			const otherKey = AudioManager.loadAudio({ msgId: 'm2', rid: 'other', uri: 'file://b.mp3' });
+
+			await AudioManager.playAudio(otherKey);
+
+			expect(players[0].pause).toHaveBeenCalled();
+			expect(players[0].release).toHaveBeenCalledTimes(1);
+			expect(getNowPlaying()).toMatchObject({ audioKey: otherKey, playing: true });
+		});
+
+		it('reopening the room keeps the audio when it is unloaded again later', async () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(key);
+			AudioManager.unloadRoomAudios('room');
+			AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			AudioManager.pauseAudio();
+
+			await AudioManager.closeAudio();
+
+			expect(players).toHaveLength(1);
+			expect(players[0].release).not.toHaveBeenCalled();
+			expect(players[0].seekTo).toHaveBeenCalledWith(0);
+		});
+
+		it('closeAudio stops the audio and hides the player', async () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(key);
+
+			await AudioManager.closeAudio();
+
+			expect(players[0].pause).toHaveBeenCalled();
+			expect(players[0].seekTo).toHaveBeenCalledWith(0);
+			expect(players[0].release).not.toHaveBeenCalled();
+			expect(getNowPlaying()).toBeNull();
+		});
+
+		it('closeAudio releases the audio when its room was left', async () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(key);
+			AudioManager.unloadRoomAudios('room');
+
+			await AudioManager.closeAudio();
+
+			expect(players[0].release).toHaveBeenCalledTimes(1);
+			expect(getNowPlaying()).toBeNull();
+		});
+
+		it('a callback registered for the now playing audio receives its current status at once', async () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(key);
+			const currentStatus = { isLoaded: true, playing: true, currentTime: 4, duration: 9 };
+			players[0].currentStatus = currentStatus;
+			const callback = jest.fn();
+
+			AudioManager.setOnPlaybackStatusUpdate(key, callback);
+
+			expect(callback).toHaveBeenCalledWith(currentStatus);
+		});
+
+		it('a callback registered for an audio paused partway receives its current status at once', async () => {
+			const { AudioManager, players } = setup();
+			const fileKey = AudioManager.loadAudio({ rid: 'room', uri: 'file://upload.mp3' });
+			const messageKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(fileKey);
+			await AudioManager.playAudio(messageKey);
+			const currentStatus = { isLoaded: true, playing: false, currentTime: 42, duration: 90 };
+			players[0].currentStatus = currentStatus;
+			const callback = jest.fn();
+
+			AudioManager.setOnPlaybackStatusUpdate(fileKey, callback);
+
+			expect(callback).toHaveBeenCalledWith(currentStatus);
+		});
+
+		it('a callback registered for an audio still at its start waits for its next status', () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			players[0].currentStatus = { isLoaded: true, playing: false, currentTime: 0, duration: 0 };
+			const callback = jest.fn();
+
+			AudioManager.setOnPlaybackStatusUpdate(key, callback);
+
+			expect(callback).not.toHaveBeenCalled();
+		});
+
+		it('a recording preview never becomes the now playing audio', async () => {
+			const { AudioManager, players } = setup();
+			const messageKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			const previewKey = AudioManager.loadAudio({ rid: 'room', uri: 'file://recording.aac', isRecordingPreview: true });
+			await AudioManager.playAudio(messageKey);
+
+			await AudioManager.playAudio(previewKey);
+			expect(getNowPlaying()).toBeNull();
+
+			AudioManager.unloadRoomAudios('room');
+			expect(players[1].release).toHaveBeenCalled();
+		});
+
+		it('an audio without a message, like a file in the Files list, becomes the now playing one', async () => {
+			const { AudioManager } = setup();
+			const fileKey = AudioManager.loadAudio({ rid: 'room', uri: 'file://upload.mp3' });
+
+			await AudioManager.playAudio(fileKey);
+
+			expect(getNowPlaying()).toMatchObject({ audioKey: fileKey, rid: 'room', msgId: undefined, playing: true });
+		});
+
+		it('tapping an audio that never loaded keeps the now playing audio', async () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(key);
+			AudioManager.unloadRoomAudios('room');
+
+			await AudioManager.playAudio('');
+
+			expect(players[0].release).not.toHaveBeenCalled();
+			expect(players[0].pause).not.toHaveBeenCalled();
+			expect(getNowPlaying()).toMatchObject({ audioKey: key, playing: true });
+		});
+
+		it('leaving the room while play is starting does not play the released audio', async () => {
+			const { AudioManager, players } = setup();
+			const key = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+
+			const log = require('./helpers/log').default as jest.Mock;
+
+			const playing = AudioManager.playAudio(key);
+			AudioManager.unloadRoomAudios('room');
+			await playing;
+
+			expect(log).not.toHaveBeenCalled();
+			expect(players[0].play).not.toHaveBeenCalled();
+			expect(getNowPlaying()).toBeNull();
+		});
+
+		it('pauseAudioIfPlaying pauses only the audio it names', async () => {
+			const { AudioManager, players } = setup();
+			const playingKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			const idleKey = AudioManager.loadAudio({ rid: 'room', uri: 'file://b.mp3' });
+			await AudioManager.playAudio(playingKey);
+
+			AudioManager.pauseAudioIfPlaying(idleKey);
+			expect(players[0].pause).not.toHaveBeenCalled();
+
+			AudioManager.pauseAudioIfPlaying(playingKey);
+			expect(players[0].pause).toHaveBeenCalledTimes(1);
+			expect(getNowPlaying()).toMatchObject({ audioKey: playingKey, playing: false });
+		});
+
+		it('an audio from a left room stays in the rooms list player when the next audio fails to start', async () => {
+			const { AudioManager, players } = setup();
+			const leftKey = AudioManager.loadAudio({ msgId: 'm1', rid: 'room', uri: 'file://a.mp3' });
+			await AudioManager.playAudio(leftKey);
+			AudioManager.unloadRoomAudios('room');
+			const otherKey = AudioManager.loadAudio({ msgId: 'm2', rid: 'other', uri: 'file://b.mp3' });
+
+			const playing = AudioManager.playAudio(otherKey);
+			AudioManager.unloadRoomAudios('other');
+			await playing;
+
+			expect(players[0].release).not.toHaveBeenCalled();
+			expect(getNowPlaying()).toMatchObject({ audioKey: leftKey, playing: false });
+
+			await AudioManager.playAudio(leftKey);
+			expect(players[0].play).toHaveBeenCalledTimes(2);
+		});
 	});
 
 	describe('key helpers', () => {

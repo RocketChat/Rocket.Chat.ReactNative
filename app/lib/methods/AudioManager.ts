@@ -8,6 +8,7 @@ import { getFilePathAudio } from './getFilePathAudio';
 import { type TMessageModel } from '~/definitions/IMessage';
 import log from './helpers/log';
 import { AUDIO_MODE } from '../constants/audio';
+import { useNowPlayingAudioStore, type INowPlayingAudio } from './useNowPlayingAudioStore';
 
 const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;
 
@@ -18,9 +19,11 @@ class AudioManagerClass {
 	private audioRates: { [audioKey: string]: number };
 	private audioSubscriptions: { [audioKey: string]: () => void };
 	private audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void };
-	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string } };
+	private audioMeta: { [audioKey: string]: { msgId?: string; rid: string; tmid?: string; isRecordingPreview: boolean } };
 	private audioPlaying: string;
 	private audiosRendered: Set<string>;
+	private detachedAudioKeys: Set<string>;
+	private nowPlayingStatusListeners: Set<(status: AudioStatus) => void>;
 
 	constructor() {
 		this.audioQueue = {};
@@ -32,6 +35,71 @@ class AudioManagerClass {
 		this.audioMeta = {};
 		this.audioPlaying = '';
 		this.audiosRendered = new Set<string>();
+		this.detachedAudioKeys = new Set<string>();
+		this.nowPlayingStatusListeners = new Set();
+	}
+
+	private get nowPlaying() {
+		return useNowPlayingAudioStore.getState().audio;
+	}
+
+	private isNowPlaying(audioKey: string) {
+		return this.nowPlaying?.audioKey === audioKey;
+	}
+
+	private updateNowPlaying(audioKey: string, changes: Partial<INowPlayingAudio>) {
+		const { nowPlaying } = this;
+		if (nowPlaying?.audioKey === audioKey) {
+			useNowPlayingAudioStore.setState({ audio: { ...nowPlaying, ...changes } });
+		}
+	}
+
+	private clearNowPlaying() {
+		useNowPlayingAudioStore.setState({ audio: null });
+	}
+
+	private startNowPlaying(audioKey: string) {
+		const { rid, msgId, tmid } = this.audioMeta[audioKey];
+		useNowPlayingAudioStore.setState({
+			audio: { audioKey, rid, msgId, tmid, uri: this.audioUris[audioKey], playing: true }
+		});
+	}
+
+	private releasePlayer(audioKey: string) {
+		this.audioSubscriptions[audioKey]?.();
+		delete this.audioSubscriptions[audioKey];
+		try {
+			this.audioQueue[audioKey]?.release();
+		} catch (error) {
+			log(error);
+		}
+		delete this.audioQueue[audioKey];
+	}
+
+	private releaseAudio(audioKey: string) {
+		this.releasePlayer(audioKey);
+		delete this.audioCallbacks[audioKey];
+		delete this.audioUris[audioKey];
+		delete this.audioPositions[audioKey];
+		delete this.audioRates[audioKey];
+		delete this.audioMeta[audioKey];
+		this.detachedAudioKeys.delete(audioKey);
+	}
+
+	private releaseIfDetached(audioKey: string) {
+		if (!this.detachedAudioKeys.has(audioKey)) {
+			return false;
+		}
+		this.releaseAudio(audioKey);
+		return true;
+	}
+
+	private subscribeToStatus(audioKey: string) {
+		this.audioSubscriptions[audioKey]?.();
+		const sub = this.audioQueue[audioKey]?.addListener('playbackStatusUpdate', status => {
+			this.onPlaybackStatusUpdate(audioKey, status);
+		});
+		if (sub) this.audioSubscriptions[audioKey] = () => sub.remove?.();
 	}
 
 	addAudioRendered = (audioKey: string) => {
@@ -42,11 +110,23 @@ class AudioManagerClass {
 		this.audiosRendered.delete(audioKey);
 	};
 
-	loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string {
+	loadAudio({
+		msgId,
+		rid,
+		tmid,
+		uri,
+		isRecordingPreview = false
+	}: {
+		rid: string;
+		msgId?: string;
+		tmid?: string;
+		uri: string;
+		isRecordingPreview?: boolean;
+	}): string {
 		const audioKey = getAudioKey({ msgId, rid, uri });
-		this.addAudioRendered(audioKey);
 		this.audioUris[audioKey] = uri;
-		this.audioMeta[audioKey] = { msgId, rid };
+		this.audioMeta[audioKey] = { msgId, rid, tmid, isRecordingPreview };
+		this.detachedAudioKeys.delete(audioKey);
 		if (this.audioQueue[audioKey]) {
 			return audioKey;
 		}
@@ -56,13 +136,19 @@ class AudioManagerClass {
 		return audioKey;
 	}
 
-	async playAudio(audioKey: string) {
+	async playAudio(audioKey: string, playedFrom?: { tmid?: string }) {
+		if (!this.audioQueue[audioKey] && !this.audioUris[audioKey]) {
+			return;
+		}
+		if (playedFrom && this.audioMeta[audioKey]) {
+			this.audioMeta[audioKey].tmid = playedFrom.tmid;
+		}
+
 		if (this.audioPlaying) {
 			this.pauseAudio();
 		}
 
-		// If player was released, recreate it
-		if (!this.audioQueue[audioKey] && this.audioUris[audioKey]) {
+		if (!this.audioQueue[audioKey]) {
 			const sound = createAudioPlayer({ uri: this.audioUris[audioKey] });
 			this.audioQueue[audioKey] = sound;
 
@@ -70,20 +156,26 @@ class AudioManagerClass {
 				await sound.seekTo(this.audioPositions[audioKey]);
 			}
 
-			// Re-register the callback if it exists
-			if (this.audioCallbacks[audioKey]) {
-				const sub = sound.addListener('playbackStatusUpdate', status => {
-					this.onPlaybackStatusUpdate(audioKey, status, this.audioCallbacks[audioKey]);
-				});
-				if (sub) this.audioSubscriptions[audioKey] = () => sub.remove?.();
-			}
+			this.subscribeToStatus(audioKey);
 		}
 
 		try {
 			await setAudioModeAsync(AUDIO_MODE);
+			if (!this.audioQueue[audioKey]) {
+				return;
+			}
 			this.audioPlaying = audioKey;
 			this.setRate(audioKey, this.audioRates[audioKey]);
 			this.audioQueue[audioKey]?.play();
+			const previousAudioKey = this.nowPlaying?.audioKey;
+			if (previousAudioKey && previousAudioKey !== audioKey) {
+				this.releaseIfDetached(previousAudioKey);
+			}
+			if (this.audioMeta[audioKey]?.isRecordingPreview) {
+				this.clearNowPlaying();
+			} else {
+				this.startNowPlaying(audioKey);
+			}
 		} catch (error) {
 			log(error);
 		}
@@ -92,8 +184,28 @@ class AudioManagerClass {
 	pauseAudio(): void {
 		if (this.audioPlaying) {
 			this.audioQueue[this.audioPlaying]?.pause();
+			this.updateNowPlaying(this.audioPlaying, { playing: false });
 			this.audioPlaying = '';
 		}
+	}
+
+	pauseAudioIfPlaying(audioKey: string): void {
+		if (this.audioPlaying === audioKey) {
+			this.pauseAudio();
+		}
+	}
+
+	async closeAudio() {
+		const audioKey = this.nowPlaying?.audioKey;
+		if (!audioKey) {
+			return;
+		}
+		this.pauseAudio();
+		this.clearNowPlaying();
+		if (this.releaseIfDetached(audioKey)) {
+			return;
+		}
+		await this.setPositionAsync(audioKey, 0);
 	}
 
 	async setPositionAsync(audioKey: string, time: number) {
@@ -121,20 +233,40 @@ class AudioManagerClass {
 		}
 	}
 
-	onPlaybackStatusUpdate(audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void): void {
-		if (status) {
-			callback(status);
-			this.onEnd(audioKey, status);
+	onPlaybackStatusUpdate(audioKey: string, status: AudioStatus): void {
+		if (!status) {
+			return;
 		}
+		this.audioCallbacks[audioKey]?.(status);
+		if (this.isNowPlaying(audioKey)) {
+			if (status.isLoaded && status.playing !== this.nowPlaying?.playing) {
+				this.updateNowPlaying(audioKey, { playing: status.playing });
+			}
+			this.nowPlayingStatusListeners.forEach(listener => listener(status));
+		}
+		this.onEnd(audioKey, status);
 	}
 
 	setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AudioStatus) => void): void {
 		this.audioCallbacks[audioKey] = callback;
-		this.audioSubscriptions[audioKey]?.();
-		const sub = this.audioQueue[audioKey]?.addListener('playbackStatusUpdate', status => {
-			this.onPlaybackStatusUpdate(audioKey, status, callback);
-		});
-		if (sub) this.audioSubscriptions[audioKey] = () => sub.remove?.();
+		this.subscribeToStatus(audioKey);
+		const status = this.audioQueue[audioKey]?.currentStatus;
+		const hasMovedFromStart = !!status?.isLoaded && status.currentTime > 0;
+		if (status && (this.isNowPlaying(audioKey) || hasMovedFromStart)) {
+			callback(status);
+		}
+	}
+
+	subscribeToNowPlayingStatus(listener: (status: AudioStatus) => void): () => void {
+		this.nowPlayingStatusListeners.add(listener);
+		const audioKey = this.nowPlaying?.audioKey;
+		const status = audioKey ? this.audioQueue[audioKey]?.currentStatus : undefined;
+		if (status) {
+			listener(status);
+		}
+		return () => {
+			this.nowPlayingStatusListeners.delete(listener);
+		};
 	}
 
 	async onEnd(audioKey: string, status: AudioStatus): Promise<void> {
@@ -144,12 +276,16 @@ class AudioManagerClass {
 
 		if (status.isLoaded && status.didJustFinish) {
 			try {
-				this.audioSubscriptions[audioKey]?.();
-				delete this.audioSubscriptions[audioKey];
-				this.audioQueue[audioKey].release();
-				delete this.audioQueue[audioKey];
-				this.audioPositions[audioKey] = 0;
-				this.audioPlaying = '';
+				if (!this.releaseIfDetached(audioKey)) {
+					this.releasePlayer(audioKey);
+					this.audioPositions[audioKey] = 0;
+				}
+				if (this.audioPlaying === audioKey) {
+					this.audioPlaying = '';
+				}
+				if (this.isNowPlaying(audioKey)) {
+					this.clearNowPlaying();
+				}
 				await this.playNextAudioInSequence(audioKey);
 			} catch (error) {
 				log(error);
@@ -205,28 +341,21 @@ class AudioManagerClass {
 		}
 	}
 
-	async unloadRoomAudios(rid?: string) {
+	unloadRoomAudios(rid?: string): void {
 		if (!rid) {
 			return;
 		}
-		const roomAudioKeysLoaded = Object.keys(this.audioMeta).filter(audioKey => this.audioMeta[audioKey].rid === rid);
-		const roomAudiosLoaded = roomAudioKeysLoaded.map(key => this.audioQueue[key]);
-		try {
-			await Promise.all(roomAudiosLoaded.map(audio => audio?.release()));
-		} catch (error) {
-			log(error);
-		}
-		roomAudioKeysLoaded.forEach(key => {
-			this.audioSubscriptions[key]?.();
-			delete this.audioSubscriptions[key];
-			delete this.audioCallbacks[key];
-			delete this.audioQueue[key];
-			delete this.audioUris[key];
-			delete this.audioPositions[key];
-			delete this.audioRates[key];
-			delete this.audioMeta[key];
+		const nowPlayingAudioKey = this.nowPlaying?.audioKey;
+		const roomAudioKeys = Object.keys(this.audioMeta).filter(audioKey => this.audioMeta[audioKey].rid === rid);
+		roomAudioKeys.forEach(audioKey => {
+			this.audiosRendered.delete(audioKey);
+			if (audioKey === nowPlayingAudioKey) {
+				this.detachedAudioKeys.add(audioKey);
+				delete this.audioCallbacks[audioKey];
+				return;
+			}
+			this.releaseAudio(audioKey);
 		});
-		this.audioPlaying = '';
 	}
 }
 

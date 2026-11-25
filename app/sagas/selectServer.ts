@@ -42,6 +42,7 @@ import { setPermissions } from '../lib/methods/getPermissions';
 import { setRoles } from '../lib/methods/getRoles';
 import { connect, disconnect, getWebsocketInfo, getLoginServices } from '../lib/services/connect';
 import sdk from '../lib/services/sdk';
+import AudioManager from '../lib/methods/AudioManager';
 import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
@@ -165,6 +166,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
+		AudioManager.closeAudio();
 		yield* call(migrateTokenKeysToServerScoped);
 		const { userId, token } = getStoredSession(server);
 		let user = null;

@@ -13,6 +13,7 @@ interface IButton {
 	disabled?: boolean;
 	onPress: () => void;
 	audioState: TAudioState;
+	testIDPrefix?: string;
 }
 
 type TCustomIconName = 'arrow-down' | 'play-shape-filled' | 'pause-shape-filled';
@@ -41,12 +42,12 @@ const Icon = ({ audioState, disabled }: { audioState: TAudioState; disabled: boo
 	);
 };
 
-const PlayButton = ({ onPress, disabled = false, audioState }: IButton): ReactElement => {
+const PlayButton = ({ onPress, disabled = false, audioState, testIDPrefix = '' }: IButton): ReactElement => {
 	const { colors } = useTheme();
 
 	return (
 		<NativeButton
-			testID='play-button'
+			testID={`${testIDPrefix}play-button`}
 			accessible
 			accessibilityLabel={getPlayButtonAccessibilityLabel(audioState)}
 			style={[styles.playPauseButton, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]}

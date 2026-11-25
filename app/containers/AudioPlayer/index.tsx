@@ -1,14 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useNavigation } from '@react-navigation/native';
 import type { AudioStatus } from 'expo-audio';
 
-import { useTheme } from '~/theme';
-import styles from './styles';
-import Seek from './Seek';
-import PlaybackSpeed from './PlaybackSpeed';
-import PlayButton from './PlayButton';
+import AudioControls from './AudioControls';
 import AudioManager from '~/lib/methods/AudioManager';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
 import { type TDownloadState } from '~/lib/methods/handleMediaDownload';
@@ -24,8 +19,10 @@ interface IAudioPlayerProps {
 	onPlayButtonPress?: Function;
 	downloadState: TDownloadState;
 	rid: string;
+	tmid?: string;
 	// It's optional when comes from MessagesView
 	msgId?: string;
+	isRecordingPreview?: boolean;
 }
 
 const AudioPlayer = ({
@@ -34,7 +31,9 @@ const AudioPlayer = ({
 	onPlayButtonPress = () => {},
 	downloadState,
 	msgId,
-	rid
+	rid,
+	tmid,
+	isRecordingPreview = false
 }: IAudioPlayerProps) => {
 	const isLoading = downloadState === 'loading';
 	const isDownloaded = downloadState === 'downloaded';
@@ -43,7 +42,6 @@ const AudioPlayer = ({
 	const [paused, setPaused] = useState(true);
 	const playbackClock = usePlaybackClock(playbackSpeed ?? AVAILABLE_SPEEDS[1]);
 	const waveform = useAudioWaveform(fileUri, isDownloaded);
-	const { colors } = useTheme();
 	const audioUri = useRef<string>('');
 	const navigation = useNavigation();
 
@@ -83,7 +81,7 @@ const AudioPlayer = ({
 				playbackClock.pause();
 				await AudioManager.pauseAudio();
 			} else {
-				await AudioManager.playAudio(audioUri.current);
+				await AudioManager.playAudio(audioUri.current, { tmid });
 			}
 		} catch {
 			// Do nothing
@@ -104,20 +102,29 @@ const AudioPlayer = ({
 		}
 	};
 
+	const onStatusUpdate = useEffectEvent(onPlaybackStatusUpdate);
+
+	const listenToAudio = useEffectEvent(() => {
+		AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onStatusUpdate);
+		AudioManager.setRate(audioUri.current, playbackSpeed);
+	});
+
 	useEffect(() => {
 		if (fileUri && isDownloaded) {
-			const immediate = setImmediate(async () => {
+			const immediate = setImmediate(() => {
 				try {
-					audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
-					AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
-					AudioManager.setRate(audioUri.current, playbackSpeed);
+					audioUri.current = AudioManager.loadAudio({ msgId, rid, tmid, uri: fileUri, isRecordingPreview });
+					if (navigation.isFocused()) {
+						AudioManager.addAudioRendered(audioUri.current);
+					}
+					listenToAudio();
 				} catch {
 					// do nothing
 				}
 			});
 			return () => clearImmediate(immediate);
 		}
-	}, [fileUri, isDownloaded]);
+	}, [fileUri, isDownloaded, msgId, rid, tmid, isRecordingPreview, navigation]);
 
 	useEffect(() => {
 		if (paused) {
@@ -129,18 +136,25 @@ const AudioPlayer = ({
 
 	useEffect(() => {
 		const unsubscribeFocus = navigation.addListener('focus', () => {
-			AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+			AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onStatusUpdate);
 			AudioManager.addAudioRendered(audioUri.current);
 		});
+		const pauseRecordingPreview = () => {
+			if (isRecordingPreview) {
+				AudioManager.pauseAudioIfPlaying(audioUri.current);
+			}
+		};
 		const unsubscribeBlur = navigation.addListener('blur', () => {
 			AudioManager.removeAudioRendered(audioUri.current);
+			pauseRecordingPreview();
 		});
 
 		return () => {
 			unsubscribeFocus();
 			unsubscribeBlur();
+			pauseRecordingPreview();
 		};
-	}, [navigation]);
+	}, [navigation, isRecordingPreview]);
 
 	let audioState: TAudioState = 'to-download';
 	if (isLoading) {
@@ -154,17 +168,16 @@ const AudioPlayer = ({
 	}
 
 	return (
-		<View style={[styles.audioContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
-			<PlayButton disabled={disabled} audioState={audioState} onPress={onPress} />
-			<Seek
-				currentTime={playbackClock.position}
-				duration={playbackClock.duration}
-				loaded={!disabled && isDownloaded}
-				peaks={waveform}
-				onChangeTime={setPosition}
-			/>
-			<PlaybackSpeed />
-		</View>
+		<AudioControls
+			audioState={audioState}
+			disabled={disabled}
+			loaded={!disabled && isDownloaded}
+			currentTime={playbackClock.position}
+			duration={playbackClock.duration}
+			peaks={waveform}
+			onPlayPress={onPress}
+			onSeek={setPosition}
+		/>
 	);
 };
 

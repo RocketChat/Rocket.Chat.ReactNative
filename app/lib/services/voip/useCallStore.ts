@@ -5,6 +5,7 @@ import InCallManager from 'react-native-incall-manager';
 
 import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import log from '~/lib/methods/helpers/log';
+import AudioManager from '~/lib/methods/AudioManager';
 import NativeVoipModule from '~/lib/native/NativeVoip';
 import { pendingHangups } from './pendingHangups';
 import { terminateNativeCall } from './terminateNativeCall';
@@ -169,6 +170,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			callStartTime: call.state === 'active' ? Date.now() : null
 		});
 
+		AudioManager.pauseAudio();
 		try {
 			InCallManager.start({ media: 'audio' });
 		} catch (error) {

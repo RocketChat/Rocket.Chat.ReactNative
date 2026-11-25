@@ -15,6 +15,7 @@ jest.mock('~/lib/methods/AudioManager', () => ({
 		addAudioRendered: jest.fn(),
 		removeAudioRendered: jest.fn(),
 		pauseAudio: jest.fn(),
+		pauseAudioIfPlaying: jest.fn(),
 		playAudio: jest.fn(),
 		setPositionAsync: jest.fn(() => Promise.resolve())
 	}
@@ -52,7 +53,7 @@ describe('AudioPlayer', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 
-		(AudioManager.loadAudio as jest.Mock).mockResolvedValue('mock-audio-key');
+		(AudioManager.loadAudio as jest.Mock).mockReturnValue('mock-audio-key');
 		(AudioManager.playAudio as jest.Mock).mockResolvedValue(undefined);
 		(AudioManager.pauseAudio as jest.Mock).mockResolvedValue(undefined);
 
@@ -64,7 +65,7 @@ describe('AudioPlayer', () => {
 			if (event === 'blur') capturedBlurCb = cb;
 			return mockUnsubscribe;
 		});
-		(useNavigation as jest.Mock).mockReturnValue({ navigate: jest.fn(), addListener: mockAddListener });
+		(useNavigation as jest.Mock).mockReturnValue({ navigate: jest.fn(), addListener: mockAddListener, isFocused: () => true });
 	});
 
 	afterEach(() => {
@@ -79,7 +80,8 @@ describe('AudioPlayer', () => {
 				expect(AudioManager.loadAudio).toHaveBeenCalledWith({
 					msgId: 'msg-1',
 					rid: 'room-1',
-					uri: 'file:///audio.mp3'
+					uri: 'file:///audio.mp3',
+					isRecordingPreview: false
 				});
 			});
 		});
@@ -120,7 +122,8 @@ describe('AudioPlayer', () => {
 				expect(AudioManager.loadAudio).toHaveBeenCalledWith({
 					msgId: 'msg-1',
 					rid: 'room-1',
-					uri: 'file:///audio.mp3'
+					uri: 'file:///audio.mp3',
+					isRecordingPreview: false
 				});
 			});
 		});
@@ -136,7 +139,8 @@ describe('AudioPlayer', () => {
 				expect(AudioManager.loadAudio).toHaveBeenCalledWith({
 					msgId: 'msg-1',
 					rid: 'room-1',
-					uri: 'file:///audio.mp3'
+					uri: 'file:///audio.mp3',
+					isRecordingPreview: false
 				});
 			});
 		});
@@ -144,7 +148,9 @@ describe('AudioPlayer', () => {
 
 	describe('error handling (try-catch)', () => {
 		it('silently catches loadAudio errors without crashing the component', async () => {
-			(AudioManager.loadAudio as jest.Mock).mockRejectedValue(new Error('load failed'));
+			(AudioManager.loadAudio as jest.Mock).mockImplementation(() => {
+				throw new Error('load failed');
+			});
 
 			const { getByTestId } = render(<AudioPlayer {...defaultProps} />);
 
@@ -154,7 +160,9 @@ describe('AudioPlayer', () => {
 		});
 
 		it('skips setOnPlaybackStatusUpdate and setRate (with loaded key) when loadAudio throws', async () => {
-			(AudioManager.loadAudio as jest.Mock).mockRejectedValue(new Error('load failed'));
+			(AudioManager.loadAudio as jest.Mock).mockImplementation(() => {
+				throw new Error('load failed');
+			});
 
 			render(<AudioPlayer {...defaultProps} />);
 
@@ -225,7 +233,7 @@ describe('AudioPlayer', () => {
 
 			fireEvent.press(getByTestId('play-button'));
 
-			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key'));
+			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key', { tmid: undefined }));
 		});
 	});
 
@@ -237,7 +245,7 @@ describe('AudioPlayer', () => {
 
 			fireEvent.press(getByTestId('play-button'));
 
-			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key'));
+			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key', { tmid: undefined }));
 		});
 
 		it('calls AudioManager.pauseAudio when audio is currently playing', async () => {
@@ -358,12 +366,87 @@ describe('AudioPlayer', () => {
 			expect(AudioManager.addAudioRendered).toHaveBeenCalled();
 		});
 
+		it('keeps an audio loaded while the screen is covered out of the rendered set', async () => {
+			(useNavigation as jest.Mock).mockReturnValue({
+				navigate: jest.fn(),
+				addListener: jest.fn(() => jest.fn()),
+				isFocused: () => false
+			});
+			render(<AudioPlayer {...defaultProps} />);
+
+			await waitFor(() => expect(AudioManager.setOnPlaybackStatusUpdate).toHaveBeenCalled());
+
+			expect(AudioManager.addAudioRendered).not.toHaveBeenCalled();
+		});
+
+		it('adds an audio loaded on the focused screen to the rendered set', async () => {
+			render(<AudioPlayer {...defaultProps} />);
+
+			await waitFor(() => expect(AudioManager.addAudioRendered).toHaveBeenCalled());
+		});
+
 		it('calls removeAudioRendered when screen is blurred', () => {
 			render(<AudioPlayer {...defaultProps} />);
 
 			act(() => capturedBlurCb!());
 
 			expect(AudioManager.removeAudioRendered).toHaveBeenCalled();
+		});
+
+		it('keeps a message audio playing when the screen is blurred', () => {
+			render(<AudioPlayer {...defaultProps} />);
+
+			act(() => capturedBlurCb!());
+
+			expect(AudioManager.pauseAudioIfPlaying).not.toHaveBeenCalled();
+		});
+
+		it('keeps an audio with no message, like a file in the Files list, playing when the screen is blurred', async () => {
+			(AudioManager.loadAudio as jest.Mock).mockReturnValue('file-key');
+			render(<AudioPlayer {...defaultProps} msgId={undefined} />);
+			await flushDeferredLoad();
+
+			act(() => capturedBlurCb!());
+
+			expect(AudioManager.pauseAudioIfPlaying).not.toHaveBeenCalled();
+		});
+
+		it('keeps an audio with no message playing when its screen closes', async () => {
+			(AudioManager.loadAudio as jest.Mock).mockReturnValue('file-key');
+			const { unmount } = render(<AudioPlayer {...defaultProps} msgId={undefined} />);
+			await flushDeferredLoad();
+
+			act(() => unmount());
+
+			expect(AudioManager.pauseAudioIfPlaying).not.toHaveBeenCalled();
+		});
+
+		it('pauses the recording preview when the screen is blurred', async () => {
+			(AudioManager.loadAudio as jest.Mock).mockReturnValue('preview-key');
+			render(<AudioPlayer {...defaultProps} msgId={undefined} isRecordingPreview />);
+			await flushDeferredLoad();
+
+			act(() => capturedBlurCb!());
+
+			expect(AudioManager.pauseAudioIfPlaying).toHaveBeenCalledWith('preview-key');
+		});
+
+		it('pauses the recording preview when it closes', async () => {
+			(AudioManager.loadAudio as jest.Mock).mockReturnValue('preview-key');
+			const { unmount } = render(<AudioPlayer {...defaultProps} msgId={undefined} isRecordingPreview />);
+			await flushDeferredLoad();
+
+			act(() => unmount());
+
+			expect(AudioManager.pauseAudioIfPlaying).toHaveBeenCalledWith('preview-key');
+		});
+
+		it('keeps a message audio playing when its screen closes', () => {
+			const { unmount } = render(<AudioPlayer {...defaultProps} />);
+
+			act(() => unmount());
+
+			expect(AudioManager.pauseAudioIfPlaying).not.toHaveBeenCalled();
 		});
 
 		it('calls both unsubscribe functions on unmount', () => {
@@ -540,7 +623,7 @@ describe('AudioPlayer', () => {
 			const currentTimeValue = seekProp('currentTime');
 
 			fireEvent.press(getByTestId('play-button'));
-			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key'));
+			await waitFor(() => expect(AudioManager.playAudio).toHaveBeenCalledWith('mock-audio-key', { tmid: undefined }));
 
 			act(() => {
 				statusCb({ isLoaded: true, playing: true, currentTime: 5, duration: 30 });

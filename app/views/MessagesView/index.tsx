@@ -29,7 +29,6 @@ import { type IAttachment } from '~/definitions/IAttachment';
 import { type IUrl } from '~/definitions/IUrl';
 import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '~/lib/services/restApi';
 import { type TNavigation } from '~/stacks/stackType';
-import AudioManager from '~/lib/methods/AudioManager';
 import { Encryption } from '~/lib/encryption';
 import Navigation from '~/lib/navigation/appNavigation';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
@@ -93,10 +92,6 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 
 	componentDidMount() {
 		this.load();
-	}
-
-	componentWillUnmount(): void {
-		AudioManager.pauseAudio();
 	}
 
 	shouldComponentUpdate(nextProps: IMessagesViewProps, nextState: IMessagesViewState) {

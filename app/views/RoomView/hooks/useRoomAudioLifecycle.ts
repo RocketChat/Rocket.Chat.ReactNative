@@ -1,16 +1,20 @@
-import { useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useCallback, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 import AudioManager from '~/lib/methods/AudioManager';
-import { type IRoomViewProps } from '../definitions';
+import { blurRoom, focusRoom } from '~/lib/methods/useFocusedRoomStore';
 
 export function useRoomAudioLifecycle(rid: string | undefined, tmid: string | undefined): void {
-	const navigation = useNavigation<IRoomViewProps['navigation']>();
-
-	useEffect(() => {
-		const unsubscribeBlur = navigation.addListener('blur', () => AudioManager.pauseAudio());
-		return unsubscribeBlur;
-	}, [navigation]);
+	useFocusEffect(
+		useCallback(() => {
+			if (!rid) {
+				return;
+			}
+			const screen = { rid, tmid };
+			focusRoom(screen);
+			return () => blurRoom(screen);
+		}, [rid, tmid])
+	);
 
 	useEffect(
 		() => () => {

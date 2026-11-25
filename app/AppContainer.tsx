@@ -19,6 +19,7 @@ import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers/emitter';
 import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
+import NowPlayingAudio from './containers/NowPlayingAudio';
 
 const useIsLoading = () =>
 	useSelector(
@@ -85,6 +86,7 @@ const AppContainer = () => {
 	return (
 		<>
 			<MediaCallHeader />
+			<NowPlayingAudio />
 			<AppNavigation
 				theme={navigationTheme(theme)}
 				ref={navigationRef}
