@@ -37,11 +37,24 @@ import { APP, SERVER } from '~/actions/actionsTypes';
 import { RootEnum } from '~/definitions/redux/TRootEnum';
 import sdk from '~/lib/services/sdk';
 import { connect } from '~/lib/services/connect';
+import UserPreferences from '~/lib/methods/userPreferences';
+import { getServerUserIdKey, getUserTokenKey } from '~/lib/constants/keys';
 import type { MockConnection } from '~/lib/testUtils/sdkIntegration';
 import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
 import { cancelSagaTasks, createRecordingStore, flushSagaMicrotasks } from '~/lib/testUtils/sagaStore';
 
 const HOST = 'https://open.rocket.chat';
+const USER_ID = 'user-id';
+
+const storeSession = () => {
+	UserPreferences.setString(getServerUserIdKey(HOST), USER_ID);
+	UserPreferences.setString(getUserTokenKey(HOST, USER_ID), 'token');
+};
+
+const clearSession = () => {
+	UserPreferences.removeItem(getServerUserIdKey(HOST));
+	UserPreferences.removeItem(getUserTokenKey(HOST, USER_ID));
+};
 
 describe('selectServer saga — redundant select for the live SDK host', () => {
 	beforeEach(() => {
@@ -51,9 +64,11 @@ describe('selectServer saga — redundant select for the live SDK host', () => {
 	afterEach(() => {
 		cancelSagaTasks();
 		sdk.disconnect();
+		clearSession();
 	});
 
 	it('reads the live host off the real SDK client and cancels the select without reconnecting', async () => {
+		storeSession();
 		sdk.initialize(HOST);
 		expect(sdk.host).toBe(HOST);
 

@@ -1,10 +1,10 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
 	backToRoomsList,
-	loginWithDeepLink,
+	loginToApp,
 	navigateToRoom,
 	sendMessage,
 	LONG_TIMEOUT,
@@ -23,7 +23,7 @@ test('edits a thread reply after app data is cleared', { tags: ['test-4'], timeo
 	const user = await createUser();
 	const room = await createRandomRoom(user);
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	await navigateToRoom(fixtures, room.name);
 	await sendMessage(fixtures, 'thread');
 	await replyInThread(fixtures, 'thread');

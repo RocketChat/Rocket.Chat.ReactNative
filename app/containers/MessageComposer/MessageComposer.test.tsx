@@ -95,8 +95,8 @@ const initialStoreState = () => {
 };
 initialStoreState();
 
-jest.mock('~/lib/database/services/Message', () => ({
-	getMessageById: (messageId: any) => ({
+jest.mock('~/lib/database/services/Message', () => {
+	const getMessage = (messageId: any) => ({
 		id: messageId,
 		rid: 'rid',
 		msg: messageId !== 'image' ? `Message ${messageId}` : undefined,
@@ -108,8 +108,9 @@ jest.mock('~/lib/database/services/Message', () => ({
 						}
 					]
 				: []
-	})
-}));
+	});
+	return { getMessageById: getMessage, getMessageOrThreadMessageById: getMessage };
+});
 
 const initialContext = {
 	rid: 'rid',

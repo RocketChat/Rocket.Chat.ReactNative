@@ -28,3 +28,6 @@ export const getMessageById = async (messageId: string | null, tmid?: string | n
 
 	return (await getThreadMessageById(messageId)) ?? (await findInMessages(messageId)) ?? getThreadById(messageId);
 };
+
+export const getMessageOrThreadMessageById = async (messageId: string) =>
+	(await findInMessages(messageId)) ?? getThreadMessageById(messageId);
