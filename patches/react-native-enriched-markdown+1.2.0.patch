@@ -424,7 +424,7 @@ index eefcf9f..ddb0cc5 100644
                } catch (_: OutOfMemoryError) {
                  Log.e(TAG, "OOM decoding image: $url")
 diff --git a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
-index feaff1d..70e6900 100644
+index feaff1d..3f0a4b0 100644
 --- a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
 +++ b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
 @@ -62,6 +62,11 @@
@@ -475,7 +475,7 @@ index feaff1d..70e6900 100644
  
    for (RCTUIView *segment in _segmentViews) {
      if ([segment isKindOfClass:[EnrichedMarkdownInternalText class]]) {
-@@ -1786,20 +1808,40 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
+@@ -1786,20 +1808,41 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
  }
  #endif
  
@@ -500,7 +500,8 @@ index feaff1d..70e6900 100644
 +      UITextView *textView = (UITextView *)view;
 +      BOOL isTextPress = _enableTextPress && textView.selectedRange.length == 0 &&
 +                         textPressIndexAtPoint(textView, viewPoint) != NSNotFound;
-+      if (isTextPress || isPointOnInteractiveElement(textView, viewPoint, _enableImagePress, NO)) {
++      if (isTextPress ||
++          isPointOnInteractiveElement(textView, viewPoint, _enableTaskListItemToggle, _enableImagePress, NO)) {
          return nil;
        }
 +      break;
@@ -522,7 +523,7 @@ index feaff1d..70e6900 100644
      }
  
      if (![segment isKindOfClass:[EnrichedMarkdownInternalText class]]) {
-@@ -1807,12 +1849,7 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
+@@ -1807,16 +1850,12 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
      }
      EnrichedMarkdownInternalText *textSegment = (EnrichedMarkdownInternalText *)segment;
      CGPoint segmentPoint = [self convertPoint:point toView:textSegment.textView];
@@ -536,7 +537,13 @@ index feaff1d..70e6900 100644
        // Only where textTapped would emit, so a parent Pressable still gets the rest, as on Android.
        BOOL isTextPress = _enableTextPress && textSegment.textView.selectedRange.length == 0 &&
                           textPressIndexAtPoint(textSegment.textView, segmentPoint) != NSNotFound;
-@@ -1825,6 +1862,7 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
+-      if (isTextPress || isPointOnInteractiveElement(textSegment.textView, segmentPoint, _enableImagePress, NO)) {
++      if (isTextPress || isPointOnInteractiveElement(textSegment.textView, segmentPoint, _enableTaskListItemToggle,
++                                                  _enableImagePress, NO)) {
+         return nil;
+       }
+       break;
+@@ -1825,6 +1864,7 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownCls(void)
  
    return [super touchEventEmitterAtPoint:point];
  }
@@ -544,6 +551,20 @@ index feaff1d..70e6900 100644
  
  #if TARGET_OS_OSX
  - (void)mouseDown:(NSEvent *)event
+diff --git a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdownText.mm b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdownText.mm
+index fcddeb0..9caa229 100644
+--- a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdownText.mm
++++ b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdownText.mm
+@@ -973,7 +973,8 @@ Class<RCTComponentViewProtocol> EnrichedMarkdownTextCls(void)
+     BOOL isTextPress = _enableTextPress && _textView.selectedRange.length == 0 &&
+                        textPressIndexAtPoint(_textView, textViewPoint) != NSNotFound;
+     if (isTextPress ||
+-        isPointOnInteractiveElement(_textView, textViewPoint, _enableImagePress, _enableCodeBlockPress)) {
++        isPointOnInteractiveElement(_textView, textViewPoint, _enableTaskListItemToggle, _enableImagePress,
++                                    _enableCodeBlockPress)) {
+       return nil;
+     }
+   }
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
 index dddff1d..0bc87bc 100644
 --- a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
@@ -1094,6 +1115,56 @@ index d73646f..d911e2b 100644
  }
  
  NSUInteger ENRMCharacterIndexForTap(ENRMPlatformTextView *textView, ENRMTapRecognizer *recognizer)
+diff --git a/node_modules/react-native-enriched-markdown/ios/utils/LinkTapUtils.h b/node_modules/react-native-enriched-markdown/ios/utils/LinkTapUtils.h
+index af45e3f..7a02841 100644
+--- a/node_modules/react-native-enriched-markdown/ios/utils/LinkTapUtils.h
++++ b/node_modules/react-native-enriched-markdown/ios/utils/LinkTapUtils.h
+@@ -40,12 +40,13 @@ NSUInteger textPressIndexAtPoint(ENRMPlatformTextView *textView, CGPoint point);
+ /// textPressIndexAtPoint for the tap location.
+ NSUInteger textPressIndexAtTapLocation(ENRMPlatformTextView *textView, ENRMTapRecognizer *recognizer);
+ 
+-/// Returns YES if the point (in textView coordinates) is on a link or task list
+-/// checkbox. When `includeImages` is YES, images also count as interactive
+-/// (used to stop a parent press handler once `onImagePress` is enabled), and
+-/// likewise `includeCodeBlock` for `onCodeBlockPress`.
+-BOOL isPointOnInteractiveElement(ENRMPlatformTextView *textView, CGPoint point, BOOL includeImages,
+-                                 BOOL includeCodeBlock);
++/// Returns YES if the point (in textView coordinates) is on a link or spoiler.
++/// When `includeTaskItems` is YES, task list items also count as interactive
++/// (only while they can be toggled). When `includeImages` is YES, images also
++/// count (used to stop a parent press handler once `onImagePress` is enabled),
++/// and likewise `includeCodeBlock` for `onCodeBlockPress`.
++BOOL isPointOnInteractiveElement(ENRMPlatformTextView *textView, CGPoint point, BOOL includeTaskItems,
++                                 BOOL includeImages, BOOL includeCodeBlock);
+ 
+ #ifdef __cplusplus
+ }
+diff --git a/node_modules/react-native-enriched-markdown/ios/utils/LinkTapUtils.m b/node_modules/react-native-enriched-markdown/ios/utils/LinkTapUtils.m
+index 933d898..5af86bf 100644
+--- a/node_modules/react-native-enriched-markdown/ios/utils/LinkTapUtils.m
++++ b/node_modules/react-native-enriched-markdown/ios/utils/LinkTapUtils.m
+@@ -109,15 +109,18 @@ NSUInteger textPressIndexAtTapLocation(ENRMPlatformTextView *textView, ENRMTapRe
+   return textPressIndexAtPoint(textView, [recognizer locationInView:textView]);
+ }
+ 
+-BOOL isPointOnInteractiveElement(ENRMPlatformTextView *textView, CGPoint point, BOOL includeImages,
+-                                 BOOL includeCodeBlock)
++BOOL isPointOnInteractiveElement(ENRMPlatformTextView *textView, CGPoint point, BOOL includeTaskItems,
++                                 BOOL includeImages, BOOL includeCodeBlock)
+ {
+   NSUInteger charIndex = ENRMCharacterIndexAtPoint(textView, point);
+   if (charIndex == NSNotFound)
+     return NO;
+ 
+   NSDictionary *attrs = [ENRMGetAttributedText(textView) attributesAtIndex:charIndex effectiveRange:NULL];
+-  if (attrs[@"linkURL"] != nil || [attrs[@"TaskItem"] boolValue] || attrs[SpoilerAttributeName] != nil)
++  if (attrs[@"linkURL"] != nil || attrs[SpoilerAttributeName] != nil)
++    return YES;
++
++  if (includeTaskItems && [attrs[@"TaskItem"] boolValue])
+     return YES;
+ 
+   if (includeImages && attrs[@"imageURL"] != nil)
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/MarkdownAccessibilityElementBuilder.m b/node_modules/react-native-enriched-markdown/ios/utils/MarkdownAccessibilityElementBuilder.m
 index ccdffff..97b5cba 100644
 --- a/node_modules/react-native-enriched-markdown/ios/utils/MarkdownAccessibilityElementBuilder.m
