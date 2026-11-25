@@ -7,7 +7,6 @@ const MIN_WAVEFORM_WIDTH = 96;
 const styles = StyleSheet.create({
 	audioContainer: {
 		flex: 1,
-		maxWidth: 368,
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		alignItems: 'center',
