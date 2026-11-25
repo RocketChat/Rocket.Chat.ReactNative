@@ -1,129 +1,138 @@
-import { type LayoutChangeEvent, View, TextInput, type TextInputProps, TouchableNativeFeedback } from 'react-native';
-import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
-import Animated, {
-	type SharedValue,
-	useAnimatedProps,
-	useAnimatedStyle,
-	useDerivedValue,
-	useSharedValue,
-	withTiming
-} from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
+import { I18nManager, type LayoutChangeEvent, Text, View } from 'react-native';
+import { GestureDetector, useCompetingGestures, usePanGesture, useTapGesture } from 'react-native-gesture-handler';
+import { type SharedValue, useDerivedValue, useSharedValue } from 'react-native-reanimated';
+import { scheduleOnRN, scheduleOnUI } from 'react-native-worklets';
 
 import styles from './styles';
 import { useTheme } from '~/theme';
-import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE, ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
-import { formatTime } from './formatTime';
+import { SCROLL_FAIL_OFFSET_Y, SCRUB_ACTIVE_OFFSET_X, SEEK_TAP_MAX_DURATION_MS } from './constants';
+import { clamp } from './playbackClock';
+import { formatProgressLabel } from './formatMediaTime';
+import Waveform from '../Waveform';
+import { useSeekAccessibility } from './hooks/useSeekAccessibility';
+import { useShownTime } from './hooks/useShownTime';
 
-const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+const NOT_SCRUBBING = -1;
+
+const keepTouchFromMessage = () => true;
 
 interface ISeek {
 	duration: SharedValue<number>;
 	currentTime: SharedValue<number>;
 	loaded: boolean;
+	peaks?: number[];
 	onChangeTime: (time: number) => void;
 }
 
-function clamp(value: number, min: number, max: number) {
-	'worklet';
-
-	return Math.min(Math.max(value, min), max);
-}
-
-const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) => {
+const Seek = ({ currentTime, duration, loaded = false, peaks, onChangeTime }: ISeek) => {
 	const { colors } = useTheme();
 
-	const maxWidth = useSharedValue(1);
-	const translateX = useSharedValue(0);
-	const timeLabel = useSharedValue(DEFAULT_TIME_LABEL);
-	const scale = useSharedValue(1);
-	const isPanning = useSharedValue(false);
-	const contextX = useSharedValue(0);
-	const savedTranslateX = useSharedValue(0);
-	const savedCurrentTime = useSharedValue(0);
+	const { isRTL } = I18nManager;
+	const trackWidth = useSharedValue(1);
+	const scrubProgress = useSharedValue(NOT_SCRUBBING);
 
-	const styleLine = useAnimatedStyle(() => ({
-		width: translateX.value
-	}));
+	const progress = useDerivedValue(() => {
+		if (scrubProgress.get() !== NOT_SCRUBBING) {
+			return scrubProgress.get();
+		}
+		return duration.get() ? clamp(currentTime.get() / duration.get(), 0, 1) : 0;
+	});
 
-	const styleThumb = useAnimatedStyle(() => ({
-		transform: [{ translateX: translateX.value - THUMB_SEEK_SIZE / 2 }, { scale: scale.value }]
-	}));
+	const shownSeconds = useDerivedValue(() => {
+		if (scrubProgress.get() !== NOT_SCRUBBING) {
+			return scrubProgress.get() * duration.get();
+		}
+		return clamp(currentTime.get(), 0, duration.get());
+	});
+
+	const progressAt = (x: number) => {
+		'worklet';
+
+		const fromLeft = clamp(x / trackWidth.get(), 0, 1);
+		return isRTL ? 1 - fromLeft : fromLeft;
+	};
+
+	const timeAt = (x: number) => {
+		'worklet';
+
+		return progressAt(x) * duration.get();
+	};
+
+	const finishSeek = (time: number) => {
+		onChangeTime(time);
+		scheduleOnUI(() => {
+			'worklet';
+
+			scrubProgress.set(NOT_SCRUBBING);
+		});
+	};
 
 	const onLayout = (event: LayoutChangeEvent) => {
-		const { width } = event.nativeEvent.layout;
-		maxWidth.set(width);
+		trackWidth.set(event.nativeEvent.layout.width || 1);
 	};
 
 	const panGesture = usePanGesture({
 		enabled: loaded,
-		activeOffsetX: [-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X],
-		onActivate: () => {
-			isPanning.set(true);
-			contextX.set(translateX.get());
-			savedTranslateX.set(translateX.get());
-			savedCurrentTime.set(currentTime.get());
-			scale.set(withTiming(1.3, { duration: 150 }));
+		activeOffsetX: [-SCRUB_ACTIVE_OFFSET_X, SCRUB_ACTIVE_OFFSET_X],
+		failOffsetY: [-SCROLL_FAIL_OFFSET_Y, SCROLL_FAIL_OFFSET_Y],
+		onActivate: event => {
+			scrubProgress.set(progressAt(event.x));
 		},
 		onUpdate: event => {
-			const newX = contextX.get() + event.translationX;
-			translateX.set(clamp(newX, 0, maxWidth.get()));
+			scrubProgress.set(progressAt(event.x));
 		},
 		onFinalize: event => {
-			if (!isPanning.get()) return;
-			isPanning.set(false);
-			scale.set(withTiming(1, { duration: 150 }));
+			if (scrubProgress.get() === NOT_SCRUBBING) return;
 			if (event.canceled) {
-				translateX.set(savedTranslateX.get());
-				currentTime.set(savedCurrentTime.get());
-			} else {
-				scheduleOnRN(onChangeTime, currentTime.get());
+				scrubProgress.set(NOT_SCRUBBING);
+				return;
+			}
+			scheduleOnRN(finishSeek, timeAt(event.x));
+		}
+	});
+
+	const tapGesture = useTapGesture({
+		enabled: loaded,
+		maxDeltaX: SCRUB_ACTIVE_OFFSET_X,
+		maxDeltaY: SCROLL_FAIL_OFFSET_Y,
+		maxDuration: SEEK_TAP_MAX_DURATION_MS,
+		onDeactivate: event => {
+			if (!event.canceled) {
+				scheduleOnRN(finishSeek, timeAt(event.x));
 			}
 		}
 	});
 
-	useDerivedValue(() => {
-		if (isPanning.get()) {
-			currentTime.set((translateX.get() * duration.get()) / maxWidth.get() || 0);
-		} else {
-			translateX.set((currentTime.get() * maxWidth.get()) / duration.get() || 0);
-		}
-		timeLabel.set(formatTime(currentTime.get()));
-	}, [translateX, maxWidth, duration, isPanning, currentTime]);
+	const seekGesture = useCompetingGestures(panGesture, tapGesture);
+	const { shownTime, showTime } = useShownTime(shownSeconds, duration);
+	const seekAccessibility = useSeekAccessibility({ shownSeconds, duration, shownTime, showTime, enabled: loaded, onChangeTime });
 
-	const timeLabelAnimatedProps = useAnimatedProps(() => {
-		if (currentTime.value !== 0) {
-			return {
-				text: timeLabel.value
-			} as TextInputProps;
-		}
-		return {
-			text: formatTime(duration.value)
-		} as TextInputProps;
-	}, [timeLabel, duration, currentTime]);
-
-	const thumbColor = loaded ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundPrimaryDisabled;
-
-	// TouchableNativeFeedback is avoiding do a long press message when seeking the audio
 	return (
-		<TouchableNativeFeedback>
-			<View style={styles.seekContainer}>
-				<AnimatedTextInput
-					defaultValue={DEFAULT_TIME_LABEL}
-					editable={false}
-					style={[styles.duration, { color: colors.fontDefault }]}
-					animatedProps={timeLabelAnimatedProps}
-				/>
-				<View style={styles.seek} onLayout={onLayout}>
-					<View style={[styles.line, { backgroundColor: colors.strokeLight }]}>
-						<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
+		<>
+			<View
+				testID='audio-seek'
+				style={styles.seek}
+				accessible={seekAccessibility.accessible}
+				accessibilityRole={seekAccessibility.accessibilityRole}
+				accessibilityLabel={seekAccessibility.accessibilityLabel}
+				accessibilityValue={seekAccessibility.accessibilityValue}
+				accessibilityState={seekAccessibility.accessibilityState}
+				accessibilityActions={seekAccessibility.accessibilityActions}
+				onAccessibilityAction={seekAccessibility.onAccessibilityAction}>
+				<GestureDetector gesture={seekGesture}>
+					<View
+						testID='audio-seek-track'
+						style={styles.seekTrack}
+						onLayout={onLayout}
+						onStartShouldSetResponder={keepTouchFromMessage}>
+						<Waveform peaks={peaks} progress={progress} />
 					</View>
-					<GestureDetector gesture={panGesture}>
-						<Animated.View hitSlop={SEEK_HIT_SLOP} style={[styles.thumbSeek, { backgroundColor: thumbColor }, styleThumb]} />
-					</GestureDetector>
-				</View>
+				</GestureDetector>
 			</View>
-		</TouchableNativeFeedback>
+			<Text testID='audio-time' numberOfLines={1} style={[styles.timeLabel, { color: colors.fontSecondaryInfo }]}>
+				{formatProgressLabel(shownTime.time, shownTime.duration)}
+			</Text>
+		</>
 	);
 };
 

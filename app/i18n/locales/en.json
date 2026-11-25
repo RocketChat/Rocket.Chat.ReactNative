@@ -96,6 +96,8 @@
   "Attention": "Attention",
   "Audio": "Audio",
   "Audio_message_from": "Audio message from {{name}}",
+  "Audio_position": "Audio position",
+  "Audio_position_value": "{{current}} of {{total}}",
   "Auto_Translate": "Auto-translate",
   "Auto-join": "Auto-join",
   "Automatic": "Automatic",

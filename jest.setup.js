@@ -22,6 +22,8 @@ loadAsyncMock.mockImplementation(() => Promise.resolve({ width: 200, height: 300
 
 jest.mock('react-native-worklets', () => jest.requireActual('react-native-worklets/lib/module/mock'));
 
+jest.mock('react-native-audio-api', () => jest.requireActual('react-native-audio-api/mock'));
+
 jest.mock('react-native-reanimated/src/css/native/proxy', () => ({
 	...jest.requireActual('react-native-reanimated/src/css/native/proxy'),
 	setCSSEventHandler: jest.fn()
@@ -47,7 +49,12 @@ jest.mock('react-native-reanimated', () => {
 		withTiming: jest.fn(value => value),
 		useAnimatedGestureHandler: jest.fn(() => jest.fn()),
 		useAnimatedStyle: jest.fn(fn => fn),
-		useDerivedValue: jest.fn(fn => fn)
+		useDerivedValue: jest.fn(derive => ({
+			get value() {
+				return derive();
+			},
+			get: derive
+		}))
 	};
 });
 

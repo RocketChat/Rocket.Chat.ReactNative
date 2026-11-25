@@ -6,7 +6,6 @@ import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';
 import { type TMessageModel } from '~/definitions/IMessage';
-import { emitter } from './helpers/emitter';
 import log from './helpers/log';
 import { AUDIO_MODE } from '../constants/audio';
 import { useNowPlayingAudioStore, type INowPlayingAudio } from './useNowPlayingAudioStore';
@@ -168,7 +167,7 @@ class AudioManagerClass {
 			}
 			this.audioPlaying = audioKey;
 			this.setRate(audioKey, this.audioRates[audioKey]);
-			this.audioQueue[audioKey].play();
+			this.audioQueue[audioKey]?.play();
 			const previousAudioKey = this.nowPlaying?.audioKey;
 			if (previousAudioKey && previousAudioKey !== audioKey) {
 				this.releaseIfDetached(previousAudioKey);
@@ -178,7 +177,6 @@ class AudioManagerClass {
 			} else {
 				this.startNowPlaying(audioKey);
 			}
-			emitter.emit('audioFocused', audioKey);
 		} catch (error) {
 			log(error);
 		}
@@ -205,7 +203,6 @@ class AudioManagerClass {
 		}
 		this.pauseAudio();
 		this.clearNowPlaying();
-		emitter.emit('audioFocused', '');
 		if (this.releaseIfDetached(audioKey)) {
 			return;
 		}
@@ -275,7 +272,6 @@ class AudioManagerClass {
 				if (this.isNowPlaying(audioKey)) {
 					this.clearNowPlaying();
 				}
-				emitter.emit('audioFocused', '');
 				await this.playNextAudioInSequence(audioKey);
 			} catch (error) {
 				log(error);

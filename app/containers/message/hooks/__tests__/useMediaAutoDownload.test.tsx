@@ -173,6 +173,13 @@ describe('useMediaAutoDownload', () => {
 			expect(result.current.currentFile.title_link).toBe('file://cache');
 		});
 
+		it('returns the cached file path as the url when the attachment links to the workspace', async () => {
+			mockGetMediaCache.mockResolvedValue({ exists: true, uri: 'file://cache' });
+			const { result } = renderMediaHook({ file: { audio_url: '/audio', title_link: '/file-upload/audio.m4a' } });
+			await waitFor(() => expect(result.current.status).toBe('downloaded'));
+			expect(result.current.url).toBe('file://cache');
+		});
+
 		it('keeps the local title_link when the file prop changes back to the remote url', async () => {
 			mockGetMediaCache.mockResolvedValue({ exists: true, uri: 'file://cache' });
 			const { result, rerender } = renderMediaHook({ file: { image_url: '/img', title: 'original.png' } });

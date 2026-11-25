@@ -16,6 +16,7 @@ import Role from './model/Role';
 import Permission from './model/Permission';
 import SlashCommand from './model/SlashCommand';
 import User from './model/User';
+import AudioWaveform from './model/AudioWaveform';
 import LoggedUser from './model/servers/User';
 import Server from './model/servers/Server';
 import ServersHistory from './model/ServersHistory';
@@ -59,7 +60,8 @@ export const getDatabase = (database = ''): Database => {
 			Role,
 			Permission,
 			SlashCommand,
-			User
+			User,
+			AudioWaveform
 		]
 	});
 };
