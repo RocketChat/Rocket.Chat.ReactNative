@@ -12,6 +12,15 @@ const element: IElement = {
 	]
 };
 
+const threeOptions: IElement = {
+	...element,
+	options: [
+		{ text: { type: 'plain_text', text: 'Active' }, value: 'active' },
+		{ text: { type: 'plain_text', text: 'Inactive' }, value: 'inactive' },
+		{ text: { type: 'plain_text', text: 'Busy' }, value: 'busy' }
+	]
+};
+
 describe('UIKit RadioButton', () => {
 	test('moves the selection to the pressed option', async () => {
 		const onChange = jest.fn().mockResolvedValue(true);
@@ -45,10 +54,6 @@ describe('UIKit RadioButton', () => {
 	});
 
 	test('shows a new value from props over the local selection', async () => {
-		const threeOptions: IElement = {
-			...element,
-			options: [...(element.options ?? []), { text: { type: 'plain_text', text: 'Busy' }, value: 'busy' }]
-		};
 		const onChange = jest.fn().mockResolvedValue(true);
 		const { rerender } = render(<RadioButton element={threeOptions} value='inactive' loading={false} onChange={onChange} />);
 
@@ -60,10 +65,6 @@ describe('UIKit RadioButton', () => {
 	});
 
 	test('keeps a value from props that arrives while a failing action is pending', async () => {
-		const threeOptions: IElement = {
-			...element,
-			options: [...(element.options ?? []), { text: { type: 'plain_text', text: 'Busy' }, value: 'busy' }]
-		};
 		let resolveAction: (succeeded: boolean) => void = () => {};
 		const onChange = jest.fn(() => new Promise<boolean>(resolve => (resolveAction = resolve)));
 		const { rerender } = render(<RadioButton element={threeOptions} value='inactive' loading={false} onChange={onChange} />);
@@ -73,6 +74,19 @@ describe('UIKit RadioButton', () => {
 		await act(() => resolveAction(false));
 
 		expect(screen.getByTestId('uikit-radio-forwarding-busy')).toBeChecked();
+		expect(screen.getByTestId('uikit-radio-forwarding-inactive')).not.toBeChecked();
+	});
+
+	test('keeps the value from props when it confirms the tapped option before the action fails', async () => {
+		let resolveAction: (succeeded: boolean) => void = () => {};
+		const onChange = jest.fn(() => new Promise<boolean>(resolve => (resolveAction = resolve)));
+		const { rerender } = render(<RadioButton element={element} value='inactive' loading={false} onChange={onChange} />);
+
+		fireEvent.press(screen.getByTestId('uikit-radio-forwarding-active'));
+		rerender(<RadioButton element={element} value='active' loading={false} onChange={onChange} />);
+		await act(() => resolveAction(false));
+
+		expect(screen.getByTestId('uikit-radio-forwarding-active')).toBeChecked();
 		expect(screen.getByTestId('uikit-radio-forwarding-inactive')).not.toBeChecked();
 	});
 

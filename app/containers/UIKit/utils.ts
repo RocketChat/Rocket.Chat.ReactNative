@@ -50,39 +50,18 @@ export const useBlockContext = (
 
 	const error = errors && actionId && errors[actionId];
 
-	if ([BlockContext.SECTION, BlockContext.ACTION].includes(context)) {
-		return [
-			{
-				loading,
-				setLoading,
-				error,
-				value,
-				language
-			},
-			async ({ value }: any) => {
-				setLoading(true);
-				try {
-					if (appId === 'videoconf-core' && blockId) {
-						setLoading(false);
-						await videoConfJoin(blockId);
-						return true;
-					}
-					await action({
-						blockId,
-						appId: appId || appIdFromContext,
-						actionId,
-						value,
-						viewId
-					});
-					return true;
-				} catch {
-					return false;
-				} finally {
-					setLoading(false);
-				}
-			}
-		];
-	}
+	const isAction = [BlockContext.SECTION, BlockContext.ACTION].includes(context);
+
+	const dispatch = (value: unknown) => {
+		if (!isAction) {
+			return state({ blockId, appId, actionId, value });
+		}
+		if (appId === 'videoconf-core' && blockId) {
+			setLoading(false);
+			return videoConfJoin(blockId);
+		}
+		return action({ blockId, appId: appId || appIdFromContext, actionId, value, viewId });
+	};
 
 	return [
 		{
@@ -95,12 +74,7 @@ export const useBlockContext = (
 		async ({ value }: any) => {
 			setLoading(true);
 			try {
-				await state({
-					blockId,
-					appId,
-					actionId,
-					value
-				});
+				await dispatch(value);
 				return true;
 			} catch {
 				return false;

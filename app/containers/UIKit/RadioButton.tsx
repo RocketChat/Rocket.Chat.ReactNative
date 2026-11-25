@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import Radio from '../Radio';
@@ -31,14 +31,19 @@ export const RadioButton = ({ element, value, loading, onChange }: IRadioButton)
 		setSyncedValue(value);
 		setSelected(value);
 	}
+	const latestValue = useRef(value);
+	useEffect(() => {
+		latestValue.current = value;
+	}, [value]);
 	const options = element.options || [];
 
 	const onPress = async (optionValue: Option['value']) => {
 		const previous = selected;
+		const valueAtPress = value;
 		setSelected(optionValue);
 		const succeeded = await onChange({ value: optionValue });
-		if (!succeeded) {
-			setSelected(current => (current === optionValue ? previous : current));
+		if (!succeeded && latestValue.current === valueAtPress) {
+			setSelected(previous);
 		}
 	};
 
