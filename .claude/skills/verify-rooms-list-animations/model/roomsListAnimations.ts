@@ -28,14 +28,15 @@ const openWindowOnFirstAnimation = () => {
 
 const fades = () => !reducedMotion && isToggling && toggleWindow === 'open';
 
+const fadesOnMount = () => !reducedMotion && isToggling && toggleWindow !== 'elapsed';
+
 const noteFade = () => {
 	if (!insideToggle) fadedOutsideToggle = true;
 	if (reducedMotion) fadedUnderReducedMotion = true;
 };
 
 const mount = (v: View) => {
-	openWindowOnFirstAnimation();
-	if (fades()) {
+	if (fadesOnMount()) {
 		noteFade();
 		shown[v] = 'fadingIn';
 	} else {

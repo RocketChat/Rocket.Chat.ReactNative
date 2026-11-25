@@ -64,13 +64,18 @@ expect_broken everyMountedRowEndsVisible "a row outside a toggle mounts at opaci
 		shown[v] = 'transparent';"
 expect_broken everyMountedRowEndsVisible "the reveal cover keeps opacity 1 after its delay" \
 	"cover = coverEntering && isToggling ? 'covering' : 'hidden';" "cover = coverEntering && isToggling ? 'stuck' : 'hidden';"
-expect_broken toggleFadeOnlyInsideToggle "fade() ignores TOGGLE_SETTLE_MS, so a sync insert after a settled toggle fades" \
-	"const fades = () => !reducedMotion && isToggling && toggleWindow === 'open';" "const fades = () => !reducedMotion && isToggling;"
-expect_broken toggleFadeOnlyInsideToggle "fade() runs without a toggle, as every insert did before the 4.7 fix" \
-	"const fades = () => !reducedMotion && isToggling && toggleWindow === 'open';" "const fades = () => !reducedMotion;"
+expect_broken toggleFadeOnlyInsideToggle "fadesOnMount() ignores TOGGLE_SETTLE_MS, so a sync insert after a settled toggle fades in" \
+	"const fadesOnMount = () => !reducedMotion && isToggling && toggleWindow !== 'elapsed';" "const fadesOnMount = () => !reducedMotion && isToggling;"
+expect_broken toggleFadeOnlyInsideToggle "fadesOnMount() runs without a toggle, as every insert did before the 4.7 fix" \
+	"const fadesOnMount = () => !reducedMotion && isToggling && toggleWindow !== 'elapsed';" "const fadesOnMount = () => !reducedMotion;"
+expect_broken toggleFadeOnlyInsideToggle "fade() runs without a toggle, so a row leaving outside a toggle fades out" \
+	"const fades = () => !reducedMotion && isToggling && toggleWindow === 'open';" "const fades = () => !reducedMotion;" \
+	"const fadesOnMount = () => !reducedMotion && isToggling && toggleWindow !== 'elapsed';" "const fadesOnMount = () => !reducedMotion;"
 expect_broken reducedMotionSkipsFades "fade() does not check useReducedMotion" \
 	"if (!reducedMotion && isToggling && toggleWindow === 'unset')" "if (isToggling && toggleWindow === 'unset')" \
 	"const fades = () => !reducedMotion && isToggling" "const fades = () => isToggling"
+expect_broken reducedMotionSkipsFades "fadesOnMount() does not check useReducedMotion" \
+	"const fadesOnMount = () => !reducedMotion && isToggling" "const fadesOnMount = () => isToggling"
 expect_broken reducedMotionSkipsFades "coverEntering is passed under reduced motion" \
 	"const coverEntering = !reducedMotion;" "const coverEntering = true;"
 
