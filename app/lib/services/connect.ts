@@ -59,9 +59,6 @@ let logoutListener: any;
 
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
-		// Check for running requests and abort them before connecting to the server
-		abort();
-
 		disconnect();
 		database.setActiveDB(server);
 
@@ -413,12 +410,6 @@ async function loginOAuthOrSso(params: ILoginCredentials) {
 	store.dispatch(loginRequest({ resume: result.token }, false));
 }
 
-function abort(): void {
-	if (sdk.isInitialized) {
-		sdk.abort();
-	}
-}
-
 function disconnect(): void {
 	sdk.disconnect();
 	mediaSessionInstance.reset();
@@ -519,7 +510,6 @@ export {
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,
-	abort,
 	connect,
 	disconnect,
 	getWebsocketInfo,

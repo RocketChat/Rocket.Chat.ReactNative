@@ -1,6 +1,6 @@
 jest.unmock('@rocket.chat/sdk');
 
-import { connect, login, loginWithPassword } from '../connect';
+import { connect, disconnect, login, loginWithPassword } from '../connect';
 import sdk from '../sdk';
 import { initStore } from '~/lib/store/auxStore';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '~/actions/connect';
@@ -232,6 +232,34 @@ describe('connect() over the real SDK', () => {
 		await flushMicrotasksAndTimers();
 
 		expect(mockConnections).toHaveLength(2);
+	});
+
+	it('does not reopen a disconnected client whose login was still in flight', async () => {
+		let answerLogin = () => {};
+		global.fetch = jest.fn(
+			(_url: unknown, options?: { signal?: AbortSignal }) =>
+				new Promise((resolve, reject) => {
+					options?.signal?.addEventListener('abort', () => reject(new Error('aborted')));
+					answerLogin = () =>
+						resolve({
+							status: 200,
+							json: () =>
+								Promise.resolve({ status: 'success', data: { userId: 'user-id', authToken: 'auth-token', me: REST_LOGIN_ME } })
+						});
+				})
+		) as unknown as typeof fetch;
+		await connect({ server: 'https://example.com' });
+		await flushMicrotasksAndTimers();
+		mockConnections[0].onerror();
+		await flushMicrotasksAndTimers();
+		login({ user: 'the-user', password: 'secret' }).catch(() => null);
+		await flushMicrotasksAndTimers();
+
+		disconnect();
+		answerLogin();
+		await flushMicrotasksAndTimers();
+
+		expect(mockConnections).toHaveLength(1);
 	});
 });
 
