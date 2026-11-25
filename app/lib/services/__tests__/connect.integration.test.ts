@@ -125,6 +125,13 @@ async function connectAndDriveHandshake(server = 'https://example.com') {
 	await flushMicrotasksAndTimers();
 }
 
+async function connectAndFailFirstAttempt(server = 'https://example.com') {
+	await connect({ server });
+	await flushMicrotasksAndTimers();
+	mockConnections[0].onerror();
+	await flushMicrotasksAndTimers();
+}
+
 describe('connect() over the real SDK', () => {
 	it('dispatches connectRequest when connecting and connectSuccess once on the handshake', async () => {
 		await connectAndDriveHandshake();
@@ -179,11 +186,7 @@ describe('connect() over the real SDK', () => {
 	});
 
 	it('keeps retrying when the first attempt fails and connects once the network is back', async () => {
-		await connect({ server: 'https://example.com' });
-		await flushMicrotasksAndTimers();
-		expect(mockConnections).toHaveLength(1);
-		mockConnections[0].onerror();
-		await flushMicrotasksAndTimers();
+		await connectAndFailFirstAttempt();
 		expect(mockConnections).toHaveLength(1);
 
 		await jest.runOnlyPendingTimersAsync();
@@ -203,11 +206,7 @@ describe('connect() over the real SDK', () => {
 	});
 
 	it('lets a socket recovery after a failed first attempt open a fresh connection immediately', async () => {
-		await connect({ server: 'https://example.com' });
-		await flushMicrotasksAndTimers();
-		mockConnections[0].onerror();
-		await flushMicrotasksAndTimers();
-
+		await connectAndFailFirstAttempt();
 		const before = mockConnections.length;
 
 		const recovering = sdk.driver!.reopenNow();
@@ -221,10 +220,7 @@ describe('connect() over the real SDK', () => {
 	});
 
 	it('does not retry an attempt that a later connect() replaced', async () => {
-		await connect({ server: 'https://a.example.com' });
-		await flushMicrotasksAndTimers();
-		mockConnections[0].onerror();
-		await flushMicrotasksAndTimers();
+		await connectAndFailFirstAttempt('https://a.example.com');
 
 		await connect({ server: 'https://b.example.com' });
 		await flushMicrotasksAndTimers();
