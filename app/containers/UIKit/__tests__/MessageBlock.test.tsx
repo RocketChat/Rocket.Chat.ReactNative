@@ -91,6 +91,31 @@ describe('MessageBlock', () => {
 		expect(screen.getByTestId('uikit-radio-q-no')).not.toBeDisabled();
 	});
 
+	it('restores a message radio and re-enables it when its action is rejected', async () => {
+		const yes = { text: { type: 'plain_text', text: 'Yes' }, value: 'yes' };
+		const no = { text: { type: 'plain_text', text: 'No' }, value: 'no' };
+		const blocks = [
+			{
+				type: 'actions',
+				blockId: 'question',
+				elements: [{ type: 'radio_button', actionId: 'q', initialOption: yes, options: [yes, no] }]
+			}
+		];
+		const action = jest.fn().mockRejectedValue(new Error('offline'));
+		render(
+			<Provider store={mockedStore}>
+				<MessageBlock blocks={blocks} context={{ appId: 'app', rid: 'room-1', action }} />
+			</Provider>
+		);
+
+		await act(() => fireEvent.press(screen.getByTestId('uikit-radio-q-no')));
+
+		expect(action).toHaveBeenCalledWith(expect.objectContaining({ actionId: 'q', value: 'no' }));
+		expect(screen.getByTestId('uikit-radio-q-yes')).toBeChecked();
+		expect(screen.getByTestId('uikit-radio-q-no')).not.toBeChecked();
+		expect(screen.getByTestId('uikit-radio-q-no')).not.toBeDisabled();
+	});
+
 	it('does not carry a radio selection over to a different radio that replaces it in the same block', async () => {
 		const radioBlock = (actionId: string) => ({
 			type: 'input',
