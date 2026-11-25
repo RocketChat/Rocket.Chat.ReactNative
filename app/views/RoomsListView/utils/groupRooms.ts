@@ -87,9 +87,6 @@ const roomsGroup = (
 	{ collapsedGroups, title, unreadOptions = NO_UNREAD_OPTIONS, keepWhenEmpty = false }: RoomsGroupOptions
 ) => {
 	const { showUnreads, keepUnreadsOnTop } = unreadOptions;
-	if (!header) {
-		return rooms;
-	}
 	if (!rooms.length && !keepWhenEmpty) {
 		return [];
 	}
@@ -161,8 +158,11 @@ const groupRooms = (
 	});
 
 	return visibleGroups.flatMap(key => {
-		const header = key === CONVERSATIONS_GROUP ? (hasChatsHeader ? CHATS_HEADER : '') : key;
-		return roomsGroup(groups.get(key) ?? [], header, {
+		const rooms = groups.get(key) ?? [];
+		if (key === CONVERSATIONS_GROUP && !hasChatsHeader) {
+			return rooms;
+		}
+		return roomsGroup(rooms, key === CONVERSATIONS_GROUP ? CHATS_HEADER : key, {
 			collapsedGroups,
 			title: customCategoryNames.get(key),
 			unreadOptions: categoryUnreadOptions.get(key),

@@ -228,17 +228,9 @@ describe('groupRooms', () => {
 		const chats = [room({ rid: 'read' }), room({ rid: 'unread', unread: 1 }), room({ rid: 'older-read' })];
 		const categoryUnreadOptions = new Map([['Conversations', { showUnreads: true, keepUnreadsOnTop: true }]]);
 
-		expect(
-			layout(
-				buildRoomList(chats, {
-					...options,
-					customCategoryNames: new Map(),
-					categoryUnreadOptions,
-					showFavorites: false,
-					groupByType: false
-				})
-			)
-		).toEqual(['read', 'unread', 'older-read']);
+		expect(layout(buildRoomList(chats, { ...options, categoryUnreadOptions, showFavorites: false, groupByType: false }))).toEqual(
+			['read', 'unread', 'older-read']
+		);
 	});
 
 	it('keeps unread rooms visible in the collapsed Unread section that always displays them', () => {
