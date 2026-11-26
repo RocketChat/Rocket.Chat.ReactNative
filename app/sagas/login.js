@@ -1,4 +1,4 @@
-import { all, call, cancel, delay, fork, put, race, select, spawn, take, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
@@ -50,6 +50,7 @@ import { store as reduxStore } from '../lib/store/auxStore';
 import { startInsideUnlessSharing } from './selectServer';
 
 const getServer = state => state.server.server;
+const getUser = state => state.login.user;
 const loginWithPasswordCall = args => loginWithPassword(args);
 const loginCall = credentials => login(credentials);
 const logoutCall = args => logout(args);
@@ -76,17 +77,17 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 		return;
 	}
 
+	if (isMasterDetail) {
+		appNavigation.navigate('ModalStackNavigator', { screen: 'SupportedVersionsWarning', params: { showCloseButton: true } });
+	} else {
+		showActionSheetRef({ children: <SupportedVersionsWarning /> });
+	}
 	const serversDB = database.servers;
 	yield serversDB.write(async () => {
 		await serverRecord.update(r => {
 			r.supportedVersionsWarningAt = new Date();
 		});
 	});
-	if (isMasterDetail) {
-		appNavigation.navigate('ModalStackNavigator', { screen: 'SupportedVersionsWarning', params: { showCloseButton: true } });
-	} else {
-		showActionSheetRef({ children: <SupportedVersionsWarning /> });
-	}
 };
 
 // Login already succeeded by the time this runs, so a superseded unlock must not fall through to
@@ -313,30 +314,17 @@ const checkVoipPermission = async () => {
 
 const startVoipFork = function* startVoipFork() {
 	yield call(checkVoipPermission);
-
-	// Re-check on permission/module changes. selectServer's DB-read phase covers warm relaunches;
-	// PERMISSIONS.SET / ENTERPRISE_MODULES.SET cover first-login on a fresh server; PERMISSIONS.UPDATE
-	// covers runtime changes pushed by the server (handled in connect.ts's stream-notify-logged listener).
-	// Stop on LOGOUT, a new LOGIN.SUCCESS, or SERVER.SELECT_REQUEST so we never leak the saga across
-	// workspace switches.
-	yield race({
-		recheck: takeLatest([types.PERMISSIONS.SET, types.PERMISSIONS.UPDATE, types.ENTERPRISE_MODULES.SET], checkVoipPermission),
-		stop: take([types.LOGOUT, types.LOGIN.SUCCESS, types.SERVER.SELECT_REQUEST])
-	});
+	yield takeLatest([types.PERMISSIONS.SET, types.PERMISSIONS.UPDATE, types.ENTERPRISE_MODULES.SET], checkVoipPermission);
 };
 
-const handleLoginSuccess = function* handleLoginSuccess({ user }) {
+const handleLoginSuccess = function* handleLoginSuccess(user, server) {
 	try {
 		yield put(setUser(user));
 		setLanguage(user?.language);
 
-		const server = yield select(getServer);
 		yield put(roomsRequest());
 		yield put(encryptionInit());
-		// VoIP must spawn before the awaited fetches so it survives the 2s cancel race in root().
-		// On warm relaunch, redux is already populated by selectServer; on cold login, it re-checks
-		// when PERMISSIONS.SET / ENTERPRISE_MODULES.SET land.
-		yield spawn(startVoipFork);
+		yield fork(startVoipFork);
 		yield all([call(fetchPermissions), call(fetchEnterpriseModules, { user })]);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
@@ -489,26 +477,46 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 	}
 };
 
+const endsPostLoginSession = server => action =>
+	action.type === types.LOGOUT ||
+	action.type === types.DELETE_ACCOUNT ||
+	(action.type === types.SERVER.SELECT_REQUEST && action.server !== server);
+
+const isReselectedBeforeSwitching = function* isReselectedBeforeSwitching(server) {
+	while (true) {
+		const action = yield take([types.SERVER.SELECT_CANCEL, types.METEOR.REQUEST, types.LOGOUT, types.DELETE_ACCOUNT]);
+		if (action.type !== types.SERVER.SELECT_CANCEL) {
+			return false;
+		}
+		if ((yield select(getServer)) === server) {
+			return true;
+		}
+	}
+};
+
+const runPostLoginSession = function* runPostLoginSession({ user }) {
+	const server = yield select(getServer);
+	let sessionUser = user;
+	while (true) {
+		const { ended } = yield race({
+			session: call(handleLoginSuccess, sessionUser, server),
+			ended: take(endsPostLoginSession(server))
+		});
+		if (ended?.type !== types.SERVER.SELECT_REQUEST) {
+			return;
+		}
+		if (!(yield call(isReselectedBeforeSwitching, server))) {
+			return;
+		}
+		sessionUser = yield select(getUser);
+	}
+};
+
 const root = function* root() {
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.USER.SET, handleSetUser);
 	yield takeLatest(types.DELETE_ACCOUNT, handleDeleteAccount);
-
-	while (true) {
-		const params = yield take(types.LOGIN.SUCCESS);
-		const loginSuccessTask = yield fork(handleLoginSuccess, params);
-		// Only cancel handleLoginSuccess if a workspace switch interrupts it.
-		// Cancelling on the 2s timeout would rip the saga before it reaches
-		// appStart(ROOT_INSIDE), stranding users on the login screen when
-		// permissions/enterprise fetches run long (issue #7333).
-		const { selectRequest } = yield race({
-			selectRequest: take(types.SERVER.SELECT_REQUEST),
-			timeout: delay(2000)
-		});
-		if (selectRequest) {
-			yield cancel(loginSuccessTask);
-		}
-	}
+	yield takeLatest(types.LOGIN.SUCCESS, runPostLoginSession);
 };
 export default root;
