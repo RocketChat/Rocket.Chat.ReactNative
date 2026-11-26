@@ -17,6 +17,7 @@
 		"**/android",
 		"**/ios",
 		"**/.worktrees/",
+		".claude/",
 		".rnstorybook/storybook.requires.ts"
 	],
 	"rules": {
