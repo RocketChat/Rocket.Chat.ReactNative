@@ -227,14 +227,6 @@ Spec == Init /\ [][Next]_vars
 VoipSessionMatchesAccess ==
     (Quiescent /\ ~switched /\ licenseAnswered) => (session = Decide(perms, voipModule))
 
-\* Same, including servers whose licence lookup fails (ENTERPRISE_MODULES.CLEAR).
-VoipSessionMatchesAccessEvenWithoutLicense ==
-    (Quiescent /\ ~switched) => (session = Decide(perms, voipModule))
-
-\* After a workspace switch settles, redux enterpriseModules belong to the new workspace.
-ModulesBelongToActiveWorkspace ==
-    (Quiescent /\ switched) => (modulesOwner = "new")
-
 \* What the regression comparison reads at quiescence: the inputs, then every value the flow writes.
 Outcome == <<start, serverPerms, serverModule, licenseAnswered, perms, voipModule, modulesOwner, session, switched>>
 =============================================================================

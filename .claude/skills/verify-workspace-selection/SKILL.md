@@ -28,31 +28,12 @@ A tla-ts model of `handleSelectServer` and the flows that dispatch it, checked f
 
 ## Rules it checks
 
-| Rule                                            | Plain sentence                                                                                           | Harm when broken                                                                                                 |
-| ----------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `roomsListHasSignedInUser`                      | The rooms list shows only with a signed-in user (stored token) of the workspace the app is connected to. | An empty rooms list with no user: nothing loads and the user has no way to sign in from there.                   |
-| `liveWorkspaceOpensWithoutReconnect`            | Selecting the connected workspace that has a stored login opens its rooms list without reconnecting.     | Each tap on the current workspace drops and reopens the socket, and the rooms list reloads.                      |
-| `loginlessSelectEndsOnWorkspaceScreen`          | Selecting a workspace without a stored login ends on the workspace screen, connected to that workspace.  | Retrying Connect on a new workspace opens an empty rooms list instead of the sign-in screen.                     |
-| `shareScreenHasSignedInUser`                    | The share screen shows only for a workspace with a signed-in user.                                       | The share screen opens with no user: there are no rooms to share into, and leaving it opens an empty rooms list. |
-| `selectPendingNow` (`@leadsTo noSelectPending`) | Every workspace selection ends with success, cancel or failure.                                          | The app waits on a select that never ends, and every flow that waits for `SELECT_SUCCESS` waits with it.         |
-| `onLoadingRoot` (`@leadsTo offLoadingRoot`)     | The app never stays on the splash or a loading screen forever.                                           | The app sits on the splash or the share loading screen until it is killed.                                       |
-
-## Known findings (at the sync commit)
-
-The current code breaks `shareScreenHasSignedInUser`, and through it `roomsListHasSignedInUser`. Both reproduce against the real sagas with [`replay/shareScreenSignedInUser.replay.test.ts`](replay/shareScreenSignedInUser.replay.test.ts). They predate "fix: show the workspace screen when retrying Connect to a workspace without a login" (https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/7919), which only changes what happens after the share screen opens.
-
-1. The token for the userId in `CURRENT_SERVER` is gone, but the userId is still stored (`migrateTokenKeysToServerScoped.ts:41` drops the token when two workspaces share a userId).
-2. The app boots, `init.js:31` `restoreServer` selects that workspace (`isLoggedInServer` checks only the userId), `handleSelectServer` finds no token, runs `clearUser` and `connect`, and puts `ROOT_OUTSIDE`. `sdk.host` is now that workspace.
-3. Another app shares into Rocket.Chat. `deepLinking.js:215` checks only the stored userId and puts `ROOT_LOADING_SHARE_EXTENSION`.
-4. After the unlock, `deepLinking.js:241` puts `selectServerRequest`, and because `sdk.host === server` (`:242`) puts `ROOT_SHARE_EXTENSION` at once (`:255`), with no user. The select then takes the no-login branch and puts `ROOT_OUTSIDE`, so the share screen flashes and the workspace screen replaces it.
-
-The second path, a share during logout:
-
-1. Signed in to a workspace, the user logs out. `login.js:400` `handleLogout` clears `state.login` and waits on `logoutCall` (`:406`), which still has the stored session, `CURRENT_SERVER` and the socket.
-2. Another app shares into Rocket.Chat before `logoutCall` disconnects. The share extension finds the userId and selects the workspace. `sdk.host` still equals it, so it puts `ROOT_SHARE_EXTENSION` with no user (the select takes the shortcut, since the token is still stored).
-3. `ShareListView/index.tsx:392` and `ShareView/index.tsx:309` put `ROOT_INSIDE` when the user leaves the share screen. If the share screen is still up at that point (for example because the select that `handleLogout` puts fails), the rooms list opens with no user.
-
-Both are recorded in `recorded_breaks` in `check.sh`, with the number of states that break each rule. A change that fixes them turns both rules green, and `check.sh` then reports `FIXED` until you update this section and `recorded_breaks`.
+| Rule                                            | Plain sentence                                                                                          | Harm when broken                                                                                         |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `liveWorkspaceOpensWithoutReconnect`            | Selecting the connected workspace that has a stored login opens its rooms list without reconnecting.    | Each tap on the current workspace drops and reopens the socket, and the rooms list reloads.              |
+| `loginlessSelectEndsOnWorkspaceScreen`          | Selecting a workspace without a stored login ends on the workspace screen, connected to that workspace. | Retrying Connect on a new workspace opens an empty rooms list instead of the sign-in screen.             |
+| `selectPendingNow` (`@leadsTo noSelectPending`) | Every workspace selection ends with success, cancel or failure.                                         | The app waits on a select that never ends, and every flow that waits for `SELECT_SUCCESS` waits with it. |
+| `onLoadingRoot` (`@leadsTo offLoadingRoot`)     | The app never stays on the splash or a loading screen forever.                                          | The app sits on the splash or the share loading screen until it is killed.                               |
 
 ## When to run it
 
@@ -66,24 +47,29 @@ From the repo root:
 SKILL_DIR=.claude/skills/verify-workspace-selection .claude/skills/verify-workspace-selection/check.sh
 ```
 
-It copies the model to a fresh `mktemp -d` and runs tla-ts three times, about 3 seconds in all: once for the rules expected to hold (with the deadlock check), and once with `-continue` for each known finding, counting the states that break it. Then it runs the Jest replays in `replay/` against the real sagas with the repo's Jest (it needs `pnpm install`; Jest's cache goes to the same `mktemp -d`), under a minute with a cold cache. The replays are the only part of the check that runs the real code. It prints one line per rule and per replay test, and exits 0 only when every line matches the record in `check.sh`:
+It copies the model to a fresh `mktemp -d` and runs tla-ts once for every rule, with the deadlock check (a few seconds). It prints one line per rule and exits 0 only when every rule holds:
 
 ```
 HOLDS liveWorkspaceOpensWithoutReconnect
 HOLDS loginlessSelectEndsOnWorkspaceScreen
 HOLDS selectPendingNow
 HOLDS onLoadingRoot
-BROKEN-AS-RECORDED roomsListHasSignedInUser (12 violating states)
-BROKEN-AS-RECORDED shareScreenHasSignedInUser (248 violating states)
-BROKEN-AS-RECORDED shareScreenHasSignedInUser (replay: shows the share screen without a user when the connected workspace has a userId but no token)
-BROKEN-AS-RECORDED shareScreenHasSignedInUser (replay: shows the share screen without a user when the share arrives while logging out)
 ```
 
-`NEW-BREAK` means a rule breaks that held (or the model deadlocks), or a known finding breaks in a different number of states: the change altered behavior. `FIXED` means a known finding now holds; on a replay line, it means the test failed: the code no longer takes the path, or the harness no longer matches the code. Each replay test passes while it shows the bug. `ERROR` means the model did not compile, the search stopped before it reached every state, or a replay suite did not run.
+`NEW-BREAK` means a rule breaks (or the model deadlocks): the change altered behavior, so follow "Bug or modeling error" below. `ERROR` means the model did not compile or the search stopped before it reached every state.
 
-After editing the model, run `check.sh --model` (about a minute). It also runs everything `check.sh` runs, and breaks one guard per rule and expects that rule to break in more states, also for a rule a known finding already breaks (`CAUGHT`). The mutant runs pass `-deadlock`, so a mutant that stops the model still reaches the temporal checks. `MISSED` means a rule no longer catches the break it guards; `STALE` means the guard's text changed in the model, so update that mutation in `check.sh` to the new text of the same guard. The first mutation puts back the bug that "fix: show the workspace screen when retrying Connect to a workspace without a login" (https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/7919) fixed: the shortcut `if (sdk.host === server)` without `&& token`.
+After editing the model, run `check.sh --model` (under a minute). It also runs everything `check.sh` runs, then breaks one guard per rule and expects that rule to break in more states (`CAUGHT`):
 
-Read the path to each broken rule with `/statechart`: run its command on a copy of `model/workspaceSelection.ts` in a fresh `mktemp -d`, and read its `report.md`. It gives each broken rule its shortest path and lists the rules that hold (about 9,000 states, a few seconds). The model has more states than the chart budget, so the chart only draws the bug paths.
+```
+CAUGHT loginlessSelectEndsOnWorkspaceScreen (0 -> 2296 violating states)
+CAUGHT liveWorkspaceOpensWithoutReconnect (0 -> 2839 violating states)
+CAUGHT selectPendingNow (0 -> 1 violating states)
+CAUGHT onLoadingRoot (0 -> 1 violating states)
+```
+
+The mutant runs pass `-deadlock`, so a mutant that stops the model still reaches the temporal checks. `MISSED` means a rule no longer catches the break it guards; `STALE` means the guard's text changed in the model, so update that mutation in `check.sh` to the new text of the same guard. The first mutation puts back the bug that "fix: show the workspace screen when retrying Connect to a workspace without a login" (https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/7919) fixed: the shortcut `if (sdk.host === server)` without `&& token`.
+
+Read the path to each broken rule with `/statechart`: run its command on a copy of `model/workspaceSelection.ts` in a fresh `mktemp -d`, and read its `report.md`. It gives each broken rule its shortest path and lists the rules that hold (9,035 states, a few seconds). The model has more states than the chart budget, so the chart only draws the bug paths.
 
 tla-ts writes `WorkspaceSelection.tla`, `.cfg` and `_TTrace_*` files next to the model it runs. They are build output: never commit them.
 
@@ -92,7 +78,7 @@ tla-ts writes `WorkspaceSelection.tla`, `.cfg` and `_TTrace_*` files next to the
 For each broken rule, take the shortest path from `/statechart` and replay it against the real code, one action per step:
 
 - Selection steps: `app/sagas/__tests__/selectServer.test.ts` (the `selecting the connected workspace` block) or `selectServer.sdkHost.test.ts`, which run the real saga on a recording store from `app/lib/testUtils/sagaStore.ts`.
-- Paths through the share extension or logout: `replay/shareScreenSignedInUser.replay.test.ts`, which `check.sh` runs (the repo's Jest config ignores `.claude/`, so `pnpm jest <path>` finds no tests). It runs the deepLinking, init, selectServer and login sagas together and records each root with the user's token. Add a case with the preferences and preloaded state of the new path.
+- Paths through the share extension or logout: `app/sagas/__tests__/shareExtension.sameWorkspace.test.ts`, or a new Jest test that forks the deepLinking, init, selectServer and login sagas together on the same recording store and records each root with the user's token.
 
 Then decide:
 
@@ -120,7 +106,7 @@ Never weaken a rule to make it pass.
 | `userSharesIntoApp`, `shareUnlocks`, `shareGivesUp` | `app/sagas/deepLinking.js:213` `handleShareExtension`: `:215` userId check, `:222` `ROOT_LOADING_SHARE_EXTENSION`, `:241` select, `:242` skips the wait when `sdk.host === server`, `:243` race on `LOGIN.SUCCESS`, `LOGIN.FAILURE`, `SELECT_FAILURE`, `LOGOUT`, `:255` `ROOT_SHARE_EXTENSION`                                                                                                                                                                    |
 | `userLeavesShare`                                   | `app/views/ShareListView/index.tsx:392`, `app/views/ShareView/index.tsx:309` put `ROOT_INSIDE`                                                                                                                                                                                                                                                                                                                                                                    |
 
-Move the sync commit forward only after you have read the covered code at the new commit and confirmed the model still describes it (or updated the model and rerun). Then update the line numbers in this table and the known findings.
+Move the sync commit forward only after you have read the covered code at the new commit and confirmed the model still describes it (or updated the model and rerun). Then update the line numbers in this table.
 
 ## Scope and assumptions
 

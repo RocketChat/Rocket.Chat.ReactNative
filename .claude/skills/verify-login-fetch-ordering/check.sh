@@ -2,7 +2,7 @@
 # Usage: check.sh [--model]
 # Model-checks the login fetch ordering and runs the getSettings pagination harness.
 # --model adds the AtomicCheck=FALSE runs and the mutants.
-# Exit 0: every result equals the recorded result; 1: a result changed; 2: tool error.
+# Exit 0: every rule holds (and with --model every mutant is caught); 1: a rule broke or a mutant was missed or stale; 2: tool error.
 set -uo pipefail
 
 skill_dir="${SKILL_DIR:-$(cd "$(dirname "$0")" && pwd)}"

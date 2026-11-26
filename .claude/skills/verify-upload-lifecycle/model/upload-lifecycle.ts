@@ -16,8 +16,6 @@ const isRunning = (send: Send) => isPreparing(send) || (call[send] === 'sending'
 
 const nothingRunning = () => !sends.some(isRunning);
 
-const somethingPreparing = () => sends.some(isPreparing);
-
 const persistUploadError = () => {
 	if (record !== 'none') {
 		record = 'failed';
@@ -35,7 +33,6 @@ const endUpload = (send: Send) => {
 export const userSendsFile = (send: Send, force: boolean) => {
 	if (call[send] !== 'notSent') return;
 	if (force && record !== 'failed') return;
-	if (somethingPreparing()) return;
 	if (record !== 'none' && queued !== null && !force) {
 		if (nothingRunning()) {
 			refusedWithNothingRunning = true;
@@ -78,7 +75,6 @@ export const serverRejects = (send: Send) => {
 
 export const userCancels = () => {
 	if (record !== 'uploading') return;
-	if (somethingPreparing()) return;
 	if (queued !== null) {
 		cancelled[queued] = true;
 	}
@@ -93,7 +89,6 @@ export const userDeletesFailedRow = () => {
 
 export const roomOpens = () => {
 	if (record === 'none' || queued !== null) return;
-	if (somethingPreparing()) return;
 	record = 'failed';
 };
 
@@ -109,9 +104,6 @@ export const appRestarts = () => {
 
 /** Once an upload of a file ends (sent, rejected by the server, cancelled), sending the same file again in the same Room is never refused as "Upload in progress". */
 export const neverRefusedAfterUploadEnded = () => !refusedWithNothingRunning;
-
-/** An upload that is still running never shows as failed in the Room. */
-export const runningUploadNeverShownFailed = () => record !== 'failed' || nothingRunning();
 
 /** @terminating */
 export const everySendSettled = () => !sends.some(send => call[send] === 'preparing' || call[send] === 'sending');

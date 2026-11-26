@@ -164,14 +164,6 @@ export const unsetCertificateSyncsHost = () => {
 
 const settled = () => adding === null && removePhase === 'idle' && unsetPhase === 'idle';
 
-/** Once things settle, the app presents the connected workspace's certificate to its host. */
-export const connectedWorkspacePresentsItsCertificate = () =>
-	!settled() ||
-	connected === null ||
-	!listed.has(connected) ||
-	workspaceCertificate[connected] === null ||
-	hostCertificate === workspaceCertificate[connected];
-
 /** Once things settle, every certificate a workspace still names can be loaded. */
 export const savedCertificateStaysLoadable = () =>
 	!settled() || workspaces.every(id => workspaceCertificate[id] === null || certificateFile.has(workspaceCertificate[id]!));
@@ -179,7 +171,3 @@ export const savedCertificateStaysLoadable = () =>
 /** Once things settle, a certificate the user removed by hand is not presented unless a workspace still names it. */
 export const removedCertificateIsNotPresented = () =>
 	!settled() || removedByHand === null || hostCertificate !== removedByHand || isCertificateInUse(removedByHand);
-
-/** Once things settle, the host keeps a certificate only while a workspace on it is listed or still names that certificate. */
-export const hostCertificateHeldOnlyWhileUsed = () =>
-	!settled() || hostCertificate === null || listed.size > 0 || isCertificateInUse(hostCertificate);

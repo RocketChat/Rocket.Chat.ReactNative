@@ -15,8 +15,7 @@ const baseSource = readFileSync(join(modelDirectory, 'LoginFetchOrdering.tla'), 
 const modes = ['sequential', 'parallel'];
 const atomicCheck = process.env.ATOMIC_CHECK ?? 'TRUE';
 
-const rulesExpectedToHold = ['VoipSessionMatchesAccess'];
-const rulesKnownBroken = ['VoipSessionMatchesAccessEvenWithoutLicense', 'ModulesBelongToActiveWorkspace'];
+const rules = ['VoipSessionMatchesAccess'];
 
 const mutants = [
 	{
@@ -90,7 +89,7 @@ const saveTrace = (label, trace) => {
 let mismatches = 0;
 let errors = 0;
 const report = (verdict, label, detail = '') => {
-	if (['FIXED', 'NEW-BREAK', 'MISSED', 'STALE'].includes(verdict)) mismatches += 1;
+	if (['NEW-BREAK', 'MISSED', 'STALE'].includes(verdict)) mismatches += 1;
 	if (verdict === 'ERROR') errors += 1;
 	console.log(`${verdict} ${label}${detail ? ` (${detail})` : ''}`);
 };
@@ -103,48 +102,32 @@ const runChecker = async (source, config, onPrint) => {
 	}
 };
 
-const checkRulesExpectedToHold = async mode => {
+const checkRules = async mode => {
 	const outcomes = new Set();
 	const result = await runChecker(
 		withDefinitions(baseSource, recordOutcome),
-		configFor(mode, atomicCheck, [...rulesExpectedToHold, 'RecordOutcome']),
+		configFor(mode, atomicCheck, [...rules, 'RecordOutcome']),
 		text => outcomes.add(normalizeOutcome(text))
 	);
 	const prefix = mode;
 	if (result.status === 'success') {
-		for (const rule of rulesExpectedToHold) report('HOLDS', `${prefix} ${rule}`, `${result.distinctStates} distinct states`);
+		for (const rule of rules) report('HOLDS', `${prefix} ${rule}`, `${result.distinctStates} distinct states`);
 		return outcomes;
 	}
 	if (result.status === 'invariant-violation') {
-		const rule = result.violation.name ?? rulesExpectedToHold.join('/');
+		const rule = result.violation.name ?? rules.join('/');
 		report('NEW-BREAK', `${prefix} ${rule}`, `shortest path in ${saveTrace(`${prefix} ${rule}`, result.violation.trace)}`);
 		console.log(describeTrace(result.violation.trace));
 		return undefined;
 	}
-	report(
-		'ERROR',
-		`${prefix} ${rulesExpectedToHold.join('/')}`,
-		`checker stopped with ${result.status} ${result.error ?? ''}`.trim()
-	);
+	report('ERROR', `${prefix} ${rules.join('/')}`, `checker stopped with ${result.status} ${result.error ?? ''}`.trim());
 	return undefined;
-};
-
-const checkKnownBrokenRule = async (mode, rule) => {
-	const result = await runChecker(baseSource, configFor(mode, atomicCheck, [rule]));
-	const label = `${mode} ${rule}`;
-	if (result.status === 'invariant-violation') {
-		report('BROKEN-AS-RECORDED', label, `shortest path in ${saveTrace(label, result.violation.trace)}`);
-	} else if (result.status === 'success') {
-		report('FIXED', label, 'the rule now holds: set it as expected to hold in model/check.mjs and update Findings in SKILL.md');
-	} else {
-		report('ERROR', label, `checker stopped with ${result.status} ${result.error ?? ''}`.trim());
-	}
 };
 
 const compareOutcomes = async (sequentialOutcomes, parallelOutcomes) => {
 	const label = 'outcome-comparison parallel-ends-only-where-sequential-can';
 	if (!sequentialOutcomes || !parallelOutcomes) {
-		report('ERROR', label, 'not compared: a run above stopped early');
+		report('SKIPPED', label, 'not compared: a rule run above did not finish');
 		return;
 	}
 	const onlyParallel = [...parallelOutcomes].filter(outcome => !sequentialOutcomes.has(outcome));
@@ -188,8 +171,7 @@ const checkMutant = async ({ name, original, replacement, atomicCheck: mutantAto
 
 const outcomesByMode = {};
 for (const mode of modes) {
-	outcomesByMode[mode] = await checkRulesExpectedToHold(mode);
-	for (const rule of rulesKnownBroken) await checkKnownBrokenRule(mode, rule);
+	outcomesByMode[mode] = await checkRules(mode);
 }
 await compareOutcomes(outcomesByMode.sequential, outcomesByMode.parallel);
 

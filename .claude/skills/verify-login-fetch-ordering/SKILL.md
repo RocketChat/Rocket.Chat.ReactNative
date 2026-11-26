@@ -19,10 +19,8 @@ metadata:
 
 Two checks guard the calls that run when a user logs in to a workspace. "perf: run independent startup, login and room calls in parallel" (https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/7910) moved these calls from one-after-the-other to parallel. The checks compare the two.
 
-1. **Model check (TLA+, checked with tla-ts).** `model/LoginFetchOrdering.tla` is a small model of `handleLoginSuccess`, `startVoipFork` and the two fetches it waits on. The model tries every order of their I/O completions, a workspace switch at any point, and every combination of starting and server values. It checks three rules and one comparison:
-   - **VoipSessionMatchesAccess** (must hold): once login settles, the VoIP media session exists exactly when the user has a voice-call permission and the workspace licence has `teams-voip`. Harm if broken: calls can't be placed or received after login, or a session runs for a user who isn't allowed calls.
-   - **VoipSessionMatchesAccessEvenWithoutLicense** (known broken, see Findings): the same rule when the licence lookup fails.
-   - **ModulesBelongToActiveWorkspace** (known broken, see Findings): after a workspace switch settles, redux `enterpriseModules` belong to the new workspace.
+1. **Model check (TLA+, checked with tla-ts).** `model/LoginFetchOrdering.tla` is a small model of `handleLoginSuccess`, `startVoipFork` and the two fetches it waits on. The model tries every order of their I/O completions, a workspace switch at any point, and every combination of starting and server values. It checks one rule and one comparison:
+   - **VoipSessionMatchesAccess**: once login settles, with the licence lookup answering, the VoIP media session exists exactly when the user has a voice-call permission and the workspace licence has `teams-voip`. Harm if broken: calls can't be placed or received after login, or a session runs for a user who isn't allowed calls.
    - **Outcome comparison**: the set of settled outcomes in `Mode = "parallel"` equals the set in `Mode = "sequential"`. An outcome is the starting redux values, the server's answers, and the final permissions, modules, module owner, VoIP session and switch flag. Equal sets mean running the two fetches in parallel ends nowhere the sequential code couldn't. This is the regression check.
 2. **Generated-input test (Jest, the real code).** `harness/getSettings.pagination.verify.ts` runs the real `getSettings` against a fake `settings.public` server: 9 fixed and 400 seeded random (setting count 0..250, page size 1..120) cases. It compares the result with the old sequential page loop, kept in the test as the oracle. The rule: when every page except the last has exactly the page size, the parallel fetch saves the same settings in the same order, with exactly ceil(N / page size) requests (at least 1). Harm if broken: workspace settings silently missing after login. Its named cases also record how old and new differ when a server breaks that contract. `harness/jest.config.js` reuses the repo's Jest config and only collects tests from `harness/`.
 
@@ -55,14 +53,13 @@ The model runs through `pnpm dlx tla-ts@0.0.10` (a TLC-compatible model checker 
 
 Each result is one line:
 
-- `HOLDS <mode> <rule>`, `HOLDS outcome-comparison ...`, `HOLDS getSettings-pagination ...`: as recorded.
-- `BROKEN-AS-RECORDED <mode> <rule>`: a known finding, still broken; the line names the file with its shortest path.
-- `FIXED <mode> <rule>`: a known finding now holds. Move the rule from `rulesKnownBroken` to `rulesExpectedToHold` in `model/check.mjs` and update Findings below.
-- `NEW-BREAK ...`: a rule expected to hold broke, the outcome sets differ, or the Jest harness failed. The shortest path or the differing outcomes follow, indented.
+- `HOLDS <mode> <rule>`, `HOLDS outcome-comparison ...`, `HOLDS getSettings-pagination ...`: the rule holds.
+- `NEW-BREAK ...`: a rule broke, the outcome sets differ, or the Jest harness failed. The shortest path or the differing outcomes follow, indented.
 - `CAUGHT` / `MISSED` / `STALE mutant ...` (`--model` only): a mutant made the rule break / did not / no longer matches the model text.
 - `ERROR ...`: the checker or Jest could not run.
+- `SKIPPED outcome-comparison ...`: a rule broke or errored above, so the comparison did not run; that line sets the exit code.
 
-Exit 0 means every result equals the recorded result, 1 means a result changed, 2 means a tool error.
+Exit 0 means every rule holds (and with `--model`, every mutant is `CAUGHT`). 1 means a rule broke, or a mutant was `MISSED` or `STALE`. 2 means a tool error.
 
 To see why a rule broke, or to get a chart of the flow, read the trace with the `/statechart` skill.
 
@@ -90,21 +87,9 @@ One model step is one JS task: the work between two I/O completions (a REST or D
 - Not covered: `PERMISSIONS.UPDATE` from the stream, a second `LOGIN.SUCCESS`, `inquiryRequest`, everything after the `all` in `handleLoginSuccess`, how long anything takes. The other calls the same PR parallelized are also out: `Root.init` in app/index.tsx, `removeNotificationsAndBadge` and `initializePushNotifications`, `probeServer` in selectServer.ts, `Encryption.getSample`, `EncryptionRoom.encryptKeyForOtherParticipants`, and `RoomActionsView.componentDidMount`.
 - The Jest harness assumes the server contract that every page except the last is full. The named cases show what changes when that fails.
 
-## Findings at the sync commit
+## What the Jest harness records when a server breaks the contract
 
-Both broken rules break the same way in sequential and parallel mode, so they come from before the parallel change. `model/check.mjs` records them in `rulesKnownBroken`, so a rerun prints `BROKEN-AS-RECORDED` and stays green until someone fixes them; the fix then prints `FIXED` and fails the check until the list is updated.
-
-1. **VoipSessionMatchesAccessEvenWithoutLicense**: when the licence lookup fails, a VoIP session started from cached modules stays up:
-   - The initial `checkVoipPermission` sees cached `teams-voip` and allowed permissions, and calls `init()`.
-   - `fetchLicenseState` returns nothing (`licenses.info` not successful), so `getEnterpriseModules` dispatches `ENTERPRISE_MODULES.CLEAR`.
-   - `startVoipFork` does not watch `CLEAR`, so no recheck runs. The session stays up while redux says the module is gone.
-2. **ModulesBelongToActiveWorkspace**: after a workspace switch, the old workspace's modules can overwrite the new one's:
-   - `getEnterpriseModules` for workspace A is waiting on `licenses.info`.
-   - The user switches to workspace B. `root()` cancels `handleLoginSuccess`, but the started promise keeps running.
-   - `handleSelectServer` for B runs `setEnterpriseModules()` and dispatches B's modules.
-   - A's request finishes and dispatches `ENTERPRISE_MODULES.SET` with A's modules into B's redux state.
-
-Jest harness, server breaking the contract: a middle page shorter than the page size makes the parallel `getSettings` skip settings that the old loop fetched. An empty first page with `total > 0` makes it save an empty list where the old loop never stopped. A failing later page makes it send every page request before giving up, where the old loop stopped at that page.
+The named cases pass and record these differences: a middle page shorter than the page size makes the parallel `getSettings` skip settings that the old loop fetched. An empty first page with `total > 0` makes it save an empty list where the old loop never stopped. A failing later page makes it send every page request before giving up, where the old loop stopped at that page.
 
 ## Reading a failure: real bug or model error?
 
@@ -117,9 +102,10 @@ Jest harness, server breaking the contract: a middle page shorter than the page 
 
 1. For each changed function in the coverage table, change the matching model action (or the oracle and cases in the Jest harness) so it does what the code now does. Keep the action names, and keep each action one JS task.
 2. If you add an await on I/O inside `checkVoipPermission`, or pass a `rid` to `hasPermission` there, run with `ATOMIC_CHECK=FALSE`. If that becomes the code's normal shape, make it the default in `model/check.mjs` and drop the `checkVoipPermission-awaits-io` mutant.
-3. Rerun. A rule that broke because of the change is a finding to report, not something to fix in the model.
+3. Rerun. A rule that broke because of the change is a finding to report, not something to fix in the model. This skill carries only rules the code satisfies: a bug the code already has goes into a GitHub issue that carries its rule, and the PR that fixes the bug adds the rule back to `rules` in `model/check.mjs`.
 4. Run `check.sh --model` and confirm every mutant prints `CAUGHT`. A `STALE` mutant means the model text it edits changed; update its `original` in `model/check.mjs`.
+5. Only after the model and the harness describe the code at a commit on origin/develop, set `sync` in the frontmatter to that commit.
 
-The outcome comparison depends on `getPermissions` firing `setPermissions()` without awaiting it. With that await in place, sequential mode always dispatches `PERMISSIONS.SET` before the licence fetch starts, so parallel mode gains outcomes the sequential code can't reach. If someone adds that await, rerun and decide whether the new parallel outcomes are acceptable. 5. Only after the model and the harness describe the code at a commit on origin/develop, set `sync` in the frontmatter to that commit.
+The outcome comparison depends on `getPermissions` firing `setPermissions()` without awaiting it. With that await in place, sequential mode always dispatches `PERMISSIONS.SET` before the licence fetch starts, so parallel mode gains outcomes the sequential code can't reach. If someone adds that await, rerun and decide whether the new parallel outcomes are acceptable.
 
 For bringing this verification back in line after changes that didn't rerun it, use `/maintain-formal-verification-skill`.

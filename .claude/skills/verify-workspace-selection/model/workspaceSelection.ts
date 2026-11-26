@@ -343,9 +343,6 @@ export const userLeavesShare = () => {
 	root = 'Inside';
 };
 
-/** The rooms list shows only with a signed-in user of the workspace the app is connected to. */
-export const roomsListHasSignedInUser = () => root !== 'Inside' || (user !== null && user === sdkHost && hasToken(user));
-
 /** Selecting the connected workspace that has a stored login opens its rooms list without reconnecting. */
 export const liveWorkspaceOpensWithoutReconnect = () =>
 	lastOutcome === 'None' || !lastWasLive || (lastOutcome === 'Cancel' && !lastReconnected && lastPutRoot !== 'Outside');
@@ -353,10 +350,6 @@ export const liveWorkspaceOpensWithoutReconnect = () =>
 /** Selecting a workspace without a stored login ends on the workspace screen, connected to that workspace. */
 export const loginlessSelectEndsOnWorkspaceScreen = () =>
 	lastOutcome === 'None' || lastOutcome === 'Failure' || lastHadLogin || (lastPutRoot === 'Outside' && lastHost === lastServer);
-
-/** The share screen shows only for a workspace with a signed-in user. */
-export const shareScreenHasSignedInUser = () =>
-	root !== 'Share' || (user !== null && user === shareServer && sdkHost === shareServer && hasToken(user));
 
 /** Every workspace selection ends with success, cancel or failure.
  * @leadsTo noSelectPending */

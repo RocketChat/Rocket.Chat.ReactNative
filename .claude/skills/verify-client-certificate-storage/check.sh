@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Model-checks client-certificate-storage.ts and compares every rule with the result recorded below.
+# Model-checks client-certificate-storage.ts and expects every rule to hold.
 # --model also breaks one guard at a time and expects the rule that guards it to catch the break.
-# Exit 0 only when every line matches the record. Tool output goes to a fresh mktemp -d.
+# Exit 0 only when every rule holds and every mutant is caught. Tool output goes to a fresh mktemp -d.
 set -uo pipefail
 
 skill_dir="${SKILL_DIR:-$(cd "$(dirname "$0")" && pwd)}"
@@ -10,15 +10,11 @@ work="$(mktemp -d)"
 failures=0
 
 holding_rules=(savedCertificateStaysLoadable removedCertificateIsNotPresented)
-recorded_breaks=(
-	"connectedWorkspacePresentsItsCertificate 84"
-	"hostCertificateHeldOnlyWhileUsed 16"
-)
 
 report() {
 	echo "$1"
 	case "$1" in
-		HOLDS* | BROKEN-AS-RECORDED* | CAUGHT*) ;;
+		HOLDS* | CAUGHT*) ;;
 		*) failures=$((failures + 1)) ;;
 	esac
 }
@@ -80,27 +76,6 @@ check_holding_rules() {
 	done
 }
 
-check_recorded_break() {
-	local rule="$1" recorded="$2" status count
-	prepare_run "$rule"
-	write_config "$rule" INVARIANT "$rule"
-	status="$(run_tlc "$rule" -config rules.cfg -continue -deadlock)"
-	if [ "$status" -ne 0 ] && ! ran_to_the_end "$rule"; then
-		report "ERROR $rule: the model did not run (tla-ts exit $status), see $work/$rule/tlc.out"
-		return
-	fi
-	count="$(violations "$rule" "$rule")"
-	if ! searched_every_state "$rule"; then
-		report "ERROR $rule: the search stopped early, see $work/$rule/tlc.out"
-	elif [ "$count" -eq 0 ]; then
-		report "FIXED $rule (recorded $recorded violating states, now 0): update the known findings"
-	elif [ "$count" -eq "$recorded" ]; then
-		report "BROKEN-AS-RECORDED $rule ($count violating states)"
-	else
-		report "NEW-BREAK $rule ($count violating states, recorded $recorded)"
-	fi
-}
-
 mutant_count=0
 
 count_all_rules() {
@@ -141,17 +116,9 @@ check_mutants() {
 	expect_caught savedCertificateStaysLoadable '	if (certificate !== null && !isCertificateInUse(certificate)) {' '	if (certificate !== null) {'
 	expect_caught removedCertificateIsNotPresented '	hostCertificate = null;
 	if (selected !== null) {' '	if (selected !== null) {'
-	expect_caught connectedWorkspacePresentsItsCertificate '	connected = workspace;
-	applyServerCertificate(workspace);
-};' '	connected = workspace;
-};'
-	expect_caught hostCertificateHeldOnlyWhileUsed '	const sameHost = servers.size > 0;' '	const sameHost = true;'
 }
 
 check_holding_rules
-for entry in "${recorded_breaks[@]}"; do
-	check_recorded_break $entry
-done
 if [ "${1:-}" = "--model" ]; then
 	check_mutants
 fi

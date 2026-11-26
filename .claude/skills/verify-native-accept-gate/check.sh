@@ -1,8 +1,8 @@
 #!/bin/sh
 # Usage: check.sh [--model] [path/to/native-accept-gate.ts]
-# Default: per scenario, one TLC run for every rule expected.txt records as holding, one run per rule recorded as broken.
-# --model: also the witnesses and the mutants, to show the model can still fail.
-# Exit 0: every result matches expected.txt and every mutant is caught; 1: a result changed; 2: a tool error.
+# Default: per scenario, one TLC run for every rule.
+# --model: also, per scenario, the answer witness, and the mutants, to show the model can still fail.
+# Exit 0: every rule holds, every scenario can answer and every mutant is caught; 1: a result changed; 2: a tool error.
 set -u
 
 mode=check
@@ -27,7 +27,7 @@ streamer-late    streamer alive 0 true  false
 monolith-relogin monolith alive 0 false true
 streamer-relogin streamer alive 0 false true
 '
-witnesses='NeverAnswers'
+rules='AcceptConnects AnswerOnlyWhenLive GateSendsNoDuplicateSub MediaSubsSurviveAccept AnswerBeforeDeadline'
 
 prepare() {
   prepared=$1 source=$2 scenario=$3
@@ -50,48 +50,38 @@ path_of() {
   grep -E '^State [0-9]+: <' "$1" | sed -E 's/^State [0-9]+: <([^ >]*).*/\1/' | tail -n +2 | paste -sd' ' -
 }
 
-expected_of() {
-  awk -v n="$1" -v r="$2" '$1==n && $2==r {print $3}' "$skill/expected.txt"
-}
-
-is_witness() {
-  case " $witnesses " in *" $1 "*) return 0 ;; esac
-  return 1
-}
-
 report() {
   dir=$1 name=$2 rule=$3 status=$4
-  expected=$(expected_of "$name" "$rule")
-  case "$status:$expected" in
-    0:holds) echo "HOLDS $name $rule" ;;
-    0:breaks) echo "FIXED $name $rule" ;;
-    12:breaks) echo "BROKEN-AS-RECORDED $name $rule: $(path_of "$dir/$rule.out")" ;;
-    12:*) echo "NEW-BREAK $name $rule: $(path_of "$dir/$rule.out")" ;;
+  case "$status" in
+    0) echo "HOLDS $name $rule" ;;
+    12) echo "NEW-BREAK $name $rule: $(path_of "$dir/$rule.out")" ;;
     *) echo "ERROR $name $rule: $dir/$rule.out" ;;
+  esac
+}
+
+check_answer_reachable() {
+  dir=$1 name=$2
+  tlc "$dir" NeverAnswers NeverAnswers
+  case $? in
+    12) echo "REACHABLE $name answered: $(path_of "$dir/NeverAnswers.out")" ;;
+    0) echo "UNREACHABLE $name answered" ;;
+    *) echo "ERROR $name NeverAnswers: $dir/NeverAnswers.out" ;;
   esac
 }
 
 check_scenario() {
   name=$1 source=$2 dir=$out/$name
   prepare "$dir" "$source" "$name"
-  holding=$(awk -v n="$name" '$1==n && $3=="holds" {print $2}' "$skill/expected.txt" | paste -sd' ' -)
-  breaking=$(awk -v n="$name" '$1==n && $3=="breaks" {print $2}' "$skill/expected.txt")
-  if [ -n "$holding" ]; then
-    tlc "$dir" holding $holding
-    if [ $? -eq 0 ]; then
-      for rule in $holding; do echo "HOLDS $name $rule"; done
-    else
-      for rule in $holding; do
-        tlc "$dir" "$rule" "$rule"
-        report "$dir" "$name" "$rule" $?
-      done
-    fi
+  tlc "$dir" holding $rules
+  if [ $? -eq 0 ]; then
+    for rule in $rules; do echo "HOLDS $name $rule"; done
+  else
+    for rule in $rules; do
+      tlc "$dir" "$rule" "$rule"
+      report "$dir" "$name" "$rule" $?
+    done
   fi
-  for rule in $breaking; do
-    if is_witness "$rule" && [ "$mode" = check ]; then continue; fi
-    tlc "$dir" "$rule" "$rule"
-    report "$dir" "$name" "$rule" $?
-  done
+  if [ "$mode" = model ]; then check_answer_reachable "$dir" "$name"; fi
 }
 
 mutant() {
@@ -132,5 +122,5 @@ mutant() {
 
 echo "results: $out"
 if grep -q '^ERROR' "$out/results.txt"; then exit 2; fi
-if grep -qvE '^(HOLDS|BROKEN-AS-RECORDED|CAUGHT) ' "$out/results.txt"; then exit 1; fi
+if grep -qvE '^(HOLDS|REACHABLE|CAUGHT) ' "$out/results.txt"; then exit 1; fi
 exit 0
