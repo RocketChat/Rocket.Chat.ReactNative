@@ -5713,3 +5713,110 @@ exports[`Story Snapshots: WithAltTextOldServer should match snapshot 1`] = `
   />
 </View>
 `;
+
+exports[`Story Snapshots: XPost should match snapshot 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+        "flexDirection": "column",
+        "gap": 4,
+      },
+      {
+        "backgroundColor": "#F7F8FA",
+        "borderColor": "#CBCED1",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "overflow": "hidden",
+      },
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "flex-start",
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "flex-start",
+        "padding": 12,
+      }
+    }
+  >
+    <Text
+      numberOfLines={2}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "500",
+            "textAlign": "left",
+          },
+          {
+            "color": "#095AD2",
+          },
+        ]
+      }
+    >
+      React Native
+    </Text>
+    <Text
+      numberOfLines={2}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      We're happy to share that our website https://t.co/Msd34gULf5 is now fully bilingual: Java & #Kotlin 🚀 You will find snippets and examples in both languages side by side! Kotlin makes for a more concise and more elegant experience when writing your native modules & components.
+    </Text>
+  </View>
+</View>
+`;
