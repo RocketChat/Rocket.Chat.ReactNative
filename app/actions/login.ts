@@ -17,6 +17,7 @@ interface ILoginRequest extends Action {
 
 interface ILoginSuccess extends Action {
 	user: Partial<IUser>;
+	server: string;
 }
 
 interface ILoginFailure extends Action {
@@ -66,10 +67,17 @@ export function loginRequest(
 	};
 }
 
-export function loginSuccess(user: Partial<IUser>): ILoginSuccess {
+export function loginSuccess(user: Partial<IUser>, server: string): ILoginSuccess {
 	return {
 		type: types.LOGIN.SUCCESS,
-		user
+		user,
+		server
+	};
+}
+
+export function loginCancel(): Action {
+	return {
+		type: types.LOGIN.CANCEL
 	};
 }
 

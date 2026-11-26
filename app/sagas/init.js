@@ -12,7 +12,7 @@ import { APP } from '../actions/actionsTypes';
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import { runBiometricTrustMigration } from '../lib/biometricTrustStore/migration';
-import { appReady, appStart } from '../actions/app';
+import { appStart } from '../actions/app';
 import { RootEnum } from '../definitions/redux/TRootEnum';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
@@ -82,8 +82,6 @@ const restore = function* restore() {
 	} else {
 		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 	}
-
-	yield put(appReady({}));
 
 	yield* deliverPendingPushNotification(restoredServer);
 };

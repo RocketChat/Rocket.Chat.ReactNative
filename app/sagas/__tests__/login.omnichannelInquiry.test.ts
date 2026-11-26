@@ -128,7 +128,7 @@ describe('login saga — requesting Inquiries for an available Agent', () => {
 	it('requests Inquiries at login when Omnichannel is enabled', async () => {
 		const { store, dispatchedActions } = setupStore({ Livechat_enabled: true });
 
-		store.dispatch(loginSuccess(AGENT));
+		store.dispatch(loginSuccess(AGENT, SERVER));
 		await flushSagaMicrotasks();
 
 		expect(dispatchedActions.map(({ type }) => type)).toContain(INQUIRY.REQUEST);
@@ -137,7 +137,7 @@ describe('login saga — requesting Inquiries for an available Agent', () => {
 	it('does not request Inquiries at login when Omnichannel is disabled', async () => {
 		const { store, dispatchedActions } = setupStore({ Livechat_enabled: false });
 
-		store.dispatch(loginSuccess(AGENT));
+		store.dispatch(loginSuccess(AGENT, SERVER));
 		await flushSagaMicrotasks();
 
 		expect(dispatchedActions.map(({ type }) => type)).not.toContain(INQUIRY.REQUEST);
@@ -146,7 +146,7 @@ describe('login saga — requesting Inquiries for an available Agent', () => {
 	it('requests Inquiries at login while the workspace settings have not loaded yet', async () => {
 		const { store, dispatchedActions } = setupStore();
 
-		store.dispatch(loginSuccess(AGENT));
+		store.dispatch(loginSuccess(AGENT, SERVER));
 		await flushSagaMicrotasks();
 
 		expect(dispatchedActions.map(({ type }) => type)).toContain(INQUIRY.REQUEST);

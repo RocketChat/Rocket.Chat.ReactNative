@@ -121,6 +121,7 @@ afterEach(cancelSagaTasks);
 
 beforeEach(() => {
 	jest.clearAllMocks();
+	setActiveHost(undefined);
 	keysToClear.forEach(key => UserPreferences.removeItem(key));
 	UserPreferences.setString(CURRENT_SERVER, OLD_SERVER);
 	applyBasicAuth(SERVER_URL);

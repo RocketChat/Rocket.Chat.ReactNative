@@ -9,7 +9,13 @@ function createRequestTypes(base = {}, types = defaultTypes): Record<string, str
 }
 
 // Login events
-export const LOGIN = createRequestTypes('LOGIN', [...defaultTypes, 'SET_SERVICES', 'SET_PREFERENCE', 'SET_LOCAL_AUTHENTICATED']);
+export const LOGIN = createRequestTypes('LOGIN', [
+	...defaultTypes,
+	'CANCEL',
+	'SET_SERVICES',
+	'SET_PREFERENCE',
+	'SET_LOCAL_AUTHENTICATED'
+]);
 export const SHARE = createRequestTypes('SHARE', ['SET_PARAMS']);
 export const USER = createRequestTypes('USER', ['SET', 'CLEAR']);
 export const ROOMS = createRequestTypes('ROOMS', [...defaultTypes, 'REFRESH']);
@@ -37,7 +43,6 @@ export const INQUIRY = createRequestTypes('INQUIRY', [
 export const ROUTING_CONFIG = createRequestTypes('ROUTING_CONFIG');
 export const APP = createRequestTypes('APP', [
 	'START',
-	'READY',
 	'INIT',
 	'INIT_LOCAL_SETTINGS',
 	'SET_NOTIFICATION_PRESENCE_CAP',

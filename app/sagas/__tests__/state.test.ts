@@ -68,7 +68,7 @@ describe('state saga — foreground socket recovery', () => {
 		const store = setupStore();
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		store.dispatch(selectServerSuccess({ server: HOST, name: 'open.rocket.chat', version: '6.0.0' }));
-		store.dispatch(loginSuccess({ id: 'user-1', token: 'token-abc' } as any));
+		store.dispatch(loginSuccess({ id: 'user-1', token: 'token-abc' } as any, HOST));
 		store.dispatch(connectSuccess());
 		flushSagaMicrotasks();
 		return store;
@@ -143,7 +143,7 @@ describe('state saga — background', () => {
 		const store = setupStore();
 		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		store.dispatch(selectServerSuccess({ server: HOST, name: 'open.rocket.chat', version: '6.0.0' }));
-		store.dispatch(loginSuccess({ id: 'user-1', token: 'token-abc' } as any));
+		store.dispatch(loginSuccess({ id: 'user-1', token: 'token-abc' } as any, HOST));
 		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
 

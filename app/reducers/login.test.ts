@@ -1,6 +1,7 @@
 import { type TUserStatus } from '../definitions/TUserStatus';
 import {
 	clearUser,
+	loginCancel,
 	loginFailure,
 	loginRequest,
 	loginSuccess,
@@ -11,6 +12,9 @@ import {
 } from '../actions/login';
 import { initialState } from './login';
 import { createMockedStore, mockedStore } from './mockedStore';
+
+const SERVER = 'https://open.rocket.chat';
+const OTHER_SERVER = 'https://other.rocket.chat';
 
 describe('test selectedUsers reducer', () => {
 	it('should return initial state', () => {
@@ -51,7 +55,7 @@ describe('test selectedUsers reducer', () => {
 			status: 'online' as TUserStatus,
 			statusText: 'online'
 		};
-		mockedStore.dispatch(loginSuccess(user));
+		mockedStore.dispatch(loginSuccess(user, SERVER));
 		const state = mockedStore.getState().login.user;
 		expect(state).toEqual(user);
 	});
@@ -97,39 +101,64 @@ describe('test selectedUsers reducer', () => {
 
 	it('should take the server settings when the same user logs in again', () => {
 		const store = createMockedStore();
-		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: true } } }));
-		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: false } } }));
+		store.dispatch(
+			loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: true } } }, SERVER)
+		);
+		store.dispatch(
+			loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: false } } }, SERVER)
+		);
 		expect(store.getState().login.user.settings).toEqual({ preferences: { convertAsciiEmoji: false } });
 	});
 
 	it('should keep the same user object when the same user logs in with unchanged fields', () => {
 		const store = createMockedStore();
 		const settings = { preferences: { convertAsciiEmoji: true } };
-		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'], settings }));
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'], settings }, SERVER));
 		const before = store.getState().login.user;
-		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'], settings: { ...settings } }));
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', roles: ['user'], settings: { ...settings } }, SERVER));
 		expect(store.getState().login.user).toBe(before);
 	});
 
 	it('should drop the user settings when a different user logs in', () => {
 		const store = createMockedStore();
-		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: true } } }));
-		store.dispatch(loginSuccess({ id: 'other-id', username: 'other' }));
+		store.dispatch(
+			loginSuccess({ id: 'user-id', username: 'carlito', settings: { preferences: { convertAsciiEmoji: true } } }, SERVER)
+		);
+		store.dispatch(loginSuccess({ id: 'other-id', username: 'other' }, SERVER));
 		expect(store.getState().login.user.settings).toBeUndefined();
 	});
 
 	it('should not carry the previous server settings when switching to another server', () => {
 		const store = createMockedStore();
 		store.dispatch(
-			loginSuccess({
-				id: 'user-id',
-				username: 'carlito',
-				settings: { preferences: { convertAsciiEmoji: true, enableMobileRinging: true } }
-			})
+			loginSuccess(
+				{
+					id: 'user-id',
+					username: 'carlito',
+					settings: { preferences: { convertAsciiEmoji: true, enableMobileRinging: true } }
+				},
+				SERVER
+			)
 		);
 		store.dispatch(setUser({ id: 'other-server-user-id', username: 'carlito' }));
-		store.dispatch(loginSuccess({ id: 'other-server-user-id', username: 'carlito' }));
+		store.dispatch(loginSuccess({ id: 'other-server-user-id', username: 'carlito' }, OTHER_SERVER));
 		expect(store.getState().login.user.settings).toBeUndefined();
+	});
+
+	it('should record which workspace the login succeeded on', () => {
+		const store = createMockedStore();
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito' }, SERVER));
+		expect(store.getState().login.signedInServer).toBe(SERVER);
+		store.dispatch(loginSuccess({ id: 'user-id', username: 'carlito' }, OTHER_SERVER));
+		expect(store.getState().login.signedInServer).toBe(OTHER_SERVER);
+	});
+
+	it('should stop fetching without signing in or failing when a login is cancelled', () => {
+		const store = createMockedStore();
+		store.dispatch(loginRequest({ resume: 'token' }));
+		store.dispatch(loginCancel());
+		const { isFetching, isAuthenticated, failure } = store.getState().login;
+		expect({ isFetching, isAuthenticated, failure }).toEqual({ isFetching: false, isAuthenticated: false, failure: false });
 	});
 
 	it('should clear user after clearUser', () => {

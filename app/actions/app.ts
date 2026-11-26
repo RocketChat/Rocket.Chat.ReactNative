@@ -32,12 +32,6 @@ export function appStart({ root, ...args }: Params): IAppStart {
 	};
 }
 
-export function appReady(): Action {
-	return {
-		type: APP.READY
-	};
-}
-
 export function appInit(): Action {
 	return {
 		type: APP.INIT

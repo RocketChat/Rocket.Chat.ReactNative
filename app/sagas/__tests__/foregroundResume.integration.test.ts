@@ -180,12 +180,12 @@ async function openSocket(): Promise<void> {
 
 async function openSignedInSocket(): Promise<void> {
 	await openSocket();
-	store.dispatch(loginSuccess({ id: USER_ID, token: RESUME_TOKEN } as never));
+	store.dispatch(loginSuccess({ id: USER_ID, token: RESUME_TOKEN } as never, SERVER));
 	await flushMicrotasksAndTimers();
 }
 
 function resumedUser(): unknown {
-	const resumed = dispatched.find(action => typeOf(action) === typeOf(loginSuccess({} as never)));
+	const resumed = dispatched.find(action => typeOf(action) === typeOf(loginSuccess({} as never, SERVER)));
 	return resumed?.user;
 }
 

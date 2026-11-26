@@ -1,4 +1,4 @@
-import { appStart, appInit, setNotificationPresenceCap, appReady } from '../actions/app';
+import { appStart, setNotificationPresenceCap } from '../actions/app';
 import { initialState } from './app';
 import { mockedStore } from './mockedStore';
 import { RootEnum } from '../definitions/redux/TRootEnum';
@@ -14,15 +14,6 @@ describe('test reducer', () => {
 		mockedStore.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		const { root } = mockedStore.getState().app;
 		expect(root).toEqual(RootEnum.ROOT_INSIDE);
-	});
-
-	it('should return ready state after dispatch appInit action', () => {
-		mockedStore.dispatch(appInit());
-		const { ready } = mockedStore.getState().app;
-		expect(ready).toEqual(false);
-		mockedStore.dispatch(appReady());
-		const { ready: ready2 } = mockedStore.getState().app;
-		expect(ready2).toEqual(true);
 	});
 
 	it('should return correct state after app go to foreground', () => {

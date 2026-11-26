@@ -4,7 +4,7 @@ import { all, call, delay, put, race, select, take, takeLatest } from 'redux-sag
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
-import { appInit, appStart, appReady } from '../actions/app';
+import { appInit, appStart } from '../actions/app';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import { loginRequest } from '../actions/login';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
@@ -38,7 +38,7 @@ const roomTypes = {
 	channels: 'l'
 };
 
-const DEEP_LINK_SIGN_IN_TIMEOUT = 60_000;
+const DEEP_LINK_WAIT_TIMEOUT = 60_000;
 
 export const shouldAutoConfirmDeepLinkLogin = (isE2E, params = {}) => isE2E && params.forceLoginPrompt !== 'true';
 
@@ -154,7 +154,14 @@ const completeDeepLinkNavigation = function* completeDeepLinkNavigation(params) 
 
 const fallbackNavigation = function* fallbackNavigation() {
 	const currentRoot = yield select(state => state.app.root);
-	if (currentRoot) {
+	if (currentRoot === RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+		const userId = yield select(state => state.login.user.id);
+		if (userId) {
+			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			return;
+		}
+		yield put(appStart({ root: RootEnum.ROOT_LOADING }));
+	} else if (currentRoot) {
 		return;
 	}
 	yield put(appInit());
@@ -259,9 +266,44 @@ const handleShareExtension = function* handleOpen({ params }) {
 	}
 };
 
-// Unlocks, then reconnects to `host` and waits for the login to land. Returns false when the unlock
-// was canceled or superseded, so the caller can bail instead of navigating.
-const authenticateAndSelectServer = function* authenticateAndSelectServer(host, version, changeServer = false) {
+const isSignedInto = (host, userId) => state =>
+	state.server.server === host && state.login.isAuthenticated && state.login.user.id === userId;
+
+const isConnectedAs = (host, userId) => state =>
+	state.server.server === host && state.server.connected && state.login.user.id === userId;
+
+const waitForSignIn = function* waitForSignIn(host, userId) {
+	while (!(yield select(isSignedInto(host, userId)))) {
+		yield take(types.LOGIN.SUCCESS);
+	}
+	return true;
+};
+
+const raceUntilLogoutOrTimeout = effects =>
+	race({
+		...effects,
+		loggedOut: take(types.LOGOUT),
+		timedOut: delay(DEEP_LINK_WAIT_TIMEOUT)
+	});
+
+const waitForWorkspace = function* waitForWorkspace(host, userId) {
+	const { signedIn } = yield raceUntilLogoutOrTimeout({
+		signedIn: call(waitForSignIn, host, userId),
+		failed: take(types.SERVER.SELECT_FAILURE)
+	});
+	if (signedIn) {
+		return true;
+	}
+	showToast(I18n.t('Deep_link_open_failed'));
+	yield fallbackNavigation();
+	return false;
+};
+
+const selectKnownWorkspace = function* selectKnownWorkspace({ host, version, userId }) {
+	if (yield select(isConnectedAs(host, userId))) {
+		return true;
+	}
+	const selectedServer = yield select(state => state.server.server);
 	try {
 		yield localAuthenticate(host);
 	} catch (e) {
@@ -269,21 +311,29 @@ const authenticateAndSelectServer = function* authenticateAndSelectServer(host, 
 		yield fallbackNavigation();
 		return false;
 	}
-	yield put(selectServerRequest(host, version, true, changeServer));
-	yield take(types.LOGIN.SUCCESS);
-	return true;
+	yield put(selectServerRequest(host, version, true, !!selectedServer && selectedServer !== host));
+	return yield* waitForWorkspace(host, userId);
 };
 
-const handleKnownServerDeepLink = function* handleKnownServerDeepLink({ params, host, version }) {
-	try {
-		yield localAuthenticate(host);
-		yield put(selectServerRequest(host, version, true, true));
-		yield take(types.LOGIN.SUCCESS);
-		yield completeDeepLinkNavigation(params);
-	} catch (e) {
-		logUnlessUserCanceled(e);
-		yield fallbackNavigation();
+const openKnownWorkspace = function* openKnownWorkspace({ params, version, userId }) {
+	if (params.voipAcceptFailed) {
+		endVoipCall(params.callId);
 	}
+	return yield* selectKnownWorkspace({ host: params.host, version, userId });
+};
+
+const waitForInsideRoot = function* waitForInsideRoot() {
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot === RootEnum.ROOT_INSIDE) {
+		return true;
+	}
+	const { inside } = yield raceUntilLogoutOrTimeout({
+		inside: take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE)
+	});
+	if (!inside) {
+		showToast(I18n.t('Deep_link_open_failed'));
+	}
+	return !!inside;
 };
 
 const waitForServerConnection = function* waitForServerConnection() {
@@ -297,11 +347,9 @@ const waitForServerConnection = function* waitForServerConnection() {
 
 const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, hostAlreadyConnected = false }) {
 	if (!hostAlreadyConnected) {
-		const { connected, failed, timedOut } = yield race({
+		const { connected, failed, timedOut } = yield raceUntilLogoutOrTimeout({
 			connected: call(waitForServerConnection),
-			failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE]),
-			loggedOut: take(types.LOGOUT),
-			timedOut: delay(DEEP_LINK_SIGN_IN_TIMEOUT)
+			failed: take([types.LOGIN.FAILURE, types.SERVER.SELECT_FAILURE])
 		});
 		if (timedOut) {
 			showToast(I18n.t('Deep_link_login_timed_out'));
@@ -317,6 +365,7 @@ const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, host
 	const { signedIn, failed } = yield race({
 		signedIn: take(types.LOGIN.SUCCESS),
 		failed: take(types.LOGIN.FAILURE),
+		cancelled: take(types.LOGIN.CANCEL),
 		loggedOut: take(types.LOGOUT)
 	});
 	if (failed) {
@@ -325,13 +374,8 @@ const signInWithDeepLinkToken = function* signInWithDeepLinkToken({ params, host
 	return !!signedIn;
 };
 
-const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, user, serverRecord, skipLoginConsent }) {
+const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, server, serverRecord, skipLoginConsent }) {
 	const { host } = params;
-	// search if deep link's server already exists
-	if (user && serverRecord) {
-		yield* handleKnownServerDeepLink({ params, host, version: serverRecord.version });
-		return;
-	}
 	if (!skipLoginConsent && requiresDeepLinkConsent(params, serverRecord) && !(yield ensureDeepLinkConsent(host, params))) {
 		if (params.voipAcceptFailed) {
 			endVoipCall(params.callId);
@@ -362,10 +406,8 @@ const handleOpenDifferentServer = function* handleOpenDifferentServer({ params, 
 	if (!(yield* signInWithDeepLinkToken({ params, hostAlreadyConnected }))) {
 		return;
 	}
-	yield put(appReady({}));
-	const currentRoot = yield select(state => state.app.root);
-	if (currentRoot !== RootEnum.ROOT_INSIDE) {
-		yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
+	if (!(yield* waitForInsideRoot())) {
+		return;
 	}
 	yield completeDeepLinkNavigation(params);
 };
@@ -406,17 +448,18 @@ const handleOpen = function* handleOpen({ params, skipLoginConsent }) {
 
 	const serverRecord = yield getServerById(host);
 
-	// TODO: needs better test
-	// if deep link is from same server
-	if (server === host && user && serverRecord) {
-		const connected = yield select(state => state.server.connected);
-		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version))) {
-			return;
+	if (user && serverRecord) {
+		try {
+			if (yield* openKnownWorkspace({ params, version: serverRecord.version, userId: user })) {
+				yield completeDeepLinkNavigation(params);
+			}
+		} catch (e) {
+			log(e);
+			yield fallbackNavigation();
 		}
-		yield completeDeepLinkNavigation(params);
-	} else {
-		yield handleOpenDifferentServer({ params, server, user, serverRecord, skipLoginConsent });
+		return;
 	}
+	yield handleOpenDifferentServer({ params, server, serverRecord, skipLoginConsent });
 };
 
 const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
@@ -468,17 +511,8 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 
 	const serverRecord = yield getServerById(host);
 
-	if (server === host && user && serverRecord) {
-		const connected = yield select(state => state.server.connected);
-		if (!connected && !(yield* authenticateAndSelectServer(host, serverRecord.version))) {
-			return;
-		}
-		yield handleNavigateCallRoom({ params });
-		return;
-	}
-
 	if (user && serverRecord) {
-		if (yield* authenticateAndSelectServer(host, serverRecord.version, true)) {
+		if (yield* openKnownWorkspace({ params, version: serverRecord.version, userId: user })) {
 			yield handleNavigateCallRoom({ params });
 		}
 		return;
