@@ -75,12 +75,18 @@ class ShareRocketChatRN: UIViewController {
                 }
                 return
             } else if firstAttachment.hasItemConformingToTypeIdentifier("public.text") {
-                if let urlAttachment = attachments.first(where: {
-                    $0.hasItemConformingToTypeIdentifier("public.url") && !$0.hasItemConformingToTypeIdentifier("public.file-url")
-                }) {
-                    self.handleUrl(item: urlAttachment)
-                } else {
+                guard let urlAttachment = attachments.first(where: { $0.hasItemConformingToTypeIdentifier("public.url") }) else {
                     self.handleText(item: firstAttachment)
+                    return
+                }
+                urlAttachment.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
+                    if let url = data as? URL, !url.isFileURL,
+                       let finalUrl = self.shareExtensionURL(params: ["url": url.absoluteString]) {
+                        _ = self.openURL(finalUrl)
+                        self.completeRequest()
+                    } else {
+                        self.handleText(item: firstAttachment)
+                    }
                 }
                 return
             }
