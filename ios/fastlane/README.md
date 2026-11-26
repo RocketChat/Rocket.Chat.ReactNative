@@ -31,14 +31,6 @@ Submit a new Beta Build to Apple TestFlight
 
 Build app
 
-### ios build_simulator
-
-```sh
-[bundle exec] fastlane ios build_simulator
-```
-
-Build app for Simulator
-
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

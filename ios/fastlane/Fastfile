@@ -106,27 +106,14 @@ platform :ios do
       targets: "Rocket.Chat.Watch",
     )
 
-    gym(
-      scheme: "RocketChat",
-      workspace: "RocketChat.xcworkspace",
-      xcargs: "-allowProvisioningUpdates",
-      output_name: "Rocket.Chat"
-    )
-  end
+    compilation_cache_path = ENV["XCODE_COMPILATION_CACHE_PATH"]
+    compilation_cache_xcargs = compilation_cache_path ? " COMPILATION_CACHE_ENABLE_CACHING=YES COMPILATION_CACHE_CAS_PATH=#{compilation_cache_path}" : ""
 
-  desc "Build app for Simulator"
-  lane :build_simulator do
     gym(
       scheme: "RocketChat",
       workspace: "RocketChat.xcworkspace",
-      destination: "generic/platform=iOS Simulator",
-      skip_package_ipa: true,
-      output_name: "Rocket.Chat",
-      output_directory: "./fastlane/output",
-      build_path: "./fastlane/build",
-      configuration: "Release",
-      derived_data_path: "./fastlane/derived_data",
-      xcargs: "-parallelizeTargets -jobs 4 ARCHS=arm64"
+      xcargs: "-allowProvisioningUpdates#{compilation_cache_xcargs}",
+      output_name: "Rocket.Chat"
     )
   end
 

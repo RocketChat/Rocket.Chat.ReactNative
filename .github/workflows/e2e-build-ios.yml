@@ -3,21 +3,7 @@ name: E2E Build iOS
 on:
   workflow_call:
     secrets:
-      APP_STORE_CONNECT_API_KEY_BASE64:
-        required: true
       BUGSNAG_KEY:
-        required: true
-      MATCH_KEYCHAIN_NAME:
-        required: true
-      MATCH_KEYCHAIN_PASSWORD:
-        required: true
-      MATCH_PASSWORD:
-        required: true
-      APP_STORE_CONNECT_API_KEY_ID:
-        required: true
-      APP_STORE_CONNECT_API_KEY_ISSUER_ID:
-        required: true
-      FASTLANE_REPO_PAT:
         required: true
     inputs:
       seed-only:
@@ -53,7 +39,7 @@ jobs:
         uses: ./.github/actions/native-fingerprint
         with:
           platform: ios
-          cache-key-prefix: e2e-ios-${{ hashFiles('.github/workflows/e2e-build-ios.yml', 'ios/fastlane/Fastfile') }}
+          cache-key-prefix: e2e-ios-${{ hashFiles('.github/workflows/e2e-build-ios.yml') }}
 
   ios-build:
     needs: native-fingerprint
@@ -80,10 +66,6 @@ jobs:
               path: .native-cache
               key: ${{ needs.native-fingerprint.outputs.cache-key }}
 
-      - name: Bundle JS into cached app
-        if: ${{ steps.native-cache.outputs.cache-hit == 'true' }}
-        run: .github/scripts/bundle-ios-app.sh "$APP_PATH"
-
       - name: Set up Xcode
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
@@ -98,7 +80,7 @@ jobs:
               ruby-version: 2.7.7
               bundler-cache: true
 
-          - name: Cache CocoaPods and derived data
+          - name: Cache CocoaPods
             if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
             uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
             with:
@@ -106,29 +88,14 @@ jobs:
                 ios/Pods
                 ~/Library/Caches/CocoaPods
                 ~/.cocoapods/repos
-                ~/Library/Developer/Xcode/DerivedData
               key: ios-cache-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock', 'ios/Podfile') }}
               restore-keys: |
                 ios-cache-${{ runner.os }}-
-
-      - name: Cache Xcode DerivedData
-        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: ~/Library/Developer/Xcode/DerivedData
-          key: derived-data-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            derived-data-${{ runner.os }}-
 
       - name: pod install
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         run: |
           pnpm pod-install
-
-      - name: Decode p8
-        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
-        run: |
-          echo ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
 
       - name: Set bugsnag key
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
@@ -137,35 +104,28 @@ jobs:
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./ShareRocketChatRN/Info.plist
 
-      - name: Build iOS app
+      - name: Build native iOS app
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
+        working-directory: ios
         run: |
-          cd ios
-          bundle exec fastlane ios build_simulator \
-            disable_xcpretty:false \
-            skip_package_ipa:true \
-            skip_archive:true
-        env:
-          MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
-          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
-          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
-          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
-          FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
-
-      - name: Find latest xcarchive path
-        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
-        id: find_xcarchive
-        run: |
-          ARCHIVE_PATH=$(ls -td ios/fastlane/build/*.xcarchive | head -n 1)
-          echo "Latest archive path is $ARCHIVE_PATH"
-          echo "archive_path=$ARCHIVE_PATH" >> $GITHUB_OUTPUT
+          set -o pipefail
+          xcodebuild \
+            -workspace RocketChat.xcworkspace \
+            -scheme RocketChat \
+            -configuration Release \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/derived-data" \
+            ARCHS=arm64 \
+            DEBUG_INFORMATION_FORMAT=dwarf \
+            COMPILER_INDEX_STORE_ENABLE=NO \
+            SKIP_BUNDLING=1 \
+            build | xcbeautify --renderer github-actions
 
       - name: Prepare native build for cache
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         run: |
           mkdir -p "$(dirname "$APP_PATH")"
-          ditto "${{ steps.find_xcarchive.outputs.archive_path }}/Products/Applications/Rocket.Chat.app" "$APP_PATH"
+          ditto "$RUNNER_TEMP/derived-data/Build/Products/Release-iphonesimulator/Rocket.Chat.app" "$APP_PATH"
 
       - name: Save native build to cache
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
@@ -173,6 +133,10 @@ jobs:
         with:
           path: .native-cache
           key: ${{ needs.native-fingerprint.outputs.cache-key }}
+
+      - name: Bundle JS into app
+        if: ${{ !inputs.seed-only }}
+        run: .github/scripts/bundle-ios-app.sh "$APP_PATH"
 
       - name: Upload Artifact
         if: ${{ !inputs.seed-only }}
