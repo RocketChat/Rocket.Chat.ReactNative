@@ -18,7 +18,14 @@ const androidResourceAssetFiles = () =>
 /** @type {import('@expo/fingerprint').Config} */
 module.exports = {
 	sourceSkips: SourceSkips.ExpoConfigVersions | SourceSkips.PackageJsonScriptsAll | SourceSkips.GitIgnore,
-	ignorePaths: ['patches/**/*', 'android/fastlane/**/*', 'ios/fastlane/**/*'],
+	ignorePaths: [
+		'patches/**/*',
+		'android/fastlane/**/*',
+		'ios/fastlane/**/*',
+		'modules/*/rust/target/**/*',
+		'modules/*/android/build/**/*',
+		'modules/*/android/.cxx/**/*'
+	],
 	extraSources: [
 		...patchFilesFor('patches', platform).map(filePath => ({
 			type: 'contents',
