@@ -71,6 +71,7 @@ import sdk from '~/lib/services/sdk';
 import { initStore } from '~/lib/store/auxStore';
 import { getMessageById } from '~/lib/database/services/Message';
 import buildMessage from '~/lib/methods/helpers/buildMessage';
+import { loadMissedMessages } from '~/lib/methods/loadMissedMessages';
 import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
 import { clearUserTyping } from '~/actions/usersTyping';
 import {
@@ -78,7 +79,8 @@ import {
 	framesOn,
 	makeCollection as makeBaseCollection,
 	makeReduxStore,
-	receiveFrame
+	receiveFrame,
+	stopAnsweringFrames
 } from '~/lib/testUtils/sdkIntegration';
 import type { IMockCollection, MockConnection } from '~/lib/testUtils/sdkIntegration';
 import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
@@ -193,5 +195,43 @@ describe('RoomSubscription over the real SDK', () => {
 		await flushMicrotasksAndTimers();
 
 		expect(buildMessage).not.toHaveBeenCalled();
+	});
+
+	describe('while the stream subscription starts', () => {
+		function answerSubscriptions(connection: MockConnection) {
+			framesOn(connection, 'sub').forEach(frame => receiveFrame(connection, { msg: 'ready', subs: [frame.id] }));
+		}
+
+		async function subscribeWithoutAnswers(rid: string) {
+			await connectDriver();
+			stopAnsweringFrames(mockConnections[0], 'sub');
+			const room = new RoomSubscription(rid);
+			const subscribing = room.subscribe();
+			await flushMicrotasksAndTimers();
+			return { room, subscribing };
+		}
+
+		it('loads the Messages sent before the stream became ready', async () => {
+			const { subscribing } = await subscribeWithoutAnswers('room-rid');
+			expect(loadMissedMessages).not.toHaveBeenCalled();
+
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+			await subscribing;
+
+			expect(loadMissedMessages).toHaveBeenCalledTimes(1);
+			expect(loadMissedMessages).toHaveBeenCalledWith({ rid: 'room-rid' });
+		});
+
+		it('loads nothing when the user leaves the Room before the stream is ready', async () => {
+			const { room, subscribing } = await subscribeWithoutAnswers('room-rid');
+
+			const leaving = room.unsubscribe();
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+			await Promise.all([leaving, subscribing]);
+
+			expect(loadMissedMessages).not.toHaveBeenCalled();
+		});
 	});
 });

@@ -45,7 +45,8 @@ export default class RoomSubscription {
 		if (this.promises) {
 			await this.unsubscribe();
 		}
-		this.promises = sdk.subscribeRoom(this.rid);
+		const subscriptions = sdk.subscribeRoom(this.rid);
+		this.promises = subscriptions;
 
 		this.connectedListener = sdk.onStreamData('connected', this.handleConnection);
 		this.disconnectedListener = sdk.onStreamData('close', this.handleConnection);
@@ -56,6 +57,20 @@ export default class RoomSubscription {
 		}
 
 		reduxStore.dispatch(subscribeRoom(this.rid));
+
+		await this.catchUpWhenStreamIsReady(subscriptions);
+	};
+
+	catchUpWhenStreamIsReady = async (subscriptions: Promise<(ISubscription | undefined)[]>) => {
+		try {
+			await subscriptions;
+		} catch (e) {
+			log(e);
+			return;
+		}
+		if (this.isAlive) {
+			await this.handleConnection();
+		}
 	};
 
 	unsubscribe = async () => {
