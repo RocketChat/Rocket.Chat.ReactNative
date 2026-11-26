@@ -135,6 +135,22 @@ describe('room saga — removals in flight', () => {
 		expect(store.getState().room.removalsInFlight).toEqual({});
 	});
 
+	it('counts a delete of a team channel, which names its room by _id only, under that room', async () => {
+		const request = hangingRequest();
+		jest.mocked(deleteRoomRequest).mockReturnValue(request.promise);
+		const store = setupStoreWithRoomSaga();
+
+		store.dispatch(deleteRoom(ERoomType.c, { _id: 'team-channel', t: 'c' }));
+		await settleSagas();
+		expect(deleteRoomRequest).toHaveBeenCalledWith('team-channel', 'c');
+		expect(store.getState().room.removalsInFlight).toEqual({ 'team-channel': 1 });
+
+		request.reject(new Error('network'));
+		await settleSagas();
+
+		expect(store.getState().room.removalsInFlight).toEqual({});
+	});
+
 	it('keeps counting a delete of another room when a leave fails', async () => {
 		const leave = hangingRequest();
 		jest.mocked(leaveRoomRequest).mockReturnValue(leave.promise);

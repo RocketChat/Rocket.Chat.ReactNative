@@ -128,7 +128,7 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 		let result = {};
 
 		if (roomType === 'channel') {
-			result = yield deleteRoom(room.rid || room._id, room.t);
+			result = yield deleteRoom(room.rid, room.t);
 		} else if (roomType === 'team') {
 			result = yield deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
 		}

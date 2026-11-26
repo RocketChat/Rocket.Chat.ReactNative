@@ -338,6 +338,7 @@ export default function subscribeRooms() {
 		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
+				const isOwnRemoval = !!store.getState().room.removalsInFlight[data.rid];
 				try {
 					const subCollection = db.get('subscriptions');
 					const sub = await subCollection.find(data.rid);
@@ -359,7 +360,6 @@ export default function subscribeRooms() {
 
 					Encryption.stopRoom(data.rid);
 
-					const isOwnRemoval = !!store.getState().room.removalsInFlight[data.rid];
 					if (isOwnRemoval) {
 						store.dispatch(removedRoom(data.rid));
 					} else {

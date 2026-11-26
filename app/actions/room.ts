@@ -107,7 +107,7 @@ export function leaveRoom(roomType: ERoomType, room: TRoom, selected?: ISelected
 export function deleteRoom(roomType: ERoomType, room: TRoom, selected?: ISelected): IDeleteRoom {
 	return {
 		type: ROOM.DELETE,
-		room,
+		room: { ...room, rid: room.rid || room._id },
 		roomType,
 		selected
 	};
