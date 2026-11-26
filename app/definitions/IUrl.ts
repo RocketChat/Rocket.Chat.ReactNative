@@ -21,6 +21,7 @@ export interface IUrlFromServer {
 		title: string;
 		oembedTitle: string;
 		oembedAuthorName: string;
+		oembedHtml?: string;
 		twitterImage: string;
 		oembedThumbnailUrl: string;
 	};
