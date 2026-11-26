@@ -198,6 +198,33 @@ describe('RoomSubscription over the real SDK', () => {
 		expect(buildMessage).not.toHaveBeenCalled();
 	});
 
+	it('does not mark the Room read when the user leaves while a streamed Message is written', async () => {
+		let finishLookup: (record: null) => void = () => {};
+		(getMessageById as jest.Mock).mockImplementationOnce(
+			() =>
+				new Promise<null>(resolve => {
+					finishLookup = resolve;
+				})
+		);
+		await connectDriver();
+		const room = await subscribeToRoom('room-rid');
+		(readMessages as jest.Mock).mockClear();
+
+		receiveFrame(mockConnections[0], {
+			msg: 'changed',
+			collection: 'stream-room-messages',
+			fields: { eventName: 'room-rid', args: [MESSAGE] }
+		});
+		await flushMicrotasksAndTimers();
+		await room.unsubscribe();
+		finishLookup(null);
+		await flushMicrotasksAndTimers();
+		jest.advanceTimersByTime(1000);
+
+		expect(database.active.batch).toHaveBeenCalled();
+		expect(readMessages).not.toHaveBeenCalled();
+	});
+
 	describe('while the stream subscription starts', () => {
 		function answerSubscriptions(connection: MockConnection) {
 			framesOn(connection, 'sub').forEach(frame => receiveFrame(connection, { msg: 'ready', subs: [frame.id] }));

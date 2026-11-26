@@ -58,25 +58,12 @@ export default class RoomSubscription {
 
 		reduxStore.dispatch(subscribeRoom(this.rid));
 
-		await this.catchUpWhenStreamIsReady(subscribing);
-	};
-
-	catchUpWhenStreamIsReady = async (subscribing: Promise<(ISubscription | undefined)[]>) => {
-		try {
-			await subscribing;
-		} catch (e) {
-			log(e);
-			return;
-		}
-		if (this.isAlive) {
-			await this.handleConnection();
-		}
+		await subscribing.then(this.handleConnection, log);
 	};
 
 	unsubscribe = async () => {
 		console.log(`[RCRN] Unsubscribing from room ${this.rid}`);
 		this.isAlive = false;
-		this.read.stop();
 		reduxStore.dispatch(unsubscribeRoom(this.rid));
 		if (this.promises) {
 			try {
@@ -105,12 +92,13 @@ export default class RoomSubscription {
 	};
 
 	handleConnection = async () => {
+		if (!this.isAlive) {
+			return;
+		}
 		try {
 			reduxStore.dispatch(clearUserTyping());
 			await loadMissedMessages({ rid: this.rid });
-			if (this.isAlive) {
-				this.read();
-			}
+			this.read();
 		} catch (e) {
 			log(e);
 		}
@@ -232,7 +220,9 @@ export default class RoomSubscription {
 	};
 
 	read = debounce(() => {
-		readMessages(this.rid);
+		if (this.isAlive) {
+			readMessages(this.rid);
+		}
 	}, 300);
 
 	updateMessage = async (message: IMessage): Promise<void> => {
