@@ -74,7 +74,7 @@ class ShareRocketChatRN: UIViewController {
                 }
                 return
             } else if firstAttachment.hasItemConformingToTypeIdentifier("public.text") {
-                self.handleTextOrWebUrl(text: firstAttachment, attachments: attachments)
+                self.handleTextOrWebUrl(textAttachment: firstAttachment, attachments: attachments)
                 return
             }
         }
@@ -83,18 +83,16 @@ class ShareRocketChatRN: UIViewController {
         self.handleMultipleMediaAndData(items: attachments)
     }
 
-    private func handleTextOrWebUrl(text: NSItemProvider, attachments: [NSItemProvider]) {
+    private func handleTextOrWebUrl(textAttachment: NSItemProvider, attachments: [NSItemProvider]) {
         guard let urlAttachment = attachments.first(where: { $0.hasItemConformingToTypeIdentifier("public.url") }) else {
-            self.handleText(item: text)
+            self.handleText(item: textAttachment)
             return
         }
         urlAttachment.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, _) in
-            if let url = data as? URL, ["http", "https"].contains(url.scheme?.lowercased()),
-               let finalUrl = self.shareExtensionURL(params: ["url": url.absoluteString]) {
-                _ = self.openURL(finalUrl)
+            if let url = data as? URL, ["http", "https"].contains(url.scheme?.lowercased()), self.openWebUrl(url) {
                 self.completeRequest()
             } else {
-                self.handleText(item: text)
+                self.handleText(item: textAttachment)
             }
         }
     }
@@ -111,12 +109,19 @@ class ShareRocketChatRN: UIViewController {
 
     private func handleUrl(item: NSItemProvider) {
         item.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
-            if let url = data as? URL,
-               let finalUrl = self.shareExtensionURL(params: ["url": url.absoluteString]) {
-                _ = self.openURL(finalUrl)
+            if let url = data as? URL {
+                self.openWebUrl(url)
             }
             self.completeRequest()
         }
+    }
+
+    @discardableResult
+    private func openWebUrl(_ url: URL) -> Bool {
+        guard let deepLink = shareExtensionURL(params: ["url": url.absoluteString]) else {
+            return false
+        }
+        return openURL(deepLink)
     }
 
     private func handleAllFileURLs(items: [NSItemProvider]) {
