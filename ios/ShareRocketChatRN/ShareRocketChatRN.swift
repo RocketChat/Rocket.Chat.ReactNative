@@ -68,8 +68,11 @@ class ShareRocketChatRN: UIViewController {
                             self.handleAllFileURLs(items: attachments)
                         } else {
                             // Handle as a web URL
-                            self.handleUrl(item: firstAttachment)
+                            self.openSharedUrl(url)
+                            self.completeRequest()
                         }
+                    } else {
+                        self.completeRequest()
                     }
                 }
                 return
@@ -89,7 +92,7 @@ class ShareRocketChatRN: UIViewController {
             return
         }
         urlAttachment.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, _) in
-            if let url = data as? URL, ["http", "https"].contains(url.scheme?.lowercased()), self.openWebUrl(url) {
+            if let url = data as? URL, ["http", "https"].contains(url.scheme?.lowercased()), self.openSharedUrl(url) {
                 self.completeRequest()
             } else {
                 self.handleText(item: textAttachment)
@@ -107,17 +110,8 @@ class ShareRocketChatRN: UIViewController {
         }
     }
 
-    private func handleUrl(item: NSItemProvider) {
-        item.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
-            if let url = data as? URL {
-                self.openWebUrl(url)
-            }
-            self.completeRequest()
-        }
-    }
-
     @discardableResult
-    private func openWebUrl(_ url: URL) -> Bool {
+    private func openSharedUrl(_ url: URL) -> Bool {
         guard let deepLink = shareExtensionURL(params: ["url": url.absoluteString]) else {
             return false
         }
