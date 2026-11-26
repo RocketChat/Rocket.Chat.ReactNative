@@ -291,9 +291,8 @@ export interface IInfoCard extends Omit<InfoCardBlock, 'rows'> {
 export type IBlockActionForView = ViewBlockActionUserInteraction;
 export type IViewClosedInteraction = ViewClosedUserInteraction;
 
-export type IPreviewImage = PreviewBlockWithPreview['preview'];
 export interface IPreview extends Partial<Pick<PreviewBlockBase, 'title' | 'description'>> {
-	preview?: IPreviewImage;
+	preview?: PreviewBlockWithPreview['preview'];
 	thumb?: PreviewBlockWithThumb['thumb'];
 	externalUrl?: string;
 	footer?: Omit<IContext, 'parser'>;
