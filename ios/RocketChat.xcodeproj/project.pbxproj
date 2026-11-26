@@ -213,6 +213,7 @@
 		7AC0A1E02C000012001CAA11 /* Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A1E02C000002001CAA11 /* Challenge.mm */; };
 		7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */; };
 		7AE10C0828A59530003593CB /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AE10C0528A59530003593CB /* Inter.ttf */; };
+		7APC00022F1BAFA700B6B4BD /* PrivacyCover.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7APC00012F1BAFA700B6B4BD /* PrivacyCover.mm */; };
 		7AVR00022F5F5900002A6BDE /* VoipRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AVR00002F5F5900002A6BDE /* VoipRegion.swift */; };
 		85160EB6C143E0493FE5F014 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */; };
 		A1C0E0022F90000000C0FFEE /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = A1C0E0012F90000000C0FFEE /* AppIcon.icon */; };
@@ -455,6 +456,7 @@
 		7ACD4853222860DE00442C55 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AE10C0528A59530003593CB /* Inter.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inter.ttf; sourceTree = "<group>"; };
+		7APC00012F1BAFA700B6B4BD /* PrivacyCover.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PrivacyCover.mm; sourceTree = "<group>"; };
 		7AVR00002F5F5900002A6BDE /* VoipRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipRegion.swift; sourceTree = "<group>"; };
 		83F98EE33D91A93DF8E69F34 /* MediaCallsAnswerRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCallsAnswerRequest.swift; sourceTree = "<group>"; };
 		88ED4E003393D3A9256F4EB3 /* Pods_defaults_Rocket_Chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_defaults_Rocket_Chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -941,6 +943,7 @@
 				7AVR00002F5F5900002A6BDE /* VoipRegion.swift */,
 				7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */,
 				7A0000042F1BAFA700B6B4BD /* VoipModule.mm */,
+				7APC00012F1BAFA700B6B4BD /* PrivacyCover.mm */,
 				7A0000032F1BAFA700B6B4BD /* VoipService.swift */,
 				B179038FDD7AAF285047814B /* SecureStorage.h */,
 				9B215A42CFB843397273C7EA /* SecureStorage.m */,
@@ -1721,6 +1724,7 @@
 				7A1B58412F5F58FF002A6BDE /* VoipPayload.swift in Sources */,
 				7A0000052F1BAFA700B6B4BD /* VoipService.swift in Sources */,
 				7A0000062F1BAFA700B6B4BD /* VoipModule.mm in Sources */,
+				7APC00022F1BAFA700B6B4BD /* PrivacyCover.mm in Sources */,
 				7AAB3E17257E6A6E00707CF6 /* ReplyNotification.swift in Sources */,
 				7AAB3E18257E6A6E00707CF6 /* Storage.swift in Sources */,
 				7AAB3E19257E6A6E00707CF6 /* Push.swift in Sources */,

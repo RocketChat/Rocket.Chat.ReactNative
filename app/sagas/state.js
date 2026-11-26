@@ -1,4 +1,4 @@
-import { select, takeLatest } from 'redux-saga/effects';
+import { cancelled, select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
@@ -7,6 +7,7 @@ import { RootEnum } from '../definitions/redux/TRootEnum';
 import { recoverSocket } from '../lib/services/socketHealth';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';
+import { claimPrivacyCover, releasePrivacyCover } from '../lib/methods/helpers/privacyCover';
 
 const isAuthAndConnected = function* isAuthAndConnected() {
 	const login = yield select(state => state.login);
@@ -14,7 +15,7 @@ const isAuthAndConnected = function* isAuthAndConnected() {
 	return login.isAuthenticated && meteor.connected;
 };
 
-const appHasComeBackToForeground = function* appHasComeBackToForeground() {
+const authenticateOnForeground = function* authenticateOnForeground() {
 	const appRoot = yield select(state => state.app.root);
 	if (appRoot !== RootEnum.ROOT_INSIDE) {
 		return;
@@ -38,6 +39,18 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		return yield setUserPresenceOnline();
 	} catch (e) {
 		log(e);
+	}
+};
+
+const appHasComeBackToForeground = function* appHasComeBackToForeground() {
+	const coverToken = claimPrivacyCover();
+	try {
+		yield authenticateOnForeground();
+	} finally {
+		const supersededByNewerForeground = yield cancelled();
+		if (!supersededByNewerForeground) {
+			releasePrivacyCover(coverToken);
+		}
 	}
 };
 

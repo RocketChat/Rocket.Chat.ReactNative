@@ -11,6 +11,7 @@ import { CustomIcon } from '../containers/CustomIcon';
 import { hasNotch } from '../lib/methods/helpers/deviceInfo';
 import EventEmitter from '../lib/methods/helpers/events';
 import { useDeferredModalSettle } from '../lib/hooks/useDeferredModalSettle';
+import { releasePrivacyCover } from '../lib/methods/helpers/privacyCover';
 import { type BiometricInvalidationReason } from '../definitions/IBiometricTrustStore';
 import Touch from '../containers/Touch';
 
@@ -54,8 +55,11 @@ const ScreenLockedView = () => {
 			currentRequestId.current += 1;
 			setRequestId(currentRequestId.current);
 			setData(args);
+			if (visible) {
+				releasePrivacyCover();
+			}
 		},
-		[onShow]
+		[onShow, visible]
 	);
 
 	useEffect(() => {
