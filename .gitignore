@@ -86,7 +86,9 @@ e2e/e2e_account.ts
 *.p8
 .worktrees/
 .omc/
-.claude/
+.claude/*
+!.claude/skills/
+.claude/skills/**/*_TTrace_*
 .agents/
 .cursor/
 skills-lock.json

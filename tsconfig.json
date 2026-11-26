@@ -23,5 +23,5 @@
 			"~e2e/*": ["./e2e/*"]
 		}
 	},
-	"exclude": ["node_modules", "__mocks__", "**/.worktrees/**"]
+	"exclude": ["node_modules", "__mocks__", "**/.worktrees/**", ".claude"]
 }
