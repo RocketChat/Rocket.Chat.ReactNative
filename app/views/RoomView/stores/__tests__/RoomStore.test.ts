@@ -248,6 +248,18 @@ describe('RoomStore', () => {
 		expect(store.getState().canAutoTranslate).toBe(true);
 	});
 
+	it('keeps the unread position the Room had when it opened, even if it is read while its messages load', async () => {
+		const lastSeen = new Date('2026-01-01T00:00:00.000Z');
+		const unreadRoom = { ...subRoom, unread: 3, ls: lastSeen };
+		setupPresentRow(unreadRoom);
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: unreadRoom });
+		mockGetMessages.mockImplementation(async () => {
+			Object.assign(store.getState().room, { unread: 0, alert: false, userMentions: 0 });
+		});
+
+		await expect(store.getState().init()).resolves.toEqual({ status: 'loaded', lastSeen });
+	});
+
 	it('loads messages without a read receipt for a route-param room that lacks a subscription row', async () => {
 		setupPresentRow();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });

@@ -86,6 +86,7 @@ const loadRoom = async (
 			}
 			onThreadMessagesLoaded?.();
 		} else {
+			const lastSeenAtOpen = isSubscriptionModel(room) && (room.alert || room.unread || room.userMentions) ? room.ls : null;
 			await getMessages({
 				rid: room.rid,
 				...(isSubscriptionModel(room) && room.lastOpen ? {} : { t: room.t as RoomType })
@@ -95,7 +96,7 @@ const loadRoom = async (
 			}
 
 			if (membership === 'subscribed' && isSubscriptionModel(room)) {
-				lastSeen = room.alert || room.unread || room.userMentions ? room.ls : null;
+				lastSeen = lastSeenAtOpen;
 				shouldMarkRead = true;
 			}
 		}
