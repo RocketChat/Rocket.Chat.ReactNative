@@ -55,12 +55,14 @@ const getRoomMember = async (room: TRoomOrPreview): Promise<IDirectMessageMember
 type TLoadRoomResult =
 	| {
 			status: 'loaded';
-			lastSeen: Date | null;
 			shouldMarkRead: boolean;
 			pendingRoomState: Partial<RoomState>;
 	  }
 	| { status: 'skipped' }
 	| { status: 'failed' };
+
+const getLastSeen = (room: TRoomOrPreview): Date | null =>
+	isSubscriptionModel(room) && (room.alert || room.unread || room.userMentions) ? room.ls : null;
 
 const loadRoom = async (
 	rid: string,
@@ -76,7 +78,6 @@ const loadRoom = async (
 
 		const pendingRoomMember = getRoomMember(room);
 
-		let lastSeen: Date | null = null;
 		let shouldMarkRead = false;
 		if (tmid) {
 			await loadThreadMessages({ tmid, rid });
@@ -86,7 +87,6 @@ const loadRoom = async (
 			}
 			onThreadMessagesLoaded?.();
 		} else {
-			const lastSeenAtOpen = isSubscriptionModel(room) && (room.alert || room.unread || room.userMentions) ? room.ls : null;
 			await getMessages({
 				rid: room.rid,
 				...(isSubscriptionModel(room) && room.lastOpen ? {} : { t: room.t as RoomType })
@@ -96,7 +96,6 @@ const loadRoom = async (
 			}
 
 			if (membership === 'subscribed' && isSubscriptionModel(room)) {
-				lastSeen = lastSeenAtOpen;
 				shouldMarkRead = true;
 			}
 		}
@@ -109,7 +108,6 @@ const loadRoom = async (
 
 		return {
 			status: 'loaded',
-			lastSeen,
 			shouldMarkRead,
 			pendingRoomState: { canAutoTranslate, member, ...(roomUserId ? { roomUserId } : {}) }
 		};
@@ -219,8 +217,10 @@ export const createRoomStore = ({
 			if (!rid) {
 				return { status: 'skipped' };
 			}
+			let lastSeenAtOpen: Date | null = null;
 			for (let attempt = 1; attempt <= INIT_MAX_ATTEMPTS; attempt += 1) {
 				const { room, membership } = get();
+				lastSeenAtOpen ??= getLastSeen(room);
 				const result = await loadRoom(rid, room, membership, { tmid, onThreadMessagesLoaded, signal });
 				if (signal?.aborted || result.status === 'skipped') {
 					return { status: 'skipped' };
@@ -230,7 +230,7 @@ export const createRoomStore = ({
 					if (result.shouldMarkRead) {
 						readMessages(room.rid).catch(e => log(e));
 					}
-					return { status: 'loaded', lastSeen: result.lastSeen };
+					return { status: 'loaded', lastSeen: result.shouldMarkRead ? lastSeenAtOpen : null };
 				}
 				if (attempt < INIT_MAX_ATTEMPTS) {
 					await new Promise(resolve => {

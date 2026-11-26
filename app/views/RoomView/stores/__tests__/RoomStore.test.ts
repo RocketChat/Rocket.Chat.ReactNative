@@ -414,6 +414,22 @@ describe('RoomStore', () => {
 			expect(mockGetMessages).toHaveBeenCalledTimes(2);
 		});
 
+		it('keeps the unread position the Room had when it opened after the Room is read during a retry', async () => {
+			setupPresentRow();
+			const lastSeen = new Date('2026-01-01T00:00:00.000Z');
+			const unreadRoom = { ...subRoom, unread: 3, ls: lastSeen };
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: unreadRoom });
+			mockGetMessages.mockImplementationOnce(async () => {
+				Object.assign(store.getState().room, { unread: 0, alert: false, userMentions: 0 });
+				throw new Error('boom');
+			});
+
+			const initPromise = store.getState().init();
+			await jest.advanceTimersByTimeAsync(1000);
+
+			await expect(initPromise).resolves.toEqual({ status: 'loaded', lastSeen });
+		});
+
 		it('gives up after three attempts without loading', async () => {
 			setupPresentRow();
 			mockGetMessages.mockRejectedValue(new Error('boom'));

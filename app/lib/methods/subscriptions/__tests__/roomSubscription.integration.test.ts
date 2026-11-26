@@ -72,6 +72,7 @@ import { initStore } from '~/lib/store/auxStore';
 import { getMessageById } from '~/lib/database/services/Message';
 import buildMessage from '~/lib/methods/helpers/buildMessage';
 import { loadMissedMessages } from '~/lib/methods/loadMissedMessages';
+import { readMessages } from '~/lib/methods/readMessages';
 import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
 import { clearUserTyping } from '~/actions/usersTyping';
 import {
@@ -232,6 +233,39 @@ describe('RoomSubscription over the real SDK', () => {
 			await Promise.all([leaving, subscribing]);
 
 			expect(loadMissedMessages).not.toHaveBeenCalled();
+		});
+
+		it('does not mark the Room read when the user leaves while the catch-up loads', async () => {
+			let finishLoading: () => void = () => {};
+			(loadMissedMessages as jest.Mock).mockImplementationOnce(
+				() =>
+					new Promise<void>(resolve => {
+						finishLoading = resolve;
+					})
+			);
+			const { room, subscribing } = await subscribeWithoutAnswers('room-rid');
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+			expect(loadMissedMessages).toHaveBeenCalledTimes(1);
+
+			await room.unsubscribe();
+			finishLoading();
+			await subscribing;
+			jest.advanceTimersByTime(1000);
+
+			expect(readMessages).not.toHaveBeenCalled();
+		});
+
+		it('does not mark the Room read when the user leaves within the read delay', async () => {
+			const { room, subscribing } = await subscribeWithoutAnswers('room-rid');
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+			await subscribing;
+
+			await room.unsubscribe();
+			jest.advanceTimersByTime(1000);
+
+			expect(readMessages).not.toHaveBeenCalled();
 		});
 	});
 });
