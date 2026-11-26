@@ -3,9 +3,12 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import { useContext, useState, createContext, type Dispatch, type SetStateAction } from 'react';
 
 import { videoConfJoin } from '~/lib/methods/videoConf';
-import { type IText } from './interfaces';
+import { type IElement, type IText } from './interfaces';
 
 export const textParser = ([{ text }]: IText[]) => text;
+
+export const getInitialValue = ({ initialValue, initialOption }: Pick<IElement, 'initialValue' | 'initialOption'>) =>
+	initialValue ?? (Array.isArray(initialOption) ? undefined : initialOption?.value);
 
 export const defaultContext: any = {
 	action: (...args: any) => console.log(args),
@@ -24,7 +27,7 @@ type TObjectReturn = {
 	language: any;
 };
 
-type TFunctionReturn = (value: any) => Promise<void>;
+type TFunctionReturn = (value: any) => Promise<boolean>;
 
 type TReturn = [TObjectReturn, TFunctionReturn];
 
@@ -33,46 +36,21 @@ interface IUseBlockContext {
 	actionId: string;
 	appId?: string;
 	initialValue?: string;
+	initialOption?: IElement['initialOption'];
 	url?: string;
 }
 
-export const useBlockContext = ({ blockId, actionId, appId, initialValue }: IUseBlockContext, context: BlockContext): TReturn => {
+export const useBlockContext = (
+	{ blockId, actionId, appId, initialValue, initialOption }: IUseBlockContext,
+	context: BlockContext
+): TReturn => {
 	const { action, appId: appIdFromContext, viewId, state, language, errors, values = {} } = useContext(KitContext);
-	const { value = initialValue } = values[actionId] || {};
+	const { value = getInitialValue({ initialValue, initialOption }) } = values[actionId] || {};
 	const [loading, setLoading] = useState(false);
 
 	const error = errors && actionId && errors[actionId];
 
-	if ([BlockContext.SECTION, BlockContext.ACTION].includes(context)) {
-		return [
-			{
-				loading,
-				setLoading,
-				error,
-				value,
-				language
-			},
-			async ({ value }: any) => {
-				setLoading(true);
-				try {
-					if (appId === 'videoconf-core' && blockId) {
-						setLoading(false);
-						return videoConfJoin(blockId);
-					}
-					await action({
-						blockId,
-						appId: appId || appIdFromContext,
-						actionId,
-						value,
-						viewId
-					});
-				} catch (e) {
-					// do nothing
-				}
-				setLoading(false);
-			}
-		];
-	}
+	const isAction = [BlockContext.SECTION, BlockContext.ACTION].includes(context);
 
 	return [
 		{
@@ -83,18 +61,21 @@ export const useBlockContext = ({ blockId, actionId, appId, initialValue }: IUse
 			language
 		},
 		async ({ value }: any) => {
+			if (isAction && appId === 'videoconf-core' && blockId) {
+				await videoConfJoin(blockId);
+				return true;
+			}
 			setLoading(true);
 			try {
-				await state({
-					blockId,
-					appId,
-					actionId,
-					value
-				});
-			} catch (e) {
-				// do nothing
+				await (isAction
+					? action({ blockId, appId: appId || appIdFromContext, actionId, value, viewId })
+					: state({ blockId, appId, actionId, value }));
+				return true;
+			} catch {
+				return false;
+			} finally {
+				setLoading(false);
 			}
-			setLoading(false);
 		}
 	];
 };

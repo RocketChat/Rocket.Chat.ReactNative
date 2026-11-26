@@ -9,7 +9,7 @@ import EventEmitter from '../lib/methods/helpers/events';
 import { headerLeftActions, headerRightActions } from '../lib/methods/helpers/navigation/headerActions';
 import { ModalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
-import { textParser } from '../containers/UIKit/utils';
+import { getInitialValue, textParser } from '../containers/UIKit/utils';
 import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions, type TModalAction } from '../containers/UIKit/interfaces';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '~/lib/apps/actions';
@@ -65,7 +65,7 @@ const groupStateByBlockIdMap = (obj: any, [key, { blockId, value }]: TElementToS
 };
 const groupStateByBlockId = (obj: { [key: string]: any }) => Object.entries(obj).reduce(groupStateByBlockIdMap, {});
 const filterInputFields = ({ element, elements = [] }: { element: any; elements?: any[] }) => {
-	if (element && element.initialValue) {
+	if (element && getInitialValue(element) !== undefined) {
 		return true;
 	}
 	if (elements.length && elements.map(e => ({ element: e })).filter(filterInputFields).length) {
@@ -80,7 +80,7 @@ const mapElementToState = ({ element, blockId, elements = [] }: { element: any; 
 			.filter(filterInputFields)
 			.map(mapElementToState);
 	}
-	return [element.actionId, { value: element.initialValue, blockId }];
+	return [element.actionId, { value: getInitialValue(element), blockId }];
 };
 const reduceState = (obj: any, el: any) =>
 	Array.isArray(el[0]) ? { ...obj, ...Object.fromEntries(el) } : { ...obj, [el[0]]: el[1] };

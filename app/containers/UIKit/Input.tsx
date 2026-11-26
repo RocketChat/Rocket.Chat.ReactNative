@@ -31,14 +31,18 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const Input = ({ element, parser, label, description, error, hint, theme }: IInput) => (
-	<View style={styles.container}>
-		{label ? (
-			<Text style={[styles.label, { color: error ? themes[theme].fontDanger : themes[theme].fontTitlesLabels }]}>{label}</Text>
-		) : null}
-		{description ? <Text style={[styles.description, { color: themes[theme].fontSecondaryInfo }]}>{description}</Text> : null}
-		{parser.renderInputs({ ...element }, BlockContext.FORM)}
-		{error ? <Text style={[styles.error, { color: themes[theme].fontDanger }]}>{error}</Text> : null}
-		{hint ? <Text style={[styles.hint, { color: themes[theme].fontSecondaryInfo }]}>{hint}</Text> : null}
-	</View>
-);
+export const Input = ({ element, parser, label, description, error, hint, theme }: IInput) => {
+	'use no memo';
+
+	return (
+		<View style={styles.container}>
+			{label ? (
+				<Text style={[styles.label, { color: error ? themes[theme].fontDanger : themes[theme].fontTitlesLabels }]}>{label}</Text>
+			) : null}
+			{description ? <Text style={[styles.description, { color: themes[theme].fontSecondaryInfo }]}>{description}</Text> : null}
+			{parser.renderInputs({ ...element }, BlockContext.FORM)}
+			{error ? <Text style={[styles.error, { color: themes[theme].fontDanger }]}>{error}</Text> : null}
+			{hint ? <Text style={[styles.hint, { color: themes[theme].fontSecondaryInfo }]}>{hint}</Text> : null}
+		</View>
+	);
+};

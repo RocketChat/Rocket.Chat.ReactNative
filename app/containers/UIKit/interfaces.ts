@@ -54,6 +54,7 @@ export interface IElement {
 	placeholder?: IText;
 	actionId?: string;
 	initialValue?: any;
+	initialOption?: Option | Option[];
 	options?: Option[];
 	text?: IText;
 	value?: any;
@@ -194,7 +195,7 @@ export interface IContext extends Block {
 export interface IDatePicker {
 	element: IElement;
 	language: string;
-	action: (params: { value: unknown }) => Promise<void>;
+	action: (params: { value: unknown }) => Promise<boolean>;
 	context: BlockContext;
 	loading: boolean;
 	value: string;
@@ -220,6 +221,13 @@ export interface IInputIndex {
 	hint?: IText;
 }
 
+export interface IRadioButton {
+	element: IElement;
+	value?: Option['value'];
+	loading: boolean;
+	onChange: (params: { value: Option['value'] }) => Promise<boolean>;
+}
+
 export interface IThumb {
 	element: IElement;
 	size?: number;
@@ -231,7 +239,7 @@ export interface IImage {
 
 export interface IOverflow {
 	element: IElement;
-	action: (params: { value: unknown }) => Promise<void>;
+	action: (params: { value: unknown }) => Promise<boolean>;
 	loading: boolean;
 	parser: IParser;
 	context: BlockContext;
