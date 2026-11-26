@@ -467,8 +467,8 @@ class Encryption {
 		);
 	}
 
-	async getSample(roomIds: string[], limit = 3): Promise<string[]> {
-		if (limit === 0) {
+	async getSample(roomIds: string[], isStale: () => boolean, limit = 3): Promise<string[]> {
+		if (limit === 0 || isStale()) {
 			return [];
 		}
 
@@ -478,7 +478,7 @@ class Encryption {
 		const sampleIds = randomRoomIds.filter((_, index) => roomInstances[index]?.hasSessionKey());
 
 		if (!sampleIds.length && roomIds.length > limit) {
-			return this.getSample(roomIds, limit - 1);
+			return this.getSample(roomIds, isStale, limit - 1);
 		}
 
 		return sampleIds;
@@ -504,20 +504,20 @@ class Encryption {
 						.filter(sub => sub.usersWaitingForE2EKeys && !sub.usersWaitingForE2EKeys.some(user => user.userId === this.userId))
 						.map(sub => sub.rid);
 
-					const sampleIds = await this.getSample(filteredSubs);
+					const sampleIds = await this.getSample(filteredSubs, isStale);
 
-					if (!sampleIds.length) {
+					if (isStale() || !sampleIds.length) {
 						return;
 					}
 
 					const result = await fetchUsersWaitingForGroupKey(sampleIds);
-					if (!result.success || !Object.keys(result.usersWaitingForE2EKeys).length) {
+					if (isStale() || !result.success || !Object.keys(result.usersWaitingForE2EKeys).length) {
 						return;
 					}
 
 					const userKeysWithRooms = await this.getSuggestedE2EEKeys(result.usersWaitingForE2EKeys);
 
-					if (!Object.keys(userKeysWithRooms).length) {
+					if (isStale() || !Object.keys(userKeysWithRooms).length) {
 						return;
 					}
 
@@ -530,7 +530,9 @@ class Encryption {
 			}
 		};
 
-		this.keyDistributionInterval = setInterval(keyDistribution, KEY_DISTRIBUTION_INTERVAL);
+		const interval = setInterval(keyDistribution, KEY_DISTRIBUTION_INTERVAL);
+		const isStale = () => this.keyDistributionInterval !== interval;
+		this.keyDistributionInterval = interval;
 		await keyDistribution();
 	};
 
