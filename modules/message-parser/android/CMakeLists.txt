@@ -4,7 +4,7 @@ project(RocketChatMessageParser)
 set(PACKAGE_NAME RocketChatMessageParser)
 set(CMAKE_CXX_STANDARD 20)
 
-add_library(${PACKAGE_NAME} SHARED ../cpp/HybridMessageParser.cpp ../cpp/MessageParserFfi.cpp)
+add_library(${PACKAGE_NAME} SHARED ../cpp/HybridMessageParser.cpp ../cpp/MessageParserFfi.cpp src/main/cpp/cpp-adapter.cpp)
 
 include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/RocketChatMessageParser+autolinking.cmake)
 
