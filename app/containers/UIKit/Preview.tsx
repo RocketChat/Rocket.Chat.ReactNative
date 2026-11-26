@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
 	card: {
 		borderWidth: 1,
 		borderRadius: 4,
-		overflow: 'hidden'
+		overflow: 'hidden',
+		marginBottom: 8
 	},
 	body: {
 		flexDirection: 'row',

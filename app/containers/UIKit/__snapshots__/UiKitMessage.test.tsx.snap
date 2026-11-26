@@ -5675,6 +5675,7 @@ exports[`Story Snapshots: PreviewTextOnly should match snapshot 1`] = `
       {
         "borderRadius": 4,
         "borderWidth": 1,
+        "marginBottom": 8,
         "overflow": "hidden",
       },
       {
@@ -5788,6 +5789,7 @@ exports[`Story Snapshots: PreviewWithImage should match snapshot 1`] = `
       {
         "borderRadius": 4,
         "borderWidth": 1,
+        "marginBottom": 8,
         "overflow": "hidden",
       },
       {
@@ -6099,6 +6101,7 @@ exports[`Story Snapshots: PreviewWithThumb should match snapshot 1`] = `
       {
         "borderRadius": 4,
         "borderWidth": 1,
+        "marginBottom": 8,
         "overflow": "hidden",
       },
       {
