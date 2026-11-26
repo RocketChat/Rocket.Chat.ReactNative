@@ -363,7 +363,7 @@ export default function subscribeRooms() {
 					// Delete and remove events come from this stream
 					// Here we identify which one was triggered
 					if (data.rid === roomState.rid && roomState.isDeleting) {
-						store.dispatch(removedRoom());
+						store.dispatch(removedRoom(data.rid));
 					} else {
 						EventEmitter.emit('ROOM_REMOVED', { rid: data.rid });
 					}

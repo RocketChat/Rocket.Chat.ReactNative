@@ -37,6 +37,7 @@ import { deleteRoom as deleteRoomRequest, forwardLivechat, leaveRoom as leaveRoo
 import roomRootSaga from '../room';
 
 const room = { rid: 'room-a', t: 'c' } as Parameters<typeof leaveRoom>[1];
+const otherRoom = { rid: 'room-b', t: 'c' } as Parameters<typeof deleteRoom>[1];
 const transferData = { roomId: 'room-a', departmentId: 'department-1' };
 
 function setupStoreWithRoomSaga() {
@@ -106,8 +107,49 @@ describe('room saga — removal flag', () => {
 		store.dispatch(leaveRoom(ERoomType.c, room));
 		await settleSagas();
 		expect(store.getState().room).toMatchObject({ rid: 'room-a', isDeleting: true });
+	});
 
-		store.dispatch(removedRoom());
+	it('keeps the flag of a delete in flight when a leave of another room fails', async () => {
+		let rejectLeave: (reason: unknown) => void = () => undefined;
+		jest.mocked(leaveRoomRequest).mockReturnValue(
+			new Promise((_, reject) => {
+				rejectLeave = reject;
+			}) as never
+		);
+		jest.mocked(deleteRoomRequest).mockReturnValue(new Promise(() => undefined) as never);
+		const store = setupStoreWithRoomSaga();
+
+		store.dispatch(leaveRoom(ERoomType.c, room));
+		store.dispatch(deleteRoom(ERoomType.c, otherRoom));
+		rejectLeave(new Error('network'));
+		await settleSagas();
+
+		expect(store.getState().room).toMatchObject({ rid: 'room-b', isDeleting: true });
+	});
+
+	it('keeps the flag of a delete in flight when a leave of another room times out', async () => {
+		jest.mocked(leaveRoomRequest).mockResolvedValue({ success: true } as never);
+		jest.mocked(deleteRoomRequest).mockReturnValue(new Promise(() => undefined) as never);
+		const store = setupStoreWithRoomSaga();
+
+		store.dispatch(leaveRoom(ERoomType.c, room));
+		await settleSagas();
+		store.dispatch(deleteRoom(ERoomType.c, otherRoom));
+		await jest.advanceTimersByTimeAsync(3000);
+
+		expect(store.getState().room).toMatchObject({ rid: 'room-b', isDeleting: true });
+	});
+
+	it('ends the wait for the removal only when the subscriptions stream reports the same room', async () => {
+		jest.mocked(leaveRoomRequest).mockResolvedValue({ success: true } as never);
+		const store = setupStoreWithRoomSaga();
+
+		store.dispatch(leaveRoom(ERoomType.c, room));
+		await settleSagas();
+		store.dispatch(removedRoom('room-b'));
+		expect(store.getState().room.isDeleting).toBe(true);
+
+		await jest.advanceTimersByTimeAsync(3000);
 
 		expect(store.getState().room.isDeleting).toBe(false);
 	});

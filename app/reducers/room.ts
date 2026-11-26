@@ -54,6 +54,9 @@ export default function (state = initialState, action: TActionsRoom): IRoom {
 				isDeleting: true
 			};
 		case ROOM.REMOVED:
+			if (action.rid !== state.rid) {
+				return state;
+			}
 			return {
 				...state,
 				isDeleting: false

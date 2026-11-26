@@ -69,17 +69,17 @@ const watchUserTyping = function* watchUserTyping({ rid, status, args }) {
 	}
 };
 
-const waitForRemovedRoom = function* waitForRemovedRoom() {
+const waitForRemovedRoom = function* waitForRemovedRoom(rid) {
 	const { timeout } = yield race({
-		removed: take(types.ROOM.REMOVED),
+		removed: take(action => action.type === types.ROOM.REMOVED && action.rid === rid),
 		timeout: delay(3000)
 	});
 	if (timeout) {
-		yield put(removedRoom());
+		yield put(removedRoom(rid));
 	}
 };
 
-const handleRemovedRoom = function* handleRemovedRoom(roomType, actionType) {
+const handleRemovedRoom = function* handleRemovedRoom(rid, roomType, actionType) {
 	const isMasterDetail = getIsMasterDetail();
 	Navigation.popToTop(isMasterDetail);
 
@@ -94,7 +94,7 @@ const handleRemovedRoom = function* handleRemovedRoom(roomType, actionType) {
 		});
 	}
 
-	yield waitForRemovedRoom();
+	yield waitForRemovedRoom(rid);
 };
 
 const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) {
@@ -109,7 +109,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 		}
 
 		if (result?.success) {
-			yield handleRemovedRoom(roomType, 'leave');
+			yield handleRemovedRoom(room.rid, roomType, 'leave');
 			return;
 		}
 	} catch (e) {
@@ -122,7 +122,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 			Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
 		}
 	}
-	yield put(removedRoom());
+	yield put(removedRoom(room.rid));
 };
 
 const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }) {
@@ -137,7 +137,7 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 		}
 
 		if (result?.success) {
-			yield handleRemovedRoom(roomType, 'delete');
+			yield handleRemovedRoom(room.rid, roomType, 'delete');
 			return;
 		}
 	} catch (e) {
@@ -149,10 +149,10 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 			})
 		);
 	}
-	yield put(removedRoom());
+	yield put(removedRoom(room.rid));
 };
 
-const handleForwardRoom = function* handleForwardRoom({ transferData }) {
+const handleForwardRoom = function* handleForwardRoom({ rid, transferData }) {
 	try {
 		const result = yield forwardLivechat(transferData);
 		if (result === true) {
@@ -162,14 +162,14 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 			} else {
 				Navigation.navigate('RoomsListView');
 			}
-			yield waitForRemovedRoom();
+			yield waitForRemovedRoom(rid);
 			return;
 		}
 		showErrorAlert(I18n.t('No_available_agents_to_transfer'), I18n.t('Oops'));
 	} catch (e) {
 		showErrorAlert(e.reason, I18n.t('Oops'));
 	}
-	yield put(removedRoom());
+	yield put(removedRoom(rid));
 };
 
 const root = function* root() {

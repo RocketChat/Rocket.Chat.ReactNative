@@ -54,8 +54,14 @@ describe('test room reducer', () => {
 		expect(isDeleting).toEqual(true);
 	});
 
+	it('keeps isDeleting after removedRoom for another room', () => {
+		mockedStore.dispatch(removedRoom('ANOTHER_ROOM'));
+		const { isDeleting } = mockedStore.getState().room;
+		expect(isDeleting).toEqual(true);
+	});
+
 	it('should return loading after call removedRoom', () => {
-		mockedStore.dispatch(removedRoom());
+		mockedStore.dispatch(removedRoom('FORWARDING'));
 		const { isDeleting } = mockedStore.getState().room;
 		expect(isDeleting).toEqual(false);
 	});
