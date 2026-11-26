@@ -1,6 +1,7 @@
 import { getSlashCommands } from '../getSlashCommands';
 
 type StoredRecord = { id: string; description?: string };
+type BatchedOperation = { operation: 'create' | 'update' | 'destroy'; record: StoredRecord & { command?: string } };
 
 const mockGet = jest.fn();
 jest.mock('../../services/sdk', () => ({
@@ -56,8 +57,9 @@ const servePages = (commands: ReturnType<typeof command>[], pageSize: number) =>
 		})
 	);
 
-const batchedOperations = () =>
-	mockBatch.mock.calls[0][0].map(({ operation, record }: any) => [operation, record.command ?? record.id]);
+const batchedOperations = (): BatchedOperation[] => mockBatch.mock.calls[0][0];
+
+const batchedIds = () => batchedOperations().map(({ operation, record }) => [operation, record.command ?? record.id]);
 
 describe('getSlashCommands', () => {
 	beforeEach(() => {
@@ -72,7 +74,7 @@ describe('getSlashCommands', () => {
 		await getSlashCommands();
 
 		expect(mockGet.mock.calls.map(([, params]) => params.offset)).toEqual([0, 2, 4]);
-		expect(batchedOperations()).toEqual(commands.map(({ command: name }) => ['create', name]));
+		expect(batchedIds()).toEqual(commands.map(({ command: name }) => ['create', name]));
 	});
 
 	it('updates listed commands and deletes the ones the server no longer lists', async () => {
@@ -81,11 +83,13 @@ describe('getSlashCommands', () => {
 
 		await getSlashCommands();
 
-		expect(batchedOperations()).toEqual([
+		expect(batchedIds()).toEqual([
 			['create', 'command2'],
 			['update', 'command1'],
 			['destroy', 'uninstalled']
 		]);
+		const updated = batchedOperations().find(({ operation }) => operation === 'update');
+		expect(updated?.record.description).toBe('description 1');
 	});
 
 	it('leaves the stored commands alone when a later page fails', async () => {
@@ -99,9 +103,12 @@ describe('getSlashCommands', () => {
 		expect(mockBatch).not.toHaveBeenCalled();
 	});
 
-	it('leaves the stored commands alone while the server is still loading apps', async () => {
+	it.each([
+		['the server is still loading apps', { success: true, appsLoaded: false, commands: [], offset: 0, count: 0, total: 0 }],
+		['the server answers success: false', { success: false }]
+	])('leaves the stored commands alone when %s', async (_case, answer) => {
 		mockStored.push({ id: 'command1' });
-		mockGet.mockResolvedValueOnce({ success: true, appsLoaded: false, commands: [], offset: 0, count: 0, total: 0 });
+		mockGet.mockResolvedValueOnce(answer);
 
 		await getSlashCommands();
 

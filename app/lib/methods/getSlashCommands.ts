@@ -49,11 +49,7 @@ const saveSlashCommands = async (commands: ISlashCommandResult[]) => {
 			);
 		});
 
-		try {
-			await db.batch([...recordsToCreate, ...recordsToUpdateOrDelete]);
-		} catch (e) {
-			log(e);
-		}
+		await db.batch([...recordsToCreate, ...recordsToUpdateOrDelete]);
 	});
 };
 
