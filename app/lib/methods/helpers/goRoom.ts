@@ -2,14 +2,10 @@ import { CommonActions } from '@react-navigation/native';
 
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import Navigation from '~/lib/navigation/appNavigation';
-import {
-	type IOmnichannelRoom,
-	SubscriptionType,
-	type IVisitor,
-	type TSubscriptionModel,
-	type ISubscription
-} from '~/definitions';
-import { getRoomTitle, getUidDirectMessage } from './helpers';
+import { type IOmnichannelRoom } from '~/definitions/IRoom';
+import { SubscriptionType, type IVisitor, type TSubscriptionModel, type ISubscription } from '~/definitions/ISubscription';
+import { getRoomTitle } from './getRoomTitle';
+import { getUidDirectMessage } from './getUidDirectMessage';
 import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
 
@@ -35,6 +31,8 @@ interface RoomRouteParams {
 	joinCodeRequired?: boolean;
 	roomUserId?: string;
 }
+
+const ROOMS_LIST_ROUTES = ['RoomsListView', 'CategoryView'];
 
 const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
 	const routeParams: RoomRouteParams = {
@@ -73,17 +71,17 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 	}
 
 	return Navigation.dispatch((state: any) => {
-		const routesRoomsListView = state.routes.filter((r: any) => r.name === 'RoomsListView');
+		const routesRoomsList = state.routes.filter((r: any) => ROOMS_LIST_ROUTES.includes(r.name));
 		return CommonActions.reset({
 			...state,
 			routes: [
-				...routesRoomsListView,
+				...routesRoomsList,
 				{
 					name: 'RoomView',
 					params: routeParams
 				}
 			],
-			index: routesRoomsListView.length
+			index: routesRoomsList.length
 		});
 	});
 };

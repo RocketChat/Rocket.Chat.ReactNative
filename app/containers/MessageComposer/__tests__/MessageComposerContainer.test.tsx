@@ -13,7 +13,7 @@ import { setPermissions } from '~/actions/permissions';
 import { selectServerRequest } from '~/actions/server';
 import { setUser } from '~/actions/login';
 import { mockedStore } from '~/reducers/mockedStore';
-import { type TMessageActionState } from '~/definitions';
+import { type TMessageActionState } from '~/definitions/IMessage';
 import { initStore } from '~/lib/store/auxStore';
 import ImagePicker from '~/lib/methods/helpers/ImagePicker/ImagePicker';
 import Navigation from '~/lib/navigation/appNavigation';
@@ -57,9 +57,10 @@ jest.mock('~/lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: jest.fn()
 }));
 
-jest.mock('~/lib/database/services/Message', () => ({
-	getMessageById: (messageId: string) => ({ id: messageId, rid: 'rid', msg: `Message ${messageId}`, attachments: [] })
-}));
+jest.mock('~/lib/database/services/Message', () => {
+	const getMessage = (messageId: string) => ({ id: messageId, rid: 'rid', msg: `Message ${messageId}`, attachments: [] });
+	return { getMessageById: getMessage, getMessageOrThreadMessageById: getMessage };
+});
 
 jest.mock('../hooks/useMessage', () => ({
 	useMessage: (messageId: string) => ({ id: messageId, msg: 'quote this', u: { username: 'rocket.cat' } })

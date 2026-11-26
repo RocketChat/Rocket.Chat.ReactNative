@@ -168,5 +168,8 @@ export default StyleSheet.create({
 	},
 	listPrefix: {
 		fontVariant: ['tabular-nums']
+	},
+	nestedList: {
+		paddingStart: 16
 	}
 });

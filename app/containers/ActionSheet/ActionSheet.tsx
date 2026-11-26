@@ -14,7 +14,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '~/theme';
-import { isAndroid, isIOS } from '~/lib/methods/helpers';
+import { isAndroid, isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
@@ -35,6 +35,7 @@ const ActionSheet = memo(
 		const [contentHeight, setContentHeight] = useState(0);
 		const { bottom } = useSafeAreaInsets();
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
+		const dismissedOnCloseRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
 		const itemHeight = useActionSheetItemHeight();
 
@@ -44,25 +45,32 @@ const ActionSheet = memo(
 
 		useEffect(() => () => clearTimeout(pendingPresentTimeoutRef.current), []);
 
+		const dismissSheet = () => sheetRef.current?.dismiss().catch(() => {});
+
 		const hide = () => {
 			desiredOptionsRef.current = null;
 			clearTimeout(pendingPresentTimeoutRef.current);
 			const phase = phaseRef.current;
 			if (phase === 'idle' || phase === 'dismissing') return;
 			phaseRef.current = 'dismissing';
-			if (phase === 'presented') {
-				sheetRef.current?.dismiss();
-			}
+			dismissSheet();
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		};
 
+		useEffect(() => {
+			if (isVisible) return;
+			const dismissedOnClose = dismissedOnCloseRef.current;
+			dismissedOnCloseRef.current = undefined;
+			dismissedOnClose?.();
+		}, [isVisible]);
+
+		// Keep contentHeight to avoid flickering on next show
 		const onDidDismiss = () => {
 			phaseRef.current = 'idle';
-			setIsVisible(false);
-			const snapshotOnClose = onCloseSnapshotRef.current;
+			dismissedOnCloseRef.current = onCloseSnapshotRef.current;
 			onCloseSnapshotRef.current = undefined;
-			snapshotOnClose?.();
+			setIsVisible(false);
 			if (desiredOptionsRef.current && phaseRef.current === 'idle') {
 				pendingPresentTimeoutRef.current = setTimeout(presentDesiredSheet);
 			}
@@ -106,8 +114,8 @@ const ActionSheet = memo(
 		};
 
 		const onDidPresent = () => {
-			if (phaseRef.current === 'dismissing') {
-				sheetRef.current?.dismiss();
+			if (phaseRef.current !== 'presenting') {
+				dismissSheet();
 				return;
 			}
 			phaseRef.current = 'presented';

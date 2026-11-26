@@ -5,11 +5,11 @@ import styles from './styles';
 import { type ITitleProps } from './interfaces';
 import { useTheme } from '~/theme';
 
-const Title = memo(({ name, hideUnreadStatus, alert }: ITitleProps) => {
+const Title = memo(({ name, isUnread }: ITitleProps) => {
 	const { colors } = useTheme();
 	return (
 		<Text
-			style={[styles.title, alert && !hideUnreadStatus && styles.alert, { color: colors.fontTitlesLabels }]}
+			style={[styles.title, isUnread ? [styles.alert, { color: colors.fontTitlesLabels }] : { color: colors.fontDefault }]}
 			ellipsizeMode='tail'
 			numberOfLines={1}>
 			{name}

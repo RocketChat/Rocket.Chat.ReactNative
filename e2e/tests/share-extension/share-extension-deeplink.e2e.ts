@@ -1,8 +1,8 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createRandomRoom, createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { loginWithDeepLink, openDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
+import { loginToApp, openDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
 import {
 	expectGroupMessageCount,
 	openPhotoShareSheet,
@@ -37,7 +37,7 @@ test('shares files into a room and handles a missing shared file', { tags: ['tes
 	const user = await createUser();
 	const room = await createRandomRoom(user, 'p');
 
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 	const rocketChatApp = await device.foregroundApp();
 	await device.closeApp();
 
@@ -60,4 +60,15 @@ test('shares files into a room and handles a missing shared file', { tags: ['tes
 	await openDeepLink(fixtures, MISSING_FILE_LINK, missingFileToast);
 	await expect(missingFileToast).toBeVisible({ timeout: 15_000 });
 	await expect(screen.getByTestId('rooms-list-view')).toBeVisible({ timeout: LONG_TIMEOUT });
+});
+
+test('opens the share list when sharing while the app is running', { tags: ['test-6'], platforms: ['ios'] }, async fixtures => {
+	const { device } = fixtures;
+	const user = await createUser();
+
+	await loginToApp(fixtures, user);
+	const rocketChatApp = await device.foregroundApp();
+
+	await openPhotoShareSheet(fixtures);
+	await shareToRocketChat(fixtures, rocketChatApp.bundleId ?? rocketChatApp.name);
 });

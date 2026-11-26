@@ -150,6 +150,9 @@ export const defaultSettings = {
 	Hide_System_Messages: {
 		type: 'valueAsArray'
 	},
+	Accounts_Default_User_Preferences_sidebarSectionsOrder: {
+		type: 'valueAsArray'
+	},
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},

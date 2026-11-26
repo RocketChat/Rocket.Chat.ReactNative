@@ -47,8 +47,10 @@ const RoomItem = ({
 	tunreadGroup,
 	testID,
 	swipeEnabled = true,
+	navigationSwipeEdgeWidth,
 	onPress,
 	onLongPress,
+	onMoveToCategoryPress,
 	teamMain,
 	autoJoin,
 	showAvatar,
@@ -61,9 +63,10 @@ const RoomItem = ({
 }: IRoomItemProps) => {
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
+	const isUnread = alert && !hideUnreadStatus;
 	const memoizedMessage = useMemo(
-		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
-		[lastMessage, username, useRealName, showLastMessage, alert, type]
+		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, type }),
+		[lastMessage, username, useRealName, showLastMessage, type]
 	);
 	const statusAccessibilityLabel = useStatusAccessibilityLabel({
 		isGroupChat,
@@ -80,6 +83,7 @@ const RoomItem = ({
 		<Touchable
 			onPress={onPress}
 			onLongPress={onLongPress}
+			onMoveToCategoryPress={onMoveToCategoryPress}
 			width={width}
 			favorite={favorite}
 			isRead={isRead}
@@ -87,6 +91,7 @@ const RoomItem = ({
 			type={type}
 			isFocused={!!isFocused}
 			swipeEnabled={swipeEnabled}
+			navigationSwipeEdgeWidth={navigationSwipeEdgeWidth}
 			displayMode={displayMode}>
 			<Wrapper
 				testID={testID}
@@ -94,34 +99,27 @@ const RoomItem = ({
 				accessibilityHint={I18n.t('Long_press_for_more_actions')}
 				avatar={avatar}
 				type={type}
-				userId={userId}
 				rid={rid}
-				prid={prid}
-				status={status}
-				isGroupChat={isGroupChat}
-				teamMain={teamMain}
 				displayMode={displayMode}
 				showAvatar={showAvatar}
-				showLastMessage={!!showLastMessage}
-				sourceType={sourceType}>
+				showLastMessage={!!showLastMessage}>
 				{showLastMessage && displayMode === DisplayMode.Expanded ? (
 					<>
 						<View style={styles.titleContainer}>
-							{showAvatar ? (
-								<TypeIcon
-									userId={userId}
-									type={type}
-									prid={prid}
-									status={status}
-									isGroupChat={isGroupChat}
-									teamMain={teamMain}
-									sourceType={sourceType}
-									abacAttributes={abacAttributes}
-								/>
-							) : null}
-							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+							<TypeIcon
+								userId={userId}
+								type={type}
+								prid={prid}
+								status={status}
+								isGroupChat={isGroupChat}
+								teamMain={teamMain}
+								sourceType={sourceType}
+								abacAttributes={abacAttributes}
+								isUnread={isUnread}
+							/>
+							<Title name={name} isUnread={isUnread} />
 							{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
-							{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
+							{isLargeFontScale ? null : <UpdatedAt date={date} isUnread={isUnread} />}
 						</View>
 						<View style={styles.row} testID='room-item-last-message-container'>
 							<LastMessage
@@ -129,8 +127,8 @@ const RoomItem = ({
 								type={type}
 								showLastMessage={showLastMessage}
 								username={username || ''}
-								alert={alert && !hideUnreadStatus}
 								useRealName={useRealName}
+								isUnread={isUnread}
 							/>
 							<UnreadBadge
 								unread={unread}
@@ -152,7 +150,7 @@ const RoomItem = ({
 								/>
 							) : null}
 						</View>
-						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
+						{isLargeFontScale ? <UpdatedAt date={date} isUnread={isUnread} /> : null}
 					</>
 				) : (
 					<>
@@ -164,12 +162,11 @@ const RoomItem = ({
 								status={status}
 								isGroupChat={isGroupChat}
 								teamMain={teamMain}
-								size={22}
-								style={{ marginRight: 8 }}
 								sourceType={sourceType}
 								abacAttributes={abacAttributes}
+								isUnread={isUnread}
 							/>
-							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+							<Title name={name} isUnread={isUnread} />
 							{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
 							{isInvited ? (
 								<CustomIcon
@@ -182,7 +179,7 @@ const RoomItem = ({
 							) : null}
 
 							<View style={styles.wrapUpdatedAndBadge}>
-								{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
+								{isLargeFontScale ? null : <UpdatedAt date={date} isUnread={isUnread} />}
 								<UnreadBadge
 									unread={unread}
 									userMentions={userMentions}
@@ -195,7 +192,7 @@ const RoomItem = ({
 								/>
 							</View>
 						</View>
-						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
+						{isLargeFontScale ? <UpdatedAt date={date} isUnread={isUnread} /> : null}
 					</>
 				)}
 			</Wrapper>

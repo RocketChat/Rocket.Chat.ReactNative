@@ -4,13 +4,13 @@ import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { useIsScreenReaderEnabled } from '~/lib/hooks/useIsScreenReaderEnabled';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
 import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '~/lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { type IListProps } from '~/views/RoomView/definitions';
 import { SCROLL_LIMIT } from '../constants';
 import { useIsAutocompleteVisible } from '~/containers/MessageComposer/ComposerStore';
@@ -79,7 +79,7 @@ const List = ({ flatListRef, jumpToBottom, onDragStart, isAnchored, ...props }: 
 						? props => <InvertedScrollView {...props} exitFocusNativeId={MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID} />
 						: undefined
 				}
-				removeClippedSubviews={isIOS}
+				removeClippedSubviews
 				initialNumToRender={20}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}

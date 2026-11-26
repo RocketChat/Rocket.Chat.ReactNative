@@ -29,8 +29,8 @@ jest.mock('~/lib/services/voip/isInActiveVoipCall', () => ({
 	useIsInActiveVoipCall: () => mockUseIsInActiveVoipCall()
 }));
 
-jest.mock('../ActionSheet', () => ({
-	...jest.requireActual('../ActionSheet'),
+jest.mock('../ActionSheet/Provider', () => ({
+	...jest.requireActual('../ActionSheet/Provider'),
 	hideActionSheetRef: () => mockHideActionSheet()
 }));
 

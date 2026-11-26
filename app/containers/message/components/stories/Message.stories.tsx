@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import MessageContainer from '~/containers/message/index';
-import { type TAnyMessageModel } from '~/definitions';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
 import { messagesStatus } from '~/lib/constants/messagesStatus';
 import { themes } from '~/lib/constants/colors';
@@ -90,16 +90,21 @@ const roomHandlers: Partial<MessageRoomState> = {
 	handlers: { navToRoomInfo: () => {}, showAttachment: undefined }
 };
 
+let storyMessageIdCounter = 0;
+
 export default {
 	title: 'Message',
 	decorators: [
-		(Story: ComponentType) => (
-			<NavigationContainer>
-				<ScrollView style={{ backgroundColor: themes[_theme].surfaceRoom }}>
-					<Story />
-				</ScrollView>
-			</NavigationContainer>
-		)
+		(Story: ComponentType) => {
+			storyMessageIdCounter = 0;
+			return (
+				<NavigationContainer>
+					<ScrollView style={{ backgroundColor: themes[_theme].surfaceRoom }}>
+						<Story />
+					</ScrollView>
+				</NavigationContainer>
+			);
+		}
 	]
 };
 
@@ -108,8 +113,6 @@ const rid = 'GENERAL';
 const otherUser = { _id: 'other-user', username: 'other.user', name: 'Other User' };
 
 const editedByFixture = { _id: 'edited-by', username: 'diego.mello' };
-
-let storyMessageIdCounter = 0;
 
 const buildMessage = (overrides: Record<string, unknown> = {}): TAnyMessageModel => {
 	const definedOverrides = Object.fromEntries(Object.entries(overrides).filter(([, value]) => value !== undefined));

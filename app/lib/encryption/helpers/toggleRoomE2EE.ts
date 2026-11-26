@@ -5,7 +5,7 @@ import database from '~/lib/database';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import log from '~/lib/methods/helpers/log';
 import I18n from '~/i18n';
-import { type TSubscriptionModel } from '~/definitions';
+import { type TSubscriptionModel } from '~/definitions/ISubscription';
 
 const optimisticUpdate = async (rid: string, value: TSubscriptionModel['encrypted']): Promise<void> => {
 	try {
@@ -60,21 +60,9 @@ export const toggleRoomE2EE = async (rid: string): Promise<void> => {
 				style: isEncrypted ? 'destructive' : 'default',
 				onPress: async () => {
 					try {
-						try {
-							// Send new room setting value to server
-							const { result } = await saveRoomSettings(rid, { encrypted: newValue });
-							// If it was saved successfully
-							if (result) {
-								return;
-							}
-						} catch {
-							// do nothing
-						}
-
-						// If something goes wrong we go back to the previous value
-						await optimisticUpdate(rid, !newValue);
-					} catch (e) {
-						log(e);
+						await saveRoomSettings(rid, { encrypted: newValue });
+					} catch {
+						await optimisticUpdate(rid, !newValue).catch(log);
 					}
 				}
 			}

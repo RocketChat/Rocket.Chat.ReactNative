@@ -173,6 +173,15 @@ export default schemaMigrations({
 					columns: [{ name: 'sidebar_categories', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 19,
+			steps: [
+				addColumns({
+					table: 'servers',
+					columns: [{ name: 'has_valid_license', type: 'boolean', isOptional: true }]
+				})
+			]
 		}
 	]
 });

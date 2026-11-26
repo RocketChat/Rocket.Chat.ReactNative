@@ -1,0 +1,3 @@
+export const DRAWER_SWIPE_EDGE_WIDTH = 32;
+
+export const IOS_BACK_SWIPE_EDGE_WIDTH = 20;

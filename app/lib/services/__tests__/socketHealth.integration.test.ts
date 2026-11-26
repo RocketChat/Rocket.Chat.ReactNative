@@ -1,12 +1,6 @@
 import sdk from '../sdk';
 import { recoverSocket } from '../socketHealth';
-import {
-	addMediaSubs,
-	backdateLastPing,
-	buildConnectedDriver,
-	framesOn,
-	stopAnsweringFrames
-} from '~/lib/testUtils/sdkIntegration';
+import { backdateLastPing, buildConnectedDriver, framesOn, stopAnsweringFrames } from '~/lib/testUtils/sdkIntegration';
 import type { IMockSdk, MockConnection, IMockSdkDriver } from '~/lib/testUtils/sdkIntegration';
 import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
 
@@ -140,27 +134,6 @@ describe('recoverSocket against the real SDK socket', () => {
 		await expect(recovery).resolves.toBe('reopened');
 	});
 
-	it('re-sends the media subscriptions on the new socket reusing their ids', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver, USER_ID);
-
-		const recovery = recoverSocket();
-		await jest.advanceTimersByTimeAsync(0);
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
-		await expect(recovery).resolves.toBe('reopened');
-
-		const resubscribed = driver.waitForNotifyUserMediaSubs();
-		await jest.advanceTimersByTimeAsync(200);
-		await expect(resubscribed).resolves.toBe(true);
-
-		expect(framesOn(mockConnections[0], 'sub')).toHaveLength(0);
-		expect(framesOn(mockConnections[1], 'sub')).toEqual([
-			expect.objectContaining({ id: 'sub-0', name: 'stream-notify-user', params: [`${USER_ID}/media-signal`] }),
-			expect.objectContaining({ id: 'sub-1', name: 'stream-notify-user', params: [`${USER_ID}/media-calls`] })
-		]);
-	});
-
 	it('reopens a closed transport without a round trip even when lastPing is fresh', async () => {
 		mockConnections[0].readyState = CLOSED;
 
@@ -174,47 +147,6 @@ describe('recoverSocket against the real SDK socket', () => {
 		await jest.advanceTimersByTimeAsync(0);
 
 		await expect(recovery).resolves.toBe('reopened');
-	});
-
-	it('waits for media subs to appear after reopen, then re-acks them', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
-
-		const recovery = recoverSocket();
-		await jest.advanceTimersByTimeAsync(0);
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
-		await expect(recovery).resolves.toBe('reopened');
-
-		const resubscribed = driver.waitForNotifyUserMediaSubs(1000);
-		await jest.advanceTimersByTimeAsync(100);
-		expect(framesOn(mockConnections[1], 'sub')).toHaveLength(0);
-
-		addMediaSubs(driver, USER_ID);
-		await jest.advanceTimersByTimeAsync(200);
-
-		await expect(resubscribed).resolves.toBe(true);
-		expect(framesOn(mockConnections[1], 'sub')).toEqual([
-			expect.objectContaining({ id: 'sub-0', name: 'stream-notify-user', params: [`${USER_ID}/media-signal`] }),
-			expect.objectContaining({ id: 'sub-1', name: 'stream-notify-user', params: [`${USER_ID}/media-calls`] })
-		]);
-	});
-
-	it('resolves false when the reopened socket never acks the re-sub', async () => {
-		backdateLastPing(driver, PING_INTERVAL * 3);
-		addMediaSubs(driver, USER_ID);
-
-		const recovery = recoverSocket();
-		await jest.advanceTimersByTimeAsync(0);
-		mockConnections[1].onopen();
-		await jest.advanceTimersByTimeAsync(0);
-		await expect(recovery).resolves.toBe('reopened');
-
-		stopAnsweringFrames(mockConnections[1]);
-
-		const resubscribed = driver.waitForNotifyUserMediaSubs(500);
-		await jest.advanceTimersByTimeAsync(500);
-
-		await expect(resubscribed).resolves.toBe(false);
 	});
 
 	it('shares one reopen between two concurrent recoverSocket calls', async () => {

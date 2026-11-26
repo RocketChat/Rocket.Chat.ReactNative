@@ -2,13 +2,10 @@ import { type SharedValue } from 'react-native-reanimated';
 import { type ReactElement } from 'react';
 
 import { type TSupportedThemes } from '~/theme';
-import {
-	type TUserStatus,
-	type ILastMessage,
-	type SubscriptionType,
-	type IOmnichannelSource,
-	type ISubscription
-} from '~/definitions';
+import { type TUserStatus } from '~/definitions/TUserStatus';
+import { type ILastMessage } from '~/definitions/IMessage';
+import { type SubscriptionType, type ISubscription } from '~/definitions/ISubscription';
+import { type IOmnichannelSource } from '~/definitions/IRoom';
 
 export interface ILeftActionsProps {
 	transX: SharedValue<number>;
@@ -23,39 +20,28 @@ export interface IRightActionsProps {
 	favorite: boolean;
 	width: number;
 	toggleFav(): void;
+	onMoveToCategoryPress?: () => void;
 	onHidePress(): void;
 	displayMode: string;
 }
 
 export interface ITitleProps {
 	name: string;
-	hideUnreadStatus: boolean;
-	alert: boolean;
+	isUnread: boolean;
 }
 
 export interface IUpdatedAtProps {
 	date: string;
-	hideUnreadStatus: boolean;
-	alert: boolean;
+	isUnread: boolean;
 }
 
-export interface IWrapperProps {
+export interface IWrapperProps extends IIconOrAvatar {
 	accessibilityLabel: string;
 	testID?: string;
 	accessibilityHint?: string;
-	avatar: string;
-	type: string;
-	userId: string | null;
-	rid: string;
 	children: ReactElement;
 	displayMode: string;
-	prid: string;
 	showLastMessage: boolean;
-	status: TUserStatus;
-	isGroupChat: boolean;
-	teamMain: boolean;
-	showAvatar: boolean;
-	sourceType: IOmnichannelSource;
 }
 
 export interface ITypeIconProps {
@@ -70,6 +56,7 @@ export interface ITypeIconProps {
 	style?: object;
 	sourceType: IOmnichannelSource;
 	abacAttributes?: ISubscription['abacAttributes'];
+	isUnread: boolean;
 }
 
 interface IRoomItemTouchables {
@@ -78,6 +65,7 @@ interface IRoomItemTouchables {
 	hideChannel?: (rid: string, type: SubscriptionType) => Promise<void>;
 	onPress: (item?: any) => void;
 	onLongPress?: (item?: any) => void;
+	onMoveToCategoryPress?: () => void;
 }
 
 interface IBaseRoomItem extends IRoomItemTouchables {
@@ -88,6 +76,7 @@ interface IBaseRoomItem extends IRoomItemTouchables {
 	displayMode: string;
 	showAvatar: boolean;
 	swipeEnabled: boolean;
+	navigationSwipeEdgeWidth?: number;
 	autoJoin?: boolean;
 	width: number;
 	username?: string;
@@ -137,7 +126,7 @@ export interface ILastMessageProps {
 	showLastMessage: boolean;
 	username: string;
 	useRealName: boolean;
-	alert: boolean;
+	isUnread: boolean;
 }
 
 export interface ITouchableProps extends IRoomItemTouchables {
@@ -149,6 +138,7 @@ export interface ITouchableProps extends IRoomItemTouchables {
 	rid: string;
 	isFocused: boolean;
 	swipeEnabled: boolean;
+	navigationSwipeEdgeWidth?: number;
 	displayMode: string;
 }
 
@@ -156,16 +146,7 @@ export interface IIconOrAvatar {
 	avatar: string;
 	type: string;
 	rid: string;
-	userId: string | null;
 	showAvatar: boolean;
-	displayMode: string;
-	prid: string;
-	status: TUserStatus;
-	isGroupChat: boolean;
-	teamMain: boolean;
-	showLastMessage: boolean;
-	sourceType: IOmnichannelSource;
-	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 export interface IRoomItem extends ISubscription {

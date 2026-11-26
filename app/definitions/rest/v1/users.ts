@@ -1,6 +1,6 @@
 import { type IAvatarSuggestion, type IProfileParams } from '~/definitions/IProfile';
 import type { ITeam } from '~/definitions/ITeam';
-import type { IUser, INotificationPreferences, IUserPreferences, IUserRegistered } from '~/definitions/IUser';
+import type { IUser, INotificationPreferences, ISidebarCategory, IUserPreferences, IUserRegistered } from '~/definitions/IUser';
 
 export type UsersEndpoints = {
 	'users.2fa.sendEmailCode': {
@@ -26,7 +26,10 @@ export type UsersEndpoints = {
 		};
 	};
 	'users.setPreferences': {
-		POST: (params: { userId?: IUser['_id']; data: Partial<INotificationPreferences> }) => {
+		POST: (params: {
+			userId?: IUser['_id'];
+			data: Partial<INotificationPreferences & { sidebarCategories: ISidebarCategory[] }>;
+		}) => {
 			user: IUserPreferences;
 			success: boolean;
 		};

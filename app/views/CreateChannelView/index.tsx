@@ -20,7 +20,7 @@ import { Review } from '~/lib/methods/helpers/review';
 import SafeAreaView from '~/containers/SafeAreaView';
 import { type ChatsStackParamList } from '~/stacks/types';
 import Button from '~/containers/Button';
-import { ControlledFormTextInput } from '~/containers/TextInput';
+import { ControlledFormTextInput } from '~/containers/TextInput/ControlledFormTextInput';
 import { RoomSettings } from './RoomSettings';
 import { type ISelectedUser } from '~/reducers/selectedUsers';
 import useA11yErrorAnnouncement from '~/lib/hooks/useA11yErrorAnnouncement';
@@ -124,7 +124,8 @@ const CreateChannelView = () => {
 			broadcast,
 			encrypted,
 			isTeam,
-			teamId
+			teamId,
+			category: params?.categoryId
 		};
 		dispatch(createChannelRequest(data));
 		Review.pushPositiveEvent();

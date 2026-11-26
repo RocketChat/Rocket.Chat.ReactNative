@@ -2,7 +2,7 @@ import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import type Model from '@nozbe/watermelondb/Model';
 
 import { getDeviceToken } from '../notifications';
-import { isSsl } from './helpers';
+import { isSsl } from './helpers/isSsl';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import { disconnect } from '../services/connect';
@@ -18,9 +18,10 @@ import {
 	getUserTokenKey
 } from '../constants/keys';
 import UserPreferences from './userPreferences';
-import { removePushToken } from '../services/restApi';
+import { forgetRegisteredPushToken, removePushToken } from '../services/restApi';
 import { closeConferenceCall } from '../services/conference/conferenceCallNavigation';
 import { clearServerCookies } from './helpers/setServerCookies';
+import { clearRemovedWorkspaceCertificate } from './helpers/sslPinning';
 import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from './getUsersPresence';
 
@@ -38,6 +39,7 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 }
 
 export async function removeServerData({ server }: { server: string }): Promise<void> {
+	forgetRegisteredPushToken(server);
 	try {
 		const batch: Model[] = [];
 		const serversDB = database.servers;
@@ -73,18 +75,20 @@ export async function removeServerDatabase({ server }: { server: string }): Prom
 }
 
 async function logoutFromServer(server: string, resume: string): Promise<void> {
+	const workspaceClient = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 	try {
-		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-		await sdk.login({ resume });
+		await workspaceClient.login({ resume });
 
 		const token = getDeviceToken();
 		if (token) {
-			await sdk.del('push.token', { token });
+			await workspaceClient.del('push.token', { token });
 		}
 
-		await sdk.logout();
+		await workspaceClient.logout();
 	} catch (e) {
 		log(e);
+	} finally {
+		workspaceClient.disconnect().catch(log);
 	}
 }
 
@@ -106,6 +110,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 		} catch (e) {
 			log(e);
 		}
+		await clearRemovedWorkspaceCertificate(server);
 	} catch (e) {
 		log(e);
 	}

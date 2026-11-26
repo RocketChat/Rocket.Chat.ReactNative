@@ -3,7 +3,7 @@ import { StyleSheet, type TextInputProps, View } from 'react-native';
 
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';
-import { FormTextInput } from '../TextInput';
+import { FormTextInput } from '../TextInput/FormTextInput';
 import { useListBackgroundColor } from '../NativeListRow/hooks/useListBackgroundColor';
 
 const styles = StyleSheet.create({
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) => {
+const SearchBox = ({ onChangeText, onSubmitEditing, testID, placeholder = I18n.t('Search') }: TextInputProps) => {
 	const [text, setText] = useState('');
 
 	const { colors } = useTheme();
@@ -30,7 +30,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) =>
 				autoCapitalize='none'
 				autoCorrect={false}
 				blurOnSubmit
-				placeholder={I18n.t('Search')}
+				placeholder={placeholder}
 				returnKeyType='search'
 				underlineColorAndroid='transparent'
 				containerStyle={styles.inputContainer}

@@ -1,6 +1,7 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
+import { openRoom } from '~e2e/support/appduct';
 import { createRandomRoom, createRandomTeam, createUser, deleteCreatedUsers } from '~e2e/support/api';
 import {
 	backToRoomsList,
@@ -8,16 +9,21 @@ import {
 	expectVisible,
 	goBackUntil,
 	hideKeyboard,
-	loginWithDeepLink,
-	navigateToRoom,
+	loginToApp,
 	type Fixtures,
 	LONG_TIMEOUT,
 	fillWhenUncovered,
-	headerItem,
 	roomTitle,
 	headerSearchInput
 } from '~e2e/support/flows';
-import { expectRoomTitle, selectHeaderMenuOption, tapHeaderItem, threadsButton, submitSelectedUsers } from '~e2e/support/header';
+import {
+	expectRoomMenuOptions,
+	expectRoomTitle,
+	selectHeaderMenuOption,
+	tapHeaderItem,
+	threadsButton,
+	submitSelectedUsers
+} from '~e2e/support/header';
 import { random } from '~e2e/support/random';
 import { selectUser } from '~e2e/support/room';
 import { closeActionSheet, openMemberActionSheet } from '~e2e/support/teams';
@@ -25,13 +31,8 @@ import { closeActionSheet, openMemberActionSheet } from '~e2e/support/teams';
 afterEach(deleteCreatedUsers);
 
 const expectRoomHeaderButtons = async (fixtures: Fixtures) => {
-	for (const button of [
-		headerItem(fixtures, 'room-view-header-call', /^Call /),
-		threadsButton(fixtures),
-		headerItem(fixtures, 'room-view-search', 'More')
-	]) {
-		await expect(button).toBeVisible({ timeout: LONG_TIMEOUT });
-	}
+	await expect(threadsButton(fixtures)).toBeVisible({ timeout: LONG_TIMEOUT });
+	await expectRoomMenuOptions(fixtures, [{ testId: 'room-view-header-call', iosLabel: /^Call / }]);
 };
 
 const openTeamChannels = async (fixtures: Fixtures) => {
@@ -152,8 +153,8 @@ test('manages a team', { tags: ['test-3'] }, async fixtures => {
 	const room = await createRandomRoom(owner);
 	const privateChannel = `private${random()}-channel-team`;
 
-	await loginWithDeepLink(fixtures, owner);
-	await navigateToRoom(fixtures, team);
+	await loginToApp(fixtures, owner);
+	await openRoom(fixtures, team);
 	await expectRoomHeaderButtons(fixtures);
 
 	await openTeamChannels(fixtures);
@@ -165,7 +166,7 @@ test('manages a team', { tags: ['test-3'] }, async fixtures => {
 	await expectRoomHeaderButtons(fixtures);
 	await backToRoomsList(fixtures);
 
-	await navigateToRoom(fixtures, team);
+	await openRoom(fixtures, team);
 	await openTeamChannels(fixtures);
 	await addExistingChannel(fixtures, team, room.name);
 	await openTeamChannels(fixtures);

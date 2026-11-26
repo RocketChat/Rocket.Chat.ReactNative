@@ -1,4 +1,4 @@
-import { type IServerSubscription } from '~/definitions';
+import { type IServerSubscription } from '~/definitions/ISubscription';
 import { merge } from '../mergeSubscriptionsRooms';
 
 jest.mock('~/lib/store/auxStore', () => ({

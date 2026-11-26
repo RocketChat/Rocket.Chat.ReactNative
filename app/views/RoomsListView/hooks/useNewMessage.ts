@@ -5,7 +5,7 @@ import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import { usePermissions } from '~/lib/hooks/usePermissions';
 import { events, logEvent } from '~/lib/methods/helpers/log';
 
-export const useNewMessage = () => {
+export const useNewMessage = (categoryId?: string) => {
 	const navigation = useNavigation<any>();
 	const isMasterDetail = useMasterDetail();
 	const createPermissions = usePermissions(['create-c', 'create-p', 'create-team', 'create-d', 'start-discussion']);
@@ -14,11 +14,11 @@ export const useNewMessage = () => {
 	const goToNewMessage = useCallback(() => {
 		logEvent(events.RL_GO_NEW_MSG);
 		if (isMasterDetail) {
-			navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' });
+			navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView', params: { categoryId } });
 		} else {
-			navigation.navigate('NewMessageStackNavigator');
+			navigation.navigate('NewMessageStackNavigator', { screen: 'NewMessageView', params: { categoryId } });
 		}
-	}, [isMasterDetail, navigation]);
+	}, [isMasterDetail, navigation, categoryId]);
 
 	return { canCreateRoom, goToNewMessage };
 };

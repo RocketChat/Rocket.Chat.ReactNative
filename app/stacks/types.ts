@@ -1,22 +1,24 @@
 import { type NavigatorScreenParams } from '@react-navigation/core';
 
-import {
-	type IAttachment,
-	type ICannedResponse,
-	type ILivechatDepartment,
-	type ILivechatTag,
-	type IMessage,
-	type IServer,
-	type ISubscription,
-	type SubscriptionType,
-	type TAnyMessageModel,
-	type TChangeAvatarViewContext,
-	type TDataSelect,
-	type TMessageAction,
-	type TSubscriptionModel,
-	type TThreadModel,
-	type IVisitor
-} from '../definitions';
+import { type IAttachment } from '../definitions/IAttachment';
+import { type ICannedResponse } from '../definitions/ICannedResponse';
+import { type ILivechatDepartment } from '../definitions/ILivechatDepartment';
+import { type ILivechatTag } from '../definitions/ILivechatTag';
+import { type IMessage, type TAnyMessageModel, type TMessageAction } from '../definitions/IMessage';
+import { type IServer } from '../definitions/IServer';
+import { type ISubscription, type SubscriptionType, type TSubscriptionModel, type IVisitor } from '../definitions/ISubscription';
+import { type TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
+import { type TDataSelect } from '../definitions/IDataSelect';
+import { type TThreadModel } from '../definitions/IThread';
+import { type CategoryViewParams } from '../views/CategoryView';
+import { type CategorySettingsViewParams } from '../views/CategorySettingsView';
+import { type ConfirmCategoryRoomsViewParams } from '../views/CategorySettingsView/ConfirmCategoryRoomsView';
+import { type ManageCategoryRoomsViewParams } from '../views/CategorySettingsView/ManageCategoryRoomsView';
+import { type RenameCategoryViewParams } from '../views/CategorySettingsView/RenameCategoryView';
+import { type CreateCategoryViewParams } from '../views/CreateCategoryView';
+import { type NewMessageViewParams } from '../views/NewMessageView';
+import { type CategoryRoomsViewParams } from '../views/CreateCategoryView/CategoryRoomsView';
+import { type ConfirmCategoryViewParams } from '../views/CreateCategoryView/ConfirmCategoryView';
 import { type ModalStackParamList } from './MasterDetailStack/types';
 import { type TNavigation } from './stackType';
 
@@ -30,6 +32,11 @@ export type ChatsStackParamList = {
 	NewMessageStackNavigator: any;
 	NewMessageStack: undefined;
 	RoomsListView: undefined;
+	CategoryView: CategoryViewParams;
+	CategorySettingsView: CategorySettingsViewParams;
+	ManageCategoryRoomsView: ManageCategoryRoomsViewParams;
+	ConfirmCategoryRoomsView: ConfirmCategoryRoomsViewParams;
+	RenameCategoryView: RenameCategoryViewParams;
 	RoomView:
 		| {
 				rid: string;
@@ -124,6 +131,7 @@ export type ChatsStackParamList = {
 	};
 	DirectoryView: undefined;
 	DisplayPrefsView: undefined;
+	CategoryOrderView: undefined;
 	E2EEToggleRoomView: {
 		rid: string;
 	};
@@ -153,6 +161,7 @@ export type ChatsStackParamList = {
 	CreateChannelView: {
 		isTeam?: boolean;
 		teamId?: string;
+		categoryId?: string;
 	};
 	AddChannelTeamView: {
 		teamId: string;
@@ -231,11 +240,13 @@ export type AdminPanelStackParamList = {
 export type AccessibilityStackParamList = {
 	AccessibilityAndAppearanceView: undefined;
 	DisplayPrefsView: undefined;
+	CategoryOrderView: undefined;
 	ThemeView: undefined;
 };
 
 export type DisplayPrefStackParamList = {
 	DisplayPrefsView: undefined;
+	CategoryOrderView: undefined;
 };
 
 export type DrawerParamList = {
@@ -247,7 +258,7 @@ export type DrawerParamList = {
 };
 
 export type NewMessageStackParamList = {
-	NewMessageView: undefined;
+	NewMessageView: NewMessageViewParams;
 	SelectedUsersView: {
 		maxUsers?: number;
 		showButton?: boolean;
@@ -259,15 +270,20 @@ export type NewMessageStackParamList = {
 	CreateChannelView?: {
 		isTeam?: boolean;
 		teamId?: string;
+		categoryId?: string;
 	};
 	CreateDiscussionView: {
 		channel: ISubscription;
 		message: IMessage;
 		showCloseModal: boolean;
+		categoryId?: string;
 	};
 	ForwardMessageView: {
 		message: TAnyMessageModel;
 	};
+	CreateCategoryView: CreateCategoryViewParams;
+	CategoryRoomsView: CategoryRoomsViewParams;
+	ConfirmCategoryView: ConfirmCategoryViewParams;
 };
 
 export type E2ESaveYourPasswordStackParamList = {

@@ -8,7 +8,7 @@ import { useTheme } from '~/theme';
 import { CallButtons } from './components/CallButtons';
 import SafeAreaView from '~/containers/SafeAreaView';
 import Ringer, { ERingerSounds } from '~/containers/Ringer';
-import { isIOS } from '~/lib/methods/helpers';
+import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import NativeVoipModule from '~/lib/native/NativeVoip';
 
 const CallView = (): ReactElement | null => {

@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
 
-import { BaseButton } from '../Buttons';
+import { BaseButton } from '../Buttons/BaseButton';
 import { useMessageComposerApi } from '~/containers/MessageComposer/context';
 import { Gap } from '../Gap';
 import { type TMarkdownStyle } from '~/containers/MessageComposer/interfaces';

@@ -1,22 +1,18 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getUniqueId } from 'react-native-device-info';
 import EJSON from 'ejson';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 
+import { type IAvatarSuggestion, type IProfileParams } from '~/definitions/IProfile';
+import { type IMessage } from '~/definitions/IMessage';
 import {
-	type IAvatarSuggestion,
-	type IMessage,
 	type IMessagePreferences,
 	type INotificationPreferences,
-	type IPreviewItem,
-	type IProfileParams,
 	type IRoleUser,
-	type IRoom,
-	type IRoomNotifications,
-	type IServerRoom,
-	type RoomType,
-	type SubscriptionType
-} from '~/definitions';
+	type ISidebarCategory
+} from '~/definitions/IUser';
+import { type IPreviewItem } from '~/definitions/ISlashCommand';
+import { type IRoom, type IRoomNotifications, type IRoomSettings, type IServerRoom, type RoomType } from '~/definitions/IRoom';
+import { type SubscriptionType } from '~/definitions/ISubscription';
 import { type TParams } from '~/definitions/ILivechatEditView';
 import { type ILivechatTag } from '~/definitions/ILivechatTag';
 import { type ISpotlight } from '~/definitions/ISpotlight';
@@ -25,12 +21,14 @@ import { type OperationParams, type ResultFor } from '~/definitions/rest/helpers
 import { type SubscriptionsEndpoints } from '~/definitions/rest/v1/subscriptions';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
-import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { getBundleId, isIOS } from '../methods/helpers/deviceInfo';
 import { getDeviceToken } from '../notifications/deviceToken';
 import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
+import { fetchForWorkspace } from '../methods/serverBasicAuth';
 import log from '../methods/helpers/log';
 
 export const createChannel = ({
@@ -281,10 +279,7 @@ export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: s
 					channelName: name
 				};
 	} else {
-		params = {
-			roomId: rid,
-			roomName: name
-		};
+		params = { roomId: rid };
 	}
 
 	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
@@ -679,24 +674,15 @@ export const hideRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
-export const saveRoomSettings = (
-	rid: string,
-	params: {
-		roomName?: string;
-		roomAvatar?: string | null;
-		roomDescription?: string;
-		roomTopic?: string;
-		roomAnnouncement?: string;
-		roomType?: SubscriptionType;
-		readOnly?: boolean;
-		reactWhenReadOnly?: boolean;
-		systemMessages?: string[];
-		joinCode?: string;
-		encrypted?: boolean;
+export const saveRoomSettings = async (rid: string, params: IRoomSettings) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.3.0')) {
+		await sdk.post('rooms.saveRoomSettings', { rid, ...params });
+		return;
 	}
-): Promise<{ result: boolean; rid: string }> =>
 	// RC 0.55.0
-	sdk.methodCallWrapper('saveRoomSettings', rid, params);
+	await sdk.methodCallWrapper('saveRoomSettings', rid, params);
+};
 
 export const setPassword = (newPassword: string) => {
 	const serverVersion = reduxStore.getState().server.version;
@@ -718,6 +704,31 @@ export const saveUserProfile = (
 export const saveUserPreferences = (data: Partial<INotificationPreferences & IMessagePreferences>) =>
 	// RC 0.62.0
 	sdk.post('users.setPreferences', { data });
+
+export const saveSidebarCategories = (sidebarCategories: ISidebarCategory[]) =>
+	sdk.post('users.setPreferences', { data: { sidebarCategories } });
+
+const postAuthenticated = async (path: string, body: object) => {
+	const { login, server } = reduxStore.getState();
+	const response = await fetchForWorkspace(server.server, `${server.server}/api/${path}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-Auth-Token': login.user.token,
+			'X-User-Id': login.user.id
+		},
+		body: JSON.stringify(body)
+	});
+	if (!response.ok) {
+		const errorBody = await response.json().catch(() => undefined);
+		throw new Error(errorBody?.error || errorBody?.message || `${response.status} ${response.statusText}`);
+	}
+	return response;
+};
+
+export const setRoomsCategory = async (roomIds: string[], category: string | null) => {
+	await postAuthenticated('experimental/rooms.setCategory', { roomIds, category });
+};
 
 export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0
@@ -1061,8 +1072,17 @@ export const saveAutoTranslate = ({
 	return sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, ddpValue, options ?? null);
 };
 
-export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
-	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+export const getSupportedLanguagesAutoTranslate = async (): Promise<{ language: string; name: string }[]> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '2.0.0')) {
+		const result = await sdk.get('autotranslate.getSupportedLanguages', { targetLanguage: 'en' });
+		if (!result.success) {
+			throw new Error('Unable to load supported languages');
+		}
+		return result.languages;
+	}
+	return sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+};
 
 export const translateMessage = (messageId: string, targetLanguage: string) =>
 	sdk.post('autotranslate.translateMessage', { messageId, targetLanguage });
@@ -1105,19 +1125,14 @@ export const createGroupChat = () => {
 	return sdk.post('im.create', { usernames });
 };
 
-export const addUsersToRoom = async (rid: string, t: 'c' | 'p') => {
+export const addUsersToRoom = (rid: string, t: 'c' | 'p') => {
 	const { selectedUsers, server } = reduxStore.getState();
 	const users = selectedUsers.users.map(u => u.name);
-	if (compareServerVersion(server.version, 'greaterThanOrEqualTo', '8.6.0')) {
-		if (t === 'p') {
-			return sdk.post('groups.invite', { roomId: rid, usernames: users });
-		}
-		const results = await Promise.allSettled(users.map(username => sdk.post('channels.invite', { roomId: rid, username })));
-		const failed = results.find((result): result is PromiseRejectedResult => result.status === 'rejected');
-		if (failed) {
-			throw failed.reason;
-		}
-		return results;
+	if (t === 'p' && compareServerVersion(server.version, 'greaterThanOrEqualTo', '8.6.0')) {
+		return sdk.post('groups.invite', { roomId: rid, usernames: users });
+	}
+	if (compareServerVersion(server.version, 'greaterThanOrEqualTo', '9.0.0')) {
+		return sdk.post('channels.invite', { roomId: rid, usernames: users });
 	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
@@ -1150,40 +1165,26 @@ export const editMediaMessage = async (
 	fileId: string,
 	body: { description?: string; filename: string; msg?: string }
 ) => {
-	const { login, server } = reduxStore.getState();
-	const { user } = login;
 	// RC 8.4.0
-	const response = await fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
-		method: 'POST',
-		headers: {
-			...RocketChatSettings.customHeaders,
-			'Content-Type': 'application/json',
-			'X-Auth-Token': user.token,
-			'X-User-Id': user.id
-		},
-		body: JSON.stringify({
+	try {
+		const response = await postAuthenticated(`v1/rooms.mediaConfirm/${rid}/${fileId}`, {
 			description: body.description,
 			filename: body.filename,
 			msg: body.msg || ''
-		})
-	});
-
-	if (!response.ok) {
-		let errorReason = `${response.status} ${response.statusText}`;
-		try {
-			const errorBody = await response.json();
-			errorReason = errorBody?.error || errorBody?.message || errorReason;
-		} catch {
-			// Best effort only: keep default HTTP reason when body is not JSON.
-		}
-		throw new Error(`Failed to edit media message: ${errorReason}`);
+		});
+		return response.json();
+	} catch (error) {
+		throw new Error(`Failed to edit media message: ${(error as Error).message}`);
 	}
-
-	return response.json();
 };
 
-let lastToken = '';
-let lastVoipToken = '';
+const registeredPushTokens = new Map<string, { token: string; voipToken: string }>();
+let forgottenRegistrationsCount = 0;
+
+export const forgetRegisteredPushToken = (server: string): void => {
+	forgottenRegistrationsCount += 1;
+	registeredPushTokens.delete(server);
+};
 
 type TRegisterPushTokenData = {
 	id?: string;
@@ -1192,7 +1193,8 @@ type TRegisterPushTokenData = {
 	appName: string;
 	voipToken?: string;
 };
-export const registerPushToken = async (): Promise<void> => {
+const registerPushTokenOnCurrentServer = async (): Promise<void> => {
+	const uniqueId = await getUniqueId();
 	const token = getDeviceToken();
 	// Always returns an empty string on Android
 	const voipToken = NativeVoipModule.getLastVoipToken();
@@ -1201,34 +1203,25 @@ export const registerPushToken = async (): Promise<void> => {
 		return;
 	}
 
-	if (token === lastToken && voipToken === lastVoipToken) {
+	const server = sdk.host;
+	if (!server) {
 		return;
 	}
 
-	// SDK is initialized on connect() only after a server is selected and the user is logged in.
-	// On a fresh-install cold-start, FCM/APNS and iOS PushKit can deliver tokens before that
-	// happens; bail without recording lastToken/lastVoipToken so registerPushTokenFork retries
-	// after login (and a later VoipPushTokenRegistered emission can still re-fire this path).
-	if (!sdk.isInitialized) {
+	const registered = registeredPushTokens.get(server);
+	if (registered?.token === token && registered.voipToken === voipToken) {
 		return;
 	}
+	const forgottenRegistrationsCountAtStart = forgottenRegistrationsCount;
 
 	const serverVersion = reduxStore.getState().server.version;
-	let data: TRegisterPushTokenData = {
-		value: '',
-		type: '',
+	const data: TRegisterPushTokenData = {
+		value: token,
+		type: isIOS ? 'apn' : 'gcm',
 		appName: getBundleId
 	};
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
-		data.id = await getUniqueId();
-	}
-	if (token) {
-		const type = isIOS ? 'apn' : 'gcm';
-		data = {
-			...data,
-			value: token,
-			type
-		};
+		data.id = uniqueId;
 	}
 	if (voipToken && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0')) {
 		data.voipToken = voipToken;
@@ -1237,11 +1230,20 @@ export const registerPushToken = async (): Promise<void> => {
 	try {
 		// RC 0.60.0
 		await sdk.post('push.token', data);
-		lastToken = token;
-		lastVoipToken = voipToken;
+		if (forgottenRegistrationsCount === forgottenRegistrationsCountAtStart) {
+			registeredPushTokens.set(server, { token, voipToken });
+		}
 	} catch (e) {
 		log(e);
 	}
+};
+
+let pushTokenRegistrationQueue: Promise<void> = Promise.resolve();
+
+export const registerPushToken = (): Promise<void> => {
+	const registration = pushTokenRegistrationQueue.then(registerPushTokenOnCurrentServer);
+	pushTokenRegistrationQueue = registration.catch(() => undefined);
+	return registration;
 };
 
 // TODO: add voip token removal
@@ -1250,8 +1252,6 @@ export const removePushToken = async (): Promise<void> => {
 	if (!token) {
 		return;
 	}
-	lastToken = '';
-	lastVoipToken = '';
 	if (!sdk.isInitialized) {
 		return;
 	}

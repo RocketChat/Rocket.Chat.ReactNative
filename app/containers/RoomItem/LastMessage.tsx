@@ -3,7 +3,7 @@ import { memo } from 'react';
 import { type TextStyle } from 'react-native';
 
 import { formatLastMessage } from '~/lib/methods/formatLastMessage';
-import { isAndroid } from '~/lib/methods/helpers';
+import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 import { useTheme } from '~/theme';
 import { MarkdownPreview } from '../markdown';
 import { type ILastMessageProps } from './interfaces';
@@ -11,7 +11,7 @@ import styles from './styles';
 
 const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProps);
 
-const LastMessage = memo(({ lastMessage, type, showLastMessage, username, alert, useRealName }: ILastMessageProps) => {
+const LastMessage = memo(({ lastMessage, type, showLastMessage, username, useRealName, isUnread }: ILastMessageProps) => {
 	const { colors } = useTheme();
 	// Android has a bug with the text align on the markdown preview
 	const alignSelf: TextStyle = isAndroid ? { alignSelf: 'stretch' } : {};
@@ -25,7 +25,7 @@ const LastMessage = memo(({ lastMessage, type, showLastMessage, username, alert,
 				username,
 				useRealName
 			})}
-			style={[styles.markdownText, { color: alert ? colors.fontDefault : colors.fontSecondaryInfo }, alignSelf]}
+			style={[styles.markdownText, { color: isUnread ? colors.fontTitlesLabels : colors.fontSecondaryInfo }, alignSelf]}
 			numberOfLines={2}
 		/>
 	);

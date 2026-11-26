@@ -3,9 +3,10 @@ import { useNavigation, type StaticScreenProps } from '@react-navigation/native'
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { type OutsideParamList } from '../stacks/types';
-import { FormTextInput } from '../containers/TextInput';
+import { FormTextInput } from '../containers/TextInput/FormTextInput';
 import Button from '../containers/Button';
-import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
+import { showErrorAlert } from '../lib/methods/helpers/info';
+import { isValidEmail } from '../lib/methods/helpers/isValidEmail';
 import I18n from '../i18n';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import log, { events, logEvent } from '../lib/methods/helpers/log';

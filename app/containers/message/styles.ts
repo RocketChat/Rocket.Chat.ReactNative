@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '~/views/Styles';
-import { isTablet } from '~/lib/methods/helpers';
+import { isTablet } from '~/lib/methods/helpers/deviceInfo';
 
 export default StyleSheet.create({
 	root: {

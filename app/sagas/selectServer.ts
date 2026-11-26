@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { all, call as callEffect, put, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
@@ -28,8 +28,9 @@ import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
-import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER } from '../lib/constants/keys';
+import { type IServerInfo, type TServerModel } from '../definitions/IServer';
+import { RootEnum } from '../definitions/redux/TRootEnum';
+import { CURRENT_SERVER } from '../lib/constants/keys';
 import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { getStoredSession } from '../lib/methods/loggedInServer';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
@@ -44,7 +45,7 @@ import sdk from '../lib/services/sdk';
 import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
-import SSLPinning from '../lib/methods/helpers/sslPinning';
+import { applyServerCertificate } from '../lib/methods/helpers/sslPinning';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -145,24 +146,27 @@ const getServerInfoSaga = function* getServerInfoSaga({
 	}
 };
 
+export const startInsideUnlessSharing = function* startInsideUnlessSharing() {
+	const currentRoot = yield* appSelector(state => state.app.root);
+	if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+	}
+};
+
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
-		if (sdk.host === server) {
+		yield* call(applyServerCertificate, server);
+		yield* call(migrateTokenKeysToServerScoped);
+		const { userId, token } = getStoredSession(server);
+		if (sdk.host === server && token) {
 			applyBasicAuth(server);
-			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			yield* startInsideUnlessSharing();
 			yield put(selectServerCancel());
 			return;
-		}
-		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-		if (certificate) {
-			SSLPinning?.setCertificate(certificate, server);
 		}
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
-		yield* call(migrateTokenKeysToServerScoped);
-		const { userId, token } = getStoredSession(server);
 		let user = null;
 		if (userId && token) {
 			// search credentials on database
@@ -192,10 +196,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(clearSettings());
 			yield put(setUser(user));
 			yield connect({ server, logoutOnError: true });
-			const currentRoot = yield* appSelector(state => state.app.root);
-			if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
-				yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
-			}
+			yield* startInsideUnlessSharing();
 			UserPreferences.setString(CURRENT_SERVER, server); // only set server after have a user
 		} else {
 			yield put(clearUser());
@@ -238,8 +239,10 @@ const UNANSWERED_HOST_PROBE_TIMEOUT_MS = 30000;
 const probeServer = function* probeServer(server: string, signal: AbortSignal) {
 	const serverInfo = yield* getServerInfoSaga({ server, signal });
 	if (serverInfo) {
-		yield* call(getLoginServices, server, signal);
-		yield* call(getLoginSettings, { server, serverVersion: serverInfo.version, signal });
+		yield all([
+			callEffect(getLoginServices, server, signal),
+			callEffect(getLoginSettings, { server, serverVersion: serverInfo.version, signal })
+		]);
 	}
 	return serverInfo;
 };
@@ -247,10 +250,7 @@ const probeServer = function* probeServer(server: string, signal: AbortSignal) {
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
 	const probeController = new AbortController();
 	try {
-		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-		if (certificate) {
-			SSLPinning?.setCertificate(certificate, server);
-		}
+		yield* call(applyServerCertificate, server);
 		const { serverInfo, timedOut } = yield* race({
 			serverInfo: call(probeServer, server, probeController.signal),
 			timedOut: delay(UNANSWERED_HOST_PROBE_TIMEOUT_MS)

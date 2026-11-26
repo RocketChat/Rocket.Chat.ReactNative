@@ -8,7 +8,7 @@ import { type TSupportedThemes } from '~/theme';
 import sharedStyles from '~/views/Styles';
 import Header from '~/containers/Header';
 import I18n from '~/i18n';
-import { hasNativeHeaderBar } from '~/lib/methods/helpers';
+import { hasNativeHeaderBar } from '~/lib/methods/helpers/deviceInfo';
 import { headerRightActions } from './headerActions';
 
 export const defaultHeader: NativeStackNavigationOptions = hasNativeHeaderBar
@@ -31,6 +31,7 @@ interface IStackedSearchBarOptions {
 	onChangeText: (text: string) => void;
 	onCancel?: () => void;
 	onSearch?: () => void;
+	placeholder?: string;
 }
 
 export const stackedSearchBarOptions = ({
@@ -38,12 +39,13 @@ export const stackedSearchBarOptions = ({
 	onFocus,
 	onChangeText,
 	onCancel,
-	onSearch
+	onSearch,
+	placeholder = I18n.t('Search')
 }: IStackedSearchBarOptions): SearchBarProps => ({
 	ref,
 	placement: 'stacked',
 	hideWhenScrolling: false,
-	placeholder: I18n.t('Search'),
+	placeholder,
 	onFocus,
 	onChangeText: event => onChangeText(event.nativeEvent.text),
 	onSearchButtonPress: onSearch,

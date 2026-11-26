@@ -1,8 +1,11 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactElement, type ReactNode } from 'react';
 import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
+import { shallowEqual } from 'react-redux';
 
-import { type IUseRoomMessageHandlersResult, type IUser, type TAnyMessageModel } from '~/definitions';
+import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
+import { type IUser } from '~/definitions/IUser';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useLiveRef } from '~/lib/hooks/useLiveRef';
 import { useSetting } from '~/lib/hooks/useSetting';
@@ -149,7 +152,11 @@ export const useIsArchived = (): boolean | undefined => useMessageRoomStore(s =>
 export const useIsReadReceiptEnabled = (): boolean | undefined => useMessageRoomStore(s => s.isReadReceiptEnabled);
 
 export const useRid = (): string | undefined => useMessageRoomStore(s => s.rid);
-export const useMessageUser = (): IUser => useAppSelector(getUserSelector);
+export const useMessageUser = (): Pick<IUser, 'id' | 'username' | 'token'> =>
+	useAppSelector(state => {
+		const { id, username, token } = getUserSelector(state);
+		return { id, username, token };
+	}, shallowEqual);
 export const useBaseUrl = (): string => useAppSelector(state => state.server.server);
 export const useBroadcast = (): boolean | undefined => useMessageRoomStore(s => s.broadcast);
 export const useTimeFormat = (): string | undefined => useMessageRoomStore(s => s.timeFormat);
@@ -160,3 +167,6 @@ export const useAutoTranslate = (): { autoTranslateRoom?: boolean; autoTranslate
 	useMessageRoomStore(
 		useShallow(s => ({ autoTranslateRoom: s.autoTranslateRoom, autoTranslateLanguage: s.autoTranslateLanguage }))
 	);
+
+export const useRoomTranslateLanguage = (): string | undefined =>
+	useMessageRoomStore(s => (s.autoTranslateRoom ? s.autoTranslateLanguage : undefined));

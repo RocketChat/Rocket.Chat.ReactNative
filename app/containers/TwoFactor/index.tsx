@@ -9,14 +9,14 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { ControlledFormTextInput } from '../TextInput';
+import { ControlledFormTextInput } from '../TextInput/ControlledFormTextInput';
 import I18n from '~/i18n';
 import EventEmitter from '~/lib/methods/helpers/events';
 import { useTheme } from '~/theme';
 import Button from '../Button';
 import sharedStyles from '~/views/Styles';
 import styles from './styles';
-import { type ILoginCredentials } from '~/definitions';
+import { type ILoginCredentials } from '~/definitions/ILoginCredentials';
 import { sendEmailCode } from '~/lib/services/restApi';
 import { useMasterDetail } from '~/lib/hooks/useMasterDetail';
 import Toast from '../Toast';
@@ -24,6 +24,7 @@ import KeyboardView from '../KeyboardView';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import log from '~/lib/methods/helpers/log';
 import { TWO_FACTOR } from '~/lib/constants/twoFactor';
+import { isAndroid, isIOS } from '~/lib/methods/helpers/deviceInfo';
 
 interface IMethodsProp {
 	text: string;
@@ -77,7 +78,8 @@ const TwoFactor = memo(() => {
 		getValues,
 		clearErrors,
 		formState: { errors },
-		setError
+		setError,
+		setFocus
 	} = useForm({
 		defaultValues: {
 			code: ''
@@ -161,7 +163,8 @@ const TwoFactor = memo(() => {
 			useNativeDriver
 			isVisible={visible}
 			hideModalContentWhileAnimating
-			style={styles.modal}>
+			style={styles.modal}
+			onModalShow={isAndroid ? () => setFocus('code') : undefined}>
 			<KeyboardView backgroundColor='transparent'>
 				<GestureHandlerRootView style={styles.container} testID='two-factor'>
 					<View
@@ -175,7 +178,7 @@ const TwoFactor = memo(() => {
 						<ControlledFormTextInput
 							name='code'
 							control={control}
-							autoFocus
+							autoFocus={isIOS}
 							returnKeyType='send'
 							autoCapitalize='none'
 							testID='two-factor-input'
@@ -203,7 +206,7 @@ const TwoFactor = memo(() => {
 							<Button title={I18n.t('Verify')} type='primary' style={styles.button} onPress={onSubmit} testID='two-factor-send' />
 						</View>
 					</View>
-					<Toast />
+					{visible ? <Toast /> : null}
 				</GestureHandlerRootView>
 			</KeyboardView>
 		</Modal>

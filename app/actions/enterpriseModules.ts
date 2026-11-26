@@ -5,14 +5,16 @@ import { ENTERPRISE_MODULES } from './actionsTypes';
 
 interface ISetEnterpriseModules extends Action {
 	payload: IEnterpriseModules[];
+	hasValidLicense: boolean;
 }
 
 export type TActionEnterpriseModules = ISetEnterpriseModules & Action;
 
-export function setEnterpriseModules(modules: IEnterpriseModules[]): ISetEnterpriseModules {
+export function setEnterpriseModules(modules: IEnterpriseModules[], hasValidLicense = false): ISetEnterpriseModules {
 	return {
 		type: ENTERPRISE_MODULES.SET,
-		payload: modules
+		payload: modules,
+		hasValidLicense
 	};
 }
 

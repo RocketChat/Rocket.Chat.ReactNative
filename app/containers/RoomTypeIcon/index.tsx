@@ -5,10 +5,11 @@ import { type ImageStyle } from 'expo-image';
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
 import { CustomIcon } from '../CustomIcon';
 import { getRoomTypeIconName } from './roomTypeIconName';
-import { themes } from '~/lib/constants/colors';
 import Status from '../Status';
 import { useTheme } from '~/theme';
-import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '~/definitions';
+import { type TUserStatus } from '~/definitions/TUserStatus';
+import { type IOmnichannelSource } from '~/definitions/IRoom';
+import { type ISubscription } from '~/definitions/ISubscription';
 
 const styles = StyleSheet.create({
 	icon: {
@@ -26,11 +27,12 @@ interface IRoomTypeIcon {
 	style?: ViewStyle;
 	sourceType?: IOmnichannelSource;
 	abacAttributes?: ISubscription['abacAttributes'];
+	color?: string;
 }
 
 const RoomTypeIcon = memo(
-	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType, abacAttributes }: IRoomTypeIcon) => {
-		const { theme } = useTheme();
+	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType, abacAttributes, color }: IRoomTypeIcon) => {
+		const { colors } = useTheme();
 
 		if (!type) {
 			return null;
@@ -51,7 +53,7 @@ const RoomTypeIcon = memo(
 
 		const icon = getRoomTypeIconName({ type, teamMain, isDiscussion: type === 'discussion', isGroupChat, abacAttributes });
 
-		return <CustomIcon name={icon} size={size} color={themes[theme].fontTitlesLabels} style={iconStyle} />;
+		return <CustomIcon name={icon} size={size} color={color ?? colors.fontTitlesLabels} style={iconStyle} />;
 	}
 );
 

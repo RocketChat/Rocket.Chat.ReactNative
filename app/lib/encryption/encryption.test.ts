@@ -2,6 +2,8 @@
 // importing directly from the file. We exercise the real `encryptMessage` here.
 import encryption from './encryption';
 import database from '../database';
+import Deferred from './helpers/deferred';
+import { KEY_DISTRIBUTION_INTERVAL } from './constants';
 
 jest.unmock('./encryption');
 
@@ -82,7 +84,13 @@ jest.mock('../database', () => {
 	};
 });
 
+const mockGetSubscriptionByRoomId = jest.fn();
+jest.mock('../database/services/Subscription', () => ({
+	getSubscriptionByRoomId: (rid: string) => mockGetSubscriptionByRoomId(rid)
+}));
+
 const mockRoomEncrypt = jest.fn();
+const mockRoomEncryptFile = jest.fn();
 const mockHasSessionKey = jest.fn();
 const mockHandshake = jest.fn().mockResolvedValue(undefined);
 jest.mock('./room', () => ({
@@ -90,7 +98,8 @@ jest.mock('./room', () => ({
 	default: jest.fn().mockImplementation(() => ({
 		handshake: mockHandshake,
 		hasSessionKey: () => mockHasSessionKey(),
-		encrypt: (m: any) => mockRoomEncrypt(m)
+		encrypt: (m: any) => mockRoomEncrypt(m),
+		encryptFile: (rid: string, file: any) => mockRoomEncryptFile(rid, file)
 	}))
 }));
 
@@ -164,6 +173,124 @@ describe('Encryption.encryptMessage', () => {
 
 		expect(result).toBe(baseMessage);
 		expect(mockRoomEncrypt).not.toHaveBeenCalled();
+	});
+});
+
+describe('Encryption.encryptFile', () => {
+	const file = { rid: 'r1', name: 'photo.jpg', path: '/tmp/photo.jpg', size: 1, type: 'image/jpeg' } as any;
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockHandshake.mockResolvedValue(undefined);
+		(encryption as any).roomInstances = {};
+	});
+
+	it('uploads the plain file when the room is not encrypted', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: false });
+
+		await expect(encryption.encryptFile('r1', file)).resolves.toEqual({ file });
+	});
+
+	it('uploads the plain file when workspace E2E is disabled, even if the local subscription is flagged as encrypted', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: false } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+
+		await expect(encryption.encryptFile('r1', file)).resolves.toEqual({ file });
+		expect(mockRoomEncryptFile).not.toHaveBeenCalled();
+	});
+
+	it('throws instead of uploading the plain file when the room is encrypted but no session key is available', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		mockHasSessionKey.mockReturnValue(false);
+
+		await expect(encryption.encryptFile('r1', file)).rejects.toThrow('Room encryption key is not available');
+		expect(mockRoomEncryptFile).not.toHaveBeenCalled();
+	});
+
+	it('does not upload the plain file while workspace settings are still loading', async () => {
+		mockGetState.mockReturnValue({ settings: {} });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		mockHasSessionKey.mockReturnValue(false);
+
+		await expect(encryption.encryptFile('r1', file)).rejects.toThrow('Room encryption key is not available');
+	});
+
+	it('encrypts the file when the room is encrypted and a session key is available', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		mockHasSessionKey.mockReturnValue(true);
+		const encrypted = { file: { ...file, path: '/tmp/encrypted' } };
+		mockRoomEncryptFile.mockResolvedValue(encrypted);
+
+		await expect(encryption.encryptFile('r1', file)).resolves.toBe(encrypted);
+		expect(mockRoomEncryptFile).toHaveBeenCalledWith('r1', file);
+	});
+});
+
+describe('Encryption.canSendToRoom', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockHandshake.mockResolvedValue(undefined);
+		(encryption as any).roomInstances = {};
+		const readyPromise = new Deferred();
+		readyPromise.resolve();
+		(encryption as any).readyPromise = readyPromise;
+	});
+
+	it('allows rooms that are not encrypted', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true }, encryption: { enabled: false, banner: '' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: false });
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(true);
+	});
+
+	it('blocks rooms without a subscription', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true }, encryption: { enabled: true, banner: '' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue(null);
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(false);
+		expect(mockHandshake).not.toHaveBeenCalled();
+	});
+
+	it('allows encrypted rooms when workspace E2E is disabled', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: false }, encryption: { enabled: false, banner: '' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(true);
+	});
+
+	it('blocks encrypted rooms while the E2EE password has not been entered', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true }, encryption: { enabled: false, banner: 'REQUEST_PASSWORD' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(false);
+		expect(mockHandshake).not.toHaveBeenCalled();
+	});
+
+	it('blocks encrypted rooms without a session key', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true }, encryption: { enabled: true, banner: '' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		mockHasSessionKey.mockReturnValue(false);
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(false);
+	});
+
+	it('blocks encrypted rooms without a session key while workspace settings are still loading', async () => {
+		mockGetState.mockReturnValue({ settings: {}, encryption: { enabled: true, banner: '' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		mockHasSessionKey.mockReturnValue(false);
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(false);
+	});
+
+	it('allows encrypted rooms with a session key', async () => {
+		mockGetState.mockReturnValue({ settings: { E2E_Enable: true }, encryption: { enabled: true, banner: '' } });
+		mockGetSubscriptionByRoomId.mockResolvedValue({ encrypted: true });
+		mockHasSessionKey.mockReturnValue(true);
+
+		await expect(encryption.canSendToRoom('r1')).resolves.toBe(true);
 	});
 });
 
@@ -297,5 +424,65 @@ describe('Encryption.decryptPendingSubscriptions', () => {
 		expect(batched).toContain(healthy);
 		expect(healthy.lastMessage).toEqual({ t: 'e2e', e2e: 'done', msg: 'plain' });
 		expect(failing.lastMessage).toEqual({ t: 'e2e', e2e: 'pending', msg: 'cipher' });
+	});
+});
+
+describe('Encryption key distribution', () => {
+	const db = (database as any).active;
+	const distributionRuns = () => jest.mocked(db.get).mock.calls.filter(([name]: [string]) => name === 'subscriptions').length;
+
+	beforeEach(() => {
+		jest.useFakeTimers();
+		jest.spyOn(db, 'get').mockImplementation(() => ({ query: () => Promise.resolve([]) }));
+	});
+
+	afterEach(() => {
+		encryption.stop();
+		jest.useRealTimers();
+		jest.restoreAllMocks();
+	});
+
+	it('stops distributing room keys when the client stops', async () => {
+		await encryption.initiateKeyDistribution();
+		encryption.stop();
+
+		await jest.advanceTimersByTimeAsync(KEY_DISTRIBUTION_INTERVAL);
+
+		expect(distributionRuns()).toBe(1);
+	});
+
+	it('stops distributing room keys when the client stops during the first run', async () => {
+		const firstRun = new Deferred();
+		jest.mocked(db.get).mockImplementationOnce(() => ({ query: () => firstRun }));
+
+		const initiating = encryption.initiateKeyDistribution();
+		encryption.stop();
+		firstRun.resolve([]);
+		await initiating;
+		await jest.advanceTimersByTimeAsync(KEY_DISTRIBUTION_INTERVAL);
+
+		expect(distributionRuns()).toBe(1);
+	});
+
+	it('distributes room keys right away when the client starts again after a stop', async () => {
+		await encryption.initiateKeyDistribution();
+		encryption.stop();
+
+		await encryption.initiateKeyDistribution();
+
+		expect(distributionRuns()).toBe(2);
+	});
+
+	it('skips a tick while the previous distribution is still running', async () => {
+		const firstRun = new Deferred();
+		jest.mocked(db.get).mockImplementationOnce(() => ({ query: () => firstRun }));
+
+		const initiating = encryption.initiateKeyDistribution();
+		await jest.advanceTimersByTimeAsync(KEY_DISTRIBUTION_INTERVAL);
+		const runsWhileFirstIsRunning = distributionRuns();
+		firstRun.resolve([]);
+		await initiating;
+
+		expect(runsWhileFirstIsRunning).toBe(1);
 	});
 });

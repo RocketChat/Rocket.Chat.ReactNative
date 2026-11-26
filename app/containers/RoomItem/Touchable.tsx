@@ -30,12 +30,14 @@ const Touchable = ({
 	type,
 	onPress,
 	onLongPress,
+	onMoveToCategoryPress,
 	width,
 	favorite,
 	isRead,
 	rid,
 	isFocused,
 	swipeEnabled,
+	navigationSwipeEdgeWidth = 0,
 	displayMode
 }: ITouchableProps): ReactElement => {
 	const { colors } = useTheme();
@@ -63,6 +65,11 @@ const Touchable = ({
 
 	const handleToggleFav = () => {
 		toggleFav(rid, favorite);
+		close();
+	};
+
+	const handleMoveToCategory = () => {
+		onMoveToCategoryPress?.();
 		close();
 	};
 
@@ -100,6 +107,7 @@ const Touchable = ({
 		activeOffsetX: [-10, 10], // More sensitive horizontal detection
 		failOffsetY: [-20, 20], // Fail on vertical movement to distinguish scrolling
 		enabled: swipeEnabled,
+		hitSlop: I18nManager.isRTL ? { right: -navigationSwipeEdgeWidth } : { left: -navigationSwipeEdgeWidth },
 		onBegin: () => {
 			crossedFullSwipe.set(false);
 			touchClosedOtherRow.set(closeOpenSwipeItem(rid));
@@ -154,6 +162,7 @@ const Touchable = ({
 							favorite={favorite}
 							width={width}
 							toggleFav={handleToggleFav}
+							onMoveToCategoryPress={onMoveToCategoryPress ? handleMoveToCategory : undefined}
 							onHidePress={onHidePress}
 							displayMode={displayMode}
 						/>

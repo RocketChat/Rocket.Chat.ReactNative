@@ -1,5 +1,4 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { InteractionManager } from 'react-native';
 import EJSON from 'ejson';
 import type Model from '@nozbe/watermelondb/Model';
 
@@ -11,23 +10,17 @@ import { handlePayloadUserInteraction } from '~/lib/apps/actions';
 import buildMessage from '../helpers/buildMessage';
 import EventEmitter from '../helpers/events';
 import { removedRoom } from '~/actions/room';
-import { setUser } from '~/actions/login';
+import { setPreference, setUser } from '~/actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '~/lib/constants/notifications';
 import { Encryption } from '~/lib/encryption';
 import updateMessages from '../updateMessages';
-import {
-	type IMessage,
-	type IServerRoom,
-	type IRoom,
-	type ISidebarCategory,
-	type ISubscription,
-	type TLoggedUserModel,
-	type TMessageModel,
-	type TRoomModel,
-	type TThreadMessageModel,
-	type TThreadModel,
-	SubscriptionType
-} from '~/definitions';
+import { type IMessage, type TMessageModel } from '~/definitions/IMessage';
+import { type IServerRoom, type IRoom, type TRoomModel } from '~/definitions/IRoom';
+import { type ISidebarCategory } from '~/definitions/IUser';
+import { type ISubscription, SubscriptionType } from '~/definitions/ISubscription';
+import { type TLoggedUserModel } from '~/definitions/ILoggedUser';
+import { type TThreadMessageModel } from '~/definitions/IThreadMessage';
+import { type TThreadModel } from '~/definitions/IThread';
 import sdk from '~/lib/services/sdk';
 import { type IDDPMessage } from '~/definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
@@ -35,7 +28,10 @@ import { getMessageById } from '~/lib/database/services/Message';
 import { E2E_MESSAGE_TYPE } from '~/lib/constants/keys';
 import { getRoom } from '../getRoom';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
-import { getRoomAvatar, getRoomTitle, getSenderName, random } from '../helpers';
+import { getRoomAvatar } from '../helpers/getRoomAvatar';
+import { getRoomTitle } from '../helpers/getRoomTitle';
+import { getSenderName } from '../helpers/getSenderName';
+import { random } from '../helpers/random';
 import { handleVideoConfIncomingWebsocketMessages } from '~/actions/videoConf';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
@@ -240,30 +236,26 @@ const debouncedUpdate = (subscription: ISubscription) => {
 			queue = {};
 			subTimer = null;
 			Object.keys(batch).forEach(key => {
-				InteractionManager.runAfterInteractions(() => {
-					if (batch[key]) {
-						if (/SUB/.test(key)) {
-							const sub = batch[key] as ISubscription;
-							// When calling the api subscriptions.read passing readThreads as true it does not return this prop
-							if (!sub.tunread) sub.tunread = [];
-							const roomQueueId = getRoomQueueId(sub.rid);
-							const room = batch[roomQueueId] as IRoom;
-							delete batch[roomQueueId];
-							createOrUpdateSubscription(sub, room);
-						} else {
-							const room = batch[key] as IRoom;
-							// If the omnichannel's chat is onHold and waitingResponse we shouldn't create or update the chat,
-							// because it should go to Queue
-							if (room.t === SubscriptionType.OMNICHANNEL && room.onHold && room.waitingResponse) {
-								return null;
-							}
-							const subQueueId = getSubQueueId(room._id);
-							const sub = batch[subQueueId] as ISubscription;
-							delete batch[subQueueId];
-							createOrUpdateSubscription(sub, room);
+				if (batch[key]) {
+					if (/SUB/.test(key)) {
+						const sub = batch[key] as ISubscription;
+						if (!sub.tunread) sub.tunread = [];
+						const roomQueueId = getRoomQueueId(sub.rid);
+						const room = batch[roomQueueId] as IRoom;
+						delete batch[roomQueueId];
+						createOrUpdateSubscription(sub, room);
+					} else {
+						const room = batch[key] as IRoom;
+						const isQueuedOmnichannel = room.t === SubscriptionType.OMNICHANNEL && room.onHold && room.waitingResponse;
+						if (isQueuedOmnichannel) {
+							return;
 						}
+						const subQueueId = getSubQueueId(room._id);
+						const sub = batch[subQueueId] as ISubscription;
+						delete batch[subQueueId];
+						createOrUpdateSubscription(sub, room);
 					}
-				});
+				}
 			});
 		}, WINDOW_TIME);
 	}
@@ -307,6 +299,12 @@ const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
 	}
 	if (unset?.['settings.preferences.sidebarCategories']) {
 		setSidebarCategories([]);
+	}
+	if (diff?.['settings.preferences.sidebarSectionsOrder'] !== undefined) {
+		store.dispatch(setPreference({ sidebarSectionsOrder: diff['settings.preferences.sidebarSectionsOrder'] }));
+	}
+	if (unset?.['settings.preferences.sidebarSectionsOrder']) {
+		store.dispatch(setPreference({ sidebarSectionsOrder: undefined }));
 	}
 	if (diff?.avatarETag) {
 		store.dispatch(setUser({ avatarETag: diff.avatarETag }));

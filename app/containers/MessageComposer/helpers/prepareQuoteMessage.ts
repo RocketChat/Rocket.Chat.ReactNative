@@ -1,15 +1,15 @@
 import { getPermalinkMessage } from '~/lib/methods/getPermalinks';
-import { getMessageById } from '~/lib/database/services/Message';
+import { getMessageOrThreadMessageById } from '~/lib/database/services/Message';
 import { store } from '~/lib/store/auxStore';
-import { compareServerVersion } from '~/lib/methods/helpers';
+import { compareServerVersion } from '~/lib/methods/helpers/compareServerVersion';
 
-export const prepareQuoteMessage = async (textFromInput: string, selectedMessages: string[], tmid?: string): Promise<string> => {
+export const prepareQuoteMessage = async (textFromInput: string, selectedMessages: string[]): Promise<string> => {
 	const { version: serverVersion } = store.getState().server;
 	const connectionString = compareServerVersion(serverVersion, 'lowerThan', '5.0.0') ? ' ' : '\n';
 
 	const permalinks = await Promise.all(
 		selectedMessages.map(async messageId => {
-			const message = await getMessageById(messageId, tmid);
+			const message = await getMessageOrThreadMessageById(messageId);
 			return message ? getPermalinkMessage(message) : undefined;
 		})
 	);

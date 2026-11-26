@@ -3,7 +3,8 @@ import { createStore, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { Keyboard } from 'react-native';
 
-import { type IAttachment, type TAnyMessageModel } from '~/definitions';
+import { type IAttachment } from '~/definitions/IAttachment';
+import { type TAnyMessageModel } from '~/definitions/IMessage';
 import { getMessageSeparators, getMessageTranslation, type TMessageSeparators } from '../utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '~/lib/constants/keys';
 import { messagesStatus } from '~/lib/constants/messagesStatus';
@@ -12,7 +13,7 @@ import openLink from '~/lib/methods/helpers/openLink';
 import { useTheme } from '~/theme';
 import {
 	useIsArchived,
-	useAutoTranslate,
+	useRoomTranslateLanguage,
 	useBroadcast,
 	useCloseEmojiAndAction,
 	useIsThreadRoom,
@@ -307,27 +308,24 @@ export const useReplies = (): TAnyMessageModel['replies'] => useMessageField(ite
 const autoTranslateLanguageFor = (
 	item: TAnyMessageModel,
 	username: string | undefined,
-	autoTranslateRoom: boolean | undefined,
-	autoTranslateLanguage: string | undefined
+	roomTranslateLanguage: string | undefined
 ): string | undefined =>
-	autoTranslateRoom && autoTranslateLanguage && item.autoTranslate && item.u?.username !== username
-		? autoTranslateLanguage
-		: undefined;
+	roomTranslateLanguage && item.autoTranslate && item.u?.username !== username ? roomTranslateLanguage : undefined;
 
 export const useTranslateLanguage = (): string | undefined => {
-	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
+	const roomTranslateLanguage = useRoomTranslateLanguage();
 	const user = useMessageUser();
-	return useMessageStore(s => autoTranslateLanguageFor(s.item, user?.username, autoTranslateRoom, autoTranslateLanguage));
+	return useMessageStore(s => autoTranslateLanguageFor(s.item, user?.username, roomTranslateLanguage));
 };
 
 export const useMessageText = (): { messageText: TAnyMessageModel['msg']; isTranslated: boolean } => {
 	const user = useMessageUser();
-	const { autoTranslateRoom, autoTranslateLanguage } = useAutoTranslate();
+	const roomTranslateLanguage = useRoomTranslateLanguage();
 	return useMessageStore(
 		useShallow(s => {
 			let messageText = s.item.msg;
 			let isTranslated = false;
-			const language = autoTranslateLanguageFor(s.item, user?.username, autoTranslateRoom, autoTranslateLanguage);
+			const language = autoTranslateLanguageFor(s.item, user?.username, roomTranslateLanguage);
 			if (language) {
 				const translated = getMessageTranslation(s.item, language);
 				isTranslated = !!translated;

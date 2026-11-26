@@ -1,8 +1,8 @@
-import { afterEach, test } from '@e2e-dev/mobile';
+import { afterEach, test } from '~e2e/support/fixtures';
 import { expect } from 'e2e';
 
 import { createUser, deleteCreatedUsers } from '~e2e/support/api';
-import { loginWithDeepLink, LONG_TIMEOUT } from '~e2e/support/flows';
+import { loginToApp, LONG_TIMEOUT } from '~e2e/support/flows';
 
 const MAX_BACK_PRESSES = 2;
 
@@ -11,7 +11,7 @@ afterEach(deleteCreatedUsers);
 test('closes the rooms search with the back key', { tags: ['test-7'], platforms: ['android'] }, async fixtures => {
 	const { screen, device } = fixtures;
 	const user = await createUser();
-	await loginWithDeepLink(fixtures, user);
+	await loginToApp(fixtures, user);
 
 	await screen.getByTestId('rooms-list-view-search').tap();
 	await expect(screen.getByTestId('rooms-list-view')).toBeVisible();
