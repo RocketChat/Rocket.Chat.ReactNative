@@ -1205,7 +1205,7 @@ index 0f84844..c664034 100644
              headers:(nullable NSDictionary<NSString *, NSString *> *)headers
           completion:(ENRMImageDownloadCompletion)completion;
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
-index 3ef8cd6..7d073f7 100644
+index 3ef8cd6..07bd730 100644
 --- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
 +++ b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
 @@ -2,6 +2,7 @@
@@ -1216,7 +1216,7 @@ index 3ef8cd6..7d073f7 100644
  #include <TargetConditionals.h>
  
  static const NSUInteger kDiskCacheMemoryCapacity = 10 * 1024 * 1024;
-@@ -12,9 +13,48 @@ NSUInteger ENRMImageByteCost(RCTUIImage *image)
+@@ -12,8 +13,60 @@ NSUInteger ENRMImageByteCost(RCTUIImage *image)
    CGImageRef cgImage = image.CGImage;
    if (!cgImage)
      return 0;
@@ -1240,9 +1240,22 @@ index 3ef8cd6..7d073f7 100644
 +    _encodedData = [encodedData copy];
 +  }
 +  return self;
- }
- 
++}
++
 +@end
++
++static BOOL ENRMIsAnimatedImageSource(CGImageSourceRef source)
++{
++  if (CGImageSourceGetCount(source) < 2)
++    return NO;
++  NSDictionary *properties = CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source, 0, NULL));
++  return properties[(__bridge NSString *)kCGImagePropertyGIFDictionary]
++                   [(__bridge NSString *)kCGImagePropertyGIFDelayTime] != nil ||
++         properties[(__bridge NSString *)kCGImagePropertyPNGDictionary]
++                   [(__bridge NSString *)kCGImagePropertyAPNGDelayTime] != nil ||
++         properties[(__bridge NSString *)kCGImagePropertyWebPDictionary]
++                   [(__bridge NSString *)kCGImagePropertyWebPDelayTime] != nil;
++}
 +
 +static RCTUIImage *ENRMImageFromData(NSData *data)
 +{
@@ -1251,7 +1264,7 @@ index 3ef8cd6..7d073f7 100644
 +    return nil;
 +
 +  RCTUIImage *animatedImage = nil;
-+  if (CGImageSourceGetCount(source) > 1) {
++  if (ENRMIsAnimatedImageSource(source)) {
 +    CGImageRef firstFrame = CGImageSourceCreateImageAtIndex(source, 0, NULL);
 +    if (firstFrame) {
 +      animatedImage = [[ENRMAnimatedImage alloc] initWithEncodedData:data firstFrame:firstFrame];
@@ -1260,13 +1273,12 @@ index 3ef8cd6..7d073f7 100644
 +  }
 +  CFRelease(source);
 +  return animatedImage ?: [RCTUIImage imageWithData:data];
-+}
+ }
 +#endif
-+
+ 
  static NSDictionary<NSString *, NSString *> *ENRMNormalizedImageHeaders(NSDictionary<NSString *, NSString *> *headers)
  {
-   NSMutableDictionary<NSString *, NSString *> *normalized = [NSMutableDictionary dictionary];
-@@ -59,7 +99,10 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
+@@ -59,7 +112,10 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
    return [NSString stringWithFormat:@"%@|%@", url, hash];
  }
  
@@ -1277,7 +1289,7 @@ index 3ef8cd6..7d073f7 100644
    NSURLSession *_session;
    NSURLSession *_headerSession;
    NSMutableDictionary<NSString *, NSMutableArray<ENRMImageDownloadCompletion> *> *_inFlightRequests;
-@@ -73,27 +116,83 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
+@@ -73,27 +129,83 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
    return instance;
  }
  
@@ -1373,7 +1385,7 @@ index 3ef8cd6..7d073f7 100644
  - (void)downloadURL:(NSString *)url
              headers:(NSDictionary<NSString *, NSString *> *)headers
           completion:(ENRMImageDownloadCompletion)completion
-@@ -142,11 +241,10 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
+@@ -142,11 +254,10 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
      [request setValue:value forHTTPHeaderField:name];
    }];
  
