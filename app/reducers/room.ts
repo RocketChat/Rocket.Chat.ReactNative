@@ -38,11 +38,11 @@ export default function (state = initialState, action: TActionsRoom): IRoom {
 				subscribedRoom: state.subscribedRoom === action.rid ? '' : state.subscribedRoom
 			};
 		case ROOM.LEAVE:
-		case ROOM.DELETE:
 			return {
 				...state,
 				removalsInFlight: startRemoval(state.removalsInFlight, action.room.rid)
 			};
+		case ROOM.DELETE:
 		case ROOM.FORWARD:
 			return {
 				...state,

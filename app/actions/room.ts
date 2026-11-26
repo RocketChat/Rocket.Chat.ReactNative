@@ -34,6 +34,7 @@ interface ILeaveRoom extends Action {
 interface IDeleteRoom extends Action {
 	roomType: ERoomType;
 	room: TRoom;
+	rid: string;
 	selected?: ISelected;
 }
 
@@ -107,7 +108,8 @@ export function leaveRoom(roomType: ERoomType, room: TRoom, selected?: ISelected
 export function deleteRoom(roomType: ERoomType, room: TRoom, selected?: ISelected): IDeleteRoom {
 	return {
 		type: ROOM.DELETE,
-		room: { ...room, rid: room.rid || room._id },
+		room,
+		rid: room.rid || room._id,
 		roomType,
 		selected
 	};

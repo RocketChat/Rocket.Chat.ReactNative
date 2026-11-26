@@ -33,7 +33,12 @@ import createSagaMiddleware from 'redux-saga';
 import { deleteRoom, forwardRoom, leaveRoom, removedRoom } from '~/actions/room';
 import { ERoomType } from '~/definitions/ERoomType';
 import reducers from '~/reducers';
-import { deleteRoom as deleteRoomRequest, forwardLivechat, leaveRoom as leaveRoomRequest } from '~/lib/services/restApi';
+import {
+	deleteRoom as deleteRoomRequest,
+	deleteTeam as deleteTeamRequest,
+	forwardLivechat,
+	leaveRoom as leaveRoomRequest
+} from '~/lib/services/restApi';
 import roomRootSaga from '../room';
 
 const room = { rid: 'room-a', t: 'c' } as Parameters<typeof leaveRoom>[1];
@@ -67,6 +72,7 @@ describe('room saga — removals in flight', () => {
 		jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
 		jest.mocked(leaveRoomRequest).mockReset();
 		jest.mocked(deleteRoomRequest).mockReset();
+		jest.mocked(deleteTeamRequest).mockReset();
 		jest.mocked(forwardLivechat).mockReset();
 	});
 
@@ -148,6 +154,27 @@ describe('room saga — removals in flight', () => {
 		request.reject(new Error('network'));
 		await settleSagas();
 
+		expect(store.getState().room.removalsInFlight).toEqual({});
+	});
+
+	it('deletes a team from a subscription record whose fields are getters', async () => {
+		class SubscriptionRecord {
+			get rid() {
+				return 'team-room';
+			}
+
+			get teamId() {
+				return 'team-1';
+			}
+		}
+		jest.mocked(deleteTeamRequest).mockRejectedValue(new Error('network'));
+		const store = setupStoreWithRoomSaga();
+
+		store.dispatch(deleteRoom(ERoomType.t, new SubscriptionRecord()));
+		expect(store.getState().room.removalsInFlight).toEqual({ 'team-room': 1 });
+		await settleSagas();
+
+		expect(deleteTeamRequest).toHaveBeenCalledWith({ teamId: 'team-1' });
 		expect(store.getState().room.removalsInFlight).toEqual({});
 	});
 

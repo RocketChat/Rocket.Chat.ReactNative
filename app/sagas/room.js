@@ -122,19 +122,19 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 	}
 };
 
-const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }) {
+const handleDeleteRoom = function* handleDeleteRoom({ room, rid, roomType, selected }) {
 	logEvent(events.RI_EDIT_DELETE);
 	try {
 		let result = {};
 
 		if (roomType === 'channel') {
-			result = yield deleteRoom(room.rid, room.t);
+			result = yield deleteRoom(rid, room.t);
 		} else if (roomType === 'team') {
 			result = yield deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
 		}
 
 		if (result?.success) {
-			yield handleRemovedRoom(room.rid, roomType, 'delete');
+			yield handleRemovedRoom(rid, roomType, 'delete');
 		}
 	} catch (e) {
 		logEvent(events.RI_EDIT_DELETE_F);
@@ -145,7 +145,7 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 			})
 		);
 	} finally {
-		yield put(roomRemovalFinished(room.rid));
+		yield put(roomRemovalFinished(rid));
 	}
 };
 
