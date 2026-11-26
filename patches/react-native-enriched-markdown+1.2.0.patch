@@ -42,6 +42,38 @@ index 96c022b..9c16c8c 100644
        super.setText(text, type)
      }
  
+diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/renderer/ListItemRenderer.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/renderer/ListItemRenderer.kt
+index 87d1df2..1759ffe 100644
+--- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/renderer/ListItemRenderer.kt
++++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/renderer/ListItemRenderer.kt
+@@ -31,7 +31,8 @@ class ListItemRenderer(
+     val isChecked = isTask && node.attributes["taskChecked"] == "true"
+ 
+     if (listType == BlockStyleContext.ListType.ORDERED) {
+-      styleContext.incrementListItemNumber()
++      val typedNumber = node.getAttribute("number")?.toIntOrNull()
++      if (typedNumber != null) styleContext.listItemNumber = typedNumber else styleContext.incrementListItemNumber()
+     }
+ 
+     val taskIndex = if (isTask) styleContext.taskItemCount++ else -1
+diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/renderer/ListRenderer.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/renderer/ListRenderer.kt
+index d8a5396..f6930ef 100644
+--- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/renderer/ListRenderer.kt
++++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/renderer/ListRenderer.kt
+@@ -69,11 +69,11 @@ class ListRenderer(
+     factory: RendererFactory,
+   ): Float {
+     val wideNumbers = mutableListOf<Int>()
+-    var number = startNumber
++    var number = startNumber - 1
+     for (item in node.children) {
+       if (item.type != MarkdownASTNode.NodeType.ListItem) continue
++      number = item.attributes["number"]?.toIntOrNull() ?: (number + 1)
+       if (number >= 100 && item.attributes["isTask"] != "true") wideNumbers += number
+-      number++
+     }
+     return OrderedListSpan.measureExtraWidth(listStyle, factory.context, wideNumbers)
+   }
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 index 9aea981..00c13e0 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
@@ -578,6 +610,149 @@ index eefcf9f..1122d20 100644
      }
    }
  }
+diff --git a/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.c b/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.c
+index e51807d..e0c2a22 100644
+--- a/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.c
++++ b/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.c
+@@ -5266,6 +5266,9 @@ struct MD_BLOCK_tag {
+      * ENRMRKD_BLOCK_OL:     Start item number.
+      */
+     ENRMRKD_SIZE n_lines;
++
++    /* ENRMRKD_BLOCK_LI:     Number of the item mark in an ordered list. */
++    unsigned item_number;
+ };
+ 
+ struct MD_CONTAINER_tag {
+@@ -5555,6 +5558,7 @@ md_process_all_blocks(MD_CTX* ctx)
+                 det.li.is_task = (block->data != 0);
+                 det.li.task_mark = (CHAR) block->data;
+                 det.li.task_mark_offset = (OFF) block->n_lines;
++                det.li.number = block->item_number;
+                 break;
+ 
+             case ENRMRKD_BLOCK_ADMONITION:
+@@ -5903,6 +5907,22 @@ md_push_container_bytes(MD_CTX* ctx, ENRMRKD_BLOCKTYPE type, unsigned start,
+     block->flags = flags;
+     block->data = data;
+     block->n_lines = start;
++    block->item_number = 0;
++
++abort:
++    return ret;
++}
++
++static int
++md_push_list_item_bytes(MD_CTX* ctx, const MD_CONTAINER* c, unsigned item_number, unsigned flags)
++{
++    MD_BLOCK* block;
++    int ret = 0;
++
++    MD_CHECK(md_push_container_bytes(ctx, ENRMRKD_BLOCK_LI,
++                    c->task_mark_off, (c->is_task ? CH(c->task_mark_off) : 0), flags));
++    block = (MD_BLOCK*) ((char*)ctx->block_bytes + ctx->n_block_bytes - sizeof(MD_BLOCK));
++    block->item_number = item_number;
+ 
+ abort:
+     return ret;
+@@ -6383,10 +6403,7 @@ md_enter_child_containers(MD_CTX* ctx, int n_children)
+                 MD_CHECK(md_push_container_bytes(ctx,
+                                 (is_ordered_list ? ENRMRKD_BLOCK_OL : ENRMRKD_BLOCK_UL),
+                                 c->start, c->ch, MD_BLOCK_CONTAINER_OPENER));
+-                MD_CHECK(md_push_container_bytes(ctx, ENRMRKD_BLOCK_LI,
+-                                c->task_mark_off,
+-                                (c->is_task ? CH(c->task_mark_off) : 0),
+-                                MD_BLOCK_CONTAINER_OPENER));
++                MD_CHECK(md_push_list_item_bytes(ctx, c, c->start, MD_BLOCK_CONTAINER_OPENER));
+                 break;
+ 
+             case _T('>'):
+@@ -6423,9 +6440,7 @@ md_leave_child_containers(MD_CTX* ctx, int n_keep)
+             case _T('-'):
+             case _T('+'):
+             case _T('*'):
+-                MD_CHECK(md_push_container_bytes(ctx, ENRMRKD_BLOCK_LI,
+-                                c->task_mark_off, (c->is_task ? CH(c->task_mark_off) : 0),
+-                                MD_BLOCK_CONTAINER_CLOSER));
++                MD_CHECK(md_push_list_item_bytes(ctx, c, 0, MD_BLOCK_CONTAINER_CLOSER));
+                 MD_CHECK(md_push_container_bytes(ctx,
+                                 (is_ordered_list ? ENRMRKD_BLOCK_OL : ENRMRKD_BLOCK_UL), 0,
+                                 c->ch, MD_BLOCK_CONTAINER_CLOSER));
+@@ -6536,6 +6551,7 @@ md_analyze_line(MD_CTX* ctx, OFF beg, OFF* p_end,
+     unsigned total_indent = 0;
+     int n_parents = 0;
+     int n_brothers = 0;
++    unsigned brother_item_number = 0;
+     int n_children = 0;
+     MD_CONTAINER container = { 0 };
+     int prev_line_has_list_loosening_effect = ctx->last_line_has_list_loosening_effect;
+@@ -6741,6 +6757,7 @@ md_analyze_line(MD_CTX* ctx, OFF beg, OFF* p_end,
+                 ctx->containers[n_parents].mark_indent = container.mark_indent;
+                 ctx->containers[n_parents].contents_indent = container.contents_indent;
+ 
++                brother_item_number = container.start;
+                 n_brothers++;
+                 continue;
+             }
+@@ -6969,14 +6986,8 @@ md_analyze_line(MD_CTX* ctx, OFF beg, OFF* p_end,
+     /* Enter any container we found a mark for. */
+     if(n_brothers > 0) {
+         MD_ASSERT(n_brothers == 1);
+-        MD_CHECK(md_push_container_bytes(ctx, ENRMRKD_BLOCK_LI,
+-                    ctx->containers[n_parents].task_mark_off,
+-                    (ctx->containers[n_parents].is_task ? CH(ctx->containers[n_parents].task_mark_off) : 0),
+-                    MD_BLOCK_CONTAINER_CLOSER));
+-        MD_CHECK(md_push_container_bytes(ctx, ENRMRKD_BLOCK_LI,
+-                    container.task_mark_off,
+-                    (container.is_task ? CH(container.task_mark_off) : 0),
+-                    MD_BLOCK_CONTAINER_OPENER));
++        MD_CHECK(md_push_list_item_bytes(ctx, &ctx->containers[n_parents], 0, MD_BLOCK_CONTAINER_CLOSER));
++        MD_CHECK(md_push_list_item_bytes(ctx, &container, brother_item_number, MD_BLOCK_CONTAINER_OPENER));
+         ctx->containers[n_parents].is_task = container.is_task;
+         ctx->containers[n_parents].task_mark_off = container.task_mark_off;
+     }
+diff --git a/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.h b/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.h
+index 3e219e0..d4cab1b 100644
+--- a/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.h
++++ b/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.h
+@@ -310,6 +310,7 @@ typedef struct ENRMRKD_BLOCK_LI_DETAIL {
+     int is_task;                /* Can be non-zero only with ENRMRKD_FLAG_TASKLISTS */
+     ENRMRKD_CHAR task_mark;          /* If is_task, then one of 'x', 'X' or ' '. Undefined otherwise. */
+     ENRMRKD_OFFSET task_mark_offset; /* If is_task, then offset in the input of the char between '[' and ']'. */
++    unsigned number;            /* Number of the item mark in an ordered list. Zero otherwise. */
+ } ENRMRKD_BLOCK_LI_DETAIL;
+ 
+ /* Detailed info for ENRMRKD_BLOCK_H. */
+diff --git a/node_modules/react-native-enriched-markdown/cpp/parser/MD4CParser.cpp b/node_modules/react-native-enriched-markdown/cpp/parser/MD4CParser.cpp
+index 5567850..51883f1 100644
+--- a/node_modules/react-native-enriched-markdown/cpp/parser/MD4CParser.cpp
++++ b/node_modules/react-native-enriched-markdown/cpp/parser/MD4CParser.cpp
+@@ -96,6 +96,7 @@ public:
+   static const std::string ATTR_IS_TASK;
+   static const std::string ATTR_TASK_CHECKED;
+   static const std::string ATTR_START;
++  static const std::string ATTR_NUMBER;
+   static const std::string ATTR_BLANK_LINE_COUNT;
+   static const std::string ATTR_ADMONITION_TYPE;
+ 
+@@ -239,6 +240,9 @@ public:
+             node->setAttribute(ATTR_IS_TASK, "true");
+             node->setAttribute(ATTR_TASK_CHECKED, (li->task_mark == 'x' || li->task_mark == 'X') ? "true" : "false");
+           }
++          if (!impl->nodeStack.empty() && impl->nodeStack.back()->type == NodeType::OrderedList) {
++            node->setAttribute(ATTR_NUMBER, std::to_string(li->number));
++          }
+         }
+         impl->pushNode(node);
+         break;
+@@ -975,6 +979,7 @@ const std::string MD4CParser::Impl::ATTR_LANGUAGE = "language";
+ const std::string MD4CParser::Impl::ATTR_IS_TASK = "isTask";
+ const std::string MD4CParser::Impl::ATTR_TASK_CHECKED = "taskChecked";
+ const std::string MD4CParser::Impl::ATTR_START = "start";
++const std::string MD4CParser::Impl::ATTR_NUMBER = "number";
+ const std::string MD4CParser::Impl::ATTR_BLANK_LINE_COUNT = "count";
+ const std::string MD4CParser::Impl::ATTR_ADMONITION_TYPE = "admonitionType";
+ 
 diff --git a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm b/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
 index feaff1d..3f0a4b0 100644
 --- a/node_modules/react-native-enriched-markdown/ios/EnrichedMarkdown.mm
@@ -849,6 +1024,43 @@ index dddff1d..0bc87bc 100644
  
    RCTUIImage *cachedProcessed = [[ENRMImageAttachment processedImageCache] objectForKey:processedKey];
  
+diff --git a/node_modules/react-native-enriched-markdown/ios/renderer/ListItemRenderer.m b/node_modules/react-native-enriched-markdown/ios/renderer/ListItemRenderer.m
+index dd6aa24..cff09d2 100644
+--- a/node_modules/react-native-enriched-markdown/ios/renderer/ListItemRenderer.m
++++ b/node_modules/react-native-enriched-markdown/ios/renderer/ListItemRenderer.m
+@@ -69,7 +69,8 @@ NSString *const TaskIndexAttribute = @"TaskIndex";
+   if (!context)
+     return;
+ 
+-  context.listItemNumber++;
++  NSString *typedNumber = node.attributes[@"number"];
++  context.listItemNumber = typedNumber != nil ? typedNumber.integerValue : context.listItemNumber + 1;
+   const NSInteger currentPosition = context.listItemNumber;
+   const NSInteger currentDepth = context.listDepth; // 1-based (1 = top level)
+ 
+diff --git a/node_modules/react-native-enriched-markdown/ios/renderer/ListRenderer.m b/node_modules/react-native-enriched-markdown/ios/renderer/ListRenderer.m
+index 61812a7..1e2c004 100644
+--- a/node_modules/react-native-enriched-markdown/ios/renderer/ListRenderer.m
++++ b/node_modules/react-native-enriched-markdown/ios/renderer/ListRenderer.m
+@@ -96,15 +96,16 @@ static void applyListItemSpacing(NSMutableAttributedString *output, RenderContex
+   }
+   context.listMarkerWidth = defaultMarkerWidth;
+   if (_isOrdered) {
+-    NSInteger number = startNumber;
++    NSInteger number = startNumber - 1;
+     for (MarkdownASTNode *item in node.children) {
+       if (item.type != MarkdownNodeTypeListItem)
+         continue;
++      NSString *typedNumber = item.attributes[@"number"];
++      number = typedNumber != nil ? typedNumber.integerValue : number + 1;
+       // Keep the existing gutter for one- and two-digit markers.
+       if (number >= 100 && ![item.attributes[@"isTask"] isEqualToString:@"true"]) {
+         context.listMarkerWidth = MAX(context.listMarkerWidth, [_config effectiveListMarginLeftForNumber:number]);
+       }
+-      number++;
+     }
+   }
+   context.listMarkerExtra = context.listMarkerWidth - defaultMarkerWidth;
 diff --git a/node_modules/react-native-enriched-markdown/ios/segments/ENRMBlockquoteContainerView.mm b/node_modules/react-native-enriched-markdown/ios/segments/ENRMBlockquoteContainerView.mm
 index 41956f0..673ff31 100644
 --- a/node_modules/react-native-enriched-markdown/ios/segments/ENRMBlockquoteContainerView.mm
