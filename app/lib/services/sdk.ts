@@ -42,7 +42,13 @@ class Sdk {
 
 	private initializeSdk(server: string): Rocketchat {
 		// The app can't reconnect if reopen interval is 5s while in development
-		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: isSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+		return new Rocketchat({
+			host: server,
+			protocol: 'ddp',
+			useSsl: isSsl(server),
+			reopen: __DEV__ ? 20000 : 5000,
+			reopenAfterFailedOpen: true
+		});
 	}
 
 	initialize(server: string): void {
