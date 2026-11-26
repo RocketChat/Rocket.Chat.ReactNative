@@ -1,12 +1,15 @@
 type ServerMode =
 	| { kind: 'paged'; defaultCount: number; upperLimit: number; allowInfiniteCount: boolean; answersAppsLoaded: boolean }
 	| { kind: 'unpaged-without-total' };
-type Failure = { kind: 'none' } | { kind: 'throws' | 'success-false' | 'apps-not-loaded'; atRequest: number };
+type Failure =
+	| { kind: 'none' }
+	| { kind: 'throws' | 'success-false' | 'apps-not-loaded' | 'apps-not-loaded-without-success'; atRequest: number };
 type ListChange =
 	| 'stable'
 	| 'command-added-after-first-request'
 	| 'command-inserted-first-after-first-request'
-	| 'first-command-removed-after-first-request';
+	| 'first-command-removed-after-first-request'
+	| 'other-instance-registration-order-after-first-request';
 type InitialTable = 'empty' | 'all-outdated' | 'one-stale-plus-first-outdated';
 type WorkspaceSwitch = { kind: 'none' } | { kind: 'switch'; duringRequest: number };
 
@@ -61,7 +64,24 @@ const mockState: {
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: () => undefined }));
 
 jest.mock('~/lib/services/sdk', () => {
-	const serve = (params: { offset?: number | string; count?: number | string } | undefined) => {
+	const sortedAsRequested = (commands: { command: string }[], sort: string | undefined) => {
+		if (!sort) {
+			return commands;
+		}
+		const fields: [string, number][] = Object.entries(JSON.parse(sort));
+		return [...commands].sort((left: any, right: any) => {
+			for (const [field, direction] of fields) {
+				if (left[field] > right[field]) {
+					return direction;
+				}
+				if (left[field] < right[field]) {
+					return -direction;
+				}
+			}
+			return 0;
+		});
+	};
+	const serve = (params: { offset?: number | string; count?: number | string; sort?: string } | undefined) => {
 		const { world } = mockState;
 		const requestNumber = mockState.requests.length + 1;
 		if (requestNumber > MOCK_REQUEST_CAP) {
@@ -69,13 +89,13 @@ jest.mock('~/lib/services/sdk', () => {
 			return Promise.reject(new Error('RUNAWAY'));
 		}
 		if (requestNumber === 2 && world.change === 'command-added-after-first-request') {
-			mockState.serverCommands.push({ command: 'late', description: 'late command', params: '' });
-			mockState.everOnServer.add('late');
+			mockState.serverCommands.push({ command: 'z-late', description: 'late command', params: '' });
+			mockState.everOnServer.add('z-late');
 			mockState.changeFired = true;
 		}
 		if (requestNumber === 2 && world.change === 'command-inserted-first-after-first-request') {
-			mockState.serverCommands.unshift({ command: 'early', description: 'early command', params: '' });
-			mockState.everOnServer.add('early');
+			mockState.serverCommands.unshift({ command: 'a-early', description: 'early command', params: '' });
+			mockState.everOnServer.add('a-early');
 			mockState.changeFired = true;
 		}
 		if (requestNumber === 2 && world.change === 'first-command-removed-after-first-request') {
@@ -103,9 +123,16 @@ jest.mock('~/lib/services/sdk', () => {
 			if (world.failure.kind === 'apps-not-loaded') {
 				return Promise.resolve({ success: true, commands: [], appsLoaded: false, offset: 0, count: 0, total: 0 });
 			}
+			if (world.failure.kind === 'apps-not-loaded-without-success') {
+				return Promise.resolve({ commands: [], appsLoaded: false, offset: 0, count: 0, total: 0 });
+			}
 			return Promise.resolve({ success: false, error: 'error' });
 		}
-		const all = mockState.serverCommands.map(command => ({ ...command }));
+		const registered = mockState.serverCommands.map(command => ({ ...command }));
+		if (requestNumber > 1 && world.change === 'other-instance-registration-order-after-first-request') {
+			registered.reverse();
+		}
+		const all = sortedAsRequested(registered, params?.sort);
 		if (world.server.kind === 'unpaged-without-total') {
 			record.served = `all ${all.length}`;
 			return Promise.resolve({ success: true, commands: all });
@@ -255,14 +282,16 @@ const failures: Failure[] = [
 	...[1, 2, 3].flatMap(atRequest => [
 		{ kind: 'throws' as const, atRequest },
 		{ kind: 'success-false' as const, atRequest },
-		{ kind: 'apps-not-loaded' as const, atRequest }
+		{ kind: 'apps-not-loaded' as const, atRequest },
+		{ kind: 'apps-not-loaded-without-success' as const, atRequest }
 	])
 ];
 const changes: ListChange[] = [
 	'stable',
 	'command-added-after-first-request',
 	'command-inserted-first-after-first-request',
-	'first-command-removed-after-first-request'
+	'first-command-removed-after-first-request',
+	'other-instance-registration-order-after-first-request'
 ];
 const initialTables: InitialTable[] = ['empty', 'all-outdated', 'one-stale-plus-first-outdated'];
 const workspaceSwitches: WorkspaceSwitch[] = [
@@ -432,7 +461,9 @@ const describeRun = (world: World, seen: Observation) => {
 };
 
 const serverCanAnswer = (server: ServerMode, failure: Failure) =>
-	failure.kind !== 'apps-not-loaded' || server.kind !== 'paged' || server.answersAppsLoaded;
+	(failure.kind !== 'apps-not-loaded' && failure.kind !== 'apps-not-loaded-without-success') ||
+	server.kind !== 'paged' ||
+	server.answersAppsLoaded;
 
 const worlds = (): World[] => {
 	const all: World[] = [];

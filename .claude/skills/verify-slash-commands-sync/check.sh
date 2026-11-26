@@ -8,7 +8,7 @@ set -uo pipefail
 skill_dir="${SKILL_DIR:-$(cd "$(dirname "$0")" && pwd)}"
 skill_dir="$(cd "$skill_dir" && pwd)"
 repo="$(git -C "$skill_dir" rev-parse --show-toplevel)"
-out="$(mktemp -d -t verify-slash-commands-sync)"
+out="$(mktemp -d "${TMPDIR:-/tmp}/verify-slash-commands-sync.XXXXXX")"
 check_model=false
 [ "${1:-}" = --model ] && check_model=true
 
