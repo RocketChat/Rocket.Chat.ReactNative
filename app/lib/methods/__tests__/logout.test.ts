@@ -27,6 +27,7 @@ jest.mock('~/lib/services/connect', () => ({
 }));
 
 jest.mock('~/lib/services/restApi', () => ({
+	forgetRegisteredPushToken: jest.fn(),
 	removePushToken: jest.fn()
 }));
 
@@ -60,6 +61,7 @@ import { clearRemovedWorkspaceCertificate } from '~/lib/methods/helpers/sslPinni
 import { useConferenceCallStore } from '~/lib/services/conference/useConferenceCallStore';
 import sdk from '~/lib/services/sdk';
 import { disconnect } from '~/lib/services/connect';
+import { forgetRegisteredPushToken } from '~/lib/services/restApi';
 import database from '~/lib/database';
 import UserPreferences from '~/lib/methods/userPreferences';
 import {
@@ -160,6 +162,12 @@ describe('removeServerData', () => {
 		await removeServerData({ server: SERVER });
 
 		expect(UserPreferences.getString(certificateKey(SERVER))).toBe('client-certificate');
+	});
+
+	it('forgets the push token registration of the removed server', async () => {
+		await removeServerData({ server: SERVER });
+
+		expect(forgetRegisteredPushToken).toHaveBeenCalledWith(SERVER);
 	});
 
 	it('skips the user token key when the server has no stored userId', async () => {

@@ -24,6 +24,7 @@ import KeyboardView from '../KeyboardView';
 import { showToast } from '~/lib/methods/helpers/showToast';
 import log from '~/lib/methods/helpers/log';
 import { TWO_FACTOR } from '~/lib/constants/twoFactor';
+import { isAndroid, isIOS } from '~/lib/methods/helpers/deviceInfo';
 
 interface IMethodsProp {
 	text: string;
@@ -163,7 +164,7 @@ const TwoFactor = memo(() => {
 			isVisible={visible}
 			hideModalContentWhileAnimating
 			style={styles.modal}
-			onModalShow={() => setFocus('code')}>
+			onModalShow={isAndroid ? () => setFocus('code') : undefined}>
 			<KeyboardView backgroundColor='transparent'>
 				<GestureHandlerRootView style={styles.container} testID='two-factor'>
 					<View
@@ -177,6 +178,7 @@ const TwoFactor = memo(() => {
 						<ControlledFormTextInput
 							name='code'
 							control={control}
+							autoFocus={isIOS}
 							returnKeyType='send'
 							autoCapitalize='none'
 							testID='two-factor-input'

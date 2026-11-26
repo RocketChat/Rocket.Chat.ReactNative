@@ -1,13 +1,13 @@
-import database from '../index';
-import { MESSAGES_TABLE } from '../model/Message';
+import database from '~/lib/database';
+import { MESSAGES_TABLE } from '~/lib/database/model/Message';
 import { type TMessageModel } from '~/definitions/IMessage';
 import { type TThreadMessageModel } from '~/definitions/IThreadMessage';
 import { type TThreadModel } from '~/definitions/IThread';
-import { getMessageById } from './Message';
-import { getThreadById } from './Thread';
-import { getThreadMessageById } from './ThreadMessage';
+import { getMessageById, getMessageOrThreadMessageById } from '~/lib/database/services/Message';
+import { getThreadById } from '~/lib/database/services/Thread';
+import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
 
-jest.mock('../index', () => ({
+jest.mock('~/lib/database', () => ({
 	__esModule: true,
 	default: {
 		active: {
@@ -16,11 +16,11 @@ jest.mock('../index', () => ({
 	}
 }));
 
-jest.mock('./ThreadMessage', () => ({
+jest.mock('~/lib/database/services/ThreadMessage', () => ({
 	getThreadMessageById: jest.fn()
 }));
 
-jest.mock('./Thread', () => ({
+jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn()
 }));
 
@@ -28,15 +28,15 @@ const mockGet = database.active.get as jest.Mock;
 const mockGetThreadMessageById = getThreadMessageById as jest.MockedFunction<typeof getThreadMessageById>;
 const mockGetThreadById = getThreadById as jest.MockedFunction<typeof getThreadById>;
 
+let mockFind: jest.Mock;
+
+beforeEach(() => {
+	jest.clearAllMocks();
+	mockFind = jest.fn();
+	mockGet.mockReturnValue({ find: mockFind });
+});
+
 describe('getMessageById', () => {
-	let mockFind: jest.Mock;
-
-	beforeEach(() => {
-		jest.clearAllMocks();
-		mockFind = jest.fn();
-		mockGet.mockReturnValue({ find: mockFind });
-	});
-
 	it('returns null when messageId is empty and does not query the database', async () => {
 		const result = await getMessageById('');
 
@@ -78,7 +78,7 @@ describe('getMessageById', () => {
 	describe('with tmid', () => {
 		it('prefers the thread messages table', async () => {
 			const threadMessage = { id: 'message1', msg: 'Thread reply' } as unknown as TThreadMessageModel;
-			mockGetThreadMessageById.mockResolvedValue(threadMessage as any);
+			mockGetThreadMessageById.mockResolvedValue(threadMessage);
 
 			const result = await getMessageById('message1', 'thread-id');
 
@@ -103,7 +103,7 @@ describe('getMessageById', () => {
 			const parent = { id: 'parent', msg: 'Thread parent' } as unknown as TThreadModel;
 			mockGetThreadMessageById.mockResolvedValue(null);
 			mockFind.mockRejectedValue(new Error('not found'));
-			mockGetThreadById.mockResolvedValue(parent as any);
+			mockGetThreadById.mockResolvedValue(parent);
 
 			const result = await getMessageById('parent', 'parent');
 
@@ -120,5 +120,37 @@ describe('getMessageById', () => {
 
 			expect(result).toBeNull();
 		});
+	});
+});
+
+describe('getMessageOrThreadMessageById', () => {
+	it('returns the message from the messages table', async () => {
+		const message = { id: 'message1' } as unknown as TMessageModel;
+		mockFind.mockResolvedValue(message);
+
+		const result = await getMessageOrThreadMessageById('message1');
+
+		expect(result).toBe(message);
+		expect(mockGetThreadMessageById).not.toHaveBeenCalled();
+	});
+
+	it('falls back to the thread messages table', async () => {
+		const threadMessage = { id: 'reply1', msg: 'Thread reply' } as unknown as TThreadMessageModel;
+		mockFind.mockRejectedValue(new Error('not found'));
+		mockGetThreadMessageById.mockResolvedValue(threadMessage);
+
+		const result = await getMessageOrThreadMessageById('reply1');
+
+		expect(result).toBe(threadMessage);
+		expect(mockGetThreadMessageById).toHaveBeenCalledWith('reply1');
+	});
+
+	it('returns null when the message is in neither table', async () => {
+		mockFind.mockRejectedValue(new Error('not found'));
+		mockGetThreadMessageById.mockResolvedValue(null);
+
+		const result = await getMessageOrThreadMessageById('nonexistent');
+
+		expect(result).toBeNull();
 	});
 });
