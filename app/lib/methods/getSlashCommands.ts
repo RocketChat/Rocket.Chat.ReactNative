@@ -7,22 +7,7 @@ import { type ISlashCommandResult, type TSlashCommandModel } from '~/definitions
 import sdk from '../services/sdk';
 
 const EVERY_COMMAND_THE_SERVER_ALLOWS = 0;
-
-const fetchSlashCommands = async (
-	db: TAppDatabase,
-	fetched: ISlashCommandResult[] = []
-): Promise<ISlashCommandResult[] | null> => {
-	const page = await sdk.get('commands.list', { offset: fetched.length, count: EVERY_COMMAND_THE_SERVER_ALLOWS });
-	if (!page.success || page.appsLoaded === false) {
-		return null;
-	}
-	const commands = [...fetched, ...page.commands];
-	const hasMorePages = page.commands.length > 0 && commands.length < page.total;
-	if (!hasMorePages) {
-		return commands;
-	}
-	return database.active === db ? fetchSlashCommands(db, commands) : null;
-};
+const SORTED_BY_COMMAND = JSON.stringify({ command: 1 });
 
 const saveSlashCommands = async (db: TAppDatabase, commands: ISlashCommandResult[]) => {
 	const commandsById = new Map(commands.map(command => [command.command, command]));
@@ -60,8 +45,25 @@ const saveSlashCommands = async (db: TAppDatabase, commands: ISlashCommandResult
 
 export async function getSlashCommands() {
 	const db = database.active;
-	const commands = await fetchSlashCommands(db);
-	if (commands) {
-		await saveSlashCommands(db, commands);
+	const commands: ISlashCommandResult[] = [];
+	let total = Infinity;
+	while (commands.length < total) {
+		if (database.active !== db) {
+			return;
+		}
+		const page = await sdk.get('commands.list', {
+			offset: commands.length,
+			count: EVERY_COMMAND_THE_SERVER_ALLOWS,
+			sort: SORTED_BY_COMMAND
+		});
+		if (!page.success || page.appsLoaded === false) {
+			return;
+		}
+		if (!page.commands.length) {
+			break;
+		}
+		commands.push(...page.commands);
+		total = page.total;
 	}
+	await saveSlashCommands(db, commands);
 }

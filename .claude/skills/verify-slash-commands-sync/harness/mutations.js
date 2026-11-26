@@ -1,15 +1,19 @@
 module.exports = {
 	'single-page': {
-		from: 'const hasMorePages = page.commands.length > 0 && commands.length < page.total;',
-		to: 'const hasMorePages = false;'
+		from: 'total = page.total;',
+		to: 'total = 0;'
 	},
 	'offset-always-zero': {
-		from: 'offset: fetched.length,',
+		from: 'offset: commands.length,',
 		to: 'offset: 0,'
 	},
+	'unsorted-pages': {
+		from: 'sort: SORTED_BY_COMMAND',
+		to: 'sort: undefined'
+	},
 	'save-partial-on-failure': {
-		from: 'if (!page.success || page.appsLoaded === false) {\n\t\treturn null;',
-		to: 'if (!page.success || page.appsLoaded === false) {\n\t\treturn fetched;'
+		from: 'if (!page.success || page.appsLoaded === false) {\n\t\t\treturn;',
+		to: 'if (!page.success || page.appsLoaded === false) {\n\t\t\tbreak;'
 	},
 	'trust-apps-not-loaded': {
 		from: 'if (!page.success || page.appsLoaded === false) {',
@@ -28,12 +32,12 @@ module.exports = {
 		to: 'commands'
 	},
 	'keep-paging-after-workspace-switch': {
-		from: 'return database.active === db ? fetchSlashCommands(db, commands) : null;',
-		to: 'return fetchSlashCommands(db, commands);'
+		from: 'if (database.active !== db) {\n\t\t\treturn;',
+		to: 'if (false) {\n\t\t\treturn;'
 	},
 	'save-partial-after-workspace-switch': {
-		from: 'return database.active === db ? fetchSlashCommands(db, commands) : null;',
-		to: 'return database.active === db ? fetchSlashCommands(db, commands) : commands;'
+		from: 'if (database.active !== db) {\n\t\t\treturn;',
+		to: 'if (database.active !== db) {\n\t\t\tbreak;'
 	},
 	'save-into-active-workspace': {
 		from: 'await saveSlashCommands(db, commands);',
