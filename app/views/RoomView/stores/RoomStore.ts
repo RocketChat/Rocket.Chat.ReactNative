@@ -230,7 +230,7 @@ export const createRoomStore = ({
 					if (result.shouldMarkRead) {
 						readMessages(room.rid).catch(e => log(e));
 					}
-					return { status: 'loaded', lastSeen: result.shouldMarkRead ? lastSeenAtOpen : null };
+					return { status: 'loaded', lastSeen: result.shouldMarkRead ? (lastSeenAtOpen ?? getLastSeen(room)) : null };
 				}
 				if (attempt < INIT_MAX_ATTEMPTS) {
 					await new Promise(resolve => {

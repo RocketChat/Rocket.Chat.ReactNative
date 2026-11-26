@@ -68,6 +68,9 @@ async function load(args: {
 		}
 
 		if (!data?.success || !data.messages?.length) {
+			if (data?.success) {
+				lastBatchWasFull = false;
+			}
 			return;
 		}
 

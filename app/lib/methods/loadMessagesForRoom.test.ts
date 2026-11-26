@@ -184,6 +184,26 @@ describe('loadMessagesForRoom', () => {
 		expect(update).toContainEqual(expect.objectContaining({ _id: 'load-more-stored-50', t: 'load_more' }));
 	});
 
+	it('drops the Older Loader when the batch after a hidden batch comes back empty', async () => {
+		const hiddenBatch = buildHiddenBatch('hidden', 50);
+		const storedIds = new Set<string>();
+		mockedUpdateMessages.mockImplementation(({ update }) => {
+			update.forEach(message => storedIds.add(message._id as string));
+			return Promise.resolve(0);
+		});
+		mockedGetMessageById.mockImplementation(id => Promise.resolve(id && storedIds.has(id) ? ({ id } as any) : null));
+		mockedSdkGet
+			.mockResolvedValueOnce({ success: true, messages: hiddenBatch } as any)
+			.mockResolvedValueOnce({ success: true, messages: [] } as any);
+
+		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+		const finalUpdate = mockedUpdateMessages.mock.calls[mockedUpdateMessages.mock.calls.length - 1][0] as {
+			update: { _id: string; t?: string }[];
+		};
+		expect(finalUpdate.update.find(message => message.t === 'load_more')).toBeUndefined();
+	});
+
 	it('does not append a trailing Older Loader when the history below the batch is already stored', async () => {
 		const batch = Array.from({ length: 50 }, (_, index) =>
 			buildMessage({ id: `stored-${index + 1}`, ts: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString() })
