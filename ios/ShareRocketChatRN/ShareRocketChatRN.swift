@@ -129,26 +129,14 @@ class ShareRocketChatRN: UIViewController {
                 return
             }
 
-            var texts = [String]()
-            var urls = [String]()
-            for case let content? in contents {
-                switch content {
-                case .text(let text):
-                    let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-                    if !trimmed.isEmpty && !texts.contains(trimmed) {
-                        texts.append(trimmed)
-                    }
-                case .webUrl(let url):
-                    if !urls.contains(url) {
-                        urls.append(url)
-                    }
-                case .fileUrl:
-                    break
-                }
-            }
-            // Skip a URL the shared text already carries.
-            urls.removeAll { url in texts.contains { $0.contains(url) } }
-            let message = (texts + urls).joined(separator: "\n")
+            // A web URL wins over any text, so a page shares as its link only, as in Safari.
+            let webUrl = contents.lazy.compactMap { content -> String? in
+                if case .webUrl(let url) = content { return url } else { return nil }
+            }.first
+            let text = contents.lazy.compactMap { content -> String? in
+                if case .text(let text) = content { return text } else { return nil }
+            }.first
+            let message = webUrl ?? text ?? ""
 
             if !message.isEmpty, let url = self.shareExtensionURL(params: ["text": message]) {
                 _ = self.openURL(url)
