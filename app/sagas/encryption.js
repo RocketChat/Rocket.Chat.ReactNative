@@ -1,7 +1,7 @@
 import EJSON from 'ejson';
-import { put, race, select, take, takeLatest } from 'redux-saga/effects';
+import { call, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
-import { ENCRYPTION, LOGOUT, SERVER, SETTINGS } from '../actions/actionsTypes';
+import { ENCRYPTION, SERVER, SETTINGS } from '../actions/actionsTypes';
 import { encryptionDecodeKeyFailure, encryptionSet } from '../actions/encryption';
 import { Encryption } from '../lib/encryption';
 import database from '../lib/database';
@@ -18,12 +18,11 @@ const getE2eEnable = state => state.settings.E2E_Enable;
 const waitForE2eEnable = function* waitForE2eEnable() {
 	let e2eEnable;
 	while (e2eEnable === undefined) {
-		const { logout, selectServer } = yield race({
+		const { selectServer } = yield race({
 			settingsAdded: take(SETTINGS.ADD),
-			logout: take(LOGOUT),
 			selectServer: take(SERVER.SELECT_REQUEST)
 		});
-		if (logout || selectServer) {
+		if (selectServer) {
 			return;
 		}
 
@@ -32,7 +31,19 @@ const waitForE2eEnable = function* waitForE2eEnable() {
 	return e2eEnable;
 };
 
+const uploadKeysMissingFromServer = function* uploadKeysMissingFromServer({ serverKeys, userId, server, storedKeys, signal }) {
+	if (!serverKeys?.success || serverKeys.publicKey) {
+		return;
+	}
+	try {
+		yield Encryption.uploadKeys(userId, server, storedKeys, signal);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleEncryptionInit = function* handleEncryptionInit() {
+	const controller = new AbortController();
 	try {
 		const server = yield select(getServer);
 		const user = yield select(getUserSelector);
@@ -72,19 +83,21 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		}
 
 		// Fetch stored public e2e key for this server
-		let storedPublicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
-
-		// Prevent parse undefined
-		if (storedPublicKey) {
-			storedPublicKey = EJSON.parse(storedPublicKey);
-		}
+		const storedPublicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
 		if (storedPublicKey && storedPrivateKey) {
 			// Persist these keys
-			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey);
+			yield Encryption.persistKeys(server, EJSON.parse(storedPublicKey), storedPrivateKey, controller.signal);
+			yield* uploadKeysMissingFromServer({
+				serverKeys: keys,
+				userId: user.id,
+				server,
+				storedKeys: { publicKey: storedPublicKey, privateKey: storedPrivateKey },
+				signal: controller.signal
+			});
 		} else {
 			// Create new keys since the user doesn't have any
-			yield Encryption.createKeys(user.id, server);
+			yield Encryption.createKeys(user.id, server, controller.signal);
 		}
 
 		// If the user has a private key stored, but never entered the password
@@ -100,6 +113,8 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		Encryption.initialize(user.id);
 	} catch (e) {
 		log(e);
+	} finally {
+		controller.abort();
 	}
 };
 
@@ -111,6 +126,7 @@ const handleEncryptionStop = function* handleEncryptionStop() {
 };
 
 const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password }) {
+	const controller = new AbortController();
 	try {
 		const server = yield select(getServer);
 		const user = yield select(getUserSelector);
@@ -124,7 +140,7 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		const privateKey = yield Encryption.decodePrivateKey(keys?.privateKey, password, user.id);
 
 		// Persist these decrypted keys
-		yield Encryption.persistKeys(server, publicKey, privateKey);
+		yield Encryption.persistKeys(server, publicKey, privateKey, controller.signal);
 
 		// Decrypt all pending messages/subscriptions
 		Encryption.initialize(user.id);
@@ -141,12 +157,22 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		log(e);
 		// Can't decrypt user private key
 		yield put(encryptionDecodeKeyFailure());
+	} finally {
+		controller.abort();
 	}
 };
 
+const untilEncryptionStop = saga =>
+	function* runUntilEncryptionStop(action) {
+		yield race({
+			run: call(saga, action),
+			stop: take(ENCRYPTION.STOP)
+		});
+	};
+
 const root = function* root() {
-	yield takeLatest(ENCRYPTION.INIT, handleEncryptionInit);
+	yield takeLatest(ENCRYPTION.INIT, untilEncryptionStop(handleEncryptionInit));
 	yield takeLatest(ENCRYPTION.STOP, handleEncryptionStop);
-	yield takeLatest(ENCRYPTION.DECODE_KEY, handleEncryptionDecodeKey);
+	yield takeLatest(ENCRYPTION.DECODE_KEY, untilEncryptionStop(handleEncryptionDecodeKey));
 };
 export default root;
