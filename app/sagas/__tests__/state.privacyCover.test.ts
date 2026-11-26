@@ -43,9 +43,11 @@ import reducers from '~/reducers';
 import stateRoot from '../state';
 import NativePrivacyCover from '~/lib/native/NativePrivacyCover';
 import { localAuthenticate } from '~/lib/methods/helpers/localAuthentication';
+import { setUserPresenceOnline } from '~/lib/services/restApi';
 
 const nativePrivacyCover = jest.mocked(NativePrivacyCover!);
 const mockedLocalAuthenticate = jest.mocked(localAuthenticate);
+const mockedSetUserPresenceOnline = jest.mocked(setUserPresenceOnline);
 
 const HOST = 'https://open.rocket.chat';
 
@@ -90,6 +92,19 @@ describe('state saga — privacy cover on foreground', () => {
 		await flushPromises();
 
 		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledWith(4);
+	});
+
+	it('releases the cover without waiting for the presence update', async () => {
+		mockedLocalAuthenticate.mockResolvedValueOnce(undefined);
+		mockedSetUserPresenceOnline.mockReturnValueOnce(new Promise(() => {}));
+		nativePrivacyCover.getCoverToken.mockReturnValueOnce(3);
+		const store = setupStore(RootEnum.ROOT_INSIDE);
+
+		store.dispatch({ type: APP_STATE.FOREGROUND });
+		await flushPromises();
+
+		expect(mockedSetUserPresenceOnline).toHaveBeenCalled();
+		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledWith(3);
 	});
 
 	it('releases the cover when authentication fails', async () => {

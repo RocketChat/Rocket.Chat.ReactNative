@@ -18,25 +18,26 @@ const isAuthAndConnected = function* isAuthAndConnected() {
 const authenticateOnForeground = function* authenticateOnForeground() {
 	const appRoot = yield select(state => state.app.root);
 	if (appRoot !== RootEnum.ROOT_INSIDE) {
-		return;
+		return false;
 	}
 	// Socket state is deliberately not checked here: a closed socket is the case
 	// recoverSocket below exists for.
 	const { isAuthenticated } = yield select(state => state.login);
 	if (!isAuthenticated) {
-		return;
+		return false;
 	}
+	const server = yield select(state => state.server.server);
+	yield localAuthenticate(server);
+	return true;
+};
+
+const resumeSessionOnForeground = function* resumeSessionOnForeground() {
+	recoverSocket().catch(e => log(e));
+	checkPendingNotification().catch(e => {
+		log('[state.js] Error checking pending notification:', e);
+	});
 	try {
-		const server = yield select(state => state.server.server);
-		yield localAuthenticate(server);
-
-		recoverSocket().catch(e => log(e));
-
-		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
-		checkPendingNotification().catch(e => {
-			log('[state.js] Error checking pending notification:', e);
-		});
-		return yield setUserPresenceOnline();
+		yield setUserPresenceOnline();
 	} catch (e) {
 		log(e);
 	}
@@ -44,13 +45,19 @@ const authenticateOnForeground = function* authenticateOnForeground() {
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const coverToken = claimPrivacyCover();
+	let isAuthenticatedOnForeground = false;
 	try {
-		yield authenticateOnForeground();
+		isAuthenticatedOnForeground = yield authenticateOnForeground();
+	} catch (e) {
+		log(e);
 	} finally {
 		const supersededByNewerForeground = yield cancelled();
 		if (!supersededByNewerForeground) {
 			releasePrivacyCover(coverToken);
 		}
+	}
+	if (isAuthenticatedOnForeground) {
+		yield resumeSessionOnForeground();
 	}
 };
 
