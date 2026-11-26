@@ -19,6 +19,7 @@ export const ROOM = createRequestTypes('ROOM', [
 	'LEAVE',
 	'DELETE',
 	'REMOVED',
+	'REMOVAL_FINISHED',
 	'FORWARD',
 	'USER_TYPING',
 	'HISTORY_REQUEST',

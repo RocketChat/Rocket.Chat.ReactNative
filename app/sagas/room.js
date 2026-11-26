@@ -4,7 +4,7 @@ import { delay, put, race, take, takeLatest, actionChannel, throttle, fork, canc
 import EventEmitter from '../lib/methods/helpers/events';
 import Navigation from '../lib/navigation/appNavigation';
 import * as types from '../actions/actionsTypes';
-import { removedRoom } from '../actions/room';
+import { roomRemovalFinished } from '../actions/room';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../lib/methods/helpers/info';
@@ -70,13 +70,10 @@ const watchUserTyping = function* watchUserTyping({ rid, status, args }) {
 };
 
 const waitForRemovedRoom = function* waitForRemovedRoom(rid) {
-	const { timeout } = yield race({
+	yield race({
 		removed: take(action => action.type === types.ROOM.REMOVED && action.rid === rid),
 		timeout: delay(3000)
 	});
-	if (timeout) {
-		yield put(removedRoom(rid));
-	}
 };
 
 const handleRemovedRoom = function* handleRemovedRoom(rid, roomType, actionType) {
@@ -110,7 +107,6 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 
 		if (result?.success) {
 			yield handleRemovedRoom(room.rid, roomType, 'leave');
-			return;
 		}
 	} catch (e) {
 		logEvent(events.RA_LEAVE_F);
@@ -121,8 +117,9 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 		} else {
 			Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
 		}
+	} finally {
+		yield put(roomRemovalFinished(room.rid));
 	}
-	yield put(removedRoom(room.rid));
 };
 
 const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }) {
@@ -138,7 +135,6 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 
 		if (result?.success) {
 			yield handleRemovedRoom(room.rid, roomType, 'delete');
-			return;
 		}
 	} catch (e) {
 		logEvent(events.RI_EDIT_DELETE_F);
@@ -148,8 +144,9 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 				action: roomType === 'team' ? I18n.t('deleting_team') : I18n.t('deleting_room')
 			})
 		);
+	} finally {
+		yield put(roomRemovalFinished(room.rid));
 	}
-	yield put(removedRoom(room.rid));
 };
 
 const handleForwardRoom = function* handleForwardRoom({ rid, transferData }) {
@@ -163,13 +160,14 @@ const handleForwardRoom = function* handleForwardRoom({ rid, transferData }) {
 				Navigation.navigate('RoomsListView');
 			}
 			yield waitForRemovedRoom(rid);
-			return;
+		} else {
+			showErrorAlert(I18n.t('No_available_agents_to_transfer'), I18n.t('Oops'));
 		}
-		showErrorAlert(I18n.t('No_available_agents_to_transfer'), I18n.t('Oops'));
 	} catch (e) {
 		showErrorAlert(e.reason, I18n.t('Oops'));
+	} finally {
+		yield put(roomRemovalFinished(rid));
 	}
-	yield put(removedRoom(rid));
 };
 
 const root = function* root() {

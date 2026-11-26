@@ -4,17 +4,25 @@ import { ROOM } from '../actions/actionsTypes';
 export type IRoomRecord = string[];
 
 export interface IRoom {
-	rid: string;
-	isDeleting: boolean;
+	removalsInFlight: Record<string, number>;
 	subscribedRoom: string;
 	historyLoaders: string[];
 }
 
 export const initialState: IRoom = {
-	rid: '',
-	isDeleting: false,
+	removalsInFlight: {},
 	subscribedRoom: '',
 	historyLoaders: []
+};
+
+const startRemoval = (removalsInFlight: IRoom['removalsInFlight'], rid: string) => ({
+	...removalsInFlight,
+	[rid]: (removalsInFlight[rid] ?? 0) + 1
+});
+
+const finishRemoval = (removalsInFlight: IRoom['removalsInFlight'], rid: string) => {
+	const { [rid]: count = 0, ...others } = removalsInFlight;
+	return count > 1 ? { ...others, [rid]: count - 1 } : others;
 };
 
 export default function (state = initialState, action: TActionsRoom): IRoom {
@@ -30,36 +38,20 @@ export default function (state = initialState, action: TActionsRoom): IRoom {
 				subscribedRoom: state.subscribedRoom === action.rid ? '' : state.subscribedRoom
 			};
 		case ROOM.LEAVE:
-			return {
-				...state,
-				rid: action.room.rid,
-				isDeleting: true
-			};
 		case ROOM.DELETE:
 			return {
 				...state,
-				rid: action.room.rid,
-				isDeleting: true
-			};
-		case ROOM.CLOSE:
-			return {
-				...state,
-				rid: action.rid,
-				isDeleting: true
+				removalsInFlight: startRemoval(state.removalsInFlight, action.room.rid)
 			};
 		case ROOM.FORWARD:
 			return {
 				...state,
-				rid: action.rid,
-				isDeleting: true
+				removalsInFlight: startRemoval(state.removalsInFlight, action.rid)
 			};
-		case ROOM.REMOVED:
-			if (action.rid !== state.rid) {
-				return state;
-			}
+		case ROOM.REMOVAL_FINISHED:
 			return {
 				...state,
-				isDeleting: false
+				removalsInFlight: finishRemoval(state.removalsInFlight, action.rid)
 			};
 		case ROOM.HISTORY_REQUEST:
 			return {

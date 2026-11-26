@@ -47,11 +47,21 @@ function setupStoreWithRoomSaga() {
 	return store;
 }
 
+function hangingRequest() {
+	let reject: (reason: unknown) => void = () => undefined;
+	let resolve: (value: unknown) => void = () => undefined;
+	const promise = new Promise((promiseResolve, promiseReject) => {
+		resolve = promiseResolve;
+		reject = promiseReject;
+	});
+	return { promise: promise as never, resolve, reject };
+}
+
 async function settleSagas(): Promise<void> {
 	await jest.advanceTimersByTimeAsync(0);
 }
 
-describe('room saga — removal flag', () => {
+describe('room saga — removals in flight', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
@@ -65,133 +75,138 @@ describe('room saga — removal flag', () => {
 		jest.restoreAllMocks();
 	});
 
-	it('clears the flag when the leave request fails', async () => {
+	it('counts the leave until the request fails', async () => {
 		jest.mocked(leaveRoomRequest).mockRejectedValue({ data: { errorType: 'error-you-are-last-owner' } });
 		const store = setupStoreWithRoomSaga();
 
 		store.dispatch(leaveRoom(ERoomType.c, room));
-		expect(store.getState().room.isDeleting).toBe(true);
+		expect(store.getState().room.removalsInFlight).toEqual({ 'room-a': 1 });
 		await settleSagas();
 
 		expect(Alert.alert).toHaveBeenCalled();
-		expect(store.getState().room.isDeleting).toBe(false);
+		expect(store.getState().room.removalsInFlight).toEqual({});
 	});
 
-	it('clears the flag when the leave request answers without success', async () => {
+	it('ends the leave when the request answers without success', async () => {
 		jest.mocked(leaveRoomRequest).mockResolvedValue({ success: false } as never);
 		const store = setupStoreWithRoomSaga();
 
 		store.dispatch(leaveRoom(ERoomType.c, room));
 		await settleSagas();
 
-		expect(store.getState().room.isDeleting).toBe(false);
+		expect(store.getState().room.removalsInFlight).toEqual({});
 	});
 
-	it('clears the flag when the subscriptions stream does not report the removal within 3 seconds', async () => {
-		jest.mocked(leaveRoomRequest).mockResolvedValue({ success: true } as never);
-		const store = setupStoreWithRoomSaga();
-
-		store.dispatch(leaveRoom(ERoomType.c, room));
-		await settleSagas();
-		expect(store.getState().room.isDeleting).toBe(true);
-
-		await jest.advanceTimersByTimeAsync(3000);
-
-		expect(store.getState().room.isDeleting).toBe(false);
-	});
-
-	it('keeps the flag until the subscriptions stream reports the removal', async () => {
-		jest.mocked(leaveRoomRequest).mockResolvedValue({ success: true } as never);
-		const store = setupStoreWithRoomSaga();
-
-		store.dispatch(leaveRoom(ERoomType.c, room));
-		await settleSagas();
-		expect(store.getState().room).toMatchObject({ rid: 'room-a', isDeleting: true });
-	});
-
-	it('keeps the flag of a delete in flight when a leave of another room fails', async () => {
-		let rejectLeave: (reason: unknown) => void = () => undefined;
-		jest.mocked(leaveRoomRequest).mockReturnValue(
-			new Promise((_, reject) => {
-				rejectLeave = reject;
-			}) as never
-		);
-		jest.mocked(deleteRoomRequest).mockReturnValue(new Promise(() => undefined) as never);
-		const store = setupStoreWithRoomSaga();
-
-		store.dispatch(leaveRoom(ERoomType.c, room));
-		store.dispatch(deleteRoom(ERoomType.c, otherRoom));
-		rejectLeave(new Error('network'));
-		await settleSagas();
-
-		expect(store.getState().room).toMatchObject({ rid: 'room-b', isDeleting: true });
-	});
-
-	it('keeps the flag of a delete in flight when a leave of another room times out', async () => {
-		jest.mocked(leaveRoomRequest).mockResolvedValue({ success: true } as never);
-		jest.mocked(deleteRoomRequest).mockReturnValue(new Promise(() => undefined) as never);
-		const store = setupStoreWithRoomSaga();
-
-		store.dispatch(leaveRoom(ERoomType.c, room));
-		await settleSagas();
-		store.dispatch(deleteRoom(ERoomType.c, otherRoom));
-		await jest.advanceTimersByTimeAsync(3000);
-
-		expect(store.getState().room).toMatchObject({ rid: 'room-b', isDeleting: true });
-	});
-
-	it('ends the wait for the removal only when the subscriptions stream reports the same room', async () => {
+	it('ends a successful leave when the subscriptions stream reports the removal of that room', async () => {
 		jest.mocked(leaveRoomRequest).mockResolvedValue({ success: true } as never);
 		const store = setupStoreWithRoomSaga();
 
 		store.dispatch(leaveRoom(ERoomType.c, room));
 		await settleSagas();
 		store.dispatch(removedRoom('room-b'));
-		expect(store.getState().room.isDeleting).toBe(true);
+		expect(store.getState().room.removalsInFlight).toEqual({ 'room-a': 1 });
+
+		store.dispatch(removedRoom('room-a'));
+		await settleSagas();
+
+		expect(store.getState().room.removalsInFlight).toEqual({});
+	});
+
+	it('ends a successful leave when the subscriptions stream stays silent for 3 seconds', async () => {
+		jest.mocked(leaveRoomRequest).mockResolvedValue({ success: true } as never);
+		const store = setupStoreWithRoomSaga();
+
+		store.dispatch(leaveRoom(ERoomType.c, room));
+		await settleSagas();
+		expect(store.getState().room.removalsInFlight).toEqual({ 'room-a': 1 });
 
 		await jest.advanceTimersByTimeAsync(3000);
 
-		expect(store.getState().room.isDeleting).toBe(false);
+		expect(store.getState().room.removalsInFlight).toEqual({});
 	});
 
-	it('clears the flag when the delete request fails', async () => {
+	it('ends the delete when the request fails', async () => {
 		jest.mocked(deleteRoomRequest).mockRejectedValue(new Error('network'));
 		const store = setupStoreWithRoomSaga();
 
 		store.dispatch(deleteRoom(ERoomType.c, room));
 		await settleSagas();
 
-		expect(store.getState().room.isDeleting).toBe(false);
+		expect(store.getState().room.removalsInFlight).toEqual({});
 	});
 
-	it('clears the flag when no agent is available to forward to', async () => {
+	it('keeps counting a delete of another room when a leave fails', async () => {
+		const leave = hangingRequest();
+		jest.mocked(leaveRoomRequest).mockReturnValue(leave.promise);
+		jest.mocked(deleteRoomRequest).mockReturnValue(hangingRequest().promise);
+		const store = setupStoreWithRoomSaga();
+
+		store.dispatch(leaveRoom(ERoomType.c, room));
+		store.dispatch(deleteRoom(ERoomType.c, otherRoom));
+		leave.reject(new Error('network'));
+		await settleSagas();
+
+		expect(store.getState().room.removalsInFlight).toEqual({ 'room-b': 1 });
+	});
+
+	it('keeps counting a delete of the same room when a leave of it fails', async () => {
+		const leave = hangingRequest();
+		jest.mocked(leaveRoomRequest).mockReturnValue(leave.promise);
+		jest.mocked(deleteRoomRequest).mockReturnValue(hangingRequest().promise);
+		const store = setupStoreWithRoomSaga();
+
+		store.dispatch(leaveRoom(ERoomType.c, room));
+		store.dispatch(deleteRoom(ERoomType.c, room));
+		expect(store.getState().room.removalsInFlight).toEqual({ 'room-a': 2 });
+
+		leave.reject(new Error('network'));
+		await settleSagas();
+
+		expect(store.getState().room.removalsInFlight).toEqual({ 'room-a': 1 });
+	});
+
+	it('ends a leave that a newer leave replaces', async () => {
+		jest.mocked(leaveRoomRequest).mockReturnValueOnce(hangingRequest().promise).mockReturnValueOnce(hangingRequest().promise);
+		const store = setupStoreWithRoomSaga();
+
+		store.dispatch(leaveRoom(ERoomType.c, room));
+		await settleSagas();
+		store.dispatch(leaveRoom(ERoomType.c, otherRoom));
+		await settleSagas();
+
+		expect(store.getState().room.removalsInFlight).toEqual({ 'room-b': 1 });
+	});
+
+	it('ends the forward when no agent is available', async () => {
 		jest.mocked(forwardLivechat).mockResolvedValue(false as never);
 		const store = setupStoreWithRoomSaga();
 
 		store.dispatch(forwardRoom('room-a', transferData));
 		await settleSagas();
 
-		expect(store.getState().room.isDeleting).toBe(false);
+		expect(store.getState().room.removalsInFlight).toEqual({});
 	});
 
-	it('clears the flag when the forward request fails', async () => {
+	it('ends the forward when the request fails', async () => {
 		jest.mocked(forwardLivechat).mockRejectedValue({ reason: 'error' });
 		const store = setupStoreWithRoomSaga();
 
 		store.dispatch(forwardRoom('room-a', transferData));
 		await settleSagas();
 
-		expect(store.getState().room.isDeleting).toBe(false);
+		expect(store.getState().room.removalsInFlight).toEqual({});
 	});
 
-	it('clears the flag after a forward once the subscriptions stream stays silent for 3 seconds', async () => {
+	it('ends a successful forward when the subscriptions stream stays silent for 3 seconds', async () => {
 		jest.mocked(forwardLivechat).mockResolvedValue(true as never);
 		const store = setupStoreWithRoomSaga();
 
 		store.dispatch(forwardRoom('room-a', transferData));
 		await settleSagas();
+		expect(store.getState().room.removalsInFlight).toEqual({ 'room-a': 1 });
+
 		await jest.advanceTimersByTimeAsync(3000);
 
-		expect(store.getState().room.isDeleting).toBe(false);
+		expect(store.getState().room.removalsInFlight).toEqual({});
 	});
 });

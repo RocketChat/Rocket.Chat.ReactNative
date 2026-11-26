@@ -21,6 +21,7 @@ interface IBaseReturn extends Action {
 type TSubscribeRoom = IBaseReturn;
 type TUnsubscribeRoom = IBaseReturn;
 type TRemovedRoom = IBaseReturn;
+type TRoomRemovalFinished = IBaseReturn;
 
 type TRoom = Record<string, any>;
 
@@ -123,6 +124,13 @@ export function forwardRoom(rid: string, transferData: ITransferData): IForwardR
 export function removedRoom(rid: string): TRemovedRoom {
 	return {
 		type: ROOM.REMOVED,
+		rid
+	};
+}
+
+export function roomRemovalFinished(rid: string): TRoomRemovalFinished {
+	return {
+		type: ROOM.REMOVAL_FINISHED,
 		rid
 	};
 }
