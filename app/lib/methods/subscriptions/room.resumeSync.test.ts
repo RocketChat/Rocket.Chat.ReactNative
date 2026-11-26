@@ -73,7 +73,7 @@ describe('RoomSubscription resume sync', () => {
 
 		expect(mockedSdkGet).toHaveBeenCalledWith(
 			'chat.syncMessages',
-			expect.objectContaining({ roomId: RID, type: 'UPDATED', next: persistedCursor.getTime() })
+			expect.objectContaining({ roomId: RID, type: 'UPDATED', next: `${persistedCursor.getTime()}_` })
 		);
 		expect(mockedUpdateMessages).toHaveBeenCalledWith(
 			expect.objectContaining({
