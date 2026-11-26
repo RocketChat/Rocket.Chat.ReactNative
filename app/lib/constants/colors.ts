@@ -1,5 +1,3 @@
-import { Platform } from 'react-native';
-
 const backdropColor = '#000000';
 const overlayBackground = 'rgba(31, 35, 41, 0.65)';
 
@@ -14,6 +12,7 @@ const light = {
 	surfaceDark: '#1F2329',
 	surfaceFeatured: '#5F1477',
 	surfaceFeaturedHover: '#4A105D',
+	surfaceHeader: '#E4E7EA',
 
 	strokeExtraLight: '#EBECEF',
 	strokeLight: '#CBCED1',
@@ -41,23 +40,23 @@ const light = {
 	statusBackgroundSuccess: '#C0F6E4',
 	statusBackgroundDanger: '#FFC1C9',
 	statusBackgroundWarning: '#FFECAD',
-	statusBackgroundWarning2: '#FFF6D6',
+	statusBackgroundWarning2: '#FFF8E0',
 	statusBackgroundService: '#FAD1B0',
 	statusBackgroundService2: '#EDD0F7',
 	statusFontInfo: '#095AD2',
 	statusFontSuccess: '#148660',
 	statusFontDanger: '#9B1325',
-	statusFontWarning: '#8E6300',
+	statusFontWarning: '#895F00',
 	statusFontWarning2: '#2F343D',
 	statusFontService: '#974809',
 	statusFontService2: '#7F1B9F',
 
 	badgeBackgroundLevel1: '#6C727A',
-	badgeBackgroundLevel2: '#1D74F5',
+	badgeBackgroundLevel2: '#156FF5',
 	badgeBackgroundLevel3: '#F38C39',
-	badgeBackgroundLevel4: '#F5455C',
+	badgeBackgroundLevel4: '#EC0D2A',
 
-	userPresenceOnline: '#158D65',
+	userPresenceOnline: '#148660',
 	userPresenceBusy: '#D40C26',
 	userPresenceAway: '#AC892F',
 	userPresenceOffline: '#6C727A',
@@ -79,7 +78,7 @@ const light = {
 	buttonBackgroundDangerPress: '#BB0B21',
 	buttonBackgroundDangerDisabled: '#FFC1C9',
 
-	buttonBackgroundSuccessDefault: '#158D65',
+	buttonBackgroundSuccessDefault: '#148660',
 	buttonBackgroundSuccessPress: '#0D5940',
 	buttonBackgroundSuccessDisabled: '#C0F6E4',
 
@@ -102,18 +101,19 @@ const dark = {
 	surfaceNeutral: '#2D3039',
 	surfaceDisabled: '#24272E',
 	surfaceHover: '#1A1E23',
-	surfaceSelected: '#3C3F44',
+	surfaceSelected: '#4C5362',
 	surfaceDark: '#E4E7EA',
 	surfaceFeatured: '#5F1477',
 	surfaceFeaturedHover: '#4A105D',
+	surfaceHeader: '#2D3039',
 
-	strokeExtraLight: '#2F343D',
-	strokeLight: '#333842',
-	strokeMedium: '#404754',
-	strokeDark: '#1F2329',
+	strokeExtraLight: '#333842',
+	strokeLight: '#404754',
+	strokeMedium: '#4B5362',
+	strokeDark: '#9EA2A8',
 	strokeExtraDark: '#CBCED1',
-	strokeExtraLightHighlight: '#87CBFC',
-	strokeHighlight: '#3976D1',
+	strokeExtraLightHighlight: '#D1EBFE',
+	strokeHighlight: '#6292DA',
 	strokeExtraLightError: '#F49AA6',
 	strokeError: '#BB3E4E',
 
@@ -125,47 +125,47 @@ const dark = {
 	fontDefault: '#C1C7D0',
 	fontTitlesLabels: '#F2F3F5',
 	fontInfo: '#739EDE',
-	fontDanger: '#CF6E7A',
+	fontDanger: '#D88892',
 	fontPureBlack: '#2F343D',
 	fontPureWhite: '#FFFFFF',
 
 	statusBackgroundInfo: '#A8C3EB',
 	statusBackgroundSuccess: '#C1EBDD',
-	statusBackgroundDanger: '#FFBDC5',
+	statusBackgroundDanger: '#F7CFD4',
 	statusBackgroundWarning: '#FEEFBE',
-	statusBackgroundWarning2: '#4E4731',
+	statusBackgroundWarning2: '#3C3625',
 	statusBackgroundService: '#FCE3CF',
 	statusBackgroundService2: '#EDD0F7',
-	statusFontInfo: '#739EDE',
+	statusFontInfo: '#8DB6FC',
 	statusFontSuccess: '#58AD90',
 	statusFontDanger: '#D88892',
-	statusFontWarning: '#C7AA66',
+	statusFontWarning: '#CFB26C',
 	statusFontWarning2: '#FFFFFF',
 	statusFontService: '#CA9163',
 	statusFontService2: '#C393D2',
 
-	badgeBackgroundLevel1: '#484C51',
+	badgeBackgroundLevel1: '#6C727A',
 	badgeBackgroundLevel2: '#2C65BA',
 	badgeBackgroundLevel3: '#955828',
 	badgeBackgroundLevel4: '#B43C4C',
 
 	userPresenceOnline: '#1CBF89',
 	userPresenceBusy: '#C75765',
-	userPresenceAway: '#AC892F',
-	userPresenceOffline: '#6C727A',
-	userPresenceDisabled: '#955828',
+	userPresenceAway: '#B08C30',
+	userPresenceOffline: '#8B9098',
+	userPresenceDisabled: '#CC7F42',
 
 	buttonBackgroundPrimaryDefault: '#095AD2',
-	buttonBackgroundPrimaryPress: '#245399',
-	buttonBackgroundPrimaryDisabled: '#1D3963',
+	buttonBackgroundPrimaryPress: '#01336B',
+	buttonBackgroundPrimaryDisabled: '#012247',
 
-	buttonBackgroundSecondaryDefault: '#353B45',
-	buttonBackgroundSecondaryPress: '#454C59',
-	buttonBackgroundSecondaryDisabled: '#2F343D',
+	buttonBackgroundSecondaryDefault: '#404754',
+	buttonBackgroundSecondaryPress: '#575F70',
+	buttonBackgroundSecondaryDisabled: '#404854',
 
-	buttonBackgroundSecondaryDangerDefault: '#2F343D',
-	buttonBackgroundSecondaryDangerPress: '#454C59',
-	buttonBackgroundSecondaryDangerDisabled: '#2F343D',
+	buttonBackgroundSecondaryDangerDefault: '#404754',
+	buttonBackgroundSecondaryDangerPress: '#575F70',
+	buttonBackgroundSecondaryDangerDisabled: '#404854',
 
 	buttonBackgroundDangerDefault: '#BB3E4E',
 	buttonBackgroundDangerPress: '#822C37',
@@ -179,74 +179,25 @@ const dark = {
 	buttonPrimaryDisabled: '#6C727A',
 	buttonFontSecondary: '#E4E7EA',
 	buttonSecondaryDisabled: '#6C727A',
-	buttonFontSecondaryDanger: '#C14454',
-	buttonSecondaryDangerDisabled: '#613339',
+	buttonFontSecondaryDanger: '#FFC1C9',
+	buttonSecondaryDangerDisabled: '#6B0513',
 	buttonFontDanger: '#FFFFFF',
 	buttonDangerDisabled: '#757575',
 	buttonFontSuccess: '#FFFFFF',
 	buttonSuccessDisabled: '#757575'
 };
 
-const blackAndroid = {
+const black = {
 	...dark,
-	surfaceLight: '#0d0d0d',
-	surfaceTint: '#16181a',
+	surfaceLight: '#1C1C1C',
+	surfaceTint: '#000000',
 	surfaceRoom: '#000000',
-	surfaceNeutral: '#16181a',
-	surfaceHover: '#080808',
-	strokeLight: '#1f2329',
-	fontDefault: '#E4E7EA',
-	buttonBackgroundPrimaryDefault: '#3976D1'
+	surfaceNeutral: '#2A2A2A',
+	surfaceDisabled: '#121212',
+	surfaceHover: '#000000',
+	surfaceSelected: '#333333',
+	surfaceHeader: '#000000'
 };
-
-const blackIOS = {
-	...dark,
-	surfaceLight: '#161717',
-	surfaceTint: '#0A0A0A',
-	surfaceRoom: '#0A0A0A',
-	surfaceNeutral: '#161717',
-	surfaceDisabled: '#121313',
-	surfaceHover: '#0A0A0A',
-	surfaceSelected: '#2A2B2B',
-	surfaceDark: '#E4E4E4',
-
-	strokeExtraLight: '#2D2E2E',
-	strokeLight: '#2D2E2E',
-	strokeMedium: '#646565',
-	strokeDark: '#161717',
-	strokeExtraDark: '#CCCCCC',
-	strokeHighlight: '#156FF5',
-
-	fontDisabled: '#5C5C5C',
-	fontAnnotation: '#949393',
-	fontHint: '#949393',
-	fontSecondaryInfo: '#949393',
-	fontDefault: '#E4E4E4',
-	fontTitlesLabels: '#FAFAFA',
-
-	badgeBackgroundLevel1: '#484848',
-	badgeBackgroundLevel2: '#156FF5',
-
-	userPresenceOffline: '#8A8A8A',
-
-	buttonBackgroundPrimaryDefault: '#156FF5',
-	buttonBackgroundPrimaryPress: '#10529E',
-
-	buttonBackgroundSecondaryDefault: '#292929',
-	buttonBackgroundSecondaryPress: '#3A3B3B',
-	buttonBackgroundSecondaryDisabled: '#1D1E1E',
-
-	buttonBackgroundSecondaryDangerDefault: '#292929',
-	buttonBackgroundSecondaryDangerPress: '#3A3B3B',
-	buttonBackgroundSecondaryDangerDisabled: '#1D1E1E',
-
-	buttonPrimaryDisabled: '#8A8A8A',
-	buttonFontSecondary: '#E4E4E4',
-	buttonSecondaryDisabled: '#6D6D6D',
-	buttonFontSecondaryDanger: '#D88892'
-};
-
-const black = Platform.OS === 'ios' ? blackIOS : blackAndroid;
 
 export const colors = {
 	light: {

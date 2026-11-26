@@ -9,6 +9,7 @@ import { fromSubscription, useRoomStore } from '../stores/RoomStoreContext';
 
 const styles = StyleSheet.create({
 	anchor: {
+		position: 'absolute',
 		width: 1,
 		height: 1
 	}

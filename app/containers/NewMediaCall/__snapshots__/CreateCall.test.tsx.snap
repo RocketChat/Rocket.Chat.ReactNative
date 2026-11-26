@@ -147,7 +147,7 @@ exports[`Story Snapshots: Enabled should match snapshot 1`] = `
         "marginTop": 32,
       },
       {
-        "backgroundColor": "#158D65",
+        "backgroundColor": "#148660",
       },
     ]
   }

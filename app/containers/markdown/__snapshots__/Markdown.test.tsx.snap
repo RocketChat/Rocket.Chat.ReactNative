@@ -6480,7 +6480,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "textAlign": "left",
                 },
                 {
-                  "color": "#8E6300",
+                  "color": "#895F00",
                 },
               ]
             }
@@ -6633,7 +6633,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "textAlign": "left",
                 },
                 {
-                  "color": "#8E6300",
+                  "color": "#895F00",
                 },
               ]
             }
@@ -6738,7 +6738,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "textAlign": "left",
                 },
                 {
-                  "color": "#8E6300",
+                  "color": "#895F00",
                 },
               ]
             }
@@ -6891,7 +6891,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   "textAlign": "left",
                 },
                 {
-                  "color": "#8E6300",
+                  "color": "#895F00",
                 },
               ]
             }
@@ -7028,7 +7028,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   "textAlign": "left",
                 },
                 {
-                  "color": "#8E6300",
+                  "color": "#895F00",
                 },
               ]
             }
@@ -7339,7 +7339,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                       "textAlign": "left",
                     },
                     {
-                      "color": "#8E6300",
+                      "color": "#895F00",
                     },
                   ]
                 }
@@ -7802,7 +7802,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                       "fontStyle": "italic",
                     },
                     {
-                      "color": "#8E6300",
+                      "color": "#895F00",
                     },
                   ]
                 }
@@ -8309,7 +8309,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                       "textDecorationLine": "line-through",
                     },
                     {
-                      "color": "#8E6300",
+                      "color": "#895F00",
                     },
                   ]
                 }
@@ -8804,7 +8804,7 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                               },
                             ],
                             {
-                              "color": "#8E6300",
+                              "color": "#895F00",
                             },
                           ]
                         }
@@ -12306,7 +12306,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "fontSize": 10,
               },
               {
-                "color": "#8E6300",
+                "color": "#895F00",
               },
             ]
           }
@@ -12491,7 +12491,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "fontSize": 10,
               },
               {
-                "color": "#8E6300",
+                "color": "#895F00",
               },
             ]
           }

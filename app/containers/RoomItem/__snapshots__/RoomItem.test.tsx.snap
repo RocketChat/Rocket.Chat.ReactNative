@@ -1381,7 +1381,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "paddingHorizontal": 4,
                             },
                             {
-                              "backgroundColor": "#F5455C",
+                              "backgroundColor": "#EC0D2A",
                               "borderRadius": 10,
                               "minWidth": 18,
                             },
@@ -2479,7 +2479,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "paddingHorizontal": 4,
                             },
                             {
-                              "backgroundColor": "#F5455C",
+                              "backgroundColor": "#EC0D2A",
                               "borderRadius": 10,
                               "minWidth": 18,
                             },
@@ -3211,7 +3211,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                               "paddingHorizontal": 4,
                             },
                             {
-                              "backgroundColor": "#F5455C",
+                              "backgroundColor": "#EC0D2A",
                               "borderRadius": 10,
                               "minWidth": 18,
                             },
@@ -7499,7 +7499,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                       style={
                         [
                           {
-                            "color": "#1D74F5",
+                            "color": "#156FF5",
                             "fontSize": 24,
                           },
                           [
@@ -7829,7 +7829,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                       style={
                         [
                           {
-                            "color": "#1D74F5",
+                            "color": "#156FF5",
                             "fontSize": 24,
                           },
                           [
@@ -10711,7 +10711,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       style={
                         [
                           {
-                            "color": "#158D65",
+                            "color": "#148660",
                             "fontSize": 16,
                           },
                           [
@@ -11919,7 +11919,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       style={
                         [
                           {
-                            "color": "#158D65",
+                            "color": "#148660",
                             "fontSize": 16,
                           },
                           [
@@ -12523,7 +12523,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       style={
                         [
                           {
-                            "color": "#158D65",
+                            "color": "#148660",
                             "fontSize": 16,
                           },
                           [
@@ -13127,7 +13127,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       style={
                         [
                           {
-                            "color": "#158D65",
+                            "color": "#148660",
                             "fontSize": 16,
                           },
                           [

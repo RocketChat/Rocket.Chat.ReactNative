@@ -58,7 +58,7 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
           "paddingVertical": 8,
         },
         {
-          "backgroundColor": "#1D74F5",
+          "backgroundColor": "#156FF5",
         },
       ]
     }
@@ -186,7 +186,7 @@ exports[`Story Snapshots: CallButton should match snapshot 1`] = `
           "paddingVertical": 8,
         },
         {
-          "backgroundColor": "#1D74F5",
+          "backgroundColor": "#156FF5",
         },
       ]
     }
@@ -547,7 +547,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
             "paddingVertical": 8,
           },
           {
-            "backgroundColor": "#1D74F5",
+            "backgroundColor": "#156FF5",
           },
         ]
       }
@@ -3730,7 +3730,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
             "paddingHorizontal": 4,
           },
           {
-            "borderColor": "#1D74F5",
+            "borderColor": "#156FF5",
             "height": 28,
           },
         ]
@@ -3761,7 +3761,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
               "textAlign": "left",
             },
             {
-              "color": "#1D74F5",
+              "color": "#156FF5",
             },
           ]
         }
@@ -3867,7 +3867,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
               "textAlign": "left",
             },
             {
-              "color": "#1D74F5",
+              "color": "#156FF5",
             },
           ]
         }
@@ -3954,7 +3954,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
         style={
           [
             {
-              "color": "#1D74F5",
+              "color": "#156FF5",
               "fontSize": 20,
             },
             [

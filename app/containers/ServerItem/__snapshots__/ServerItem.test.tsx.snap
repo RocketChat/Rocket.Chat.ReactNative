@@ -220,7 +220,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               style={
                 [
                   {
-                    "color": "#1D74F5",
+                    "color": "#156FF5",
                     "fontSize": 24,
                   },
                   [
@@ -1976,7 +1976,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               style={
                 [
                   {
-                    "color": "#404754",
+                    "color": "#4B5362",
                     "fontSize": 24,
                   },
                   [
@@ -2072,14 +2072,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "marginVertical": undefined,
             },
             {
-              "backgroundColor": "#161717",
+              "backgroundColor": "#1C1C1C",
               "borderRadius": undefined,
             },
           ],
           undefined,
         ]
       }
-      underlayColor="#161717"
+      underlayColor="#2A2A2A"
     >
       <View
         accessibilityHint="Activate to select server"
@@ -2172,7 +2172,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "textAlign": "left",
                   },
                   {
-                    "color": "#FAFAFA",
+                    "color": "#F2F3F5",
                   },
                 ]
               }
@@ -2194,7 +2194,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     "textAlign": "left",
                   },
                   {
-                    "color": "#949393",
+                    "color": "#9EA2A8",
                   },
                 ]
               }
@@ -2219,7 +2219,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               style={
                 [
                   {
-                    "color": "#646565",
+                    "color": "#4B5362",
                     "fontSize": 24,
                   },
                   [

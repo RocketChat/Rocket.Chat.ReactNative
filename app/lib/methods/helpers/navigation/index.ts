@@ -54,11 +54,15 @@ export const stackedSearchBarOptions = ({
 
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
 	headerStyle: {
-		backgroundColor: themes[theme].surfaceNeutral
+		backgroundColor: themes[theme].surfaceHeader
 	},
 	headerTintColor: themes[theme].fontDefault,
 	...(hasNativeHeaderBar
-		? { headerTitleStyle: { color: themes[theme].fontTitlesLabels }, headerSubtitleColor: themes[theme].fontSecondaryInfo }
+		? {
+				headerShadowVisible: false,
+				headerTitleStyle: { color: themes[theme].fontTitlesLabels },
+				headerSubtitleColor: themes[theme].fontSecondaryInfo
+			}
 		: { headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 } })
 });
 

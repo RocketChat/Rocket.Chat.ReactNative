@@ -763,7 +763,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 							}
 						})
 					}
-					style={{ backgroundColor: isIOS ? 'transparent' : themes[theme].surfaceRoom }}
+					style={{ backgroundColor: isIOS ? 'transparent' : themes[theme].surfaceLight }}
 					accessibilityLabel={I18n.t('Room_Info')}
 					disabled={isGroupChatHandler}
 					testID='room-actions-info'>

@@ -178,7 +178,7 @@ const RoomsListView = memo(function RoomsListView() {
 			<Animated.FlatList
 				data={searchEnabled ? searchResults : subscriptions}
 				keyExtractor={item => `${item.rid}-${searchEnabled}`}
-				style={[styles.list, { backgroundColor: hasNativeHeaderBar ? colors.surfaceNeutral : colors.surfaceTint }]}
+				style={[styles.list, { backgroundColor: hasNativeHeaderBar ? colors.surfaceHeader : colors.surfaceTint }]}
 				contentContainerStyle={[
 					hasNativeHeaderBar && [styles.listContent, { backgroundColor: colors.surfaceTint }],
 					{

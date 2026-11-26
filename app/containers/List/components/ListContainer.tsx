@@ -3,6 +3,7 @@ import { ScrollView, type ScrollViewProps, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
+import { useTheme } from '~/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -15,11 +16,13 @@ interface IListContainer extends ScrollViewProps {
 	testID?: string;
 	backgroundHidden?: boolean;
 }
-const ListContainer = ({ children, backgroundHidden: _backgroundHidden, ...props }: IListContainer) => {
+const ListContainer = ({ children, backgroundHidden, style, ...props }: IListContainer) => {
 	const { bottom } = useSafeAreaInsets();
+	const { colors } = useTheme();
 
 	return (
 		<ScrollView
+			style={[backgroundHidden ? undefined : { backgroundColor: colors.surfaceTint }, style]}
 			contentContainerStyle={[styles.container, { paddingBottom: bottom }]}
 			scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
 			{...scrollPersistTaps}
