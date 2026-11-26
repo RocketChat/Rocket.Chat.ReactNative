@@ -22,8 +22,28 @@ index 6e970c2..9cc855b 100644
          }
        }
      }
+diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/accessibility/AccessibleMarkdownTextView.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/accessibility/AccessibleMarkdownTextView.kt
+index 96c022b..9c16c8c 100644
+--- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/accessibility/AccessibleMarkdownTextView.kt
++++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/accessibility/AccessibleMarkdownTextView.kt
+@@ -7,6 +7,7 @@ import android.view.ActionMode
+ import android.view.KeyEvent
+ import android.view.MotionEvent
+ import androidx.appcompat.widget.AppCompatTextView
++import com.swmansion.enriched.markdown.spans.ImageSpan
+ import com.swmansion.enriched.markdown.spans.LinkPillSpan
+ import com.swmansion.enriched.markdown.utils.text.span.prepareWidthAwareSpans
+ import com.swmansion.enriched.markdown.utils.text.view.OnSelectionCopy
+@@ -49,6 +50,7 @@ abstract class AccessibleMarkdownTextView
+       val contentWidth = width - compoundPaddingLeft - compoundPaddingRight
+       if (contentWidth > 0) prepareWidthAwareSpans(text, contentWidth)
+       LinkPillSpan.registerView(text, this)
++      ImageSpan.releaseHostedBy(this)
+       super.setText(text, type)
+     }
+ 
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
-index 9aea981..e033160 100644
+index 9aea981..00c13e0 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 @@ -1,19 +1,21 @@
@@ -61,7 +81,7 @@ index 9aea981..e033160 100644
  import com.swmansion.enriched.markdown.utils.text.view.repaintSpan
  import java.lang.ref.WeakReference
  import java.util.concurrent.Executors
-@@ -104,6 +108,68 @@ class ImageSpan(
+@@ -104,6 +108,73 @@ class ImageSpan(
    private var onBoxHeightChanged: (() -> Unit)? = null
    private var boxHeightReported = false
  
@@ -127,10 +147,15 @@ index 9aea981..e033160 100644
 +    view.addOnAttachStateChangeListener(hostAttachListener)
 +  }
 +
++  private fun releaseHost(view: TextView) {
++    animation?.stop()
++    view.removeOnAttachStateChangeListener(hostAttachListener)
++  }
++
    private fun intrinsicImageSize(): Pair<Int, Int> {
      sourceDrawable?.let { return it.intrinsicWidth to it.intrinsicHeight }
      val cached = ImageCache.getOriginal(requestKey) ?: return 0 to 0
-@@ -160,20 +226,56 @@ class ImageSpan(
+@@ -160,20 +231,57 @@ class ImageSpan(
      if (requestUrl.isEmpty()) return
      val scheme = Uri.parse(requestUrl).scheme?.lowercase()
      if (scheme == "http" || scheme == "https") {
@@ -167,6 +192,7 @@ index 9aea981..e033160 100644
 +      drawable.callback = animationCallback
 +      showDrawable(drawable)
 +      val view = viewRef?.get() ?: return@decode
++      if (!isHostedBy(view)) return@decode
 +      followHostAttachState(view)
 +      if (view.isAttachedToWindow) drawable.start()
 +    }
@@ -194,7 +220,7 @@ index 9aea981..e033160 100644
        ImageCache.markFailed(requestKey)
        loadFailed = true
        if (!wasFailed) refreshForSize(previousSize)
-@@ -181,7 +283,7 @@ class ImageSpan(
+@@ -181,7 +289,7 @@ class ImageSpan(
      }
      ImageCache.clearFailed(requestKey)
      loadFailed = false
@@ -203,7 +229,7 @@ index 9aea981..e033160 100644
      wrapAndAssignDrawable(previousSize)
    }
  
-@@ -217,7 +319,9 @@ class ImageSpan(
+@@ -217,7 +325,9 @@ class ImageSpan(
      val base = sourceDrawable ?: return
      boxHeight = resolveBoxHeight(targetWidth)
  
@@ -214,7 +240,7 @@ index 9aea981..e033160 100644
  
      if (cachedBitmap != null) {
        loadedDrawable =
-@@ -234,7 +338,7 @@ class ImageSpan(
+@@ -234,7 +344,7 @@ class ImageSpan(
            isBlockImage = !isInline,
            resizeMode = resizeMode,
            legacySizing = legacySizing,
@@ -223,17 +249,20 @@ index 9aea981..e033160 100644
          )
      }
    }
-@@ -289,7 +393,9 @@ class ImageSpan(
+@@ -289,7 +399,12 @@ class ImageSpan(
      onBoxHeightChanged: (() -> Unit)? = null,
    ) {
      this.onBoxHeightChanged = onBoxHeightChanged
 +    viewRef?.get()?.removeOnAttachStateChangeListener(hostAttachListener)
      viewRef = WeakReference(view)
-+    if (animation != null) followHostAttachState(view)
++    animation?.let {
++      followHostAttachState(view)
++      if (view.isAttachedToWindow) it.start()
++    }
      if (!isInline) {
        val availableWidth = getAvailableWidth(view)
        if (availableWidth > 0) {
-@@ -304,6 +410,7 @@ class ImageSpan(
+@@ -304,6 +419,7 @@ class ImageSpan(
          if (!boxHeightReported && boxHeight != placeholderBoxHeight) notifyBoxHeightMayHaveChanged(view)
        }
      }
@@ -241,6 +270,18 @@ index 9aea981..e033160 100644
    }
  
    private fun updateWidthAndRecreate(newWidth: Int) {
+@@ -594,6 +710,11 @@ class ImageSpan(
+   }
+ 
+   companion object {
++    fun releaseHostedBy(view: TextView) {
++      val text = view.text as? Spanned ?: return
++      text.getSpans(0, text.length, ImageSpan::class.java).forEach { it.releaseHost(view) }
++    }
++
+     private val transparentDrawable by lazy { Color.TRANSPARENT.toDrawable() }
+     private val cacheExecutor = Executors.newSingleThreadExecutor()
+   }
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkSpan.kt
 index ff00069..75f1228 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkSpan.kt
