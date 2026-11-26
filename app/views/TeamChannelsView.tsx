@@ -574,7 +574,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 
 	renderScroll = () => {
 		const { loading, data, search } = this.state;
-		const { insets } = this.props;
+		const { insets, theme } = this.props;
 		const { isFiltering } = this;
 		if (loading) {
 			return <BackgroundContainer loading />;
@@ -594,6 +594,7 @@ class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsVi
 				renderItem={this.renderItem}
 				getItemLayout={this.getItemLayout}
 				removeClippedSubviews={isIOS}
+				style={{ backgroundColor: themes[theme].surfaceTint }}
 				contentInsetAdjustmentBehavior={nativeHeaderContentInset}
 				keyboardShouldPersistTaps='always'
 				onEndReached={() => this.load()}

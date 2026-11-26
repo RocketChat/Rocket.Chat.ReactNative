@@ -170,10 +170,8 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 					keyExtractor={item => item.rid}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.isSearch ? this.renderSearch : this.renderInfoText}
-					contentContainerStyle={{
-						backgroundColor: isIOS ? themes[theme].surfaceHover : themes[theme].surfaceRoom,
-						paddingBottom: insets.bottom
-					}}
+					style={{ backgroundColor: isIOS ? themes[theme].surfaceHover : themes[theme].surfaceRoom }}
+					contentContainerStyle={{ paddingBottom: insets.bottom }}
 					keyboardShouldPersistTaps='always'
 				/>
 			</SafeAreaView>
