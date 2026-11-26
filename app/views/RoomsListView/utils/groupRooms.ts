@@ -87,14 +87,11 @@ const roomsGroup = (
 	{ collapsedGroups, title, unreadOptions = NO_UNREAD_OPTIONS, keepWhenEmpty = false }: RoomsGroupOptions
 ) => {
 	const { showUnreads, keepUnreadsOnTop } = unreadOptions;
-	if (!rooms.length && !(header && keepWhenEmpty)) {
+	if (!rooms.length && !keepWhenEmpty) {
 		return [];
 	}
 	const [unreadRooms, readRooms] = partition(rooms, filterIsUnread);
 	const orderedRooms = keepUnreadsOnTop ? [...unreadRooms, ...readRooms] : rooms;
-	if (!header) {
-		return orderedRooms;
-	}
 	const collapsed = collapsedGroups.has(header);
 	if (!collapsed) {
 		return [sectionHeader({ rooms, badgeSourceRooms: rooms, header, title }), ...orderedRooms];
@@ -161,8 +158,11 @@ const groupRooms = (
 	});
 
 	return visibleGroups.flatMap(key => {
-		const header = key === CONVERSATIONS_GROUP ? (hasChatsHeader ? CHATS_HEADER : '') : key;
-		return roomsGroup(groups.get(key) ?? [], header, {
+		const rooms = groups.get(key) ?? [];
+		if (key === CONVERSATIONS_GROUP && !hasChatsHeader) {
+			return rooms;
+		}
+		return roomsGroup(rooms, key === CONVERSATIONS_GROUP ? CHATS_HEADER : key, {
 			collapsedGroups,
 			title: customCategoryNames.get(key),
 			unreadOptions: categoryUnreadOptions.get(key),
