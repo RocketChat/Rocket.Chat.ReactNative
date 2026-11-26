@@ -98,6 +98,15 @@ describe('getSlashCommands', () => {
 		expect(updated?.record.description).toBe('description 1');
 	});
 
+	it('deletes every stored command when the server lists none', async () => {
+		mockStored.push({ id: 'command1' });
+		servePages([], 2);
+
+		await getSlashCommands();
+
+		expect(batchedIds()).toEqual([['destroy', 'command1']]);
+	});
+
 	it('saves into the workspace that was active when the sync started', async () => {
 		mockGet.mockImplementationOnce(() => {
 			mockActiveWorkspace.current = 'other';
