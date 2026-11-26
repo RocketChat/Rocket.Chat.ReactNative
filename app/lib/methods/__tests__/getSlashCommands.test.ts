@@ -11,8 +11,6 @@ jest.mock('../../services/sdk', () => ({
 	}
 }));
 
-jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
-
 const mockStored: StoredRecord[] = [];
 const mockBatch = jest.fn();
 const mockOtherWorkspaceBatch = jest.fn();
@@ -112,13 +110,27 @@ describe('getSlashCommands', () => {
 		expect(batchedIds()).toEqual([['create', 'command1']]);
 	});
 
+	it('stops paging when the workspace changes between pages', async () => {
+		mockStored.push({ id: 'command1' });
+		mockGet.mockImplementationOnce(() => {
+			mockActiveWorkspace.current = 'other';
+			return Promise.resolve({ success: true, appsLoaded: true, commands: [command(1)], offset: 0, count: 1, total: 2 });
+		});
+
+		await getSlashCommands();
+
+		expect(mockGet).toHaveBeenCalledTimes(1);
+		expect(mockBatch).not.toHaveBeenCalled();
+		expect(mockOtherWorkspaceBatch).not.toHaveBeenCalled();
+	});
+
 	it('leaves the stored commands alone when a later page fails', async () => {
 		mockStored.push({ id: 'command1' });
 		mockGet
 			.mockResolvedValueOnce({ success: true, appsLoaded: true, commands: [command(1)], offset: 0, count: 1, total: 2 })
 			.mockRejectedValueOnce(new Error('network'));
 
-		await getSlashCommands();
+		await expect(getSlashCommands()).rejects.toThrow('network');
 
 		expect(mockBatch).not.toHaveBeenCalled();
 	});

@@ -2,21 +2,26 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import database from '../database';
 import { type TAppDatabase } from '../database/interfaces';
-import log from './helpers/log';
 import protectedFunction from './helpers/protectedFunction';
 import { type ISlashCommandResult, type TSlashCommandModel } from '~/definitions/ISlashCommand';
 import sdk from '../services/sdk';
 
 const EVERY_COMMAND_THE_SERVER_ALLOWS = 0;
 
-const fetchSlashCommands = async (fetched: ISlashCommandResult[] = []): Promise<ISlashCommandResult[] | null> => {
+const fetchSlashCommands = async (
+	db: TAppDatabase,
+	fetched: ISlashCommandResult[] = []
+): Promise<ISlashCommandResult[] | null> => {
 	const page = await sdk.get('commands.list', { offset: fetched.length, count: EVERY_COMMAND_THE_SERVER_ALLOWS });
 	if (!page.success || page.appsLoaded === false) {
 		return null;
 	}
 	const commands = [...fetched, ...page.commands];
 	const hasMorePages = page.commands.length > 0 && commands.length < page.total;
-	return hasMorePages ? fetchSlashCommands(commands) : commands;
+	if (!hasMorePages) {
+		return commands;
+	}
+	return database.active === db ? fetchSlashCommands(db, commands) : null;
 };
 
 const saveSlashCommands = async (db: TAppDatabase, commands: ISlashCommandResult[]) => {
@@ -55,12 +60,8 @@ const saveSlashCommands = async (db: TAppDatabase, commands: ISlashCommandResult
 
 export async function getSlashCommands() {
 	const db = database.active;
-	try {
-		const commands = await fetchSlashCommands();
-		if (commands) {
-			await saveSlashCommands(db, commands);
-		}
-	} catch (e) {
-		log(e);
+	const commands = await fetchSlashCommands(db);
+	if (commands) {
+		await saveSlashCommands(db, commands);
 	}
 }
