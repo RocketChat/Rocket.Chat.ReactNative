@@ -218,6 +218,29 @@ describe('AudioManager', () => {
 		expect(players).toHaveLength(5);
 	});
 
+	it('setOnPlaybackStatusUpdate hands a new listener the loaded player status', () => {
+		const { AudioManager, players } = setup();
+		const audioKey = AudioManager.loadAudio({ msgId: 'a', rid: 'room', uri: 'file://x' });
+		const pausedAtThirtySeconds = { isLoaded: true, playing: false, currentTime: 30, duration: 60 } as AudioStatus;
+		players[0].currentStatus = pausedAtThirtySeconds;
+		const callback = jest.fn();
+
+		AudioManager.setOnPlaybackStatusUpdate(audioKey, callback);
+
+		expect(callback).toHaveBeenCalledWith(pausedAtThirtySeconds);
+	});
+
+	it('setOnPlaybackStatusUpdate waits for a player still loading', () => {
+		const { AudioManager, players } = setup();
+		const audioKey = AudioManager.loadAudio({ msgId: 'a', rid: 'room', uri: 'file://x' });
+		players[0].currentStatus = { isLoaded: false } as AudioStatus;
+		const callback = jest.fn();
+
+		AudioManager.setOnPlaybackStatusUpdate(audioKey, callback);
+
+		expect(callback).not.toHaveBeenCalled();
+	});
+
 	it('room cleanup removes completed audio state and releases live players only in that room', async () => {
 		const { AudioManager, players } = setup();
 		const completedKey = AudioManager.loadAudio({ msgId: 'a', rid: 'room', uri: 'file://x' });

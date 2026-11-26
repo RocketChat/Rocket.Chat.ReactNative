@@ -10,6 +10,13 @@ workspace 'RocketChat'
 
 prepare_react_native_project!
 
+def download_audio_api_prebuilt_binaries
+  audio_api_dir = File.dirname(`node --print "require.resolve('react-native-audio-api/package.json')"`)
+  system('bash', File.join(audio_api_dir, 'scripts/download-prebuilt-binaries.sh'), 'ios', 'skipffmpeg', exception: true)
+end
+
+download_audio_api_prebuilt_binaries
+
 def all_pods
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
   pod 'MMKV', :modular_headers => true

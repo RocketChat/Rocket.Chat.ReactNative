@@ -1,5 +1,6 @@
 import { type Database, type Collection } from '@nozbe/watermelondb';
 
+import type { AUDIO_WAVEFORMS_TABLE } from './model/AudioWaveform';
 import type { CUSTOM_EMOJIS_TABLE } from './model/CustomEmoji';
 import type { FREQUENTLY_USED_EMOJIS_TABLE } from './model/FrequentlyUsedEmoji';
 import type { MESSAGES_TABLE } from './model/Message';
@@ -16,6 +17,7 @@ import type { UPLOADS_TABLE } from './model/Upload';
 import type { USERS_TABLE } from './model/User';
 import type { SERVERS_TABLE } from './model/servers/Server';
 import type { LOGGED_USERS_TABLE } from './model/servers/User';
+import type { TAudioWaveformModel } from '~/definitions/IAudioWaveform';
 import type { TCustomEmojiModel, TFrequentlyUsedEmojiModel } from '~/definitions/IEmoji';
 import type { TLoggedUserModel } from '~/definitions/ILoggedUser';
 import type { TMessageModel } from '~/definitions/IMessage';
@@ -45,7 +47,8 @@ export type TAppDatabaseNames =
 	| typeof ROLES_TABLE
 	| typeof PERMISSIONS_TABLE
 	| typeof SLASH_COMMANDS_TABLE
-	| typeof USERS_TABLE;
+	| typeof USERS_TABLE
+	| typeof AUDIO_WAVEFORMS_TABLE;
 
 // Verify if T extends one type from TAppDatabaseNames, and if is truly,
 // returns the specific model type.
@@ -76,7 +79,9 @@ type ObjectType<T> = T extends typeof SUBSCRIPTIONS_TABLE
 												? TSlashCommandModel
 												: T extends typeof USERS_TABLE
 													? TUserModel
-													: never;
+													: T extends typeof AUDIO_WAVEFORMS_TABLE
+														? TAudioWaveformModel
+														: never;
 
 export type TAppDatabase = {
 	get: <T extends TAppDatabaseNames>(db: T) => Collection<ObjectType<T>>;
