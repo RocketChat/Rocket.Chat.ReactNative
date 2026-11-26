@@ -37,6 +37,7 @@ import { localAuthenticate } from '~/lib/methods/helpers/localAuthentication';
 import { setUserPresenceOnline, setUserPresenceAway } from '~/lib/services/restApi';
 import { recoverSocket } from '~/lib/services/socketHealth';
 import log from '~/lib/methods/helpers/log';
+import NativePrivacyCover from '~/lib/native/NativePrivacyCover';
 
 async function flushSagaMicrotasks(): Promise<void> {
 	await Promise.resolve();
@@ -151,5 +152,103 @@ describe('state saga — background', () => {
 		await flushSagaMicrotasks();
 
 		expect(setUserPresenceAway).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe('state saga — privacy cover on foreground', () => {
+	const nativePrivacyCover = jest.mocked(NativePrivacyCover);
+	const mockedLocalAuthenticate = jest.mocked(localAuthenticate);
+	const mockedSetUserPresenceOnline = jest.mocked(setUserPresenceOnline);
+
+	const flushPromises = () => new Promise(resolve => setImmediate(resolve));
+
+	const deferred = () => {
+		let resolve!: () => void;
+		const promise = new Promise<void>(res => {
+			resolve = res;
+		});
+		return { promise, resolve };
+	};
+
+	function setupSignedInStore(root: RootEnum) {
+		const store = setupStore();
+		store.dispatch(appStart({ root }));
+		store.dispatch(selectServerSuccess({ server: HOST, name: 'open.rocket.chat', version: '6.0.0' }));
+		store.dispatch(loginSuccess({ id: 'user-1', token: 'token-abc' } as any));
+		return store;
+	}
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('releases the cover for its own trip only after the lock decision completes', async () => {
+		const lockDecision = deferred();
+		mockedLocalAuthenticate.mockReturnValueOnce(lockDecision.promise);
+		nativePrivacyCover.getCoverToken.mockReturnValueOnce(4);
+		const store = setupSignedInStore(RootEnum.ROOT_INSIDE);
+
+		store.dispatch({ type: APP_STATE.FOREGROUND });
+		await flushPromises();
+
+		expect(nativePrivacyCover.getCoverToken).toHaveBeenCalledTimes(1);
+		expect(nativePrivacyCover.releaseCover).not.toHaveBeenCalled();
+
+		lockDecision.resolve();
+		await flushPromises();
+
+		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledWith(4);
+	});
+
+	it('releases the cover without waiting for the presence update', async () => {
+		mockedLocalAuthenticate.mockResolvedValueOnce(undefined);
+		mockedSetUserPresenceOnline.mockReturnValueOnce(new Promise(() => {}));
+		nativePrivacyCover.getCoverToken.mockReturnValueOnce(3);
+		const store = setupSignedInStore(RootEnum.ROOT_INSIDE);
+
+		store.dispatch({ type: APP_STATE.FOREGROUND });
+		await flushPromises();
+
+		expect(mockedSetUserPresenceOnline).toHaveBeenCalled();
+		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledWith(3);
+	});
+
+	it('releases the cover when authentication fails', async () => {
+		mockedLocalAuthenticate.mockRejectedValueOnce(new Error('server record missing'));
+		nativePrivacyCover.getCoverToken.mockReturnValueOnce(2);
+		const store = setupSignedInStore(RootEnum.ROOT_INSIDE);
+
+		store.dispatch({ type: APP_STATE.FOREGROUND });
+		await flushPromises();
+
+		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledWith(2);
+	});
+
+	it('releases the cover when the app is outside the signed-in area', async () => {
+		nativePrivacyCover.getCoverToken.mockReturnValueOnce(1);
+		const store = setupSignedInStore(RootEnum.ROOT_OUTSIDE);
+
+		store.dispatch({ type: APP_STATE.FOREGROUND });
+		await flushPromises();
+
+		expect(mockedLocalAuthenticate).not.toHaveBeenCalled();
+		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledWith(1);
+	});
+
+	it('leaves the release to the newer foreground when one supersedes it', async () => {
+		const firstLockDecision = deferred();
+		mockedLocalAuthenticate.mockReturnValueOnce(firstLockDecision.promise).mockResolvedValueOnce(undefined);
+		nativePrivacyCover.getCoverToken.mockReturnValueOnce(1).mockReturnValueOnce(2);
+		const store = setupSignedInStore(RootEnum.ROOT_INSIDE);
+
+		store.dispatch({ type: APP_STATE.FOREGROUND });
+		await flushPromises();
+		store.dispatch({ type: APP_STATE.FOREGROUND });
+		await flushPromises();
+		firstLockDecision.resolve();
+		await flushPromises();
+
+		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledTimes(1);
+		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledWith(2);
 	});
 });

@@ -7,4 +7,4 @@ export interface Spec extends TurboModule {
 	releaseCover(token: number): void;
 }
 
-export default TurboModuleRegistry.get<Spec>('PrivacyCover');
+export default TurboModuleRegistry.getEnforcing<Spec>('PrivacyCover');

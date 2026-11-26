@@ -9,7 +9,8 @@
 
 @implementation PrivacyCover {
   BOOL _enabled;
-  std::atomic<NSInteger> _coverToken;
+  NSInteger _coverToken;
+  std::atomic<NSInteger> _activatedToken;
   NSInteger _releasedToken;
   UIView *_coverView;
 }
@@ -31,6 +32,7 @@ RCT_EXPORT_MODULE()
   if (self = [super init]) {
     _enabled = NO;
     _coverToken = 0;
+    _activatedToken = 0;
     _releasedToken = 0;
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(sceneWillDeactivate:) name:UISceneWillDeactivateNotification object:nil];
@@ -64,6 +66,7 @@ RCT_EXPORT_MODULE()
 
 - (void)sceneDidActivate:(NSNotification *)notification
 {
+  _activatedToken = _coverToken;
   if (_releasedToken == _coverToken) {
     [self hideCover];
   }
@@ -76,7 +79,7 @@ RCT_EXPORT_MODULE()
 
 - (NSNumber *)getCoverToken
 {
-  return @(_coverToken.load());
+  return @(_activatedToken.load());
 }
 
 - (void)releaseCover:(double)token
@@ -102,19 +105,14 @@ RCT_EXPORT_MODULE()
   UIView *coverView = [self makeCoverView];
   coverView.frame = window.bounds;
   coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+  coverView.accessibilityViewIsModal = YES;
   [window addSubview:coverView];
   _coverView = coverView;
 }
 
 - (UIView *)makeCoverView
 {
-  UIViewController *launchScreen = [[UIStoryboard storyboardWithName:@"LaunchScreen" bundle:nil] instantiateInitialViewController];
-  if (launchScreen.view != nil) {
-    return launchScreen.view;
-  }
-  UIView *plainCover = [[UIView alloc] init];
-  plainCover.backgroundColor = UIColor.systemBackgroundColor;
-  return plainCover;
+  return [[UIStoryboard storyboardWithName:@"LaunchScreen" bundle:nil] instantiateInitialViewController].view;
 }
 
 - (void)hideCover

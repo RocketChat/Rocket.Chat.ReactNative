@@ -295,6 +295,15 @@ jest.mock('./app/lib/native/NativeSSLPinningAndroid', () => ({
 	}
 }));
 
+jest.mock('./app/lib/native/NativePrivacyCover', () => ({
+	__esModule: true,
+	default: {
+		setEnabled: jest.fn(),
+		getCoverToken: jest.fn(() => 0),
+		releaseCover: jest.fn()
+	}
+}));
+
 jest.mock('./app/lib/methods/helpers/externalInput', () => ({
 	isExternalKeyboardConnected: jest.fn(() => false)
 }));

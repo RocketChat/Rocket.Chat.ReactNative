@@ -17,11 +17,6 @@ jest.mock('~/lib/database', () => ({
 	}
 }));
 
-jest.mock('~/lib/native/NativePrivacyCover', () => ({
-	__esModule: true,
-	default: { setEnabled: jest.fn(), getCoverToken: jest.fn(), releaseCover: jest.fn() }
-}));
-
 import { appStart } from '~/actions/app';
 import { loginRequest, loginSuccess } from '~/actions/login';
 import { selectServerSuccess } from '~/actions/server';
@@ -30,7 +25,7 @@ import NativePrivacyCover from '~/lib/native/NativePrivacyCover';
 import reducers from '~/reducers';
 import { usePrivacyCoverSync } from '..';
 
-const setEnabled = jest.mocked(NativePrivacyCover!.setEnabled);
+const setEnabled = jest.mocked(NativePrivacyCover.setEnabled);
 
 const renderSignedInWithScreenLock = () => {
 	const store = createStore(reducers);

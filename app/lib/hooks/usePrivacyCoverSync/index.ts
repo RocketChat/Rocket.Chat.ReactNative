@@ -4,7 +4,7 @@ import { Q } from '@nozbe/watermelondb';
 import database from '~/lib/database';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
 import { useObservable } from '~/lib/hooks/useObservable';
-import { setPrivacyCoverEnabled } from '~/lib/methods/helpers/privacyCover';
+import NativePrivacyCover from '~/lib/native/NativePrivacyCover';
 import { RootEnum } from '~/definitions/redux/TRootEnum';
 
 const observeServerRecords = (server: string) =>
@@ -21,6 +21,6 @@ export const usePrivacyCoverSync = (): void => {
 	const enabled = isInsideApp && isScreenLockOn;
 
 	useEffect(() => {
-		setPrivacyCoverEnabled(enabled);
+		NativePrivacyCover.setEnabled(enabled);
 	}, [enabled]);
 };

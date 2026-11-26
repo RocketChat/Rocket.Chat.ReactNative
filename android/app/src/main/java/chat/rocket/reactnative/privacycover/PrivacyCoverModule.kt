@@ -11,10 +11,10 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.UiThreadUtil
-import com.facebook.react.common.LifecycleState
 
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.R
@@ -26,15 +26,15 @@ class PrivacyCoverModule(reactContext: ReactApplicationContext) :
     NativePrivacyCoverSpec(reactContext), Application.ActivityLifecycleCallbacks {
 
     private var enabled = false
-    private val coverToken = AtomicInteger(0)
+    private var coverToken = 0
+    private val activatedToken = AtomicInteger(0)
     private var releasedToken = 0
-    private var isResumed = false
     private var flagSecureSet = false
     private var coverView: View? = null
+    private var contentHiddenFromAccessibility: View? = null
 
     init {
         (reactContext.applicationContext as Application).registerActivityLifecycleCallbacks(this)
-        isResumed = reactContext.lifecycleState == LifecycleState.RESUMED
     }
 
     override fun invalidate() {
@@ -49,15 +49,15 @@ class PrivacyCoverModule(reactContext: ReactApplicationContext) :
         }
     }
 
-    override fun getCoverToken(): Double = coverToken.get().toDouble()
+    override fun getCoverToken(): Double = activatedToken.get().toDouble()
 
     override fun releaseCover(token: Double) {
         UiThreadUtil.runOnUiThread {
-            if (token.toInt() != coverToken.get()) {
+            if (token.toInt() != coverToken) {
                 return@runOnUiThread
             }
             releasedToken = token.toInt()
-            if (isResumed) {
+            if (isMainActivityResumed()) {
                 hideCover()
             }
         }
@@ -65,7 +65,6 @@ class PrivacyCoverModule(reactContext: ReactApplicationContext) :
 
     override fun onActivityPaused(activity: Activity) {
         if (activity !is MainActivity) return
-        isResumed = false
         if (enabled && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             activity.window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
             flagSecureSet = true
@@ -74,27 +73,30 @@ class PrivacyCoverModule(reactContext: ReactApplicationContext) :
 
     override fun onActivityStopped(activity: Activity) {
         if (activity !is MainActivity) return
-        val token = coverToken.incrementAndGet()
+        coverToken += 1
         if (enabled) {
             showCover(activity)
         } else {
-            releasedToken = token
+            releasedToken = coverToken
         }
     }
 
     override fun onActivityResumed(activity: Activity) {
         if (activity !is MainActivity) return
-        isResumed = true
+        activatedToken.set(coverToken)
         applyRecentsScreenshot(activity)
         clearFlagSecure(activity)
-        if (releasedToken == coverToken.get()) {
+        if (releasedToken == coverToken) {
             hideCover()
+        } else {
+            showCover(activity)
         }
     }
 
     override fun onActivityDestroyed(activity: Activity) {
         if (activity !is MainActivity) return
         coverView = null
+        contentHiddenFromAccessibility = null
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
@@ -102,6 +104,11 @@ class PrivacyCoverModule(reactContext: ReactApplicationContext) :
     override fun onActivityStarted(activity: Activity) = Unit
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+
+    private fun isMainActivityResumed(): Boolean {
+        val activity = reactApplicationContext.currentActivity as? MainActivity ?: return false
+        return activity.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
+    }
 
     private fun applyRecentsScreenshot(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -133,10 +140,15 @@ class PrivacyCoverModule(reactContext: ReactApplicationContext) :
         }
         decorView.addView(cover, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         coverView = cover
+        contentHiddenFromAccessibility = activity.findViewById<View>(android.R.id.content)?.apply {
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+        }
     }
 
     private fun hideCover() {
         coverView?.let { (it.parent as? ViewGroup)?.removeView(it) }
         coverView = null
+        contentHiddenFromAccessibility?.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+        contentHiddenFromAccessibility = null
     }
 }

@@ -1,4 +1,4 @@
-import { cancelled, select, takeLatest } from 'redux-saga/effects';
+import { select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
@@ -7,7 +7,7 @@ import { RootEnum } from '../definitions/redux/TRootEnum';
 import { recoverSocket } from '../lib/services/socketHealth';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';
-import { claimPrivacyCover, releasePrivacyCover } from '../lib/methods/helpers/privacyCover';
+import NativePrivacyCover from '../lib/native/NativePrivacyCover';
 
 const isAuthAndConnected = function* isAuthAndConnected() {
 	const login = yield select(state => state.login);
@@ -44,18 +44,14 @@ const resumeSessionOnForeground = function* resumeSessionOnForeground() {
 };
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
-	const coverToken = claimPrivacyCover();
+	const coverToken = NativePrivacyCover.getCoverToken();
 	let isAuthenticatedOnForeground = false;
 	try {
 		isAuthenticatedOnForeground = yield authenticateOnForeground();
 	} catch (e) {
 		log(e);
-	} finally {
-		const supersededByNewerForeground = yield cancelled();
-		if (!supersededByNewerForeground) {
-			releasePrivacyCover(coverToken);
-		}
 	}
+	NativePrivacyCover.releaseCover(coverToken);
 	if (isAuthenticatedOnForeground) {
 		yield resumeSessionOnForeground();
 	}

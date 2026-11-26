@@ -11,7 +11,7 @@ import { CustomIcon } from '../containers/CustomIcon';
 import { hasNotch } from '../lib/methods/helpers/deviceInfo';
 import EventEmitter from '../lib/methods/helpers/events';
 import { useDeferredModalSettle } from '../lib/hooks/useDeferredModalSettle';
-import { releasePrivacyCover } from '../lib/methods/helpers/privacyCover';
+import NativePrivacyCover from '../lib/native/NativePrivacyCover';
 import { type BiometricInvalidationReason } from '../definitions/IBiometricTrustStore';
 import Touch from '../containers/Touch';
 
@@ -34,19 +34,19 @@ const styles = StyleSheet.create({
 	}
 });
 
+const releaseActivePrivacyCover = () => NativePrivacyCover.releaseCover(NativePrivacyCover.getCoverToken());
+
 const ScreenLockedView = () => {
 	const [visible, setVisible] = useState(false);
+	const isVisibleRef = useRef(false);
 	const [data, setData] = useState<IData>({});
 	const [requestId, setRequestId] = useState(0);
 	const currentRequestId = useRef(0);
 	const { onShow, defer, onModalHide } = useDeferredModalSettle<IData>();
 
 	useDeepCompareEffect(() => {
-		if (!isEmpty(data)) {
-			setVisible(true);
-		} else {
-			setVisible(false);
-		}
+		isVisibleRef.current = !isEmpty(data);
+		setVisible(isVisibleRef.current);
 	}, [data]);
 
 	const showScreenLock = useCallback(
@@ -55,11 +55,11 @@ const ScreenLockedView = () => {
 			currentRequestId.current += 1;
 			setRequestId(currentRequestId.current);
 			setData(args);
-			if (visible) {
-				releasePrivacyCover();
+			if (isVisibleRef.current) {
+				releaseActivePrivacyCover();
 			}
 		},
-		[onShow, visible]
+		[onShow]
 	);
 
 	useEffect(() => {
@@ -77,7 +77,10 @@ const ScreenLockedView = () => {
 		setData({});
 	};
 
-	const onSubmit = () => settle(requestId, data.submit);
+	const onSubmit = () => {
+		releaseActivePrivacyCover();
+		settle(requestId, data.submit);
+	};
 
 	const onCancel = () => settle(requestId, data.cancel);
 
