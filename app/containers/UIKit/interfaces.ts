@@ -6,6 +6,9 @@ import type {
 	Markdown,
 	ModalView,
 	PlainText,
+	PreviewBlockBase,
+	PreviewBlockWithPreview,
+	PreviewBlockWithThumb,
 	ServerInteraction,
 	ViewBlockActionUserInteraction,
 	ViewClosedUserInteraction,
@@ -287,3 +290,11 @@ export interface IInfoCard extends Omit<InfoCardBlock, 'rows'> {
 }
 export type IBlockActionForView = ViewBlockActionUserInteraction;
 export type IViewClosedInteraction = ViewClosedUserInteraction;
+
+export interface IPreview extends Partial<Pick<PreviewBlockBase, 'title' | 'description'>> {
+	preview?: PreviewBlockWithPreview['preview'];
+	thumb?: PreviewBlockWithThumb['thumb'];
+	externalUrl?: string;
+	footer?: Omit<IContext, 'parser'>;
+	parser: IParser;
+}

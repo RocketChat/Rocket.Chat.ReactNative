@@ -30,6 +30,7 @@ import { Overflow } from './Overflow';
 import { Icon } from './Icon';
 import { IconButton } from './IconButton';
 import { InfoCard } from './InfoCard';
+import { Preview } from './Preview';
 import { ThemeContext } from '~/theme';
 import {
 	type IActions,
@@ -41,6 +42,7 @@ import {
 	type IInfoCard,
 	type IInputIndex,
 	type IParser,
+	type IPreview,
 	type ISection
 } from './interfaces';
 import VideoConferenceBlock from './VideoConferenceBlock';
@@ -66,12 +68,13 @@ const styles = StyleSheet.create({
 
 const plainText = ({ text } = { text: '' }) => text;
 
+const LAYOUT_BLOCK_TYPES_MISSING_FROM_UI_KIT_MESSAGES = ['info_card', 'markdown'];
+
 class MessageParser extends UiKitParserMessage<ReactElement> {
 	constructor() {
 		super();
-		// Compatibility for @rocket.chat/ui-kit@0.39.0 where info_card is exported
-		// but still missing from message allowed layout block types.
-		this.allowedLayoutBlockTypes.add('info_card' as any);
+		const allowedLayoutBlockTypes: Set<string> = this.allowedLayoutBlockTypes;
+		LAYOUT_BLOCK_TYPES_MISSING_FROM_UI_KIT_MESSAGES.forEach(type => allowedLayoutBlockTypes.add(type));
 	}
 
 	get current() {
@@ -165,6 +168,14 @@ class MessageParser extends UiKitParserMessage<ReactElement> {
 
 	info_card(args: IInfoCard): ReactElement {
 		return <InfoCard {...args} parser={this.current} />;
+	}
+
+	preview(args: Omit<IPreview, 'parser'>): ReactElement {
+		return <Preview {...args} parser={this.current} />;
+	}
+
+	markdown({ text }: { text: string }): ReactElement {
+		return <Markdown msg={text} />;
 	}
 
 	multiStaticSelect(element: IElement, context: BlockContext): ReactElement {

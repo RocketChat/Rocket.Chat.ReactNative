@@ -1,22 +1,18 @@
 import { useContext, useEffect, useState, type ReactElement } from 'react';
 import { StyleSheet, Text, View, type ImageStyle, type ViewStyle } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
 import { Image, type ImageLoadEventData } from 'expo-image';
 import axios from 'axios';
 
 import MessageActionTouchable from './Touchable/MessageActionTouchable';
-import openLink from '~/lib/methods/helpers/openLink';
 import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import sharedStyles from '~/views/Styles';
 import { useTheme } from '~/theme';
-import { LISTENER } from '~/containers/Toast';
-import EventEmitter from '~/lib/methods/helpers/events';
-import I18n from '~/i18n';
 import { type IUrl } from '~/definitions/IUrl';
 import { WidthAwareContext } from './WidthAwareView';
 import { useUrls } from '../stores/MessageStore';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
 import { useSetting } from '~/lib/hooks/useSetting';
+import { useLinkPressHandlers } from '~/lib/hooks/useLinkPressHandlers';
 
 const styles = StyleSheet.create({
 	container: {
@@ -87,20 +83,21 @@ const getImageStyles = (dimensions: ImageDimensions, maxSize: number) => {
 	return { imageStyle, containerStyle };
 };
 
-const UrlImage = ({
+export const UrlImage = ({
 	image,
 	hasContent,
 	knownDimensions
 }: {
 	image: string;
 	hasContent: boolean;
-	knownDimensions?: ImageDimensions;
+	knownDimensions?: Partial<ImageDimensions>;
 }) => {
 	const { colors } = useTheme();
 	const maxSize = useContext(WidthAwareContext);
 	const [loadedDimensions, setLoadedDimensions] = useState<ImageDimensions | null>(null);
 	const [failed, setFailed] = useState(false);
-	const dimensions = knownDimensions ?? loadedDimensions;
+	const { width: knownWidth, height: knownHeight } = knownDimensions ?? {};
+	const dimensions = knownWidth && knownHeight ? { width: knownWidth, height: knownHeight } : loadedDimensions;
 
 	if (failed) {
 		return null;
@@ -152,17 +149,11 @@ const useImageUrl = (url: IUrl): string | null => {
 };
 
 const Url = ({ url }: { url: IUrl }) => {
-	const { colors, theme } = useTheme();
+	const { colors } = useTheme();
 	const API_Embed = useSetting('API_Embed') as boolean;
 	const imageUrl = useImageUrl(url);
-	const knownDimensions = url.imageWidth && url.imageHeight ? { width: url.imageWidth, height: url.imageHeight } : undefined;
 
-	const onPress = () => openLink(url.url, theme);
-
-	const onLongPress = () => {
-		Clipboard.setString(url.url);
-		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
-	};
+	const { onPress, onLongPress } = useLinkPressHandlers(url.url);
 
 	const hasContent = !!(url.title || url.description);
 
@@ -185,7 +176,14 @@ const Url = ({ url }: { url: IUrl }) => {
 				}
 			]}>
 			<>
-				{imageUrl ? <UrlImage key={imageUrl} image={imageUrl} hasContent={hasContent} knownDimensions={knownDimensions} /> : null}
+				{imageUrl ? (
+					<UrlImage
+						key={imageUrl}
+						image={imageUrl}
+						hasContent={hasContent}
+						knownDimensions={{ width: url.imageWidth, height: url.imageHeight }}
+					/>
+				) : null}
 				{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}
 			</>
 		</MessageActionTouchable>
