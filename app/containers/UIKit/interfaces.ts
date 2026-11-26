@@ -292,7 +292,7 @@ export type IBlockActionForView = ViewBlockActionUserInteraction;
 export type IViewClosedInteraction = ViewClosedUserInteraction;
 
 export type IPreviewImage = PreviewBlockWithPreview['preview'];
-export interface IPreview extends Pick<PreviewBlockBase, 'title' | 'description'> {
+export interface IPreview extends Partial<Pick<PreviewBlockBase, 'title' | 'description'>> {
 	preview?: IPreviewImage;
 	thumb?: PreviewBlockWithThumb['thumb'];
 	externalUrl?: string;

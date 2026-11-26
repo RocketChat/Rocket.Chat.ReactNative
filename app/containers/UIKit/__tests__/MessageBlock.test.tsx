@@ -2,10 +2,13 @@ import { Provider } from 'react-redux';
 import { StyleSheet } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { fireEvent, render, screen } from '@testing-library/react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import { MessageBlock, ModalBlockWithContext } from '../MessageBlock';
 import { mockedStore } from '~/reducers/mockedStore';
 import openLink from '~/lib/methods/helpers/openLink';
+import EventEmitter from '~/lib/methods/helpers/events';
+import { LISTENER } from '~/containers/Toast';
 
 jest.mock('~/lib/methods/helpers/openLink', () => ({ __esModule: true, default: jest.fn() }));
 
@@ -138,6 +141,23 @@ describe('MessageBlock', () => {
 		renderAppMessage([{ type: 'preview', appId: 'pr-status', blockId: 'preview', footer: previewBlock.footer }]);
 
 		expect(screen.getByText(/Open · ✅ Ready to merge/)).toBeOnTheScreen();
+	});
+
+	it('renders a preview block sent with null title and description', () => {
+		renderAppMessage([{ ...previewBlock, title: null, description: null }]);
+
+		expect(screen.getByText(/Open · ✅ Ready to merge/)).toBeOnTheScreen();
+	});
+
+	it('copies the preview external URL when the card is long-pressed', () => {
+		const emit = jest.spyOn(EventEmitter, 'emit');
+		renderAppMessage(prStatusBlocks);
+
+		fireEvent(screen.getByText('#7940 chore: bump react-native-reanimated to 4.8.0'), 'longPress');
+
+		expect(Clipboard.setString).toHaveBeenCalledWith('https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/7940');
+		expect(emit).toHaveBeenCalledWith(LISTENER, { message: 'Copied to clipboard!' });
+		emit.mockRestore();
 	});
 
 	it('loads the new preview image after a failed one is replaced', () => {

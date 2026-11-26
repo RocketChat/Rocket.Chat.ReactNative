@@ -73,7 +73,8 @@ const LAYOUT_BLOCK_TYPES_MISSING_FROM_UI_KIT_MESSAGES = ['info_card', 'markdown'
 class MessageParser extends UiKitParserMessage<ReactElement> {
 	constructor() {
 		super();
-		LAYOUT_BLOCK_TYPES_MISSING_FROM_UI_KIT_MESSAGES.forEach(type => this.allowedLayoutBlockTypes.add(type as any));
+		const allowedLayoutBlockTypes: Set<string> = this.allowedLayoutBlockTypes;
+		LAYOUT_BLOCK_TYPES_MISSING_FROM_UI_KIT_MESSAGES.forEach(type => allowedLayoutBlockTypes.add(type));
 	}
 
 	get current() {

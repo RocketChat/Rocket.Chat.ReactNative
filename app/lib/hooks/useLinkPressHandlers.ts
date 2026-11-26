@@ -6,12 +6,19 @@ import EventEmitter from '~/lib/methods/helpers/events';
 import openLink from '~/lib/methods/helpers/openLink';
 import { useTheme } from '~/theme';
 
-export const useLinkPressHandlers = (url: string) => {
+export const useLinkPressHandlers = (url?: string) => {
 	const { theme } = useTheme();
 
-	const onPress = () => openLink(url, theme);
+	const onPress = () => {
+		if (url) {
+			openLink(url, theme);
+		}
+	};
 
 	const onLongPress = () => {
+		if (!url) {
+			return;
+		}
 		Clipboard.setString(url);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};

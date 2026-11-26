@@ -8,7 +8,7 @@ import { MarkdownPreview } from '../markdown';
 import { UrlImage } from '../message/components/Urls';
 import { Context } from './Context';
 import { Thumb } from './Image';
-import { type IPreview, type IPreviewImage, type IText } from './interfaces';
+import { type IPreview, type IText } from './interfaces';
 
 const styles = StyleSheet.create({
 	card: {
@@ -44,11 +44,9 @@ const PreviewTitle = ({ text }: { text: IText }) => {
 	);
 };
 
-const measuredDimensions = ({ dimensions }: IPreviewImage) => (dimensions?.width && dimensions?.height ? dimensions : undefined);
-
-export const Preview = ({ title = [], description = [], preview, thumb, externalUrl, footer, parser }: IPreview) => {
+export const Preview = ({ title, description, preview, thumb, externalUrl, footer, parser }: IPreview) => {
 	const { colors } = useTheme();
-	const { onPress, onLongPress } = useLinkPressHandlers(externalUrl ?? '');
+	const { onPress, onLongPress } = useLinkPressHandlers(externalUrl);
 
 	return (
 		<Pressable
@@ -57,15 +55,13 @@ export const Preview = ({ title = [], description = [], preview, thumb, external
 			onLongPress={onLongPress}
 			accessibilityRole={externalUrl ? 'link' : undefined}
 			style={[styles.card, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeLight }]}>
-			{preview?.url ? (
-				<UrlImage key={preview.url} image={preview.url} hasContent knownDimensions={measuredDimensions(preview)} />
-			) : null}
+			{preview?.url ? <UrlImage key={preview.url} image={preview.url} hasContent knownDimensions={preview.dimensions} /> : null}
 			<View style={styles.body}>
 				<View style={styles.content}>
-					{title.map((text, index) => (
+					{(title ?? []).map((text, index) => (
 						<PreviewTitle key={`title-${index}`} text={text} />
 					))}
-					{description.map((text, index) => (
+					{(description ?? []).map((text, index) => (
 						<Fragment key={`description-${index}`}>{parser.text(text)}</Fragment>
 					))}
 					{footer ? <Context {...footer} parser={parser} /> : null}

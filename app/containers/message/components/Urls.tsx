@@ -90,13 +90,14 @@ export const UrlImage = ({
 }: {
 	image: string;
 	hasContent: boolean;
-	knownDimensions?: ImageDimensions;
+	knownDimensions?: Partial<ImageDimensions>;
 }) => {
 	const { colors } = useTheme();
 	const maxSize = useContext(WidthAwareContext);
 	const [loadedDimensions, setLoadedDimensions] = useState<ImageDimensions | null>(null);
 	const [failed, setFailed] = useState(false);
-	const dimensions = knownDimensions ?? loadedDimensions;
+	const { width: knownWidth, height: knownHeight } = knownDimensions ?? {};
+	const dimensions = knownWidth && knownHeight ? { width: knownWidth, height: knownHeight } : loadedDimensions;
 
 	if (failed) {
 		return null;
@@ -151,7 +152,6 @@ const Url = ({ url }: { url: IUrl }) => {
 	const { colors } = useTheme();
 	const API_Embed = useSetting('API_Embed') as boolean;
 	const imageUrl = useImageUrl(url);
-	const knownDimensions = url.imageWidth && url.imageHeight ? { width: url.imageWidth, height: url.imageHeight } : undefined;
 
 	const { onPress, onLongPress } = useLinkPressHandlers(url.url);
 
@@ -176,7 +176,14 @@ const Url = ({ url }: { url: IUrl }) => {
 				}
 			]}>
 			<>
-				{imageUrl ? <UrlImage key={imageUrl} image={imageUrl} hasContent={hasContent} knownDimensions={knownDimensions} /> : null}
+				{imageUrl ? (
+					<UrlImage
+						key={imageUrl}
+						image={imageUrl}
+						hasContent={hasContent}
+						knownDimensions={{ width: url.imageWidth, height: url.imageHeight }}
+					/>
+				) : null}
 				{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}
 			</>
 		</MessageActionTouchable>
