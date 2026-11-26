@@ -4,7 +4,7 @@
 //
 //  Shared TLS / client-certificate handling used by React Native networking and native URLSessions.
 //  Extracted from SSLPinning.h so app extensions (NotificationService) can use `Challenge` without
-//  pulling in the RCTHTTPRequestHandler/EXSessionTaskDispatcher/SRWebSocket categories.
+//  pulling in the RCTHTTPRequestHandler/EXSessionTaskDispatcher categories and the SRWebSocket subclass.
 //
 
 #import <Foundation/NSURLSession.h>
