@@ -59,7 +59,6 @@ class ShareRocketChatRN: UIViewController {
             return
         }
 
-        // Handle URL or Text
         if let firstAttachment = attachments.first {
             if firstAttachment.hasItemConformingToTypeIdentifier("public.url") {
                 firstAttachment.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
@@ -75,25 +74,29 @@ class ShareRocketChatRN: UIViewController {
                 }
                 return
             } else if firstAttachment.hasItemConformingToTypeIdentifier("public.text") {
-                guard let urlAttachment = attachments.first(where: { $0.hasItemConformingToTypeIdentifier("public.url") }) else {
-                    self.handleText(item: firstAttachment)
-                    return
-                }
-                urlAttachment.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
-                    if let url = data as? URL, !url.isFileURL,
-                       let finalUrl = self.shareExtensionURL(params: ["url": url.absoluteString]) {
-                        _ = self.openURL(finalUrl)
-                        self.completeRequest()
-                    } else {
-                        self.handleText(item: firstAttachment)
-                    }
-                }
+                self.handleTextOrWebUrl(text: firstAttachment, attachments: attachments)
                 return
             }
         }
 
         // Handle Media (Images, Videos) and Data (PDFs, etc.) for all attachments
         self.handleMultipleMediaAndData(items: attachments)
+    }
+
+    private func handleTextOrWebUrl(text: NSItemProvider, attachments: [NSItemProvider]) {
+        guard let urlAttachment = attachments.first(where: { $0.hasItemConformingToTypeIdentifier("public.url") }) else {
+            self.handleText(item: text)
+            return
+        }
+        urlAttachment.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, _) in
+            if let url = data as? URL, ["http", "https"].contains(url.scheme?.lowercased()),
+               let finalUrl = self.shareExtensionURL(params: ["url": url.absoluteString]) {
+                _ = self.openURL(finalUrl)
+                self.completeRequest()
+            } else {
+                self.handleText(item: text)
+            }
+        }
     }
 
     private func handleText(item: NSItemProvider) {
