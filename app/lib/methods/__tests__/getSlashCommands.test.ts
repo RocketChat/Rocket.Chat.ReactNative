@@ -15,6 +15,8 @@ jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
 
 const mockStored: StoredRecord[] = [];
 const mockBatch = jest.fn();
+const mockOtherWorkspaceBatch = jest.fn();
+const mockActiveWorkspace = { current: 'signed-in' };
 jest.mock('../../database', () => {
 	const toRecord = (stored: StoredRecord) => ({
 		...stored,
@@ -34,11 +36,16 @@ jest.mock('../../database', () => {
 			return { operation: 'create', record: draft };
 		}
 	};
+	const databaseWithBatch = (batchMock: () => jest.Mock) => ({
+		get: () => collection,
+		write: (writer: () => Promise<unknown>) => writer(),
+		batch: (...args: unknown[]) => batchMock()(...args)
+	});
+	const signedInDatabase = databaseWithBatch(() => mockBatch);
+	const otherDatabase = databaseWithBatch(() => mockOtherWorkspaceBatch);
 	return {
-		active: {
-			get: () => collection,
-			write: (writer: () => Promise<unknown>) => writer(),
-			batch: (...args: unknown[]) => mockBatch(...args)
+		get active() {
+			return mockActiveWorkspace.current === 'signed-in' ? signedInDatabase : otherDatabase;
 		}
 	};
 });
@@ -65,6 +72,7 @@ describe('getSlashCommands', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockStored.length = 0;
+		mockActiveWorkspace.current = 'signed-in';
 	});
 
 	it('pages through commands.list until it has every command', async () => {
@@ -90,6 +98,18 @@ describe('getSlashCommands', () => {
 		]);
 		const updated = batchedOperations().find(({ operation }) => operation === 'update');
 		expect(updated?.record.description).toBe('description 1');
+	});
+
+	it('saves into the workspace that was active when the sync started', async () => {
+		mockGet.mockImplementationOnce(() => {
+			mockActiveWorkspace.current = 'other';
+			return Promise.resolve({ success: true, appsLoaded: true, commands: [command(1)], offset: 0, count: 1, total: 1 });
+		});
+
+		await getSlashCommands();
+
+		expect(mockOtherWorkspaceBatch).not.toHaveBeenCalled();
+		expect(batchedIds()).toEqual([['create', 'command1']]);
 	});
 
 	it('leaves the stored commands alone when a later page fails', async () => {

@@ -1,6 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import database from '../database';
+import { type TAppDatabase } from '../database/interfaces';
 import log from './helpers/log';
 import protectedFunction from './helpers/protectedFunction';
 import { type ISlashCommandResult, type TSlashCommandModel } from '~/definitions/ISlashCommand';
@@ -18,8 +19,7 @@ const fetchSlashCommands = async (fetched: ISlashCommandResult[] = []): Promise<
 	return hasMorePages ? fetchSlashCommands(commands) : commands;
 };
 
-const saveSlashCommands = async (commands: ISlashCommandResult[]) => {
-	const db = database.active;
+const saveSlashCommands = async (db: TAppDatabase, commands: ISlashCommandResult[]) => {
 	const commandsById = new Map(commands.map(command => [command.command, command]));
 	await db.write(async () => {
 		const slashCommandsCollection = db.get('slash_commands');
@@ -54,10 +54,11 @@ const saveSlashCommands = async (commands: ISlashCommandResult[]) => {
 };
 
 export async function getSlashCommands() {
+	const db = database.active;
 	try {
 		const commands = await fetchSlashCommands();
 		if (commands) {
-			await saveSlashCommands(commands);
+			await saveSlashCommands(db, commands);
 		}
 	} catch (e) {
 		log(e);
