@@ -30,7 +30,7 @@ const COMMON_ROOM_ACTIONS = [
 	'room-actions-pinned'
 ];
 
-test('previews, joins and leaves a public room', { tags: ['test-3'] }, async fixtures => {
+test('previews, joins and leaves a public room', { tags: ['test-3'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const room = data.channels.detoxpublic.name;
 	const user = await createUser();

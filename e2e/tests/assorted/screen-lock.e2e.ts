@@ -35,7 +35,7 @@ const relaunchAfterAutoLock = async ({ device, app }: Fixtures) => {
 	await app.open();
 };
 
-test('locks the app with a passcode and changes it', { tags: ['test-8'], timeout: 300_000 }, async fixtures => {
+test('locks the app with a passcode and changes it', { tags: ['test-8'], timeout: 300_000 }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const screenLockConfig = screen.getByTestId('screen-lock-config-view');
 	const user = await createUser();

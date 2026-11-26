@@ -237,8 +237,7 @@ const offeredTools = (session: StepSession, context: StepExecutorContext) => {
 		.tools()
 		.filter(spec => (spec.mutates ? canMutate : true))
 		.filter(spec => (spec.verb ? context.target.verbs.has(spec.verb) : true))
-		.filter(spec => spec.verb !== 'typeSecret' || context.step.secrets.length > 0)
-		.filter(spec => spec.name !== 'screenshot' || !context.pixelsTainted);
+		.filter(spec => spec.verb !== 'typeSecret' || context.step.secrets.length > 0);
 	return Object.fromEntries(
 		offered.map(spec => [
 			spec.name,

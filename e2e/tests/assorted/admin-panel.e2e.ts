@@ -5,7 +5,7 @@ import { adminCredentials } from '~e2e/support/api';
 import { loginToApp, LONG_TIMEOUT } from '~e2e/support/flows';
 import { openSidebar } from '~e2e/support/settings';
 
-test('opens the admin panel already logged in', { tags: ['test-7'] }, async fixtures => {
+test('opens the admin panel already logged in', { tags: ['test-7'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	await loginToApp(fixtures, adminCredentials());
 

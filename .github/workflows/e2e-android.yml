@@ -215,5 +215,6 @@ jobs:
           path: |
             .e2e/report.json
             .e2e/junit.xml
+            .e2e/results
             .e2e/artifacts
           retention-days: 7

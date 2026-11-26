@@ -43,7 +43,7 @@ const searchAndOpen = async (fixtures: Fixtures, name: string) => {
 	await expectRoomTitle(fixtures, name);
 };
 
-test('joins a channel, user and team from the directory', { tags: ['test-7'] }, async fixtures => {
+test('joins a channel, user and team from the directory', { tags: ['test-7'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const otherUser = await createUser();

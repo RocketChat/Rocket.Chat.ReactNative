@@ -100,7 +100,7 @@ const tapCenterUntilVisible = async ({ screen }: Fixtures, target: Locator, expe
 const scrollUntilLoaded = ({ screen }: Fixtures, target: Locator, direction: 'up' | 'down') =>
 	screen.getByTestId('room-view-messages').scrollUntilVisible(target, { direction, timeout: PAGINATION_TIMEOUT });
 
-test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, async fixtures => {
+test('jumps to messages', { tags: ['test-3'], retries: 0, timeout: 900_000 }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	await loginToApp(fixtures, adminCredentials());
 

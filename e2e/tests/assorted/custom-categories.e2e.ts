@@ -29,7 +29,7 @@ import { openNewMessage } from '~e2e/support/room';
 
 afterEach(deleteCreatedUsers);
 
-test('creates a category with a room from Create new', { tags: ['test-1'] }, async fixtures => {
+test('creates a category with a room from Create new', { tags: ['test-1'] }, async ({ fixtures }) => {
 	const user = await createUser();
 	const room = await createRandomRoom(user);
 	const categoryName = randomCategoryName();
@@ -57,7 +57,7 @@ test('creates a category with a room from Create new', { tags: ['test-1'] }, asy
 	await expectListedInCategoryView(fixtures, room.name);
 });
 
-test('moves a room to a category, collapses, renames and deletes it', { tags: ['test-1'] }, async fixtures => {
+test('moves a room to a category, collapses, renames and deletes it', { tags: ['test-1'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const room = await createRandomRoom(user);

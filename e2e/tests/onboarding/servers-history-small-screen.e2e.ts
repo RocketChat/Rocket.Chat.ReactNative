@@ -11,7 +11,7 @@ afterEach(deleteCreatedUsers);
 test(
 	'fully renders the servers history sheet on a small screen',
 	{ tags: ['test-9'], platforms: ['ios'], timeout: 300_000 },
-	async fixtures => {
+	async ({ fixtures }) => {
 		const { screen } = fixtures;
 		const user = await createUser();
 		const historyItem = screen.getByTestId(`servers-history-${data.server}`);

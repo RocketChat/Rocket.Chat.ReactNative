@@ -2,7 +2,7 @@ import { expect, type Locator } from 'e2e';
 
 import { adb } from './adb';
 import type { Fixtures } from './flows';
-import { LONG_TIMEOUT, escapeRegExp, succeeds } from './flows';
+import { LONG_TIMEOUT, escapeRegExp, readOutcome } from './flows';
 import { delay } from './timing';
 
 const KEY_CODES = {
@@ -112,8 +112,8 @@ export const leaveTouchMode = () => pressKeys('down');
 
 export const pressKeyTimes = (key: HardwareKey, times: number) => pressKeys(...Array.from({ length: times }, () => key));
 
-const isFocusedItself = ({ screen }: Fixtures, testId: string) =>
-	succeeds(expect(screen.getByTestId(testId)).toBeFocused({ timeout: FOCUS_CHECK_TIMEOUT }));
+const readOwnFocus = ({ screen }: Fixtures, testId: string) =>
+	readOutcome(expect(screen.getByTestId(testId)).toBeFocused({ timeout: FOCUS_CHECK_TIMEOUT }));
 
 const WRAPPER_CENTER_TOLERANCE = 4;
 
@@ -133,15 +133,21 @@ const isInsideFocusedWrapper = async ({ device, screen }: Fixtures, testId: stri
 	return !!wrapperBox && !!targetBox && sharesCenter(wrapperBox, targetBox);
 };
 
-const isFocused = async (fixtures: Fixtures, testId: string) =>
-	(await isFocusedItself(fixtures, testId)) || isInsideFocusedWrapper(fixtures, testId);
+const readFocus = async (fixtures: Fixtures, testId: string) => {
+	const ownFocus = await readOwnFocus(fixtures, testId);
+	if (ownFocus !== 'missed') {
+		return ownFocus;
+	}
+	return (await isInsideFocusedWrapper(fixtures, testId)) ? 'passed' : 'missed';
+};
 
 export const moveFocusTo = async (fixtures: Fixtures, testId: string, key: HardwareKey = 'down') => {
 	for (let attempt = 0; attempt <= FOCUS_ATTEMPTS; attempt += 1) {
-		if (await isFocused(fixtures, testId)) {
+		const focus = await readFocus(fixtures, testId);
+		if (focus === 'passed') {
 			return;
 		}
-		if (attempt < FOCUS_ATTEMPTS) {
+		if (focus === 'missed' && attempt < FOCUS_ATTEMPTS) {
 			await pressKeys(key);
 		}
 	}
@@ -150,7 +156,7 @@ export const moveFocusTo = async (fixtures: Fixtures, testId: string, key: Hardw
 
 export const waitForFocus = async (fixtures: Fixtures, testId: string) => {
 	for (let attempt = 0; attempt < FOCUS_ATTEMPTS; attempt += 1) {
-		if (await isFocused(fixtures, testId)) {
+		if ((await readFocus(fixtures, testId)) === 'passed') {
 			return;
 		}
 	}

@@ -13,7 +13,7 @@ const coldStartRoomLink = async (fixtures: Fixtures, path: string, expectedName:
 	await expectRoomTitle(fixtures, expectedName);
 };
 
-test('opens groups and channels from deep links', { tags: ['test-6'] }, async fixtures => {
+test('opens groups and channels from deep links', { tags: ['test-6'] }, async ({ fixtures }) => {
 	const user = await createUser();
 	const group = await createRandomRoom(user, 'p');
 	const channel = await createRandomRoom(user, 'c');

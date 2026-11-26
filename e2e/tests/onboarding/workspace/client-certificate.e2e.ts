@@ -33,13 +33,13 @@ afterAll(async () => {
 
 afterEach(deleteCreatedUsers);
 
-afterEach(async fixtures => {
+afterEach(async ({ fixtures }) => {
 	if (certificate) {
 		await removeClientCertificateFiles(fixtures, certificate);
 	}
 });
 
-test('connects to a workspace that requires a client certificate', { tags: ['test-1'] }, async fixtures => {
+test('connects to a workspace that requires a client certificate', { tags: ['test-1'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const room = await createRandomRoom(user);

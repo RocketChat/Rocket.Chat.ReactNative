@@ -65,7 +65,7 @@ const saveStatus = async (fixtures: Fixtures, status: 'online' | 'offline') => {
 
 afterEach(deleteCreatedUsers);
 
-test('shows alerts as toasts or dialogs', { tags: ['test-3'] }, async fixtures => {
+test('shows alerts as toasts or dialogs', { tags: ['test-3'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	await loginToApp(fixtures, user);

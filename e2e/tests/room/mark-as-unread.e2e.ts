@@ -7,7 +7,7 @@ import { loginToApp, LONG_TIMEOUT, expectVisible, scrollAndTap } from '~e2e/supp
 
 afterEach(deleteCreatedUsers);
 
-test('marks a message as unread', { tags: ['test-1'] }, async fixtures => {
+test('marks a message as unread', { tags: ['test-1'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const otherUser = await createUser();

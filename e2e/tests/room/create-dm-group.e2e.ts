@@ -7,7 +7,7 @@ import { openNewMessage, selectUser } from '~e2e/support/room';
 
 afterEach(deleteCreatedUsers);
 
-test('creates a group DM', { tags: ['test-2'] }, async fixtures => {
+test('creates a group DM', { tags: ['test-2'] }, async ({ fixtures }) => {
 	const user = await createUser();
 	const otherUser = await createUser();
 	await loginToApp(fixtures, user);

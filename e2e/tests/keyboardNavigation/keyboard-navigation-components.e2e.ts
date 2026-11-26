@@ -34,7 +34,7 @@ afterEach(restoreKeyboardSettings);
 test(
 	'navigates accessibility switches, theme radios and alert options with a hardware keyboard',
 	{ tags: ['test-9'], platforms: ['android'], timeout: 600_000 },
-	async fixtures => {
+	async ({ fixtures }) => {
 		const { screen } = fixtures;
 		const user = await createUser();
 		await hideSoftKeyboardWithHardwareKeyboard();

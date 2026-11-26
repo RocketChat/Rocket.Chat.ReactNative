@@ -48,7 +48,7 @@ const tapDiscardAlertButton = async (fixtures: Fixtures, name: RegExp) => {
 	await screen.getByRole('button', { name }).last().tap();
 };
 
-test('changes the avatar', { tags: ['test-3'] }, async fixtures => {
+test('changes the avatar', { tags: ['test-3'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const { userId } = await login(user);

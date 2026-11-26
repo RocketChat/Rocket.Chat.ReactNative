@@ -21,7 +21,7 @@ afterEach(deleteCreatedUsers);
 test(
 	'toggles mention and room symbols from accessibility and appearance',
 	{ tags: ['test-6'], platforms: ['android'], timeout: 600_000 },
-	async fixtures => {
+	async ({ fixtures }) => {
 		const { screen } = fixtures;
 		const user = await createUser();
 		await loginToApp(fixtures, user);

@@ -5,7 +5,7 @@ import { openRoom } from '~e2e/support/appduct';
 import { adminCredentials } from '~e2e/support/api';
 import { loginToApp, LONG_TIMEOUT, expectVisible, scrollUntilLoaded } from '~e2e/support/flows';
 
-test('opens a room whose last message is a thread with more than 50 messages', { tags: ['test-3'] }, async fixtures => {
+test('opens a room whose last message is a thread with more than 50 messages', { tags: ['test-3'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	await loginToApp(fixtures, adminCredentials());
 	await openRoom(fixtures, 'maestro_test_load_threads');

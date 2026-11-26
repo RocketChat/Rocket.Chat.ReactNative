@@ -17,7 +17,7 @@ const tapNotification = async ({ screen }: Fixtures, message: string) => {
 	await notification.tap({ position: { x: box.width / 2, y: box.height / 2 } });
 };
 
-test('opens the DM from an in-app notification', { tags: ['test-6'] }, async fixtures => {
+test('opens the DM from an in-app notification', { tags: ['test-6'] }, async ({ fixtures }) => {
 	const sender = await createUser();
 	const receiver = await createUser();
 	const room = await createRandomRoom(receiver);

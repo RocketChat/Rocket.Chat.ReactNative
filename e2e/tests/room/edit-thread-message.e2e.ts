@@ -18,7 +18,7 @@ import { clearLocalCache, openSettings } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
 
-test('edits a thread reply after app data is cleared', { tags: ['test-4'], timeout: 600_000 }, async fixtures => {
+test('edits a thread reply after app data is cleared', { tags: ['test-4'], timeout: 600_000 }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const room = await createRandomRoom(user);

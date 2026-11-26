@@ -4,7 +4,7 @@ import { expect } from 'e2e';
 import { goBackUntil, launchApp, navigateToLogin } from '~e2e/support/flows';
 import { tapHeaderItem } from '~e2e/support/header';
 
-test('opens legal from login and register', { tags: ['test-7'] }, async fixtures => {
+test('opens legal from login and register', { tags: ['test-7'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	await launchApp(fixtures);
 	await navigateToLogin(fixtures);

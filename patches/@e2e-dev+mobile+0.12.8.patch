@@ -1,0 +1,175 @@
+diff --git a/node_modules/@e2e-dev/mobile/dist/errors.js b/node_modules/@e2e-dev/mobile/dist/errors.js
+index 9165602..76699fa 100644
+--- a/node_modules/@e2e-dev/mobile/dist/errors.js
++++ b/node_modules/@e2e-dev/mobile/dist/errors.js
+@@ -249,6 +249,12 @@ export function translateError(cause, operation, where) {
+ export function isRunnerFailure(error) {
+     return error instanceof Error && runnerState(error.cause) !== undefined;
+ }
++export function isRunnerBusy(cause) {
++    return details(cause).runnerErrorCode === 'RUNNER_BUSY';
++}
++export function isContentPoorCapture(error) {
++    return error instanceof Error && details(error.cause).androidSnapshotHelperFailureReason === 'content-poor-app-window';
++}
+ /**
+  * True for a translated snapshot the iOS runner acquired but could not
+  * present. The check is per capture and the capture is a read, so one retry
+diff --git a/node_modules/@e2e-dev/mobile/dist/surface.js b/node_modules/@e2e-dev/mobile/dist/surface.js
+index 8511c8b..038599a 100644
+--- a/node_modules/@e2e-dev/mobile/dist/surface.js
++++ b/node_modules/@e2e-dev/mobile/dist/surface.js
+@@ -15,7 +15,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, w
+ import { tmpdir } from 'node:os';
+ import path from 'node:path';
+ import { EngineError, KEY_NAMES, parseKey, raceAbort, rejectUnknownKeys, stopProviderRecording, withinCleanupBudget, ConfigurationError, TestError, } from '@e2e-dev/core/engine';
+-import { isAppNotRunning, isSnapshotPresentationFailure, isUnreadableCapture, ORIGIN_UNKNOWN_BOUNDS, ORIGIN_WARNING, runCommand, staleOr } from './errors.js';
++import { isAppNotRunning, isContentPoorCapture, isRunnerBusy, isSnapshotPresentationFailure, isUnreadableCapture, ORIGIN_UNKNOWN_BOUNDS, ORIGIN_WARNING, runCommand, staleOr } from './errors.js';
+ import { pointerInteraction, DEFAULT_LONG_PRESS_MS } from './actions.js';
+ import { resolveExpression } from './locate.js';
+ import { isWithin, KEYBOARD_KINDS, keyboardBand, mayTakeText, normalizeKind, projectSnapshot, ROOT_ID, screenRoot, screenTitle, } from './nodes.js';
+@@ -37,6 +37,10 @@ const UNINSTALLED_BUILD = "the build the target's `app.appPath` names installed
+  * Maestro's `hideKeyboard` uses.
+  */
+ const KEYBOARD_DRAG_RATIO = 0.03;
++const RUNNER_BUSY_BUDGET_MS = 60_000;
++const RUNNER_BUSY_RETRY_MS = 1_000;
++const CONTENT_POOR_BUDGET_MS = 60_000;
++const CONTENT_POOR_RETRY_MS = 500;
+ /** What a test does instead when the engine cannot send the keyboard away. */
+ const KEYBOARD_ALTERNATIVES = 'Tap the app\'s own Done or close control, or press Enter on the field when submitting is what you want.';
+ /**
+@@ -367,7 +371,23 @@ export class AgentDeviceSurface {
+      */
+     async command(label, run, signal) {
+         const client = this.requireClient();
+-        return runCommand(label, () => this.track(run(client)), signal ?? new AbortController().signal, this.where);
++        const operationSignal = signal ?? new AbortController().signal;
++        return runCommand(label, () => this.untilRunnerIdle(() => run(client), operationSignal), operationSignal, this.where);
++    }
++    async untilRunnerIdle(run, signal) {
++        const deadline = Date.now() + RUNNER_BUSY_BUDGET_MS;
++        for (;;) {
++            try {
++                return await this.track(run());
++            }
++            catch (cause) {
++                if (!isRunnerBusy(cause) || Date.now() >= deadline)
++                    throw cause;
++                await sleep(RUNNER_BUSY_RETRY_MS, signal);
++                if (signal.aborted)
++                    throw cause;
++            }
++        }
+     }
+     /**
+      * Runs a fixture command that changes the screen (a back, the home screen,
+@@ -782,7 +802,7 @@ export class AgentDeviceSurface {
+             this.installedApp = installed.app;
+         return installed;
+     }
+-    async snapshot(signal, interactiveOnly, budget) {
++    async snapshot(signal, interactiveOnly, budget, waitsOutContentPoor = true) {
+         let last = {};
+         let captureMs = 0;
+         for (const backoffMs of SPARSE_RETRY_BACKOFF_MS) {
+@@ -795,7 +815,7 @@ export class AgentDeviceSurface {
+             if (signal.aborted)
+                 throw new EngineError('CANCELLED', 'snapshot cancelled', { retryable: false });
+             const startedAt = Date.now();
+-            last = await this.capture(signal, interactiveOnly, budget);
++            last = await this.capture(signal, interactiveOnly, budget, waitsOutContentPoor);
+             captureMs = Date.now() - startedAt;
+             this.launching = false;
+             if (last.appBundleId !== undefined || last.appName !== undefined) {
+@@ -813,15 +833,36 @@ export class AgentDeviceSurface {
+      * the retry is safe; a second failure is the runner's and propagates. Each
+      * capture runs under `budget`, so one the budget abandoned is not retried.
+      */
+-    async capture(signal, interactiveOnly, budget) {
+-        const take = () => budget.read(() => this.command('snapshot', (client) => client.capture.snapshot({ interactiveOnly }), signal));
++    async capture(signal, interactiveOnly, budget, waitsOutContentPoor) {
++        const take = () => this.abandonableRead(budget, signal, (attemptSignal) => this.command('snapshot', (client) => client.capture.snapshot({ interactiveOnly }), attemptSignal));
++        const deadline = Date.now() + CONTENT_POOR_BUDGET_MS;
++        for (;;) {
++            const startedAt = Date.now();
++            try {
++                return await take();
++            }
++            catch (cause) {
++                if (signal.aborted)
++                    throw cause;
++                if (isSnapshotPresentationFailure(cause))
++                    return take();
++                const nextReadMs = CONTENT_POOR_RETRY_MS + Date.now() - startedAt;
++                if (!waitsOutContentPoor || !isContentPoorCapture(cause) || Date.now() >= deadline || budget.remainingMs() <= nextReadMs)
++                    throw cause;
++                await sleep(CONTENT_POOR_RETRY_MS, signal);
++                if (signal.aborted)
++                    throw cause;
++            }
++        }
++    }
++    async abandonableRead(budget, signal, dispatch) {
++        const attempt = new AbortController();
+         try {
+-            return await take();
++            return await budget.read(() => dispatch(AbortSignal.any([signal, attempt.signal])));
+         }
+         catch (cause) {
+-            if (signal.aborted || !isSnapshotPresentationFailure(cause))
+-                throw cause;
+-            return take();
++            attempt.abort();
++            throw cause;
+         }
+     }
+     /**
+@@ -829,9 +870,9 @@ export class AgentDeviceSurface {
+      * anything is open is an empty screen rather than a fault: the model's next
+      * move is the open tool, and failing the step would take that move away.
+      */
+-    async snapshotOrEmpty(operation, interactiveOnly, budget) {
++    async snapshotOrEmpty(operation, interactiveOnly, budget, waitsOutContentPoor = true) {
+         try {
+-            return await this.snapshot(operation.signal, interactiveOnly, budget);
++            return await this.snapshot(operation.signal, interactiveOnly, budget, waitsOutContentPoor);
+         }
+         catch (cause) {
+             if (!this.managesApp && cause instanceof EngineError && cause.code === 'INVALID_STATE')
+@@ -852,7 +893,7 @@ export class AgentDeviceSurface {
+     async locateSnapshot(operation, budget) {
+         const startedMs = Date.now();
+         try {
+-            return await this.snapshotOrEmpty(operation, false, budget);
++            return await this.snapshotOrEmpty(operation, false, budget, false);
+         }
+         catch (cause) {
+             const arriving = isUnreadableCapture(cause) || (this.launching && isAppNotRunning(cause));
+@@ -1302,7 +1343,7 @@ export class AgentDeviceSurface {
+             }
+         };
+         try {
+-            await raceAbort(() => this.track(run()), operation.signal, label);
++            await raceAbort(() => this.untilRunnerIdle(run, operation.signal), operation.signal, label);
+         }
+         catch (cause) {
+             throw staleOr(cause, label, this.where);
+@@ -1541,7 +1582,7 @@ export class AgentDeviceSurface {
+      * abandons the capture.
+      */
+     captureScreenshot(signal, read, capture, budget) {
+-        return budget.read(() => this.command('screenshot', async (client) => {
++        return this.abandonableRead(budget, signal, (attemptSignal) => this.command('screenshot', async (client) => {
+             const directory = mkdtempSync(path.join(tmpdir(), 'e2e-agent-device-'));
+             const file = path.join(directory, 'screenshot.png');
+             try {
+@@ -1550,7 +1591,7 @@ export class AgentDeviceSurface {
+             finally {
+                 rmSync(directory, { recursive: true, force: true });
+             }
+-        }, signal));
++        }, attemptSignal));
+     }
+     /**
+      * Screenshot with every secure node on the current screen painted over.

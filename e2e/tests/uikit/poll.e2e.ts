@@ -8,7 +8,7 @@ import { random } from '~e2e/support/random';
 
 afterEach(deleteCreatedUsers);
 
-test('creates and votes on a poll from the composer app action', { tags: ['test-9'] }, async fixtures => {
+test('creates and votes on a poll from the composer app action', { tags: ['test-9'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const room = await createRandomRoom(user);

@@ -45,7 +45,7 @@ const reportUser = async (fixtures: Fixtures, roomTitle: string) => {
 	await expectRoomTitle(fixtures, roomTitle);
 };
 
-test('blocks, ignores and reports a user', { tags: ['test-4'] }, async fixtures => {
+test('blocks, ignores and reports a user', { tags: ['test-4'] }, async ({ fixtures }) => {
 	const { screen, platform } = fixtures;
 	const user = await createUser();
 	const otherUser = await createUser();

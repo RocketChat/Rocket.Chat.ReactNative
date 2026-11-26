@@ -150,6 +150,7 @@
 	},
 	"pnpm": {
 		"overrides": {
+			"agent-device": "0.21.42",
 			"ua-parser-js": "1.0.2",
 			"jpeg-js": "0.4.4",
 			"typescript": "7.0.2",
@@ -174,7 +175,7 @@
 		"@babel/runtime": "~7.25.9",
 		"@bugsnag/cli": "^3.2.1",
 		"@bugsnag/source-maps": "^2.3.3",
-		"@e2e-dev/mobile": "0.10.0",
+		"@e2e-dev/mobile": "0.12.8",
 		"@expo/fingerprint": "0.20.13",
 		"@gorhom/bottom-sheet": "^5",
 		"@react-native-community/cli": "20.0.0",
@@ -207,7 +208,7 @@
 		"babel-plugin-transform-inline-environment-variables": "^0.4.4",
 		"babel-plugin-transform-remove-console": "^6.9.4",
 		"babel-preset-expo": "~57.0.12",
-		"e2e": "0.21.2",
+		"e2e": "0.24.0",
 		"emojibase-data": "17.0.0",
 		"eslint-plugin-react-native": "~5.0.0",
 		"fast-glob": "3.3.3",

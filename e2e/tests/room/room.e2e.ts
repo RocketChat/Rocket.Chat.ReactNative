@@ -206,7 +206,7 @@ const openRoomWithOwnMessage = async (fixtures: Fixtures) => {
 	return { user, room };
 };
 
-test('autocompletes and reacts to messages in a room', { tags: ['test-2'] }, async fixtures => {
+test('autocompletes and reacts to messages in a room', { tags: ['test-2'] }, async ({ fixtures }) => {
 	const { user } = await openRoomWithOwnMessage(fixtures);
 
 	await expectAutocomplete(fixtures, ':joy', ':joy:', { selected: 'joy', alsoListed: ['joystick'] });
@@ -231,7 +231,7 @@ test('autocompletes and reacts to messages in a room', { tags: ['test-2'] }, asy
 	await toggleReactionsList(fixtures, 'laughing');
 });
 
-test('opens profiles and edits, quotes and deletes messages in a room', { tags: ['test-2'] }, async fixtures => {
+test('opens profiles and edits, quotes and deletes messages in a room', { tags: ['test-2'] }, async ({ fixtures }) => {
 	const { user, room } = await openRoomWithOwnMessage(fixtures);
 
 	const otherUser = await createUser();
@@ -250,12 +250,12 @@ test('opens profiles and edits, quotes and deletes messages in a room', { tags: 
 	await deleteMessage(fixtures, 'message to delete');
 });
 
-test('replies to a room message in a direct message', { tags: ['test-2'] }, async fixtures => {
+test('replies to a room message in a direct message', { tags: ['test-2'] }, async ({ fixtures }) => {
 	await loginToApp(fixtures, await createUser());
 	await replyInDirectMessage(fixtures);
 });
 
-test('keeps composer drafts, with and without a quote', { tags: ['test-2'] }, async fixtures => {
+test('keeps composer drafts, with and without a quote', { tags: ['test-2'] }, async ({ fixtures }) => {
 	const user = await createUser();
 	const room = await createRandomRoom(user);
 	await loginToApp(fixtures, user);

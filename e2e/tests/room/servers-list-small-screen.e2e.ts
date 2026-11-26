@@ -5,12 +5,16 @@ import { loginToApp, tapUntilVisible, tapWhenVisible, expectVisible } from '~e2e
 
 afterEach(deleteCreatedUsers);
 
-test('fully renders the workspaces action sheet on small screens', { tags: ['test-9'], platforms: ['ios'] }, async fixtures => {
-	const user = await createUser();
-	await loginToApp(fixtures, user);
+test(
+	'fully renders the workspaces action sheet on small screens',
+	{ tags: ['test-9'], platforms: ['ios'] },
+	async ({ fixtures }) => {
+		const user = await createUser();
+		await loginToApp(fixtures, user);
 
-	await tapUntilVisible(fixtures, fixtures.screen.getByTestId('rooms-list-header-servers-list-button'), 'action-sheet');
-	await expectVisible(fixtures, 'rooms-list-header-servers-list');
-	await tapWhenVisible(fixtures, 'rooms-list-header-server-add');
-	await expectVisible(fixtures, 'new-server-view');
-});
+		await tapUntilVisible(fixtures, fixtures.screen.getByTestId('rooms-list-header-servers-list-button'), 'action-sheet');
+		await expectVisible(fixtures, 'rooms-list-header-servers-list');
+		await tapWhenVisible(fixtures, 'rooms-list-header-server-add');
+		await expectVisible(fixtures, 'new-server-view');
+	}
+);

@@ -18,7 +18,7 @@ afterEach(deleteCreatedUsers);
 test(
 	'delivers messages received while the device was offline',
 	{ tags: ['test-5'], platforms: ['android'], timeout: 600_000 },
-	async fixtures => {
+	async ({ fixtures }) => {
 		const { screen, device } = fixtures;
 		const user = await createUser();
 		const sender = await createUser();

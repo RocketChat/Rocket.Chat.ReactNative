@@ -8,7 +8,7 @@ import { openSidebar } from '~e2e/support/settings';
 
 afterEach(deleteCreatedUsers);
 
-test('changes status and status text', { tags: ['test-4'] }, async fixtures => {
+test('changes status and status text', { tags: ['test-4'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	await loginToApp(fixtures, user);

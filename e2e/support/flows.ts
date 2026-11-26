@@ -8,19 +8,39 @@ import { getDeepLink, login, serverHost, type Credentials, type Session } from '
 import { data } from './data';
 import { delay } from './timing';
 
-export type Fixtures = TestFixtures & { device: Device; appduct: Appduct };
+export type Fixtures = Pick<TestFixtures, 'app' | 'platform' | 'screen'> & { device: Device; appduct: Appduct };
 
 export const LONG_TIMEOUT = 60_000;
 
 const errorCode = (error: unknown) => (error as { code?: string } | null)?.code;
+
+const isActionFailedBy = (error: unknown, causeCode: string) =>
+	errorCode(error) === 'ACTION_FAILED' && errorCode((error as { cause?: unknown } | null)?.cause) === causeCode;
+
+const isAssertionMiss = (error: unknown) => errorCode(error) === 'ASSERTION_FAILED';
+
+const isHungRead = (error: unknown) => isActionFailedBy(error, 'OPERATION_TIMEOUT');
 
 export const succeeds = async (assertion: Promise<unknown>) => {
 	try {
 		await assertion;
 		return true;
 	} catch (error) {
-		if (errorCode(error) !== 'ASSERTION_FAILED') throw error;
+		if (!isAssertionMiss(error)) throw error;
 		return false;
+	}
+};
+
+export type ReadOutcome = 'passed' | 'missed' | 'hung';
+
+export const readOutcome = async (assertion: Promise<unknown>): Promise<ReadOutcome> => {
+	try {
+		await assertion;
+		return 'passed';
+	} catch (error) {
+		if (isAssertionMiss(error)) return 'missed';
+		if (isHungRead(error)) return 'hung';
+		throw error;
 	}
 };
 
@@ -193,13 +213,8 @@ const RETRYABLE_ACTION_ERRORS = [COVERED_ERROR, OFF_SCREEN_ERROR, NO_INPUT_AT_PO
 
 const REFUSED_ACTION_CODES = ['NOT_ACTIONABLE', 'ENGINE_FAILURE'];
 
-const isActionRefused = (error: unknown) => {
-	const cause = (error as { cause?: unknown } | null)?.cause;
-	return (
-		REFUSED_ACTION_CODES.includes(errorCode(error) ?? '') ||
-		(errorCode(error) === 'ACTION_FAILED' && errorCode(cause) === 'NOT_ACTIONABLE')
-	);
-};
+const isActionRefused = (error: unknown) =>
+	REFUSED_ACTION_CODES.includes(errorCode(error) ?? '') || isActionFailedBy(error, 'NOT_ACTIONABLE');
 
 const retryWhileUnreachable = async (action: () => Promise<unknown>, timeout: number) => {
 	const deadline = Date.now() + timeout;

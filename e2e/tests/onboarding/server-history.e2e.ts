@@ -7,7 +7,7 @@ import { goBackUntil, loginToApp, logout, LONG_TIMEOUT } from '~e2e/support/flow
 
 afterEach(deleteCreatedUsers);
 
-test('remembers and deletes a server from history', { tags: ['test-4'] }, async fixtures => {
+test('remembers and deletes a server from history', { tags: ['test-4'] }, async ({ fixtures }) => {
 	const { screen } = fixtures;
 	const user = await createUser();
 	const historyItem = screen.getByTestId(`servers-history-${data.server}`);
