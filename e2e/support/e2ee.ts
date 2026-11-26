@@ -10,6 +10,7 @@ import {
 	hideKeyboard,
 	launchApp,
 	loginWithForm,
+	replaceTextUntilHeld,
 	navigateToLogin,
 	LONG_TIMEOUT,
 	openMessageActions,
@@ -161,7 +162,9 @@ export const editMessage = async (fixtures: Fixtures, message: string, edited: s
 	const { screen } = fixtures;
 	await openMessageActions(fixtures, message);
 	await tapTextWhenVisible(fixtures, 'Edit');
-	await fillWhenUncovered(screen.getByTestId('message-composer-input'), edited);
+	const composerInput = screen.getByTestId('message-composer-input');
+	await expect(composerInput).toHaveValue(message, { timeout: LONG_TIMEOUT });
+	await replaceTextUntilHeld(composerInput, edited);
 	await tapSend(fixtures);
 };
 

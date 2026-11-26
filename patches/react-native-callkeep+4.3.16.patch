@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
-index 025480a..6a66858 100644
+index 025480a..caeda6c 100644
 --- a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
 +++ b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
-@@ -221,7 +221,7 @@ public class RNCallKeepModule extends ReactContextBase
+@@ -221,7 +221,7 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
          ComponentName cName = new ComponentName(context, VoiceConnectionService.class);
          String appName = this.getApplicationName(context);
  
@@ -11,31 +11,43 @@ index 025480a..6a66858 100644
          telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
      }
  
-@@ -432,11 +432,6 @@ public class RNCallKeepModule extends ReactContextBase
-         Log.d(TAG, "[RNCallKeepModule] unregisterEvents");
- 
+@@ -434,11 +434,6 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
          this.hasListeners = false;
--    }
--
+     }
+ 
 -    @ReactMethod
 -    public void displayIncomingCall(String uuid, String number, String callerName) {
 -        this.displayIncomingCall(uuid, number, callerName, false, null);
+-    }
+-
+     @ReactMethod
+     public void displayIncomingCall(String uuid, String number, String callerName, boolean hasVideo) {
+         this.displayIncomingCall(uuid, number, callerName, hasVideo, null);
+@@ -483,11 +478,6 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+         conn.onAnswer();
      }
  
-     @ReactMethod
-@@ -484,11 +479,6 @@ public class RNCallKeepModule extends ReactContextBase
-     }
- 
-     @ReactMethod
+-    @ReactMethod
 -    public void startCall(String uuid, String number, String callerName) {
 -        this.startCall(uuid, number, callerName, false, null);
 -    }
 -
--    @ReactMethod
+     @ReactMethod
      public void startCall(String uuid, String number, String callerName, boolean hasVideo) {
          this.startCall(uuid, number, callerName, hasVideo, null);
-     }
-@@ -1125,6 +1115,18 @@ public class RNCallKeepModule extends ReactContextBase
+@@ -742,6 +732,11 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+    public void onHostDestroy() {
+        // When activity destroyed end all calls
+        Log.d(TAG, "[RNCallKeepModule] onHostDestroy called");
++       Activity activity = this.getCurrentReactActivity();
++       if (activity != null && activity.isChangingConfigurations()) {
++           Log.d(TAG, "[RNCallKeepModule] onHostDestroy ignored because the activity is being recreated");
++           return;
++       }
+        if (!isConnectionServiceAvailable() || !hasPhoneAccount()) {
+            Log.w(TAG, "[RNCallKeepModule] onHostDestroy ignored due to no ConnectionService or no phone account");
+            return;
+@@ -1125,6 +1120,18 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
              Log.w(TAG, "[RNCallKeepModule][registerPhoneAccount] no react context found.");
              return;
          }
@@ -54,7 +66,7 @@ index 025480a..6a66858 100644
          String appName = this.getApplicationName(context);
  
          PhoneAccount.Builder builder = new PhoneAccount.Builder(handle, appName);
-@@ -1145,7 +1147,13 @@ public class RNCallKeepModule extends ReactContextBase
+@@ -1145,7 +1152,13 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
  
          telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
  
@@ -69,7 +81,7 @@ index 025480a..6a66858 100644
      }
  
      public void sendEventToJS(String eventName, @Nullable WritableMap params) {
-@@ -1196,9 +1204,14 @@ public class RNCallKeepModule extends ReactContextBase
+@@ -1196,9 +1209,14 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
              return true;
          }
  
@@ -88,18 +100,18 @@ index 025480a..6a66858 100644
  
      protected void registerReceiver() {
 diff --git a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java
-index 5d58692..f4e4b1b 100644
+index 5d58692..263575b 100644
 --- a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java
 +++ b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java
-@@ -317,7 +317,7 @@ public class VoiceConnectionService extends ConnectionService {
-         notificationBuilder.setOngoing(true)
-             .setContentTitle(foregroundSettings.getString("notificationTitle"))
+@@ -319,7 +319,7 @@ public class VoiceConnectionService extends ConnectionService {
              .setPriority(NotificationManager.IMPORTANCE_MIN)
              .setCategory(Notification.CATEGORY_SERVICE);
  
 -        Activity currentActivity = RNCallKeepModule.instance.getCurrentReactActivity();
 +        Activity currentActivity = RNCallKeepModule.instance != null ? RNCallKeepModule.instance.getCurrentReactActivity() : null;
          if (currentActivity != null) {
+             Intent notificationIntent = new Intent(this, currentActivity.getClass());
+             notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 @@ -459,18 +459,10 @@ public class VoiceConnectionService extends ConnectionService {
          connection.setConnectionCapabilities(Connection.CAPABILITY_MUTE | Connection.CAPABILITY_SUPPORT_HOLD);
  

@@ -188,6 +188,12 @@ export const setDeviceLanguage = () => {
 	setLanguage(languageTag);
 };
 
+const primaryDeviceLocale = () => RNLocalize.getLocales()[0]?.languageTag;
+
+const startupDeviceLocale = primaryDeviceLocale();
+
+export const hasDeviceLanguageChanged = () => primaryDeviceLocale() !== startupDeviceLocale;
+
 // @ts-ignore
 i18n.isTranslated = (text?: string) => text in englishJson;
 

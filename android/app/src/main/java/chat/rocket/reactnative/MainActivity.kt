@@ -27,12 +27,19 @@ class MainActivity : ReactActivity() {
       DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    RNBootSplash.init(this, R.style.BootTheme)
+    if (isReactRunning()) {
+      setTheme(R.style.AppTheme)
+    } else {
+      RNBootSplash.init(this, R.style.BootTheme)
+    }
     super.onCreate(null)
 
-    // Handle notification intents
-    intent?.let { NotificationIntentHandler.handleIntent(this, it) }
+    if (savedInstanceState == null) {
+      intent?.let { NotificationIntentHandler.handleIntent(this, it) }
+    }
   }
+
+  private fun isReactRunning(): Boolean = reactHost?.currentReactContext != null
 
   public override fun onNewIntent(intent: Intent) {
     super.onNewIntent(intent)
