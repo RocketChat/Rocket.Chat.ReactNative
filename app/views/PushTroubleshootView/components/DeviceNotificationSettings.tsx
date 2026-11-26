@@ -1,11 +1,10 @@
-import { Linking } from 'react-native';
 import { type ReactElement } from 'react';
 
 import * as List from '~/containers/List';
 import i18n from '~/i18n';
 import { useAppSelector } from '~/lib/hooks/useAppSelector';
-import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { openAppSettings } from '~/lib/methods/helpers/openAppSettings';
 import { useTheme } from '~/theme';
 import StatusDot from './StatusDot';
 
@@ -16,11 +15,7 @@ function DeviceNotificationSettings(): ReactElement {
 	}));
 
 	const goToNotificationSettings = () => {
-		if (isIOS) {
-			Linking.openURL('app-settings:');
-		} else {
-			Linking.openSettings();
-		}
+		openAppSettings();
 	};
 
 	const alertDeviceNotificationSettings = () => {
