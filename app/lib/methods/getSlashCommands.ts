@@ -6,74 +6,64 @@ import protectedFunction from './helpers/protectedFunction';
 import { type ISlashCommandResult, type TSlashCommandModel } from '~/definitions/ISlashCommand';
 import sdk from '../services/sdk';
 
-export function getSlashCommands() {
+const EVERY_COMMAND_THE_SERVER_ALLOWS = 0;
+
+const fetchSlashCommands = async (fetched: ISlashCommandResult[] = []): Promise<ISlashCommandResult[] | null> => {
+	const page = await sdk.get('commands.list', { offset: fetched.length, count: EVERY_COMMAND_THE_SERVER_ALLOWS });
+	if (!page.success || page.appsLoaded === false) {
+		return null;
+	}
+	const commands = [...fetched, ...page.commands];
+	const hasMorePages = page.commands.length > 0 && commands.length < page.total;
+	return hasMorePages ? fetchSlashCommands(commands) : commands;
+};
+
+const saveSlashCommands = async (commands: ISlashCommandResult[]) => {
 	const db = database.active;
-	return new Promise<void>(async resolve => {
+	const commandsById = new Map(commands.map(command => [command.command, command]));
+	await db.write(async () => {
+		const slashCommandsCollection = db.get('slash_commands');
+		const storedRecords = await slashCommandsCollection.query().fetch();
+		const storedIds = new Set(storedRecords.map(record => record.id));
+
+		const recordsToCreate = [...commandsById.values()]
+			.filter(command => !storedIds.has(command.command))
+			.map(command =>
+				slashCommandsCollection.prepareCreate(
+					protectedFunction((record: TSlashCommandModel) => {
+						record._raw = sanitizedRaw({ id: command.command }, slashCommandsCollection.schema);
+						Object.assign(record, command);
+					})
+				)
+			);
+
+		const recordsToUpdateOrDelete = storedRecords.map(record => {
+			const command = commandsById.get(record.id);
+			if (!command) {
+				return record.prepareDestroyPermanently();
+			}
+			return record.prepareUpdate(
+				protectedFunction((updated: TSlashCommandModel) => {
+					Object.assign(updated, command);
+				})
+			);
+		});
+
 		try {
-			// RC 0.60.2
-			// @ts-ignore
-			const result = await sdk.get('commands.list');
-
-			if (!result.success) {
-				return resolve();
-			}
-			// @ts-ignore
-			const { commands } = result;
-			if (commands && commands.length) {
-				await db.write(async () => {
-					const slashCommandsCollection = db.get('slash_commands');
-					const allSlashCommandsRecords = await slashCommandsCollection.query().fetch();
-
-					// filter slash commands
-					const filteredSlashCommandsToCreate = commands.filter(
-						(i1: ISlashCommandResult) => !allSlashCommandsRecords.find(i2 => i1.command === i2.id)
-					);
-					const filteredSlashCommandsToUpdate = allSlashCommandsRecords.filter(i1 =>
-						commands.find((i2: ISlashCommandResult) => i1.id === i2.command)
-					);
-					const filteredSlashCommandsToDelete = allSlashCommandsRecords.filter(
-						i1 =>
-							!filteredSlashCommandsToCreate.find((i2: ISlashCommandResult) => i2.command === i1.id) &&
-							!filteredSlashCommandsToUpdate.find(i2 => i2.id === i1.id)
-					);
-
-					// Create
-					const slashCommandsToCreate = filteredSlashCommandsToCreate.map((command: ISlashCommandResult) =>
-						slashCommandsCollection.prepareCreate(
-							protectedFunction((s: TSlashCommandModel) => {
-								s._raw = sanitizedRaw({ id: command.command }, slashCommandsCollection.schema);
-								Object.assign(s, command);
-							})
-						)
-					);
-
-					// Update
-					const slashCommandsToUpdate = filteredSlashCommandsToUpdate.map(command => {
-						const newCommand = commands.find((s: ISlashCommandResult) => s.command === command.id);
-						return command.prepareUpdate(
-							protectedFunction((s: TSlashCommandModel) => {
-								Object.assign(s, newCommand);
-							})
-						);
-					});
-
-					// Delete
-					const slashCommandsToDelete = filteredSlashCommandsToDelete.map(command => command.prepareDestroyPermanently());
-
-					const allRecords = [...slashCommandsToCreate, ...slashCommandsToUpdate, ...slashCommandsToDelete];
-
-					try {
-						await db.batch(allRecords);
-					} catch (e) {
-						log(e);
-					}
-					return allRecords.length;
-				});
-			}
-			return resolve();
+			await db.batch([...recordsToCreate, ...recordsToUpdateOrDelete]);
 		} catch (e) {
 			log(e);
-			return resolve();
 		}
 	});
+};
+
+export async function getSlashCommands() {
+	try {
+		const commands = await fetchSlashCommands();
+		if (commands) {
+			await saveSlashCommands(commands);
+		}
+	} catch (e) {
+		log(e);
+	}
 }

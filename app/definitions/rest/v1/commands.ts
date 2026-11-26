@@ -1,6 +1,11 @@
-import { type IPreviewItem } from '~/definitions/ISlashCommand';
+import { type IPreviewItem, type ISlashCommandResult } from '~/definitions/ISlashCommand';
+import { type PaginatedRequest } from '../helpers/PaginatedRequest';
+import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 export type CommandsEndpoints = {
+	'commands.list': {
+		GET: (params: PaginatedRequest) => PaginatedResult<{ commands: ISlashCommandResult[]; appsLoaded?: boolean }>;
+	};
 	'commands.preview': {
 		GET: (params: { command: string; params: string; roomId: string }) => {
 			preview?: {
