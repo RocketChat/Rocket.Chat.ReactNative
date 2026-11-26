@@ -26,6 +26,9 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Setup Rust
+      uses: ./.github/actions/setup-rust
+
     - name: Decode Keystore
       working-directory: android/app
       run: |

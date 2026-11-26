@@ -35,6 +35,9 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Setup Rust
+      uses: ./.github/actions/setup-rust
+
     - name: pod install
       run: |
         .github/scripts/pod-install.sh

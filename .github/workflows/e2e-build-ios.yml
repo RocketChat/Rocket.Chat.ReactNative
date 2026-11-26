@@ -118,6 +118,10 @@ jobs:
           restore-keys: |
             derived-data-${{ runner.os }}-
 
+      - name: Setup Rust
+        if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
+        uses: ./.github/actions/setup-rust
+
       - name: pod install
         if: ${{ steps.native-cache.outputs.cache-hit != 'true' }}
         run: |
