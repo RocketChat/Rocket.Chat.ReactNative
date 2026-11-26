@@ -170,6 +170,33 @@ describe('loadMessagesForRoom', () => {
 		expect(mockedDispatch).not.toHaveBeenCalledWith(expect.objectContaining({ type: ROOM.HISTORY_UI_LOADER_PUSH }));
 	});
 
+	it('keeps the trailing Older Loader when the same history is loaded again', async () => {
+		const batch = Array.from({ length: 50 }, (_, index) =>
+			buildMessage({ id: `stored-${index + 1}`, ts: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString() })
+		);
+		const storedIds = new Set([...batch.map(message => message._id), 'load-more-stored-50']);
+		mockedGetMessageById.mockImplementation(id => Promise.resolve(storedIds.has(id) ? ({ id } as any) : null));
+		mockedSdkGet.mockResolvedValueOnce({ success: true, messages: batch } as any);
+
+		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+		const { update } = mockedUpdateMessages.mock.calls[0][0] as { update: { _id: string; t?: string }[] };
+		expect(update).toContainEqual(expect.objectContaining({ _id: 'load-more-stored-50', t: 'load_more' }));
+	});
+
+	it('does not append a trailing Older Loader when the history below the batch is already stored', async () => {
+		const batch = Array.from({ length: 50 }, (_, index) =>
+			buildMessage({ id: `stored-${index + 1}`, ts: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString() })
+		);
+		mockedGetMessageById.mockImplementation(id => Promise.resolve(!!id?.startsWith('stored-') ? ({ id } as any) : null));
+		mockedSdkGet.mockResolvedValueOnce({ success: true, messages: batch } as any);
+
+		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+		const { update } = mockedUpdateMessages.mock.calls[0][0] as { update: { _id: string; t?: string }[] };
+		expect(update.find(message => message.t === 'load_more')).toBeUndefined();
+	});
+
 	const buildMillisecondBatch = (prefix: string, baseSeconds: number, t?: string) =>
 		Array.from({ length: 50 }, (_, index) =>
 			buildMessage({

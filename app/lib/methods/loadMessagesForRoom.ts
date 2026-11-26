@@ -127,10 +127,12 @@ export async function loadMessagesForRoom(args: {
 		});
 		if (messages?.length) {
 			const lastMessage = messages[messages.length - 1];
+			const olderLoaderId = generateLoadMoreId(lastMessage._id as string);
 			const lastMessageRecord = await getMessageById(lastMessage._id as string);
-			if (!lastMessageRecord && lastBatchWasFull) {
+			const olderLoaderRecord = await getMessageById(olderLoaderId);
+			if (lastBatchWasFull && (!lastMessageRecord || olderLoaderRecord)) {
 				messages.push({
-					_id: generateLoadMoreId(lastMessage._id as string),
+					_id: olderLoaderId,
 					rid: lastMessage.rid,
 					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toDate(),
 					t: MessageTypeLoad.MORE,

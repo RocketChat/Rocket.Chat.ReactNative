@@ -283,6 +283,21 @@ describe('updateMessages', () => {
 			expect(batched()).toContain(loader);
 		});
 
+		it('keeps a load-more record that the update carries again', async () => {
+			const loaderId = generateLoadMoreId('m1');
+			const loader = makeFakeRecord(`messages#${loaderId}`, { t: 'load_more' });
+			setRecords('messages', [loader]);
+			const destroy = jest.spyOn(loader as any, 'prepareDestroyPermanently');
+
+			await updateMessages({
+				rid,
+				update: [{ _id: 'm1', rid, msg: 'hi' } as any, { _id: loaderId, rid, t: 'load_more' } as any]
+			});
+
+			expect(destroy).not.toHaveBeenCalled();
+			expect(batched()).toContain(loader);
+		});
+
 		it('destroys the loaderItem it was handed', async () => {
 			const loaderItem = makeFakeRecord('messages#loaderItem', { t: 'load_more' });
 			const destroy = jest.spyOn(loaderItem as any, 'prepareDestroyPermanently');
