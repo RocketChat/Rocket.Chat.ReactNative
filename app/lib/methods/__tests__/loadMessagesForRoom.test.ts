@@ -1,4 +1,4 @@
-import { loadMessagesForRoom, waitForLatestHistoryLoad } from '../loadMessagesForRoom';
+import { loadMessagesForRoom, waitForLiveTailLoad } from '../loadMessagesForRoom';
 import sdk from '../../services/sdk';
 import { ROOM } from '~/actions/actionsTypes';
 import { getMessageById } from '../../database/services/Message';
@@ -209,7 +209,7 @@ describe('loadMessagesForRoom', () => {
 		expect(update.find(message => message.t === 'load_more')).toBeUndefined();
 	});
 
-	describe('waitForLatestHistoryLoad', () => {
+	describe('waitForLiveTailLoad', () => {
 		const settled = async (promise: Promise<void>) => {
 			let isSettled = false;
 			promise.then(() => {
@@ -219,7 +219,7 @@ describe('loadMessagesForRoom', () => {
 			return isSettled;
 		};
 
-		it('waits for the latest history load of the Room in progress', async () => {
+		it('waits for the Live Tail load of the Room in progress', async () => {
 			let finishFetch: (response: unknown) => void = () => {};
 			mockedSdkGet.mockImplementationOnce(
 				() =>
@@ -229,7 +229,7 @@ describe('loadMessagesForRoom', () => {
 			);
 
 			const latestLoad = loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
-			const waiting = waitForLatestHistoryLoad('ROOM_ID');
+			const waiting = waitForLiveTailLoad('ROOM_ID');
 			expect(await settled(waiting)).toBe(false);
 
 			finishFetch({ success: true, messages: [] });
@@ -237,13 +237,13 @@ describe('loadMessagesForRoom', () => {
 			expect(await settled(waiting)).toBe(true);
 		});
 
-		it('resolves when the latest history load of the Room fails', async () => {
+		it('resolves when the Live Tail load of the Room fails', async () => {
 			const networkError = new Error('boom');
 			mockedSdkGet.mockRejectedValueOnce(networkError);
 
 			const latestLoad = loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
 
-			await expect(waitForLatestHistoryLoad('ROOM_ID')).resolves.toBeUndefined();
+			await expect(waitForLiveTailLoad('ROOM_ID')).resolves.toBeUndefined();
 			await expect(latestLoad).rejects.toBe(networkError);
 		});
 
@@ -252,7 +252,7 @@ describe('loadMessagesForRoom', () => {
 
 			loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c', loaderItem: { id: 'tapped-load-more' } as any });
 
-			expect(await settled(waitForLatestHistoryLoad('ROOM_ID'))).toBe(true);
+			expect(await settled(waitForLiveTailLoad('ROOM_ID'))).toBe(true);
 		});
 	});
 

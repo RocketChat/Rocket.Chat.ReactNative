@@ -94,9 +94,6 @@ export default class RoomSubscription {
 	};
 
 	handleConnection = async () => {
-		if (!this.isAlive) {
-			return;
-		}
 		try {
 			reduxStore.dispatch(clearUserTyping());
 			const subscription = await getSubscriptionByRoomId(this.rid);

@@ -4,7 +4,7 @@ import updateMessages from '../updateMessages';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { updateLastOpen } from '../updateLastOpen';
 import { store } from '../../store/auxStore';
-import { loadMessagesForRoom, waitForLatestHistoryLoad } from '../loadMessagesForRoom';
+import { loadMessagesForRoom, waitForLiveTailLoad } from '../loadMessagesForRoom';
 
 jest.mock('../../services/sdk', () => ({
 	__esModule: true,
@@ -30,14 +30,14 @@ jest.mock('../updateLastOpen', () => ({
 	updateLastOpen: jest.fn()
 }));
 jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('../loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn(), waitForLatestHistoryLoad: jest.fn() }));
+jest.mock('../loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn(), waitForLiveTailLoad: jest.fn() }));
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 const mockedUpdateMessages = updateMessages as jest.MockedFunction<typeof updateMessages>;
 const mockedGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.MockedFunction<typeof getSubscriptionByRoomId>;
 const mockedUpdateLastOpen = updateLastOpen as jest.MockedFunction<typeof updateLastOpen>;
 const mockedLoadMessagesForRoom = loadMessagesForRoom as jest.MockedFunction<typeof loadMessagesForRoom>;
-const mockedWaitForLatestHistoryLoad = waitForLatestHistoryLoad as jest.MockedFunction<typeof waitForLatestHistoryLoad>;
+const mockedWaitForLiveTailLoad = waitForLiveTailLoad as jest.MockedFunction<typeof waitForLiveTailLoad>;
 
 const RID = 'ROOM_ID';
 
@@ -46,7 +46,7 @@ describe('loadMissedMessages', () => {
 		jest.clearAllMocks();
 		mockedUpdateMessages.mockResolvedValue(0);
 		mockedLoadMessagesForRoom.mockResolvedValue(undefined as never);
-		mockedWaitForLatestHistoryLoad.mockResolvedValue(undefined);
+		mockedWaitForLiveTailLoad.mockResolvedValue(undefined);
 		mockedGetSubscriptionByRoomId.mockResolvedValue(null as never);
 		(store.getState as jest.Mock).mockReturnValue({ server: { version: '7.4.0' } });
 	});
@@ -87,14 +87,14 @@ describe('loadMissedMessages', () => {
 		const CURSOR = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
 		const subscription = { lastOpen: null as Date | null, t: 'p' };
 		mockedGetSubscriptionByRoomId.mockResolvedValue(subscription as never);
-		mockedWaitForLatestHistoryLoad.mockImplementation(async () => {
+		mockedWaitForLiveTailLoad.mockImplementation(async () => {
 			subscription.lastOpen = CURSOR;
 		});
 		mockedSdkGet.mockResolvedValue({ result: { updated: [], deleted: [], cursor: { next: null } } } as never);
 
 		await loadMissedMessages({ rid: RID });
 
-		expect(mockedWaitForLatestHistoryLoad).toHaveBeenCalledWith(RID);
+		expect(mockedWaitForLiveTailLoad).toHaveBeenCalledWith(RID);
 		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
 		expect(mockedSdkGet).toHaveBeenCalledWith(
 			'chat.syncMessages',
@@ -127,6 +127,7 @@ describe('loadMissedMessages', () => {
 		const CURSOR = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: CURSOR, t: 'c' } as never);
 		mockedSdkGet.mockResolvedValue({ result: { updated: [], deleted: [], cursor: { next: null } } } as never);
+		mockedWaitForLiveTailLoad.mockReturnValue(new Promise(() => {}));
 
 		await loadMissedMessages({ rid: RID });
 

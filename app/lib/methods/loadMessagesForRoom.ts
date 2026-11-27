@@ -117,7 +117,7 @@ async function load(args: {
 	return { messages: allMessages, serverTimestamps, lastBatchWasFull };
 }
 
-const isHistoryBelowUnstored = async (oldestMessage: IMessage): Promise<boolean> => {
+const hasGapBelow = async (oldestMessage: IMessage): Promise<boolean> => {
 	if (!(await getMessageById(oldestMessage._id as string))) {
 		return true;
 	}
@@ -132,24 +132,20 @@ type TLoadMessagesForRoomArgs = {
 	loaderItem?: TMessageModel;
 };
 
-const latestHistoryLoads = new Map<string, Promise<void>>();
+const liveTailLoads = new Map<string, Promise<void>>();
 
-export const waitForLatestHistoryLoad = async (rid: string): Promise<void> => {
-	await latestHistoryLoads.get(rid)?.catch(() => undefined);
-};
+const isLiveTailLoad = (args: TLoadMessagesForRoomArgs): boolean => !args.latest && !args.loaderItem;
+
+export const waitForLiveTailLoad = (rid: string): Promise<void> => liveTailLoads.get(rid) ?? Promise.resolve();
 
 export function loadMessagesForRoom(args: TLoadMessagesForRoomArgs): Promise<void> {
 	const currentLoad = loadRoomHistory(args);
-	if (args.latest || args.loaderItem) {
-		return currentLoad;
+	if (isLiveTailLoad(args)) {
+		liveTailLoads.set(
+			args.rid,
+			currentLoad.catch(() => undefined)
+		);
 	}
-	latestHistoryLoads.set(args.rid, currentLoad);
-	const forgetCurrentLoad = () => {
-		if (latestHistoryLoads.get(args.rid) === currentLoad) {
-			latestHistoryLoads.delete(args.rid);
-		}
-	};
-	currentLoad.then(forgetCurrentLoad, forgetCurrentLoad);
 	return currentLoad;
 }
 
@@ -164,13 +160,13 @@ async function loadRoomHistory(args: TLoadMessagesForRoomArgs): Promise<void> {
 		});
 		if (messages?.length) {
 			const lastMessage = messages[messages.length - 1];
-			if (lastBatchWasFull && (await isHistoryBelowUnstored(lastMessage))) {
+			if (lastBatchWasFull && (await hasGapBelow(lastMessage))) {
 				messages.push(buildOlderLoader(lastMessage));
 			}
 			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
 		}
 
-		if (!args.latest && !args.loaderItem) {
+		if (isLiveTailLoad(args)) {
 			await updateLastOpen(args.rid, serverTimestamps);
 		}
 	} catch (e) {

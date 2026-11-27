@@ -6,7 +6,7 @@ import { store } from '../store/auxStore';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import log from './helpers/log';
 import { snapshotServerTimestamps, type TServerTimestamps, updateLastOpen } from './updateLastOpen';
-import { loadMessagesForRoom, waitForLatestHistoryLoad } from './loadMessagesForRoom';
+import { loadMessagesForRoom, waitForLiveTailLoad } from './loadMessagesForRoom';
 import { isRoomType } from './roomTypeToApiType';
 
 const count = 50;
@@ -73,6 +73,15 @@ async function load({
 	return result;
 }
 
+const getSubscriptionOnceCursorSettles = async (rid: string) => {
+	const sub = await getSubscriptionByRoomId(rid);
+	if (!sub || sub.lastOpen) {
+		return sub;
+	}
+	await waitForLiveTailLoad(rid);
+	return getSubscriptionByRoomId(rid);
+};
+
 export async function loadMissedMessages(args: {
 	rid: string;
 	updatedNext?: number | null;
@@ -83,8 +92,7 @@ export async function loadMissedMessages(args: {
 	if (isFirstPage) {
 		// A room whose history load fetched no messages has no cursor to sync from, and syncing is what
 		// would write one. Load its history instead: it fetches the same gap and seeds the cursor.
-		await waitForLatestHistoryLoad(args.rid);
-		const sub = await getSubscriptionByRoomId(args.rid);
+		const sub = await getSubscriptionOnceCursorSettles(args.rid);
 		if (sub && !sub.lastOpen && isRoomType(sub.t)) {
 			return loadMessagesForRoom({ rid: args.rid, t: sub.t });
 		}
