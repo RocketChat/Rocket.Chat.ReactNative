@@ -7,11 +7,19 @@ const mockGoBack = jest.fn();
 let mockCanGoBack = true;
 let mockUnreads: number | null = null;
 const mockUseUnreadsCount = jest.fn((_rid?: string) => mockUnreads);
+let mockFontScale = 1;
+
+// Stable across renders, so effects only re-run when their real dependencies change
+const mockNavigation = { setOptions: mockSetOptions, goBack: mockGoBack, canGoBack: () => mockCanGoBack };
 
 jest.mock('@react-navigation/native', () => ({
-	useNavigation: () => ({ setOptions: mockSetOptions, goBack: mockGoBack, canGoBack: () => mockCanGoBack })
+	useNavigation: () => mockNavigation
 }));
 jest.mock('../useUnreadsCount', () => ({ useUnreadsCount: (rid?: string) => mockUseUnreadsCount(rid) }));
+jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
+	__esModule: true,
+	default: () => ({ width: 390, height: 844, scale: 3, fontScale: mockFontScale })
+}));
 
 const renderBackItem = (unreads: number | null) => {
 	mockUnreads = unreads;
@@ -26,6 +34,7 @@ beforeEach(() => {
 	jest.clearAllMocks();
 	mockUnreads = null;
 	mockCanGoBack = true;
+	mockFontScale = 1;
 });
 
 it('replaces the back button with a chevron labelled with the unread count', () => {
@@ -50,6 +59,21 @@ it('shows only the chevron without unreads', () => {
 it('goes back when pressed', () => {
 	renderBackItem(3).onPress();
 	expect(mockGoBack).toHaveBeenCalledTimes(1);
+});
+
+it('recreates the back button when the font scale changes', () => {
+	const { rerender } = renderHook(() => useNativeBackButton('rid'));
+	const [before] = mockSetOptions.mock.lastCall[0].unstable_headerLeftItems({ tintColor: 'header-tint' });
+
+	rerender({});
+	expect(mockSetOptions).toHaveBeenCalledTimes(1);
+
+	mockFontScale = 2;
+	rerender({});
+	const [after] = mockSetOptions.mock.lastCall[0].unstable_headerLeftItems({ tintColor: 'header-tint' });
+
+	expect(mockSetOptions).toHaveBeenCalledTimes(2);
+	expect(after.identifier).not.toBe(before.identifier);
 });
 
 it('clears custom left items when it cannot go back', () => {

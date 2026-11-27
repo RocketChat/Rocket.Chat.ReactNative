@@ -1,4 +1,5 @@
 import { useLayoutEffect } from 'react';
+import { useWindowDimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackHeaderItem } from '@react-navigation/native-stack';
 
@@ -11,6 +12,9 @@ export const useNativeBackButton = (rid: string) => {
 	const navigation = useNavigation<IRoomViewProps['navigation']>();
 	const unreadsCount = useUnreadsCount(rid);
 	const unreadsLabel = unreadsCount ? formatUnreadCount(unreadsCount) : '';
+	// The native back button keeps its old size after a Dynamic Type change.
+	// A font-scale-based identifier changes the item props, so the native side recreates it at the new size.
+	const { fontScale } = useWindowDimensions();
 
 	useLayoutEffect(() => {
 		if (!navigation.canGoBack()) {
@@ -19,6 +23,7 @@ export const useNativeBackButton = (rid: string) => {
 		}
 		const backItem: NativeStackHeaderItem = {
 			type: 'button',
+			identifier: `room-back-${fontScale}`,
 			label: unreadsLabel,
 			icon: { type: 'sfSymbol', name: 'chevron.backward' },
 			showsLabelWithIcon: true,
@@ -29,5 +34,5 @@ export const useNativeBackButton = (rid: string) => {
 			headerBackVisible: false,
 			unstable_headerLeftItems: ({ tintColor }) => [{ ...backItem, tintColor }]
 		});
-	}, [navigation, unreadsLabel]);
+	}, [navigation, unreadsLabel, fontScale]);
 };
