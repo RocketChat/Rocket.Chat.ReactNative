@@ -1,3 +1,27 @@
+diff --git a/node_modules/react-native-enriched-markdown/ReactNativeEnrichedMarkdown.podspec b/node_modules/react-native-enriched-markdown/ReactNativeEnrichedMarkdown.podspec
+index dee0fac..96be918 100644
+--- a/node_modules/react-native-enriched-markdown/ReactNativeEnrichedMarkdown.podspec
++++ b/node_modules/react-native-enriched-markdown/ReactNativeEnrichedMarkdown.podspec
+@@ -107,6 +107,7 @@ Pod::Spec.new do |s|
+   s.exclude_files = exclude
+   # Bounded decoding of native pill icons.
+   s.frameworks = "ImageIO"
++  s.dependency "SDWebImage", "~> 5.21.0"
+ 
+   # Video playback (AVKit, built into iOS — no external framework or vendored asset).
+   # Default on: consumers opt out via "enriched-markdown".enableVideo = false in package.json.
+diff --git a/node_modules/react-native-enriched-markdown/android/build.gradle b/node_modules/react-native-enriched-markdown/android/build.gradle
+index ffa8522..522ac10 100644
+--- a/node_modules/react-native-enriched-markdown/android/build.gradle
++++ b/node_modules/react-native-enriched-markdown/android/build.gradle
+@@ -292,6 +292,7 @@ dependencies {
+   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+   // Baseline Profile installer for AOT compilation hints
+   implementation "androidx.profileinstaller:profileinstaller:1.3.1"
++  implementation "com.github.bumptech.glide:glide:5.0.5"
+   // LaTeX math rendering (optional — set enrichedMarkdown.enableMath=false in gradle.properties to exclude)
+   if (enableMath) {
+     implementation("io.github.erweixin:ratex-android:0.1.15")
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/EnrichedMarkdown.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/EnrichedMarkdown.kt
 index 6e970c2..9cc855b 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/EnrichedMarkdown.kt
@@ -75,7 +99,7 @@ index d8a5396..f6930ef 100644
      return OrderedListSpan.measureExtraWidth(listStyle, factory.context, wideNumbers)
    }
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
-index 9aea981..00c13e0 100644
+index 9aea981..094ea82 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 @@ -1,19 +1,21 @@
@@ -101,36 +125,29 @@ index 9aea981..00c13e0 100644
  import android.widget.TextView
  import androidx.core.graphics.createBitmap
  import androidx.core.graphics.drawable.toDrawable
-@@ -23,9 +25,11 @@ import com.swmansion.enriched.markdown.EnrichedMarkdownText
- import com.swmansion.enriched.markdown.styles.ImageSourceOverride
+@@ -24,8 +26,8 @@ import com.swmansion.enriched.markdown.styles.ImageSourceOverride
  import com.swmansion.enriched.markdown.styles.StyleConfig
  import com.swmansion.enriched.markdown.utils.common.findEnrichedMarkdownAncestor
-+import com.swmansion.enriched.markdown.utils.text.AnimatedImageDecoder
  import com.swmansion.enriched.markdown.utils.text.ImageCache
- import com.swmansion.enriched.markdown.utils.text.ImageDownloader
+-import com.swmansion.enriched.markdown.utils.text.ImageDownloader
  import com.swmansion.enriched.markdown.utils.text.LocalImageLoader
-+import com.swmansion.enriched.markdown.utils.text.OriginalImage
++import com.swmansion.enriched.markdown.utils.text.RemoteImageLoader
  import com.swmansion.enriched.markdown.utils.text.view.repaintSpan
  import java.lang.ref.WeakReference
  import java.util.concurrent.Executors
-@@ -104,6 +108,73 @@ class ImageSpan(
+@@ -104,10 +106,79 @@ class ImageSpan(
    private var onBoxHeightChanged: (() -> Unit)? = null
    private var boxHeightReported = false
  
-+  private var animationDecodeRequested = false
-+
-+  // Held from the load until the span is hosted, so a cache eviction in between cannot lose them.
-+  private var pendingAnimatedSource: ByteArray? = null
-+
-+  private val animation: Animatable?
-+    get() = sourceDrawable as? Animatable
++  private val animation: Drawable?
++    get() = sourceDrawable?.takeIf { it is Animatable }
 +
 +  private val animationCallback =
 +    object : Drawable.Callback {
 +      override fun invalidateDrawable(who: Drawable) {
 +        val view = viewRef?.get()
 +        if (view == null || !isHostedBy(view)) {
-+          animation?.stop()
++          stopAnimation()
 +          view?.removeOnAttachStateChangeListener(hostAttachListener)
 +          return
 +        }
@@ -157,14 +174,14 @@ index 9aea981..00c13e0 100644
 +    object : View.OnAttachStateChangeListener {
 +      override fun onViewAttachedToWindow(view: View) {
 +        if (isHostedBy(view)) {
-+          animation?.start()
++          startAnimation()
 +        } else {
 +          view.removeOnAttachStateChangeListener(this)
 +        }
 +      }
 +
 +      override fun onViewDetachedFromWindow(view: View) {
-+        animation?.stop()
++        stopAnimation()
 +        if (!isHostedBy(view)) view.removeOnAttachStateChangeListener(this)
 +      }
 +    }
@@ -180,67 +197,50 @@ index 9aea981..00c13e0 100644
 +  }
 +
 +  private fun releaseHost(view: TextView) {
-+    animation?.stop()
++    stopAnimation()
 +    view.removeOnAttachStateChangeListener(hostAttachListener)
++  }
++
++  private fun startAnimation() {
++    animation?.let { SharedAnimationRunner.start(it, this) }
++  }
++
++  private fun stopAnimation() {
++    animation?.let { SharedAnimationRunner.stop(it, this) }
 +  }
 +
    private fun intrinsicImageSize(): Pair<Int, Int> {
      sourceDrawable?.let { return it.intrinsicWidth to it.intrinsicHeight }
-     val cached = ImageCache.getOriginal(requestKey) ?: return 0 to 0
-@@ -160,20 +231,57 @@ class ImageSpan(
+-    val cached = ImageCache.getOriginal(requestKey) ?: return 0 to 0
+-    return cached.width to cached.height
++    return ImageCache.getIntrinsicSize(requestKey) ?: (0 to 0)
+   }
+ 
+   // Sizing precedence: aspectRatio > maxHeight > height. Returns the legacy fixed
+@@ -160,28 +231,36 @@ class ImageSpan(
      if (requestUrl.isEmpty()) return
      val scheme = Uri.parse(requestUrl).scheme?.lowercase()
      if (scheme == "http" || scheme == "https") {
 -      ImageDownloader.download(context, requestUrl, requestHeaders, ::handleLoadResult)
-+      ImageDownloader.downloadOriginal(context, requestUrl, requestHeaders, ::handleLoadResult)
++      RemoteImageLoader.loadDrawable(context, requestUrl, requestHeaders, height.takeIf { isInline }, ::handleLoadResult)
      } else {
 -      val cached = ImageCache.getOriginal(requestKey)
 -      val bitmap = cached ?: LocalImageLoader.load(context, requestUrl)
 -      if (bitmap != null && cached == null) ImageCache.putOriginal(requestKey, bitmap)
 -      handleLoadResult(bitmap)
-+      val cached = ImageCache.getOriginalImage(requestKey)
-+      val image = cached ?: LocalImageLoader.load(context, requestUrl)?.let { OriginalImage(it) }
-+      if (image != null && cached == null) ImageCache.putOriginal(requestKey, image)
-+      handleLoadResult(image)
++      handleLoadResult(LocalImageLoader.load(context, requestUrl)?.toDrawable(context.resources))
      }
    }
  
 -  private fun handleLoadResult(bitmap: Bitmap?) {
-+  private fun handleLoadResult(image: OriginalImage?) {
-+    pendingAnimatedSource = image?.animatedSource
-+    showDrawable(image?.bitmap?.toDrawable(context.resources))
-+    decodeAnimationOnceHosted()
-+  }
-+
-+  private fun decodeAnimationOnceHosted() {
-+    if (animationDecodeRequested || viewRef?.get() == null) return
-+    val still = sourceDrawable ?: return
-+    val encoded = pendingAnimatedSource ?: return
-+    animationDecodeRequested = true
-+    pendingAnimatedSource = null
-+    val (decodeWidth, decodeHeight) = animationDecodeSizeWithoutUpscaling(still.intrinsicWidth, still.intrinsicHeight)
-+    AnimatedImageDecoder.decode(encoded, decodeWidth, decodeHeight) { drawable ->
-+      if (drawable !is Animatable) return@decode
-+      drawable.callback = animationCallback
-+      showDrawable(drawable)
-+      val view = viewRef?.get() ?: return@decode
-+      if (!isHostedBy(view)) return@decode
-+      followHostAttachState(view)
-+      if (view.isAttachedToWindow) drawable.start()
-+    }
-+  }
-+
-+  private fun animationDecodeSizeWithoutUpscaling(
-+    sourceWidth: Int,
-+    sourceHeight: Int,
-+  ): Pair<Int, Int> {
-+    val boxWidth = if (isInline) height else cachedWidth
-+    val boxHeight = if (isInline) height else resolveBoxHeight(cachedWidth)
-+    if (boxWidth <= 0 || boxHeight <= 0) return sourceWidth to sourceHeight
-+    val widthScale = boxWidth.toFloat() / sourceWidth
-+    val heightScale = boxHeight.toFloat() / sourceHeight
-+    val scale = minOf(1f, if (isInline) minOf(widthScale, heightScale) else maxOf(widthScale, heightScale))
-+    return (sourceWidth * scale).toInt().coerceAtLeast(1) to (sourceHeight * scale).toInt().coerceAtLeast(1)
++  private fun handleLoadResult(drawable: Drawable?) {
++    showDrawable(drawable)
++    if (drawable !is Animatable) return
++    SharedAnimationRunner.attachCallback(drawable, animationCallback)
++    val view = viewRef?.get() ?: return
++    if (!isHostedBy(view)) return
++    followHostAttachState(view)
++    if (view.isAttachedToWindow) startAnimation()
 +  }
 +
 +  private fun showDrawable(drawable: Drawable?) {
@@ -252,16 +252,17 @@ index 9aea981..00c13e0 100644
        ImageCache.markFailed(requestKey)
        loadFailed = true
        if (!wasFailed) refreshForSize(previousSize)
-@@ -181,7 +289,7 @@ class ImageSpan(
+       return
      }
      ImageCache.clearFailed(requestKey)
++    ImageCache.putIntrinsicSize(requestKey, drawable.intrinsicWidth, drawable.intrinsicHeight)
      loadFailed = false
 -    sourceDrawable = bitmap.toDrawable(context.resources)
 +    sourceDrawable = drawable
      wrapAndAssignDrawable(previousSize)
    }
  
-@@ -217,7 +325,9 @@ class ImageSpan(
+@@ -217,7 +296,9 @@ class ImageSpan(
      val base = sourceDrawable ?: return
      boxHeight = resolveBoxHeight(targetWidth)
  
@@ -272,7 +273,7 @@ index 9aea981..00c13e0 100644
  
      if (cachedBitmap != null) {
        loadedDrawable =
-@@ -234,7 +344,7 @@ class ImageSpan(
+@@ -234,7 +315,7 @@ class ImageSpan(
            isBlockImage = !isInline,
            resizeMode = resizeMode,
            legacySizing = legacySizing,
@@ -281,28 +282,46 @@ index 9aea981..00c13e0 100644
          )
      }
    }
-@@ -289,7 +399,12 @@ class ImageSpan(
+@@ -289,7 +370,12 @@ class ImageSpan(
      onBoxHeightChanged: (() -> Unit)? = null,
    ) {
      this.onBoxHeightChanged = onBoxHeightChanged
 +    viewRef?.get()?.removeOnAttachStateChangeListener(hostAttachListener)
      viewRef = WeakReference(view)
-+    animation?.let {
++    if (animation != null) {
 +      followHostAttachState(view)
-+      if (view.isAttachedToWindow) it.start()
++      if (view.isAttachedToWindow) startAnimation()
 +    }
      if (!isInline) {
        val availableWidth = getAvailableWidth(view)
        if (availableWidth > 0) {
-@@ -304,6 +419,7 @@ class ImageSpan(
-         if (!boxHeightReported && boxHeight != placeholderBoxHeight) notifyBoxHeightMayHaveChanged(view)
-       }
-     }
-+    decodeAnimationOnceHosted()
-   }
+@@ -448,6 +534,7 @@ class ImageSpan(
+     private val cacheKey: CacheKey? = null,
+   ) : Drawable() {
+     private val clipPath: Path?
++    private val imageBounds: Rect
+     private var hasCached = false
  
-   private fun updateWidthAndRecreate(newWidth: Int) {
-@@ -594,6 +710,11 @@ class ImageSpan(
+     init {
+@@ -482,7 +569,8 @@ class ImageSpan(
+ 
+       val left = (targetWidth - scaledWidth) / 2
+       val top = (targetHeight - scaledHeight) / 2
+-      imageDrawable.setBounds(left, top, left + scaledWidth, top + scaledHeight)
++      imageBounds = Rect(left, top, left + scaledWidth, top + scaledHeight)
++      imageDrawable.bounds = imageBounds
+ 
+       val clipLeft = maxOf(0, left).toFloat()
+       val clipTop = maxOf(0, top).toFloat()
+@@ -534,6 +622,7 @@ class ImageSpan(
+     }
+ 
+     override fun draw(canvas: Canvas) {
++      if (imageDrawable.bounds != imageBounds) imageDrawable.bounds = imageBounds
+       if (clipPath != null) {
+         canvas.withSave {
+           clipPath(clipPath)
+@@ -594,6 +683,11 @@ class ImageSpan(
    }
  
    companion object {
@@ -314,6 +333,48 @@ index 9aea981..00c13e0 100644
      private val transparentDrawable by lazy { Color.TRANSPARENT.toDrawable() }
      private val cacheExecutor = Executors.newSingleThreadExecutor()
    }
+diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkPillIconCache.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkPillIconCache.kt
+index 9510b5f..bff8e97 100644
+--- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkPillIconCache.kt
++++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkPillIconCache.kt
+@@ -8,15 +8,15 @@ import android.util.LruCache
+ import androidx.annotation.VisibleForTesting
+ import androidx.core.graphics.scale
+ import com.swmansion.enriched.markdown.utils.text.ImageCache
+-import com.swmansion.enriched.markdown.utils.text.ImageDownloader
+ import com.swmansion.enriched.markdown.utils.text.LocalImageLoader
++import com.swmansion.enriched.markdown.utils.text.RemoteImageLoader
+ import java.io.File
+ import kotlin.math.max
+ 
+ /**
+  * Original-color pill icon thumbnails, bounded by count and decoded bytes. Local
+  * sources decode synchronously through the library's local resolver; remote ones go
+- * through the shared image downloader and arrive later.
++ * through the app's Glide instance and arrive later.
+  */
+ internal object LinkPillIconCache {
+   // Icons are drawn at the label's font size, so they need few pixels. Local sources
+@@ -42,7 +42,9 @@ internal object LinkPillIconCache {
+ 
+   /** Replaceable so unit tests never touch the network. */
+   @VisibleForTesting
+-  internal var remoteLoader: (Context, String, Map<String, String>, (Bitmap?) -> Unit) -> Unit = ImageDownloader::download
++  internal var remoteLoader: (Context, String, Map<String, String>, (Bitmap?) -> Unit) -> Unit = { context, url, headers, onLoaded ->
++    RemoteImageLoader.loadBitmap(context, url, headers, REMOTE_MAX_DIMENSION, onLoaded)
++  }
+ 
+   @VisibleForTesting
+   internal var clock: () -> Long = SystemClock::uptimeMillis
+@@ -96,7 +98,7 @@ internal object LinkPillIconCache {
+   /**
+    * Returns the cached remote icon, or null after starting a download that reports
+    * through [onLoaded] on the main thread, with null when the download fails. [onLoaded]
+-   * can also run before this returns when the downloader already holds the image.
++   * can also run before this returns when Glide's memory cache already holds the image.
+    */
+   fun loadRemote(
+     context: Context,
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkSpan.kt
 index ff00069..75f1228 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/LinkSpan.kt
@@ -344,272 +405,547 @@ index ff00069..75f1228 100644
  
      textPaint.color = variant?.color ?: styleCache.linkColor
      textPaint.isUnderlineText = variant?.underline ?: styleCache.linkUnderline
-diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/AnimatedImageDecoder.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/AnimatedImageDecoder.kt
+diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/SharedAnimationRunner.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/SharedAnimationRunner.kt
 new file mode 100644
-index 0000000..5c73576
+index 0000000..d747146
 --- /dev/null
-+++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/AnimatedImageDecoder.kt
-@@ -0,0 +1,52 @@
-+package com.swmansion.enriched.markdown.utils.text
++++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/SharedAnimationRunner.kt
+@@ -0,0 +1,53 @@
++package com.swmansion.enriched.markdown.spans
 +
-+import android.graphics.ImageDecoder
++import android.graphics.drawable.Animatable
 +import android.graphics.drawable.Drawable
-+import android.os.Build
 +import android.os.Handler
 +import android.os.Looper
-+import android.util.Log
-+import androidx.annotation.RequiresApi
-+import java.nio.ByteBuffer
-+import java.util.concurrent.Executors
++import java.util.Collections
++import java.util.WeakHashMap
 +
-+object AnimatedImageDecoder {
-+  private const val TAG = "AnimatedImageDecoder"
++// Glide hands every request for one image the same drawable when it has no constant state
++// (APNG4Android's drawables), so one span stopping it must not freeze the others.
++internal object SharedAnimationRunner {
++  private val runningOwnersByDrawable = WeakHashMap<Drawable, MutableSet<Any>>()
 +
-+  private val executor = Executors.newSingleThreadExecutor()
 +  private val mainHandler = Handler(Looper.getMainLooper())
 +
-+  fun decode(
-+    encoded: ByteArray,
-+    targetWidth: Int,
-+    targetHeight: Int,
-+    callback: (Drawable?) -> Unit,
++  fun attachCallback(
++    drawable: Drawable,
++    callback: Drawable.Callback,
 +  ) {
-+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-+      callback(null)
++    if (Looper.myLooper() != Looper.getMainLooper()) {
++      mainHandler.post { attachCallback(drawable, callback) }
 +      return
 +    }
-+    executor.execute {
-+      val drawable = decodeOrNull(encoded, targetWidth, targetHeight)
-+      mainHandler.post { callback(drawable) }
-+    }
++    drawable.callback = callback
++    // APNG4Android's FrameAnimationDrawable keeps invalidating every callback it saw in setVisible,
++    // and starts itself there unless autoPlay is off; only owners may keep it running.
++    drawable.setVisible(true, false)
++    val animatable = drawable as? Animatable ?: return
++    if (animatable.isRunning && runningOwnersByDrawable[drawable].isNullOrEmpty()) animatable.stop()
 +  }
 +
-+  @RequiresApi(Build.VERSION_CODES.P)
-+  private fun decodeOrNull(
-+    encoded: ByteArray,
-+    targetWidth: Int,
-+    targetHeight: Int,
-+  ): Drawable? =
-+    try {
-+      ImageDecoder.decodeDrawable(ImageDecoder.createSource(ByteBuffer.wrap(encoded))) { decoder, _, _ ->
-+        decoder.setTargetSize(targetWidth, targetHeight)
-+      }
-+    } catch (_: OutOfMemoryError) {
-+      Log.e(TAG, "OOM decoding animated image ${targetWidth}x$targetHeight")
-+      null
-+    } catch (e: Exception) {
-+      Log.e(TAG, "Failed to decode animated image", e)
-+      null
-+    }
++  fun start(
++    drawable: Drawable,
++    owner: Any,
++  ) {
++    val animatable = drawable as? Animatable ?: return
++    runningOwnersByDrawable.getOrPut(drawable) { Collections.newSetFromMap(WeakHashMap()) }.add(owner)
++    if (!animatable.isRunning) animatable.start()
++  }
++
++  fun stop(
++    drawable: Drawable,
++    owner: Any,
++  ) {
++    val animatable = drawable as? Animatable ?: return
++    val owners = runningOwnersByDrawable[drawable] ?: return
++    owners.remove(owner)
++    if (owners.isNotEmpty()) return
++    runningOwnersByDrawable.remove(drawable)
++    animatable.stop()
++  }
 +}
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt
-index ccbf799..25a6a44 100644
+index ccbf799..d9f93d4 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt
-@@ -4,12 +4,24 @@ import android.graphics.Bitmap
- import android.util.LruCache
+@@ -5,17 +5,18 @@ import android.util.LruCache
  import java.security.MessageDigest
  
-+class OriginalImage(
-+  val bitmap: Bitmap,
-+  val animatedSource: ByteArray? = null,
-+)
-+
  object ImageCache {
 -  private const val ORIGINAL_CACHE_SIZE = 20 * 1024 * 1024
-+  private const val ORIGINAL_CACHE_SIZE = 40 * 1024 * 1024
    private const val PROCESSED_CACHE_SIZE = 30 * 1024 * 1024
    private const val FAILED_KEYS_SIZE = 200
++  private const val INTRINSIC_SIZES_SIZE = 500
  
 -  private val originalCache = bitmapLruCache(ORIGINAL_CACHE_SIZE)
-+  // The still and its animated bytes share one entry, so they are evicted together.
-+  private val originalCache =
-+    object : LruCache<String, OriginalImage>(ORIGINAL_CACHE_SIZE) {
-+      override fun sizeOf(
-+        key: String,
-+        value: OriginalImage,
-+      ): Int = value.bitmap.allocationByteCount + (value.animatedSource?.size ?: 0)
-+    }
    private val processedCache = bitmapLruCache(PROCESSED_CACHE_SIZE)
  
    // Measurement builds its own spans, so the requests that failed have to be readable
-@@ -43,13 +55,15 @@ object ImageCache {
+   // by a new span: without this it would size an inline image as the square it never drew.
+   private val failedKeys = LruCache<String, Boolean>(FAILED_KEYS_SIZE)
+ 
++  private val intrinsicSizes = LruCache<String, Pair<Int, Int>>(INTRINSIC_SIZES_SIZE)
++
+   /** Header names lower-cased; sorted first so case aliases collapse deterministically. */
+   fun normalizedHeaders(headers: Map<String, String>): Map<String, String> =
+     headers.entries
+@@ -43,13 +44,14 @@ object ImageCache {
      return url + "|" + digest.joinToString(separator = "") { "%02x".format(it) }
    }
  
 -  fun getOriginal(url: String): Bitmap? = originalCache.get(url)
-+  fun getOriginal(url: String): Bitmap? = originalCache.get(url)?.bitmap
-+
-+  fun getOriginalImage(url: String): OriginalImage? = originalCache.get(url)
++  fun getIntrinsicSize(requestKey: String): Pair<Int, Int>? = intrinsicSizes.get(requestKey)
  
-   fun putOriginal(
-     url: String,
+-  fun putOriginal(
+-    url: String,
 -    bitmap: Bitmap,
-+    image: OriginalImage,
++  fun putIntrinsicSize(
++    requestKey: String,
++    width: Int,
++    height: Int,
    ) {
 -    originalCache.put(url, bitmap)
-+    originalCache.put(url, image)
++    if (width > 0 && height > 0) intrinsicSizes.put(requestKey, width to height)
    }
  
    fun hasFailed(requestKey: String): Boolean = failedKeys.get(requestKey) != null
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
-index eefcf9f..1122d20 100644
+deleted file mode 100644
+index eefcf9f..0000000
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
-+++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageDownloader.kt
-@@ -3,10 +3,12 @@ package com.swmansion.enriched.markdown.utils.text
- import android.content.Context
- import android.graphics.Bitmap
- import android.graphics.BitmapFactory
-+import android.os.Build
- import android.os.Handler
- import android.os.Looper
- import android.util.Log
- import androidx.annotation.VisibleForTesting
-+import com.facebook.react.modules.network.OkHttpClientProvider
- import okhttp3.Cache
- import okhttp3.CacheControl
- import okhttp3.Call
-@@ -22,22 +24,37 @@ object ImageDownloader {
-   private const val TAG = "ImageDownloader"
-   private const val DISK_CACHE_SIZE = 100L * 1024 * 1024
-   private const val TIMEOUT = 15L
-+  private const val WEBP_ANIMATION_FLAG = 0x02
- 
-   private val mainHandler = Handler(Looper.getMainLooper())
- 
-   @Volatile
-   private var client: OkHttpClient? = null
- 
-+  @Volatile
-+  private var userAgent: String? = null
-+
-   // No disk cache: it keys by URL alone and would mix header sets.
-   @Volatile
-   private var headerClient: OkHttpClient? = null
-   private var maxTargetWidth: Int = 0
- 
++++ /dev/null
+@@ -1,228 +0,0 @@
+-package com.swmansion.enriched.markdown.utils.text
+-
+-import android.content.Context
+-import android.graphics.Bitmap
+-import android.graphics.BitmapFactory
+-import android.os.Handler
+-import android.os.Looper
+-import android.util.Log
+-import androidx.annotation.VisibleForTesting
+-import okhttp3.Cache
+-import okhttp3.CacheControl
+-import okhttp3.Call
+-import okhttp3.Callback
+-import okhttp3.OkHttpClient
+-import okhttp3.Request
+-import okhttp3.Response
+-import java.io.File
+-import java.io.IOException
+-import java.util.concurrent.TimeUnit
+-
+-object ImageDownloader {
+-  private const val TAG = "ImageDownloader"
+-  private const val DISK_CACHE_SIZE = 100L * 1024 * 1024
+-  private const val TIMEOUT = 15L
+-
+-  private val mainHandler = Handler(Looper.getMainLooper())
+-
+-  @Volatile
+-  private var client: OkHttpClient? = null
+-
+-  // No disk cache: it keys by URL alone and would mix header sets.
+-  @Volatile
+-  private var headerClient: OkHttpClient? = null
+-  private var maxTargetWidth: Int = 0
+-
 -  private val inFlight = HashMap<String, MutableList<(Bitmap?) -> Unit>>()
-+  private val inFlight = HashMap<String, MutableList<(OriginalImage?) -> Unit>>()
-+
-+  private fun isDecodableAnimation(bytes: ByteArray): Boolean {
-+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) return false
-+    val isGif = bytes.size > 4 && String(bytes, 0, 4, Charsets.US_ASCII) == "GIF8"
-+    val isAnimatedWebp =
-+      bytes.size > 20 &&
-+        String(bytes, 0, 4, Charsets.US_ASCII) == "RIFF" &&
-+        String(bytes, 8, 8, Charsets.US_ASCII) == "WEBPVP8X" &&
-+        (bytes[20].toInt() and WEBP_ANIMATION_FLAG) != 0
-+    return isGif || isAnimatedWebp
-+  }
- 
-   /** Replaceable so unit tests never touch the network. */
-   @VisibleForTesting
+-
+-  /** Replaceable so unit tests never touch the network. */
+-  @VisibleForTesting
 -  internal var remoteLoader: (Context, String, Map<String, String>, (Bitmap?) -> Unit) -> Unit = ::fetch
-+  internal var remoteLoader: (Context, String, Map<String, String>, (OriginalImage?) -> Unit) -> Unit = ::fetch
- 
-   private fun getClient(context: Context): OkHttpClient =
-     client ?: synchronized(this) {
-@@ -56,14 +73,29 @@ object ImageDownloader {
-         .also { headerClient = it }
-     }
- 
-+  fun setUserAgent(value: String?) {
-+    userAgent = value
-+  }
-+
-   private fun buildClient(context: Context): OkHttpClient {
-     val cacheDir = File(context.applicationContext.cacheDir, "enrm_image_cache")
+-
+-  private fun getClient(context: Context): OkHttpClient =
+-    client ?: synchronized(this) {
+-      client ?: buildClient(context).also {
+-        client = it
+-        maxTargetWidth = context.applicationContext.resources.displayMetrics.widthPixels
+-      }
+-    }
+-
+-  private fun getHeaderClient(context: Context): OkHttpClient =
+-    headerClient ?: synchronized(this) {
+-      headerClient ?: getClient(context)
+-        .newBuilder()
+-        .cache(null)
+-        .build()
+-        .also { headerClient = it }
+-    }
+-
+-  private fun buildClient(context: Context): OkHttpClient {
+-    val cacheDir = File(context.applicationContext.cacheDir, "enrm_image_cache")
 -    return OkHttpClient
 -      .Builder()
-+    return OkHttpClientProvider
-+      .createClient()
-+      .newBuilder()
-       .cache(Cache(cacheDir, DISK_CACHE_SIZE))
-       .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
-       .readTimeout(TIMEOUT, TimeUnit.SECONDS)
+-      .cache(Cache(cacheDir, DISK_CACHE_SIZE))
+-      .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
+-      .readTimeout(TIMEOUT, TimeUnit.SECONDS)
 -      .build()
-+      .addInterceptor { chain ->
-+        val request = chain.request()
-+        val agent = userAgent
-+        chain.proceed(
-+          if (agent == null || request.header("User-Agent") != null) {
-+            request
-+          } else {
-+            request.newBuilder().header("User-Agent", agent).build()
-+          },
-+        )
-+      }.build()
-   }
- 
-   fun download(
-@@ -71,18 +103,25 @@ object ImageDownloader {
-     url: String,
-     headers: Map<String, String> = emptyMap(),
-     callback: (Bitmap?) -> Unit,
-+  ) = remoteLoader(context, url, headers) { callback(it?.bitmap) }
-+
-+  fun downloadOriginal(
-+    context: Context,
-+    url: String,
-+    headers: Map<String, String> = emptyMap(),
-+    callback: (OriginalImage?) -> Unit,
-   ) = remoteLoader(context, url, headers, callback)
- 
-   private fun fetch(
-     context: Context,
-     url: String,
-     headers: Map<String, String>,
+-  }
+-
+-  fun download(
+-    context: Context,
+-    url: String,
+-    headers: Map<String, String> = emptyMap(),
 -    callback: (Bitmap?) -> Unit,
-+    callback: (OriginalImage?) -> Unit,
-   ) {
-     val headers = ImageCache.normalizedHeaders(headers)
-     val requestKey = ImageCache.requestKey(url, headers)
- 
+-  ) = remoteLoader(context, url, headers, callback)
+-
+-  private fun fetch(
+-    context: Context,
+-    url: String,
+-    headers: Map<String, String>,
+-    callback: (Bitmap?) -> Unit,
+-  ) {
+-    val headers = ImageCache.normalizedHeaders(headers)
+-    val requestKey = ImageCache.requestKey(url, headers)
+-
 -    ImageCache.getOriginal(requestKey)?.let {
-+    ImageCache.getOriginalImage(requestKey)?.let {
-       callback(it)
-       return
-     }
-@@ -128,11 +167,12 @@ object ImageDownloader {
-           call: Call,
-           response: Response,
-         ) {
+-      callback(it)
+-      return
+-    }
+-
+-    synchronized(inFlight) {
+-      val existing = inFlight[requestKey]
+-      if (existing != null) {
+-        existing.add(callback)
+-        return
+-      }
+-      inFlight[requestKey] = mutableListOf(callback)
+-    }
+-
+-    // OkHttp throws on a URL or header it cannot use; report that like any failed download.
+-    val request =
+-      try {
+-        Request
+-          .Builder()
+-          .url(url)
+-          .apply {
+-            headers.forEach { (name, value) -> addHeader(name, value) }
+-            // The HTTP cache keys by URL and server Vary, which may omit the headers
+-            // that make this request distinct; keep header-bearing responses out of it.
+-            if (headers.isNotEmpty()) {
+-              cacheControl(
+-                CacheControl
+-                  .Builder()
+-                  .noCache()
+-                  .noStore()
+-                  .build(),
+-              )
+-            }
+-          }.build()
+-      } catch (e: IllegalArgumentException) {
+-        Log.e(TAG, "Invalid image request: $url", e)
+-        dispatchCallbacks(requestKey, null)
+-        return
+-      }
+-    val client = if (headers.isEmpty()) getClient(context) else getHeaderClient(context)
+-    client.newCall(request).enqueue(
+-      object : Callback {
+-        override fun onResponse(
+-          call: Call,
+-          response: Response,
+-        ) {
 -          val bitmap =
-+          val image =
-             response.use {
-               try {
-                 val bytes = it.body?.bytes() ?: return@use null
+-            response.use {
+-              try {
+-                val bytes = it.body?.bytes() ?: return@use null
 -                decodeDownsampled(bytes, maxTargetWidth)
-+                val still = decodeDownsampled(bytes, maxTargetWidth) ?: return@use null
-+                OriginalImage(still, if (isDecodableAnimation(bytes)) bytes else null)
-               } catch (_: OutOfMemoryError) {
-                 Log.e(TAG, "OOM decoding image: $url")
-                 null
-@@ -142,8 +182,8 @@ object ImageDownloader {
-               }
-             }
- 
+-              } catch (_: OutOfMemoryError) {
+-                Log.e(TAG, "OOM decoding image: $url")
+-                null
+-              } catch (e: Exception) {
+-                Log.e(TAG, "Failed to decode image: $url", e)
+-                null
+-              }
+-            }
+-
 -          bitmap?.let { ImageCache.putOriginal(requestKey, it) }
 -          dispatchCallbacks(requestKey, bitmap)
-+          image?.let { ImageCache.putOriginal(requestKey, it) }
-+          dispatchCallbacks(requestKey, image)
-         }
- 
-         override fun onFailure(
-@@ -218,11 +258,11 @@ object ImageDownloader {
- 
-   private fun dispatchCallbacks(
-     requestKey: String,
+-        }
+-
+-        override fun onFailure(
+-          call: Call,
+-          e: IOException,
+-        ) {
+-          Log.e(TAG, "Failed to download image: $url", e)
+-          dispatchCallbacks(requestKey, null)
+-        }
+-      },
+-    )
+-  }
+-
+-  private fun decodeDownsampled(
+-    bytes: ByteArray,
+-    targetWidth: Int,
+-    maxDimension: Int? = null,
+-  ): Bitmap? {
+-    val opts = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+-    BitmapFactory.decodeByteArray(bytes, 0, bytes.size, opts)
+-    return decodeWithSampleSize(opts, targetWidth, maxDimension) {
+-      BitmapFactory.decodeByteArray(bytes, 0, bytes.size, it)
+-    }
+-  }
+-
+-  fun decodeBytesDownsampled(
+-    context: Context,
+-    bytes: ByteArray,
+-    maxDimension: Int? = null,
+-  ): Bitmap? = decodeDownsampled(bytes, context.resources.displayMetrics.widthPixels, maxDimension)
+-
+-  fun decodeFileDownsampled(
+-    context: Context,
+-    path: String,
+-    maxDimension: Int? = null,
+-  ): Bitmap? {
+-    val targetWidth = context.resources.displayMetrics.widthPixels
+-    val opts = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+-    BitmapFactory.decodeFile(path, opts)
+-    return decodeWithSampleSize(opts, targetWidth, maxDimension) {
+-      BitmapFactory.decodeFile(path, it)
+-    }
+-  }
+-
+-  private inline fun decodeWithSampleSize(
+-    opts: BitmapFactory.Options,
+-    targetWidth: Int,
+-    maxDimension: Int?,
+-    decode: (BitmapFactory.Options) -> Bitmap?,
+-  ): Bitmap? {
+-    if (opts.outWidth <= 0 || opts.outHeight <= 0) return null
+-    opts.inSampleSize =
+-      if (maxDimension == null) {
+-        calculateInSampleSize(opts.outWidth, targetWidth)
+-      } else {
+-        var sample = 1
+-        val limit = maxDimension.coerceAtLeast(1).toLong()
+-        while (maxOf(opts.outWidth, opts.outHeight).toLong() > limit * sample) sample *= 2
+-        sample
+-      }
+-    opts.inJustDecodeBounds = false
+-    return decode(opts)
+-  }
+-
+-  private fun calculateInSampleSize(
+-    srcWidth: Int,
+-    reqWidth: Int,
+-  ): Int {
+-    if (srcWidth in 0..reqWidth) return 1
+-    return Integer.highestOneBit(srcWidth / reqWidth)
+-  }
+-
+-  private fun dispatchCallbacks(
+-    requestKey: String,
 -    bitmap: Bitmap?,
-+    image: OriginalImage?,
-   ) {
-     val callbacks = synchronized(inFlight) { inFlight.remove(requestKey) } ?: return
-     mainHandler.post {
+-  ) {
+-    val callbacks = synchronized(inFlight) { inFlight.remove(requestKey) } ?: return
+-    mainHandler.post {
 -      callbacks.forEach { it(bitmap) }
-+      callbacks.forEach { it(image) }
+-    }
+-  }
+-}
+diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/LocalImageLoader.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/LocalImageLoader.kt
+index a1c9133..39c12a1 100644
+--- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/LocalImageLoader.kt
++++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/LocalImageLoader.kt
+@@ -2,6 +2,7 @@ package com.swmansion.enriched.markdown.utils.text
+ 
+ import android.content.Context
+ import android.graphics.Bitmap
++import android.graphics.BitmapFactory
+ import android.net.Uri
+ import android.util.Base64
+ import android.util.Log
+@@ -14,7 +15,7 @@ import java.io.InputStream
+  * React Native's asset system produces different URI shapes for the same
+  * `require('./img.png')` depending on environment, and none of them are plain
+  * file paths in a bundled app:
+- * - Metro dev server: `http://host:8081/assets/...` (handled by [ImageDownloader])
++ * - Metro dev server: `http://host:8081/assets/...` (loaded remotely by [RemoteImageLoader])
+  * - Release APK: a bare drawable resource name, e.g. `src_assets_logo`
+  *   (RN's `AssetSourceResolver.resourceIdentifierWithoutScale`)
+  * - Sideloaded JS bundle: `file:///.../drawable-xhdpi/src_assets_logo.png`
+@@ -45,7 +46,7 @@ object LocalImageLoader {
+       when (uri.scheme?.lowercase()) {
+         null -> {
+           if (source.startsWith('/')) {
+-            ImageDownloader.decodeFileDownsampled(context, source, maxDimension)
++            decodeFileDownsampled(context, source, maxDimension)
+           } else {
+             decodeResourceByName(context, source, maxDimension)
+           }
+@@ -102,7 +103,7 @@ object LocalImageLoader {
+       }
+ 
+       else -> {
+-        ImageDownloader.decodeFileDownsampled(context, path, maxDimension)
++        decodeFileDownsampled(context, path, maxDimension)
+       }
      }
    }
+@@ -154,14 +155,66 @@ object LocalImageLoader {
+     val marker = source.indexOf(BASE64_MARKER)
+     if (marker == -1) return null
+     val bytes = Base64.decode(source.substring(marker + BASE64_MARKER.length), Base64.DEFAULT)
+-    return ImageDownloader.decodeBytesDownsampled(context, bytes, maxDimension)
++    return decodeBytesDownsampled(context, bytes, maxDimension)
+   }
+ 
+   private inline fun decodeStream(
+     context: Context,
+     maxDimension: Int?,
+     open: () -> InputStream,
+-  ): Bitmap? = open().use { ImageDownloader.decodeBytesDownsampled(context, it.readBytes(), maxDimension) }
++  ): Bitmap? = open().use { decodeBytesDownsampled(context, it.readBytes(), maxDimension) }
+ 
+   private fun schemelessPath(uri: Uri): String = (uri.host.orEmpty() + uri.path.orEmpty()).trimStart('/')
++
++  private fun decodeBytesDownsampled(
++    context: Context,
++    bytes: ByteArray,
++    maxDimension: Int?,
++  ): Bitmap? {
++    val opts = BitmapFactory.Options().apply { inJustDecodeBounds = true }
++    BitmapFactory.decodeByteArray(bytes, 0, bytes.size, opts)
++    return decodeWithSampleSize(opts, context.resources.displayMetrics.widthPixels, maxDimension) {
++      BitmapFactory.decodeByteArray(bytes, 0, bytes.size, it)
++    }
++  }
++
++  private fun decodeFileDownsampled(
++    context: Context,
++    path: String,
++    maxDimension: Int?,
++  ): Bitmap? {
++    val opts = BitmapFactory.Options().apply { inJustDecodeBounds = true }
++    BitmapFactory.decodeFile(path, opts)
++    return decodeWithSampleSize(opts, context.resources.displayMetrics.widthPixels, maxDimension) {
++      BitmapFactory.decodeFile(path, it)
++    }
++  }
++
++  private inline fun decodeWithSampleSize(
++    opts: BitmapFactory.Options,
++    targetWidth: Int,
++    maxDimension: Int?,
++    decode: (BitmapFactory.Options) -> Bitmap?,
++  ): Bitmap? {
++    if (opts.outWidth <= 0 || opts.outHeight <= 0) return null
++    opts.inSampleSize =
++      if (maxDimension == null) {
++        calculateInSampleSize(opts.outWidth, targetWidth)
++      } else {
++        var sample = 1
++        val limit = maxDimension.coerceAtLeast(1).toLong()
++        while (maxOf(opts.outWidth, opts.outHeight).toLong() > limit * sample) sample *= 2
++        sample
++      }
++    opts.inJustDecodeBounds = false
++    return decode(opts)
++  }
++
++  private fun calculateInSampleSize(
++    srcWidth: Int,
++    reqWidth: Int,
++  ): Int {
++    if (srcWidth in 0..reqWidth) return 1
++    return Integer.highestOneBit(srcWidth / reqWidth)
++  }
  }
+diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/RemoteImageLoader.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/RemoteImageLoader.kt
+new file mode 100644
+index 0000000..4a3f072
+--- /dev/null
++++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/RemoteImageLoader.kt
+@@ -0,0 +1,89 @@
++package com.swmansion.enriched.markdown.utils.text
++
++import android.content.Context
++import android.graphics.Bitmap
++import android.graphics.drawable.Drawable
++import com.bumptech.glide.Glide
++import com.bumptech.glide.RequestBuilder
++import com.bumptech.glide.load.model.GlideUrl
++import com.bumptech.glide.load.model.LazyHeaders
++import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
++import com.bumptech.glide.request.target.CustomTarget
++import com.bumptech.glide.request.transition.Transition
++
++object RemoteImageLoader {
++  fun loadDrawable(
++    context: Context,
++    url: String,
++    headers: Map<String, String>,
++    fitWithin: Int?,
++    onLoaded: (Drawable?) -> Unit,
++  ) {
++    val request =
++      Glide
++        .with(context.applicationContext)
++        .asDrawable()
++        .withRemoteModel(url, headers)
++    val sizedRequest =
++      if (fitWithin == null) {
++        val screenWidth = context.resources.displayMetrics.widthPixels
++        request.override(screenWidth, screenWidth).downsample(WidthOnlyDownsampleStrategy)
++      } else {
++        request.override(fitWithin, fitWithin).downsample(DownsampleStrategy.CENTER_INSIDE)
++      }
++    sizedRequest.into(DeliveringTarget(onLoaded))
++  }
++
++  fun loadBitmap(
++    context: Context,
++    url: String,
++    headers: Map<String, String>,
++    maxDimension: Int,
++    onLoaded: (Bitmap?) -> Unit,
++  ) {
++    Glide
++      .with(context.applicationContext)
++      .asBitmap()
++      .withRemoteModel(url, headers)
++      .override(maxDimension, maxDimension)
++      .downsample(DownsampleStrategy.CENTER_INSIDE)
++      .into(DeliveringTarget(onLoaded))
++  }
++
++  private fun <ResourceType : Any> RequestBuilder<ResourceType>.withRemoteModel(
++    url: String,
++    headers: Map<String, String>,
++  ): RequestBuilder<ResourceType> {
++    val requestHeaders = LazyHeaders.Builder().apply { headers.forEach { (name, value) -> addHeader(name, value) } }.build()
++    return load(GlideUrl(url, requestHeaders)).disallowHardwareConfig()
++  }
++
++  private object WidthOnlyDownsampleStrategy : DownsampleStrategy() {
++    override fun getScaleFactor(
++      sourceWidth: Int,
++      sourceHeight: Int,
++      requestedWidth: Int,
++      requestedHeight: Int,
++    ): Float = minOf(1f, requestedWidth.toFloat() / sourceWidth)
++
++    override fun getSampleSizeRounding(
++      sourceWidth: Int,
++      sourceHeight: Int,
++      requestedWidth: Int,
++      requestedHeight: Int,
++    ): SampleSizeRounding = SampleSizeRounding.QUALITY
++  }
++
++  private class DeliveringTarget<ResourceType : Any>(
++    private val onLoaded: (ResourceType?) -> Unit,
++  ) : CustomTarget<ResourceType>() {
++    override fun onResourceReady(
++      resource: ResourceType,
++      transition: Transition<in ResourceType>?,
++    ) = onLoaded(resource)
++
++    override fun onLoadFailed(errorDrawable: Drawable?) = onLoaded(null)
++
++    override fun onLoadCleared(placeholder: Drawable?) = Unit
++  }
++}
 diff --git a/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.c b/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.c
 index e51807d..e0c2a22 100644
 --- a/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.c
@@ -896,31 +1232,113 @@ index fcddeb0..9caa229 100644
      }
    }
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
-index dddff1d..0bc87bc 100644
+index dddff1d..0d8bae5 100644
 --- a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
 +++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
-@@ -4,6 +4,7 @@
+@@ -1,6 +1,7 @@
+ #import "ENRMImageAttachment.h"
+ #import "ENRMImageDownloader.h"
+ #import "ENRMImageFailurePlaceholder.h"
++#import "ENRMSharedImageAnimation.h"
  #import "ENRMUIKit.h"
  #import "RuntimeKeys.h"
  #import "StyleConfig.h"
-+#import <ImageIO/ImageIO.h>
- #import <objc/runtime.h>
- 
+@@ -9,6 +10,7 @@
  #define CACHE_KEY_PROCESSED(url, w, h, r, m) [NSString stringWithFormat:@"%@_w%.1f_h%.1f_r%.1f_m%@", url, w, h, r, m]
-@@ -48,6 +49,12 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+ 
+ static NSString *const kInlineDrawingMode = @"contain";
++static NSString *const kInlineProcessingMode = @"inline";
+ 
+ static NSCache<NSString *, RCTUIImage *> *_originalImageCache;
+ static NSCache<NSString *, RCTUIImage *> *_processedImageCache;
+@@ -27,7 +29,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+ 
+ @end
+ 
+-@interface ENRMImageAttachment ()
++@interface ENRMImageAttachment () <ENRMAnimatedImageDisplay>
+ 
+ @property (nonatomic, copy) NSString *imageURL;
+ @property (nonatomic, copy) NSString *requestURL;
+@@ -48,9 +50,77 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
  @property (nonatomic, assign) BOOL loadFailed;
  @property (nonatomic, strong) ENRMImageFailurePlaceholder *failurePlaceholder;
  @property (nonatomic, strong) RCTUIImage *failureImage;
 +@property (nonatomic, strong) NSHashTable<NSTextContainer *> *displayedContainers;
-+@property (nonatomic, strong, nullable) RCTUIImage *animationFrame;
-+@property (nonatomic, assign) CGSize animationBoxSize;
-+@property (nonatomic, assign) NSUInteger animationGeneration;
-+@property (nonatomic, assign) size_t resumeFrameIndex;
-+@property (nonatomic, assign) BOOL isAnimating;
++@property (nonatomic, strong, nullable) ENRMSharedImageAnimation *animation;
  
  @end
  
-@@ -126,6 +133,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
++static CGRect ENRMDrawingRectForResizeMode(NSString *mode, CGSize source, CGSize box)
++{
++  if ([mode isEqualToString:@"stretch"]) {
++    return CGRectMake(0, 0, box.width, box.height);
++  }
++
++  CGFloat widthScale = box.width / source.width;
++  CGFloat heightScale = box.height / source.height;
++
++  CGFloat scale;
++  if ([mode isEqualToString:@"contain"]) {
++    scale = MIN(widthScale, heightScale);
++  } else if ([mode isEqualToString:@"center"]) {
++    scale = MIN(1.0, MIN(widthScale, heightScale));
++  } else if ([mode isEqualToString:@"none"]) {
++    scale = 1.0;
++  } else { // cover (default)
++    scale = MAX(widthScale, heightScale);
++  }
++
++  CGFloat drawingWidth = source.width * scale;
++  CGFloat drawingHeight = source.height * scale;
++  return CGRectMake((box.width - drawingWidth) / 2.0, (box.height - drawingHeight) / 2.0, drawingWidth, drawingHeight);
++}
++
++static RCTUIImage *ENRMScaledImage(RCTUIImage *image, CGSize box, CGFloat radius, NSString *drawingMode)
++{
++  CGFloat sourceWidth = image.size.width;
++  CGFloat sourceHeight = image.size.height;
++  if (sourceWidth <= 0 || sourceHeight <= 0)
++    return nil;
++
++  CGSize source = CGSizeMake(sourceWidth, sourceHeight);
++  BOOL isInline = [drawingMode isEqualToString:kInlineProcessingMode];
++  BOOL isLegacyBlockSizing = !isInline && drawingMode.length == 0;
++
++  CGRect drawingRect;
++  if (isInline) {
++    drawingRect = ENRMDrawingRectForResizeMode(kInlineDrawingMode, source, box);
++  } else if (isLegacyBlockSizing) {
++    CGFloat drawingHeight = sourceHeight * (box.width / sourceWidth);
++    drawingRect = CGRectMake(0, (box.height - drawingHeight) / 2.0, box.width, drawingHeight);
++  } else {
++    drawingRect = ENRMDrawingRectForResizeMode(drawingMode, source, box);
++  }
++
++  RCTUIGraphicsImageRenderer *renderer = ImageRendererForSize(box);
++
++  return [renderer imageWithActions:^(RCTUIGraphicsImageRendererContext *context) {
++    if (radius > 0) {
++      CGRect clipRect = CGRectIntersection(CGRectMake(0, 0, box.width, box.height), drawingRect);
++      if (isInline) {
++        CGFloat cornerRadius = MIN(radius, MIN(clipRect.size.width, clipRect.size.height) / 2.0);
++        CGPathRef path = CGPathCreateWithRoundedRect(clipRect, cornerRadius, cornerRadius, NULL);
++        CGContextAddPath(context.CGContext, path);
++        CGContextClip(context.CGContext);
++        CGPathRelease(path);
++      } else {
++        UIBezierPath *path = UIBezierPathWithRoundedRect(clipRect, radius);
++        [path addClip];
++      }
++    }
++    [image drawInRect:drawingRect];
++  }];
++}
++
+ @implementation ENRMImageAttachment
+ 
+ + (NSCache<NSString *, RCTUIImage *> *)originalImageCache
+@@ -126,6 +196,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
      CGFloat inlineImageSize = [config inlineImageSize];
      CGFloat inlineScale = isInline && inlineImageSize > 0 ? _cachedHeight / inlineImageSize : 1.0;
      _cachedBorderRadius = [config imageBorderRadius] * inlineScale;
@@ -928,7 +1346,21 @@ index dddff1d..0bc87bc 100644
  
      // The resolved font, so the alt text grows with the user's text size like the paragraph does.
      _failurePlaceholder = [[ENRMImageFailurePlaceholder alloc] initWithAltText:altText
-@@ -218,6 +226,9 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -160,13 +231,6 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+   return self.cachedHeight;
+ }
+ 
+-// True when resizeMode is unset ('') - legacy always implies a fixed height box.
+-
+-- (BOOL)isLegacyBlockSizing
+-{
+-  return !self.isInline && self.cachedResizeMode.length == 0;
+-}
+-
+ // TextKit proposes the line's full width and applies the paragraph's indents afterwards, so
+ // a box as wide as the proposal runs past the right edge of an indented list item.
+ - (CGFloat)availableWidthInLineFragment:(CGRect)lineFragment
+@@ -218,6 +282,9 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
                  characterIndex:(NSUInteger)characterIndex
  {
    self.textContainer = textContainer;
@@ -938,22 +1370,24 @@ index dddff1d..0bc87bc 100644
  
    if (self.loadFailed) {
      return [self failureImageForSize:imageBounds.size] ?: self.placeholderImage;
-@@ -228,7 +239,76 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -228,9 +295,34 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
      [self processAndApplyImage:self.originalImage withTargetWidth:imageBounds.size.width];
    }
  
--  return self.loadedImage ?: self.placeholderImage;
-+  [self startAnimationIfDisplayed];
-+  return self.animationFrame ?: self.loadedImage ?: self.placeholderImage;
-+}
-+
-+- (void)setLoadedImage:(RCTUIImage *)loadedImage
++  ENRMSharedImageAnimation *animation = self.animation;
++  if (animation && self.loadedImage) {
++    [animation playForDisplay:self];
++    return animation.currentFrame ?: self.loadedImage;
++  }
+   return self.loadedImage ?: self.placeholderImage;
+ }
+ 
++- (void)setAnimation:(ENRMSharedImageAnimation *)animation
 +{
-+  _loadedImage = loadedImage;
-+  self.animationFrame = nil;
-+  self.animationGeneration += 1;
-+  self.resumeFrameIndex = 0;
-+  self.isAnimating = NO;
++  if (_animation == animation)
++    return;
++  [_animation removeDisplay:self];
++  _animation = animation;
 +}
 +
 +- (NSArray<ENRMPlatformTextView *> *)displayingTextViewsInWindow
@@ -968,62 +1402,341 @@ index dddff1d..0bc87bc 100644
 +  return textViews;
 +}
 +
-+- (void)startAnimationIfDisplayed
-+{
-+#if !TARGET_OS_OSX
-+  if (self.isAnimating || !self.loadedImage || ![self.originalImage isKindOfClass:[ENRMAnimatedImage class]])
-+    return;
-+  if ([self displayingTextViewsInWindow].count == 0)
-+    return;
-+
-+  self.isAnimating = YES;
-+  NSData *encodedData = ((ENRMAnimatedImage *)self.originalImage).encodedData;
-+  NSDictionary *options = @{(__bridge NSString *)kCGImageAnimationStartIndex : @(self.resumeFrameIndex)};
-+  NSUInteger generation = self.animationGeneration;
-+  __weak typeof(self) weakSelf = self;
-+  dispatch_async(dispatch_get_main_queue(), ^{
-+    CGAnimateImageDataWithBlock((__bridge CFDataRef)encodedData, (__bridge CFDictionaryRef)options,
-+                                ^(size_t index, CGImageRef frame, bool *stop) {
-+                                  *stop = ![weakSelf showAnimationFrame:frame atIndex:index generation:generation];
-+                                });
-+  });
-+#endif
-+}
-+
-+- (BOOL)showAnimationFrame:(CGImageRef)frame atIndex:(size_t)index generation:(NSUInteger)generation
-+{
-+  if (generation != self.animationGeneration)
-+    return NO;
-+
-+  NSArray<ENRMPlatformTextView *> *textViews = [self displayingTextViewsInWindow];
-+  if (textViews.count == 0) {
-+    self.resumeFrameIndex = index;
-+    self.isAnimating = NO;
-+    return NO;
-+  }
-+
-+  self.animationFrame = [self createScaledImage:[RCTUIImage imageWithCGImage:frame]
-+                                        toWidth:self.animationBoxSize.width
-+                                         height:self.animationBoxSize.height
-+                                   borderRadius:self.cachedBorderRadius];
-+  for (ENRMPlatformTextView *textView in textViews) {
-+    NSRange range = [self findAttachmentRangeInText:textView.textStorage];
-+    if (range.location != NSNotFound) {
-+      [textView.layoutManager invalidateDisplayForCharacterRange:range];
-+    }
-+  }
-+  return YES;
- }
- 
  - (RCTUIImage *)failureImageForSize:(CGSize)size
-@@ -297,6 +377,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+ {
+   if (size.width <= 0 || size.height <= 0)
+@@ -290,13 +382,17 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+ 
+   CGFloat boxHeight = self.isInline ? self.cachedHeight : [self resolvedBoxHeightForWidth:targetWidth];
+ 
+-  NSString *drawingMode = self.isInline ? @"inline" : self.cachedResizeMode;
++  NSString *drawingMode = self.isInline ? kInlineProcessingMode : self.cachedResizeMode;
+   NSString *processedKey =
+       CACHE_KEY_PROCESSED(self.cacheKey, targetWidth, boxHeight, self.cachedBorderRadius, drawingMode);
+ 
    if ([processedKey isEqualToString:self.lastProcessedKey])
      return;
    self.lastProcessedKey = processedKey;
-+  self.animationBoxSize = CGSizeMake(targetWidth, boxHeight);
++  self.animation = [self sharedAnimationForImage:image
++                                             key:processedKey
++                                         boxSize:CGSizeMake(targetWidth, boxHeight)
++                                     drawingMode:drawingMode];
  
    RCTUIImage *cachedProcessed = [[ENRMImageAttachment processedImageCache] objectForKey:processedKey];
  
+@@ -312,10 +408,8 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+     if (!strongSelf)
+       return;
+ 
+-    RCTUIImage *processedImage = [strongSelf createScaledImage:image
+-                                                       toWidth:targetWidth
+-                                                        height:boxHeight
+-                                                  borderRadius:strongSelf.cachedBorderRadius];
++    RCTUIImage *processedImage =
++        ENRMScaledImage(image, CGSizeMake(targetWidth, boxHeight), strongSelf.cachedBorderRadius, drawingMode);
+ 
+     if (processedImage) {
+       [[ENRMImageAttachment processedImageCache] setObject:processedImage
+@@ -333,73 +427,19 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+   });
+ }
+ 
+-- (RCTUIImage *)createScaledImage:(RCTUIImage *)image
+-                          toWidth:(CGFloat)targetWidth
+-                           height:(CGFloat)targetHeight
+-                     borderRadius:(CGFloat)radius
++- (nullable ENRMSharedImageAnimation *)sharedAnimationForImage:(RCTUIImage *)image
++                                                           key:(NSString *)key
++                                                       boxSize:(CGSize)boxSize
++                                                   drawingMode:(NSString *)drawingMode
+ {
+-  CGFloat sourceWidth = image.size.width;
+-  CGFloat sourceHeight = image.size.height;
+-  if (sourceWidth <= 0 || sourceHeight <= 0)
++  if (!ENRMIsAnimatedImage(image))
+     return nil;
+-
+-  CGSize source = CGSizeMake(sourceWidth, sourceHeight);
+-  CGSize box = CGSizeMake(targetWidth, targetHeight);
+-  BOOL legacy = [self isLegacyBlockSizing];
+-
+-  CGRect drawingRect;
+-  if (self.isInline) {
+-    drawingRect = [self drawingRectForResizeMode:kInlineDrawingMode source:source box:box];
+-  } else if (legacy) {
+-    CGFloat drawingHeight = sourceHeight * (targetWidth / sourceWidth);
+-    drawingRect = CGRectMake(0, (targetHeight - drawingHeight) / 2.0, targetWidth, drawingHeight);
+-  } else {
+-    drawingRect = [self drawingRectForResizeMode:self.cachedResizeMode source:source box:box];
+-  }
+-
+-  RCTUIGraphicsImageRenderer *renderer = ImageRendererForSize(box);
+-
+-  return [renderer imageWithActions:^(RCTUIGraphicsImageRendererContext *context) {
+-    if (radius > 0) {
+-      CGRect clipRect = CGRectIntersection(CGRectMake(0, 0, targetWidth, targetHeight), drawingRect);
+-      if (self.isInline) {
+-        CGFloat cornerRadius = MIN(radius, MIN(clipRect.size.width, clipRect.size.height) / 2.0);
+-        CGPathRef path = CGPathCreateWithRoundedRect(clipRect, cornerRadius, cornerRadius, NULL);
+-        CGContextAddPath(context.CGContext, path);
+-        CGContextClip(context.CGContext);
+-        CGPathRelease(path);
+-      } else {
+-        UIBezierPath *path = UIBezierPathWithRoundedRect(clipRect, radius);
+-        [path addClip];
+-      }
+-    }
+-    [image drawInRect:drawingRect];
+-  }];
+-}
+-
+-- (CGRect)drawingRectForResizeMode:(NSString *)mode source:(CGSize)source box:(CGSize)box
+-{
+-  if ([mode isEqualToString:@"stretch"]) {
+-    return CGRectMake(0, 0, box.width, box.height);
+-  }
+-
+-  CGFloat widthScale = box.width / source.width;
+-  CGFloat heightScale = box.height / source.height;
+-
+-  CGFloat scale;
+-  if ([mode isEqualToString:@"contain"]) {
+-    scale = MIN(widthScale, heightScale);
+-  } else if ([mode isEqualToString:@"center"]) {
+-    scale = MIN(1.0, MIN(widthScale, heightScale));
+-  } else if ([mode isEqualToString:@"none"]) {
+-    scale = 1.0;
+-  } else { // cover (default)
+-    scale = MAX(widthScale, heightScale);
+-  }
+-
+-  CGFloat drawingWidth = source.width * scale;
+-  CGFloat drawingHeight = source.height * scale;
+-  return CGRectMake((box.width - drawingWidth) / 2.0, (box.height - drawingHeight) / 2.0, drawingWidth, drawingHeight);
++  CGFloat borderRadius = self.cachedBorderRadius;
++  return [ENRMSharedImageAnimation animationForImage:image
++                                                 key:key
++                                       frameRenderer:^RCTUIImage *(RCTUIImage *frame) {
++                                         return ENRMScaledImage(frame, boxSize, borderRadius, drawingMode);
++                                       }];
+ }
+ 
+ - (void)startDownloadingImage
+diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.h b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.h
+new file mode 100644
+index 0000000..eaedd7d
+--- /dev/null
++++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.h
+@@ -0,0 +1,27 @@
++#pragma once
++#import "ENRMUIKit.h"
++
++NS_ASSUME_NONNULL_BEGIN
++
++@protocol ENRMAnimatedImageDisplay <NSObject>
++- (NSArray<ENRMPlatformTextView *> *)displayingTextViewsInWindow;
++@end
++
++typedef RCTUIImage *_Nullable (^ENRMAnimationFrameRenderer)(RCTUIImage *frame);
++
++FOUNDATION_EXPORT BOOL ENRMIsAnimatedImage(RCTUIImage *_Nullable image);
++
++@interface ENRMSharedImageAnimation : NSObject
++
++@property (nonatomic, readonly, nullable) RCTUIImage *currentFrame;
++
+++ (instancetype)animationForImage:(RCTUIImage *)image
++                              key:(NSString *)key
++                    frameRenderer:(ENRMAnimationFrameRenderer)frameRenderer;
++
++- (void)playForDisplay:(id<ENRMAnimatedImageDisplay>)display;
++- (void)removeDisplay:(id<ENRMAnimatedImageDisplay>)display;
++
++@end
++
++NS_ASSUME_NONNULL_END
+diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m
+new file mode 100644
+index 0000000..1d44b71
+--- /dev/null
++++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m
+@@ -0,0 +1,176 @@
++#import "ENRMSharedImageAnimation.h"
++#import <SDWebImage/SDWebImage.h>
++
++BOOL ENRMIsAnimatedImage(RCTUIImage *image)
++{
++#if !TARGET_OS_OSX
++  if (![image isKindOfClass:[SDAnimatedImage class]])
++    return NO;
++  SDAnimatedImage *animatedImage = (SDAnimatedImage *)image;
++  SDImageFormat format = animatedImage.animatedImageFormat;
++  return animatedImage.animatedImageFrameCount > 1 &&
++         (format == SDImageFormatGIF || format == SDImageFormatPNG || format == SDImageFormatWebP);
++#else
++  return NO;
++#endif
++}
++
++@interface ENRMRenderedFrameProvider : NSObject <SDAnimatedImageProvider>
++- (instancetype)initWithImage:(id<SDAnimatedImageProvider>)image frameRenderer:(ENRMAnimationFrameRenderer)frameRenderer;
++@end
++
++@implementation ENRMRenderedFrameProvider {
++  id<SDAnimatedImageProvider> _image;
++  ENRMAnimationFrameRenderer _frameRenderer;
++}
++
++- (instancetype)initWithImage:(id<SDAnimatedImageProvider>)image frameRenderer:(ENRMAnimationFrameRenderer)frameRenderer
++{
++  self = [super init];
++  if (self) {
++    _image = image;
++    _frameRenderer = [frameRenderer copy];
++  }
++  return self;
++}
++
++- (NSData *)animatedImageData
++{
++  return _image.animatedImageData;
++}
++
++- (NSUInteger)animatedImageFrameCount
++{
++  return _image.animatedImageFrameCount;
++}
++
++- (NSUInteger)animatedImageLoopCount
++{
++  return _image.animatedImageLoopCount;
++}
++
++- (RCTUIImage *)animatedImageFrameAtIndex:(NSUInteger)index
++{
++  RCTUIImage *frame = [_image animatedImageFrameAtIndex:index];
++  return frame ? _frameRenderer(frame) : nil;
++}
++
++- (NSTimeInterval)animatedImageDurationAtIndex:(NSUInteger)index
++{
++  return [_image animatedImageDurationAtIndex:index];
++}
++
++@end
++
++@implementation ENRMSharedImageAnimation {
++  ENRMRenderedFrameProvider *_frameProvider;
++  SDAnimatedImagePlayer *_player;
++  NSHashTable<id<ENRMAnimatedImageDisplay>> *_displays;
++}
++
+++ (NSMapTable<NSString *, ENRMSharedImageAnimation *> *)animationsByKey
++{
++  static NSMapTable<NSString *, ENRMSharedImageAnimation *> *animations;
++  static dispatch_once_t onceToken;
++  dispatch_once(&onceToken, ^{ animations = [NSMapTable strongToWeakObjectsMapTable]; });
++  return animations;
++}
++
+++ (instancetype)animationForImage:(RCTUIImage *)image
++                              key:(NSString *)key
++                    frameRenderer:(ENRMAnimationFrameRenderer)frameRenderer
++{
++  NSMapTable<NSString *, ENRMSharedImageAnimation *> *animations = [self animationsByKey];
++  @synchronized(animations) {
++    ENRMSharedImageAnimation *animation = [animations objectForKey:key];
++    if (!animation) {
++      animation = [[self alloc] initWithImage:image frameRenderer:frameRenderer];
++      [animations setObject:animation forKey:key];
++    }
++    return animation;
++  }
++}
++
++- (instancetype)initWithImage:(RCTUIImage *)image frameRenderer:(ENRMAnimationFrameRenderer)frameRenderer
++{
++  self = [super init];
++  if (self) {
++    _frameProvider = [[ENRMRenderedFrameProvider alloc] initWithImage:(id<SDAnimatedImageProvider>)image
++                                                        frameRenderer:frameRenderer];
++    _displays = [NSHashTable weakObjectsHashTable];
++  }
++  return self;
++}
++
++- (void)dealloc
++{
++  [_player stopPlaying];
++}
++
++- (void)playForDisplay:(id<ENRMAnimatedImageDisplay>)display
++{
++  if (!NSThread.isMainThread) {
++    dispatch_async(dispatch_get_main_queue(), ^{ [self playForDisplay:display]; });
++    return;
++  }
++  [_displays addObject:display];
++  if (_player.isPlaying || [display displayingTextViewsInWindow].count == 0)
++    return;
++  [[self player] startPlaying];
++}
++
++- (void)removeDisplay:(id<ENRMAnimatedImageDisplay>)display
++{
++  if (!NSThread.isMainThread) {
++    dispatch_async(dispatch_get_main_queue(), ^{ [self removeDisplay:display]; });
++    return;
++  }
++  [_displays removeObject:display];
++}
++
++- (SDAnimatedImagePlayer *)player
++{
++  if (!_player) {
++    _player = [SDAnimatedImagePlayer playerWithProvider:_frameProvider];
++    __weak typeof(self) weakSelf = self;
++    _player.animationFrameHandler = ^(NSUInteger index, RCTUIImage *frame) { [weakSelf showFrame:frame]; };
++  }
++  return _player;
++}
++
++- (void)showFrame:(RCTUIImage *)frame
++{
++  NSMapTable<ENRMPlatformTextView *, NSHashTable<id<ENRMAnimatedImageDisplay>> *> *displaysByTextView =
++      [NSMapTable strongToStrongObjectsMapTable];
++  for (id<ENRMAnimatedImageDisplay> display in _displays.allObjects) {
++    for (ENRMPlatformTextView *textView in [display displayingTextViewsInWindow]) {
++      NSHashTable<id<ENRMAnimatedImageDisplay>> *displays = [displaysByTextView objectForKey:textView];
++      if (!displays) {
++        displays = [NSHashTable hashTableWithOptions:NSPointerFunctionsObjectPointerPersonality];
++        [displaysByTextView setObject:displays forKey:textView];
++      }
++      [displays addObject:display];
++    }
++  }
++
++  if (displaysByTextView.count == 0) {
++    [_player pausePlaying];
++    return;
++  }
++
++  _currentFrame = frame;
++  for (ENRMPlatformTextView *textView in displaysByTextView) {
++    NSHashTable<id<ENRMAnimatedImageDisplay>> *displays = [displaysByTextView objectForKey:textView];
++    NSTextStorage *textStorage = textView.textStorage;
++    [textStorage enumerateAttribute:NSAttachmentAttributeName
++                            inRange:NSMakeRange(0, textStorage.length)
++                            options:0
++                         usingBlock:^(id value, NSRange range, __unused BOOL *stop) {
++                           if (value && [displays containsObject:value]) {
++                             [textView.layoutManager invalidateDisplayForCharacterRange:range];
++                           }
++                         }];
++  }
++}
++
++@end
 diff --git a/node_modules/react-native-enriched-markdown/ios/renderer/ListItemRenderer.m b/node_modules/react-native-enriched-markdown/ios/renderer/ListItemRenderer.m
 index dd6aa24..cff09d2 100644
 --- a/node_modules/react-native-enriched-markdown/ios/renderer/ListItemRenderer.m
@@ -1165,147 +1878,33 @@ index 7a49023..17d59e5 100644
  
    ENRMTableIOSItemHit *hit = [[ENRMTableIOSItemHit alloc] init];
    hit.kind = linkURL ? ENRMTableIOSItemKindLink : ENRMTableIOSItemKindImage;
-diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.h b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.h
-index 0f84844..c664034 100644
---- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.h
-+++ b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.h
-@@ -6,6 +6,16 @@ NS_ASSUME_NONNULL_BEGIN
- /// Decoded pixel cost, shared by native image caches.
- FOUNDATION_EXPORT NSUInteger ENRMImageByteCost(RCTUIImage *image);
- 
-+#if !TARGET_OS_OSX
-+@interface ENRMAnimatedImage : RCTUIImage
-+
-+@property (nonatomic, readonly) NSData *encodedData;
-+
-+- (instancetype)initWithEncodedData:(NSData *)encodedData firstFrame:(CGImageRef)firstFrame;
-+
-+@end
-+#endif
-+
- typedef void (^ENRMImageDownloadCompletion)(RCTUIImage *_Nullable image);
- 
- /**
-@@ -23,10 +33,16 @@ NSDictionary<NSString *, NSString *> *
- ENRMMergeImageRequestHeaders(NSDictionary<NSString *, NSString *> *_Nullable documentHeaders,
-                              NSDictionary<NSString *, NSString *> *_Nullable sourceHeaders);
- 
--@interface ENRMImageDownloader : NSObject
-+typedef NSURLCredential *_Nullable (^ENRMClientCredentialProvider)(NSURLAuthenticationChallenge *challenge);
-+
-+@interface ENRMImageDownloader : NSObject <NSURLSessionTaskDelegate>
- 
- + (instancetype)shared;
- 
-++ (void)setUserAgent:(nullable NSString *)userAgent;
-+
-++ (void)setClientCredentialProvider:(nullable ENRMClientCredentialProvider)provider;
-+
- - (void)downloadURL:(NSString *)url
-             headers:(nullable NSDictionary<NSString *, NSString *> *)headers
-          completion:(ENRMImageDownloadCompletion)completion;
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
-index 3ef8cd6..07bd730 100644
+index 3ef8cd6..7a94c7c 100644
 --- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
 +++ b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
-@@ -2,6 +2,7 @@
+@@ -2,10 +2,7 @@
  #import "ENRMImageAttachment.h"
  #import "ENRMLocalImageLoader.h"
  #import <CommonCrypto/CommonDigest.h>
-+#import <ImageIO/ImageIO.h>
- #include <TargetConditionals.h>
+-#include <TargetConditionals.h>
+-
+-static const NSUInteger kDiskCacheMemoryCapacity = 10 * 1024 * 1024;
+-static const NSUInteger kDiskCacheDiskCapacity = 100 * 1024 * 1024;
++#import <SDWebImage/SDWebImage.h>
  
- static const NSUInteger kDiskCacheMemoryCapacity = 10 * 1024 * 1024;
-@@ -12,8 +13,60 @@ NSUInteger ENRMImageByteCost(RCTUIImage *image)
-   CGImageRef cgImage = image.CGImage;
-   if (!cgImage)
-     return 0;
--  return CGImageGetBytesPerRow(cgImage) * CGImageGetHeight(cgImage);
-+  NSUInteger cost = CGImageGetBytesPerRow(cgImage) * CGImageGetHeight(cgImage);
-+#if !TARGET_OS_OSX
-+  if ([image isKindOfClass:[ENRMAnimatedImage class]]) {
-+    cost += ((ENRMAnimatedImage *)image).encodedData.length;
-+  }
-+#endif
-+  return cost;
-+}
-+
-+#if !TARGET_OS_OSX
-+@implementation ENRMAnimatedImage
-+
-+- (instancetype)initWithEncodedData:(NSData *)encodedData firstFrame:(CGImageRef)firstFrame
-+{
-+  self = [super initWithCGImage:firstFrame];
-+  if (self) {
-+    _encodedData = [encodedData copy];
-+  }
-+  return self;
-+}
-+
-+@end
-+
-+static BOOL ENRMIsAnimatedImageSource(CGImageSourceRef source)
-+{
-+  if (CGImageSourceGetCount(source) < 2)
-+    return NO;
-+  NSDictionary *properties = CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source, 0, NULL));
-+  return properties[(__bridge NSString *)kCGImagePropertyGIFDictionary]
-+                   [(__bridge NSString *)kCGImagePropertyGIFDelayTime] != nil ||
-+         properties[(__bridge NSString *)kCGImagePropertyPNGDictionary]
-+                   [(__bridge NSString *)kCGImagePropertyAPNGDelayTime] != nil ||
-+         properties[(__bridge NSString *)kCGImagePropertyWebPDictionary]
-+                   [(__bridge NSString *)kCGImagePropertyWebPDelayTime] != nil;
-+}
-+
-+static RCTUIImage *ENRMImageFromData(NSData *data)
-+{
-+  CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
-+  if (!source)
-+    return nil;
-+
-+  RCTUIImage *animatedImage = nil;
-+  if (ENRMIsAnimatedImageSource(source)) {
-+    CGImageRef firstFrame = CGImageSourceCreateImageAtIndex(source, 0, NULL);
-+    if (firstFrame) {
-+      animatedImage = [[ENRMAnimatedImage alloc] initWithEncodedData:data firstFrame:firstFrame];
-+      CGImageRelease(firstFrame);
-+    }
-+  }
-+  CFRelease(source);
-+  return animatedImage ?: [RCTUIImage imageWithData:data];
- }
-+#endif
- 
- static NSDictionary<NSString *, NSString *> *ENRMNormalizedImageHeaders(NSDictionary<NSString *, NSString *> *headers)
+ NSUInteger ENRMImageByteCost(RCTUIImage *image)
  {
-@@ -59,7 +112,10 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
-   return [NSString stringWithFormat:@"%@|%@", url, hash];
+@@ -60,8 +57,7 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
  }
  
-+static ENRMClientCredentialProvider ENRMCurrentClientCredentialProvider;
-+
  @implementation ENRMImageDownloader {
-+  NSURLCache *_urlCache;
-   NSURLSession *_session;
-   NSURLSession *_headerSession;
+-  NSURLSession *_session;
+-  NSURLSession *_headerSession;
++  SDWebImageManager *_imageManager;
    NSMutableDictionary<NSString *, NSMutableArray<ENRMImageDownloadCompletion> *> *_inFlightRequests;
-@@ -73,27 +129,83 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
-   return instance;
  }
  
-++ (void)setUserAgent:(NSString *)userAgent
-+{
-+  [[self shared] rebuildSessionsWithUserAgent:userAgent];
-+}
-+
-++ (void)setClientCredentialProvider:(ENRMClientCredentialProvider)provider
-+{
-+  @synchronized(self) {
-+    ENRMCurrentClientCredentialProvider = [provider copy];
-+  }
-+}
-+
- - (instancetype)init
+@@ -77,18 +73,8 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
  {
    self = [super init];
    if (self) {
@@ -1321,84 +1920,120 @@ index 3ef8cd6..07bd730 100644
 -    NSURLSessionConfiguration *headerConfig = [config copy];
 -    headerConfig.URLCache = nil;
 -    _headerSession = [NSURLSession sessionWithConfiguration:headerConfig];
-+    _urlCache = [[NSURLCache alloc] initWithMemoryCapacity:kDiskCacheMemoryCapacity
-+                                              diskCapacity:kDiskCacheDiskCapacity
-+                                              directoryURL:nil];
++    _imageManager = [[SDWebImageManager alloc] initWithCache:[SDImageCache sharedImageCache]
++                                                      loader:[SDWebImageDownloader sharedDownloader]];
      _inFlightRequests = [NSMutableDictionary dictionary];
-+    [self rebuildSessionsWithUserAgent:nil];
    }
    return self;
- }
+@@ -103,22 +89,26 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
+     return;
+   }
  
-+- (void)rebuildSessionsWithUserAgent:(NSString *)userAgent
-+{
-+  NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-+  config.URLCache = _urlCache;
-+  config.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
-+  config.timeoutIntervalForRequest = 15;
-+  config.timeoutIntervalForResource = 30;
-+  if (userAgent.length > 0) {
-+    config.HTTPAdditionalHeaders = @{@"User-Agent" : userAgent};
-+  }
-+  // No URL cache: it keys by URL alone and would mix header sets.
-+  NSURLSessionConfiguration *headerConfig = [config copy];
-+  headerConfig.URLCache = nil;
-+
-+  NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
-+  NSURLSession *headerSession = [NSURLSession sessionWithConfiguration:headerConfig delegate:self delegateQueue:nil];
-+  NSURLSession *previousSession;
-+  NSURLSession *previousHeaderSession;
-+  @synchronized(self) {
-+    previousSession = _session;
-+    previousHeaderSession = _headerSession;
-+    _session = session;
-+    _headerSession = headerSession;
-+  }
-+  [previousSession finishTasksAndInvalidate];
-+  [previousHeaderSession finishTasksAndInvalidate];
-+}
-+
-+- (NSURLSession *)sessionForHeaders:(NSDictionary<NSString *, NSString *> *)headers
-+{
-+  @synchronized(self) {
-+    return headers.count > 0 ? _headerSession : _session;
-+  }
-+}
-+
-+- (void)URLSession:(NSURLSession *)session
-+                   task:(NSURLSessionTask *)task
-+    didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
-+      completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *_Nullable))completionHandler
-+{
-+  ENRMClientCredentialProvider provider;
-+  @synchronized([ENRMImageDownloader class]) {
-+    provider = ENRMCurrentClientCredentialProvider;
-+  }
-+  NSURLCredential *credential = provider ? provider(challenge) : nil;
-+  if (credential) {
-+    completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+-  headers = ENRMNormalizedImageHeaders(headers);
+-  BOOL isLocal = ENRMIsLocalImageURL(url);
+-  NSString *cacheKey = isLocal ? url : ENRMImageCacheKey(url, headers);
++  if (ENRMIsLocalImageURL(url)) {
++    [self loadLocalURL:url completion:completion];
 +    return;
 +  }
-+  completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+ 
+-  RCTUIImage *cached = [[ENRMImageAttachment originalImageCache] objectForKey:cacheKey];
+-  if (cached) {
+-    completion(cached);
++  NSURL *requestURL = [NSURL URLWithString:url];
++  if (!requestURL) {
++    completion(nil);
+     return;
+   }
+ 
+-  if (isLocal) {
+-    RCTUIImage *local = ENRMLoadLocalImage(url);
+-    if (local) {
+-      [[ENRMImageAttachment originalImageCache] setObject:local forKey:cacheKey cost:ENRMImageByteCost(local)];
+-    }
+-    completion(local);
++  headers = ENRMNormalizedImageHeaders(headers);
++  NSString *cacheKey = ENRMImageCacheKey(url, headers);
++  SDWebImageContext *context = [self imageContextForCacheKey:cacheKey headers:headers];
++
++  RCTUIImage *memoryImage =
++      [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:[_imageManager cacheKeyForURL:requestURL
++                                                                                        context:context]];
++  if (memoryImage) {
++    completion(memoryImage);
+     return;
+   }
+ 
+@@ -131,34 +121,43 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
+     _inFlightRequests[cacheKey] = [NSMutableArray arrayWithObject:completion];
+   }
+ 
+-  NSURL *nsURL = [NSURL URLWithString:url];
+-  if (!nsURL) {
+-    [self dispatchCallbacksForKey:cacheKey image:nil];
+-    return;
++  [_imageManager loadImageWithURL:requestURL
++                          options:SDWebImageRetryFailed | SDWebImageHandleCookies
++                          context:context
++                         progress:nil
++                        completed:^(RCTUIImage *image, __unused NSData *data, __unused NSError *error,
++                                    __unused SDImageCacheType cacheType, BOOL finished, __unused NSURL *imageURL) {
++                          if (finished) {
++                            [self dispatchCallbacksForKey:cacheKey image:image];
++                          }
++                        }];
 +}
 +
- - (void)downloadURL:(NSString *)url
-             headers:(NSDictionary<NSString *, NSString *> *)headers
-          completion:(ENRMImageDownloadCompletion)completion
-@@ -142,11 +254,10 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
-     [request setValue:value forHTTPHeaderField:name];
-   }];
++- (SDWebImageContext *)imageContextForCacheKey:(NSString *)cacheKey headers:(NSDictionary<NSString *, NSString *> *)headers
++{
++  NSMutableDictionary<SDWebImageContextOption, id> *context = [NSMutableDictionary dictionary];
++  context[SDWebImageContextAnimatedImageClass] = [SDAnimatedImage class];
++  if (headers.count > 0) {
++    context[SDWebImageContextDownloadRequestModifier] =
++        [[SDWebImageDownloaderRequestModifier alloc] initWithHeaders:headers];
++    context[SDWebImageContextCacheKeyFilter] =
++        [SDWebImageCacheKeyFilter cacheKeyFilterWithBlock:^NSString *(__unused NSURL *imageURL) { return cacheKey; }];
+   }
++  return context;
++}
  
+-  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:nsURL];
+-  [headers enumerateKeysAndObjectsUsingBlock:^(NSString *name, NSString *value, BOOL *stop) {
+-    [request setValue:value forHTTPHeaderField:name];
+-  }];
+-
 -  NSURLSession *session = headers.count > 0 ? _headerSession : _session;
 -  [[session dataTaskWithRequest:request
-+  [[[self sessionForHeaders:headers] dataTaskWithRequest:request
-               completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
- #if !TARGET_OS_OSX
+-              completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+-#if !TARGET_OS_OSX
 -                RCTUIImage *image = (data && !error) ? [RCTUIImage imageWithData:data] : nil;
-+                RCTUIImage *image = (data && !error) ? ENRMImageFromData(data) : nil;
- #else
-         RCTUIImage *image = (data && !error) ? [[RCTUIImage alloc] initWithData:data] : nil;
- #endif
+-#else
+-        RCTUIImage *image = (data && !error) ? [[RCTUIImage alloc] initWithData:data] : nil;
+-#endif
+-
+-                if (image) {
+-                  [[ENRMImageAttachment originalImageCache] setObject:image
+-                                                               forKey:cacheKey
+-                                                                 cost:ENRMImageByteCost(image)];
+-                }
+-
+-                [self dispatchCallbacksForKey:cacheKey image:image];
+-              }] resume];
++- (void)loadLocalURL:(NSString *)url completion:(ENRMImageDownloadCompletion)completion
++{
++  RCTUIImage *cached = [[ENRMImageAttachment originalImageCache] objectForKey:url];
++  if (cached) {
++    completion(cached);
++    return;
++  }
++  RCTUIImage *local = ENRMLoadLocalImage(url);
++  if (local) {
++    [[ENRMImageAttachment originalImageCache] setObject:local forKey:url cost:ENRMImageByteCost(local)];
++  }
++  completion(local);
+ }
+ 
+ - (void)dispatchCallbacksForKey:(NSString *)cacheKey image:(RCTUIImage *_Nullable)image
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMLinkLongPressRecognizer.h b/node_modules/react-native-enriched-markdown/ios/utils/ENRMLinkLongPressRecognizer.h
 new file mode 100644
 index 0000000..6cd8a98

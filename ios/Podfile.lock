@@ -2406,6 +2406,7 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
+    - SDWebImage (~> 5.21.0)
     - Yoga
   - ReactNativeIncallManager (4.2.1):
     - React-Core
@@ -3662,10 +3663,10 @@ SPEC CHECKSUMS:
   React-viewtransitionnativemodule: 22ae58bc9260c2b9651b1a8fad1ef37ce9996ec1
   React-webperformancenativemodule: d5706a015640e1e52a3b7e85e11a91bdff982ff7
   ReactAppDependencyProvider: 782ee9546c9cd3b53b73f1e9e3dd728540085fc7
-  ReactCodegen: 8581b108fd91dbfd8366a183d5f66ff56d7f1e8e
+  ReactCodegen: 7eb373282f6cd376554c1d37e59114150e7e3ba7
   ReactCommon: 145a14b942b19fc2fe38927f261955ada56978aa
   ReactNativeDependencies: d3b7423ba1e52525e42085c8470109abde583d2e
-  ReactNativeEnrichedMarkdown: fce01bbabb4d29aeaaf94401d237a57e08668bf9
+  ReactNativeEnrichedMarkdown: 3dab66ebbd9b8e8d0f1c2096b1c23dc34e06bbb3
   ReactNativeIncallManager: dccd3e7499caa3bb73d3acfedf4fb0360f1a87d5
   RNBootSplash: a411a505ad4d9de9560570483fb4bd735285bb3f
   RNCallKeep: 1930a01d8caf48f018be4f2db0c9f03405c2f977
