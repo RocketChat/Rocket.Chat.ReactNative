@@ -2,6 +2,7 @@ import { type IAttachment } from './IAttachment';
 import { type IEmoji } from './IEmoji';
 import { type IMessage, type TAnyMessageModel } from './IMessage';
 import { type IRoomInfoParam } from './IRoom';
+import { type TMediaSharedTransition } from '~/lib/animations/mediaSharedTransition';
 
 export interface IUseRoomMessageHandlersResult {
 	blockAction: (params: {
@@ -17,7 +18,7 @@ export interface IUseRoomMessageHandlersResult {
 	onDiscussionPress: (drid: TAnyMessageModel['drid']) => void;
 	onThreadPress: (item: TAnyMessageModel) => void;
 	onEncryptedPress: () => void;
-	showAttachment: (attachment: IAttachment) => void;
+	showAttachment: (attachment: IAttachment, sharedTransition?: TMediaSharedTransition) => void;
 	onReactionPress: (emoji: IEmoji, messageId: string) => Promise<void>;
 	onReactionLongPress: (message: TAnyMessageModel) => void;
 	replyBroadcast: (message: IMessage) => void;

@@ -307,7 +307,10 @@ const InsideStack = createNativeStackNavigator({
 			screen: ModalStack as any,
 			options: { headerShown: false }
 		}),
-		AttachmentView,
+		AttachmentView: createNativeStackScreen({
+			screen: AttachmentView,
+			options: { animation: 'fade' }
+		}),
 		ModalBlockView: createNativeStackScreen({
 			screen: ModalBlockViewScreen,
 			options: ModalBlockView.navigationOptions as any

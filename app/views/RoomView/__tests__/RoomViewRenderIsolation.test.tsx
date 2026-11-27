@@ -9,7 +9,8 @@ import { useE2EEStatus } from '../hooks/useE2EEStatus';
 
 const mockSetOptions = jest.fn();
 jest.mock('@react-navigation/native', () => ({
-	useNavigation: () => ({ setOptions: mockSetOptions })
+	useNavigation: () => ({ setOptions: mockSetOptions }),
+	useIsFocused: () => true
 }));
 jest.mock('~/lib/methods/helpers/deviceInfo', () => ({
 	...jest.requireActual('~/lib/methods/helpers/deviceInfo'),

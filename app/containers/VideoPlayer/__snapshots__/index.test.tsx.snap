@@ -12,5 +12,23 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
       },
     ]
   }
-/>
+>
+  <View
+    sharedTransitionStyle={SharedTransitionMock {}}
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
+      ]
+    }
+  />
+</View>
 `;

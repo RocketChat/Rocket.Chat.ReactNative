@@ -81,8 +81,8 @@ export function useRoomMessageHandlers({
 		navigation.navigate('E2ESaveYourPasswordStackNavigator', screen);
 	};
 
-	const showAttachment = (attachment: Parameters<IUseRoomMessageHandlersResult['showAttachment']>[0]) => {
-		navigation.navigate('AttachmentView', { attachment });
+	const showAttachment: IUseRoomMessageHandlersResult['showAttachment'] = (attachment, sharedTransition) => {
+		navigation.navigate('AttachmentView', { attachment, sharedTransition });
 	};
 
 	const onReactionLongPress = (message: TAnyMessageModel) => {

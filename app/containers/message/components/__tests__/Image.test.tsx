@@ -11,7 +11,12 @@ jest.mock('~/lib/methods/userPreferences', () => ({
 const renderMessageImage = () =>
 	render(
 		<WidthAwareContext.Provider value={200}>
-			<MessageImage uri='https://open.rocket.chat/image.png' status='downloaded' encrypted={false} />
+			<MessageImage
+				uri='https://open.rocket.chat/image.png'
+				status='downloaded'
+				encrypted={false}
+				imageSize={{ width: 400, height: 300 }}
+			/>
 		</WidthAwareContext.Provider>
 	);
 

@@ -6,6 +6,7 @@ import { RoomViewHeader } from './components/RoomViewHeader/RoomViewHeader';
 import { parseRoomRoute } from './services/parseRoomRoute';
 import { createRoomStore, observeRoom } from './stores/RoomStore';
 import { type RoomStore } from './definitions';
+import { FocusedSharedTransitionBoundary } from '~/containers/FocusedSharedTransitionBoundary';
 
 const RoomView = ({ route, navigation }: IRoomViewProps) => {
 	const [mountedRouteParams] = useState(() => parseRoomRoute(route.params));
@@ -16,10 +17,10 @@ const RoomView = ({ route, navigation }: IRoomViewProps) => {
 	useEffect(() => observeRoom(rid, roomStore, () => setReady(true)), [rid, roomStore]);
 
 	return (
-		<>
+		<FocusedSharedTransitionBoundary>
 			<RoomViewHeader rid={rid} tmid={tmid} name={name} roomStore={roomStore} />
 			<RoomViewContent route={route} navigation={navigation} rid={rid} t={t} tmid={tmid} roomStore={roomStore} ready={ready} />
-		</>
+		</FocusedSharedTransitionBoundary>
 	);
 };
 

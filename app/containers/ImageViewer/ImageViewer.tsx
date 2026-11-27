@@ -8,13 +8,14 @@ import {
 	useTapGesture
 } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import { Image, type ImageStyle } from 'expo-image';
+import { Image, type ImageLoadEventData, type ImageStyle } from 'expo-image';
 
 import Touch from '../Touch';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '~/lib/constants/keys';
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';
+import { mediaSharedTransition, type TMediaSize } from '~/lib/animations/mediaSharedTransition';
 
 interface ImageViewerProps {
 	style?: StyleProp<ImageStyle>;
@@ -27,26 +28,51 @@ interface ImageViewerProps {
 	onLoadEnd?: () => void;
 	altText?: string;
 	isAnimated?: boolean;
+	sharedTransitionTag?: string;
+	initialImageSize?: TMediaSize;
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
 	},
-	flex: {
+	gestureArea: {
 		width: '100%',
-		height: '100%'
-	},
-	image: {
-		width: '100%',
-		height: '100%'
+		height: '100%',
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 });
 
-export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...props }: ImageViewerProps): ReactElement => {
+const AnimatedImage = Animated.createAnimatedComponent(Image);
+
+const fullSize = { width: '100%', height: '100%' } as const;
+
+const fitWithin = (image: TMediaSize | undefined, bounds: TMediaSize): TMediaSize | typeof fullSize => {
+	if (!image?.width || !image?.height) {
+		return fullSize;
+	}
+	const scale = Math.min(bounds.width / image.width, bounds.height / image.height);
+	return { width: image.width * scale, height: image.height * scale };
+};
+
+export const ImageViewer = ({
+	uri = '',
+	width,
+	height,
+	altText,
+	isAnimated,
+	sharedTransitionTag,
+	initialImageSize,
+	...props
+}: ImageViewerProps): ReactElement => {
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const isPlayingRef = useRef(!!autoplayGifs);
 	const expoImageRef = useRef<Image>(null);
+	const [imageSize, setImageSize] = useState(initialImageSize);
+	const onImageLoad = ({ source }: ImageLoadEventData) => setImageSize({ width: source.width, height: source.height });
+	const imageFrame = fitWithin(imageSize, { width, height });
+	const contentFit = imageFrame === fullSize ? 'contain' : 'cover';
 
 	const handleGifPlayback = async () => {
 		if (isPlayingRef.current) {
@@ -148,7 +174,7 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 	return (
 		<View importantForAccessibility='no' style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
-				<Animated.View accessible={false} onLayout={onLayout} style={[styles.flex, style]}>
+				<Animated.View accessible={false} onLayout={onLayout} style={[styles.gestureArea, style]}>
 					{isAnimated ? (
 						<Touch
 							accessible
@@ -156,26 +182,32 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 							accessibilityRole='button'
 							accessibilityHint={I18n.t('A11y_image_viewer_gif_hint')}
 							onPress={handleGifPlayback}
-							style={styles.flex}
-							rectButtonStyle={styles.flex}>
-							<Image
+							style={styles.gestureArea}
+							rectButtonStyle={styles.gestureArea}>
+							<AnimatedImage
 								accessible={false}
-								style={styles.image}
-								contentFit='contain'
+								style={imageFrame}
+								contentFit={contentFit}
 								source={{ uri }}
 								ref={expoImageRef}
+								onLoad={onImageLoad}
+								sharedTransitionTag={sharedTransitionTag}
+								sharedTransitionStyle={mediaSharedTransition}
 								{...props}
 							/>
 						</Touch>
 					) : (
-						<Image
+						<AnimatedImage
 							accessible
 							accessibilityLabel={accessibilityLabel}
 							accessibilityRole='image'
-							style={styles.image}
-							contentFit='contain'
+							style={imageFrame}
+							contentFit={contentFit}
 							source={{ uri }}
 							ref={expoImageRef}
+							onLoad={onImageLoad}
+							sharedTransitionTag={sharedTransitionTag}
+							sharedTransitionStyle={mediaSharedTransition}
 							{...props}
 						/>
 					)}

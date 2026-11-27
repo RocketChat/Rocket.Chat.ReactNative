@@ -1,5 +1,6 @@
 import { type IAttachment } from '../definitions/IAttachment';
 import { type IOptionsField } from '../views/NotificationPreferencesView/options';
+import { type TMediaSharedTransition } from '~/lib/animations/mediaSharedTransition';
 
 export type TNavigation = {
 	PickerView: {
@@ -16,5 +17,6 @@ export type TNavigation = {
 	};
 	AttachmentView: {
 		attachment: IAttachment;
+		sharedTransition?: TMediaSharedTransition;
 	};
 };

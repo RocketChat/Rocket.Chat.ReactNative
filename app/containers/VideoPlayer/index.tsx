@@ -1,8 +1,9 @@
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEffect, useRef, type Dispatch, type SetStateAction, type ReactElement } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useEventListener } from 'expo';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated from 'react-native-reanimated';
 
 import { styles } from './styles';
 import { useAppNavigation } from '~/lib/hooks/navigation';
@@ -10,18 +11,22 @@ import I18n from '~/i18n';
 import { type IAttachment } from '~/definitions/IAttachment';
 import { formatAttachmentUrl, encodeAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { useTheme } from '~/theme';
+import { mediaSharedTransition } from '~/lib/animations/mediaSharedTransition';
 
 interface IVideoPlayerProps {
 	attachment: IAttachment;
 	user: { id: string; token: string };
 	baseUrl: string;
 	setLoading: Dispatch<SetStateAction<boolean>>;
+	sharedTransitionTag?: string;
 }
 
-const VideoPlayer = ({ attachment, user, baseUrl, setLoading }: IVideoPlayerProps): ReactElement => {
+const VideoPlayer = ({ attachment, user, baseUrl, setLoading, sharedTransitionTag }: IVideoPlayerProps): ReactElement => {
 	const navigation = useAppNavigation();
 	const hasHandledErrorRef = useRef(false);
 	const { bottom } = useSafeAreaInsets();
+	const { colors } = useTheme();
 
 	const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
 	const uri = encodeAttachmentUrl(url);
@@ -56,6 +61,11 @@ const VideoPlayer = ({ attachment, user, baseUrl, setLoading }: IVideoPlayerProp
 
 	return (
 		<View style={[styles.container, { paddingBottom: bottom }]}>
+			<Animated.View
+				style={[StyleSheet.absoluteFill, { backgroundColor: colors.surfaceNeutral }]}
+				sharedTransitionTag={sharedTransitionTag}
+				sharedTransitionStyle={mediaSharedTransition}
+			/>
 			<VideoView
 				player={player}
 				style={styles.container}

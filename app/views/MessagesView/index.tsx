@@ -33,6 +33,8 @@ import AudioManager from '~/lib/methods/AudioManager';
 import { Encryption } from '~/lib/encryption';
 import Navigation from '~/lib/navigation/appNavigation';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
+import { type TMediaSharedTransition } from '~/lib/animations/mediaSharedTransition';
+import { FocusedSharedTransitionBoundary } from '~/containers/FocusedSharedTransitionBoundary';
 
 interface IMessagesViewProps {
 	user: {
@@ -278,9 +280,9 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		}
 	};
 
-	showAttachment = (attachment: IAttachment) => {
+	showAttachment = (attachment: IAttachment, sharedTransition?: TMediaSharedTransition) => {
 		const { navigation } = this.props;
-		navigation.navigate('AttachmentView', { attachment });
+		navigation.navigate('AttachmentView', { attachment, sharedTransition });
 	};
 
 	messageHandlers = { navToRoomInfo: this.navToRoomInfo, showAttachment: this.showAttachment };
@@ -338,15 +340,17 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
 				<A11yGateProvider>
 					<MessageRoomProvider handlers={this.messageHandlers} rid={this.rid} isThreadRoom timeFormat={'MMM Do YYYY, h:mm:ss a'}>
-						<FlatList
-							data={messages}
-							renderItem={this.renderItem}
-							style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-							keyExtractor={item => item._id}
-							onEndReached={this.load}
-							contentContainerStyle={{ paddingBottom: insets.bottom }}
-							ListFooterComponent={loading ? <ActivityIndicator /> : undefined}
-						/>
+						<FocusedSharedTransitionBoundary>
+							<FlatList
+								data={messages}
+								renderItem={this.renderItem}
+								style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+								keyExtractor={item => item._id}
+								onEndReached={this.load}
+								contentContainerStyle={{ paddingBottom: insets.bottom }}
+								ListFooterComponent={loading ? <ActivityIndicator /> : undefined}
+							/>
+						</FocusedSharedTransitionBoundary>
 					</MessageRoomProvider>
 				</A11yGateProvider>
 			</SafeAreaView>
