@@ -33,7 +33,10 @@ jest.mock('~/lib/store/auxStore', () => ({
 
 jest.mock('../updateMessages', () => jest.fn());
 jest.mock('../readMessages', () => ({ readMessages: jest.fn() }));
-jest.mock('../loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn() }));
+jest.mock('../loadMessagesForRoom', () => ({
+	loadMessagesForRoom: jest.fn(),
+	waitForLiveTailLoad: jest.fn(() => Promise.resolve())
+}));
 jest.mock('~/lib/encryption', () => ({ Encryption: { decryptMessage: jest.fn(m => m) } }));
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
