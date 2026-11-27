@@ -99,7 +99,7 @@ index d8a5396..f6930ef 100644
      return OrderedListSpan.measureExtraWidth(listStyle, factory.context, wideNumbers)
    }
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
-index 9aea981..a41c330 100644
+index 9aea981..bfb8c64 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 @@ -1,19 +1,21 @@
@@ -304,7 +304,7 @@ index 9aea981..a41c330 100644
      private var hasCached = false
  
 +    // Spans share a drawable that has no constant state (APNG4Android), and it re-samples its frames
-+    // whenever its bounds change, so its bounds stay at its intrinsic size and the canvas scales it.
++    // whenever its bounds change, so its bounds only grow to the largest copy and the canvas scales it.
 +    private val scalesCanvas =
 +      imageDrawable is Animatable &&
 +        imageDrawable.constantState == null &&
@@ -314,21 +314,24 @@ index 9aea981..a41c330 100644
      init {
        setBounds(0, 0, targetWidth, targetHeight)
        val intrinsicWidth = imageDrawable.intrinsicWidth
-@@ -482,7 +578,12 @@ class ImageSpan(
+@@ -482,7 +578,15 @@ class ImageSpan(
  
        val left = (targetWidth - scaledWidth) / 2
        val top = (targetHeight - scaledHeight) / 2
 -      imageDrawable.setBounds(left, top, left + scaledWidth, top + scaledHeight)
 +      imageBounds = Rect(left, top, left + scaledWidth, top + scaledHeight)
 +      if (scalesCanvas) {
-+        imageDrawable.setBounds(0, 0, intrinsicWidth, intrinsicHeight)
++        val shared = imageDrawable.bounds
++        if (scaledWidth > shared.width() || scaledHeight > shared.height()) {
++          imageDrawable.setBounds(0, 0, maxOf(scaledWidth, shared.width()), maxOf(scaledHeight, shared.height()))
++        }
 +      } else {
 +        imageDrawable.bounds = imageBounds
 +      }
  
        val clipLeft = maxOf(0, left).toFloat()
        val clipTop = maxOf(0, top).toFloat()
-@@ -534,13 +635,18 @@ class ImageSpan(
+@@ -534,13 +638,17 @@ class ImageSpan(
      }
  
      override fun draw(canvas: Canvas) {
@@ -339,11 +342,10 @@ index 9aea981..a41c330 100644
 +      canvas.withSave {
 +        clipPath?.let { clipPath(it) }
 +        if (scalesCanvas) {
++          val shared = imageDrawable.bounds
++          if (shared.isEmpty) return@withSave
 +          translate(imageBounds.left.toFloat(), imageBounds.top.toFloat())
-+          scale(
-+            imageBounds.width().toFloat() / imageDrawable.intrinsicWidth,
-+            imageBounds.height().toFloat() / imageDrawable.intrinsicHeight,
-+          )
++          scale(imageBounds.width().toFloat() / shared.width(), imageBounds.height().toFloat() / shared.height())
 +        } else if (imageDrawable.bounds != imageBounds) {
 +          imageDrawable.bounds = imageBounds
          }
@@ -353,7 +355,7 @@ index 9aea981..a41c330 100644
        }
        scheduleCacheBitmap()
      }
-@@ -594,6 +700,11 @@ class ImageSpan(
+@@ -594,6 +702,11 @@ class ImageSpan(
    }
  
    companion object {
@@ -891,10 +893,10 @@ index a1c9133..39c12a1 100644
  }
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/RemoteImageLoader.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/RemoteImageLoader.kt
 new file mode 100644
-index 0000000..e2a0199
+index 0000000..6f06c4d
 --- /dev/null
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/RemoteImageLoader.kt
-@@ -0,0 +1,134 @@
+@@ -0,0 +1,137 @@
 +package com.swmansion.enriched.markdown.utils.text
 +
 +import android.content.Context
@@ -906,12 +908,14 @@ index 0000000..e2a0199
 +import com.bumptech.glide.RequestBuilder
 +import com.bumptech.glide.load.model.GlideUrl
 +import com.bumptech.glide.load.model.LazyHeaders
++import com.bumptech.glide.load.resource.gif.GifDrawable
 +import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 +import com.bumptech.glide.request.target.CustomTarget
 +import com.bumptech.glide.request.transition.Transition
 +
 +object RemoteImageLoader {
 +  private const val RECENT_DELIVERIES_BYTES = 20 * 1024 * 1024
++  private const val FRAMES_HELD_BY_ANIMATION = 2
 +
 +  // Glide keeps a delivered image in memory only while its request is referenced, so the
 +  // latest deliveries stay referenced here and a new span for the same image draws it at once.
@@ -972,7 +976,8 @@ index 0000000..e2a0199
 +    when (resource) {
 +      is Bitmap -> resource.allocationByteCount
 +      is BitmapDrawable -> resource.bitmap?.allocationByteCount ?: 0
-+      is Drawable -> resource.intrinsicWidth * resource.intrinsicHeight * 4
++      is GifDrawable -> resource.size
++      is Drawable -> resource.intrinsicWidth * resource.intrinsicHeight * 4 * FRAMES_HELD_BY_ANIMATION
 +      else -> 0
 +    }.coerceAtLeast(1)
 +
@@ -1315,7 +1320,7 @@ index fcddeb0..9caa229 100644
      }
    }
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
-index dddff1d..3846f10 100644
+index dddff1d..cc71a1b 100644
 --- a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
 +++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
 @@ -1,6 +1,7 @@
@@ -1488,7 +1493,7 @@ index dddff1d..3846f10 100644
  - (RCTUIImage *)failureImageForSize:(CGSize)size
  {
    if (size.width <= 0 || size.height <= 0)
-@@ -290,13 +382,17 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -290,13 +382,19 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
  
    CGFloat boxHeight = self.isInline ? self.cachedHeight : [self resolvedBoxHeightForWidth:targetWidth];
  
@@ -1500,14 +1505,16 @@ index dddff1d..3846f10 100644
    if ([processedKey isEqualToString:self.lastProcessedKey])
      return;
    self.lastProcessedKey = processedKey;
-+  self.animation = [self sharedAnimationForImage:image
-+                                             key:processedKey
-+                                         boxSize:CGSizeMake(targetWidth, boxHeight)
-+                                     drawingMode:drawingMode];
++  CGSize boxSize = CGSizeMake(targetWidth, boxHeight);
++  CGFloat borderRadius = self.cachedBorderRadius;
++  ENRMAnimationFrameRenderer scaleToBox = ^RCTUIImage *(RCTUIImage *frame) {
++    return ENRMScaledImage(frame, boxSize, borderRadius, drawingMode);
++  };
++  self.animation = [ENRMSharedImageAnimation animationForImage:image key:processedKey frameRenderer:scaleToBox];
  
    RCTUIImage *cachedProcessed = [[ENRMImageAttachment processedImageCache] objectForKey:processedKey];
  
-@@ -312,10 +408,8 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -312,10 +410,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
      if (!strongSelf)
        return;
  
@@ -1515,12 +1522,11 @@ index dddff1d..3846f10 100644
 -                                                       toWidth:targetWidth
 -                                                        height:boxHeight
 -                                                  borderRadius:strongSelf.cachedBorderRadius];
-+    RCTUIImage *processedImage =
-+        ENRMScaledImage(image, CGSizeMake(targetWidth, boxHeight), strongSelf.cachedBorderRadius, drawingMode);
++    RCTUIImage *processedImage = scaleToBox(image);
  
      if (processedImage) {
        [[ENRMImageAttachment processedImageCache] setObject:processedImage
-@@ -333,73 +427,17 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -333,75 +428,6 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
    });
  }
  
@@ -1569,11 +1575,7 @@ index dddff1d..3846f10 100644
 -}
 -
 -- (CGRect)drawingRectForResizeMode:(NSString *)mode source:(CGSize)source box:(CGSize)box
-+- (nullable ENRMSharedImageAnimation *)sharedAnimationForImage:(RCTUIImage *)image
-+                                                           key:(NSString *)key
-+                                                       boxSize:(CGSize)boxSize
-+                                                   drawingMode:(NSString *)drawingMode
- {
+-{
 -  if ([mode isEqualToString:@"stretch"]) {
 -    return CGRectMake(0, 0, box.width, box.height);
 -  }
@@ -1595,15 +1597,11 @@ index dddff1d..3846f10 100644
 -  CGFloat drawingWidth = source.width * scale;
 -  CGFloat drawingHeight = source.height * scale;
 -  return CGRectMake((box.width - drawingWidth) / 2.0, (box.height - drawingHeight) / 2.0, drawingWidth, drawingHeight);
-+  CGFloat borderRadius = self.cachedBorderRadius;
-+  return [ENRMSharedImageAnimation animationForImage:image
-+                                                 key:key
-+                                       frameRenderer:^RCTUIImage *(RCTUIImage *frame) {
-+                                         return ENRMScaledImage(frame, boxSize, borderRadius, drawingMode);
-+                                       }];
- }
- 
+-}
+-
  - (void)startDownloadingImage
+ {
+   // An overridden source with an empty uri keeps the placeholder on purpose.
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.h b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.h
 new file mode 100644
 index 0000000..4dea088
@@ -1637,12 +1635,14 @@ index 0000000..4dea088
 +NS_ASSUME_NONNULL_END
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m
 new file mode 100644
-index 0000000..32849c7
+index 0000000..aa6d9b3
 --- /dev/null
 +++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m
-@@ -0,0 +1,186 @@
+@@ -0,0 +1,192 @@
 +#import "ENRMSharedImageAnimation.h"
 +#import <SDWebImage/SDWebImage.h>
++
++static const NSUInteger kFrameBufferBytesPerPlayer = 4 * 1024 * 1024;
 +
 +static BOOL ENRMIsAnimatedImage(RCTUIImage *image)
 +{
@@ -1778,6 +1778,7 @@ index 0000000..32849c7
 +{
 +  if (!_player) {
 +    _player = [SDAnimatedImagePlayer playerWithProvider:_frameProvider];
++    _player.maxBufferSize = kFrameBufferBytesPerPlayer;
 +    __weak typeof(self) weakSelf = self;
 +    _player.animationFrameHandler = ^(NSUInteger index, RCTUIImage *frame) { [weakSelf showFrame:frame]; };
 +    _player.animationLoopHandler = ^(NSUInteger loopCount) { [weakSelf didCompleteLoop:loopCount]; };
@@ -1789,6 +1790,8 @@ index 0000000..32849c7
 +{
 +  NSUInteger totalLoopCount = _player.totalLoopCount;
 +  _playedAllLoops = totalLoopCount != 0 && loopCount >= totalLoopCount;
++  if (_playedAllLoops)
++    [_player clearFrameBuffer];
 +}
 +
 +- (void)showFrame:(RCTUIImage *)frame
@@ -1808,6 +1811,7 @@ index 0000000..32849c7
 +
 +  if (displaysByTextView.count == 0) {
 +    [_player pausePlaying];
++    [_player clearFrameBuffer];
 +    return;
 +  }
 +
