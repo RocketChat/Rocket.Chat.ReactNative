@@ -11,6 +11,7 @@ interface IMarkdownContext {
 	navToRoomInfo?: Function;
 	onLinkPress?: Function;
 	textStyle?: StyleProp<TextStyle>;
+	allowImages?: boolean;
 }
 
 const defaultState = {
@@ -19,7 +20,8 @@ const defaultState = {
 	useRealName: false,
 	username: '',
 	navToRoomInfo: () => {},
-	textStyle: undefined
+	textStyle: undefined,
+	allowImages: true
 };
 
 const MarkdownContext = createContext<IMarkdownContext>(defaultState);

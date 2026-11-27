@@ -17,6 +17,7 @@ import { MarkdownPreview } from '~/containers/markdown';
 import RoomTypeIcon from '~/containers/RoomTypeIcon';
 import SafeAreaView from '~/containers/SafeAreaView';
 import StatusRows from '~/containers/Status/StatusRows';
+import StatusText from '~/containers/Status/StatusText';
 import { type IApplicationState } from '~/definitions/redux';
 import { type IBaseScreen } from '~/definitions';
 import { type ISubscription, SubscriptionType, type TSubscriptionModel } from '~/definitions/ISubscription';
@@ -801,7 +802,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 									statusTextColor={themes[theme].fontSecondaryInfo}
 									fontSecondaryInfo={themes[theme].fontSecondaryInfo}
 									renderStatusText={text => (
-										<MarkdownPreview msg={text} style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]} />
+										<StatusText msg={text} textStyle={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]} />
 									)}
 									textStyle={styles.roomDescription}
 									secondaryTextStyle={styles.roomDescription}
