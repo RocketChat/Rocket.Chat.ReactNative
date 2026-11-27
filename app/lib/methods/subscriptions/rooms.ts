@@ -338,8 +338,8 @@ export default function subscribeRooms() {
 		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
-				const isOwnRemoval = !!store.getState().room.removalsInFlight[data.rid];
 				try {
+					const isOwnRemoval = !!store.getState().room.removalsInFlight[data.rid];
 					const subCollection = db.get('subscriptions');
 					const sub = await subCollection.find(data.rid);
 					// TODO - today the Relation type from watermelon just support one to one relations

@@ -18,7 +18,7 @@ jest.mock('~/lib/database', () => ({
 }));
 
 jest.mock('~/lib/store/auxStore', () => ({
-	store: { dispatch: jest.fn(), getState: jest.fn(() => ({ settings: {}, login: { user: {} } })) }
+	store: { dispatch: jest.fn(), getState: jest.fn(() => ({ settings: {}, login: { user: {} }, room: { removalsInFlight: {} } })) }
 }));
 
 jest.mock('~/lib/methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
