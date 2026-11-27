@@ -1,8 +1,8 @@
-import { type AccessibilityActionInfo } from 'react-native';
+import { type AccessibilityProps } from 'react-native';
 
 import i18n from '~/i18n';
 
-export const useMessageAccessibilityActions = (isDisabled: boolean): AccessibilityActionInfo[] | undefined => {
+export const useMessageAccessibilityActions = (isDisabled: boolean): AccessibilityProps['accessibilityActions'] => {
 	if (isDisabled) {
 		return undefined;
 	}
