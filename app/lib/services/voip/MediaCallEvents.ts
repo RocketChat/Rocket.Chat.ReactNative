@@ -1,5 +1,5 @@
 import RNCallKeep from 'react-native-callkeep';
-import { DeviceEventEmitter, NativeEventEmitter } from 'react-native';
+import { DeviceEventEmitter, type EmitterSubscription, NativeEventEmitter } from 'react-native';
 
 import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { normalizeDeepLinkingServerHost } from '~/lib/methods/helpers/normalizeDeepLinkingServerHost';
@@ -10,7 +10,9 @@ import NativeVoipModule from '~/lib/native/NativeVoip';
 import { registerPushToken } from '../restApi';
 import { MediaCallLogger } from './MediaCallLogger';
 
-const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
+const Emitter: { addListener: (eventType: string, listener: (event: any) => void) => EmitterSubscription } = isIOS
+	? new NativeEventEmitter(NativeVoipModule)
+	: DeviceEventEmitter;
 const platform = isIOS ? 'iOS' : 'Android';
 const TAG = `[MediaCallEvents][${platform}]`;
 const mediaCallLogger = new MediaCallLogger();
