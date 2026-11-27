@@ -13,7 +13,7 @@
   std::atomic<NSInteger> _activatedToken;
   NSInteger _releasedToken;
   UIView *_coverView;
-  __weak UIView *_contentHiddenFromAccessibility;
+  NSHashTable<UIView *> *_viewsHiddenFromAccessibility;
 }
 
 RCT_EXPORT_MODULE()
@@ -35,6 +35,7 @@ RCT_EXPORT_MODULE()
     _coverToken = 0;
     _activatedToken = 0;
     _releasedToken = 0;
+    _viewsHiddenFromAccessibility = [NSHashTable weakObjectsHashTable];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(sceneWillDeactivate:) name:UISceneWillDeactivateNotification object:nil];
     [center addObserver:self selector:@selector(sceneDidEnterBackground:) name:UISceneDidEnterBackgroundNotification object:nil];
@@ -107,10 +108,19 @@ RCT_EXPORT_MODULE()
   coverView.frame = window.bounds;
   coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   coverView.accessibilityElementsHidden = YES;
+  [self hideFromAccessibility:window.subviews];
   [window addSubview:coverView];
   _coverView = coverView;
-  _contentHiddenFromAccessibility = window.rootViewController.view;
-  _contentHiddenFromAccessibility.accessibilityElementsHidden = YES;
+}
+
+- (void)hideFromAccessibility:(NSArray<UIView *> *)views
+{
+  for (UIView *view in views) {
+    if (!view.accessibilityElementsHidden) {
+      view.accessibilityElementsHidden = YES;
+      [_viewsHiddenFromAccessibility addObject:view];
+    }
+  }
 }
 
 - (UIView *)makeCoverView
@@ -122,8 +132,10 @@ RCT_EXPORT_MODULE()
 {
   [_coverView removeFromSuperview];
   _coverView = nil;
-  _contentHiddenFromAccessibility.accessibilityElementsHidden = NO;
-  _contentHiddenFromAccessibility = nil;
+  for (UIView *view in _viewsHiddenFromAccessibility) {
+    view.accessibilityElementsHidden = NO;
+  }
+  [_viewsHiddenFromAccessibility removeAllObjects];
 }
 
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const facebook::react::ObjCTurboModule::InitParams &)params

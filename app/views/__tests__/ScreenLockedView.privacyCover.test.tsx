@@ -61,6 +61,16 @@ describe('ScreenLockedView privacy cover', () => {
 		expect(nativePrivacyCover.releaseCover).not.toHaveBeenCalled();
 	});
 
+	it('releases the active trip cover once the lock screen has faded in after a second lock request', () => {
+		render(<ScreenLockedView />);
+		emitLockRequest();
+		emitLockRequest();
+
+		act(() => mockModal.onModalShow?.());
+
+		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledWith(7);
+	});
+
 	it('releases the active trip cover when a lock request arrives while the lock screen is already up', () => {
 		render(<ScreenLockedView />);
 		emitLockRequest();

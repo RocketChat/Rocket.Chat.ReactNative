@@ -11,7 +11,7 @@ import { CustomIcon } from '../containers/CustomIcon';
 import { hasNotch } from '../lib/methods/helpers/deviceInfo';
 import EventEmitter from '../lib/methods/helpers/events';
 import { useDeferredModalSettle } from '../lib/hooks/useDeferredModalSettle';
-import NativePrivacyCover from '../lib/native/NativePrivacyCover';
+import { useLockScreenPrivacyCover } from '../lib/hooks/useLockScreenPrivacyCover';
 import { type BiometricInvalidationReason } from '../definitions/IBiometricTrustStore';
 import Touch from '../containers/Touch';
 
@@ -34,27 +34,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const releaseActivePrivacyCover = () => NativePrivacyCover.releaseCover(NativePrivacyCover.getCoverToken());
-
 const ScreenLockedView = () => {
 	const [visible, setVisible] = useState(false);
-	const isVisibleRef = useRef(false);
 	const [data, setData] = useState<IData>({});
 	const [requestId, setRequestId] = useState(0);
 	const currentRequestId = useRef(0);
 	const { onShow, defer, onModalHide } = useDeferredModalSettle<IData>();
+	const { onLockRequest, onLockScreenShown, onLockScreenDismissed, onUnlock } = useLockScreenPrivacyCover();
 
 	useDeepCompareEffect(() => {
-		const hasRequest = !isEmpty(data);
-		if (!hasRequest) {
-			isVisibleRef.current = false;
-		}
-		setVisible(hasRequest);
+		setVisible(!isEmpty(data));
 	}, [data]);
-
-	const onModalShow = () => {
-		isVisibleRef.current = true;
-	};
 
 	const showScreenLock = useCallback(
 		(args: IData) => {
@@ -62,11 +52,9 @@ const ScreenLockedView = () => {
 			currentRequestId.current += 1;
 			setRequestId(currentRequestId.current);
 			setData(args);
-			if (isVisibleRef.current) {
-				releaseActivePrivacyCover();
-			}
+			onLockRequest();
 		},
-		[onShow]
+		[onShow, onLockRequest]
 	);
 
 	useEffect(() => {
@@ -81,11 +69,12 @@ const ScreenLockedView = () => {
 			return;
 		}
 		defer(callback || null);
+		onLockScreenDismissed();
 		setData({});
 	};
 
 	const onSubmit = () => {
-		releaseActivePrivacyCover();
+		onUnlock();
 		settle(requestId, data.submit);
 	};
 
@@ -99,7 +88,7 @@ const ScreenLockedView = () => {
 			style={{ margin: 0 }}
 			animationIn='fadeIn'
 			animationOut='fadeOut'
-			onModalShow={onModalShow}
+			onModalShow={onLockScreenShown}
 			onModalHide={onModalHide}>
 			<GestureHandlerRootView style={styles.container}>
 				<PasscodeEnter key={requestId} hasBiometry={!!data?.hasBiometry} reason={data?.reason} finishProcess={onSubmit} />
