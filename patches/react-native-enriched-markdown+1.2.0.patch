@@ -99,7 +99,7 @@ index d8a5396..f6930ef 100644
      return OrderedListSpan.measureExtraWidth(listStyle, factory.context, wideNumbers)
    }
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
-index 9aea981..bfb8c64 100644
+index 9aea981..f2595f4 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 @@ -1,19 +1,21 @@
@@ -314,24 +314,17 @@ index 9aea981..bfb8c64 100644
      init {
        setBounds(0, 0, targetWidth, targetHeight)
        val intrinsicWidth = imageDrawable.intrinsicWidth
-@@ -482,7 +578,15 @@ class ImageSpan(
+@@ -482,7 +578,8 @@ class ImageSpan(
  
        val left = (targetWidth - scaledWidth) / 2
        val top = (targetHeight - scaledHeight) / 2
 -      imageDrawable.setBounds(left, top, left + scaledWidth, top + scaledHeight)
 +      imageBounds = Rect(left, top, left + scaledWidth, top + scaledHeight)
-+      if (scalesCanvas) {
-+        val shared = imageDrawable.bounds
-+        if (scaledWidth > shared.width() || scaledHeight > shared.height()) {
-+          imageDrawable.setBounds(0, 0, maxOf(scaledWidth, shared.width()), maxOf(scaledHeight, shared.height()))
-+        }
-+      } else {
-+        imageDrawable.bounds = imageBounds
-+      }
++      if (!scalesCanvas) imageDrawable.bounds = imageBounds
  
        val clipLeft = maxOf(0, left).toFloat()
        val clipTop = maxOf(0, top).toFloat()
-@@ -534,13 +638,17 @@ class ImageSpan(
+@@ -534,17 +631,28 @@ class ImageSpan(
      }
  
      override fun draw(canvas: Canvas) {
@@ -342,6 +335,7 @@ index 9aea981..bfb8c64 100644
 +      canvas.withSave {
 +        clipPath?.let { clipPath(it) }
 +        if (scalesCanvas) {
++          growSharedBoundsToFit()
 +          val shared = imageDrawable.bounds
 +          if (shared.isEmpty) return@withSave
 +          translate(imageBounds.left.toFloat(), imageBounds.top.toFloat())
@@ -355,6 +349,16 @@ index 9aea981..bfb8c64 100644
        }
        scheduleCacheBitmap()
      }
+ 
++    private fun growSharedBoundsToFit() {
++      val shared = imageDrawable.bounds
++      if (imageBounds.width() <= shared.width() && imageBounds.height() <= shared.height()) return
++      imageDrawable.setBounds(0, 0, maxOf(imageBounds.width(), shared.width()), maxOf(imageBounds.height(), shared.height()))
++    }
++
+     private fun scheduleCacheBitmap() {
+       if (hasCached || cacheKey == null || targetWidth <= 0 || targetHeight <= 0) return
+       hasCached = true
 @@ -594,6 +702,11 @@ class ImageSpan(
    }
  
@@ -441,10 +445,10 @@ index ff00069..75f1228 100644
      textPaint.isUnderlineText = variant?.underline ?: styleCache.linkUnderline
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/SharedAnimationRunner.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/SharedAnimationRunner.kt
 new file mode 100644
-index 0000000..488a4b2
+index 0000000..abf0db3
 --- /dev/null
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/SharedAnimationRunner.kt
-@@ -0,0 +1,51 @@
+@@ -0,0 +1,54 @@
 +package com.swmansion.enriched.markdown.spans
 +
 +import android.graphics.drawable.Animatable
@@ -481,8 +485,11 @@ index 0000000..488a4b2
 +    animatable: Animatable,
 +    owner: Any,
 +  ) {
-+    runningOwnersByAnimation.getOrPut(animatable) { Collections.newSetFromMap(WeakHashMap()) }.add(owner)
-+    if (!animatable.isRunning) animatable.start()
++    val owners = runningOwnersByAnimation.getOrPut(animatable) { Collections.newSetFromMap(WeakHashMap()) }
++    val wasStopped = owners.isEmpty()
++    owners.add(owner)
++    // APNG4Android only queues a stop on its decoder thread and keeps reporting itself running until then.
++    if (wasStopped || !animatable.isRunning) animatable.start()
 +  }
 +
 +  fun stop(
@@ -893,25 +900,30 @@ index a1c9133..39c12a1 100644
  }
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/RemoteImageLoader.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/RemoteImageLoader.kt
 new file mode 100644
-index 0000000..6f06c4d
+index 0000000..4eef2a4
 --- /dev/null
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/RemoteImageLoader.kt
-@@ -0,0 +1,137 @@
+@@ -0,0 +1,169 @@
 +package com.swmansion.enriched.markdown.utils.text
 +
 +import android.content.Context
 +import android.graphics.Bitmap
 +import android.graphics.drawable.BitmapDrawable
++import android.graphics.drawable.Animatable
 +import android.graphics.drawable.Drawable
++import android.os.Handler
++import android.os.Looper
 +import android.util.LruCache
 +import com.bumptech.glide.Glide
 +import com.bumptech.glide.RequestBuilder
 +import com.bumptech.glide.load.model.GlideUrl
 +import com.bumptech.glide.load.model.LazyHeaders
-+import com.bumptech.glide.load.resource.gif.GifDrawable
 +import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 +import com.bumptech.glide.request.target.CustomTarget
 +import com.bumptech.glide.request.transition.Transition
++import java.util.Collections
++import java.util.WeakHashMap
++import java.util.concurrent.Executors
 +
 +object RemoteImageLoader {
 +  private const val RECENT_DELIVERIES_BYTES = 20 * 1024 * 1024
@@ -976,10 +988,29 @@ index 0000000..6f06c4d
 +    when (resource) {
 +      is Bitmap -> resource.allocationByteCount
 +      is BitmapDrawable -> resource.bitmap?.allocationByteCount ?: 0
-+      is GifDrawable -> resource.size
 +      is Drawable -> resource.intrinsicWidth * resource.intrinsicHeight * 4 * FRAMES_HELD_BY_ANIMATION
 +      else -> 0
 +    }.coerceAtLeast(1)
++
++  private val mainHandler = Handler(Looper.getMainLooper())
++  private val sizeReader = Executors.newSingleThreadExecutor()
++  private val drawablesWithKnownSize = Collections.newSetFromMap(Collections.synchronizedMap(WeakHashMap<Drawable, Boolean>()))
++
++  // APNG4Android's drawables parse the whole file on their decoder thread the first time their size
++  // is read, and the reading thread waits for it.
++  private fun readsSizeByParsing(resource: Any): Boolean =
++    resource is Drawable && resource is Animatable && resource.constantState == null && resource !in drawablesWithKnownSize
++
++  private fun readSizeOffMain(
++    drawable: Drawable,
++    then: () -> Unit,
++  ) {
++    sizeReader.execute {
++      drawable.intrinsicWidth
++      drawablesWithKnownSize.add(drawable)
++      mainHandler.post(then)
++    }
++  }
 +
 +  private fun <ResourceType : Any> RequestBuilder<ResourceType>.withRemoteModel(
 +    url: String,
@@ -1018,6 +1049,14 @@ index 0000000..6f06c4d
 +      resource: ResourceType,
 +      transition: Transition<in ResourceType>?,
 +    ) {
++      if (Looper.myLooper() == Looper.getMainLooper() && readsSizeByParsing(resource)) {
++        readSizeOffMain(resource as Drawable) { accept(resource) }
++      } else {
++        accept(resource)
++      }
++    }
++
++    private fun accept(resource: ResourceType) {
 +      resourceBytes = byteCount(resource)
 +      recentDeliveries.put(deliveryKey, this)
 +      deliver(resource)
@@ -1319,8 +1358,20 @@ index fcddeb0..9caa229 100644
        return nil;
      }
    }
+diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.h b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.h
+index a1ff17d..f559936 100644
+--- a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.h
++++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.h
+@@ -55,7 +55,6 @@ NS_ASSUME_NONNULL_BEGIN
+                           config:(StyleConfig *)config
+                         isInline:(BOOL)isInline;
+ 
+-+ (NSCache<NSString *, RCTUIImage *> *)originalImageCache;
+ + (NSCache<NSString *, RCTUIImage *> *)processedImageCache;
+ 
+ @end
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
-index dddff1d..cc71a1b 100644
+index dddff1d..4300d58 100644
 --- a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
 +++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
 @@ -1,6 +1,7 @@
@@ -1331,15 +1382,17 @@ index dddff1d..cc71a1b 100644
  #import "ENRMUIKit.h"
  #import "RuntimeKeys.h"
  #import "StyleConfig.h"
-@@ -9,6 +10,7 @@
+@@ -9,8 +10,8 @@
  #define CACHE_KEY_PROCESSED(url, w, h, r, m) [NSString stringWithFormat:@"%@_w%.1f_h%.1f_r%.1f_m%@", url, w, h, r, m]
  
  static NSString *const kInlineDrawingMode = @"contain";
 +static NSString *const kInlineProcessingMode = @"inline";
  
- static NSCache<NSString *, RCTUIImage *> *_originalImageCache;
+-static NSCache<NSString *, RCTUIImage *> *_originalImageCache;
  static NSCache<NSString *, RCTUIImage *> *_processedImageCache;
-@@ -27,7 +29,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+ 
+@@ -27,7 +28,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
  
  @end
  
@@ -1348,7 +1401,7 @@ index dddff1d..cc71a1b 100644
  
  @property (nonatomic, copy) NSString *imageURL;
  @property (nonatomic, copy) NSString *requestURL;
-@@ -48,9 +50,77 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -48,22 +49,79 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
  @property (nonatomic, assign) BOOL loadFailed;
  @property (nonatomic, strong) ENRMImageFailurePlaceholder *failurePlaceholder;
  @property (nonatomic, strong) RCTUIImage *failureImage;
@@ -1357,6 +1410,7 @@ index dddff1d..cc71a1b 100644
  
  @end
  
+-@implementation ENRMImageAttachment
 +static CGRect ENRMDrawingRectForResizeMode(NSString *mode, CGSize source, CGSize box)
 +{
 +  if ([mode isEqualToString:@"stretch"]) {
@@ -1381,9 +1435,17 @@ index dddff1d..cc71a1b 100644
 +  CGFloat drawingHeight = source.height * scale;
 +  return CGRectMake((box.width - drawingWidth) / 2.0, (box.height - drawingHeight) / 2.0, drawingWidth, drawingHeight);
 +}
-+
+ 
+-+ (NSCache<NSString *, RCTUIImage *> *)originalImageCache
 +static RCTUIImage *ENRMScaledImage(RCTUIImage *image, CGSize box, CGFloat radius, NSString *drawingMode)
-+{
+ {
+-  static dispatch_once_t onceToken;
+-  dispatch_once(&onceToken, ^{
+-    _originalImageCache = [[NSCache alloc] init];
+-    _originalImageCache.countLimit = 50;
+-    _originalImageCache.totalCostLimit = 1024 * 1024 * 20; // 20 MB
+-  });
+-  return _originalImageCache;
 +  CGFloat sourceWidth = image.size.width;
 +  CGFloat sourceHeight = image.size.height;
 +  if (sourceWidth <= 0 || sourceHeight <= 0)
@@ -1421,12 +1483,14 @@ index dddff1d..cc71a1b 100644
 +    }
 +    [image drawInRect:drawingRect];
 +  }];
-+}
-+
- @implementation ENRMImageAttachment
+ }
  
- + (NSCache<NSString *, RCTUIImage *> *)originalImageCache
-@@ -126,6 +196,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
++@implementation ENRMImageAttachment
++
+ + (NSCache<NSString *, RCTUIImage *> *)processedImageCache
+ {
+   static dispatch_once_t onceToken;
+@@ -126,6 +184,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
      CGFloat inlineImageSize = [config inlineImageSize];
      CGFloat inlineScale = isInline && inlineImageSize > 0 ? _cachedHeight / inlineImageSize : 1.0;
      _cachedBorderRadius = [config imageBorderRadius] * inlineScale;
@@ -1434,7 +1498,7 @@ index dddff1d..cc71a1b 100644
  
      // The resolved font, so the alt text grows with the user's text size like the paragraph does.
      _failurePlaceholder = [[ENRMImageFailurePlaceholder alloc] initWithAltText:altText
-@@ -160,13 +231,6 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -160,13 +219,6 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
    return self.cachedHeight;
  }
  
@@ -1448,7 +1512,7 @@ index dddff1d..cc71a1b 100644
  // TextKit proposes the line's full width and applies the paragraph's indents afterwards, so
  // a box as wide as the proposal runs past the right edge of an indented list item.
  - (CGFloat)availableWidthInLineFragment:(CGRect)lineFragment
-@@ -218,6 +282,9 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -218,6 +270,9 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
                  characterIndex:(NSUInteger)characterIndex
  {
    self.textContainer = textContainer;
@@ -1458,7 +1522,7 @@ index dddff1d..cc71a1b 100644
  
    if (self.loadFailed) {
      return [self failureImageForSize:imageBounds.size] ?: self.placeholderImage;
-@@ -228,9 +295,34 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -228,9 +283,34 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
      [self processAndApplyImage:self.originalImage withTargetWidth:imageBounds.size.width];
    }
  
@@ -1493,7 +1557,7 @@ index dddff1d..cc71a1b 100644
  - (RCTUIImage *)failureImageForSize:(CGSize)size
  {
    if (size.width <= 0 || size.height <= 0)
-@@ -290,13 +382,19 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -290,13 +370,19 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
  
    CGFloat boxHeight = self.isInline ? self.cachedHeight : [self resolvedBoxHeightForWidth:targetWidth];
  
@@ -1514,7 +1578,7 @@ index dddff1d..cc71a1b 100644
  
    RCTUIImage *cachedProcessed = [[ENRMImageAttachment processedImageCache] objectForKey:processedKey];
  
-@@ -312,10 +410,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -312,10 +398,7 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
      if (!strongSelf)
        return;
  
@@ -1526,7 +1590,7 @@ index dddff1d..cc71a1b 100644
  
      if (processedImage) {
        [[ENRMImageAttachment processedImageCache] setObject:processedImage
-@@ -333,75 +428,6 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -333,75 +416,6 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
    });
  }
  
@@ -1635,10 +1699,10 @@ index 0000000..4dea088
 +NS_ASSUME_NONNULL_END
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m
 new file mode 100644
-index 0000000..aa6d9b3
+index 0000000..5259984
 --- /dev/null
 +++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m
-@@ -0,0 +1,192 @@
+@@ -0,0 +1,198 @@
 +#import "ENRMSharedImageAnimation.h"
 +#import <SDWebImage/SDWebImage.h>
 +
@@ -1788,10 +1852,17 @@ index 0000000..aa6d9b3
 +
 +- (void)didCompleteLoop:(NSUInteger)loopCount
 +{
-+  NSUInteger totalLoopCount = _player.totalLoopCount;
++  NSUInteger totalLoopCount = _frameProvider.animatedImageLoopCount;
 +  _playedAllLoops = totalLoopCount != 0 && loopCount >= totalLoopCount;
 +  if (_playedAllLoops)
-+    [_player clearFrameBuffer];
++    [self releasePlayer];
++}
++
++- (void)releasePlayer
++{
++  SDAnimatedImagePlayer *player = _player;
++  _player = nil;
++  dispatch_async(dispatch_get_main_queue(), ^{ [player stopPlaying]; });
 +}
 +
 +- (void)showFrame:(RCTUIImage *)frame
@@ -1810,8 +1881,7 @@ index 0000000..aa6d9b3
 +  }
 +
 +  if (displaysByTextView.count == 0) {
-+    [_player pausePlaying];
-+    [_player clearFrameBuffer];
++    [self releasePlayer];
 +    return;
 +  }
 +
@@ -1973,11 +2043,12 @@ index 7a49023..17d59e5 100644
    ENRMTableIOSItemHit *hit = [[ENRMTableIOSItemHit alloc] init];
    hit.kind = linkURL ? ENRMTableIOSItemKindLink : ENRMTableIOSItemKindImage;
 diff --git a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
-index 3ef8cd6..7a94c7c 100644
+index 3ef8cd6..f0a2ff0 100644
 --- a/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
 +++ b/node_modules/react-native-enriched-markdown/ios/utils/ENRMImageDownloader.m
-@@ -2,10 +2,7 @@
- #import "ENRMImageAttachment.h"
+@@ -1,11 +1,7 @@
+ #import "ENRMImageDownloader.h"
+-#import "ENRMImageAttachment.h"
  #import "ENRMLocalImageLoader.h"
  #import <CommonCrypto/CommonDigest.h>
 -#include <TargetConditionals.h>
@@ -1988,7 +2059,26 @@ index 3ef8cd6..7a94c7c 100644
  
  NSUInteger ENRMImageByteCost(RCTUIImage *image)
  {
-@@ -60,8 +57,7 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
+@@ -15,6 +11,18 @@ NSUInteger ENRMImageByteCost(RCTUIImage *image)
+   return CGImageGetBytesPerRow(cgImage) * CGImageGetHeight(cgImage);
+ }
+ 
++static NSCache<NSString *, RCTUIImage *> *ENRMLocalImageCache(void)
++{
++  static NSCache<NSString *, RCTUIImage *> *cache;
++  static dispatch_once_t onceToken;
++  dispatch_once(&onceToken, ^{
++    cache = [[NSCache alloc] init];
++    cache.countLimit = 50;
++    cache.totalCostLimit = 20 * 1024 * 1024;
++  });
++  return cache;
++}
++
+ static NSDictionary<NSString *, NSString *> *ENRMNormalizedImageHeaders(NSDictionary<NSString *, NSString *> *headers)
+ {
+   NSMutableDictionary<NSString *, NSString *> *normalized = [NSMutableDictionary dictionary];
+@@ -60,8 +68,7 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
  }
  
  @implementation ENRMImageDownloader {
@@ -1998,7 +2088,7 @@ index 3ef8cd6..7a94c7c 100644
    NSMutableDictionary<NSString *, NSMutableArray<ENRMImageDownloadCompletion> *> *_inFlightRequests;
  }
  
-@@ -77,18 +73,8 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
+@@ -77,18 +84,8 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
  {
    self = [super init];
    if (self) {
@@ -2019,7 +2109,7 @@ index 3ef8cd6..7a94c7c 100644
      _inFlightRequests = [NSMutableDictionary dictionary];
    }
    return self;
-@@ -103,22 +89,26 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
+@@ -103,22 +100,26 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
      return;
    }
  
@@ -2058,7 +2148,7 @@ index 3ef8cd6..7a94c7c 100644
      return;
    }
  
-@@ -131,34 +121,43 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
+@@ -131,34 +132,43 @@ NSString *ENRMImageCacheKey(NSString *url, NSDictionary<NSString *, NSString *>
      _inFlightRequests[cacheKey] = [NSMutableArray arrayWithObject:completion];
    }
  
@@ -2115,14 +2205,14 @@ index 3ef8cd6..7a94c7c 100644
 -              }] resume];
 +- (void)loadLocalURL:(NSString *)url completion:(ENRMImageDownloadCompletion)completion
 +{
-+  RCTUIImage *cached = [[ENRMImageAttachment originalImageCache] objectForKey:url];
++  RCTUIImage *cached = [ENRMLocalImageCache() objectForKey:url];
 +  if (cached) {
 +    completion(cached);
 +    return;
 +  }
 +  RCTUIImage *local = ENRMLoadLocalImage(url);
 +  if (local) {
-+    [[ENRMImageAttachment originalImageCache] setObject:local forKey:url cost:ENRMImageByteCost(local)];
++    [ENRMLocalImageCache() setObject:local forKey:url cost:ENRMImageByteCost(local)];
 +  }
 +  completion(local);
  }
