@@ -235,8 +235,8 @@ test('opens profiles and edits, quotes and deletes messages in a room', { tags: 
 	const { user, room } = await openRoomWithOwnMessage(fixtures);
 
 	const otherUser = await createUser();
-	await sendMessageAsUser(otherUser, room._id, 'new message');
 	await expectProfileFromUsername(fixtures, user.username, room.name);
+	await sendMessageAsUser(otherUser, room._id, 'new message');
 	await expectProfileFromUsername(fixtures, otherUser.username, room.name);
 
 	await editMessage(fixtures);

@@ -34,6 +34,10 @@ jest.mock('~/lib/database/services/Message', () => ({
 	getMessageById: jest.fn()
 }));
 
+jest.mock('~/lib/database/services/Subscription', () => ({
+	getSubscriptionByRoomId: jest.fn()
+}));
+
 jest.mock('~/lib/database/services/Thread', () => ({
 	getThreadById: jest.fn()
 }));
@@ -70,7 +74,10 @@ import RoomSubscription from '../room';
 import sdk from '~/lib/services/sdk';
 import { initStore } from '~/lib/store/auxStore';
 import { getMessageById } from '~/lib/database/services/Message';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import buildMessage from '~/lib/methods/helpers/buildMessage';
+import { loadMissedMessages } from '~/lib/methods/loadMissedMessages';
+import { readMessages } from '~/lib/methods/readMessages';
 import { subscribeRoom, unsubscribeRoom } from '~/actions/room';
 import { clearUserTyping } from '~/actions/usersTyping';
 import {
@@ -78,7 +85,8 @@ import {
 	framesOn,
 	makeCollection as makeBaseCollection,
 	makeReduxStore,
-	receiveFrame
+	receiveFrame,
+	stopAnsweringFrames
 } from '~/lib/testUtils/sdkIntegration';
 import type { IMockCollection, MockConnection } from '~/lib/testUtils/sdkIntegration';
 import type * as SdkIntegration from '~/lib/testUtils/sdkIntegration';
@@ -108,6 +116,14 @@ const MESSAGE = {
 	ts: { $date: 1700000000000 }
 };
 
+function deferred<T>() {
+	let resolve: (value: T) => void = () => {};
+	const promise = new Promise<T>(settle => {
+		resolve = settle;
+	});
+	return { promise, resolve };
+}
+
 let redux: ReturnType<typeof makeReduxStore>;
 let collections: Record<string, ReturnType<typeof makeCollection>>;
 
@@ -122,6 +138,7 @@ beforeEach(() => {
 	database.active.write.mockReset().mockImplementation((fn: () => unknown) => fn());
 	database.active.batch.mockReset().mockImplementation((...records: unknown[]) => Promise.resolve(records));
 	(getMessageById as jest.Mock).mockResolvedValue(null);
+	(getSubscriptionByRoomId as jest.Mock).mockResolvedValue(null);
 });
 
 afterEach(() => {
@@ -193,5 +210,136 @@ describe('RoomSubscription over the real SDK', () => {
 		await flushMicrotasksAndTimers();
 
 		expect(buildMessage).not.toHaveBeenCalled();
+	});
+
+	it('does not mark the Room read when the user leaves while a streamed Message is written', async () => {
+		const lookup = deferred<null>();
+		(getMessageById as jest.Mock).mockImplementationOnce(() => lookup.promise);
+		await connectDriver();
+		const room = await subscribeToRoom('room-rid');
+		(readMessages as jest.Mock).mockClear();
+
+		receiveFrame(mockConnections[0], {
+			msg: 'changed',
+			collection: 'stream-room-messages',
+			fields: { eventName: 'room-rid', args: [MESSAGE] }
+		});
+		await flushMicrotasksAndTimers();
+		await room.unsubscribe();
+		lookup.resolve(null);
+		await flushMicrotasksAndTimers();
+		jest.advanceTimersByTime(1000);
+
+		expect(database.active.batch).toHaveBeenCalled();
+		expect(readMessages).not.toHaveBeenCalled();
+	});
+
+	describe('while the stream subscription starts', () => {
+		function answerSubscriptions(connection: MockConnection) {
+			framesOn(connection, 'sub').forEach(frame => receiveFrame(connection, { msg: 'ready', subs: [frame.id] }));
+		}
+
+		async function subscribeWithoutAnswers(rid: string) {
+			await connectDriver();
+			stopAnsweringFrames(mockConnections[0], 'sub');
+			const room = new RoomSubscription(rid);
+			const subscribing = room.subscribe();
+			await flushMicrotasksAndTimers();
+			return { room, subscribing };
+		}
+
+		it('loads the Messages sent before the stream became ready', async () => {
+			const { subscribing } = await subscribeWithoutAnswers('room-rid');
+			expect(loadMissedMessages).not.toHaveBeenCalled();
+
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+			await subscribing;
+
+			expect(loadMissedMessages).toHaveBeenCalledTimes(1);
+			expect(loadMissedMessages).toHaveBeenCalledWith(expect.objectContaining({ rid: 'room-rid' }));
+		});
+
+		it('loads nothing when the user leaves the Room before the stream is ready', async () => {
+			const { room, subscribing } = await subscribeWithoutAnswers('room-rid');
+
+			const leaving = room.unsubscribe();
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+			await Promise.all([leaving, subscribing]);
+
+			expect(loadMissedMessages).not.toHaveBeenCalled();
+		});
+
+		it('tells the catch-up when the user leaves the Room', async () => {
+			const { room, subscribing } = await subscribeWithoutAnswers('room-rid');
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+			await subscribing;
+			const { signal } = (loadMissedMessages as jest.Mock).mock.calls[0][0] as { signal: AbortSignal };
+			expect(signal.aborted).toBe(false);
+
+			await room.unsubscribe();
+
+			expect(signal.aborted).toBe(true);
+		});
+
+		it('does not mark the Room read when the user leaves while the catch-up loads', async () => {
+			const loading = deferred<void>();
+			(loadMissedMessages as jest.Mock).mockImplementationOnce(() => loading.promise);
+			const { room, subscribing } = await subscribeWithoutAnswers('room-rid');
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+			expect(loadMissedMessages).toHaveBeenCalledTimes(1);
+
+			await room.unsubscribe();
+			loading.resolve();
+			await subscribing;
+			jest.advanceTimersByTime(1000);
+
+			expect(readMessages).not.toHaveBeenCalled();
+		});
+
+		it('loads nothing when the user leaves while the catch-up reads the Subscription', async () => {
+			const lookup = deferred<null>();
+			(getSubscriptionByRoomId as jest.Mock).mockImplementationOnce(() => lookup.promise);
+			const { room, subscribing } = await subscribeWithoutAnswers('room-rid');
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+
+			await room.unsubscribe();
+			lookup.resolve(null);
+			await subscribing;
+
+			expect(loadMissedMessages).not.toHaveBeenCalled();
+		});
+
+		it('neither loads nor marks an Invited Room read', async () => {
+			(getSubscriptionByRoomId as jest.Mock).mockResolvedValue({
+				rid: 'room-rid',
+				status: 'INVITED',
+				inviter: { _id: 'inviter-id' }
+			});
+			const { subscribing } = await subscribeWithoutAnswers('room-rid');
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+			await subscribing;
+			jest.advanceTimersByTime(1000);
+
+			expect(loadMissedMessages).not.toHaveBeenCalled();
+			expect(readMessages).not.toHaveBeenCalled();
+		});
+
+		it('does not mark the Room read when the user leaves within the read delay', async () => {
+			const { room, subscribing } = await subscribeWithoutAnswers('room-rid');
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+			await subscribing;
+
+			await room.unsubscribe();
+			jest.advanceTimersByTime(1000);
+
+			expect(readMessages).not.toHaveBeenCalled();
+		});
 	});
 });

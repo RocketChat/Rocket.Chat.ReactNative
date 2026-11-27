@@ -1,42 +1,43 @@
-import { loadMissedMessages } from './loadMissedMessages';
-import sdk from '../services/sdk';
-import updateMessages from './updateMessages';
-import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { updateLastOpen } from './updateLastOpen';
-import { store } from '../store/auxStore';
-import { loadMessagesForRoom } from './loadMessagesForRoom';
+import { loadMissedMessages } from '../loadMissedMessages';
+import sdk from '../../services/sdk';
+import updateMessages from '../updateMessages';
+import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import { updateLastOpen } from '../updateLastOpen';
+import { store } from '../../store/auxStore';
+import { loadMessagesForRoom, waitForLiveTailLoad } from '../loadMessagesForRoom';
 
-jest.mock('../services/sdk', () => ({
+jest.mock('../../services/sdk', () => ({
 	__esModule: true,
 	default: {
 		get: jest.fn()
 	}
 }));
 
-jest.mock('../database/services/Subscription', () => ({
+jest.mock('../../database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn()
 }));
 
-jest.mock('../store/auxStore', () => ({
+jest.mock('../../store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => ({ server: { version: '7.4.0' } })),
 		dispatch: jest.fn()
 	}
 }));
 
-jest.mock('./updateMessages', () => jest.fn());
-jest.mock('./updateLastOpen', () => ({
-	...jest.requireActual('./updateLastOpen'),
+jest.mock('../updateMessages', () => jest.fn());
+jest.mock('../updateLastOpen', () => ({
+	...jest.requireActual('../updateLastOpen'),
 	updateLastOpen: jest.fn()
 }));
-jest.mock('./helpers/log', () => ({ __esModule: true, default: jest.fn() }));
-jest.mock('./loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn() }));
+jest.mock('../helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn(), waitForLiveTailLoad: jest.fn() }));
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 const mockedUpdateMessages = updateMessages as jest.MockedFunction<typeof updateMessages>;
 const mockedGetSubscriptionByRoomId = getSubscriptionByRoomId as jest.MockedFunction<typeof getSubscriptionByRoomId>;
 const mockedUpdateLastOpen = updateLastOpen as jest.MockedFunction<typeof updateLastOpen>;
 const mockedLoadMessagesForRoom = loadMessagesForRoom as jest.MockedFunction<typeof loadMessagesForRoom>;
+const mockedWaitForLiveTailLoad = waitForLiveTailLoad as jest.MockedFunction<typeof waitForLiveTailLoad>;
 
 const RID = 'ROOM_ID';
 
@@ -45,6 +46,7 @@ describe('loadMissedMessages', () => {
 		jest.clearAllMocks();
 		mockedUpdateMessages.mockResolvedValue(0);
 		mockedLoadMessagesForRoom.mockResolvedValue(undefined as never);
+		mockedWaitForLiveTailLoad.mockResolvedValue(undefined);
 		mockedGetSubscriptionByRoomId.mockResolvedValue(null as never);
 		(store.getState as jest.Mock).mockReturnValue({ server: { version: '7.4.0' } });
 	});
@@ -81,6 +83,56 @@ describe('loadMissedMessages', () => {
 		expect(mockedUpdateMessages).not.toHaveBeenCalled();
 	});
 
+	it('syncs from the cursor that the history load in progress writes instead of loading the history again', async () => {
+		const CURSOR = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
+		const subscription = { lastOpen: null as Date | null, t: 'p' };
+		mockedGetSubscriptionByRoomId.mockResolvedValue(subscription as never);
+		mockedWaitForLiveTailLoad.mockImplementation(async () => {
+			subscription.lastOpen = CURSOR;
+		});
+		mockedSdkGet.mockResolvedValue({ result: { updated: [], deleted: [], cursor: { next: null } } } as never);
+
+		await loadMissedMessages({ rid: RID });
+
+		expect(mockedWaitForLiveTailLoad).toHaveBeenCalledWith(RID);
+		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
+		expect(mockedSdkGet).toHaveBeenCalledWith(
+			'chat.syncMessages',
+			expect.objectContaining({ roomId: RID, next: CURSOR.getTime() })
+		);
+	});
+
+	it('loads the history itself when the history load in progress does not settle in time', async () => {
+		jest.useFakeTimers();
+		try {
+			mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'p' } as never);
+			mockedWaitForLiveTailLoad.mockReturnValue(new Promise(() => {}));
+
+			const catchingUp = loadMissedMessages({ rid: RID });
+			await jest.advanceTimersByTimeAsync(10000);
+			await catchingUp;
+
+			expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'p' });
+		} finally {
+			jest.useRealTimers();
+		}
+	});
+
+	it('loads nothing when the user left while it waited for the history load in progress', async () => {
+		const leaving = new AbortController();
+		const subscription = { lastOpen: null as Date | null, t: 'p' };
+		mockedGetSubscriptionByRoomId.mockResolvedValue(subscription as never);
+		mockedWaitForLiveTailLoad.mockImplementation(async () => {
+			subscription.lastOpen = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
+			leaving.abort();
+		});
+
+		await loadMissedMessages({ rid: RID, signal: leaving.signal });
+
+		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
+		expect(mockedSdkGet).not.toHaveBeenCalled();
+	});
+
 	it('falls through to the sync path when the subscription type is not a room type', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'not-a-room-type' } as never);
 		mockedSdkGet.mockResolvedValue({ result: { updated: [], deleted: [], cursor: { next: null } } } as never);
@@ -106,6 +158,7 @@ describe('loadMissedMessages', () => {
 		const CURSOR = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: CURSOR, t: 'c' } as never);
 		mockedSdkGet.mockResolvedValue({ result: { updated: [], deleted: [], cursor: { next: null } } } as never);
+		mockedWaitForLiveTailLoad.mockReturnValue(new Promise(() => {}));
 
 		await loadMissedMessages({ rid: RID });
 

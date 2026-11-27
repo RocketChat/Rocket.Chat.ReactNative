@@ -248,6 +248,30 @@ describe('RoomStore', () => {
 		expect(store.getState().canAutoTranslate).toBe(true);
 	});
 
+	it('keeps the unread position the Room had when it opened, even if it is read while its messages load', async () => {
+		const lastSeen = new Date('2026-01-01T00:00:00.000Z');
+		const unreadRoom = { ...subRoom, unread: 3, ls: lastSeen };
+		setupPresentRow(unreadRoom);
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: unreadRoom });
+		mockGetMessages.mockImplementation(async () => {
+			Object.assign(store.getState().room, { unread: 0, alert: false, userMentions: 0 });
+		});
+
+		await expect(store.getState().init()).resolves.toEqual({ status: 'loaded', lastSeen });
+	});
+
+	it('keeps the unread position of Messages that arrive while the messages load', async () => {
+		const lastSeen = new Date('2026-01-01T00:00:00.000Z');
+		const readRoom = { ...subRoom, unread: 0, alert: false, userMentions: 0, ls: lastSeen };
+		setupPresentRow(readRoom);
+		const store = createRoomStore({ rid: 'rid-1', initialRoom: readRoom });
+		mockGetMessages.mockImplementation(async () => {
+			Object.assign(store.getState().room, { unread: 1, alert: true });
+		});
+
+		await expect(store.getState().init()).resolves.toEqual({ status: 'loaded', lastSeen });
+	});
+
 	it('loads messages without a read receipt for a route-param room that lacks a subscription row', async () => {
 		setupPresentRow();
 		const store = createRoomStore({ rid: 'rid-1', initialRoom: stubRoom });
@@ -400,6 +424,22 @@ describe('RoomStore', () => {
 
 			await expect(initPromise).resolves.toEqual({ status: 'loaded', lastSeen: unreadRoom.ls });
 			expect(mockGetMessages).toHaveBeenCalledTimes(2);
+		});
+
+		it('keeps the unread position the Room had when it opened after the Room is read during a retry', async () => {
+			setupPresentRow();
+			const lastSeen = new Date('2026-01-01T00:00:00.000Z');
+			const unreadRoom = { ...subRoom, unread: 3, ls: lastSeen };
+			const store = createRoomStore({ rid: 'rid-1', initialRoom: unreadRoom });
+			mockGetMessages.mockImplementationOnce(async () => {
+				Object.assign(store.getState().room, { unread: 0, alert: false, userMentions: 0 });
+				throw new Error('boom');
+			});
+
+			const initPromise = store.getState().init();
+			await jest.advanceTimersByTimeAsync(1000);
+
+			await expect(initPromise).resolves.toEqual({ status: 'loaded', lastSeen });
 		});
 
 		it('gives up after three attempts without loading', async () => {

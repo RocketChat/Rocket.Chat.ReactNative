@@ -19,6 +19,15 @@ const MAX_BATCHES = 10;
 const isVisibleMainRoomMessage = (message: IMessage, hideSystemMessages: string[]) =>
 	!message.tmid && (!message.t || !hideSystemMessages.includes(message.t));
 
+const buildOlderLoader = (oldestMessage: IMessage): IMessage =>
+	({
+		_id: generateLoadMoreId(oldestMessage._id as string),
+		rid: oldestMessage.rid,
+		ts: dayjs(oldestMessage.ts).subtract(1, 'millisecond').toDate(),
+		t: MessageTypeLoad.MORE,
+		msg: oldestMessage.msg
+	}) as IMessage;
+
 async function resolveHideSystemMessages(rid: string): Promise<string[]> {
 	const sub = await getSubscriptionByRoomId(rid);
 	return getHiddenSystemMessages(sub?.sysMes, store.getState().settings.Hide_System_Messages);
@@ -67,14 +76,17 @@ async function load(args: {
 				return;
 		}
 
-		if (!data?.success || !data.messages?.length) {
+		if (!data?.success) {
 			return;
 		}
 
-		const batch = data.messages as IMessage[];
+		const batch = (data.messages ?? []) as IMessage[];
+		lastBatchWasFull = batch.length === COUNT;
+		if (!batch.length) {
+			return;
+		}
 		serverTimestamps.push(...snapshotServerTimestamps(batch));
 		allMessages.push(...batch);
-		lastBatchWasFull = batch.length === COUNT;
 
 		const visibleMainMessagesInBatch = batch.filter(message => isVisibleMainRoomMessage(message, hideSystemMessages));
 		visibleMainMessagesCount += visibleMainMessagesInBatch.length;
@@ -85,13 +97,7 @@ async function load(args: {
 			const lastMessage = batch[batch.length - 1];
 
 			if (!args.loaderItem && batchesFetched === 1) {
-				const loadMoreMessage = {
-					_id: generateLoadMoreId(lastMessage._id as string),
-					rid: lastMessage.rid,
-					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toDate(),
-					t: MessageTypeLoad.MORE,
-					msg: lastMessage.msg
-				} as IMessage;
+				const loadMoreMessage = buildOlderLoader(lastMessage);
 
 				await updateMessages({
 					rid: roomId,
@@ -111,12 +117,39 @@ async function load(args: {
 	return { messages: allMessages, serverTimestamps, lastBatchWasFull };
 }
 
-export async function loadMessagesForRoom(args: {
+const hasOlderGap = async (oldestMessage: IMessage): Promise<boolean> => {
+	if (!(await getMessageById(oldestMessage._id as string))) {
+		return true;
+	}
+	const olderLoaderRecord = await getMessageById(generateLoadMoreId(oldestMessage._id as string));
+	return olderLoaderRecord?.t === MessageTypeLoad.MORE;
+};
+
+type TLoadMessagesForRoomArgs = {
 	rid: string;
 	t: RoomTypes;
 	latest?: Date;
 	loaderItem?: TMessageModel;
-}): Promise<void> {
+};
+
+const liveTailLoads = new Map<string, Promise<void>>();
+
+const isLiveTailLoad = (args: TLoadMessagesForRoomArgs): boolean => !args.latest && !args.loaderItem;
+
+export const waitForLiveTailLoad = (rid: string): Promise<void> => liveTailLoads.get(rid) ?? Promise.resolve();
+
+export function loadMessagesForRoom(args: TLoadMessagesForRoomArgs): Promise<void> {
+	const currentLoad = loadRoomHistory(args);
+	if (isLiveTailLoad(args)) {
+		liveTailLoads.set(
+			args.rid,
+			currentLoad.catch(() => undefined)
+		);
+	}
+	return currentLoad;
+}
+
+async function loadRoomHistory(args: TLoadMessagesForRoomArgs): Promise<void> {
 	let uiLoaderId: string | null = null;
 	try {
 		const { messages, serverTimestamps, lastBatchWasFull } = await load({
@@ -127,20 +160,13 @@ export async function loadMessagesForRoom(args: {
 		});
 		if (messages?.length) {
 			const lastMessage = messages[messages.length - 1];
-			const lastMessageRecord = await getMessageById(lastMessage._id as string);
-			if (!lastMessageRecord && lastBatchWasFull) {
-				messages.push({
-					_id: generateLoadMoreId(lastMessage._id as string),
-					rid: lastMessage.rid,
-					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toDate(),
-					t: MessageTypeLoad.MORE,
-					msg: lastMessage.msg
-				} as IMessage);
+			if (lastBatchWasFull && (await hasOlderGap(lastMessage))) {
+				messages.push(buildOlderLoader(lastMessage));
 			}
 			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
 		}
 
-		if (!args.latest && !args.loaderItem) {
+		if (isLiveTailLoad(args)) {
 			await updateLastOpen(args.rid, serverTimestamps);
 		}
 	} catch (e) {

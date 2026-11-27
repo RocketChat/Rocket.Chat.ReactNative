@@ -20,6 +20,12 @@ interface IUpdateMessages {
 	loaderItem?: TMessageModel;
 }
 
+const selectLoadersToDelete = (records: TMessageModel[], update: IMessage[]): TMessageModel[] => {
+	const updatedIds = new Set(update.map(message => message._id));
+	const loaderIdsOfUpdatedMessages = new Set(update.map(message => generateLoadMoreId(message._id as string)));
+	return records.filter(record => loaderIdsOfUpdatedMessages.has(record.id) && !updatedIds.has(record.id));
+};
+
 export default async function updateMessages({
 	rid,
 	update = [],
@@ -57,9 +63,7 @@ export default async function updateMessages({
 		update = update.map(m => buildMessage(m)) as IMessage[];
 
 		// filter loaders to delete
-		let loadersToDelete: TMessageModel[] = allMessagesRecords.filter(i1 =>
-			update.find(i2 => i1.id === generateLoadMoreId(i2._id as string))
-		);
+		let loadersToDelete: TMessageModel[] = selectLoadersToDelete(allMessagesRecords, update);
 
 		// Delete
 		let msgsToDelete: TMessageModel[] = [];

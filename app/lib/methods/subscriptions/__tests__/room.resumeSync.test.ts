@@ -1,8 +1,8 @@
-import RoomSubscription from './room';
+import RoomSubscription from '../room';
 import sdk from '~/lib/services/sdk';
-import updateMessages from '../updateMessages';
+import updateMessages from '../../updateMessages';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
-import { loadMessagesForRoom } from '../loadMessagesForRoom';
+import { loadMessagesForRoom } from '../../loadMessagesForRoom';
 
 jest.mock('~/lib/services/sdk', () => ({
 	__esModule: true,
@@ -31,9 +31,12 @@ jest.mock('~/lib/store/auxStore', () => ({
 	}
 }));
 
-jest.mock('../updateMessages', () => jest.fn());
-jest.mock('../readMessages', () => ({ readMessages: jest.fn() }));
-jest.mock('../loadMessagesForRoom', () => ({ loadMessagesForRoom: jest.fn() }));
+jest.mock('../../updateMessages', () => jest.fn());
+jest.mock('../../readMessages', () => ({ readMessages: jest.fn() }));
+jest.mock('../../loadMessagesForRoom', () => ({
+	loadMessagesForRoom: jest.fn(),
+	waitForLiveTailLoad: jest.fn(() => Promise.resolve())
+}));
 jest.mock('~/lib/encryption', () => ({ Encryption: { decryptMessage: jest.fn(m => m) } }));
 
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;

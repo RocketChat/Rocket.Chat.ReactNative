@@ -1,14 +1,14 @@
-import updateMessages from './updateMessages';
-import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { makeFakeRecord } from '../database/__tests__/mockedWatermelonDB';
-import { Encryption } from '../encryption';
-import { generateLoadMoreId } from './helpers/generateLoadMoreId';
+import updateMessages from '../updateMessages';
+import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import { makeFakeRecord } from '../../database/__tests__/mockedWatermelonDB';
+import { Encryption } from '../../encryption';
+import { generateLoadMoreId } from '../helpers/generateLoadMoreId';
 
-jest.mock('../database/services/Subscription', () => ({
+jest.mock('../../database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn()
 }));
 
-jest.mock('../encryption', () => ({
+jest.mock('../../encryption', () => ({
 	Encryption: {
 		decryptMessages: jest.fn((messages: unknown[]) => Promise.resolve(messages))
 	}
@@ -18,12 +18,12 @@ jest.mock('@nozbe/watermelondb/RawRecord', () => ({
 	sanitizedRaw: (raw: unknown) => raw
 }));
 
-jest.mock('./helpers/buildMessage', () => ({
+jest.mock('../helpers/buildMessage', () => ({
 	__esModule: true,
 	default: (message: unknown) => message
 }));
 
-jest.mock('./helpers/protectedFunction', () => ({
+jest.mock('../helpers/protectedFunction', () => ({
 	__esModule: true,
 	default:
 		(fn: (...args: unknown[]) => unknown) =>
@@ -57,7 +57,7 @@ class FakeCollection {
 const mockDbBatch = jest.fn().mockResolvedValue(undefined);
 let collections: Record<string, FakeCollection>;
 
-jest.mock('../database', () => ({
+jest.mock('../../database', () => ({
 	__esModule: true,
 	default: {
 		active: {
@@ -280,6 +280,21 @@ describe('updateMessages', () => {
 			await updateMessages({ rid, update: [{ _id: 'm1', rid, msg: 'hi' } as any] });
 
 			expect(destroy).toHaveBeenCalled();
+			expect(batched()).toContain(loader);
+		});
+
+		it('keeps a load-more record that the update carries again', async () => {
+			const loaderId = generateLoadMoreId('m1');
+			const loader = makeFakeRecord(`messages#${loaderId}`, { t: 'load_more' });
+			setRecords('messages', [loader]);
+			const destroy = jest.spyOn(loader as any, 'prepareDestroyPermanently');
+
+			await updateMessages({
+				rid,
+				update: [{ _id: 'm1', rid, msg: 'hi' } as any, { _id: loaderId, rid, t: 'load_more' } as any]
+			});
+
+			expect(destroy).not.toHaveBeenCalled();
 			expect(batched()).toContain(loader);
 		});
 
