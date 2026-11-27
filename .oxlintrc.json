@@ -16,6 +16,7 @@
 		"e2e/docker",
 		"**/android",
 		"**/ios",
+		"modules/*/nitrogen/generated",
 		"**/.worktrees/",
 		".rnstorybook/storybook.requires.ts"
 	],

@@ -144,6 +144,10 @@ jobs:
           echo -e 'KEY_PASSWORD=${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
           echo -e 'BugsnagAPIKey=${{ secrets.BUGSNAG_KEY_OFFICIAL }}' >> ./gradle.properties
 
+      - name: Setup Rust
+        if: ${{ steps.swap.outputs.swapped != 'true' }}
+        uses: ./.github/actions/setup-rust
+
       - name: Build Android Release APK
         if: ${{ steps.swap.outputs.swapped != 'true' }}
         working-directory: android

@@ -1,0 +1,21 @@
+{
+	"$schema": "https://nitro.margelo.com/nitro.schema.json",
+	"cxxNamespace": ["rocketchat", "messageparser"],
+	"ios": {
+		"iosModuleName": "RocketChatMessageParser"
+	},
+	"android": {
+		"androidNamespace": ["rocketchat", "messageparser"],
+		"androidCxxLibName": "RocketChatMessageParser"
+	},
+	"autolinking": {
+		"MessageParser": {
+			"all": {
+				"language": "c++",
+				"implementationClassName": "HybridMessageParser"
+			}
+		}
+	},
+	"ignorePaths": ["**/node_modules", "rust/target"],
+	"gitAttributesGeneratedFlag": true
+}

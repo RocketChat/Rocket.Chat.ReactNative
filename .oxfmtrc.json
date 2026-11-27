@@ -20,6 +20,7 @@
 		"android/",
 		"ios/",
 		"patches/",
+		"modules/*/nitrogen/generated/",
 		"scripts/",
 		".worktrees/",
 		".bettercodehub.yml",

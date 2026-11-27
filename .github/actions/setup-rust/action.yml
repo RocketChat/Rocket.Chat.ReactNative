@@ -1,0 +1,13 @@
+name: Setup Rust
+description: Install the Rust toolchain and targets pinned by the native message parser, with its Cargo build cache
+runs:
+  using: "composite"
+  steps:
+    - name: Install Rust toolchain
+      working-directory: modules/message-parser/rust
+      run: rustup toolchain install
+      shell: bash
+
+    - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+      with:
+        workspaces: modules/message-parser/rust -> target

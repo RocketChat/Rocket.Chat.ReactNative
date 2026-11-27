@@ -29,3 +29,13 @@ jobs:
 
       - name: Validate sniffler test-map freshness
         run: node .github/scripts/validate-test-map.js
+
+      - name: Setup Rust
+        uses: ./.github/actions/setup-rust
+
+      - name: Lint and test the native message parser
+        working-directory: modules/message-parser/rust
+        run: |
+          cargo fmt --check
+          cargo clippy --locked --release --all-targets -- -D warnings
+          cargo test --locked --release

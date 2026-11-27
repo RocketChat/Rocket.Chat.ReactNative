@@ -1,0 +1,19 @@
+[package]
+name = "rocketchat-message-parser-ffi"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[lib]
+name = "rocketchat_message_parser_ffi"
+crate-type = ["staticlib", "rlib"]
+
+[dependencies]
+message-parser = { package = "rocketchat-message-parser", git = "https://github.com/diegolmello/rocket.chat-message-parser-rs", rev = "01a0519033861f6dde820a6a7bfc0555d11375a0" }
+serde_json = "1"
+
+[profile.release]
+lto = true
+codegen-units = 1
+debug = "line-tables-only"
