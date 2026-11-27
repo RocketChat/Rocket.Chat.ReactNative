@@ -20,7 +20,7 @@ if(NOT RUST_TARGET)
 endif()
 
 find_program(CARGO cargo HINTS "$ENV{CARGO_HOME}/bin" "$ENV{HOME}/.cargo/bin" REQUIRED)
-set(RUST_DIR ${CMAKE_SOURCE_DIR}/../rust)
+get_filename_component(RUST_DIR ${CMAKE_SOURCE_DIR}/../rust ABSOLUTE)
 set(RUST_LIBRARY ${RUST_DIR}/target/${RUST_TARGET}/release/librocketchat_message_parser_ffi.a)
 
 add_custom_target(
