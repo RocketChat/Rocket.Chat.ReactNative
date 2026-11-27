@@ -23116,7 +23116,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           ]
         }
       >
-        unread
+        November 10, 2017
       </Text>
       <View
         style={
@@ -23153,7 +23153,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           ]
         }
       >
-        November 10, 2017
+        unread
       </Text>
     </View>
     <ExternalKeyboardView
@@ -23621,6 +23621,19 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
         }
       }
     >
+      <View
+        style={
+          [
+            {
+              "flex": 1,
+              "height": 1,
+            },
+            {
+              "backgroundColor": "#EC0D2A",
+            },
+          ]
+        }
+      />
       <Text
         style={
           [
@@ -23638,26 +23651,13 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               "color": "#D40C26",
             },
             {
-              "marginRight": 14,
+              "marginLeft": 14,
             },
           ]
         }
       >
         unread
       </Text>
-      <View
-        style={
-          [
-            {
-              "flex": 1,
-              "height": 1,
-            },
-            {
-              "backgroundColor": "#EC0D2A",
-            },
-          ]
-        }
-      />
     </View>
     <ExternalKeyboardView
       canBeFocused={true}
@@ -25357,7 +25357,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           ]
         }
       >
-        unread
+        November 10, 2017
       </Text>
       <View
         style={
@@ -25394,7 +25394,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           ]
         }
       >
-        November 10, 2017
+        unread
       </Text>
     </View>
     <ExternalKeyboardView
@@ -25862,6 +25862,19 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
         }
       }
     >
+      <View
+        style={
+          [
+            {
+              "flex": 1,
+              "height": 1,
+            },
+            {
+              "backgroundColor": "#EC0D2A",
+            },
+          ]
+        }
+      />
       <Text
         style={
           [
@@ -25879,26 +25892,13 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               "color": "#D40C26",
             },
             {
-              "marginRight": 14,
+              "marginLeft": 14,
             },
           ]
         }
       >
         unread
       </Text>
-      <View
-        style={
-          [
-            {
-              "flex": 1,
-              "height": 1,
-            },
-            {
-              "backgroundColor": "#EC0D2A",
-            },
-          ]
-        }
-      />
     </View>
     <ExternalKeyboardView
       canBeFocused={true}
