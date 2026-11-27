@@ -3,7 +3,6 @@ import DeviceInfo from 'react-native-device-info';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { getOrigin, isSameOrigin } from './getOrigin';
-import NativeMarkdownImageDownloader from '~/lib/native/NativeMarkdownImageDownloader';
 
 export type TMethods = 'POST' | 'GET' | 'DELETE' | 'PUT' | 'post' | 'get' | 'delete' | 'put';
 
@@ -30,7 +29,6 @@ const userAgent = `RC Mobile; ${
 export const headers: CustomHeaders = { 'User-Agent': userAgent };
 
 RocketChatSettings.customHeaders = headers;
-NativeMarkdownImageDownloader.setUserAgent(userAgent);
 
 let sharedAuthorizationOrigin: string | null = null;
 
