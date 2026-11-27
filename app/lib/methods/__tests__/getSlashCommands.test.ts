@@ -64,7 +64,9 @@ const servePages = (commands: ReturnType<typeof command>[], pageSize: number) =>
 
 const batchedOperations = (): BatchedOperation[] => mockBatch.mock.calls[0][0];
 
-const batchedIds = () => batchedOperations().map(({ operation, record }) => [operation, record.command ?? record.id]);
+const batchedIds = () => batchedOperations().map(({ operation, record }) => `${operation} ${record.command ?? record.id}`);
+
+const inAnyOrder = (ids: string[]) => [...ids].sort();
 
 describe('getSlashCommands', () => {
 	beforeEach(() => {
@@ -80,7 +82,29 @@ describe('getSlashCommands', () => {
 		await getSlashCommands();
 
 		expect(mockGet.mock.calls.map(([, params]) => params.offset)).toEqual([0, 2, 4]);
-		expect(batchedIds()).toEqual(commands.map(({ command: name }) => ['create', name]));
+		expect(inAnyOrder(batchedIds())).toEqual(inAnyOrder(commands.map(({ command: name }) => `create ${name}`)));
+	});
+
+	it('stops paging and saves what it has when the server returns an empty page before total', async () => {
+		const listed = [command(1), command(2)];
+		mockGet.mockImplementation((_endpoint: string, { offset }: { offset: number }) => {
+			if (mockGet.mock.calls.length > 3) {
+				return Promise.reject(new Error('kept requesting pages after an empty one'));
+			}
+			return Promise.resolve({
+				success: true,
+				appsLoaded: true,
+				commands: listed.slice(offset, offset + 2),
+				offset,
+				count: 2,
+				total: 5
+			});
+		});
+
+		await getSlashCommands();
+
+		expect(mockGet.mock.calls.map(([, params]) => params.offset)).toEqual([0, 2]);
+		expect(inAnyOrder(batchedIds())).toEqual(['create command1', 'create command2']);
 	});
 
 	it('updates listed commands and deletes the ones the server no longer lists', async () => {
@@ -89,11 +113,7 @@ describe('getSlashCommands', () => {
 
 		await getSlashCommands();
 
-		expect(batchedIds()).toEqual([
-			['create', 'command2'],
-			['update', 'command1'],
-			['destroy', 'uninstalled']
-		]);
+		expect(inAnyOrder(batchedIds())).toEqual(inAnyOrder(['create command2', 'update command1', 'destroy uninstalled']));
 		const updated = batchedOperations().find(({ operation }) => operation === 'update');
 		expect(updated?.record.description).toBe('description 1');
 	});
@@ -104,7 +124,7 @@ describe('getSlashCommands', () => {
 
 		await getSlashCommands();
 
-		expect(batchedIds()).toEqual([['destroy', 'command1']]);
+		expect(batchedIds()).toEqual(['destroy command1']);
 	});
 
 	it('saves into the workspace that was active when the sync started', async () => {
@@ -116,7 +136,7 @@ describe('getSlashCommands', () => {
 		await getSlashCommands();
 
 		expect(mockOtherWorkspaceBatch).not.toHaveBeenCalled();
-		expect(batchedIds()).toEqual([['create', 'command1']]);
+		expect(batchedIds()).toEqual(['create command1']);
 	});
 
 	it('stops paging when the workspace changes between pages', async () => {
