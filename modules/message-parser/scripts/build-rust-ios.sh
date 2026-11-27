@@ -46,7 +46,7 @@ for arch in $ARCHS; do
 	rust_target="$(rust_target_for "$arch")"
 	(cd "$rust_dir" && cargo build --release --locked --target "$rust_target" --target-dir "$rust_dir/target")
 	prelinked_object="$output_dir/rocketchat_message_parser_ffi-$arch.o"
-	xcrun ld -r -arch "$arch" -platform_version "$linker_platform" "$IPHONEOS_DEPLOYMENT_TARGET" 0 \
+	xcrun ld -r -arch "$arch" -platform_version "$linker_platform" "$IPHONEOS_DEPLOYMENT_TARGET" "$SDK_VERSION" \
 		"${linker_symbol_flags[@]}" "$rust_dir/target/$rust_target/release/$library_name" -o "$prelinked_object"
 	xcrun libtool -static -o "$output_dir/$arch-$library_name" "$prelinked_object"
 	libraries+=("$output_dir/$arch-$library_name")
