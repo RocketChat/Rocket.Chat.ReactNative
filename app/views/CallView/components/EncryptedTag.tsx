@@ -8,10 +8,16 @@ import { styles } from '../styles';
 const EncryptedTag = () => {
 	const { colors } = useTheme();
 
+	const label = I18n.t('Encrypted');
+
 	return (
-		<View style={[styles.encryptedTag, { backgroundColor: colors.surfaceSelected }]} testID='call-view-encrypted-tag'>
+		<View
+			style={[styles.encryptedTag, { backgroundColor: colors.surfaceSelected }]}
+			accessible
+			accessibilityLabel={label}
+			testID='call-view-encrypted-tag'>
 			<CustomIcon name='encrypted' size={12} color={colors.fontSecondaryInfo} />
-			<Text style={[styles.encryptedTagText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Encrypted')}</Text>
+			<Text style={[styles.encryptedTagText, { color: colors.fontSecondaryInfo }]}>{label}</Text>
 		</View>
 	);
 };

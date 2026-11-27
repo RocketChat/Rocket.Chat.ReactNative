@@ -75,7 +75,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -894,6 +894,8 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -1040,7 +1042,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -1865,6 +1867,8 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -2011,7 +2015,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -2830,6 +2834,8 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -2976,7 +2982,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -3795,6 +3801,8 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -3941,7 +3949,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -4760,6 +4768,8 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -4906,7 +4916,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -5725,6 +5735,8 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -5854,7 +5866,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -6662,6 +6674,8 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -6791,7 +6805,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -7605,6 +7619,8 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -7734,7 +7750,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -8542,6 +8558,8 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -8671,7 +8689,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -9479,6 +9497,8 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -9608,7 +9628,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -10416,6 +10436,8 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -10545,7 +10567,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -11353,6 +11375,8 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -11482,7 +11506,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -12290,6 +12314,8 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {
@@ -12436,7 +12462,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
-          "marginBottom": 100,
+          "marginBottom": 140,
           "paddingHorizontal": 24,
         }
       }
@@ -13255,6 +13281,8 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
         </View>
       </View>
       <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
         style={
           [
             {

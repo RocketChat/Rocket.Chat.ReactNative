@@ -47,7 +47,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         "alignItems": "center",
         "flex": 1,
         "justifyContent": "center",
-        "marginBottom": 100,
+        "marginBottom": 140,
         "paddingHorizontal": 24,
       }
     }
@@ -208,7 +208,7 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
         "alignItems": "center",
         "flex": 1,
         "justifyContent": "center",
-        "marginBottom": 100,
+        "marginBottom": 140,
         "paddingHorizontal": 24,
       }
     }

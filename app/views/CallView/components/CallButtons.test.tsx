@@ -79,17 +79,6 @@ describe('CallButtons', () => {
 		expect(getByTestId('call-view-dialpad')).toBeTruthy();
 	});
 
-	it('renders the encrypted tag', () => {
-		setStoreState();
-		const { getByTestId, getByText } = render(
-			<Wrapper>
-				<CallButtons />
-			</Wrapper>
-		);
-		expect(getByTestId('call-view-encrypted-tag')).toBeTruthy();
-		expect(getByText('Encrypted')).toBeTruthy();
-	});
-
 	it('narrow layout renders 2 rows', () => {
 		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
 		setStoreState();
