@@ -1,25 +1,24 @@
-import { render, screen } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
+import { Image as ExpoImage } from 'expo-image';
 
 import StatusText from '../StatusText';
 
-jest.mock('~/containers/markdown', () => ({
-	__esModule: true,
-	default: ({ msg, allowImages }: { msg: string; allowImages?: boolean }) => {
-		const { Text } = require('react-native');
-		return <Text>{`${msg}|${String(allowImages)}`}</Text>;
-	}
-}));
-
 describe('StatusText', () => {
-	it('renders the status text through the markdown renderer with images disabled', () => {
-		render(<StatusText msg=':rcbadge: on vacation' />);
+	it('does not render direct image markdown', () => {
+		const { UNSAFE_queryAllByType } = render(<StatusText msg='![tracker](https://example.com/tracker.png)' />);
 
-		expect(screen.getByText(':rcbadge: on vacation|false')).toBeTruthy();
+		expect(UNSAFE_queryAllByType(ExpoImage)).toHaveLength(0);
 	});
 
-	it('disables images so status text cannot load remote hosts', () => {
-		render(<StatusText msg='![tracker](https://example.com/tracker.png) on vacation' />);
+	it('does not render an image re-formed by the previous bypass input', () => {
+		const { UNSAFE_queryAllByType } = render(<StatusText msg='!![](https://example.com/a.png)[x](https://example.com/b.png)' />);
 
-		expect(screen.getByText('![tracker](https://example.com/tracker.png) on vacation|false')).toBeTruthy();
+		expect(UNSAFE_queryAllByType(ExpoImage)).toHaveLength(0);
+	});
+
+	it('still renders plain text', () => {
+		const { getByText } = render(<StatusText msg='on vacation' />);
+
+		expect(getByText('on vacation')).toBeTruthy();
 	});
 });
