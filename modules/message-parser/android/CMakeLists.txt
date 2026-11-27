@@ -25,7 +25,7 @@ set(RUST_LIBRARY ${RUST_DIR}/target/${RUST_TARGET}/release/librocketchat_message
 
 add_custom_target(
   rust_message_parser
-  COMMAND ${CARGO} build --release --locked --target ${RUST_TARGET}
+  COMMAND ${CARGO} build --release --locked --target ${RUST_TARGET} --target-dir ${RUST_DIR}/target
   WORKING_DIRECTORY ${RUST_DIR}
   BYPRODUCTS ${RUST_LIBRARY}
   USES_TERMINAL
@@ -42,7 +42,6 @@ target_link_libraries(
   ${LOG_LIB}
   dl
   m
-  android
 )
 
 target_link_options(${PACKAGE_NAME} PRIVATE "-Wl,--exclude-libs,ALL")

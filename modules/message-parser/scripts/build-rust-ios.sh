@@ -38,13 +38,15 @@ for symbol in "${exported_symbols[@]}"; do
 	linker_symbol_flags+=(-u "$symbol" -exported_symbol "$symbol")
 done
 
+linker_platform="$(linker_platform_for)"
+
 mkdir -p "$output_dir"
 libraries=()
 for arch in $ARCHS; do
 	rust_target="$(rust_target_for "$arch")"
-	(cd "$rust_dir" && cargo build --release --locked --target "$rust_target")
+	(cd "$rust_dir" && cargo build --release --locked --target "$rust_target" --target-dir "$rust_dir/target")
 	prelinked_object="$output_dir/rocketchat_message_parser_ffi-$arch.o"
-	xcrun ld -r -arch "$arch" -platform_version "$(linker_platform_for)" "$IPHONEOS_DEPLOYMENT_TARGET" 0 \
+	xcrun ld -r -arch "$arch" -platform_version "$linker_platform" "$IPHONEOS_DEPLOYMENT_TARGET" 0 \
 		"${linker_symbol_flags[@]}" "$rust_dir/target/$rust_target/release/$library_name" -o "$prelinked_object"
 	xcrun libtool -static -o "$output_dir/$arch-$library_name" "$prelinked_object"
 	libraries+=("$output_dir/$arch-$library_name")
