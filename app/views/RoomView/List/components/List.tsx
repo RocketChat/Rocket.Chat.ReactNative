@@ -3,10 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { useIsScreenReaderEnabled } from '~/lib/hooks/useIsScreenReaderEnabled';
-import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import scrollPersistTaps from '~/lib/methods/helpers/scrollPersistTaps';
-import { isExternalKeyboardConnected } from '~/lib/methods/helpers/externalInput';
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '~/lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
@@ -16,6 +13,7 @@ import { SCROLL_LIMIT } from '../constants';
 import { useIsAutocompleteVisible } from '~/containers/MessageComposer/ComposerStore';
 import FloatingDateSeparator from '~/containers/Separator/FloatingDateSeparator';
 import { useFloatingDate } from '../hooks/useFloatingDate';
+import { useUsesInvertedScrollView } from '../hooks/useUsesInvertedScrollView';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<TAnyMessageModel>);
 
@@ -60,9 +58,7 @@ const List = ({ flatListRef, jumpToBottom, onDragStart, isAnchored, ...props }: 
 	// Anchored window: loaded rows' bottom edge isn't the Live Tail, so force the FAB visible to keep a path back to live.
 	const visible = scrolledPastLimit || !!isAnchored;
 
-	const isScreenReaderEnabled = useIsScreenReaderEnabled();
-
-	const renderScrollComponent = !isIOS && (isScreenReaderEnabled || isExternalKeyboardConnected());
+	const renderScrollComponent = useUsesInvertedScrollView();
 	return (
 		<View style={styles.list}>
 			<AnimatedFlatList

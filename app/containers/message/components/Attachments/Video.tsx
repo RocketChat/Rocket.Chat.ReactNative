@@ -79,7 +79,7 @@ const Thumbnail = ({
 		<>
 			<Animated.View
 				style={[StyleSheet.absoluteFill, styles.thumbnailBackdrop, { backgroundColor: colors.surfaceNeutral }]}
-				sharedTransitionTag={status === 'downloaded' ? sharedTransitionTag : undefined}
+				sharedTransitionTag={sharedTransitionTag}
 				sharedTransitionStyle={mediaSharedTransition}
 			/>
 			<BlurComponent

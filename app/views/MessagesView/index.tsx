@@ -25,7 +25,6 @@ import { type IApplicationState } from '~/definitions/redux';
 import { type IRoomInfoParam } from '~/definitions/IRoom';
 import { type TMessageModel, type IMessage, type TAnyMessageModel } from '~/definitions/IMessage';
 import { SubscriptionType } from '~/definitions/ISubscription';
-import { type IAttachment } from '~/definitions/IAttachment';
 import { type IUrl } from '~/definitions/IUrl';
 import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '~/lib/services/restApi';
 import { type TNavigation } from '~/stacks/stackType';
@@ -33,7 +32,7 @@ import AudioManager from '~/lib/methods/AudioManager';
 import { Encryption } from '~/lib/encryption';
 import Navigation from '~/lib/navigation/appNavigation';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { type TMediaSharedTransition } from '~/lib/animations/mediaSharedTransition';
+import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
 import { FocusedSharedTransitionBoundary } from '~/containers/FocusedSharedTransitionBoundary';
 
 interface IMessagesViewProps {
@@ -280,7 +279,7 @@ class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 		}
 	};
 
-	showAttachment = (attachment: IAttachment, sharedTransition?: TMediaSharedTransition) => {
+	showAttachment: IUseRoomMessageHandlersResult['showAttachment'] = (attachment, sharedTransition) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment, sharedTransition });
 	};

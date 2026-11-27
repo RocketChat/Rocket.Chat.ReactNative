@@ -86703,6 +86703,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                   >
                                     <View
                                       sharedTransitionStyle={SharedTransitionMock {}}
+                                      sharedTransitionTag="media-_r_4_"
                                       style={
                                         [
                                           {
@@ -99756,6 +99757,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                   >
                                     <View
                                       sharedTransitionStyle={SharedTransitionMock {}}
+                                      sharedTransitionTag="media-_r_8_"
                                       style={
                                         [
                                           {
@@ -177443,6 +177445,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                         >
                           <View
                             sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_14_"
                             style={
                               [
                                 {
@@ -177798,6 +177801,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                         >
                           <View
                             sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_15_"
                             style={
                               [
                                 {
@@ -178417,6 +178421,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                         >
                           <View
                             sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_16_"
                             style={
                               [
                                 {
@@ -178564,6 +178569,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                         >
                           <View
                             sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_17_"
                             style={
                               [
                                 {
@@ -179232,6 +179238,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                         >
                           <View
                             sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_18_"
                             style={
                               [
                                 {
@@ -179778,6 +179785,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                         >
                           <View
                             sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_19_"
                             style={
                               [
                                 {
@@ -180390,6 +180398,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                         >
                           <View
                             sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_1a_"
                             style={
                               [
                                 {
@@ -180537,6 +180546,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                         >
                           <View
                             sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_1b_"
                             style={
                               [
                                 {

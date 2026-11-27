@@ -179,7 +179,13 @@ const AttachmentView = (): ReactElement => {
 	return (
 		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>
 			<FocusedSharedTransitionBoundary>
-				<RenderContent attachment={attachment} setLoading={setLoading} altText={altText} sharedTransition={sharedTransition} />
+				<RenderContent
+					key={attachment.title_link || attachment.image_url || attachment.video_url}
+					attachment={attachment}
+					setLoading={setLoading}
+					altText={altText}
+					sharedTransition={sharedTransition}
+				/>
 			</FocusedSharedTransitionBoundary>
 
 			{altText ? (

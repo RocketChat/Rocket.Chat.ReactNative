@@ -35,14 +35,13 @@ import { isIOS } from '~/lib/methods/helpers/deviceInfo';
 import { type IMessageFromServer, type TMessageModel } from '~/definitions/IMessage';
 import { type IUser } from '~/definitions/IUser';
 import { type IUrl } from '~/definitions/IUrl';
-import { type IAttachment } from '~/definitions/IAttachment';
 import { type IRoomInfoParam } from '~/definitions/IRoom';
 import { SubscriptionType } from '~/definitions/ISubscription';
 import { searchMessages } from '~/lib/services/restApi';
 import { type TNavigation } from '~/stacks/stackType';
 import Navigation from '~/lib/navigation/appNavigation';
 import { withMasterDetail } from '~/lib/hooks/useMasterDetail';
-import { type TMediaSharedTransition } from '~/lib/animations/mediaSharedTransition';
+import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
 import { FocusedSharedTransitionBoundary } from '~/containers/FocusedSharedTransitionBoundary';
 
 const QUERY_SIZE = 50;
@@ -190,7 +189,7 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 		await this.getMessages(searchText, true);
 	}, textInputDebounceTime);
 
-	showAttachment = (attachment: IAttachment, sharedTransition?: TMediaSharedTransition) => {
+	showAttachment: IUseRoomMessageHandlersResult['showAttachment'] = (attachment, sharedTransition) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment, sharedTransition });
 	};

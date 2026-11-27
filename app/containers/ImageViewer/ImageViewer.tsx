@@ -1,5 +1,5 @@
 import { useRef, useState, type ReactElement } from 'react';
-import { type LayoutChangeEvent, StyleSheet, type StyleProp, type ViewStyle, View } from 'react-native';
+import { type LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import {
 	GestureDetector,
 	usePanGesture,
@@ -8,7 +8,7 @@ import {
 	useTapGesture
 } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import { Image, type ImageLoadEventData, type ImageStyle } from 'expo-image';
+import { Image, type ImageLoadEventData } from 'expo-image';
 
 import Touch from '../Touch';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
@@ -18,10 +18,6 @@ import I18n from '~/i18n';
 import { mediaSharedTransition, type TMediaSize } from '~/lib/animations/mediaSharedTransition';
 
 interface ImageViewerProps {
-	style?: StyleProp<ImageStyle>;
-	containerStyle?: StyleProp<ViewStyle>;
-	imageContainerStyle?: StyleProp<ViewStyle>;
-
 	uri: string;
 	width: number;
 	height: number;
@@ -64,7 +60,7 @@ export const ImageViewer = ({
 	isAnimated,
 	sharedTransitionTag,
 	initialImageSize,
-	...props
+	onLoadEnd
 }: ImageViewerProps): ReactElement => {
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const isPlayingRef = useRef(!!autoplayGifs);
@@ -182,7 +178,7 @@ export const ImageViewer = ({
 			onLoad={onImageLoad}
 			sharedTransitionTag={sharedTransitionTag}
 			sharedTransitionStyle={mediaSharedTransition}
-			{...props}
+			onLoadEnd={onLoadEnd}
 		/>
 	);
 
