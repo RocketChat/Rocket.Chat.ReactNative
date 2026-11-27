@@ -86696,11 +86696,32 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                       {
                                         "borderRadius": 4,
                                         "minHeight": 200,
-                                        "overflow": "hidden",
+                                        "overflow": "visible",
                                         "width": "100%",
                                       }
                                     }
                                   >
+                                    <View
+                                      sharedTransitionStyle={SharedTransitionMock {}}
+                                      sharedTransitionTag="media-_r_4_"
+                                      style={
+                                        [
+                                          {
+                                            "bottom": 0,
+                                            "left": 0,
+                                            "position": "absolute",
+                                            "right": 0,
+                                            "top": 0,
+                                          },
+                                          {
+                                            "backgroundColor": "#E4E7EA",
+                                          },
+                                          {
+                                            "borderRadius": 4,
+                                          },
+                                        ]
+                                      }
+                                    />
                                     <View
                                       style={
                                         [
@@ -99729,11 +99750,32 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                       {
                                         "borderRadius": 4,
                                         "minHeight": 200,
-                                        "overflow": "hidden",
+                                        "overflow": "visible",
                                         "width": "100%",
                                       }
                                     }
                                   >
+                                    <View
+                                      sharedTransitionStyle={SharedTransitionMock {}}
+                                      sharedTransitionTag="media-_r_8_"
+                                      style={
+                                        [
+                                          {
+                                            "bottom": 0,
+                                            "left": 0,
+                                            "position": "absolute",
+                                            "right": 0,
+                                            "top": 0,
+                                          },
+                                          {
+                                            "backgroundColor": "#E4E7EA",
+                                          },
+                                          {
+                                            "borderRadius": 4,
+                                          },
+                                        ]
+                                      }
+                                    />
                                     <View
                                       style={
                                         [
@@ -177396,11 +177438,32 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                             {
                               "borderRadius": 4,
                               "minHeight": 200,
-                              "overflow": "hidden",
+                              "overflow": "visible",
                               "width": "100%",
                             }
                           }
                         >
+                          <View
+                            sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_14_"
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                },
+                                {
+                                  "backgroundColor": "#E4E7EA",
+                                },
+                                {
+                                  "borderRadius": 4,
+                                },
+                              ]
+                            }
+                          />
                           <View
                             style={
                               [
@@ -177731,11 +177794,32 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                             {
                               "borderRadius": 4,
                               "minHeight": 200,
-                              "overflow": "hidden",
+                              "overflow": "visible",
                               "width": "100%",
                             }
                           }
                         >
+                          <View
+                            sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_15_"
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                },
+                                {
+                                  "backgroundColor": "#E4E7EA",
+                                },
+                                {
+                                  "borderRadius": 4,
+                                },
+                              ]
+                            }
+                          />
                           <View
                             style={
                               [
@@ -178330,11 +178414,32 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                             {
                               "borderRadius": 4,
                               "minHeight": 200,
-                              "overflow": "hidden",
+                              "overflow": "visible",
                               "width": "100%",
                             }
                           }
                         >
+                          <View
+                            sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_16_"
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                },
+                                {
+                                  "backgroundColor": "#E4E7EA",
+                                },
+                                {
+                                  "borderRadius": 4,
+                                },
+                              ]
+                            }
+                          />
                           <View
                             style={
                               [
@@ -178457,11 +178562,32 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                             {
                               "borderRadius": 4,
                               "minHeight": 200,
-                              "overflow": "hidden",
+                              "overflow": "visible",
                               "width": "100%",
                             }
                           }
                         >
+                          <View
+                            sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_17_"
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                },
+                                {
+                                  "backgroundColor": "#E4E7EA",
+                                },
+                                {
+                                  "borderRadius": 4,
+                                },
+                              ]
+                            }
+                          />
                           <View
                             style={
                               [
@@ -179105,11 +179231,32 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                             {
                               "borderRadius": 4,
                               "minHeight": 200,
-                              "overflow": "hidden",
+                              "overflow": "visible",
                               "width": "100%",
                             }
                           }
                         >
+                          <View
+                            sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_18_"
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                },
+                                {
+                                  "backgroundColor": "#E4E7EA",
+                                },
+                                {
+                                  "borderRadius": 4,
+                                },
+                              ]
+                            }
+                          />
                           <View
                             style={
                               [
@@ -179631,11 +179778,32 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                             {
                               "borderRadius": 4,
                               "minHeight": 200,
-                              "overflow": "hidden",
+                              "overflow": "visible",
                               "width": "100%",
                             }
                           }
                         >
+                          <View
+                            sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_19_"
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                },
+                                {
+                                  "backgroundColor": "#E4E7EA",
+                                },
+                                {
+                                  "borderRadius": 4,
+                                },
+                              ]
+                            }
+                          />
                           <View
                             style={
                               [
@@ -180223,11 +180391,32 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                             {
                               "borderRadius": 4,
                               "minHeight": 200,
-                              "overflow": "hidden",
+                              "overflow": "visible",
                               "width": "100%",
                             }
                           }
                         >
+                          <View
+                            sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_1a_"
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                },
+                                {
+                                  "backgroundColor": "#E4E7EA",
+                                },
+                                {
+                                  "borderRadius": 4,
+                                },
+                              ]
+                            }
+                          />
                           <View
                             style={
                               [
@@ -180350,11 +180539,32 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                             {
                               "borderRadius": 4,
                               "minHeight": 200,
-                              "overflow": "hidden",
+                              "overflow": "visible",
                               "width": "100%",
                             }
                           }
                         >
+                          <View
+                            sharedTransitionStyle={SharedTransitionMock {}}
+                            sharedTransitionTag="media-_r_1b_"
+                            style={
+                              [
+                                {
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
+                                },
+                                {
+                                  "backgroundColor": "#E4E7EA",
+                                },
+                                {
+                                  "borderRadius": 4,
+                                },
+                              ]
+                            }
+                          />
                           <View
                             style={
                               [

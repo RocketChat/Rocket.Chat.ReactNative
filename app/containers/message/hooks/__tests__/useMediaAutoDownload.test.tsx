@@ -262,8 +262,11 @@ describe('useMediaAutoDownload', () => {
 			const { result } = renderMediaHook({ file: { image_url: '/img' }, showAttachment });
 			await waitFor(() => expect(result.current.status).toBe('downloaded'));
 
-			act(() => result.current.onPress());
-			expect(showAttachment).toHaveBeenCalledWith(expect.objectContaining({ title_link: 'file://cache' }));
+			act(() => result.current.onPress({ width: 400, height: 300 }));
+			expect(showAttachment).toHaveBeenCalledWith(expect.objectContaining({ title_link: 'file://cache' }), {
+				tag: result.current.sharedTransitionTag,
+				mediaSize: { width: 400, height: 300 }
+			});
 		});
 
 		it('does not open the attachment when there is no showAttachment handler', async () => {

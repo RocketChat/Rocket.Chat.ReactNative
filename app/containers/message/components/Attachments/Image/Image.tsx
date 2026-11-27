@@ -1,6 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { View, type ViewStyle } from 'react-native';
 import { Image } from 'expo-image';
+import Animated from 'react-native-reanimated';
 
 import { isValidUrl } from '~/lib/methods/helpers/isValidUrl';
 import { useTheme } from '~/theme';
@@ -11,33 +12,32 @@ import { WidthAwareContext } from '~/containers/message/components/WidthAwareVie
 import { useUserPreferences } from '~/lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '~/lib/constants/keys';
 import ImageBadge from './ImageBadge';
-import log from '~/lib/methods/helpers/log';
 import { encodeAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
+import { mediaSharedTransition } from '~/lib/animations/mediaSharedTransition';
 
-export const MessageImage = ({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
+const AnimatedImage = Animated.createAnimatedComponent(Image);
+
+const FRAME_BORDER_WIDTH = 1;
+const FRAME_BORDER_RADIUS = 4;
+const imageCorners = { borderRadius: FRAME_BORDER_RADIUS - FRAME_BORDER_WIDTH };
+
+export const MessageImage = ({
+	uri,
+	status,
+	encrypted = false,
+	imagePreview,
+	imageType,
+	imageSize,
+	sharedTransitionTag
+}: IMessageImage) => {
 	const { colors } = useTheme();
-	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const maxSize = useContext(WidthAwareContext);
-	const showImage = isValidUrl(uri) && imageDimensions.width && status === 'downloaded';
+	const showImage = isValidUrl(uri) && imageSize.width && status === 'downloaded';
 	const isGif = imageType === 'image/gif';
 
-	useEffect(() => {
-		if (status === 'downloaded') {
-			Image.loadAsync(uri, {
-				onError: e => {
-					log(e);
-				},
-				maxHeight: 1000,
-				maxWidth: 1000
-			}).then(image => {
-				setImageDimensions({ width: image.width, height: image.height });
-			});
-		}
-	}, [uri, status]);
-
-	const width = Math.min(imageDimensions.width, maxSize) || 0;
-	const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
+	const width = Math.min(imageSize.width, maxSize) || 0;
+	const height = Math.min((imageSize.height * ((width * 100) / imageSize.width)) / 100, maxSize) || 0;
 	const imageStyle = {
 		width,
 		height
@@ -46,14 +46,18 @@ export const MessageImage = ({ uri, status, encrypted = false, imagePreview, ima
 	const containerStyle: ViewStyle = {
 		alignItems: 'center',
 		justifyContent: 'center',
-		...(imageDimensions.width <= 64 && { width: 64 }),
-		...(imageDimensions.height <= 64 && { height: 64 })
+		...(imageSize.width <= 64 && { width: 64 }),
+		...(imageSize.height <= 64 && { height: 64 })
+	};
+
+	const frameStyle: ViewStyle = {
+		borderColor: colors.strokeLight,
+		borderWidth: FRAME_BORDER_WIDTH,
+		borderRadius: FRAME_BORDER_RADIUS
 	};
 
 	const borderStyle: ViewStyle = {
-		borderColor: colors.strokeLight,
-		borderWidth: 1,
-		borderRadius: 4,
+		...frameStyle,
 		overflow: 'hidden'
 	};
 
@@ -69,8 +73,15 @@ export const MessageImage = ({ uri, status, encrypted = false, imagePreview, ima
 	return (
 		<>
 			{showImage ? (
-				<View style={[containerStyle, borderStyle]}>
-					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeAttachmentUrl(uri) }} contentFit='cover' />
+				<View style={[containerStyle, frameStyle]}>
+					<AnimatedImage
+						autoplay={autoplayGifs}
+						style={[imageStyle, imageCorners]}
+						source={{ uri: encodeAttachmentUrl(uri) }}
+						contentFit='cover'
+						sharedTransitionTag={sharedTransitionTag}
+						sharedTransitionStyle={mediaSharedTransition}
+					/>
 				</View>
 			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (

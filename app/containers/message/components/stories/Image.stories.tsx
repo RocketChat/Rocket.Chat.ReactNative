@@ -4,6 +4,7 @@ import { WidthAwareContext } from '../WidthAwareView';
 import { MessageImage } from '../Attachments/Image/Image';
 
 const MOCK_URI = 'https://picsum.photos/400/300';
+const MOCK_SIZE = { width: 400, height: 300 };
 
 export default {
 	title: 'Attachments/MessageImage'
@@ -12,7 +13,7 @@ export default {
 export const Default = () => (
 	<View style={{ padding: 10 }}>
 		<WidthAwareContext.Provider value={350}>
-			<MessageImage uri={MOCK_URI} status='downloaded' encrypted={false} />
+			<MessageImage uri={MOCK_URI} imageSize={MOCK_SIZE} status='downloaded' encrypted={false} />
 		</WidthAwareContext.Provider>
 	</View>
 );
@@ -20,7 +21,7 @@ export const Default = () => (
 export const Loading = () => (
 	<View style={{ padding: 10 }}>
 		<WidthAwareContext.Provider value={350}>
-			<MessageImage uri={MOCK_URI} status='loading' encrypted={false} />
+			<MessageImage uri={MOCK_URI} imageSize={MOCK_SIZE} status='loading' encrypted={false} />
 		</WidthAwareContext.Provider>
 	</View>
 );
@@ -28,7 +29,7 @@ export const Loading = () => (
 export const GIF = () => (
 	<View style={{ padding: 10 }}>
 		<WidthAwareContext.Provider value={350}>
-			<MessageImage uri={MOCK_URI} status='downloaded' encrypted={false} imageType='image/gif' />
+			<MessageImage uri={MOCK_URI} imageSize={MOCK_SIZE} status='downloaded' encrypted={false} imageType='image/gif' />
 		</WidthAwareContext.Provider>
 	</View>
 );
@@ -37,7 +38,7 @@ export const GIF = () => (
 export const WithAltTextOldServer = () => (
 	<View style={{ padding: 10 }}>
 		<WidthAwareContext.Provider value={350}>
-			<MessageImage uri={MOCK_URI} status='downloaded' encrypted={false} />
+			<MessageImage uri={MOCK_URI} imageSize={MOCK_SIZE} status='downloaded' encrypted={false} />
 		</WidthAwareContext.Provider>
 	</View>
 );
@@ -46,7 +47,7 @@ export const WithAltTextOldServer = () => (
 export const WithAltTextNewServer = () => (
 	<View style={{ padding: 10 }}>
 		<WidthAwareContext.Provider value={350}>
-			<MessageImage uri={MOCK_URI} status='downloaded' encrypted={false} />
+			<MessageImage uri={MOCK_URI} imageSize={MOCK_SIZE} status='downloaded' encrypted={false} />
 		</WidthAwareContext.Provider>
 	</View>
 );

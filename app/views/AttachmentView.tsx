@@ -26,15 +26,19 @@ import { getUserSelector } from '../selectors/login';
 import { type TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMediaDownload';
+import { type TMediaSharedTransition } from '~/lib/animations/mediaSharedTransition';
+import { FocusedSharedTransitionBoundary } from '~/containers/FocusedSharedTransitionBoundary';
 
 const RenderContent = ({
 	setLoading,
 	attachment,
-	altText
+	altText,
+	sharedTransition
 }: {
 	setLoading: Dispatch<SetStateAction<boolean>>;
 	attachment: IAttachment;
 	altText?: string;
+	sharedTransition?: TMediaSharedTransition;
 }) => {
 	const insets = useSafeAreaInsets();
 	const { width, height } = useWindowDimensions();
@@ -59,11 +63,21 @@ const RenderContent = ({
 				height={height - insets.top - insets.bottom - (headerHeight || 0)}
 				altText={altText}
 				isAnimated={isAnimated}
+				sharedTransitionTag={sharedTransition?.tag}
+				initialImageSize={sharedTransition?.mediaSize}
 			/>
 		);
 	}
 	if (attachment.video_url) {
-		return <VideoPlayer attachment={attachment} user={user} baseUrl={baseUrl} setLoading={setLoading} />;
+		return (
+			<VideoPlayer
+				attachment={attachment}
+				user={user}
+				baseUrl={baseUrl}
+				setLoading={setLoading}
+				sharedTransitionTag={sharedTransition?.tag}
+			/>
+		);
 	}
 	return null;
 };
@@ -71,7 +85,7 @@ const RenderContent = ({
 const AttachmentView = (): ReactElement => {
 	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
 	const {
-		params: { attachment }
+		params: { attachment, sharedTransition }
 	} = useAppRoute<TNavigation, 'AttachmentView'>();
 	const [loading, setLoading] = useState(true);
 	const { colors } = useTheme();
@@ -164,7 +178,15 @@ const AttachmentView = (): ReactElement => {
 
 	return (
 		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>
-			<RenderContent attachment={attachment} setLoading={setLoading} altText={altText} />
+			<FocusedSharedTransitionBoundary>
+				<RenderContent
+					key={attachment.title_link || attachment.image_url || attachment.video_url}
+					attachment={attachment}
+					setLoading={setLoading}
+					altText={altText}
+					sharedTransition={sharedTransition}
+				/>
+			</FocusedSharedTransitionBoundary>
 
 			{altText ? (
 				<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>

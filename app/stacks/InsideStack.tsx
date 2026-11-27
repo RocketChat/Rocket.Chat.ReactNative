@@ -387,7 +387,10 @@ const InsideStack = createNativeStackNavigator({
 			screen: E2EEnterYourPasswordStack,
 			options: { headerShown: false }
 		}),
-		AttachmentView: AttachmentViewScreen,
+		AttachmentView: createNativeStackScreen({
+			screen: AttachmentViewScreen,
+			options: { animation: 'fade' }
+		}),
 		StatusView: StatusViewScreen,
 		ShareView: ShareViewScreen,
 		ModalBlockView: createNativeStackScreen({

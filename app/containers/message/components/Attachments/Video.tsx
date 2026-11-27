@@ -1,6 +1,7 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
 import { type IUserMessage } from '~/definitions/IMessage';
 import { type IAttachment } from '~/definitions/IAttachment';
 import I18n from '~/i18n';
@@ -18,6 +19,7 @@ import { useMessageUser } from '~/containers/message/stores/MessageRoomStore';
 import BlurComponent from '../OverlayComponent';
 import { type TDownloadState } from '~/lib/methods/handleMediaDownload';
 import messageStyles from '~/containers/message/styles';
+import { MediaTransitionBackdrop } from '~/containers/MediaTransitionBackdrop';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -31,12 +33,19 @@ const styles = StyleSheet.create({
 	text: {
 		...sharedStyles.textRegular,
 		fontSize: 12
+	},
+	thumbnailFrame: {
+		...messageStyles.image,
+		overflow: 'visible'
+	},
+	thumbnailBackdrop: {
+		borderRadius: messageStyles.image.borderRadius
 	}
 });
 
 interface IMessageVideo {
 	file: IAttachment;
-	showAttachment?: (file: IAttachment) => void;
+	showAttachment?: IUseRoomMessageHandlersResult['showAttachment'];
 	author?: IUserMessage;
 	msg?: string;
 }
@@ -50,7 +59,15 @@ const CancelIndicator = () => {
 	);
 };
 
-const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encrypted: boolean }) => {
+const Thumbnail = ({
+	status,
+	encrypted = false,
+	sharedTransitionTag
+}: {
+	status: TDownloadState;
+	encrypted: boolean;
+	sharedTransitionTag: string;
+}) => {
 	const { colors } = useTheme();
 	let icon: TIconsName = status === 'downloaded' ? 'play-filled' : 'arrow-down-circle';
 	if (encrypted && status === 'downloaded') {
@@ -59,6 +76,7 @@ const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encr
 
 	return (
 		<>
+			<MediaTransitionBackdrop sharedTransitionTag={sharedTransitionTag} style={styles.thumbnailBackdrop} />
 			<BlurComponent
 				iconName={icon}
 				loading={status === 'loading'}
@@ -71,7 +89,11 @@ const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encr
 
 const Video = ({ file, showAttachment, author, msg }: IMessageVideo): ReactElement | null => {
 	const user = useMessageUser();
-	const { status, onPress, url, isEncrypted, currentFile } = useMediaAutoDownload({ file, author, showAttachment });
+	const { status, onPress, url, isEncrypted, currentFile, sharedTransitionTag } = useMediaAutoDownload({
+		file,
+		author,
+		showAttachment
+	});
 
 	const _onPress = async () => {
 		if (currentFile.video_type && !isTypeSupported(currentFile.video_type)) {
@@ -99,8 +121,8 @@ const Video = ({ file, showAttachment, author, msg }: IMessageVideo): ReactEleme
 	return (
 		<View style={{ gap: 4 }}>
 			{msg ? <Markdown msg={msg} username={user?.username} /> : null}
-			<MessageActionTouchable onPress={_onPress} style={messageStyles.image}>
-				<Thumbnail status={status} encrypted={isEncrypted} />
+			<MessageActionTouchable onPress={_onPress} style={styles.thumbnailFrame}>
+				<Thumbnail status={status} encrypted={isEncrypted} sharedTransitionTag={sharedTransitionTag} />
 			</MessageActionTouchable>
 		</View>
 	);

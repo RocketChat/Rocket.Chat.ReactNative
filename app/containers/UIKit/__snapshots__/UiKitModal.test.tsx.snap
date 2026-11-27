@@ -4178,13 +4178,13 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
       First field
     </Text>
     <A11yOrderView
-      orderKey="_r_5_"
+      orderKey="_r_6_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="_r_5_"
+        orderKey="_r_6_"
       >
         <View
           style={
@@ -4289,13 +4289,13 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
       Second field
     </Text>
     <A11yOrderView
-      orderKey="_r_6_"
+      orderKey="_r_7_"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey="_r_6_"
+        orderKey="_r_7_"
       >
         <View
           style={
@@ -4462,13 +4462,13 @@ exports[`Story Snapshots: ModalInputWithError should match snapshot 1`] = `
     Label
   </Text>
   <A11yOrderView
-    orderKey="_r_7_"
+    orderKey="_r_8_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="_r_7_"
+      orderKey="_r_8_"
     >
       <View
         style={
@@ -5153,13 +5153,13 @@ exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
     Label
   </Text>
   <A11yOrderView
-    orderKey="_r_8_"
+    orderKey="_r_9_"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey="_r_8_"
+      orderKey="_r_9_"
     >
       <View
         style={

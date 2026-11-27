@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useId, useReducer, useState } from 'react';
 
 import { type IAttachment } from '~/definitions/IAttachment';
 import { type IUserMessage } from '~/definitions/IMessage';
@@ -16,6 +16,8 @@ import { emitter } from '~/lib/methods/helpers/emitter';
 import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
 import { useMessageId } from '../stores/MessageStore';
+import { type TMediaSize } from '~/lib/animations/mediaSharedTransition';
+import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
 
 const getFileType = (file: IAttachment): MediaTypes | null => {
 	if (file.image_url) {
@@ -73,7 +75,7 @@ export const useMediaAutoDownload = ({
 }: {
 	file: IAttachment;
 	author?: IUserMessage;
-	showAttachment?: (file: IAttachment) => void;
+	showAttachment?: IUseRoomMessageHandlersResult['showAttachment'];
 }) => {
 	const fileType = getFileType(file) ?? 'image';
 	const id = useMessageId();
@@ -91,6 +93,7 @@ export const useMediaAutoDownload = ({
 		originalUrl
 	);
 	const isEncrypted = currentFile.e2e === 'pending';
+	const sharedTransitionTag = `media-${useId()}`;
 
 	const resumeDownload = () => {
 		dispatchDownloadEvent('download_started');
@@ -177,7 +180,7 @@ export const useMediaAutoDownload = ({
 		};
 	}, []);
 
-	const onPress = () => {
+	const onPress = (mediaSize?: TMediaSize) => {
 		if (status === 'loading') {
 			cancelDownload(url);
 			dispatchDownloadEvent('download_canceled');
@@ -190,7 +193,7 @@ export const useMediaAutoDownload = ({
 		if (!showAttachment || !currentFile.title_link || isEncrypted) {
 			return;
 		}
-		showAttachment(currentFile);
+		showAttachment(currentFile, { tag: sharedTransitionTag, mediaSize });
 	};
 
 	return {
@@ -198,6 +201,7 @@ export const useMediaAutoDownload = ({
 		url,
 		onPress,
 		currentFile,
-		isEncrypted
+		isEncrypted,
+		sharedTransitionTag
 	};
 };

@@ -334,88 +334,56 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
-          "minHeight": 200,
-          "overflow": "hidden",
-          "width": "100%",
+          "alignItems": "center",
+          "justifyContent": "center",
         },
         {
           "borderColor": "#CBCED1",
           "borderRadius": 4,
           "borderWidth": 1,
-          "overflow": "hidden",
-        },
-      ]
-    }
-  />
-  <View
-    style={
-      [
-        [
-          {
-            "borderRadius": 4,
-            "minHeight": 200,
-            "overflow": "hidden",
-            "width": "100%",
-          },
-          {
-            "borderColor": "#CBCED1",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "overflow": "hidden",
-          },
-        ],
-        {
-          "borderWidth": 0,
-          "bottom": 0,
-          "left": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-        },
-      ]
-    }
-  />
-  <View
-    style={
-      [
-        [
-          {
-            "borderRadius": 4,
-            "minHeight": 200,
-            "overflow": "hidden",
-            "width": "100%",
-          },
-          {
-            "borderColor": "#CBCED1",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "overflow": "hidden",
-          },
-        ],
-        {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "position": "absolute",
         },
       ]
     }
   >
-    <ActivityIndicator
-      color="#6C727A"
-      size={54}
-      style={
+    <ViewManagerAdapter_ExpoImage
+      autoplay={true}
+      borderRadius={3}
+      containerViewRef={{"current":"Object"}}
+      contentFit="cover"
+      contentPosition={
+        {
+          "left": "50%",
+          "top": "50%",
+        }
+      }
+      height={262.5}
+      nativeViewRef={{"current":"NativeComponent"}}
+      onError={[Function]}
+      onLoad={[Function]}
+      onLoadStart={[Function]}
+      onProgress={[Function]}
+      placeholder={[]}
+      sfEffect={null}
+      sharedTransitionStyle={SharedTransitionMock {}}
+      source={
         [
           {
-            "flex": 1,
-            "padding": 16,
+            "uri": "https://picsum.photos/400/300",
           },
-          undefined,
         ]
       }
+      style={
+        {
+          "borderRadius": 3,
+          "height": 262.5,
+          "width": 350,
+        }
+      }
+      svgVariables={null}
+      symbolSize={null}
+      symbolWeight={null}
+      transition={null}
+      width={350}
     />
   </View>
   <View
@@ -816,88 +784,56 @@ exports[`Story Snapshots: GIF should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
-          "minHeight": 200,
-          "overflow": "hidden",
-          "width": "100%",
+          "alignItems": "center",
+          "justifyContent": "center",
         },
         {
           "borderColor": "#CBCED1",
           "borderRadius": 4,
           "borderWidth": 1,
-          "overflow": "hidden",
-        },
-      ]
-    }
-  />
-  <View
-    style={
-      [
-        [
-          {
-            "borderRadius": 4,
-            "minHeight": 200,
-            "overflow": "hidden",
-            "width": "100%",
-          },
-          {
-            "borderColor": "#CBCED1",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "overflow": "hidden",
-          },
-        ],
-        {
-          "borderWidth": 0,
-          "bottom": 0,
-          "left": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-        },
-      ]
-    }
-  />
-  <View
-    style={
-      [
-        [
-          {
-            "borderRadius": 4,
-            "minHeight": 200,
-            "overflow": "hidden",
-            "width": "100%",
-          },
-          {
-            "borderColor": "#CBCED1",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "overflow": "hidden",
-          },
-        ],
-        {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "position": "absolute",
         },
       ]
     }
   >
-    <ActivityIndicator
-      color="#6C727A"
-      size={54}
-      style={
+    <ViewManagerAdapter_ExpoImage
+      autoplay={true}
+      borderRadius={3}
+      containerViewRef={{"current":"Object"}}
+      contentFit="cover"
+      contentPosition={
+        {
+          "left": "50%",
+          "top": "50%",
+        }
+      }
+      height={262.5}
+      nativeViewRef={{"current":"NativeComponent"}}
+      onError={[Function]}
+      onLoad={[Function]}
+      onLoadStart={[Function]}
+      onProgress={[Function]}
+      placeholder={[]}
+      sfEffect={null}
+      sharedTransitionStyle={SharedTransitionMock {}}
+      source={
         [
           {
-            "flex": 1,
-            "padding": 16,
+            "uri": "https://picsum.photos/400/300",
           },
-          undefined,
         ]
       }
+      style={
+        {
+          "borderRadius": 3,
+          "height": 262.5,
+          "width": 350,
+        }
+      }
+      svgVariables={null}
+      symbolSize={null}
+      symbolWeight={null}
+      transition={null}
+      width={350}
     />
   </View>
   <View
@@ -5508,88 +5444,56 @@ exports[`Story Snapshots: WithAltTextNewServer should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
-          "minHeight": 200,
-          "overflow": "hidden",
-          "width": "100%",
+          "alignItems": "center",
+          "justifyContent": "center",
         },
         {
           "borderColor": "#CBCED1",
           "borderRadius": 4,
           "borderWidth": 1,
-          "overflow": "hidden",
-        },
-      ]
-    }
-  />
-  <View
-    style={
-      [
-        [
-          {
-            "borderRadius": 4,
-            "minHeight": 200,
-            "overflow": "hidden",
-            "width": "100%",
-          },
-          {
-            "borderColor": "#CBCED1",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "overflow": "hidden",
-          },
-        ],
-        {
-          "borderWidth": 0,
-          "bottom": 0,
-          "left": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-        },
-      ]
-    }
-  />
-  <View
-    style={
-      [
-        [
-          {
-            "borderRadius": 4,
-            "minHeight": 200,
-            "overflow": "hidden",
-            "width": "100%",
-          },
-          {
-            "borderColor": "#CBCED1",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "overflow": "hidden",
-          },
-        ],
-        {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "position": "absolute",
         },
       ]
     }
   >
-    <ActivityIndicator
-      color="#6C727A"
-      size={54}
-      style={
+    <ViewManagerAdapter_ExpoImage
+      autoplay={true}
+      borderRadius={3}
+      containerViewRef={{"current":"Object"}}
+      contentFit="cover"
+      contentPosition={
+        {
+          "left": "50%",
+          "top": "50%",
+        }
+      }
+      height={262.5}
+      nativeViewRef={{"current":"NativeComponent"}}
+      onError={[Function]}
+      onLoad={[Function]}
+      onLoadStart={[Function]}
+      onProgress={[Function]}
+      placeholder={[]}
+      sfEffect={null}
+      sharedTransitionStyle={SharedTransitionMock {}}
+      source={
         [
           {
-            "flex": 1,
-            "padding": 16,
+            "uri": "https://picsum.photos/400/300",
           },
-          undefined,
         ]
       }
+      style={
+        {
+          "borderRadius": 3,
+          "height": 262.5,
+          "width": 350,
+        }
+      }
+      svgVariables={null}
+      symbolSize={null}
+      symbolWeight={null}
+      transition={null}
+      width={350}
     />
   </View>
   <View
@@ -5618,88 +5522,56 @@ exports[`Story Snapshots: WithAltTextOldServer should match snapshot 1`] = `
     style={
       [
         {
-          "borderRadius": 4,
-          "minHeight": 200,
-          "overflow": "hidden",
-          "width": "100%",
+          "alignItems": "center",
+          "justifyContent": "center",
         },
         {
           "borderColor": "#CBCED1",
           "borderRadius": 4,
           "borderWidth": 1,
-          "overflow": "hidden",
-        },
-      ]
-    }
-  />
-  <View
-    style={
-      [
-        [
-          {
-            "borderRadius": 4,
-            "minHeight": 200,
-            "overflow": "hidden",
-            "width": "100%",
-          },
-          {
-            "borderColor": "#CBCED1",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "overflow": "hidden",
-          },
-        ],
-        {
-          "borderWidth": 0,
-          "bottom": 0,
-          "left": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-        },
-      ]
-    }
-  />
-  <View
-    style={
-      [
-        [
-          {
-            "borderRadius": 4,
-            "minHeight": 200,
-            "overflow": "hidden",
-            "width": "100%",
-          },
-          {
-            "borderColor": "#CBCED1",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "overflow": "hidden",
-          },
-        ],
-        {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "position": "absolute",
         },
       ]
     }
   >
-    <ActivityIndicator
-      color="#6C727A"
-      size={54}
-      style={
+    <ViewManagerAdapter_ExpoImage
+      autoplay={true}
+      borderRadius={3}
+      containerViewRef={{"current":"Object"}}
+      contentFit="cover"
+      contentPosition={
+        {
+          "left": "50%",
+          "top": "50%",
+        }
+      }
+      height={262.5}
+      nativeViewRef={{"current":"NativeComponent"}}
+      onError={[Function]}
+      onLoad={[Function]}
+      onLoadStart={[Function]}
+      onProgress={[Function]}
+      placeholder={[]}
+      sfEffect={null}
+      sharedTransitionStyle={SharedTransitionMock {}}
+      source={
         [
           {
-            "flex": 1,
-            "padding": 16,
+            "uri": "https://picsum.photos/400/300",
           },
-          undefined,
         ]
       }
+      style={
+        {
+          "borderRadius": 3,
+          "height": 262.5,
+          "width": 350,
+        }
+      }
+      svgVariables={null}
+      symbolSize={null}
+      symbolWeight={null}
+      transition={null}
+      width={350}
     />
   </View>
   <View

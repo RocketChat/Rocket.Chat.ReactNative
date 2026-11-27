@@ -10,15 +10,17 @@ import I18n from '~/i18n';
 import { type IAttachment } from '~/definitions/IAttachment';
 import { formatAttachmentUrl, encodeAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
+import { MediaTransitionBackdrop } from '~/containers/MediaTransitionBackdrop';
 
 interface IVideoPlayerProps {
 	attachment: IAttachment;
 	user: { id: string; token: string };
 	baseUrl: string;
 	setLoading: Dispatch<SetStateAction<boolean>>;
+	sharedTransitionTag?: string;
 }
 
-const VideoPlayer = ({ attachment, user, baseUrl, setLoading }: IVideoPlayerProps): ReactElement => {
+const VideoPlayer = ({ attachment, user, baseUrl, setLoading, sharedTransitionTag }: IVideoPlayerProps): ReactElement => {
 	const navigation = useAppNavigation();
 	const hasHandledErrorRef = useRef(false);
 	const { bottom } = useSafeAreaInsets();
@@ -56,6 +58,7 @@ const VideoPlayer = ({ attachment, user, baseUrl, setLoading }: IVideoPlayerProp
 
 	return (
 		<View style={[styles.container, { paddingBottom: bottom }]}>
+			<MediaTransitionBackdrop sharedTransitionTag={sharedTransitionTag} />
 			<VideoView
 				player={player}
 				style={styles.container}

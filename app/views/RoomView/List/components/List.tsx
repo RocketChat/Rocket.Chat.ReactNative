@@ -16,6 +16,7 @@ import { SCROLL_LIMIT } from '../constants';
 import { useIsAutocompleteVisible } from '~/containers/MessageComposer/ComposerStore';
 import FloatingDateSeparator from '~/containers/Separator/FloatingDateSeparator';
 import { useFloatingDate } from '../hooks/useFloatingDate';
+import { FocusedSharedTransitionBoundary } from '~/containers/FocusedSharedTransitionBoundary';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<TAnyMessageModel>);
 
@@ -65,31 +66,33 @@ const List = ({ flatListRef, jumpToBottom, onDragStart, isAnchored, ...props }: 
 	const renderScrollComponent = !isIOS && (isScreenReaderEnabled || isExternalKeyboardConnected());
 	return (
 		<View style={styles.list}>
-			<AnimatedFlatList
-				accessibilityElementsHidden={isAutocompleteVisible}
-				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
-				testID='room-view-messages'
-				ref={flatListRef}
-				keyExtractor={item => item.id}
-				contentContainerStyle={styles.contentContainer}
-				style={styles.list}
-				inverted
-				renderScrollComponent={
-					renderScrollComponent
-						? props => <InvertedScrollView {...props} exitFocusNativeId={MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID} />
-						: undefined
-				}
-				removeClippedSubviews
-				initialNumToRender={20}
-				onEndReachedThreshold={0.5}
-				maxToRenderPerBatch={5}
-				windowSize={10}
-				scrollEventThrottle={16}
-				onScroll={scrollHandler}
-				{...props}
-				{...scrollPersistTaps}
-				viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
-			/>
+			<FocusedSharedTransitionBoundary isEnabled={!renderScrollComponent}>
+				<AnimatedFlatList
+					accessibilityElementsHidden={isAutocompleteVisible}
+					importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
+					testID='room-view-messages'
+					ref={flatListRef}
+					keyExtractor={item => item.id}
+					contentContainerStyle={styles.contentContainer}
+					style={styles.list}
+					inverted
+					renderScrollComponent={
+						renderScrollComponent
+							? props => <InvertedScrollView {...props} exitFocusNativeId={MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID} />
+							: undefined
+					}
+					removeClippedSubviews
+					initialNumToRender={20}
+					onEndReachedThreshold={0.5}
+					maxToRenderPerBatch={5}
+					windowSize={10}
+					scrollEventThrottle={16}
+					onScroll={scrollHandler}
+					{...props}
+					{...scrollPersistTaps}
+					viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
+				/>
+			</FocusedSharedTransitionBoundary>
 			<FloatingDateSeparator ts={ts} opacity={floatingDateOpacity} />
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>

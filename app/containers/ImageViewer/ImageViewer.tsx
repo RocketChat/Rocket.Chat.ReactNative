@@ -1,5 +1,5 @@
 import { useRef, useState, type ReactElement } from 'react';
-import { type LayoutChangeEvent, StyleSheet, type StyleProp, type ViewStyle, View } from 'react-native';
+import { type LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import {
 	GestureDetector,
 	usePanGesture,
@@ -8,45 +8,66 @@ import {
 	useTapGesture
 } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import { Image, type ImageStyle } from 'expo-image';
+import { Image, type ImageLoadEventData } from 'expo-image';
 
 import Touch from '../Touch';
 import { useUserPreferences } from '~/lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '~/lib/constants/keys';
 import { useTheme } from '~/theme';
 import I18n from '~/i18n';
+import { mediaSharedTransition, type TMediaSize } from '~/lib/animations/mediaSharedTransition';
 
 interface ImageViewerProps {
-	style?: StyleProp<ImageStyle>;
-	containerStyle?: StyleProp<ViewStyle>;
-	imageContainerStyle?: StyleProp<ViewStyle>;
-
 	uri: string;
 	width: number;
 	height: number;
 	onLoadEnd?: () => void;
 	altText?: string;
 	isAnimated?: boolean;
+	sharedTransitionTag?: string;
+	initialImageSize?: TMediaSize;
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
 	},
-	flex: {
+	gestureArea: {
 		width: '100%',
-		height: '100%'
-	},
-	image: {
-		width: '100%',
-		height: '100%'
+		height: '100%',
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 });
 
-export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...props }: ImageViewerProps): ReactElement => {
+const AnimatedImage = Animated.createAnimatedComponent(Image);
+
+const fullSize = { width: '100%', height: '100%' } as const;
+
+const fitWithin = (image: TMediaSize | undefined, bounds: TMediaSize): TMediaSize | undefined => {
+	if (!image?.width || !image?.height) {
+		return undefined;
+	}
+	const scale = Math.min(bounds.width / image.width, bounds.height / image.height);
+	return { width: image.width * scale, height: image.height * scale };
+};
+
+export const ImageViewer = ({
+	uri = '',
+	width,
+	height,
+	altText,
+	isAnimated,
+	sharedTransitionTag,
+	initialImageSize,
+	onLoadEnd
+}: ImageViewerProps): ReactElement => {
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const isPlayingRef = useRef(!!autoplayGifs);
 	const expoImageRef = useRef<Image>(null);
+	const [imageSize, setImageSize] = useState(initialImageSize);
+	const onImageLoad = ({ source }: ImageLoadEventData) => setImageSize({ width: source.width, height: source.height });
+	const fittedFrame = fitWithin(imageSize, { width, height });
 
 	const handleGifPlayback = async () => {
 		if (isPlayingRef.current) {
@@ -145,10 +166,26 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 
 	const accessibilityLabel = altText?.trim() || I18n.t('A11y_image_no_description');
 
+	const image = (
+		<AnimatedImage
+			accessible={!isAnimated}
+			accessibilityLabel={isAnimated ? undefined : accessibilityLabel}
+			accessibilityRole={isAnimated ? undefined : 'image'}
+			style={fittedFrame ?? fullSize}
+			contentFit={fittedFrame ? 'cover' : 'contain'}
+			source={{ uri }}
+			ref={expoImageRef}
+			onLoad={onImageLoad}
+			sharedTransitionTag={sharedTransitionTag}
+			sharedTransitionStyle={mediaSharedTransition}
+			onLoadEnd={onLoadEnd}
+		/>
+	);
+
 	return (
 		<View importantForAccessibility='no' style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
-				<Animated.View accessible={false} onLayout={onLayout} style={[styles.flex, style]}>
+				<Animated.View accessible={false} onLayout={onLayout} style={[styles.gestureArea, style]}>
 					{isAnimated ? (
 						<Touch
 							accessible
@@ -156,28 +193,12 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 							accessibilityRole='button'
 							accessibilityHint={I18n.t('A11y_image_viewer_gif_hint')}
 							onPress={handleGifPlayback}
-							style={styles.flex}
-							rectButtonStyle={styles.flex}>
-							<Image
-								accessible={false}
-								style={styles.image}
-								contentFit='contain'
-								source={{ uri }}
-								ref={expoImageRef}
-								{...props}
-							/>
+							style={styles.gestureArea}
+							rectButtonStyle={styles.gestureArea}>
+							{image}
 						</Touch>
 					) : (
-						<Image
-							accessible
-							accessibilityLabel={accessibilityLabel}
-							accessibilityRole='image'
-							style={styles.image}
-							contentFit='contain'
-							source={{ uri }}
-							ref={expoImageRef}
-							{...props}
-						/>
+						image
 					)}
 				</Animated.View>
 			</GestureDetector>
