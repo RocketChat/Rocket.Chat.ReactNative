@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingHorizontal: 24,
-		marginBottom: 140
+		marginBottom: 180
 	},
 	avatarContainer: {
 		marginBottom: 16,
