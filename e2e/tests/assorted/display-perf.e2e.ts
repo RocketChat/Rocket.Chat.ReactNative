@@ -16,7 +16,7 @@ const displayPreferenceOptions = [
 	'display-pref-view-name',
 	'display-pref-view-unread',
 	'display-pref-view-favorites',
-	'display-pref-view-categories'
+	'display-pref-view-types'
 ];
 
 const ROW_TAP_ATTEMPTS = 3;

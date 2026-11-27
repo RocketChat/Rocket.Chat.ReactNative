@@ -7,9 +7,11 @@ import {
 	DIRECT_MESSAGES_GROUP,
 	DISCUSSIONS_GROUP,
 	FAVORITES_GROUP,
+	type GroupVisibility,
 	isVisibleGroup,
 	OMNICHANNEL_IN_PROGRESS_GROUP,
 	OMNICHANNEL_ON_HOLD_GROUP,
+	TEAMS_AND_CHANNELS_GROUP,
 	TEAMS_GROUP,
 	UNREAD_GROUP
 } from './sidebarGroupOrder';
@@ -114,11 +116,17 @@ const getRoomGroup = (subscription: TSubscriptionModel, groups: Map<string, TSub
 	if (subscription.teamMain && groups.has(TEAMS_GROUP)) {
 		return TEAMS_GROUP;
 	}
+	if (subscription.teamMain && groups.has(TEAMS_AND_CHANNELS_GROUP)) {
+		return TEAMS_AND_CHANNELS_GROUP;
+	}
 	if (subscription.prid && groups.has(DISCUSSIONS_GROUP)) {
 		return DISCUSSIONS_GROUP;
 	}
 	if ((subscription.t === 'c' || subscription.t === 'p') && groups.has(CHANNELS_GROUP)) {
 		return CHANNELS_GROUP;
+	}
+	if ((subscription.t === 'c' || subscription.t === 'p') && groups.has(TEAMS_AND_CHANNELS_GROUP)) {
+		return TEAMS_AND_CHANNELS_GROUP;
 	}
 	if (subscription.t === 'd' && groups.has(DIRECT_MESSAGES_GROUP)) {
 		return DIRECT_MESSAGES_GROUP;
@@ -129,29 +137,19 @@ const getRoomGroup = (subscription: TSubscriptionModel, groups: Map<string, TSub
 	return undefined;
 };
 
-type GroupRoomsOptions = {
+type GroupRoomsOptions = GroupVisibility & {
 	groupOrder: string[];
-	customCategoryNames: Map<string, string>;
 	categoryUnreadOptions: Map<string, CategoryUnreadOptions>;
-	showFavorites: boolean;
-	groupByType: boolean;
 	hasChatsHeader: boolean;
 	collapsedGroups: ReadonlySet<string>;
 };
 
 const groupRooms = (
 	chats: TSubscriptionModel[],
-	{
-		groupOrder,
-		customCategoryNames,
-		categoryUnreadOptions,
-		showFavorites,
-		groupByType,
-		hasChatsHeader,
-		collapsedGroups
-	}: GroupRoomsOptions
+	{ groupOrder, categoryUnreadOptions, hasChatsHeader, collapsedGroups, ...visibility }: GroupRoomsOptions
 ) => {
-	const visibleGroups = groupOrder.filter(key => isVisibleGroup(key, { customCategoryNames, showFavorites, groupByType }));
+	const { customCategoryNames } = visibility;
+	const visibleGroups = groupOrder.filter(key => isVisibleGroup(key, visibility));
 	const groups = new Map(visibleGroups.map(key => [key, [] as TSubscriptionModel[]]));
 	chats.forEach(subscription => {
 		const group = getRoomGroup(subscription, groups);
@@ -178,17 +176,8 @@ type BuildRoomListOptions = Omit<GroupRoomsOptions, 'hasChatsHeader'> & {
 };
 
 export const buildRoomList = (subscriptions: TSubscriptionModel[], options: BuildRoomListOptions) => {
-	const {
-		groupOrder,
-		categoryUnreadOptions,
-		sectionsOrder,
-		showUnread,
-		showFavorites,
-		groupByType,
-		isOmnichannelAgent,
-		collapsedGroups
-	} = options;
-	const customCategoryNames = groupByType ? options.customCategoryNames : new Map<string, string>();
+	const { sectionsOrder, showUnread, isOmnichannelAgent, ...groupOptions } = options;
+	const { customCategoryNames, categoryUnreadOptions, showFavorites, groupByType, collapsedGroups } = groupOptions;
 	const showsSection = (key: string) => sectionsOrder.includes(key);
 	let remainingSubscriptions = subscriptions;
 	const roomList: TSubscriptionModel[] = [];
@@ -226,13 +215,8 @@ export const buildRoomList = (subscriptions: TSubscriptionModel[], options: Buil
 
 	return roomList.concat(
 		groupRooms(remainingSubscriptions, {
-			groupOrder,
-			customCategoryNames,
-			categoryUnreadOptions,
-			showFavorites,
-			groupByType,
-			collapsedGroups,
-			hasChatsHeader: showUnread || showFavorites || isOmnichannelAgent || customCategoryNames.size > 0
+			...groupOptions,
+			hasChatsHeader: showUnread || showFavorites || groupByType || isOmnichannelAgent || customCategoryNames.size > 0
 		})
 	);
 };
