@@ -21,7 +21,6 @@
 		"ios/",
 		"patches/",
 		"modules/*/nitrogen/generated/",
-		"modules/*/rust/target/",
 		"scripts/",
 		".worktrees/",
 		".bettercodehub.yml",

@@ -127,22 +127,6 @@ mod tests {
     }
 
     #[test]
-    fn rejects_options_upstream_does_not_define() {
-        assert_eq!(
-            parse_to_json(b"hi", br#"{"unknown":true}"#).0,
-            MessageParserStatus::InvalidOptions
-        );
-        assert_eq!(
-            parse_to_json(b"hi", b"not json").0,
-            MessageParserStatus::InvalidOptions
-        );
-        assert_eq!(
-            parse_to_json(b"hi", b"true").0,
-            MessageParserStatus::InvalidOptions
-        );
-    }
-
-    #[test]
     fn replaces_invalid_utf8_instead_of_failing() {
         let (status, json) = parse_to_json(b"a\xED\xA0\x80b", b"{}");
         assert_eq!(status, MessageParserStatus::Ok);

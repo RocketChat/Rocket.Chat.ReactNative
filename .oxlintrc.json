@@ -17,7 +17,6 @@
 		"**/android",
 		"**/ios",
 		"modules/*/nitrogen/generated",
-		"modules/*/rust/target",
 		"**/.worktrees/",
 		".rnstorybook/storybook.requires.ts"
 	],
