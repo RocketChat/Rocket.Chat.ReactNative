@@ -5260,6 +5260,663 @@ exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
 </View>
 `;
 
+exports[`Story Snapshots: ModalRadioButton should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Immediate forwarding
+    </Text>
+    <View
+      accessibilityRole="radiogroup"
+    >
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          activeUnderlayOpacity={1}
+          animationDuration={0}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              [
+                undefined,
+                {
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                },
+              ],
+              undefined,
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            accessibilityLabel="Active, Unselected"
+            accessibilityRole="radio"
+            accessible={true}
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 8,
+                "paddingVertical": 6,
+              }
+            }
+            testID="uikit-radio-immediate-forwarding-active"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#9EA2A8",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flex": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Active
+            </Text>
+          </View>
+        </View>
+      </ExternalKeyboardView>
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          activeUnderlayOpacity={1}
+          animationDuration={0}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              [
+                undefined,
+                {
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                },
+              ],
+              undefined,
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            accessibilityLabel="Inactive, Selected"
+            accessibilityRole="radio"
+            accessible={true}
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 8,
+                "paddingVertical": 6,
+              }
+            }
+            testID="uikit-radio-immediate-forwarding-inactive"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#156FF5",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flex": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Inactive
+            </Text>
+          </View>
+        </View>
+      </ExternalKeyboardView>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontVariant": [
+              "tabular-nums",
+            ],
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Forward when busy
+    </Text>
+    <View
+      accessibilityRole="radiogroup"
+    >
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          activeUnderlayOpacity={1}
+          animationDuration={0}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              [
+                undefined,
+                {
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                },
+              ],
+              undefined,
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            accessibilityLabel="Active, Selected"
+            accessibilityRole="radio"
+            accessible={true}
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 8,
+                "paddingVertical": 6,
+              }
+            }
+            testID="uikit-radio-busy-forwarding-active"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#156FF5",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flex": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Active
+            </Text>
+          </View>
+        </View>
+      </ExternalKeyboardView>
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
+        style={
+          [
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <View
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          activeUnderlayOpacity={1}
+          animationDuration={0}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              [
+                undefined,
+                {
+                  "margin": undefined,
+                  "marginBottom": undefined,
+                  "marginEnd": undefined,
+                  "marginHorizontal": undefined,
+                  "marginLeft": undefined,
+                  "marginRight": undefined,
+                  "marginStart": undefined,
+                  "marginTop": undefined,
+                  "marginVertical": undefined,
+                },
+                {
+                  "backgroundColor": undefined,
+                  "borderRadius": undefined,
+                },
+              ],
+              undefined,
+            ]
+          }
+          underlayColor="#E4E7EA"
+        >
+          <View
+            accessibilityLabel="Inactive, Unselected"
+            accessibilityRole="radio"
+            accessible={true}
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 8,
+                "paddingVertical": 6,
+              }
+            }
+            testID="uikit-radio-busy-forwarding-inactive"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#9EA2A8",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flex": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontVariant": [
+                      "tabular-nums",
+                    ],
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Inactive
+            </Text>
+          </View>
+        </View>
+      </ExternalKeyboardView>
+    </View>
+  </View>,
+]
+`;
+
 exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
 [
   <View

@@ -171,6 +171,12 @@ jest.mock('~/lib/services/voip/acceptNativeCall', () => ({
 jest.mock('~/lib/services/voip/playCallEndedSound', () => ({
 	playCallEndedSound: jest.fn()
 }));
+jest.mock('~/lib/hooks/useVideoConf', () => ({
+	useVideoConf: () => ({ startCall: jest.fn(), showInitCallActionSheet: jest.fn(), callEnabled: false })
+}));
+jest.mock('~/views/CallView/useMediaCallAppActions', () => ({
+	useMediaCallAppActions: () => []
+}));
 
 const mockHideActionSheet = jest.fn();
 jest.mock('../ActionSheet/Provider', () => ({
@@ -223,6 +229,7 @@ type MockMediaSignalingSession = {
 const createdSessions: MockMediaSignalingSession[] = [];
 
 jest.mock('@rocket.chat/media-signaling', () => ({
+	...jest.requireActual('@rocket.chat/media-signaling'),
 	MediaCallWebRTCProcessor: jest.fn().mockImplementation(function MediaCallWebRTCProcessor(this: unknown) {
 		return this;
 	}),
@@ -255,6 +262,8 @@ jest.mock('@rocket.chat/media-signaling', () => ({
 				callId: `call-${userId}`,
 				hidden: false,
 				state: 'ringing',
+				service: 'webrtc',
+				features: ['audio', 'hold', 'dialpad'],
 				localParticipant: {
 					local: true,
 					role: 'caller',
@@ -296,6 +305,8 @@ function makeCall(overrides: {
 	return {
 		callId,
 		hidden: overrides.hidden ?? false,
+		service: 'webrtc',
+		features: ['audio', 'hold', 'dialpad'],
 		state: overrides.state ?? 'ringing',
 		localParticipant: {
 			local: true,

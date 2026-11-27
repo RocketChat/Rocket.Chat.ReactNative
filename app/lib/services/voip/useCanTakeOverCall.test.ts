@@ -1,0 +1,146 @@
+import { act, renderHook } from '@testing-library/react-native';
+
+import { useCanTakeOverAnyCall, useCanTakeOverCall } from './useCanTakeOverCall';
+
+type Listener = () => void;
+
+const mockStoreListeners = new Set<Listener>();
+let mockInstance: { canTakeOverCall: jest.Mock; getState: jest.Mock; on: jest.Mock; listeners: Set<Listener> } | null = null;
+
+const createInstance = (canTakeOver: boolean, contact: Record<string, string> = { type: 'user', id: 'peer' }) => {
+	const listeners = new Set<Listener>();
+	return {
+		listeners,
+		canTakeOverCall: jest.fn(() => canTakeOver),
+		getState: jest.fn(() => ({ call: { remoteParticipants: [{ contact }] } })),
+		on: jest.fn((_event: string, listener: Listener) => {
+			listeners.add(listener);
+			return () => listeners.delete(listener);
+		})
+	};
+};
+
+jest.mock('./MediaSessionStore', () => ({
+	mediaSessionStore: {
+		getCurrentInstance: () => mockInstance,
+		onChange: (listener: Listener) => {
+			mockStoreListeners.add(listener);
+			return () => mockStoreListeners.delete(listener);
+		}
+	}
+}));
+
+describe('useCanTakeOverCall', () => {
+	beforeEach(() => {
+		mockStoreListeners.clear();
+		mockInstance = null;
+	});
+
+	it('is false without a media session', () => {
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
+
+		expect(result.current).toBe(false);
+	});
+
+	it('follows the session state', () => {
+		const instance = createInstance(false);
+		mockInstance = instance;
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
+		expect(result.current).toBe(false);
+
+		instance.canTakeOverCall.mockReturnValue(true);
+		act(() => instance.listeners.forEach(listener => listener()));
+
+		expect(instance.on).toHaveBeenCalledWith('sessionStateChange', expect.any(Function));
+		expect(result.current).toBe(true);
+	});
+
+	it('follows a session created after mount', () => {
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
+
+		act(() => {
+			mockInstance = createInstance(true);
+			mockStoreListeners.forEach(listener => listener());
+		});
+
+		expect(result.current).toBe(true);
+	});
+
+	it('is false for a call with someone else', () => {
+		mockInstance = createInstance(true, { type: 'user', id: 'someone-else' });
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
+
+		expect(result.current).toBe(false);
+	});
+
+	it('is false for a SIP call to an external number', () => {
+		mockInstance = createInstance(true, { type: 'sip', id: 'peer' });
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
+
+		expect(result.current).toBe(false);
+	});
+
+	it('is true for the peer reached by SIP extension', () => {
+		mockInstance = createInstance(true, { type: 'sip', id: '1005', uid: 'peer' });
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
+
+		expect(result.current).toBe(true);
+	});
+
+	it('is false for another user reached by SIP extension', () => {
+		mockInstance = createInstance(true, { type: 'sip', id: '1005', uid: 'someone-else' });
+		const { result } = renderHook(() => useCanTakeOverCall('peer'));
+
+		expect(result.current).toBe(false);
+	});
+
+	it('is false outside a direct message', () => {
+		mockInstance = createInstance(true);
+		const { result } = renderHook(() => useCanTakeOverCall(null));
+
+		expect(result.current).toBe(false);
+	});
+
+	it('stops listening on unmount', () => {
+		const instance = createInstance(false);
+		mockInstance = instance;
+		const { unmount } = renderHook(() => useCanTakeOverCall('peer'));
+
+		unmount();
+
+		expect(instance.listeners.size).toBe(0);
+		expect(mockStoreListeners.size).toBe(0);
+	});
+});
+
+describe('useCanTakeOverAnyCall', () => {
+	beforeEach(() => {
+		mockStoreListeners.clear();
+		mockInstance = null;
+	});
+
+	it('is false without a media session', () => {
+		const { result } = renderHook(() => useCanTakeOverAnyCall());
+
+		expect(result.current).toBe(false);
+	});
+
+	it('is true for a call with anyone, including a SIP number', () => {
+		mockInstance = createInstance(true, { type: 'sip', id: '+5511999999999' });
+		const { result } = renderHook(() => useCanTakeOverAnyCall());
+
+		expect(result.current).toBe(true);
+	});
+
+	it('follows the session state', () => {
+		const instance = createInstance(false);
+		mockInstance = instance;
+		const { result } = renderHook(() => useCanTakeOverAnyCall());
+		expect(result.current).toBe(false);
+
+		instance.canTakeOverCall.mockReturnValue(true);
+		act(() => instance.listeners.forEach(listener => listener()));
+
+		expect(result.current).toBe(true);
+	});
+});

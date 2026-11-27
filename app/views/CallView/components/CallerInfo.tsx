@@ -7,6 +7,7 @@ import I18n from '~/i18n';
 import { useCallContact, useCallStore, useControlsVisible } from '~/lib/services/voip/useCallStore';
 import { useIsScreenReaderEnabled } from '~/lib/hooks/useIsScreenReaderEnabled';
 import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
+import EscalatedCallPrompt from './EscalatedCallPrompt';
 import { useTheme } from '~/theme';
 
 const CallerInfo = (): ReactElement => {
@@ -39,6 +40,7 @@ const CallerInfo = (): ReactElement => {
 					{name}
 				</Text>
 			</Animated.View>
+			<EscalatedCallPrompt />
 		</Pressable>
 	);
 };

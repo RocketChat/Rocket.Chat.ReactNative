@@ -111,6 +111,9 @@ function createMockCall(callId: string, options?: { initialState?: string }) {
 		callId,
 		state: initialState,
 		hidden: false,
+		escalated: false,
+		service: 'webrtc',
+		features: ['audio', 'hold', 'dialpad'],
 		localParticipant,
 		remoteParticipants,
 		emitter,
@@ -213,6 +216,38 @@ describe('useCallStore roomId', () => {
 		const { call } = createMockCall('persist-call');
 		useCallStore.getState().setCall(call);
 		expect(useCallStore.getState().roomId).toBe('room-persist-1');
+	});
+});
+
+describe('useCallStore escalated', () => {
+	beforeEach(() => {
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('flags the call and shows the controls when it is escalated', () => {
+		const { call, emit } = createMockCall('esc-call');
+		useCallStore.getState().setCall(call);
+		useCallStore.setState({ controlsVisible: false });
+		(call as { escalated: boolean }).escalated = true;
+		emit('escalated');
+		expect(useCallStore.getState().escalated).toBe(true);
+		expect(useCallStore.getState().controlsVisible).toBe(true);
+	});
+
+	it('picks up a call that was already escalated', () => {
+		const { call } = createMockCall('esc-call');
+		(call as { escalated: boolean }).escalated = true;
+		useCallStore.getState().setCall(call);
+		expect(useCallStore.getState().escalated).toBe(true);
+	});
+
+	it('reset clears escalated', () => {
+		const { call, emit } = createMockCall('esc-call');
+		useCallStore.getState().setCall(call);
+		emit('escalated');
+		useCallStore.getState().reset();
+		expect(useCallStore.getState().escalated).toBe(false);
 	});
 });
 
@@ -558,5 +593,92 @@ describe('useCallStore endCall — pendingHangups recording', () => {
 		useCallStore.getState().endCall();
 
 		expect(pendingHangups.drainAll()).toEqual(['end-record']);
+	});
+});
+
+describe('useCallStore call taken over by another session', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('lets go of the call without hanging it up when it becomes hidden', () => {
+		const { call, emit } = createMockCall('moved');
+		useCallStore.getState().setCall(call);
+
+		emit('hidden');
+
+		expect(call.hangup).not.toHaveBeenCalled();
+		expect(mockPlayCallEndedSound).not.toHaveBeenCalled();
+		expect(RNCallKeep.endCall).toHaveBeenCalledWith('moved');
+		expect(useCallStore.getState().call).toBeNull();
+		expect(useCallStore.getState().callId).toBeNull();
+		expect(jest.requireMock('~/lib/navigation/appNavigation').default.back).toHaveBeenCalledTimes(1);
+	});
+
+	it('keeps the original start time of a call that was already active', () => {
+		const { call } = createMockCall('taken', { initialState: 'active' });
+		const activeTimestamp = new Date(Date.now() - 60_000);
+		Object.assign(call, { activeTimestamp });
+
+		useCallStore.getState().setCall(call);
+
+		expect(useCallStore.getState().callStartTime).toBe(activeTimestamp.getTime());
+	});
+});
+
+describe('useCallStore call features', () => {
+	beforeEach(() => {
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	const setCti = (call: IClientMediaCall, features: string[]) => {
+		Object.assign(call, { service: 'cti', features });
+	};
+
+	it('offers the control features on a webrtc call even when the server does not list them', () => {
+		const { call } = createMockCall('feat-1');
+		useCallStore.getState().setCall(call);
+
+		expect(useCallStore.getState().features).toEqual(
+			expect.arrayContaining(['audio', 'hold', 'dialpad', 'mute', 'direct-message', 'device-picker'])
+		);
+	});
+
+	it('offers only what the server lists on a cti call', () => {
+		const { call } = createMockCall('feat-2');
+		setCti(call, ['audio', 'mute']);
+		useCallStore.getState().setCall(call);
+
+		expect(useCallStore.getState().service).toBe('cti');
+		expect(useCallStore.getState().features).toEqual(['audio', 'mute']);
+	});
+
+	it('ignores hold and dialpad when the call does not offer them', () => {
+		const { call } = createMockCall('feat-3');
+		setCti(call, ['audio', 'mute']);
+		useCallStore.getState().setCall(call);
+
+		useCallStore.getState().toggleHold();
+		useCallStore.getState().setDialpadValue('1');
+
+		expect(call.localParticipant.setHeld).not.toHaveBeenCalled();
+		expect(call.sendDTMF).not.toHaveBeenCalled();
+		expect(useCallStore.getState().isOnHold).toBe(false);
+	});
+
+	it('picks up features and contact the server updates mid-call', () => {
+		const { call, emit } = createMockCall('feat-4');
+		setCti(call, ['audio']);
+		useCallStore.getState().setCall(call);
+
+		setCti(call, ['audio', 'hold']);
+		Object.assign(call.remoteParticipants[0], { contact: { type: 'sip', id: '2244', uid: 'user-1', displayName: 'Desk' } });
+		emit('contactUpdate');
+
+		expect(useCallStore.getState().features).toEqual(['audio', 'hold']);
+		expect(useCallStore.getState().contact).toEqual(expect.objectContaining({ type: 'sip', id: '2244', uid: 'user-1' }));
 	});
 });

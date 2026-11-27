@@ -9,6 +9,16 @@ import { getGroupOrder, getSectionsOrder } from '../utils/sidebarGroupOrder';
 
 const NO_CATEGORIES: ISidebarCategory[] = [];
 
+type TGroupingPreference = 'sidebarGroupTeamsAndChannels' | 'sidebarGroupUnlistedInConversations';
+
+const useGroupingPreference = (preference: TGroupingPreference) =>
+	useAppSelector(
+		state =>
+			(getUserSelector(state).settings?.preferences?.[preference] as boolean | undefined) ??
+			(state.settings[`Accounts_Default_User_Preferences_${preference}`] as boolean | undefined) ??
+			false
+	);
+
 export const useIsCustomCategoriesAvailable = () =>
 	useAppSelector(state => state.hasValidLicense && compareServerVersion(state.server.version, 'greaterThanOrEqualTo', '8.9.0'));
 
@@ -22,6 +32,9 @@ export const useSidebarCategories = () => {
 	const adminSectionsOrder = useAppSelector(
 		state => state.settings.Accounts_Default_User_Preferences_sidebarSectionsOrder as string[] | undefined
 	);
+	const groupByType = useAppSelector(state => state.sortPreferences.groupByType);
+	const mergeTeamsAndChannels = useGroupingPreference('sidebarGroupTeamsAndChannels');
+	const groupUnlistedInConversations = useGroupingPreference('sidebarGroupUnlistedInConversations');
 	const customCategoryNames = useMemo(
 		() => new Map(categories.filter(category => !category.default).map(category => [category._id, category.name])),
 		[categories]
@@ -36,10 +49,19 @@ export const useSidebarCategories = () => {
 			),
 		[categories]
 	);
+	const keepConversations = groupByType && groupUnlistedInConversations;
 	const sectionsOrder = useMemo(
-		() => getSectionsOrder(userSectionsOrder ?? adminSectionsOrder),
-		[userSectionsOrder, adminSectionsOrder]
+		() => getSectionsOrder(userSectionsOrder ?? adminSectionsOrder, { mergeTeamsAndChannels, keepConversations }),
+		[userSectionsOrder, adminSectionsOrder, mergeTeamsAndChannels, keepConversations]
 	);
 	const groupOrder = useMemo(() => getGroupOrder(categories, sectionsOrder), [categories, sectionsOrder]);
-	return { storedCategories, customCategoryNames, categoryUnreadOptions, sectionsOrder, groupOrder };
+	return {
+		storedCategories,
+		customCategoryNames,
+		categoryUnreadOptions,
+		sectionsOrder,
+		groupOrder,
+		mergeTeamsAndChannels,
+		groupUnlistedInConversations
+	};
 };

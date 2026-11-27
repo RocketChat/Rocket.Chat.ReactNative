@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingHorizontal: 24,
+		paddingBottom: 80,
 		marginBottom: 100
 	},
 	avatarContainer: {
@@ -41,6 +42,14 @@ export const styles = StyleSheet.create({
 		lineHeight: 26,
 		textAlign: 'center',
 		marginBottom: 8
+	},
+	escalatedPrompt: {
+		alignItems: 'center',
+		marginTop: 24
+	},
+	escalatedPromptButton: {
+		marginTop: 16,
+		marginBottom: 0
 	},
 	statusText: {
 		...sharedStyles.textRegular,
@@ -80,5 +89,18 @@ export const styles = StyleSheet.create({
 		...sharedStyles.textRegular,
 		fontSize: 14,
 		lineHeight: 20
+	},
+	encryptedTag: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		alignSelf: 'center',
+		gap: 4,
+		paddingHorizontal: 4,
+		borderRadius: 4
+	},
+	encryptedTagText: {
+		...sharedStyles.textSemibold,
+		fontSize: 12,
+		lineHeight: 16
 	}
 });

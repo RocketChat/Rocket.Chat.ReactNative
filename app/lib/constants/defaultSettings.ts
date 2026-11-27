@@ -153,6 +153,12 @@ export const defaultSettings = {
 	Accounts_Default_User_Preferences_sidebarSectionsOrder: {
 		type: 'valueAsArray'
 	},
+	Accounts_Default_User_Preferences_sidebarGroupTeamsAndChannels: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Default_User_Preferences_sidebarGroupUnlistedInConversations: {
+		type: 'valueAsBoolean'
+	},
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},
@@ -274,6 +280,9 @@ export const defaultSettings = {
 		type: 'valueAsBoolean'
 	},
 	VideoConf_Enable_Teams: {
+		type: 'valueAsBoolean'
+	},
+	VideoConf_Enable_Persistent_Chat: {
 		type: 'valueAsBoolean'
 	},
 	Accounts_AllowDeleteOwnAccount: {

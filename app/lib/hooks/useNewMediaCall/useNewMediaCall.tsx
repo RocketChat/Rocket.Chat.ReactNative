@@ -2,7 +2,7 @@ import { NewMediaCall } from '~/containers/NewMediaCall/NewMediaCall';
 import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
 import { getUidDirectMessage } from '~/lib/methods/helpers/getUidDirectMessage';
 import { usePeerAutocompleteStore } from '~/lib/services/voip/usePeerAutocompleteStore';
-import { useIsInActiveVoipCall } from '~/lib/services/voip/isInActiveVoipCall';
+import { useIsInAnyCall } from '~/lib/services/isInAnyCall';
 import { useSubscription } from '../useSubscription';
 import { useMediaCallPermission } from '../useMediaCallPermission/useMediaCallPermission';
 import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
@@ -10,7 +10,7 @@ import { isAndroid } from '~/lib/methods/helpers/deviceInfo';
 export const useNewMediaCall = (rid?: string) => {
 	const room = useSubscription(rid);
 	const hasMediaCallPermission = useMediaCallPermission();
-	const isInActiveCall = useIsInActiveVoipCall();
+	const isInActiveCall = useIsInAnyCall();
 
 	const openNewMediaCall = () => {
 		if (isInActiveCall) return;

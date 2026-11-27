@@ -40,6 +40,7 @@ export default {
 	SIDEBAR_GO_PROFILE: 'sidebar_go_profile',
 	SIDEBAR_GO_SETTINGS: 'sidebar_go_settings',
 	SIDEBAR_GO_ADMINPANEL: 'sidebar_go_admin_panel',
+	SIDEBAR_APP_ACTION: 'sidebar_app_action',
 
 	// STATUS VIEW
 	STATUS_DONE: 'status_done',

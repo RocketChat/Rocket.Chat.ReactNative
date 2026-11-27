@@ -423,6 +423,7 @@ describe('sdk.subscribeRoom() over the real SDK', () => {
 			'stream-room-messages',
 			'stream-notify-room',
 			'stream-notify-room',
+			'stream-notify-room',
 			'stream-notify-room'
 		]);
 		expect(subs.map(sub => sub.params?.[0])).toEqual([
@@ -430,7 +431,8 @@ describe('sdk.subscribeRoom() over the real SDK', () => {
 			'room-rid',
 			'room-rid/deleteMessage',
 			'room-rid/deleteMessageBulk',
-			'room-rid/messagesRead'
+			'room-rid/messagesRead',
+			'room-rid/videoconf'
 		]);
 	});
 

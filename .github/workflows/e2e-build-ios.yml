@@ -17,7 +17,7 @@ on:
         required: true
       APP_STORE_CONNECT_API_KEY_ISSUER_ID:
         required: true
-      FASTLANE_REPO_PAT:
+      TEST_FASTLANE_NEW_PAT:
         required: true
     inputs:
       seed-only:

@@ -306,6 +306,14 @@ const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
 	if (unset?.['settings.preferences.sidebarSectionsOrder']) {
 		store.dispatch(setPreference({ sidebarSectionsOrder: undefined }));
 	}
+	['sidebarGroupTeamsAndChannels', 'sidebarGroupUnlistedInConversations'].forEach(preference => {
+		if (diff?.[`settings.preferences.${preference}`] !== undefined) {
+			store.dispatch(setPreference({ [preference]: diff[`settings.preferences.${preference}`] }));
+		}
+		if (unset?.[`settings.preferences.${preference}`]) {
+			store.dispatch(setPreference({ [preference]: undefined }));
+		}
+	});
 	if (diff?.avatarETag) {
 		store.dispatch(setUser({ avatarETag: diff.avatarETag }));
 	}
@@ -317,6 +325,12 @@ const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
 	}
 	if (diff?.nickname) {
 		store.dispatch(setUser({ nickname: diff.nickname }));
+	}
+	if (diff?.mediaCallDevice) {
+		store.dispatch(setUser({ mediaCallDevice: diff.mediaCallDevice }));
+	}
+	if (unset?.mediaCallDevice) {
+		store.dispatch(setUser({ mediaCallDevice: undefined }));
 	}
 };
 

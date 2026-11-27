@@ -107,6 +107,41 @@ describe('getSectionsOrder', () => {
 	it('drops keys that are not system sections', () => {
 		expect(getSectionsOrder(['Drafts', 'Channels', 'Unread'])).toEqual(['Channels', 'Unread']);
 	});
+
+	it('leaves the merged teams and channels section out unless merging', () => {
+		expect(getSectionsOrder(undefined)).not.toContain('Teams_and_channels');
+	});
+
+	it('keeps the merged teams and channels section where the server order has it', () => {
+		expect(getSectionsOrder(['Teams', 'Channels', 'Direct_Messages', 'Teams_and_channels'])).toEqual([
+			'Teams',
+			'Channels',
+			'Direct_Messages',
+			'Teams_and_channels'
+		]);
+	});
+
+	it('inserts the merged teams and channels section after Channels when merging and the order predates it', () => {
+		expect(
+			getSectionsOrder(['Unread', 'Favorites', 'Teams', 'Channels', 'Direct_Messages'], { mergeTeamsAndChannels: true })
+		).toEqual(['Unread', 'Favorites', 'Teams', 'Channels', 'Teams_and_channels', 'Direct_Messages']);
+	});
+
+	it('appends Conversations when it must catch unlisted rooms and the order dropped it', () => {
+		expect(getSectionsOrder(['Teams', 'Channels'], { keepConversations: true })).toEqual(['Teams', 'Channels', 'Conversations']);
+	});
+
+	it('places the merged teams and channels section in the group order', () => {
+		expect(getGroupOrder([], getSectionsOrder(undefined, { mergeTeamsAndChannels: true }))).toEqual([
+			'Favorites',
+			'Teams',
+			'Discussions',
+			'Channels',
+			'Teams_and_channels',
+			'Direct_Messages',
+			'Conversations'
+		]);
+	});
 });
 
 describe('reorderGroups', () => {
