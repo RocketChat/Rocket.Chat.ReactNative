@@ -1,6 +1,6 @@
 type ServerMode =
 	| { kind: 'paged'; defaultCount: number; upperLimit: number; allowInfiniteCount: boolean; answersAppsLoaded: boolean }
-	| { kind: 'unpaged-without-total' };
+	| { kind: 'unpaged' };
 type Failure =
 	| { kind: 'none' }
 	| { kind: 'throws' | 'success-false' | 'apps-not-loaded' | 'apps-not-loaded-without-success'; atRequest: number };
@@ -133,9 +133,9 @@ jest.mock('~/lib/services/sdk', () => {
 			registered.reverse();
 		}
 		const all = sortedAsRequested(registered, params?.sort);
-		if (world.server.kind === 'unpaged-without-total') {
+		if (world.server.kind === 'unpaged') {
 			record.served = `all ${all.length}`;
-			return Promise.resolve({ success: true, commands: all });
+			return Promise.resolve({ success: true, commands: all, offset: 0, count: all.length, total: all.length });
 		}
 		const { defaultCount, upperLimit, allowInfiniteCount } = world.server;
 		const offset = params?.offset ? parseInt(String(params.offset), 10) : 0;
@@ -275,7 +275,7 @@ const serverModes: ServerMode[] = [
 	{ kind: 'paged', defaultCount: 3, upperLimit: 5, allowInfiniteCount: true, answersAppsLoaded: true },
 	{ kind: 'paged', defaultCount: 1, upperLimit: 3, allowInfiniteCount: false, answersAppsLoaded: true },
 	{ kind: 'paged', defaultCount: 2, upperLimit: 4, allowInfiniteCount: false, answersAppsLoaded: false },
-	{ kind: 'unpaged-without-total' }
+	{ kind: 'unpaged' }
 ];
 const failures: Failure[] = [
 	{ kind: 'none' },
@@ -384,33 +384,33 @@ const holdsOnlyServerCommands = (seen: Observation) =>
 		return !stored || stored.description === command.description;
 	});
 
-type Rule = { name: string; applies: (seen: Observation) => boolean; holds: (world: World, seen: Observation) => boolean };
+type Rule = { name: string; applies: (seen: Observation) => boolean; holds: (seen: Observation) => boolean };
 
 const rules: Rule[] = [
 	{
 		name: 'completeSync',
 		applies: seen => !seen.failureFired && !seen.changeFired && seen.switchedDuringRequest === undefined,
-		holds: (_world, seen) => holdsExactlyServerCommands(seen)
+		holds: seen => holdsExactlyServerCommands(seen)
 	},
 	{
 		name: 'failureKeepsTable',
 		applies: seen => seen.failureFired,
-		holds: (_world, seen) => sameTable(seen.initialTable, seen.finalTable)
+		holds: seen => sameTable(seen.initialTable, seen.finalTable)
 	},
 	{
 		name: 'terminates',
 		applies: () => true,
-		holds: (_world, seen) => !seen.runaway && !seen.timedOut
+		holds: seen => !seen.runaway && !seen.timedOut
 	},
 	{
 		name: 'changingListKeepsOnlyServerCommands',
 		applies: seen => !seen.failureFired && seen.changeFired && seen.switchedDuringRequest === undefined,
-		holds: (_world, seen) => holdsOnlyServerCommands(seen)
+		holds: seen => holdsOnlyServerCommands(seen)
 	},
 	{
 		name: 'workspaceSwitchSavesOnlyIntoStartingWorkspace',
 		applies: seen => seen.switchedDuringRequest !== undefined,
-		holds: (_world, seen) =>
+		holds: seen =>
 			seen.requests.length === seen.switchedDuringRequest &&
 			sameTable(seen.otherWorkspaceTableBefore, seen.otherWorkspaceTableAfter) &&
 			(sameTable(seen.initialTable, seen.finalTable) ||
@@ -422,7 +422,7 @@ const describeWorld = (world: World) => {
 	const server =
 		world.server.kind === 'paged'
 			? `server pages commands.list with API_Default_Count=${world.server.defaultCount}, API_Upper_Count_Limit=${world.server.upperLimit}, API_Allow_Infinite_Count=${world.server.allowInfiniteCount}${world.server.answersAppsLoaded ? '' : ', no appsLoaded field (server 8.0 or older)'}`
-			: 'server ignores offset/count and returns every command with no total';
+			: 'server ignores offset/count and returns every command';
 	const failure = world.failure.kind === 'none' ? 'no request fails' : `request ${world.failure.atRequest} ${world.failure.kind}`;
 	const workspaceSwitch =
 		world.workspaceSwitch.kind === 'none'
@@ -493,7 +493,7 @@ it('getSlashCommands keeps slash_commands equal to the server command set', asyn
 	for (const world of allWorlds) {
 		const seen = await runWorld(world);
 		for (const rule of rules) {
-			if (rule.applies(seen) && !rule.holds(world, seen)) {
+			if (rule.applies(seen) && !rule.holds(seen)) {
 				failing.get(rule.name)!.push({ world, seen });
 			}
 		}

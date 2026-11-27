@@ -13,7 +13,6 @@ module.exports = {
 	rootDir: repo,
 	roots: [__dirname, repo],
 	testMatch: [path.join(__dirname, '*.verify.ts')],
-	testPathIgnorePatterns: ['node_modules'],
 	maxWorkers: 1,
 	cacheDirectory: process.env.VERIFY_JEST_CACHE ?? path.join(os.tmpdir(), 'verify-slash-commands-sync-jest'),
 	transform: {

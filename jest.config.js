@@ -8,7 +8,6 @@ module.exports = {
 	testPathIgnorePatterns: [
 		'node_modules',
 		'<rootDir>/.*worktrees/',
-		'<rootDir>/.claude/',
 		'/__tests__/testHelpers\\.tsx$',
 		'/__tests__/mockedWatermelonDB\\.tsx$'
 	],
