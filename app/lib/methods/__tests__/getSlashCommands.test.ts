@@ -34,13 +34,13 @@ jest.mock('../../database', () => {
 			return { operation: 'create', record: draft };
 		}
 	};
-	const databaseWithBatch = (batchMock: () => jest.Mock) => ({
+	const databaseWithBatch = (batch: (...args: unknown[]) => unknown) => ({
 		get: () => collection,
 		write: (writer: () => Promise<unknown>) => writer(),
-		batch: (...args: unknown[]) => batchMock()(...args)
+		batch
 	});
-	const signedInDatabase = databaseWithBatch(() => mockBatch);
-	const otherDatabase = databaseWithBatch(() => mockOtherWorkspaceBatch);
+	const signedInDatabase = databaseWithBatch((...args) => mockBatch(...args));
+	const otherDatabase = databaseWithBatch((...args) => mockOtherWorkspaceBatch(...args));
 	return {
 		get active() {
 			return mockActiveWorkspace.current === 'signed-in' ? signedInDatabase : otherDatabase;
