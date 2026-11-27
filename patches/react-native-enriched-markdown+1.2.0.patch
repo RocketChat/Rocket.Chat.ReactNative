@@ -853,15 +853,17 @@ index a1c9133..39c12a1 100644
  }
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/RemoteImageLoader.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/RemoteImageLoader.kt
 new file mode 100644
-index 0000000..4a3f072
+index 0000000..e2a0199
 --- /dev/null
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/RemoteImageLoader.kt
-@@ -0,0 +1,89 @@
+@@ -0,0 +1,134 @@
 +package com.swmansion.enriched.markdown.utils.text
 +
 +import android.content.Context
 +import android.graphics.Bitmap
++import android.graphics.drawable.BitmapDrawable
 +import android.graphics.drawable.Drawable
++import android.util.LruCache
 +import com.bumptech.glide.Glide
 +import com.bumptech.glide.RequestBuilder
 +import com.bumptech.glide.load.model.GlideUrl
@@ -871,6 +873,18 @@ index 0000000..4a3f072
 +import com.bumptech.glide.request.transition.Transition
 +
 +object RemoteImageLoader {
++  private const val RECENT_DELIVERIES_BYTES = 20 * 1024 * 1024
++
++  // Glide keeps a delivered image in memory only while its request is referenced, so the
++  // latest deliveries stay referenced here and a new span for the same image draws it at once.
++  private val recentDeliveries =
++    object : LruCache<String, DeliveringTarget<*>>(RECENT_DELIVERIES_BYTES) {
++      override fun sizeOf(
++        key: String,
++        value: DeliveringTarget<*>,
++      ): Int = value.resourceBytes
++    }
++
 +  fun loadDrawable(
 +    context: Context,
 +    url: String,
@@ -890,7 +904,7 @@ index 0000000..4a3f072
 +      } else {
 +        request.override(fitWithin, fitWithin).downsample(DownsampleStrategy.CENTER_INSIDE)
 +      }
-+    sizedRequest.into(DeliveringTarget(onLoaded))
++    sizedRequest.into(DeliveringTarget(deliveryKey("drawable", url, headers, fitWithin), onLoaded))
 +  }
 +
 +  fun loadBitmap(
@@ -906,8 +920,23 @@ index 0000000..4a3f072
 +      .withRemoteModel(url, headers)
 +      .override(maxDimension, maxDimension)
 +      .downsample(DownsampleStrategy.CENTER_INSIDE)
-+      .into(DeliveringTarget(onLoaded))
++      .into(DeliveringTarget(deliveryKey("bitmap", url, headers, maxDimension), onLoaded))
 +  }
++
++  private fun deliveryKey(
++    resourceType: String,
++    url: String,
++    headers: Map<String, String>,
++    size: Int?,
++  ): String = "$resourceType|${size ?: "screen"}|${ImageCache.requestKey(url, headers)}"
++
++  private fun byteCount(resource: Any): Int =
++    when (resource) {
++      is Bitmap -> resource.allocationByteCount
++      is BitmapDrawable -> resource.bitmap?.allocationByteCount ?: 0
++      is Drawable -> resource.intrinsicWidth * resource.intrinsicHeight * 4
++      else -> 0
++    }.coerceAtLeast(1)
 +
 +  private fun <ResourceType : Any> RequestBuilder<ResourceType>.withRemoteModel(
 +    url: String,
@@ -934,16 +963,32 @@ index 0000000..4a3f072
 +  }
 +
 +  private class DeliveringTarget<ResourceType : Any>(
-+    private val onLoaded: (ResourceType?) -> Unit,
++    private val deliveryKey: String,
++    onLoaded: (ResourceType?) -> Unit,
 +  ) : CustomTarget<ResourceType>() {
++    private var onLoaded: ((ResourceType?) -> Unit)? = onLoaded
++
++    var resourceBytes = 1
++      private set
++
 +    override fun onResourceReady(
 +      resource: ResourceType,
 +      transition: Transition<in ResourceType>?,
-+    ) = onLoaded(resource)
++    ) {
++      resourceBytes = byteCount(resource)
++      recentDeliveries.put(deliveryKey, this)
++      deliver(resource)
++    }
 +
-+    override fun onLoadFailed(errorDrawable: Drawable?) = onLoaded(null)
++    override fun onLoadFailed(errorDrawable: Drawable?) = deliver(null)
 +
 +    override fun onLoadCleared(placeholder: Drawable?) = Unit
++
++    private fun deliver(resource: ResourceType?) {
++      val callback = onLoaded ?: return
++      onLoaded = null
++      callback(resource)
++    }
 +  }
 +}
 diff --git a/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.c b/node_modules/react-native-enriched-markdown/cpp/enrmrkd/enrmrkd.c
@@ -1557,10 +1602,10 @@ index 0000000..eaedd7d
 +NS_ASSUME_NONNULL_END
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m
 new file mode 100644
-index 0000000..1d44b71
+index 0000000..fed9899
 --- /dev/null
 +++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m
-@@ -0,0 +1,176 @@
+@@ -0,0 +1,184 @@
 +#import "ENRMSharedImageAnimation.h"
 +#import <SDWebImage/SDWebImage.h>
 +
@@ -1629,6 +1674,7 @@ index 0000000..1d44b71
 +  ENRMRenderedFrameProvider *_frameProvider;
 +  SDAnimatedImagePlayer *_player;
 +  NSHashTable<id<ENRMAnimatedImageDisplay>> *_displays;
++  BOOL _playedAllLoops;
 +}
 +
 ++ (NSMapTable<NSString *, ENRMSharedImageAnimation *> *)animationsByKey
@@ -1677,7 +1723,7 @@ index 0000000..1d44b71
 +    return;
 +  }
 +  [_displays addObject:display];
-+  if (_player.isPlaying || [display displayingTextViewsInWindow].count == 0)
++  if (_playedAllLoops || _player.isPlaying || [display displayingTextViewsInWindow].count == 0)
 +    return;
 +  [[self player] startPlaying];
 +}
@@ -1697,8 +1743,15 @@ index 0000000..1d44b71
 +    _player = [SDAnimatedImagePlayer playerWithProvider:_frameProvider];
 +    __weak typeof(self) weakSelf = self;
 +    _player.animationFrameHandler = ^(NSUInteger index, RCTUIImage *frame) { [weakSelf showFrame:frame]; };
++    _player.animationLoopHandler = ^(NSUInteger loopCount) { [weakSelf didCompleteLoop:loopCount]; };
 +  }
 +  return _player;
++}
++
++- (void)didCompleteLoop:(NSUInteger)loopCount
++{
++  NSUInteger totalLoopCount = _player.totalLoopCount;
++  _playedAllLoops = totalLoopCount != 0 && loopCount >= totalLoopCount;
 +}
 +
 +- (void)showFrame:(RCTUIImage *)frame
