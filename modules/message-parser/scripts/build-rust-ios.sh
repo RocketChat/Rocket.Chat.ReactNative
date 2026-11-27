@@ -9,6 +9,17 @@ library_name="librocketchat_message_parser_ffi.a"
 export PATH="${CARGO_HOME:-$HOME/.cargo}/bin:$PATH"
 unset SDKROOT
 
+linker_platform_for() {
+	case "$PLATFORM_NAME" in
+		iphoneos) echo ios ;;
+		iphonesimulator) echo ios-simulator ;;
+		*)
+			echo "error: no linker platform for $PLATFORM_NAME" >&2
+			exit 1
+			;;
+	esac
+}
+
 rust_target_for() {
 	case "$PLATFORM_NAME/$1" in
 		iphoneos/arm64) echo aarch64-apple-ios ;;
@@ -21,12 +32,22 @@ rust_target_for() {
 	esac
 }
 
+exported_symbols=(_rocketchat_message_parser_parse _rocketchat_message_parser_free)
+linker_symbol_flags=()
+for symbol in "${exported_symbols[@]}"; do
+	linker_symbol_flags+=(-u "$symbol" -exported_symbol "$symbol")
+done
+
+mkdir -p "$output_dir"
 libraries=()
 for arch in $ARCHS; do
 	rust_target="$(rust_target_for "$arch")"
 	(cd "$rust_dir" && cargo build --release --locked --target "$rust_target")
-	libraries+=("$rust_dir/target/$rust_target/release/$library_name")
+	prelinked_object="$output_dir/rocketchat_message_parser_ffi-$arch.o"
+	xcrun ld -r -arch "$arch" -platform_version "$(linker_platform_for)" "$IPHONEOS_DEPLOYMENT_TARGET" 0 \
+		"${linker_symbol_flags[@]}" "$rust_dir/target/$rust_target/release/$library_name" -o "$prelinked_object"
+	xcrun libtool -static -o "$output_dir/$arch-$library_name" "$prelinked_object"
+	libraries+=("$output_dir/$arch-$library_name")
 done
 
-mkdir -p "$output_dir"
 lipo -create "${libraries[@]}" -output "$output_dir/$library_name"
