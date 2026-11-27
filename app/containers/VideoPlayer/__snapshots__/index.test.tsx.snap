@@ -27,6 +27,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
         {
           "backgroundColor": "#E4E7EA",
         },
+        undefined,
       ]
     }
   />

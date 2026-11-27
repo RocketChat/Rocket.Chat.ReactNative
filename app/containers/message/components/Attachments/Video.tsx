@@ -1,6 +1,5 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Animated from 'react-native-reanimated';
 
 import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
 import { type IUserMessage } from '~/definitions/IMessage';
@@ -20,7 +19,7 @@ import { useMessageUser } from '~/containers/message/stores/MessageRoomStore';
 import BlurComponent from '../OverlayComponent';
 import { type TDownloadState } from '~/lib/methods/handleMediaDownload';
 import messageStyles from '~/containers/message/styles';
-import { mediaSharedTransition } from '~/lib/animations/mediaSharedTransition';
+import { MediaTransitionBackdrop } from '~/containers/MediaTransitionBackdrop';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -77,11 +76,7 @@ const Thumbnail = ({
 
 	return (
 		<>
-			<Animated.View
-				style={[StyleSheet.absoluteFill, styles.thumbnailBackdrop, { backgroundColor: colors.surfaceNeutral }]}
-				sharedTransitionTag={sharedTransitionTag}
-				sharedTransitionStyle={mediaSharedTransition}
-			/>
+			<MediaTransitionBackdrop sharedTransitionTag={sharedTransitionTag} style={styles.thumbnailBackdrop} />
 			<BlurComponent
 				iconName={icon}
 				loading={status === 'loading'}

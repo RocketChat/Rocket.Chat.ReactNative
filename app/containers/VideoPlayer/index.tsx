@@ -1,9 +1,8 @@
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEffect, useRef, type Dispatch, type SetStateAction, type ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { useEventListener } from 'expo';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Animated from 'react-native-reanimated';
 
 import { styles } from './styles';
 import { useAppNavigation } from '~/lib/hooks/navigation';
@@ -11,8 +10,7 @@ import I18n from '~/i18n';
 import { type IAttachment } from '~/definitions/IAttachment';
 import { formatAttachmentUrl, encodeAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import { showErrorAlert } from '~/lib/methods/helpers/info';
-import { useTheme } from '~/theme';
-import { mediaSharedTransition } from '~/lib/animations/mediaSharedTransition';
+import { MediaTransitionBackdrop } from '~/containers/MediaTransitionBackdrop';
 
 interface IVideoPlayerProps {
 	attachment: IAttachment;
@@ -26,7 +24,6 @@ const VideoPlayer = ({ attachment, user, baseUrl, setLoading, sharedTransitionTa
 	const navigation = useAppNavigation();
 	const hasHandledErrorRef = useRef(false);
 	const { bottom } = useSafeAreaInsets();
-	const { colors } = useTheme();
 
 	const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
 	const uri = encodeAttachmentUrl(url);
@@ -61,11 +58,7 @@ const VideoPlayer = ({ attachment, user, baseUrl, setLoading, sharedTransitionTa
 
 	return (
 		<View style={[styles.container, { paddingBottom: bottom }]}>
-			<Animated.View
-				style={[StyleSheet.absoluteFill, { backgroundColor: colors.surfaceNeutral }]}
-				sharedTransitionTag={sharedTransitionTag}
-				sharedTransitionStyle={mediaSharedTransition}
-			/>
+			<MediaTransitionBackdrop sharedTransitionTag={sharedTransitionTag} />
 			<VideoView
 				player={player}
 				style={styles.container}

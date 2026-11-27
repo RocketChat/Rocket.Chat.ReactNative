@@ -5,7 +5,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import ImageContainer from '../message/components/Attachments/Image';
 import Navigation from '~/lib/navigation/appNavigation';
 import { type IThumb, type IImage } from './interfaces';
-import { type IAttachment } from '~/definitions/IAttachment';
+import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
 
 const styles = StyleSheet.create({
 	image: {
@@ -27,7 +27,8 @@ export const Thumb = ({ element, size = 88 }: IThumb) => (
 );
 
 export const Media = ({ element }: IImage) => {
-	const showAttachment = (attachment: IAttachment) => Navigation.navigate('AttachmentView', { attachment });
+	const showAttachment: IUseRoomMessageHandlersResult['showAttachment'] = (attachment, sharedTransition) =>
+		Navigation.navigate('AttachmentView', { attachment, sharedTransition });
 	const imageUrl = element?.imageUrl ?? '';
 	return <ImageContainer file={{ image_url: imageUrl }} showAttachment={showAttachment} />;
 };

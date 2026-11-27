@@ -86714,10 +86714,10 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                             "top": 0,
                                           },
                                           {
-                                            "borderRadius": 4,
+                                            "backgroundColor": "#E4E7EA",
                                           },
                                           {
-                                            "backgroundColor": "#E4E7EA",
+                                            "borderRadius": 4,
                                           },
                                         ]
                                       }
@@ -99768,10 +99768,10 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                             "top": 0,
                                           },
                                           {
-                                            "borderRadius": 4,
+                                            "backgroundColor": "#E4E7EA",
                                           },
                                           {
-                                            "backgroundColor": "#E4E7EA",
+                                            "borderRadius": 4,
                                           },
                                         ]
                                       }
@@ -177456,10 +177456,10 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                   "top": 0,
                                 },
                                 {
-                                  "borderRadius": 4,
+                                  "backgroundColor": "#E4E7EA",
                                 },
                                 {
-                                  "backgroundColor": "#E4E7EA",
+                                  "borderRadius": 4,
                                 },
                               ]
                             }
@@ -177812,10 +177812,10 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                   "top": 0,
                                 },
                                 {
-                                  "borderRadius": 4,
+                                  "backgroundColor": "#E4E7EA",
                                 },
                                 {
-                                  "backgroundColor": "#E4E7EA",
+                                  "borderRadius": 4,
                                 },
                               ]
                             }
@@ -178432,10 +178432,10 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                   "top": 0,
                                 },
                                 {
-                                  "borderRadius": 4,
+                                  "backgroundColor": "#E4E7EA",
                                 },
                                 {
-                                  "backgroundColor": "#E4E7EA",
+                                  "borderRadius": 4,
                                 },
                               ]
                             }
@@ -178580,10 +178580,10 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                                   "top": 0,
                                 },
                                 {
-                                  "borderRadius": 4,
+                                  "backgroundColor": "#E4E7EA",
                                 },
                                 {
-                                  "backgroundColor": "#E4E7EA",
+                                  "borderRadius": 4,
                                 },
                               ]
                             }
@@ -179249,10 +179249,10 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                   "top": 0,
                                 },
                                 {
-                                  "borderRadius": 4,
+                                  "backgroundColor": "#E4E7EA",
                                 },
                                 {
-                                  "backgroundColor": "#E4E7EA",
+                                  "borderRadius": 4,
                                 },
                               ]
                             }
@@ -179796,10 +179796,10 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                   "top": 0,
                                 },
                                 {
-                                  "borderRadius": 4,
+                                  "backgroundColor": "#E4E7EA",
                                 },
                                 {
-                                  "backgroundColor": "#E4E7EA",
+                                  "borderRadius": 4,
                                 },
                               ]
                             }
@@ -180409,10 +180409,10 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                   "top": 0,
                                 },
                                 {
-                                  "borderRadius": 4,
+                                  "backgroundColor": "#E4E7EA",
                                 },
                                 {
-                                  "backgroundColor": "#E4E7EA",
+                                  "borderRadius": 4,
                                 },
                               ]
                             }
@@ -180557,10 +180557,10 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                                   "top": 0,
                                 },
                                 {
-                                  "borderRadius": 4,
+                                  "backgroundColor": "#E4E7EA",
                                 },
                                 {
-                                  "backgroundColor": "#E4E7EA",
+                                  "borderRadius": 4,
                                 },
                               ]
                             }
