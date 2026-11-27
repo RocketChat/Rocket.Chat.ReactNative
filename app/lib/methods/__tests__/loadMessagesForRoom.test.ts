@@ -1,28 +1,28 @@
-import { loadMessagesForRoom } from './loadMessagesForRoom';
-import sdk from '../services/sdk';
+import { loadMessagesForRoom, waitForLatestHistoryLoad } from '../loadMessagesForRoom';
+import sdk from '../../services/sdk';
 import { ROOM } from '~/actions/actionsTypes';
-import { getMessageById } from '../database/services/Message';
-import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import updateMessages from './updateMessages';
-import { store } from '../store/auxStore';
-import { updateLastOpen } from './updateLastOpen';
+import { getMessageById } from '../../database/services/Message';
+import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import updateMessages from '../updateMessages';
+import { store } from '../../store/auxStore';
+import { updateLastOpen } from '../updateLastOpen';
 
-jest.mock('../services/sdk', () => ({
+jest.mock('../../services/sdk', () => ({
 	__esModule: true,
 	default: {
 		get: jest.fn()
 	}
 }));
 
-jest.mock('../database/services/Message', () => ({
+jest.mock('../../database/services/Message', () => ({
 	getMessageById: jest.fn()
 }));
 
-jest.mock('../database/services/Subscription', () => ({
+jest.mock('../../database/services/Subscription', () => ({
 	getSubscriptionByRoomId: jest.fn(() => Promise.resolve(null))
 }));
 
-jest.mock('../store/auxStore', () => ({
+jest.mock('../../store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => ({
 			settings: { Hide_System_Messages: ['uj'] }
@@ -31,9 +31,9 @@ jest.mock('../store/auxStore', () => ({
 	}
 }));
 
-jest.mock('./updateMessages', () => jest.fn());
-jest.mock('./updateLastOpen', () => ({
-	...jest.requireActual('./updateLastOpen'),
+jest.mock('../updateMessages', () => jest.fn());
+jest.mock('../updateLastOpen', () => ({
+	...jest.requireActual('../updateLastOpen'),
 	updateLastOpen: jest.fn()
 }));
 
@@ -209,37 +209,51 @@ describe('loadMessagesForRoom', () => {
 		expect(update.find(message => message.t === 'load_more')).toBeUndefined();
 	});
 
-	it('starts a Room history load only after the previous one for that Room finished', async () => {
-		let finishFirstFetch: (response: unknown) => void = () => {};
-		mockedSdkGet
-			.mockImplementationOnce(
+	describe('waitForLatestHistoryLoad', () => {
+		const settled = async (promise: Promise<void>) => {
+			let isSettled = false;
+			promise.then(() => {
+				isSettled = true;
+			});
+			await new Promise(resolve => setImmediate(resolve));
+			return isSettled;
+		};
+
+		it('waits for the latest history load of the Room in progress', async () => {
+			let finishFetch: (response: unknown) => void = () => {};
+			mockedSdkGet.mockImplementationOnce(
 				() =>
 					new Promise(resolve => {
-						finishFirstFetch = resolve;
+						finishFetch = resolve;
 					}) as any
-			)
-			.mockResolvedValueOnce({ success: true, messages: [] } as any);
+			);
 
-		const firstLoad = loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
-		const secondLoad = loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
-		await new Promise(resolve => setImmediate(resolve));
-		expect(mockedSdkGet).toHaveBeenCalledTimes(1);
+			const latestLoad = loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+			const waiting = waitForLatestHistoryLoad('ROOM_ID');
+			expect(await settled(waiting)).toBe(false);
 
-		finishFirstFetch({ success: true, messages: [] });
-		await Promise.all([firstLoad, secondLoad]);
-		expect(mockedSdkGet).toHaveBeenCalledTimes(2);
-	});
+			finishFetch({ success: true, messages: [] });
+			await latestLoad;
+			expect(await settled(waiting)).toBe(true);
+		});
 
-	it('runs the next Room history load after the previous one failed', async () => {
-		const networkError = new Error('boom');
-		mockedSdkGet.mockRejectedValueOnce(networkError).mockResolvedValueOnce({ success: true, messages: [] } as any);
+		it('resolves when the latest history load of the Room fails', async () => {
+			const networkError = new Error('boom');
+			mockedSdkGet.mockRejectedValueOnce(networkError);
 
-		const firstLoad = loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
-		const secondLoad = loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+			const latestLoad = loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
 
-		await expect(firstLoad).rejects.toBe(networkError);
-		await expect(secondLoad).resolves.toBeUndefined();
-		expect(mockedSdkGet).toHaveBeenCalledTimes(2);
+			await expect(waitForLatestHistoryLoad('ROOM_ID')).resolves.toBeUndefined();
+			await expect(latestLoad).rejects.toBe(networkError);
+		});
+
+		it('does not wait for a load of older Messages', async () => {
+			mockedSdkGet.mockImplementationOnce(() => new Promise(() => {}) as any);
+
+			loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c', loaderItem: { id: 'tapped-load-more' } as any });
+
+			expect(await settled(waitForLatestHistoryLoad('ROOM_ID'))).toBe(true);
+		});
 	});
 
 	it('drops the Older Loader when the batch after a hidden batch comes back empty', async () => {

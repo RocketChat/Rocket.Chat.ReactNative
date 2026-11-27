@@ -132,15 +132,21 @@ type TLoadMessagesForRoomArgs = {
 	loaderItem?: TMessageModel;
 };
 
-const roomLoads = new Map<string, Promise<void>>();
+const latestHistoryLoads = new Map<string, Promise<void>>();
+
+export const waitForLatestHistoryLoad = async (rid: string): Promise<void> => {
+	await latestHistoryLoads.get(rid)?.catch(() => undefined);
+};
 
 export function loadMessagesForRoom(args: TLoadMessagesForRoomArgs): Promise<void> {
-	const previousLoad = roomLoads.get(args.rid) ?? Promise.resolve();
-	const currentLoad = previousLoad.catch(() => undefined).then(() => loadRoomHistory(args));
-	roomLoads.set(args.rid, currentLoad);
+	const currentLoad = loadRoomHistory(args);
+	if (args.latest || args.loaderItem) {
+		return currentLoad;
+	}
+	latestHistoryLoads.set(args.rid, currentLoad);
 	const forgetCurrentLoad = () => {
-		if (roomLoads.get(args.rid) === currentLoad) {
-			roomLoads.delete(args.rid);
+		if (latestHistoryLoads.get(args.rid) === currentLoad) {
+			latestHistoryLoads.delete(args.rid);
 		}
 	};
 	currentLoad.then(forgetCurrentLoad, forgetCurrentLoad);
