@@ -102,6 +102,37 @@ describe('loadMissedMessages', () => {
 		);
 	});
 
+	it('loads the history itself when the history load in progress does not settle in time', async () => {
+		jest.useFakeTimers();
+		try {
+			mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'p' } as never);
+			mockedWaitForLiveTailLoad.mockReturnValue(new Promise(() => {}));
+
+			const catchingUp = loadMissedMessages({ rid: RID });
+			await jest.advanceTimersByTimeAsync(10000);
+			await catchingUp;
+
+			expect(mockedLoadMessagesForRoom).toHaveBeenCalledWith({ rid: RID, t: 'p' });
+		} finally {
+			jest.useRealTimers();
+		}
+	});
+
+	it('loads nothing when the user left while it waited for the history load in progress', async () => {
+		const leaving = new AbortController();
+		const subscription = { lastOpen: null as Date | null, t: 'p' };
+		mockedGetSubscriptionByRoomId.mockResolvedValue(subscription as never);
+		mockedWaitForLiveTailLoad.mockImplementation(async () => {
+			subscription.lastOpen = new Date(Date.UTC(2024, 0, 1, 11, 0, 0));
+			leaving.abort();
+		});
+
+		await loadMissedMessages({ rid: RID, signal: leaving.signal });
+
+		expect(mockedLoadMessagesForRoom).not.toHaveBeenCalled();
+		expect(mockedSdkGet).not.toHaveBeenCalled();
+	});
+
 	it('falls through to the sync path when the subscription type is not a room type', async () => {
 		mockedGetSubscriptionByRoomId.mockResolvedValue({ lastOpen: null, t: 'not-a-room-type' } as never);
 		mockedSdkGet.mockResolvedValue({ result: { updated: [], deleted: [], cursor: { next: null } } } as never);

@@ -30,7 +30,7 @@ import { isInviteSubscription } from '../isInviteSubscription';
 
 export default class RoomSubscription {
 	private rid: string;
-	private isAlive: boolean;
+	private readonly leaving = new AbortController();
 	private promises?: Promise<(ISubscription | undefined)[]>;
 	private connectedListener?: Promise<any>;
 	private disconnectedListener?: Promise<any>;
@@ -39,7 +39,6 @@ export default class RoomSubscription {
 
 	constructor(rid: string) {
 		this.rid = rid;
-		this.isAlive = true;
 	}
 
 	subscribe = async () => {
@@ -54,7 +53,7 @@ export default class RoomSubscription {
 		this.disconnectedListener = sdk.onStreamData('close', this.handleConnection);
 		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
-		if (!this.isAlive) {
+		if (this.leaving.signal.aborted) {
 			await this.unsubscribe();
 		}
 
@@ -65,7 +64,7 @@ export default class RoomSubscription {
 
 	unsubscribe = async () => {
 		console.log(`[RCRN] Unsubscribing from room ${this.rid}`);
-		this.isAlive = false;
+		this.leaving.abort();
 		reduxStore.dispatch(unsubscribeRoom(this.rid));
 		if (this.promises) {
 			try {
@@ -97,10 +96,10 @@ export default class RoomSubscription {
 		try {
 			reduxStore.dispatch(clearUserTyping());
 			const subscription = await getSubscriptionByRoomId(this.rid);
-			if (!this.isAlive || (subscription && isInviteSubscription(subscription))) {
+			if (this.leaving.signal.aborted || (subscription && isInviteSubscription(subscription))) {
 				return;
 			}
-			await loadMissedMessages({ rid: this.rid });
+			await loadMissedMessages({ rid: this.rid, signal: this.leaving.signal });
 			this.read();
 		} catch (e) {
 			log(e);
@@ -223,7 +222,7 @@ export default class RoomSubscription {
 	};
 
 	read = debounce(() => {
-		if (this.isAlive) {
+		if (!this.leaving.signal.aborted) {
 			readMessages(this.rid);
 		}
 	}, 300);

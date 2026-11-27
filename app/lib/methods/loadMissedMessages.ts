@@ -73,13 +73,36 @@ async function load({
 	return result;
 }
 
+const LIVE_TAIL_WAIT_LIMIT = 10000;
+
+const waitAtMost = (promise: Promise<void>, limit: number): Promise<void> =>
+	new Promise(resolve => {
+		const timer = setTimeout(resolve, limit);
+		promise.then(() => {
+			clearTimeout(timer);
+			resolve();
+		});
+	});
+
 const getSubscriptionOnceCursorSettles = async (rid: string) => {
 	const sub = await getSubscriptionByRoomId(rid);
 	if (!sub || sub.lastOpen) {
 		return sub;
 	}
-	await waitForLiveTailLoad(rid);
+	await waitAtMost(waitForLiveTailLoad(rid), LIVE_TAIL_WAIT_LIMIT);
 	return getSubscriptionByRoomId(rid);
+};
+
+const catchUpWithoutSyncing = async (rid: string, signal?: AbortSignal): Promise<boolean> => {
+	const sub = await getSubscriptionOnceCursorSettles(rid);
+	if (signal?.aborted) {
+		return true;
+	}
+	if (sub && !sub.lastOpen && isRoomType(sub.t)) {
+		await loadMessagesForRoom({ rid, t: sub.t });
+		return true;
+	}
+	return false;
 };
 
 export async function loadMissedMessages(args: {
@@ -87,15 +110,11 @@ export async function loadMissedMessages(args: {
 	updatedNext?: number | null;
 	deletedNext?: number | null;
 	serverTimestamps?: TServerTimestamps;
+	signal?: AbortSignal;
 }): Promise<void> {
 	const isFirstPage = !args.updatedNext && !args.deletedNext;
-	if (isFirstPage) {
-		// A room whose history load fetched no messages has no cursor to sync from, and syncing is what
-		// would write one. Load its history instead: it fetches the same gap and seeds the cursor.
-		const sub = await getSubscriptionOnceCursorSettles(args.rid);
-		if (sub && !sub.lastOpen && isRoomType(sub.t)) {
-			return loadMessagesForRoom({ rid: args.rid, t: sub.t });
-		}
+	if (isFirstPage && (await catchUpWithoutSyncing(args.rid, args.signal))) {
+		return;
 	}
 
 	// A DELETED-only continuation fetches no UPDATED page, so it must not write the cursor again.

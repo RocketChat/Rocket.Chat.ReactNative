@@ -257,7 +257,7 @@ describe('RoomSubscription over the real SDK', () => {
 			await subscribing;
 
 			expect(loadMissedMessages).toHaveBeenCalledTimes(1);
-			expect(loadMissedMessages).toHaveBeenCalledWith({ rid: 'room-rid' });
+			expect(loadMissedMessages).toHaveBeenCalledWith(expect.objectContaining({ rid: 'room-rid' }));
 		});
 
 		it('loads nothing when the user leaves the Room before the stream is ready', async () => {
@@ -269,6 +269,19 @@ describe('RoomSubscription over the real SDK', () => {
 			await Promise.all([leaving, subscribing]);
 
 			expect(loadMissedMessages).not.toHaveBeenCalled();
+		});
+
+		it('tells the catch-up when the user leaves the Room', async () => {
+			const { room, subscribing } = await subscribeWithoutAnswers('room-rid');
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+			await subscribing;
+			const { signal } = (loadMissedMessages as jest.Mock).mock.calls[0][0] as { signal: AbortSignal };
+			expect(signal.aborted).toBe(false);
+
+			await room.unsubscribe();
+
+			expect(signal.aborted).toBe(true);
 		});
 
 		it('does not mark the Room read when the user leaves while the catch-up loads', async () => {
