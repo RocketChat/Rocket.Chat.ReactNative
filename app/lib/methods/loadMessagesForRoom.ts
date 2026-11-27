@@ -19,6 +19,15 @@ const MAX_BATCHES = 10;
 const isVisibleMainRoomMessage = (message: IMessage, hideSystemMessages: string[]) =>
 	!message.tmid && (!message.t || !hideSystemMessages.includes(message.t));
 
+const buildOlderLoader = (oldestMessage: IMessage): IMessage =>
+	({
+		_id: generateLoadMoreId(oldestMessage._id as string),
+		rid: oldestMessage.rid,
+		ts: dayjs(oldestMessage.ts).subtract(1, 'millisecond').toDate(),
+		t: MessageTypeLoad.MORE,
+		msg: oldestMessage.msg
+	}) as IMessage;
+
 async function resolveHideSystemMessages(rid: string): Promise<string[]> {
 	const sub = await getSubscriptionByRoomId(rid);
 	return getHiddenSystemMessages(sub?.sysMes, store.getState().settings.Hide_System_Messages);
@@ -67,17 +76,17 @@ async function load(args: {
 				return;
 		}
 
-		if (!data?.success || !data.messages?.length) {
-			if (data?.success) {
-				lastBatchWasFull = false;
-			}
+		if (!data?.success) {
 			return;
 		}
 
-		const batch = data.messages as IMessage[];
+		const batch = (data.messages ?? []) as IMessage[];
+		lastBatchWasFull = batch.length === COUNT;
+		if (!batch.length) {
+			return;
+		}
 		serverTimestamps.push(...snapshotServerTimestamps(batch));
 		allMessages.push(...batch);
-		lastBatchWasFull = batch.length === COUNT;
 
 		const visibleMainMessagesInBatch = batch.filter(message => isVisibleMainRoomMessage(message, hideSystemMessages));
 		visibleMainMessagesCount += visibleMainMessagesInBatch.length;
@@ -88,13 +97,7 @@ async function load(args: {
 			const lastMessage = batch[batch.length - 1];
 
 			if (!args.loaderItem && batchesFetched === 1) {
-				const loadMoreMessage = {
-					_id: generateLoadMoreId(lastMessage._id as string),
-					rid: lastMessage.rid,
-					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toDate(),
-					t: MessageTypeLoad.MORE,
-					msg: lastMessage.msg
-				} as IMessage;
+				const loadMoreMessage = buildOlderLoader(lastMessage);
 
 				await updateMessages({
 					rid: roomId,
@@ -114,12 +117,37 @@ async function load(args: {
 	return { messages: allMessages, serverTimestamps, lastBatchWasFull };
 }
 
-export async function loadMessagesForRoom(args: {
+const isHistoryBelowUnstored = async (oldestMessage: IMessage): Promise<boolean> => {
+	if (!(await getMessageById(oldestMessage._id as string))) {
+		return true;
+	}
+	const olderLoaderRecord = await getMessageById(generateLoadMoreId(oldestMessage._id as string));
+	return olderLoaderRecord?.t === MessageTypeLoad.MORE;
+};
+
+type TLoadMessagesForRoomArgs = {
 	rid: string;
 	t: RoomTypes;
 	latest?: Date;
 	loaderItem?: TMessageModel;
-}): Promise<void> {
+};
+
+const roomLoads = new Map<string, Promise<void>>();
+
+export function loadMessagesForRoom(args: TLoadMessagesForRoomArgs): Promise<void> {
+	const previousLoad = roomLoads.get(args.rid) ?? Promise.resolve();
+	const currentLoad = previousLoad.catch(() => undefined).then(() => loadRoomHistory(args));
+	roomLoads.set(args.rid, currentLoad);
+	const forgetCurrentLoad = () => {
+		if (roomLoads.get(args.rid) === currentLoad) {
+			roomLoads.delete(args.rid);
+		}
+	};
+	currentLoad.then(forgetCurrentLoad, forgetCurrentLoad);
+	return currentLoad;
+}
+
+async function loadRoomHistory(args: TLoadMessagesForRoomArgs): Promise<void> {
 	let uiLoaderId: string | null = null;
 	try {
 		const { messages, serverTimestamps, lastBatchWasFull } = await load({
@@ -130,17 +158,8 @@ export async function loadMessagesForRoom(args: {
 		});
 		if (messages?.length) {
 			const lastMessage = messages[messages.length - 1];
-			const olderLoaderId = generateLoadMoreId(lastMessage._id as string);
-			const lastMessageRecord = await getMessageById(lastMessage._id as string);
-			const olderLoaderRecord = await getMessageById(olderLoaderId);
-			if (lastBatchWasFull && (!lastMessageRecord || olderLoaderRecord)) {
-				messages.push({
-					_id: olderLoaderId,
-					rid: lastMessage.rid,
-					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toDate(),
-					t: MessageTypeLoad.MORE,
-					msg: lastMessage.msg
-				} as IMessage);
+			if (lastBatchWasFull && (await isHistoryBelowUnstored(lastMessage))) {
+				messages.push(buildOlderLoader(lastMessage));
 			}
 			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
 		}

@@ -57,8 +57,10 @@ export default async function updateMessages({
 		update = update.map(m => buildMessage(m)) as IMessage[];
 
 		// filter loaders to delete
+		const updatedIds = new Set(update.map(message => message._id));
+		const loaderIdsOfUpdatedMessages = new Set(update.map(message => generateLoadMoreId(message._id as string)));
 		let loadersToDelete: TMessageModel[] = allMessagesRecords.filter(
-			i1 => update.find(i2 => i1.id === generateLoadMoreId(i2._id as string)) && !update.find(i2 => i1.id === i2._id)
+			record => loaderIdsOfUpdatedMessages.has(record.id) && !updatedIds.has(record.id)
 		);
 
 		// Delete

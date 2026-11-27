@@ -170,18 +170,76 @@ describe('loadMessagesForRoom', () => {
 		expect(mockedDispatch).not.toHaveBeenCalledWith(expect.objectContaining({ type: ROOM.HISTORY_UI_LOADER_PUSH }));
 	});
 
-	it('keeps the trailing Older Loader when the same history is loaded again', async () => {
-		const batch = Array.from({ length: 50 }, (_, index) =>
+	const buildStoredBatch = () =>
+		Array.from({ length: 50 }, (_, index) =>
 			buildMessage({ id: `stored-${index + 1}`, ts: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString() })
 		);
-		const storedIds = new Set([...batch.map(message => message._id), 'load-more-stored-50']);
-		mockedGetMessageById.mockImplementation(id => Promise.resolve(storedIds.has(id) ? ({ id } as any) : null));
+
+	it('keeps the trailing Older Loader when the same history is loaded again', async () => {
+		const batch = buildStoredBatch();
+		const storedIds = new Set(batch.map(message => message._id));
+		mockedGetMessageById.mockImplementation(id => {
+			if (id === 'load-more-stored-50') {
+				return Promise.resolve({ id, t: 'load_more' } as any);
+			}
+			return Promise.resolve(storedIds.has(id) ? ({ id } as any) : null);
+		});
 		mockedSdkGet.mockResolvedValueOnce({ success: true, messages: batch } as any);
 
 		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
 
 		const { update } = mockedUpdateMessages.mock.calls[0][0] as { update: { _id: string; t?: string }[] };
 		expect(update).toContainEqual(expect.objectContaining({ _id: 'load-more-stored-50', t: 'load_more' }));
+	});
+
+	it('does not turn a Newer Loader of the oldest Message into an Older Loader', async () => {
+		const batch = buildStoredBatch();
+		const storedIds = new Set(batch.map(message => message._id));
+		mockedGetMessageById.mockImplementation(id => {
+			if (id === 'load-more-stored-50') {
+				return Promise.resolve({ id, t: 'load_next_chunk' } as any);
+			}
+			return Promise.resolve(storedIds.has(id) ? ({ id } as any) : null);
+		});
+		mockedSdkGet.mockResolvedValueOnce({ success: true, messages: batch } as any);
+
+		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+		const { update } = mockedUpdateMessages.mock.calls[0][0] as { update: { _id: string; t?: string }[] };
+		expect(update.find(message => message.t === 'load_more')).toBeUndefined();
+	});
+
+	it('starts a Room history load only after the previous one for that Room finished', async () => {
+		let finishFirstFetch: (response: unknown) => void = () => {};
+		mockedSdkGet
+			.mockImplementationOnce(
+				() =>
+					new Promise(resolve => {
+						finishFirstFetch = resolve;
+					}) as any
+			)
+			.mockResolvedValueOnce({ success: true, messages: [] } as any);
+
+		const firstLoad = loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+		const secondLoad = loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+		await new Promise(resolve => setImmediate(resolve));
+		expect(mockedSdkGet).toHaveBeenCalledTimes(1);
+
+		finishFirstFetch({ success: true, messages: [] });
+		await Promise.all([firstLoad, secondLoad]);
+		expect(mockedSdkGet).toHaveBeenCalledTimes(2);
+	});
+
+	it('runs the next Room history load after the previous one failed', async () => {
+		const networkError = new Error('boom');
+		mockedSdkGet.mockRejectedValueOnce(networkError).mockResolvedValueOnce({ success: true, messages: [] } as any);
+
+		const firstLoad = loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+		const secondLoad = loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
+
+		await expect(firstLoad).rejects.toBe(networkError);
+		await expect(secondLoad).resolves.toBeUndefined();
+		expect(mockedSdkGet).toHaveBeenCalledTimes(2);
 	});
 
 	it('drops the Older Loader when the batch after a hidden batch comes back empty', async () => {
@@ -205,9 +263,7 @@ describe('loadMessagesForRoom', () => {
 	});
 
 	it('does not append a trailing Older Loader when the history below the batch is already stored', async () => {
-		const batch = Array.from({ length: 50 }, (_, index) =>
-			buildMessage({ id: `stored-${index + 1}`, ts: new Date(Date.UTC(2024, 0, 1, 0, 0, 50 - index)).toISOString() })
-		);
+		const batch = buildStoredBatch();
 		mockedGetMessageById.mockImplementation(id => Promise.resolve(!!id?.startsWith('stored-') ? ({ id } as any) : null));
 		mockedSdkGet.mockResolvedValueOnce({ success: true, messages: batch } as any);
 
