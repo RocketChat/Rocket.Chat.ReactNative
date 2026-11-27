@@ -2,14 +2,14 @@ use rocketchat_message_parser_ffi::{
     rocketchat_message_parser_free, rocketchat_message_parser_parse, MessageParserStatus,
 };
 
-const OPTIONS: [&str; 6] = [
+const VALID_OPTIONS: [&str; 4] = [
     "{}",
     r#"{"emoticons":true}"#,
     r#"{"colors":true,"customDomains":["example.com"]}"#,
     r#"{"katex":{"dollarSyntax":true,"parenthesisSyntax":true}}"#,
-    r#"{"unknown":true}"#,
-    "not json",
 ];
+
+const INVALID_OPTIONS: [&str; 3] = [r#"{"unknown":true}"#, "not json", "true"];
 
 const FRAGMENTS: [&[u8]; 16] = [
     b"*",
@@ -73,21 +73,23 @@ fn every_input_returns_owned_utf8_that_frees_cleanly() {
     let mut random = Xorshift(0x5eed_1234_abcd_0001);
     for _ in 0..cases {
         let input = random_input(&mut random);
-        let options = OPTIONS[random.next() % OPTIONS.len()];
-        let (status, text) = parse_through_c_abi(&input, options.as_bytes());
-        match status {
-            MessageParserStatus::Ok => {
-                let ast: serde_json::Value = serde_json::from_str(&text).unwrap();
-                assert!(ast.is_array(), "{input:?} {options} -> {text}");
-            }
-            MessageParserStatus::InvalidOptions => {
-                assert!(
-                    options == r#"{"unknown":true}"# || options == "not json",
-                    "{options} rejected: {text}"
-                );
-            }
-            MessageParserStatus::Failed => panic!("{input:?} {options} failed: {text}"),
-        }
+        let valid_options = VALID_OPTIONS[random.next() % VALID_OPTIONS.len()];
+        let (status, text) = parse_through_c_abi(&input, valid_options.as_bytes());
+        assert_eq!(
+            status,
+            MessageParserStatus::Ok,
+            "{input:?} {valid_options}: {text}"
+        );
+        let ast: serde_json::Value = serde_json::from_str(&text).unwrap();
+        assert!(ast.is_array(), "{input:?} {valid_options} -> {text}");
+
+        let invalid_options = INVALID_OPTIONS[random.next() % INVALID_OPTIONS.len()];
+        let (status, text) = parse_through_c_abi(&input, invalid_options.as_bytes());
+        assert_eq!(
+            status,
+            MessageParserStatus::InvalidOptions,
+            "{invalid_options}: {text}"
+        );
     }
 }
 

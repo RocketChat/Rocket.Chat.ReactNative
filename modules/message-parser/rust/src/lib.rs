@@ -5,38 +5,6 @@ use message_parser::{parse, Options};
 
 const PARSE_THREAD_STACK_BYTES: usize = 8 * 1024 * 1024;
 
-#[derive(Debug, PartialEq, Eq)]
-pub enum ParseError {
-    InvalidOptions(String),
-    Failed(String),
-}
-
-pub fn parse_to_json(input: &[u8], options_json: &[u8]) -> Result<String, ParseError> {
-    let options: Options = serde_json::from_slice(options_json)
-        .map_err(|error| ParseError::InvalidOptions(error.to_string()))?;
-    let text = String::from_utf8_lossy(input).into_owned();
-
-    let parse_thread = thread::Builder::new()
-        .name("message-parser".into())
-        .stack_size(PARSE_THREAD_STACK_BYTES)
-        .spawn(move || serde_json::to_string(&parse(&text, &options)))
-        .map_err(|error| ParseError::Failed(error.to_string()))?;
-
-    match parse_thread.join() {
-        Ok(Ok(json)) => Ok(json),
-        Ok(Err(error)) => Err(ParseError::Failed(error.to_string())),
-        Err(panic) => Err(ParseError::Failed(panic_message(panic.as_ref()))),
-    }
-}
-
-fn panic_message(panic: &(dyn Any + Send)) -> String {
-    panic
-        .downcast_ref::<&str>()
-        .map(|message| message.to_string())
-        .or_else(|| panic.downcast_ref::<String>().cloned())
-        .unwrap_or_else(|| "message parser panicked".to_string())
-}
-
 #[repr(C)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MessageParserStatus {
@@ -63,6 +31,34 @@ impl MessageParserOutput {
     }
 }
 
+fn parse_to_json(input: &[u8], options_json: &[u8]) -> (MessageParserStatus, String) {
+    let options: Options = match serde_json::from_slice(options_json) {
+        Ok(options) => options,
+        Err(error) => return (MessageParserStatus::InvalidOptions, error.to_string()),
+    };
+    let text = String::from_utf8_lossy(input).into_owned();
+
+    let parse_thread = thread::Builder::new()
+        .name("message-parser".into())
+        .stack_size(PARSE_THREAD_STACK_BYTES)
+        .spawn(move || serde_json::to_string(&parse(&text, &options)));
+
+    match parse_thread.map(|handle| handle.join()) {
+        Ok(Ok(Ok(json))) => (MessageParserStatus::Ok, json),
+        Ok(Ok(Err(error))) => (MessageParserStatus::Failed, error.to_string()),
+        Ok(Err(panic)) => (MessageParserStatus::Failed, panic_message(panic.as_ref())),
+        Err(error) => (MessageParserStatus::Failed, error.to_string()),
+    }
+}
+
+fn panic_message(panic: &(dyn Any + Send)) -> String {
+    panic
+        .downcast_ref::<&str>()
+        .map(|message| message.to_string())
+        .or_else(|| panic.downcast_ref::<String>().cloned())
+        .unwrap_or_else(|| "message parser panicked".to_string())
+}
+
 unsafe fn borrowed_bytes<'a>(bytes: *const u8, length: usize) -> &'a [u8] {
     if bytes.is_null() || length == 0 {
         &[]
@@ -81,17 +77,11 @@ pub unsafe extern "C" fn rocketchat_message_parser_parse(
     options_json: *const u8,
     options_json_length: usize,
 ) -> MessageParserOutput {
-    let input = borrowed_bytes(input, input_length);
-    let options_json = borrowed_bytes(options_json, options_json_length);
-    match parse_to_json(input, options_json) {
-        Ok(json) => MessageParserOutput::new(MessageParserStatus::Ok, json),
-        Err(ParseError::InvalidOptions(message)) => {
-            MessageParserOutput::new(MessageParserStatus::InvalidOptions, message)
-        }
-        Err(ParseError::Failed(message)) => {
-            MessageParserOutput::new(MessageParserStatus::Failed, message)
-        }
-    }
+    let (status, text) = parse_to_json(
+        borrowed_bytes(input, input_length),
+        borrowed_bytes(options_json, options_json_length),
+    );
+    MessageParserOutput::new(status, text)
 }
 
 /// # Safety
@@ -111,16 +101,16 @@ pub unsafe extern "C" fn rocketchat_message_parser_free(output: MessageParserOut
 mod tests {
     use super::*;
 
-    fn parse_json(input: &str, options_json: &str) -> Result<serde_json::Value, ParseError> {
-        parse_to_json(input.as_bytes(), options_json.as_bytes())
-            .map(|json| serde_json::from_str(&json).unwrap())
+    fn parse_json(input: &str, options_json: &str) -> serde_json::Value {
+        let (status, json) = parse_to_json(input.as_bytes(), options_json.as_bytes());
+        assert_eq!(status, MessageParserStatus::Ok, "{json}");
+        serde_json::from_str(&json).unwrap()
     }
 
     #[test]
     fn serializes_the_upstream_ast_shape() {
-        let ast = parse_json("**hi**", "{}").unwrap();
         assert_eq!(
-            ast,
+            parse_json("**hi**", "{}"),
             serde_json::json!([{
                 "type": "PARAGRAPH",
                 "value": [{ "type": "BOLD", "value": [{ "type": "PLAIN_TEXT", "value": "hi" }] }]
@@ -130,65 +120,37 @@ mod tests {
 
     #[test]
     fn applies_the_parse_options() {
-        let without = parse_json("hi :)", "{}").unwrap().to_string();
-        let with = parse_json("hi :)", r#"{"emoticons":true}"#)
-            .unwrap()
-            .to_string();
+        let without = parse_json("hi :)", "{}").to_string();
+        let with = parse_json("hi :)", r#"{"emoticons":true}"#).to_string();
         assert!(!without.contains("EMOJI"));
         assert!(with.contains("EMOJI"));
     }
 
     #[test]
     fn rejects_options_upstream_does_not_define() {
-        assert!(matches!(
-            parse_to_json(b"hi", br#"{"unknown":true}"#),
-            Err(ParseError::InvalidOptions(_))
-        ));
-        assert!(matches!(
-            parse_to_json(b"hi", b"not json"),
-            Err(ParseError::InvalidOptions(_))
-        ));
+        assert_eq!(
+            parse_to_json(b"hi", br#"{"unknown":true}"#).0,
+            MessageParserStatus::InvalidOptions
+        );
+        assert_eq!(
+            parse_to_json(b"hi", b"not json").0,
+            MessageParserStatus::InvalidOptions
+        );
+        assert_eq!(
+            parse_to_json(b"hi", b"true").0,
+            MessageParserStatus::InvalidOptions
+        );
     }
 
     #[test]
     fn replaces_invalid_utf8_instead_of_failing() {
-        let ast = parse_to_json(b"a\xED\xA0\x80b", b"{}").unwrap();
-        assert!(ast.contains("a\u{FFFD}\u{FFFD}\u{FFFD}b"));
+        let (status, json) = parse_to_json(b"a\xED\xA0\x80b", b"{}");
+        assert_eq!(status, MessageParserStatus::Ok);
+        assert!(json.contains("a\u{FFFD}\u{FFFD}\u{FFFD}b"));
     }
 
     #[test]
     fn parses_the_deepest_spoiler_emoticon_chain_on_its_own_stack() {
-        let input = "||:)".repeat(2_000);
-        assert!(parse_json(&input, r#"{"emoticons":true}"#).is_ok());
-    }
-
-    #[test]
-    fn round_trips_through_the_c_abi() {
-        let input = "**hi**";
-        let options = "{}";
-        let output = unsafe {
-            rocketchat_message_parser_parse(
-                input.as_ptr(),
-                input.len(),
-                options.as_ptr(),
-                options.len(),
-            )
-        };
-        assert_eq!(output.status, MessageParserStatus::Ok);
-        let json = unsafe { std::slice::from_raw_parts(output.bytes, output.length) };
-        assert!(std::str::from_utf8(json)
-            .unwrap()
-            .starts_with("[{\"type\":\"PARAGRAPH\""));
-        unsafe { rocketchat_message_parser_free(output) };
-    }
-
-    #[test]
-    fn reports_bad_options_through_the_c_abi() {
-        let options = "true";
-        let output = unsafe {
-            rocketchat_message_parser_parse(std::ptr::null(), 0, options.as_ptr(), options.len())
-        };
-        assert_eq!(output.status, MessageParserStatus::InvalidOptions);
-        unsafe { rocketchat_message_parser_free(output) };
+        parse_json(&"||:)".repeat(2_000), r#"{"emoticons":true}"#);
     }
 }
