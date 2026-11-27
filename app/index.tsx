@@ -47,6 +47,7 @@ import { initStore } from './lib/store/auxStore';
 import { type TSupportedThemes } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
+import PrivacyCoverSync from './containers/PrivacyCoverSync';
 
 enableScreens();
 initStore(store);
@@ -183,6 +184,7 @@ export default class Root extends Component<{}, IState> {
 										<AppContainer />
 										<TwoFactor />
 										<ScreenLockedView />
+										<PrivacyCoverSync />
 										<ChangePasscodeView />
 										<InAppNotification />
 										<ConferenceCall />

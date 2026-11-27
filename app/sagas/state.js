@@ -1,12 +1,17 @@
 import { select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
-import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
+import {
+	localAuthenticate,
+	saveLastLocalAuthenticationSession,
+	UserCanceledError
+} from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions/redux/TRootEnum';
 import { recoverSocket } from '../lib/services/socketHealth';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';
+import NativePrivacyCover from '../lib/native/NativePrivacyCover';
 
 const isAuthAndConnected = function* isAuthAndConnected() {
 	const login = yield select(state => state.login);
@@ -14,30 +19,48 @@ const isAuthAndConnected = function* isAuthAndConnected() {
 	return login.isAuthenticated && meteor.connected;
 };
 
-const appHasComeBackToForeground = function* appHasComeBackToForeground() {
+const authenticateOnForeground = function* authenticateOnForeground() {
 	const appRoot = yield select(state => state.app.root);
 	if (appRoot !== RootEnum.ROOT_INSIDE) {
-		return;
+		return false;
 	}
 	// Socket state is deliberately not checked here: a closed socket is the case
 	// recoverSocket below exists for.
 	const { isAuthenticated } = yield select(state => state.login);
 	if (!isAuthenticated) {
-		return;
+		return false;
 	}
+	const server = yield select(state => state.server.server);
+	yield localAuthenticate(server);
+	return true;
+};
+
+const resumeSessionOnForeground = function* resumeSessionOnForeground() {
+	recoverSocket().catch(e => log(e));
+	checkPendingNotification().catch(e => {
+		log('[state.js] Error checking pending notification:', e);
+	});
 	try {
-		const server = yield select(state => state.server.server);
-		yield localAuthenticate(server);
-
-		recoverSocket().catch(e => log(e));
-
-		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
-		checkPendingNotification().catch(e => {
-			log('[state.js] Error checking pending notification:', e);
-		});
-		return yield setUserPresenceOnline();
+		yield setUserPresenceOnline();
 	} catch (e) {
 		log(e);
+	}
+};
+
+const appHasComeBackToForeground = function* appHasComeBackToForeground() {
+	const coverToken = NativePrivacyCover.getCoverToken();
+	let isAuthenticatedOnForeground = false;
+	try {
+		isAuthenticatedOnForeground = yield authenticateOnForeground();
+	} catch (e) {
+		log(e);
+		if (e instanceof UserCanceledError) {
+			return;
+		}
+	}
+	NativePrivacyCover.releaseCover(coverToken);
+	if (isAuthenticatedOnForeground) {
+		yield resumeSessionOnForeground();
 	}
 };
 
