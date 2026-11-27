@@ -10,6 +10,7 @@ import Plain from './Plain';
 import InlineCode from './InlineCode';
 import Image from './Image';
 import Timestamp from './Timestamp';
+import { useMarkdownContext } from '../contexts/MarkdownContext';
 // import { InlineKaTeX, KaTeX } from './Katex';
 
 interface IParagraphProps {
@@ -23,6 +24,8 @@ const toLinkLabelValue = (label: LinkProps['value']['label']): ParagraphProps['v
 	Array.isArray(label) ? label : [label];
 
 const Inline = ({ value, forceTrim }: IParagraphProps): ReactElement | null => {
+	const { allowImages } = useMarkdownContext();
+
 	return (
 		<Text style={styles.inline}>
 			{value.map((block, index) => {
@@ -46,7 +49,7 @@ const Inline = ({ value, forceTrim }: IParagraphProps): ReactElement | null => {
 
 				switch (block.type) {
 					case 'IMAGE':
-						return <Image key={key} value={block.value} />;
+						return allowImages === false ? null : <Image key={key} value={block.value} />;
 					case 'PLAIN_TEXT':
 						return <Plain key={key} value={block.value} />;
 					case 'BOLD':

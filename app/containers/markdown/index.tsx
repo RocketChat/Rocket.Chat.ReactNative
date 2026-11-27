@@ -33,6 +33,7 @@ interface IMarkdownProps {
 	onLinkPress?: TOnLinkPress;
 	isTranslated?: boolean;
 	textStyle?: StyleProp<TextStyle>;
+	allowImages?: boolean;
 }
 
 type MarkdownBlock = Root[number];
@@ -117,7 +118,8 @@ const Markdown: FC<IMarkdownProps> = ({
 	username = '',
 	onLinkPress,
 	isTranslated,
-	textStyle
+	textStyle,
+	allowImages = true
 }: IMarkdownProps) => {
 	let tokens: Root | null = null;
 
@@ -138,9 +140,10 @@ const Markdown: FC<IMarkdownProps> = ({
 			username,
 			navToRoomInfo,
 			onLinkPress,
-			textStyle
+			textStyle,
+			allowImages
 		}),
-		[mentions, channels, useRealName, username, navToRoomInfo, onLinkPress, textStyle]
+		[mentions, channels, useRealName, username, navToRoomInfo, onLinkPress, textStyle, allowImages]
 	);
 
 	if (!tokens) {

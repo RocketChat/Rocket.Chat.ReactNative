@@ -1,36 +1,25 @@
 import { render, screen } from '@testing-library/react-native';
 
-import StatusText, { stripMarkdownImages } from '../StatusText';
+import StatusText from '../StatusText';
 
 jest.mock('~/containers/markdown', () => ({
 	__esModule: true,
-	default: ({ msg }: { msg: string }) => {
+	default: ({ msg, allowImages }: { msg: string; allowImages?: boolean }) => {
 		const { Text } = require('react-native');
-		return <Text>{msg}</Text>;
+		return <Text>{`${msg}|${String(allowImages)}`}</Text>;
 	}
 }));
 
 describe('StatusText', () => {
-	it('renders status text through the markdown renderer', () => {
+	it('renders the status text through the markdown renderer with images disabled', () => {
 		render(<StatusText msg=':rcbadge: on vacation' />);
 
-		expect(screen.getByText(':rcbadge: on vacation')).toBeTruthy();
+		expect(screen.getByText(':rcbadge: on vacation|false')).toBeTruthy();
 	});
 
-	it('strips remote images so opening a profile cannot contact their hosts', () => {
+	it('disables images so status text cannot load remote hosts', () => {
 		render(<StatusText msg='![tracker](https://example.com/tracker.png) on vacation' />);
 
-		expect(screen.queryByText(/tracker\.png/)).toBeNull();
-		expect(screen.getByText('tracker on vacation')).toBeTruthy();
-	});
-});
-
-describe('stripMarkdownImages', () => {
-	it('replaces an image with its alt text', () => {
-		expect(stripMarkdownImages('![alt](https://example.com/a.png)')).toBe('alt');
-	});
-
-	it('leaves links and plain text untouched', () => {
-		expect(stripMarkdownImages('[link](https://example.com) :rcbadge:')).toBe('[link](https://example.com) :rcbadge:');
+		expect(screen.getByText('![tracker](https://example.com/tracker.png) on vacation|false')).toBeTruthy();
 	});
 });
