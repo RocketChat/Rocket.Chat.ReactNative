@@ -41,6 +41,10 @@ const VideoPlayer = ({ attachment, user, baseUrl, setLoading }: IVideoPlayerProp
 		}
 	});
 
+	useEventListener(player, 'playToEnd', () => {
+		player.currentTime = 0;
+	});
+
 	useEffect(() => {
 		hasHandledErrorRef.current = false;
 	}, [uri]);

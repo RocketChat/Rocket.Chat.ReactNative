@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react-native';
 import { Alert } from 'react-native';
+import { useVideoPlayer } from 'expo-video';
 
 import VideoPlayer from '.';
 import { useAppNavigation } from '~/lib/hooks/navigation';
@@ -31,9 +32,11 @@ jest.mock('~/lib/hooks/navigation', () => ({
 
 const mockUseEventListener = require('expo').useEventListener as jest.Mock;
 
+const mockUseVideoPlayer = useVideoPlayer as jest.Mock;
+
 const mockUseAppNavigation = useAppNavigation as jest.Mock;
 
-let statusCallback: ((event: { status: string }) => void) | undefined;
+let listeners: Record<string, (event?: any) => void> = {};
 
 const baseProps = {
 	attachment: {
@@ -47,21 +50,22 @@ const baseProps = {
 describe('VideoPlayer', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		statusCallback = undefined;
+		listeners = {};
 		mockUseAppNavigation.mockReturnValue({
 			addListener: jest.fn(() => jest.fn()),
 			goBack: jest.fn()
 		});
-		mockUseEventListener.mockImplementation((_player: unknown, _event: string, cb: (event: { status: string }) => void) => {
-			statusCallback = cb;
+		mockUseEventListener.mockImplementation((_player: unknown, event: string, cb: (event?: any) => void) => {
+			listeners[event] = cb;
 		});
+		mockUseVideoPlayer.mockReturnValue({ play: jest.fn(), pause: jest.fn(), currentTime: 0 });
 	});
 
 	it('hides the loading indicator when the video is ready to play', () => {
 		const setLoading = jest.fn();
 		render(<VideoPlayer {...baseProps} setLoading={setLoading} />);
 
-		statusCallback?.({ status: 'readyToPlay' });
+		listeners.statusChange?.({ status: 'readyToPlay' });
 
 		expect(setLoading).toHaveBeenCalledWith(false);
 	});
@@ -77,13 +81,24 @@ describe('VideoPlayer', () => {
 
 		render(<VideoPlayer {...baseProps} setLoading={setLoading} />);
 
-		statusCallback?.({ status: 'error' });
-		statusCallback?.({ status: 'error' });
+		listeners.statusChange?.({ status: 'error' });
+		listeners.statusChange?.({ status: 'error' });
 
 		expect(alertSpy).toHaveBeenCalledTimes(1);
 		expect(goBack).toHaveBeenCalledTimes(1);
 
 		alertSpy.mockRestore();
+	});
+
+	it('rewinds the video when it plays to the end', () => {
+		const player = { play: jest.fn(), pause: jest.fn(), currentTime: 10 };
+		mockUseVideoPlayer.mockReturnValue(player);
+
+		render(<VideoPlayer {...baseProps} setLoading={jest.fn()} />);
+
+		listeners.playToEnd?.();
+
+		expect(player.currentTime).toBe(0);
 	});
 });
 
