@@ -1,6 +1,7 @@
 jest.mock('~/lib/methods/helpers/localAuthentication', () => ({
 	localAuthenticate: jest.fn(),
-	saveLastLocalAuthenticationSession: jest.fn()
+	saveLastLocalAuthenticationSession: jest.fn(),
+	UserCanceledError: class UserCanceledError extends Error {}
 }));
 
 jest.mock('~/lib/services/restApi', () => ({
@@ -33,7 +34,7 @@ import { selectServerSuccess } from '~/actions/server';
 import { RootEnum } from '~/definitions/redux/TRootEnum';
 import reducers from '~/reducers';
 import stateRoot from '../state';
-import { localAuthenticate } from '~/lib/methods/helpers/localAuthentication';
+import { localAuthenticate, UserCanceledError } from '~/lib/methods/helpers/localAuthentication';
 import { setUserPresenceOnline, setUserPresenceAway } from '~/lib/services/restApi';
 import { recoverSocket } from '~/lib/services/socketHealth';
 import log from '~/lib/methods/helpers/log';
@@ -222,6 +223,17 @@ describe('state saga — privacy cover on foreground', () => {
 		await flushPromises();
 
 		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledWith(2);
+	});
+
+	it('leaves the cover to the lock request that replaced its own', async () => {
+		mockedLocalAuthenticate.mockRejectedValueOnce(new UserCanceledError());
+		nativePrivacyCover.getCoverToken.mockReturnValueOnce(2);
+		const store = setupSignedInStore(RootEnum.ROOT_INSIDE);
+
+		store.dispatch({ type: APP_STATE.FOREGROUND });
+		await flushPromises();
+
+		expect(nativePrivacyCover.releaseCover).not.toHaveBeenCalled();
 	});
 
 	it('releases the cover when the app is outside the signed-in area', async () => {

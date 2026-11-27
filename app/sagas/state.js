@@ -1,7 +1,11 @@
 import { select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
-import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
+import {
+	localAuthenticate,
+	saveLastLocalAuthenticationSession,
+	UserCanceledError
+} from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions/redux/TRootEnum';
 import { recoverSocket } from '../lib/services/socketHealth';
@@ -50,6 +54,9 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		isAuthenticatedOnForeground = yield authenticateOnForeground();
 	} catch (e) {
 		log(e);
+		if (e instanceof UserCanceledError) {
+			return;
+		}
 	}
 	NativePrivacyCover.releaseCover(coverToken);
 	if (isAuthenticatedOnForeground) {
