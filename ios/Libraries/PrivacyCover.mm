@@ -13,6 +13,7 @@
   std::atomic<NSInteger> _activatedToken;
   NSInteger _releasedToken;
   UIView *_coverView;
+  __weak UIView *_contentHiddenFromAccessibility;
 }
 
 RCT_EXPORT_MODULE()
@@ -105,9 +106,10 @@ RCT_EXPORT_MODULE()
   UIView *coverView = [self makeCoverView];
   coverView.frame = window.bounds;
   coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-  coverView.accessibilityViewIsModal = YES;
   [window addSubview:coverView];
   _coverView = coverView;
+  _contentHiddenFromAccessibility = window.rootViewController.view;
+  _contentHiddenFromAccessibility.accessibilityElementsHidden = YES;
 }
 
 - (UIView *)makeCoverView
@@ -119,6 +121,8 @@ RCT_EXPORT_MODULE()
 {
   [_coverView removeFromSuperview];
   _coverView = nil;
+  _contentHiddenFromAccessibility.accessibilityElementsHidden = NO;
+  _contentHiddenFromAccessibility = nil;
 }
 
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const facebook::react::ObjCTurboModule::InitParams &)params

@@ -45,9 +45,16 @@ const ScreenLockedView = () => {
 	const { onShow, defer, onModalHide } = useDeferredModalSettle<IData>();
 
 	useDeepCompareEffect(() => {
-		isVisibleRef.current = !isEmpty(data);
-		setVisible(isVisibleRef.current);
+		const hasRequest = !isEmpty(data);
+		if (!hasRequest) {
+			isVisibleRef.current = false;
+		}
+		setVisible(hasRequest);
 	}, [data]);
+
+	const onModalShow = () => {
+		isVisibleRef.current = true;
+	};
 
 	const showScreenLock = useCallback(
 		(args: IData) => {
@@ -92,6 +99,7 @@ const ScreenLockedView = () => {
 			style={{ margin: 0 }}
 			animationIn='fadeIn'
 			animationOut='fadeOut'
+			onModalShow={onModalShow}
 			onModalHide={onModalHide}>
 			<GestureHandlerRootView style={styles.container}>
 				<PasscodeEnter key={requestId} hasBiometry={!!data?.hasBiometry} reason={data?.reason} finishProcess={onSubmit} />

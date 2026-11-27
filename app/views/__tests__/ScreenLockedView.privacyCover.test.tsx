@@ -5,11 +5,14 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import NativePrivacyCover from '../../lib/native/NativePrivacyCover';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../../lib/constants/localAuthentication';
 
+const mockModal: { onModalShow?: () => void } = {};
 jest.mock('react-native-modal', () => {
 	const mockReact = require('react');
 	const { View: MockView } = require('react-native');
-	return ({ isVisible, children }: { isVisible: boolean; children: React.ReactNode }) =>
-		isVisible ? mockReact.createElement(MockView, { testID: 'modal' }, children) : null;
+	return ({ isVisible, onModalShow, children }: { isVisible: boolean; onModalShow: () => void; children: React.ReactNode }) => {
+		mockModal.onModalShow = onModalShow;
+		return isVisible ? mockReact.createElement(MockView, { testID: 'modal' }, children) : null;
+	};
 });
 
 const mockRenders: { finishProcess: () => void }[] = [];
@@ -49,9 +52,19 @@ describe('ScreenLockedView privacy cover', () => {
 		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledWith(7);
 	});
 
+	it('keeps the cover when a second lock request arrives while the lock screen is still fading in', () => {
+		render(<ScreenLockedView />);
+		emitLockRequest();
+
+		emitLockRequest();
+
+		expect(nativePrivacyCover.releaseCover).not.toHaveBeenCalled();
+	});
+
 	it('releases the active trip cover when a lock request arrives while the lock screen is already up', () => {
 		render(<ScreenLockedView />);
 		emitLockRequest();
+		act(() => mockModal.onModalShow?.());
 
 		emitLockRequest();
 
