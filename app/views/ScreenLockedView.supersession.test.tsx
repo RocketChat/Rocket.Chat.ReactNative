@@ -5,11 +5,13 @@ import EventEmitter from '../lib/methods/helpers/events';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants/localAuthentication';
 
 // Renders children only while visible, so the assertions read the modal's real visibility.
-jest.mock('react-native-modal', () => {
+jest.mock('../containers/LockScreenHost', () => {
 	const mockReact = require('react');
 	const { View: MockView } = require('react-native');
-	return ({ isVisible, children }: { isVisible: boolean; children: React.ReactNode }) =>
-		isVisible ? mockReact.createElement(MockView, { testID: 'modal' }, children) : null;
+	return {
+		LockScreenHost: ({ visible, children }: { visible: boolean; children: React.ReactNode }) =>
+			visible ? mockReact.createElement(MockView, { testID: 'modal' }, children) : null
+	};
 });
 
 // Captures the callbacks each render hands down; index 0 is the ones the first request mounted with.

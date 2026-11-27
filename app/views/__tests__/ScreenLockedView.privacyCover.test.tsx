@@ -5,15 +5,13 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import NativePrivacyCover from '../../lib/native/NativePrivacyCover';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../../lib/constants/localAuthentication';
 
-const mockModal: { onModalShow?: () => void } = {};
-jest.mock('react-native-modal', () => {
-	const mockReact = require('react');
-	const { View: MockView } = require('react-native');
-	return ({ isVisible, onModalShow, children }: { isVisible: boolean; onModalShow: () => void; children: React.ReactNode }) => {
-		mockModal.onModalShow = onModalShow;
-		return isVisible ? mockReact.createElement(MockView, { testID: 'modal' }, children) : null;
-	};
-});
+const mockHost: { onShown?: () => void } = {};
+jest.mock('../../containers/LockScreenHost', () => ({
+	LockScreenHost: ({ visible, onShown, children }: { visible: boolean; onShown: () => void; children: React.ReactNode }) => {
+		mockHost.onShown = onShown;
+		return visible ? children : null;
+	}
+}));
 
 const mockRenders: { finishProcess: () => void }[] = [];
 jest.mock('../../containers/Passcode', () => ({
@@ -66,7 +64,7 @@ describe('ScreenLockedView privacy cover', () => {
 		emitLockRequest();
 		emitLockRequest();
 
-		act(() => mockModal.onModalShow?.());
+		act(() => mockHost.onShown?.());
 
 		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledWith(7);
 	});
@@ -74,7 +72,7 @@ describe('ScreenLockedView privacy cover', () => {
 	it('releases the active trip cover when a lock request arrives while the lock screen is already up', () => {
 		render(<ScreenLockedView />);
 		emitLockRequest();
-		act(() => mockModal.onModalShow?.());
+		act(() => mockHost.onShown?.());
 
 		emitLockRequest();
 

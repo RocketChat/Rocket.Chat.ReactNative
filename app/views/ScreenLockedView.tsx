@@ -1,11 +1,11 @@
 import isEmpty from 'lodash/isEmpty';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { PasscodeEnter } from '../containers/Passcode';
+import { LockScreenHost } from '../containers/LockScreenHost';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants/localAuthentication';
 import { CustomIcon } from '../containers/CustomIcon';
 import { hasNotch } from '../lib/methods/helpers/deviceInfo';
@@ -81,15 +81,7 @@ const ScreenLockedView = () => {
 	const onCancel = () => settle(requestId, data.cancel);
 
 	return (
-		<Modal
-			useNativeDriver
-			isVisible={visible}
-			hideModalContentWhileAnimating
-			style={{ margin: 0 }}
-			animationIn='fadeIn'
-			animationOut='fadeOut'
-			onModalShow={onLockScreenShown}
-			onModalHide={onModalHide}>
+		<LockScreenHost visible={visible} onShown={onLockScreenShown} onHidden={onModalHide}>
 			<GestureHandlerRootView style={styles.container}>
 				<PasscodeEnter key={requestId} hasBiometry={!!data?.hasBiometry} reason={data?.reason} finishProcess={onSubmit} />
 				{data?.canClose ? (
@@ -98,7 +90,7 @@ const ScreenLockedView = () => {
 					</Touch>
 				) : null}
 			</GestureHandlerRootView>
-		</Modal>
+		</LockScreenHost>
 	);
 };
 
