@@ -339,6 +339,7 @@ export default function subscribeRooms() {
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
 				try {
+					const isOwnRemoval = !!store.getState().room.removalsInFlight[data.rid];
 					const subCollection = db.get('subscriptions');
 					const sub = await subCollection.find(data.rid);
 					// TODO - today the Relation type from watermelon just support one to one relations
@@ -359,11 +360,8 @@ export default function subscribeRooms() {
 
 					Encryption.stopRoom(data.rid);
 
-					const roomState = store.getState().room;
-					// Delete and remove events come from this stream
-					// Here we identify which one was triggered
-					if (data.rid === roomState.rid && roomState.isDeleting) {
-						store.dispatch(removedRoom());
+					if (isOwnRemoval) {
+						store.dispatch(removedRoom(data.rid));
 					} else {
 						EventEmitter.emit('ROOM_REMOVED', { rid: data.rid });
 					}

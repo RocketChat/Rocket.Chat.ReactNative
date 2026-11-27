@@ -7,6 +7,7 @@ import {
 	roomHistoryRequest,
 	roomHistoryUiLoaderPop,
 	roomHistoryUiLoaderPush,
+	roomRemovalFinished,
 	subscribeRoom,
 	unsubscribeRoom
 } from '../actions/room';
@@ -32,32 +33,38 @@ describe('test room reducer', () => {
 		expect(state.subscribedRoom).toEqual('');
 	});
 
-	it('should return initial state after leaveRoom', () => {
-		mockedStore.dispatch(leaveRoom(ERoomType.c, { rid: ERoomType.c }));
-		const { rid, isDeleting } = mockedStore.getState().room;
-		expect(rid).toEqual(ERoomType.c);
-		expect(isDeleting).toEqual(true);
+	it('counts a removal in flight after leaveRoom', () => {
+		mockedStore.dispatch(leaveRoom(ERoomType.c, { rid: 'LEAVING' }));
+		expect(mockedStore.getState().room.removalsInFlight).toEqual({ LEAVING: 1 });
 	});
 
-	it('should return initial state after deleteRoom', () => {
-		mockedStore.dispatch(deleteRoom(ERoomType.l, { rid: ERoomType.l }));
-		const { rid, isDeleting } = mockedStore.getState().room;
-		expect(rid).toEqual(ERoomType.l);
-		expect(isDeleting).toEqual(true);
+	it('counts a second removal in flight of the same room after deleteRoom', () => {
+		mockedStore.dispatch(deleteRoom(ERoomType.c, { rid: 'LEAVING' }));
+		expect(mockedStore.getState().room.removalsInFlight).toEqual({ LEAVING: 2 });
 	});
 
-	it('should return initial state after forwardRoom', () => {
-		const transferData = { roomId: 'FORWARDING' };
-		mockedStore.dispatch(forwardRoom('FORWARDING', transferData));
-		const { rid, isDeleting } = mockedStore.getState().room;
-		expect(rid).toEqual('FORWARDING');
-		expect(isDeleting).toEqual(true);
+	it('counts a removal in flight after forwardRoom', () => {
+		mockedStore.dispatch(forwardRoom('FORWARDING', { roomId: 'FORWARDING' }));
+		expect(mockedStore.getState().room.removalsInFlight).toEqual({ LEAVING: 2, FORWARDING: 1 });
 	});
 
-	it('should return loading after call removedRoom', () => {
-		mockedStore.dispatch(removedRoom());
-		const { isDeleting } = mockedStore.getState().room;
-		expect(isDeleting).toEqual(false);
+	it('keeps the removals in flight after removedRoom', () => {
+		mockedStore.dispatch(removedRoom('LEAVING'));
+		expect(mockedStore.getState().room.removalsInFlight).toEqual({ LEAVING: 2, FORWARDING: 1 });
+	});
+
+	it('ends one removal in flight per roomRemovalFinished', () => {
+		mockedStore.dispatch(roomRemovalFinished('LEAVING'));
+		expect(mockedStore.getState().room.removalsInFlight).toEqual({ LEAVING: 1, FORWARDING: 1 });
+
+		mockedStore.dispatch(roomRemovalFinished('LEAVING'));
+		mockedStore.dispatch(roomRemovalFinished('FORWARDING'));
+		expect(mockedStore.getState().room.removalsInFlight).toEqual({});
+	});
+
+	it('ignores roomRemovalFinished for a room with no removal in flight', () => {
+		mockedStore.dispatch(roomRemovalFinished('UNKNOWN'));
+		expect(mockedStore.getState().room.removalsInFlight).toEqual({});
 	});
 
 	it('should return historyLoaders with one item after call historyRequest', () => {

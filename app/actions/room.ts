@@ -20,6 +20,8 @@ interface IBaseReturn extends Action {
 
 type TSubscribeRoom = IBaseReturn;
 type TUnsubscribeRoom = IBaseReturn;
+type TRemovedRoom = IBaseReturn;
+type TRoomRemovalFinished = IBaseReturn;
 
 type TRoom = Record<string, any>;
 
@@ -32,6 +34,7 @@ interface ILeaveRoom extends Action {
 interface IDeleteRoom extends Action {
 	roomType: ERoomType;
 	room: TRoom;
+	rid: string;
 	selected?: ISelected;
 }
 
@@ -106,6 +109,7 @@ export function deleteRoom(roomType: ERoomType, room: TRoom, selected?: ISelecte
 	return {
 		type: ROOM.DELETE,
 		room,
+		rid: room.rid || room._id,
 		roomType,
 		selected
 	};
@@ -119,9 +123,17 @@ export function forwardRoom(rid: string, transferData: ITransferData): IForwardR
 	};
 }
 
-export function removedRoom(): Action {
+export function removedRoom(rid: string): TRemovedRoom {
 	return {
-		type: ROOM.REMOVED
+		type: ROOM.REMOVED,
+		rid
+	};
+}
+
+export function roomRemovalFinished(rid: string): TRoomRemovalFinished {
+	return {
+		type: ROOM.REMOVAL_FINISHED,
+		rid
 	};
 }
 

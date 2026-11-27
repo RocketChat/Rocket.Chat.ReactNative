@@ -4,7 +4,7 @@ import { delay, put, race, take, takeLatest, actionChannel, throttle, fork, canc
 import EventEmitter from '../lib/methods/helpers/events';
 import Navigation from '../lib/navigation/appNavigation';
 import * as types from '../actions/actionsTypes';
-import { removedRoom } from '../actions/room';
+import { roomRemovalFinished } from '../actions/room';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../lib/methods/helpers/info';
@@ -69,7 +69,14 @@ const watchUserTyping = function* watchUserTyping({ rid, status, args }) {
 	}
 };
 
-const handleRemovedRoom = function* handleRemovedRoom(roomType, actionType) {
+const waitForRemovedRoom = function* waitForRemovedRoom(rid) {
+	yield race({
+		removed: take(action => action.type === types.ROOM.REMOVED && action.rid === rid),
+		timeout: delay(3000)
+	});
+};
+
+const handleRemovedRoom = function* handleRemovedRoom(rid, roomType, actionType) {
 	const isMasterDetail = getIsMasterDetail();
 	Navigation.popToTop(isMasterDetail);
 
@@ -84,14 +91,7 @@ const handleRemovedRoom = function* handleRemovedRoom(roomType, actionType) {
 		});
 	}
 
-	// types.ROOM.REMOVE is triggered by `subscriptions-changed` with `removed` arg
-	const { timeout } = yield race({
-		deleteFinished: take(types.ROOM.REMOVED),
-		timeout: delay(3000)
-	});
-	if (timeout) {
-		put(removedRoom());
-	}
+	yield waitForRemovedRoom(rid);
 };
 
 const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) {
@@ -106,7 +106,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 		}
 
 		if (result?.success) {
-			yield handleRemovedRoom(roomType, 'leave');
+			yield handleRemovedRoom(room.rid, roomType, 'leave');
 		}
 	} catch (e) {
 		logEvent(events.RA_LEAVE_F);
@@ -117,22 +117,24 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 		} else {
 			Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
 		}
+	} finally {
+		yield put(roomRemovalFinished(room.rid));
 	}
 };
 
-const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }) {
+const handleDeleteRoom = function* handleDeleteRoom({ room, rid, roomType, selected }) {
 	logEvent(events.RI_EDIT_DELETE);
 	try {
 		let result = {};
 
 		if (roomType === 'channel') {
-			result = yield deleteRoom(room.rid || room._id, room.t);
+			result = yield deleteRoom(rid, room.t);
 		} else if (roomType === 'team') {
 			result = yield deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
 		}
 
 		if (result?.success) {
-			yield handleRemovedRoom(roomType, 'delete');
+			yield handleRemovedRoom(rid, roomType, 'delete');
 		}
 	} catch (e) {
 		logEvent(events.RI_EDIT_DELETE_F);
@@ -142,10 +144,12 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 				action: roomType === 'team' ? I18n.t('deleting_team') : I18n.t('deleting_room')
 			})
 		);
+	} finally {
+		yield put(roomRemovalFinished(rid));
 	}
 };
 
-const handleForwardRoom = function* handleForwardRoom({ transferData }) {
+const handleForwardRoom = function* handleForwardRoom({ rid, transferData }) {
 	try {
 		const result = yield forwardLivechat(transferData);
 		if (result === true) {
@@ -155,11 +159,14 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 			} else {
 				Navigation.navigate('RoomsListView');
 			}
+			yield waitForRemovedRoom(rid);
 		} else {
 			showErrorAlert(I18n.t('No_available_agents_to_transfer'), I18n.t('Oops'));
 		}
 	} catch (e) {
 		showErrorAlert(e.reason, I18n.t('Oops'));
+	} finally {
+		yield put(roomRemovalFinished(rid));
 	}
 };
 
