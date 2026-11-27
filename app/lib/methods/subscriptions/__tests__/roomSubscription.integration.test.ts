@@ -287,6 +287,20 @@ describe('RoomSubscription over the real SDK', () => {
 			expect(readMessages).not.toHaveBeenCalled();
 		});
 
+		it('loads nothing when the user leaves while the catch-up reads the Subscription', async () => {
+			const lookup = deferred<null>();
+			(getSubscriptionByRoomId as jest.Mock).mockImplementationOnce(() => lookup.promise);
+			const { room, subscribing } = await subscribeWithoutAnswers('room-rid');
+			answerSubscriptions(mockConnections[0]);
+			await flushMicrotasksAndTimers();
+
+			await room.unsubscribe();
+			lookup.resolve(null);
+			await subscribing;
+
+			expect(loadMissedMessages).not.toHaveBeenCalled();
+		});
+
 		it('neither loads nor marks an Invited Room read', async () => {
 			(getSubscriptionByRoomId as jest.Mock).mockResolvedValue({
 				rid: 'room-rid',

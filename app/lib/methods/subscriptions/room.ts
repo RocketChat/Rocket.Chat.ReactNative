@@ -100,7 +100,7 @@ export default class RoomSubscription {
 		try {
 			reduxStore.dispatch(clearUserTyping());
 			const subscription = await getSubscriptionByRoomId(this.rid);
-			if (subscription && isInviteSubscription(subscription)) {
+			if (!this.isAlive || (subscription && isInviteSubscription(subscription))) {
 				return;
 			}
 			await loadMissedMessages({ rid: this.rid });
