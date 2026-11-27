@@ -22,11 +22,11 @@ interface IOptions {
 }
 
 // this form is required by Rocket.Chat's parser in "app/statistics/server/lib/UAParserCustom.js"
-export const headers: CustomHeaders = {
-	'User-Agent': `RC Mobile; ${
-		Platform.OS
-	} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
-};
+const userAgent = `RC Mobile; ${
+	Platform.OS
+} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`;
+
+export const headers: CustomHeaders = { 'User-Agent': userAgent };
 
 RocketChatSettings.customHeaders = headers;
 

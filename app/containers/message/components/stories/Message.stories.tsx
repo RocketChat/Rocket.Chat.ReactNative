@@ -60,6 +60,8 @@ const longText =
 store.dispatch(setUser(user));
 store.dispatch(selectServerSuccess({ server: baseUrl, version: '', name: '' }));
 store.dispatch(updateSettings('API_Embed', true));
+store.dispatch(updateSettings('Katex_Enabled', true));
+store.dispatch(updateSettings('Katex_Parenthesis_Syntax', true));
 store.dispatch(
 	setCustomEmojis({
 		marioparty: { name: 'marioparty', extension: 'gif' },
@@ -148,7 +150,6 @@ const buildMessage = (overrides: Record<string, unknown> = {}): TAnyMessageModel
 		tmsg: undefined,
 		blocks: undefined,
 		e2e: undefined,
-		md: undefined,
 		comment: undefined,
 		...definedOverrides
 	} as unknown as TAnyMessageModel;
@@ -376,41 +377,11 @@ export const PinnedLargeFont = () => (
 
 export const Translated = () => (
 	<>
-		<Message
-			msg='Message translated'
-			md={[
-				{
-					type: 'PARAGRAPH',
-					value: [
-						{
-							type: 'PLAIN_TEXT',
-							value: 'md is never translated'
-						}
-					]
-				}
-			]}
-			isTranslated
-		/>
+		<Message msg='Message translated' isTranslated />
 	</>
 );
 
-export const TranslatedLargeFont = () => (
-	<MessageLargeFont
-		msg='Message translated'
-		md={[
-			{
-				type: 'PARAGRAPH',
-				value: [
-					{
-						type: 'PLAIN_TEXT',
-						value: 'md is never translated'
-					}
-				]
-			}
-		]}
-		isTranslated
-	/>
-);
+export const TranslatedLargeFont = () => <MessageLargeFont msg='Message translated' isTranslated />;
 
 export const Encrypted = () => (
 	<>
@@ -2795,14 +2766,7 @@ export const AttachmentWithTextAndLink = () => <Message attachments={attachmentW
 
 export const AttachmentWithTextAndLinkLargeFont = () => <MessageLargeFont attachments={attachmentWithTextAndLink} />;
 const katex = {
-	msg: '\\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\]',
-	md: [
-		{
-			type: 'KATEX',
-			value:
-				' \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }'
-		}
-	]
+	msg: '\\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\]'
 };
 
 export const Katex = () => (
@@ -2813,14 +2777,7 @@ export const Katex = () => (
 export const KatexLargeFont = () => <MessageLargeFont {...katex} />;
 
 const katexArray = {
-	msg: '\\begin{array}{|c|c|c|c|c|c|} \\hline \\text{...} & \\text{...} \\\\ \\hline \\end{array}',
-	md: [
-		{
-			type: 'KATEX',
-			value:
-				' \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{testing} & \\text{testingII} & \\text{testing III} & \\text{testing IV} & \\text{testV} & \\text{testVI} \\\\ \\hline \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} \\\\ \\hline\\text{TEST} & \\text{✅} & \\text{test} & \\text{test} & \\text{test} & \\text{✅} \\\\ \\hline \\end{array} '
-		}
-	]
+	msg: '\\[ \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{testing} & \\text{testingII} & \\text{testing III} & \\text{testing IV} & \\text{testV} & \\text{testVI} \\\\ \\hline \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} \\\\ \\hline\\text{TEST} & \\text{✅} & \\text{test} & \\text{test} & \\text{test} & \\text{✅} \\\\ \\hline \\end{array} \\]'
 };
 
 export const KatexArray = () => (
@@ -2832,18 +2789,7 @@ export const KatexArray = () => (
 export const KatexArrayLargeFont = () => <MessageLargeFont {...katexArray} />;
 
 const inlineKatex = {
-	msg: '\\(xˆ2 + yˆ2 - zˆ2\\)',
-	md: [
-		{
-			type: 'PARAGRAPH',
-			value: [
-				{
-					type: 'INLINE_KATEX',
-					value: 'xˆ2 + yˆ2 - zˆ2'
-				}
-			]
-		}
-	]
+	msg: '\\(xˆ2 + yˆ2 - zˆ2\\)'
 };
 
 export const InlineKatex = () => (

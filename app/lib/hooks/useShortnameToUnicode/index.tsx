@@ -35,9 +35,8 @@ const useShortnameToUnicode = (isEmojiPicker?: boolean) => {
 	const customEmojis = useCustomEmoji();
 
 	const replaceShortnameWithUnicode = (shortname: string) => {
-		const name = shortname.replace(/:/g, '');
-		// a custom emoji sharing a built-in shortcode/alias must win
-		if (customEmojis(name)) {
+		const customEmojiOverridesBuiltIn = customEmojis(shortname.replace(/:/g, ''));
+		if (customEmojiOverridesBuiltIn) {
 			return shortname;
 		}
 		return shortnameToUnicodeMap[shortname] || legacyShortnameToUnicodeMap[shortname] || shortname;
@@ -45,8 +44,8 @@ const useShortnameToUnicode = (isEmojiPicker?: boolean) => {
 	const formatShortnameToUnicode = (str: string) => {
 		str = str.replace(shortnamePattern, replaceShortnameWithUnicode);
 		str = str.replace(regAscii, (entire, _m1, m2, m3) => {
-			if (!m3 || !(unescapeHTML(m3) in ascii)) {
-				// if the ascii doesnt exist just return the entire match
+			const isKnownAscii = !!m3 && unescapeHTML(m3) in ascii;
+			if (!isKnownAscii) {
 				return entire;
 			}
 

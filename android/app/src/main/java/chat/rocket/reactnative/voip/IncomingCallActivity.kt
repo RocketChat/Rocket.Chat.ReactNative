@@ -25,7 +25,6 @@ import android.util.Log
 import android.view.ViewOutlineProvider
 import com.bumptech.glide.Glide
 import chat.rocket.reactnative.R
-import android.graphics.Typeface
 import chat.rocket.reactnative.notification.Ejson
 import chat.rocket.reactnative.notification.NotificationHelper
 
@@ -87,7 +86,6 @@ class IncomingCallActivity : Activity() {
         setContentView(R.layout.activity_incoming_call)
         applyNavigationBar()
         applyButtonBackgrounds()
-        applyInterFont()
 
         val voipPayload = VoipPayload.fromBundle(intent.extras)
         if (voipPayload == null || !voipPayload.isVoipIncomingCall()) {
@@ -148,30 +146,6 @@ class IncomingCallActivity : Activity() {
                 cornerRadius = cornerRadiusPx
             }
         }
-    }
-
-    private fun applyInterFont() {
-        val interRegular = try {
-            Typeface.createFromAsset(assets, "fonts/Inter-Regular.otf")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to load Inter-Regular font", e)
-            return
-        }
-        val interBold = try {
-            Typeface.createFromAsset(assets, "fonts/Inter-Bold.otf")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to load Inter-Bold font", e)
-            interRegular
-        }
-        listOf(
-            R.id.header_text,
-            R.id.host_name,
-            R.id.incoming_call_reject_label,
-            R.id.incoming_call_accept_label
-        ).forEach { id ->
-            findViewById<TextView>(id)?.setTypeface(interRegular)
-        }
-        findViewById<TextView>(R.id.caller_name)?.setTypeface(interBold)
     }
 
     private fun updateUI(payload: VoipPayload) {

@@ -33,8 +33,6 @@ export const getMessageSeparators = (
 	return { dateSeparator, showUnreadSeparator };
 };
 
-export const DEFAULT_MESSAGE_HEIGHT = 150;
-
 export const formatMessageCount = (count?: number, type?: string): string | null => {
 	const discussion = type === DISCUSSION;
 	let text = discussion ? I18n.t('No_messages_yet') : null;

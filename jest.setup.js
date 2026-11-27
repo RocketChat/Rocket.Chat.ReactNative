@@ -22,6 +22,10 @@ loadAsyncMock.mockImplementation(() => Promise.resolve({ width: 200, height: 300
 
 jest.mock('react-native-worklets', () => jest.requireActual('react-native-worklets/lib/module/mock'));
 
+jest.mock('./app/containers/markdown/parseOffThread', () => ({
+	parseOffThread: (msg, options, onParsed) => onParsed(jest.requireActual('@rocket.chat/message-parser').parse(msg, options))
+}));
+
 jest.mock('react-native-reanimated/src/css/native/proxy', () => ({
 	...jest.requireActual('react-native-reanimated/src/css/native/proxy'),
 	setCSSEventHandler: jest.fn()
@@ -259,15 +263,6 @@ jest.mock('@lodev09/react-native-true-sheet', () => {
 	};
 });
 
-jest.mock('react-native-math-view', () => {
-	const react = require('react-native');
-	return {
-		__esModule: true,
-		default: react.View, // Default export
-		MathText: react.View // {...} Named export
-	};
-});
-
 jest.mock('react-native-keyboard-controller', () => require('react-native-keyboard-controller/jest'));
 
 jest.mock('react-native-keychain', () => ({
@@ -298,6 +293,8 @@ jest.mock('./app/lib/native/NativeSSLPinningAndroid', () => ({
 jest.mock('./app/lib/methods/helpers/externalInput', () => ({
 	isExternalKeyboardConnected: jest.fn(() => false)
 }));
+
+jest.mock('react-native-enriched-markdown', () => require('react-native-enriched-markdown/jest'));
 
 jest.mock('react-native-webview', () => {
 	const { forwardRef } = require('react');

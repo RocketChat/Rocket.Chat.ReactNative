@@ -75,7 +75,7 @@ describe('CollapsibleQuote', () => {
 		// open
 		fireEvent.press(collapsibleQuoteTouchable);
 		const open = within(collapsibleQuoteTouchable);
-		const textOpen = open.getByLabelText(testAttachment.text);
+		const textOpen = open.getByText(testAttachment.text);
 		expect(textOpen).toBeTruthy();
 		// close
 		fireEvent.press(collapsibleQuoteTouchable);
@@ -108,7 +108,7 @@ describe('CollapsibleQuote', () => {
 		// open
 		fireEvent.press(collapsibleQuoteTouchable);
 		const open = within(collapsibleQuoteTouchable);
-		const fieldValueOpen = open.getByLabelText(testAttachment.fields[0].value.split('\n')[0]);
+		const fieldValueOpen = open.getByText(testAttachment.fields[0].value.split('\n')[0]);
 		expect(fieldValueOpen).toBeTruthy();
 		// close
 		fireEvent.press(collapsibleQuoteTouchable);

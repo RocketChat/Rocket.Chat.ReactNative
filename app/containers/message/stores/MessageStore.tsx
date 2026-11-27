@@ -201,10 +201,9 @@ export const useIsOwnMessage = (): boolean => {
 export const useAvatar = (): Pick<TAnyMessageModel, 'avatar' | 'emoji'> =>
 	useMessageStore(useShallow(s => ({ avatar: s.item.avatar, emoji: s.item.emoji })));
 
-export const useContentData = (): Pick<TAnyMessageModel, 'md' | 'mentions' | 'channels' | 'comment' | 'attachments' | 't'> =>
+export const useContentData = (): Pick<TAnyMessageModel, 'mentions' | 'channels' | 'comment' | 'attachments' | 't'> =>
 	useMessageStore(
 		useShallow(s => ({
-			md: s.item.md,
 			mentions: s.item.mentions,
 			channels: s.item.channels,
 			comment: s.item.comment,

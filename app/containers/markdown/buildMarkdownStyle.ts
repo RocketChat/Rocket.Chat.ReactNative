@@ -1,0 +1,89 @@
+import { Platform } from 'react-native';
+import { type MarkdownStyle } from 'react-native-enriched-markdown';
+
+import { type TColors } from '~/theme';
+import { interWeight } from '~/views/Styles';
+import { CHANNEL_SCHEME, ME_QUERY, TIMESTAMP_SCHEME, USER_SCHEME } from './linkSchemes';
+
+const codeFontFamily = Platform.select({ ios: 'Courier New', android: 'monospace' });
+
+const BIG_EMOJI_SIZE = 30;
+
+const bodyTextStyle = (colors: TColors) => ({
+	fontFamily: 'Inter',
+	fontSize: 16,
+	lineHeight: 22,
+	color: colors.fontDefault
+});
+
+export const buildMarkdownStyle = (colors: TColors, isBigEmojiOnly: boolean, fontScale: number): MarkdownStyle => ({
+	paragraph: {
+		...bodyTextStyle(colors),
+		...(isBigEmojiOnly && { fontSize: BIG_EMOJI_SIZE, lineHeight: 43 })
+	},
+	h1: { fontFamily: 'Inter', fontWeight: 'bold', fontSize: 24, lineHeight: 30, color: colors.fontDefault },
+	h2: { fontFamily: 'Inter', fontWeight: 'bold', fontSize: 22, lineHeight: 28, color: colors.fontDefault },
+	h3: { ...interWeight('600'), fontSize: 20, lineHeight: 26, color: colors.fontDefault },
+	h4: { ...interWeight('600'), fontSize: 18, lineHeight: 24, color: colors.fontDefault },
+	blockquote: {
+		...bodyTextStyle(colors),
+		borderColor: colors.strokeLight,
+		backgroundColor: colors.strokeLight,
+		borderWidth: 0,
+		padding: 4
+	},
+	list: bodyTextStyle(colors),
+	code: {
+		fontFamily: codeFontFamily,
+		color: colors.fontDefault,
+		backgroundColor: colors.surfaceNeutral,
+		borderColor: colors.strokeLight
+	},
+	codeBlock: {
+		fontFamily: codeFontFamily,
+		fontSize: 16,
+		lineHeight: 22,
+		color: colors.fontDefault,
+		backgroundColor: colors.surfaceNeutral,
+		borderColor: colors.strokeLight,
+		borderWidth: 1,
+		borderRadius: 4,
+		padding: 4
+	},
+	link: {
+		color: colors.fontInfo
+	},
+	linkVariants: {
+		[`^${USER_SCHEME}(all|here)$`]: { color: colors.statusFontService, underline: false },
+		[`^${USER_SCHEME}[^?]+\\${ME_QUERY}$`]: { color: colors.statusFontDanger, underline: false },
+		[`^${USER_SCHEME}`]: { color: colors.statusFontWarning, underline: false },
+		[`^${CHANNEL_SCHEME}`]: { color: colors.fontInfo, underline: false },
+		[`^${TIMESTAMP_SCHEME}`]: { color: colors.fontDefault, backgroundColor: colors.surfaceSelected, underline: false }
+	},
+	image: {
+		borderRadius: 0,
+		maxHeight: isBigEmojiOnly ? BIG_EMOJI_SIZE * fontScale : 300,
+		resizeMode: 'contain'
+	},
+	inlineImage: {
+		size: (isBigEmojiOnly ? BIG_EMOJI_SIZE : 19) * fontScale
+	},
+	taskList: {
+		checkedColor: colors.fontDefault
+	},
+	table: {
+		...bodyTextStyle(colors),
+		headerFontFamily: 'Inter',
+		headerTextColor: colors.fontTitlesLabels,
+		headerBackgroundColor: colors.surfaceNeutral,
+		rowEvenBackgroundColor: colors.surfaceLight,
+		rowOddBackgroundColor: colors.surfaceTint,
+		borderColor: colors.strokeLight
+	},
+	thematicBreak: {
+		color: colors.strokeLight
+	},
+	spoiler: {
+		color: colors.fontSecondaryInfo
+	}
+});

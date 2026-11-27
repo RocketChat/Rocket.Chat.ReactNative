@@ -11,6 +11,7 @@ import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.common.assets.ReactFontManager
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.nozbe.watermelondb.jsi.WatermelonDBJSIPackage;
@@ -77,6 +78,10 @@ open class MainApplication : Application(), ReactApplication {
 
     // Must run before any OkHttp client is created
     SSLPinningTurboModule.installClientCertificates(this)
+
+    ReactFontManager.getInstance().addCustomFont(this, "Inter", R.font.inter)
+    ReactFontManager.getInstance().addCustomFont(this, "Inter-Medium", R.font.inter_medium)
+    ReactFontManager.getInstance().addCustomFont(this, "Inter-SemiBold", R.font.inter_semibold)
 
     // Load the native entry point for the New Architecture
     loadReactNative(this)

@@ -55,7 +55,7 @@
 		"@react-navigation/native": "^7.4.1",
 		"@react-navigation/native-stack": "^7.19.1",
 		"@rocket.chat/media-signaling": "1.0.0-rc.1",
-		"@rocket.chat/message-parser": "0.31.36",
+		"@rocket.chat/message-parser": "0.33.0",
 		"@rocket.chat/mobile-crypto": "RocketChat/rocket.chat-mobile-crypto#main",
 		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#ecf4fedcf8ab6121e62a6b95bb48823afd805afd",
 		"@rocket.chat/ui-kit": "^0.39.0",
@@ -103,16 +103,15 @@
 		"react-native-device-info": "11.1.0",
 		"react-native-easy-grid": "0.2.2",
 		"react-native-easy-toast": "2.3.0",
+		"react-native-enriched-markdown": "1.2.0",
 		"react-native-external-keyboard": "^0.9.0",
 		"react-native-gesture-handler": "~3.3.0",
 		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker#cba321c5a6a0c2b1a931dc9b1cce33e4d2bf1add",
 		"react-native-incall-manager": "^4.2.1",
-		"react-native-katex": "git+https://github.com/RocketChat/react-native-katex.git",
 		"react-native-keyboard-controller": "1.22.9",
 		"react-native-keychain": "10.0.0",
 		"react-native-linear-gradient": "2.8.3",
 		"react-native-localize": "3.7.0",
-		"react-native-math-view": "3.9.5",
 		"react-native-mime-types": "2.3.0",
 		"react-native-mmkv": "^4.3.2",
 		"react-native-modal": "13.0.1",
@@ -120,7 +119,7 @@
 		"react-native-notifier": "1.6.1",
 		"react-native-picker-select": "9.0.1",
 		"react-native-popover-view": "5.1.7",
-		"react-native-reanimated": "4.7.1",
+		"react-native-reanimated": "4.8.0",
 		"react-native-safe-area-context": "~5.10.1",
 		"react-native-screens": "~4.30.0",
 		"react-native-skeleton-placeholder": "5.2.4",
@@ -128,7 +127,7 @@
 		"react-native-url-polyfill": "2.0.0",
 		"react-native-webrtc": "124.0.7",
 		"react-native-webview": "14.0.1",
-		"react-native-worklets": "0.13.0",
+		"react-native-worklets": "0.14.0",
 		"react-redux": "8.0.5",
 		"reanimated-tab-view": "^0.3.0",
 		"redux": "4.2.0",
@@ -161,6 +160,7 @@
 			"core-js-pure",
 			"esbuild",
 			"protobufjs",
+			"react-native-enriched-markdown",
 			"sharp",
 			"unrs-resolver"
 		]
@@ -171,7 +171,7 @@
 		"@babel/plugin-transform-named-capturing-groups-regex": "~7.25.9",
 		"@babel/preset-env": "~7.25.9",
 		"@babel/runtime": "~7.25.9",
-		"@bugsnag/cli": "^3.2.1",
+		"@bugsnag/cli": "^3.10.6",
 		"@bugsnag/source-maps": "^2.3.3",
 		"@e2e-dev/mobile": "0.10.0",
 		"@expo/fingerprint": "0.21.6",
@@ -253,7 +253,8 @@
 	},
 	"reanimated": {
 		"staticFeatureFlags": {
-			"USE_LEGACY_LAYOUT_ANIMATIONS_PROXY": true
+			"USE_LEGACY_LAYOUT_ANIMATIONS_PROXY": true,
+			"ENABLE_SHARED_ELEMENT_TRANSITIONS": false
 		}
 	},
 	"codegenConfig": {
@@ -266,5 +267,9 @@
 	},
 	"volta": {
 		"node": "22.22.3"
+	},
+	"enriched-markdown": {
+		"enableCodeHighlight": false,
+		"enableMath": true
 	}
 }

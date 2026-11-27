@@ -1,23 +1,13 @@
 import { useMemo, type FC } from 'react';
-import { type StyleProp, type TextStyle, View } from 'react-native';
-import { parse } from '@rocket.chat/message-parser';
-import type { Root } from '@rocket.chat/message-parser';
-import isEmpty from 'lodash/isEmpty';
+import { View, useWindowDimensions } from 'react-native';
+import { type Root } from '@rocket.chat/message-parser';
+import { EnrichedMarkdownText } from 'react-native-enriched-markdown';
 
 import { type IUserMention, type IUserChannel, type TOnLinkPress } from './interfaces';
-import MarkdownContext from './contexts/MarkdownContext';
-import LineBreak from './components/LineBreak';
-import { KaTeX } from './components/Katex';
-import { BigEmoji } from './components/emoji';
-import UnorderedList from './components/list/UnorderedList';
-import OrderedList from './components/list/OrderedList';
-import TaskList from './components/list/TaskList';
-import { type TRenderList } from './components/list/NestedLists';
-import Quote from './components/Quote';
-import Paragraph from './components/Paragraph';
-import { Code } from './components/code';
-import Heading from './components/Heading';
-import log from '~/lib/methods/helpers/log';
+import { buildMarkdownStyle } from './buildMarkdownStyle';
+import { useMarkdownLinkPress } from './hooks/useMarkdownLinkPress';
+import { useMarkdownSegments } from './hooks/useMarkdownSegments';
+import { useTheme } from '~/theme';
 import styles from './styles';
 
 export { default as MarkdownPreview } from './components/Preview';
@@ -31,81 +21,7 @@ interface IMarkdownProps {
 	channels?: IUserChannel[];
 	navToRoomInfo?: Function;
 	onLinkPress?: TOnLinkPress;
-	isTranslated?: boolean;
-	textStyle?: StyleProp<TextStyle>;
 }
-
-type MarkdownBlock = Root[number];
-
-const PARSE_CACHE_MAX = 200;
-const parseCache = new Map<string, Root>();
-
-const parseMessage = (msg: string): Root => {
-	const cached = parseCache.get(msg);
-	if (cached) {
-		return cached;
-	}
-
-	const result = parse(msg);
-
-	if (parseCache.size >= PARSE_CACHE_MAX) {
-		const oldestKey = parseCache.keys().next().value;
-		if (oldestKey !== undefined) {
-			parseCache.delete(oldestKey);
-		}
-	}
-
-	parseCache.set(msg, result);
-	return result;
-};
-
-const resolveTokens = (msg: string, md: Root | undefined, isTranslated?: boolean): Root => {
-	if (!isTranslated && md) {
-		return md;
-	}
-
-	return parseMessage(typeof msg === 'string' ? msg : String(msg || ''));
-};
-
-const renderList: TRenderList = list => {
-	switch (list.type) {
-		case 'UNORDERED_LIST':
-			return <UnorderedList value={list.value} renderList={renderList} />;
-		case 'ORDERED_LIST':
-			return <OrderedList value={list.value} renderList={renderList} />;
-		case 'TASKS':
-			return <TaskList value={list.value} renderList={renderList} />;
-	}
-};
-
-const MarkdownBlockView = ({ block }: { block: MarkdownBlock }) => {
-	switch (block.type) {
-		case 'BIG_EMOJI':
-			return <BigEmoji value={block.value} />;
-		case 'UNORDERED_LIST':
-		case 'ORDERED_LIST':
-		case 'TASKS':
-			return renderList(block);
-		case 'QUOTE':
-			return <Quote value={block.value} />;
-		case 'PARAGRAPH':
-			return <Paragraph value={block.value} />;
-		case 'CODE':
-			return <Code value={block.value} />;
-		case 'HEADING':
-			return <Heading value={block.value} level={block.level} />;
-		case 'LINE_BREAK':
-			return <LineBreak />;
-		// This prop exists, but not even on the web it is treated, so...
-		// https://github.com/RocketChat/Rocket.Chat/blob/develop/packages/gazzodown/src/Markup.tsx
-		// case 'LIST_ITEM':
-		// 	return <View />;
-		case 'KATEX':
-			return <KaTeX value={block.value} />;
-		default:
-			return null;
-	}
-};
 
 const Markdown: FC<IMarkdownProps> = ({
 	msg,
@@ -115,45 +31,47 @@ const Markdown: FC<IMarkdownProps> = ({
 	navToRoomInfo,
 	useRealName,
 	username = '',
-	onLinkPress,
-	isTranslated,
-	textStyle
+	onLinkPress
 }: IMarkdownProps) => {
-	let tokens: Root | null = null;
+	const { colors } = useTheme();
+	const { fontScale } = useWindowDimensions();
+	const { handleLinkPress, handleLinkLongPress } = useMarkdownLinkPress({ navToRoomInfo, onLinkPress });
+	const { segments, bigEmojiOnly } = useMarkdownSegments({
+		msg: String(msg || ''),
+		md,
+		mentions,
+		channels,
+		useRealName,
+		username
+	});
+	const markdownStyle = useMemo(() => buildMarkdownStyle(colors, bigEmojiOnly, fontScale), [colors, bigEmojiOnly, fontScale]);
 
-	if (msg) {
-		try {
-			const result = resolveTokens(msg, md, isTranslated);
-			tokens = isEmpty(result) ? null : result;
-		} catch (e) {
-			log(e);
-		}
-	}
-
-	const contextValue = useMemo(
-		() => ({
-			mentions,
-			channels,
-			useRealName,
-			username,
-			navToRoomInfo,
-			onLinkPress,
-			textStyle
-		}),
-		[mentions, channels, useRealName, username, navToRoomInfo, onLinkPress, textStyle]
-	);
-
-	if (!tokens) {
+	if (segments.length === 0) {
 		return null;
 	}
 
 	return (
 		<View style={styles.blocks}>
-			<MarkdownContext.Provider value={contextValue}>
-				{tokens.map((block, index) => (
-					<MarkdownBlockView key={`${block.type}-${index}`} block={block} />
-				))}
-			</MarkdownContext.Provider>
+			{segments.map((segment, index) => {
+				if (segment.type === 'linebreak') {
+					return <View key={`linebreak-${index}`} style={styles.lineBreak} />;
+				}
+
+				return (
+					<EnrichedMarkdownText
+						key={`markdown-${index}`}
+						markdown={segment.content}
+						markdownStyle={markdownStyle}
+						flavor='github'
+						md4cFlags={{ latexMath: true }}
+						selectable={false}
+						enableTaskListItemToggle={false}
+						enableBlockContextMenu={false}
+						onLinkPress={event => handleLinkPress(event.url)}
+						onLinkLongPress={event => handleLinkLongPress(event.url)}
+					/>
+				);
+			})}
 		</View>
 	);
 };

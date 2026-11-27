@@ -27,7 +27,7 @@
             android:id="@+id/header_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/inter"
             android:text="@string/incoming_call_status"
             android:textColor="@color/incoming_call_header_text"
             android:textSize="18sp" />
@@ -61,6 +61,7 @@
         <!-- Caller name -->
         <TextView
             android:id="@+id/caller_name"
+            android:fontFamily="@font/inter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -73,6 +74,7 @@
         <!-- Host name -->
         <TextView
             android:id="@+id/host_name"
+            android:fontFamily="@font/inter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Unknown host"
@@ -122,6 +124,7 @@
 
             <TextView
                 android:id="@+id/incoming_call_reject_label"
+                android:fontFamily="@font/inter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -171,6 +174,7 @@
 
             <TextView
                 android:id="@+id/incoming_call_accept_label"
+                android:fontFamily="@font/inter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

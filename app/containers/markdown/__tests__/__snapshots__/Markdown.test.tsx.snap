@@ -1,0 +1,1743 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      &gt; This is block quote
+    </Text>
+    <Text>
+      this is a normal line
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Code should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      This is \`inline code\`
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      Inline \`code\` has \`back-ticks around\` it\\.
+    </Text>
+    <Text>
+      \`\`\`
+Code block
+\`\`\`
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Emoji should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      Unicode: 😃😇👍
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      Shortnames: 😂 👍️
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      Custom emojis: ⁠!
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        react\\rocket
+      </Text>
+       ⁠!
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        nyan\\rocket
+      </Text>
+       ⁠!
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        marioparty
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      😃👍️⁠!
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        marioparty
+      </Text>
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: EmojiFromServersBefore5 should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      😄
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      Hello 😄
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        test\\-channel
+      </Text>
+       \\#unknown
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Headers should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      # Header 1
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      ## Header 2
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      ### Header 3
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      #### Header 4
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: HeadersWithFormatting should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      # H1 **bold** _italic_ ~~strike~~ \`code\` 🚀 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        rocket\\.cat
+      </Text>
+       
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        test\\-channel
+      </Text>
+       
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        https://rocket\\.chat
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      ## H2 **bold** _italic_ ~~strike~~ \`code\` 🚀 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        rocket\\.cat
+      </Text>
+       
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        test\\-channel
+      </Text>
+       
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        https://rocket\\.chat
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      ### H3 **bold** _italic_ ~~strike~~ \`code\` 🚀 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        rocket\\.cat
+      </Text>
+       
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        test\\-channel
+      </Text>
+       
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        https://rocket\\.chat
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      #### H4 **bold** _italic_ ~~strike~~ \`code\` 🚀 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        rocket\\.cat
+      </Text>
+       
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        test\\-channel
+      </Text>
+       
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        https://rocket\\.chat
+      </Text>
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: HorizontalRule should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      Above
+    </Text>
+    <View
+      style={
+        {
+          "height": 8,
+        }
+      }
+    />
+    <Text>
+      ---
+    </Text>
+    <View
+      style={
+        {
+          "height": 8,
+        }
+      }
+    />
+    <Text>
+      Below
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Image should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      ![](&lt;https://play.google.com/intl/en_us/badges/images/badge_new.png&gt;)
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Links should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        Markdown link
+      </Text>
+      : \`
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        description
+      </Text>
+      \`
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        Formatted Link
+      </Text>
+      : \`&lt;url|description&gt;\`
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        Markdown link
+      </Text>
+       and the text with default style
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        Markdown link
+      </Text>
+       and the text continues on the next line
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Lists should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      - Open Source
+- 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        Rocket\\.Chat
+      </Text>
+      
+  - nodejs
+  - ReactNative
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      1. Open Source
+2. 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        Rocket\\.Chat
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      - **bold** 
+- _italic_ 
+- ~~strikethrough~~ 
+- _**bold italic**_ 
+- **~~bold strikethrough~~** 
+- _~~italic strikethrough~~_ 
+- _**~~bold italic strikethrough~~**_
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Mentions should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text>
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          rocket\\.cat
+        </Text>
+         
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          name1
+        </Text>
+         
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          all
+        </Text>
+         
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          here
+        </Text>
+         @unknown 
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          team
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text>
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          Rocket Cat
+        </Text>
+         
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          Name
+        </Text>
+         
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          all
+        </Text>
+         
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          here
+        </Text>
+         @unknown 
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          team
+        </Text>
+      </Text>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text>
+        Normal: 
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          rocket\\.cat
+        </Text>
+         
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          name1
+        </Text>
+         
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          all
+        </Text>
+         
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          here
+        </Text>
+         
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          test\\-channel
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text>
+        Bold: **
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          rocket\\.cat
+        </Text>
+        ** **
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          name1
+        </Text>
+        ** **
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          all
+        </Text>
+        ** **
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          here
+        </Text>
+        ** **
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          test\\-channel
+        </Text>
+        **
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text>
+        Italic:  _
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          rocket\\.cat
+        </Text>
+        _   _
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          name1
+        </Text>
+        _   _
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          all
+        </Text>
+        _   _
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          here
+        </Text>
+        _   _
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          test\\-channel
+        </Text>
+        _ 
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text>
+        Strikethrough: ~~
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          rocket\\.cat
+        </Text>
+        ~~ ~~
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          name1
+        </Text>
+        ~~ ~~
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          all
+        </Text>
+        ~~ ~~
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          here
+        </Text>
+        ~~ ~~
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          test\\-channel
+        </Text>
+        ~~
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text>
+        Italic \\+ Bold \\+ Strikethrough: _~~**
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          rocket\\.cat
+        </Text>
+        **~~_ _~~**
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          name1
+        </Text>
+        **~~_ _~~**
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          all
+        </Text>
+        **~~_ _~~**
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          here
+        </Text>
+        **~~_ _~~**
+        <Text
+          accessibilityRole="link"
+          onLongPress={[Function]}
+          onPress={[Function]}
+        >
+          test\\-channel
+        </Text>
+        **~~_
+      </Text>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: NestedLists should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      - item 1
+  - subitem A
+  - subitem B
+- item 2
+    </Text>
+    <View
+      style={
+        {
+          "height": 8,
+        }
+      }
+    />
+    <Text>
+      1. first
+   - [x] done
+   - [ ] todo
+     1. deep
+2. second
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: NonStringValues should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      A livechat custom field stored as a number or boolean:
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      42
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      true
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Preview should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <Text
+    accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+      ]
+    }
+    testID="markdown-preview-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  >
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  </Text>
+  <Text
+    accessibilityLabel="a b c d e"
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+      ]
+    }
+    testID="markdown-preview-a b c d e"
+  >
+    a b c d e
+  </Text>
+  <Text
+    accessibilityLabel="a b c"
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+      ]
+    }
+    testID="markdown-preview-a b c"
+  >
+    a b c
+  </Text>
+  <Text
+    accessibilityLabel="@rocket.cat @name1 @all @here @unknown #general #unknown"
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+      ]
+    }
+    testID="markdown-preview-@rocket.cat @name1 @all @here @unknown #general #unknown"
+  >
+    @rocket.cat @name1 @all @here @unknown #general #unknown
+  </Text>
+  <Text
+    accessibilityLabel="Testing: 😃 👍️ :marioparty:"
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+      ]
+    }
+    testID="markdown-preview-Testing: 😃 👍️ :marioparty:"
+  >
+    Testing: 😃 👍️ :marioparty:
+  </Text>
+  <Text
+    accessibilityLabel="Fallback from new md to old"
+    numberOfLines={1}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontVariant": [
+            "tabular-nums",
+          ],
+          "fontWeight": "400",
+          "lineHeight": 22,
+          "textAlign": "left",
+        },
+        {
+          "color": "#2F343D",
+          "lineHeight": undefined,
+        },
+      ]
+    }
+    testID="markdown-preview-Fallback from new md to old"
+  >
+    Fallback from new md to old
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: Spoilers should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      Inline ||hidden text|| spoiler
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Tables should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      | Left | Center | Right |
+| :--- | :---: | ---: |
+| **bold** | _italic_ | \`code\` |
+| @rocket\\.cat | \\#general | 😄 |
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Text should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      This is 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+        Rocket\\.Chat
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua\\.
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      a
+    </Text>
+    <Text>
+      b
+    </Text>
+    <Text>
+      c
+    </Text>
+    <View
+      style={
+        {
+          "height": 8,
+        }
+      }
+    />
+    <Text>
+      d
+    </Text>
+    <View
+      style={
+        {
+          "height": 8,
+        }
+      }
+    />
+    <View
+      style={
+        {
+          "height": 8,
+        }
+      }
+    />
+    <Text>
+      e
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      a       b                                                                             c
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      Emphasis: **bold** _italic_ ~~strikethrough~~ **_bold with italic_** **~~bold with strike~~** **_~~bold with italic and strike~~_** _~~italic with strike~~_
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      Unix timestamp formats
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      t \\- Short time: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         12:00 AM 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      T \\- Long time: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         12:00:00 AM 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      d \\- Short date: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         01/01/2025 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      D \\- Long date: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         Wednesday, Jan 01, 2025 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      f \\- Short date/time: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         Wednesday, Jan 01, 2025 12:00 AM 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      F \\- Long date/time: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         Wednesday, Jan 01, 2025 12:00:00 AM 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      R \\- Relative time: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         a year ago 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      ISO timestamp formats
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      t \\- Short time: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         12:00 AM 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      T \\- Long time: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         12:00:00 AM 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      d \\- Short date: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         01/01/2025 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      D \\- Long date: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         Wednesday, Jan 01, 2025 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      f \\- Short date/time: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         Wednesday, Jan 01, 2025 12:00 AM 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      F \\- Long date/time: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         Wednesday, Jan 01, 2025 12:00:00 AM 
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text>
+      R \\- Relative time: 
+      <Text
+        accessibilityRole="link"
+        onLongPress={[Function]}
+        onPress={[Function]}
+      >
+         a year ago 
+      </Text>
+    </Text>
+  </View>
+</View>
+`;

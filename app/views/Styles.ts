@@ -2,6 +2,18 @@ import { Platform, StyleSheet, type TextStyle } from 'react-native';
 
 import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants/tablet';
 
+const dropsIntermediateFontWeights = Platform.OS === 'android' && Number(Platform.Version) < 28;
+
+type TIntermediateFontWeight = '500' | '600';
+
+const LEGACY_INTER_FAMILIES: Record<TIntermediateFontWeight, string> = {
+	'500': 'Inter-Medium',
+	'600': 'Inter-SemiBold'
+};
+
+export const interWeight = (fontWeight: TIntermediateFontWeight): { fontFamily: string; fontWeight?: TIntermediateFontWeight } =>
+	dropsIntermediateFontWeights ? { fontFamily: LEGACY_INTER_FAMILIES[fontWeight] } : { fontFamily: 'Inter', fontWeight };
+
 const defaultTextStyle: TextStyle = {
 	textAlign: 'left',
 	backgroundColor: 'transparent',
@@ -76,51 +88,21 @@ export default StyleSheet.create({
 	},
 	textRegular: {
 		...defaultTextStyle,
-		...Platform.select({
-			ios: {
-				fontFamily: 'Inter',
-				fontWeight: '400'
-			},
-			android: {
-				fontFamily: 'Inter-Regular'
-			}
-		})
+		fontFamily: 'Inter',
+		fontWeight: '400'
 	},
 	textMedium: {
 		...defaultTextStyle,
-		...Platform.select({
-			ios: {
-				fontFamily: 'Inter',
-				fontWeight: '500'
-			},
-			android: {
-				fontFamily: 'Inter-Medium'
-			}
-		})
+		...interWeight('500')
 	},
 	textSemibold: {
 		...defaultTextStyle,
-		...Platform.select({
-			ios: {
-				fontFamily: 'Inter',
-				fontWeight: '600'
-			},
-			android: {
-				fontFamily: 'Inter-SemiBold'
-			}
-		})
+		...interWeight('600')
 	},
 	textBold: {
 		...defaultTextStyle,
-		...Platform.select({
-			ios: {
-				fontFamily: 'Inter',
-				fontWeight: '700'
-			},
-			android: {
-				fontFamily: 'Inter-Bold'
-			}
-		})
+		fontFamily: 'Inter',
+		fontWeight: '700'
 	},
 	inputLastChild: {
 		marginBottom: 15

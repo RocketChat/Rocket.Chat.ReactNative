@@ -147,11 +147,23 @@ export const defaultSettings = {
 	FEDERATION_Enabled: {
 		type: 'valueAsBoolean'
 	},
+	HexColorPreview_Enabled: {
+		type: 'valueAsBoolean'
+	},
 	Hide_System_Messages: {
 		type: 'valueAsArray'
 	},
 	Accounts_Default_User_Preferences_sidebarSectionsOrder: {
 		type: 'valueAsArray'
+	},
+	Katex_Enabled: {
+		type: 'valueAsBoolean'
+	},
+	Katex_Dollar_Syntax: {
+		type: 'valueAsBoolean'
+	},
+	Katex_Parenthesis_Syntax: {
+		type: 'valueAsBoolean'
 	},
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
@@ -182,6 +194,9 @@ export const defaultSettings = {
 	},
 	Message_AudioRecorderEnabled: {
 		type: 'valueAsBoolean'
+	},
+	Message_CustomDomain_AutoLink: {
+		type: 'valueAsString'
 	},
 	Message_GroupingPeriod: {
 		type: 'valueAsNumber'

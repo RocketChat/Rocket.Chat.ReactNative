@@ -1,9 +1,8 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import type { ListItem, Plain, Root, Task } from '@rocket.chat/message-parser';
+import { type Root } from '@rocket.chat/message-parser';
 
 import Markdown, { MarkdownPreview } from '.';
-import type { NestedList, WithNested } from './components/list/NestedLists';
 import { setCustomEmojis } from '~/actions/customEmojis';
 import { mockedStore } from '~/reducers/mockedStore';
 import { themes } from '~/lib/constants/colors';
@@ -222,48 +221,34 @@ export const Lists = () => (
 	</View>
 );
 
-const plain = (value: string): Plain[] => [{ type: 'PLAIN_TEXT', value }];
-const item = (value: string, extra?: { number?: number; nested?: NestedList[] }): WithNested<ListItem> => ({
-	type: 'LIST_ITEM',
-	value: plain(value),
-	...extra
-});
-const task = (status: boolean, value: string, nested?: NestedList[]): WithNested<Task> => ({
-	type: 'TASK',
-	status,
-	value: plain(value),
-	...(nested && { nested })
-});
-const nestedListsMd: Root = [
-	{
-		type: 'UNORDERED_LIST',
-		value: [
-			item('item 1', { nested: [{ type: 'UNORDERED_LIST', value: [item('subitem A'), item('subitem B')] }] }),
-			item('item 2')
-		]
-	},
-	{
-		type: 'ORDERED_LIST',
-		value: [
-			item('first', {
-				number: 1,
-				nested: [
-					{
-						type: 'TASKS',
-						value: [task(true, 'done'), task(false, 'todo', [{ type: 'ORDERED_LIST', value: [item('deep', { number: 1 })] }])]
-					}
-				]
-			}),
-			item('second', { number: 2 })
-		]
-	}
-];
 const nestedListsMsg =
 	'- item 1\n  - subitem A\n  - subitem B\n- item 2\n\n1. first\n   - [x] done\n   - [ ] todo\n     1. deep\n2. second';
 
 export const NestedLists = () => (
 	<View style={styles.container}>
-		<Markdown msg={nestedListsMsg} md={nestedListsMd} />
+		<Markdown msg={nestedListsMsg} />
+	</View>
+);
+
+export const Tables = () => (
+	<View style={styles.container}>
+		<Markdown
+			msg={
+				'| Left | Center | Right |\n| :--- | :---: | ---: |\n| *bold* | _italic_ | `code` |\n| @rocket.cat | #general | :smile: |'
+			}
+		/>
+	</View>
+);
+
+export const Spoilers = () => (
+	<View style={styles.container}>
+		<Markdown msg='Inline ||hidden text|| spoiler' />
+	</View>
+);
+
+export const HorizontalRule = () => (
+	<View style={styles.container}>
+		<Markdown msg={'Above\n\n---\n\nBelow'} />
 	</View>
 );
 
@@ -289,20 +274,26 @@ export const Timestamp = () => (
 	</View>
 );
 
-const textStyle = { fontSize: 10, color: 'red' };
-export const TextStyle = () => (
+export const NonStringValues = () => (
 	<View style={styles.container}>
+		<Markdown msg='A livechat custom field stored as a number or boolean:' />
+		<Markdown msg={42 as unknown as string} />
+		<Markdown msg={true as unknown as string} />
+	</View>
+);
+
+const emojiWithoutShortCode = (name: string) => ({ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: name } });
+
+export const EmojiFromServersBefore5 = () => (
+	<View style={styles.container}>
+		<Markdown msg=':smile:' md={[{ type: 'BIG_EMOJI', value: [emojiWithoutShortCode('smile')] }] as unknown as Root} />
 		<Markdown
-			msg='Emphasis: *bold* _italic_ ~strikethrough~ *_bold with italic_* *~bold with strike~* *_~bold with italic and strike~_* _~italic with strike~_'
-			textStyle={textStyle}
+			msg='Hello :smile:'
+			md={
+				[
+					{ type: 'PARAGRAPH', value: [{ type: 'PLAIN_TEXT', value: 'Hello ' }, emojiWithoutShortCode('smile')] }
+				] as unknown as Root
+			}
 		/>
-		<Markdown msg={msgMentions} mentions={mentions} username='rocket.cat' textStyle={textStyle} />
-		<Markdown msg='#test-channel #unknown' channels={channels} textStyle={textStyle} />
-		<Markdown
-			msg={`> This is block quote
-this is a normal line`}
-			textStyle={textStyle}
-		/>
-		<Markdown msg='[Markdown link](https://rocket.chat)' textStyle={textStyle} />
 	</View>
 );
