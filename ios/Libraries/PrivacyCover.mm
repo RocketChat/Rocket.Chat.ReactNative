@@ -106,6 +106,7 @@ RCT_EXPORT_MODULE()
   UIView *coverView = [self makeCoverView];
   coverView.frame = window.bounds;
   coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+  coverView.accessibilityElementsHidden = YES;
   [window addSubview:coverView];
   _coverView = coverView;
   _contentHiddenFromAccessibility = window.rootViewController.view;
