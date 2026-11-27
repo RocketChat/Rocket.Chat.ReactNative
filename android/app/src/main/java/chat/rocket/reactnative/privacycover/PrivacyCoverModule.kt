@@ -41,6 +41,10 @@ class PrivacyCoverModule(reactContext: ReactApplicationContext) :
 
     override fun invalidate() {
         (reactApplicationContext.applicationContext as Application).unregisterActivityLifecycleCallbacks(this)
+        UiThreadUtil.runOnUiThread {
+            hideCover()
+            (reactApplicationContext.currentActivity as? MainActivity)?.let { clearFlagSecure(it) }
+        }
         super.invalidate()
     }
 

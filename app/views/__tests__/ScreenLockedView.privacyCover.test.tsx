@@ -78,4 +78,15 @@ describe('ScreenLockedView privacy cover', () => {
 
 		expect(nativePrivacyCover.releaseCover).toHaveBeenCalledWith(7);
 	});
+
+	it('ignores a passcode accepted on a lock request that a newer one replaced', () => {
+		render(<ScreenLockedView />);
+		emitLockRequest();
+		const replacedRequest = mockRenders[mockRenders.length - 1];
+		emitLockRequest();
+
+		act(() => replacedRequest.finishProcess());
+
+		expect(nativePrivacyCover.releaseCover).not.toHaveBeenCalled();
+	});
 });

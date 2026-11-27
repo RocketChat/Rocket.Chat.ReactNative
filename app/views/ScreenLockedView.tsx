@@ -74,6 +74,9 @@ const ScreenLockedView = () => {
 	};
 
 	const onSubmit = () => {
+		if (requestId !== currentRequestId.current) {
+			return;
+		}
 		onUnlock();
 		settle(requestId, data.submit);
 	};
@@ -81,7 +84,7 @@ const ScreenLockedView = () => {
 	const onCancel = () => settle(requestId, data.cancel);
 
 	return (
-		<LockScreenHost visible={visible} onShown={onLockScreenShown} onHidden={onModalHide}>
+		<LockScreenHost visible={visible} requestId={requestId} onShown={onLockScreenShown} onHidden={onModalHide}>
 			<GestureHandlerRootView style={styles.container}>
 				<PasscodeEnter key={requestId} hasBiometry={!!data?.hasBiometry} reason={data?.reason} finishProcess={onSubmit} />
 				{data?.canClose ? (

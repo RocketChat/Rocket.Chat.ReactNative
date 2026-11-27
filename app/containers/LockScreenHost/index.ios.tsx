@@ -4,7 +4,7 @@ import { FullWindowOverlay } from 'react-native-screens';
 
 import type { ILockScreenHostProps } from './types';
 
-export const LockScreenHost = ({ visible, onShown, onHidden, children }: ILockScreenHostProps) => {
+export const LockScreenHost = ({ visible, requestId, onShown, onHidden, children }: ILockScreenHostProps) => {
 	const wasVisible = useRef(false);
 
 	useEffect(() => {
@@ -14,7 +14,7 @@ export const LockScreenHost = ({ visible, onShown, onHidden, children }: ILockSc
 			onHidden();
 		}
 		wasVisible.current = visible;
-	}, [visible, onShown, onHidden]);
+	}, [visible, requestId, onShown, onHidden]);
 
 	if (!visible) {
 		return null;

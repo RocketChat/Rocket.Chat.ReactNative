@@ -49,6 +49,12 @@ RCT_EXPORT_MODULE()
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)invalidate
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [self hideCover];
+}
+
 - (void)sceneWillDeactivate:(NSNotification *)notification
 {
   if (_enabled) {
