@@ -99,7 +99,7 @@ index d8a5396..f6930ef 100644
      return OrderedListSpan.measureExtraWidth(listStyle, factory.context, wideNumbers)
    }
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
-index 9aea981..094ea82 100644
+index 9aea981..a41c330 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/ImageSpan.kt
 @@ -1,19 +1,21 @@
@@ -139,8 +139,8 @@ index 9aea981..094ea82 100644
    private var onBoxHeightChanged: (() -> Unit)? = null
    private var boxHeightReported = false
  
-+  private val animation: Drawable?
-+    get() = sourceDrawable?.takeIf { it is Animatable }
++  private val animation: Animatable?
++    get() = sourceDrawable as? Animatable
 +
 +  private val animationCallback =
 +    object : Drawable.Callback {
@@ -217,7 +217,7 @@ index 9aea981..094ea82 100644
    }
  
    // Sizing precedence: aspectRatio > maxHeight > height. Returns the legacy fixed
-@@ -160,28 +231,36 @@ class ImageSpan(
+@@ -160,28 +231,37 @@ class ImageSpan(
      if (requestUrl.isEmpty()) return
      val scheme = Uri.parse(requestUrl).scheme?.lowercase()
      if (scheme == "http" || scheme == "https") {
@@ -228,7 +228,8 @@ index 9aea981..094ea82 100644
 -      val bitmap = cached ?: LocalImageLoader.load(context, requestUrl)
 -      if (bitmap != null && cached == null) ImageCache.putOriginal(requestKey, bitmap)
 -      handleLoadResult(bitmap)
-+      handleLoadResult(LocalImageLoader.load(context, requestUrl)?.toDrawable(context.resources))
++      val bitmap = ImageCache.getOrLoadLocal(requestUrl) { LocalImageLoader.load(context, requestUrl) }
++      handleLoadResult(bitmap?.toDrawable(context.resources))
      }
    }
  
@@ -262,7 +263,7 @@ index 9aea981..094ea82 100644
      wrapAndAssignDrawable(previousSize)
    }
  
-@@ -217,7 +296,9 @@ class ImageSpan(
+@@ -217,7 +297,9 @@ class ImageSpan(
      val base = sourceDrawable ?: return
      boxHeight = resolveBoxHeight(targetWidth)
  
@@ -273,7 +274,7 @@ index 9aea981..094ea82 100644
  
      if (cachedBitmap != null) {
        loadedDrawable =
-@@ -234,7 +315,7 @@ class ImageSpan(
+@@ -234,7 +316,7 @@ class ImageSpan(
            isBlockImage = !isInline,
            resizeMode = resizeMode,
            legacySizing = legacySizing,
@@ -282,7 +283,7 @@ index 9aea981..094ea82 100644
          )
      }
    }
-@@ -289,7 +370,12 @@ class ImageSpan(
+@@ -289,7 +371,12 @@ class ImageSpan(
      onBoxHeightChanged: (() -> Unit)? = null,
    ) {
      this.onBoxHeightChanged = onBoxHeightChanged
@@ -295,33 +296,64 @@ index 9aea981..094ea82 100644
      if (!isInline) {
        val availableWidth = getAvailableWidth(view)
        if (availableWidth > 0) {
-@@ -448,6 +534,7 @@ class ImageSpan(
+@@ -448,8 +535,17 @@ class ImageSpan(
      private val cacheKey: CacheKey? = null,
    ) : Drawable() {
      private val clipPath: Path?
 +    private val imageBounds: Rect
      private var hasCached = false
  
++    // Spans share a drawable that has no constant state (APNG4Android), and it re-samples its frames
++    // whenever its bounds change, so its bounds stay at its intrinsic size and the canvas scales it.
++    private val scalesCanvas =
++      imageDrawable is Animatable &&
++        imageDrawable.constantState == null &&
++        imageDrawable.intrinsicWidth > 0 &&
++        imageDrawable.intrinsicHeight > 0
++
      init {
-@@ -482,7 +569,8 @@ class ImageSpan(
+       setBounds(0, 0, targetWidth, targetHeight)
+       val intrinsicWidth = imageDrawable.intrinsicWidth
+@@ -482,7 +578,12 @@ class ImageSpan(
  
        val left = (targetWidth - scaledWidth) / 2
        val top = (targetHeight - scaledHeight) / 2
 -      imageDrawable.setBounds(left, top, left + scaledWidth, top + scaledHeight)
 +      imageBounds = Rect(left, top, left + scaledWidth, top + scaledHeight)
-+      imageDrawable.bounds = imageBounds
++      if (scalesCanvas) {
++        imageDrawable.setBounds(0, 0, intrinsicWidth, intrinsicHeight)
++      } else {
++        imageDrawable.bounds = imageBounds
++      }
  
        val clipLeft = maxOf(0, left).toFloat()
        val clipTop = maxOf(0, top).toFloat()
-@@ -534,6 +622,7 @@ class ImageSpan(
+@@ -534,13 +635,18 @@ class ImageSpan(
      }
  
      override fun draw(canvas: Canvas) {
-+      if (imageDrawable.bounds != imageBounds) imageDrawable.bounds = imageBounds
-       if (clipPath != null) {
-         canvas.withSave {
-           clipPath(clipPath)
-@@ -594,6 +683,11 @@ class ImageSpan(
+-      if (clipPath != null) {
+-        canvas.withSave {
+-          clipPath(clipPath)
+-          imageDrawable.draw(canvas)
++      canvas.withSave {
++        clipPath?.let { clipPath(it) }
++        if (scalesCanvas) {
++          translate(imageBounds.left.toFloat(), imageBounds.top.toFloat())
++          scale(
++            imageBounds.width().toFloat() / imageDrawable.intrinsicWidth,
++            imageBounds.height().toFloat() / imageDrawable.intrinsicHeight,
++          )
++        } else if (imageDrawable.bounds != imageBounds) {
++          imageDrawable.bounds = imageBounds
+         }
+-      } else {
+-        imageDrawable.draw(canvas)
++        imageDrawable.draw(this)
+       }
+       scheduleCacheBitmap()
+     }
+@@ -594,6 +700,11 @@ class ImageSpan(
    }
  
    companion object {
@@ -407,10 +439,10 @@ index ff00069..75f1228 100644
      textPaint.isUnderlineText = variant?.underline ?: styleCache.linkUnderline
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/SharedAnimationRunner.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/SharedAnimationRunner.kt
 new file mode 100644
-index 0000000..d747146
+index 0000000..488a4b2
 --- /dev/null
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/spans/SharedAnimationRunner.kt
-@@ -0,0 +1,53 @@
+@@ -0,0 +1,51 @@
 +package com.swmansion.enriched.markdown.spans
 +
 +import android.graphics.drawable.Animatable
@@ -423,7 +455,7 @@ index 0000000..d747146
 +// Glide hands every request for one image the same drawable when it has no constant state
 +// (APNG4Android's drawables), so one span stopping it must not freeze the others.
 +internal object SharedAnimationRunner {
-+  private val runningOwnersByDrawable = WeakHashMap<Drawable, MutableSet<Any>>()
++  private val runningOwnersByAnimation = WeakHashMap<Animatable, MutableSet<Any>>()
 +
 +  private val mainHandler = Handler(Looper.getMainLooper())
 +
@@ -440,35 +472,33 @@ index 0000000..d747146
 +    // and starts itself there unless autoPlay is off; only owners may keep it running.
 +    drawable.setVisible(true, false)
 +    val animatable = drawable as? Animatable ?: return
-+    if (animatable.isRunning && runningOwnersByDrawable[drawable].isNullOrEmpty()) animatable.stop()
++    if (animatable.isRunning && runningOwnersByAnimation[animatable].isNullOrEmpty()) animatable.stop()
 +  }
 +
 +  fun start(
-+    drawable: Drawable,
++    animatable: Animatable,
 +    owner: Any,
 +  ) {
-+    val animatable = drawable as? Animatable ?: return
-+    runningOwnersByDrawable.getOrPut(drawable) { Collections.newSetFromMap(WeakHashMap()) }.add(owner)
++    runningOwnersByAnimation.getOrPut(animatable) { Collections.newSetFromMap(WeakHashMap()) }.add(owner)
 +    if (!animatable.isRunning) animatable.start()
 +  }
 +
 +  fun stop(
-+    drawable: Drawable,
++    animatable: Animatable,
 +    owner: Any,
 +  ) {
-+    val animatable = drawable as? Animatable ?: return
-+    val owners = runningOwnersByDrawable[drawable] ?: return
++    val owners = runningOwnersByAnimation[animatable] ?: return
 +    owners.remove(owner)
 +    if (owners.isNotEmpty()) return
-+    runningOwnersByDrawable.remove(drawable)
++    runningOwnersByAnimation.remove(animatable)
 +    animatable.stop()
 +  }
 +}
 diff --git a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt
-index ccbf799..d9f93d4 100644
+index ccbf799..f59d956 100644
 --- a/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt
 +++ b/node_modules/react-native-enriched-markdown/android/src/main/java/com/swmansion/enriched/markdown/utils/text/ImageCache.kt
-@@ -5,17 +5,18 @@ import android.util.LruCache
+@@ -5,17 +5,21 @@ import android.util.LruCache
  import java.security.MessageDigest
  
  object ImageCache {
@@ -476,6 +506,7 @@ index ccbf799..d9f93d4 100644
    private const val PROCESSED_CACHE_SIZE = 30 * 1024 * 1024
    private const val FAILED_KEYS_SIZE = 200
 +  private const val INTRINSIC_SIZES_SIZE = 500
++  private const val LOCAL_IMAGES_SIZE = 10 * 1024 * 1024
  
 -  private val originalCache = bitmapLruCache(ORIGINAL_CACHE_SIZE)
    private val processedCache = bitmapLruCache(PROCESSED_CACHE_SIZE)
@@ -486,19 +517,26 @@ index ccbf799..d9f93d4 100644
  
 +  private val intrinsicSizes = LruCache<String, Pair<Int, Int>>(INTRINSIC_SIZES_SIZE)
 +
++  private val localImages = bitmapLruCache(LOCAL_IMAGES_SIZE)
++
    /** Header names lower-cased; sorted first so case aliases collapse deterministically. */
    fun normalizedHeaders(headers: Map<String, String>): Map<String, String> =
      headers.entries
-@@ -43,13 +44,14 @@ object ImageCache {
+@@ -43,13 +47,19 @@ object ImageCache {
      return url + "|" + digest.joinToString(separator = "") { "%02x".format(it) }
    }
  
 -  fun getOriginal(url: String): Bitmap? = originalCache.get(url)
-+  fun getIntrinsicSize(requestKey: String): Pair<Int, Int>? = intrinsicSizes.get(requestKey)
++  fun getOrLoadLocal(
++    source: String,
++    load: () -> Bitmap?,
++  ): Bitmap? = localImages.get(source) ?: load()?.also { localImages.put(source, it) }
  
 -  fun putOriginal(
 -    url: String,
 -    bitmap: Bitmap,
++  fun getIntrinsicSize(requestKey: String): Pair<Int, Int>? = intrinsicSizes.get(requestKey)
++
 +  fun putIntrinsicSize(
 +    requestKey: String,
 +    width: Int,
@@ -1277,7 +1315,7 @@ index fcddeb0..9caa229 100644
      }
    }
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
-index dddff1d..0d8bae5 100644
+index dddff1d..3846f10 100644
 --- a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
 +++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMImageAttachment.m
 @@ -1,6 +1,7 @@
@@ -1482,7 +1520,7 @@ index dddff1d..0d8bae5 100644
  
      if (processedImage) {
        [[ENRMImageAttachment processedImageCache] setObject:processedImage
-@@ -333,73 +427,19 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
+@@ -333,73 +427,17 @@ static NSCache<NSString *, NSNumber *> *_failedImageKeys;
    });
  }
  
@@ -1490,16 +1528,11 @@ index dddff1d..0d8bae5 100644
 -                          toWidth:(CGFloat)targetWidth
 -                           height:(CGFloat)targetHeight
 -                     borderRadius:(CGFloat)radius
-+- (nullable ENRMSharedImageAnimation *)sharedAnimationForImage:(RCTUIImage *)image
-+                                                           key:(NSString *)key
-+                                                       boxSize:(CGSize)boxSize
-+                                                   drawingMode:(NSString *)drawingMode
- {
+-{
 -  CGFloat sourceWidth = image.size.width;
 -  CGFloat sourceHeight = image.size.height;
 -  if (sourceWidth <= 0 || sourceHeight <= 0)
-+  if (!ENRMIsAnimatedImage(image))
-     return nil;
+-    return nil;
 -
 -  CGSize source = CGSizeMake(sourceWidth, sourceHeight);
 -  CGSize box = CGSizeMake(targetWidth, targetHeight);
@@ -1536,7 +1569,11 @@ index dddff1d..0d8bae5 100644
 -}
 -
 -- (CGRect)drawingRectForResizeMode:(NSString *)mode source:(CGSize)source box:(CGSize)box
--{
++- (nullable ENRMSharedImageAnimation *)sharedAnimationForImage:(RCTUIImage *)image
++                                                           key:(NSString *)key
++                                                       boxSize:(CGSize)boxSize
++                                                   drawingMode:(NSString *)drawingMode
+ {
 -  if ([mode isEqualToString:@"stretch"]) {
 -    return CGRectMake(0, 0, box.width, box.height);
 -  }
@@ -1569,10 +1606,10 @@ index dddff1d..0d8bae5 100644
  - (void)startDownloadingImage
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.h b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.h
 new file mode 100644
-index 0000000..eaedd7d
+index 0000000..4dea088
 --- /dev/null
 +++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.h
-@@ -0,0 +1,27 @@
+@@ -0,0 +1,25 @@
 +#pragma once
 +#import "ENRMUIKit.h"
 +
@@ -1584,15 +1621,13 @@ index 0000000..eaedd7d
 +
 +typedef RCTUIImage *_Nullable (^ENRMAnimationFrameRenderer)(RCTUIImage *frame);
 +
-+FOUNDATION_EXPORT BOOL ENRMIsAnimatedImage(RCTUIImage *_Nullable image);
-+
 +@interface ENRMSharedImageAnimation : NSObject
 +
 +@property (nonatomic, readonly, nullable) RCTUIImage *currentFrame;
 +
-++ (instancetype)animationForImage:(RCTUIImage *)image
-+                              key:(NSString *)key
-+                    frameRenderer:(ENRMAnimationFrameRenderer)frameRenderer;
+++ (nullable instancetype)animationForImage:(RCTUIImage *)image
++                                       key:(NSString *)key
++                             frameRenderer:(ENRMAnimationFrameRenderer)frameRenderer;
 +
 +- (void)playForDisplay:(id<ENRMAnimatedImageDisplay>)display;
 +- (void)removeDisplay:(id<ENRMAnimatedImageDisplay>)display;
@@ -1602,14 +1637,14 @@ index 0000000..eaedd7d
 +NS_ASSUME_NONNULL_END
 diff --git a/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m
 new file mode 100644
-index 0000000..fed9899
+index 0000000..32849c7
 --- /dev/null
 +++ b/node_modules/react-native-enriched-markdown/ios/attachments/ENRMSharedImageAnimation.m
-@@ -0,0 +1,184 @@
+@@ -0,0 +1,186 @@
 +#import "ENRMSharedImageAnimation.h"
 +#import <SDWebImage/SDWebImage.h>
 +
-+BOOL ENRMIsAnimatedImage(RCTUIImage *image)
++static BOOL ENRMIsAnimatedImage(RCTUIImage *image)
 +{
 +#if !TARGET_OS_OSX
 +  if (![image isKindOfClass:[SDAnimatedImage class]])
@@ -1685,10 +1720,12 @@ index 0000000..fed9899
 +  return animations;
 +}
 +
-++ (instancetype)animationForImage:(RCTUIImage *)image
-+                              key:(NSString *)key
-+                    frameRenderer:(ENRMAnimationFrameRenderer)frameRenderer
+++ (nullable instancetype)animationForImage:(RCTUIImage *)image
++                                       key:(NSString *)key
++                             frameRenderer:(ENRMAnimationFrameRenderer)frameRenderer
 +{
++  if (!ENRMIsAnimatedImage(image))
++    return nil;
 +  NSMapTable<NSString *, ENRMSharedImageAnimation *> *animations = [self animationsByKey];
 +  @synchronized(animations) {
 +    ENRMSharedImageAnimation *animation = [animations objectForKey:key];
