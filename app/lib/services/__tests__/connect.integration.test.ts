@@ -125,6 +125,13 @@ async function connectAndDriveHandshake(server = 'https://example.com') {
 	await flushMicrotasksAndTimers();
 }
 
+async function connectAndFailFirstAttempt(server = 'https://example.com') {
+	await connect({ server });
+	await flushMicrotasksAndTimers();
+	mockConnections[0].onerror();
+	await flushMicrotasksAndTimers();
+}
+
 describe('connect() over the real SDK', () => {
 	it('dispatches connectRequest when connecting and connectSuccess once on the handshake', async () => {
 		await connectAndDriveHandshake();
@@ -176,6 +183,37 @@ describe('connect() over the real SDK', () => {
 		await flushMicrotasksAndTimers();
 
 		expect(successCount()).toBe(before);
+	});
+
+	it('keeps retrying when the first attempt fails and connects once the network is back', async () => {
+		await connectAndFailFirstAttempt();
+		expect(mockConnections).toHaveLength(1);
+
+		await jest.runOnlyPendingTimersAsync();
+		await flushMicrotasksAndTimers();
+		expect(mockConnections).toHaveLength(2);
+		mockConnections[1].onerror();
+		await flushMicrotasksAndTimers();
+		expect(mockConnections).toHaveLength(2);
+
+		await jest.runOnlyPendingTimersAsync();
+		await flushMicrotasksAndTimers();
+		expect(mockConnections).toHaveLength(3);
+		mockConnections[2].onopen();
+		await flushMicrotasksAndTimers();
+
+		expect(redux.store.dispatch).toHaveBeenCalledWith(connectSuccess());
+	});
+
+	it('does not retry an attempt that a later connect() replaced', async () => {
+		await connectAndFailFirstAttempt('https://a.example.com');
+
+		await connect({ server: 'https://b.example.com' });
+		await flushMicrotasksAndTimers();
+		await jest.runOnlyPendingTimersAsync();
+		await flushMicrotasksAndTimers();
+
+		expect(mockConnections).toHaveLength(2);
 	});
 });
 

@@ -76,6 +76,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -892,6 +893,75 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             Dialpad
           </Text>
         </View>
+      </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
       </View>
     </View>
   </RNCSafeAreaView>
@@ -974,6 +1044,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -1796,6 +1867,75 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             Dialpad
           </Text>
         </View>
+      </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
       </View>
     </View>
   </RNCSafeAreaView>
@@ -1878,6 +2018,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -2695,6 +2836,75 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           </Text>
         </View>
       </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
+      </View>
     </View>
   </RNCSafeAreaView>
 </View>
@@ -2776,6 +2986,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -3593,6 +3804,75 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           </Text>
         </View>
       </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
+      </View>
     </View>
   </RNCSafeAreaView>
 </View>
@@ -3674,6 +3954,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -4491,6 +4772,75 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           </Text>
         </View>
       </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
+      </View>
     </View>
   </RNCSafeAreaView>
 </View>
@@ -4572,6 +4922,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -5389,6 +5740,75 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           </Text>
         </View>
       </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
+      </View>
     </View>
   </RNCSafeAreaView>
 </View>
@@ -5453,6 +5873,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -6259,6 +6680,75 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
           </Text>
         </View>
       </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -6323,6 +6813,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -7135,6 +7626,75 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
           </Text>
         </View>
       </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -7199,6 +7759,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -8005,6 +8566,75 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
           </Text>
         </View>
       </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -8069,6 +8699,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -8875,6 +9506,75 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
           </Text>
         </View>
       </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -8939,6 +9639,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -9745,6 +10446,75 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
           </Text>
         </View>
       </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -9809,6 +10579,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -10615,6 +11386,75 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
           </Text>
         </View>
       </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -10679,6 +11519,7 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -11485,6 +12326,75 @@ exports[`Story Snapshots: TabletWithDialpad should match snapshot 1`] = `
           </Text>
         </View>
       </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -11566,6 +12476,7 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "center",
           "marginBottom": 100,
+          "paddingBottom": 80,
           "paddingHorizontal": 24,
         }
       }
@@ -12382,6 +13293,75 @@ exports[`Story Snapshots: WithDialpad should match snapshot 1`] = `
             Dialpad
           </Text>
         </View>
+      </View>
+      <View
+        accessibilityLabel="Encrypted"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "alignSelf": "center",
+              "borderRadius": 4,
+              "flexDirection": "row",
+              "gap": 4,
+              "paddingHorizontal": 4,
+            },
+            {
+              "backgroundColor": "#D7DBE0",
+            },
+          ]
+        }
+        testID="call-view-encrypted-tag"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+              [
+                {
+                  "lineHeight": 12,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+                "fontWeight": "600",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Encrypted
+        </Text>
       </View>
     </View>
   </RNCSafeAreaView>

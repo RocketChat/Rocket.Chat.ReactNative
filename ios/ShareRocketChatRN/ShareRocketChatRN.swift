@@ -59,7 +59,6 @@ class ShareRocketChatRN: UIViewController {
             return
         }
 
-        // Handle URL or Text using the first attachment only
         if let firstAttachment = attachments.first {
             if firstAttachment.hasItemConformingToTypeIdentifier("public.url") {
                 firstAttachment.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
@@ -69,19 +68,35 @@ class ShareRocketChatRN: UIViewController {
                             self.handleAllFileURLs(items: attachments)
                         } else {
                             // Handle as a web URL
-                            self.handleUrl(item: firstAttachment)
+                            self.openSharedUrl(url)
+                            self.completeRequest()
                         }
                     }
                 }
                 return
             } else if firstAttachment.hasItemConformingToTypeIdentifier("public.text") {
-                self.handleText(item: firstAttachment)
+                self.handleTextOrWebUrl(textAttachment: firstAttachment, attachments: attachments)
                 return
             }
         }
 
         // Handle Media (Images, Videos) and Data (PDFs, etc.) for all attachments
         self.handleMultipleMediaAndData(items: attachments)
+    }
+
+    private func handleTextOrWebUrl(textAttachment: NSItemProvider, attachments: [NSItemProvider]) {
+        guard let urlAttachment = attachments.first(where: { $0.hasItemConformingToTypeIdentifier("public.url") }) else {
+            self.handleText(item: textAttachment)
+            return
+        }
+        urlAttachment.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, _) in
+            if let url = data as? URL, ["http", "https"].contains(url.scheme?.lowercased()) {
+                self.openSharedUrl(url)
+                self.completeRequest()
+            } else {
+                self.handleText(item: textAttachment)
+            }
+        }
     }
 
     private func handleText(item: NSItemProvider) {
@@ -94,13 +109,9 @@ class ShareRocketChatRN: UIViewController {
         }
     }
 
-    private func handleUrl(item: NSItemProvider) {
-        item.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
-            if let url = data as? URL,
-               let finalUrl = self.shareExtensionURL(params: ["url": url.absoluteString]) {
-                _ = self.openURL(finalUrl)
-            }
-            self.completeRequest()
+    private func openSharedUrl(_ url: URL) {
+        if let deepLink = shareExtensionURL(params: ["url": url.absoluteString]) {
+            _ = openURL(deepLink)
         }
     }
 

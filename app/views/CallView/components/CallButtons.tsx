@@ -13,6 +13,7 @@ import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
 import { useTheme } from '~/theme';
 import { showActionSheetRef } from '~/containers/ActionSheet/Provider';
 import Dialpad from './Dialpad/Dialpad';
+import EncryptedTag from './EncryptedTag';
 import { useCallLayoutMode } from '../useCallLayoutMode';
 import { useResponsiveLayout } from '~/lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { type TIconsName } from '~/containers/CustomIcon';
@@ -219,6 +220,7 @@ export const CallButtons = () => {
 					</View>
 				</>
 			)}
+			<EncryptedTag />
 		</Animated.View>
 	);
 };
