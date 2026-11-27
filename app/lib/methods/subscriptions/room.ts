@@ -9,6 +9,7 @@ import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '~/lib/database';
 import { getMessageById } from '~/lib/database/services/Message';
+import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 import { getThreadById } from '~/lib/database/services/Thread';
 import { getThreadMessageById } from '~/lib/database/services/ThreadMessage';
 import { store as reduxStore } from '~/lib/store/auxStore';
@@ -25,6 +26,7 @@ import sdk from '~/lib/services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import markMessagesRead from '../helpers/markMessagesRead';
+import { isInviteSubscription } from '../isInviteSubscription';
 
 export default class RoomSubscription {
 	private rid: string;
@@ -97,6 +99,10 @@ export default class RoomSubscription {
 		}
 		try {
 			reduxStore.dispatch(clearUserTyping());
+			const subscription = await getSubscriptionByRoomId(this.rid);
+			if (subscription && isInviteSubscription(subscription)) {
+				return;
+			}
 			await loadMissedMessages({ rid: this.rid });
 			this.read();
 		} catch (e) {
