@@ -1,8 +1,8 @@
-import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
 import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
+import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
 import { type IUserMessage } from '~/definitions/IMessage';
 import { type IAttachment } from '~/definitions/IAttachment';
 import I18n from '~/i18n';
@@ -40,12 +40,7 @@ const styles = StyleSheet.create({
 		overflow: 'visible'
 	},
 	thumbnailBackdrop: {
-		position: 'absolute',
-		top: 0,
-		right: 0,
-		bottom: 0,
-		left: 0,
-		borderRadius: 4
+		borderRadius: messageStyles.image.borderRadius
 	}
 });
 
@@ -83,7 +78,7 @@ const Thumbnail = ({
 	return (
 		<>
 			<Animated.View
-				style={[styles.thumbnailBackdrop, { backgroundColor: colors.surfaceNeutral }]}
+				style={[StyleSheet.absoluteFill, styles.thumbnailBackdrop, { backgroundColor: colors.surfaceNeutral }]}
 				sharedTransitionTag={status === 'downloaded' ? sharedTransitionTag : undefined}
 				sharedTransitionStyle={mediaSharedTransition}
 			/>

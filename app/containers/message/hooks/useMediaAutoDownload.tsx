@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useId, useReducer, useState } from 'react';
 
 import { type IAttachment } from '~/definitions/IAttachment';
 import { type IUserMessage } from '~/definitions/IMessage';
@@ -16,7 +16,7 @@ import { emitter } from '~/lib/methods/helpers/emitter';
 import { formatAttachmentUrl } from '~/lib/methods/helpers/formatAttachmentUrl';
 import { useBaseUrl, useMessageUser } from '../stores/MessageRoomStore';
 import { useMessageId } from '../stores/MessageStore';
-import { getMediaSharedTransitionTag, type TMediaSize } from '~/lib/animations/mediaSharedTransition';
+import { type TMediaSize } from '~/lib/animations/mediaSharedTransition';
 import { type IUseRoomMessageHandlersResult } from '~/definitions/IRoomMessageHandlers';
 
 const getFileType = (file: IAttachment): MediaTypes | null => {
@@ -93,7 +93,7 @@ export const useMediaAutoDownload = ({
 		originalUrl
 	);
 	const isEncrypted = currentFile.e2e === 'pending';
-	const sharedTransitionTag = getMediaSharedTransitionTag(id, file);
+	const sharedTransitionTag = `media-${useId()}`;
 
 	const resumeDownload = () => {
 		dispatchDownloadEvent('download_started');

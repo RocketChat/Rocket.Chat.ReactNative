@@ -17,7 +17,9 @@ import { mediaSharedTransition } from '~/lib/animations/mediaSharedTransition';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 
-const imageCorners = { borderRadius: 3 };
+const FRAME_BORDER_WIDTH = 1;
+const FRAME_BORDER_RADIUS = 4;
+const imageCorners = { borderRadius: FRAME_BORDER_RADIUS - FRAME_BORDER_WIDTH };
 
 export const MessageImage = ({
 	uri,
@@ -50,8 +52,8 @@ export const MessageImage = ({
 
 	const frameStyle: ViewStyle = {
 		borderColor: colors.strokeLight,
-		borderWidth: 1,
-		borderRadius: 4
+		borderWidth: FRAME_BORDER_WIDTH,
+		borderRadius: FRAME_BORDER_RADIUS
 	};
 
 	const borderStyle: ViewStyle = {

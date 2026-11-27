@@ -86706,12 +86706,14 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                       style={
                                         [
                                           {
-                                            "borderRadius": 4,
                                             "bottom": 0,
                                             "left": 0,
                                             "position": "absolute",
                                             "right": 0,
                                             "top": 0,
+                                          },
+                                          {
+                                            "borderRadius": 4,
                                           },
                                           {
                                             "backgroundColor": "#E4E7EA",
@@ -99757,12 +99759,14 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                       style={
                                         [
                                           {
-                                            "borderRadius": 4,
                                             "bottom": 0,
                                             "left": 0,
                                             "position": "absolute",
                                             "right": 0,
                                             "top": 0,
+                                          },
+                                          {
+                                            "borderRadius": 4,
                                           },
                                           {
                                             "backgroundColor": "#E4E7EA",
@@ -177442,12 +177446,14 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                             style={
                               [
                                 {
-                                  "borderRadius": 4,
                                   "bottom": 0,
                                   "left": 0,
                                   "position": "absolute",
                                   "right": 0,
                                   "top": 0,
+                                },
+                                {
+                                  "borderRadius": 4,
                                 },
                                 {
                                   "backgroundColor": "#E4E7EA",
@@ -177795,12 +177801,14 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                             style={
                               [
                                 {
-                                  "borderRadius": 4,
                                   "bottom": 0,
                                   "left": 0,
                                   "position": "absolute",
                                   "right": 0,
                                   "top": 0,
+                                },
+                                {
+                                  "borderRadius": 4,
                                 },
                                 {
                                   "backgroundColor": "#E4E7EA",
@@ -178412,12 +178420,14 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                             style={
                               [
                                 {
-                                  "borderRadius": 4,
                                   "bottom": 0,
                                   "left": 0,
                                   "position": "absolute",
                                   "right": 0,
                                   "top": 0,
+                                },
+                                {
+                                  "borderRadius": 4,
                                 },
                                 {
                                   "backgroundColor": "#E4E7EA",
@@ -178557,12 +178567,14 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                             style={
                               [
                                 {
-                                  "borderRadius": 4,
                                   "bottom": 0,
                                   "left": 0,
                                   "position": "absolute",
                                   "right": 0,
                                   "top": 0,
+                                },
+                                {
+                                  "borderRadius": 4,
                                 },
                                 {
                                   "backgroundColor": "#E4E7EA",
@@ -179223,12 +179235,14 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                             style={
                               [
                                 {
-                                  "borderRadius": 4,
                                   "bottom": 0,
                                   "left": 0,
                                   "position": "absolute",
                                   "right": 0,
                                   "top": 0,
+                                },
+                                {
+                                  "borderRadius": 4,
                                 },
                                 {
                                   "backgroundColor": "#E4E7EA",
@@ -179767,12 +179781,14 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                             style={
                               [
                                 {
-                                  "borderRadius": 4,
                                   "bottom": 0,
                                   "left": 0,
                                   "position": "absolute",
                                   "right": 0,
                                   "top": 0,
+                                },
+                                {
+                                  "borderRadius": 4,
                                 },
                                 {
                                   "backgroundColor": "#E4E7EA",
@@ -180377,12 +180393,14 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                             style={
                               [
                                 {
-                                  "borderRadius": 4,
                                   "bottom": 0,
                                   "left": 0,
                                   "position": "absolute",
                                   "right": 0,
                                   "top": 0,
+                                },
+                                {
+                                  "borderRadius": 4,
                                 },
                                 {
                                   "backgroundColor": "#E4E7EA",
@@ -180522,12 +180540,14 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                             style={
                               [
                                 {
-                                  "borderRadius": 4,
                                   "bottom": 0,
                                   "left": 0,
                                   "position": "absolute",
                                   "right": 0,
                                   "top": 0,
+                                },
+                                {
+                                  "borderRadius": 4,
                                 },
                                 {
                                   "backgroundColor": "#E4E7EA",

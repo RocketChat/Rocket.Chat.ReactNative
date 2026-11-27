@@ -48,9 +48,9 @@ const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 const fullSize = { width: '100%', height: '100%' } as const;
 
-const fitWithin = (image: TMediaSize | undefined, bounds: TMediaSize): TMediaSize | typeof fullSize => {
+const fitWithin = (image: TMediaSize | undefined, bounds: TMediaSize): TMediaSize | undefined => {
 	if (!image?.width || !image?.height) {
-		return fullSize;
+		return undefined;
 	}
 	const scale = Math.min(bounds.width / image.width, bounds.height / image.height);
 	return { width: image.width * scale, height: image.height * scale };
@@ -71,8 +71,7 @@ export const ImageViewer = ({
 	const expoImageRef = useRef<Image>(null);
 	const [imageSize, setImageSize] = useState(initialImageSize);
 	const onImageLoad = ({ source }: ImageLoadEventData) => setImageSize({ width: source.width, height: source.height });
-	const imageFrame = fitWithin(imageSize, { width, height });
-	const contentFit = imageFrame === fullSize ? 'contain' : 'cover';
+	const fittedFrame = fitWithin(imageSize, { width, height });
 
 	const handleGifPlayback = async () => {
 		if (isPlayingRef.current) {
@@ -171,6 +170,22 @@ export const ImageViewer = ({
 
 	const accessibilityLabel = altText?.trim() || I18n.t('A11y_image_no_description');
 
+	const image = (
+		<AnimatedImage
+			accessible={!isAnimated}
+			accessibilityLabel={isAnimated ? undefined : accessibilityLabel}
+			accessibilityRole={isAnimated ? undefined : 'image'}
+			style={fittedFrame ?? fullSize}
+			contentFit={fittedFrame ? 'cover' : 'contain'}
+			source={{ uri }}
+			ref={expoImageRef}
+			onLoad={onImageLoad}
+			sharedTransitionTag={sharedTransitionTag}
+			sharedTransitionStyle={mediaSharedTransition}
+			{...props}
+		/>
+	);
+
 	return (
 		<View importantForAccessibility='no' style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
@@ -184,32 +199,10 @@ export const ImageViewer = ({
 							onPress={handleGifPlayback}
 							style={styles.gestureArea}
 							rectButtonStyle={styles.gestureArea}>
-							<AnimatedImage
-								accessible={false}
-								style={imageFrame}
-								contentFit={contentFit}
-								source={{ uri }}
-								ref={expoImageRef}
-								onLoad={onImageLoad}
-								sharedTransitionTag={sharedTransitionTag}
-								sharedTransitionStyle={mediaSharedTransition}
-								{...props}
-							/>
+							{image}
 						</Touch>
 					) : (
-						<AnimatedImage
-							accessible
-							accessibilityLabel={accessibilityLabel}
-							accessibilityRole='image'
-							style={imageFrame}
-							contentFit={contentFit}
-							source={{ uri }}
-							ref={expoImageRef}
-							onLoad={onImageLoad}
-							sharedTransitionTag={sharedTransitionTag}
-							sharedTransitionStyle={mediaSharedTransition}
-							{...props}
-						/>
+						image
 					)}
 				</Animated.View>
 			</GestureDetector>
