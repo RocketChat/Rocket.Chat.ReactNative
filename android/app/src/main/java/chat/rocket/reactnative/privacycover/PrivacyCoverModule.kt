@@ -2,6 +2,8 @@ package chat.rocket.reactnative.privacycover
 
 import android.app.Activity
 import android.app.Application
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
@@ -30,7 +32,7 @@ class PrivacyCoverModule(reactContext: ReactApplicationContext) :
     private val activatedToken = AtomicInteger(0)
     private var releasedToken = 0
     private var flagSecureSet = false
-    private var coverView: View? = null
+    private var coverDialog: Dialog? = null
     private var contentHiddenFromAccessibility: View? = null
 
     init {
@@ -95,7 +97,8 @@ class PrivacyCoverModule(reactContext: ReactApplicationContext) :
 
     override fun onActivityDestroyed(activity: Activity) {
         if (activity !is MainActivity) return
-        coverView = null
+        coverDialog?.dismiss()
+        coverDialog = null
         contentHiddenFromAccessibility = null
     }
 
@@ -124,11 +127,9 @@ class PrivacyCoverModule(reactContext: ReactApplicationContext) :
     }
 
     private fun showCover(activity: Activity) {
-        if (coverView != null) return
-        val decorView = activity.window.decorView as ViewGroup
+        if (coverDialog != null || activity.isFinishing) return
+        val background = ContextCompat.getColor(activity, R.color.splashBackground)
         val cover = FrameLayout(activity).apply {
-            setBackgroundColor(ContextCompat.getColor(activity, R.color.splashBackground))
-            isClickable = true
             addView(
                 ImageView(activity).apply { setImageResource(R.drawable.bootsplash_logo) },
                 FrameLayout.LayoutParams(
@@ -138,16 +139,25 @@ class PrivacyCoverModule(reactContext: ReactApplicationContext) :
                 )
             )
         }
-        decorView.addView(cover, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-        coverView = cover
+        coverDialog = Dialog(activity, android.R.style.Theme_DeviceDefault_NoActionBar).apply {
+            setContentView(cover)
+            setCancelable(false)
+            window?.apply {
+                setBackgroundDrawable(ColorDrawable(background))
+                setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                setWindowAnimations(0)
+                clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            }
+            show()
+        }
         contentHiddenFromAccessibility = activity.findViewById<View>(android.R.id.content)?.apply {
             importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
         }
     }
 
     private fun hideCover() {
-        coverView?.let { (it.parent as? ViewGroup)?.removeView(it) }
-        coverView = null
+        coverDialog?.dismiss()
+        coverDialog = null
         contentHiddenFromAccessibility?.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
         contentHiddenFromAccessibility = null
     }
