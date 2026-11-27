@@ -80,5 +80,18 @@ export const styles = StyleSheet.create({
 		...sharedStyles.textRegular,
 		fontSize: 14,
 		lineHeight: 20
+	},
+	encryptedTag: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		alignSelf: 'center',
+		gap: 4,
+		paddingHorizontal: 4,
+		borderRadius: 4
+	},
+	encryptedTagText: {
+		...sharedStyles.textSemibold,
+		fontSize: 12,
+		lineHeight: 16
 	}
 });
