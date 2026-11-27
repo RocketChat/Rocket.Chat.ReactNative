@@ -1,6 +1,6 @@
-import RoomSubscription from './room';
+import RoomSubscription from '../room';
 import sdk from '~/lib/services/sdk';
-import updateMessages from '../updateMessages';
+import updateMessages from '../../updateMessages';
 import { getSubscriptionByRoomId } from '~/lib/database/services/Subscription';
 
 jest.mock('~/lib/services/sdk', () => ({
@@ -30,9 +30,9 @@ jest.mock('~/lib/store/auxStore', () => ({
 	}
 }));
 
-jest.mock('../updateMessages', () => jest.fn());
-jest.mock('../readMessages', () => ({ readMessages: jest.fn() }));
-jest.mock('../loadMessagesForRoom', () => ({
+jest.mock('../../updateMessages', () => jest.fn());
+jest.mock('../../readMessages', () => ({ readMessages: jest.fn() }));
+jest.mock('../../loadMessagesForRoom', () => ({
 	loadMessagesForRoom: jest.fn(),
 	waitForLiveTailLoad: jest.fn(() => Promise.resolve())
 }));

@@ -64,6 +64,14 @@ type TLoadRoomResult =
 const getLastSeen = (room: TRoomOrPreview): Date | null =>
 	isSubscriptionModel(room) && (room.alert || room.unread || room.userMentions) ? room.ls : null;
 
+const markReadAndGetLastSeen = (room: TRoomOrPreview, shouldMarkRead: boolean, lastSeenAtOpen: Date | null): Date | null => {
+	if (!shouldMarkRead) {
+		return null;
+	}
+	readMessages(room.rid).catch(e => log(e));
+	return lastSeenAtOpen ?? getLastSeen(room);
+};
+
 const loadRoom = async (
 	rid: string,
 	room: TRoomOrPreview,
@@ -227,10 +235,7 @@ export const createRoomStore = ({
 				}
 				if (result.status === 'loaded') {
 					set(result.pendingRoomState);
-					if (result.shouldMarkRead) {
-						readMessages(room.rid).catch(e => log(e));
-					}
-					return { status: 'loaded', lastSeen: result.shouldMarkRead ? (lastSeenAtOpen ?? getLastSeen(room)) : null };
+					return { status: 'loaded', lastSeen: markReadAndGetLastSeen(room, result.shouldMarkRead, lastSeenAtOpen) };
 				}
 				if (attempt < INIT_MAX_ATTEMPTS) {
 					await new Promise(resolve => {

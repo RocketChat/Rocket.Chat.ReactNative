@@ -278,7 +278,7 @@ describe('loadMessagesForRoom', () => {
 
 	it('does not append a trailing Older Loader when the history below the batch is already stored', async () => {
 		const batch = buildStoredBatch();
-		mockedGetMessageById.mockImplementation(id => Promise.resolve(!!id?.startsWith('stored-') ? ({ id } as any) : null));
+		mockedGetMessageById.mockImplementation(id => Promise.resolve(id?.startsWith('stored-') ? ({ id } as any) : null));
 		mockedSdkGet.mockResolvedValueOnce({ success: true, messages: batch } as any);
 
 		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });

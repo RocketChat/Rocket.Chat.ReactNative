@@ -117,7 +117,7 @@ async function load(args: {
 	return { messages: allMessages, serverTimestamps, lastBatchWasFull };
 }
 
-const hasGapBelow = async (oldestMessage: IMessage): Promise<boolean> => {
+const hasOlderGap = async (oldestMessage: IMessage): Promise<boolean> => {
 	if (!(await getMessageById(oldestMessage._id as string))) {
 		return true;
 	}
@@ -160,7 +160,7 @@ async function loadRoomHistory(args: TLoadMessagesForRoomArgs): Promise<void> {
 		});
 		if (messages?.length) {
 			const lastMessage = messages[messages.length - 1];
-			if (lastBatchWasFull && (await hasGapBelow(lastMessage))) {
+			if (lastBatchWasFull && (await hasOlderGap(lastMessage))) {
 				messages.push(buildOlderLoader(lastMessage));
 			}
 			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
