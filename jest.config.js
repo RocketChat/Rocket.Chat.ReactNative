@@ -4,10 +4,11 @@ module.exports = {
 	maxWorkers: 2,
 	fakeTimers: { doNotFake: ['setImmediate'] },
 	workerIdleMemoryLimit: '512MB',
-	modulePathIgnorePatterns: ['<rootDir>/.*worktrees/'],
+	modulePathIgnorePatterns: ['<rootDir>/.*worktrees/', '<rootDir>/\\.scratch/'],
 	testPathIgnorePatterns: [
 		'node_modules',
 		'<rootDir>/.*worktrees/',
+		'<rootDir>/\\.scratch/',
 		'/__tests__/testHelpers\\.tsx$',
 		'/__tests__/mockedWatermelonDB\\.tsx$'
 	],
