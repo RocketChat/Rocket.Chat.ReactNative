@@ -7,7 +7,7 @@ metadata:
     - app/definitions/rest/v1/commands.ts
   check: $SKILL_DIR/check.sh
   check-model: $SKILL_DIR/check.sh --model
-  sync: 4fa4fc2af2882fe1dbb22fa84e7efb6cd10805e2
+  sync: 701c9ebbcc896cc8cb16f35f47002ba7bc98e861
 ---
 
 # Verify slash commands sync
@@ -117,10 +117,10 @@ If a change is intended, update the rule or the fake that describes it in `harne
 
 ## Coverage
 
-Sync commit: `4fa4fc2af2882fe1dbb22fa84e7efb6cd10805e2` (also `metadata.sync`). Line numbers are at that commit; find functions by name if lines moved. To list what changed since the harness last matched the code:
+Sync commit: `701c9ebbcc896cc8cb16f35f47002ba7bc98e861` (also `metadata.sync`). Line numbers are at that commit; find functions by name if lines moved. To list what changed since the harness last matched the code:
 
 ```sh
-git diff 4fa4fc2af2882fe1dbb22fa84e7efb6cd10805e2 -- app/lib/methods/getSlashCommands.ts app/definitions/rest/v1/commands.ts
+git diff 701c9ebbcc896cc8cb16f35f47002ba7bc98e861 -- app/lib/methods/getSlashCommands.ts app/definitions/rest/v1/commands.ts
 ```
 
 | Code                                                            | What the check covers                                                                                                                                                                                                                                                                                                                                                                                                                                             |
@@ -134,6 +134,7 @@ Move the sync commit forward, here and in `metadata.sync`, only to a pushed comm
 ## Not covered
 
 - `changingListKeepsOnlyServerCommands` does not require that a command which stayed on the server ends in the table. When a command before the current offset is removed (an app uninstalled) while paging, the next page skips one command that is still on the server, and the save deletes it until the next sign-in. The current code does this; the rule accepts it.
+- The empty-page stop (`if (!page.commands.length) break;`) has no mutation. Every server rule the fake copies counts `total` over the same list it pages, so an empty page only comes at an offset at or past `total`, where the loop stops anyway; removing the stop changes no run. It matters only for a `total` above the list, which the server does not send. `app/lib/methods/__tests__/getSlashCommands.test.ts` covers it.
 - The real WatermelonDB and SQLite: the fake applies a batch all at once and rejects duplicate ids; a SQLite failure mid-batch is not tried.
 - What `sanitizedRaw` and `Object.assign` store for fields outside `description`, `params`, `appId`, `clientOnly`, `providesPreview`.
 - More than 7 commands, other page sizes, a `total` that disagrees with the list the server pages, and changes after the second request.
