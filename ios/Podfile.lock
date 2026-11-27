@@ -2981,6 +2981,31 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - RocketChatMessageParser (0.1.0):
+    - hermes-engine
+    - NitroModules
+    - RCTRequired
+    - RCTTypeSafety
+    - React-bridging
+    - React-callinvoker
+    - React-Core
+    - React-Core-prebuilt
+    - React-cxxstableapi
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - SDWebImage (5.21.7):
     - SDWebImage/Core (= 5.21.7)
   - SDWebImage/Core (5.21.7)
@@ -3163,6 +3188,7 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - "RNTrueSheet (from `../node_modules/@lodev09/react-native-true-sheet`)"
   - RNWorklets (from `../node_modules/react-native-worklets`)
+  - "RocketChatMessageParser (from `../node_modules/@rocket.chat/message-parser-native`)"
   - "simdjson (from `../node_modules/@nozbe/simdjson`)"
   - SocketRocket (from `build/rndeps-facades/SocketRocket`)
   - "WatermelonDB (from `../node_modules/@nozbe/watermelondb`)"
@@ -3504,6 +3530,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@lodev09/react-native-true-sheet"
   RNWorklets:
     :path: "../node_modules/react-native-worklets"
+  RocketChatMessageParser:
+    :path: "../node_modules/@rocket.chat/message-parser-native"
   simdjson:
     :path: "../node_modules/@nozbe/simdjson"
   SocketRocket:
@@ -3687,6 +3715,7 @@ SPEC CHECKSUMS:
   RNSVG: c3f9498aa208ae99a217dd3d698251677b224890
   RNTrueSheet: 6f09e891bdc4fdaf67eea359f3df7bc5afb16a04
   RNWorklets: 488806637a21eb17812a48dadca7cb8c698c8cfd
+  RocketChatMessageParser: 94cde242b605ff06d62f63dbb0481d8729ad0ccb
   SDWebImage: e9fc87c1aab89a8ab1bbd74eba378c6f53be8abf
   SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
