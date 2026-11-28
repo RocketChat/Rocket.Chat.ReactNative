@@ -97,15 +97,18 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 				console.log('connect error', err);
 			});
 
+		let isConnected = false;
+
 		connectingListener = sdk.onStreamData('connecting', () => {
+			isConnected = false;
 			store.dispatch(connectRequest());
 		});
 
 		connectedListener = sdk.onStreamData('connected', () => {
-			const { connected } = store.getState().meteor;
-			if (connected) {
+			if (isConnected) {
 				return;
 			}
+			isConnected = true;
 			store.dispatch(connectSuccess());
 			const { user } = store.getState().login;
 			if (user?.token) {
@@ -118,6 +121,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		let pendingHangupsDrainArmed = false;
 
 		closeListener = sdk.onStreamData('close', () => {
+			isConnected = false;
 			pendingHangupsDrainArmed = true;
 			store.dispatch(disconnectAction());
 		});

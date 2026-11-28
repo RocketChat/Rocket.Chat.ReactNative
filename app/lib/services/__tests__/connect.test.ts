@@ -2,7 +2,7 @@ import { connect, determineAuthType, disconnect, login, loginTOTP } from '../con
 import { mediaSessionInstance } from '../voip/MediaSessionInstance';
 import { useAppsStore } from '../../apps/appsStore';
 import { pendingHangups } from '../voip/pendingHangups';
-import { setUser } from '~/actions/login';
+import { loginRequest, setUser } from '~/actions/login';
 import database from '../../database';
 
 jest.mock('../voip/MediaSessionInstance', () => ({
@@ -565,6 +565,72 @@ describe('connect — pendingHangups drain on reconnect', () => {
 		await flushMicrotasks();
 
 		expect(firstDrainStop).toHaveBeenCalled();
+	});
+});
+
+describe('connect — resume login on reconnect', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockOnStreamDataStops.length = 0;
+		mockStoreSubscribe.mockImplementation(noopUnsubscribe);
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: { id: 'user1', token: 'resume-token-123' }, isAuthenticated: true },
+			settings: {}
+		});
+	});
+
+	it('dispatches loginRequest with resume token when reconnecting even if meteor.connected was stale', async () => {
+		await connect({ server: 'https://example.com' });
+
+		const connectingHandler = getHandlersByEvent('connecting')[0];
+		const connectedHandler = getHandlersByEvent('connected')[0];
+
+		connectingHandler();
+		connectedHandler();
+		await flushMicrotasks();
+
+		expect(mockStoreDispatch).toHaveBeenCalledWith(loginRequest({ resume: 'resume-token-123' }, false));
+	});
+
+	it('dispatches loginRequest only once when connected fires multiple times', async () => {
+		await connect({ server: 'https://example.com' });
+
+		const connectingHandler = getHandlersByEvent('connecting')[0];
+		const connectedHandler = getHandlersByEvent('connected')[0];
+
+		connectingHandler();
+		connectedHandler();
+		connectedHandler();
+		await flushMicrotasks();
+
+		expect(mockStoreDispatch).toHaveBeenCalledWith(loginRequest({ resume: 'resume-token-123' }, false));
+		const loginCalls = mockStoreDispatch.mock.calls.filter(
+			([action]: any) => action?.type === loginRequest({ resume: 'resume-token-123' }, false).type
+		);
+		expect(loginCalls).toHaveLength(1);
+	});
+
+	it('does not dispatch loginRequest when user token is absent on connected', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {}
+		});
+
+		await connect({ server: 'https://example.com' });
+
+		const connectingHandler = getHandlersByEvent('connecting')[0];
+		const connectedHandler = getHandlersByEvent('connected')[0];
+
+		connectingHandler();
+		connectedHandler();
+		await flushMicrotasks();
+
+		const loginCalls = mockStoreDispatch.mock.calls.filter(
+			([action]: any) => action?.type === loginRequest({ resume: 'token' }, false).type
+		);
+		expect(loginCalls).toHaveLength(0);
 	});
 });
 

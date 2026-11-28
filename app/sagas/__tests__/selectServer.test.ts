@@ -71,7 +71,8 @@ jest.mock('~/lib/methods/helpers/log', () => ({
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import selectServerRoot from '../selectServer';
-import { selectServerRequest, serverRequest } from '~/actions/server';
+import { selectServerCancel, selectServerRequest, serverRequest } from '~/actions/server';
+import { setUser } from '~/actions/login';
 import { appStart } from '~/actions/app';
 import { RootEnum } from '~/definitions/redux/TRootEnum';
 import { SERVER } from '~/actions/actionsTypes';
@@ -516,5 +517,43 @@ describe('selectServer saga — selecting the connected workspace', () => {
 		await flushSagaMicrotasks();
 
 		expect(applyServerCertificate).toHaveBeenCalledWith(OLD_SERVER);
+	});
+
+	it('populates login.user and cancels selection without reconnecting when the connected workspace is selected again', async () => {
+		UserPreferences.setString(`${TOKEN_KEY}-${OLD_SERVER}`, OLD_USER_ID);
+		UserPreferences.setString(getUserTokenKey(OLD_SERVER, OLD_USER_ID), 'token-old');
+		setActiveHost(OLD_SERVER);
+		jest.mocked(getLoggedUserById).mockResolvedValue({ id: OLD_USER_ID, username: 'old-user' } as any);
+
+		const { store, dispatchedActions } = setupStore();
+		store.dispatch(selectServerRequest(OLD_SERVER, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions).toContainEqual(
+			setUser(
+				expect.objectContaining({
+					token: 'token-old'
+				}) as any
+			)
+		);
+		expect(connect).not.toHaveBeenCalled();
+		expect(dispatchedActions).toContainEqual(selectServerCancel());
+	});
+
+	it('falls back to token-only user when getLoggedUserById throws in the short-circuit branch', async () => {
+		UserPreferences.setString(`${TOKEN_KEY}-${OLD_SERVER}`, OLD_USER_ID);
+		UserPreferences.setString(getUserTokenKey(OLD_SERVER, OLD_USER_ID), 'token-old');
+		setActiveHost(OLD_SERVER);
+		jest.mocked(getLoggedUserById).mockRejectedValueOnce(new Error('DB read failure'));
+
+		const { store, dispatchedActions } = setupStore();
+		store.dispatch(selectServerRequest(OLD_SERVER, '7.0.0', false));
+		await flushSagaMicrotasks();
+
+		expect(dispatchedActions).toContainEqual(setUser({ token: 'token-old' }));
+		expect(dispatchedActions.map(action => action.type)).not.toContain(SERVER.SELECT_FAILURE);
+		expect(dispatchedActions.map(action => action.type)).not.toContain(SERVER.FAILURE);
+		expect(connect).not.toHaveBeenCalled();
+		expect(dispatchedActions).toContainEqual(selectServerCancel());
 	});
 });

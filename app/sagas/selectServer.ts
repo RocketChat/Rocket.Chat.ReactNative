@@ -153,6 +153,38 @@ export const startInsideUnlessSharing = function* startInsideUnlessSharing() {
 	}
 };
 
+const resolveUser = function* resolveUser(userId: string | null, token: string, allowFallback = false) {
+	if (!userId) {
+		return { token };
+	}
+	try {
+		const userRecord = yield* call(getLoggedUserById, userId);
+		return userRecord
+			? {
+					id: userRecord.id,
+					token,
+					username: userRecord.username,
+					name: userRecord.name,
+					language: userRecord.language,
+					status: userRecord.status,
+					statusText: userRecord.statusText,
+					roles: userRecord.roles,
+					avatarETag: userRecord.avatarETag,
+					bio: userRecord.bio,
+					nickname: userRecord.nickname,
+					requirePasswordChange: userRecord.requirePasswordChange,
+					sidebarCategories: userRecord.sidebarCategories
+				}
+			: { token };
+	} catch (e) {
+		if (allowFallback) {
+			log(e);
+			return { token };
+		}
+		throw e;
+	}
+};
+
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
 		yield* call(applyServerCertificate, server);
@@ -160,6 +192,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		const { userId, token } = getStoredSession(server);
 		if (sdk.host === server && token) {
 			applyBasicAuth(server);
+			const user = yield* resolveUser(userId, token, true);
+			yield put(setUser(user));
 			yield* startInsideUnlessSharing();
 			yield put(selectServerCancel());
 			return;
@@ -167,28 +201,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
-		let user = null;
-		if (userId && token) {
-			// search credentials on database
-			const userRecord = yield* call(getLoggedUserById, userId);
-			user = userRecord
-				? {
-						id: userRecord.id,
-						token,
-						username: userRecord.username,
-						name: userRecord.name,
-						language: userRecord.language,
-						status: userRecord.status,
-						statusText: userRecord.statusText,
-						roles: userRecord.roles,
-						avatarETag: userRecord.avatarETag,
-						bio: userRecord.bio,
-						nickname: userRecord.nickname,
-						requirePasswordChange: userRecord.requirePasswordChange,
-						sidebarCategories: userRecord.sidebarCategories
-					}
-				: { token };
-		}
+		const user = token ? yield* resolveUser(userId, token) : null;
 
 		applyBasicAuth(server);
 
